@@ -1,0 +1,39 @@
+# Dolibarr language file - Source file is en_US - resource
+MenuResourceIndex=Resurssit
+MenuResourceAdd=Uusi resurssi
+DeleteResource=Poista resurssi
+ConfirmDeleteResourceElement=Vahvista tämän elementin resurssin poistaminen
+NoResourceInDatabase=Ei resursseja kielellä tietokanta.
+NoResourceLinked=Ei linkitettyä resurssia
+ActionsOnResource=Tätä resurssia koskevat tapahtumat
+ResourcePageIndex=Resurssiluettelo
+ResourceSingular=Resurssi
+ResourceCard=Resurssikortti
+AddResource=luo resurssi
+ResourceFormLabel_ref=Resurssin nimi
+ResourceType=Resurssin tyyppi
+ResourceFormLabel_description=Resurssin kuvaus
+
+ResourcesLinkedToElement=Elementtiin linkitetyt resurssit
+
+ShowResource=Näytä resurssi
+
+ResourceElementPage=Elementtiresurssit
+ResourceCreatedWithSuccess=Resurssi luotu onnistuneesti
+RessourceLineSuccessfullyDeleted=Resurssirivin poistaminen onnistui
+RessourceLineSuccessfullyUpdated=Resurssirivin päivitys onnistui
+ResourceLinkedWithSuccess=Menestykseen liittyvä resurssi
+
+ConfirmDeleteResource=Vahvista tämän resurssin poistaminen
+RessourceSuccessfullyDeleted=Resurssi poistettu onnistuneesti
+DictionaryResourceType=Resurssien tyyppi
+
+SelectResource=Valitse resurssi
+
+IdResource=Id-resurssi
+AssetNumber=Sarjanumero
+ResourceTypeCode=Resurssityypin koodi
+ImportDataset_resource_1=Resurssit
+
+ErrorResourcesAlreadyInUse=Jotkut resurssit ovat käytössä
+ErrorResourceUseInEvent=%s käytetty %s tapahtumassa

@@ -1,0 +1,42 @@
+# Dolibarr language file - Source file is en_US - multicurrency
+MultiCurrency=Viacnásobná mena
+ErrorAddRateFail=Chyba v pridanej sadzbe
+ErrorAddCurrencyFail=Chyba v pridanej mene
+ErrorDeleteCurrencyFail=Chyba pri odstránení zlyhala
+multicurrency_syncronize_error=Chyba synchronizácie: %s
+MULTICURRENCY_USE_RATE_ON_DOCUMENT_DATE=Na nájdenie kurzu meny použite dátum dokumentu, namiesto použitia posledného známeho kurzu
+multicurrency_useOriginTx=Keď je objekt vytvorený z iného objektu, ponechajte pôvodnú sadzbu zo zdrojového objektu (inak použite poslednú známu sadzbu)
+CurrencyLayerAccount=CurrencyLayer API
+CurrencyLayerAccount_help_to_synchronize=Ak chcete používať túto funkciu, musíte si vytvoriť účet na webovej stránke %s.<br>Získajte <b> /span>Kľúč API<span class='notranslate'></b>.<br>Ak používate bezplatný účet, nemôžete zmeniť <b>zdrojová mena</b> (predvolene USD).<br>Ak vaša hlavná mena nie je USD aplikácia to automaticky prepočíta.<br><br>Máte obmedzený počet 1000 synchronizácií za mesiac.
+multicurrency_appId=API kľúč
+multicurrency_appCurrencySource=Zdrojová mena
+multicurrency_alternateCurrencySource=Alternatívna zdrojová mena
+CurrenciesUsed=Použité meny
+CurrenciesUsed_help_to_add=Pridajte rôzne meny a sadzby, ktoré musíte použiť vo svojich <b>ponukách</b>, b0aeee383 /span>objednávky<span class='notranslate'></b> atď.
+rate=sadzba
+MulticurrencyReceived=Prijaté, pôvodná mena
+MulticurrencyRemainderToTake=Zostávajúca suma, pôvodná mena
+AmountToOthercurrency=Čiastka do (v mene prijímajúceho účtu)
+CurrencyRateSyncSucceed=Synchronizácia menového kurzu bola úspešne vykonaná
+MULTICURRENCY_USE_CURRENCY_ON_DOCUMENT=Pri online platbách použite menu dokladu
+TabTitleMulticurrencyRate=Sadzobník
+ListCurrencyRate=Zoznam výmenných kurzov meny
+CreateRate=Vytvorte sadzbu
+FormCreateRate=Tvorba sadzby
+FormUpdateRate=Úprava sadzby
+successRateCreate=Kurz pre menu %s bol pridaný do databázy
+ConfirmDeleteLineRate=Naozaj chcete odstrániť %s kurz pre menu %s na %s dátum?
+DeleteLineRate=Jasná sadzba
+successRateDelete=Sadzba bola vymazaná
+errorRateDelete=Chyba pri odstraňovaní sadzby
+successUpdateRate=Vykonaná úprava
+ErrorUpdateRate=Chyba pri zmene sadzby
+Codemulticurrency=kód meny
+UpdateRate=zmeniť sadzbu
+CancelUpdate=Zrušiť
+NoEmptyRate=Pole sadzby nesmie byť prázdne
+CurrencyCodeId=ID meny
+CurrencyCode=Kód meny
+CurrencyUnitPrice=Jednotková cena v cudzej mene
+CurrencyPrice=Cena v cudzej mene
+MutltiCurrencyAutoUpdateCurrencies=Aktualizujte všetky menové kurzy
