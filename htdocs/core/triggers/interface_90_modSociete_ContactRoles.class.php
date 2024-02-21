@@ -26,6 +26,9 @@
  * \ingroup agenda
  * \brief Trigger file for company - contactroles
  */
+
+use Alxarafe\Core\Base\Lang;
+
 require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
 /**

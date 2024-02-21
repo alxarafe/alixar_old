@@ -16,6 +16,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alxarafe\Core\Base\Lang;
+
 /**
  * Class that all triggers must inherit
  */

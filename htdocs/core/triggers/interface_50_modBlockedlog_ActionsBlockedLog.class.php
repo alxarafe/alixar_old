@@ -22,8 +22,9 @@
  *  \brief      Trigger file for blockedlog module
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
+use Alxarafe\Core\Base\Lang;
 
+require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
 /**
  *  Class of triggered functions for agenda module

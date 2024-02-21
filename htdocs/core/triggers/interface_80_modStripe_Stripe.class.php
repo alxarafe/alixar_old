@@ -27,8 +27,10 @@
  *              - The class name must be InterfaceMytrigger
  *              - The property name must be Mytrigger
  */
-require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
+use Alxarafe\Core\Base\Lang;
+
+require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
 /**
  *  Class of triggers for stripe module

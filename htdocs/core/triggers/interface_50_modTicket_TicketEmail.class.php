@@ -23,8 +23,10 @@
  *  \ingroup    core
  *  \brief      File of trigger for ticket module
  */
-require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
+use Alxarafe\Core\Base\Lang;
+
+require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
 /**
  *  Class of triggers for ticket module

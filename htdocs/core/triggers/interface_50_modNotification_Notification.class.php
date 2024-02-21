@@ -23,9 +23,11 @@
  *  \ingroup    notification
  *  \brief      File of class of triggers for notification module
  */
+
+use Alxarafe\Core\Base\Lang;
+
 require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 include_once DOL_DOCUMENT_ROOT.'/core/class/notify.class.php';
-
 
 /**
  *  Class of triggers for notification module
