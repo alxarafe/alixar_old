@@ -4,6 +4,7 @@
  * Copyright (C) 2018 	   Juanjo Menent  <jmenent@2byte.es>
  * Copyright (C) 2019 	   Ferran Marcet  <fmarcet@2byte.es>
  * Copyright (C) 2019-2024 Frédéric France <frederic.france@netlogic.fr>
+ * Copyright (C) 2024 Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -788,7 +789,7 @@ if (!$error && $massaction == "builddoc" && $permissiontoread && !GETPOST('butto
 	//	$newlang = $objecttmp->thirdparty->default_lang;
 	//}
 	if (!empty($newlang)) {
-		$outputlangs = new Translate("", $conf);
+        $outputlangs = new Lang("", $conf);
 		$outputlangs->setDefaultLang($newlang);
 	}
 
@@ -998,7 +999,7 @@ if (!$error && $massaction == 'validate' && $permissiontoadd) {
 							}
 						}
 						if (!empty($newlang)) {
-							$outputlangs = new Translate("", $conf);
+                            $outputlangs = new Lang("", $conf);
 							$outputlangs->setDefaultLang($newlang);
 							$outputlangs->load('products');
 						}
@@ -1161,7 +1162,7 @@ if (!$error && $massaction == 'generate_doc' && $permissiontoread) {
 				$newlang = $objecttmp->thirdparty->default_lang; // for proposal, order, invoice, ...
 			}
 			if (!empty($newlang)) {
-				$outputlangs = new Translate("", $conf);
+                $outputlangs = new Lang("", $conf);
 				$outputlangs->setDefaultLang($newlang);
 			}
 

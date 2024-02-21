@@ -45,6 +45,8 @@
  *					This file contains all frequently used functions.
  */
 
+use Alxarafe\Core\Base\Lang;
+
 include_once DOL_DOCUMENT_ROOT.'/core/lib/json.lib.php';
 
 // Function for better PHP x compatibility
@@ -5468,8 +5470,8 @@ function dol_print_error($db = null, $error = '', $errors = null)
 
 	// If error occurs before the $lang object was loaded
 	if (!$langs) {
-		require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
-		$langs = new Translate('', $conf);
+        //		require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
+        $langs = new Lang('', $conf);
 		$langs->load("main");
 	}
 

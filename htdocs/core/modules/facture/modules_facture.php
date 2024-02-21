@@ -85,7 +85,7 @@ abstract class ModelePDFFactures extends CommonDocGenerator
 	 * @param 	Translate 				$langs 		Translation object
 	 * @return 	SwissQrBill\QrBill|bool 			The valid SwissQR object, or false
 	 */
-	private function getSwissQrBill(Facture $object, Translate $langs)
+    private function getSwissQrBill(Facture $object, Lang $langs)
 	{
 		global $conf;
 
@@ -193,10 +193,11 @@ abstract class ModelePDFFactures extends CommonDocGenerator
 	 *
 	 * @param int       $pagenbr 	Page number
 	 * @param Facture   $object  	Invoice object
-	 * @param Translate $langs   	Translation object
+     * @param Lang $langs Translation object
+     *
 	 * @return int      			Height in mm of the bottom-page QR invoice. Can be zero if not on right page; not enabled
-	 */
-	protected function getHeightForQRInvoice(int $pagenbr, Facture $object, Translate $langs)
+     */
+    protected function getHeightForQRInvoice(int $pagenbr, Facture $object, Lang $langs)
 	{
 		if (getDolGlobalString('INVOICE_ADD_SWISS_QR_CODE') == 'bottom') {
 			// Keep it, to reset it after QRinvoice getter
@@ -221,10 +222,11 @@ abstract class ModelePDFFactures extends CommonDocGenerator
 	 *
 	 * @param TCPDF     $pdf     	TCPDF object
 	 * @param Facture   $object  	Invoice object
-	 * @param Translate $langs   	Translation object
+     * @param Lang      $langs     Translation object
+	 *
 	 * @return bool 				True for for success
-	 */
-	public function addBottomQRInvoice(TCPDF $pdf, Facture $object, Translate $langs): bool
+     */
+    public function addBottomQRInvoice(TCPDF $pdf, Facture $object, Lang $langs): bool
 	{
 		if (!($qrBill = $this->getSwissQrBill($object, $langs))) {
 			return false;

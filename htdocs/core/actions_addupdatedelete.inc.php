@@ -1,5 +1,6 @@
 <?php
 /* Copyright (C) 2017-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -448,7 +449,7 @@ if ($action == 'confirm_deleteline' && $confirm == 'yes' && !empty($permissionto
 			$newlang = $object->thirdparty->default_lang;
 		}
 		if (!empty($newlang)) {
-			$outputlangs = new Translate("", $conf);
+            $outputlangs = new Lang("", $conf);
 			$outputlangs->setDefaultLang($newlang);
 		}
 		if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
@@ -493,7 +494,7 @@ if ($action == 'confirm_validate' && $confirm == 'yes' && $permissiontoadd) {
 					$newlang = !empty($object->thirdparty->default_lang) ? $object->thirdparty->default_lang : "";
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 
@@ -530,7 +531,7 @@ if ($action == 'confirm_close' && $confirm == 'yes' && $permissiontoadd) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$model = $object->model_pdf;
@@ -574,7 +575,7 @@ if ($action == 'confirm_reopen' && $confirm == 'yes' && $permissiontoadd) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$model = $object->model_pdf;

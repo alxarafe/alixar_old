@@ -371,7 +371,7 @@ class PaiementFourn extends Paiement
 									$newlang = $invoice->thirdparty->default_lang;
 								}
 								if (!empty($newlang)) {
-									$outputlangs = new Translate("", $conf);
+                                    $outputlangs = new Lang("", $conf);
 									$outputlangs->setDefaultLang($newlang);
 								}
 								$ret = $invoice->fetch($facid); // Reload to get new records

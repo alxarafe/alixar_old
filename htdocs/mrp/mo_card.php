@@ -23,6 +23,8 @@
 
 
 // Load Dolibarr environment
+use Alxarafe\Core\Base\Lang;
+
 require '../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
@@ -299,7 +301,7 @@ if (empty($reshook)) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$model = $object->model_pdf;

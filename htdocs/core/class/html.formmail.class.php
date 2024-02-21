@@ -7,6 +7,7 @@
  * Copyright (C) 2018-2022	Frédéric France			<frederic.france@netlogic.fr>
  * Copyright (C) 2022		Charlene Benke			<charlene@patas-monkey.com>
  * Copyright (C) 2023		Anthony Berton			<anthony.berton@bb2a.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -426,7 +427,7 @@ class FormMail extends Form
 				$newlang = $this->param['langsmodels'];
 			}
 			if (!empty($newlang)) {
-				$outputlangs = new Translate("", $conf);
+                $outputlangs = new Lang("", $conf);
 				$outputlangs->setDefaultLang($newlang);
 				$outputlangs->load('other');
 			}

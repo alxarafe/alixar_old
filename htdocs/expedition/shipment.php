@@ -689,7 +689,7 @@ if ($id > 0 || !empty($ref)) {
 								$newlang = $object->thirdparty->default_lang;
 							}
 							if (!empty($newlang)) {
-								$outputlangs = new Translate("", $conf);
+                                $outputlangs = new Lang("", $conf);
 								$outputlangs->setDefaultLang($newlang);
 							}
 

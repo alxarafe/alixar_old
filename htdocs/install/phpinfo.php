@@ -1,5 +1,6 @@
 <?php
 /* Copyright (C) 2007 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024 Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@
  *     \brief      Show page phpinfo
  */
 
+include_once '../vendor/autoload.php';
 include_once 'inc.php';
 
 phpinfo();

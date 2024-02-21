@@ -24,7 +24,11 @@
  *		\remarks	To run this script as CLI:  phpunit filename.php
  */
 
-global $conf,$user,$langs,$db;
+global
+
+use Alxarafe\Core\Base\Lang;
+
+$conf,$user,$langs,$db;
 //define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
@@ -93,7 +97,7 @@ class LangTest extends CommonClassTest
 		$langs = $this->savlangs;
 		$db = $this->savdb;
 
-		include_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
+        //		include_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
 
 		$filesarray = scandir(DOL_DOCUMENT_ROOT.'/langs');
 		foreach ($filesarray as $key => $code) {
@@ -102,7 +106,7 @@ class LangTest extends CommonClassTest
 			}
 
 			print 'Check language file for lang code='.$code."\n";
-			$tmplangs = new Translate('', $conf);
+            $tmplangs = new Lang('', $conf);
 			$langcode = $code;
 			$tmplangs->setDefaultLang($langcode);
 			$tmplangs->load("main");
@@ -187,7 +191,7 @@ class LangTest extends CommonClassTest
 		$langs = $this->savlangs;
 		$db = $this->savdb;
 
-		$tmplangs = new Translate('', $conf);
+        $tmplangs = new Lang('', $conf);
 		$langcode = 'en_US';
 		$tmplangs->setDefaultLang($langcode);
 		$tmplangs->load("main");

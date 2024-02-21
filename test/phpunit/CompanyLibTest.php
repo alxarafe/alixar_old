@@ -24,7 +24,11 @@
  *      \remarks    To run this script as CLI:  phpunit filename.php
  */
 
-global $conf,$user,$langs,$db;
+global
+
+use Alxarafe\Core\Base\Lang;
+
+$conf,$user,$langs,$db;
 //define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
@@ -65,7 +69,7 @@ class CompanyLibTest extends CommonClassTest
 		print __METHOD__." result=".$result."\n";
 		$this->assertEquals('US Dollars', $result, 'Test to get currency name USD in default language '.$langs->defaultlang);
 
-		$outputlangs = new Translate('', $conf);
+        $outputlangs = new Lang('', $conf);
 		$outputlangs->setDefaultLang('fr_FR');
 
 		$result = currency_name('USD', 1, $outputlangs);

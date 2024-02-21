@@ -167,7 +167,7 @@ class PartnershipUtils
 								$newlang = GETPOST('lang_id', 'aZ09');
 							}
 							if (!empty($newlang)) {
-								$outputlangs = new Translate("", $conf);
+                                $outputlangs = new Lang("", $conf);
 								$outputlangs->setDefaultLang($newlang);
 								$outputlangs->loadLangs(array('main', 'member', 'partnership'));
 							}
@@ -392,7 +392,7 @@ class PartnershipUtils
 										$newlang = GETPOST('lang_id', 'aZ09');
 									}
 									if (!empty($newlang)) {
-										$outputlangs = new Translate("", $conf);
+                                        $outputlangs = new Lang("", $conf);
 										$outputlangs->setDefaultLang($newlang);
 										$outputlangs->loadLangs(array('main', 'member', 'partnership'));
 									}

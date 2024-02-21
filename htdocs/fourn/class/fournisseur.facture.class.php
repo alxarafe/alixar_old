@@ -491,7 +491,7 @@ class FactureFournisseur extends CommonInvoice
 				$newlang = $this->default_lang; // for thirdparty
 			}
 			if (!empty($newlang)) {
-				$outputlangs = new Translate("", $conf);
+                $outputlangs = new Lang("", $conf);
 				$outputlangs->setDefaultLang($newlang);
 			}
 

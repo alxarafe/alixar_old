@@ -3,6 +3,7 @@
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2016   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2023   Romain Neil             <contact@romain-neil.fr>
+ * Copyright (C) 2024   Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,7 +150,7 @@ class Documents extends DolibarrApi
 
 		$outputlangs = $langs;
 		if ($langcode && $langs->defaultlang != $langcode) {
-			$outputlangs = new Translate('', $conf);
+            $outputlangs = new Lang('', $conf);
 			$outputlangs->setDefaultLang($langcode);
 		}
 

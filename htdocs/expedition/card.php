@@ -484,7 +484,7 @@ if (empty($reshook)) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$model = $object->model_pdf;
@@ -851,7 +851,7 @@ if (empty($reshook)) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 
@@ -2229,7 +2229,7 @@ if ($action == 'create') {
 			$newlang = $object->thirdparty->default_lang;
 		}
 		if (!empty($newlang)) {
-			$outputlangs = new Translate("", $conf);
+            $outputlangs = new Lang("", $conf);
 			$outputlangs->setDefaultLang($newlang);
 		}
 	}

@@ -280,7 +280,7 @@ if (empty($reshook)) {
 		//	$newlang = $objecttmp->thirdparty->default_lang;
 		//}
 		if (!empty($newlang)) {
-			$outputlangs = new Translate("", $conf);
+            $outputlangs = new Lang("", $conf);
 			$outputlangs->setDefaultLang($newlang);
 		}
 

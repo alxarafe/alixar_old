@@ -64,7 +64,7 @@ if ($action == 'builddoc') {
 
 	$outputlangs = $langs;
 	if (GETPOST('lang_id', 'aZ09')) {
-		$outputlangs = new Translate("", $conf);
+        $outputlangs = new Lang("", $conf);
 		$outputlangs->setDefaultLang(GETPOST('lang_id', 'aZ09'));
 	}
 

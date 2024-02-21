@@ -151,7 +151,7 @@ if ($action == 'add') {
 			$newlang = $object->thirdparty->default_lang;
 		}
 		if (!empty($newlang)) {
-			$outputlangs = new Translate("", $conf);
+            $outputlangs = new Lang("", $conf);
 			$outputlangs->setDefaultLang($newlang);
 		}
 		$model = $object->model_pdf;
@@ -548,7 +548,7 @@ if ($action == 'create') {
 								$newlang = $object->thirdparty->default_lang;
 							}
 							if (!empty($newlang)) {
-								$outputlangs = new Translate("", $conf);
+                                $outputlangs = new Lang("", $conf);
 								$outputlangs->setDefaultLang($newlang);
 							}
 

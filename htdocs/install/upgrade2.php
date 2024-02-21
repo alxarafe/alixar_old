@@ -5,6 +5,7 @@
  * Copyright (C) 2010       Juanjo Menent           <jmenent@2byte.es>
  * Copyright (C) 2015-2016  Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2023      	Gauthier VERDOL       	<gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +41,7 @@
  */
 
 define('ALLOWED_IF_UPGRADE_UNLOCK_FOUND', 1);
+include_once '../vendor/autoload.php';
 include_once 'inc.php';
 if (!file_exists($conffile)) {
 	print 'Error: Dolibarr config file was not found. This may means that Dolibarr is not installed yet. Please call the page "/install/index.php" instead of "/install/upgrade.php").';
@@ -2950,7 +2952,7 @@ function migrate_element_time($db, $langs, $conf)
 				if ($obj->element_duration > 0) {
 					// convert to second
 					// only for int time and float time ex: 1,75 for 1h45
-					list($hour, $min) = explode('.', $obj->element_duration);
+					[$hour, $min] = explode('.', $obj->element_duration);
 					$hour = $hour * 60 * 60;
 					$min = ($min / 100) * 60 * 60;
 					$newtime = $hour + $min;

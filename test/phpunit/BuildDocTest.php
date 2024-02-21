@@ -26,7 +26,11 @@
  *      			See also PdfDocTest to test methods
  */
 
-global $conf,$user,$langs,$db;
+global
+
+use Alxarafe\Core\Base\Lang;
+
+$conf,$user,$langs,$db;
 //define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
@@ -170,7 +174,7 @@ class BuildDocTest extends CommonClassTest
 		print __METHOD__." result=".$result." for generation from crabe with MAIN_DISABLE_TCPDI and a watermark\n";
 
 		// Crabe (japanese)
-		$newlangs1 = new Translate("", $conf);
+        $newlangs1 = new Lang("", $conf);
 		$newlangs1->setDefaultLang('ja_JP');
 		$localobject->model_pdf = 'crabe';
 		$result = $localobject->generateDocument($localobject->model_pdf, $newlangs1);
@@ -178,7 +182,7 @@ class BuildDocTest extends CommonClassTest
 		print __METHOD__." result=".$result."\n";
 
 		// Crabe (saudiarabia)
-		$newlangs2a = new Translate("", $conf);
+        $newlangs2a = new Lang("", $conf);
 		$newlangs2a->setDefaultLang('sa_SA');
 		$localobject->model_pdf = 'crabe';
 		$result = $localobject->generateDocument($localobject->model_pdf, $newlangs2a);
@@ -186,7 +190,7 @@ class BuildDocTest extends CommonClassTest
 		print __METHOD__." result=".$result."\n";
 
 		// Crabe (english_saudiarabia)
-		$newlangs2b = new Translate("", $conf);
+        $newlangs2b = new Lang("", $conf);
 		$newlangs2b->setDefaultLang('en_SA');
 		$localobject->model_pdf = 'crabe';
 		$result = $localobject->generateDocument($localobject->model_pdf, $newlangs2b);
@@ -194,7 +198,7 @@ class BuildDocTest extends CommonClassTest
 		print __METHOD__." result=".$result."\n";
 
 		// Crabe (greek)
-		$newlangs3 = new Translate("", $conf);
+        $newlangs3 = new Lang("", $conf);
 		$newlangs3->setDefaultLang('el_GR');
 		$localobject->model_pdf = 'crabe';
 		$result = $localobject->generateDocument($localobject->model_pdf, $newlangs3);
@@ -202,7 +206,7 @@ class BuildDocTest extends CommonClassTest
 		print __METHOD__." result=".$result."\n";
 
 		// Crabe (chinese)
-		$newlangs4 = new Translate("", $conf);
+        $newlangs4 = new Lang("", $conf);
 		$newlangs4->setDefaultLang('zh_CN');
 		$localobject->model_pdf = 'crabe';
 		$result = $localobject->generateDocument($localobject->model_pdf, $newlangs4);
@@ -210,7 +214,7 @@ class BuildDocTest extends CommonClassTest
 		print __METHOD__." result=".$result."\n";
 
 		// Crabe (russian)
-		$newlangs5 = new Translate("", $conf);
+        $newlangs5 = new Lang("", $conf);
 		$newlangs5->setDefaultLang('ru_RU');
 		$localobject->model_pdf = 'crabe';
 		$result = $localobject->generateDocument($localobject->model_pdf, $newlangs5);

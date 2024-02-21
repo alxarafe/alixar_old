@@ -177,7 +177,7 @@ if ($resql) {
 			}
 
 			// Define line content
-			$outputlangs = new Translate('', $conf);
+            $outputlangs = new Lang('', $conf);
 			$outputlangs->setDefaultLang(empty($obj->default_lang) ? $langs->defaultlang : $obj->default_lang); // By default language of customer
 
 			// Load translation files required by the page
@@ -250,7 +250,7 @@ function sendEmailTo($mode, $oldemail, $message, $total, $userlang, $oldtarget, 
 		$oldemail = getenv('DOL_FORCE_EMAIL_TO');
 	}
 
-	$newlangs = new Translate('', $conf);
+    $newlangs = new Lang('', $conf);
 	$newlangs->setDefaultLang(empty($userlang) ? getDolGlobalString('MAIN_LANG_DEFAULT', 'auto') : $userlang);
 	$newlangs->load("main");
 	$newlangs->load("contracts");

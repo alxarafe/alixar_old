@@ -36,6 +36,8 @@
  *  \ingroup	core
  */
 
+use Alxarafe\Core\Base\Lang;
+
 require_once DOL_DOCUMENT_ROOT.'/core/lib/security.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT.'/user/class/usergroup.class.php';
@@ -2494,7 +2496,7 @@ class User extends CommonObject
 		// Define $msg
 		$mesg = '';
 
-		$outputlangs = new Translate("", $conf);
+        $outputlangs = new Lang("", $conf);
 
 		if (isset($this->conf->MAIN_LANG_DEFAULT)
 			&& $this->conf->MAIN_LANG_DEFAULT != 'auto') {	// If user has defined its own language (rare because in most cases, auto is used)

@@ -142,7 +142,7 @@ if (empty($reshook)) {
 						$newlang = $object->thirdparty->default_lang;
 					}
 					if (!empty($newlang)) {
-						$outputlangs = new Translate("", $conf);
+                        $outputlangs = new Lang("", $conf);
 						$outputlangs->setDefaultLang($newlang);
 					}
 					$model = $object->model_pdf;
@@ -393,7 +393,7 @@ if (empty($reshook)) {
 		if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) $newlang=$object->thirdparty->default_lang;
 		if (!empty($newlang))
 		{
-			$outputlangs = new Translate("",$conf);
+			$outputlangs = new Lang("",$conf);
 			$outputlangs->setDefaultLang($newlang);
 		}
 		$result=don_create($db, $object->id, '', $object->model_pdf, $outputlangs);

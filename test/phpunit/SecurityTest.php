@@ -85,7 +85,7 @@ class SecurityTest extends CommonClassTest
 		global $conf;
 		$conf = $this->savconf;
 
-		$tmplangs = new Translate('', $conf);
+        $tmplangs = new Lang('', $conf);
 
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = "' malicious text with quote";
 		$tmplangs->setDefaultLang('auto');

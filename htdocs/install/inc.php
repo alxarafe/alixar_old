@@ -7,7 +7,8 @@
  * Copyright (C) 2016       Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2021       Charlene Benke      	<charlene@patas-monkey.com>
  * Copyright (C) 2023       Alexandre Janniaux      <alexandre.janniaux@gmail.com>
-*
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -22,6 +23,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alxarafe\Core\Base\Lang;
+
 /**
  * 	\file       htdocs/install/inc.php
  * 	\ingroup	core
@@ -29,6 +32,7 @@
  */
 
 // Just to define version DOL_VERSION
+
 if (!defined('DOL_INC_FOR_VERSION_ERROR')) {
 	define('DOL_INC_FOR_VERSION_ERROR', '1');
 }
@@ -42,7 +46,7 @@ if (!defined('DOL_DOCUMENT_ROOT')) {
 }
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/conf.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
+//require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
@@ -311,7 +315,7 @@ if (@file_exists($lockfile) || @file_exists($lockfile2)) {
 }
 if ($islocked) {	// Pages are locked
 	if (!isset($langs) || !is_object($langs)) {
-		$langs = new Translate('..', $conf);
+        $langs = new Lang('..', $conf);
 		$langs->setDefaultLang('auto');
 	}
 	$langs->load("install");
@@ -386,7 +390,7 @@ foreach ($handlers as $handler) {
 }
 
 // Define object $langs
-$langs = new Translate('..', $conf);
+$langs = new Lang('..', $conf);
 if (GETPOST('lang', 'aZ09')) {
 	$langs->setDefaultLang(GETPOST('lang', 'aZ09'));
 } else {

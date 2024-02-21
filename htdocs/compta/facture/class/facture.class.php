@@ -484,7 +484,7 @@ class Facture extends CommonInvoice
 			// Multicurrency (test on $this->multicurrency_tx because we should take the default rate of multicurrency_code only if not using original rate)
 			if (empty($this->multicurrency_tx)) {
 				// If original rate is not set, we take a default value from date
-				list($this->fk_multicurrency, $this->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($this->db, $this->multicurrency_code, $this->date);
+				[$this->fk_multicurrency, $this->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($this->db, $this->multicurrency_code, $this->date);
 			} else {
 				// original rate multicurrency_tx and multicurrency_code are set, we use them
 				$this->fk_multicurrency = MultiCurrency::getIdFromCode($this->db, $this->multicurrency_code);
@@ -612,8 +612,8 @@ class Facture extends CommonInvoice
 				$newlang = $this->default_lang; // for thirdparty
 			}
 			if (!empty($newlang)) {
-				$outputlangs = new Translate("", $conf);
-				$outputlangs->setDefaultLang($newlang);
+                $outputlangs = new Lang("", $conf);
+                $outputlangs->setDefaultLang($newlang);
 			}
 
 			// Array of possible substitutions (See also file mailing-send.php that should manage same substitutions)
@@ -5715,8 +5715,8 @@ class Facture extends CommonInvoice
 					if ($res > 0) {
 						$tmpinvoice->fetch_thirdparty();
 
-						$outputlangs = new Translate('', $conf);
-						if ($tmpinvoice->thirdparty->default_lang) {
+                        $outputlangs = new Lang('', $conf);
+                        if ($tmpinvoice->thirdparty->default_lang) {
 							$outputlangs->setDefaultLang($tmpinvoice->thirdparty->default_lang);
 							$outputlangs->loadLangs(array("main", "bills"));
 						} else {

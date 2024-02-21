@@ -30,7 +30,7 @@ if (!defined('DOL_DOCUMENT_ROOT')) {
 }
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/conf.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
+//require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
@@ -167,7 +167,7 @@ if (empty($conf->db->user)) {
 
 
 // Defini object langs
-$langs = new Translate('..', $conf);
+$langs = new Lang('..', $conf);
 if (GETPOST('lang', 'aZ09')) {
 	$langs->setDefaultLang(GETPOST('lang', 'aZ09'));
 } else {

@@ -8,6 +8,7 @@
  * Copyright (C) 2015-2018  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2018-2022  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2021       Waël Almoman            <info@almoman.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -660,7 +661,7 @@ if (empty($reshook)) {
 				include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
 				$formmail = new FormMail($db);
 				// Set output language
-				$outputlangs = new Translate('', $conf);
+                $outputlangs = new Lang('', $conf);
 				$outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
 				// Load traductions files required by page
 				$outputlangs->loadLangs(array("main", "members", "companies", "install", "other"));
@@ -732,7 +733,7 @@ if (empty($reshook)) {
 					include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
 					$formmail = new FormMail($db);
 					// Set output language
-					$outputlangs = new Translate('', $conf);
+                    $outputlangs = new Lang('', $conf);
 					$outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
 					// Load traductions files required by page
 					$outputlangs->loadLangs(array("main", "members", "companies", "install", "other"));
@@ -803,7 +804,7 @@ if (empty($reshook)) {
 					include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
 					$formmail = new FormMail($db);
 					// Set output language
-					$outputlangs = new Translate('', $conf);
+                    $outputlangs = new Lang('', $conf);
 					$outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
 					// Load traductions files required by page
 					$outputlangs->loadLangs(array("main", "members", "companies", "install", "other"));
@@ -1529,7 +1530,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
 			$formmail = new FormMail($db);
 			// Set output language
-			$outputlangs = new Translate('', $conf);
+            $outputlangs = new Lang('', $conf);
 			$outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
 			// Load traductions files required by page
 			$outputlangs->loadLangs(array("main", "members", "companies", "install", "other"));
@@ -1592,7 +1593,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
 			$formmail = new FormMail($db);
 			// Set output language
-			$outputlangs = new Translate('', $conf);
+            $outputlangs = new Lang('', $conf);
 			$outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
 			// Load traductions files required by page
 			$outputlangs->loadLangs(array("main", "members"));
@@ -1652,7 +1653,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
 			$formmail = new FormMail($db);
 			// Set output language
-			$outputlangs = new Translate('', $conf);
+            $outputlangs = new Lang('', $conf);
 			$outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
 			// Load traductions files required by page
 			$outputlangs->loadLangs(array("main", "members"));

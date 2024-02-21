@@ -271,7 +271,7 @@ if (empty($reshook)) {
 			// Define output language
 			$outputlangs = $langs;
 			if (getDolGlobalInt('MAIN_MULTILANGS')) {
-				$outputlangs = new Translate("", $conf);
+                $outputlangs = new Lang("", $conf);
 				$newlang = (GETPOST('lang_id', 'aZ09') ? GETPOST('lang_id', 'aZ09') : $object->thirdparty->default_lang);
 				$outputlangs->setDefaultLang($newlang);
 			}
@@ -302,7 +302,7 @@ if (empty($reshook)) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$model = $object->model_pdf;
@@ -347,7 +347,7 @@ if (empty($reshook)) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$model = $object->model_pdf;
@@ -372,7 +372,7 @@ if (empty($reshook)) {
 					$newlang = $object->thirdparty->default_lang;
 				}
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$model = $object->model_pdf;
@@ -675,7 +675,7 @@ if (empty($reshook)) {
 								$newlang = $object->thirdparty->default_lang;
 							}
 							if (!empty($newlang)) {
-								$outputlangs = new Translate("", $conf);
+                                $outputlangs = new Lang("", $conf);
 								$outputlangs->setDefaultLang($newlang);
 							}
 							$model = $object->model_pdf;
@@ -771,7 +771,7 @@ if (empty($reshook)) {
 						$outputlangs = $langs;
 
 						if (getDolGlobalInt('MAIN_MULTILANGS')) {
-							$outputlangs = new Translate('', $conf);
+                            $outputlangs = new Lang('', $conf);
 							$outputlangs->setDefaultLang($deposit->thirdparty->default_lang);
 							$outputlangs->load('products');
 						}
@@ -909,7 +909,7 @@ if (empty($reshook)) {
 			// Define output language
 			$outputlangs = $langs;
 			if (getDolGlobalInt('MAIN_MULTILANGS')) {
-				$outputlangs = new Translate("", $conf);
+                $outputlangs = new Lang("", $conf);
 				$newlang = (GETPOST('lang_id', 'aZ09') ? GETPOST('lang_id', 'aZ09') : $object->thirdparty->default_lang);
 				$outputlangs->setDefaultLang($newlang);
 			}
@@ -1219,7 +1219,7 @@ if (empty($reshook)) {
 						$newlang = $object->thirdparty->default_lang;
 					}
 					if (!empty($newlang)) {
-						$outputlangs = new Translate("", $conf);
+                        $outputlangs = new Lang("", $conf);
 						$outputlangs->setDefaultLang($newlang);
 					}
 
@@ -1253,7 +1253,7 @@ if (empty($reshook)) {
 							$newlang = $object->thirdparty->default_lang;
 						}
 						if (!empty($newlang)) {
-							$outputlangs = new Translate("", $conf);
+                            $outputlangs = new Lang("", $conf);
 							$outputlangs->setDefaultLang($newlang);
 							$outputlangs->load('products');
 						}
@@ -1371,7 +1371,7 @@ if (empty($reshook)) {
 						// Define output language
 						$outputlangs = $langs;
 						if (getDolGlobalInt('MAIN_MULTILANGS')) {
-							$outputlangs = new Translate("", $conf);
+                            $outputlangs = new Lang("", $conf);
 							$newlang = (GETPOST('lang_id', 'aZ09') ? GETPOST('lang_id', 'aZ09') : $object->thirdparty->default_lang);
 							$outputlangs->setDefaultLang($newlang);
 						}
@@ -1576,7 +1576,7 @@ if (empty($reshook)) {
 					// Define output language
 					$outputlangs = $langs;
 					if (getDolGlobalInt('MAIN_MULTILANGS')) {
-						$outputlangs = new Translate("", $conf);
+                        $outputlangs = new Lang("", $conf);
 						$newlang = (GETPOST('lang_id', 'aZ09') ? GETPOST('lang_id', 'aZ09') : $object->thirdparty->default_lang);
 						$outputlangs->setDefaultLang($newlang);
 					}

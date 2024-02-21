@@ -25,7 +25,11 @@
  *		\remarks	To run this script as CLI:  phpunit filename.php
  */
 
-global $conf,$user,$langs,$db,$mysoc;
+global
+
+use Alxarafe\Core\Base\Lang;
+
+$conf,$user,$langs,$db,$mysoc;
 //define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
@@ -1522,7 +1526,7 @@ class FunctionsLibTest extends CommonClassTest
 
 		$oldlangs = $langs;
 
-		$newlangs = new Translate('', $conf);
+        $newlangs = new Lang('', $conf);
 		$newlangs->setDefaultLang('en_US');
 		$newlangs->load("main");
 		$langs = $newlangs;
@@ -1550,7 +1554,7 @@ class FunctionsLibTest extends CommonClassTest
 		$this->assertEquals('12.4', price2num('12r.4$'));
 
 		// For spanish language
-		$newlangs2 = new Translate('', $conf);
+        $newlangs2 = new Lang('', $conf);
 		$newlangs2->setDefaultLang('es_ES');
 		$newlangs2->load("main");
 		$langs = $newlangs2;
@@ -1577,7 +1581,7 @@ class FunctionsLibTest extends CommonClassTest
 		$this->assertEquals(12.123, price2num('12,123'), 'Test 12,123 give 12.123 with spanish language');
 
 		// For french language
-		$newlangs3 = new Translate('', $conf);
+        $newlangs3 = new Lang('', $conf);
 		$newlangs3->setDefaultLang('fr_FR');
 		$newlangs3->load("main");
 		$langs = $newlangs3;

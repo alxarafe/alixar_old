@@ -1,5 +1,6 @@
 <?php
 /* Copyright (c) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,7 +149,7 @@ if ($mode) {
 		//print $sql;
 	}
 
-	$langsen = new Translate('', $conf);
+    $langsen = new Lang('', $conf);
 	$langsen->setDefaultLang('en_US');
 	$langsen->load("dict");
 	//print $langsen->trans("Country"."FI");exit;

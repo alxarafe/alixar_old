@@ -24,7 +24,11 @@
  *		\remarks	To run this script as CLI:  phpunit filename.php
  */
 
-global $conf,$user,$langs,$db;
+global
+
+use Alxarafe\Core\Base\Lang;
+
+$conf,$user,$langs,$db;
 //define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
@@ -125,7 +129,7 @@ class DateLibTzFranceTest extends CommonClassTest
 		$this->assertEquals('1970-01-01 00:59:59', $result);
 
 		// Check dayhour format for fr_FR
-		$outputlangs = new Translate('', $conf);
+        $outputlangs = new Lang('', $conf);
 		$outputlangs->setDefaultLang('fr_FR');
 		$outputlangs->load("main");
 
@@ -134,7 +138,7 @@ class DateLibTzFranceTest extends CommonClassTest
 		$this->assertEquals('02/01/1970 01:00', $result);
 
 		// Check day format for en_US
-		$outputlangs = new Translate('', $conf);
+        $outputlangs = new Lang('', $conf);
 		$outputlangs->setDefaultLang('en_US');
 		$outputlangs->load("main");
 

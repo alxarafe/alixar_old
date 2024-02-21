@@ -158,7 +158,7 @@ if ($action == 'create' && GETPOST("accountid", "int") > 0 && $user->hasRight('b
 				}
 				//if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) $newlang=$object->client->default_lang;
 				if (!empty($newlang)) {
-					$outputlangs = new Translate("", $conf);
+                    $outputlangs = new Lang("", $conf);
 					$outputlangs->setDefaultLang($newlang);
 				}
 				$result = $object->generatePdf(GETPOST("model"), $outputlangs);
@@ -209,7 +209,7 @@ if ($action == 'confirm_validate' && $confirm == 'yes' && $user->hasRight('banqu
 		}
 		//if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) $newlang=$object->client->default_lang;
 		if (!empty($newlang)) {
-			$outputlangs = new Translate("", $conf);
+            $outputlangs = new Lang("", $conf);
 			$outputlangs->setDefaultLang($newlang);
 		}
 		$result = $object->generatePdf(GETPOST('model'), $outputlangs);
@@ -251,7 +251,7 @@ if ($action == 'builddoc' && $user->hasRight('banque', 'cheque')) {
 	}
 	//if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) $newlang=$object->client->default_lang;
 	if (!empty($newlang)) {
-		$outputlangs = new Translate("", $conf);
+        $outputlangs = new Lang("", $conf);
 		$outputlangs->setDefaultLang($newlang);
 	}
 	$result = $object->generatePdf(GETPOST("model"), $outputlangs);

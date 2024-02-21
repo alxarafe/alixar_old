@@ -26,6 +26,7 @@
  *  			because it is used at low code level.
  */
 
+use Alxarafe\Core\Base\Lang;
 
 /**
  *	Encode a string with base 64 algorithm + specific delta change.
@@ -1191,8 +1192,8 @@ function accessforbidden($message = '', $printheader = 1, $printfooter = 1, $sho
 	global $action, $object;
 
 	if (!is_object($langs)) {
-		include_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
-		$langs = new Translate('', $conf);
+        //		include_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
+        $langs = new Lang('', $conf);
 		$langs->setDefaultLang();
 	}
 

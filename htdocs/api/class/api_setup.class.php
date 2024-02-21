@@ -1,10 +1,11 @@
 <?php
-/* Copyright (C) 2016   Xebax Christy           <xebax@wanadoo.fr>
- * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
- * Copyright (C) 2017	Regis Houssin	        <regis.houssin@inodbox.com>
- * Copyright (C) 2017	Neil Orley	            <neil.orley@oeris.fr>
- * Copyright (C) 2018-2021   Frédéric France         <frederic.france@netlogic.fr>
- * Copyright (C) 2018-2022   Thibault FOUCART        <support@ptibogxiv.net>
+/* Copyright (C) 2016       Xebax Christy           <xebax@wanadoo.fr>
+ * Copyright (C) 2016	    Laurent Destailleur		<eldy@users.sourceforge.net>
+ * Copyright (C) 2017	    Regis Houssin	        <regis.houssin@inodbox.com>
+ * Copyright (C) 2017	    Neil Orley	            <neil.orley@oeris.fr>
+ * Copyright (C) 2018-2021  Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2018-2022  Thibault FOUCART        <support@ptibogxiv.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -754,7 +755,7 @@ class Setup extends DolibarrApi
 			// Load the translations if this is a new language.
 			if ($this->translations == null || $this->translations->getDefaultLang() !== $lang) {
 				global $conf;
-				$this->translations = new Translate('', $conf);
+                $this->translations = new Lang('', $conf);
 				$this->translations->setDefaultLang($lang);
 				$this->translations->loadLangs($dict);
 			}

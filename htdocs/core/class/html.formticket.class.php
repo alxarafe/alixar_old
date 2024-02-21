@@ -5,6 +5,7 @@
  * Copyright (C) 2021      Juanjo Menent           <jmenent@2byte.es>
  * Copyright (C) 2021      Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2023      Charlene Benke	       <charlene.r@patas-monkey.com>
+ * Copyright (C) 2024      Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1310,7 +1311,7 @@ class FormTicket
 			$newlang = $this->param['langsmodels'];
 		}
 		if (!empty($newlang)) {
-			$outputlangs = new Translate("", $conf);
+            $outputlangs = new Lang("", $conf);
 			$outputlangs->setDefaultLang($newlang);
 			$outputlangs->load('other');
 		}
@@ -1363,7 +1364,7 @@ class FormTicket
 			$newlang = $this->param['langsmodels'];
 		}
 		if (!empty($newlang)) {
-			$outputlangs = new Translate("", $conf);
+            $outputlangs = new Lang("", $conf);
 			$outputlangs->setDefaultLang($newlang);
 			$outputlangs->load('other');
 		}

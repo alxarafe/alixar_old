@@ -103,7 +103,7 @@ foreach ($argv as $key => $value) {
 $outputlangs = $langs;
 if (!empty($newlangid)) {
 	if ($outputlangs->defaultlang != $newlangid) {
-		$outputlangs = new Translate("", $conf);
+        $outputlangs = new Lang("", $conf);
 		$outputlangs->setDefaultLang($newlangid);
 	}
 }

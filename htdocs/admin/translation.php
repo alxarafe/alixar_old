@@ -2,6 +2,7 @@
 /* Copyright (C) 2007-2020	Laurent Destailleur	<eldy@users.sourceforge.net>
  * Copyright (C) 2009-2017	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2017       Frédéric France     <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José     <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,8 @@
  */
 
 // Load Dolibarr environment
+use Alxarafe\Core\Base\Lang;
+
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
@@ -263,13 +266,13 @@ print dol_get_fiche_head($head, $mode, '', -1, '');
 
 $langcode = GETPOSTISSET('langcode') ? GETPOST('langcode') : $langs->defaultlang;
 
-$newlang = new Translate('', $conf);
+$newlang = new Lang('', $conf);
 $newlang->setDefaultLang($langcode);
 
-$langsenfileonly = new Translate('', $conf);
+$langsenfileonly = new Lang('', $conf);
 $langsenfileonly->setDefaultLang('en_US');
 
-$newlangfileonly = new Translate('', $conf);
+$newlangfileonly = new Lang('', $conf);
 $newlangfileonly->setDefaultLang($langcode);
 
 $recordtoshow = array();

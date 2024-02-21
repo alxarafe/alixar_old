@@ -172,7 +172,7 @@ if (!empty($_SESSION['ipaddress'])) {      // To avoid to make action twice
 
 	// Send warning of error to administrator
 	if ($sendemail) {
-		$companylangs = new Translate('', $conf);
+        $companylangs = new Lang('', $conf);
 		$companylangs->setDefaultLang($mysoc->default_lang);
 		$companylangs->loadLangs(array('main', 'members', 'bills', 'paypal', 'paybox'));
 

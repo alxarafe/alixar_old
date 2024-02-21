@@ -6,6 +6,7 @@
  * Copyright (C) 2021 	   Thibault FOUCART		<support@ptibogxiv.net>
  * Copyright (C) 2022      Anthony Berton     	<anthony.berton@bb2a.fr>
  * Copyright (C) 2023      William Mead         <william.mead@manchenumerique.fr>
+ * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -475,7 +476,7 @@ class Notify
 						// Set output language
 						$outputlangs = $langs;
 						if ($obj->default_lang && $obj->default_lang != $langs->defaultlang) {
-							$outputlangs = new Translate('', $conf);
+                            $outputlangs = new Lang('', $conf);
 							$outputlangs->setDefaultLang($obj->default_lang);
 							$outputlangs->loadLangs(array("main", "other"));
 						}

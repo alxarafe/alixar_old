@@ -898,7 +898,7 @@ class EmailCollector extends CommonObject
 			$newlang = !empty($object->thirdparty->default_lang) ? $object->thirdparty->default_lang : $newlang;
 		}
 		if (!empty($newlang)) {
-			$outputlangs = new Translate('', $conf);
+            $outputlangs = new Lang('', $conf);
 			$outputlangs->setDefaultLang($newlang);
 		}
 
