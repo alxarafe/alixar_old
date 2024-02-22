@@ -34,7 +34,7 @@ require_once 'vendor/autoload.php';
  *    \file       htdocs/master.inc.php
  *    \ingroup    core
  *  \brief      File that defines environment for all Dolibarr process (pages or scripts)
- *                This script reads the conf file, init $lang, $db and and empty $user
+ *                This script reads the conf file, init $lang, $db and empty $user
  */
 
 // Include the conf.php and functions.lib.php and security.lib.php. This defined the constants like DOL_DOCUMENT_ROOT, DOL_DATA_ROOT, DOL_URL_ROOT...
@@ -42,20 +42,6 @@ require_once 'vendor/autoload.php';
 require_once 'filefunc.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/conf.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-
-if (!function_exists('is_countable')) {
-    /**
-     * function is_countable (to remove when php version supported will be >= 7.3)
-     *
-     * @param mixed $c data to check if countable
-     *
-     * @return bool
-     */
-    function is_countable($c)
-    {
-        return is_array($c) || $c instanceof Countable;
-    }
-}
 
 /*
  * Create $conf object

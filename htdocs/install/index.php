@@ -45,7 +45,6 @@ if (file_exists($conffile) && isset($dolibarr_main_url_root)) {
 
 $langs->load("admin");
 
-
 /*
  * View
  */
@@ -53,7 +52,6 @@ $langs->load("admin");
 $formadmin = new FormAdmin(null); // Note: $db does not exist yet but we don't need it, so we put ''.
 
 pHeader("", "check"); // Next step = check
-
 
 if (!is_readable($conffile)) {
 	print '<br>';

@@ -50,6 +50,7 @@ $forcedfile = "./install.forced.php";
 if ($conffile == "/etc/dolibarr/conf.php") {
 	$forcedfile = "/etc/dolibarr/install.forced.php";
 }
+
 if (@file_exists($forcedfile)) {
 	$useforcedwizard = true;
 	include_once $forcedfile;
@@ -267,11 +268,11 @@ if (is_readable($conffile) && filesize($conffile) > 8) {
 	$confexists = 0;
 
 	// First we try by copying example
-	if (@copy($conffile.".example", $conffile)) {
-		// Success
+    if (copy($conffile . ".example", $conffile)) {
+        // Success
 		dolibarr_install_syslog("check: successfully copied file ".$conffile.".example into ".$conffile);
 	} else {
-		// If failed, we try to create an empty file
+        // If failed, we try to create an empty file
 		dolibarr_install_syslog("check: failed to copy file ".$conffile.".example into ".$conffile.". We try to create it.", LOG_WARNING);
 
 		$fp = @fopen($conffile, "w");
@@ -287,8 +288,6 @@ if (is_readable($conffile) && filesize($conffile) > 8) {
 	// First install: no upgrade necessary/required
 	$allowupgrade = false;
 }
-
-
 
 // File is missing and cannot be created
 if (!file_exists($conffile)) {
