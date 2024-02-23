@@ -2026,7 +2026,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
             // CKEditor
             if (empty($disableforlogin) && (isModEnabled('fckeditor') && (!getDolGlobalString('FCKEDITOR_EDITORNAME') || getDolGlobalString('FCKEDITOR_EDITORNAME') == 'ckeditor') && !defined('DISABLE_CKEDITOR')) || defined('FORCE_CKEDITOR')) {
                 print '<!-- Includes JS for CKEditor -->' . "\n";
-                $pathckeditor = DOL_URL_ROOT . '/includes/ckeditor/ckeditor/';
+                $pathckeditor = DOL_URL_ROOT . '/vendor/ckeditor/ckeditor/';
                 $jsckeditor = 'ckeditor.js';
                 if (constant('JS_CKEDITOR')) {
                     // To use external ckeditor 4 js lib

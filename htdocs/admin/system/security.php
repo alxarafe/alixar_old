@@ -1,5 +1,6 @@
 <?php
 /* Copyright (C) 2013-2022	Laurent Destailleur		<eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -682,7 +683,7 @@ print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").": 1 
 $conf->global->MAIN_RESTRICTHTML_REMOVE_ALSO_BAD_ATTRIBUTES = 0;
 $conf->global->MAIN_RESTRICTHTML_ONLY_VALID_HTML = 1;
 $conf->global->MAIN_RESTRICTHTML_ONLY_VALID_HTML_TIDY = 0;
-$result=dol_htmlwithnojs('<img onerror<=alert(document.domain)> src=>0xbeefed');
+$result=dol_htmlwithnojs('<img onerror=alert(document.domain)> src=>0xbeefed');
 if ($result == 'InvalidHTMLStringCantBeCleaned') {
 	print ' &nbsp; - &nbsp; '.img_warning().' Your libxml seems to old to work correctly with this option. Disable it !';
 } else {
@@ -698,7 +699,7 @@ if (extension_loaded('tidy') && class_exists("tidy")) {
 	$conf->global->MAIN_RESTRICTHTML_REMOVE_ALSO_BAD_ATTRIBUTES = 0;
 	$conf->global->MAIN_RESTRICTHTML_ONLY_VALID_HTML = 0;
 	$conf->global->MAIN_RESTRICTHTML_ONLY_VALID_HTML_TIDY = 1;
-	$result=dol_htmlwithnojs('<img onerror<=alert(document.domain)> src=>0xbeefed');
+	$result=dol_htmlwithnojs('<img onerror=alert(document.domain)> src=>0xbeefed');
 	if ($result == 'InvalidHTMLStringCantBeCleaned') {
 		print ' &nbsp; - &nbsp; '.img_warning().' Your libxml seems to old to work correctly with this option. Disable it !';
 	} else {
