@@ -1,0 +1,67 @@
+{
+  "name": "alxarafe/alixar",
+  "description": "Alixar is an evolution of Dolibarr that offers optimized code for ERP and CRM",
+  "type": "project",
+  "homepage": "https://github.com/alxarafe/alixar",
+  "keywords": [
+    "erp",
+    "crm",
+    "invoice",
+    "sme",
+    "proposal",
+    "order",
+    "stock",
+    "agenda"
+  ],
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Alxarafe",
+      "email": "info@alxarafe.com",
+      "homepage": "https://alxarafe.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/alxarafe/alixar/issues",
+    "source": "https://github.com/alxarafe/alixar"
+  },
+  "config": {
+    "vendor-dir": "htdocs/vendor",
+    "platform": {
+      "php": "7.3"
+    }
+  },
+  "require": {
+    "php": ">=7.3.0",
+    "ckeditor/ckeditor": "4.12.1",
+    "mike42/escpos-php": "3.0",
+    "mobiledetect/mobiledetectlib": "2.8.41",
+    "phpoffice/phpspreadsheet": ">=1.12",
+    "restler/framework": "3.0.0-RC6",
+    "tecnickcom/tcpdf": "6.3.2",
+    "nnnick/chartjs": "^3.7.1",
+    "stripe/stripe-php": "10.7.0",
+    "maximebf/debugbar": "1.18.2"
+  },
+  "require-dev": {
+  },
+  "suggest": {
+    "ext-mysqlnd": "To use with MySQL or MariaDB",
+    "ext-mysqli": "To use with MySQL or MariaDB",
+    "ext-pgsql": "To use with PostgreSQL",
+    "ext-gd": "Image manipulation (Required but maybe built-in PHP)",
+    "ext-imagick": "Generation of thumbs from PDF",
+    "ext-intl": "Intl",
+    "ext-openssl": "Secure connections (Emails, SOAP\u2026)",
+    "ext-mbstring": "Handle non UTF-8 characters",
+    "ext-soap": "Native SOAP",
+    "ext-zip": "ODT, Excel and file compression support",
+    "ext-xml": "Excel support"
+  },
+  "autoload": {
+    "psr-4": {
+      "Alxarafe\\": "htdocs/"
+    }
+  }
+}
