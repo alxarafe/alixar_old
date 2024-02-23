@@ -44,7 +44,7 @@ if (!defined('NOBROWSERNOTIF')) {
 
 // Load Dolibarr environment
 require '../../main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/includes/stripe/stripe-php/init.php';
+require_once DOL_DOCUMENT_ROOT . '/vendor/stripe/stripe-php/init.php';
 require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 

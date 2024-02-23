@@ -39,12 +39,16 @@
     "mobiledetect/mobiledetectlib": "2.8.41",
     "phpoffice/phpspreadsheet": ">=1.12",
     "restler/framework": "3.0.0-RC6",
-    "tecnickcom/tcpdf": "6.3.2",
+    "tecnickcom/tcpdf": "^6.6",
     "nnnick/chartjs": "^3.7.1",
-    "stripe/stripe-php": "10.7.0",
-    "maximebf/debugbar": "1.18.2",
+    "stripe/stripe-php": "^13.12",
+    "maximebf/debugbar": "^1.20",
     "erusev/parsedown": "^1.7",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "webklex/php-imap": "^4.1",
+    "swiftmailer/swiftmailer": "^6.3",
+    "luracast/restler": "*",
+    "globalcitizen/php-iban": "^4.2"
   },
   "suggest": {
     "ext-mysqlnd": "To use with MySQL or MariaDB",

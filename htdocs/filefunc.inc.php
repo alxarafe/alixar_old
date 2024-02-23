@@ -326,7 +326,7 @@ define('MAIN_DB_PREFIX', $dolibarr_main_db_prefix);
  */
 // Path to root libraries
 if (!defined('TCPDF_PATH')) {
-    define('TCPDF_PATH', (empty($dolibarr_lib_TCPDF_PATH)) ? DOL_DOCUMENT_ROOT . '/includes/tecnickcom/tcpdf/' : $dolibarr_lib_TCPDF_PATH . '/');
+    define('TCPDF_PATH', (empty($dolibarr_lib_TCPDF_PATH)) ? DOL_DOCUMENT_ROOT . '/vendor/tecnickcom/tcpdf/' : $dolibarr_lib_TCPDF_PATH . '/');
 }
 if (!defined('TCPDI_PATH')) {
     define('TCPDI_PATH', (empty($dolibarr_lib_TCPDI_PATH)) ? DOL_DOCUMENT_ROOT . '/includes/tcpdi/' : $dolibarr_lib_TCPDI_PATH . '/');

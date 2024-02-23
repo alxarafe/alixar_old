@@ -278,7 +278,7 @@ if ((empty($paymentmethod) || $paymentmethod == 'paybox') && isModEnabled('paybo
     // No specific test for the moment
 }
 if ((empty($paymentmethod) || $paymentmethod == 'stripe') && isModEnabled('stripe')) {
-    require_once DOL_DOCUMENT_ROOT . '/stripe/config.php'; // This include also /stripe/lib/stripe.lib.php, /includes/stripe/stripe-php/init.php, ...
+    require_once DOL_DOCUMENT_ROOT . '/stripe/config.php'; // This include also /stripe/lib/stripe.lib.php, /vendor/stripe/stripe-php/init.php, ...
 }
 
 // Initialize $validpaymentmethod

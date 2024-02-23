@@ -1096,7 +1096,7 @@ class EmailCollector extends CommonObject
 
         require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         if (getDolGlobalString('MAIN_IMAP_USE_PHPIMAP')) {
-            require_once DOL_DOCUMENT_ROOT . '/includes/webklex/php-imap/vendor/autoload.php';
+            require_once DOL_DOCUMENT_ROOT . '/vendor/webklex/php-imap/vendor/autoload.php';
         }
 
         dol_syslog("EmailCollector::doCollectOneCollector start for id=" . $this->id . " - " . $this->ref, LOG_INFO);

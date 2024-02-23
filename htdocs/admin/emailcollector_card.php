@@ -398,7 +398,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	if ($action == 'scan') {
 		if (getDolGlobalString('MAIN_IMAP_USE_PHPIMAP')) {
-			require_once DOL_DOCUMENT_ROOT.'/includes/webklex/php-imap/vendor/autoload.php';
+			require_once DOL_DOCUMENT_ROOT.'/vendor/webklex/php-imap/vendor/autoload.php';
 
 			if ($object->acces_type == 1) {
 				// Mode OAUth2 with PHP-IMAP

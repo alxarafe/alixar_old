@@ -24,7 +24,7 @@ repos:
       - id: mixed-line-ending
         # alternative for dev/tools/fixdosfiles.sh
         exclude: |
-          (?x)^(htdocs/includes/tecnickcom/tcpdf/fonts/.*
+          (?x)^(htdocs/vendor/tecnickcom/tcpdf/fonts/.*
                |.*/CRLF.*.php  # Files in swiftmailer
                )$
         args: [--fix=lf]

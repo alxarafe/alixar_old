@@ -4155,7 +4155,7 @@ function migrate_delete_old_files($db, $langs, $conf)
 		'/core/modules/mailings/kiwi.modules.php',
 		'/core/boxes/box_members.php',
 
-		'/includes/restler/framework/Luracast/Restler/Data/Object.php',
+		'/vendor/restler/framework/Luracast/Restler/Data/Object.php',
 		'/includes/nusoap/lib/class.*',
 		'/phenix/inc/triggers/interface_modPhenix_Phenixsynchro.class.php',
 		'/webcalendar/inc/triggers/interface_modWebcalendar_webcalsynchro.class.php',

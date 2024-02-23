@@ -25,7 +25,7 @@ upgrade.log
 doxygen_warnings.log
 # Vagrant generated files
 .vagrant
-# Composer installed repositories
+# Includes installed repositories
 /htdocs/includes/**/.git
 # Composer autoloader and unwanted files
 composer.phar

@@ -5,7 +5,7 @@
 
 spl_autoload_register(function ($class) {
     if (preg_match('/^DebugBar/', $class)) {
-        $file = DOL_DOCUMENT_ROOT . '/includes/maximebf/debugbar/src/' . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+        $file = DOL_DOCUMENT_ROOT . '/vendor/maximebf/debugbar/src/' . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
         //var_dump($class.' - '.file_exists($file).' - '.$file);
         if (file_exists($file)) {
             require_once $file;

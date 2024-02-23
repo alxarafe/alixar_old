@@ -565,12 +565,12 @@ class CMailFile
 			// ------------------------------------------
 			$host = dol_getprefix('email');
 
-			require_once DOL_DOCUMENT_ROOT.'/includes/swiftmailer/lexer/lib/Doctrine/Common/Lexer/AbstractLexer.php';
+			require_once DOL_DOCUMENT_ROOT.'/vendor/swiftmailer/swiftmailer/lexer/lib/Doctrine/Common/Lexer/AbstractLexer.php';
 
 			// egulias autoloader lib
-			require_once DOL_DOCUMENT_ROOT.'/includes/swiftmailer/autoload.php';
+			require_once DOL_DOCUMENT_ROOT.'/vendor/swiftmailer/swiftmailer/autoload.php';
 
-			require_once DOL_DOCUMENT_ROOT.'/includes/swiftmailer/lib/swift_required.php';
+			require_once DOL_DOCUMENT_ROOT.'/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
 			// Create the message
 			//$this->message = Swift_Message::newInstance();
@@ -1134,7 +1134,7 @@ class CMailFile
 			} elseif ($this->sendmode == 'swiftmailer') {
 				// Use Swift Mailer library
 				// ------------------------------------------
-				require_once DOL_DOCUMENT_ROOT.'/includes/swiftmailer/lib/swift_required.php';
+				require_once DOL_DOCUMENT_ROOT.'/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
 				// Clean parameters
 				if (empty($conf->global->$keyforsmtpserver)) {
