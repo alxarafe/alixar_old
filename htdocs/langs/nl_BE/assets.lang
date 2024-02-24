@@ -1,9 +1,0 @@
-# Dolibarr language file - Source file is en_US - assets
-AssetsLines=Middelen
-DeleteAnAssetType=Verwijder een bestandstype
-ConfirmDeleteAssetType=Weet u zeker dat u dit bestandstype wilt verwijderen?
-AssetsType=Activa type
-AssetsTypeId=Activa type id
-AssetsTypeLabel=Label van het activatype
-AssetsTypes=Activa types
-AssetType=Activa type
