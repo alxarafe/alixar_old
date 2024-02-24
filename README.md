@@ -1,6 +1,6 @@
 # ALIXAR ERP & CRM
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alxarafe/alixar/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alxarafe/alixar/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alxarafe/alixar/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/alxarafe/alixar/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/alxarafe/alixar/badges/build.png?b=master)](https://scrutinizer-ci.com/g/alxarafe/alixar/build-status/master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Alxarafe/Alixar/issues?utf8=✓&q=is%3Aopen%20is%3Aissue)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF.svg?style=flat-square)](https://php.net/)

@@ -4,6 +4,7 @@ English Dolibarr ChangeLog
 
 ***** ChangeLog for Alixar compared to Dolibarr 20.0.0 *****
 
+- A rudimentary single entry system is implemented by adding the GET variables 'page' and 'ctrl'
 - The includes folder is deleted and its modules are loaded via composer.
 - Class core/class/translate.class.php moved to Core/Base/Lang.php
 - Namespace Core/Base creation.

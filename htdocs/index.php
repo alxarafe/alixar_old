@@ -1,10 +1,5 @@
 <?php
 /* Copyright (C) 2001-2004	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
- * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
- * Copyright (C) 2005-2017	Regis Houssin			<regis.houssin@inodbox.com>
- * Copyright (C) 2011-2012	Juanjo Menent			<jmenent@2byte.es>
- * Copyright (C) 2015		Marcos García			<marcosgdf@gmail.com>
- * Copyright (C) 2021		Frédéric France			<frederic.france@netlogic.fr>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,11 +20,21 @@ require_once 'vendor/autoload.php';
 
 const BASE_PATH = __DIR__;
 
-$page = filter_input(INPUT_GET, 'ctrl');
+$page = filter_input(INPUT_GET, 'page');
+$ctrl = filter_input(INPUT_GET, 'ctrl');
 
-if (file_exists(BASE_PATH.$page)) {
-    include $page;
+if (empty($ctrl)) {
+    require 'index_dol.php';
     die();
 }
 
-require 'index_dol.php';
+$path = BASE_PATH;
+if (!empty($page)) {
+    $path .= DIRECTORY_SEPARATOR.$page;
+}
+
+chdir($path);
+
+$path .= DIRECTORY_SEPARATOR.$ctrl. '.php';
+
+require $path;
