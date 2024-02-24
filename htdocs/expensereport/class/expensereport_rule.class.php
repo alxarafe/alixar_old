@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2017		ATM Consulting			<support@atm-consulting.fr>
+
+/* Copyright (C) 2017       ATM Consulting          <support@atm-consulting.fr>
  * Copyright (C) 2017		Pierre-Henry Favre		<phf@atm-consulting.fr>
  *
  * This program is free software; you can redistribute it and/or modify

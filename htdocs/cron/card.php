@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2012       Nicolas Villa aka Boyquotes http://informetic.fr
  * Copyright (C) 2013       Florian Henry           <florian.henry@open-concpt.pro>
  * Copyright (C) 2013-2016  Laurent Destailleur     <eldy@users.sourceforge.net>

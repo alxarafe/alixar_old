@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2010  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2007-2010  Jean Heimburger         <jean@tiaris.info>
  * Copyright (C) 2011       Juanjo Menent           <jmenent@2byte.es>
@@ -28,6 +29,7 @@
  * \ingroup        Accountancy (Double entries)
  * \brief        Page with purchases journal
  */
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
@@ -343,20 +345,20 @@ $errorforinvoice = [];
 /*
 // Old way, 1 query for each invoice
 // Loop in invoices to detect lines with not binding lines
-foreach ($tabfac as $key => $val) {		// Loop on each invoice
-	$sql = "SELECT COUNT(fd.rowid) as nb";
-	$sql .= " FROM ".MAIN_DB_PREFIX."facture_fourn_det as fd";
-	$sql .= " WHERE fd.product_type <= 2 AND fd.fk_code_ventilation <= 0";
-	$sql .= " AND fd.total_ttc <> 0 AND fk_facture_fourn = ".((int) $key);
-	$resql = $db->query($sql);
-	if ($resql) {
-		$obj = $db->fetch_object($resql);
-		if ($obj->nb > 0) {
-			$errorforinvoice[$key] = 'somelinesarenotbound';
-		}
-	} else {
-		dol_print_error($db);
-	}
+foreach ($tabfac as $key => $val) {     // Loop on each invoice
+    $sql = "SELECT COUNT(fd.rowid) as nb";
+    $sql .= " FROM ".MAIN_DB_PREFIX."facture_fourn_det as fd";
+    $sql .= " WHERE fd.product_type <= 2 AND fd.fk_code_ventilation <= 0";
+    $sql .= " AND fd.total_ttc <> 0 AND fk_facture_fourn = ".((int) $key);
+    $resql = $db->query($sql);
+    if ($resql) {
+        $obj = $db->fetch_object($resql);
+        if ($obj->nb > 0) {
+            $errorforinvoice[$key] = 'somelinesarenotbound';
+        }
+    } else {
+        dol_print_error($db);
+    }
 }
 */
 // New way, single query, load all unbound lines

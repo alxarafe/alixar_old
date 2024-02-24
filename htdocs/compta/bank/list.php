@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -386,10 +387,10 @@ $trackid = 'bank' . $object->id;
 include DOL_DOCUMENT_ROOT . '/core/tpl/massactions_pre.tpl.php';
 
 //if ($sall) {
-//	foreach ($fieldstosearchall as $key => $val) {
-//		$fieldstosearchall[$key] = $langs->trans($val);
-//	}
-//	print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $sall).join(', ', $fieldstosearchall).'</div>';
+//  foreach ($fieldstosearchall as $key => $val) {
+//      $fieldstosearchall[$key] = $langs->trans($val);
+//  }
+//  print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $sall).join(', ', $fieldstosearchall).'</div>';
 //}
 
 $moreforfilter = '';

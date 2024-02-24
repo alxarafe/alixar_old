@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018-2020  Thibault FOUCART       <support@ptibogxiv.net>
  * Copyright (C) 2018       Fédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2023       Laurent Destailleur    <eldy@users.sourceforge.net>

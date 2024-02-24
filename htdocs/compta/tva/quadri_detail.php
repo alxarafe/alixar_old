@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004       Eric Seigne             <eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2013  Laurent Destailleur     <eldy@users.sourceforge.net>
@@ -435,8 +436,10 @@ if (!is_array($x_coll) || !is_array($x_paye)) {
                 // Payment
                 $ratiopaymentinvoice = 1;
                 if ($modetax != 1) {
-                    if (($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
-                        || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')) {
+                    if (
+                        ($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
+                        || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')
+                    ) {
                     } else {
                         if (isset($fields['payment_amount']) && price2num($fields['ftotal_ttc'])) {
                             $ratiopaymentinvoice = ($fields['payment_amount'] / $fields['ftotal_ttc']);
@@ -559,8 +562,10 @@ if (!is_array($x_coll) || !is_array($x_paye)) {
                             $payment_static->ref = $fields['payment_ref'];
                             print $payment_static->getNomUrl(2, '', '', 0) . ' ';
                         }
-                        if (($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
-                            || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')) {
+                        if (
+                            ($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
+                            || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')
+                        ) {
                             print $langs->trans("NA");
                         } else {
                             if (isset($fields['payment_amount']) && price2num($fields['ftotal_ttc'])) {
@@ -674,8 +679,10 @@ if (!is_array($x_coll) || !is_array($x_paye)) {
                 // Payment
                 $ratiopaymentinvoice = 1;
                 if ($modetax != 1) {
-                    if (($type == 0 && getDolGlobalString('TAX_MODE_BUY_PRODUCT') == 'invoice')
-                        || ($type == 1 && getDolGlobalString('TAX_MODE_BUY_SERVICE') == 'invoice')) {
+                    if (
+                        ($type == 0 && getDolGlobalString('TAX_MODE_BUY_PRODUCT') == 'invoice')
+                        || ($type == 1 && getDolGlobalString('TAX_MODE_BUY_SERVICE') == 'invoice')
+                    ) {
                     } else {
                         if (isset($fields['payment_amount']) && $fields['ftotal_ttc']) {
                             $ratiopaymentinvoice = ($fields['payment_amount'] / $fields['ftotal_ttc']);
@@ -796,8 +803,10 @@ if (!is_array($x_coll) || !is_array($x_paye)) {
                             print $paymentfourn_static->getNomUrl(2, '', '', 0) . ' ';
                         }
 
-                        if (($type == 0 && getDolGlobalString('TAX_MODE_BUY_PRODUCT') == 'invoice')
-                            || ($type == 1 && getDolGlobalString('TAX_MODE_BUY_SERVICE') == 'invoice')) {
+                        if (
+                            ($type == 0 && getDolGlobalString('TAX_MODE_BUY_PRODUCT') == 'invoice')
+                            || ($type == 1 && getDolGlobalString('TAX_MODE_BUY_SERVICE') == 'invoice')
+                        ) {
                             print $langs->trans("NA");
                         } else {
                             if (isset($fields['payment_amount']) && $fields['ftotal_ttc']) {

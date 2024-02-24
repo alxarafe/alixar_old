@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018	Destailleur Laurent	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2018   Destailleur Laurent <eldy@users.sourceforge.net>
  * Copyright (C) 2019	Regis Houssin		<regis.houssin@inodbox.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -197,7 +198,8 @@ if (isset($baseUri)) {
 }
 
 // Add authentication function
-if ((!getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')
+if (
+    (!getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')
         || !preg_match('/' . preg_quote(DOL_URL_ROOT . '/dav/fileserver.php/public', '/') . '/', $_SERVER["PHP_SELF"]))
     && !preg_match('/^sabreAction=asset&assetName=[a-zA-Z0-9%\-\/]+\.(png|css|woff|ico|ttf)$/', $_SERVER["QUERY_STRING"])    // URL for Sabre browser resources
 ) {

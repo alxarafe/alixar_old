@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2022       Quatadah Nasdami     <quatadah.nasdami@gmail.com>
  * Copyright (C) 2022       Laurent Destailleur     <eldy@users.sourceforge.net>
  *
@@ -215,7 +216,7 @@ class Receptions extends DolibarrApi
     //  *
     //  * @param int   $id             Id of reception
     //  *
-    //  * @url	GET {id}/lines
+    //  * @url  GET {id}/lines
     //  *
     //  * @return int
     //  */
@@ -249,7 +250,7 @@ class Receptions extends DolibarrApi
     //  * @param int   $id             Id of reception to update
     //  * @param array $request_data   ShipmentLine data
     //  *
-    //  * @url	POST {id}/lines
+    //  * @url  POST {id}/lines
     //  *
     //  * @return int
     //  */
@@ -317,7 +318,7 @@ class Receptions extends DolibarrApi
     //  * @param int   $lineid         Id of line to update
     //  * @param array $request_data   ShipmentLine data
     //  *
-    //  * @url	PUT {id}/lines/{lineid}
+    //  * @url  PUT {id}/lines/{lineid}
     //  *
     //  * @return object
     //  */

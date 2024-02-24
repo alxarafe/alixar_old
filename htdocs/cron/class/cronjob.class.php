@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2022 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2013      Florian Henry        <florian.henry@open-concept.pro>
  * Copyright (C) 2023-2024	William Mead		<william.mead@manchenumerique.fr>
@@ -1484,8 +1485,10 @@ class Cronjob extends CommonObject
 
         // Archive job
         if ($this->autodelete == 2) {
-            if (($this->maxrun > 0 && ($this->nbrun >= $this->maxrun))
-                || ($this->dateend && ($this->datenextrun > $this->dateend))) {
+            if (
+                ($this->maxrun > 0 && ($this->nbrun >= $this->maxrun))
+                || ($this->dateend && ($this->datenextrun > $this->dateend))
+            ) {
                 $this->status = self::STATUS_ARCHIVED;
                 dol_syslog(get_class($this) . "::reprogram_jobs Job will be set to archived", LOG_ERR);
             }

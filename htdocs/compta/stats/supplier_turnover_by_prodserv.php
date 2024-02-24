@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2020       Maxime Kohlhaas         <maxime@atm-consulting.fr>
  *
  * This program is free software; you can redistribute it and/or modify

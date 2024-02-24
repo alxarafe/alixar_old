@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@inodbox.com>
@@ -493,11 +494,11 @@ $moreforfilter = '';
 
 // Filter on categories
 /*if (isModEnabled("categorie")) {
-	require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=$langs->trans('ProjectCategories'). ': ';
-	$moreforfilter.=$formother->select_categories('project', $search_categ, 'search_categ', 1, 1, 'maxwidth300');
-	$moreforfilter.='</div>';
+    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
+    $moreforfilter.='<div class="divsearchfield">';
+    $moreforfilter.=$langs->trans('ProjectCategories'). ': ';
+    $moreforfilter.=$formother->select_categories('project', $search_categ, 'search_categ', 1, 1, 'maxwidth300');
+    $moreforfilter.='</div>';
 }*/
 
 // If the user can view user other than himself
@@ -692,8 +693,8 @@ if ($conf->use_javascript_ajax) {
 }
 
 if (count($tasksarray) > 0) {
-    //var_dump($tasksarray);				// contains only selected tasks
-    //var_dump($tasksarraywithoutfilter);	// contains all tasks (if there is a filter, not defined if no filter)
+    //var_dump($tasksarray);                // contains only selected tasks
+    //var_dump($tasksarraywithoutfilter);   // contains all tasks (if there is a filter, not defined if no filter)
     //var_dump($tasksrole);
 
     $j = 0;

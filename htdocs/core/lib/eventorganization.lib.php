@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2021		Florian Henry			<florian.henry@scopen.fr>
+
+/* Copyright (C) 2021       Florian Henry           <florian.henry@scopen.fr>
  * Copyright (C) 2023       Frédéric France         <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,52 +30,52 @@
  */
 function eventorganizationAdminPrepareHead()
 {
-	global $langs, $conf, $db;
+    global $langs, $conf, $db;
 
-	$extrafields = new ExtraFields($db);
-	$extrafields->fetch_name_optionals_label('actioncomm');
-	$extrafields->fetch_name_optionals_label('eventorganization_conferenceorboothattendee');
+    $extrafields = new ExtraFields($db);
+    $extrafields->fetch_name_optionals_label('actioncomm');
+    $extrafields->fetch_name_optionals_label('eventorganization_conferenceorboothattendee');
 
-	$langs->load("eventorganization");
+    $langs->load("eventorganization");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT.'/admin/eventorganization.php';
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/admin/eventorganization.php';
+    $head[$h][1] = $langs->trans("Settings");
+    $head[$h][2] = 'settings';
+    $h++;
 
 
-	$head[$h][0] = DOL_URL_ROOT.'/admin/eventorganization_confbooth_extrafields.php';
-	$head[$h][1] = $langs->trans("ExtraFields")." (".$langs->trans("EventOrganizationConfOrBooth").")";
-	$nbExtrafields = $extrafields->attributes['actioncomm']['count'];
-	if ($nbExtrafields > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbExtrafields.'</span>';
-	}
-	$head[$h][2] = 'eventorganization_extrafields';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/admin/eventorganization_confbooth_extrafields.php';
+    $head[$h][1] = $langs->trans("ExtraFields") . " (" . $langs->trans("EventOrganizationConfOrBooth") . ")";
+    $nbExtrafields = $extrafields->attributes['actioncomm']['count'];
+    if ($nbExtrafields > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
+    }
+    $head[$h][2] = 'eventorganization_extrafields';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT.'/admin/eventorganization_confboothattendee_extrafields.php';
-	$head[$h][1] = $langs->trans("ExtraFields")." (".$langs->trans("Attendees").")";
-	$nbExtrafields = $extrafields->attributes['eventorganization_conferenceorboothattendee']['count'];
-	if ($nbExtrafields > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbExtrafields.'</span>';
-	}
-	$head[$h][2] = 'conferenceorboothattendee_extrafields';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/admin/eventorganization_confboothattendee_extrafields.php';
+    $head[$h][1] = $langs->trans("ExtraFields") . " (" . $langs->trans("Attendees") . ")";
+    $nbExtrafields = $extrafields->attributes['eventorganization_conferenceorboothattendee']['count'];
+    if ($nbExtrafields > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
+    }
+    $head[$h][2] = 'conferenceorboothattendee_extrafields';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'eventorganization');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'eventorganization');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'eventorganization', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'eventorganization', 'remove');
 
-	return $head;
+    return $head;
 }

@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2014	Maxime Kohlhaas		<support@atm-consulting.fr>
+/* Copyright (C) 2014   Maxime Kohlhaas     <support@atm-consulting.fr>
  * Copyright (C) 2014	Juanjo Menent		<jmenent@2byte.es>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,8 +27,8 @@
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
-	print "Error, template page can't be called as URL";
-	exit;
+    print "Error, template page can't be called as URL";
+    exit;
 }
 
 ?>
@@ -37,18 +37,18 @@ if (empty($conf) || !is_object($conf)) {
 
 // Other attributes
 if (!isset($parameters)) {
-	$parameters = array();
+    $parameters = array();
 }
 $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 if (empty($reshook)) {
-	$params = array();
-	if (isset($tpl_context)) {
-		$params['tpl_context'] = $tpl_context;
-	}
-	$params['cols'] = array_key_exists('colspanvalue', $parameters) ? $parameters['colspanvalue'] : null;
+    $params = array();
+    if (isset($tpl_context)) {
+        $params['tpl_context'] = $tpl_context;
+    }
+    $params['cols'] = array_key_exists('colspanvalue', $parameters) ? $parameters['colspanvalue'] : null;
 
-	print $object->showOptionals($extrafields, 'edit', $params);
+    print $object->showOptionals($extrafields, 'edit', $params);
 }
 
 ?>

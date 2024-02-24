@@ -239,7 +239,7 @@ class Context
      *
      * @return  string  Web Portal root url
      */
-    static public function getRootConfigUrl()
+    public static function getRootConfigUrl()
     {
         global $conf;
 
@@ -312,7 +312,7 @@ class Context
      *
      * @return    string
      */
-    static public function getPublicControllerUrl($controller = false, $moreParams = '', $Tparams = [])
+    public static function getPublicControllerUrl($controller = false, $moreParams = '', $Tparams = [])
     {
         $url = self::getRootConfigUrl();
 
@@ -367,7 +367,7 @@ class Context
      *
      * @return    string
      */
-    static public function urlOrigin($withRequestUri = true, $use_forwarded_host = false)
+    public static function urlOrigin($withRequestUri = true, $use_forwarded_host = false)
     {
         $s = $_SERVER;
 

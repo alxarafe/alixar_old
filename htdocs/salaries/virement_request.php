@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2015  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015       Charlie BENKE        <charlie@patas-monkey.com>
  * Copyright (C) 2017-2019  Alexandre Spangaro   <aspangaro@open-dsi.fr>
@@ -335,8 +336,8 @@ $user_perms = $user->hasRight('paymentbybanktransfer', 'create');
 
 print '<div class="fichehalfright">';
 /*
-	 * Payments
-	 */
+     * Payments
+     */
 $sql = "SELECT p.rowid, p.num_payment as num_payment, p.datep as dp, p.amount,";
 $sql .= " c.code as type_code,c.libelle as paiement_type,";
 $sql .= ' ba.rowid as baid, ba.ref as baref, ba.label, ba.number as banumber, ba.account_number, ba.currency_code as bacurrency_code, ba.fk_accountancy_journal';
@@ -514,8 +515,8 @@ print '<div>';
 $bprev = new BonPrelevement($db);
 
 /*
-	 * Withdrawals
-	 */
+     * Withdrawals
+     */
 
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder centpercent">';

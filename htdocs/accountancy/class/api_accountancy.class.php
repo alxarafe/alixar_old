@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2019   Cedric Ancelin          <icedo.anc@gmail.com>
  * Copyright (C) 2023   Lionel Vessiller		<lvessiller@open-dsi.fr>

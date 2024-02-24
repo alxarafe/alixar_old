@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -62,9 +63,11 @@ function printDropdownBookmarksList()
     }
     if (!empty($_POST) && is_array($_POST)) {
         foreach ($_POST as $key => $val) {
-            if ((preg_match('/^search_/', $key) || in_array($key, $authorized_var))
+            if (
+                (preg_match('/^search_/', $key) || in_array($key, $authorized_var))
                 && $val != ''
-                && !array_key_exists($key, $url_param)) {
+                && !array_key_exists($key, $url_param)
+            ) {
                 if (is_array($val)) {
                     foreach ($val as $tmpsubval) {
                         $url_param[] = http_build_query([dol_escape_htmltag($key) . '[]' => dol_escape_htmltag($tmpsubval)]);

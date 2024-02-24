@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010  Regis Houssin           <regis.houssin@inodbox.com>
@@ -127,11 +128,13 @@ if ($year > 0) {
     $sql .= " OR (tva.datev IS NULL AND tva.datev between '" . $db->idate(dol_get_first_day($year)) . "' AND '" . $db->idate(dol_get_last_day($year)) . "')";
     $sql .= ")";
 }
-if (preg_match('/^cs\./', $sortfield)
+if (
+    preg_match('/^cs\./', $sortfield)
     || preg_match('/^tva\./', $sortfield)
     || preg_match('/^ptva\./', $sortfield)
     || preg_match('/^pct\./', $sortfield)
-    || preg_match('/^bank\./', $sortfield)) {
+    || preg_match('/^bank\./', $sortfield)
+) {
     $sql .= $db->order($sortfield, $sortorder);
 }
 //$sql.= $db->plimit($limit+1,$offset);
@@ -198,11 +201,13 @@ if (isModEnabled('tax') && $user->hasRight('tax', 'charges', 'lire')) {
         $sql .= " OR (tva.datev IS NULL AND tva.datev between '" . $db->idate(dol_get_first_day($year)) . "' AND '" . $db->idate(dol_get_last_day($year)) . "')";
         $sql .= ")";
     }
-    if (preg_match('/^cs\./', $sortfield)
+    if (
+        preg_match('/^cs\./', $sortfield)
         || preg_match('/^tva\./', $sortfield)
         || preg_match('/^ptva\./', $sortfield)
         || preg_match('/^pct\./', $sortfield)
-        || preg_match('/^bank\./', $sortfield)) {
+        || preg_match('/^bank\./', $sortfield)
+    ) {
         $sql .= $db->order($sortfield, $sortorder);
     }
 

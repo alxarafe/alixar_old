@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2011  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
@@ -26,6 +27,7 @@
  *       \ingroup    agenda
  *       \brief      File of class to manage agenda events (actions)
  */
+
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
@@ -850,7 +852,7 @@ class ActionComm extends CommonObject
                 $this->type_picto = $obj->type_picto;
                 $this->type = $obj->type_type;
                 /*$transcode = $langs->trans("Action".$obj->type_code);
-				$this->type       = (($transcode != "Action".$obj->type_code) ? $transcode : $obj->type_label); */
+                $this->type       = (($transcode != "Action".$obj->type_code) ? $transcode : $obj->type_label); */
                 $transcode = $langs->trans("Action" . $obj->type_code . 'Short');
 
                 $this->code = $obj->code;
@@ -889,8 +891,8 @@ class ActionComm extends CommonObject
                 $this->contact_id = $obj->fk_contact; // To have fetch_contact method working
                 $this->fk_project = $obj->fk_project; // To have fetch_projet method working
 
-                //$this->societe->id			= $obj->fk_soc;			// deprecated
-                //$this->contact->id			= $obj->fk_contact;		// deprecated
+                //$this->societe->id            = $obj->fk_soc;         // deprecated
+                //$this->contact->id            = $obj->fk_contact;     // deprecated
 
                 $this->fk_element = $obj->elementid;
                 $this->elementid = $obj->elementid;
@@ -1659,9 +1661,9 @@ class ActionComm extends CommonObject
                 $datas['mailcc'] = '<br><b>' . $langs->trans('MailCC') . ':</b> ' . str_replace(['<', '>'], ['&amp;lt', '&amp;gt'], $this->email_tocc);
             }
             /* Disabled because bcc must remain by definition not visible
-			if (!empty($this->email_tobcc)) {
-				$datas['mailccc'] = '<br><b>'.$langs->trans('MailCCC').':</b> '.$this->email_tobcc;
-			} */
+            if (!empty($this->email_tobcc)) {
+                $datas['mailccc'] = '<br><b>'.$langs->trans('MailCCC').':</b> '.$this->email_tobcc;
+            } */
         }
         if (!empty($this->note_private)) {
             $datas['description'] = '<br><b>' . $langs->trans('Description') . ':</b><br>';
@@ -1764,9 +1766,9 @@ class ActionComm extends CommonObject
                 $tooltip .= '<br><b>' . $langs->trans('MailCC') . ':</b> ' . str_replace(['<', '>'], ['&amp;lt', '&amp;gt'], $this->email_tocc);
             }
             /* Disabled because bcc must remain by definition not visible
-			if (!empty($this->email_tobcc)) {
-				$tooltip .= '<br><b>'.$langs->trans('MailCCC').':</b> '.$this->email_tobcc;
-			} */
+            if (!empty($this->email_tobcc)) {
+                $tooltip .= '<br><b>'.$langs->trans('MailCCC').':</b> '.$this->email_tobcc;
+            } */
         }
         if (!empty($this->note_private)) {
             $tooltip .= '<br><br><b>' . $langs->trans('Description') . ':</b><br>';
@@ -2242,7 +2244,7 @@ class ActionComm extends CommonObject
                         // Define $urlwithroot
                         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
                         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-                        //$urlwithroot=DOL_MAIN_URL_ROOT;						// This is to use same domain name than current
+                        //$urlwithroot=DOL_MAIN_URL_ROOT;                       // This is to use same domain name than current
                         $url = $urlwithroot . '/comm/action/card.php?id=' . $obj->id;
                         $event['url'] = $url;
                     }
@@ -2734,7 +2736,7 @@ class ActionComm extends CommonObject
 
             if (!$resql) {
                 $errorsMsg[] = 'Failed to delete old reminders';
-                //$error++;		// If this fails, we must not rollback other SQL requests already done. Never mind.
+                //$error++;     // If this fails, we must not rollback other SQL requests already done. Never mind.
             }
         }
 

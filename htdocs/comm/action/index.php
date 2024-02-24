@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Eric Seigne          <erics@rycks.com>
  * Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -952,7 +953,7 @@ if ($resql) {
             $moisend = dol_print_date($daycursorend, '%m', 'tzuserrel');
             $jourend = dol_print_date($daycursorend, '%d', 'tzuserrel');
 
-            //var_dump(dol_print_date($event->date_start_in_calendar, 'dayhour', 'gmt'));	// Hour at greenwich
+            //var_dump(dol_print_date($event->date_start_in_calendar, 'dayhour', 'gmt'));   // Hour at greenwich
             //var_dump($annee.'-'.$mois.'-'.$jour);
             //print 'annee='.$annee.' mois='.$mois.' jour='.$jour.'<br>';
 
@@ -1954,8 +1955,10 @@ function show_day_events($db, $day, $month, $year, $monthshown, $style, &$eventa
                             $cssclass .= ' movable cursormove';
                         }
                     } else {
-                        if ($user->hasRight('agenda', 'allactions', 'create') ||
-                            (($event->authorid == $user->id || $event->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))) {
+                        if (
+                            $user->hasRight('agenda', 'allactions', 'create') ||
+                            (($event->authorid == $user->id || $event->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))
+                        ) {
                             $cssclass .= " movable cursormove";
                         } else {
                             $cssclass .= " unmovable";
@@ -2013,7 +2016,7 @@ function show_day_events($db, $day, $month, $year, $monthshown, $style, &$eventa
                     //var_dump($event->transparency);
                     print '<table class="centpercent cal_event';
                     print(empty($event->transparency) ? ' cal_event_notbusy' : ' cal_event_busy');
-                    //if (empty($event->transparency) && empty($conf->global->AGENDA_NO_TRANSPARENT_ON_NOT_BUSY)) print ' opacitymedium';	// Not busy
+                    //if (empty($event->transparency) && empty($conf->global->AGENDA_NO_TRANSPARENT_ON_NOT_BUSY)) print ' opacitymedium';   // Not busy
                     print '" style="' . $h;
                     $colortouse = $color;
                     // If colortouse is similar than background, we force to change it.

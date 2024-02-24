@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007  Rodolphe Quiedeville        <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2007  Laurent Destailleur         <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009  Regis Houssin               <regis.houssin@inodbox.com>
@@ -30,119 +31,119 @@ dol_include_once('/knowledgemanagement/core/modules/knowledgemanagement/modules_
 
 
 /**
- *	Class to manage customer Bom numbering rules advanced
+ *  Class to manage customer Bom numbering rules advanced
  */
 class mod_knowledgerecord_advanced extends ModeleNumRefKnowledgeRecord
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	/**
-	 * @var string Error message
-	 */
-	public $error = '';
+    /**
+     * @var string Error message
+     */
+    public $error = '';
 
-	/**
-	 * @var string name
-	 */
-	public $name = 'advanced';
+    /**
+     * @var string name
+     */
+    public $name = 'advanced';
 
 
-	/**
-	 *  Returns the description of the numbering model
-	 *
-	 *  @return     string      Descriptive text
-	 */
-	public function info()
-	{
-		global $conf, $langs, $db;
+    /**
+     *  Returns the description of the numbering model
+     *
+     *  @return     string      Descriptive text
+     */
+    public function info()
+    {
+        global $conf, $langs, $db;
 
-		$langs->load("bills");
+        $langs->load("bills");
 
-		$form = new Form($db);
+        $form = new Form($db);
 
-		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
-		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
-		$texte .= '<input type="hidden" name="action" value="updateMask">';
-		$texte .= '<input type="hidden" name="maskconst" value="KNOWLEDGEMANAGEMENT_KNOWLEDGERECORD_ADVANCED_MASK">';
-		$texte .= '<table class="nobordernopadding" width="100%">';
+        $texte = $langs->trans('GenericNumRefModelDesc') . "<br>\n";
+        $texte .= '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST">';
+        $texte .= '<input type="hidden" name="token" value="' . newToken() . '">';
+        $texte .= '<input type="hidden" name="action" value="updateMask">';
+        $texte .= '<input type="hidden" name="maskconst" value="KNOWLEDGEMANAGEMENT_KNOWLEDGERECORD_ADVANCED_MASK">';
+        $texte .= '<table class="nobordernopadding" width="100%">';
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("KnowledgeRecord"), $langs->transnoentities("KnowledgeRecord"));
-		$tooltip .= $langs->trans("GenericMaskCodes2");
-		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("KnowledgeRecord"), $langs->transnoentities("KnowledgeRecord"));
-		$tooltip .= $langs->trans("GenericMaskCodes5");
+        $tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("KnowledgeRecord"), $langs->transnoentities("KnowledgeRecord"));
+        $tooltip .= $langs->trans("GenericMaskCodes2");
+        $tooltip .= $langs->trans("GenericMaskCodes3");
+        $tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("KnowledgeRecord"), $langs->transnoentities("KnowledgeRecord"));
+        $tooltip .= $langs->trans("GenericMaskCodes5");
 
-		// Parametrage du prefix
-		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskKnowledgeRecord" value="'.getDolGlobalString('KNOWLEDGEMANAGEMENT_KNOWLEDGERECORD_ADVANCED_MASK').'">', $tooltip, 1, 1).'</td>';
+        // Parametrage du prefix
+        $texte .= '<tr><td>' . $langs->trans("Mask") . ':</td>';
+        $texte .= '<td class="right">' . $form->textwithpicto('<input type="text" class="flat minwidth175" name="maskKnowledgeRecord" value="' . getDolGlobalString('KNOWLEDGEMANAGEMENT_KNOWLEDGERECORD_ADVANCED_MASK') . '">', $tooltip, 1, 1) . '</td>';
 
-		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit" name="Button"value="'.$langs->trans("Modify").'"></td>';
+        $texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit" name="Button"value="' . $langs->trans("Modify") . '"></td>';
 
-		$texte .= '</tr>';
+        $texte .= '</tr>';
 
-		$texte .= '</table>';
-		$texte .= '</form>';
+        $texte .= '</table>';
+        $texte .= '</form>';
 
-		return $texte;
-	}
+        return $texte;
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		global $conf, $db, $langs, $mysoc;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        global $conf, $db, $langs, $mysoc;
 
-		$object = new KnowledgeRecord($db);
-		$object->initAsSpecimen();
+        $object = new KnowledgeRecord($db);
+        $object->initAsSpecimen();
 
-		/*$old_code_client = $mysoc->code_client;
-		$old_code_type = $mysoc->typent_code;
-		$mysoc->code_client = 'CCCCCCCCCC';
-		$mysoc->typent_code = 'TTTTTTTTTT';*/
+        /*$old_code_client = $mysoc->code_client;
+        $old_code_type = $mysoc->typent_code;
+        $mysoc->code_client = 'CCCCCCCCCC';
+        $mysoc->typent_code = 'TTTTTTTTTT';*/
 
-		$numExample = $this->getNextValue($object);
+        $numExample = $this->getNextValue($object);
 
-		/*$mysoc->code_client = $old_code_client;
-		$mysoc->typent_code = $old_code_type;*/
+        /*$mysoc->code_client = $old_code_client;
+        $mysoc->typent_code = $old_code_type;*/
 
-		if (!$numExample) {
-			$numExample = $langs->trans('NotConfigured');
-		}
-		return $numExample;
-	}
+        if (!$numExample) {
+            $numExample = $langs->trans('NotConfigured');
+        }
+        return $numExample;
+    }
 
-	/**
-	 * 	Return next free value
-	 *
-	 *  @param  Object		$object		Object we need next value for
-	 *  @return string|0      			Next value if OK, 0 if KO
-	 */
-	public function getNextValue($object)
-	{
-		global $db, $conf;
+    /**
+     *  Return next free value
+     *
+     *  @param  Object      $object     Object we need next value for
+     *  @return string|0                Next value if OK, 0 if KO
+     */
+    public function getNextValue($object)
+    {
+        global $db, $conf;
 
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-		// We get cursor rule
-		$mask = getDolGlobalString('KNOWLEDGEMANAGEMENT_KNOWLEDGERECORD_ADVANCED_MASK');
+        // We get cursor rule
+        $mask = getDolGlobalString('KNOWLEDGEMANAGEMENT_KNOWLEDGERECORD_ADVANCED_MASK');
 
-		if (!$mask) {
-			$this->error = 'NotConfigured';
-			return 0;
-		}
+        if (!$mask) {
+            $this->error = 'NotConfigured';
+            return 0;
+        }
 
-		$date = $object->date;
+        $date = $object->date;
 
-		$numFinal = get_next_value($db, $mask, 'knowledgemanagement_knowledgerecord', 'ref', '', null, $date);
+        $numFinal = get_next_value($db, $mask, 'knowledgemanagement_knowledgerecord', 'ref', '', null, $date);
 
-		return  $numFinal;
-	}
+        return  $numFinal;
+    }
 }

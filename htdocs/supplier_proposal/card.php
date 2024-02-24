@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2004       Eric Seigne             <eric.seigne@ryxeo.com>
@@ -668,7 +669,7 @@ if (empty($reshook)) {
                         $productsupplier->get_buyprice(0, -1, $idprod, 'none', $fksoctosearch); // We force qty to -1 to be sure to find if a supplier price exist
                     }
                 } elseif (GETPOST('idprodfournprice', 'alpha') > 0) {
-                    //$qtytosearch=$qty; 	   // Just to see if a price exists for the quantity. Not used to found vat.
+                    //$qtytosearch=$qty;       // Just to see if a price exists for the quantity. Not used to found vat.
                     $qtytosearch = -1; // We force qty to -1 to be sure to find if the supplier price that exists
                     $idprod = $productsupplier->get_buyprice(GETPOST('idprodfournprice', 'alpha'), $qtytosearch);
                     $res = $productsupplier->fetch($idprod);
@@ -1115,9 +1116,9 @@ if (empty($reshook)) {
         // Terms of payments
         $result = $object->setPaymentTerms(GETPOST('cond_reglement_id', 'int'));
         //} elseif ($action == 'setremisepercent' && $usercancreate) {
-        //	$result = $object->set_remise_percent($user, price2num(GETPOST('remise_percent'), '', 2));
+        //  $result = $object->set_remise_percent($user, price2num(GETPOST('remise_percent'), '', 2));
         //} elseif ($action == 'setremiseabsolue' && $usercancreate) {
-        //	$result = $object->set_remise_absolue($user, price2num(GETPOST('remise_absolue'), 'MU', 2));
+        //  $result = $object->set_remise_absolue($user, price2num(GETPOST('remise_absolue'), 'MU', 2));
     } elseif ($action == 'setmode' && $usercancreate) {
         // Payment mode
         $result = $object->setPaymentMethods(GETPOST('mode_reglement_id', 'int'));

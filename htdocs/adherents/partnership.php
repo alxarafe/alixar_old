@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2017 Laurent Destailleur  	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2017 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2021 NextGestion 			<contact@nextgestion.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -236,9 +237,9 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         print '<table class="border centpercent tableforfield">' . "\n";
 
         // Common attributes
-        //$keyforbreak='fieldkeytoswitchonsecondcolumn';	// We change column just before this field
-        //unset($object->fields['fk_project']);				// Hide field already shown in banner
-        //unset($object->fields['fk_member']);					// Hide field already shown in banner
+        //$keyforbreak='fieldkeytoswitchonsecondcolumn';    // We change column just before this field
+        //unset($object->fields['fk_project']);             // Hide field already shown in banner
+        //unset($object->fields['fk_member']);                  // Hide field already shown in banner
         include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
         // End of subscription date

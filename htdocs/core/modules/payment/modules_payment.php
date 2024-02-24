@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015      Juanjo Menent	    <jmenent@2byte.es>
+
+/* Copyright (C) 2015      Juanjo Menent        <jmenent@2byte.es>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +17,12 @@
  * or see https://www.gnu.org/
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
 
 /**
  * Payment numbering references mother class
  */
 abstract class ModeleNumRefPayments extends CommonNumRefGenerator
 {
-	// No overload code
+    // No overload code
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004      Eric Seigne          <eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -25,6 +26,7 @@
  *      \ingroup    tax
  *        \brief      Local tax by rate
  */
+
 global $mysoc;
 
 // Load Dolibarr environment
@@ -191,10 +193,10 @@ if (getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'payment') $description.=$lan
 if (getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice') $description.='<br>'.$langs->trans("RulesVATDueServices");
 if (getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'payment') $description.='<br>'.$langs->trans("RulesVATInServices");
 if (!empty($conf->global->FACTURE_DEPOSITS_ARE_JUST_PAYMENTS)) {
-	$description.='<br>'.$langs->trans("DepositsAreNotIncluded");
+    $description.='<br>'.$langs->trans("DepositsAreNotIncluded");
 }
 if (! empty($conf->global->FACTURE_SUPPLIER_DEPOSITS_ARE_JUST_PAYMENTS)) {
-	$description.='<br>'.$langs->trans("SupplierDepositsAreNotIncluded");
+    $description.='<br>'.$langs->trans("SupplierDepositsAreNotIncluded");
 }
 */
 if (isModEnabled('accounting')) {

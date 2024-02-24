@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016       Neil Orley          <neil.orley@oeris.fr>
  * Copyright (C) 2013-2016  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2020  Florian Henry       <florian.henry@open-concept.pro>
@@ -382,30 +383,30 @@ if (empty($reshook)) {
     }
 
     //if ($action == 'delbookkeepingyearconfirm' && $user->hasRight('accounting', 'mouvements', 'supprimer')_tous) {
-    //	$delmonth = GETPOST('delmonth', 'int');
-    //	$delyear = GETPOST('delyear', 'int');
-    //	if ($delyear == -1) {
-    //		$delyear = 0;
-    //	}
-    //	$deljournal = GETPOST('deljournal', 'alpha');
-    //	if ($deljournal == -1) {
-    //		$deljournal = 0;
-    //	}
+    //  $delmonth = GETPOST('delmonth', 'int');
+    //  $delyear = GETPOST('delyear', 'int');
+    //  if ($delyear == -1) {
+    //      $delyear = 0;
+    //  }
+    //  $deljournal = GETPOST('deljournal', 'alpha');
+    //  if ($deljournal == -1) {
+    //      $deljournal = 0;
+    //  }
     //
-    //	if (!empty($delmonth) || !empty($delyear) || !empty($deljournal)) {
-    //		$result = $object->deleteByYearAndJournal($delyear, $deljournal, '', ($delmonth > 0 ? $delmonth : 0));
-    //		if ($result < 0) {
-    //			setEventMessages($object->error, $object->errors, 'errors');
-    //		} else {
-    //			setEventMessages("RecordDeleted", null, 'mesgs');
-    //		}
+    //  if (!empty($delmonth) || !empty($delyear) || !empty($deljournal)) {
+    //      $result = $object->deleteByYearAndJournal($delyear, $deljournal, '', ($delmonth > 0 ? $delmonth : 0));
+    //      if ($result < 0) {
+    //          setEventMessages($object->error, $object->errors, 'errors');
+    //      } else {
+    //          setEventMessages("RecordDeleted", null, 'mesgs');
+    //      }
     //
-    //		// Make a redirect to avoid to launch the delete later after a back button
-    //		header("Location: ".$_SERVER["PHP_SELF"].($param ? '?'.$param : ''));
-    //		exit;
-    //	} else {
-    //		setEventMessages("NoRecordDeleted", null, 'warnings');
-    //	}
+    //      // Make a redirect to avoid to launch the delete later after a back button
+    //      header("Location: ".$_SERVER["PHP_SELF"].($param ? '?'.$param : ''));
+    //      exit;
+    //  } else {
+    //      setEventMessages("NoRecordDeleted", null, 'warnings');
+    //  }
     //}
 
     // Mass actions
@@ -593,43 +594,43 @@ $arrayofselected = is_array($toselect) ? $toselect : [];
 $num = count($object->lines);
 
 ///if ($action == 'delbookkeepingyear') {
-//	$form_question = array();
-//	$delyear = GETPOST('delyear', 'int');
-//	$deljournal = GETPOST('deljournal', 'alpha');
+//  $form_question = array();
+//  $delyear = GETPOST('delyear', 'int');
+//  $deljournal = GETPOST('deljournal', 'alpha');
 //
-//	if (empty($delyear)) {
-//		$delyear = dol_print_date(dol_now(), '%Y');
-//	}
-//	$month_array = array();
-//	for ($i = 1; $i <= 12; $i++) {
-//		$month_array[$i] = $langs->trans("Month".sprintf("%02d", $i));
-//	}
-//	$year_array = $formaccounting->selectyear_accountancy_bookkepping($delyear, 'delyear', 0, 'array');
-//	$journal_array = $formaccounting->select_journal($deljournal, 'deljournal', '', 1, 1, 1, '', 0, 1);
+//  if (empty($delyear)) {
+//      $delyear = dol_print_date(dol_now(), '%Y');
+//  }
+//  $month_array = array();
+//  for ($i = 1; $i <= 12; $i++) {
+//      $month_array[$i] = $langs->trans("Month".sprintf("%02d", $i));
+//  }
+//  $year_array = $formaccounting->selectyear_accountancy_bookkepping($delyear, 'delyear', 0, 'array');
+//  $journal_array = $formaccounting->select_journal($deljournal, 'deljournal', '', 1, 1, 1, '', 0, 1);
 //
-//	$form_question['delmonth'] = array(
-//		'name' => 'delmonth',
-//		'type' => 'select',
-//		'label' => $langs->trans('DelMonth'),
-//		'values' => $month_array,
-//		'default' => ''
-//	);
-//	$form_question['delyear'] = array(
-//		'name' => 'delyear',
-//		'type' => 'select',
-//		'label' => $langs->trans('DelYear'),
-//		'values' => $year_array,
-//		'default' => $delyear
-//	);
-//	$form_question['deljournal'] = array(
-//		'name' => 'deljournal',
-//		'type' => 'other', // We don't use select here, the journal_array is already a select html component
-//		'label' => $langs->trans('DelJournal'),
-//		'value' => $journal_array,
-//		'default' => $deljournal
-//	);
+//  $form_question['delmonth'] = array(
+//      'name' => 'delmonth',
+//      'type' => 'select',
+//      'label' => $langs->trans('DelMonth'),
+//      'values' => $month_array,
+//      'default' => ''
+//  );
+//  $form_question['delyear'] = array(
+//      'name' => 'delyear',
+//      'type' => 'select',
+//      'label' => $langs->trans('DelYear'),
+//      'values' => $year_array,
+//      'default' => $delyear
+//  );
+//  $form_question['deljournal'] = array(
+//      'name' => 'deljournal',
+//      'type' => 'other', // We don't use select here, the journal_array is already a select html component
+//      'label' => $langs->trans('DelJournal'),
+//      'value' => $journal_array,
+//      'default' => $deljournal
+//  );
 //
-//	$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?'.$param, $langs->trans('DeleteMvt'), $langs->trans('ConfirmDeleteMvt', $langs->transnoentitiesnoconv("RegistrationInAccounting")), 'delbookkeepingyearconfirm', $form_question, '', 1, 300);
+//  $formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?'.$param, $langs->trans('DeleteMvt'), $langs->trans('ConfirmDeleteMvt', $langs->transnoentitiesnoconv("RegistrationInAccounting")), 'delbookkeepingyearconfirm', $form_question, '', 1, 300);
 //}
 
 // Print form confirm
@@ -1392,9 +1393,9 @@ print '</div>';
 
 // TODO Replace this with mass delete action
 //if ($user->hasRight('accounting', 'mouvements, 'supprimer_tous')) {
-//	print '<div class="tabsAction tabsActionNoBottom">'."\n";
-//	print '<a class="butActionDelete" name="button_delmvt" href="'.$_SERVER["PHP_SELF"].'?action=delbookkeepingyear&token='.newToken().($param ? '&'.$param : '').'">'.$langs->trans("DeleteMvt").'</a>';
-//	print '</div>';
+//  print '<div class="tabsAction tabsActionNoBottom">'."\n";
+//  print '<a class="butActionDelete" name="button_delmvt" href="'.$_SERVER["PHP_SELF"].'?action=delbookkeepingyear&token='.newToken().($param ? '&'.$param : '').'">'.$langs->trans("DeleteMvt").'</a>';
+//  print '</div>';
 //}
 
 print '</form>';

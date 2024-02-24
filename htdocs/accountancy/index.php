@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2016-2020  Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2016-2020  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2016-2023  Alexandre Spangaro		<aspangaro@easya.solutions>
  * Copyright (C) 2019-2021  Frédéric France			<frederic.france@netlogic.fr>
  *

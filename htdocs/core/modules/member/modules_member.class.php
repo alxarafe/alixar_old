@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2004      Eric Seigne          <eric.seigne@ryxeo.com>
@@ -27,33 +28,33 @@
  *  \brief      File with parent class for generating members to PDF
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
 
 
 /**
- *	Parent class to manage intervention document templates
+ *  Parent class to manage intervention document templates
  */
 abstract class ModelePDFMember extends CommonDocGenerator
 {
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *	Return list of active generation modules
-	 *
-	 *  @param	DoliDB	$db     			Database handler
-	 *  @param  integer	$maxfilenamelength  Max length of value to show
-	 *  @return	array						List of templates
-	 */
-	public static function liste_modeles($db, $maxfilenamelength = 0)
-	{
+    /**
+     *  Return list of active generation modules
+     *
+     *  @param  DoliDB  $db                 Database handler
+     *  @param  integer $maxfilenamelength  Max length of value to show
+     *  @return array                       List of templates
+     */
+    public static function liste_modeles($db, $maxfilenamelength = 0)
+    {
 		// phpcs:enable
-		$type = 'member';
-		$list = array();
+        $type = 'member';
+        $list = array();
 
-		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-		$list = getListOfModels($db, $type, $maxfilenamelength);
-		return $list;
-	}
+        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        $list = getListOfModels($db, $type, $maxfilenamelength);
+        return $list;
+    }
 }
 
 
@@ -63,72 +64,72 @@ abstract class ModelePDFMember extends CommonDocGenerator
  */
 abstract class ModeleNumRefMembers extends CommonNumRefGenerator
 {
-	public $code_modifiable; // Editable code
+    public $code_modifiable; // Editable code
 
-	public $code_modifiable_invalide; // Modified code if it is invalid
+    public $code_modifiable_invalide; // Modified code if it is invalid
 
-	public $code_modifiable_null; // Modified code if it is null
+    public $code_modifiable_null; // Modified code if it is null
 
-	public $code_null; //
+    public $code_null; //
 
-	public $code_auto;
+    public $code_auto;
 
 
-	/**
-	 *  Return description of module parameters
-	 *
-	 *  @param	Translate	$langs      Output language
-	 *  @param	Societe		$soc		Third party object
-	 *  @return	string					HTML translated description
-	 */
-	public function getToolTip($langs, $soc)
-	{
-		global $conf;
+    /**
+     *  Return description of module parameters
+     *
+     *  @param  Translate   $langs      Output language
+     *  @param  Societe     $soc        Third party object
+     *  @return string                  HTML translated description
+     */
+    public function getToolTip($langs, $soc)
+    {
+        global $conf;
 
-		$langs->loadLangs(array("admin", "companies"));
+        $langs->loadLangs(array("admin", "companies"));
 
-		$strikestart = '';
-		$strikeend = '';
-		if (getDolGlobalString('MAIN_MEMBER_CODE_ALWAYS_REQUIRED') && !empty($this->code_null)) {
-			$strikestart = '<strike>';
-			$strikeend = '</strike> '.yn(1, 1, 2).' ('.$langs->trans("ForcedToByAModule", $langs->transnoentities("yes")).')';
-		}
+        $strikestart = '';
+        $strikeend = '';
+        if (getDolGlobalString('MAIN_MEMBER_CODE_ALWAYS_REQUIRED') && !empty($this->code_null)) {
+            $strikestart = '<strike>';
+            $strikeend = '</strike> ' . yn(1, 1, 2) . ' (' . $langs->trans("ForcedToByAModule", $langs->transnoentities("yes")) . ')';
+        }
 
-		$s = '';
-		$s .= $langs->trans("Name").': <b>'.$this->getName($langs).'</b><br>';
-		$s .= $langs->trans("Version").': <b>'.$this->getVersion().'</b><br>';
-		$s .= $langs->trans("MemberCodeDesc").'<br>';
-		$s .= $langs->trans("ValidityControledByModule").': <b>'.$this->getName($langs).'</b><br>';
-		$s .= '<br>';
-		$s .= '<u>'.$langs->trans("ThisIsModuleRules").':</u><br>';
+        $s = '';
+        $s .= $langs->trans("Name") . ': <b>' . $this->getName($langs) . '</b><br>';
+        $s .= $langs->trans("Version") . ': <b>' . $this->getVersion() . '</b><br>';
+        $s .= $langs->trans("MemberCodeDesc") . '<br>';
+        $s .= $langs->trans("ValidityControledByModule") . ': <b>' . $this->getName($langs) . '</b><br>';
+        $s .= '<br>';
+        $s .= '<u>' . $langs->trans("ThisIsModuleRules") . ':</u><br>';
 
-		$s .= $langs->trans("Required").': '.$strikestart;
-		$s .= yn(!$this->code_null, 1, 2).$strikeend;
-		$s .= '<br>';
-		$s .= $langs->trans("CanBeModifiedIfOk").': ';
-		$s .= yn($this->code_modifiable, 1, 2);
-		$s .= '<br>';
-		$s .= $langs->trans("CanBeModifiedIfKo").': '.yn($this->code_modifiable_invalide, 1, 2).'<br>';
-		$s .= $langs->trans("AutomaticCode").': '.yn($this->code_auto, 1, 2).'<br>';
-		$s .= '<br>';
-		$nextval = $this->getNextValue($soc, 0);
-		if (empty($nextval)) {
-			$nextval = $langs->trans("Undefined");
-		}
-		$s .= $langs->trans("NextValue").' ('.$langs->trans("Member").'): <b>'.$nextval.'</b><br>';
+        $s .= $langs->trans("Required") . ': ' . $strikestart;
+        $s .= yn(!$this->code_null, 1, 2) . $strikeend;
+        $s .= '<br>';
+        $s .= $langs->trans("CanBeModifiedIfOk") . ': ';
+        $s .= yn($this->code_modifiable, 1, 2);
+        $s .= '<br>';
+        $s .= $langs->trans("CanBeModifiedIfKo") . ': ' . yn($this->code_modifiable_invalide, 1, 2) . '<br>';
+        $s .= $langs->trans("AutomaticCode") . ': ' . yn($this->code_auto, 1, 2) . '<br>';
+        $s .= '<br>';
+        $nextval = $this->getNextValue($soc, 0);
+        if (empty($nextval)) {
+            $nextval = $langs->trans("Undefined");
+        }
+        $s .= $langs->trans("NextValue") . ' (' . $langs->trans("Member") . '): <b>' . $nextval . '</b><br>';
 
-		return $s;
-	}
+        return $s;
+    }
 
-	/**
-	 *  Return next value
-	 *
-	 *  @param  Societe		$objsoc		Object third party
-	 *  @param  Adherent	$object		Object we need next value for
-	 *  @return	string					next value
-	 */
-	public function getNextValue($objsoc, $object)
-	{
-		return '';
-	}
+    /**
+     *  Return next value
+     *
+     *  @param  Societe     $objsoc     Object third party
+     *  @param  Adherent    $object     Object we need next value for
+     *  @return string                  next value
+     */
+    public function getNextValue($objsoc, $object)
+    {
+        return '';
+    }
 }

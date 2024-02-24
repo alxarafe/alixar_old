@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2005 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2004      Eric Seigne          <eric.seigne@ryxeo.com>
@@ -23,65 +24,66 @@
  */
 
 /**
- *		\file       htdocs/core/modules/supplier_order/modules_commandefournisseur.php
+ *      \file       htdocs/core/modules/supplier_order/modules_commandefournisseur.php
  *      \ingroup    commande fournisseur
  *      \brief      File that contains parent class for supplier orders models
  *                  and parent class for supplier orders numbering models
  */
-require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // required for use by classes that inherit
+
+require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php'; // required for use by classes that inherit
 
 
 /**
- *	Parent class for supplier orders models
+ *  Parent class for supplier orders models
  */
 abstract class ModelePDFSuppliersOrders extends CommonDocGenerator
 {
-	public $posxpicture;
-	public $posxtva;
-	public $posxup;
-	public $posxqty;
-	public $posxunit;
-	public $posxdesc;
-	public $posxdiscount;
-	public $postotalht;
+    public $posxpicture;
+    public $posxtva;
+    public $posxup;
+    public $posxqty;
+    public $posxunit;
+    public $posxdesc;
+    public $posxdiscount;
+    public $postotalht;
 
-	public $tva;
-	public $tva_array;
-	public $localtax1;
-	public $localtax2;
+    public $tva;
+    public $tva_array;
+    public $localtax1;
+    public $localtax2;
 
-	public $atleastoneratenotnull = 0;
-	public $atleastonediscount = 0;
+    public $atleastoneratenotnull = 0;
+    public $atleastonediscount = 0;
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return list of active generation models
-	 *
-	 *  @param	DoliDB	$db     			Database handler
-	 *  @param  integer	$maxfilenamelength  Max length of value to show
-	 *  @return	array						List of templates
-	 */
-	public static function liste_modeles($db, $maxfilenamelength = 0)
-	{
+    /**
+     *  Return list of active generation models
+     *
+     *  @param  DoliDB  $db                 Database handler
+     *  @param  integer $maxfilenamelength  Max length of value to show
+     *  @return array                       List of templates
+     */
+    public static function liste_modeles($db, $maxfilenamelength = 0)
+    {
 		// phpcs:enable
-		$type = 'order_supplier';
-		$list = array();
+        $type = 'order_supplier';
+        $list = array();
 
-		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-		$list = getListOfModels($db, $type, $maxfilenamelength);
+        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        $list = getListOfModels($db, $type, $maxfilenamelength);
 
-		return $list;
-	}
+        return $list;
+    }
 }
 
 
 
 /**
- *	Parent Class of numbering models of suppliers orders references
+ *  Parent Class of numbering models of suppliers orders references
  */
 abstract class ModeleNumRefSuppliersOrders extends CommonNumRefGenerator
 {
-	// No overload code
+    // No overload code
 }

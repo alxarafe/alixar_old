@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) ---Put here your own copyright and developer email---
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,10 +99,10 @@ function recruitmentjobpositionPrepareHead($object)
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     //$this->tabs = array(
-    //	'entity:+tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
+    //  'entity:+tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
     //); // to add new tab
     //$this->tabs = array(
-    //	'entity:-tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
+    //  'entity:-tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
     //); // to remove a tab
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'recruitmentjobposition');
 
@@ -129,7 +130,7 @@ function getPublicJobPositionUrl($mode, $ref = '', $localorexternal = 0)
     // Define $urlwithroot
     $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
     $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-    //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+    //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
     $urltouse = DOL_MAIN_URL_ROOT;
     if ($localorexternal) {

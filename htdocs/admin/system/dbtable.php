@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003		Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2005	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2004		Sebastien Di Cintio		<sdicintio@ressource-toi.org>
  * Copyright (C) 2004		Benoit Mortier			<benoit.mortier@opensides.be>
@@ -30,7 +31,7 @@ require '../../main.inc.php';
 $langs->load("admin");
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $table = GETPOST('table', 'alpha');
@@ -43,100 +44,100 @@ $table = GETPOST('table', 'alpha');
 llxHeader();
 
 
-print load_fiche_titre($langs->trans("Table")." ".$table, '', 'title_setup');
+print load_fiche_titre($langs->trans("Table") . " " . $table, '', 'title_setup');
 
 // Define request to get table description
 $base = 0;
 if (preg_match('/mysql/i', $conf->db->type)) {
-	$sql = "SHOW TABLE STATUS LIKE '".$db->escape($table)."'";
-	$base = 1;
+    $sql = "SHOW TABLE STATUS LIKE '" . $db->escape($table) . "'";
+    $base = 1;
 } elseif ($conf->db->type == 'pgsql') {
-	$sql = "SELECT conname,contype FROM pg_constraint";
-	$base = 2;
+    $sql = "SELECT conname,contype FROM pg_constraint";
+    $base = 2;
 }
 
 if (!$base) {
-	print $langs->trans("FeatureNotAvailableWithThisDatabaseDriver");
+    print $langs->trans("FeatureNotAvailableWithThisDatabaseDriver");
 } else {
-	$resql = $db->query($sql);
-	if ($resql) {
-		$num = $db->num_rows($resql);
-		$i = 0;
-		while ($i < $num) {
-			$row = $db->fetch_row($resql);
-			$i++;
-		}
-	}
+    $resql = $db->query($sql);
+    if ($resql) {
+        $num = $db->num_rows($resql);
+        $i = 0;
+        while ($i < $num) {
+            $row = $db->fetch_row($resql);
+            $i++;
+        }
+    }
 
-	if ($base == 1) {	// mysql
-		$link = array();
-		$cons = explode(";", $row[14]);
-		if (!empty($cons)) {
-			foreach ($cons as $cc) {
-				$cx = preg_replace("/\)\sREFER/", "", $cc);
-				$cx = preg_replace("/\(`/", "", $cx);
-				$cx = preg_replace("/`\)/", "", $cx);
-				$cx = preg_replace("/`\s/", "", $cx);
+    if ($base == 1) {   // mysql
+        $link = array();
+        $cons = explode(";", $row[14]);
+        if (!empty($cons)) {
+            foreach ($cons as $cc) {
+                $cx = preg_replace("/\)\sREFER/", "", $cc);
+                $cx = preg_replace("/\(`/", "", $cx);
+                $cx = preg_replace("/`\)/", "", $cx);
+                $cx = preg_replace("/`\s/", "", $cx);
 
-				$val = explode("`", $cx);
+                $val = explode("`", $cx);
 
-				$link[trim($val[0])][0] = (isset($val[1]) ? $val[1] : '');
-				$link[trim($val[0])][1] = (isset($val[2]) ? $val[2] : '');
-			}
-		}
+                $link[trim($val[0])][0] = (isset($val[1]) ? $val[1] : '');
+                $link[trim($val[0])][1] = (isset($val[2]) ? $val[2] : '');
+            }
+        }
 
-		print '<table class="noborder">';
-		print '<tr class="liste_titre">';
-		print '<td>'.$langs->trans("Fields").'</td>';
-		print '<td>'.$langs->trans("Type").'</td>';
-		print '<td>'.$langs->trans("Collation").'</td>';
-		print '<td>'.$langs->trans("Null").'</td>';
-		print '<td>'.$langs->trans("Index").'</td>';
-		print '<td>'.$langs->trans("Default").'</td>';
-		print '<td>'.$langs->trans("Extra").'</td>';
-		print '<td>'.$langs->trans("Privileges").'</td>';
-		print '<td>'.$langs->trans("FieldsLinked").'</td>';
-		print '</tr>';
+        print '<table class="noborder">';
+        print '<tr class="liste_titre">';
+        print '<td>' . $langs->trans("Fields") . '</td>';
+        print '<td>' . $langs->trans("Type") . '</td>';
+        print '<td>' . $langs->trans("Collation") . '</td>';
+        print '<td>' . $langs->trans("Null") . '</td>';
+        print '<td>' . $langs->trans("Index") . '</td>';
+        print '<td>' . $langs->trans("Default") . '</td>';
+        print '<td>' . $langs->trans("Extra") . '</td>';
+        print '<td>' . $langs->trans("Privileges") . '</td>';
+        print '<td>' . $langs->trans("FieldsLinked") . '</td>';
+        print '</tr>';
 
-		// $sql = "DESCRIBE ".$table;
-		$sql = "SHOW FULL COLUMNS IN ".$db->escape($table);
+        // $sql = "DESCRIBE ".$table;
+        $sql = "SHOW FULL COLUMNS IN " . $db->escape($table);
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$num = $db->num_rows($resql);
-			$i = 0;
-			while ($i < $num) {
-				$row = $db->fetch_row($resql);
+        $resql = $db->query($sql);
+        if ($resql) {
+            $num = $db->num_rows($resql);
+            $i = 0;
+            while ($i < $num) {
+                $row = $db->fetch_row($resql);
 
-				print '<tr class="oddeven">';
-				// field
-				print "<td>".$row[0]."</td>";
-				// type
-				print "<td>".$row[1]."</td>";
-				// collation
-				print "<td>".$row[2]."</td>";
-				// null
-				print "<td>".$row[3]."</td>";
-				// key
-				print "<td>".(empty($row[4]) ? '' : $row[4])."</td>";
-				// default
-				print "<td>".(empty($row[5]) ? '' : $row[5])."</td>";
-				// extra
-				print "<td>".(empty($row[6]) ? '' : $row[6])."</td>";
-				// privileges
-				print "<td>".(empty($row[7]) ? '' : $row[7])."</td>";
+                print '<tr class="oddeven">';
+                // field
+                print "<td>" . $row[0] . "</td>";
+                // type
+                print "<td>" . $row[1] . "</td>";
+                // collation
+                print "<td>" . $row[2] . "</td>";
+                // null
+                print "<td>" . $row[3] . "</td>";
+                // key
+                print "<td>" . (empty($row[4]) ? '' : $row[4]) . "</td>";
+                // default
+                print "<td>" . (empty($row[5]) ? '' : $row[5]) . "</td>";
+                // extra
+                print "<td>" . (empty($row[6]) ? '' : $row[6]) . "</td>";
+                // privileges
+                print "<td>" . (empty($row[7]) ? '' : $row[7]) . "</td>";
 
-				print "<td>".(isset($link[$row[0]][0]) ? $link[$row[0]][0] : '').".";
-				print(isset($link[$row[0]][1]) ? $link[$row[0]][1] : '')."</td>";
+                print "<td>" . (isset($link[$row[0]][0]) ? $link[$row[0]][0] : '') . ".";
+                print(isset($link[$row[0]][1]) ? $link[$row[0]][1] : '') . "</td>";
 
-				print '<!-- ALTER TABLE '.$table.' MODIFY '.$row[0].' '.$row[1].' COLLATE utf8_unicode_ci; -->';
-				print '<!-- ALTER TABLE '.$table.' MODIFY '.$row[0].' '.$row[1].' CHARACTER SET utf8; -->';
-				print '</tr>';
-				$i++;
-			}
-		}
-		print '</table>';
-	}
+                print '<!-- ALTER TABLE ' . $table . ' MODIFY ' . $row[0] . ' ' . $row[1] . ' COLLATE utf8_unicode_ci; -->';
+                print '<!-- ALTER TABLE ' . $table . ' MODIFY ' . $row[0] . ' ' . $row[1] . ' CHARACTER SET utf8; -->';
+                print '</tr>';
+                $i++;
+            }
+        }
+        print '</table>';
+    }
 }
 
 // End of page

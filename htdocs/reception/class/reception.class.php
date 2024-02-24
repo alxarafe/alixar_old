@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2008	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2008  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@capnetworks.com>
  * Copyright (C) 2007		Franky Van Liedekerke	<franky.van.liedekerke@telenet.be>
  * Copyright (C) 2006-2012	Laurent Destailleur		<eldy@users.sourceforge.net>
@@ -502,8 +503,10 @@ class Reception extends CommonObject
             return 0;
         }
 
-        if (!((!getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'creer'))
-            || (getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'reception_advance', 'validate')))) {
+        if (
+            !((!getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'creer'))
+            || (getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'reception_advance', 'validate')))
+        ) {
             $this->error = 'Permission denied';
             dol_syslog(get_class($this) . "::valid " . $this->error, LOG_ERR);
             return -1;
@@ -1924,8 +1927,10 @@ class Reception extends CommonObject
             return 0;
         }
 
-        if (!((!getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'creer'))
-            || (getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'reception_advance', 'validate')))) {
+        if (
+            !((!getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'creer'))
+            || (getDolGlobalInt('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'reception_advance', 'validate')))
+        ) {
             $this->error = 'Permission denied';
             return -1;
         }

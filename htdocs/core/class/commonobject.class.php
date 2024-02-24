@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2006-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2013 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2010-2020 Juanjo Menent        <jmenent@2byte.es>
@@ -1048,21 +1049,21 @@ abstract class CommonObject
 
                 // TODO We can't, we don't have full path of file, only last_main_doc and ->element, so we must first rebuild full path $destfull
                 /*
-				$ecmfile->filepath = $rel_dir;
-				$ecmfile->filename = $filename;
-				$ecmfile->label = md5_file(dol_osencode($destfull));    // hash of file content
-				$ecmfile->fullpath_orig = '';
-				$ecmfile->gen_or_uploaded = 'generated';
-				$ecmfile->description = '';    // indexed content
-				$ecmfile->keywords = '';        // keyword content
-				$ecmfile->share = getRandomPassword(true);
-				$result = $ecmfile->create($user);
-				if ($result < 0)
-				{
-					$this->error = $ecmfile->error;
-					$this->errors = $ecmfile->errors;
-				}
-				*/
+                $ecmfile->filepath = $rel_dir;
+                $ecmfile->filename = $filename;
+                $ecmfile->label = md5_file(dol_osencode($destfull));    // hash of file content
+                $ecmfile->fullpath_orig = '';
+                $ecmfile->gen_or_uploaded = 'generated';
+                $ecmfile->description = '';    // indexed content
+                $ecmfile->keywords = '';        // keyword content
+                $ecmfile->share = getRandomPassword(true);
+                $result = $ecmfile->create($user);
+                if ($result < 0)
+                {
+                    $this->error = $ecmfile->error;
+                    $this->errors = $ecmfile->errors;
+                }
+                */
             } else {
                 return '';
             }
@@ -1082,14 +1083,14 @@ abstract class CommonObject
         //if (DOL_URL_ROOT && ! preg_match('/\/$/', $urlwithouturlroot) && ! preg_match('/^\//', DOL_URL_ROOT)) $urlwithroot=$urlwithouturlroot.'/'.DOL_URL_ROOT;
         //else
         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT;
-        //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+        //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
         $forcedownload = 0;
 
         $paramlink = '';
-        //if (!empty($modulepart)) $paramlink.=($paramlink?'&':'').'modulepart='.$modulepart;		// For sharing with hash (so public files), modulepart is not required.
-        //if (!empty($ecmfile->entity)) $paramlink.='&entity='.$ecmfile->entity; 					// For sharing with hash (so public files), entity is not required.
-        //$paramlink.=($paramlink?'&':'').'file='.urlencode($filepath);								// No need of name of file for public link, we will use the hash
+        //if (!empty($modulepart)) $paramlink.=($paramlink?'&':'').'modulepart='.$modulepart;       // For sharing with hash (so public files), modulepart is not required.
+        //if (!empty($ecmfile->entity)) $paramlink.='&entity='.$ecmfile->entity;                    // For sharing with hash (so public files), entity is not required.
+        //$paramlink.=($paramlink?'&':'').'file='.urlencode($filepath);                             // No need of name of file for public link, we will use the hash
         if (!empty($ecmfile->share)) {
             $paramlink .= ($paramlink ? '&' : '') . 'hashp=' . $ecmfile->share; // Hash for public share
         }
@@ -4158,10 +4159,10 @@ abstract class CommonObject
         $targettype = (!empty($targettype) ? $targettype : $this->element);
 
         /*if (empty($sourceid) && empty($targetid))
-		 {
-		 dol_syslog('Bad usage of function. No source nor target id defined (nor as parameter nor as object id)', LOG_ERR);
-		 return -1;
-		 }*/
+         {
+         dol_syslog('Bad usage of function. No source nor target id defined (nor as parameter nor as object id)', LOG_ERR);
+         return -1;
+         }*/
 
         // Links between objects are stored in table element_element
         $sql = "SELECT rowid, fk_source, sourcetype, fk_target, targettype";
@@ -4218,8 +4219,10 @@ abstract class CommonObject
                     // Parse element/subelement (ex: project_task, cabinetmed_consultation, ...)
                     $module = $element = $subelement = $objecttype;
                     $regs = [];
-                    if ($objecttype != 'supplier_proposal' && $objecttype != 'order_supplier' && $objecttype != 'invoice_supplier'
-                        && preg_match('/^([^_]+)_([^_]+)/i', $objecttype, $regs)) {
+                    if (
+                        $objecttype != 'supplier_proposal' && $objecttype != 'order_supplier' && $objecttype != 'invoice_supplier'
+                        && preg_match('/^([^_]+)_([^_]+)/i', $objecttype, $regs)
+                    ) {
                         $module = $element = $regs[1];
                         $subelement = $regs[2];
                     }
@@ -5953,8 +5956,8 @@ abstract class CommonObject
             }
 
             /*$this->result['fullname']=$destfull;
-			 $this->result['filepath']=$ecmfile->filepath;
-			 $this->result['filename']=$ecmfile->filename;*/
+             $this->result['filepath']=$ecmfile->filepath;
+             $this->result['filename']=$ecmfile->filename;*/
             //var_dump($obj->update_main_doc_field);exit;
 
             if ($update_main_doc_field && !empty($this->table_element)) {
@@ -6106,7 +6109,7 @@ abstract class CommonObject
             exit;
         }
         if (!is_object($langs)) {    // If lang was not defined, we set it. It is required by run_triggers().
-            //			include_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
+            //          include_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
             $langs = new Lang('', $conf);
         }
 
@@ -6160,7 +6163,7 @@ abstract class CommonObject
         $sql .= " WHERE type_object = '" . $this->db->escape($element) . "'";
         $sql .= " AND fk_object = " . ((int) $this->id);
 
-        //dol_syslog(get_class($this)."::fetch_optionals get extrafields data for ".$this->table_element, LOG_DEBUG);		// Too verbose
+        //dol_syslog(get_class($this)."::fetch_optionals get extrafields data for ".$this->table_element, LOG_DEBUG);       // Too verbose
         $resql = $this->db->query($sql);
         if ($resql) {
             $numrows = $this->db->num_rows($resql);
@@ -6234,10 +6237,10 @@ abstract class CommonObject
                 $enabled = dol_eval($this->fields[$key]['enabled'], 1, 1, '1');
             }
             /*$perms = 1;
-			if (isset($this->fields[$key]['perms']))
-			{
-				$perms = dol_eval($this->fields[$key]['perms'], 1, 1, '1');
-			}*/
+            if (isset($this->fields[$key]['perms']))
+            {
+                $perms = dol_eval($this->fields[$key]['perms'], 1, 1, '1');
+            }*/
             if (empty($enabled)) {
                 continue;
             }
@@ -6270,10 +6273,10 @@ abstract class CommonObject
 
             $this->array_languages[$key][$codelang] = $value_key;
             /*if ($nofillrequired) {
-				$langs->load('errors');
-				setEventMessages($langs->trans('ErrorFieldsRequired').' : '.implode(', ', $error_field_required), null, 'errors');
-				return -1;
-			}*/
+                $langs->load('errors');
+                setEventMessages($langs->trans('ErrorFieldsRequired').' : '.implode(', ', $error_field_required), null, 'errors');
+                return -1;
+            }*/
         }
 
         return 1;
@@ -6368,7 +6371,7 @@ abstract class CommonObject
             $sql .= " FROM " . $this->db->prefix() . $table_element . "_extrafields";
             $sql .= " WHERE fk_object = " . ((int) $rowid);
 
-            //dol_syslog(get_class($this)."::fetch_optionals get extrafields data for ".$this->table_element, LOG_DEBUG);		// Too verbose
+            //dol_syslog(get_class($this)."::fetch_optionals get extrafields data for ".$this->table_element, LOG_DEBUG);       // Too verbose
             $resql = $this->db->query($sql);
             if ($resql) {
                 $numrows = $this->db->num_rows($resql);
@@ -6564,12 +6567,12 @@ abstract class CommonObject
                         //dol_syslog("double value"." on ".$attributeLabel."(".$value." is '".$attributeType."')", LOG_DEBUG);
                         $new_array_options[$key] = $value;
                         break;
-                    /*case 'select':	// Not required, we chose value='0' for undefined values
-							 if ($value=='-1')
-							 {
-								 $this->array_options[$key] = null;
-							 }
-							 break;*/
+                    /*case 'select':    // Not required, we chose value='0' for undefined values
+                             if ($value=='-1')
+                             {
+                                 $this->array_options[$key] = null;
+                             }
+                             break;*/
                     case 'password':
                         $algo = '';
                         if ($this->array_options[$key] != '' && is_array($extrafields->attributes[$this->table_element]['param'][$attributeKey]['options'])) {
@@ -6577,7 +6580,7 @@ abstract class CommonObject
                             $tmparrays = array_keys($extrafields->attributes[$this->table_element]['param'][$attributeKey]['options']);
                             $algo = reset($tmparrays);
                             if ($algo != '') {
-                                //global $action;		// $action may be 'create', 'update', 'update_extras'...
+                                //global $action;       // $action may be 'create', 'update', 'update_extras'...
                                 //var_dump($action);
                                 //var_dump($this->oldcopy);exit;
                                 if (is_object($this->oldcopy)) {    // If this->oldcopy is not defined, we can't know if we change attribute or not, so we must keep value
@@ -6817,12 +6820,12 @@ abstract class CommonObject
                             $new_array_languages[$key] = $value;
                         }
                         break;
-                    /*case 'select':	// Not required, we chose value='0' for undefined values
-						 if ($value=='-1')
-						 {
-						 $this->array_options[$key] = null;
-						 }
-						 break;*/
+                    /*case 'select':    // Not required, we chose value='0' for undefined values
+                         if ($value=='-1')
+                         {
+                         $this->array_options[$key] = null;
+                         }
+                         break;*/
                 }
             }
 
@@ -6984,14 +6987,14 @@ abstract class CommonObject
 
                     $this->array_options["options_" . $key] = $new_array_options["options_" . $key];
                     break;
-                /*case 'select':	// Not required, we chose value='0' for undefined values
-						 if ($value=='-1')
-						 {
-							$new_array_options["options_".$key] = $value;
+                /*case 'select':    // Not required, we chose value='0' for undefined values
+                         if ($value=='-1')
+                         {
+                            $new_array_options["options_".$key] = $value;
 
-							$this->array_options["options_".$key] = $new_array_options["options_".$key];
-						 }
-						 break;*/
+                            $this->array_options["options_".$key] = $new_array_options["options_".$key];
+                         }
+                         break;*/
                 case 'password':
                     $algo = '';
                     if ($this->array_options["options_" . $key] != '' && is_array($extrafields->attributes[$this->table_element]['param'][$attributeKey]['options'])) {
@@ -6999,7 +7002,7 @@ abstract class CommonObject
                         $tmparrays = array_keys($extrafields->attributes[$this->table_element]['param'][$attributeKey]['options']);
                         $algo = reset($tmparrays);
                         if ($algo != '') {
-                            //global $action;		// $action may be 'create', 'update', 'update_extras'...
+                            //global $action;       // $action may be 'create', 'update', 'update_extras'...
                             //var_dump($action);
                             //var_dump($this->oldcopy);exit;
                             //var_dump($key.' '.$this->array_options["options_".$key].' '.$algo);
@@ -7077,34 +7080,34 @@ abstract class CommonObject
                     }
                     break;
                 /*
-					case 'link':
-						$param_list = array_keys($attributeParam['options']);
-						// 0 : ObjectName
-						// 1 : classPath
-						$InfoFieldList = explode(":", $param_list[0]);
-						dol_include_once($InfoFieldList[1]);
-						if ($InfoFieldList[0] && class_exists($InfoFieldList[0]))
-						{
-							if ($value == '-1')	// -1 is key for no defined in combo list of objects
-							{
-								$new_array_options[$key] = '';
-							} elseif ($value) {
-								$object = new $InfoFieldList[0]($this->db);
-								if (is_numeric($value)) $res = $object->fetch($value);	// Common case
-								else $res = $object->fetch('', $value);					// For compatibility
+                    case 'link':
+                        $param_list = array_keys($attributeParam['options']);
+                        // 0 : ObjectName
+                        // 1 : classPath
+                        $InfoFieldList = explode(":", $param_list[0]);
+                        dol_include_once($InfoFieldList[1]);
+                        if ($InfoFieldList[0] && class_exists($InfoFieldList[0]))
+                        {
+                            if ($value == '-1') // -1 is key for no defined in combo list of objects
+                            {
+                                $new_array_options[$key] = '';
+                            } elseif ($value) {
+                                $object = new $InfoFieldList[0]($this->db);
+                                if (is_numeric($value)) $res = $object->fetch($value);  // Common case
+                                else $res = $object->fetch('', $value);                 // For compatibility
 
-								if ($res > 0) $new_array_options[$key] = $object->id;
-								else {
-									$this->error = "Id/Ref '".$value."' for object '".$object->element."' not found";
-									$this->db->rollback();
-									return -1;
-								}
-							}
-						} else {
-							dol_syslog('Error bad setup of extrafield', LOG_WARNING);
-						}
-						break;
-					*/
+                                if ($res > 0) $new_array_options[$key] = $object->id;
+                                else {
+                                    $this->error = "Id/Ref '".$value."' for object '".$object->element."' not found";
+                                    $this->db->rollback();
+                                    return -1;
+                                }
+                            }
+                        } else {
+                            dol_syslog('Error bad setup of extrafield', LOG_WARNING);
+                        }
+                        break;
+                    */
                 case 'checkbox':
                 case 'chkbxlst':
                     $new_array_options = [];
@@ -7291,7 +7294,7 @@ abstract class CommonObject
         }
 
         $label = $this->fields[$key]['label'];
-        //$elementtype=$this->fields[$key]['elementtype'];	// Seems not used
+        //$elementtype=$this->fields[$key]['elementtype'];  // Seems not used
         $default = (!empty($this->fields[$key]['default']) ? $this->fields[$key]['default'] : '');
         $computed = (!empty($this->fields[$key]['computed']) ? $this->fields[$key]['computed'] : '');
         $unique = (!empty($this->fields[$key]['unique']) ? $this->fields[$key]['unique'] : 0);
@@ -7825,8 +7828,10 @@ abstract class CommonObject
             $out = $form->selectForForms($param_list_array[0], $keyprefix . $key . $keysuffix, $value, $showempty, '', '', $morecss, $moreparam, 0, (empty($val['disabled']) ? 0 : 1), '', $objectfield);
 
             if (!empty($param_list_array[2])) {        // If the entry into $fields is set, we must add a create button
-                if ((!GETPOSTISSET('backtopage') || strpos(GETPOST('backtopage'), $_SERVER['PHP_SELF']) === 0)    // // To avoid to open several times the 'Plus' button (we accept only one level)
-                    && empty($val['disabled']) && empty($nonewbutton)) {    // and to avoid to show the button if the field is protected by a "disabled".
+                if (
+                    (!GETPOSTISSET('backtopage') || strpos(GETPOST('backtopage'), $_SERVER['PHP_SELF']) === 0)    // // To avoid to open several times the 'Plus' button (we accept only one level)
+                    && empty($val['disabled']) && empty($nonewbutton)
+                ) {    // and to avoid to show the button if the field is protected by a "disabled".
                     [$class, $classfile] = explode(':', $param_list[0]);
                     if (file_exists(dol_buildpath(dirname(dirname($classfile)) . '/card.php'))) {
                         $url_path = dol_buildpath(dirname(dirname($classfile)) . '/card.php', 1);
@@ -7890,9 +7895,9 @@ abstract class CommonObject
             $out .= $this->getJSListDependancies('_common');
         }
         /* Add comments
-		 if ($type == 'date') $out.=' (YYYY-MM-DD)';
-		 elseif ($type == 'datetime') $out.=' (YYYY-MM-DD HH:MM:SS)';
-		 */
+         if ($type == 'date') $out.=' (YYYY-MM-DD)';
+         elseif ($type == 'datetime') $out.=' (YYYY-MM-DD HH:MM:SS)';
+         */
 
         // Display error message for field
         if (!empty($fieldValidationErrorMsg) && function_exists('getFieldErrorIcon')) {
@@ -8733,20 +8738,20 @@ abstract class CommonObject
                     if ($extrafields->attributes[$this->table_element]['type'][$key] == 'separate') {
                         $extrafields_collapse_num = $key;
                         /*
-						$extrafield_param = $extrafields->attributes[$this->table_element]['param'][$key];
-						if (!empty($extrafield_param) && is_array($extrafield_param)) {
-							$extrafield_param_list = array_keys($extrafield_param['options']);
+                        $extrafield_param = $extrafields->attributes[$this->table_element]['param'][$key];
+                        if (!empty($extrafield_param) && is_array($extrafield_param)) {
+                            $extrafield_param_list = array_keys($extrafield_param['options']);
 
-							if (count($extrafield_param_list) > 0) {
-								$extrafield_collapse_display_value = intval($extrafield_param_list[0]);
+                            if (count($extrafield_param_list) > 0) {
+                                $extrafield_collapse_display_value = intval($extrafield_param_list[0]);
 
-								if ($extrafield_collapse_display_value == 1 || $extrafield_collapse_display_value == 2) {
-									//$extrafields_collapse_num = $extrafields->attributes[$this->table_element]['pos'][$key];
-									$extrafields_collapse_num = $key;
-								}
-							}
-						}
-						*/
+                                if ($extrafield_collapse_display_value == 1 || $extrafield_collapse_display_value == 2) {
+                                    //$extrafields_collapse_num = $extrafields->attributes[$this->table_element]['pos'][$key];
+                                    $extrafields_collapse_num = $key;
+                                }
+                            }
+                        }
+                        */
 
                         // if colspan=0 or 1, the second column is not extended, so the separator must be on 2 columns
                         $out .= $extrafields->showSeparator($key, $this, ($colspan ? $colspan + 1 : 2), $display_type, $mode);
@@ -9248,10 +9253,10 @@ abstract class CommonObject
         $filearray = dol_dir_list($dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
 
         /*if (getDolGlobalInt('PRODUCT_USE_OLD_PATH_FOR_PHOTO'))    // For backward compatibility, we scan also old dirs
-		 {
-		 $filearrayold=dol_dir_list($dirold,"files",0,'','(\.meta|_preview.*\.png)$',$sortfield,(strtolower($sortorder)=='desc'?SORT_DESC:SORT_ASC),1);
-		 $filearray=array_merge($filearray, $filearrayold);
-		 }*/
+         {
+         $filearrayold=dol_dir_list($dirold,"files",0,'','(\.meta|_preview.*\.png)$',$sortfield,(strtolower($sortorder)=='desc'?SORT_DESC:SORT_ASC),1);
+         $filearray=array_merge($filearray, $filearrayold);
+         }*/
 
         completeFileArrayWithDatabaseInfo($filearray, $relativedir);
 
@@ -10071,9 +10076,9 @@ abstract class CommonObject
 
                     // Note: extrafields load of line not yet supported
                     /*
-					if (empty($noextrafields)) {
-						// Load extrafields of line
-					}*/
+                    if (empty($noextrafields)) {
+                        // Load extrafields of line
+                    }*/
 
                     $this->lines[] = $newline;
                 }
@@ -10106,7 +10111,7 @@ abstract class CommonObject
 
         // $this->oldcopy should have been set by the caller of update
         //if (empty($this->oldcopy)) {
-        //	$this->oldcopy = dol_clone($this);
+        //  $this->oldcopy = dol_clone($this);
         //}
 
         $fieldvalues = $this->setSaveQuery();
@@ -10144,11 +10149,11 @@ abstract class CommonObject
 
             //var_dump($key.'-'.$values[$key].'-'.($this->fields[$key]['notnull'] == 1));
             /*
-			if ($this->fields[$key]['notnull'] == 1 && empty($values[$key]))
-			{
-				$error++;
-				$this->errors[]=$langs->trans("ErrorFieldRequired", $this->fields[$key]['label']);
-			}*/
+            if ($this->fields[$key]['notnull'] == 1 && empty($values[$key]))
+            {
+                $error++;
+                $this->errors[]=$langs->trans("ErrorFieldRequired", $this->fields[$key]['label']);
+            }*/
         }
 
         $sql = 'UPDATE ' . $this->db->prefix() . $this->table_element . ' SET ' . implode(', ', $tmp) . ' WHERE rowid=' . ((int) $this->id);

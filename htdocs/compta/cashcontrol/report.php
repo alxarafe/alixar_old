@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2002  Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2020  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010  Regis Houssin        <regis.houssin@capnetworks.com>
@@ -131,8 +132,8 @@ elseif ($key == 'cheque') $sql.=" AND cp.code = 'CHQ'";
 elseif ($key == 'card')   $sql.=" AND cp.code = 'CB'";
 else
 {
-	dol_print_error(null, 'Value for key = '.$key.' not supported');
-	exit;
+    dol_print_error(null, 'Value for key = '.$key.' not supported');
+    exit;
 }*/
 if ($syear && !$smonth) {
     $sql .= " AND datef BETWEEN '" . $db->idate(dol_get_first_day($syear, 1)) . "' AND '" . $db->idate(dol_get_last_day($syear, 12)) . "'";

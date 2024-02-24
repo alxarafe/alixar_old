@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  *
@@ -22,6 +23,7 @@
  *  \ingroup    partnership
  *  \brief      File of class to manage Partnership numbering rules standard
  */
+
 require_once DOL_DOCUMENT_ROOT . '/partnership/core/modules/partnership/modules_partnership.php';
 
 /**

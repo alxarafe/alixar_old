@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2011-2022  Alexandre Spangaro  <aspangaro@open-dsi.fr>
  * Copyright (C) 2014       Juanjo Menent       <jmenent@2byte.es>
  * Copyright (C) 2021       Gauthier VERDOL     <gauthier.verdol@atm-consulting.fr>
@@ -595,7 +596,7 @@ class Salary extends CommonObject
         $field = 'fk_salary';
 
         $sql = "SELECT sum(amount) as amount";
-        //sum(multicurrency_amount) as multicurrency_amount		// Not yet supported
+        //sum(multicurrency_amount) as multicurrency_amount     // Not yet supported
         $sql .= " FROM " . MAIN_DB_PREFIX . $table;
         $sql .= " WHERE " . $field . " = " . ((int) $this->id);
 
@@ -898,7 +899,7 @@ class Salary extends CommonObject
                     //$resteapayer=bcadd($this->total_ttc,$totalpaid,$conf->global->MAIN_MAX_DECIMALS_TOT);
                     //$resteapayer=bcadd($resteapayer,$totalavoir,$conf->global->MAIN_MAX_DECIMALS_TOT);
                     // if (empty($amount)) {
-                    // 	$amount = price2num($this->total_ttc - $totalpaid - $totalcreditnotes - $totaldeposits, 'MT');
+                    //  $amount = price2num($this->total_ttc - $totalpaid - $totalcreditnotes - $totaldeposits, 'MT');
                     // }
 
                     if (is_numeric($amount) && $amount != 0) {

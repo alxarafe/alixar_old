@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Bariley / Ocebo <marc@ocebo.com>
@@ -244,8 +245,8 @@ $arrayfields['opp_weighted_amount'] = ['label' => $langs->trans('OpportunityWeig
 $arrayfields['u.login'] = ['label' => "Author", 'checked' => -1, 'position' => 165];
 // Force some fields according to search_usage filter...
 if (GETPOST('search_usage_opportunity')) {
-    //$arrayfields['p.usage_opportunity']['visible'] = 1;	// Not require, filter on search_opp_status is enough
-    //$arrayfields['p.usage_opportunity']['checked'] = 1;	// Not require, filter on search_opp_status is enough
+    //$arrayfields['p.usage_opportunity']['visible'] = 1;   // Not require, filter on search_opp_status is enough
+    //$arrayfields['p.usage_opportunity']['checked'] = 1;   // Not require, filter on search_opp_status is enough
 }
 if (GETPOST('search_usage_event_organization')) {
     $arrayfields['p.fk_opp_status']['enabled'] = 0;

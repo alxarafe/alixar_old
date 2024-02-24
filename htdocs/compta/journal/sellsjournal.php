@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2010  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2007-2010  Jean Heimburger         <jean@tiaris.info>
  * Copyright (C) 2011-2014  Juanjo Menent           <jmenent@2byte.es>
@@ -28,6 +29,7 @@
  *        \ingroup    societe, facture
  *        \brief      Page with sells journal
  */
+
 global $mysoc;
 
 // Load Dolibarr environment

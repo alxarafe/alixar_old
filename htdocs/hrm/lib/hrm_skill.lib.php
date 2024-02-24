@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
  * Copyright (C) 2021 Jean-Pascal BOUDET <jean-pascal.boudet@atm-consulting.fr>
@@ -83,10 +84,10 @@ function skillPrepareHead($object)
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     //$this->tabs = array(
-    //	'entity:+tabname:Title:@hrm:/hrm/mypage.php?id=__ID__'
+    //  'entity:+tabname:Title:@hrm:/hrm/mypage.php?id=__ID__'
     //); // to add new tab
     //$this->tabs = array(
-    //	'entity:-tabname:Title:@hrm:/hrm/mypage.php?id=__ID__'
+    //  'entity:-tabname:Title:@hrm:/hrm/mypage.php?id=__ID__'
     //); // to remove a tab
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'skill@hrm');
 

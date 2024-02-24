@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018      Alexandre Spangaro   <aspangaro@open-dsi.fr>
  * Copyright (c) 2018      Fidesio              <contact@fidesio.com>
  * Copyright (C) 2021		Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
@@ -22,6 +23,7 @@
  *  \ingroup    salaries
  *  \brief      File of class to manage salary statistics
  */
+
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2005	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004		Eric Seigne				<eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2004		Christophe Combelles	<ccomb@free.fr>
@@ -190,8 +191,10 @@ $sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'bank_account as ba ON b.fk_account = b
 $sql .= ' WHERE ndf.entity IN (' . getEntity("expensereport") . ')';
 
 // RESTRICT RIGHTS
-if (!$user->hasRight('expensereport', 'readall') && !$user->hasRight('expensereport', 'lire_tous')
-    && (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || !$user->hasRight('expensereport', 'writeall_advance'))) {
+if (
+    !$user->hasRight('expensereport', 'readall') && !$user->hasRight('expensereport', 'lire_tous')
+    && (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || !$user->hasRight('expensereport', 'writeall_advance'))
+) {
     $sql .= " AND ndf.fk_user_author IN (" . $db->sanitize(implode(',', $childids)) . ")\n";
 }
 

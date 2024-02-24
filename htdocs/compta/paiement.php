@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2006  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005       Marc Barilley / Ocebo   <marc@ocebo.com>
@@ -814,8 +815,10 @@ if ($action == 'create' || $action == 'confirm_paiement' || $action == 'add_paie
                     // Warning
                     print '<td align="center" width="16">';
                     //print "xx".$amounts[$invoice->id]."-".$amountsresttopay[$invoice->id]."<br>";
-                    if (!empty($amounts[$invoice->id]) && (abs($amounts[$invoice->id]) > abs($amountsresttopay[$invoice->id]))
-                        || !empty($multicurrency_amounts[$invoice->id]) && (abs($multicurrency_amounts[$invoice->id]) > abs($multicurrency_amountsresttopay[$invoice->id]))) {
+                    if (
+                        !empty($amounts[$invoice->id]) && (abs($amounts[$invoice->id]) > abs($amountsresttopay[$invoice->id]))
+                        || !empty($multicurrency_amounts[$invoice->id]) && (abs($multicurrency_amounts[$invoice->id]) > abs($multicurrency_amountsresttopay[$invoice->id]))
+                    ) {
                         print ' ' . img_warning($langs->trans("PaymentHigherThanReminderToPay"));
                     }
                     print '</td>';

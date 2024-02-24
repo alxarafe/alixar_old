@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (c) 2005-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -78,7 +79,7 @@ class DonationStats extends Stats
         $object = new Don($this->db);
         $this->from = MAIN_DB_PREFIX . $object->table_element . " as d";
         //$this->from.= ", ".MAIN_DB_PREFIX."societe as s";
-        //$this->field='weight';	// Warning, unit of weight is NOT USED AND MUST BE
+        //$this->field='weight';    // Warning, unit of weight is NOT USED AND MUST BE
         $this->where .= " d.fk_statut > 0"; // Not draft and not cancelled
 
         //$this->where.= " AND c.fk_soc = s.rowid AND c.entity = ".$conf->entity;

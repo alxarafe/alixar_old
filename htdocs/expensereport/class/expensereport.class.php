@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2011 		Dimitri Mouillard   	<dmouillard@teclib.com>
+
+/* Copyright (C) 2011       Dimitri Mouillard       <dmouillard@teclib.com>
  * Copyright (C) 2015 		Laurent Destailleur 	<eldy@users.sourceforge.net>
  * Copyright (C) 2015 		Alexandre Spangaro  	<aspangaro@open-dsi.fr>
  * Copyright (C) 2018       Nicolas ZABOURI         <info@inovea-conseil.com>
@@ -25,6 +26,7 @@
  *       \ingroup    expensereport
  *       \brief      File to manage Expense Reports
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport_ik.class.php';
@@ -1018,13 +1020,13 @@ class ExpenseReport extends CommonObject
                             break;
                     }
                     /*
-					 if ($status==4) return img_picto($langs->trans('StatusOrderCanceled'),'statut5');
-					if ($status==1) return img_picto($langs->trans('StatusOrderDraft'),'statut0');
-					if ($status==2) return img_picto($langs->trans('StatusOrderValidated'),'statut1');
-					if ($status==2) return img_picto($langs->trans('StatusOrderOnProcess'),'statut3');
-					if ($status==5) return img_picto($langs->trans('StatusOrderToBill'),'statut4');
-					if ($status==6) return img_picto($langs->trans('StatusOrderOnProcess'),'statut6');
-					*/
+                     if ($status==4) return img_picto($langs->trans('StatusOrderCanceled'),'statut5');
+                    if ($status==1) return img_picto($langs->trans('StatusOrderDraft'),'statut0');
+                    if ($status==2) return img_picto($langs->trans('StatusOrderValidated'),'statut1');
+                    if ($status==2) return img_picto($langs->trans('StatusOrderOnProcess'),'statut3');
+                    if ($status==5) return img_picto($langs->trans('StatusOrderToBill'),'statut4');
+                    if ($status==6) return img_picto($langs->trans('StatusOrderOnProcess'),'statut6');
+                    */
                     print '</td>';
                     print '</tr>';
 

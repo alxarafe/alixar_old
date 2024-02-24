@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2022 Alice Adminson <aadminson@example.com>
  *
@@ -71,12 +72,12 @@ $item->defaultFieldValue = 'MyBigCompany public interface for Bookcal';
 /*// Setup conf BOOKCAL_MYPARAM8
 $item = $formSetup->newItem('BOOKCAL_MYPARAM8');
 $TField = array(
-	'test01' => $langs->trans('test01'),
-	'test02' => $langs->trans('test02'),
-	'test03' => $langs->trans('test03'),
-	'test04' => $langs->trans('test04'),
-	'test05' => $langs->trans('test05'),
-	'test06' => $langs->trans('test06'),
+    'test01' => $langs->trans('test01'),
+    'test02' => $langs->trans('test02'),
+    'test03' => $langs->trans('test03'),
+    'test04' => $langs->trans('test04'),
+    'test05' => $langs->trans('test05'),
+    'test06' => $langs->trans('test06'),
 );
 $item->setAsMultiSelect($TField);
 $item->helpText = $langs->transnoentities('BOOKCAL_MYPARAM8');

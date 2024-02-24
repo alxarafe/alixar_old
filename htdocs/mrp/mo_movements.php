@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2022 Ferran Marcet <fmarcet@2byte.es>
  *
@@ -232,7 +233,7 @@ if (empty($reshook)) {
     include DOL_DOCUMENT_ROOT . '/core/actions_sendmails.inc.php';
 
     // Action to move up and down lines of object
-    //include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';	// Must be include, not include_once
+    //include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php'; // Must be include, not include_once
 
     if ($action == 'set_thirdparty' && $permissiontoadd) {
         $object->setValueFrom('fk_soc', GETPOST('fk_soc', 'int'), '', '', 'date', '', $user, $triggermodname);
@@ -293,7 +294,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         $formquestion = [];
         /*
         $forcecombo=0;
-        if ($conf->browser->name == 'ie') $forcecombo = 1;	// There is a bug in IE10 that make combo inside popup crazy
+        if ($conf->browser->name == 'ie') $forcecombo = 1;  // There is a bug in IE10 that make combo inside popup crazy
         $formquestion = array(
             // 'text' => $langs->trans("ConfirmClone"),
             // array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneMainAttributes"), 'value' => 1),

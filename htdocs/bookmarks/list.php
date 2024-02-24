@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2022 Laurent Destailleur       <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -105,8 +106,10 @@ if (empty($reshook)) {
     // Selection of new fields
     include DOL_DOCUMENT_ROOT . '/core/actions_changeselectedfields.inc.php';
 
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2014-2023 Frederic France      <frederic.france@netlogic.fr>
  *
@@ -22,8 +23,9 @@
  *      \ingroup    printing
  *      \brief      File with parent class of printing modules
  */
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
 
 /**
@@ -31,87 +33,87 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
  */
 class PrintingDriver
 {
-	/**
-	 * @var DoliDB Database handler.
-	 */
-	public $db;
+    /**
+     * @var DoliDB Database handler.
+     */
+    public $db;
 
-	/**
-	 * @var string Error code (or message)
-	 */
-	public $error = '';
+    /**
+     * @var string Error code (or message)
+     */
+    public $error = '';
 
-	/**
-	 * @var string Name
-	 */
-	public $name;
+    /**
+     * @var string Name
+     */
+    public $name;
 
-	/**
-	 * @var string Description
-	 */
-	public $desc;
+    /**
+     * @var string Description
+     */
+    public $desc;
 
-	/**
-	 * @var string Html string returned for print
-	 */
-	public $resprint;
+    /**
+     * @var string Html string returned for print
+     */
+    public $resprint;
 
-	/**
-	 *  Constructor
-	 *
-	 *  @param      DoliDB      $db      Database handler
-	 */
-	public function __construct($db)
-	{
-		$this->db = $db;
-	}
+    /**
+     *  Constructor
+     *
+     *  @param      DoliDB      $db      Database handler
+     */
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
 
-	/**
-	 *  Return list of printing driver
-	 *
-	 *  @param  DoliDB  $db                 Database handler
-	 *  @param  integer  $maxfilenamelength  Max length of value to show
-	 *  @return array                       List of drivers
-	 */
-	public static function listDrivers($db, $maxfilenamelength = 0)
-	{
-		global $conf;
+    /**
+     *  Return list of printing driver
+     *
+     *  @param  DoliDB  $db                 Database handler
+     *  @param  integer  $maxfilenamelength  Max length of value to show
+     *  @return array                       List of drivers
+     */
+    public static function listDrivers($db, $maxfilenamelength = 0)
+    {
+        global $conf;
 
-		$type = 'printing';
-		$list = array();
+        $type = 'printing';
+        $list = array();
 
-		$listoffiles = array();
-		if (!empty($conf->modules_parts['printing'])) {
-			$dirmodels = array_merge(array('/core/modules/printing/'), (array) $conf->modules_parts['printing']);
-		} else {
-			$dirmodels = array('/core/modules/printing/');
-		}
-		foreach ($dirmodels as $dir) {
-			$tmpfiles = dol_dir_list(dol_buildpath($dir, 0), 'all', 0, '\.modules.php', '', 'name', SORT_ASC, 0);
-			if (!empty($tmpfiles)) {
-				$listoffiles = array_merge($listoffiles, $tmpfiles);
-			}
-		}
-		foreach ($listoffiles as $record) {
-			$list[$record['fullname']] = str_replace('.modules.php', '', $record['name']);
-		}
-		return $list;
-	}
+        $listoffiles = array();
+        if (!empty($conf->modules_parts['printing'])) {
+            $dirmodels = array_merge(array('/core/modules/printing/'), (array) $conf->modules_parts['printing']);
+        } else {
+            $dirmodels = array('/core/modules/printing/');
+        }
+        foreach ($dirmodels as $dir) {
+            $tmpfiles = dol_dir_list(dol_buildpath($dir, 0), 'all', 0, '\.modules.php', '', 'name', SORT_ASC, 0);
+            if (!empty($tmpfiles)) {
+                $listoffiles = array_merge($listoffiles, $tmpfiles);
+            }
+        }
+        foreach ($listoffiles as $record) {
+            $list[$record['fullname']] = str_replace('.modules.php', '', $record['name']);
+        }
+        return $list;
+    }
 
-	/**
-	 *  Return description of Printing Module
-	 *
-	 *  @return     string      Return translation of key PrintingModuleDescXXX where XXX is module name, or $this->desc if not exists
-	 */
-	public function getDesc()
-	{
-		global $langs;
-		$langs->load("printing");
-		$transstring = "PrintingModuleDesc".$this->name;
-		if ($langs->trans($transstring) != $transstring) {
-			return $langs->trans($transstring);
-		} else {
-			return $this->desc;
-		}
-	}
+    /**
+     *  Return description of Printing Module
+     *
+     *  @return     string      Return translation of key PrintingModuleDescXXX where XXX is module name, or $this->desc if not exists
+     */
+    public function getDesc()
+    {
+        global $langs;
+        $langs->load("printing");
+        $transstring = "PrintingModuleDesc" . $this->name;
+        if ($langs->trans($transstring) != $transstring) {
+            return $langs->trans($transstring);
+        } else {
+            return $this->desc;
+        }
+    }
 }

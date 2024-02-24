@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017       ATM Consulting      <contact@atm-consulting.fr>
  * Copyright (C) 2017-2020  Laurent Destailleur <eldy@destailleur.fr>
  * Copyright (C) 2022 		charlene benke		<charlene@patas-monkey.com>
@@ -168,8 +169,8 @@ class BlockedLog
             $this->trackedevents['BILL_SUPPLIER_VALIDATE']='BlockedLogSupplierBillValidate';
             $this->trackedevents['BILL_SUPPLIER_DELETE']='BlockedLogSupplierBillDelete';
             $this->trackedevents['BILL_SUPPLIER_SENTBYMAIL']='BlockedLogSupplierBillSentByEmail'; // Trigger key does not exists, we want just into array to list it as done
-            $this->trackedevents['SUPPLIER_DOC_DOWNLOAD']='BlockedLogSupplierBillDownload';		// Trigger key does not exists, we want just into array to list it as done
-            $this->trackedevents['SUPPLIER_DOC_PREVIEW']='BlockedLogSupplierBillPreview';		// Trigger key does not exists, we want just into array to list it as done
+            $this->trackedevents['SUPPLIER_DOC_DOWNLOAD']='BlockedLogSupplierBillDownload';     // Trigger key does not exists, we want just into array to list it as done
+            $this->trackedevents['SUPPLIER_DOC_PREVIEW']='BlockedLogSupplierBillPreview';       // Trigger key does not exists, we want just into array to list it as done
             $this->trackedevents['PAYMENT_SUPPLIER_CREATE']='BlockedLogSupplierBillPaymentCreate';
             $this->trackedevents['PAYMENT_SUPPLIER_DELETE']='BlockedLogsupplierBillPaymentCreate';
         }
@@ -465,10 +466,12 @@ class BlockedLog
                 if (in_array($key, $arrayoffieldstoexclude)) {
                     continue; // Discard some properties
                 }
-                if (!in_array($key, [
+                if (
+                    !in_array($key, [
                     'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
                     'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur',
-                ])) {
+                    ])
+                ) {
                     continue; // Discard if not into a dedicated list
                 }
                 if (!is_object($value) && !is_null($value) && $value !== '') {
@@ -485,10 +488,12 @@ class BlockedLog
                 if (in_array($key, $arrayoffieldstoexclude)) {
                     continue; // Discard some properties
                 }
-                if (!in_array($key, [
+                if (
+                    !in_array($key, [
                     'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
                     'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur',
-                ])) {
+                    ])
+                ) {
                     continue; // Discard if not into a dedicated list
                 }
                 if (!is_object($value) && !is_null($value) && $value !== '') {
@@ -509,9 +514,11 @@ class BlockedLog
                 if (in_array($key, $arrayoffieldstoexclude)) {
                     continue; // Discard some properties
                 }
-                if (!in_array($key, [
+                if (
+                    !in_array($key, [
                     'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'datev', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public', 'lines',
-                ])) {
+                    ])
+                ) {
                     continue; // Discard if not into a dedicated list
                 }
                 if ($key == 'lines') {
@@ -519,9 +526,11 @@ class BlockedLog
                     foreach ($value as $tmpline) {    // $tmpline is object FactureLine
                         $lineid++;
                         foreach ($tmpline as $keyline => $valueline) {
-                            if (!in_array($keyline, [
+                            if (
+                                !in_array($keyline, [
                                 'ref', 'multicurrency_code', 'multicurrency_total_ht', 'multicurrency_total_tva', 'multicurrency_total_ttc', 'qty', 'product_type', 'vat_src_code', 'tva_tx', 'info_bits', 'localtax1_tx', 'localtax2_tx', 'total_ht', 'total_tva', 'total_ttc', 'total_localtax1', 'total_localtax2',
-                            ])) {
+                                ])
+                            ) {
                                 continue; // Discard if not into a dedicated list
                             }
 
@@ -547,9 +556,11 @@ class BlockedLog
                 if (in_array($key, $arrayoffieldstoexclude)) {
                     continue; // Discard some properties
                 }
-                if (!in_array($key, [
+                if (
+                    !in_array($key, [
                     'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public',
-                ])) {
+                    ])
+                ) {
                     continue; // Discard if not into a dedicated list
                 }
                 if (!is_object($value) && !is_null($value) && $value !== '') {
@@ -638,10 +649,12 @@ class BlockedLog
                             if (in_array($key, $arrayoffieldstoexclude)) {
                                 continue; // Discard some properties
                             }
-                            if (!in_array($key, [
+                            if (
+                                !in_array($key, [
                                 'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
                                 'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur',
-                            ])) {
+                                ])
+                            ) {
                                 continue; // Discard if not into a dedicated list
                             }
                             if (!is_object($value) && !is_null($value) && $value !== '') {
@@ -662,9 +675,11 @@ class BlockedLog
                             if (in_array($key, $arrayoffieldstoexclude)) {
                                 continue; // Discard some properties
                             }
-                            if (!in_array($key, [
+                            if (
+                                !in_array($key, [
                                 'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public',
-                            ])) {
+                                ])
+                            ) {
                                 continue; // Discard if not into a dedicated list
                             }
                             if (!is_object($value) && !is_null($value) && $value !== '') {
@@ -702,9 +717,11 @@ class BlockedLog
                 if (in_array($key, $arrayoffieldstoexclude)) {
                     continue; // Discard some properties
                 }
-                if (!in_array($key, [
+                if (
+                    !in_array($key, [
                     'id', 'datec', 'dateh', 'datef', 'fk_adherent', 'amount', 'import_key', 'statut', 'note',
-                ])) {
+                    ])
+                ) {
                     continue; // Discard if not into a dedicated list
                 }
                 if (!is_object($value) && !is_null($value) && $value !== '') {

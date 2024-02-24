@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016       Olivier Geffroy         <jeff@jeffinfo.com>
  * Copyright (C) 2016       Florian Henry           <florian.henry@open-concept.pro>
  * Copyright (C) 2016-2024  Alexandre Spangaro      <aspangaro@easya.solutions>
@@ -429,7 +430,7 @@ if ($action != 'export_csv') {
     print_liste_field_titre("AccountAccounting", $_SERVER['PHP_SELF'], "t.numero_compte", "", $param, "", $sortfield, $sortorder);
     // TODO : Retrieve the type of third party: Customer / Supplier / Employee
     //if ($type == 'sub') {
-    //	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "t.type", "", $param, "", $sortfield, $sortorder);
+    //  print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "t.type", "", $param, "", $sortfield, $sortorder);
     //}
     if (getDolGlobalString('ACCOUNTANCY_SHOW_OPENING_BALANCE')) {
         print_liste_field_titre("OpeningBalance", $_SERVER['PHP_SELF'], "", $param, "", 'class="right"', $sortfield, $sortorder);
@@ -572,7 +573,7 @@ if ($action != 'export_csv') {
         // Type
         // TODO Retrieve the type of third party: Customer / Supplier / Employee
         //if ($type == 'sub') {
-        //	print '<td></td>';
+        //  print '<td></td>';
         //}
 
         if (getDolGlobalString('ACCOUNTANCY_SHOW_OPENING_BALANCE')) {

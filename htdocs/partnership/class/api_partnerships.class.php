@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  *
  * This program is free software; you can redistribute it and/or modify

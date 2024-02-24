@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2020  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
@@ -93,7 +94,7 @@ $conf->expensereport->dir_output = $rootfordata . '/expensereport';
 // Define $urlwithroot
 $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
 $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 // PDF
 $hidedetails = (GETPOST('hidedetails', 'int') ? GETPOST('hidedetails', 'int') : (getDolGlobalString('MAIN_GENERATE_DOCUMENTS_HIDE_DETAILS') ? 1 : 0));
@@ -263,8 +264,10 @@ if (empty($reshook)) {
         }
 
         // Check that expense report is for a user inside the hierarchy, or that advanced permission for all is set
-        if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('expensereport', 'creer'))
-            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('expensereport', 'creer') && !$user->hasRight('expensereport', 'writeall_advance'))) {
+        if (
+            (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('expensereport', 'creer'))
+            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('expensereport', 'creer') && !$user->hasRight('expensereport', 'writeall_advance'))
+        ) {
             $error++;
             setEventMessages($langs->trans("NotEnoughPermissions"), null, 'errors');
         }
@@ -439,15 +442,15 @@ if (empty($reshook)) {
 
                 // Rebuild pdf
                 /*
-				$object->setDocModel($user,"");
-				$resultPDF = expensereport_pdf_create($db,$id,'',"",$langs);
+                $object->setDocModel($user,"");
+                $resultPDF = expensereport_pdf_create($db,$id,'',"",$langs);
 
-				if($resultPDF):
-				// ATTACHMENT
-				array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
-				array_push($filedir,$conf->expensereport->dir_output . "/" . dol_sanitizeFileName($object->ref) . "/" . dol_sanitizeFileName($object->ref).".pdf");
-				array_push($mimetype,"application/pdf");
-				*/
+                if($resultPDF):
+                // ATTACHMENT
+                array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
+                array_push($filedir,$conf->expensereport->dir_output . "/" . dol_sanitizeFileName($object->ref) . "/" . dol_sanitizeFileName($object->ref).".pdf");
+                array_push($mimetype,"application/pdf");
+                */
 
                 // PREPARE SEND
                 $mailfile = new CMailFile($subject, $emailTo, $emailFrom, $message, $filedir, $mimetype, $filename, '', '', 0, -1);
@@ -549,18 +552,18 @@ if (empty($reshook)) {
 
                 // Rebuild pdf
                 /*
-				$object->setDocModel($user,"");
-				$resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
+                $object->setDocModel($user,"");
+                $resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
 
-				   if($resultPDF)
-				   {
-					   // ATTACHMENT
-					   $filename=array(); $filedir=array(); $mimetype=array();
-					   array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
-					   array_push($filedir,$conf->expensereport->dir_output . "/" . dol_sanitizeFileName($object->ref) . "/" . dol_sanitizeFileName($object->ref_number).".pdf");
-					   array_push($mimetype,"application/pdf");
-				}
-				*/
+                   if($resultPDF)
+                   {
+                       // ATTACHMENT
+                       $filename=array(); $filedir=array(); $mimetype=array();
+                       array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
+                       array_push($filedir,$conf->expensereport->dir_output . "/" . dol_sanitizeFileName($object->ref) . "/" . dol_sanitizeFileName($object->ref_number).".pdf");
+                       array_push($mimetype,"application/pdf");
+                }
+                */
 
                 // PREPARE SEND
                 $mailfile = new CMailFile($subject, $emailTo, $emailFrom, $message, $filedir, $mimetype, $filename, '', '', 0, -1);
@@ -665,18 +668,18 @@ if (empty($reshook)) {
 
                 // Rebuilt pdf
                 /*
-				$object->setDocModel($user,"");
-				$resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
+                $object->setDocModel($user,"");
+                $resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
 
-				if($resultPDF
-				{
-					// ATTACHMENT
-					$filename=array(); $filedir=array(); $mimetype=array();
-					array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
-					array_push($filedir, $conf->expensereport->dir_output."/".dol_sanitizeFileName($object->ref)."/".dol_sanitizeFileName($object->ref).".pdf");
-					array_push($mimetype,"application/pdf");
-				}
-				*/
+                if($resultPDF
+                {
+                    // ATTACHMENT
+                    $filename=array(); $filedir=array(); $mimetype=array();
+                    array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
+                    array_push($filedir, $conf->expensereport->dir_output."/".dol_sanitizeFileName($object->ref)."/".dol_sanitizeFileName($object->ref).".pdf");
+                    array_push($mimetype,"application/pdf");
+                }
+                */
 
                 $mailfile = new CMailFile($subject, $emailTo, $emailFrom, $message, $filedir, $mimetype, $filename, '', '', 0, -1);
 
@@ -775,18 +778,18 @@ if (empty($reshook)) {
 
                 // Rebuilt pdf
                 /*
-				$object->setDocModel($user,"");
-				$resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
+                $object->setDocModel($user,"");
+                $resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
 
-				if($resultPDF
-				{
-					// ATTACHMENT
-					$filename=array(); $filedir=array(); $mimetype=array();
-					array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
-					array_push($filedir, $conf->expensereport->dir_output."/".dol_sanitizeFileName($object->ref)."/".dol_sanitizeFileName($object->ref).".pdf");
-					array_push($mimetype,"application/pdf");
-				}
-				*/
+                if($resultPDF
+                {
+                    // ATTACHMENT
+                    $filename=array(); $filedir=array(); $mimetype=array();
+                    array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
+                    array_push($filedir, $conf->expensereport->dir_output."/".dol_sanitizeFileName($object->ref)."/".dol_sanitizeFileName($object->ref).".pdf");
+                    array_push($mimetype,"application/pdf");
+                }
+                */
 
                 // PREPARE SEND
                 $mailfile = new CMailFile($subject, $emailTo, $emailFrom, $message, $filedir, $mimetype, $filename, '', '', 0, -1);
@@ -891,18 +894,18 @@ if (empty($reshook)) {
 
                         // Rebuilt pdf
                         /*
-						$object->setDocModel($user,"");
-						$resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
+                        $object->setDocModel($user,"");
+                        $resultPDF = expensereport_pdf_create($db,$object,'',"",$langs);
 
-						if($resultPDF
-						{
-							// ATTACHMENT
-							$filename=array(); $filedir=array(); $mimetype=array();
-							array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
-							array_push($filedir, $conf->expensereport->dir_output."/".dol_sanitizeFileName($object->ref)."/".dol_sanitizeFileName($object->ref).".pdf");
-							array_push($mimetype,"application/pdf");
-						}
-						*/
+                        if($resultPDF
+                        {
+                            // ATTACHMENT
+                            $filename=array(); $filedir=array(); $mimetype=array();
+                            array_push($filename,dol_sanitizeFileName($object->ref).".pdf");
+                            array_push($filedir, $conf->expensereport->dir_output."/".dol_sanitizeFileName($object->ref)."/".dol_sanitizeFileName($object->ref).".pdf");
+                            array_push($mimetype,"application/pdf");
+                        }
+                        */
 
                         // PREPARE SEND
                         $mailfile = new CMailFile($subject, $emailTo, $emailFrom, $message, $filedir, $mimetype, $filename, '', '', 0, -1);
@@ -1533,8 +1536,10 @@ if ($action == 'create') {
 
     if ($result > 0) {
         if (!in_array($object->fk_user_author, $user->getAllChildIds(1))) {
-            if (!$user->hasRight('expensereport', 'readall') && !$user->hasRight('expensereport', 'lire_tous')
-                && (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || !$user->hasRight('expensereport', 'writeall_advance'))) {
+            if (
+                !$user->hasRight('expensereport', 'readall') && !$user->hasRight('expensereport', 'lire_tous')
+                && (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || !$user->hasRight('expensereport', 'writeall_advance'))
+            ) {
                 print load_fiche_titre($langs->trans('TripCard'), '', 'trip');
 
                 print '<div class="tabBar">';
@@ -1845,18 +1850,18 @@ if ($action == 'create') {
 
             if ($object->status == $object::STATUS_CLOSED) {
                 /* TODO this fields are not yet filled
-				  print '<tr>';
-				  print '<td>'.$langs->trans("AUTHORPAIEMENT").'</td>';
-				  print '<td>';
-				  $userfee=new User($db);
-				  $userfee->fetch($object->fk_user_paid);
-				  print $userfee->getNomUrl(-1);
-				  print '</td></tr>';
-				  print '<tr>';
-				  print '<td>'.$langs->trans("DATE_PAIEMENT").'</td>';
-				  print '<td>'.$object->date_paiement.'</td></tr>';
-				  print '</tr>';
-				  */
+                  print '<tr>';
+                  print '<td>'.$langs->trans("AUTHORPAIEMENT").'</td>';
+                  print '<td>';
+                  $userfee=new User($db);
+                  $userfee->fetch($object->fk_user_paid);
+                  print $userfee->getNomUrl(-1);
+                  print '</td></tr>';
+                  print '<tr>';
+                  print '<td>'.$langs->trans("DATE_PAIEMENT").'</td>';
+                  print '<td>'.$object->date_paiement.'</td></tr>';
+                  print '</tr>';
+                  */
             }
 
             // Other attributes
@@ -2696,15 +2701,15 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
             //if ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) || $user->rights->expensereport->expensereport_advance->send)) {
             print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=presend&mode=init#formmailbeforetitle">' . $langs->trans('SendMail') . '</a></div>';
             //} else
-            //	print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#">' . $langs->trans('SendMail') . '</a></div>';
+            //  print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#">' . $langs->trans('SendMail') . '</a></div>';
         }
     }
 
     /* Si l'état est "Brouillon"
-	 *	ET user à droit "creer/supprimer"
-	*	ET fk_user_author == user courant
-	* 	Afficher : "Enregistrer" / "Modifier" / "Supprimer"
-	*/
+     *  ET user à droit "creer/supprimer"
+    *   ET fk_user_author == user courant
+    *   Afficher : "Enregistrer" / "Modifier" / "Supprimer"
+    */
     if ($user->hasRight('expensereport', 'creer') && $object->status == ExpenseReport::STATUS_DRAFT) {
         if (in_array($object->fk_user_author, $user->getAllChildIds(1)) || $user->hasRight('expensereport', 'writeall_advance')) {
             // Modify
@@ -2718,10 +2723,10 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
     }
 
     /* Si l'état est "Refusée"
-	 *	ET user à droit "creer/supprimer"
-	 *	ET fk_user_author == user courant
-	 * 	Afficher : "Enregistrer" / "Modifier" / "Supprimer"
-	 */
+     *  ET user à droit "creer/supprimer"
+     *  ET fk_user_author == user courant
+     *  Afficher : "Enregistrer" / "Modifier" / "Supprimer"
+     */
     if ($user->hasRight('expensereport', 'creer') && $object->status == ExpenseReport::STATUS_REFUSED) {
         if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid) {
             // Modify
@@ -2742,10 +2747,10 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
     }
 
     /* Si l'état est "En attente d'approbation"
-	 *	ET user à droit de "approve"
-	 *	ET fk_user_validator == user courant
-	 *	Afficher : "Valider" / "Refuser" / "Supprimer"
-	 */
+     *  ET user à droit de "approve"
+     *  ET fk_user_validator == user courant
+     *  Afficher : "Valider" / "Refuser" / "Supprimer"
+     */
     if ($object->status == ExpenseReport::STATUS_VALIDATED) {
         if (in_array($object->fk_user_author, $user->getAllChildIds(1))) {
             // set draft
@@ -2836,8 +2841,8 @@ if (GETPOST('modelselected', 'alpha')) {
 
 if ($action != 'presend') {
     /*
-	 * Generate documents
-	 */
+     * Generate documents
+     */
 
     print '<div class="fichecenter"><div class="fichehalfleft">';
     print '<a name="builddoc"></a>'; // ancre
@@ -2855,12 +2860,12 @@ if ($action != 'presend') {
 
     // Disabled for expensereport, there is no thirdparty on expensereport, so nothing to define the list of other object we can suggest to link to
     /*
-	if ($action != 'create' && $action != 'edit' && ($id || $ref))
-	{
-		$linktoelem = $form->showLinkToObjectBlock($object, null, array('expensereport'));
-		$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
-	}
-	*/
+    if ($action != 'create' && $action != 'edit' && ($id || $ref))
+    {
+        $linktoelem = $form->showLinkToObjectBlock($object, null, array('expensereport'));
+        $somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
+    }
+    */
 
     print '</div><div class="fichehalfright">';
     // List of actions on element

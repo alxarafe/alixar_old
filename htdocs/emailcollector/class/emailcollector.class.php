@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -440,15 +441,15 @@ class EmailCollector extends CommonObject
      * @return int         Return integer <0 if KO, 0 if not found, >0 if OK
      */
     /*
-	 public function fetchLines()
-	 {
-	 $this->lines=array();
+     public function fetchLines()
+     {
+     $this->lines=array();
 
-	 // Load lines with object EmailCollectorLine
+     // Load lines with object EmailCollectorLine
 
-	 return count($this->lines)?1:0;
-	 }
-	 */
+     return count($this->lines)?1:0;
+     }
+     */
 
     /**
      * Fetch all account and load objects into an array
@@ -1162,9 +1163,11 @@ class EmailCollector extends CommonObject
                 $keyforsupportedoauth2array = 'OAUTH_' . $keyforsupportedoauth2array . '_NAME';
 
                 $OAUTH_SERVICENAME = 'Unknown';
-                if (array_key_exists($keyforsupportedoauth2array, $supportedoauth2array)
+                if (
+                    array_key_exists($keyforsupportedoauth2array, $supportedoauth2array)
                     && array_key_exists('name', $supportedoauth2array[$keyforsupportedoauth2array])
-                    && !empty($supportedoauth2array[$keyforsupportedoauth2array]['name'])) {
+                    && !empty($supportedoauth2array[$keyforsupportedoauth2array]['name'])
+                ) {
                     $OAUTH_SERVICENAME = $supportedoauth2array[$keyforsupportedoauth2array]['name'] . (!empty($keyforprovider) ? '-' . $keyforprovider : '');
                 }
 
@@ -1182,7 +1185,7 @@ class EmailCollector extends CommonObject
                     $expire = true;
                     // Is token expired or will token expire in the next 30 seconds
                     // if (is_object($tokenobj)) {
-                    // 	$expire = ($tokenobj->getEndOfLife() !== -9002 && $tokenobj->getEndOfLife() !== -9001 && time() > ($tokenobj->getEndOfLife() - 30));
+                    //  $expire = ($tokenobj->getEndOfLife() !== -9002 && $tokenobj->getEndOfLife() !== -9001 && time() > ($tokenobj->getEndOfLife() - 30));
                     // }
                     // Token expired so we refresh it
                     if (is_object($tokenobj) && $expire) {
@@ -1346,12 +1349,12 @@ class EmailCollector extends CommonObject
 
                 /* seems not used */
                 /*
-				 if ($rule['type'] == 'notinsubject') {
-				 array_push($criteria, array($not."SUBJECT NOT" => $rule['rulevalue']));
-				 }
-				 if ($rule['type'] == 'notinbody') {
-				 array_push($criteria, array($not."BODY NOT" => $rule['rulevalue']));
-				 }*/
+                 if ($rule['type'] == 'notinsubject') {
+                 array_push($criteria, array($not."SUBJECT NOT" => $rule['rulevalue']));
+                 }
+                 if ($rule['type'] == 'notinbody') {
+                 array_push($criteria, array($not."BODY NOT" => $rule['rulevalue']));
+                 }*/
 
                 if ($rule['type'] == 'seen') {
                     array_push($criteria, [$not . "SEEN"]);
@@ -1485,12 +1488,12 @@ class EmailCollector extends CommonObject
 
                 /* seems not used */
                 /*
-				 if ($rule['type'] == 'notinsubject') {
-				 $search .= ($search ? ' ' : '').'NOT SUBJECT "'.str_replace('"', '', $rule['rulevalue']).'"';
-				 }
-				 if ($rule['type'] == 'notinbody') {
-				 $search .= ($search ? ' ' : '').'NOT BODY "'.str_replace('"', '', $rule['rulevalue']).'"';
-				 }*/
+                 if ($rule['type'] == 'notinsubject') {
+                 $search .= ($search ? ' ' : '').'NOT SUBJECT "'.str_replace('"', '', $rule['rulevalue']).'"';
+                 }
+                 if ($rule['type'] == 'notinbody') {
+                 $search .= ($search ? ' ' : '').'NOT BODY "'.str_replace('"', '', $rule['rulevalue']).'"';
+                 }*/
 
                 if ($rule['type'] == 'seen') {
                     $search .= ($search ? ' ' : '') . $not . 'SEEN';
@@ -1616,20 +1619,20 @@ class EmailCollector extends CommonObject
         if (!$error && !empty($arrayofemail) && count($arrayofemail) > 0) {
             // Loop to get part html and plain
             /*
-			 0 multipart/mixed
-			 1 multipart/alternative
-			 1.1 text/plain
-			 1.2 text/html
-			 2 message/rfc822
-			 2 multipart/mixed
-			 2.1 multipart/alternative
-			 2.1.1 text/plain
-			 2.1.2 text/html
-			 2.2 message/rfc822
-			 2.2 multipart/alternative
-			 2.2.1 text/plain
-			 2.2.2 text/html
-			 */
+             0 multipart/mixed
+             1 multipart/alternative
+             1.1 text/plain
+             1.2 text/html
+             2 message/rfc822
+             2 multipart/mixed
+             2.1 multipart/alternative
+             2.1.1 text/plain
+             2.1.2 text/html
+             2.2 message/rfc822
+             2.2 multipart/alternative
+             2.2.1 text/plain
+             2.2.2 text/html
+             */
             dol_syslog("Start of loop on email", LOG_INFO, 1);
 
             $iforemailloop = 0;
@@ -1730,7 +1733,7 @@ class EmailCollector extends CommonObject
                             $isanswer = 1;
                         }
                     }
-                    //if ($headers['In-Reply-To'] != $headers['Message-ID'] && empty($headers['References'])) $isanswer = 1;	// If in-reply-to differs of message-id, this is a reply
+                    //if ($headers['In-Reply-To'] != $headers['Message-ID'] && empty($headers['References'])) $isanswer = 1;    // If in-reply-to differs of message-id, this is a reply
                     //if ($headers['In-Reply-To'] != $headers['Message-ID'] && !empty($headers['References']) && strpos($headers['References'], $headers['Message-ID']) !== false) $isanswer = 1;
 
                     if (!$isanswer) {
@@ -1747,7 +1750,7 @@ class EmailCollector extends CommonObject
                         if (preg_match('/Re\s*:\s+/i', $headers['Subject'])) {
                             $isanswer = 1;
                         }
-                        //if ($headers['In-Reply-To'] != $headers['Message-ID'] && empty($headers['References'])) $isanswer = 1;	// If in-reply-to differs of message-id, this is a reply
+                        //if ($headers['In-Reply-To'] != $headers['Message-ID'] && empty($headers['References'])) $isanswer = 1;    // If in-reply-to differs of message-id, this is a reply
                         //if ($headers['In-Reply-To'] != $headers['Message-ID'] && !empty($headers['References']) && strpos($headers['References'], $headers['Message-ID']) !== false) $isanswer = 1;
                         if ($isanswer) {
                             $nbemailprocessed++;
@@ -1842,45 +1845,45 @@ class EmailCollector extends CommonObject
 
                 // Parse IMAP email structure
                 /*
-				 $structure = imap_fetchstructure($connection, $imapemail, FT_UID);
+                 $structure = imap_fetchstructure($connection, $imapemail, FT_UID);
 
-				 $partplain = $parthtml = -1;
-				 $encodingplain = $encodinghtml = '';
+                 $partplain = $parthtml = -1;
+                 $encodingplain = $encodinghtml = '';
 
-				 $result = createPartArray($structure, '');
+                 $result = createPartArray($structure, '');
 
-				 foreach($result as $part)
-				 {
-				 // $part['part_object']->type seems 0 for content
-				 // $part['part_object']->type seems 5 for attachment
-				 if (empty($part['part_object'])) continue;
-				 if ($part['part_object']->subtype == 'HTML')
-				 {
-				 $parthtml=$part['part_number'];
-				 if ($part['part_object']->encoding == 4)
-				 {
-				 $encodinghtml = 'aaa';
-				 }
-				 }
-				 if ($part['part_object']->subtype == 'PLAIN')
-				 {
-				 $partplain=$part['part_number'];
-				 if ($part['part_object']->encoding == 4)
-				 {
-				 $encodingplain = 'rr';
-				 }
-				 }
-				 }
-				 //var_dump($result);
-				 //var_dump($partplain);
-				 //var_dump($parthtml);
+                 foreach($result as $part)
+                 {
+                 // $part['part_object']->type seems 0 for content
+                 // $part['part_object']->type seems 5 for attachment
+                 if (empty($part['part_object'])) continue;
+                 if ($part['part_object']->subtype == 'HTML')
+                 {
+                 $parthtml=$part['part_number'];
+                 if ($part['part_object']->encoding == 4)
+                 {
+                 $encodinghtml = 'aaa';
+                 }
+                 }
+                 if ($part['part_object']->subtype == 'PLAIN')
+                 {
+                 $partplain=$part['part_number'];
+                 if ($part['part_object']->encoding == 4)
+                 {
+                 $encodingplain = 'rr';
+                 }
+                 }
+                 }
+                 //var_dump($result);
+                 //var_dump($partplain);
+                 //var_dump($parthtml);
 
-				 //var_dump($structure);
-				 //var_dump($parthtml);
-				 //var_dump($partplain);
+                 //var_dump($structure);
+                 //var_dump($parthtml);
+                 //var_dump($partplain);
 
-				 $messagetext = imap_fetchbody($connection, $imapemail, ($parthtml != '-1' ? $parthtml : ($partplain != '-1' ? $partplain : 1)), FT_PEEK|FTP_UID);
-				 */
+                 $messagetext = imap_fetchbody($connection, $imapemail, ($parthtml != '-1' ? $parthtml : ($partplain != '-1' ? $partplain : 1)), FT_PEEK|FTP_UID);
+                 */
 
                 //var_dump($messagetext);
                 //var_dump($structure->parts[0]->parts);
@@ -2037,11 +2040,11 @@ class EmailCollector extends CommonObject
                                 $objectemail = new Adherent($this->db);
                             }
                             /*if ($reg[1] == 'leav') {   // Leave / Holiday
-							 $objectemail = new Holiday($db);
-							 }
-							 if ($reg[1] == 'exp') {   // ExpenseReport
-							 $objectemail = new ExpenseReport($db);
-							 }*/
+                             $objectemail = new Holiday($db);
+                             }
+                             if ($reg[1] == 'exp') {   // ExpenseReport
+                             $objectemail = new ExpenseReport($db);
+                             }*/
                         } elseif (preg_match('/<(.*@.*)>/', $reference, $reg)) {
                             // This is an external reference, we check if we have it in our database
                             if (!is_object($objectemail)) {
@@ -2200,34 +2203,34 @@ class EmailCollector extends CommonObject
                 }
 
                 /*
-				 if ($replyto) {
-				 if (empty($contactid)) {		// Try to find contact using email
-				 $result = $contactstatic->fetch(0, null, '', $replyto);
+                 if ($replyto) {
+                 if (empty($contactid)) {       // Try to find contact using email
+                 $result = $contactstatic->fetch(0, null, '', $replyto);
 
-				 if ($result > 0) {
-				 dol_syslog("We found a contact with the email ".$replyto);
-				 $contactid = $contactstatic->id;
-				 $contactfoundby = 'email of contact ('.$replyto.')';
-				 if (empty($thirdpartyid) && $contactstatic->socid > 0) {
-				 $result = $thirdpartystatic->fetch($contactstatic->socid);
-				 if ($result > 0) {
-				 $thirdpartyid = $thirdpartystatic->id;
-				 $thirdpartyfoundby = 'email of contact ('.$replyto.')';
-				 }
-				 }
-				 }
-				 }
+                 if ($result > 0) {
+                 dol_syslog("We found a contact with the email ".$replyto);
+                 $contactid = $contactstatic->id;
+                 $contactfoundby = 'email of contact ('.$replyto.')';
+                 if (empty($thirdpartyid) && $contactstatic->socid > 0) {
+                 $result = $thirdpartystatic->fetch($contactstatic->socid);
+                 if ($result > 0) {
+                 $thirdpartyid = $thirdpartystatic->id;
+                 $thirdpartyfoundby = 'email of contact ('.$replyto.')';
+                 }
+                 }
+                 }
+                 }
 
-				 if (empty($thirdpartyid)) {		// Try to find thirdparty using email
-				 $result = $thirdpartystatic->fetch(0, '', '', '', '', '', '', '', '', '', $replyto);
-				 if ($result > 0) {
-				 dol_syslog("We found a thirdparty with the email ".$replyto);
-				 $thirdpartyid = $thirdpartystatic->id;
-				 $thirdpartyfoundby = 'email ('.$replyto.')';
-				 }
-				 }
-				 }
-				 */
+                 if (empty($thirdpartyid)) {        // Try to find thirdparty using email
+                 $result = $thirdpartystatic->fetch(0, '', '', '', '', '', '', '', '', '', $replyto);
+                 if ($result > 0) {
+                 dol_syslog("We found a thirdparty with the email ".$replyto);
+                 $thirdpartyid = $thirdpartystatic->id;
+                 $thirdpartyfoundby = 'email ('.$replyto.')';
+                 }
+                 }
+                 }
+                 */
 
                 // Do operations (extract variables and creating data)
                 if ($mode < 2) {    // 0=Mode production, 1=Mode test (read IMAP and try SQL update then rollback), 2=Mode test with no SQL updates
@@ -3215,44 +3218,44 @@ class EmailCollector extends CommonObject
                                 $errorforthisaction = $this->overwritePropertiesOfObject($candidaturetocreate, $operation['actionparam'], $messagetext, $subject, $header, $operationslog);
 
                                 // Set candidature ref if not yet defined
-                                /*if (empty($candidaturetocreate->ref))				We do not need this because we create object in draft status
-								 {
-								 // Get next Ref
-								 $defaultref = '';
-								 $modele = empty($conf->global->CANDIDATURE_ADDON) ? 'mod_candidature_simple' : $conf->global->CANDIDATURE_ADDON;
+                                /*if (empty($candidaturetocreate->ref))             We do not need this because we create object in draft status
+                                 {
+                                 // Get next Ref
+                                 $defaultref = '';
+                                 $modele = empty($conf->global->CANDIDATURE_ADDON) ? 'mod_candidature_simple' : $conf->global->CANDIDATURE_ADDON;
 
-								 // Search template files
-								 $file = ''; $classname = ''; $filefound = 0; $reldir = '';
-								 $dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
-								 foreach ($dirmodels as $reldir)
-								 {
-								 $file = dol_buildpath($reldir."core/modules/ticket/".$modele.'.php', 0);
-								 if (file_exists($file)) {
-								 $filefound = 1;
-								 $classname = $modele;
-								 break;
-								 }
-								 }
+                                 // Search template files
+                                 $file = ''; $classname = ''; $filefound = 0; $reldir = '';
+                                 $dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
+                                 foreach ($dirmodels as $reldir)
+                                 {
+                                 $file = dol_buildpath($reldir."core/modules/ticket/".$modele.'.php', 0);
+                                 if (file_exists($file)) {
+                                 $filefound = 1;
+                                 $classname = $modele;
+                                 break;
+                                 }
+                                 }
 
-								 if ($filefound) {
-								 if ($savesocid > 0) {
-								 if ($savesocid != $candidaturetocreate->socid) {
-								 $errorforactions++;
-								 setEventMessages('You loaded a thirdparty (id='.$savesocid.') and you force another thirdparty id (id='.$candidaturetocreate->socid.') by setting socid in operation with a different value', null, 'errors');
-								 }
-								 } else {
-								 if ($candidaturetocreate->socid > 0)
-								 {
-								 $thirdpartystatic->fetch($candidaturetocreate->socid);
-								 }
-								 }
+                                 if ($filefound) {
+                                 if ($savesocid > 0) {
+                                 if ($savesocid != $candidaturetocreate->socid) {
+                                 $errorforactions++;
+                                 setEventMessages('You loaded a thirdparty (id='.$savesocid.') and you force another thirdparty id (id='.$candidaturetocreate->socid.') by setting socid in operation with a different value', null, 'errors');
+                                 }
+                                 } else {
+                                 if ($candidaturetocreate->socid > 0)
+                                 {
+                                 $thirdpartystatic->fetch($candidaturetocreate->socid);
+                                 }
+                                 }
 
-								 $result = dol_include_once($reldir."core/modules/ticket/".$modele.'.php');
-								 $modModuleToUseForNextValue = new $classname;
-								 $defaultref = $modModuleToUseForNextValue->getNextValue(($thirdpartystatic->id > 0 ? $thirdpartystatic : null), $tickettocreate);
-								 }
-								 $candidaturetocreate->ref = $defaultref;
-								 }*/
+                                 $result = dol_include_once($reldir."core/modules/ticket/".$modele.'.php');
+                                 $modModuleToUseForNextValue = new $classname;
+                                 $defaultref = $modModuleToUseForNextValue->getNextValue(($thirdpartystatic->id > 0 ? $thirdpartystatic : null), $tickettocreate);
+                                 }
+                                 $candidaturetocreate->ref = $defaultref;
+                                 }*/
 
                                 if ($errorforthisaction) {
                                     $errorforactions++;
@@ -3481,20 +3484,20 @@ class EmailCollector extends CommonObject
     }
 
     /* partno string
-	 0 multipart/mixed
-	 1 multipart/alternative
-	 1.1 text/plain
-	 1.2 text/html
-	 2 message/rfc822
-	 2 multipart/mixed
-	 2.1 multipart/alternative
-	 2.1.1 text/plain
-	 2.1.2 text/html
-	 2.2 message/rfc822
-	 2.2 multipart/alternative
-	 2.2.1 text/plain
-	 2.2.2 text/html
-	 */
+     0 multipart/mixed
+     1 multipart/alternative
+     1.1 text/plain
+     1.2 text/html
+     2 message/rfc822
+     2 multipart/mixed
+     2.1 multipart/alternative
+     2.1.1 text/plain
+     2.1.2 text/html
+     2.2 message/rfc822
+     2.2 multipart/alternative
+     2.2.1 text/plain
+     2.2.2 text/html
+     */
 
     /**
      * Sub function for getpart(). Only called by createPartArray() and itself.

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2019	Thibault FOUCART      <support@ptibogxiv.net>
+
+/* Copyright (C) 2019   Thibault FOUCART      <support@ptibogxiv.net>
  * Copyright (C) 2020	Andreu Bisquerra Gaya <jove@bisquerra.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,10 +23,10 @@
  *    \brief      Page with the content of the popup to enter payments
  */
 
-//if (! defined('NOREQUIREUSER'))	define('NOREQUIREUSER', '1');	// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIREDB'))		define('NOREQUIREDB', '1');		// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIRESOC'))	define('NOREQUIRESOC', '1');
-//if (! defined('NOREQUIRETRAN'))	define('NOREQUIRETRAN', '1');
+//if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER', '1');   // Not disabled cause need to load personalized language
+//if (! defined('NOREQUIREDB'))     define('NOREQUIREDB', '1');     // Not disabled cause need to load personalized language
+//if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC', '1');
+//if (! defined('NOREQUIRETRAN'))   define('NOREQUIRETRAN', '1');
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1');
 }

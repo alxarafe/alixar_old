@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016   Xebax Christy           <xebax@wanadoo.fr>
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2016   Jean-François Ferry     <jfefe@aternatik.fr>
@@ -543,13 +544,13 @@ class Documents extends DolibarrApi
             // require_once DOL_DOCUMENT_ROOT.'/ecm/class/ecmdirectory.class.php';
 
             // if (!DolibarrApiAccess::$user->hasRight('ecm', 'read')) {
-            // 	throw new RestException(403);
+            //  throw new RestException(403);
             // }
 
             // // $object = new EcmDirectory($this->db);
             // // $result = $object->fetch($ref);
             // // if (!$result) {
-            // // 	throw new RestException(404, 'EcmDirectory not found');
+            // //   throw new RestException(404, 'EcmDirectory not found');
             // // }
             // $upload_dir = $conf->ecm->dir_output;
             // $type = 'all';

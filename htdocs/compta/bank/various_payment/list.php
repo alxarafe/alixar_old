@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2017-2023	Alexandre Spangaro      <aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2017-2023  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2017       Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2020       Tobias Sekan            <tobias.sekan@startmail.com>
@@ -135,13 +136,13 @@ $search_all = GETPOSTISSET("search_all") ? trim(GETPOST("search_all", 'alpha')) 
 * $search = array();
 * foreach ($object->fields as $key => $val)
 * {
-*	if (GETPOST('search_'.$key, 'alpha')) $search[$key] = GETPOST('search_'.$key, 'alpha');
+*   if (GETPOST('search_'.$key, 'alpha')) $search[$key] = GETPOST('search_'.$key, 'alpha');
 * }
 
 * $fieldstosearchall = array();
 * foreach ($object->fields as $key => $val)
 * {
-*	if ($val['searchall']) $fieldstosearchall['t.'.$key] = $val['label'];
+*   if ($val['searchall']) $fieldstosearchall['t.'.$key] = $val['label'];
 * }
 *
 */
@@ -215,8 +216,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 }

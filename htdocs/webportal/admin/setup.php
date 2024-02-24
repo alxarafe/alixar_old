@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -253,7 +254,7 @@ if (isModEnabled('multicompany')) {
 // Define $urlwithroot
 $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
 $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 print '<div class="urllink">';
 print '<input type="text" id="publicurlmember" class="quatrevingtpercentminusx" value="' . $urlwithroot . '/public/webportal/index.php' . $entity_qr . '">';

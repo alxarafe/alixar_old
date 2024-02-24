@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2002-2003	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2002-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2002-2003	Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2012	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2004		Sebastien Di Cintio		<sdicintio@ressource-toi.org>
@@ -36,6 +37,7 @@
  *    \ingroup    member
  *    \brief      File of class to manage members of a foundation
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
@@ -884,7 +886,7 @@ class Adherent extends CommonObject
                         $luser->lastname = $this->lastname;
                         $luser->gender = $this->gender;
                         $luser->pass = $this->pass;
-                        //$luser->socid=$this->fk_soc;		// We do not enable this. This may transform a user into an external user.
+                        //$luser->socid=$this->fk_soc;      // We do not enable this. This may transform a user into an external user.
 
                         $luser->birth = $this->birth;
 

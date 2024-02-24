@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This file is an example to follow to add your own email selector inside

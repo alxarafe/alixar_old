@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2004 Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Barilley / Ocebo <marc@ocebo.com>
@@ -292,7 +293,7 @@ if ($object->id > 0) {
     /*if (in_array($user->id,array_keys($listofuserid)))
     {
         print '<div class="myavailability">';
-        print $langs->trans("MyAvailability").': '.(($object->userassigned[$user->id]['transparency'] > 0)?$langs->trans("Busy"):$langs->trans("Available"));	// We show nothing if event is assigned to nobody
+        print $langs->trans("MyAvailability").': '.(($object->userassigned[$user->id]['transparency'] > 0)?$langs->trans("Busy"):$langs->trans("Available"));   // We show nothing if event is assigned to nobody
         print '</div>';
     }*/
     print '	</td></tr>';

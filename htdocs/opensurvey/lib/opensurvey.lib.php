@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2014 Marcos García			<marcosgdf@gmail.com>
  *
@@ -54,7 +55,7 @@ function opensurvey_prepare_head(Opensurveysondage $object)
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-    // $this->tabs = array('entity:-tabname);   												to remove a tab
+    // $this->tabs = array('entity:-tabname);                                                   to remove a tab
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'opensurveypoll');
 
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'opensurveypoll', 'remove');
@@ -160,8 +161,8 @@ function get_server_name()
     global $dolibarr_main_url_root;
 
     $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
-    //$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;		// This is to use external domain name found into config file
-    //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+    //$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;     // This is to use external domain name found into config file
+    //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
     $url = $urlwithouturlroot . dol_buildpath('/opensurvey/', 1);
 

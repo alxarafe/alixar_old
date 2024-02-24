@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2011      Dimitri Mouillard    <dmouillard@teclib.com>
  * Copyright (C) 2020      Tobias Sekan         <tobias.sekan@startmail.com>
@@ -134,12 +135,14 @@ if (empty($reshook)) {
         $search_array_options = [];
     }
 
-    if (GETPOST('button_removefilter_x', 'alpha')
+    if (
+        GETPOST('button_removefilter_x', 'alpha')
         || GETPOST('button_removefilter.x', 'alpha')
         || GETPOST('button_removefilter', 'alpha')
         || GETPOST('button_search_x', 'alpha')
         || GETPOST('button_search.x', 'alpha')
-        || GETPOST('button_search', 'alpha')) {
+        || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 

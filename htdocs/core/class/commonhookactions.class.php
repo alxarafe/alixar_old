@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2023 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,47 +17,47 @@
  */
 
 /**
- *	\file       htdocs/core/class/commonhookactions.class.php
- *	\ingroup    core
- *	\brief      File of parent class of all other hook actions classes
+ *  \file       htdocs/core/class/commonhookactions.class.php
+ *  \ingroup    core
+ *  \brief      File of parent class of all other hook actions classes
  */
 
 
 /**
- *	Parent class of all other hook actions classes
+ *  Parent class of all other hook actions classes
  */
 abstract class CommonHookActions
 {
-	/**
-	 * @var string	String of results.
-	 */
-	public $resprints;
+    /**
+     * @var string  String of results.
+     */
+    public $resprints;
 
-	/**
-	 * @var array 	Array of results.
-	 */
-	public $results = array();
+    /**
+     * @var array   Array of results.
+     */
+    public $results = array();
 
-	/**
-	 * Check context of hook
-	 * @param array $parameters Hook parameters.
-	 * @param array|string $allContexts Context to check
-	 * @return bool
-	 */
-	protected function isContext($parameters, $allContexts)
-	{
-		if (is_array($allContexts)) {
-			foreach ($allContexts as $context) {
-				if ($this->isContext($parameters, $context)) {
-					return true;
-				}
-			}
-			return false;
-		}
-		if ($parameters['currentcontext'] == $allContexts) {
-			return true;
-		}
-		$contexts = explode(':', $parameters['context']);
-		return in_array($allContexts, $contexts);
-	}
+    /**
+     * Check context of hook
+     * @param array $parameters Hook parameters.
+     * @param array|string $allContexts Context to check
+     * @return bool
+     */
+    protected function isContext($parameters, $allContexts)
+    {
+        if (is_array($allContexts)) {
+            foreach ($allContexts as $context) {
+                if ($this->isContext($parameters, $context)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if ($parameters['currentcontext'] == $allContexts) {
+            return true;
+        }
+        $contexts = explode(':', $parameters['context']);
+        return in_array($allContexts, $contexts);
+    }
 }

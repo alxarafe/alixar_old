@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2017      Ferran Marcet       	 <fmarcet@2byte.es>
  *

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
@@ -82,13 +83,13 @@ $cancel = GETPOST('cancel', 'aZ09');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'positioncard'; // To manage different context of search
 $backtopage = GETPOST('backtopage', 'alpha');
 $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
-//	$lineid   = GETPOST('lineid', 'int');
+//  $lineid   = GETPOST('lineid', 'int');
 
 // Initialize technical objects
 //$object = new Position($db);
 //$res = $object->fetch($id);
 /*if ($res < 0) {
-	dol_print_error($db, &$object->error);
+    dol_print_error($db, &$object->error);
 }*/
 
 $extrafields = new ExtraFields($db);
@@ -294,9 +295,9 @@ function displayPositionCard(&$object)
         print '<table class="border centpercent tableforfield">' . "\n";
 
         // Common attributes
-        //$keyforbreak='fieldkeytoswitchonsecondcolumn';	// We change column just before this field
-        //unset($object->fields['fk_project']);				// Hide field already shown in banner
-        //unset($object->fields['fk_soc']);					// Hide field already shown in banner
+        //$keyforbreak='fieldkeytoswitchonsecondcolumn';    // We change column just before this field
+        //unset($object->fields['fk_project']);             // Hide field already shown in banner
+        //unset($object->fields['fk_soc']);                 // Hide field already shown in banner
         $object->fields['fk_user']['visible'] = 0; // Already in banner
         $object->fields['fk_job']['visible'] = 0; // Already in banner
         include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
@@ -328,36 +329,36 @@ function displayPositionCard(&$object)
 }
 
 //if ($action != 'presend') {
-//	$formfile = new FormFile($db);
-//	print '<div class="fichecenter"><div class="fichehalfleft">';
+//  $formfile = new FormFile($db);
+//  print '<div class="fichecenter"><div class="fichehalfleft">';
 //
-//	if (empty($conf->global->SOCIETE_DISABLE_BUILDDOC)) {
-//		print '<a name="builddoc"></a>'; // ancre
+//  if (empty($conf->global->SOCIETE_DISABLE_BUILDDOC)) {
+//      print '<a name="builddoc"></a>'; // ancre
 //
-//		/*
-//		 * Generated documents
-//		 */
-//		$filedir = $conf->societe->multidir_output[$object->entity].'/'.$object->id;
-//		$urlsource = $_SERVER["PHP_SELF"]."?socid=".$object->id;
-//		$genallowed = $user->hasRight('societe', 'lire');
-//		$delallowed = $user->hasRight('societe', 'creer');
+//      /*
+//       * Generated documents
+//       */
+//      $filedir = $conf->societe->multidir_output[$object->entity].'/'.$object->id;
+//      $urlsource = $_SERVER["PHP_SELF"]."?socid=".$object->id;
+//      $genallowed = $user->hasRight('societe', 'lire');
+//      $delallowed = $user->hasRight('societe', 'creer');
 //
-//		print $formfile->showdocuments('company', $object->id, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 0, 0, 0, 28, 0, 'entity='.$object->entity, 0, '', $object->default_lang);
-//	}
+//      print $formfile->showdocuments('company', $object->id, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 0, 0, 0, 28, 0, 'entity='.$object->entity, 0, '', $object->default_lang);
+//  }
 //
 //
-//	print '</div><div class="fichehalfright">';
+//  print '</div><div class="fichehalfright">';
 //
-//	$MAXEVENT = 10;
+//  $MAXEVENT = 10;
 //
-//	$morehtmlright = dolGetButtonTitle($langs->trans('SeeAll'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/societe/agenda.php?socid='.$object->id);
+//  $morehtmlright = dolGetButtonTitle($langs->trans('SeeAll'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/societe/agenda.php?socid='.$object->id);
 //
-//	// List of actions on element
-//	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
-//	$formactions = new FormActions($db);
-//	$somethingshown = $formactions->showactions($object, '', $object->id, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for thirdparty
+//  // List of actions on element
+//  include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
+//  $formactions = new FormActions($db);
+//  $somethingshown = $formactions->showactions($object, '', $object->id, 1, '', $MAXEVENT, '', $morehtmlright); // Show all action for thirdparty
 //
-//	print '</div></div>';
+//  print '</div></div>';
 //}
 
 print '</table>' . "\n";

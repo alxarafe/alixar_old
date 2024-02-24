@@ -1,5 +1,5 @@
 <?php
-//define("NOLOGIN",1);		// This means this output page does not require to be logged.
+//define("NOLOGIN",1);      // This means this output page does not require to be logged.
 //if (!defined('NOREQUIREUSER'))  define('NOREQUIREUSER', '1');
 //if (!defined('NOREQUIREDB'))    define('NOREQUIREDB', '1');
 if (!defined('NOREQUIRESOC')) {

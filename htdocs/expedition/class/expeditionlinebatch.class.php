@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2013-2014 Cedric GROSS         <c.gross@kreiz-it.fr>
  *

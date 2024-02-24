@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2005	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2019	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2009-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2010-2011	Juanjo Menent			<jmenent@2byte.es>
@@ -574,8 +575,8 @@ class FactureRec extends CommonInvoice
             $sql .= ' AND f.rowid = 0';
         }
         /* This field are not used for template invoice
-		 if ($ref_ext) $sql.= " AND f.ref_ext='".$this->db->escape($ref_ext)."'";
-		 */
+         if ($ref_ext) $sql.= " AND f.ref_ext='".$this->db->escape($ref_ext)."'";
+         */
 
         $result = $this->db->query($sql);
         if ($result) {
@@ -2166,7 +2167,7 @@ class FactureLigneRec extends CommonInvoiceLine
     public $fk_fournprice; // For backward compatibility
 
     public $rang;
-    //public $situation_percent;	// Not supported on recurring invoice line
+    //public $situation_percent;    // Not supported on recurring invoice line
 
     public $desc;
     public $description;

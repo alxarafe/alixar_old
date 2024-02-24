@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2012      Christophe Battarel	<christophe.battarel@altairis.fr>
@@ -183,36 +184,36 @@ if (empty($array_match_file_to_database)) {
 /*
 if ($action=='downfield' || $action=='upfield')
 {
-	$pos=$array_match_file_to_database[$_GET["field"]];
-	if ($action=='downfield') $newpos=$pos+1;
-	if ($action=='upfield') $newpos=$pos-1;
-	// Recherche code avec qui switcher
-	$newcode="";
-	foreach($array_match_file_to_database as $code=>$value)
-	{
-		if ($value == $newpos)
-		{
-			$newcode=$code;
-			break;
-		}
-	}
-	//print("Switch pos=$pos (code=".$_GET["field"].") and newpos=$newpos (code=$newcode)");
-	if ($newcode)   // Si newcode trouve (protection contre resoumission de page)
-	{
-		$array_match_file_to_database[$_GET["field"]]=$newpos;
-		$array_match_file_to_database[$newcode]=$pos;
-		$_SESSION["dol_array_match_file_to_database"]=$serialized_array_match_file_to_database;
-	}
+    $pos=$array_match_file_to_database[$_GET["field"]];
+    if ($action=='downfield') $newpos=$pos+1;
+    if ($action=='upfield') $newpos=$pos-1;
+    // Recherche code avec qui switcher
+    $newcode="";
+    foreach($array_match_file_to_database as $code=>$value)
+    {
+        if ($value == $newpos)
+        {
+            $newcode=$code;
+            break;
+        }
+    }
+    //print("Switch pos=$pos (code=".$_GET["field"].") and newpos=$newpos (code=$newcode)");
+    if ($newcode)   // Si newcode trouve (protection contre resoumission de page)
+    {
+        $array_match_file_to_database[$_GET["field"]]=$newpos;
+        $array_match_file_to_database[$newcode]=$pos;
+        $_SESSION["dol_array_match_file_to_database"]=$serialized_array_match_file_to_database;
+    }
 }
 */
 // if ($action == 'builddoc') {
-// 	// Build import file
-// 	$result = $objimport->build_file($user, GETPOST('model', 'alpha'), $datatoimport, $array_match_file_to_database);
-// 	if ($result < 0) {
-// 		setEventMessages($objimport->error, $objimport->errors, 'errors');
-// 	} else {
-// 		setEventMessages($langs->trans("FileSuccessfullyBuilt"), null, 'mesgs');
-// 	}
+//  // Build import file
+//  $result = $objimport->build_file($user, GETPOST('model', 'alpha'), $datatoimport, $array_match_file_to_database);
+//  if ($result < 0) {
+//      setEventMessages($objimport->error, $objimport->errors, 'errors');
+//  } else {
+//      setEventMessages($langs->trans("FileSuccessfullyBuilt"), null, 'mesgs');
+//  }
 // }
 
 if ($action == 'deleteprof') {
@@ -539,8 +540,8 @@ if ($step == 3 && $datatoimport) {
     print dol_get_fiche_head($head, 'step3', '', -2);
 
     /*
-	 * Confirm delete file
-	 */
+     * Confirm delete file
+     */
     if ($action == 'delete') {
         print $form->formconfirm($_SERVER["PHP_SELF"] . '?urlfile=' . urlencode(GETPOST('urlfile')) . '&step=3' . $param, $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', 0, 1);
     }
@@ -1078,8 +1079,8 @@ if ($step == 4 && $datatoimport) {
         $valforsourcefieldnb[$lefti] = $key;
         $lefti++;
         /*if ($lefti > count($fieldstarget)) {
-			break; // Other fields are in the not imported area
-		}*/
+            break; // Other fields are in the not imported area
+        }*/
     }
     //var_dump($valforsourcefieldnb);
 
@@ -1133,8 +1134,8 @@ if ($step == 4 && $datatoimport) {
     print '<table class="nobordernopadding centpercent tableimport">';
     foreach ($fieldssource as $code => $line) {    // $fieldssource is an array code=column num,  line=content on first line for column in source file.
         /*if ($i == $minpos) {
-			break;
-		}*/
+            break;
+        }*/
         print '<tr style="height:' . $height . '" class="trimport oddevenimport">';
         $entity = (!empty($objimport->array_import_entities[0][$code]) ? $objimport->array_import_entities[0][$code] : $objimport->array_import_icon[0]);
 
@@ -1233,15 +1234,19 @@ if ($step == 4 && $datatoimport) {
                 foreach ($tmpval['labelkeyarray'] as $tmpval2) {
                     $labeltarget = $langs->transnoentities($tmpval2);
                     //var_dump($tmpstring1.' - '.$tmpstring2.' - '.$tmpval['labelkey'].' - '.$tmpval['label'].' - '.$tmpval2.' - '.$labeltarget);
-                    if ($tmpstring1 && ($tmpstring1 == $tmpcode || $tmpstring1 == strtolower($labeltarget)
-                            || $tmpstring1 == strtolower(dol_string_unaccent($labeltarget)) || $tmpstring1 == strtolower($tmpval2))) {
+                    if (
+                        $tmpstring1 && ($tmpstring1 == $tmpcode || $tmpstring1 == strtolower($labeltarget)
+                            || $tmpstring1 == strtolower(dol_string_unaccent($labeltarget)) || $tmpstring1 == strtolower($tmpval2))
+                    ) {
                         if (empty($codeselectedarray[$code])) {
                             $selectforline .= ' selected';
                             $codeselectedarray[$code] = 1;
                             break;
                         }
-                    } elseif ($tmpstring2 && ($tmpstring2 == $tmpcode || $tmpstring2 == strtolower($labeltarget)
-                            || $tmpstring2 == strtolower(dol_string_unaccent($labeltarget)) || $tmpstring2 == strtolower($tmpval2))) {
+                    } elseif (
+                        $tmpstring2 && ($tmpstring2 == $tmpcode || $tmpstring2 == strtolower($labeltarget)
+                            || $tmpstring2 == strtolower(dol_string_unaccent($labeltarget)) || $tmpstring2 == strtolower($tmpval2))
+                    ) {
                         if (empty($codeselectedarray[$code])) {
                             $selectforline .= ' selected';
                             $codeselectedarray[$code] = 1;
@@ -1355,7 +1360,7 @@ if ($step == 4 && $datatoimport) {
 
         // Function to save the selection in database
         print 'function saveSelection() {' . "\n";
-        //print '		console.log(arrayofselectedvalues);'."\n";
+        //print '       console.log(arrayofselectedvalues);'."\n";
         print '		arrayselectedfields = [];' . "\n";
         print '		arrayselectedfields.push(0);' . "\n";
 
@@ -1428,8 +1433,8 @@ if ($step == 4 && $datatoimport) {
     }
 
     /*
-	 * Action bar
-	 */
+     * Action bar
+     */
     print '<div class="tabsAction">';
 
     if (count($array_match_file_to_database)) {
@@ -1727,8 +1732,8 @@ if ($step == 5 && $datatoimport) {
         }
     }
     /*echo '<pre>';
-	print_r($objimport->array_import_updatekeys);
-	echo '</pre>';*/
+    print_r($objimport->array_import_updatekeys);
+    echo '</pre>';*/
     print '</td></tr>';
 
     print '</table>';
@@ -1766,15 +1771,15 @@ if ($step == 5 && $datatoimport) {
             $newval = $val;
             // Link to Dolibarr wiki pages
             /*$helppagename='EN:Table_'.$newval;
-			if ($helppagename && empty($conf->global->MAIN_HELP_DISABLELINK))
-			{
-				// Get helpbaseurl, helppage and mode from helppagename and langs
-				$arrayres=getHelpParamFor($helppagename,$langs);
-				$helpbaseurl=$arrayres['helpbaseurl'];
-				$helppage=$arrayres['helppage'];
-				$mode=$arrayres['mode'];
-				$newval.=' <a href="'.sprintf($helpbaseurl,$helppage).'">'.img_picto($langs->trans($mode == 'wiki' ? 'GoToWikiHelpPage': 'GoToHelpPage'),DOL_URL_ROOT.'/theme/common/helpdoc.png','',1).'</a>';
-			}*/
+            if ($helppagename && empty($conf->global->MAIN_HELP_DISABLELINK))
+            {
+                // Get helpbaseurl, helppage and mode from helppagename and langs
+                $arrayres=getHelpParamFor($helppagename,$langs);
+                $helpbaseurl=$arrayres['helpbaseurl'];
+                $helppage=$arrayres['helppage'];
+                $mode=$arrayres['mode'];
+                $newval.=' <a href="'.sprintf($helpbaseurl,$helppage).'">'.img_picto($langs->trans($mode == 'wiki' ? 'GoToWikiHelpPage': 'GoToHelpPage'),DOL_URL_ROOT.'/theme/common/helpdoc.png','',1).'</a>';
+            }*/
             print $newval;
         }
     } else {
@@ -1990,8 +1995,8 @@ if ($step == 5 && $datatoimport) {
         print '<div class="center">';
         print '<span class="opacitymedium">' . $langs->trans("NowClickToRunTheImport", $langs->transnoentitiesnoconv("RunImportFile")) . '</span><br>';
         /*if (empty($nboferrors)) {
-			print $langs->trans("DataLoadedWithId", $importid).'<br>';
-		}*/
+            print $langs->trans("DataLoadedWithId", $importid).'<br>';
+        }*/
         print '</div>';
 
         print '<br>';
@@ -2195,15 +2200,15 @@ if ($step == 6 && $datatoimport) {
             $newval = $val;
             // Link to Dolibarr wiki pages
             /*$helppagename='EN:Table_'.$newval;
-			if ($helppagename && empty($conf->global->MAIN_HELP_DISABLELINK))
-			{
-				// Get helpbaseurl, helppage and mode from helppagename and langs
-				$arrayres=getHelpParamFor($helppagename,$langs);
-				$helpbaseurl=$arrayres['helpbaseurl'];
-				$helppage=$arrayres['helppage'];
-				$mode=$arrayres['mode'];
-				$newval.=' <a href="'.sprintf($helpbaseurl,$helppage).'">'.img_picto($langs->trans($mode == 'wiki' ? 'GoToWikiHelpPage': 'GoToHelpPage'),DOL_URL_ROOT.'/theme/common/helpdoc.png','',1).'</a>';
-			}*/
+            if ($helppagename && empty($conf->global->MAIN_HELP_DISABLELINK))
+            {
+                // Get helpbaseurl, helppage and mode from helppagename and langs
+                $arrayres=getHelpParamFor($helppagename,$langs);
+                $helpbaseurl=$arrayres['helpbaseurl'];
+                $helppage=$arrayres['helppage'];
+                $mode=$arrayres['mode'];
+                $newval.=' <a href="'.sprintf($helpbaseurl,$helppage).'">'.img_picto($langs->trans($mode == 'wiki' ? 'GoToWikiHelpPage': 'GoToHelpPage'),DOL_URL_ROOT.'/theme/common/helpdoc.png','',1).'</a>';
+            }*/
             print $newval;
         }
     } else {
@@ -2401,14 +2406,14 @@ function show_elem($fieldssource, $pos, $key)
 
     if (($pos && $pos > count($fieldssource)) && (!isset($fieldssource[$pos]["imported"]))) {    // No fields
         /*
-		print '<tr style="height:'.$height.'" class="trimport oddevenimport">';
-		print '<td class="nocellnopadding" width="16" style="font-weight: normal">';
-		print '</td>';
-		print '<td style="font-weight: normal">';
-		print $langs->trans("NoFields");
-		print '</td>';
-		print '</tr>';
-		*/
+        print '<tr style="height:'.$height.'" class="trimport oddevenimport">';
+        print '<td class="nocellnopadding" width="16" style="font-weight: normal">';
+        print '</td>';
+        print '<td style="font-weight: normal">';
+        print $langs->trans("NoFields");
+        print '</td>';
+        print '</tr>';
+        */
     } elseif ($key == 'none') {    // Empty line
         print '<tr style="height:' . $height . '" class="trimport oddevenimport">';
         print '<td class="nocellnopadding" width="16" style="font-weight: normal">';

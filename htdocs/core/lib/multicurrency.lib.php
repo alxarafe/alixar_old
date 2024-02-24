@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015	ATM Consulting	<support@atm-consulting.fr>
+
+/* Copyright (C) 2015   ATM Consulting  <support@atm-consulting.fr>
  * Copyright (C) 2018	Regis Houssin	<regis.houssin@inodbox.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,10 +18,10 @@
  */
 
 /**
- *	\file		lib/multicurrency.lib.php
- *	\ingroup	multicurency
- *	\brief		This file is an example module library
- *				Put some comments here
+ *  \file       lib/multicurrency.lib.php
+ *  \ingroup    multicurency
+ *  \brief      This file is an example module library
+ *              Put some comments here
  */
 
 /**
@@ -30,48 +31,48 @@
  */
 function multicurrencyAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = dol_buildpath("/admin/multicurrency.php", 1);
-	$head[$h][1] = $langs->trans("Parameters");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = dol_buildpath("/admin/multicurrency.php", 1);
+    $head[$h][1] = $langs->trans("Parameters");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	$head[$h][0] = dol_buildpath("/multicurrency/multicurrency_rate.php", 1);
-	$head[$h][1] = $langs->trans("TabTitleMulticurrencyRate");
-	$head[$h][2] = 'ratelist';
-	$h++;
+    $head[$h][0] = dol_buildpath("/multicurrency/multicurrency_rate.php", 1);
+    $head[$h][1] = $langs->trans("TabTitleMulticurrencyRate");
+    $head[$h][2] = 'ratelist';
+    $h++;
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'multicurrency');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'multicurrency');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'multicurrency', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'multicurrency', 'remove');
 
-	return $head;
+    return $head;
 }
 
 /**
  * Prepare array with list of currency tabs
  *
- * @param	array	$aCurrencies	Currencies array
- * @return  array					Array of tabs
+ * @param   array   $aCurrencies    Currencies array
+ * @return  array                   Array of tabs
  */
 function multicurrencyLimitPrepareHead($aCurrencies)
 {
-	global $langs;
+    global $langs;
 
-	$i = 0;
-	$head = array();
+    $i = 0;
+    $head = array();
 
-	foreach ($aCurrencies as $currency) {
-		$head[$i][0] = $_SERVER['PHP_SELF'].'?currencycode='.$currency;
-		$head[$i][1] = $langs->trans("Currency".$currency).' ('.$langs->getCurrencySymbol($currency).')';
-		$head[$i][2] = $currency;
+    foreach ($aCurrencies as $currency) {
+        $head[$i][0] = $_SERVER['PHP_SELF'] . '?currencycode=' . $currency;
+        $head[$i][1] = $langs->trans("Currency" . $currency) . ' (' . $langs->getCurrencySymbol($currency) . ')';
+        $head[$i][2] = $currency;
 
-		$i++;
-	}
+        $i++;
+    }
 
-	return $head;
+    return $head;
 }

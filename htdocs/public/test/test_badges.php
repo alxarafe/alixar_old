@@ -1,5 +1,5 @@
 <?php
-//define("NOLOGIN",1);		// This means this output page does not require to be logged.
+//define("NOLOGIN",1);      // This means this output page does not require to be logged.
 define("NOCSRFCHECK", 1); // We accept to go on this page from external web site.
 if (!defined('NOSESSION')) {
     define('NOSESSION', '1');
@@ -52,7 +52,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
     </div>
 
     <figure class="highlight">
-			<pre>
+            <pre>
 
 &lt;h1&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h1&gt;
 &lt;h2&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h2&gt;
@@ -61,7 +61,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 &lt;h5&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h5&gt;
 &lt;h6&gt;Example heading &lt;span class=&quot;badge badge-secondary&quot;&gt;New&lt;/span&gt;&lt;/h6&gt;
 
-			</pre>
+            </pre>
     </figure>
 
     <p>Badges can be used as part of links or buttons to provide a counter.</p>
@@ -76,7 +76,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 &lt;button type=&quot;button&quot; class=&quot;button&quot;&gt;
   Notifications &lt;span class=&quot;badge badge-primary&quot;&gt;4&lt;/span&gt;
 &lt;/button&gt;
-		</pre>
+        </pre>
     </figure>
 
     <div class="warning">
@@ -97,7 +97,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
     </div>
 
     <figure class="highlight">
-			<pre>
+            <pre>
 
 
 &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot;&gt;
@@ -106,7 +106,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 &lt;/button&gt;
 
 
-			</pre>
+            </pre>
     </figure>
 
     <h2 id="contextual-variations">Contextual variations</h2>
@@ -126,7 +126,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
     </div>
 
     <figure class="highlight">
-			<pre>
+            <pre>
 
 &lt;span class=&quot;badge badge-primary&quot;&gt;Primary&lt;/span&gt;
 &lt;span class=&quot;badge badge-secondary&quot;&gt;Secondary&lt;/span&gt;
@@ -137,7 +137,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 &lt;span class=&quot;badge badge-light&quot;&gt;Light&lt;/span&gt;
 &lt;span class=&quot;badge badge-dark&quot;&gt;Dark&lt;/span&gt;
 
-			</pre>
+            </pre>
     </figure>
 
     <div class="warning">
@@ -161,7 +161,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 <?php for ($i = 0; $i <= 9; $i++) : ?>
     &lt;span class="badge badge-status<?php print $i; ?>" &gt;status<?php print $i; ?>&lt;/span&gt;
 <?php endfor; ?>
-		</pre>
+        </pre>
     </figure>
 
 
@@ -187,7 +187,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
     </div>
 
     <figure class="highlight">
-		<pre>
+        <pre>
 
 &lt;span class=&quot;badge badge-pill badge-primary&quot;&gt;Primary&lt;/span&gt;
 &lt;span class=&quot;badge badge-pill badge-secondary&quot;&gt;Secondary&lt;/span&gt;
@@ -200,7 +200,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 <?php for ($i = 0; $i <= 9; $i++) : ?>
     &lt;span class="badge badge-pill badge-status<?php print $i; ?>" &gt;status<?php print $i; ?>&lt;/span&gt;
 <?php endfor; ?>
-		</pre>
+        </pre>
     </figure>
 
 
@@ -226,7 +226,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
     </div>
 
     <figure class="highlight">
-		<pre>
+        <pre>
 
 &lt;span class=&quot;badge badge-dot badge-primary&quot;&gt;&lt;/span&gt;
 &lt;span class=&quot;badge badge-dot badge-secondary&quot;&gt;&lt;/span&gt;
@@ -239,7 +239,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 <?php for ($i = 0; $i <= 9; $i++) : ?>
     &lt;span class="badge badge-dot badge-status<?php print $i; ?>" &gt;&lt;/span&gt;
 <?php endfor; ?>
-		</pre>
+        </pre>
     </figure>
 
 
@@ -287,7 +287,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 <?php for ($i = 0; $i <= 9; $i++) : ?>
     &lt;a href=&quot;#&quot; class="badge badge-status<?php print $i; ?>" &gt;status<?php print $i; ?>&lt;/a&gt;
 <?php endfor; ?>
-		</pre>
+        </pre>
     </figure>
 
 
@@ -300,7 +300,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
     <figure class="highlight"><pre>
 &lt;?php  print dolGetBadge('your label for accessibility', 'your label &lt;u&gt;with&lt;/u&gt; &lt;em&gt;html&lt;/em&gt;', 'danger', 'pill') ?&gt;
 &lt;?php  print dolGetBadge('your label for accessibility', 'your label &lt;u&gt;with&lt;/u&gt; &lt;em&gt;html&lt;/em&gt;', 'warning', 'dot') ?&gt;
-		</pre>
+        </pre>
     </figure>
 
     <h2 id="helper">Use status helper function</h2>
@@ -338,7 +338,7 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 &lt;?php print dolGetStatus('your label for accessibility', 'your label', 'your label &lt;u&gt;with&lt;/u&gt; &lt;em&gt;html&lt;/em&gt;', 'status4',4) ?&gt;
 &lt;?php print dolGetStatus('your label for accessibility', 'your label', 'your label &lt;u&gt;with&lt;/u&gt; &lt;em&gt;html&lt;/em&gt;', 'status4',5) ?&gt;
 &lt;?php print dolGetStatus('your label for accessibility', 'your label', 'your label &lt;u&gt;with&lt;/u&gt; &lt;em&gt;html&lt;/em&gt;', 'status4',6) ?&gt;
-		</pre>
+        </pre>
     </figure>
 
 

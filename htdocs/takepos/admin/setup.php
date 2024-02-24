@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2011  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2011-2017  Juanjo Menent       <jmenent@2byte.es>
  * Copyright (C) 2021       Nicolas ZABOURI     <info@inovea-conseil.com>
@@ -414,7 +415,7 @@ if (isModEnabled('barcode')) {
 //$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 //foreach ($dirmodels as $reldir)
 //{
-//	$dir = dol_buildpath($reldir."core/modules/facture/");
+//  $dir = dol_buildpath($reldir."core/modules/facture/");
 //    if (is_dir($dir))
 //    {
 //        $handle = opendir($dir);
@@ -450,7 +451,7 @@ if (isModEnabled('barcode')) {
 //
 //                        if ($module->isEnabled())
 //                        {
-//							$array[preg_replace('/\-.*$/', '', preg_replace('/\.php$/', '', $file))] = preg_replace('/\-.*$/', '', preg_replace('/mod_facture_/', '', preg_replace('/\.php$/', '', $file)));
+//                          $array[preg_replace('/\-.*$/', '', preg_replace('/\.php$/', '', $file))] = preg_replace('/\-.*$/', '', preg_replace('/mod_facture_/', '', preg_replace('/\.php$/', '', $file)));
 //                        }
 //                    }
 //                }

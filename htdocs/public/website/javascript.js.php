@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016-2023 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -112,9 +113,9 @@ if (empty($pageid)) {
 /* Not required for CSS file
 if (empty($pageid))
 {
-	$langs->load("website");
-	print $langs->trans("PreviewOfSiteNotYetAvailable");
-	exit;
+    $langs->load("website");
+    print $langs->trans("PreviewOfSiteNotYetAvailable");
+    exit;
 }
 */
 

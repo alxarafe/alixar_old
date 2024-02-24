@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -24,63 +25,63 @@
  *  \file       htdocs/core/modules/propale/modules_propale.php
  *  \ingroup    propale
  *  \brief      Fichier contenant la class mere de generation des propales en PDF
- *  			et la class mere de numerotation des propales
+ *              et la class mere de numerotation des propales
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // Requis car utilise dans les classes qui heritent
+require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php'; // Requis car utilise dans les classes qui heritent
 
 
 /**
- *	Class mere des modeles de propale
+ *  Class mere des modeles de propale
  */
 abstract class ModelePDFPropales extends CommonDocGenerator
 {
-	public $posxpicture;
-	public $posxtva;
-	public $posxup;
-	public $posxqty;
-	public $posxunit;
-	public $posxdesc;
-	public $posxdiscount;
-	public $postotalht;
+    public $posxpicture;
+    public $posxtva;
+    public $posxup;
+    public $posxqty;
+    public $posxunit;
+    public $posxdesc;
+    public $posxdiscount;
+    public $postotalht;
 
-	public $tva;
-	public $tva_array;
-	public $localtax1;
-	public $localtax2;
+    public $tva;
+    public $tva_array;
+    public $localtax1;
+    public $localtax2;
 
-	public $atleastonediscount = 0;
-	public $atleastoneratenotnull = 0;
+    public $atleastonediscount = 0;
+    public $atleastoneratenotnull = 0;
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return list of active generation modules
-	 *
-	 *  @param	DoliDB	$db     			Database handler
-	 *  @param  integer	$maxfilenamelength  Max length of value to show
-	 *  @return	array						List of templates
-	 */
-	public static function liste_modeles($db, $maxfilenamelength = 0)
-	{
+    /**
+     *  Return list of active generation modules
+     *
+     *  @param  DoliDB  $db                 Database handler
+     *  @param  integer $maxfilenamelength  Max length of value to show
+     *  @return array                       List of templates
+     */
+    public static function liste_modeles($db, $maxfilenamelength = 0)
+    {
 		// phpcs:enable
-		$type = 'propal';
-		$list = array();
+        $type = 'propal';
+        $list = array();
 
-		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-		$list = getListOfModels($db, $type, $maxfilenamelength);
+        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        $list = getListOfModels($db, $type, $maxfilenamelength);
 
-		return $list;
-	}
+        return $list;
+    }
 }
 
 
 /**
- *	Parent class for numbering rules of proposals
+ *  Parent class for numbering rules of proposals
  */
 abstract class ModeleNumRefPropales extends CommonNumRefGenerator
 {
-	// No overload code
+    // No overload code
 }

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2008	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2008  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005		Simon TOSSER			<simon@kornog-computing.com>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
@@ -461,9 +462,13 @@ if (empty($reshook)) {
 
             setEventMessages($object->error, $object->errors, 'errors');
         }
-    } elseif ($action == 'confirm_valid' && $confirm == 'yes' &&
-        ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'creer'))
-            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'shipping_advance', 'validate')))
+    } elseif (
+        $action == 'confirm_valid' &&
+        $confirm == 'yes' &&
+        ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') &&
+        $user->hasRight('expedition', 'creer')) ||
+            (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') &&
+            $user->hasRight('expedition', 'shipping_advance', 'validate')))
     ) {
         $object->fetch_thirdparty();
 
@@ -515,11 +520,11 @@ if (empty($reshook)) {
         // TODO add alternative status
         //} elseif ($action == 'reopen' && (!empty($user->rights->expedition->creer) || !empty($user->rights->expedition->shipping_advance->validate)))
         //{
-        //	$result = $object->setStatut(0);
-        //	if ($result < 0)
-        //	{
-        //		setEventMessages($object->error, $object->errors, 'errors');
-        //	}
+        //  $result = $object->setStatut(0);
+        //  if ($result < 0)
+        //  {
+        //      setEventMessages($object->error, $object->errors, 'errors');
+        //  }
         //}
     } elseif ($action == 'setdate_livraison' && $user->hasRight('expedition', 'creer')) {
         $datedelivery = dol_mktime(GETPOST('liv_hour', 'int'), GETPOST('liv_min', 'int'), 0, GETPOST('liv_month', 'int'), GETPOST('liv_day', 'int'), GETPOST('liv_year', 'int'));
@@ -529,7 +534,8 @@ if (empty($reshook)) {
         if ($result < 0) {
             setEventMessages($object->error, $object->errors, 'errors');
         }
-    } elseif (($action == 'settracking_number'
+    } elseif (
+        ($action == 'settracking_number'
             || $action == 'settracking_url'
             || $action == 'settrueWeight'
             || $action == 'settrueWidth'
@@ -2380,9 +2386,9 @@ if ($action == 'create') {
                             $htmltooltip .= ' - ' . $shipmentline_var['qty_shipped'];
                             $htmltooltip .= ' - ' . $langs->trans("DateValidation") . ' : ' . (empty($shipmentline_var['date_valid']) ? $langs->trans("Draft") : dol_print_date($shipmentline_var['date_valid'], 'dayhour'));
                             /*if (isModEnabled('stock') && $shipmentline_var['warehouse'] > 0) {
-								$warehousestatic->fetch($shipmentline_var['warehouse']);
-								$htmltext .= '<br>'.$langs->trans("FromLocation").' : '.$warehousestatic->getNomUrl(1, '', 0, 1);
-							}*/
+                                $warehousestatic->fetch($shipmentline_var['warehouse']);
+                                $htmltext .= '<br>'.$langs->trans("FromLocation").' : '.$warehousestatic->getNomUrl(1, '', 0, 1);
+                            }*/
                             //print ' '.$form->textwithpicto('', $htmltext, 1);
 
                             $qtyalreadysent += $shipmentline_var['qty_shipped'];
@@ -2624,8 +2630,8 @@ if ($action == 'create') {
     $object->fetchObjectLinked($object->id, $object->element);
 
     /*
-	 *    Boutons actions
-	 */
+     *    Boutons actions
+     */
 
     if (($user->socid == 0) && ($action != 'presend')) {
         print '<div class="tabsAction">';
@@ -2635,8 +2641,10 @@ if ($action == 'create') {
         // modified by hook
         if (empty($reshook)) {
             if ($object->statut == Expedition::STATUS_DRAFT && $num_prod > 0) {
-                if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'creer'))
-                    || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'shipping_advance', 'validate'))) {
+                if (
+                    (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'creer'))
+                    || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'shipping_advance', 'validate'))
+                ) {
                     print dolGetButtonAction('', $langs->trans('Validate'), 'default', $_SERVER["PHP_SELF"] . '?action=valid&token=' . newToken() . '&id=' . $object->id, '');
                 } else {
                     print dolGetButtonAction($langs->trans('NotAllowed'), $langs->trans('Validate'), 'default', $_SERVER['PHP_SELF'] . '#', '', false);
@@ -2708,8 +2716,8 @@ if ($action == 'create') {
     }
 
     /*
-	 * Documents generated
-	 */
+     * Documents generated
+     */
 
     if ($action != 'presend' && $action != 'editline') {
         print '<div class="fichecenter"><div class="fichehalfleft">';
@@ -2739,8 +2747,8 @@ if ($action == 'create') {
     }
 
     /*
-	 * Action presend
-	 */
+     * Action presend
+     */
 
     //Select mail models is same action as presend
     if (GETPOST('modelselected')) {

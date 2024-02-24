@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) ---Put here your own copyright and developer email---
  *
@@ -23,25 +24,25 @@
  */
 
 // General defined Options
-//if (! defined('CSRFCHECK_WITH_TOKEN'))     define('CSRFCHECK_WITH_TOKEN', '1');					// Force use of CSRF protection with tokens even for GET
-//if (! defined('MAIN_AUTHENTICATION_MODE')) define('MAIN_AUTHENTICATION_MODE', 'aloginmodule');	// Force authentication handler
-//if (! defined('MAIN_LANG_DEFAULT'))        define('MAIN_LANG_DEFAULT', 'auto');					// Force LANG (language) to a particular value
-//if (! defined('MAIN_SECURITY_FORCECSP'))   define('MAIN_SECURITY_FORCECSP', 'none');				// Disable all Content Security Policies
-//if (! defined('NOBROWSERNOTIF'))     		 define('NOBROWSERNOTIF', '1');					// Disable browser notification
-//if (! defined('NOIPCHECK'))                define('NOIPCHECK', '1');						// Do not check IP defined into conf $dolibarr_main_restrict_ip
-//if (! defined('NOLOGIN'))                  define('NOLOGIN', '1');						// Do not use login - if this page is public (can be called outside logged session). This includes the NOIPCHECK too.
-//if (! defined('NOREQUIREAJAX'))            define('NOREQUIREAJAX', '1');       	  		// Do not load ajax.lib.php library
-//if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');					// Do not create database handler $db
-//if (! defined('NOREQUIREHTML'))            define('NOREQUIREHTML', '1');					// Do not load html.form.class.php
-//if (! defined('NOREQUIREMENU'))            define('NOREQUIREMENU', '1');					// Do not load and show top and left menu
-//if (! defined('NOREQUIRESOC'))             define('NOREQUIRESOC', '1');					// Do not load object $mysoc
-//if (! defined('NOREQUIRETRAN'))            define('NOREQUIRETRAN', '1');					// Do not load object $langs
-//if (! defined('NOREQUIREUSER'))            define('NOREQUIREUSER', '1');					// Do not load object $user
-//if (! defined('NOSCANGETFORINJECTION'))    define('NOSCANGETFORINJECTION', '1');			// Do not check injection attack on GET parameters
-//if (! defined('NOSCANPOSTFORINJECTION'))   define('NOSCANPOSTFORINJECTION', '1');			// Do not check injection attack on POST parameters
-//if (! defined('NOSESSION'))                define('NOSESSION', '1');						// On CLI mode, no need to use web sessions
-//if (! defined('NOSTYLECHECK'))             define('NOSTYLECHECK', '1');					// Do not check style html tag into posted data
-//if (! defined('NOTOKENRENEWAL'))           define('NOTOKENRENEWAL', '1');					// Do not roll the Anti CSRF token (used if MAIN_SECURITY_CSRF_WITH_TOKEN is on)
+//if (! defined('CSRFCHECK_WITH_TOKEN'))     define('CSRFCHECK_WITH_TOKEN', '1');                   // Force use of CSRF protection with tokens even for GET
+//if (! defined('MAIN_AUTHENTICATION_MODE')) define('MAIN_AUTHENTICATION_MODE', 'aloginmodule');    // Force authentication handler
+//if (! defined('MAIN_LANG_DEFAULT'))        define('MAIN_LANG_DEFAULT', 'auto');                   // Force LANG (language) to a particular value
+//if (! defined('MAIN_SECURITY_FORCECSP'))   define('MAIN_SECURITY_FORCECSP', 'none');              // Disable all Content Security Policies
+//if (! defined('NOBROWSERNOTIF'))           define('NOBROWSERNOTIF', '1');                 // Disable browser notification
+//if (! defined('NOIPCHECK'))                define('NOIPCHECK', '1');                      // Do not check IP defined into conf $dolibarr_main_restrict_ip
+//if (! defined('NOLOGIN'))                  define('NOLOGIN', '1');                        // Do not use login - if this page is public (can be called outside logged session). This includes the NOIPCHECK too.
+//if (! defined('NOREQUIREAJAX'))            define('NOREQUIREAJAX', '1');                  // Do not load ajax.lib.php library
+//if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');                    // Do not create database handler $db
+//if (! defined('NOREQUIREHTML'))            define('NOREQUIREHTML', '1');                  // Do not load html.form.class.php
+//if (! defined('NOREQUIREMENU'))            define('NOREQUIREMENU', '1');                  // Do not load and show top and left menu
+//if (! defined('NOREQUIRESOC'))             define('NOREQUIRESOC', '1');                   // Do not load object $mysoc
+//if (! defined('NOREQUIRETRAN'))            define('NOREQUIRETRAN', '1');                  // Do not load object $langs
+//if (! defined('NOREQUIREUSER'))            define('NOREQUIREUSER', '1');                  // Do not load object $user
+//if (! defined('NOSCANGETFORINJECTION'))    define('NOSCANGETFORINJECTION', '1');          // Do not check injection attack on GET parameters
+//if (! defined('NOSCANPOSTFORINJECTION'))   define('NOSCANPOSTFORINJECTION', '1');         // Do not check injection attack on POST parameters
+//if (! defined('NOSESSION'))                define('NOSESSION', '1');                      // On CLI mode, no need to use web sessions
+//if (! defined('NOSTYLECHECK'))             define('NOSTYLECHECK', '1');                   // Do not check style html tag into posted data
+//if (! defined('NOTOKENRENEWAL'))           define('NOTOKENRENEWAL', '1');                 // Do not roll the Anti CSRF token (used if MAIN_SECURITY_CSRF_WITH_TOKEN is on)
 
 // Load Dolibarr environment
 $res = 0;
@@ -156,16 +157,16 @@ foreach ($object->fields as $key => $val) {
 $fieldstosearchall = [];
 // List of fields to search into when doing a "search in all"
 // foreach ($object->fields as $key => $val) {
-// 	if (!empty($val['searchall'])) {
-// 		$fieldstosearchall['t.'.$key] = $val['label'];
-// 	}
+//  if (!empty($val['searchall'])) {
+//      $fieldstosearchall['t.'.$key] = $val['label'];
+//  }
 // }
 // $parameters = array('fieldstosearchall'=>$fieldstosearchall);
 // $reshook = $hookmanager->executeHooks('completeFieldsToSearchAll', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 // if ($reshook > 0) {
-// 	$fieldstosearchall = empty($hookmanager->resArray['fieldstosearchall']) ? array() : $hookmanager->resArray['fieldstosearchall'];
+//  $fieldstosearchall = empty($hookmanager->resArray['fieldstosearchall']) ? array() : $hookmanager->resArray['fieldstosearchall'];
 // } elseif ($reshook == 0) {
-// 	$fieldstosearchall = array_merge($fieldstosearchall, empty($hookmanager->resArray['fieldstosearchall']) ? array() : $hookmanager->resArray['fieldstosearchall']);
+//  $fieldstosearchall = array_merge($fieldstosearchall, empty($hookmanager->resArray['fieldstosearchall']) ? array() : $hookmanager->resArray['fieldstosearchall']);
 // }
 
 // Definition of array of fields for columns
@@ -252,8 +253,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 
@@ -349,19 +352,19 @@ if ($search_all) {
 // If the internal user must only see his customers, force searching by him
 $search_sale = 0;
 if (!$user->hasRight('societe', 'client', 'voir')) {
-	$search_sale = $user->id;
+    $search_sale = $user->id;
 }
 // Search on sale representative
 if ($search_sale && $search_sale != '-1') {
-	if ($search_sale == -2) {
-		$sql .= " AND NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = t.fk_soc)";
-	} elseif ($search_sale > 0) {
-		$sql .= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = t.fk_soc AND sc.fk_user = ".((int) $search_sale).")";
-	}
+    if ($search_sale == -2) {
+        $sql .= " AND NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = t.fk_soc)";
+    } elseif ($search_sale > 0) {
+        $sql .= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = t.fk_soc AND sc.fk_user = ".((int) $search_sale).")";
+    }
 }
 // Search on socid
 if ($socid) {
-	$sql .= " AND t.fk_soc = ".((int) $socid);
+    $sql .= " AND t.fk_soc = ".((int) $socid);
 }
 */
 //$sql.= dolSqlDateFilter("t.field", $search_xxxday, $search_xxxmonth, $search_xxxyear);
@@ -375,13 +378,13 @@ $sql .= $hookmanager->resPrint;
 /* If a group by is required
 $sql .= " GROUP BY ";
 foreach($object->fields as $key => $val) {
-	$sql .= "t.".$db->escape($key).", ";
+    $sql .= "t.".$db->escape($key).", ";
 }
 // Add fields from extrafields
 if (!empty($extrafields->attributes[$object->table_element]['label'])) {
-	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
-		$sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.', ' : '');
-	}
+    foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
+        $sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.', ' : '');
+    }
 }
 // Add groupby from hooks
 $parameters = array();
@@ -449,15 +452,15 @@ llxHeader('', $title, $help_url, '', 0, 0, $morejs, $morecss, '', 'mod-mymodule 
 // Example : Adding jquery code
 // print '<script type="text/javascript">
 // jQuery(document).ready(function() {
-// 	function init_myfunc()
-// 	{
-// 		jQuery("#myid").removeAttr(\'disabled\');
-// 		jQuery("#myid").attr(\'disabled\',\'disabled\');
-// 	}
-// 	init_myfunc();
-// 	jQuery("#mybutton").click(function() {
-// 		init_myfunc();
-// 	});
+//  function init_myfunc()
+//  {
+//      jQuery("#myid").removeAttr(\'disabled\');
+//      jQuery("#myid").attr(\'disabled\',\'disabled\');
+//  }
+//  init_myfunc();
+//  jQuery("#mybutton").click(function() {
+//      init_myfunc();
+//  });
 // });
 // </script>';
 
@@ -634,7 +637,7 @@ $parameters = ['arrayfields' => $arrayfields];
 $reshook = $hookmanager->executeHooks('printFieldListOption', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 /*if (!empty($arrayfields['anotherfield']['checked'])) {
-	print '<td class="liste_titre"></td>';
+    print '<td class="liste_titre"></td>';
 }*/
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
@@ -680,8 +683,8 @@ $parameters = ['arrayfields' => $arrayfields, 'param' => $param, 'sortfield' => 
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 /*if (!empty($arrayfields['anotherfield']['checked'])) {
-	print '<th class="liste_titre right">'.$langs->trans("AnotherField").'</th>';
-	$totalarray['nbfield']++;
+    print '<th class="liste_titre right">'.$langs->trans("AnotherField").'</th>';
+    $totalarray['nbfield']++;
 }*/
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {

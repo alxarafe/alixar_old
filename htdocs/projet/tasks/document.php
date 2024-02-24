@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010-2012 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2006-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2012      Florian Henry        <florian.henry@open-concept.pro>
@@ -39,7 +40,7 @@ $langs->loadLangs(['projects', 'other']);
 $action = GETPOST('action', 'aZ09');
 $confirm = GETPOST('confirm', 'alpha');
 $mine = GETPOST('mode') == 'mine' ? 1 : 0;
-//if (! $user->rights->projet->all->lire) $mine=1;	// Special for projects
+//if (! $user->rights->projet->all->lire) $mine=1;  // Special for projects
 $id = GETPOST('id', 'int');
 $ref = GETPOST('ref', 'alpha');
 $withproject = GETPOST('withproject', 'int');

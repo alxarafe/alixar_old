@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015		Jean-François Ferry     <jfefe@aternatik.fr>
+
+/* Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016		Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2018-2020  Frédéric France         <frederic.france@netlogic.fr>
  *

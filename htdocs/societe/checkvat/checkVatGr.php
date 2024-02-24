@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016       Spiros Ioannou
  * Copyright (C) 2017       Marios Kaintatzis
  * Copyright (C) 2023       Nick Fragoulis
@@ -38,52 +39,52 @@ echo json_encode($result); // Encode the result as JSON and output
 
 /**
 * Request VAT details
-* @param 	string 	$username 			Company AADE username
-* @param 	string 	$password 			Company AADE password
-* @param 	string 	$AFMcalledby 		Company vat number
-* @param 	string 	$AFMcalledfor 		Client vat number
+* @param    string  $username           Company AADE username
+* @param    string  $password           Company AADE password
+* @param    string  $AFMcalledby        Company vat number
+* @param    string  $AFMcalledfor       Client vat number
 * @return   string
 */
 function checkVATGR($username, $password, $AFMcalledby, $AFMcalledfor)
 {
-	/*
-	$WS_DOL_URL_WSDL = "https://www1.gsis.gr/webtax2/wsgsis/RgWsPublic/RgWsPublicPort?WSDL";
+    /*
+    $WS_DOL_URL_WSDL = "https://www1.gsis.gr/webtax2/wsgsis/RgWsPublic/RgWsPublicPort?WSDL";
 
-	require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-	$params = getSoapParams();
-	//ini_set('default_socket_timeout', $params['response_timeout']);
-	$soapclient = new nusoap_client($WS_DOL_URL_WSDL, true, $params['proxy_host'], $params['proxy_port'], $params['proxy_login'], $params['proxy_password'], $params['connection_timeout'], $params['response_timeout']);
+    require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+    $params = getSoapParams();
+    //ini_set('default_socket_timeout', $params['response_timeout']);
+    $soapclient = new nusoap_client($WS_DOL_URL_WSDL, true, $params['proxy_host'], $params['proxy_port'], $params['proxy_login'], $params['proxy_password'], $params['connection_timeout'], $params['response_timeout']);
 
-	$soapclient->soap_defencoding = 'utf-8';
-	$soapclient->xml_encoding = 'utf-8';
-	$soapclient->decode_utf8 = false;
+    $soapclient->soap_defencoding = 'utf-8';
+    $soapclient->xml_encoding = 'utf-8';
+    $soapclient->decode_utf8 = false;
 
-	// Check for an error
-	$err = $soapclient->getError();
-	if ($err) {
-		dol_syslog("Constructor error ".$WS_DOL_URL, LOG_ERR);
-	}
+    // Check for an error
+    $err = $soapclient->getError();
+    if ($err) {
+        dol_syslog("Constructor error ".$WS_DOL_URL, LOG_ERR);
+    }
 
-	...
+    ...
 
 
-	*/
+    */
 
-	// TODO Replace this with code using nusoap_client() and remove phpstan tag
-	// @phpstan-ignore-next-line
-	$client = new SoapClient("https://www1.gsis.gr/webtax2/wsgsis/RgWsPublic/RgWsPublicPort?WSDL", array('trace' => true));
-	$authHeader = new stdClass();
-	$authHeader->UsernameToken = new stdClass();
-	$authHeader->UsernameToken->Username = "$username";
-	$authHeader->UsernameToken->Password = "$password";
-	$Headers[] = new SoapHeader('https://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd', 'Security', $authHeader, true);
-	$client->__setSoapHeaders($Headers);
-	$result = $client->rgWsPublicAfmMethod(
-		array(
-			'afmCalledBy' => "$AFMcalledby",
-			'afmCalledFor' => "$AFMcalledfor",
-		)
-	);
+    // TODO Replace this with code using nusoap_client() and remove phpstan tag
+    // @phpstan-ignore-next-line
+    $client = new SoapClient("https://www1.gsis.gr/webtax2/wsgsis/RgWsPublic/RgWsPublicPort?WSDL", array('trace' => true));
+    $authHeader = new stdClass();
+    $authHeader->UsernameToken = new stdClass();
+    $authHeader->UsernameToken->Username = "$username";
+    $authHeader->UsernameToken->Password = "$password";
+    $Headers[] = new SoapHeader('https://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd', 'Security', $authHeader, true);
+    $client->__setSoapHeaders($Headers);
+    $result = $client->rgWsPublicAfmMethod(
+        array(
+            'afmCalledBy' => "$AFMcalledby",
+            'afmCalledFor' => "$AFMcalledfor",
+        )
+    );
 
-	return $result;
+    return $result;
 }

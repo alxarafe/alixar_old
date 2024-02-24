@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2010-2011	Regis Houssin <regis.houssin@inodbox.com>
+/* Copyright (C) 2010-2011  Regis Houssin <regis.houssin@inodbox.com>
  * Copyright (C) 2013		Juanjo Menent <jmenent@2byte.es>
  * Copyright (C) 2014       Marcos García <marcosgdf@gmail.com>
  *
@@ -41,8 +41,8 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
         <td class="center"><?php echo dol_print_date($objectlink->date_debut, 'day'); ?></td>
         <td class="right"><?php
             if ($user->hasRight('expensereport', 'lire')) {
-                $total = $total + $objectlink->total_ht;
-                echo price($objectlink->total_ht);
+            $total = $total + $objectlink->total_ht;
+            echo price($objectlink->total_ht);
             } ?></td>
         <td class="right"><?php echo $objectlink->getLibStatut(3); ?></td>
         <td class="right">

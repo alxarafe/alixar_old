@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2007 Rodolphe Quiedeville		<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2007 Rodolphe Quiedeville     <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016 Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2004      Eric Seigne				<eric.seigne@ryxeo.com>
  * Copyright (C) 2005      Marc Barilley / Ocebo	<marc@ocebo.com>
@@ -254,25 +255,25 @@ $arrayfields = [
 // List of fields to search into when doing a "search in all"
 /*$fieldstosearchall = array();
 foreach ($object->fields as $key => $val) {
-	if (!empty($val['searchall'])) {
-		$fieldstosearchall['t.'.$key] = $val['label'];
-	}
+    if (!empty($val['searchall'])) {
+        $fieldstosearchall['t.'.$key] = $val['label'];
+    }
 }*/
 
 // Definition of array of fields for columns
 /*$arrayfields = array();
 foreach ($object->fields as $key => $val) {
-	// If $val['visible']==0, then we never show the field
-	if (!empty($val['visible'])) {
-		$visible = (int) dol_eval($val['visible'], 1);
-		$arrayfields['t.'.$key] = array(
-			'label'=>$val['label'],
-			'checked'=>(($visible < 0) ? 0 : 1),
-			'enabled'=>(abs($visible) != 3 && dol_eval($val['enabled'], 1)),
-			'position'=>$val['position'],
-			'help'=> isset($val['help']) ? $val['help'] : ''
-		);
-	}
+    // If $val['visible']==0, then we never show the field
+    if (!empty($val['visible'])) {
+        $visible = (int) dol_eval($val['visible'], 1);
+        $arrayfields['t.'.$key] = array(
+            'label'=>$val['label'],
+            'checked'=>(($visible < 0) ? 0 : 1),
+            'enabled'=>(abs($visible) != 3 && dol_eval($val['enabled'], 1)),
+            'position'=>$val['position'],
+            'help'=> isset($val['help']) ? $val['help'] : ''
+        );
+    }
 }*/
 
 if (!$user->hasRight('societe', 'client', 'voir')) {
@@ -1692,7 +1693,8 @@ $typenArray = null;
 $now = dol_now();
 
 $with_margin_info = false;
-if (isModEnabled('margin') && (
+if (
+    isModEnabled('margin') && (
         !empty($arrayfields['total_pa']['checked'])
         || !empty($arrayfields['total_margin']['checked'])
         || !empty($arrayfields['total_margin_rate']['checked'])

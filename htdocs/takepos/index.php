@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018	Andreu Bisquerra	<jove@bisquerra.com>
+
+/* Copyright (C) 2018   Andreu Bisquerra    <jove@bisquerra.com>
  * Copyright (C) 2019	Josep Lluís Amador	<joseplluis@lliuretic.cat>
  * Copyright (C) 2020	Thibault FOUCART	<support@ptibogxiv.net>
  *
@@ -23,10 +24,10 @@
  *    \brief      Main TakePOS screen
  */
 
-// if (! defined('NOREQUIREUSER')) 		define('NOREQUIREUSER','1'); 		// Not disabled cause need to load personalized language
-// if (! defined('NOREQUIREDB')) 		define('NOREQUIREDB','1'); 			// Not disabled cause need to load personalized language
-// if (! defined('NOREQUIRESOC')) 		define('NOREQUIRESOC','1');
-// if (! defined('NOREQUIRETRAN')) 		define('NOREQUIRETRAN','1');
+// if (! defined('NOREQUIREUSER'))      define('NOREQUIREUSER','1');        // Not disabled cause need to load personalized language
+// if (! defined('NOREQUIREDB'))        define('NOREQUIREDB','1');          // Not disabled cause need to load personalized language
+// if (! defined('NOREQUIRESOC'))       define('NOREQUIRESOC','1');
+// if (! defined('NOREQUIRETRAN'))      define('NOREQUIRETRAN','1');
 
 if (!defined('NOREQUIREMENU')) {
     define('NOREQUIREMENU', '1');
@@ -389,8 +390,8 @@ $subcategories = dol_sort_array($subcategories, 'label');
                         echo '$("#proimg"+ishow).attr("title","");';
                         echo '$("#proimg"+ishow).attr("src","genimg/empty.png");';
                     } else {
-                        echo '$("#probutton"+ishow).hide();';
-                        echo '$("#probutton"+ishow).text("");';
+                            echo '$("#probutton"+ishow).hide();';
+                            echo '$("#probutton"+ishow).text("");';
                     }?>
                         $("#proprice" + ishow).attr("class", "hidden");
                         $("#proprice" + ishow).html("");
@@ -408,17 +409,17 @@ $subcategories = dol_sort_array($subcategories, 'label');
                         <?php if (!getDolGlobalString('TAKEPOS_HIDE_PRODUCT_IMAGES')) {
                         echo '$("#prodivdesc"+ishow).show();';
                         if (getDolGlobalInt('TAKEPOS_SHOW_PRODUCT_REFERENCE') == 1) {
-                            echo '$("#prodesc"+ishow).html(data[parseInt(idata)][\'ref\'].bold() + \' - \' + data[parseInt(idata)][\'label\']);';
+                                echo '$("#prodesc"+ishow).html(data[parseInt(idata)][\'ref\'].bold() + \' - \' + data[parseInt(idata)][\'label\']);';
                         } elseif (getDolGlobalInt('TAKEPOS_SHOW_PRODUCT_REFERENCE') == 2) {
-                            echo '$("#prodesc"+ishow).html(data[parseInt(idata)][\'ref\'].bold());';
+                                echo '$("#prodesc"+ishow).html(data[parseInt(idata)][\'ref\'].bold());';
                         } else {
-                            echo '$("#prodesc"+ishow).html(data[parseInt(idata)][\'label\']);';
+                                echo '$("#prodesc"+ishow).html(data[parseInt(idata)][\'label\']);';
                         }
                         echo '$("#proimg"+ishow).attr("title", titlestring);';
                         echo '$("#proimg"+ishow).attr("src", "genimg/index.php?query=pro&id="+data[idata][\'id\']);';
                     } else {
-                        echo '$("#probutton"+ishow).show();';
-                        echo '$("#probutton"+ishow).html(data[parseInt(idata)][\'label\']);';
+                            echo '$("#probutton"+ishow).show();';
+                            echo '$("#probutton"+ishow).html(data[parseInt(idata)][\'label\']);';
                     }
                         ?>
                         if (data[parseInt(idata)]['price_formated']) {
@@ -721,7 +722,7 @@ $subcategories = dol_sort_array($subcategories, 'label');
 
         function New() {
             // If we go here,it means $conf->global->TAKEPOS_BAR_RESTAURANT is not defined
-            invoiceid = $("#invoiceid").val();		// This is a hidden field added by invoice.php
+            invoiceid = $("#invoiceid").val();      // This is a hidden field added by invoice.php
 
             console.log("New with place = <?php echo $place; ?>, js place=" + place + ", invoiceid=" + invoiceid);
 
@@ -908,7 +909,7 @@ $subcategories = dol_sort_array($subcategories, 'label');
             console.log("We click on PAD on key=" + number);
 
             if (typeof (selectedtext) == "undefined") {
-                return;	// We click on an action on the number pad but there is no line selected
+                return; // We click on an action on the number pad but there is no line selected
             }
 
             var text = selectedtext + "<br> ";
@@ -1210,8 +1211,8 @@ $subcategories = dol_sort_array($subcategories, 'label');
                             <a class="topnav-terminalhour" onclick="ModalBox('ModalTerminal')">
                                 <span class="fa fa-cash-register"></span>
                                 <span class="hideonsmartphone">
-				<?php echo getDolGlobalString("TAKEPOS_TERMINAL_NAME_" . $_SESSION["takeposterminal"], $langs->trans("TerminalName", $_SESSION["takeposterminal"])); ?>
-				</span>
+                <?php echo getDolGlobalString("TAKEPOS_TERMINAL_NAME_" . $_SESSION["takeposterminal"], $langs->trans("TerminalName", $_SESSION["takeposterminal"])); ?>
+                </span>
                                 <?php
                                 echo '<span class="hideonsmartphone"> - ' . dol_print_date(dol_now(), "day") . '</span>'; ?>
                             </a>
@@ -1586,9 +1587,9 @@ $subcategories = dol_sort_array($subcategories, 'label');
                 <div class="wrapper" <?php if ($count == ($MAXCATEG - 2)) {
                     echo 'onclick="MoreCategories(\'less\')"';
                 } elseif ($count == ($MAXCATEG - 1)) {
-                    echo 'onclick="MoreCategories(\'more\')"';
+                                         echo 'onclick="MoreCategories(\'more\')"';
                 } else {
-                    echo 'onclick="LoadProducts(' . $count . ')"';
+                                         echo 'onclick="LoadProducts(' . $count . ')"';
                 } ?> id="catdiv<?php echo $count; ?>">
                     <?php
                     if ($count == ($MAXCATEG - 2)) {
@@ -1627,26 +1628,26 @@ $subcategories = dol_sort_array($subcategories, 'label');
                 ?> onclick="MoreProducts('less')" <?php
             }
             if ($count == ($MAXPRODUCT - 1)) {
-                ?> onclick="MoreProducts('more')" <?php
+                    ?> onclick="MoreProducts('more')" <?php
             } else {
-                echo 'onclick="ClickProduct(' . $count . ')"';
+                    echo 'onclick="ClickProduct(' . $count . ')"';
             } ?>>
             <?php
             if ($count == ($MAXPRODUCT - 2)) {
-                //echo '<img class="imgwrapper" src="img/arrow-prev-top.png" height="100%" id="proimg'.$count.'" />';
-                print '<span class="fa fa-chevron-left centerinmiddle" style="font-size: 5em; cursor: pointer;"></span>';
+                    //echo '<img class="imgwrapper" src="img/arrow-prev-top.png" height="100%" id="proimg'.$count.'" />';
+                    print '<span class="fa fa-chevron-left centerinmiddle" style="font-size: 5em; cursor: pointer;"></span>';
             } elseif ($count == ($MAXPRODUCT - 1)) {
-                //echo '<img class="imgwrapper" src="img/arrow-next-top.png" height="100%" id="proimg'.$count.'" />';
-                print '<span class="fa fa-chevron-right centerinmiddle" style="font-size: 5em; cursor: pointer;"></span>';
+                    //echo '<img class="imgwrapper" src="img/arrow-next-top.png" height="100%" id="proimg'.$count.'" />';
+                    print '<span class="fa fa-chevron-right centerinmiddle" style="font-size: 5em; cursor: pointer;"></span>';
             } else {
-                if (!getDolGlobalString('TAKEPOS_HIDE_PRODUCT_PRICES')) {
-                    print '<div class="" id="proprice' . $count . '"></div>';
-                }
-                if (getDolGlobalString('TAKEPOS_HIDE_PRODUCT_IMAGES')) {
-                    print '<button type="button" id="probutton' . $count . '" class="productbutton" style="display: none;"></button>';
-                } else {
-                    print '<img class="imgwrapper" title="" id="proimg' . $count . '">';
-                }
+                    if (!getDolGlobalString('TAKEPOS_HIDE_PRODUCT_PRICES')) {
+                        print '<div class="" id="proprice' . $count . '"></div>';
+                        }
+                    if (getDolGlobalString('TAKEPOS_HIDE_PRODUCT_IMAGES')) {
+                        print '<button type="button" id="probutton' . $count . '" class="productbutton" style="display: none;"></button>';
+                        } else {
+                        print '<img class="imgwrapper" title="" id="proimg' . $count . '">';
+                        }
             } ?>
             <?php if ($count != $MAXPRODUCT - 2 && $count != $MAXPRODUCT - 1 && !getDolGlobalString('TAKEPOS_HIDE_PRODUCT_IMAGES')) { ?>
                 <div class="description" id="prodivdesc<?php echo $count; ?>">

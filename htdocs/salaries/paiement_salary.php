@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2016-2018  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2021		Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>

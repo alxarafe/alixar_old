@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018-2022  Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -80,7 +81,7 @@ if (isModEnabled('stripe') && (!getDolGlobalString('STRIPE_LIVE') || GETPOST('fo
 $stripeacc = $stripe->getStripeAccount($service);
 /*if (empty($stripeaccount))
 {
-	print $langs->trans('ErrorStripeAccountNotDefined');
+    print $langs->trans('ErrorStripeAccountNotDefined');
 }*/
 
 if (!$rowid) {
@@ -177,7 +178,7 @@ if (!$rowid) {
 
             // Why this ?
             /*if (!empty($charge->payment_intent)) {
-             if (empty($stripeacc)) {				// If the Stripe connect account not set, we use common API usage
+             if (empty($stripeacc)) {               // If the Stripe connect account not set, we use common API usage
              $charge = \Stripe\PaymentIntent::retrieve($charge->payment_intent);
              } else {
              $charge = \Stripe\PaymentIntent::retrieve($charge->payment_intent, array("stripe_account" => $stripeacc));

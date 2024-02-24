@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018-2023  Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -80,7 +81,7 @@ if (isModEnabled('stripe') && (!getDolGlobalString('STRIPE_LIVE') || GETPOST('fo
 $stripeacc = $stripe->getStripeAccount($service);
 /*if (empty($stripeaccount))
 {
-	print $langs->trans('ErrorStripeAccountNotDefined');
+    print $langs->trans('ErrorStripeAccountNotDefined');
 }*/
 
 $moreforfilter = '';

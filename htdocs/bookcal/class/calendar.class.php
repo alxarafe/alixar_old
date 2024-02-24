@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur      <eldy@users.sourceforge.net>
  * Copyright (C) 2023  Frédéric France          <frederic.france@netlogic.fr>
  * Copyright (C) 2023 Alice Adminson <aadminson@example.com>
@@ -234,7 +235,7 @@ class Calendar extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);

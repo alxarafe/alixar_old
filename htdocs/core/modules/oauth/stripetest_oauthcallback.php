@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2022       Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015       Frederic France      <frederic.france@free.fr>
  *
@@ -24,21 +25,21 @@
 
 // Load Dolibarr environment
 require '../../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/includes/OAuth/bootstrap.php';
+require_once DOL_DOCUMENT_ROOT . '/includes/OAuth/bootstrap.php';
 use OAuth\Common\Storage\DoliStorage;
 use OAuth\Common\Consumer\Credentials;
 
 // Define $urlwithroot
-$urlwithouturlroot = preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
-$urlwithroot = $urlwithouturlroot.DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+$urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
+$urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 
 $action = GETPOST('action', 'aZ09');
 $backtourl = GETPOST('backtourl', 'alpha');
 $keyforprovider = GETPOST('keyforprovider', 'aZ09');
 if (empty($keyforprovider) && !empty($_SESSION["oauthkeyforproviderbeforeoauthjump"]) && (GETPOST('code') || $action == 'delete')) {
-	$keyforprovider = $_SESSION["oauthkeyforproviderbeforeoauthjump"];
+    $keyforprovider = $_SESSION["oauthkeyforproviderbeforeoauthjump"];
 }
 
 
@@ -48,7 +49,7 @@ if (empty($keyforprovider) && !empty($_SESSION["oauthkeyforproviderbeforeoauthju
 $uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
 //$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
 //$currentUri->setQuery('');
-$currentUri = $uriFactory->createFromAbsolute($urlwithroot.'/core/modules/oauth/stripetest_oauthcallback.php');
+$currentUri = $uriFactory->createFromAbsolute($urlwithroot . '/core/modules/oauth/stripetest_oauthcallback.php');
 
 
 /**
@@ -67,30 +68,30 @@ $serviceFactory->setHttpClient($httpClient);
 $storage = new DoliStorage($db, $conf, $keyforprovider);
 
 // Setup the credentials for the requests
-$keyforparamid = 'OAUTH_STRIPE_TEST'.($keyforprovider ? '-'.$keyforprovider : '').'_ID';
-$keyforparamsecret = 'OAUTH_STRIPE_TEST'.($keyforprovider ? '-'.$keyforprovider : '').'_SECRET';
+$keyforparamid = 'OAUTH_STRIPE_TEST' . ($keyforprovider ? '-' . $keyforprovider : '') . '_ID';
+$keyforparamsecret = 'OAUTH_STRIPE_TEST' . ($keyforprovider ? '-' . $keyforprovider : '') . '_SECRET';
 $credentials = new Credentials(
-	getDolGlobalString($keyforparamid),
-	getDolGlobalString($keyforparamsecret),
-	$currentUri->getAbsoluteUri()
+    getDolGlobalString($keyforparamid),
+    getDolGlobalString($keyforparamsecret),
+    $currentUri->getAbsoluteUri()
 );
 
 $requestedpermissionsarray = array();
 if (GETPOST('state')) {
-	$requestedpermissionsarray = explode(',', GETPOST('state')); // Example: 'userinfo_email,userinfo_profile,cloud_print'. 'state' parameter is standard to retrieve some parameters back
+    $requestedpermissionsarray = explode(',', GETPOST('state')); // Example: 'userinfo_email,userinfo_profile,cloud_print'. 'state' parameter is standard to retrieve some parameters back
 }
 /*if ($action != 'delete' && empty($requestedpermissionsarray))
 {
-	print 'Error, parameter state is not defined';
-	exit;
+    print 'Error, parameter state is not defined';
+    exit;
 }*/
 //var_dump($requestedpermissionsarray);exit;
 
 // Instantiate the Api service using the credentials, http client and storage mechanism for the token
 //$apiService = $serviceFactory->createService('StripeTest', $credentials, $storage, $requestedpermissionsarray);
 
-$servicesuffix = ($keyforprovider ? '-'.$keyforprovider : '');
-$sql = "INSERT INTO ".MAIN_DB_PREFIX."oauth_token SET service = 'StripeTest".$db->escape($servicesuffix)."', entity = ".((int) $conf->entity);
+$servicesuffix = ($keyforprovider ? '-' . $keyforprovider : '');
+$sql = "INSERT INTO " . MAIN_DB_PREFIX . "oauth_token SET service = 'StripeTest" . $db->escape($servicesuffix) . "', entity = " . ((int) $conf->entity);
 $db->query($sql);
 
 // access type needed to have oauth provider refreshing token
@@ -99,10 +100,10 @@ $db->query($sql);
 $langs->load("oauth");
 
 if (!getDolGlobalString($keyforparamid)) {
-	accessforbidden('Setup of service is not complete. Customer ID is missing');
+    accessforbidden('Setup of service is not complete. Customer ID is missing');
 }
 if (!getDolGlobalString($keyforparamsecret)) {
-	accessforbidden('Setup of service is not complete. Secret key is missing');
+    accessforbidden('Setup of service is not complete. Secret key is missing');
 }
 
 
@@ -112,65 +113,65 @@ if (!getDolGlobalString($keyforparamsecret)) {
 
 
 if ($action == 'delete') {
-	$storage->clearToken('StripeTest');
+    $storage->clearToken('StripeTest');
 
-	setEventMessages($langs->trans('TokenDeleted'), null, 'mesgs');
+    setEventMessages($langs->trans('TokenDeleted'), null, 'mesgs');
 
-	header('Location: '.$backtourl);
-	exit();
+    header('Location: ' . $backtourl);
+    exit();
 }
 
 if (GETPOST('code')) {     // We are coming from oauth provider page
-	// We should have
-	//$_GET=array('code' => string 'aaaaaaaaaaaaaa' (length=20), 'state' => string 'user,public_repo' (length=16))
+    // We should have
+    //$_GET=array('code' => string 'aaaaaaaaaaaaaa' (length=20), 'state' => string 'user,public_repo' (length=16))
 
-	dol_syslog("We are coming from the oauth provider page code=".dol_trunc(GETPOST('code'), 5));
+    dol_syslog("We are coming from the oauth provider page code=" . dol_trunc(GETPOST('code'), 5));
 
-	// This was a callback request from service, get the token
-	try {
-		//var_dump($state);
-		//var_dump($apiService);      // OAuth\OAuth2\Service\Stripe
+    // This was a callback request from service, get the token
+    try {
+        //var_dump($state);
+        //var_dump($apiService);      // OAuth\OAuth2\Service\Stripe
 
-		//$token = $apiService->requestAccessToken(GETPOST('code'), $state);
-		$token = $apiService->requestAccessToken(GETPOST('code'));
-		// Stripe is a service that does not need state to be stored as second parameter of requestAccessToken
+        //$token = $apiService->requestAccessToken(GETPOST('code'), $state);
+        $token = $apiService->requestAccessToken(GETPOST('code'));
+        // Stripe is a service that does not need state to be stored as second parameter of requestAccessToken
 
-		setEventMessages($langs->trans('NewTokenStored'), null, 'mesgs'); // Stored into object managed by class DoliStorage so into table oauth_token
+        setEventMessages($langs->trans('NewTokenStored'), null, 'mesgs'); // Stored into object managed by class DoliStorage so into table oauth_token
 
-		$backtourl = $_SESSION["backtourlsavedbeforeoauthjump"];
-		unset($_SESSION["backtourlsavedbeforeoauthjump"]);
+        $backtourl = $_SESSION["backtourlsavedbeforeoauthjump"];
+        unset($_SESSION["backtourlsavedbeforeoauthjump"]);
 
-		if (empty($backtourl)) {
-			$backtourl = DOL_URL_ROOT.'/';
-		}
+        if (empty($backtourl)) {
+            $backtourl = DOL_URL_ROOT . '/';
+        }
 
-		header('Location: '.$backtourl);
-		exit();
-	} catch (Exception $e) {
-		print $e->getMessage();
-	}
+        header('Location: ' . $backtourl);
+        exit();
+    } catch (Exception $e) {
+        print $e->getMessage();
+    }
 } else { // If entry on page with no parameter, we arrive here
-	$_SESSION["backtourlsavedbeforeoauthjump"] = $backtourl;
-	$_SESSION["oauthkeyforproviderbeforeoauthjump"] = $keyforprovider;
-	$_SESSION['oauthstateanticsrf'] = $state;
+    $_SESSION["backtourlsavedbeforeoauthjump"] = $backtourl;
+    $_SESSION["oauthkeyforproviderbeforeoauthjump"] = $keyforprovider;
+    $_SESSION['oauthstateanticsrf'] = $state;
 
-	// This may create record into oauth_state before the header redirect.
-	// Creation of record with state in this tables depend on the Provider used (see its constructor).
-	if (GETPOST('state')) {
-		$url = $apiService->getAuthorizationUri(array('state'=>GETPOST('state')));
-	} else {
-		//$url = $apiService->getAuthorizationUri();      // Parameter state will be randomly generated
-		//https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_AX27ut70tJ1j6eyFCV3ObEXhNOo2jY6V&scope=read_write
-		$url = 'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=' . getDolGlobalString($keyforparamid).'&scope=read_write';
-	}
+    // This may create record into oauth_state before the header redirect.
+    // Creation of record with state in this tables depend on the Provider used (see its constructor).
+    if (GETPOST('state')) {
+        $url = $apiService->getAuthorizationUri(array('state' => GETPOST('state')));
+    } else {
+        //$url = $apiService->getAuthorizationUri();      // Parameter state will be randomly generated
+        //https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_AX27ut70tJ1j6eyFCV3ObEXhNOo2jY6V&scope=read_write
+        $url = 'https://connect.stripe.com/oauth/authorize?response_type=code&client_id=' . getDolGlobalString($keyforparamid) . '&scope=read_write';
+    }
 
-	if (empty($url)) {
-		$url = DOL_URL_ROOT.'/';
-	}
+    if (empty($url)) {
+        $url = DOL_URL_ROOT . '/';
+    }
 
-	// we go on oauth provider authorization page
-	header('Location: '.$url);
-	exit();
+    // we go on oauth provider authorization page
+    header('Location: ' . $url);
+    exit();
 }
 
 

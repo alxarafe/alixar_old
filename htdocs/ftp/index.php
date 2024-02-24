@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2008-2009  Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
@@ -224,7 +225,7 @@ if (GETPOST("const", 'array') && GETPOST("delete") && GETPOST("delete") == $lang
                     setEventMessages($langs->trans("FTPFailedToRemoveFile", $file), null, 'errors');
                 }
 
-                //ftp_close($conn_id);	Close later
+                //ftp_close($conn_id);  Close later
 
                 $action = '';
             }
@@ -256,7 +257,7 @@ if ($action == 'confirm_deletesection' && $confirm == 'yes') {
             setEventMessages($langs->trans("FTPFailedToRemoveDir", $file), null, 'errors');
         }
 
-        //ftp_close($conn_id);	Close later
+        //ftp_close($conn_id);  Close later
 
         $action = '';
     } else {
@@ -320,7 +321,7 @@ if ($action == 'download') {
     } else {
         dol_print_error(null, $mesg);
     }
-    //ftp_close($conn_id);	Close later
+    //ftp_close($conn_id);  Close later
 }
 
 /*
@@ -469,9 +470,9 @@ if (!function_exists('ftp_connect')) {
                 //$handle = opendir('ssh2.sftp://'.intval($conn_id).$newsection);
                 //$buff=array();
                 //while (false !== ($file = readdir($handle))) {
-                //	if (substr("$file", 0, 1) != "."){
-                //  	if (is_dir($file)) {
-                //      	$buff[$i]="d--------- - root root 1234 Aug 01 2000 ".$file;
+                //  if (substr("$file", 0, 1) != "."){
+                //      if (is_dir($file)) {
+                //          $buff[$i]="d--------- - root root 1234 Aug 01 2000 ".$file;
                 //      } else {
                 //          $buff[$i]="---------- - root root 1234 Aug 01 2000 ".$file;
                 //      }

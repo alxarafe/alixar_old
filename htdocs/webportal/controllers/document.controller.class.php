@@ -144,7 +144,8 @@ class DocumentController extends Controller
         // check config access
         // and file mime type (only PDF)
         // and check login access
-        if (getDolGlobalInt('WEBPORTAL_' . $moduleNameUpperEn . '_LIST_ACCESS')
+        if (
+            getDolGlobalInt('WEBPORTAL_' . $moduleNameUpperEn . '_LIST_ACCESS')
             && in_array($type, ['application/pdf'])
             && ($context->logged_thirdparty && $context->logged_thirdparty->id > 0)
             && $context->logged_thirdparty->id == $socId

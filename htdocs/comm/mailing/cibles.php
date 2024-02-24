@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2023 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@inodbox.com>
@@ -798,7 +799,7 @@ if ($object->fetch($id) >= 0) {
                             print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=delete&token=' . newToken() . '&rowid=' . ((int) $obj->rowid) . $param . '">' . img_delete($langs->trans("RemoveRecipient")) . '</a>';
                         }
                     }
-                    /*if ($obj->status == -1)	// Sent with error
+                    /*if ($obj->status == -1)   // Sent with error
                      {
                      print '<a href="'.$_SERVER['PHP_SELF'].'?action=retry&rowid='.$obj->rowid.$param.'">'.$langs->trans("Retry").'</a>';
                      }*/
@@ -875,7 +876,7 @@ if ($object->fetch($id) >= 0) {
                             print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=delete&token=' . newToken() . '&rowid=' . ((int) $obj->rowid) . $param . '">' . img_delete($langs->trans("RemoveRecipient")) . '</a>';
                         }
                     }
-                    /*if ($obj->status == -1)	// Sent with error
+                    /*if ($obj->status == -1)   // Sent with error
                     {
                         print '<a href="'.$_SERVER['PHP_SELF'].'?action=retry&rowid='.$obj->rowid.$param.'">'.$langs->trans("Retry").'</a>';
                     }*/

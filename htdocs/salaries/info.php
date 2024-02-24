@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2015  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015       Charlie BENKE        <charlie@patas-monkey.com>
  * Copyright (C) 2017-2023  Alexandre Spangaro   <aspangaro@easya.solutions>

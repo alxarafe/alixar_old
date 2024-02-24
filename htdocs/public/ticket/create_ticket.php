@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2016    Jean-François FERRY <hello@librethic.io>
  * Copyright (C) 2016         Christophe Battarel <christophe@altairis.fr>
  * Copyright (C) 2023         Laurent Destailleur <eldy@users.sourceforge.net>
@@ -25,7 +26,7 @@
 
 /* We need object $user->default_values
 if (!defined('NOREQUIREUSER')) {
-	define('NOREQUIREUSER', '1');
+    define('NOREQUIREUSER', '1');
 }*/
 if (!defined('NOREQUIREMENU')) {
     define('NOREQUIREMENU', '1');

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2017		Alexandre Spangaro		<aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2017       Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2017		Olivier Geffroy			<jeff@jeffinfo.com>
  * Copyright (C) 2017		Saasprov				<saasprov@gmail.com>
  * Copyright (C) 2018-2022  Thibault FOUCART		<support@ptibogxiv.net>
@@ -133,7 +134,7 @@ if ($action == 'setvalue' && $user->admin) {
     // Stock decrement
     //$result = dolibarr_set_const($db, "ONLINE_PAYMENT_WAREHOUSE", (GETPOST('ONLINE_PAYMENT_WAREHOUSE', 'alpha') > 0 ? GETPOST('ONLINE_PAYMENT_WAREHOUSE', 'alpha') : ''), 'chaine', 0, '', $conf->entity);
     //if (! $result > 0)
-    //	$error ++;
+    //  $error ++;
 
     // Payment token for URL
     $result = dolibarr_set_const($db, "PAYMENT_SECURITY_TOKEN", GETPOST('PAYMENT_SECURITY_TOKEN', 'alpha'), 'chaine', 0, '', $conf->entity);

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010      Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2011-2014 Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2021 	   Henry Guo <henrynopo@homtail.com>
@@ -19,33 +20,33 @@
 
 /**
  *       \file      htdocs/core/ajax/locationincoterms.php
- *       \ingroup	core
+ *       \ingroup   core
  *       \brief     File to return Ajax response on location_incoterms request
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1); // Disables token renewal
+    define('NOTOKENRENEWAL', 1); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 
 // Security check
 if (!isModEnabled('incoterm')) {
-	httponly_accessforbidden("Module incoterm not enabled");	// This includes the exit.
+    httponly_accessforbidden("Module incoterm not enabled");    // This includes the exit.
 }
 // There is no other permission on this component. Everybody connected can read content of the incoterm table
 
@@ -63,51 +64,51 @@ top_httphead();
 
 //print '<!-- Ajax page called with url '.dol_escape_htmltag($_SERVER["PHP_SELF"]).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
 
-dol_syslog('location_incoterms call with MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY='.(!getDolGlobalString('MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY') ? '' : $conf->global->MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY));
+dol_syslog('location_incoterms call with MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY=' . (!getDolGlobalString('MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY') ? '' : $conf->global->MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY));
 //var_dump($_GET);
 
 // Generation of list of zip-town
 if (GETPOST('location_incoterms')) {
-	$return_arr = array();
+    $return_arr = array();
 
-	// Define filter on text typed
-	$location_incoterms = GETPOST('location_incoterms');
+    // Define filter on text typed
+    $location_incoterms = GETPOST('location_incoterms');
 
-	if (getDolGlobalString('MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY')) {   // Use location_incoterms
-		$sql = "SELECT z.location as location_incoterms, z.label as label";
-		$sql .= " FROM ".MAIN_DB_PREFIX."c_location_incoterms as z";
-		$sql .= " WHERE z.active = 1 AND z.location LIKE '%".$db->escape($db->escapeforlike($location_incoterms))."%'";
-		$sql .= " ORDER BY z.location";
-		$sql .= $db->plimit(100); // Avoid pb with bad criteria
-	} else { // Use table of sale orders
-		$sql = "SELECT DISTINCT s.location_incoterms FROM ".MAIN_DB_PREFIX.'commande as s';
-		$sql .= " WHERE s.location_incoterms LIKE '%".$db->escape($db->escapeforlike($location_incoterms))."%'";
+    if (getDolGlobalString('MAIN_USE_LOCATION_INCOTERMS_DICTIONNARY')) {   // Use location_incoterms
+        $sql = "SELECT z.location as location_incoterms, z.label as label";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "c_location_incoterms as z";
+        $sql .= " WHERE z.active = 1 AND z.location LIKE '%" . $db->escape($db->escapeforlike($location_incoterms)) . "%'";
+        $sql .= " ORDER BY z.location";
+        $sql .= $db->plimit(100); // Avoid pb with bad criteria
+    } else { // Use table of sale orders
+        $sql = "SELECT DISTINCT s.location_incoterms FROM " . MAIN_DB_PREFIX . 'commande as s';
+        $sql .= " WHERE s.location_incoterms LIKE '%" . $db->escape($db->escapeforlike($location_incoterms)) . "%'";
 
-		//Todo: merge with data from table of supplier order
-		/*	$sql .=" UNION";
-		$sql .= " SELECT DISTINCT p.location_incoterms FROM ".MAIN_DB_PREFIX.'commande_fournisseur as p';
-		$sql .= " WHERE UPPER(p.location_incoterms) LIKE UPPER('%".$db->escape($location_incoterms)."%')";
-		*/
-		$sql .= " ORDER BY s.location_incoterms";
-		$sql .= $db->plimit(100); // Avoid pb with bad criteria
-	}
+        //Todo: merge with data from table of supplier order
+        /*  $sql .=" UNION";
+        $sql .= " SELECT DISTINCT p.location_incoterms FROM ".MAIN_DB_PREFIX.'commande_fournisseur as p';
+        $sql .= " WHERE UPPER(p.location_incoterms) LIKE UPPER('%".$db->escape($location_incoterms)."%')";
+        */
+        $sql .= " ORDER BY s.location_incoterms";
+        $sql .= $db->plimit(100); // Avoid pb with bad criteria
+    }
 
-	//print $sql;
-	$resql = $db->query($sql);
-	//var_dump($db);
-	if ($resql) {
-		while ($row = $db->fetch_array($resql)) {
-			$row_array['label'] = $row['location_incoterms'].($row['label'] ? ' - '.$row['label'] : '');
-			if ($location_incoterms) {
-				$row_array['value'] = $row['location_incoterms'];
-			}
-			// TODO Use a cache here to avoid to make select_state in each pass (this make a SQL and lot of logs)
+    //print $sql;
+    $resql = $db->query($sql);
+    //var_dump($db);
+    if ($resql) {
+        while ($row = $db->fetch_array($resql)) {
+            $row_array['label'] = $row['location_incoterms'] . ($row['label'] ? ' - ' . $row['label'] : '');
+            if ($location_incoterms) {
+                $row_array['value'] = $row['location_incoterms'];
+            }
+            // TODO Use a cache here to avoid to make select_state in each pass (this make a SQL and lot of logs)
 
-			array_push($return_arr, $row_array);
-		}
-	}
+            array_push($return_arr, $row_array);
+        }
+    }
 
-	echo json_encode($return_arr);
+    echo json_encode($return_arr);
 }
 
 $db->close();

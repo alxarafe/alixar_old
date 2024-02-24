@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2015 Regis Houssin        <regis.houssin@inodbox.com>
@@ -18,17 +19,16 @@
  */
 
 /**
- *	    \file       htdocs/contact/info.php
+ *      \file       htdocs/contact/info.php
  *      \ingroup    societe
- *		\brief      Onglet info d'un contact
+ *      \brief      Onglet info d'un contact
  */
-
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/contact.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
 
 // Load translation files required by the page
 $langs->load("companies");
@@ -37,7 +37,7 @@ $langs->load("companies");
 // Security check
 $id = GETPOST("id", 'int');
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'contact', $id, 'socpeople&societe');
 
@@ -56,31 +56,31 @@ $title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("Co
 llxHeader('', $title, 'EN:Module_Third_Parties|FR:Module_Tiers|ES:M&oacute;dulo_Empresas');
 
 if ($id > 0) {
-	$result = $object->fetch($id, $user);
+    $result = $object->fetch($id, $user);
 
-	$object->info($id);
-
-
-	$head = contact_prepare_head($object);
-
-	print dol_get_fiche_head($head, 'info', $title, -1, 'contact');
-
-	$linkback = '<a href="'.DOL_URL_ROOT.'/contact/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
-
-	dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', '');
+    $object->info($id);
 
 
-	print '<div class="fichecenter">';
+    $head = contact_prepare_head($object);
 
-	print '<div class="underbanner clearboth"></div>';
+    print dol_get_fiche_head($head, 'info', $title, -1, 'contact');
 
-	print '<br>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/contact/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
-	dol_print_object_info($object);
+    dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', '');
 
-	print '</div>';
 
-	print dol_get_fiche_end();
+    print '<div class="fichecenter">';
+
+    print '<div class="underbanner clearboth"></div>';
+
+    print '<br>';
+
+    dol_print_object_info($object);
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 }
 
 llxFooter();

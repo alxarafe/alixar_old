@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014       Florian Henry           <florian.henry@open-concept.pro>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -238,7 +239,7 @@ class FormAdvTargetEmailing extends Form
             $InfoFieldList = explode(":", $param_list [0]);
 
             // 0 1 : tableName
-            // 1 2 : label field name 	Name of field that contains the label
+            // 1 2 : label field name   Name of field that contains the label
             // 2 3 : key fields name (if differ of rowid)
             // 3 4 : where clause filter on column or table extrafield, syntax field='value' or extra.field=value
 

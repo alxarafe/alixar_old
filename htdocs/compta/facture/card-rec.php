@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2023  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
@@ -524,7 +525,7 @@ if (empty($reshook)) {
                 //$tva_tx = get_default_tva($mysoc, $object->thirdparty, $prod->id);
                 //$tva_npr = get_default_npr($mysoc, $object->thirdparty, $prod->id);
                 //if (empty($tva_tx)) {
-                //	$tva_npr = 0;
+                //  $tva_npr = 0;
                 //}
 
                 // Search the correct price into loaded array product_price_by_qty using id of array retrieved into POST['pqp'].
@@ -669,7 +670,7 @@ if (empty($reshook)) {
                         $outputlangs = $langs;
                         $newlang = '';
                         if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang) && GETPOST('lang_id','aZ09')) $newlang = GETPOST('lang_id','aZ09');
-                        if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang))	$newlang = $object->thirdparty->default_lang;
+                        if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang))  $newlang = $object->thirdparty->default_lang;
                         if (!empty($newlang)) {
                         $outputlangs = new Lang("", $conf);
                         $outputlangs->setDefaultLang($newlang);

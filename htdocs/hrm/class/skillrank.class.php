@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
@@ -143,7 +144,7 @@ class SkillRank extends CommonObject
     // public $class_element_line = 'SkillRankline';
 
     // /**
-    //  * @var array	List of child tables. To test if we can delete object.
+    //  * @var array    List of child tables. To test if we can delete object.
     //  */
     // protected $childtables = array();
 
@@ -254,7 +255,7 @@ class SkillRank extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);

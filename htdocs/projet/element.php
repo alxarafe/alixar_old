@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2004  Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2020  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010  Regis Houssin        <regis.houssin@inodbox.com>
@@ -142,7 +143,7 @@ if (isModEnabled('eventorganization')) {
     $langs->load("eventorganization");
 }
 //if (isModEnabled('stocktransfer')) {
-//	$langs->load("stockstransfer");
+//  $langs->load("stockstransfer");
 //}
 
 $id = GETPOST('id', 'int');
@@ -172,7 +173,7 @@ if ($id == '' && $ref == '') {
 }
 
 $mine = GETPOST('mode') == 'mine' ? 1 : 0;
-//if (! $user->rights->projet->all->lire) $mine=1;	// Special for projects
+//if (! $user->rights->projet->all->lire) $mine=1;  // Special for projects
 
 $object = new Project($db);
 
@@ -874,7 +875,8 @@ foreach ($listofreferent as $key => $value) {
                                 /**
                                  * @var $loanSchedule LoanSchedule
                                  */
-                                if (($loanSchedule->datep >= $dates && $loanSchedule->datep <= $datee) // dates filter is defined
+                                if (
+                                    ($loanSchedule->datep >= $dates && $loanSchedule->datep <= $datee) // dates filter is defined
                                     || !empty($dates) && empty($datee) && $loanSchedule->datep >= $dates && $loanSchedule->datep <= dol_now()
                                     || empty($dates) && !empty($datee) && $loanSchedule->datep <= $datee
                                 ) {

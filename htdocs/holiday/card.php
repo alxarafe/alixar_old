@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2011		Dimitri Mouillard	<dmouillard@teclib.com>
+
+/* Copyright (C) 2011       Dimitri Mouillard   <dmouillard@teclib.com>
  * Copyright (C) 2012-2016	Laurent Destailleur	<eldy@users.sourceforge.net>
  * Copyright (C) 2012-2016	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2013		Juanjo Menent		<jmenent@2byte.es>
@@ -484,7 +485,7 @@ if (empty($reshook)) {
                 // From
                 $expediteur = new User($db);
                 $expediteur->fetch($object->fk_user);
-                //$emailFrom = $expediteur->email;		Email of user can be an email into another company. Sending will fails, we must use the generic email.
+                //$emailFrom = $expediteur->email;      Email of user can be an email into another company. Sending will fails, we must use the generic email.
                 $emailFrom = getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
 
                 // Subject
@@ -647,7 +648,7 @@ if (empty($reshook)) {
                     // From
                     $expediteur = new User($db);
                     $expediteur->fetch($object->fk_validator);
-                    //$emailFrom = $expediteur->email;		Email of user can be an email into another company. Sending will fails, we must use the generic email.
+                    //$emailFrom = $expediteur->email;      Email of user can be an email into another company. Sending will fails, we must use the generic email.
                     $emailFrom = getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
 
                     // Subject
@@ -729,7 +730,7 @@ if (empty($reshook)) {
                         // From
                         $expediteur = new User($db);
                         $expediteur->fetch($object->fk_validator);
-                        //$emailFrom = $expediteur->email;		Email of user can be an email into another company. Sending will fails, we must use the generic email.
+                        //$emailFrom = $expediteur->email;      Email of user can be an email into another company. Sending will fails, we must use the generic email.
                         $emailFrom = getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
 
                         // Subject
@@ -818,8 +819,10 @@ if (empty($reshook)) {
         $object->fetch($id);
 
         // If status pending validation and validator = validator or user, or rights to do for others
-        if (($object->statut == Holiday::STATUS_VALIDATED || $object->statut == Holiday::STATUS_APPROVED) &&
-            (!empty($user->admin) || $user->id == $object->fk_validator || $cancreate || $cancreateall)) {
+        if (
+            ($object->statut == Holiday::STATUS_VALIDATED || $object->statut == Holiday::STATUS_APPROVED) &&
+            (!empty($user->admin) || $user->id == $object->fk_validator || $cancreate || $cancreateall)
+        ) {
             $db->begin();
 
             $oldstatus = $object->statut;
@@ -876,7 +879,7 @@ if (empty($reshook)) {
                 // From
                 $expediteur = new User($db);
                 $expediteur->fetch($object->fk_user_cancel);
-                //$emailFrom = $expediteur->email;		Email of user can be an email into another company. Sending will fails, we must use the generic email.
+                //$emailFrom = $expediteur->email;      Email of user can be an email into another company. Sending will fails, we must use the generic email.
                 $emailFrom = getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
 
                 // Subject
@@ -1163,7 +1166,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
             print img_picto('', 'user', 'class="pictofixedwidth"') . $form->textwithpicto($s, $langs->trans("AnyOtherInThisListCanValidate"));
         }
 
-        //print $form->select_dolusers((GETPOST('valideur','int')>0?GETPOST('valideur','int'):$user->fk_user), "valideur", 1, ($user->admin ? '' : array($user->id)), 0, '', 0, 0, 0, 0, '', 0, '', '', 1);	// By default, hierarchical parent
+        //print $form->select_dolusers((GETPOST('valideur','int')>0?GETPOST('valideur','int'):$user->fk_user), "valideur", 1, ($user->admin ? '' : array($user->id)), 0, '', 0, 0, 0, 0, '', 0, '', '', 1); // By default, hierarchical parent
         print '</td>';
         print '</tr>';
 

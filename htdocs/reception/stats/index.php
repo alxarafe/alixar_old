@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@capnetworks.com>
@@ -108,36 +109,36 @@ $data = $stats->getAmountByMonthWithPrevYear($endyear,$startyear);
 
 if (empty($user->rights->societe->client->voir) || $user->socid)
 {
-	$filenameamount = $dir.'/receptionsamountinyear-'.$user->id.'-'.$year.'.png';
+    $filenameamount = $dir.'/receptionsamountinyear-'.$user->id.'-'.$year.'.png';
 }
 else
 {
-	$filenameamount = $dir.'/receptionsamountinyear-'.$year.'.png';
+    $filenameamount = $dir.'/receptionsamountinyear-'.$year.'.png';
 }
 
 $px2 = new DolGraph();
 $mesg = $px2->isGraphKo();
 if (! $mesg)
 {
-	$px2->SetData($data);
-	$i=$startyear;$legend=array();
-	while ($i <= $endyear)
-	{
-		$legend[]=$i;
-		$i++;
-	}
-	$px2->SetLegend($legend);
-	$px2->SetMaxValue($px2->GetCeilMaxValue());
-	$px2->SetMinValue(min(0,$px2->GetFloorMinValue()));
-	$px2->SetWidth($WIDTH);
-	$px2->SetHeight($HEIGHT);
-	$px2->SetYLabel($langs->trans("AmountOfReceptions"));
-	$px2->SetShading(3);
-	$px2->SetHorizTickIncrement(1);
-	$px2->mode='depth';
-	$px2->SetTitle($langs->trans("AmountOfReceptionsByMonthHT"));
+    $px2->SetData($data);
+    $i=$startyear;$legend=array();
+    while ($i <= $endyear)
+    {
+        $legend[]=$i;
+        $i++;
+    }
+    $px2->SetLegend($legend);
+    $px2->SetMaxValue($px2->GetCeilMaxValue());
+    $px2->SetMinValue(min(0,$px2->GetFloorMinValue()));
+    $px2->SetWidth($WIDTH);
+    $px2->SetHeight($HEIGHT);
+    $px2->SetYLabel($langs->trans("AmountOfReceptions"));
+    $px2->SetShading(3);
+    $px2->SetHorizTickIncrement(1);
+    $px2->mode='depth';
+    $px2->SetTitle($langs->trans("AmountOfReceptionsByMonthHT"));
 
-	$px2->draw($filenameamount,$fileurlamount);
+    $px2->draw($filenameamount,$fileurlamount);
 }
 */
 
@@ -146,36 +147,36 @@ $data = $stats->getAverageByMonthWithPrevYear($endyear, $startyear);
 
 if (empty($user->rights->societe->client->voir) || $user->socid)
 {
-	$filename_avg = $dir.'/receptionsaverage-'.$user->id.'-'.$year.'.png';
+    $filename_avg = $dir.'/receptionsaverage-'.$user->id.'-'.$year.'.png';
 }
 else
 {
-	$filename_avg = $dir.'/receptionsaverage-'.$year.'.png';
+    $filename_avg = $dir.'/receptionsaverage-'.$year.'.png';
 }
 
 $px3 = new DolGraph();
 $mesg = $px3->isGraphKo();
 if (! $mesg)
 {
-	$px3->SetData($data);
-	$i=$startyear;$legend=array();
-	while ($i <= $endyear)
-	{
-		$legend[]=$i;
-		$i++;
-	}
-	$px3->SetLegend($legend);
-	$px3->SetYLabel($langs->trans("AmountAverage"));
-	$px3->SetMaxValue($px3->GetCeilMaxValue());
-	$px3->SetMinValue($px3->GetFloorMinValue());
-	$px3->SetWidth($WIDTH);
-	$px3->SetHeight($HEIGHT);
-	$px3->SetShading(3);
-	$px3->SetHorizTickIncrement(1);
-	$px3->mode='depth';
-	$px3->SetTitle($langs->trans("AmountAverage"));
+    $px3->SetData($data);
+    $i=$startyear;$legend=array();
+    while ($i <= $endyear)
+    {
+        $legend[]=$i;
+        $i++;
+    }
+    $px3->SetLegend($legend);
+    $px3->SetYLabel($langs->trans("AmountAverage"));
+    $px3->SetMaxValue($px3->GetCeilMaxValue());
+    $px3->SetMinValue($px3->GetFloorMinValue());
+    $px3->SetWidth($WIDTH);
+    $px3->SetHeight($HEIGHT);
+    $px3->SetShading(3);
+    $px3->SetHorizTickIncrement(1);
+    $px3->mode='depth';
+    $px3->SetTitle($langs->trans("AmountAverage"));
 
-	$px3->draw($filename_avg,$fileurl_avg);
+    $px3->draw($filename_avg,$fileurl_avg);
 }
 */
 
@@ -313,17 +314,17 @@ $sql.= " GROUP BY dm DESC";
 $resql=$db->query($sql);
 if ($resql)
 {
-	$num = $db->num_rows($resql);
-	$i = 0;
-	while ($i < $num)
-	{
-		$row = $db->fetch_row($resql);
-		$nbproduct = $row[0];
-		$year = $row[1];
-		print "<tr>";
-		print '<td class="center"><a href="month.php?year='.$year.'">'.$year.'</a></td><td class="center">'.$nbproduct.'</td></tr>';
-		$i++;
-	}
+    $num = $db->num_rows($resql);
+    $i = 0;
+    while ($i < $num)
+    {
+        $row = $db->fetch_row($resql);
+        $nbproduct = $row[0];
+        $year = $row[1];
+        print "<tr>";
+        print '<td class="center"><a href="month.php?year='.$year.'">'.$year.'</a></td><td class="center">'.$nbproduct.'</td></tr>';
+        $i++;
+    }
 }
 $db->free($resql);
 

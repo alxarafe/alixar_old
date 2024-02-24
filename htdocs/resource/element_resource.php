@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2013-2018	Jean-François Ferry	<hello+jf@librethic.io>
+
+/* Copyright (C) 2013-2018  Jean-François Ferry <hello+jf@librethic.io>
  * Copyright (C) 2016		Gilles Poirier 		<glgpoirier@gmail.com>
  * Copyright (C) 2019		Josep Lluís Amador	<joseplluis@lliuretic.cat>
  * Copyright (C) 2021		Frédéric France		<frederic.france@netlogic.fr>
@@ -479,7 +480,7 @@ if (!$ret) {
             /*if (in_array($user->id,array_keys($listofuserid)))
             {
                 print '<div class="myavailability">';
-                print $langs->trans("MyAvailability").': '.(($act->userassigned[$user->id]['transparency'] > 0)?$langs->trans("Busy"):$langs->trans("Available"));	// We show nothing if event is assigned to nobody
+                print $langs->trans("MyAvailability").': '.(($act->userassigned[$user->id]['transparency'] > 0)?$langs->trans("Busy"):$langs->trans("Available"));  // We show nothing if event is assigned to nobody
                 print '</div>';
             }*/
             print '	</td></tr>';

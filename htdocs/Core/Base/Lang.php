@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001       Eric Seigne         <erics@rycks.com>
  * Copyright (C) 2004-2015  Destailleur Laurent <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010  Regis Houssin       <regis.houssin@inodbox.com>
@@ -1183,7 +1184,7 @@ class Lang
 
             // Resort cache
             array_multisort($label, SORT_ASC, $this->cache_currencies);
-            //var_dump($this->cache_currencies);	$this->cache_currencies is now sorted onto label
+            //var_dump($this->cache_currencies);    $this->cache_currencies is now sorted onto label
             return $num;
         } else {
             dol_print_error($db);

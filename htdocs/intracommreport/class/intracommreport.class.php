@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015       ATM Consulting          <support@atm-consulting.fr>
  * Copyright (C) 2019-2020  Open-DSI                <support@open-dsi.fr>
  * Copyright (C) 2020-2024  Frédéric France         <frederic.france@netlogic.fr>

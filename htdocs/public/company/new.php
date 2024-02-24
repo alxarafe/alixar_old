@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2001-2002  Jean-Louis Bergamo      <jlb@j1b.org>
  * Copyright (C) 2006-2013  Laurent Destailleur     <eldy@users.sourceforge.net>
@@ -352,9 +353,9 @@ print '<table class="border" summary="form to subscribe" id="tablesubscribe">' .
 //Third party name
 /*
 if ($objectsoc->particulier || $private) {
-	print '<span id="TypeName" class="fieldrequired">'.$langs->trans('ThirdPartyName').' / '.$langs->trans('LastName', 'name').'</span>';
+    print '<span id="TypeName" class="fieldrequired">'.$langs->trans('ThirdPartyName').' / '.$langs->trans('LastName', 'name').'</span>';
 } else {
-	print '<span id="TypeName" class="fieldrequired">'.$form->editfieldkey('ThirdPartyName', 'name', '', $objectsoc, 0).'</span>';
+    print '<span id="TypeName" class="fieldrequired">'.$form->editfieldkey('ThirdPartyName', 'name', '', $objectsoc, 0).'</span>';
 }
 */
 print '<tr class="tr-field-thirdparty-name"><td class="titlefieldcreate">'; // text appreas left

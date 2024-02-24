@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2019 Frédéric FRANCE <frederic.france@free.fr>
  *

@@ -1,6 +1,7 @@
 <?php
-/* Copyright (C) 2007-2017	Laurent Destailleur			<eldy@users.sourceforge.net>
-/* Copyright (C) 2023		Alexandre Janniaux			<alexandre.janniaux@gmail.com>
+
+/* Copyright (C) 2007-2017  Laurent Destailleur         <eldy@users.sourceforge.net>
+/* Copyright (C) 2023       Alexandre Janniaux          <alexandre.janniaux@gmail.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) ---Put here your own copyright and developer email---
  *
@@ -25,7 +26,7 @@
  */
 
 global $conf, $user, $langs, $db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';

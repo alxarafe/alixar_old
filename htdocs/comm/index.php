@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2005	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2015		Jean-François Ferry		<jfefe@aternatik.fr>
@@ -68,8 +69,10 @@ $maxofloop = (!getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global
 $now = dol_now();
 
 //restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', 0);
-if (!$user->hasRight('propal', 'read') && !$user->hasRight('supplier_proposal', 'read') && !$user->hasRight('commande', 'read') && !$user->hasRight('fournisseur', 'commande', 'read')
-    && !$user->hasRight('supplier_order', 'read') && !$user->hasRight('fichinter', 'read') && !$user->hasRight('contrat', 'read')) {
+if (
+    !$user->hasRight('propal', 'read') && !$user->hasRight('supplier_proposal', 'read') && !$user->hasRight('commande', 'read') && !$user->hasRight('fournisseur', 'commande', 'read')
+    && !$user->hasRight('supplier_order', 'read') && !$user->hasRight('fichinter', 'read') && !$user->hasRight('contrat', 'read')
+) {
     accessforbidden();
 }
 
@@ -791,14 +794,14 @@ if ((isModEnabled("supplier_order") || isModEnabled("supplier_invoice")) && $use
  * Last actions
  */
 /*if ($user->hasRight('agenda', 'myactions', 'read')) {
-	show_array_last_actions_done($max);
+    show_array_last_actions_done($max);
 }*/
 
 /*
  * Actions to do
  */
 /*if ($user->hasRight('agenda', 'myactions', 'read')) {
-	show_array_actions_to_do($max);
+    show_array_actions_to_do($max);
 }*/
 
 /*

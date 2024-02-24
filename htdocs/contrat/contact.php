@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2005		Patrick Rouillon	<patrick@rouillon.net>
+
+/* Copyright (C) 2005       Patrick Rouillon    <patrick@rouillon.net>
  * Copyright (C) 2005-2009	Destailleur Laurent	<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2017      Ferran Marcet       	 <fmarcet@2byte.es>

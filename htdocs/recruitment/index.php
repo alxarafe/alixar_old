@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -48,7 +49,7 @@ if (isset($user->socid) && $user->socid > 0) {
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 // if (! $user->hasRight('mymodule', 'myobject', 'read')) {
-// 	accessforbidden();
+//  accessforbidden();
 // }
 restrictedArea($user, 'recruitment', 0, 'recruitment_recruitmentjobposition', 'recruitmentjobposition', '', 'rowid');
 
@@ -247,78 +248,78 @@ print '<br>';
 // Draft MyObject
 if (isModEnabled('recruitment') && $user->rights->recruitment->read)
 {
-	$langs->load("orders");
+    $langs->load("orders");
 
-	$sql = "SELECT c.rowid, c.ref, c.ref_client, c.total_ht, c.total_tva, c.total_ttc, s.rowid as socid, s.nom as name, s.client, s.canvas";
-	$sql.= ", s.code_client";
-	$sql.= " FROM ".MAIN_DB_PREFIX."recruitment_recruitmentjobposition as c";
-	$sql.= ", ".MAIN_DB_PREFIX."societe as s";
-	if (! $user->rights->societe->client->voir && ! $socid) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
-	$sql.= " WHERE c.fk_soc = s.rowid";
-	$sql.= " AND c.fk_statut = 0";
-	$sql.= " AND c.entity IN (".getEntity('commande').")";
-	if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
-	if ($socid)	$sql.= " AND c.fk_soc = ".((int) $socid);
+    $sql = "SELECT c.rowid, c.ref, c.ref_client, c.total_ht, c.total_tva, c.total_ttc, s.rowid as socid, s.nom as name, s.client, s.canvas";
+    $sql.= ", s.code_client";
+    $sql.= " FROM ".MAIN_DB_PREFIX."recruitment_recruitmentjobposition as c";
+    $sql.= ", ".MAIN_DB_PREFIX."societe as s";
+    if (! $user->rights->societe->client->voir && ! $socid) $sql.= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
+    $sql.= " WHERE c.fk_soc = s.rowid";
+    $sql.= " AND c.fk_statut = 0";
+    $sql.= " AND c.entity IN (".getEntity('commande').")";
+    if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id);
+    if ($socid) $sql.= " AND c.fk_soc = ".((int) $socid);
 
-	$resql = $db->query($sql);
-	if ($resql)
-	{
-		$total = 0;
-		$num = $db->num_rows($resql);
+    $resql = $db->query($sql);
+    if ($resql)
+    {
+        $total = 0;
+        $num = $db->num_rows($resql);
 
-		print '<table class="noborder centpercent">';
-		print '<tr class="liste_titre">';
-		print '<th colspan="3">'.$langs->trans("DraftOrders").($num?'<span class="badge marginleftonlyshort">'.$num.'</span>':'').'</th></tr>';
+        print '<table class="noborder centpercent">';
+        print '<tr class="liste_titre">';
+        print '<th colspan="3">'.$langs->trans("DraftOrders").($num?'<span class="badge marginleftonlyshort">'.$num.'</span>':'').'</th></tr>';
 
-		$var = true;
-		if ($num > 0)
-		{
-			$i = 0;
-			while ($i < $num)
-			{
+        $var = true;
+        if ($num > 0)
+        {
+            $i = 0;
+            while ($i < $num)
+            {
 
-				$obj = $db->fetch_object($resql);
-				print '<tr class="oddeven"><td class="nowrap">';
-				$orderstatic->id=$obj->rowid;
-				$orderstatic->ref=$obj->ref;
-				$orderstatic->ref_client=$obj->ref_client;
-				$orderstatic->total_ht = $obj->total_ht;
-				$orderstatic->total_tva = $obj->total_tva;
-				$orderstatic->total_ttc = $obj->total_ttc;
-				print $orderstatic->getNomUrl(1);
-				print '</td>';
-				print '<td class="nowrap">';
-				$companystatic->id=$obj->socid;
-				$companystatic->name=$obj->name;
-				$companystatic->client=$obj->client;
-				$companystatic->code_client = $obj->code_client;
-				$companystatic->code_fournisseur = $obj->code_fournisseur;
-				$companystatic->canvas=$obj->canvas;
-				print $companystatic->getNomUrl(1,'customer',16);
-				print '</td>';
-				print '<td class="right" class="nowrap">'.price($obj->total_ttc).'</td></tr>';
-				$i++;
-				$total += $obj->total_ttc;
-			}
-			if ($total>0)
-			{
+                $obj = $db->fetch_object($resql);
+                print '<tr class="oddeven"><td class="nowrap">';
+                $orderstatic->id=$obj->rowid;
+                $orderstatic->ref=$obj->ref;
+                $orderstatic->ref_client=$obj->ref_client;
+                $orderstatic->total_ht = $obj->total_ht;
+                $orderstatic->total_tva = $obj->total_tva;
+                $orderstatic->total_ttc = $obj->total_ttc;
+                print $orderstatic->getNomUrl(1);
+                print '</td>';
+                print '<td class="nowrap">';
+                $companystatic->id=$obj->socid;
+                $companystatic->name=$obj->name;
+                $companystatic->client=$obj->client;
+                $companystatic->code_client = $obj->code_client;
+                $companystatic->code_fournisseur = $obj->code_fournisseur;
+                $companystatic->canvas=$obj->canvas;
+                print $companystatic->getNomUrl(1,'customer',16);
+                print '</td>';
+                print '<td class="right" class="nowrap">'.price($obj->total_ttc).'</td></tr>';
+                $i++;
+                $total += $obj->total_ttc;
+            }
+            if ($total>0)
+            {
 
-				print '<tr class="liste_total"><td>'.$langs->trans("Total").'</td><td colspan="2" class="right">'.price($total)."</td></tr>";
-			}
-		}
-		else
-		{
+                print '<tr class="liste_total"><td>'.$langs->trans("Total").'</td><td colspan="2" class="right">'.price($total)."</td></tr>";
+            }
+        }
+        else
+        {
 
-			print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("NoOrder").'</td></tr>';
-		}
-		print "</table><br>";
+            print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("NoOrder").'</td></tr>';
+        }
+        print "</table><br>";
 
-		$db->free($resql);
-	}
-	else
-	{
-		dol_print_error($db);
-	}
+        $db->free($resql);
+    }
+    else
+    {
+        dol_print_error($db);
+    }
 }
 END MODULEBUILDER DRAFT MYOBJECT */
 

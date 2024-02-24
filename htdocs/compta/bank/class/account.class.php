@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2007	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2012	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2004		Christophe Combelles	<ccomb@free.fr>
@@ -1740,7 +1741,7 @@ class Account extends CommonObject
             'LV', // Latvia
             'MC', // Monaco - Included in France
             'MT', // Malta
-            //'NO',	// Norway
+            //'NO', // Norway
             'PL', // Poland
             'PT', // Portugal
             'RO', // Romania
@@ -1748,7 +1749,7 @@ class Account extends CommonObject
             'SK', // Slovakia
             'SI', // Slovenia
             'UK', // United Kingdom
-            //'CH',	// Switzerland - No. Swizerland in not in EEC
+            //'CH', // Switzerland - No. Swizerland in not in EEC
         ];
 
         if (in_array($country_code, $country_code_in_EEC)) {
@@ -2767,36 +2768,36 @@ class AccountLine extends CommonObjectLine
 
         //$langs->load('companies');
         /*
-		if ($mode == 0)
-		{
-			if ($status==0) return $langs->trans("ActivityCeased");
-			if ($status==1) return $langs->trans("InActivity");
-		}
-		if ($mode == 1)
-		{
-			if ($status==0) return $langs->trans("ActivityCeased");
-			if ($status==1) return $langs->trans("InActivity");
-		}
-		if ($mode == 2)
-		{
-			if ($status==0) return img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"').' '.$langs->trans("ActivityCeased");
-			if ($status==1) return img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"').' '.$langs->trans("InActivity");
-		}
-		if ($mode == 3)
-		{
-			if ($status==0) return img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"');
-			if ($status==1) return img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"');
-		}
-		if ($mode == 4)
-		{
-			if ($status==0) return img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"').' '.$langs->trans("ActivityCeased");
-			if ($status==1) return img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"').' '.$langs->trans("InActivity");
-		}
-		if ($mode == 5)
-		{
-			if ($status==0) return $langs->trans("ActivityCeased").' '.img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"');
-			if ($status==1) return $langs->trans("InActivity").' '.img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"');
-		}*/
+        if ($mode == 0)
+        {
+            if ($status==0) return $langs->trans("ActivityCeased");
+            if ($status==1) return $langs->trans("InActivity");
+        }
+        if ($mode == 1)
+        {
+            if ($status==0) return $langs->trans("ActivityCeased");
+            if ($status==1) return $langs->trans("InActivity");
+        }
+        if ($mode == 2)
+        {
+            if ($status==0) return img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"').' '.$langs->trans("ActivityCeased");
+            if ($status==1) return img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"').' '.$langs->trans("InActivity");
+        }
+        if ($mode == 3)
+        {
+            if ($status==0) return img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"');
+            if ($status==1) return img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"');
+        }
+        if ($mode == 4)
+        {
+            if ($status==0) return img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"').' '.$langs->trans("ActivityCeased");
+            if ($status==1) return img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"').' '.$langs->trans("InActivity");
+        }
+        if ($mode == 5)
+        {
+            if ($status==0) return $langs->trans("ActivityCeased").' '.img_picto($langs->trans("ActivityCeased"),'statut5', 'class="pictostatus"');
+            if ($status==1) return $langs->trans("InActivity").' '.img_picto($langs->trans("InActivity"),'statut4', 'class="pictostatus"');
+        }*/
 
         return '';
     }

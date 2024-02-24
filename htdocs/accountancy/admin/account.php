@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2016  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2024  Alexandre Spangaro  <aspangaro@easya.solutions>
  * Copyright (C) 2016-2018  Laurent Destailleur <eldy@users.sourceforge.net>
@@ -146,8 +147,10 @@ if (empty($reshook)) {
         $search_import_key = "";
         $search_array_options = [];
     }
-    if ((GETPOST('valid_change_chart', 'alpha') && GETPOST('chartofaccounts', 'int') > 0)    // explicit click on button 'Change and load' with js on
-        || (GETPOST('chartofaccounts', 'int') > 0 && GETPOST('chartofaccounts', 'int') != getDolGlobalInt('CHARTOFACCOUNTS'))) {    // a submit of form is done and chartofaccounts combo has been modified
+    if (
+        (GETPOST('valid_change_chart', 'alpha') && GETPOST('chartofaccounts', 'int') > 0)    // explicit click on button 'Change and load' with js on
+        || (GETPOST('chartofaccounts', 'int') > 0 && GETPOST('chartofaccounts', 'int') != getDolGlobalInt('CHARTOFACCOUNTS'))
+    ) {    // a submit of form is done and chartofaccounts combo has been modified
         $error = 0;
 
         if ($chartofaccounts > 0 && $permissiontoadd) {

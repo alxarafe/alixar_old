@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2004		Rodolphe Quiedeville		<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2004       Rodolphe Quiedeville        <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2016	Laurent Destailleur		<eldy@users.sourceforge.org>
  * Copyright (C) 2011		Juanjo Menent			<jmenent@2byte.es>
  * Copyright (C) 2012-2018	Regis Houssin			<regis.houssin@inodbox.com>
@@ -160,7 +161,7 @@ print '</form>';
 // Define $urlwithroot
 $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
 $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 // Show message
 $message = '';

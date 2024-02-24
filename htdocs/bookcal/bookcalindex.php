@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -35,7 +36,7 @@ $action = GETPOST('action', 'aZ09');
 
 // Security check
 // if (! $user->hasRight('bookcal', 'myobject', 'read')) {
-// 	accessforbidden();
+//  accessforbidden();
 // }
 $socid = GETPOST('socid', 'int');
 if (isset($user->socid) && $user->socid > 0) {
@@ -136,49 +137,49 @@ $max = getDolGlobalInt('MAIN_SIZE_SHORTLIST_LIMIT');
 /* BEGIN MODULEBUILDER LASTMODIFIED MYOBJECT
 // Last modified myobject
 if (isModEnabled('bookcal')) {
-	$sql = "SELECT rowid, `ref`, fk_soc, fk_project, description, note_public, note_private, date_creation, tms, fk_user_creat, fk_user_modif, last_main_doc, import_key, model_pdf, status, firstname, lastname, email, `start`, duration";
-	$sql .= " FROM ". MAIN_DB_PREFIX . 'bookcal_booking';
-	print "here2";
-	$resql = $db->query($sql);
-	if ($resql)
-	{
-		$num = $db->num_rows($resql);
-		$i = 0;
+    $sql = "SELECT rowid, `ref`, fk_soc, fk_project, description, note_public, note_private, date_creation, tms, fk_user_creat, fk_user_modif, last_main_doc, import_key, model_pdf, status, firstname, lastname, email, `start`, duration";
+    $sql .= " FROM ". MAIN_DB_PREFIX . 'bookcal_booking';
+    print "here2";
+    $resql = $db->query($sql);
+    if ($resql)
+    {
+        $num = $db->num_rows($resql);
+        $i = 0;
 
-		print '<table class="noborder centpercent">';
-		print '<tr class="liste_titre">';
-		print '<th colspan="2">';
-		print $langs->trans("BoxTitleLatestModifiedMyObjects", $max);
-		print '</th>';
-		print '<th class="right">'.$langs->trans("DateModificationShort").'</th>';
-		print '</tr>';
-		print $num;
-		if ($num)
-		{
-			while ($i < $num)
-			{
-				$objp = $db->fetch_object($resql);
+        print '<table class="noborder centpercent">';
+        print '<tr class="liste_titre">';
+        print '<th colspan="2">';
+        print $langs->trans("BoxTitleLatestModifiedMyObjects", $max);
+        print '</th>';
+        print '<th class="right">'.$langs->trans("DateModificationShort").'</th>';
+        print '</tr>';
+        print $num;
+        if ($num)
+        {
+            while ($i < $num)
+            {
+                $objp = $db->fetch_object($resql);
 
-				$myobjectstatic->id=$objp->rowid;
-				$myobjectstatic->ref=$objp->ref;
-				$myobjectstatic->label=$objp->label;
-				$myobjectstatic->status = $objp->status;
+                $myobjectstatic->id=$objp->rowid;
+                $myobjectstatic->ref=$objp->ref;
+                $myobjectstatic->label=$objp->label;
+                $myobjectstatic->status = $objp->status;
 
-				print '<tr class="oddeven">';
-				print '<td class="nowrap">'.$myobjectstatic->getNomUrl(1).'</td>';
-				print '<td class="right nowrap">';
-				print "</td>";
-				print '<td class="right nowrap">'.dol_print_date($db->jdate($objp->tms), 'day')."</td>";
-				print '</tr>';
-				$i++;
-			}
+                print '<tr class="oddeven">';
+                print '<td class="nowrap">'.$myobjectstatic->getNomUrl(1).'</td>';
+                print '<td class="right nowrap">';
+                print "</td>";
+                print '<td class="right nowrap">'.dol_print_date($db->jdate($objp->tms), 'day')."</td>";
+                print '</tr>';
+                $i++;
+            }
 
-			$db->free($resql);
-		} else {
-			print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("None").'</td></tr>';
-		}
-		print "</table><br>";
-	}
+            $db->free($resql);
+        } else {
+            print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("None").'</td></tr>';
+        }
+        print "</table><br>";
+    }
 }
 
 */

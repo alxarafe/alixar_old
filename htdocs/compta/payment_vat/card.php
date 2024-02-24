@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2014 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Barilley / Ocebo <marc@ocebo.com>
@@ -80,39 +81,39 @@ if ($action == 'confirm_delete' && $confirm == 'yes' && $user->hasRight('tax', '
 /*
 if ($action == 'confirm_valide' && $confirm == 'yes' && $user->rights->tax->charges->creer)
 {
-	$db->begin();
+    $db->begin();
 
-	$result=$object->valide();
+    $result=$object->valide();
 
-	if ($result > 0)
-	{
-		$db->commit();
+    if ($result > 0)
+    {
+        $db->commit();
 
-		$factures=array();	// TODO Get all id of invoices linked to this payment
-		foreach($factures as $id)
-		{
-			$fac = new Facture($db);
-			$fac->fetch($id);
+        $factures=array();  // TODO Get all id of invoices linked to this payment
+        foreach($factures as $id)
+        {
+            $fac = new Facture($db);
+            $fac->fetch($id);
 
-			$outputlangs = $langs;
-			if (!empty($_REQUEST['lang_id']))
-			{
-				$outputlangs = new Lang("",$conf);
-				$outputlangs->setDefaultLang($_REQUEST['lang_id']);
-			}
-			if (empty($conf->global->MAIN_DISABLE_PDF_AUTOUPDATE)) {
-				$fac->generateDocument($fac->model_pdf, $outputlangs);
-			}
-		}
+            $outputlangs = $langs;
+            if (!empty($_REQUEST['lang_id']))
+            {
+                $outputlangs = new Lang("",$conf);
+                $outputlangs->setDefaultLang($_REQUEST['lang_id']);
+            }
+            if (empty($conf->global->MAIN_DISABLE_PDF_AUTOUPDATE)) {
+                $fac->generateDocument($fac->model_pdf, $outputlangs);
+            }
+        }
 
-		header('Location: card.php?id='.$object->id);
-		exit;
-	}
-	else
-	{
-		setEventMessages($object->error, $object->errors, 'errors');
-		$db->rollback();
-	}
+        header('Location: card.php?id='.$object->id);
+        exit;
+    }
+    else
+    {
+        setEventMessages($object->error, $object->errors, 'errors');
+        $db->rollback();
+    }
 }
 */
 
@@ -152,8 +153,8 @@ if ($action == 'delete') {
 /*
 if ($action == 'valide')
 {
-	$facid = $_GET['facid'];
-	print $form->formconfirm('card.php?id='.$object->id.'&amp;facid='.$facid, $langs->trans("ValidatePayment"), $langs->trans("ConfirmValidatePayment"), 'confirm_valide','',0,2);
+    $facid = $_GET['facid'];
+    print $form->formconfirm('card.php?id='.$object->id.'&amp;facid='.$facid, $langs->trans("ValidatePayment"), $langs->trans("ConfirmValidatePayment"), 'confirm_valide','',0,2);
 
 }
 */
@@ -276,12 +277,12 @@ print '<div class="tabsAction">';
 /*
 if (!empty($conf->global->BILL_ADD_PAYMENT_VALIDATION))
 {
-	if ($user->socid == 0 && $object->statut == 0 && $_GET['action'] == '')
-	{
-		if ($user->hasRight('facture', 'paiement')) {
-			print '<a class="butAction" href="card.php?id='.GETPOST('id', 'int').'&amp;facid='.$objp->facid.'&amp;action=valide">'.$langs->trans('Valid').'</a>';
-		}
-	}
+    if ($user->socid == 0 && $object->statut == 0 && $_GET['action'] == '')
+    {
+        if ($user->hasRight('facture', 'paiement')) {
+            print '<a class="butAction" href="card.php?id='.GETPOST('id', 'int').'&amp;facid='.$objp->facid.'&amp;action=valide">'.$langs->trans('Valid').'</a>';
+        }
+    }
 }
 */
 

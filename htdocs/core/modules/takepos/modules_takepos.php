@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@capnetworks.com>
@@ -26,7 +27,7 @@
  *  \brief      File containing the parent class for the numbering of cash register receipts
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
 
 
 /**
@@ -34,5 +35,5 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
  */
 abstract class ModeleNumRefTakepos extends CommonNumRefGenerator
 {
-	// No overload code
+    // No overload code
 }

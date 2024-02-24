@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -175,15 +176,15 @@ llxHeader('', $title, $help_url);
 // Example : Adding jquery code
 // print '<script type="text/javascript">
 // jQuery(document).ready(function() {
-// 	function init_myfunc()
-// 	{
-// 		jQuery("#myid").removeAttr(\'disabled\');
-// 		jQuery("#myid").attr(\'disabled\',\'disabled\');
-// 	}
-// 	init_myfunc();
-// 	jQuery("#mybutton").click(function() {
-// 		init_myfunc();
-// 	});
+//  function init_myfunc()
+//  {
+//      jQuery("#myid").removeAttr(\'disabled\');
+//      jQuery("#myid").attr(\'disabled\',\'disabled\');
+//  }
+//  init_myfunc();
+//  jQuery("#mybutton").click(function() {
+//      init_myfunc();
+//  });
 // });
 // </script>';
 
@@ -302,7 +303,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         $formquestion = [];
         /*
         $forcecombo=0;
-        if ($conf->browser->name == 'ie') $forcecombo = 1;	// There is a bug in IE10 that make combo inside popup crazy
+        if ($conf->browser->name == 'ie') $forcecombo = 1;  // There is a bug in IE10 that make combo inside popup crazy
         $formquestion = array(
             // 'text' => $langs->trans("ConfirmClone"),
             // array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneMainAttributes"), 'value' => 1),
@@ -374,9 +375,9 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     print '<table class="border centpercent tableforfield">' . "\n";
 
     // Common attributes
-    //$keyforbreak='fieldkeytoswitchonsecondcolumn';	// We change column just before this field
-    //unset($object->fields['fk_project']);				// Hide field already shown in banner
-    //unset($object->fields['fk_soc']);					// Hide field already shown in banner
+    //$keyforbreak='fieldkeytoswitchonsecondcolumn';    // We change column just before this field
+    //unset($object->fields['fk_project']);             // Hide field already shown in banner
+    //unset($object->fields['fk_soc']);                 // Hide field already shown in banner
     include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
     // Other attributes. Fields from hook formObjectOptions and Extrafields.

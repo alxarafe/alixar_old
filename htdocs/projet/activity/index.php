@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2010      Regis Houssin        <regis.houssin@inodbox.com>
@@ -211,59 +212,59 @@ print '</div>';
 /*
 if ($db->type != 'pgsql')
 {
-	print '<br>';
+    print '<br>';
 
-	// Show list of projects active this week
-	print '<div class="div-table-responsive-no-min">';
-	print '<table class="noborder centpercent">';
-	print '<tr class="liste_titre">';
-	print '<td>'.$langs->trans("ActivityOnProjectThisWeek").'</td>';
-	print '<td class="right">'.$langs->trans("Time").'</td>';
-	print "</tr>\n";
+    // Show list of projects active this week
+    print '<div class="div-table-responsive-no-min">';
+    print '<table class="noborder centpercent">';
+    print '<tr class="liste_titre">';
+    print '<td>'.$langs->trans("ActivityOnProjectThisWeek").'</td>';
+    print '<td class="right">'.$langs->trans("Time").'</td>';
+    print "</tr>\n";
 
-	$sql = "SELECT p.rowid, p.ref, p.title, p.public, SUM(tt.task_duration) as nb";
-	$sql.= " FROM ".MAIN_DB_PREFIX."projet as p";
-	$sql.= " , ".MAIN_DB_PREFIX."projet_task as t";
-	$sql.= " , ".MAIN_DB_PREFIX."element_time as tt";
-	$sql.= " WHERE t.fk_projet = p.rowid";
-	$sql.= " AND p.entity = ".((int) $conf->entity);
-	$sql.= " AND tt.fk_task = t.rowid";
-	$sql.= " AND tt.fk_user = ".((int) $user->id);
-	$sql.= " AND task_date >= '".$db->idate(dol_get_first_day($year, $month)).'" AND ...";
-	$sql.= " AND p.rowid in (".$db->sanitize($projectsListId).")";
-	$sql.= " GROUP BY p.rowid, p.ref, p.title";
+    $sql = "SELECT p.rowid, p.ref, p.title, p.public, SUM(tt.task_duration) as nb";
+    $sql.= " FROM ".MAIN_DB_PREFIX."projet as p";
+    $sql.= " , ".MAIN_DB_PREFIX."projet_task as t";
+    $sql.= " , ".MAIN_DB_PREFIX."element_time as tt";
+    $sql.= " WHERE t.fk_projet = p.rowid";
+    $sql.= " AND p.entity = ".((int) $conf->entity);
+    $sql.= " AND tt.fk_task = t.rowid";
+    $sql.= " AND tt.fk_user = ".((int) $user->id);
+    $sql.= " AND task_date >= '".$db->idate(dol_get_first_day($year, $month)).'" AND ...";
+    $sql.= " AND p.rowid in (".$db->sanitize($projectsListId).")";
+    $sql.= " GROUP BY p.rowid, p.ref, p.title";
 
-	$resql = $db->query($sql);
-	if ( $resql )
-	{
-		$total = 0;
+    $resql = $db->query($sql);
+    if ( $resql )
+    {
+        $total = 0;
 
-		while ($row = $db->fetch_object($resql))
-		{
-			print '<tr class="oddeven">';
-			print '<td>';
-			$projectstatic->id=$row->rowid;
-			$projectstatic->ref=$row->ref;
-			$projectstatic->title=$row->title;
-			$projectstatic->public=$row->public;
-			print $projectstatic->getNomUrl(1, '', 1);
-			print '</td>';
-			print '<td class="right">'.convertSecondToTime($row->nb, 'allhourmin').'</td>';
-			print "</tr>\n";
-			$total += $row->nb;
-		}
+        while ($row = $db->fetch_object($resql))
+        {
+            print '<tr class="oddeven">';
+            print '<td>';
+            $projectstatic->id=$row->rowid;
+            $projectstatic->ref=$row->ref;
+            $projectstatic->title=$row->title;
+            $projectstatic->public=$row->public;
+            print $projectstatic->getNomUrl(1, '', 1);
+            print '</td>';
+            print '<td class="right">'.convertSecondToTime($row->nb, 'allhourmin').'</td>';
+            print "</tr>\n";
+            $total += $row->nb;
+        }
 
-		$db->free($resql);
-	}
-	else
-	{
-		dol_print_error($db);
-	}
-	print '<tr class="liste_total">';
-	print '<td>'.$langs->trans('Total').'</td>';
-	print '<td class="right">'.convertSecondToTime($total, 'allhourmin').'</td>';
-	print "</tr>\n";
-	print "</table></div><br>";
+        $db->free($resql);
+    }
+    else
+    {
+        dol_print_error($db);
+    }
+    print '<tr class="liste_total">';
+    print '<td>'.$langs->trans('Total').'</td>';
+    print '<td class="right">'.convertSecondToTime($total, 'allhourmin').'</td>';
+    print "</tr>\n";
+    print "</table></div><br>";
 
 }
 */

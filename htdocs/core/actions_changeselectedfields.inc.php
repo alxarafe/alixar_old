@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,10 +18,9 @@
  */
 
 /**
- *	\file			htdocs/core/actions_changeselectedfields.inc.php
- *  \brief			Code for actions when we change list of fields on a list page
+ *  \file           htdocs/core/actions_changeselectedfields.inc.php
+ *  \brief          Code for actions when we change list of fields on a list page
  */
-
 
 // $action must be defined
 // $db must be defined
@@ -29,20 +29,20 @@
 
 // Save selection
 if (GETPOST('formfilteraction', 'alphanohtml') == 'listafterchangingselectedfields') {
-	$tabparam = array();
+    $tabparam = array();
 
-	$varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
+    $varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
 
-	if (GETPOST("selectedfields")) {
-		$tabparam["MAIN_SELECTEDFIELDS_".$varpage] = GETPOST("selectedfields");
-	} else {
-		$tabparam["MAIN_SELECTEDFIELDS_".$varpage] = '';
-	}
+    if (GETPOST("selectedfields")) {
+        $tabparam["MAIN_SELECTEDFIELDS_" . $varpage] = GETPOST("selectedfields");
+    } else {
+        $tabparam["MAIN_SELECTEDFIELDS_" . $varpage] = '';
+    }
 
-	include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+    include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-	$result = dol_set_user_param($db, $conf, $user, $tabparam);
+    $result = dol_set_user_param($db, $conf, $user, $tabparam);
 
-	//$action='list';
-	//var_dump($tabparam);exit;
+    //$action='list';
+    //var_dump($tabparam);exit;
 }

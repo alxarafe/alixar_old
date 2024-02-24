@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007 Rodolphe Quiedeville        <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010 Laurent Destailleur         <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2007 Regis Houssin               <regis.houssin@inodbox.com>
@@ -25,7 +26,7 @@
  * \brief      File that contains the numbering module rules Saphir
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/propale/modules_propale.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/propale/modules_propale.php';
 
 
 /**
@@ -33,123 +34,123 @@ require_once DOL_DOCUMENT_ROOT.'/core/modules/propale/modules_propale.php';
  */
 class mod_propale_saphir extends ModeleNumRefPropales
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	/**
-	 * @var string Error code (or message)
-	 */
-	public $error = '';
+    /**
+     * @var string Error code (or message)
+     */
+    public $error = '';
 
-	/**
-	 * @var string Nom du modele
-	 * @deprecated
-	 * @see $name
-	 */
-	public $nom = 'Saphir';
+    /**
+     * @var string Nom du modele
+     * @deprecated
+     * @see $name
+     */
+    public $nom = 'Saphir';
 
-	/**
-	 * @var string model name
-	 */
-	public $name = 'Saphir';
+    /**
+     * @var string model name
+     */
+    public $name = 'Saphir';
 
 
-	/**
-	 *  Return description of module
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $conf, $langs, $db;
+    /**
+     *  Return description of module
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $conf, $langs, $db;
 
-		$langs->load("bills");
+        $langs->load("bills");
 
-		$form = new Form($db);
+        $form = new Form($db);
 
-		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
-		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
-		$texte .= '<input type="hidden" name="action" value="updateMask">';
-		$texte .= '<input type="hidden" name="maskconstpropal" value="PROPALE_SAPHIR_MASK">';
-		$texte .= '<table class="nobordernopadding" width="100%">';
+        $texte = $langs->trans('GenericNumRefModelDesc') . "<br>\n";
+        $texte .= '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST">';
+        $texte .= '<input type="hidden" name="token" value="' . newToken() . '">';
+        $texte .= '<input type="hidden" name="action" value="updateMask">';
+        $texte .= '<input type="hidden" name="maskconstpropal" value="PROPALE_SAPHIR_MASK">';
+        $texte .= '<table class="nobordernopadding" width="100%">';
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Proposal"), $langs->transnoentities("Proposal"));
-		$tooltip .= $langs->trans("GenericMaskCodes2");
-		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Proposal"), $langs->transnoentities("Proposal"));
-		$tooltip .= $langs->trans("GenericMaskCodes5");
+        $tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Proposal"), $langs->transnoentities("Proposal"));
+        $tooltip .= $langs->trans("GenericMaskCodes2");
+        $tooltip .= $langs->trans("GenericMaskCodes3");
+        $tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Proposal"), $langs->transnoentities("Proposal"));
+        $tooltip .= $langs->trans("GenericMaskCodes5");
 
-		// Parametrage du prefix
-		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$mask = !getDolGlobalString('PROPALE_SAPHIR_MASK') ? '' : $conf->global->PROPALE_SAPHIR_MASK;
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskpropal" value="'.$mask.'">', $tooltip, 1, 1).'</td>';
+        // Parametrage du prefix
+        $texte .= '<tr><td>' . $langs->trans("Mask") . ':</td>';
+        $mask = !getDolGlobalString('PROPALE_SAPHIR_MASK') ? '' : $conf->global->PROPALE_SAPHIR_MASK;
+        $texte .= '<td class="right">' . $form->textwithpicto('<input type="text" class="flat minwidth175" name="maskpropal" value="' . $mask . '">', $tooltip, 1, 1) . '</td>';
 
-		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="'.$langs->trans("Modify").'"></td>';
+        $texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="' . $langs->trans("Modify") . '"></td>';
 
-		$texte .= '</tr>';
+        $texte .= '</tr>';
 
-		$texte .= '</table>';
-		$texte .= '</form>';
+        $texte .= '</table>';
+        $texte .= '</form>';
 
-		return $texte;
-	}
+        return $texte;
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		global $conf, $langs, $mysoc;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        global $conf, $langs, $mysoc;
 
-		$old_code_client = $mysoc->code_client;
-		$old_code_type = $mysoc->typent_code;
-		$mysoc->code_client = 'CCCCCCCCCC';
-		$mysoc->typent_code = 'TTTTTTTTTT';
-		$numExample = $this->getNextValue($mysoc, '');
-		$mysoc->code_client = $old_code_client;
-		$mysoc->typent_code = $old_code_type;
+        $old_code_client = $mysoc->code_client;
+        $old_code_type = $mysoc->typent_code;
+        $mysoc->code_client = 'CCCCCCCCCC';
+        $mysoc->typent_code = 'TTTTTTTTTT';
+        $numExample = $this->getNextValue($mysoc, '');
+        $mysoc->code_client = $old_code_client;
+        $mysoc->typent_code = $old_code_type;
 
-		if (!$numExample) {
-			$numExample = 'NotConfigured';
-		}
-		return $numExample;
-	}
+        if (!$numExample) {
+            $numExample = 'NotConfigured';
+        }
+        return $numExample;
+    }
 
-	/**
-	 *  Return next value
-	 *
-	 *  @param	Societe		$objsoc     Object third party
-	 * 	@param	Propal		$propal		Object commercial proposal
-	 *  @return string|0      			Value if OK, 0 if KO
-	 */
-	public function getNextValue($objsoc, $propal)
-	{
-		global $db, $conf;
+    /**
+     *  Return next value
+     *
+     *  @param  Societe     $objsoc     Object third party
+     *  @param  Propal      $propal     Object commercial proposal
+     *  @return string|0                Value if OK, 0 if KO
+     */
+    public function getNextValue($objsoc, $propal)
+    {
+        global $db, $conf;
 
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-		// On defini critere recherche compteur
-		$mask = !getDolGlobalString('PROPALE_SAPHIR_MASK') ? '' : $conf->global->PROPALE_SAPHIR_MASK;
+        // On defini critere recherche compteur
+        $mask = !getDolGlobalString('PROPALE_SAPHIR_MASK') ? '' : $conf->global->PROPALE_SAPHIR_MASK;
 
-		if (!$mask) {
-			$this->error = 'NotConfigured';
-			return 0;
-		}
+        if (!$mask) {
+            $this->error = 'NotConfigured';
+            return 0;
+        }
 
-		// Get entities
-		$entity = getEntity('proposalnumber', 1, $propal);
+        // Get entities
+        $entity = getEntity('proposalnumber', 1, $propal);
 
-		$date = empty($propal->date) ? dol_now() : $propal->date;
+        $date = empty($propal->date) ? dol_now() : $propal->date;
 
-		$numFinal = get_next_value($db, $mask, 'propal', 'ref', '', $objsoc, $date, 'next', false, null, $entity);
+        $numFinal = get_next_value($db, $mask, 'propal', 'ref', '', $objsoc, $date, 'next', false, null, $entity);
 
-		return  $numFinal;
-	}
+        return  $numFinal;
+    }
 }

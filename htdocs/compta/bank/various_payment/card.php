@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017-2024  Alexandre Spangaro      <aspangaro@easya.solutions>
  * Copyright (C) 2018-2020  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2023       Laurent Destailleur     <eldy@users.sourceforge.net>

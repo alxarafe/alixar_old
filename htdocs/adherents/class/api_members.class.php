@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2016	Xebax Christy	<xebax@wanadoo.fr>
+
+/* Copyright (C) 2016   Xebax Christy   <xebax@wanadoo.fr>
  * Copyright (C) 2017	Regis Houssin	<regis.houssin@inodbox.com>
  * Copyright (C) 2020	Thibault FOUCART<support@ptibogxiv.net>
  * Copyright (C) 2020	Frédéric France	<frederic.france@netlogic.fr>

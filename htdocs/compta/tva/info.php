@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016-2023  Alexandre Spangaro      <aspangaro@easya.solutions>
  *
  * This program is free software; you can redistribute it and/or modify

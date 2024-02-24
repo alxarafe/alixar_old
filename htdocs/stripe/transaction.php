@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018-2019  Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2018-2021  Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -81,7 +82,7 @@ if (isModEnabled('stripe') && (!getDolGlobalString('STRIPE_LIVE') || GETPOST('fo
 $stripeacc = $stripe->getStripeAccount($service);
 /*if (empty($stripeaccount))
 {
-	print $langs->trans('ErrorStripeAccountNotDefined');
+    print $langs->trans('ErrorStripeAccountNotDefined');
 }*/
 
 if (!$rowid) {
@@ -197,13 +198,13 @@ if (!$rowid) {
             // Origine
             //print "<td>";
             ////if ($charge->metadata->dol_type=="order"){
-            //	$object = new Commande($db);
-            //	$object->fetch($charge->metadata->dol_id);
-            //	print "<a href='".DOL_URL_ROOT."/commande/card.php?id=".$charge->metadata->dol_id."'>".img_picto('', 'object_order')." ".$object->ref."</a>";
+            //  $object = new Commande($db);
+            //  $object->fetch($charge->metadata->dol_id);
+            //  print "<a href='".DOL_URL_ROOT."/commande/card.php?id=".$charge->metadata->dol_id."'>".img_picto('', 'object_order')." ".$object->ref."</a>";
             //} elseif ($charge->metadata->dol_type=="invoice"){
-            //	$object = new Facture($db);
-            //	$object->fetch($charge->metadata->dol_id);
-            //	print "<a href='".DOL_URL_ROOT."/compta/facture/card.php?facid=".$charge->metadata->dol_id."'>".img_picto('', 'object_invoice')." ".$object->ref."</a>";
+            //  $object = new Facture($db);
+            //  $object->fetch($charge->metadata->dol_id);
+            //  print "<a href='".DOL_URL_ROOT."/compta/facture/card.php?facid=".$charge->metadata->dol_id."'>".img_picto('', 'object_invoice')." ".$object->ref."</a>";
             //}
             //print "</td>\n";
             // Date payment

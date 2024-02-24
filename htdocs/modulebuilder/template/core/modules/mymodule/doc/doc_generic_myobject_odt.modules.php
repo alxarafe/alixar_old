@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2010-2012 	Laurent Destailleur <eldy@users.sourceforge.net>
+
+/* Copyright (C) 2010-2012  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2012		Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2014		Marcos García		<marcosgdf@gmail.com>
  * Copyright (C) 2016		Charlie Benke		<charlie@patas-monkey.com>
@@ -269,7 +270,7 @@ class doc_generic_myobject_odt extends ModelePDFMyObject
             }
 
             if (file_exists($dir)) {
-                //print "srctemplatepath=".$srctemplatepath;	// Src filename
+                //print "srctemplatepath=".$srctemplatepath;    // Src filename
                 $newfile = basename($srctemplatepath);
                 $newfiletmp = preg_replace('/\.od[ts]/i', '', $newfile);
                 $newfiletmp = preg_replace('/template_/i', '', $newfiletmp);

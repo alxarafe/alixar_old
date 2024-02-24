@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2006-2010 Regis Houssin        <regis.houssin@inodbox.com>
@@ -1565,8 +1566,10 @@ if (!empty($totalarray['totalizable']) && is_array($totalarray['totalizable'])) 
     }
 }
 
-if (isset($totalarray['totaldurationeffectivefield']) || isset($totalarray['totalplannedworkloadfield']) || isset($totalarray['totalprogress_calculatedfield'])
-    || isset($totalarray['totaltobill']) || isset($totalarray['totalbilled']) || isset($totalarray['totalbudget'])) {
+if (
+    isset($totalarray['totaldurationeffectivefield']) || isset($totalarray['totalplannedworkloadfield']) || isset($totalarray['totalprogress_calculatedfield'])
+    || isset($totalarray['totaltobill']) || isset($totalarray['totalbilled']) || isset($totalarray['totalbudget'])
+) {
     print '<tr class="liste_total">';
     $i = 0;
     while ($i < $totalarray['nbfield']) {

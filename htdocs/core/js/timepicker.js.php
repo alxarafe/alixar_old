@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2012	Regis Houssin		<regis.houssin@inodbox.com>
+
+/* Copyright (C) 2012   Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2012	Laurent Destailleur	<eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,25 +23,25 @@
  */
 
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 if (!defined('NOCSRFCHECK')) {
-	define('NOCSRFCHECK', 1);
+    define('NOCSRFCHECK', 1);
 }
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1);
+    define('NOTOKENRENEWAL', 1);
 }
 if (!defined('NOLOGIN')) {
-	define('NOLOGIN', 1);
+    define('NOLOGIN', 1);
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', 1);
+    define('NOREQUIREMENU', 1);
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', 1);
+    define('NOREQUIREHTML', 1);
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 session_cache_limiter('public');
@@ -55,33 +56,33 @@ require_once '../../main.inc.php';
 top_httphead('text/javascript; charset=UTF-8');
 // Important: Following code is to avoid page request by browser and PHP CPU at each Dolibarr page access.
 if (empty($dolibarr_nocache)) {
-	header('Cache-Control: max-age=10800, public, must-revalidate');
+    header('Cache-Control: max-age=10800, public, must-revalidate');
 } else {
-	header('Cache-Control: no-cache');
+    header('Cache-Control: no-cache');
 }
 ?>
 
 // For JQuery Timepicker
 jQuery(function($){
-	$.timepicker.regional['<?php echo $langs->defaultlang ?>'] = {
-		timeOnlyTitle: '<?php echo $langs->trans("TimeOnly") ?>',
-		timeText: '<?php echo $langs->trans("Time") ?>',
-		hourText: '<?php echo $langs->trans("Hour") ?>',
-		minuteText: '<?php echo $langs->trans("Minute") ?>',
-		secondText: '<?php echo $langs->trans("Second") ?>',
-		millisecText: '<?php echo $langs->trans("Millisecond") ?>',
-		timezoneText: '<?php echo $langs->trans("Timezone") ?>',
-		currentText: '<?php echo $langs->trans("Now") ?>',
-		closeText: '<?php echo $langs->trans("Close2") ?>',
-		timeFormat: 'HH:mm',
-		amNames: ['AM', 'A'],
-		pmNames: ['PM', 'P'],
-		isRTL: <?php echo($langs->trans("DIRECTION") == 'rtl' ? 'true' : 'false'); ?>
-	};
-	$.timepicker.setDefaults($.timepicker.regional['<?php echo $langs->defaultlang ?>']);
+    $.timepicker.regional['<?php echo $langs->defaultlang ?>'] = {
+        timeOnlyTitle: '<?php echo $langs->trans("TimeOnly") ?>',
+        timeText: '<?php echo $langs->trans("Time") ?>',
+        hourText: '<?php echo $langs->trans("Hour") ?>',
+        minuteText: '<?php echo $langs->trans("Minute") ?>',
+        secondText: '<?php echo $langs->trans("Second") ?>',
+        millisecText: '<?php echo $langs->trans("Millisecond") ?>',
+        timezoneText: '<?php echo $langs->trans("Timezone") ?>',
+        currentText: '<?php echo $langs->trans("Now") ?>',
+        closeText: '<?php echo $langs->trans("Close2") ?>',
+        timeFormat: 'HH:mm',
+        amNames: ['AM', 'A'],
+        pmNames: ['PM', 'P'],
+        isRTL: <?php echo($langs->trans("DIRECTION") == 'rtl' ? 'true' : 'false'); ?>
+    };
+    $.timepicker.setDefaults($.timepicker.regional['<?php echo $langs->defaultlang ?>']);
 });
 
 <?php
 if (is_object($db)) {
-	$db->close();
+    $db->close();
 }

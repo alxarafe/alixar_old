@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016       Xebax Christy           <xebax@wanadoo.fr>
  * Copyright (C) 2016	    Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2017	    Regis Houssin	        <regis.houssin@inodbox.com>
@@ -1903,8 +1904,10 @@ class Setup extends DolibarrApi
     {
         global $conf, $mysoc;
 
-        if (!DolibarrApiAccess::$user->admin
-            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_GET_COMPANY') || DolibarrApiAccess::$user->login != $conf->global->API_LOGINS_ALLOWED_FOR_GET_COMPANY)) {
+        if (
+            !DolibarrApiAccess::$user->admin
+            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_GET_COMPANY') || DolibarrApiAccess::$user->login != $conf->global->API_LOGINS_ALLOWED_FOR_GET_COMPANY)
+        ) {
             throw new RestException(403, 'Error API open to admin users only or to the users with logins defined into constant API_LOGINS_ALLOWED_FOR_GET_COMPANY');
         }
 
@@ -2026,8 +2029,10 @@ class Setup extends DolibarrApi
     {
         global $conf;
 
-        if (!DolibarrApiAccess::$user->admin
-            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_CONST_READ') || DolibarrApiAccess::$user->login != getDolGlobalString('API_LOGINS_ALLOWED_FOR_CONST_READ'))) {
+        if (
+            !DolibarrApiAccess::$user->admin
+            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_CONST_READ') || DolibarrApiAccess::$user->login != getDolGlobalString('API_LOGINS_ALLOWED_FOR_CONST_READ'))
+        ) {
             throw new RestException(403, 'Error API open to admin users only or to the users with logins defined into constant API_LOGINS_ALLOWED_FOR_CONST_READ');
         }
 
@@ -2058,8 +2063,10 @@ class Setup extends DolibarrApi
     {
         global $langs, $conf;
 
-        if (!DolibarrApiAccess::$user->admin
-            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_INTEGRITY_CHECK') || DolibarrApiAccess::$user->login != $conf->global->API_LOGINS_ALLOWED_FOR_INTEGRITY_CHECK)) {
+        if (
+            !DolibarrApiAccess::$user->admin
+            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_INTEGRITY_CHECK') || DolibarrApiAccess::$user->login != $conf->global->API_LOGINS_ALLOWED_FOR_INTEGRITY_CHECK)
+        ) {
             throw new RestException(403, 'Error API open to admin users only or to the users with logins defined into constant API_LOGINS_ALLOWED_FOR_INTEGRITY_CHECK');
         }
 
@@ -2372,8 +2379,10 @@ class Setup extends DolibarrApi
     {
         global $conf;
 
-        if (!DolibarrApiAccess::$user->admin
-            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_GET_MODULES') || DolibarrApiAccess::$user->login != $conf->global->API_LOGINS_ALLOWED_FOR_GET_MODULES)) {
+        if (
+            !DolibarrApiAccess::$user->admin
+            && (!getDolGlobalString('API_LOGINS_ALLOWED_FOR_GET_MODULES') || DolibarrApiAccess::$user->login != $conf->global->API_LOGINS_ALLOWED_FOR_GET_MODULES)
+        ) {
             throw new RestException(403, 'Error API open to admin users only or to the users with logins defined into constant API_LOGINS_ALLOWED_FOR_GET_MODULES');
         }
 

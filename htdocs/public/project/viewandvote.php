@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2021		Dorian Vabre			<dorian.vabre@gmail.com>
+
+/* Copyright (C) 2021       Dorian Vabre            <dorian.vabre@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +81,7 @@ $listofvotes = explode(',', $_SESSION["savevotes"]);
 
 // Define $urlwithroot
 //$urlwithouturlroot=preg_replace('/'.preg_quote(DOL_URL_ROOT,'/').'$/i','',trim($dolibarr_main_url_root));
-//$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;		// This is to use external domain name found into config file
+//$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;     // This is to use external domain name found into config file
 $urlwithroot = DOL_MAIN_URL_ROOT; // This is to use same domain name than current. For Paypal payment, we can use internal URL like localhost.
 
 $project = new Project($db);
@@ -140,21 +141,21 @@ while ($i < $db->num_rows($result)) {
 $result = $db->query($sqlforbooth);
 $i = 0;
 while ($i < $db->num_rows($result)) {
-	$obj = $db->fetch_object($result);
-	if (!empty($obj->fk_soc)) {
-		$resultthirdparty = $tmpthirdparty->fetch($obj->fk_soc);
-		if ($resultthirdparty) {
-			$thirdpartyname = $tmpthirdparty->name;
-		} else {
-			$thirdpartyname = '';
-		}
-	} else {
-		$thirdpartyname = '';
-	}
+    $obj = $db->fetch_object($result);
+    if (!empty($obj->fk_soc)) {
+        $resultthirdparty = $tmpthirdparty->fetch($obj->fk_soc);
+        if ($resultthirdparty) {
+            $thirdpartyname = $tmpthirdparty->name;
+        } else {
+            $thirdpartyname = '';
+        }
+    } else {
+        $thirdpartyname = '';
+    }
 
-	$listOfBooths .= '<tr><td>'.$obj->label.'</td><td>'.$obj->libelle.'</td><td>'.$obj->datep.'</td><td>'.$obj->datep2.'</td><td>'.$thirdpartyname.'</td><td>'.$obj->note.'</td>';
-	$listOfBooths .= '<td><button type="submit" name="vote" value="'.$obj->id.'" class="button">'.$langs->trans("Vote").'</button></td></tr>';
-	$i++;
+    $listOfBooths .= '<tr><td>'.$obj->label.'</td><td>'.$obj->libelle.'</td><td>'.$obj->datep.'</td><td>'.$obj->datep2.'</td><td>'.$thirdpartyname.'</td><td>'.$obj->note.'</td>';
+    $listOfBooths .= '<td><button type="submit" name="vote" value="'.$obj->id.'" class="button">'.$langs->trans("Vote").'</button></td></tr>';
+    $i++;
 }
 */
 

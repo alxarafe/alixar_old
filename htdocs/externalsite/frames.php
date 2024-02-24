@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2018 Laurent Destailleur <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -59,8 +60,10 @@ if (!empty($keyforcontent)) {
 
     print '<div class="framecontent" style="height: ' . ($_SESSION['dol_screenheight'] - 90) . 'px">';
 
-    if (!preg_match('/EXTERNAL_SITE_CONTENT_/', $keyforcontent)
-        && !preg_match('/EXTERNAL_SITE_URL_/', $keyforcontent)) {
+    if (
+        !preg_match('/EXTERNAL_SITE_CONTENT_/', $keyforcontent)
+        && !preg_match('/EXTERNAL_SITE_URL_/', $keyforcontent)
+    ) {
         $langs->load("errors");
         print $langs->trans("ErrorBadSyntaxForParamKeyForContent", 'EXTERNAL_SITE_CONTENT_', 'EXTERNAL_SITE_URL_');
     } elseif (!getDolGlobalString($keyforcontent)) {

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2023 Marc Chenebaux <marc.chenebaux@maj44.com>
  *

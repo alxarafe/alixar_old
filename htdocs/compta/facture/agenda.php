@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2023 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +21,7 @@
  *  \ingroup    facture
  *  \brief      Tab of events on Invoices
  */
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';

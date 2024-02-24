@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2018  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2018-2019  Nicolas ZABOURI         <info@inovea-conseil.com>
  * Copyright (C) 2019-2020  Frédéric France         <frederic.france@netlogic.fr>
@@ -26,6 +27,7 @@
  *  \ingroup    mymodule
  *  \brief      Description and activation file for module MyModule
  */
+
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
 /**
@@ -156,7 +158,7 @@ class modMyModule extends DolibarrModules
         $this->warnings_activation = []; // Warning to show when we activate module. array('always'='text') or array('FR'='textfr','MX'='textmx'...)
         $this->warnings_activation_ext = []; // Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','MX'='textmx'...)
         //$this->automatic_activation = array('FR'=>'MyModuleWasAutomaticallyActivatedBecauseOfYourCountryChoice');
-        //$this->always_enabled = true;								// If true, can't be disabled
+        //$this->always_enabled = true;                             // If true, can't be disabled
 
         // Constants
         // List of particular constants to add when module is enabled (key, 'chaine', value, desc, visible, 'current' or 'allentities', deleteonunactive)
@@ -179,12 +181,12 @@ class modMyModule extends DolibarrModules
         // Array to add new pages in new tabs
         $this->tabs = [];
         // Example:
-        // $this->tabs[] = array('data'=>'objecttype:+tabname1:Title1:mylangfile@mymodule:$user->hasRight('mymodule', 'read'):/mymodule/mynewtab1.php?id=__ID__');  					// To add a new tab identified by code tabname1
-        // $this->tabs[] = array('data'=>'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@mymodule:$user->hasRight('othermodule', 'read'):/mymodule/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2. Label will be result of calling all substitution functions on 'Title2' key.
-        // $this->tabs[] = array('data'=>'objecttype:-tabname:NU:conditiontoremove');                                                     										// To remove an existing tab identified by code tabname
+        // $this->tabs[] = array('data'=>'objecttype:+tabname1:Title1:mylangfile@mymodule:$user->hasRight('mymodule', 'read'):/mymodule/mynewtab1.php?id=__ID__');                      // To add a new tab identified by code tabname1
+        // $this->tabs[] = array('data'=>'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@mymodule:$user->hasRight('othermodule', 'read'):/mymodule/mynewtab2.php?id=__ID__',   // To add another new tab identified by code tabname2. Label will be result of calling all substitution functions on 'Title2' key.
+        // $this->tabs[] = array('data'=>'objecttype:-tabname:NU:conditiontoremove');                                                                                           // To remove an existing tab identified by code tabname
         //
         // Where objecttype can be
-        // 'categories_x'	  to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
+        // 'categories_x'     to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
         // 'contact'          to add a tab in contact view
         // 'contract'         to add a tab in contract view
         // 'group'            to add a tab in group view
@@ -192,10 +194,10 @@ class modMyModule extends DolibarrModules
         // 'invoice'          to add a tab in customer invoice view
         // 'invoice_supplier' to add a tab in supplier invoice view
         // 'member'           to add a tab in foundation member view
-        // 'opensurveypoll'	  to add a tab in opensurvey poll view
+        // 'opensurveypoll'   to add a tab in opensurvey poll view
         // 'order'            to add a tab in sale order view
         // 'order_supplier'   to add a tab in supplier order view
-        // 'payment'		  to add a tab in payment view
+        // 'payment'          to add a tab in payment view
         // 'payment_supplier' to add a tab in supplier payment view
         // 'product'          to add a tab in product view
         // 'propal'           to add a tab in propal view
@@ -327,40 +329,40 @@ class modMyModule extends DolibarrModules
             'mainmenu'=>'mymodule',
             'leftmenu'=>'myobject',
             'url'=>'/mymodule/mymoduleindex.php',
-            'langs'=>'mymodule@mymodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+            'langs'=>'mymodule@mymodule',           // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
             'position'=>1000+$r,
             'enabled'=>'isModEnabled("mymodule")', // Define condition to show or hide menu entry. Use 'isModEnabled("mymodule")' if entry must be visible if module is enabled.
             'perms'=>'$user->hasRight("mymodule", "myobject", "read")',
             'target'=>'',
-            'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
+            'user'=>2,                              // 0=Menu for internal users, 1=external users, 2=both
         );
         $this->menu[$r++]=array(
-            'fk_menu'=>'fk_mainmenu=mymodule,fk_leftmenu=myobject',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-            'type'=>'left',			                // This is a Left menu entry
+            'fk_menu'=>'fk_mainmenu=mymodule,fk_leftmenu=myobject',     // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+            'type'=>'left',                         // This is a Left menu entry
             'titre'=>'List_MyObject',
             'mainmenu'=>'mymodule',
             'leftmenu'=>'mymodule_myobject_list',
             'url'=>'/mymodule/myobject_list.php',
-            'langs'=>'mymodule@mymodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+            'langs'=>'mymodule@mymodule',           // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
             'position'=>1000+$r,
             'enabled'=>'isModEnabled("mymodule")', // Define condition to show or hide menu entry. Use 'isModEnabled("mymodule")' if entry must be visible if module is enabled.
             'perms'=>'$user->hasRight("mymodule", "myobject", "read")'
             'target'=>'',
-            'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
+            'user'=>2,                              // 0=Menu for internal users, 1=external users, 2=both
         );
         $this->menu[$r++]=array(
-            'fk_menu'=>'fk_mainmenu=mymodule,fk_leftmenu=myobject',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-            'type'=>'left',			                // This is a Left menu entry
+            'fk_menu'=>'fk_mainmenu=mymodule,fk_leftmenu=myobject',     // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+            'type'=>'left',                         // This is a Left menu entry
             'titre'=>'New_MyObject',
             'mainmenu'=>'mymodule',
             'leftmenu'=>'mymodule_myobject_new',
             'url'=>'/mymodule/myobject_card.php?action=create',
-            'langs'=>'mymodule@mymodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+            'langs'=>'mymodule@mymodule',           // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
             'position'=>1000+$r,
             'enabled'=>'isModEnabled("mymodule")', // Define condition to show or hide menu entry. Use 'isModEnabled("mymodule")' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
             'perms'=>'$user->hasRight("mymodule", "myobject", "write")'
             'target'=>'',
-            'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
+            'user'=>2,                              // 0=Menu for internal users, 1=external users, 2=both
         );*/
         /* END MODULEBUILDER LEFTMENU MYOBJECT */
         // Exports profiles provided by this module
@@ -369,7 +371,7 @@ class modMyModule extends DolibarrModules
         /*
         $langs->load("mymodule@mymodule");
         $this->export_code[$r] = $this->rights_class.'_'.$r;
-        $this->export_label[$r] = 'MyObjectLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
+        $this->export_label[$r] = 'MyObjectLines';  // Translation key (used only if key ExportDataset_xxx_z not found)
         $this->export_icon[$r] = $this->picto;
         // Define $this->export_fields_array, $this->export_TypeFields_array and $this->export_entities_array
         $keyforclass = 'MyObject'; $keyforclassfile='/mymodule/class/myobject.class.php'; $keyforelement='myobject@mymodule';
@@ -400,7 +402,7 @@ class modMyModule extends DolibarrModules
         /*
         $langs->load("mymodule@mymodule");
         $this->import_code[$r] = $this->rights_class.'_'.$r;
-        $this->import_label[$r] = 'MyObjectLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
+        $this->import_label[$r] = 'MyObjectLines';  // Translation key (used only if key ExportDataset_xxx_z not found)
         $this->import_icon[$r] = $this->picto;
         $this->import_tables_array[$r] = array('t' => MAIN_DB_PREFIX.'mymodule_myobject', 'extra' => MAIN_DB_PREFIX.'mymodule_myobject_extrafields');
         $this->import_tables_creator_array[$r] = array('t' => 'fk_user_author'); // Fields to store import user id

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2022       Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015       Frederic France      <frederic.france@free.fr>
  *
@@ -24,21 +25,21 @@
 
 // Load Dolibarr environment
 require '../../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/includes/OAuth/bootstrap.php';
+require_once DOL_DOCUMENT_ROOT . '/includes/OAuth/bootstrap.php';
 use OAuth\Common\Storage\DoliStorage;
 use OAuth\Common\Consumer\Credentials;
 
 // Define $urlwithroot
-$urlwithouturlroot = preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
-$urlwithroot = $urlwithouturlroot.DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+$urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
+$urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 
 $action = GETPOST('action', 'aZ09');
 $backtourl = GETPOST('backtourl', 'alpha');
 $keyforprovider = GETPOST('keyforprovider', 'aZ09');
 if (empty($keyforprovider) && !empty($_SESSION["oauthkeyforproviderbeforeoauthjump"]) && (GETPOST('code') || $action == 'delete')) {
-	$keyforprovider = $_SESSION["oauthkeyforproviderbeforeoauthjump"];
+    $keyforprovider = $_SESSION["oauthkeyforproviderbeforeoauthjump"];
 }
 $genericstring = 'OTHER';
 
@@ -49,7 +50,7 @@ $genericstring = 'OTHER';
 $uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
 //$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
 //$currentUri->setQuery('');
-$currentUri = $uriFactory->createFromAbsolute($urlwithroot.'/core/modules/oauth/generic_oauthcallback.php');
+$currentUri = $uriFactory->createFromAbsolute($urlwithroot . '/core/modules/oauth/generic_oauthcallback.php');
 
 
 /**
@@ -68,23 +69,23 @@ $serviceFactory->setHttpClient($httpClient);
 $storage = new DoliStorage($db, $conf, $keyforprovider);
 
 // Setup the credentials for the requests
-$keyforparamid = 'OAUTH_'.$genericstring.($keyforprovider ? '-'.$keyforprovider : '').'_ID';
-$keyforparamsecret = 'OAUTH_'.$genericstring.($keyforprovider ? '-'.$keyforprovider : '').'_SECRET';
+$keyforparamid = 'OAUTH_' . $genericstring . ($keyforprovider ? '-' . $keyforprovider : '') . '_ID';
+$keyforparamsecret = 'OAUTH_' . $genericstring . ($keyforprovider ? '-' . $keyforprovider : '') . '_SECRET';
 $credentials = new Credentials(
-	getDolGlobalString($keyforparamid),
-	getDolGlobalString($keyforparamsecret),
-	$currentUri->getAbsoluteUri()
+    getDolGlobalString($keyforparamid),
+    getDolGlobalString($keyforparamsecret),
+    $currentUri->getAbsoluteUri()
 );
 
 $state = GETPOST('state');
 
 $requestedpermissionsarray = array();
 if ($state) {
-	$requestedpermissionsarray = explode(',', $state); // Example: 'user'. 'state' parameter is standard to retrieve some parameters back
+    $requestedpermissionsarray = explode(',', $state); // Example: 'user'. 'state' parameter is standard to retrieve some parameters back
 }
 if ($action != 'delete' && empty($requestedpermissionsarray)) {
-	print 'Error, parameter state is not defined';
-	exit;
+    print 'Error, parameter state is not defined';
+    exit;
 }
 //var_dump($requestedpermissionsarray);exit;
 
@@ -100,8 +101,8 @@ var_dump($requestedpermissionsarray);
 */
 
 if (empty($apiService)) {
-	print 'Error, failed to create serviceFactory';
-	exit;
+    print 'Error, failed to create serviceFactory';
+    exit;
 }
 
 // access type needed to have oauth provider refreshing token
@@ -110,10 +111,10 @@ if (empty($apiService)) {
 $langs->load("oauth");
 
 if (!getDolGlobalString($keyforparamid)) {
-	accessforbidden('Setup of service is not complete. Customer ID is missing');
+    accessforbidden('Setup of service is not complete. Customer ID is missing');
 }
 if (!getDolGlobalString($keyforparamsecret)) {
-	accessforbidden('Setup of service is not complete. Secret key is missing');
+    accessforbidden('Setup of service is not complete. Secret key is missing');
 }
 
 
@@ -122,64 +123,64 @@ if (!getDolGlobalString($keyforparamsecret)) {
  */
 
 if ($action == 'delete') {
-	$storage->clearToken($genericstring);
+    $storage->clearToken($genericstring);
 
-	setEventMessages($langs->trans('TokenDeleted'), null, 'mesgs');
+    setEventMessages($langs->trans('TokenDeleted'), null, 'mesgs');
 
-	if (empty($backtourl)) {
-		$backtourl = DOL_URL_ROOT.'/';
-	}
+    if (empty($backtourl)) {
+        $backtourl = DOL_URL_ROOT . '/';
+    }
 
-	header('Location: '.$backtourl);
-	exit();
+    header('Location: ' . $backtourl);
+    exit();
 }
 
 if (GETPOST('code') || GETPOST('error')) {     // We are coming from oauth provider page
-	// We should have
-	//$_GET=array('code' => string 'aaaaaaaaaaaaaa' (length=20), 'state' => string 'user,public_repo' (length=16))
+    // We should have
+    //$_GET=array('code' => string 'aaaaaaaaaaaaaa' (length=20), 'state' => string 'user,public_repo' (length=16))
 
-	dol_syslog("We are coming from the oauth provider page code=".dol_trunc(GETPOST('code'), 5)." error=".GETPOST('error'));
+    dol_syslog("We are coming from the oauth provider page code=" . dol_trunc(GETPOST('code'), 5) . " error=" . GETPOST('error'));
 
-	// This was a callback request from service, get the token
-	try {
-		//var_dump($state);
-		//var_dump($apiService);      // OAuth\OAuth2\Service\Xxx
+    // This was a callback request from service, get the token
+    try {
+        //var_dump($state);
+        //var_dump($apiService);      // OAuth\OAuth2\Service\Xxx
 
-		if (GETPOST('error')) {
-			setEventMessages(GETPOST('error').' '.GETPOST('error_description'), null, 'errors');
-		} else {
-			//$token = $apiService->requestAccessToken(GETPOST('code'), $state);
-			$token = $apiService->requestAccessToken(GETPOST('code'));
+        if (GETPOST('error')) {
+            setEventMessages(GETPOST('error') . ' ' . GETPOST('error_description'), null, 'errors');
+        } else {
+            //$token = $apiService->requestAccessToken(GETPOST('code'), $state);
+            $token = $apiService->requestAccessToken(GETPOST('code'));
 
-			setEventMessages($langs->trans('NewTokenStored'), null, 'mesgs'); // Stored into object managed by class DoliStorage so into table oauth_token
-		}
+            setEventMessages($langs->trans('NewTokenStored'), null, 'mesgs'); // Stored into object managed by class DoliStorage so into table oauth_token
+        }
 
-		$backtourl = $_SESSION["backtourlsavedbeforeoauthjump"];
-		unset($_SESSION["backtourlsavedbeforeoauthjump"]);
+        $backtourl = $_SESSION["backtourlsavedbeforeoauthjump"];
+        unset($_SESSION["backtourlsavedbeforeoauthjump"]);
 
-		header('Location: '.$backtourl);
-		exit();
-	} catch (Exception $e) {
-		print $e->getMessage();
-	}
+        header('Location: ' . $backtourl);
+        exit();
+    } catch (Exception $e) {
+        print $e->getMessage();
+    }
 } else {
-	// If we enter this page without 'code' parameter, we arrive here. This is the case when we want to get the redirect
-	// to the OAuth provider login page.
-	$_SESSION["backtourlsavedbeforeoauthjump"] = $backtourl;
-	$_SESSION["oauthkeyforproviderbeforeoauthjump"] = $keyforprovider;
-	$_SESSION['oauthstateanticsrf'] = $state;
+    // If we enter this page without 'code' parameter, we arrive here. This is the case when we want to get the redirect
+    // to the OAuth provider login page.
+    $_SESSION["backtourlsavedbeforeoauthjump"] = $backtourl;
+    $_SESSION["oauthkeyforproviderbeforeoauthjump"] = $keyforprovider;
+    $_SESSION['oauthstateanticsrf'] = $state;
 
-	// This may create record into oauth_state before the header redirect.
-	// Creation of record with state in this tables depend on the Provider used (see its constructor).
-	if ($state) {
-		$url = $apiService->getAuthorizationUri(array('state' => $state));
-	} else {
-		$url = $apiService->getAuthorizationUri(); // Parameter state will be randomly generated
-	}
+    // This may create record into oauth_state before the header redirect.
+    // Creation of record with state in this tables depend on the Provider used (see its constructor).
+    if ($state) {
+        $url = $apiService->getAuthorizationUri(array('state' => $state));
+    } else {
+        $url = $apiService->getAuthorizationUri(); // Parameter state will be randomly generated
+    }
 
-	// we go on oauth provider authorization page
-	header('Location: '.$url);
-	exit();
+    // we go on oauth provider authorization page
+    header('Location: ' . $url);
+    exit();
 }
 
 

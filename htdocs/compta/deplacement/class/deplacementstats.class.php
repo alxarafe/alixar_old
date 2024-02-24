@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (c) 2005-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -22,6 +23,7 @@
  *       \ingroup    factures
  *       \brief      File for class managaging the statistics of travel and expense notes
  */
+
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/compta/deplacement/class/deplacement.class.php';
 

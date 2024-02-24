@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2007 Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2022 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2004      Eric Seigne           <eric.seigne@ryxeo.com>
@@ -813,7 +814,8 @@ if (empty($reshook)) {
                 $db->rollback();
             }
         }
-    } elseif ($action == 'import_lines_from_object'
+    } elseif (
+        $action == 'import_lines_from_object'
         && $user->hasRight('propal', 'creer')
         && $object->statut == Propal::STATUS_DRAFT
     ) {
@@ -1082,10 +1084,10 @@ if (empty($reshook)) {
 
                 // Update if prices fields are defined
                 /*$tva_tx = get_default_tva($mysoc, $object->thirdparty, $prod->id);
-				$tva_npr = get_default_npr($mysoc, $object->thirdparty, $prod->id);
-				if (empty($tva_tx)) {
-					$tva_npr = 0;
-				}*/
+                $tva_npr = get_default_npr($mysoc, $object->thirdparty, $prod->id);
+                if (empty($tva_tx)) {
+                    $tva_npr = 0;
+                }*/
 
                 // Price unique per product
                 $pu_ht = $prod->price;
@@ -1127,13 +1129,13 @@ if (empty($reshook)) {
                             $price_min_ttc = price($prodcustprice->lines[0]->price_min_ttc);
                             $price_base_type = $prodcustprice->lines[0]->price_base_type;
                             /*$tva_tx = ($prodcustprice->lines[0]->default_vat_code ? $prodcustprice->lines[0]->tva_tx.' ('.$prodcustprice->lines[0]->default_vat_code.' )' : $prodcustprice->lines[0]->tva_tx);
-							if ($prodcustprice->lines[0]->default_vat_code && !preg_match('/\(.*\)/', $tva_tx)) {
-								$tva_tx .= ' ('.$prodcustprice->lines[0]->default_vat_code.')';
-							}
-							$tva_npr = $prodcustprice->lines[0]->recuperableonly;
-							if (empty($tva_tx)) {
-								$tva_npr = 0;
-							}*/
+                            if ($prodcustprice->lines[0]->default_vat_code && !preg_match('/\(.*\)/', $tva_tx)) {
+                                $tva_tx .= ' ('.$prodcustprice->lines[0]->default_vat_code.')';
+                            }
+                            $tva_npr = $prodcustprice->lines[0]->recuperableonly;
+                            if (empty($tva_tx)) {
+                                $tva_npr = 0;
+                            }*/
                         }
                     }
                 } elseif (getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY')) {
@@ -1332,14 +1334,14 @@ if (empty($reshook)) {
 
             // TODO $pu_equivalent or $pu_equivalent_ttc must be calculated from the one not null taking into account all taxes
             /*
-			 if ($pu_equivalent) {
-			 $tmp = calcul_price_total(1, $pu_equivalent, 0, $tva_tx, -1, -1, 0, 'HT', $info_bits, $type);
-			 $pu_equivalent_ttc = ...
-			 } else {
-			 $tmp = calcul_price_total(1, $pu_equivalent_ttc, 0, $tva_tx, -1, -1, 0, 'TTC', $info_bits, $type);
-			 $pu_equivalent_ht = ...
-			 }
-			 */
+             if ($pu_equivalent) {
+             $tmp = calcul_price_total(1, $pu_equivalent, 0, $tva_tx, -1, -1, 0, 'HT', $info_bits, $type);
+             $pu_equivalent_ttc = ...
+             } else {
+             $tmp = calcul_price_total(1, $pu_equivalent_ttc, 0, $tva_tx, -1, -1, 0, 'TTC', $info_bits, $type);
+             $pu_equivalent_ht = ...
+             }
+             */
 
             //var_dump(price2num($price_min)); var_dump(price2num($pu_ht)); var_dump($remise_percent);
             //var_dump(price2num($price_min_ttc)); var_dump(price2num($pu_ttc)); var_dump($remise_percent);exit;
@@ -1470,14 +1472,14 @@ if (empty($reshook)) {
 
         // TODO $pu_equivalent or $pu_equivalent_ttc must be calculated from the one not null taking into account all taxes
         /*
-		 if ($pu_equivalent) {
-		 $tmp = calcul_price_total(1, $pu_equivalent, 0, $vat_rate, -1, -1, 0, 'HT', $info_bits, $type);
-		 $pu_equivalent_ttc = ...
-		 } else {
-		 $tmp = calcul_price_total(1, $pu_equivalent_ttc, 0, $vat_rate, -1, -1, 0, 'TTC', $info_bits, $type);
-		 $pu_equivalent_ht = ...
-		 }
-		 */
+         if ($pu_equivalent) {
+         $tmp = calcul_price_total(1, $pu_equivalent, 0, $vat_rate, -1, -1, 0, 'HT', $info_bits, $type);
+         $pu_equivalent_ttc = ...
+         } else {
+         $tmp = calcul_price_total(1, $pu_equivalent_ttc, 0, $vat_rate, -1, -1, 0, 'TTC', $info_bits, $type);
+         $pu_equivalent_ht = ...
+         }
+         */
 
         // Extrafields
         $extralabelsline = $extrafields->fetch_name_optionals_label($object->table_element_line);
@@ -1632,9 +1634,9 @@ if (empty($reshook)) {
         // Terms of payment
         $result = $object->setPaymentTerms(GETPOST('cond_reglement_id', 'int'), GETPOST('cond_reglement_id_deposit_percent', 'alpha'));
         //} elseif ($action == 'setremisepercent' && $usercancreate) {
-        //	$result = $object->set_remise_percent($user, price2num(GETPOST('remise_percent'), '', 2));
+        //  $result = $object->set_remise_percent($user, price2num(GETPOST('remise_percent'), '', 2));
         //} elseif ($action == 'setremiseabsolue' && $usercancreate) {
-        //	$result = $object->set_remise_absolue($user, price2num(GETPOST('remise_absolue'), 'MU', 2));
+        //  $result = $object->set_remise_absolue($user, price2num(GETPOST('remise_absolue'), 'MU', 2));
     } elseif ($action == 'setmode' && $usercancreate) {
         // Payment choice
         $result = $object->setPaymentMethods(GETPOST('mode_reglement_id', 'int'));
@@ -2096,7 +2098,7 @@ if ($action == 'create') {
             // TODO for compatibility
             if ($origin == 'contrat') {
                 // Calcul contrat->price (HT), contrat->total (TTC), contrat->tva
-                //$objectsrc->remise_absolue = $remise_absolue;	// deprecated
+                //$objectsrc->remise_absolue = $remise_absolue; // deprecated
                 //$objectsrc->remise_percent = $remise_percent;
                 $objectsrc->update_price(1, 'auto', 1);
             }
@@ -2142,8 +2144,8 @@ if ($action == 'create') {
         print "</table>\n";
 
         /*
-		 * Combobox for copy function
-		 */
+         * Combobox for copy function
+         */
 
         if (!getDolGlobalString('PROPAL_CLONE_ON_CREATE_PAGE')) {
             print '<input type="hidden" name="createmode" value="empty">';
@@ -2215,8 +2217,8 @@ if ($action == 'create') {
     }
 } elseif ($object->id > 0) {
     /*
-	 * Show object in view mode
-	 */
+     * Show object in view mode
+     */
     $object->fetch_thirdparty();
     if ($object->thirdparty) {
         $soc = $object->thirdparty;
@@ -2545,7 +2547,7 @@ if ($action == 'create') {
         // print $langs->trans('DatePropal');
         // print '</td>';
         // if ($action != 'editdate' && $usercancreate && $caneditfield) {
-        // 	print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editdate&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDate'), 1).'</a></td>';
+        //  print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=editdate&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDate'), 1).'</a></td>';
         // }
 
         // print '</tr></table>';
@@ -2926,8 +2928,8 @@ if ($action == 'create') {
         }
 
         /*
-		 * Lines
-		 */
+         * Lines
+         */
 
         // Get object lines
         $result = $object->getLinesArray();
@@ -2987,8 +2989,8 @@ if ($action == 'create') {
     print dol_get_fiche_end();
 
     /*
-	 * Button Actions
-	 */
+     * Button Actions
+     */
 
     if ($action != 'presend') {
         print '<div class="tabsAction">';
@@ -2999,8 +3001,10 @@ if ($action == 'create') {
         if (empty($reshook)) {
             if ($action != 'editline') {
                 // Validate
-                if (($object->statut == Propal::STATUS_DRAFT && $object->total_ttc >= 0 && count($object->lines) > 0)
-                    || ($object->statut == Propal::STATUS_DRAFT && getDolGlobalString('PROPAL_ENABLE_NEGATIVE') && count($object->lines) > 0)) {
+                if (
+                    ($object->statut == Propal::STATUS_DRAFT && $object->total_ttc >= 0 && count($object->lines) > 0)
+                    || ($object->statut == Propal::STATUS_DRAFT && getDolGlobalString('PROPAL_ENABLE_NEGATIVE') && count($object->lines) > 0)
+                ) {
                     if ($usercanvalidate) {
                         print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=validate&token=' . newToken() . '">' . (!getDolGlobalString('PROPAL_SKIP_ACCEPT_REFUSE') ? $langs->trans('Validate') : $langs->trans('ValidateAndSign')) . '</a>';
                     } else {
@@ -3008,10 +3012,10 @@ if ($action == 'create') {
                     }
                 }
                 // Create event
-                /*if (isModEnabled('agenda') && !empty($conf->global->MAIN_ADD_EVENT_ON_ELEMENT_CARD)) 	// Add hidden condition because this is not a "workflow" action so should appears somewhere else on page.
-				{
-					print '<a class="butAction" href="' . DOL_URL_ROOT . '/comm/action/card.php?action=create&amp;origin=' . $object->element . '&amp;originid=' . $object->id . '&amp;socid=' . $object->socid . '">' . $langs->trans("AddAction") . '</a></div>';
-				}*/
+                /*if (isModEnabled('agenda') && !empty($conf->global->MAIN_ADD_EVENT_ON_ELEMENT_CARD))  // Add hidden condition because this is not a "workflow" action so should appears somewhere else on page.
+                {
+                    print '<a class="butAction" href="' . DOL_URL_ROOT . '/comm/action/card.php?action=create&amp;origin=' . $object->element . '&amp;originid=' . $object->id . '&amp;socid=' . $object->socid . '">' . $langs->trans("AddAction") . '</a></div>';
+                }*/
                 // Edit
                 if ($object->statut == Propal::STATUS_VALIDATED && $usercancreate) {
                     print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=modif&token=' . newToken() . '">' . $langs->trans('Modify') . '</a>';
@@ -3125,8 +3129,8 @@ if ($action == 'create') {
         print '<div class="fichecenter"><div class="fichehalfleft">';
         print '<a name="builddoc"></a>'; // ancre
         /*
-		 * Generated documents
-		 */
+         * Generated documents
+         */
         $objref = dol_sanitizeFileName($object->ref);
         $filedir = $conf->propal->multidir_output[$object->entity] . "/" . dol_sanitizeFileName($object->ref);
         $urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;

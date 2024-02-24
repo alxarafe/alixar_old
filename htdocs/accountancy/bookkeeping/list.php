@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2016  Olivier Geffroy         <jeff@jeffinfo.com>
  * Copyright (C) 2013-2016  Florian Henry           <florian.henry@open-concept.pro>
  * Copyright (C) 2013-2024  Alexandre Spangaro      <aspangaro@easya.solutions>
@@ -717,7 +718,7 @@ $formconfirm = '';
 // Print form confirm
 print $formconfirm;
 
-//$param='';	param started before
+//$param='';    param started before
 if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) {
     $param .= '&contextpage=' . urlencode($contextpage);
 }

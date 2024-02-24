@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -484,10 +485,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
             $morehtmlref .= ' <small class="hideonsmartphone opacitymedium">(' . $form->textwithpicto($langs->trans("CreatedByEmailCollector"), $langs->trans("EmailMsgID") . ': ' . $object->email_msgid) . ')</small>';
         }
     } /* elseif (!empty($object->origin_email)) {
-		$morehtmlref .= $langs->trans("CreatedBy").' : ';
-		$morehtmlref .= img_picto('', 'email', 'class="paddingrightonly"');
-		$morehtmlref .= dol_escape_htmltag($object->origin_email).' <small class="hideonsmartphone opacitymedium">('.$langs->trans("CreatedByPublicPortal").')</small>';
-	} */
+        $morehtmlref .= $langs->trans("CreatedBy").' : ';
+        $morehtmlref .= img_picto('', 'email', 'class="paddingrightonly"');
+        $morehtmlref .= dol_escape_htmltag($object->origin_email).' <small class="hideonsmartphone opacitymedium">('.$langs->trans("CreatedByPublicPortal").')</small>';
+    } */
     $morehtmlref .= '</div>';
 
     dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
@@ -500,7 +501,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     // Common attributes
     $keyforbreak = 'description'; // We change column just before this field
     unset($object->fields['email']); // Hide field already shown in banner
-    //unset($object->fields['fk_soc']);					// Hide field already shown in banner
+    //unset($object->fields['fk_soc']);                 // Hide field already shown in banner
     include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
     // Other attributes. Fields from hook formObjectOptions and Extrafields.

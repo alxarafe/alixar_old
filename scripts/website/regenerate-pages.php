@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /* Copyright (C) 2020 Laurent Destailleur <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,17 +24,17 @@
  */
 
 if (!defined('NOSESSION')) {
-	define('NOSESSION', '1');
+    define('NOSESSION', '1');
 }
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);
-$path = __DIR__.'/';
+$path = __DIR__ . '/';
 
 // Test if batch mode
 if (substr($sapi_type, 0, 3) == 'cgi') {
-	echo "Error: You are using PHP for CGI. To execute ".$script_file." from command line, you must use PHP for CLI mode.\n";
-	exit(-1);
+    echo "Error: You are using PHP for CGI. To execute " . $script_file . " from command line, you must use PHP for CLI mode.\n";
+    exit(-1);
 }
 
 @set_time_limit(0); // No timeout for this script
@@ -46,17 +47,17 @@ $websiteref = empty($argv[2]) ? '' : $argv[2];
 $max = (!isset($argv[3]) || (empty($argv[3]) && $argv[3] !== '0')) ? '10' : $argv[3];
 
 if (empty($argv[2]) || !in_array($argv[1], array('test', 'confirm')) || empty($websiteref)) {
-	print '***** '.$script_file.' *****'."\n";
-	print "Usage: $script_file (test|confirm) website [nbmaxrecord]\n";
-	print "\n";
-	print "Regenerate all pages of a web site.\n";
-	exit(-1);
+    print '***** ' . $script_file . ' *****' . "\n";
+    print "Usage: $script_file (test|confirm) website [nbmaxrecord]\n";
+    print "\n";
+    print "Regenerate all pages of a web site.\n";
+    exit(-1);
 }
 
-require $path."../../htdocs/master.inc.php";
-include_once DOL_DOCUMENT_ROOT.'/website/class/website.class.php';
-include_once DOL_DOCUMENT_ROOT.'/website/class/websitepage.class.php';
-include_once DOL_DOCUMENT_ROOT.'/core/lib/website2.lib.php';
+require $path . "../../htdocs/master.inc.php";
+include_once DOL_DOCUMENT_ROOT . '/website/class/website.class.php';
+include_once DOL_DOCUMENT_ROOT . '/website/class/websitepage.class.php';
+include_once DOL_DOCUMENT_ROOT . '/core/lib/website2.lib.php';
 
 $hookmanager->initHooks(array('cli'));
 
@@ -68,15 +69,15 @@ $hookmanager->initHooks(array('cli'));
 $langs->load('main');
 
 if (!empty($dolibarr_main_db_readonly)) {
-	print "Error: instance in read-onyl mode\n";
-	exit(-1);
+    print "Error: instance in read-onyl mode\n";
+    exit(-1);
 }
 
 $website = new Website($db);
 $result = $website->fetch(0, $websiteref);
 if ($result <= 0) {
-	print 'Error, web site '.$websiteref.' not found'."\n";
-	exit(-1);
+    print 'Error, web site ' . $websiteref . ' not found' . "\n";
+    exit(-1);
 }
 
 $websitepagestatic = new WebsitePage($db);
@@ -86,29 +87,29 @@ $db->begin();
 $listofpages = $websitepagestatic->fetchAll($website->id, '', '', $max);
 
 global $dolibarr_main_data_root;
-$pathofwebsite = $dolibarr_main_data_root.'/website/'.$websiteref;
+$pathofwebsite = $dolibarr_main_data_root . '/website/' . $websiteref;
 
 $nbgenerated = 0;
 foreach ($listofpages as $websitepage) {
-	$filealias = $pathofwebsite.'/'.$websitepage->pageurl.'.php';
-	$filetpl = $pathofwebsite.'/page'.$websitepage->id.'.tpl.php';
-	if ($mode == 'confirm') {
-		dolSavePageAlias($filealias, $website, $websitepage);
-		dolSavePageContent($filetpl, $website, $websitepage);
-	}
-	print "Generation of page done - pageid = ".$websitepage->id." - ".$websitepage->pageurl."\n";
-	$nbgenerated++;
+    $filealias = $pathofwebsite . '/' . $websitepage->pageurl . '.php';
+    $filetpl = $pathofwebsite . '/page' . $websitepage->id . '.tpl.php';
+    if ($mode == 'confirm') {
+        dolSavePageAlias($filealias, $website, $websitepage);
+        dolSavePageContent($filetpl, $website, $websitepage);
+    }
+    print "Generation of page done - pageid = " . $websitepage->id . " - " . $websitepage->pageurl . "\n";
+    $nbgenerated++;
 
-	if ($max && $nbgenerated >= $max) {
-		print 'Nb max of record ('.$max.') reached. We stop now.'."\n";
-		break;
-	}
+    if ($max && $nbgenerated >= $max) {
+        print 'Nb max of record (' . $max . ') reached. We stop now.' . "\n";
+        break;
+    }
 }
 
 if ($mode == 'confirm') {
-	print $nbgenerated." page(s) generated into ".$pathofwebsite."\n";
+    print $nbgenerated . " page(s) generated into " . $pathofwebsite . "\n";
 } else {
-	print $nbgenerated." page(s) found but not generated (test mode)\n";
+    print $nbgenerated . " page(s) found but not generated (test mode)\n";
 }
 
 exit($error);

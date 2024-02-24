@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -69,10 +70,10 @@ function webportalAdminPrepareHead()
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     //$this->tabs = array(
-    //	'entity:+tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
+    //  'entity:+tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
     //); // to add new tab
     //$this->tabs = array(
-    //	'entity:-tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
+    //  'entity:-tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
     //); // to remove a tab
     complete_head_from_modules($conf, $langs, null, $head, $h, 'website');
 

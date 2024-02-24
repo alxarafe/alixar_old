@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2014 Regis Houssin         <regis.houssin@inodbox.com>
  * Copyright (C) 2006-2007 Laurent Destailleur   <eldy@users.sourceforge.net>
@@ -411,8 +412,10 @@ class Delivery extends CommonObject
 
         $error = 0;
 
-        if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery', 'creer'))
-            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery_advance', 'validate'))) {
+        if (
+            (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery', 'creer'))
+            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery_advance', 'validate'))
+        ) {
             if (getDolGlobalString('DELIVERY_ADDON_NUMBER')) {
                 // Setting the command numbering module name
                 $modName = getDolGlobalString('DELIVERY_ADDON_NUMBER');

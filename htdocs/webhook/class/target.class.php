@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) ---Put here your own copyright and developer email---
  *
@@ -148,7 +149,7 @@ class Target extends CommonObject
     // public $class_element_line = 'Targetline';
 
     // /**
-    //  * @var array	List of child tables. To test if we can delete object.
+    //  * @var array    List of child tables. To test if we can delete object.
     //  */
     // protected $childtables = array();
 
@@ -248,7 +249,7 @@ class Target extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);
@@ -293,19 +294,19 @@ class Target extends CommonObject
         }
 
         // if (!$error) {
-        // 	// copy internal contacts
-        // 	if ($this->copy_linked_contact($object, 'internal') < 0) {
-        // 		$error++;
-        // 	}
+        //  // copy internal contacts
+        //  if ($this->copy_linked_contact($object, 'internal') < 0) {
+        //      $error++;
+        //  }
         // }
 
         // if (!$error) {
-        // 	// copy external contacts if same company
-        // 	if (!empty($object->socid) && property_exists($this, 'fk_soc') && $this->fk_soc == $object->socid) {
-        // 		if ($this->copy_linked_contact($object, 'external') < 0) {
-        // 			$error++;
-        // 		}
-        // 	}
+        //  // copy external contacts if same company
+        //  if (!empty($object->socid) && property_exists($this, 'fk_soc') && $this->fk_soc == $object->socid) {
+        //      if ($this->copy_linked_contact($object, 'external') < 0) {
+        //          $error++;
+        //      }
+        //  }
         // }
 
         unset($object->context['createfromclone']);

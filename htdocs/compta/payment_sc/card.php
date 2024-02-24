@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005       Marc Barilley / Ocebo   <marc@ocebo.com>
@@ -77,13 +78,13 @@ if ($action == 'confirm_delete' && $confirm == 'yes' && $user->hasRight('tax', '
 }
 
 /*if ($action == 'setdatep' && GETPOST('datepday') && $user->hasRight('tax', 'charges', 'creer')) {
-	$datepaye = dol_mktime(GETPOST('datephour', 'int'), GETPOST('datepmin', 'int'), GETPOST('datepsec', 'int'), GETPOST('datepmonth', 'int'), GETPOST('datepday', 'int'), GETPOST('datepyear', 'int'));
-	$res = $object->update_date($datepaye);
-	if ($res === 0) {
-		setEventMessages($langs->trans('PaymentDateUpdateSucceeded'), null, 'mesgs');
-	} else {
-		setEventMessages($langs->trans('PaymentDateUpdateFailed'), null, 'errors');
-	}
+    $datepaye = dol_mktime(GETPOST('datephour', 'int'), GETPOST('datepmin', 'int'), GETPOST('datepsec', 'int'), GETPOST('datepmonth', 'int'), GETPOST('datepday', 'int'), GETPOST('datepyear', 'int'));
+    $res = $object->update_date($datepaye);
+    if ($res === 0) {
+        setEventMessages($langs->trans('PaymentDateUpdateSucceeded'), null, 'mesgs');
+    } else {
+        setEventMessages($langs->trans('PaymentDateUpdateFailed'), null, 'errors');
+    }
 }*/
 
 /*
@@ -236,12 +237,12 @@ print '<div class="tabsAction">';
 /*
 if (!empty($conf->global->BILL_ADD_PAYMENT_VALIDATION))
 {
-	if ($user->socid == 0 && $object->statut == 0 && $_GET['action'] == '')
-	{
-		if ($user->hasRight('facture', 'paiement')){
-			print '<a class="butAction" href="card.php?id='.GETPOST('id', 'int').'&amp;facid='.$objp->facid.'&amp;action=valide">'.$langs->trans('Valid').'</a>';
-		}
-	}
+    if ($user->socid == 0 && $object->statut == 0 && $_GET['action'] == '')
+    {
+        if ($user->hasRight('facture', 'paiement')){
+            print '<a class="butAction" href="card.php?id='.GETPOST('id', 'int').'&amp;facid='.$objp->facid.'&amp;action=valide">'.$langs->trans('Valid').'</a>';
+        }
+    }
 }
 */
 

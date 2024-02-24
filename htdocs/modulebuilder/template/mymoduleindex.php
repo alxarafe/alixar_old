@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -80,14 +81,14 @@ if (isset($user->socid) && $user->socid > 0) {
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 //if (!isModEnabled('mymodule')) {
-//	accessforbidden('Module not enabled');
+//  accessforbidden('Module not enabled');
 //}
 //if (! $user->hasRight('mymodule', 'myobject', 'read')) {
-//	accessforbidden();
+//  accessforbidden();
 //}
 //restrictedArea($user, 'mymodule', 0, 'mymodule_myobject', 'myobject', '', 'rowid');
 //if (empty($user->admin)) {
-//	accessforbidden('Must be admin');
+//  accessforbidden('Must be admin');
 //}
 
 /*
@@ -112,71 +113,71 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 /* BEGIN MODULEBUILDER DRAFT MYOBJECT
 // Draft MyObject
 if (isModEnabled('mymodule') && $user->hasRight('mymodule', 'read')) {
-	$langs->load("orders");
+    $langs->load("orders");
 
-	$sql = "SELECT c.rowid, c.ref, c.ref_client, c.total_ht, c.tva as total_tva, c.total_ttc, s.rowid as socid, s.nom as name, s.client, s.canvas";
-	$sql.= ", s.code_client";
-	$sql.= " FROM ".MAIN_DB_PREFIX."commande as c";
-	$sql.= ", ".MAIN_DB_PREFIX."societe as s";
-	$sql.= " WHERE c.fk_soc = s.rowid";
-	$sql.= " AND c.fk_statut = 0";
-	$sql.= " AND c.entity IN (".getEntity('commande').")";
-	if ($socid)	$sql.= " AND c.fk_soc = ".((int) $socid);
+    $sql = "SELECT c.rowid, c.ref, c.ref_client, c.total_ht, c.tva as total_tva, c.total_ttc, s.rowid as socid, s.nom as name, s.client, s.canvas";
+    $sql.= ", s.code_client";
+    $sql.= " FROM ".MAIN_DB_PREFIX."commande as c";
+    $sql.= ", ".MAIN_DB_PREFIX."societe as s";
+    $sql.= " WHERE c.fk_soc = s.rowid";
+    $sql.= " AND c.fk_statut = 0";
+    $sql.= " AND c.entity IN (".getEntity('commande').")";
+    if ($socid) $sql.= " AND c.fk_soc = ".((int) $socid);
 
-	$resql = $db->query($sql);
-	if ($resql)
-	{
-		$total = 0;
-		$num = $db->num_rows($resql);
+    $resql = $db->query($sql);
+    if ($resql)
+    {
+        $total = 0;
+        $num = $db->num_rows($resql);
 
-		print '<table class="noborder centpercent">';
-		print '<tr class="liste_titre">';
-		print '<th colspan="3">'.$langs->trans("DraftMyObjects").($num?'<span class="badge marginleftonlyshort">'.$num.'</span>':'').'</th></tr>';
+        print '<table class="noborder centpercent">';
+        print '<tr class="liste_titre">';
+        print '<th colspan="3">'.$langs->trans("DraftMyObjects").($num?'<span class="badge marginleftonlyshort">'.$num.'</span>':'').'</th></tr>';
 
-		$var = true;
-		if ($num > 0)
-		{
-			$i = 0;
-			while ($i < $num)
-			{
+        $var = true;
+        if ($num > 0)
+        {
+            $i = 0;
+            while ($i < $num)
+            {
 
-				$obj = $db->fetch_object($resql);
-				print '<tr class="oddeven"><td class="nowrap">';
+                $obj = $db->fetch_object($resql);
+                print '<tr class="oddeven"><td class="nowrap">';
 
-				$myobjectstatic->id=$obj->rowid;
-				$myobjectstatic->ref=$obj->ref;
-				$myobjectstatic->ref_client=$obj->ref_client;
-				$myobjectstatic->total_ht = $obj->total_ht;
-				$myobjectstatic->total_tva = $obj->total_tva;
-				$myobjectstatic->total_ttc = $obj->total_ttc;
+                $myobjectstatic->id=$obj->rowid;
+                $myobjectstatic->ref=$obj->ref;
+                $myobjectstatic->ref_client=$obj->ref_client;
+                $myobjectstatic->total_ht = $obj->total_ht;
+                $myobjectstatic->total_tva = $obj->total_tva;
+                $myobjectstatic->total_ttc = $obj->total_ttc;
 
-				print $myobjectstatic->getNomUrl(1);
-				print '</td>';
-				print '<td class="nowrap">';
-				print '</td>';
-				print '<td class="right" class="nowrap">'.price($obj->total_ttc).'</td></tr>';
-				$i++;
-				$total += $obj->total_ttc;
-			}
-			if ($total>0)
-			{
+                print $myobjectstatic->getNomUrl(1);
+                print '</td>';
+                print '<td class="nowrap">';
+                print '</td>';
+                print '<td class="right" class="nowrap">'.price($obj->total_ttc).'</td></tr>';
+                $i++;
+                $total += $obj->total_ttc;
+            }
+            if ($total>0)
+            {
 
-				print '<tr class="liste_total"><td>'.$langs->trans("Total").'</td><td colspan="2" class="right">'.price($total)."</td></tr>";
-			}
-		}
-		else
-		{
+                print '<tr class="liste_total"><td>'.$langs->trans("Total").'</td><td colspan="2" class="right">'.price($total)."</td></tr>";
+            }
+        }
+        else
+        {
 
-			print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("NoOrder").'</td></tr>';
-		}
-		print "</table><br>";
+            print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("NoOrder").'</td></tr>';
+        }
+        print "</table><br>";
 
-		$db->free($resql);
-	}
-	else
-	{
-		dol_print_error($db);
-	}
+        $db->free($resql);
+    }
+    else
+    {
+        dol_print_error($db);
+    }
 }
 END MODULEBUILDER DRAFT MYOBJECT */
 
@@ -188,52 +189,52 @@ $max = getDolGlobalInt('MAIN_SIZE_SHORTLIST_LIMIT');
 /* BEGIN MODULEBUILDER LASTMODIFIED MYOBJECT
 // Last modified myobject
 if (isModEnabled('mymodule') && $user->hasRight('mymodule', 'read')) {
-	$sql = "SELECT s.rowid, s.ref, s.label, s.date_creation, s.tms";
-	$sql.= " FROM ".MAIN_DB_PREFIX."mymodule_myobject as s";
-	$sql.= " WHERE s.entity IN (".getEntity($myobjectstatic->element).")";
-	//if ($socid)	$sql.= " AND s.rowid = $socid";
-	$sql .= " ORDER BY s.tms DESC";
-	$sql .= $db->plimit($max, 0);
+    $sql = "SELECT s.rowid, s.ref, s.label, s.date_creation, s.tms";
+    $sql.= " FROM ".MAIN_DB_PREFIX."mymodule_myobject as s";
+    $sql.= " WHERE s.entity IN (".getEntity($myobjectstatic->element).")";
+    //if ($socid)   $sql.= " AND s.rowid = $socid";
+    $sql .= " ORDER BY s.tms DESC";
+    $sql .= $db->plimit($max, 0);
 
-	$resql = $db->query($sql);
-	if ($resql)
-	{
-		$num = $db->num_rows($resql);
-		$i = 0;
+    $resql = $db->query($sql);
+    if ($resql)
+    {
+        $num = $db->num_rows($resql);
+        $i = 0;
 
-		print '<table class="noborder centpercent">';
-		print '<tr class="liste_titre">';
-		print '<th colspan="2">';
-		print $langs->trans("BoxTitleLatestModifiedMyObjects", $max);
-		print '</th>';
-		print '<th class="right">'.$langs->trans("DateModificationShort").'</th>';
-		print '</tr>';
-		if ($num)
-		{
-			while ($i < $num)
-			{
-				$objp = $db->fetch_object($resql);
+        print '<table class="noborder centpercent">';
+        print '<tr class="liste_titre">';
+        print '<th colspan="2">';
+        print $langs->trans("BoxTitleLatestModifiedMyObjects", $max);
+        print '</th>';
+        print '<th class="right">'.$langs->trans("DateModificationShort").'</th>';
+        print '</tr>';
+        if ($num)
+        {
+            while ($i < $num)
+            {
+                $objp = $db->fetch_object($resql);
 
-				$myobjectstatic->id=$objp->rowid;
-				$myobjectstatic->ref=$objp->ref;
-				$myobjectstatic->label=$objp->label;
-				$myobjectstatic->status = $objp->status;
+                $myobjectstatic->id=$objp->rowid;
+                $myobjectstatic->ref=$objp->ref;
+                $myobjectstatic->label=$objp->label;
+                $myobjectstatic->status = $objp->status;
 
-				print '<tr class="oddeven">';
-				print '<td class="nowrap">'.$myobjectstatic->getNomUrl(1).'</td>';
-				print '<td class="right nowrap">';
-				print "</td>";
-				print '<td class="right nowrap">'.dol_print_date($db->jdate($objp->tms), 'day')."</td>";
-				print '</tr>';
-				$i++;
-			}
+                print '<tr class="oddeven">';
+                print '<td class="nowrap">'.$myobjectstatic->getNomUrl(1).'</td>';
+                print '<td class="right nowrap">';
+                print "</td>";
+                print '<td class="right nowrap">'.dol_print_date($db->jdate($objp->tms), 'day')."</td>";
+                print '</tr>';
+                $i++;
+            }
 
-			$db->free($resql);
-		} else {
-			print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("None").'</td></tr>';
-		}
-		print "</table><br>";
-	}
+            $db->free($resql);
+        } else {
+            print '<tr class="oddeven"><td colspan="3" class="opacitymedium">'.$langs->trans("None").'</td></tr>';
+        }
+        print "</table><br>";
+    }
 }
 */
 

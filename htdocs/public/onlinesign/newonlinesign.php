@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2017	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2009-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2023		anthony Berton			<anthony.berton@bb2a.fr>
@@ -90,7 +91,7 @@ if (!empty($refusepropal)) {
 
 // Define $urlwithroot
 //$urlwithouturlroot=preg_replace('/'.preg_quote(DOL_URL_ROOT,'/').'$/i','',trim($dolibarr_main_url_root));
-//$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;		// This is to use external domain name found into config file
+//$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;     // This is to use external domain name found into config file
 $urlwithroot = DOL_MAIN_URL_ROOT; // This is to use same domain name than current. For Paypal payment, we can use internal URL like localhost.
 
 // Complete urls for post treatment
@@ -554,10 +555,12 @@ if ($source == 'proposal') {
     $last_main_doc_file = $object->last_main_doc;
     $diroutput = $conf->societe->multidir_output[$object->thirdparty->entity] . '/'
         . dol_sanitizeFileName($object->thirdparty->id) . '/';
-    if ((empty($last_main_doc_file) ||
+    if (
+        (empty($last_main_doc_file) ||
             !dol_is_file($diroutput
-                . $langs->transnoentitiesnoconv("SepaMandateShort") . ' ' . $object->id . "-" . dol_sanitizeFileName($object->rum) . ".pdf"))
-        && $message != "signed") {
+                . $langs->transnoentitiesnoconv("SepaMandateShort") . ' ' . $object->id . "-" . dol_sanitizeFileName($object->rum) . ".pdf")) &&
+        $message != "signed"
+    ) {
         // It seems document has never been generated, or was generated and then deleted.
         // So we try to regenerate it with its default template.
         //$defaulttemplate = 'sepamandate';

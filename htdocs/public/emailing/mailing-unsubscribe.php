@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -123,8 +124,8 @@ if ($obj->statut == 3) {
 /*
 if ($obj->email != $email)
 {
-	print 'Email does not match tagnot found. No need to unsubscribe.';
-	exit;
+    print 'Email does not match tagnot found. No need to unsubscribe.';
+    exit;
 }
 */
 
@@ -155,7 +156,7 @@ if (! $resql) dol_print_error($db);
 $sql = "INSERT INTO " . MAIN_DB_PREFIX . "mailing_unsubscribe (date_creat, entity, email, unsubscribegroup, ip) VALUES ('" . $db->idate(dol_now()) . "', " . ((int) $obj->entity) . ", '" . $db->escape($obj->email) . "', '', '" . $db->escape(getUserRemoteIP()) . "')";
 
 $resql = $db->query($sql);
-//if (! $resql) dol_print_error($db);	No test on errors, may fail if already unsubscribed
+//if (! $resql) dol_print_error($db);   No test on errors, may fail if already unsubscribed
 
 print '<table><tr><td style="text_align:center;">';
 print $langs->trans("YourMailUnsubcribeOK", $obj->email) . "<br>\n";

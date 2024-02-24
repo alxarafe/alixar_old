@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017      Franck Moreau        <franck.moreau@theobald.com>
  * Copyright (C) 2018-2023 Alexandre Spangaro   <aspangaro@easya.solutions>
  * Copyright (C) 2020      Maxime DEMAREST      <maxime@indelog.fr>

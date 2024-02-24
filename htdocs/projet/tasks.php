@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2017 Regis Houssin        <regis.houssin@inodbox.com>
@@ -104,7 +105,7 @@ $search_date_end_end = dol_mktime(23, 59, 59, $search_date_end_endmonth, $search
 
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'projecttasklist';
 $optioncss = GETPOST('optioncss', 'aZ');
-//if (! $user->rights->projet->all->lire) $mine=1;	// Special for projects
+//if (! $user->rights->projet->all->lire) $mine=1;  // Special for projects
 
 $object = new Project($db);
 $taskstatic = new Task($db);
@@ -124,10 +125,10 @@ $search_array_options = $extrafields->getOptionalsFromPost($taskstatic->table_el
 
 // Default sort order (if not yet defined by previous GETPOST)
 /* if (!$sortfield) {
-	reset($object->fields); $sortfield="t.".key($object->fields);
+    reset($object->fields); $sortfield="t.".key($object->fields);
 }   // Set here default search field. By default 1st field in definition. Reset is required to avoid key() to return null.
 if (!$sortorder) {
-	$sortorder = "ASC";
+    $sortorder = "ASC";
 } */
 
 // Security check

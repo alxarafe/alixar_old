@@ -1,4 +1,5 @@
 <?php
+
 /* Lead
  * Copyright (C) 2014-2015 Florian HENRY <florian.henry@open-concept.pro>
  *
@@ -81,7 +82,7 @@ class ProjectStats extends Stats
         $sql .= " FROM " . MAIN_DB_PREFIX . "projet as t";
         // No check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $user->socid)
-        //	$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
+        //  $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
         $sql .= ", " . MAIN_DB_PREFIX . "c_lead_status as cls";
         $sql .= $this->buildWhere();
         // For external user, no check is done on company permission because readability is managed by public status of project and assignment.
@@ -147,7 +148,7 @@ class ProjectStats extends Stats
         $sql .= " FROM " . MAIN_DB_PREFIX . "projet as t LEFT JOIN " . MAIN_DB_PREFIX . "c_lead_status as cls ON cls.rowid = t.fk_opp_status";
         // No check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $user->soc_id)
-        //	$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
+        //  $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
         $sql .= $this->buildWhere();
         // For external user, no check is done on company permission because readability is managed by public status of project and assignment.
         //if ($socid > 0) $sql.= " AND t.fk_soc = ".((int) $socid);
@@ -244,7 +245,7 @@ class ProjectStats extends Stats
         $sql .= " FROM " . MAIN_DB_PREFIX . "projet as t";
         // No check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $user->soc_id)
-        //	$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
+        //  $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
         $sql .= $this->buildWhere();
         $sql .= " GROUP BY dm";
         $sql .= $this->db->order('dm', 'DESC');
@@ -270,7 +271,7 @@ class ProjectStats extends Stats
         $sql .= " FROM " . MAIN_DB_PREFIX . "projet as t";
         // No check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $user->soc_id)
-        //	$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
+        //  $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
         $sql .= $this->buildWhere();
         $sql .= " GROUP BY dm";
         $sql .= $this->db->order('dm', 'DESC');
@@ -382,7 +383,7 @@ class ProjectStats extends Stats
         $sql .= " FROM " . MAIN_DB_PREFIX . "projet as t LEFT JOIN " . MAIN_DB_PREFIX . 'c_lead_status as cls ON t.fk_opp_status = cls.rowid';
         // No check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $user->soc_id)
-        //	$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
+        //  $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
         $sql .= $this->buildWhere();
         $sql .= " GROUP BY dm";
         $sql .= $this->db->order('dm', 'DESC');
@@ -492,7 +493,7 @@ class ProjectStats extends Stats
         $sql .= " FROM " . MAIN_DB_PREFIX . "projet as t";
         // No check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $user->soc_id)
-        //	$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
+        //  $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
         $sql .= $this->buildWhere();
         $sql .= " GROUP BY dm";
         $sql .= $this->db->order('dm', 'DESC');
@@ -505,7 +506,7 @@ class ProjectStats extends Stats
         $sql .= " FROM " . MAIN_DB_PREFIX . "projet as t";
         // No check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $user->soc_id)
-        //	$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
+        //  $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "societe_commerciaux as sc ON sc.fk_soc=t.fk_soc AND sc.fk_user = ".((int) $user->id);
         $sql .= $this->buildWhere();
         $sql .= " GROUP BY dm";
         $sql .= $this->db->order('dm', 'DESC');

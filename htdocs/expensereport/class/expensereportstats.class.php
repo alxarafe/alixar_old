@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (c) 2005-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -22,6 +23,7 @@
  *       \ingroup    expensereport
  *       \brief      File of lass to manage the statistics of the expensereports et expense notes
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
 

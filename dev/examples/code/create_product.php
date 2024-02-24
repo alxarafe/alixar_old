@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /* Copyright (C) 2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,18 +20,18 @@
 /**
  *      \file       dev/examples/create_product.php
  *      \brief      This file is an example for a command line script
- *		\author		Put author's name here
- *		\remarks	Put here some comments
+ *      \author     Put author's name here
+ *      \remarks    Put here some comments
  */
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);
-$path = dirname(__FILE__).'/';
+$path = dirname(__FILE__) . '/';
 
 // Test if batch mode
 if (substr($sapi_type, 0, 3) == 'cgi') {
-	echo "Error: You are using PHP for CGI. To execute ".$script_file." from command line, you must use PHP for CLI mode.\n";
-	exit;
+    echo "Error: You are using PHP for CGI. To execute " . $script_file . " from command line, you must use PHP for CLI mode.\n";
+    exit;
 }
 
 // Global variables
@@ -40,29 +41,29 @@ $error = 0;
 
 // -------------------- START OF YOUR CODE HERE --------------------
 // Include Dolibarr environment
-require_once $path."../../../htdocs/master.inc.php";
+require_once $path . "../../../htdocs/master.inc.php";
 // After this $db, $mysoc, $langs and $conf->entity are defined. Opened handler to database will be closed at end of file.
 
-//$langs->setDefaultLang('en_US'); 	// To change default language of $langs
-$langs->load("main");				// To load language file for default language
+//$langs->setDefaultLang('en_US');  // To change default language of $langs
+$langs->load("main");               // To load language file for default language
 @set_time_limit(0);
 
 // Load user and its permissions
-$result = $user->fetch('', 'admin');	// Load user for login 'admin'. Comment line to run as anonymous user.
+$result = $user->fetch('', 'admin');    // Load user for login 'admin'. Comment line to run as anonymous user.
 if (!$result > 0) {
-	dol_print_error(null, $user->error);
-	exit;
+    dol_print_error(null, $user->error);
+    exit;
 }
 $user->getrights();
 
 
-print "***** ".$script_file." (".$version.") *****\n";
+print "***** " . $script_file . " (" . $version . ") *****\n";
 
 
 // Start of transaction
 $db->begin();
 
-require_once DOL_DOCUMENT_ROOT."/product/class/product.class.php";
+require_once DOL_DOCUMENT_ROOT . "/product/class/product.class.php";
 
 // Create instance of object
 $myproduct = new Product($db);
@@ -83,20 +84,20 @@ $myproduct->weight_units       = 0;
 // Create product in database
 $idobject = $myproduct->create($user);
 if ($idobject > 0) {
-	print "OK Object created with id ".$idobject."\n";
+    print "OK Object created with id " . $idobject . "\n";
 } else {
-	$error++;
-	dol_print_error($db, $myproduct->error);
+    $error++;
+    dol_print_error($db, $myproduct->error);
 }
 
 // -------------------- END OF YOUR CODE --------------------
 
 if (!$error) {
-	$db->commit();
-	print '--- end ok'."\n";
+    $db->commit();
+    print '--- end ok' . "\n";
 } else {
-	print '--- end error code='.$error."\n";
-	$db->rollback();
+    print '--- end error code=' . $error . "\n";
+    $db->rollback();
 }
 
 $db->close();

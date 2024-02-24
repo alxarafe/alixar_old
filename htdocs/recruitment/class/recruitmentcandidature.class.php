@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2020  Laurent Destailleur <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -241,7 +242,7 @@ class RecruitmentCandidature extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);

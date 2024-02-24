@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -484,14 +485,14 @@ $formfile=new FormFile($db);
 // Display upload form
 if ($user->rights->ecm->upload)
 {
-	$formfile->form_attach_new_file(DOL_URL_ROOT.'/ecm/dir_card.php','',0,$section);
+    $formfile->form_attach_new_file(DOL_URL_ROOT.'/ecm/dir_card.php','',0,$section);
 }
 
 // List of document
 if ($user->rights->ecm->read)
 {
-	$param='&amp;section='.$section;
-	$formfile->list_of_documents($filearray,'','ecm',$param,1,$relativepath,$user->rights->ecm->upload);
+    $param='&amp;section='.$section;
+    $formfile->list_of_documents($filearray,'','ecm',$param,1,$relativepath,$user->rights->ecm->upload);
 }
 */
 

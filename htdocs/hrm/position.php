@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
@@ -208,8 +209,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 
@@ -304,9 +307,9 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
     print '<table class="border centpercent tableforfield">' . "\n";
 
     // Common attributes
-    //$keyforbreak='fieldkeytoswitchonsecondcolumn';	// We change column just before this field
-    //unset($object->fields['fk_project']);				// Hide field already shown in banner
-    //unset($object->fields['fk_soc']);					// Hide field already shown in banner
+    //$keyforbreak='fieldkeytoswitchonsecondcolumn';    // We change column just before this field
+    //unset($object->fields['fk_project']);             // Hide field already shown in banner
+    //unset($object->fields['fk_soc']);                 // Hide field already shown in banner
     $object->fields['label']['visible'] = 0; // Already in banner
     include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 

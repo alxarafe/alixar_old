@@ -3,7 +3,10 @@
 //use \Aaa as Aaa;
 
 use Dolibarr\Aaa as Aaa;
-use function Dolibarr\faaa as faaa; // Need php 5.6+
+
+use function Dolibarr\faaa as faaa; 
+
+// Need php 5.6+
 
 //use const Dolibarr\AAA;
 
@@ -19,14 +22,14 @@ $bbb->do();
 $aaa = new Aaa();
 $aaa->do();
 
-echo $aaa::AAA."\n";
-echo $bbb::BBB."\n";
+echo $aaa::AAA . "\n";
+echo $bbb::BBB . "\n";
 
-echo Aaa::AAA."\n";
-echo Bbb::BBB."\n";
+echo Aaa::AAA . "\n";
+echo Bbb::BBB . "\n";
 
-echo faaa()."\n";
-echo fbbb()."\n";
+echo faaa() . "\n";
+echo fbbb() . "\n";
 
 echo "globalaaa=$globalaaa\n";
 echo "globalbbb=$globalbbb\n";

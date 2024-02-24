@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004       Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2005       Simon TOSSER          <simon@kornog-computing.com>
  * Copyright (C) 2013-2024  Alexandre Spangaro    <aspangaro@easya.solutions>
@@ -26,6 +27,7 @@
  * \ingroup Accountancy (Double entries)
  * \brief    Card supplier ventilation
  */
+
 require '../../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';

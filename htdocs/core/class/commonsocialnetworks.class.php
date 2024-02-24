@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2012 Regis Houssin  <regis.houssin@inodbox.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,59 +28,59 @@
  */
 trait CommonSocialNetworks
 {
-	/**
-	 * @var array array of socialnetworks
-	 */
-	public $socialnetworks;
+    /**
+     * @var array array of socialnetworks
+     */
+    public $socialnetworks;
 
 
-	/**
-	 * Show social network part if the module is enabled with hiding functionality
-	 *
-	 * @param	array	$socialnetworks		Array of social networks
-	 * @param	int		$colspan			Colspan
-	 * @return 	void
-	 */
-	public function showSocialNetwork($socialnetworks, $colspan = 4)
-	{
-		global $object, $form, $langs;
+    /**
+     * Show social network part if the module is enabled with hiding functionality
+     *
+     * @param   array   $socialnetworks     Array of social networks
+     * @param   int     $colspan            Colspan
+     * @return  void
+     */
+    public function showSocialNetwork($socialnetworks, $colspan = 4)
+    {
+        global $object, $form, $langs;
 
-		$nbofnetworks = count($socialnetworks);
-		$nbactive = 0;
-		foreach ($socialnetworks as $key => $value) {
-			if (!empty($object->socialnetworks[$key])) {
-				$nbactive++;
-			}
-		}
+        $nbofnetworks = count($socialnetworks);
+        $nbactive = 0;
+        foreach ($socialnetworks as $key => $value) {
+            if (!empty($object->socialnetworks[$key])) {
+                $nbactive++;
+            }
+        }
 
-		if ($nbofnetworks > 1) {
-			print '<tr><td><br><a class="paddingtop paddingbottom socialnetworklnk onreposition" colspan="'.$colspan.'" id="socialnetworklnk" href="#"></a>';
-			//print '</td>';
-			//print '<td'.($colspan ? ' colspan="'.($colspan-1).'"' : '').'>';
-			//print '<br>';
-			print ' <a class="paddingtop paddingbottom socialnetworklnk onreposition" href="#"><span class="badge badge-secondary socialnetworklnk">'.$nbactive.'</span></a>';
-			print '</td>';
-			print '</tr>';
-		}
-		foreach ($socialnetworks as $key => $value) {
-			if ($value['active'] || $nbofnetworks == 1) {
-				print '<tr class="soc_network">';
-				print '<td><label for="'.$value['label'].'">'.$form->editfieldkey($value['label'], $key, '', $object, 0).'</label></td>';
-				print '<td colspan="3">';
-				if (!empty($value['icon'])) {
-					print '<span class="fab '.$value['icon'].' pictofixedwidth"></span>';
-				}
-				print '<input type="text" name="'.$key.'" id="'.$key.'" class="minwidth100 maxwidth300 widthcentpercentminusx" maxlength="80" value="'.dol_escape_htmltag(GETPOSTISSET($key) ? GETPOST($key, 'alphanohtml') : (empty($object->socialnetworks[$key]) ? '' : $object->socialnetworks[$key])).'">';
-				print '</td>';
-				print '</tr>';
-			} elseif (!empty($object->socialnetworks[$key])) {
-				print '<input type="hidden" name="'.$key.'" value="'.$object->socialnetworks[$key].'">';
-			}
-		}
-		print '<tr><td'.($colspan ? ' colspan="'.$colspan.'"' : '').'><hr></td></tr>';
+        if ($nbofnetworks > 1) {
+            print '<tr><td><br><a class="paddingtop paddingbottom socialnetworklnk onreposition" colspan="' . $colspan . '" id="socialnetworklnk" href="#"></a>';
+            //print '</td>';
+            //print '<td'.($colspan ? ' colspan="'.($colspan-1).'"' : '').'>';
+            //print '<br>';
+            print ' <a class="paddingtop paddingbottom socialnetworklnk onreposition" href="#"><span class="badge badge-secondary socialnetworklnk">' . $nbactive . '</span></a>';
+            print '</td>';
+            print '</tr>';
+        }
+        foreach ($socialnetworks as $key => $value) {
+            if ($value['active'] || $nbofnetworks == 1) {
+                print '<tr class="soc_network">';
+                print '<td><label for="' . $value['label'] . '">' . $form->editfieldkey($value['label'], $key, '', $object, 0) . '</label></td>';
+                print '<td colspan="3">';
+                if (!empty($value['icon'])) {
+                    print '<span class="fab ' . $value['icon'] . ' pictofixedwidth"></span>';
+                }
+                print '<input type="text" name="' . $key . '" id="' . $key . '" class="minwidth100 maxwidth300 widthcentpercentminusx" maxlength="80" value="' . dol_escape_htmltag(GETPOSTISSET($key) ? GETPOST($key, 'alphanohtml') : (empty($object->socialnetworks[$key]) ? '' : $object->socialnetworks[$key])) . '">';
+                print '</td>';
+                print '</tr>';
+            } elseif (!empty($object->socialnetworks[$key])) {
+                print '<input type="hidden" name="' . $key . '" value="' . $object->socialnetworks[$key] . '">';
+            }
+        }
+        print '<tr><td' . ($colspan ? ' colspan="' . $colspan . '"' : '') . '><hr></td></tr>';
 
-		if ($nbofnetworks > 1) {
-			print '<script nonce="'.getNonce().'" type="text/javascript">
+        if ($nbofnetworks > 1) {
+            print '<script nonce="' . getNonce() . '" type="text/javascript">
 		$("document").ready(function() { toogleSocialNetwork(false); });
 
 		jQuery(".socialnetworklnk").click(function() {
@@ -97,15 +98,15 @@ trait CommonSocialNetworks
 
 			if (cookieState) {
 				items.hide();
-				lnk.text("'.dol_escape_js($langs->transnoentitiesnoconv("ShowSocialNetworks")).'...");
+				lnk.text("' . dol_escape_js($langs->transnoentitiesnoconv("ShowSocialNetworks")) . '...");
 				if (chgCookieState) { document.cookie = "DOLUSER_SOCIALNETWORKS_SHOW=false; SameSite=Strict"};
 			} else {
 				items.show();
-				lnk.text("'.dol_escape_js($langs->transnoentitiesnoconv("HideSocialNetworks")).'...");
+				lnk.text("' . dol_escape_js($langs->transnoentitiesnoconv("HideSocialNetworks")) . '...");
 				if (chgCookieState) { document.cookie = "DOLUSER_SOCIALNETWORKS_SHOW=true; SameSite=Strict";}
 			}
 		}
 		</script>';
-		}
-	}
+        }
+    }
 }

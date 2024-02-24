@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2008 Jeremie Ollivier    <jeremie.o@laposte.net>
  * Copyright (C) 2011-2023 Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2012      Marcos García       <marcosgdf@gmail.com>
@@ -28,10 +29,10 @@
 
 // Include main (when fie in included into send.php, $action is set and main was already loaded)
 if (!isset($action)) {
-    //if (! defined('NOREQUIREUSER'))	define('NOREQUIREUSER', '1');	// Not disabled cause need to load personalized language
-    //if (! defined('NOREQUIREDB'))		define('NOREQUIREDB', '1');		// Not disabled cause need to load personalized language
-    //if (! defined('NOREQUIRESOC'))		define('NOREQUIRESOC', '1');
-    //if (! defined('NOREQUIRETRAN'))		define('NOREQUIRETRAN', '1');
+    //if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER', '1');   // Not disabled cause need to load personalized language
+    //if (! defined('NOREQUIREDB'))     define('NOREQUIREDB', '1');     // Not disabled cause need to load personalized language
+    //if (! defined('NOREQUIRESOC'))        define('NOREQUIRESOC', '1');
+    //if (! defined('NOREQUIRETRAN'))       define('NOREQUIRETRAN', '1');
     if (!defined('NOTOKENRENEWAL')) {
         define('NOTOKENRENEWAL', '1');
     }

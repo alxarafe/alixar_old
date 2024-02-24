@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2004		Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2004       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2019	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2016	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2021		Waël Almoman            <info@almoman.com>
@@ -643,7 +644,7 @@ if (empty($reshook)) {
         if (!$isupload) {
             $mesgs = [];
 
-            //$object->messtype       = (string) GETPOST("messtype");	// We must not be able to change the messtype
+            //$object->messtype       = (string) GETPOST("messtype");   // We must not be able to change the messtype
             $object->sujet = (string) GETPOST("sujet");
             $object->body = (string) GETPOST("bodyemail", 'restricthtml');
             $object->bgcolor = preg_replace('/^#/', '', (string) GETPOST("bgcolor"));

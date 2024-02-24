@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@inodbox.com>
@@ -24,7 +25,7 @@
  *   \brief      Fichier contenant la class du modele de numerotation de reference de bon de livraison Jade
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/delivery/modules_delivery.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/delivery/modules_delivery.php';
 
 
 /**
@@ -34,153 +35,153 @@ require_once DOL_DOCUMENT_ROOT.'/core/modules/delivery/modules_delivery.php';
 
 class mod_delivery_jade extends ModeleNumRefDeliveryOrder
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	/**
-	 * @var string Error message
-	 */
-	public $error = '';
+    /**
+     * @var string Error message
+     */
+    public $error = '';
 
-	/**
-	 * @var string Nom du modele
-	 * @deprecated
-	 * @see $name
-	 */
-	public $nom = 'Jade';
+    /**
+     * @var string Nom du modele
+     * @deprecated
+     * @see $name
+     */
+    public $nom = 'Jade';
 
-	/**
-	 * @var string model name
-	 */
-	public $name = 'Jade';
+    /**
+     * @var string model name
+     */
+    public $name = 'Jade';
 
-	public $prefix = 'BL';
+    public $prefix = 'BL';
 
 
-	/**
-	 *   Returns the description of the numbering model
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $langs;
-		return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
-	}
+    /**
+     *   Returns the description of the numbering model
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $langs;
+        return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		return $this->prefix."0501-0001";
-	}
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        return $this->prefix . "0501-0001";
+    }
 
-	/**
-	 *  Checks if the numbers already in the database do not
-	 *  cause conflicts that would prevent this numbering working.
-	 *
-	 *  @param  Object		$object		Object we need next value for
-	 *  @return boolean     			false if conflict, true if ok
-	 */
-	public function canBeActivated($object)
-	{
-		global $langs, $conf, $db;
+    /**
+     *  Checks if the numbers already in the database do not
+     *  cause conflicts that would prevent this numbering working.
+     *
+     *  @param  Object      $object     Object we need next value for
+     *  @return boolean                 false if conflict, true if ok
+     */
+    public function canBeActivated($object)
+    {
+        global $langs, $conf, $db;
 
-		$langs->load("bills");
+        $langs->load("bills");
 
-		// Check invoice num
-		$fayymm = '';
-		$max = '';
+        // Check invoice num
+        $fayymm = '';
+        $max = '';
 
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max"; // This is standard SQL
-		$sql .= " FROM ".MAIN_DB_PREFIX."delivery";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity = ".$conf->entity;
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max"; // This is standard SQL
+        $sql .= " FROM " . MAIN_DB_PREFIX . "delivery";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity = " . $conf->entity;
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$row = $db->fetch_row($resql);
-			if ($row) {
-				$fayymm = substr($row[0], 0, 6);
-				$max = $row[0];
-			}
-		}
-		if ($fayymm && !preg_match('/'.$this->prefix.'[0-9][0-9][0-9][0-9]/i', $fayymm)) {
-			$langs->load("errors");
-			$this->error = $langs->trans('ErrorNumRefModel', $max);
-			return false;
-		}
+        $resql = $db->query($sql);
+        if ($resql) {
+            $row = $db->fetch_row($resql);
+            if ($row) {
+                $fayymm = substr($row[0], 0, 6);
+                $max = $row[0];
+            }
+        }
+        if ($fayymm && !preg_match('/' . $this->prefix . '[0-9][0-9][0-9][0-9]/i', $fayymm)) {
+            $langs->load("errors");
+            $this->error = $langs->trans('ErrorNumRefModel', $max);
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * 	Return next free value
-	 *
-	 *  @param	Societe		$objsoc     Object thirdparty
-	 *  @param  Object		$object		Object we need next value for
-	 *  @return string|-1      			Value if OK, -1 if KO
-	 */
-	public function getNextValue($objsoc, $object)
-	{
-		global $db, $conf;
+    /**
+     *  Return next free value
+     *
+     *  @param  Societe     $objsoc     Object thirdparty
+     *  @param  Object      $object     Object we need next value for
+     *  @return string|-1               Value if OK, -1 if KO
+     */
+    public function getNextValue($objsoc, $object)
+    {
+        global $db, $conf;
 
-		// First, we get the max value
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max"; // This is standard SQL
-		$sql .= " FROM ".MAIN_DB_PREFIX."delivery";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity = ".$conf->entity;
+        // First, we get the max value
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max"; // This is standard SQL
+        $sql .= " FROM " . MAIN_DB_PREFIX . "delivery";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity = " . $conf->entity;
 
-		$resql = $db->query($sql);
-		dol_syslog("mod_delivery_jade::getNextValue", LOG_DEBUG);
-		if ($resql) {
-			$obj = $db->fetch_object($resql);
-			if ($obj) {
-				$max = intval($obj->max);
-			} else {
-				$max = 0;
-			}
-		} else {
-			return -1;
-		}
+        $resql = $db->query($sql);
+        dol_syslog("mod_delivery_jade::getNextValue", LOG_DEBUG);
+        if ($resql) {
+            $obj = $db->fetch_object($resql);
+            if ($obj) {
+                $max = intval($obj->max);
+            } else {
+                $max = 0;
+            }
+        } else {
+            return -1;
+        }
 
-		$date = $object->date_delivery;
-		if (empty($date)) {
-			$date = dol_now();
-		}
-		$yymm = dol_print_date($date, "%y%m");
+        $date = $object->date_delivery;
+        if (empty($date)) {
+            $date = dol_now();
+        }
+        $yymm = dol_print_date($date, "%y%m");
 
-		if ($max >= (pow(10, 4) - 1)) {
-			$num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
-		} else {
-			$num = sprintf("%04s", $max + 1);
-		}
+        if ($max >= (pow(10, 4) - 1)) {
+            $num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
+        } else {
+            $num = sprintf("%04s", $max + 1);
+        }
 
-		dol_syslog("mod_delivery_jade::getNextValue return ".$this->prefix.$yymm."-".$num);
-		return $this->prefix.$yymm."-".$num;
-	}
+        dol_syslog("mod_delivery_jade::getNextValue return " . $this->prefix . $yymm . "-" . $num);
+        return $this->prefix . $yymm . "-" . $num;
+    }
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return next free ref
-	 *
-	 *  @param  Societe     $objsoc         Object thirdparty
-	 *  @param  Object      $object         Object livraison
-	 *  @return string|-1                   Value if OK, -1 if KO
-	 */
-	public function delivery_get_num($objsoc = 0, $object = '')
-	{
+    /**
+     *  Return next free ref
+     *
+     *  @param  Societe     $objsoc         Object thirdparty
+     *  @param  Object      $object         Object livraison
+     *  @return string|-1                   Value if OK, -1 if KO
+     */
+    public function delivery_get_num($objsoc = 0, $object = '')
+    {
 		// phpcs:enable
-		return $this->getNextValue($objsoc, $object);
-	}
+        return $this->getNextValue($objsoc, $object);
+    }
 }

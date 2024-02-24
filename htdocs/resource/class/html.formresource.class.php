@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) - 2013-2015 Jean-François FERRY	<jfefe@aternatik.fr>
+
+/* Copyright (C) - 2013-2015 Jean-François FERRY    <jfefe@aternatik.fr>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2022       Ferran Marcet           <fmarcet@2byte.es>
  * Copyright (C) 2023		William Mead			<william.mead@manchenumerique.fr>
@@ -24,6 +25,7 @@
  *       \ingroup    core
  *       \brief      Class file to manage forms into resource module
  */
+
 require_once DOL_DOCUMENT_ROOT . "/core/class/html.form.class.php";
 require_once DOL_DOCUMENT_ROOT . "/resource/class/dolresource.class.php";
 

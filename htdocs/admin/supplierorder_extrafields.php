@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2013	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2012		Regis Houssin			<regis.houssin@inodbox.com>
@@ -22,21 +23,21 @@
 
 /**
  *      \file       htdocs/admin/supplierorder_extrafields.php
- *		\ingroup    fourn
- *		\brief      Page to setup extra fields of supplierorder
+ *      \ingroup    fourn
+ *      \brief      Page to setup extra fields of supplierorder
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/fourn.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
-	// Load translation files required by the page
+    // Load translation files required by the page
 $langs->loadLangs(array('admin', 'other', 'orders'));
 
 $extrafields = new ExtraFields($db);
@@ -46,7 +47,7 @@ $form = new Form($db);
 $tmptype2label = ExtraFields::$type2label;
 $type2label = array('');
 foreach ($tmptype2label as $key => $val) {
-	$type2label[$key] = $langs->transnoentitiesnoconv($val);
+    $type2label[$key] = $langs->transnoentitiesnoconv($val);
 }
 
 $action = GETPOST('action', 'aZ09');
@@ -54,7 +55,7 @@ $attrname = GETPOST('attrname', 'alpha');
 $elementtype = 'commande_fournisseur'; //Must be the $table_element of the class that manage extrafield
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -62,7 +63,7 @@ if (!$user->admin) {
  * Actions
  */
 
-require DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
+require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
 
 
 
@@ -74,7 +75,7 @@ $textobject = $langs->transnoentitiesnoconv("SuppliersOrders");
 
 llxHeader('', $langs->trans("SuppliersSetup"));
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("SuppliersSetup"), $linkback, 'title_setup');
 print "<br>\n";
 
@@ -82,25 +83,25 @@ $head = supplierorder_admin_prepare_head();
 
 print dol_get_fiche_head($head, 'supplierorder', $langs->trans("Suppliers"), -1, 'company');
 
-require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
+require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
 print dol_get_fiche_end();
 
 
 // Creation of an optional field
 if ($action == 'create') {
-	print '<br><div id="newattrib"></div>';
-	print load_fiche_titre($langs->trans('NewAttribute'));
+    print '<br><div id="newattrib"></div>';
+    print load_fiche_titre($langs->trans('NewAttribute'));
 
-	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_add.tpl.php';
+    require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_add.tpl.php';
 }
 
 // Edition of an optional field
 if ($action == 'edit' && !empty($attrname)) {
-	print "<br>";
-	print load_fiche_titre($langs->trans("FieldEdition", $attrname));
+    print "<br>";
+    print load_fiche_titre($langs->trans("FieldEdition", $attrname));
 
-	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_edit.tpl.php';
+    require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_edit.tpl.php';
 }
 
 // End of page

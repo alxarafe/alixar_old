@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -230,17 +231,17 @@ $sql.= " GROUP BY dm DESC";
 $resql=$db->query($sql);
 if ($resql)
 {
-	$num = $db->num_rows($resql);
-	$i = 0;
-	while ($i < $num)
-	{
-		$row = $db->fetch_row($resql);
-		$nbproduct = $row[0];
-		$year = $row[1];
-		print "<tr>";
-		print '<td class="center"><a href="month.php?year='.$year.'">'.$year.'</a></td><td class="center">'.$nbproduct.'</td></tr>';
-		$i++;
-	}
+    $num = $db->num_rows($resql);
+    $i = 0;
+    while ($i < $num)
+    {
+        $row = $db->fetch_row($resql);
+        $nbproduct = $row[0];
+        $year = $row[1];
+        print "<tr>";
+        print '<td class="center"><a href="month.php?year='.$year.'">'.$year.'</a></td><td class="center">'.$nbproduct.'</td></tr>';
+        $i++;
+    }
 }
 $db->free($resql);
 

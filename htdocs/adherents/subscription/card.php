@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2019  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2018-2020  Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -74,7 +75,7 @@ if ($cancel) {
 
 include DOL_DOCUMENT_ROOT . '/core/actions_dellink.inc.php'; // Must be include, not include_once
 
-//include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';	// Must be include, not include_once
+//include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php'; // Must be include, not include_once
 
 if ($user->hasRight('adherent', 'cotisation', 'creer') && $action == 'update' && !$cancel) {
     // Load current object

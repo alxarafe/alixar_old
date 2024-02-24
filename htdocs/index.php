@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2004	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,11 +31,11 @@ if (empty($ctrl)) {
 
 $path = BASE_PATH;
 if (!empty($page)) {
-    $path .= DIRECTORY_SEPARATOR.$page;
+    $path .= DIRECTORY_SEPARATOR . $page;
 }
 
 chdir($path);
 
-$path .= DIRECTORY_SEPARATOR.$ctrl. '.php';
+$path .= DIRECTORY_SEPARATOR . $ctrl . '.php';
 
 require $path;

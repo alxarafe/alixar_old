@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2013 Cédric Salvador      <csalvador@gpcsolutions.fr>
@@ -40,7 +41,7 @@ $confirm = GETPOST('confirm', 'alpha');
 $id = GETPOST('id', 'int');
 $ref = GETPOST('ref', 'alpha');
 $mine = (GETPOST('mode', 'alpha') == 'mine' ? 1 : 0);
-//if (! $user->rights->projet->all->lire) $mine=1;	// Special for projects
+//if (! $user->rights->projet->all->lire) $mine=1;  // Special for projects
 
 $object = new Project($db);
 

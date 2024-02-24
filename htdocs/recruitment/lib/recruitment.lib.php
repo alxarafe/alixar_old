@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019   Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2022   Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -76,10 +77,10 @@ function recruitmentAdminPrepareHead()
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     //$this->tabs = array(
-    //	'entity:+tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
+    //  'entity:+tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
     //); // to add new tab
     //$this->tabs = array(
-    //	'entity:-tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
+    //  'entity:-tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
     //); // to remove a tab
     complete_head_from_modules($conf, $langs, null, $head, $h, 'recruitment');
 

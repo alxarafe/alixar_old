@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005       Matthieu Valleton   <mv@seeschloss.org>
  * Copyright (C) 2005       Eric Seigne         <eric.seigne@ryxeo.com>
  * Copyright (C) 2006-2016  Laurent Destailleur <eldy@users.sourceforge.net>

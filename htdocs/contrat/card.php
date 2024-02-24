@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2004  Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2019  Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2014  Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2006       Andre Cianfarani		<acianfa@free.fr>
@@ -505,9 +506,9 @@ if (empty($reshook)) {
 
                 // Update if prices fields are defined
                 /*$tva_tx = get_default_tva($mysoc, $object->thirdparty, $prod->id);
-				$tva_npr = get_default_npr($mysoc, $object->thirdparty, $prod->id);
-				if (empty($tva_tx)) {
-				}*/
+                $tva_npr = get_default_npr($mysoc, $object->thirdparty, $prod->id);
+                if (empty($tva_tx)) {
+                }*/
                 $tva_npr = 0;
 
                 $price_min = $prod->price_min;
@@ -531,13 +532,13 @@ if (empty($reshook)) {
                             $price_min = price($prodcustprice->lines[0]->price_min);
                             $price_min_ttc = price($prodcustprice->lines[0]->price_min_ttc);
                             /*$tva_tx = $prodcustprice->lines[0]->tva_tx;
-							if ($prodcustprice->lines[0]->default_vat_code && !preg_match('/\(.*\)/', $tva_tx)) {
-								$tva_tx .= ' ('.$prodcustprice->lines[0]->default_vat_code.')';
-							}
-							$tva_npr = $prodcustprice->lines[0]->recuperableonly;
-							if (empty($tva_tx)) {
-								$tva_npr = 0;
-							}*/
+                            if ($prodcustprice->lines[0]->default_vat_code && !preg_match('/\(.*\)/', $tva_tx)) {
+                                $tva_tx .= ' ('.$prodcustprice->lines[0]->default_vat_code.')';
+                            }
+                            $tva_npr = $prodcustprice->lines[0]->recuperableonly;
+                            if (empty($tva_tx)) {
+                                $tva_npr = 0;
+                            }*/
                         }
                     }
                 }
@@ -613,8 +614,10 @@ if (empty($reshook)) {
                 $info_bits |= 0x01;
             }
 
-            if (((getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('produit', 'ignore_price_min_advance'))
-                    || !getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) && ($price_min && (price2num($pu_ht) * (1 - price2num($remise_percent) / 100) < price2num($price_min)))) {
+            if (
+                ((getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('produit', 'ignore_price_min_advance'))
+                    || !getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) && ($price_min && (price2num($pu_ht) * (1 - price2num($remise_percent) / 100) < price2num($price_min)))
+            ) {
                 $object->error = $langs->trans("CantBeLessThanMinPrice", price(price2num($price_min, 'MU'), 0, $langs, 0, 0, -1, $conf->currency));
                 $result = -1;
             } else {
@@ -1493,8 +1496,8 @@ if ($action == 'create') {
         $arrayothercontracts = $object->getListOfContracts('others');    // array or -1 if technical error
 
         /*
-		 * Lines of contracts
-		 */
+         * Lines of contracts
+         */
 
         // Add products/services form
         //$forceall = 1;
@@ -1549,7 +1552,7 @@ if ($action == 'create') {
                 print '<td width="80" class="center">' . $langs->trans("VAT") . '</td>';
                 print '<td width="80" class="right">' . $langs->trans("PriceUHT") . '</td>';
                 //if (isModEnabled("multicurrency")) {
-                //	print '<td width="80" class="right">'.$langs->trans("PriceUHTCurrency").'</td>';
+                //  print '<td width="80" class="right">'.$langs->trans("PriceUHTCurrency").'</td>';
                 //}
                 print '<td width="30" class="center">' . $langs->trans("Qty") . '</td>';
                 if (getDolGlobalInt('PRODUCT_USE_UNITS')) {
@@ -1628,8 +1631,8 @@ if ($action == 'create') {
                     print '<td class="right">' . ($objp->subprice != '' ? price($objp->subprice) : '') . "</td>\n";
                     // Price multicurrency
                     /*if (isModEnabled("multicurrency")) {
-						print '<td class="linecoluht_currency nowrap right">'.price($objp->multicurrency_subprice).'</td>';
-					}*/
+                        print '<td class="linecoluht_currency nowrap right">'.price($objp->multicurrency_subprice).'</td>';
+                    }*/
                     // Quantity
                     print '<td class="center">' . $objp->qty . '</td>';
                     // Unit
@@ -1771,8 +1774,8 @@ if ($action == 'create') {
 
                     // Price multicurrency
                     /*if (isModEnabled("multicurrency")) {
-					 print '<td class="linecoluht_currency nowrap right">'.price($objp->multicurrency_subprice).'</td>';
-					 }*/
+                     print '<td class="linecoluht_currency nowrap right">'.price($objp->multicurrency_subprice).'</td>';
+                     }*/
 
                     // Quantity
                     print '<td class="center"><input size="2" type="text" name="elqty" value="' . $objp->qty . '"></td>';
@@ -1856,8 +1859,8 @@ if ($action == 'create') {
             print "</form>\n";
 
             /*
-			 * Confirmation to delete service line of contract
-			 */
+             * Confirmation to delete service line of contract
+             */
             if ($action == 'deleteline' && !$_REQUEST["cancel"] && $user->hasRight('contrat', 'creer') && $object->lines[$cursorline - 1]->id == GETPOST('rowid')) {
                 print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $object->id . "&lineid=" . GETPOST('rowid'), $langs->trans("DeleteContractLine"), $langs->trans("ConfirmDeleteContractLine"), "confirm_deleteline", '', 0, 1);
                 if ($ret == 'html') {
@@ -1866,8 +1869,8 @@ if ($action == 'create') {
             }
 
             /*
-			 * Confirmation to move service toward another contract
-			 */
+             * Confirmation to move service toward another contract
+             */
             if ($action == 'move' && !$_REQUEST["cancel"] && $user->hasRight('contrat', 'creer') && $object->lines[$cursorline - 1]->id == GETPOST('rowid')) {
                 $arraycontractid = [];
                 foreach ($arrayothercontracts as $contractcursor) {
@@ -2116,8 +2119,8 @@ if ($action == 'create') {
         }
 
         /*
-		 * Buttons
-		 */
+         * Buttons
+         */
         if ($user->socid == 0 && $action != 'presend' && $action != 'editline') {
             print '<div class="tabsAction">';
 
@@ -2216,7 +2219,7 @@ if ($action == 'create') {
                     //}
                     //else
                     //{
-                    //	print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("CloseRefusedBecauseOneServiceActive").'">'.$langs->trans("Close").'</a></div>';
+                    //  print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("CloseRefusedBecauseOneServiceActive").'">'.$langs->trans("Close").'</a></div>';
                     //}
                 }
 
@@ -2246,8 +2249,8 @@ if ($action == 'create') {
             print '<div class="fichecenter"><div class="fichehalfleft">';
 
             /*
-			 * Generated documents
-			 */
+             * Generated documents
+             */
             $filename = dol_sanitizeFileName($object->ref);
             $filedir = $conf->contrat->multidir_output[$object->entity] . "/" . dol_sanitizeFileName($object->ref);
             $urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
@@ -2302,60 +2305,60 @@ $db->close();
 
 <?php
 if (isModEnabled('margin') && $action == 'editline') {
-	// TODO Why this ? To manage margin on contracts ??>
+    // TODO Why this ? To manage margin on contracts ??>
 <script type="text/javascript">
 $(document).ready(function() {
   var idprod = $("input[name='idprod']").val();
   var fournprice = $("input[name='fournprice']").val();
-  var token = '<?php echo currentToken(); ?>';		// For AJAX Call we use old 'token' and not 'newtoken'
+  var token = '<?php echo currentToken(); ?>';      // For AJAX Call we use old 'token' and not 'newtoken'
   if (idprod > 0) {
-	  $.post('<?php echo DOL_URL_ROOT; ?>/fourn/ajax/getSupplierPrices.php', {
-		  'idprod': idprod,
-		  'token': token
-		  }, function(data) {
-		if (data.length > 0) {
-		  var options = '';
-		  var trouve=false;
-		  $(data).each(function() {
-			options += '<option value="'+this.id+'" price="'+this.price+'"';
-			if (fournprice > 0) {
-				if (this.id == fournprice) {
-				  options += ' selected';
-				  $("#buying_price").val(this.price);
-				  trouve = true;
-				}
-			}
-			options += '>'+this.label+'</option>';
-		  });
-		  options += '<option value=null'+(trouve?'':' selected')+'><?php echo $langs->trans("InputPrice"); ?></option>';
-		  $("#fournprice").html(options);
-		  if (trouve) {
-			$("#buying_price").hide();
-			$("#fournprice").show();
-		  }
-		  else {
-			$("#buying_price").show();
-		  }
-		  $("#fournprice").change(function() {
-			var selval = $(this).find('option:selected').attr("price");
-			if (selval)
-			  {$("#buying_price").val(selval).hide();}
-			else
-			  {$('#buying_price').show();}
-		  });
-		}
-		else {
-		  $("#fournprice").hide();
-		  $('#buying_price').show();
-		}
-	  },
-	  'json');
-	}
-	else {
-	  $("#fournprice").hide();
-	  $('#buying_price').show();
-	}
+      $.post('<?php echo DOL_URL_ROOT; ?>/fourn/ajax/getSupplierPrices.php', {
+          'idprod': idprod,
+          'token': token
+          }, function(data) {
+        if (data.length > 0) {
+          var options = '';
+          var trouve=false;
+          $(data).each(function() {
+            options += '<option value="'+this.id+'" price="'+this.price+'"';
+            if (fournprice > 0) {
+                if (this.id == fournprice) {
+                  options += ' selected';
+                  $("#buying_price").val(this.price);
+                  trouve = true;
+                }
+            }
+            options += '>'+this.label+'</option>';
+          });
+          options += '<option value=null'+(trouve?'':' selected')+'><?php echo $langs->trans("InputPrice"); ?></option>';
+          $("#fournprice").html(options);
+          if (trouve) {
+            $("#buying_price").hide();
+            $("#fournprice").show();
+          }
+          else {
+            $("#buying_price").show();
+          }
+          $("#fournprice").change(function() {
+            var selval = $(this).find('option:selected').attr("price");
+            if (selval)
+              {$("#buying_price").val(selval).hide();}
+            else
+              {$('#buying_price').show();}
+          });
+        }
+        else {
+          $("#fournprice").hide();
+          $('#buying_price').show();
+        }
+      },
+      'json');
+    }
+    else {
+      $("#fournprice").hide();
+      $('#buying_price').show();
+    }
 });
 </script>
-	<?php
+    <?php
 }

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2006		Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2006       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2007-2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2009-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2014		Alexandre Spangaro		<aspangaro@open-dsi.fr>

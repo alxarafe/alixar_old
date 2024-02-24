@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  *
@@ -224,7 +225,7 @@ class Tasks extends DolibarrApi
     //  * @param int   $id                     Id of task
     //  * @return int
     //  *
-    //  * @url	GET {id}/tasks
+    //  * @url  GET {id}/tasks
     //  */
     /*
     public function getLines($id, $includetimespent=0)
@@ -309,7 +310,7 @@ class Tasks extends DolibarrApi
     //  * @param int   $id             Id of project to update
     //  * @param array $request_data   Projectline data
     //  *
-    //  * @url	POST {id}/tasks
+    //  * @url  POST {id}/tasks
     //  *
     //  * @return int
     //  */
@@ -376,7 +377,7 @@ class Tasks extends DolibarrApi
     //  * @param int   $taskid         Id of task to update
     //  * @param array $request_data   Projectline data
     //  *
-    //  * @url	PUT {id}/tasks/{taskid}
+    //  * @url  PUT {id}/tasks/{taskid}
     //  *
     //  * @return object
     //  */

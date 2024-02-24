@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -41,8 +42,8 @@ class PaymentTerm // extends CommonObject
      */
     public $errors = [];
 
-    //public  $element='c_payment_term';			//!< Id that identify managed objects
-    //public  $table_element='c_payment_term';	//!< Name of table without prefix where object is stored
+    //public  $element='c_payment_term';            //!< Id that identify managed objects
+    //public  $table_element='c_payment_term';  //!< Name of table without prefix where object is stored
     public $context = [];
 
     /**

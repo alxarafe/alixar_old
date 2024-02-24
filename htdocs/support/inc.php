@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004      Benoit Mortier       <benoit.mortier@opensides.be>
  * Copyright (C) 2004      Sebastien DiCintio   <sdicintio@ressource-toi.org>
@@ -56,8 +57,8 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // For debian/redhat like systems
 /*
 if (!file_exists($conffile)) {
-	$conffile = "/etc/dolibarr/conf.php";
-	$conffiletoshow = "/etc/dolibarr/conf.php";
+    $conffile = "/etc/dolibarr/conf.php";
+    $conffiletoshow = "/etc/dolibarr/conf.php";
 }
 */
 

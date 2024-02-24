@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2010-2012	Regis Houssin	<regis.houssin@inodbox.com>
+/* Copyright (C) 2010-2012  Regis Houssin   <regis.houssin@inodbox.com>
  * Copyright (C) 2017		Charlie Benke	<charlie@patas-monkey.com>
  * Copyright (C) 2022		Gauthier VERDOL	<gauthier.verdol@atm-consulting.fr>
  *
@@ -19,38 +19,38 @@
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
-	print "Error, template page can't be called as URL";
-	exit;
+    print "Error, template page can't be called as URL";
+    exit;
 }
 
 ?>
 
 <!-- BEGIN PHP TEMPLATE originproductline.tpl.php -->
 <?php
-print '<tr data-id="'.$this->tpl['id'].'" class="oddeven'.(empty($this->tpl['strike']) ? '' : ' strikefordisabled').'">';
-print '<td class="linecolref">'.$this->tpl['label'].'</td>';
-print '<td class="linecoldescription">'.$this->tpl['description'].'</td>';
-print '<td class="linecolvat right">'.$this->tpl['vat_rate'].'</td>';
-print '<td class="linecoluht right">'.$this->tpl['price'].'</td>';
+print '<tr data-id="' . $this->tpl['id'] . '" class="oddeven' . (empty($this->tpl['strike']) ? '' : ' strikefordisabled') . '">';
+print '<td class="linecolref">' . $this->tpl['label'] . '</td>';
+print '<td class="linecoldescription">' . $this->tpl['description'] . '</td>';
+print '<td class="linecolvat right">' . $this->tpl['vat_rate'] . '</td>';
+print '<td class="linecoluht right">' . $this->tpl['price'] . '</td>';
 if (isModEnabled("multicurrency")) {
-	print '<td class="linecoluht_currency right">'.$this->tpl['multicurrency_price'].'</td>';
+    print '<td class="linecoluht_currency right">' . $this->tpl['multicurrency_price'] . '</td>';
 }
 
-print '<td class="linecolqty right">'.$this->tpl['qty'].'</td>';
+print '<td class="linecolqty right">' . $this->tpl['qty'] . '</td>';
 if (getDolGlobalString('PRODUCT_USE_UNITS')) {
-	print '<td class="linecoluseunit left">'.$langs->trans($this->tpl['unit']).'</td>';
+    print '<td class="linecoluseunit left">' . $langs->trans($this->tpl['unit']) . '</td>';
 }
 
-print '<td class="linecoldiscount right">'.$this->tpl['remise_percent'].'</td>';
-print '<td class="linecolht right">'.$this->tpl['total_ht'].'</td>';
+print '<td class="linecoldiscount right">' . $this->tpl['remise_percent'] . '</td>';
+print '<td class="linecolht right">' . $this->tpl['total_ht'] . '</td>';
 
 $selected = 1;
 if (!empty($selectedLines) && !in_array($this->tpl['id'], $selectedLines)) {
-	$selected = 0;
+    $selected = 0;
 }
 print '<td class="center">';
-print '<input id="cb'.$this->tpl['id'].'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$this->tpl['id'].'"'.($selected ? ' checked="checked"' : '').'>';
+print '<input id="cb' . $this->tpl['id'] . '" class="flat checkforselect" type="checkbox" name="toselect[]" value="' . $this->tpl['id'] . '"' . ($selected ? ' checked="checked"' : '') . '>';
 print '</td>';
-print '</tr>'."\n";
+print '</tr>' . "\n";
 ?>
 <!-- END PHP TEMPLATE originproductline.tpl.php -->

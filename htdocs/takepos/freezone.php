@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018 Andreu Bisquerra	<jove@bisquerra.com>
+
+/* Copyright (C) 2018 Andreu Bisquerra  <jove@bisquerra.com>
  * Copyright (C) 2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,10 +23,10 @@
  *    \brief      Popup to enter a free line
  */
 
-//if (! defined('NOREQUIREUSER'))	define('NOREQUIREUSER','1');	// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIREDB'))		define('NOREQUIREDB','1');		// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIRESOC'))	define('NOREQUIRESOC','1');
-//if (! defined('NOREQUIRETRAN'))	define('NOREQUIRETRAN','1');
+//if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER','1');    // Not disabled cause need to load personalized language
+//if (! defined('NOREQUIREDB'))     define('NOREQUIREDB','1');      // Not disabled cause need to load personalized language
+//if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC','1');
+//if (! defined('NOREQUIRETRAN'))   define('NOREQUIRETRAN','1');
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1');
 }

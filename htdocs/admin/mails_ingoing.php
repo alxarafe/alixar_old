@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2009-2012 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2013	   Juanjo Menent		<jmenent@2byte.es>
@@ -25,8 +26,8 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "products", "admin", "mails", "other", "errors"));
@@ -37,7 +38,7 @@ $cancel = GETPOST('cancel', 'aZ09');
 $trackid = GETPOST('trackid');
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -58,10 +59,10 @@ $form = new Form($db);
 
 $linuxlike = 1;
 if (preg_match('/^win/i', PHP_OS)) {
-	$linuxlike = 0;
+    $linuxlike = 0;
 }
 if (preg_match('/^mac/i', PHP_OS)) {
-	$linuxlike = 0;
+    $linuxlike = 0;
 }
 
 
@@ -78,32 +79,32 @@ $listofmethods = array();
 $listofmethods['mail'] = 'PHP mail function';
 $listofmethods['smtps'] = 'SMTP/SMTPS socket library';
 if (version_compare(phpversion(), '7.0', '>=')) {
-	$listofmethods['swiftmailer'] = 'Swift Mailer socket library';
+    $listofmethods['swiftmailer'] = 'Swift Mailer socket library';
 }
 
 // List of oauth services
 $oauthservices = array();
 
 foreach ($conf->global as $key => $val) {
-	if (!empty($val) && preg_match('/^OAUTH_.*_ID$/', $key)) {
-		$key = preg_replace('/^OAUTH_/', '', $key);
-		$key = preg_replace('/_ID$/', '', $key);
-		if (preg_match('/^.*-/', $key)) {
-			$name = preg_replace('/^.*-/', '', $key);
-		} else {
-			$name = $langs->trans("NoName");
-		}
-		$provider = preg_replace('/-.*$/', '', $key);
-		$provider = ucfirst(strtolower($provider));
+    if (!empty($val) && preg_match('/^OAUTH_.*_ID$/', $key)) {
+        $key = preg_replace('/^OAUTH_/', '', $key);
+        $key = preg_replace('/_ID$/', '', $key);
+        if (preg_match('/^.*-/', $key)) {
+            $name = preg_replace('/^.*-/', '', $key);
+        } else {
+            $name = $langs->trans("NoName");
+        }
+        $provider = preg_replace('/-.*$/', '', $key);
+        $provider = ucfirst(strtolower($provider));
 
-		$oauthservices[$key] = $name." (".$provider.")";
-	}
+        $oauthservices[$key] = $name . " (" . $provider . ")";
+    }
 }
 
 print dol_get_fiche_head($head, 'common_ingoing', '', -1);
 
 print '<br>';
-print '<span class="opacitymedium">'.$langs->trans("EMailsInGoingDesc", $langs->transnoentitiesnoconv("EmailCollector"))."</span><br>\n";
+print '<span class="opacitymedium">' . $langs->trans("EMailsInGoingDesc", $langs->transnoentitiesnoconv("EmailCollector")) . "</span><br>\n";
 print "<br><br>\n";
 
 /*
@@ -118,11 +119,11 @@ print '<table class="noborder centpercent">';
 
 // SMTPS oauth service
 if (in_array(getDolGlobalString('MAIN_MAIL_SENDMODE', 'mail'), array('smtps', 'swiftmailer')) && getDolGlobalString('MAIN_MAIL_SMTPS_AUTH_TYPE') === "XOAUTH2") {
-	$text = $oauthservices[$conf->global->MAIN_MAIL_SMTPS_OAUTH_SERVICE];
-	if (empty($text)) {
-		$text = $langs->trans("Undefined").img_warning();
-	}
-	print '<tr class="oddeven"><td>'.$langs->trans("MAIN_MAIL_SMTPS_OAUTH_SERVICE").'</td><td>'.$text.'</td></tr>';
+    $text = $oauthservices[$conf->global->MAIN_MAIL_SMTPS_OAUTH_SERVICE];
+    if (empty($text)) {
+        $text = $langs->trans("Undefined").img_warning();
+    }
+    print '<tr class="oddeven"><td>'.$langs->trans("MAIN_MAIL_SMTPS_OAUTH_SERVICE").'</td><td>'.$text.'</td></tr>';
 }
 
 print '</table>';

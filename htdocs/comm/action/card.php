@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Simon TOSSER         <simon@kornog-computing.com>
@@ -264,8 +265,10 @@ if (empty($reshook) && (GETPOST('addassignedtoresource') || GETPOST('updateassig
 }
 
 // Link to a project
-if (empty($reshook) && $action == 'classin' && ($user->hasRight('agenda', 'allactions', 'create') ||
-        (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create')))) {
+if (
+    empty($reshook) && $action == 'classin' && ($user->hasRight('agenda', 'allactions', 'create') ||
+        (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create')))
+) {
     //$object->fetch($id);
     $object->setProject(GETPOST('projectid', 'int'));
 }
@@ -567,9 +570,9 @@ if (empty($reshook) && $action == 'add') {
 
                 // Modify $moreparam so we are sure to see the event we have just created, whatever are the default value of filter on next page.
                 /*$moreparam .= ($moreparam ? '&' : '').'search_actioncode=0';
-				 $moreparam .= ($moreparam ? '&' : '').'search_status=-1';
-				 $moreparam .= ($moreparam ? '&' : '').'search_filtert='.$object->userownerid;
-				 */
+                 $moreparam .= ($moreparam ? '&' : '').'search_status=-1';
+                 $moreparam .= ($moreparam ? '&' : '').'search_filtert='.$object->userownerid;
+                 */
                 $moreparam .= ($moreparam ? '&' : '') . 'disabledefaultvalues=1';
 
                 if ($error) {
@@ -579,12 +582,12 @@ if (empty($reshook) && $action == 'add') {
                 }
 
                 // if (!empty($backtopage)) {
-                // 	dol_syslog("Back to ".$backtopage.($moreparam ? (preg_match('/\?/', $backtopage) ? '&'.$moreparam : '?'.$moreparam) : ''));
-                // 	header("Location: ".$backtopage.($moreparam ? (preg_match('/\?/', $backtopage) ? '&'.$moreparam : '?'.$moreparam) : ''));
+                //  dol_syslog("Back to ".$backtopage.($moreparam ? (preg_match('/\?/', $backtopage) ? '&'.$moreparam : '?'.$moreparam) : ''));
+                //  header("Location: ".$backtopage.($moreparam ? (preg_match('/\?/', $backtopage) ? '&'.$moreparam : '?'.$moreparam) : ''));
                 // } elseif ($idaction) {
-                // 	header("Location: ".DOL_URL_ROOT.'/comm/action/card.php?id='.$idaction.($moreparam ? '&'.$moreparam : ''));
+                //  header("Location: ".DOL_URL_ROOT.'/comm/action/card.php?id='.$idaction.($moreparam ? '&'.$moreparam : ''));
                 // } else {
-                // 	header("Location: ".DOL_URL_ROOT.'/comm/action/index.php'.($moreparam ? '?'.$moreparam : ''));
+                //  header("Location: ".DOL_URL_ROOT.'/comm/action/index.php'.($moreparam ? '?'.$moreparam : ''));
                 // }
                 // exit;
             } else {
@@ -683,9 +686,9 @@ if (empty($reshook) && $action == 'add') {
 
                         // Modify $moreparam so we are sure to see the event we have just created, whatever are the default value of filter on next page.
                         /*$moreparam .= ($moreparam ? '&' : '').'search_actioncode=0';
-						 $moreparam .= ($moreparam ? '&' : '').'search_status=-1';
-						 $moreparam .= ($moreparam ? '&' : '').'search_filtert='.$object->userownerid;
-						 */
+                         $moreparam .= ($moreparam ? '&' : '').'search_status=-1';
+                         $moreparam .= ($moreparam ? '&' : '').'search_filtert='.$object->userownerid;
+                         */
                         $moreparam .= ($moreparam ? '&' : '') . 'disabledefaultvalues=1';
 
                         if ($error) {
@@ -1043,8 +1046,10 @@ if (empty($reshook) && $action == 'confirm_delete' && GETPOST("confirm") == 'yes
     $object->fetch_userassigned();
     $object->oldcopy = dol_clone($object, 2);
 
-    if ($user->hasRight('agenda', 'myactions', 'delete')
-        || $user->hasRight('agenda', 'allactions', 'delete')) {
+    if (
+        $user->hasRight('agenda', 'myactions', 'delete')
+        || $user->hasRight('agenda', 'allactions', 'delete')
+    ) {
         $result = $object->delete();
 
         if ($result >= 0) {
@@ -1774,8 +1779,8 @@ if ($id > 0) {
     }
 
     /*
-	 * Show tabs
-	 */
+     * Show tabs
+     */
 
     $head = actions_prepare_head($object);
 
@@ -1868,69 +1873,69 @@ if ($id > 0) {
         // // Recurring event
         // $userepeatevent = (getDolGlobalInt('MAIN_FEATURES_LEVEL') == 2 ? 1 : 0);
         // if ($userepeatevent) {
-        // 	// Repeat
-        // 	//print '<tr><td></td><td colspan="3">';
-        // 	print ' &nbsp; &nbsp; &nbsp; &nbsp; <div class="opacitymedium inline-block">';
-        // 	print img_picto($langs->trans("Recurrence"), 'recurring', 'class="paddingright2"');
-        // 	print '<input type="hidden" name="recurid" value="'.$object->recurid.'">';
-        // 	$selectedrecurrulefreq = 'no';
-        // 	$selectedrecurrulebymonthday = '';
-        // 	$selectedrecurrulebyday = '';
-        // 	if ($object->recurrule && preg_match('/FREQ=([A-Z]+)/i', $object->recurrule, $reg)) {
-        // 		$selectedrecurrulefreq = $reg[1];
-        // 	}
-        // 	if ($object->recurrule && preg_match('/FREQ=MONTHLY.*BYMONTHDAY=(\d+)/i', $object->recurrule, $reg)) {
-        // 		$selectedrecurrulebymonthday = $reg[1];
-        // 	}
-        // 	if ($object->recurrule && preg_match('/FREQ=WEEKLY.*BYDAY(\d+)/i', $object->recurrule, $reg)) {
-        // 		$selectedrecurrulebyday = $reg[1];
-        // 	}
-        // 	print $form->selectarray('recurrulefreq', $arrayrecurrulefreq, $selectedrecurrulefreq, 0, 0, 0, '', 0, 0, 0, '', 'marginrightonly');
-        // 	// If recurrulefreq is MONTHLY
-        // 	print '<div class="hidden marginrightonly inline-block repeateventBYMONTHDAY">';
-        // 	print $langs->trans("DayOfMonth").': <input type="input" size="2" name="BYMONTHDAY" value="'.$selectedrecurrulebymonthday.'">';
-        // 	print '</div>';
-        // 	// If recurrulefreq is WEEKLY
-        // 	print '<div class="hidden marginrightonly inline-block repeateventBYDAY">';
-        // 	print $langs->trans("DayOfWeek").': <input type="input" size="4" name="BYDAY" value="'.$selectedrecurrulebyday.'">';
-        // 	print '</div>';
-        // 	print '<script type="text/javascript">
-        // 		jQuery(document).ready(function() {
-        // 			function init_repeat()
-        // 			{
-        // 				if (jQuery("#recurrulefreq").val() == \'MONTHLY\')
-        // 				{
-        // 					jQuery(".repeateventBYMONTHDAY").css("display", "inline-block");		/* use this instead of show because we want inline-block and not block */
-        // 					jQuery(".repeateventBYDAY").hide();
-        // 				}
-        // 				else if (jQuery("#recurrulefreq").val() == \'WEEKLY\')
-        // 				{
-        // 					jQuery(".repeateventBYMONTHDAY").hide();
-        // 					jQuery(".repeateventBYDAY").css("display", "inline-block");		/* use this instead of show because we want inline-block and not block */
-        // 				}
-        // 				else
-        // 				{
-        // 					jQuery(".repeateventBYMONTHDAY").hide();
-        // 					jQuery(".repeateventBYDAY").hide();
-        // 				}
-        // 			}
-        // 			init_repeat();
-        // 			jQuery("#recurrulefreq").change(function() {
-        // 				init_repeat();
-        // 			});
-        // 		});
-        // 		</script>';
-        // 	print '</div>';
-        // 	//print '</td></tr>';
+        //  // Repeat
+        //  //print '<tr><td></td><td colspan="3">';
+        //  print ' &nbsp; &nbsp; &nbsp; &nbsp; <div class="opacitymedium inline-block">';
+        //  print img_picto($langs->trans("Recurrence"), 'recurring', 'class="paddingright2"');
+        //  print '<input type="hidden" name="recurid" value="'.$object->recurid.'">';
+        //  $selectedrecurrulefreq = 'no';
+        //  $selectedrecurrulebymonthday = '';
+        //  $selectedrecurrulebyday = '';
+        //  if ($object->recurrule && preg_match('/FREQ=([A-Z]+)/i', $object->recurrule, $reg)) {
+        //      $selectedrecurrulefreq = $reg[1];
+        //  }
+        //  if ($object->recurrule && preg_match('/FREQ=MONTHLY.*BYMONTHDAY=(\d+)/i', $object->recurrule, $reg)) {
+        //      $selectedrecurrulebymonthday = $reg[1];
+        //  }
+        //  if ($object->recurrule && preg_match('/FREQ=WEEKLY.*BYDAY(\d+)/i', $object->recurrule, $reg)) {
+        //      $selectedrecurrulebyday = $reg[1];
+        //  }
+        //  print $form->selectarray('recurrulefreq', $arrayrecurrulefreq, $selectedrecurrulefreq, 0, 0, 0, '', 0, 0, 0, '', 'marginrightonly');
+        //  // If recurrulefreq is MONTHLY
+        //  print '<div class="hidden marginrightonly inline-block repeateventBYMONTHDAY">';
+        //  print $langs->trans("DayOfMonth").': <input type="input" size="2" name="BYMONTHDAY" value="'.$selectedrecurrulebymonthday.'">';
+        //  print '</div>';
+        //  // If recurrulefreq is WEEKLY
+        //  print '<div class="hidden marginrightonly inline-block repeateventBYDAY">';
+        //  print $langs->trans("DayOfWeek").': <input type="input" size="4" name="BYDAY" value="'.$selectedrecurrulebyday.'">';
+        //  print '</div>';
+        //  print '<script type="text/javascript">
+        //      jQuery(document).ready(function() {
+        //          function init_repeat()
+        //          {
+        //              if (jQuery("#recurrulefreq").val() == \'MONTHLY\')
+        //              {
+        //                  jQuery(".repeateventBYMONTHDAY").css("display", "inline-block");        /* use this instead of show because we want inline-block and not block */
+        //                  jQuery(".repeateventBYDAY").hide();
+        //              }
+        //              else if (jQuery("#recurrulefreq").val() == \'WEEKLY\')
+        //              {
+        //                  jQuery(".repeateventBYMONTHDAY").hide();
+        //                  jQuery(".repeateventBYDAY").css("display", "inline-block");     /* use this instead of show because we want inline-block and not block */
+        //              }
+        //              else
+        //              {
+        //                  jQuery(".repeateventBYMONTHDAY").hide();
+        //                  jQuery(".repeateventBYDAY").hide();
+        //              }
+        //          }
+        //          init_repeat();
+        //          jQuery("#recurrulefreq").change(function() {
+        //              init_repeat();
+        //          });
+        //      });
+        //      </script>';
+        //  print '</div>';
+        //  //print '</td></tr>';
         // }
         print '</td></tr>';
 
         // Date start - end
         print '<tr><td class="nowrap">';
         /*print '<span class="fieldrequired">'.$langs->trans("DateActionStart").'</span>';
-		print ' - ';
-		print '<span id="dateend"'.($object->type_code == 'AC_RDV' ? ' class="fieldrequired"' : '').'>'.$langs->trans("DateActionEnd").'</span>';
-		*/
+        print ' - ';
+        print '<span id="dateend"'.($object->type_code == 'AC_RDV' ? ' class="fieldrequired"' : '').'>'.$langs->trans("DateActionEnd").'</span>';
+        */
         print '</td><td td colspan="3">';
         $tzforfullday = getDolGlobalString('MAIN_STORE_FULL_EVENT_IN_GMT');
         if (GETPOST("afaire") == 1) {
@@ -1988,11 +1993,11 @@ if ($id > 0) {
         print $form->select_dolusers_forevent(($action == 'create' ? 'add' : 'update'), 'assignedtouser', 1, '', 0, '', '', 0, 0, 0, 'AND u.statut != 0', 1, $listofuserid, $listofcontactid, $listofotherid);
         print '</div>';
         /*if (in_array($user->id,array_keys($listofuserid)))
-		{
-			print '<div class="myavailability">';
-			print $langs->trans("MyAvailability").':  <input id="transparency" type="checkbox" name="transparency"'.($listofuserid[$user->id]['transparency']?' checked':'').'>'.$langs->trans("Busy");
-			print '</div>';
-		}*/
+        {
+            print '<div class="myavailability">';
+            print $langs->trans("MyAvailability").':  <input id="transparency" type="checkbox" name="transparency"'.($listofuserid[$user->id]['transparency']?' checked':'').'>'.$langs->trans("Busy");
+            print '</div>';
+        }*/
         print '</td></tr>';
 
         // Realised by
@@ -2415,13 +2420,13 @@ if ($id > 0) {
         print $form->select_dolusers_forevent('view', 'assignedtouser', 1, '', 0, '', '', 0, 0, 0, '', ($object->datep != $object->datef) ? 1 : 0, $listofuserid, $listofcontactid, $listofotherid);
         print '</div>';
         /*
-		if ($object->datep != $object->datef && in_array($user->id,array_keys($listofuserid)))
-		{
-			print '<div class="myavailability">';
-			print $langs->trans("MyAvailability").': '.(($object->userassigned[$user->id]['transparency'] > 0)?$langs->trans("Busy"):$langs->trans("Available"));	// We show nothing if event is assigned to nobody
-			print '</div>';
-		}
-		*/
+        if ($object->datep != $object->datef && in_array($user->id,array_keys($listofuserid)))
+        {
+            print '<div class="myavailability">';
+            print $langs->trans("MyAvailability").': '.(($object->userassigned[$user->id]['transparency'] > 0)?$langs->trans("Busy"):$langs->trans("Available"));   // We show nothing if event is assigned to nobody
+            print '</div>';
+        }
+        */
         print '	</td></tr>';
 
         // Done by
@@ -2584,30 +2589,36 @@ if ($id > 0) {
     }
 
     /*
-	 * Action bar
-	 */
+     * Action bar
+     */
     print '<div class="tabsAction">';
 
     $parameters = [];
     $reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
     if (empty($reshook)) {
         if ($action != 'edit') {
-            if ($user->hasRight('agenda', 'allactions', 'create') ||
-                (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))) {
+            if (
+                $user->hasRight('agenda', 'allactions', 'create') ||
+                (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))
+            ) {
                 print '<div class="inline-block divButAction"><a class="butAction" href="card.php?action=edit&token=' . newToken() . '&id=' . $object->id . '">' . $langs->trans("Modify") . '</a></div>';
             } else {
                 print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans("Modify") . '</a></div>';
             }
 
-            if ($user->hasRight('agenda', 'allactions', 'create') ||
-                (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))) {
+            if (
+                $user->hasRight('agenda', 'allactions', 'create') ||
+                (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))
+            ) {
                 print '<div class="inline-block divButAction"><a class="butAction" href="card.php?action=clone&object=' . $object->element . '&id=' . $object->id . '">' . $langs->trans("ToClone") . '</a></div>';
             } else {
                 print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans("ToClone") . '</a></div>';
             }
 
-            if ($user->hasRight('agenda', 'allactions', 'delete') ||
-                (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'delete'))) {
+            if (
+                $user->hasRight('agenda', 'allactions', 'delete') ||
+                (($object->authorid == $user->id || $object->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'delete'))
+            ) {
                 print '<div class="inline-block divButAction"><a class="butActionDelete" href="card.php?action=delete&token=' . newToken() . '&id=' . $object->id . '">' . $langs->trans("Delete") . '</a></div>';
             } else {
                 print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans("Delete") . '</a></div>';
@@ -2623,8 +2634,8 @@ if ($id > 0) {
             print '<a name="builddoc"></a>'; // ancre
 
             /*
-			 * Generated documents
-			 */
+             * Generated documents
+             */
 
             $filedir = $conf->agenda->multidir_output[$conf->entity] . '/' . $object->id;
             $urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;

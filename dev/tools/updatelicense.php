@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-/* Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2024       MDW                         <mdeweerd@users.noreply.github.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +32,14 @@
  */
 function getGitUserInfo()
 {
-	$name = trim(shell_exec('git config user.name'));
-	$email = trim(shell_exec('git config user.email'));
-	return ['name' => $name, 'email' => $email];
+    $name = trim(shell_exec('git config user.name'));
+    $email = trim(shell_exec('git config user.email'));
+    return ['name' => $name, 'email' => $email];
 }
 
 const PREFIXES = [
-	'sh' => ['# ', '# ', '', '#!'],
-	'php' => ['/* ', ' * ', ' */', '<?php'],
+    'sh' => ['# ', '# ', '', '#!'],
+    'php' => ['/* ', ' * ', ' */', '<?php'],
 ];
 
 /**
@@ -54,101 +54,101 @@ const PREFIXES = [
  */
 function updateCopyrightNotice($filename, $fileType, $name, $email)
 {
-	// Determine the appropriate prefix based on file type
-	if (!array_key_exists($fileType, PREFIXES)) {
-		return false;
-	}
+    // Determine the appropriate prefix based on file type
+    if (!array_key_exists($fileType, PREFIXES)) {
+        return false;
+    }
 
-	// Get configuration for the filetype
-	list($prefix0, $prefix1, $prefix2, $prefix3) = PREFIXES[$fileType];
-	$r_prefix0 = preg_quote($prefix0);
-	$r_prefix1 = preg_quote($prefix1);
-	$r_prefix3 = preg_quote($prefix3);
-	$r_name = preg_quote($name);
-	$r_email = preg_quote($email);
+    // Get configuration for the filetype
+    list($prefix0, $prefix1, $prefix2, $prefix3) = PREFIXES[$fileType];
+    $r_prefix0 = preg_quote($prefix0);
+    $r_prefix1 = preg_quote($prefix1);
+    $r_prefix3 = preg_quote($prefix3);
+    $r_name = preg_quote($name);
+    $r_email = preg_quote($email);
 
-	// Read the first n lines of the file
-	$n = 50;
-	$lines = implode('', array_slice(file($filename), 0, $n));
+    // Read the first n lines of the file
+    $n = 50;
+    $lines = implode('', array_slice(file($filename), 0, $n));
 
-	// Define the regex pattern for matching copyright notices
-	$pattern = "~(?:{$r_prefix0}|{$r_prefix1})Copyright \(C\)\s+(?:(?:\d{4}-)?(?<year>\d{4}))\s+{$r_name}\s*\<{$r_email}>~";
+    // Define the regex pattern for matching copyright notices
+    $pattern = "~(?:{$r_prefix0}|{$r_prefix1})Copyright \(C\)\s+(?:(?:\d{4}-)?(?<year>\d{4}))\s+{$r_name}\s*\<{$r_email}>~";
 
-	// Check if the lines match the pattern
-	if (preg_match($pattern, $lines, $matches)) {
-		$existingYear = $matches['year'];
+    // Check if the lines match the pattern
+    if (preg_match($pattern, $lines, $matches)) {
+        $existingYear = $matches['year'];
 
-		// Check if the existing year is different from the current year
-		if ($existingYear !== date('Y')) {
-			// Update the year range to include or be up to the current year
-			$updatedNotice = preg_replace('/(\d{4})(-\d{4})?\s+/', $existingYear . '-' . date('Y') . "\t", $matches[0]);
+        // Check if the existing year is different from the current year
+        if ($existingYear !== date('Y')) {
+            // Update the year range to include or be up to the current year
+            $updatedNotice = preg_replace('/(\d{4})(-\d{4})?\s+/', $existingYear . '-' . date('Y') . "\t", $matches[0]);
 
-			// Replace the old notice with the updated one in the file
-			file_put_contents($filename, preg_replace($pattern, $updatedNotice, file_get_contents($filename)));
-			return true; // Change detected
-		}
-		// If the existing year is the same, no need to update
-	} else {
-		// Adjust tabs for proper alignment
-		$emailTabs = str_repeat("\t", (int) (max(0, (31 - mb_strlen($name)) / 4)));
+            // Replace the old notice with the updated one in the file
+            file_put_contents($filename, preg_replace($pattern, $updatedNotice, file_get_contents($filename)));
+            return true; // Change detected
+        }
+        // If the existing year is the same, no need to update
+    } else {
+        // Adjust tabs for proper alignment
+        $emailTabs = str_repeat("\t", (int) (max(0, (31 - mb_strlen($name)) / 4)));
 
-		// No match found, add a new line to the header
-		$newNotice = "Copyright (C) " . date('Y') . "\t\t" . $name . $emailTabs . "<" . $email . ">";
+        // No match found, add a new line to the header
+        $newNotice = "Copyright (C) " . date('Y') . "\t\t" . $name . $emailTabs . "<" . $email . ">";
 
-		// Read the file content
-		$fileContent = file_get_contents($filename);
+        // Read the file content
+        $fileContent = file_get_contents($filename);
 
-		// Check if there are existing copyright notices
-		$pos = max(strrpos($fileContent, "{$prefix0}Copyright"), strrpos($fileContent, "{$prefix1}Copyright"));
+        // Check if there are existing copyright notices
+        $pos = max(strrpos($fileContent, "{$prefix0}Copyright"), strrpos($fileContent, "{$prefix1}Copyright"));
 
-		if ($pos !== false) {
-			// Add the new notice behind the last preceding copyright notices
-			$pos = strpos($fileContent, "\n", $pos) + 1;
-			$fileContent = substr_replace($fileContent, $prefix1 . $newNotice . "\n", $pos, 0);
-		} elseif (strpos($fileContent, $prefix3) !== false) {
-			// Add the new notice after the shebang or '<?php' line
-			$fileContent = preg_replace("~{$r_prefix3}.*\n~", "$0$prefix0$newNotice\n$prefix2\n", $fileContent, 1);
-		} else {
-			return false; // No change detected
-		}
+        if ($pos !== false) {
+            // Add the new notice behind the last preceding copyright notices
+            $pos = strpos($fileContent, "\n", $pos) + 1;
+            $fileContent = substr_replace($fileContent, $prefix1 . $newNotice . "\n", $pos, 0);
+        } elseif (strpos($fileContent, $prefix3) !== false) {
+            // Add the new notice after the shebang or '<?php' line
+            $fileContent = preg_replace("~{$r_prefix3}.*\n~", "$0$prefix0$newNotice\n$prefix2\n", $fileContent, 1);
+        } else {
+            return false; // No change detected
+        }
 
-		// Write the updated content back to the file
-		file_put_contents($filename, $fileContent);
-		return true; // Change detected
-	}
+        // Write the updated content back to the file
+        file_put_contents($filename, $fileContent);
+        return true; // Change detected
+    }
 
-	return false; // No change detected
+    return false; // No change detected
 }
 
 // Main program
 
 // Check if filenames are provided as parameters
 if ($argc < 2) {
-	echo "Usage: php " . __FILE__ . " <filename1> [<filename2> ...]" . PHP_EOL;
-	exit(1);
+    echo "Usage: php " . __FILE__ . " <filename1> [<filename2> ...]" . PHP_EOL;
+    exit(1);
 }
 
 // Process each filename provided
 $changesDetected = false;
 for ($i = 1; $i < $argc; $i++) {
-	$filename = $argv[$i];
+    $filename = $argv[$i];
 
-	// Determine file type based on extension
-	$fileType = pathinfo($filename, PATHINFO_EXTENSION);
+    // Determine file type based on extension
+    $fileType = pathinfo($filename, PATHINFO_EXTENSION);
 
-	// Retrieve Git user information
-	$gitUserInfo = getGitUserInfo();
-	$name = $gitUserInfo['name'];
-	$email = $gitUserInfo['email'];
+    // Retrieve Git user information
+    $gitUserInfo = getGitUserInfo();
+    $name = $gitUserInfo['name'];
+    $email = $gitUserInfo['email'];
 
-	// Update or add copyright notice based on file type
-	$changeDetected = updateCopyrightNotice($filename, $fileType, $name, $email);
-	$changesDetected |= $changeDetected;
-	if ($changeDetected) {
-		echo "Copyright notice updated in '$filename'" . PHP_EOL;
-	}
+    // Update or add copyright notice based on file type
+    $changeDetected = updateCopyrightNotice($filename, $fileType, $name, $email);
+    $changesDetected |= $changeDetected;
+    if ($changeDetected) {
+        echo "Copyright notice updated in '$filename'" . PHP_EOL;
+    }
 }
 
 if (!$changesDetected) {
-	echo "No changes needed in any file" . PHP_EOL;
+    echo "No changes needed in any file" . PHP_EOL;
 }

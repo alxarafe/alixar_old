@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2015	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2006-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2011		Juanjo Menent			<jmenent@2byte.es>
@@ -183,7 +184,7 @@ if (getDolGlobalString('MEMBER_ENABLE_PUBLIC')) {
     // Define $urlwithroot
     $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
     $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-    //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+    //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
     print '<div class="urllink">';
     print '<input type="text" id="publicurlmember" class="quatrevingtpercentminusx" value="' . $urlwithroot . '/public/members/new.php' . $entity_qr . '">';

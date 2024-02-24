@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Jean-Louis Bergamo   <jlb@j1b.org>
  * Copyright (C) 2006-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -22,6 +23,7 @@
  *    \ingroup    member
  *    \brief      Page to output members business cards
  */
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';

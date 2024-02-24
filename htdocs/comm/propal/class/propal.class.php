@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004       Eric Seigne             <eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2011  Laurent Destailleur     <eldy@users.sourceforge.net>
@@ -1246,9 +1247,9 @@ class Propal extends CommonObject
                 }
 
                 /*
-				 *  Insertion du detail des produits dans la base
-				 *  Insert products detail in database
-				 */
+                 *  Insertion du detail des produits dans la base
+                 *  Insert products detail in database
+                 */
                 if (!$error) {
                     $fk_parent_line = 0;
                     $num = count($this->lines);
@@ -1327,14 +1328,14 @@ class Propal extends CommonObject
 
                 // Set delivery address
                 /*if (! $error && $this->fk_delivery_address)
-				{
-					$sql = "UPDATE ".MAIN_DB_PREFIX."propal";
-					$sql.= " SET fk_delivery_address = ".((int) $this->fk_delivery_address);
-					$sql.= " WHERE ref = '".$this->db->escape($this->ref)."'";
-					$sql.= " AND entity = ".setEntity($this);
+                {
+                    $sql = "UPDATE ".MAIN_DB_PREFIX."propal";
+                    $sql.= " SET fk_delivery_address = ".((int) $this->fk_delivery_address);
+                    $sql.= " WHERE ref = '".$this->db->escape($this->ref)."'";
+                    $sql.= " AND entity = ".setEntity($this);
 
-					$result=$this->db->query($sql);
-				}*/
+                    $result=$this->db->query($sql);
+                }*/
 
                 if (!$error) {
                     // Mise a jour infos denormalisees
@@ -1424,15 +1425,15 @@ class Propal extends CommonObject
                 $object->fk_delivery_address = 0;
 
                 /*if (isModEnabled('project'))
-				{
-					$project = new Project($db);
-					if ($this->fk_project > 0 && $project->fetch($this->fk_project)) {
-						if ($project->socid <= 0) $clonedObj->fk_project = $this->fk_project;
-						else $clonedObj->fk_project = '';
-					} else {
-						$clonedObj->fk_project = '';
-					}
-				}*/
+                {
+                    $project = new Project($db);
+                    if ($this->fk_project > 0 && $project->fetch($this->fk_project)) {
+                        if ($project->socid <= 0) $clonedObj->fk_project = $this->fk_project;
+                        else $clonedObj->fk_project = '';
+                    } else {
+                        $clonedObj->fk_project = '';
+                    }
+                }*/
                 $object->fk_project = 0; // A cloned proposal is set by default to no project.
             }
 
@@ -2005,8 +2006,10 @@ class Propal extends CommonObject
             return 0;
         }
 
-        if (!((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('propal', 'creer'))
-            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('propal', 'propal_advance', 'validate')))) {
+        if (
+            !((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('propal', 'creer'))
+            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('propal', 'propal_advance', 'validate')))
+        ) {
             $this->error = 'ErrorPermissionDenied';
             dol_syslog(get_class($this) . "::valid " . $this->error, LOG_ERR);
             return -1;
@@ -2511,59 +2514,59 @@ class Propal extends CommonObject
      * @deprecated remise_percent is a deprecated field for object parent
      */
     /*
-	public function set_remise_percent($user, $remise, $notrigger = 0)
-	{
+    public function set_remise_percent($user, $remise, $notrigger = 0)
+    {
 		// phpcs:enable
-		$remise = trim($remise) ?trim($remise) : 0;
+        $remise = trim($remise) ?trim($remise) : 0;
 
-		if ($user->hasRight('propal', 'creer')) {
-			$remise = price2num($remise, 2);
+        if ($user->hasRight('propal', 'creer')) {
+            $remise = price2num($remise, 2);
 
-			$error = 0;
+            $error = 0;
 
-			$this->db->begin();
+            $this->db->begin();
 
-			$sql = "UPDATE ".MAIN_DB_PREFIX."propal SET remise_percent = ".((float) $remise);
-			$sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = ".self::STATUS_DRAFT;
+            $sql = "UPDATE ".MAIN_DB_PREFIX."propal SET remise_percent = ".((float) $remise);
+            $sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = ".self::STATUS_DRAFT;
 
-			dol_syslog(__METHOD__, LOG_DEBUG);
-			$resql = $this->db->query($sql);
-			if (!$resql) {
-				$this->errors[] = $this->db->error();
-				$error++;
-			}
+            dol_syslog(__METHOD__, LOG_DEBUG);
+            $resql = $this->db->query($sql);
+            if (!$resql) {
+                $this->errors[] = $this->db->error();
+                $error++;
+            }
 
-			if (!$error) {
-				$this->oldcopy = clone $this;
-				$this->remise_percent = $remise;
-				$this->update_price(1);
-			}
+            if (!$error) {
+                $this->oldcopy = clone $this;
+                $this->remise_percent = $remise;
+                $this->update_price(1);
+            }
 
-			if (!$notrigger && empty($error)) {
-				// Call trigger
-				$result = $this->call_trigger('PROPAL_MODIFY', $user);
-				if ($result < 0) {
-					$error++;
-				}
-				// End call triggers
-			}
+            if (!$notrigger && empty($error)) {
+                // Call trigger
+                $result = $this->call_trigger('PROPAL_MODIFY', $user);
+                if ($result < 0) {
+                    $error++;
+                }
+                // End call triggers
+            }
 
-			if (!$error) {
-				$this->db->commit();
-				return 1;
-			} else {
-				foreach ($this->errors as $errmsg) {
-					dol_syslog(__METHOD__.' Error: '.$errmsg, LOG_ERR);
-					$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
-				}
-				$this->db->rollback();
-				return -1 * $error;
-			}
-		}
+            if (!$error) {
+                $this->db->commit();
+                return 1;
+            } else {
+                foreach ($this->errors as $errmsg) {
+                    dol_syslog(__METHOD__.' Error: '.$errmsg, LOG_ERR);
+                    $this->error .= ($this->error ? ', '.$errmsg : $errmsg);
+                }
+                $this->db->rollback();
+                return -1 * $error;
+            }
+        }
 
-		return -1;
-	}
-	*/
+        return -1;
+    }
+    */
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
     /**
@@ -2576,60 +2579,60 @@ class Propal extends CommonObject
      * @return     int                Return integer <0 if ko, >0 if ok
      */
     /*
-	public function set_remise_absolue($user, $remise, $notrigger = 0)
-	{
+    public function set_remise_absolue($user, $remise, $notrigger = 0)
+    {
 		// phpcs:enable
-		if (empty($remise)) {
-			$remise = 0;
-		}
-		$remise = price2num($remise);
+        if (empty($remise)) {
+            $remise = 0;
+        }
+        $remise = price2num($remise);
 
-		if ($user->hasRight('propal', 'creer')) {
-			$error = 0;
+        if ($user->hasRight('propal', 'creer')) {
+            $error = 0;
 
-			$this->db->begin();
+            $this->db->begin();
 
-			$sql = "UPDATE ".MAIN_DB_PREFIX."propal";
-			$sql .= " SET remise_absolue = ".((float) $remise);
-			$sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = ".self::STATUS_DRAFT;
+            $sql = "UPDATE ".MAIN_DB_PREFIX."propal";
+            $sql .= " SET remise_absolue = ".((float) $remise);
+            $sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = ".self::STATUS_DRAFT;
 
-			dol_syslog(__METHOD__, LOG_DEBUG);
-			$resql = $this->db->query($sql);
-			if (!$resql) {
-				$this->errors[] = $this->db->error();
-				$error++;
-			}
+            dol_syslog(__METHOD__, LOG_DEBUG);
+            $resql = $this->db->query($sql);
+            if (!$resql) {
+                $this->errors[] = $this->db->error();
+                $error++;
+            }
 
-			if (!$error) {
-				$this->oldcopy = clone $this;
-				$this->update_price(1);
-			}
+            if (!$error) {
+                $this->oldcopy = clone $this;
+                $this->update_price(1);
+            }
 
-			if (!$notrigger && empty($error)) {
-				// Call trigger
-				$result = $this->call_trigger('PROPAL_MODIFY', $user);
-				if ($result < 0) {
-					$error++;
-				}
-				// End call triggers
-			}
+            if (!$notrigger && empty($error)) {
+                // Call trigger
+                $result = $this->call_trigger('PROPAL_MODIFY', $user);
+                if ($result < 0) {
+                    $error++;
+                }
+                // End call triggers
+            }
 
-			if (!$error) {
-				$this->db->commit();
-				return 1;
-			} else {
-				foreach ($this->errors as $errmsg) {
-					dol_syslog(__METHOD__.' Error: '.$errmsg, LOG_ERR);
-					$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
-				}
-				$this->db->rollback();
-				return -1 * $error;
-			}
-		}
+            if (!$error) {
+                $this->db->commit();
+                return 1;
+            } else {
+                foreach ($this->errors as $errmsg) {
+                    dol_syslog(__METHOD__.' Error: '.$errmsg, LOG_ERR);
+                    $this->error .= ($this->error ? ', '.$errmsg : $errmsg);
+                }
+                $this->db->rollback();
+                return -1 * $error;
+            }
+        }
 
-		return -1;
-	}
-	*/
+        return -1;
+    }
+    */
 
     /**
      *    Reopen the commercial proposal
@@ -4210,8 +4213,8 @@ class PropaleLigne extends CommonObjectLine
     // 3: option line (when qty = 0)
 
     public $info_bits = 0; // Some other info:
-    // Bit 0: 	0 si TVA normal - 1 if TVA NPR
-    // Bit 1:	0 ligne normal - 1 if line with fixed discount
+    // Bit 0:   0 si TVA normal - 1 if TVA NPR
+    // Bit 1:   0 ligne normal - 1 if line with fixed discount
 
     public $total_ht; // Total HT  de la ligne toute quantite et incluant la remise ligne
     public $total_tva; // Total TVA  de la ligne toute quantite et incluant la remise ligne

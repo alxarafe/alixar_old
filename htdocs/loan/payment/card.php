@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014-2018  Alexandre Spangaro  <aspangaro@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify

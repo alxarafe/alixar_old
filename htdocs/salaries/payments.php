@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2011-2022  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2015-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
@@ -196,8 +197,10 @@ if (empty($reshook)) {
         $search_chq_number = '';
         $search_type_id = "";
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 
@@ -384,7 +387,7 @@ include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_list_search_param.tpl.php';
 // List of mass actions available
 $arrayofmassactions = [
     //'presend'=>$langs->trans("SendByMail"),
-    //'buildsepa'=>$langs->trans("BuildSepa"),	// TODO
+    //'buildsepa'=>$langs->trans("BuildSepa"),  // TODO
 ];
 //if ($permissiontodelete) $arrayofmassactions['predelete'] = '<span class="fa fa-trash paddingrightonly"></span>'.$langs->trans("Delete");
 if (GETPOST('nomassaction', 'int') || in_array($massaction, ['presend', 'predelete'])) {

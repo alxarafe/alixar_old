@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2020   Thibault FOUCART		<support@ptibogxiv.net>
  * Copyright (C) 2023	Joachim Kueter			<git-jk@bloxera.com>

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2012  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2014-2016  Juanjo Menent       <jmenent@2byte.es>
  * Copyright (C) 2015       Florian Henry       <florian.henry@open-concept.pro>
@@ -461,7 +462,7 @@ class EcmFiles extends CommonObject
             } else {
                 $sql .= " AND t.share IS NOT NULL AND t.share <> ''";
             }
-            //$sql .= " AND t.entity = ".$conf->entity;							// hashforshare already unique
+            //$sql .= " AND t.entity = ".$conf->entity;                         // hashforshare already unique
             $filterfound++;
         }
         if ($src_object_type && $src_object_id) {

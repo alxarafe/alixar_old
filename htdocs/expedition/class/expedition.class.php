@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2008	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2008  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2007		Franky Van Liedekerke	<franky.van.liedekerke@telenet.be>
  * Copyright (C) 2006-2012	Laurent Destailleur		<eldy@users.sourceforge.net>
@@ -691,8 +692,8 @@ class Expedition extends CommonObject
                 }
 
                 /*
-				 * Lines
-				 */
+                 * Lines
+                 */
                 $result = $this->fetch_lines();
                 if ($result < 0) {
                     return -3;
@@ -732,8 +733,10 @@ class Expedition extends CommonObject
             return 0;
         }
 
-        if (!((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'creer'))
-            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'shipping_advance', 'validate')))) {
+        if (
+            !((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'creer'))
+            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'shipping_advance', 'validate')))
+        ) {
             $this->error = 'Permission denied';
             dol_syslog(get_class($this) . "::valid " . $this->error, LOG_ERR);
             return -1;
@@ -1227,9 +1230,11 @@ class Expedition extends CommonObject
         }
 
         // Stock control
-        if (!$error && isModEnabled('stock') &&
+        if (
+            !$error && isModEnabled('stock') &&
             (($conf->global->STOCK_CALCULATE_ON_SHIPMENT && $this->statut > self::STATUS_DRAFT) ||
-                ($conf->global->STOCK_CALCULATE_ON_SHIPMENT_CLOSE && $this->statut == self::STATUS_CLOSED && $also_update_stock))) {
+                ($conf->global->STOCK_CALCULATE_ON_SHIPMENT_CLOSE && $this->statut == self::STATUS_CLOSED && $also_update_stock))
+        ) {
             require_once DOL_DOCUMENT_ROOT . "/product/stock/class/mouvementstock.class.php";
 
             $langs->load("agenda");
@@ -1420,9 +1425,11 @@ class Expedition extends CommonObject
         }
 
         // Stock control
-        if (!$error && isModEnabled('stock') &&
+        if (
+            !$error && isModEnabled('stock') &&
             (($conf->global->STOCK_CALCULATE_ON_SHIPMENT && $this->statut > self::STATUS_DRAFT) ||
-                ($conf->global->STOCK_CALCULATE_ON_SHIPMENT_CLOSE && $this->statut == self::STATUS_CLOSED && $also_update_stock))) {
+                ($conf->global->STOCK_CALCULATE_ON_SHIPMENT_CLOSE && $this->statut == self::STATUS_CLOSED && $also_update_stock))
+        ) {
             require_once DOL_DOCUMENT_ROOT . "/product/stock/class/mouvementstock.class.php";
 
             $langs->load("agenda");

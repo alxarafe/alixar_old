@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005       Marc Barilley / Ocebo   <marc@ocebo.com>
@@ -33,6 +34,7 @@
  *    \ingroup    facture
  *    \brief      File of class to manage payments of customers invoices
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
 

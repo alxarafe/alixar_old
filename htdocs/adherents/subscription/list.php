@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2002 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Jean-Louis Bergamo   <jlb@j1b.org>
  * Copyright (C) 2004-2023 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -103,7 +104,7 @@ $arrayfields = [
     'd.amount' => ['label' => "Amount", 'checked' => 1, 'position' => 102],
     'c.datec' => ['label' => "DateCreation", 'checked' => 0, 'position' => 500],
     'c.tms' => ['label' => "DateModificationShort", 'checked' => 0, 'position' => 500],
-    //	'd.statut'=>array('label'=>"Status", 'checked'=>1, 'position'=>1000)
+    //  'd.statut'=>array('label'=>"Status", 'checked'=>1, 'position'=>1000)
 ];
 
 // Security check
@@ -146,8 +147,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 

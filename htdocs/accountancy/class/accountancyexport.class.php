@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2007-2012  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2014       Juanjo Menent       <jmenent@2byte.es>
@@ -1796,7 +1797,8 @@ class AccountancyExport
                 $sammelBuchung = true;
             } elseif ($aIndex + 2 < $aSize && $objectLines[$aIndex + 2]->piece_num == $line->piece_num) {
                 $sammelBuchung = true;
-            } elseif ($aIndex + 1 < $aSize
+            } elseif (
+                $aIndex + 1 < $aSize
                 && $objectLines[$aIndex + 1]->piece_num == $line->piece_num
                 && $aIndex - 1 < $aSize
                 && $objectLines[$aIndex - 1]->piece_num == $line->piece_num
@@ -1950,7 +1952,7 @@ class AccountancyExport
             }
             $tab[] = $nature_piece;
             // RACI
-            //			if (!empty($line->subledger_account)) {
+            //          if (!empty($line->subledger_account)) {
             //              if ($line->doc_type == 'supplier_invoice') {
             //                  $racine_subledger_account = '40';
             //              } elseif ($line->doc_type == 'customer_invoice') {
@@ -2228,17 +2230,17 @@ class AccountancyExport
             }
             $tab[] = $nature_piece;
             // RACI
-            //			if (!empty($line->subledger_account)) {
-            //				if ($line->doc_type == 'supplier_invoice') {
-            //					$racine_subledger_account = '40';
-            //				} elseif ($line->doc_type == 'customer_invoice') {
-            //					$racine_subledger_account = '41';
-            //				} else {
-            //					$racine_subledger_account = '';
-            //				}
-            //			} else {
+            //          if (!empty($line->subledger_account)) {
+            //              if ($line->doc_type == 'supplier_invoice') {
+            //                  $racine_subledger_account = '40';
+            //              } elseif ($line->doc_type == 'customer_invoice') {
+            //                  $racine_subledger_account = '41';
+            //              } else {
+            //                  $racine_subledger_account = '';
+            //              }
+            //          } else {
             $racine_subledger_account = ''; // for records of type E leave this field blank
-            //			}
+            //          }
 
             $tab[] = $racine_subledger_account; // deprecated CPTG & CPTA use instead
             // MONT
@@ -2426,8 +2428,10 @@ class AccountancyExport
                 $company_name = "";
 
                 if (($line->doc_type == 'customer_invoice' || $line->doc_type == 'supplier_invoice') && $line->fk_doc > 0) {
-                    if (($line->doc_type == 'customer_invoice' && !isset($invoices_infos[$line->fk_doc])) ||
-                        ($line->doc_type == 'supplier_invoice' && !isset($supplier_invoices_infos[$line->fk_doc]))) {
+                    if (
+                        ($line->doc_type == 'customer_invoice' && !isset($invoices_infos[$line->fk_doc])) ||
+                        ($line->doc_type == 'supplier_invoice' && !isset($supplier_invoices_infos[$line->fk_doc]))
+                    ) {
                         if ($line->doc_type == 'customer_invoice') {
                             // Get new customer invoice ref and company name
                             $sql = 'SELECT f.ref, s.nom FROM ' . MAIN_DB_PREFIX . 'facture as f';

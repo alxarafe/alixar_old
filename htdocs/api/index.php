@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015	Jean-François Ferry		<jfefe@aternatik.fr>
+
+/* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2017	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2021	Alexis LAURIER			<contact@alexislaurier.fr>
@@ -168,11 +169,11 @@ if (getDolGlobalString('MAIN_API_DEBUG')) {
     $r->onCall(function () use ($r) {
         // Don't log Luracast Restler Explorer resources calls
         //if (!preg_match('/^explorer/', $r->url)) {
-        //	'method'  => $api->r->requestMethod,
-        //	'url'     => $api->r->url,
-        //	'route'   => $api->r->apiMethodInfo->className.'::'.$api->r->apiMethodInfo->methodName,
-        //	'version' => $api->r->getRequestedApiVersion(),
-        //	'data'    => $api->r->getRequestData(),
+        //  'method'  => $api->r->requestMethod,
+        //  'url'     => $api->r->url,
+        //  'route'   => $api->r->apiMethodInfo->className.'::'.$api->r->apiMethodInfo->methodName,
+        //  'version' => $api->r->getRequestedApiVersion(),
+        //  'data'    => $api->r->getRequestData(),
         //dol_syslog("Debug API input ".var_export($r, true), LOG_DEBUG, 0, '_api');
         dol_syslog("Debug API url " . var_export($r->url, true), LOG_DEBUG, 0, '_api');
         dol_syslog("Debug API input " . var_export($r->getRequestData(), true), LOG_DEBUG, 0, '_api');

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010-2014  Regis Houssin    <regis.houssin@inodbox.com>
  * Copyright (C) 2014       Marcos García    <marcosgdf@gmail.com>
  * Copyright (C) 2020       Charlene Benke   <charlie@patas-monkey.com>
@@ -25,34 +26,34 @@
  *                  and parent class for projects numbering models
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
 
 
 /**
- *	Parent class for documents models
+ *  Parent class for documents models
  */
 abstract class ModelePDFTicket extends CommonDocGenerator
 {
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return list of active generation modules
-	 *
-	 *  @param	DoliDB	$db     			Database handler
-	 *  @param  integer	$maxfilenamelength  Max length of value to show
-	 *  @return	array						List of templates
-	 */
-	public static function liste_modeles($db, $maxfilenamelength = 0)
-	{
+    /**
+     *  Return list of active generation modules
+     *
+     *  @param  DoliDB  $db                 Database handler
+     *  @param  integer $maxfilenamelength  Max length of value to show
+     *  @return array                       List of templates
+     */
+    public static function liste_modeles($db, $maxfilenamelength = 0)
+    {
 		// phpcs:enable
-		$type = 'ticket';
-		$list = array();
+        $type = 'ticket';
+        $list = array();
 
-		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-		$list = getListOfModels($db, $type, $maxfilenamelength);
+        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        $list = getListOfModels($db, $type, $maxfilenamelength);
 
-		return $list;
-	}
+        return $list;
+    }
 }
 
 
@@ -61,5 +62,5 @@ abstract class ModelePDFTicket extends CommonDocGenerator
  */
 abstract class ModeleNumRefTicket extends CommonNumRefGenerator
 {
-	// No overload code
+    // No overload code
 }

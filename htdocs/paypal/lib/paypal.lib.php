@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2008-2012	Laurent Destailleur	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2008-2012  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2011-2012	Regis Houssin		<regis.houssin@inodbox.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,7 +47,7 @@ function paypaladmin_prepare_head()
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-    // $this->tabs = array('entity:-tabname);   												to remove a tab
+    // $this->tabs = array('entity:-tabname);                                                   to remove a tab
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'paypaladmin');
 
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'paypaladmin', 'remove');
@@ -210,7 +211,7 @@ function callSetExpressCheckout($paymentAmount, $currencyCodeType, $paymentType,
     global $PAYPAL_API_USER, $PAYPAL_API_PASSWORD, $PAYPAL_API_SIGNATURE;
 
     $nvpstr = '';
-    //$nvpstr = $nvpstr . "&VERSION=".$API_version;				// Already added by hash_call
+    //$nvpstr = $nvpstr . "&VERSION=".$API_version;             // Already added by hash_call
     $nvpstr = $nvpstr . "&RETURNURL=" . urlencode($returnURL);
     $nvpstr = $nvpstr . "&CANCELURL=" . urlencode($cancelURL);
     if (getDolGlobalString('PAYPAL_ALLOW_NOTES')) {
@@ -267,7 +268,7 @@ function callSetExpressCheckout($paymentAmount, $currencyCodeType, $paymentType,
         // Define $urlwithroot
         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-        //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+        //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
         $urllogo = $urlwithroot . "/viewimage.php?modulepart=mycompany&file=" . urlencode('logos/' . $mysoc->logo);
         $nvpstr = $nvpstr . "&LOGOIMG=" . urlencode($urllogo);
@@ -413,32 +414,32 @@ function confirmPayment($token, $paymentType, $currencyCodeType, $payerID, $ipad
 /*
 function DirectPayment($paymentType, $paymentAmount, $creditCardType, $creditCardNumber, $expDate, $cvv2, $firstName, $lastName, $street, $city, $state, $zip, $countryCode, $currencyCode, $tag)
 {
-	//declaring of global variables
-	global $conf, $langs;
-	global $API_Endpoint, $API_Url, $API_version, $USE_PROXY, $PROXY_HOST, $PROXY_PORT;
-	global $PAYPAL_API_USER, $PAYPAL_API_PASSWORD, $PAYPAL_API_SIGNATURE;
+    //declaring of global variables
+    global $conf, $langs;
+    global $API_Endpoint, $API_Url, $API_version, $USE_PROXY, $PROXY_HOST, $PROXY_PORT;
+    global $PAYPAL_API_USER, $PAYPAL_API_PASSWORD, $PAYPAL_API_SIGNATURE;
 
-	//Construct the parameter string that describes DoDirectPayment
-	$nvpstr = '';
-	$nvpstr = $nvpstr . "&AMT=" . urlencode($paymentAmount);              // deprecated by paypal
-	$nvpstr = $nvpstr . "&CURRENCYCODE=" . urlencode($currencyCode);
-	$nvpstr = $nvpstr . "&PAYMENTACTION=" . urlencode($paymentType);      // deprecated by paypal
-	$nvpstr = $nvpstr . "&CREDITCARDTYPE=" . urlencode($creditCardType);
-	$nvpstr = $nvpstr . "&ACCT=" . urlencode($creditCardNumber);
-	$nvpstr = $nvpstr . "&EXPDATE=" . urlencode($expDate);
-	$nvpstr = $nvpstr . "&CVV2=" . urlencode($cvv2);
-	$nvpstr = $nvpstr . "&FIRSTNAME=" . urlencode($firstName);
-	$nvpstr = $nvpstr . "&LASTNAME=" . urlencode($lastName);
-	$nvpstr = $nvpstr . "&STREET=" . urlencode($street);
-	$nvpstr = $nvpstr . "&CITY=" . urlencode($city);
-	$nvpstr = $nvpstr . "&STATE=" . urlencode($state);
-	$nvpstr = $nvpstr . "&COUNTRYCODE=" . urlencode($countryCode);
-	$nvpstr = $nvpstr . "&IPADDRESS=" . getUserRemotIP();
-	$nvpstr = $nvpstr . "&INVNUM=" . urlencode($tag);
+    //Construct the parameter string that describes DoDirectPayment
+    $nvpstr = '';
+    $nvpstr = $nvpstr . "&AMT=" . urlencode($paymentAmount);              // deprecated by paypal
+    $nvpstr = $nvpstr . "&CURRENCYCODE=" . urlencode($currencyCode);
+    $nvpstr = $nvpstr . "&PAYMENTACTION=" . urlencode($paymentType);      // deprecated by paypal
+    $nvpstr = $nvpstr . "&CREDITCARDTYPE=" . urlencode($creditCardType);
+    $nvpstr = $nvpstr . "&ACCT=" . urlencode($creditCardNumber);
+    $nvpstr = $nvpstr . "&EXPDATE=" . urlencode($expDate);
+    $nvpstr = $nvpstr . "&CVV2=" . urlencode($cvv2);
+    $nvpstr = $nvpstr . "&FIRSTNAME=" . urlencode($firstName);
+    $nvpstr = $nvpstr . "&LASTNAME=" . urlencode($lastName);
+    $nvpstr = $nvpstr . "&STREET=" . urlencode($street);
+    $nvpstr = $nvpstr . "&CITY=" . urlencode($city);
+    $nvpstr = $nvpstr . "&STATE=" . urlencode($state);
+    $nvpstr = $nvpstr . "&COUNTRYCODE=" . urlencode($countryCode);
+    $nvpstr = $nvpstr . "&IPADDRESS=" . getUserRemotIP();
+    $nvpstr = $nvpstr . "&INVNUM=" . urlencode($tag);
 
-	$resArray=hash_call("DoDirectPayment", $nvpstr);
+    $resArray=hash_call("DoDirectPayment", $nvpstr);
 
-	return $resArray;
+    return $resArray;
 }
 */
 

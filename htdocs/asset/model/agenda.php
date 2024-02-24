@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) ---Put here your own copyright and developer email---
  *
@@ -210,7 +211,7 @@ if ($object->id > 0) {
     //      // List of all actions
     //      $filters = array();
     //      $filters['search_agenda_label'] = $search_agenda_label;
-    //		$filters['search_rowid'] = $search_rowid;
+    //      $filters['search_rowid'] = $search_rowid;
     //
     //      // TODO Replace this with same code than into list.php
     //      show_actions_done($conf, $langs, $db, $object, null, 0, $actioncode, '', $filters, $sortfield, $sortorder, $object->module);

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015-2022  Alexandre Spangaro	<aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2015-2022  Alexandre Spangaro  <aspangaro@open-dsi.fr>
  * Copyright (C) 2022  		Lionel Vessiller    <lvessiller@open-dsi.fr>
  * Copyright (C) 2016       Charlie Benke		<charlie@patas-monkey.com>
  * Copyright (C) 2022  		Progiseize         	<a.bisotti@progiseize.fr>
@@ -19,7 +20,7 @@
  */
 
 // $formatexportset must be defined
-// $downloadMode 	=0 for direct download or =1 to download after writing files or =-1 not to download files
+// $downloadMode    =0 for direct download or =1 to download after writing files or =-1 not to download files
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
@@ -44,8 +45,10 @@ include_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancyexport.class.php
 $accountancyexport = new AccountancyExport($db);
 
 // Specific filename for FEC model export into the general ledger
-if (($accountancyexport->getFormatCode($formatexportset) == 'fec' || $accountancyexport->getFormatCode($formatexportset) == 'fec2')
-    && $type_export == "general_ledger") {
+if (
+    ($accountancyexport->getFormatCode($formatexportset) == 'fec' || $accountancyexport->getFormatCode($formatexportset) == 'fec2')
+    && $type_export == "general_ledger"
+) {
     // FEC format is defined here: https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000027804775&cidTexte=LEGITEXT000006069583&dateTexte=20130802&oldAction=rechCodeArticle
     if (empty($search_date_end)) {
         // TODO Get the max date into bookkeeping table

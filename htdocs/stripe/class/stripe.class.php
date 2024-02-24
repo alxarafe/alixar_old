@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018-2021 	Thibault FOUCART       <support@ptibogxiv.net>
+
+/* Copyright (C) 2018-2021  Thibault FOUCART       <support@ptibogxiv.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -447,7 +448,7 @@ class Stripe extends CommonObject
             $descriptor = dol_trunc($tag, 10, 'right', 'UTF-8', 1);
             if (getDolGlobalInt('STRIPE_SEPA_DIRECT_DEBIT')) {
                 $paymentmethodtypes[] = "sepa_debit"; //&& ($object->thirdparty->isInEEC())
-                //$descriptor = preg_replace('/ref=[^:=]+/', '', $descriptor);	// Clean ref
+                //$descriptor = preg_replace('/ref=[^:=]+/', '', $descriptor);  // Clean ref
             }
             if (getDolGlobalInt('STRIPE_KLARNA')) {
                 $paymentmethodtypes[] = "klarna";
@@ -844,10 +845,10 @@ class Stripe extends CommonObject
                             }
                         } else {
                             if (!preg_match('/^pm_/', $cardref) && !empty($cu->sources)) {
-                                //$card = $cu->sources->retrieve($cardref, array("stripe_account" => $stripeacc));		// this API fails when array stripe_account is provided
+                                //$card = $cu->sources->retrieve($cardref, array("stripe_account" => $stripeacc));      // this API fails when array stripe_account is provided
                                 $card = $cu->sources->retrieve($cardref);
                             } else {
-                                //$card = \Stripe\PaymentMethod::retrieve($cardref, array("stripe_account" => $stripeacc));		// Don't know if this works
+                                //$card = \Stripe\PaymentMethod::retrieve($cardref, array("stripe_account" => $stripeacc));     // Don't know if this works
                                 $card = \Stripe\PaymentMethod::retrieve($cardref);
                             }
                         }
@@ -998,10 +999,10 @@ class Stripe extends CommonObject
                             }
                         } else {
                             if (!preg_match('/^pm_/', $cardref) && !empty($cu->sources)) {
-                                //$sepa = $cu->sources->retrieve($cardref, array("stripe_account" => $stripeacc));		// this API fails when array stripe_account is provided
+                                //$sepa = $cu->sources->retrieve($cardref, array("stripe_account" => $stripeacc));      // this API fails when array stripe_account is provided
                                 $sepa = $cu->sources->retrieve($cardref);
                             } else {
-                                //$sepa = \Stripe\PaymentMethod::retrieve($cardref, array("stripe_account" => $stripeacc));		// Don't know if this works
+                                //$sepa = \Stripe\PaymentMethod::retrieve($cardref, array("stripe_account" => $stripeacc));     // Don't know if this works
                                 $sepa = \Stripe\PaymentMethod::retrieve($cardref);
                             }
                         }

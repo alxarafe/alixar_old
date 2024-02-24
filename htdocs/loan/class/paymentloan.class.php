@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014-2018  Alexandre Spangaro   <aspangaro@open-dsi.fr>
  * Copyright (C) 2015-2023 Frederic France      <frederic.france@netlogic.fr>
  * Copyright (C) 2020       Maxime DEMAREST      <maxime@indelog.fr>
@@ -430,8 +431,8 @@ class PaymentLoan extends CommonObject
 
         //if (! $error)
         //{
-        //	if (! $notrigger)
-        //	{
+        //  if (! $notrigger)
+        //  {
         // Uncomment this and change MYOBJECT to your own tag if you
         // want this action call a trigger.
 
@@ -441,7 +442,7 @@ class PaymentLoan extends CommonObject
         //$result=$interface->run_triggers('MYOBJECT_DELETE',$this,$user,$langs,$conf);
         //if ($result < 0) { $error++; $this->errors=$interface->errors; }
         //// End call triggers
-        //	}
+        //  }
         //}
 
         // Commit or rollback

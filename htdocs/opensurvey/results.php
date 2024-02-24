@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2020  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2014       Marcos García           <marcosgdf@gmail.com>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
@@ -177,9 +178,11 @@ if (GETPOSTISSET("ajoutercolonne") && $object->format == "D") {
 
     $nouveauxsujets = $object->sujet;
 
-    if (GETPOSTISSET("nouveaujour") && GETPOST("nouveaujour") != "vide" &&
+    if (
+        GETPOSTISSET("nouveaujour") && GETPOST("nouveaujour") != "vide" &&
         GETPOSTISSET("nouveaumois") && GETPOST("nouveaumois") != "vide" &&
-        GETPOSTISSET("nouvelleannee") && GETPOST("nouvelleannee") != "vide") {
+        GETPOSTISSET("nouvelleannee") && GETPOST("nouvelleannee") != "vide"
+    ) {
         $nouvelledate = dol_mktime(0, 0, 0, GETPOST("nouveaumois"), GETPOST("nouveaujour"), GETPOST("nouvelleannee"));
 
         if (GETPOSTISSET("nouvelleheuredebut") && GETPOST("nouvelleheuredebut") != "vide") {
@@ -202,9 +205,11 @@ if (GETPOSTISSET("ajoutercolonne") && $object->format == "D") {
             }
         }
 
-        if (GETPOST("nouvelleheuredebut") == "vide" || (GETPOSTISSET("nouvelleheuredebut") && GETPOSTISSET("nouvelleheurefin")
+        if (
+            GETPOST("nouvelleheuredebut") == "vide" || (GETPOSTISSET("nouvelleheuredebut") && GETPOSTISSET("nouvelleheurefin")
                 && (GETPOST("nouvelleheuredebut") < GETPOST("nouvelleheurefin") || (GETPOST("nouvelleheuredebut") == GETPOST("nouvelleheurefin")
-                        && (GETPOST("nouvelleminutedebut") < GETPOST("nouvelleminutefin")))))) {
+                        && (GETPOST("nouvelleminutedebut") < GETPOST("nouvelleminutefin")))))
+        ) {
             $erreur_ajout_date = false;
         } else {
             $erreur_ajout_date = "yes";
@@ -328,8 +333,10 @@ for ($i = 0; $i < $nblines; $i++) {
 
 // Delete column
 for ($i = 0; $i < $nbcolonnes; $i++) {
-    if ((GETPOST("effacecolonne" . $i) || GETPOST("effacecolonne" . $i . "_x") || GETPOST("effacecolonne" . $i . ".x"))
-        && $nbcolonnes > 1) {    // effacecolonnei for chrome, effacecolonnei_x for firefox
+    if (
+        (GETPOST("effacecolonne" . $i) || GETPOST("effacecolonne" . $i . "_x") || GETPOST("effacecolonne" . $i . ".x"))
+        && $nbcolonnes > 1
+    ) {    // effacecolonnei for chrome, effacecolonnei_x for firefox
         // Security check
         if (!$user->hasRight('opensurvey', 'write')) {
             accessforbidden();
@@ -533,7 +540,7 @@ print '<tr><td>' . $langs->trans("UrlForSurvey", '') . '</td><td>';
 // Define $urlwithroot
 $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
 $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 $url = $urlwithouturlroot . dol_buildpath('/public/opensurvey/studs.php', 1) . '?sondage=' . $object->id_sondage;
 $urllink = '<input type="text" class="quatrevingtpercent" ' . ($action == 'edit' ? 'disabled' : '') . ' id="opensurveyurl" name="opensurveyurl" value="' . $url . '">';

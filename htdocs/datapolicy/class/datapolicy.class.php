@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018 Nicolas ZABOURI <info@inovea-conseil.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +21,7 @@
  * \ingroup datapolicy
  * \brief   Class to manage feature of Data Policy module.
  */
+
 include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 include_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';

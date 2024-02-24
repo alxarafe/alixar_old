@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -105,9 +106,9 @@ foreach ($object->fields as $key => $val) {
 /*$parameters = array('fieldstosearchall'=>$fieldstosearchall);
 $reshook = $hookmanager->executeHooks('completeFieldsToSearchAll', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook > 0) {
-	$fieldstosearchall = $hookmanager->resArray['fieldstosearchall'];
+    $fieldstosearchall = $hookmanager->resArray['fieldstosearchall'];
 } elseif ($reshook == 0) {
-	$fieldstosearchall = array_merge($fieldstosearchall, $hookmanager->resArray['fieldstosearchall']);
+    $fieldstosearchall = array_merge($fieldstosearchall, $hookmanager->resArray['fieldstosearchall']);
 }*/
 
 // Definition of array of fields for columns
@@ -187,8 +188,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 
@@ -290,13 +293,13 @@ $sql .= $hookmanager->resPrint;
 /* If a group by is required
 $sql.= " GROUP BY ";
 foreach ($object->fields as $key => $val) {
-	$sql .= "t.".$db->escape($key).", ";
+    $sql .= "t.".$db->escape($key).", ";
 }
 // Add fields from extrafields
 if (!empty($extrafields->attributes[$object->table_element]['label'])) {
-	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
-		$sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.', ' : '');
-	}
+    foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
+        $sql.=($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.', ' : '');
+    }
 }
 // Add where from hooks
 $parameters=array();
@@ -387,7 +390,7 @@ if ($jobposition->id > 0 && (empty($action) || ($action != 'edit' && $action != 
         $formquestion = [];
         /*
          $forcecombo=0;
-         if ($conf->browser->name == 'ie') $forcecombo = 1;	// There is a bug in IE10 that make combo inside popup crazy
+         if ($conf->browser->name == 'ie') $forcecombo = 1; // There is a bug in IE10 that make combo inside popup crazy
          $formquestion = array(
          // 'text' => $langs->trans("ConfirmClone"),
          // array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneMainAttributes"), 'value' => 1),
@@ -464,7 +467,7 @@ if ($jobposition->id > 0 && (empty($action) || ($action != 'edit' && $action != 
     // Common attributes
     $keyforbreak = 'description'; // We change column just after this field
     unset($object->fields['fk_project']); // Hide field already shown in banner
-    //unset($object->fields['fk_soc']);					// Hide field already shown in banner
+    //unset($object->fields['fk_soc']);                 // Hide field already shown in banner
     include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
     // Other attributes. Fields from hook formObjectOptions and Extrafields.

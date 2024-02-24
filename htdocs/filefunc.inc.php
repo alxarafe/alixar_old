@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Xavier Dutoit        <doli@sydesy.com>
  * Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -89,7 +90,7 @@ if (!empty($dolibarr_main_stream_to_disable) && is_array($dolibarr_main_stream_t
 foreach ($arrayofstreamtodisable as $streamtodisable) {
     if (!empty($listofwrappers) && in_array($streamtodisable, $listofwrappers)) {
         /*if (!empty($dolibarr_main_stream_do_not_disable) && is_array($dolibarr_main_stream_do_not_disable) && in_array($streamtodisable, $dolibarr_main_stream_do_not_disable)) {
-            continue;	// We do not disable this stream
+            continue;   // We do not disable this stream
         }*/
         stream_wrapper_unregister($streamtodisable);
     }

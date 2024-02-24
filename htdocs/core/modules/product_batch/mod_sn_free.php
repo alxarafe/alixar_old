@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -23,75 +24,75 @@
  *       \brief      File containing class for numbering model of SN free
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/product_batch/modules_product_batch.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/product_batch/modules_product_batch.class.php';
 
 /**
- *	\class 		mod_codeproduct_leopard
- *	\brief 		Class permettant la gestion leopard des codes produits
+ *  \class      mod_codeproduct_leopard
+ *  \brief      Class permettant la gestion leopard des codes produits
  */
 class mod_sn_free extends ModeleNumRefBatch
 {
-	/*
-	 * :warning:
-	 *    This module is used by default if none was set in the configuration.
-	 *    Therefore, the implementation must remain as open as possible.
-	 */
+    /*
+     * :warning:
+     *    This module is used by default if none was set in the configuration.
+     *    Therefore, the implementation must remain as open as possible.
+     */
 
-	// variables inherited from ModeleThirdPartyCode class
-	public $name = 'sn_free';
-	public $version = 'dolibarr';
-	public $code_null;
-	public $code_modifiable;
-	public $code_modifiable_invalide;
-	public $code_modifiable_null;
-	public $code_auto;
-
-
-	/**
-	 *	Constructor
-	 */
-	public function __construct()
-	{
-		$this->code_null = 1;
-		$this->code_modifiable = 1;
-		$this->code_modifiable_invalide = 1;
-		$this->code_modifiable_null = 1;
-		$this->code_auto = 0;
-	}
+    // variables inherited from ModeleThirdPartyCode class
+    public $name = 'sn_free';
+    public $version = 'dolibarr';
+    public $code_null;
+    public $code_modifiable;
+    public $code_modifiable_invalide;
+    public $code_modifiable_null;
+    public $code_auto;
 
 
-	/**
-	 *  Return description of module
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $langs;
-		$langs->load("companies");
-		return $langs->trans("LeopardNumRefModelDesc");
-	}
+    /**
+     *  Constructor
+     */
+    public function __construct()
+    {
+        $this->code_null = 1;
+        $this->code_modifiable = 1;
+        $this->code_modifiable_invalide = 1;
+        $this->code_modifiable_null = 1;
+        $this->code_auto = 0;
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		return $this->getNextValue(null, null);
-	}
 
-	/**
-	 * Return an example of result returned by getNextValue
-	 *
-	 * @param	Societe		$objsoc	    Object thirdparty
-	 * @param   Productlot	$object		Object we need next value for
-	 * @return	string					Return next value
-	 */
-	public function getNextValue($objsoc, $object)
-	{
-		return '';
-	}
+    /**
+     *  Return description of module
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $langs;
+        $langs->load("companies");
+        return $langs->trans("LeopardNumRefModelDesc");
+    }
+
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        return $this->getNextValue(null, null);
+    }
+
+    /**
+     * Return an example of result returned by getNextValue
+     *
+     * @param   Societe     $objsoc     Object thirdparty
+     * @param   Productlot  $object     Object we need next value for
+     * @return  string                  Return next value
+     */
+    public function getNextValue($objsoc, $object)
+    {
+        return '';
+    }
 }

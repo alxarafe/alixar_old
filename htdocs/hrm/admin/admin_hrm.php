@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015 		Alexandre Spangaro <aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2015       Alexandre Spangaro <aspangaro@open-dsi.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +35,7 @@ $action = GETPOST('action', 'aZ09');
 
 // Other parameters HRM_*
 $list = [
-    //		'HRM_EMAIL_EXTERNAL_SERVICE'   // To prevent your public accountant for example
+    //      'HRM_EMAIL_EXTERNAL_SERVICE'   // To prevent your public accountant for example
 ];
 
 // Permissions

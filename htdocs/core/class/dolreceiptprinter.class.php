@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015-2021  Frédéric France     <frederic.france@netlogic.fr>
  * Copyright (C) 2020       Andreu Bisquerra    <jove@bisquerra.com>
  * Copyright (C) 2024       Rafael San José     <rsanjose@alxarafe.com>

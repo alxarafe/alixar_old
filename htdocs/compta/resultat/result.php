@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016-2017  Jamal Elbaz             <jamelbaz@gmail.com>
  * Copyright (C) 2016-2022  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2018-2020  Laurent Destailleur     <eldy@destailleur.fr>
@@ -266,10 +267,10 @@ print    '</tr>';
 
 if ($modecompta == 'CREANCES-DETTES') {
     //if (!empty($date_start) && !empty($date_end))
-    //	$sql.= " AND f.datef >= '".$db->idate($date_start)."' AND f.datef <= '".$db->idate($date_end)."'";
+    //  $sql.= " AND f.datef >= '".$db->idate($date_start)."' AND f.datef <= '".$db->idate($date_end)."'";
 } elseif ($modecompta == "RECETTES-DEPENSES") {
     //if (!empty($date_start) && !empty($date_end))
-    //	$sql.= " AND p.datep >= '".$db->idate($date_start)."' AND p.datep <= '".$db->idate($date_end)."'";
+    //  $sql.= " AND p.datep >= '".$db->idate($date_start)."' AND p.datep <= '".$db->idate($date_end)."'";
 } elseif ($modecompta == "BOOKKEEPING") {
     // Get array of all report groups that are active
     $cats = $AccCat->getCats(); // WARNING: Computed groups must be after group they include
@@ -292,8 +293,8 @@ if ($modecompta == 'CREANCES-DETTES') {
             print '<div class="warning">Warning: There is '.$num_rows.' accounts in your ledger table that are not set into a reporting group</div>';
             $i = 0;
             //while ($i < $num) {
-            //	$obj = $db->fetch_object($resql);
-            //	$i++;
+            //  $obj = $db->fetch_object($resql);
+            //  $i++;
             //}
         }
     }

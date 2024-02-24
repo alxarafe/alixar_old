@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2006-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2011		Juanjo Menent			<jmenent@2byte.es>
@@ -112,20 +113,20 @@ print '<br>';
 
 /*
 if (!empty($conf->global->RECRUITMENT_ENABLE_PUBLIC_INTERFACE)) {
-	print '<br>';
+    print '<br>';
 
-	print '<table class="noborder centpercent">';
+    print '<table class="noborder centpercent">';
 
-	print '<tr class="liste_titre">';
-	print '<td>'.$langs->trans("Parameter").'</td>';
-	print '<td class="right">'.$langs->trans("Value").'</td>';
-	print "</tr>\n";
+    print '<tr class="liste_titre">';
+    print '<td>'.$langs->trans("Parameter").'</td>';
+    print '<td class="right">'.$langs->trans("Value").'</td>';
+    print "</tr>\n";
 
-	print '</table>';
+    print '</table>';
 
-	print '<div class="center">';
-	print '<input type="submit" class="button button-edit" value="'.$langs->trans("Modify").'">';
-	print '</div>';
+    print '<div class="center">';
+    print '<input type="submit" class="button button-edit" value="'.$langs->trans("Modify").'">';
+    print '</div>';
 }
 */
 
@@ -146,7 +147,7 @@ if (getDolGlobalString('RECRUITMENT_ENABLE_PUBLIC_INTERFACE')) {
     // Define $urlwithroot
     $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
     $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-    //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+    //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
     print '<div class="urllink">';
     print '<input type="text" id="publicurlmember" class="quatrevingtpercentminusx" value="' . $urlwithroot . '/public/recruitment/index.php' . $entity_qr . '">';

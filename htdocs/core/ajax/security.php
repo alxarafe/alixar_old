@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2011-2015 Regis Houssin  <regis.houssin@inodbox.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,23 +23,23 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 // We need langs because the getRandomPassword may use the user language to define some rules of pass generation
 /*if (!defined('NOREQUIRETRAN')) {
-	define('NOREQUIRETRAN', '1');
+    define('NOREQUIRETRAN', '1');
 }*/
 
 // Load Dolibarr environment
@@ -61,13 +62,13 @@ top_httphead();
 
 // Return a new generated password
 if ($action) {
-	if ($action == 'getrandompassword') {
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/security2.lib.php';
-		$generic = GETPOST('generic') ? true : false;
-		echo getRandomPassword($generic);
-	}
+    if ($action == 'getrandompassword') {
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+        $generic = GETPOST('generic') ? true : false;
+        echo getRandomPassword($generic);
+    }
 } else {
-	if (GETPOST('errorcode') == 'InvalidToken') {
-		http_response_code(401);
-	}
+    if (GETPOST('errorcode') == 'InvalidToken') {
+        http_response_code(401);
+    }
 }

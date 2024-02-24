@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2013-2014	Olivier Geffroy			<jeff@jeffinfo.com>
+
+/* Copyright (C) 2013-2014  Olivier Geffroy         <jeff@jeffinfo.com>
  * Copyright (C) 2013-2024	Alexandre Spangaro		<aspangaro@easya.solutions>
  * Copyright (C) 2014-2015	Ari Elbaz (elarifr)		<github@accedinfo.com>
  * Copyright (C) 2013-2021	Florian Henry			<florian.henry@open-concept.pro>
@@ -26,6 +27,7 @@
  * \ingroup    Accountancy (Double entries)
  * \brief        Ventilation page from suppliers invoices
  */
+
 require '../../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
@@ -301,7 +303,7 @@ if (strlen(trim($search_ref))) {
     $sql .= natural_search("p.ref", $search_ref);
 }
 /*if (strlen(trim($search_ref_supplier))) {
-	$sql .= natural_search("f.ref_supplier", $search_ref_supplier);
+    $sql .= natural_search("f.ref_supplier", $search_ref_supplier);
 }*/
 if (strlen(trim($search_label))) {
     $sql .= natural_search(["p.label", "f.libelle"], $search_label);
@@ -698,8 +700,8 @@ if ($result) {
 
         // Vat rate
         $code_vat_differ = '';
-        //if ($objp->vat_tx_l != $objp->vat_tx_p && price2num($objp->vat_tx_p) && price2num($objp->vat_tx_l)) {	// Note: having a vat rate of 0 is often the normal case when sells is intra b2b or to export
-        //	$code_vat_differ = 'warning bold';
+        //if ($objp->vat_tx_l != $objp->vat_tx_p && price2num($objp->vat_tx_p) && price2num($objp->vat_tx_l)) { // Note: having a vat rate of 0 is often the normal case when sells is intra b2b or to export
+        //  $code_vat_differ = 'warning bold';
         //}
         print '<td class="right' . ($code_vat_differ ? ' ' . $code_vat_differ : '') . '">';
         print vatrate($facturefourn_static_det->tva_tx . ($facturefourn_static_det->vat_src_code ? ' (' . $facturefourn_static_det->vat_src_code . ')' : ''), false, 0, 0, 1);

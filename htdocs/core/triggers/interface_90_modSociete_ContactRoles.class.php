@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2005-2017 Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2009-2017 Regis Houssin <regis.houssin@inodbox.com>
@@ -29,97 +30,99 @@
 
 use Alxarafe\Core\Base\Lang;
 
-require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 
 /**
  * Class of triggered functions for agenda module
  */
 class InterfaceContactRoles extends DolibarrTriggers
 {
-	/**
-	 * Constructor
-	 *
-	 * @param DoliDB $db Database handler
-	 */
-	public function __construct($db)
-	{
-		$this->db = $db;
+    /**
+     * Constructor
+     *
+     * @param DoliDB $db Database handler
+     */
+    public function __construct($db)
+    {
+        $this->db = $db;
 
-		$this->name = preg_replace('/^Interface/i', '', get_class($this));
-		$this->family = "agenda";
-		$this->description = "Triggers of this module auto link contact to company.";
-		$this->version = self::VERSIONS['prod'];
-		$this->picto = 'company';
-	}
+        $this->name = preg_replace('/^Interface/i', '', get_class($this));
+        $this->family = "agenda";
+        $this->description = "Triggers of this module auto link contact to company.";
+        $this->version = self::VERSIONS['prod'];
+        $this->picto = 'company';
+    }
 
-	/**
-	 * Function called when a Dolibarrr business event is done.
-	 * All functions "runTrigger" are triggered if file is inside directory htdocs/core/triggers or htdocs/module/code/triggers (and declared)
-	 *
-	 * Following properties may be set before calling trigger. The may be completed by this trigger to be used for writing the event into database:
-	 * $object->socid or $object->fk_soc(id of thirdparty)
-	 * $object->element (element type of object)
-	 *
-	 * @param string $action	Event action code
-	 * @param Object $object	Object
-	 * @param User $user		Object user
+    /**
+     * Function called when a Dolibarrr business event is done.
+     * All functions "runTrigger" are triggered if file is inside directory htdocs/core/triggers or htdocs/module/code/triggers (and declared)
+     *
+     * Following properties may be set before calling trigger. The may be completed by this trigger to be used for writing the event into database:
+     * $object->socid or $object->fk_soc(id of thirdparty)
+     * $object->element (element type of object)
+     *
+     * @param string $action    Event action code
+     * @param Object $object    Object
+     * @param User $user        Object user
      * @param Lang $langs Object langs
-     * @param conf $conf		Object conf
-	 *
-	 * @return int Return integer <0 if KO, 0 if no triggered ran, >0 if OK
+     * @param conf $conf        Object conf
+     *
+     * @return int Return integer <0 if KO, 0 if no triggered ran, >0 if OK
      */
     public function runTrigger(string $action, $object, User $user, Lang $langs, Conf $conf)
-	{
-		if ($action === 'PROPAL_CREATE' || $action === 'ORDER_CREATE' || $action === 'BILL_CREATE'
-			|| $action === 'ORDER_SUPPLIER_CREATE' || $action === 'BILL_SUPPLIER_CREATE' || $action === 'PROPOSAL_SUPPLIER_CREATE'
-			|| $action === 'CONTRACT_CREATE' || $action === 'FICHINTER_CREATE' || $action === 'PROJECT_CREATE' || $action === 'TICKET_CREATE') {
-			dol_syslog("Trigger '".$this->name."' for action '".$action."' launched by ".__FILE__.". id=".$object->id);
+    {
+        if (
+            $action === 'PROPAL_CREATE' || $action === 'ORDER_CREATE' || $action === 'BILL_CREATE'
+            || $action === 'ORDER_SUPPLIER_CREATE' || $action === 'BILL_SUPPLIER_CREATE' || $action === 'PROPOSAL_SUPPLIER_CREATE'
+            || $action === 'CONTRACT_CREATE' || $action === 'FICHINTER_CREATE' || $action === 'PROJECT_CREATE' || $action === 'TICKET_CREATE'
+        ) {
+            dol_syslog("Trigger '" . $this->name . "' for action '" . $action . "' launched by " . __FILE__ . ". id=" . $object->id);
 
-			$socid = (property_exists($object, 'socid') ? $object->socid : $object->fk_soc);
+            $socid = (property_exists($object, 'socid') ? $object->socid : $object->fk_soc);
 
-			if (!empty($socid) && $socid > 0) {
-				require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-				$contactdefault = new Contact($this->db);
-				$contactdefault->socid = $socid;
+            if (!empty($socid) && $socid > 0) {
+                require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+                $contactdefault = new Contact($this->db);
+                $contactdefault->socid = $socid;
 
-				$TContact = array();
-				if (method_exists($contactdefault, 'getContactRoles')) {	// For backward compatibility
-					$TContact = $contactdefault->getContactRoles($object->element);
-				}
+                $TContact = array();
+                if (method_exists($contactdefault, 'getContactRoles')) {    // For backward compatibility
+                    $TContact = $contactdefault->getContactRoles($object->element);
+                }
 
-				if (is_array($TContact) && !empty($TContact)) {
-					$TContactAlreadyLinked = array();
+                if (is_array($TContact) && !empty($TContact)) {
+                    $TContactAlreadyLinked = array();
 
-					if ($object->id > 0) {
-						$TContactAlreadyLinked = array_merge($object->liste_contact(-1, 'external'), $object->liste_contact(-1, 'internal'));
-					}
+                    if ($object->id > 0) {
+                        $TContactAlreadyLinked = array_merge($object->liste_contact(-1, 'external'), $object->liste_contact(-1, 'internal'));
+                    }
 
-					foreach ($TContact as $i => $infos) {
-						foreach ($TContactAlreadyLinked as $contactData) {
-							if ($contactData['id'] == $infos['fk_socpeople'] && $contactData['fk_c_type_contact'] == $infos['type_contact']) {
-								unset($TContact[$i]);
-							}
-						}
-					}
+                    foreach ($TContact as $i => $infos) {
+                        foreach ($TContactAlreadyLinked as $contactData) {
+                            if ($contactData['id'] == $infos['fk_socpeople'] && $contactData['fk_c_type_contact'] == $infos['type_contact']) {
+                                unset($TContact[$i]);
+                            }
+                        }
+                    }
 
-					$nb = 0;
-					foreach ($TContact as $infos) {
-						$res = $object->add_contact($infos['fk_socpeople'], $infos['type_contact']);
-						if ($res > 0) {
-							$nb++;
-						}
-					}
+                    $nb = 0;
+                    foreach ($TContact as $infos) {
+                        $res = $object->add_contact($infos['fk_socpeople'], $infos['type_contact']);
+                        if ($res > 0) {
+                            $nb++;
+                        }
+                    }
 
-					// We disable this message, it shows the message in api, public page or batch actions when it should not.
-					// Message setting must be done by the calling GUI page and not set inside the trigger.
-					/*
-					if ($nb > 0) {
-						setEventMessages($langs->trans('ContactAddedAutomatically', $nb), null, 'mesgs');
-					}
-					*/
-				}
-			}
-		}
-		return 0;
-	}
+                    // We disable this message, it shows the message in api, public page or batch actions when it should not.
+                    // Message setting must be done by the calling GUI page and not set inside the trigger.
+                    /*
+                    if ($nb > 0) {
+                        setEventMessages($langs->trans('ContactAddedAutomatically', $nb), null, 'mesgs');
+                    }
+                    */
+                }
+            }
+        }
+        return 0;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Advance Targeting Emailing for mass emailing module
  * Copyright (C) 2013  Florian Henry <florian.henry@open-concept.pro>
  *
@@ -613,18 +614,24 @@ class AdvanceTargetingMailing extends CommonObject
                 $extrafields->fetch_name_optionals_label($elementtype);
 
                 foreach ($extrafields->attributes[$elementtype]['label'] as $key => $val) {
-                    if (($extrafields->attributes[$elementtype]['type'][$key] == 'varchar') ||
-                        ($extrafields->attributes[$elementtype]['type'][$key] == 'text')) {
+                    if (
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'varchar') ||
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'text')
+                    ) {
                         if (!empty($arrayquery['options_' . $key])) {
                             $sqlwhere[] = " (te." . $key . " LIKE '" . $this->db->escape($arrayquery["options_" . $key]) . "')";
                         }
-                    } elseif (($extrafields->attributes[$elementtype]['type'][$key] == 'int') ||
-                        ($extrafields->attributes[$elementtype]['type'][$key] == 'double')) {
+                    } elseif (
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'int') ||
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'double')
+                    ) {
                         if (!empty($arrayquery['options_' . $key . '_max'])) {
                             $sqlwhere[] = " (te." . $key . " >= " . ((float) $arrayquery["options_" . $key . "_max"]) . " AND te." . $key . " <= " . ((float) $arrayquery["options_" . $key . '_min']) . ")";
                         }
-                    } elseif (($extrafields->attributes[$elementtype]['type'][$key] == 'date') ||
-                        ($extrafields->attributes[$elementtype]['type'][$key] == 'datetime')) {
+                    } elseif (
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'date') ||
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'datetime')
+                    ) {
                         if (!empty($arrayquery['options_' . $key . '_end_dt'])) {
                             $sqlwhere[] = " (te." . $key . " >= '" . $this->db->idate($arrayquery["options_" . $key . "_st_dt"]) . "' AND te." . $key . " <= '" . $this->db->idate($arrayquery["options_" . $key . "_end_dt"]) . "')";
                         }
@@ -757,18 +764,24 @@ class AdvanceTargetingMailing extends CommonObject
                 $extrafields->fetch_name_optionals_label($elementtype);
 
                 foreach ($extrafields->attributes[$elementtype]['label'] as $key => $val) {
-                    if (($extrafields->attributes[$elementtype]['type'][$key] == 'varchar') ||
-                        ($extrafields->attributes[$elementtype]['type'][$key] == 'text')) {
+                    if (
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'varchar') ||
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'text')
+                    ) {
                         if (!empty($arrayquery['options_' . $key . '_cnct'])) {
                             $sqlwhere[] = " (te." . $key . " LIKE '" . $this->db->escape($arrayquery["options_" . $key . "_cnct"]) . "')";
                         }
-                    } elseif (($extrafields->attributes[$elementtype]['type'][$key] == 'int') ||
-                        ($extrafields->attributes[$elementtype]['type'][$key] == 'double')) {
+                    } elseif (
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'int') ||
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'double')
+                    ) {
                         if (!empty($arrayquery['options_' . $key . '_max_cnct'])) {
                             $sqlwhere[] = " (te." . $key . " >= " . ((float) $arrayquery["options_" . $key . "_max_cnct"]) . " AND te." . $key . " <= " . ((float) $arrayquery["options_" . $key . "_min_cnct"]) . ")";
                         }
-                    } elseif (($extrafields->attributes[$elementtype]['type'][$key] == 'date') ||
-                        ($extrafields->attributes[$elementtype]['type'][$key] == 'datetime')) {
+                    } elseif (
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'date') ||
+                        ($extrafields->attributes[$elementtype]['type'][$key] == 'datetime')
+                    ) {
                         if (!empty($arrayquery['options_' . $key . '_end_dt_cnct'])) {
                             $sqlwhere[] = " (te." . $key . " >= '" . $this->db->idate($arrayquery["options_" . $key . "_st_dt_cnct"]) . "' AND te." . $key . " <= '" . $this->db->idate($arrayquery["options_" . $key . "_end_dt_cnct"]) . "')";
                         }
@@ -859,18 +872,24 @@ class AdvanceTargetingMailing extends CommonObject
                         $extrafields->fetch_name_optionals_label($elementtype);
 
                         foreach ($extrafields->attributes[$elementtype]['label'] as $key => $val) {
-                            if (($extrafields->attributes[$elementtype]['type'][$key] == 'varchar') ||
-                                ($extrafields->attributes[$elementtype]['type'][$key] == 'text')) {
+                            if (
+                                ($extrafields->attributes[$elementtype]['type'][$key] == 'varchar') ||
+                                ($extrafields->attributes[$elementtype]['type'][$key] == 'text')
+                            ) {
                                 if (!empty($arrayquery['options_' . $key])) {
                                     $sqlwhere[] = " (tse." . $key . " LIKE '" . $this->db->escape($arrayquery['options_' . $key]) . "')";
                                 }
-                            } elseif (($extrafields->attributes[$elementtype]['type'][$key] == 'int') ||
-                                ($extrafields->attributes[$elementtype]['type'][$key] == 'double')) {
+                            } elseif (
+                                ($extrafields->attributes[$elementtype]['type'][$key] == 'int') ||
+                                ($extrafields->attributes[$elementtype]['type'][$key] == 'double')
+                            ) {
                                 if (!empty($arrayquery['options_' . $key . '_max'])) {
                                     $sqlwhere[] = " (tse." . $key . " >= " . ((float) $arrayquery["options_" . $key . "_max"]) . " AND tse." . $key . " <= " . ((float) $arrayquery["options_" . $key . "_min"]) . ")";
                                 }
-                            } elseif (($extrafields->attributes[$elementtype]['type'][$key] == 'date') ||
-                                ($extrafields->attributes[$elementtype]['type'][$key] == 'datetime')) {
+                            } elseif (
+                                ($extrafields->attributes[$elementtype]['type'][$key] == 'date') ||
+                                ($extrafields->attributes[$elementtype]['type'][$key] == 'datetime')
+                            ) {
                                 if (!empty($arrayquery['options_' . $key . '_end_dt'])) {
                                     $sqlwhere[] = " (tse." . $key . " >= '" . $this->db->idate($arrayquery["options_" . $key . "_st_dt"]) . "' AND tse." . $key . " <= '" . $this->db->idate($arrayquery["options_" . $key . "_end_dt"]) . "')";
                                 }

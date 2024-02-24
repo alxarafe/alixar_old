@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2012 Regis Houssin  <regis.houssin@inodbox.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,24 +22,24 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
 
-$output		= GETPOST('output', 'alpha');
-$amount		= price2num(GETPOST('amount', 'alpha'));
-$tva_tx		= str_replace('*', '', GETPOST('tva_tx', 'alpha'));
+$output     = GETPOST('output', 'alpha');
+$amount     = price2num(GETPOST('amount', 'alpha'));
+$tva_tx     = str_replace('*', '', GETPOST('tva_tx', 'alpha'));
 
 // Security check
 // None. This is a formatting only component.
@@ -54,20 +55,20 @@ top_httphead();
 
 // Load original field value
 if (!empty($output) && isset($amount) && isset($tva_tx)) {
-	$return = array();
-	$price = '';
+    $return = array();
+    $price = '';
 
-	if (is_numeric($amount) && $amount != '') {
-		if ($output == 'price_ttc') {
-			$price = price2num($amount * (1 + ($tva_tx / 100)), 'MU');
-			$return['price_ht'] = $amount;
-			$return['price_ttc'] = (isset($price) && $price != '' ? price($price) : '');
-		} elseif ($output == 'price_ht') {
-			$price = price2num($amount / (1 + ($tva_tx / 100)), 'MU');
-			$return['price_ht'] = (isset($price) && $price != '' ? price($price) : '');
-			$return['price_ttc'] = ($tva_tx == 0 ? $price : $amount);
-		}
-	}
+    if (is_numeric($amount) && $amount != '') {
+        if ($output == 'price_ttc') {
+            $price = price2num($amount * (1 + ($tva_tx / 100)), 'MU');
+            $return['price_ht'] = $amount;
+            $return['price_ttc'] = (isset($price) && $price != '' ? price($price) : '');
+        } elseif ($output == 'price_ht') {
+            $price = price2num($amount / (1 + ($tva_tx / 100)), 'MU');
+            $return['price_ht'] = (isset($price) && $price != '' ? price($price) : '');
+            $return['price_ttc'] = ($tva_tx == 0 ? $price : $amount);
+        }
+    }
 
-	echo json_encode($return);
+    echo json_encode($return);
 }

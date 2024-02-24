@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,8 +52,8 @@ $datetocheckbooking = GETPOST('datetocheck', 'int');
 $error = 0;
 
 // Security check
-/*if (!defined("NOLOGIN")) {	// No need of restrictedArea if not logged: Later the select will filter on public articles only if not logged.
-	restrictedArea($user, 'knowledgemanagement', 0, 'knowledgemanagement_knowledgerecord', 'knowledgerecord');
+/*if (!defined("NOLOGIN")) {    // No need of restrictedArea if not logged: Later the select will filter on public articles only if not logged.
+    restrictedArea($user, 'knowledgemanagement', 0, 'knowledgemanagement_knowledgerecord', 'knowledgerecord');
 }*/
 
 $result = "{}";

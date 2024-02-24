@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004      Eric Seigne          <eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -27,6 +28,7 @@
  *        \ingroup    tax
  *        \brief      Index page of VAT reports
  */
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/tax.lib.php';
@@ -348,7 +350,7 @@ if ($refresh === true) {
                         'ddate_end' => $x_paye[$my_paye_rate]['ddate_end'][$id],
                         'totalht' => price2num($x_paye[$my_paye_rate]['totalht_list'][$id]),
                         'vat' => $x_paye[$my_paye_rate]['vat_list'][$id],
-                        //'link'				=>$expensereport->getNomUrl(1)
+                        //'link'                =>$expensereport->getNomUrl(1)
                     ];
                 } else {
                     //$invoice_supplier->id=$x_paye[$my_paye_rate]['facid'][$id];
@@ -415,8 +417,10 @@ if ($refresh === true) {
                         $type = 1;
                     }
 
-                    if (($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
-                        || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')) {
+                    if (
+                        ($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
+                        || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')
+                    ) {
                         //print $langs->trans("NA");
                     } else {
                         if (isset($fields['payment_amount']) && price2num($fields['ftotal_ttc'])) {
@@ -455,8 +459,10 @@ if ($refresh === true) {
                         $type = 1;
                     }
 
-                    if (($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
-                        || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')) {
+                    if (
+                        ($type == 0 && getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'invoice')
+                        || ($type == 1 && getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'invoice')
+                    ) {
                         //print $langs->trans("NA");
                     } else {
                         if (isset($fields['payment_amount']) && price2num($fields['ftotal_ttc'])) {

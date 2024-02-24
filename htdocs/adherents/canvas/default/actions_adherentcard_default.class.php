@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2010-2012	Regis Houssin		<regis.houssin@inodbox.com>
+
+/* Copyright (C) 2010-2012  Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2011		Laurent Destailleur	<eldy@users.sourceforge.net>
  * Copyright (C) 2012-2018  Philippe Grand      <philippe.grand@atoo-net.com>
  *
@@ -22,6 +23,7 @@
  *    \ingroup    member
  *    \brief      File of class Thirdparty member card controller (default canvas)
  */
+
 include_once DOL_DOCUMENT_ROOT . '/adherents/canvas/actions_adherentcard_common.class.php';
 
 /**

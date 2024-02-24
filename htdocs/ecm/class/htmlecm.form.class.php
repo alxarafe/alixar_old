@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,6 +20,7 @@
  *    \file        htdocs/ecm/class/htmlecm.form.class.php
  *    \brief        File of class to manage HTML component for ECM and generic filemanager
  */
+
 require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmdirectory.class.php';
 
 /**

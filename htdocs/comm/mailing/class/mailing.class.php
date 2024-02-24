@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -457,7 +458,7 @@ class Mailing extends CommonObject
             $object->bgimage = '';
             $object->evenunsubscribe = 0;
 
-            //$object->email_from         = '';		// We do not reset from email because it is a mandatory value
+            //$object->email_from         = '';     // We do not reset from email because it is a mandatory value
             $object->email_replyto = '';
             $object->email_errorsto = '';
 

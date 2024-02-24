@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018 Nicolas ZABOURI   <info@inovea-conseil.com>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
  *

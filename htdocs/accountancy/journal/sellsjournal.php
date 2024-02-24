@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2010  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2007-2010  Jean Heimburger         <jean@tiaris.info>
  * Copyright (C) 2011       Juanjo Menent           <jmenent@2byte.es>
@@ -168,11 +169,11 @@ if (getDolGlobalString('ACCOUNTING_DATE_START_BINDING')) {
 // Already in bookkeeping or not
 if ($in_bookkeeping == 'already') {
     $sql .= " AND f.rowid IN (SELECT fk_doc FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab WHERE ab.doc_type='customer_invoice')";
-    //	$sql .= " AND fd.rowid IN (SELECT fk_docdet FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab WHERE ab.doc_type='customer_invoice')";		// Useless, we save one line for all products with same account
+    //  $sql .= " AND fd.rowid IN (SELECT fk_docdet FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab WHERE ab.doc_type='customer_invoice')";     // Useless, we save one line for all products with same account
 }
 if ($in_bookkeeping == 'notyet') {
     $sql .= " AND f.rowid NOT IN (SELECT fk_doc FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab WHERE ab.doc_type='customer_invoice')";
-    // $sql .= " AND fd.rowid NOT IN (SELECT fk_docdet FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab WHERE ab.doc_type='customer_invoice')";		// Useless, we save one line for all products with same account
+    // $sql .= " AND fd.rowid NOT IN (SELECT fk_docdet FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab WHERE ab.doc_type='customer_invoice')";      // Useless, we save one line for all products with same account
 }
 $parameters = [];
 $reshook = $hookmanager->executeHooks('printFieldListWhere', $parameters); // Note that $action and $object may have been modified by hook
@@ -362,20 +363,20 @@ $errorforinvoice = [];
 /*
 // Old way, 1 query for each invoice
 // Loop on all invoices to detect lines without binded code (fk_code_ventilation <= 0)
-foreach ($tabfac as $key => $val) {		// Loop on each invoice
-	$sql = "SELECT COUNT(fd.rowid) as nb";
-	$sql .= " FROM ".MAIN_DB_PREFIX."facturedet as fd";
-	$sql .= " WHERE fd.product_type <= 2 AND fd.fk_code_ventilation <= 0";
-	$sql .= " AND fd.total_ttc <> 0 AND fk_facture = ".((int) $key);
-	$resql = $db->query($sql);
-	if ($resql) {
-		$obj = $db->fetch_object($resql);
-		if ($obj->nb > 0) {
-			$errorforinvoice[$key] = 'somelinesarenotbound';
-		}
-	} else {
-		dol_print_error($db);
-	}
+foreach ($tabfac as $key => $val) {     // Loop on each invoice
+    $sql = "SELECT COUNT(fd.rowid) as nb";
+    $sql .= " FROM ".MAIN_DB_PREFIX."facturedet as fd";
+    $sql .= " WHERE fd.product_type <= 2 AND fd.fk_code_ventilation <= 0";
+    $sql .= " AND fd.total_ttc <> 0 AND fk_facture = ".((int) $key);
+    $resql = $db->query($sql);
+    if ($resql) {
+        $obj = $db->fetch_object($resql);
+        if ($obj->nb > 0) {
+            $errorforinvoice[$key] = 'somelinesarenotbound';
+        }
+    } else {
+        dol_print_error($db);
+    }
 }
 */
 // New way, single query, load all unbound lines

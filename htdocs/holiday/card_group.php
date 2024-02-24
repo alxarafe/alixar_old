@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2011		Dimitri Mouillard	<dmouillard@teclib.com>
+
+/* Copyright (C) 2011       Dimitri Mouillard   <dmouillard@teclib.com>
  * Copyright (C) 2012-2016	Laurent Destailleur	<eldy@users.sourceforge.net>
  * Copyright (C) 2012-2016	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2013		Juanjo Menent		<jmenent@2byte.es>
@@ -701,7 +702,7 @@ function sendMail($id, $cancreate, $now, $autoValidation)
                 // From
                 $expediteur = new User($db);
                 $expediteur->fetch($object->fk_user);
-                //$emailFrom = $expediteur->email;		Email of user can be an email into another company. Sending will fails, we must use the generic email.
+                //$emailFrom = $expediteur->email;      Email of user can be an email into another company. Sending will fails, we must use the generic email.
                 $emailFrom = getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
 
                 // Subject

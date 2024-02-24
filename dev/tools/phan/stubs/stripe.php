@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable Generic.Files.LineLength.TooLong,Generic.NamingConventions,PEAR.Commenting,PEAR.NamingConventions
 namespace Stripe;
 
@@ -7,276 +8,276 @@ namespace Stripe;
  */
 class StripeObject implements \ArrayAccess, \Countable, \JsonSerializable
 {
-	/** @var Util\RequestOptions */
-	protected $_opts;
-	/** @var array */
-	protected $_originalValues;
-	/** @var array */
-	protected $_values;
-	/** @var Util\Set */
-	protected $_unsavedValues;
-	/** @var Util\Set */
-	protected $_transientValues;
-	/** @var null|array */
-	protected $_retrieveOptions;
-	/** @var null|ApiResponse */
-	protected $_lastResponse;
-	/**
-	 * @return Util\Set Attributes that should not be sent to the API because
-	 *    they're not updatable (e.g. ID).
-	 */
-	public static function getPermanentAttributes()
-	{
-	}
-	/**
-	 * Additive objects are subobjects in the API that don't have the same
-	 * semantics as most subobjects, which are fully replaced when they're set.
-	 *
-	 * This is best illustrated by example. The `source` parameter sent when
-	 * updating a subscription is *not* additive; if we set it:
-	 *
-	 *     source[object]=card&source[number]=123
-	 *
-	 * We expect the old `source` object to have been overwritten completely. If
-	 * the previous source had an `address_state` key associated with it and we
-	 * didn't send one this time, that value of `address_state` is gone.
-	 *
-	 * By contrast, additive objects are those that will have new data added to
-	 * them while keeping any existing data in place. The only known case of its
-	 * use is for `metadata`, but it could in theory be more general. As an
-	 * example, say we have a `metadata` object that looks like this on the
-	 * server side:
-	 *
-	 *     metadata = ["old" => "old_value"]
-	 *
-	 * If we update the object with `metadata[new]=new_value`, the server side
-	 * object now has *both* fields:
-	 *
-	 *     metadata = ["old" => "old_value", "new" => "new_value"]
-	 *
-	 * This is okay in itself because usually users will want to treat it as
-	 * additive:
-	 *
-	 *     $obj->metadata["new"] = "new_value";
-	 *     $obj->save();
-	 *
-	 * However, in other cases, they may want to replace the entire existing
-	 * contents:
-	 *
-	 *     $obj->metadata = ["new" => "new_value"];
-	 *     $obj->save();
-	 *
-	 * This is where things get a little bit tricky because in order to clear
-	 * any old keys that may have existed, we actually have to send an explicit
-	 * empty string to the server. So the operation above would have to send
-	 * this form to get the intended behavior:
-	 *
-	 *     metadata[old]=&metadata[new]=new_value
-	 *
-	 * This method allows us to track which parameters are considered additive,
-	 * and lets us behave correctly where appropriate when serializing
-	 * parameters to be sent.
-	 *
-	 * @return Util\Set Set of additive parameters
-	 */
-	public static function getAdditiveParams()
-	{
-	}
-	public function __construct($id = null, $opts = null)
-	{
-	}
-	// Standard accessor magic methods
-	public function __set($k, $v)
-	{
-	}
-	/**
-	 * @param mixed $k
-	 *
-	 * @return bool
-	 */
-	public function __isset($k)
-	{
-	}
-	public function __unset($k)
-	{
-	}
-	public function &__get($k)
-	{
-	}
-	/**
-	 * Magic method for var_dump output. Only works with PHP >= 5.6.
-	 *
-	 * @return array
-	 */
-	public function __debugInfo()
-	{
-	}
-	// ArrayAccess methods
-	/**
-	 * @return void
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetSet($k, $v)
-	{
-	}
-	/**
-	 * @return bool
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetExists($k)
-	{
-	}
-	/**
-	 * @return void
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetUnset($k)
-	{
-	}
-	/**
-	 * @return mixed
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetGet($k)
-	{
-	}
-	/**
-	 * @return int
-	 */
-	#[\ReturnTypeWillChange]
-	public function count()
-	{
-	}
-	public function keys()
-	{
-	}
-	public function values()
-	{
-	}
-	/**
-	 * This unfortunately needs to be public to be used in Util\Util.
-	 *
-	 * @param array $values
-	 * @param null|array|string|Util\RequestOptions $opts
-	 *
-	 * @return static the object constructed from the given values
-	 */
-	public static function constructFrom($values, $opts = null)
-	{
-	}
-	/**
-	 * Refreshes this object using the provided values.
-	 *
-	 * @param array $values
-	 * @param null|array|string|Util\RequestOptions $opts
-	 * @param bool $partial defaults to false
-	 */
-	public function refreshFrom($values, $opts, $partial = false)
-	{
-	}
-	/**
-	 * Mass assigns attributes on the model.
-	 *
-	 * @param array $values
-	 * @param null|array|string|Util\RequestOptions $opts
-	 * @param bool $dirty defaults to true
-	 */
-	public function updateAttributes($values, $opts = null, $dirty = true)
-	{
-	}
-	/**
-	 * @param bool $force defaults to false
-	 *
-	 * @return array a recursive mapping of attributes to values for this object,
-	 *    including the proper value for deleted attributes
-	 */
-	public function serializeParameters($force = false)
-	{
-	}
-	public function serializeParamsValue($value, $original, $unsaved, $force, $key = null)
-	{
-	}
-	/**
-	 * @return mixed
-	 */
-	#[\ReturnTypeWillChange]
-	public function jsonSerialize()
-	{
-	}
-	/**
-	 * Returns an associative array with the key and values composing the
-	 * Stripe object.
-	 *
-	 * @return array the associative array
-	 */
-	public function toArray()
-	{
-	}
-	/**
-	 * Returns a pretty JSON representation of the Stripe object.
-	 *
-	 * @return string the JSON representation of the Stripe object
-	 */
-	public function toJSON()
-	{
-	}
-	public function __toString()
-	{
-	}
-	/**
-	 * Sets all keys within the StripeObject as unsaved so that they will be
-	 * included with an update when `serializeParameters` is called. This
-	 * method is also recursive, so any StripeObjects contained as values or
-	 * which are values in a tenant array are also marked as dirty.
-	 */
-	public function dirty()
-	{
-	}
-	protected function dirtyValue($value)
-	{
-	}
-	/**
-	 * Produces a deep copy of the given object including support for arrays
-	 * and StripeObjects.
-	 *
-	 * @param mixed $obj
-	 */
-	protected static function deepCopy($obj)
-	{
-	}
-	/**
-	 * Returns a hash of empty values for all the values that are in the given
-	 * StripeObject.
-	 *
-	 * @param mixed $obj
-	 */
-	public static function emptyValues($obj)
-	{
-	}
-	/**
-	 * @return null|ApiResponse The last response from the Stripe API
-	 */
-	public function getLastResponse()
-	{
-	}
-	/**
-	 * Sets the last response from the Stripe API.
-	 *
-	 * @param ApiResponse $resp
-	 */
-	public function setLastResponse($resp)
-	{
-	}
-	/**
-	 * Indicates whether or not the resource has been deleted on the server.
-	 * Note that some, but not all, resources can indicate whether they have
-	 * been deleted.
-	 *
-	 * @return bool whether the resource is deleted
-	 */
-	public function isDeleted()
-	{
-	}
+    /** @var Util\RequestOptions */
+    protected $_opts;
+    /** @var array */
+    protected $_originalValues;
+    /** @var array */
+    protected $_values;
+    /** @var Util\Set */
+    protected $_unsavedValues;
+    /** @var Util\Set */
+    protected $_transientValues;
+    /** @var null|array */
+    protected $_retrieveOptions;
+    /** @var null|ApiResponse */
+    protected $_lastResponse;
+    /**
+     * @return Util\Set Attributes that should not be sent to the API because
+     *    they're not updatable (e.g. ID).
+     */
+    public static function getPermanentAttributes()
+    {
+    }
+    /**
+     * Additive objects are subobjects in the API that don't have the same
+     * semantics as most subobjects, which are fully replaced when they're set.
+     *
+     * This is best illustrated by example. The `source` parameter sent when
+     * updating a subscription is *not* additive; if we set it:
+     *
+     *     source[object]=card&source[number]=123
+     *
+     * We expect the old `source` object to have been overwritten completely. If
+     * the previous source had an `address_state` key associated with it and we
+     * didn't send one this time, that value of `address_state` is gone.
+     *
+     * By contrast, additive objects are those that will have new data added to
+     * them while keeping any existing data in place. The only known case of its
+     * use is for `metadata`, but it could in theory be more general. As an
+     * example, say we have a `metadata` object that looks like this on the
+     * server side:
+     *
+     *     metadata = ["old" => "old_value"]
+     *
+     * If we update the object with `metadata[new]=new_value`, the server side
+     * object now has *both* fields:
+     *
+     *     metadata = ["old" => "old_value", "new" => "new_value"]
+     *
+     * This is okay in itself because usually users will want to treat it as
+     * additive:
+     *
+     *     $obj->metadata["new"] = "new_value";
+     *     $obj->save();
+     *
+     * However, in other cases, they may want to replace the entire existing
+     * contents:
+     *
+     *     $obj->metadata = ["new" => "new_value"];
+     *     $obj->save();
+     *
+     * This is where things get a little bit tricky because in order to clear
+     * any old keys that may have existed, we actually have to send an explicit
+     * empty string to the server. So the operation above would have to send
+     * this form to get the intended behavior:
+     *
+     *     metadata[old]=&metadata[new]=new_value
+     *
+     * This method allows us to track which parameters are considered additive,
+     * and lets us behave correctly where appropriate when serializing
+     * parameters to be sent.
+     *
+     * @return Util\Set Set of additive parameters
+     */
+    public static function getAdditiveParams()
+    {
+    }
+    public function __construct($id = null, $opts = null)
+    {
+    }
+    // Standard accessor magic methods
+    public function __set($k, $v)
+    {
+    }
+    /**
+     * @param mixed $k
+     *
+     * @return bool
+     */
+    public function __isset($k)
+    {
+    }
+    public function __unset($k)
+    {
+    }
+    public function &__get($k)
+    {
+    }
+    /**
+     * Magic method for var_dump output. Only works with PHP >= 5.6.
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+    }
+    // ArrayAccess methods
+    /**
+     * @return void
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetSet($k, $v)
+    {
+    }
+    /**
+     * @return bool
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetExists($k)
+    {
+    }
+    /**
+     * @return void
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetUnset($k)
+    {
+    }
+    /**
+     * @return mixed
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetGet($k)
+    {
+    }
+    /**
+     * @return int
+     */
+    #[\ReturnTypeWillChange]
+    public function count()
+    {
+    }
+    public function keys()
+    {
+    }
+    public function values()
+    {
+    }
+    /**
+     * This unfortunately needs to be public to be used in Util\Util.
+     *
+     * @param array $values
+     * @param null|array|string|Util\RequestOptions $opts
+     *
+     * @return static the object constructed from the given values
+     */
+    public static function constructFrom($values, $opts = null)
+    {
+    }
+    /**
+     * Refreshes this object using the provided values.
+     *
+     * @param array $values
+     * @param null|array|string|Util\RequestOptions $opts
+     * @param bool $partial defaults to false
+     */
+    public function refreshFrom($values, $opts, $partial = false)
+    {
+    }
+    /**
+     * Mass assigns attributes on the model.
+     *
+     * @param array $values
+     * @param null|array|string|Util\RequestOptions $opts
+     * @param bool $dirty defaults to true
+     */
+    public function updateAttributes($values, $opts = null, $dirty = true)
+    {
+    }
+    /**
+     * @param bool $force defaults to false
+     *
+     * @return array a recursive mapping of attributes to values for this object,
+     *    including the proper value for deleted attributes
+     */
+    public function serializeParameters($force = false)
+    {
+    }
+    public function serializeParamsValue($value, $original, $unsaved, $force, $key = null)
+    {
+    }
+    /**
+     * @return mixed
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+    }
+    /**
+     * Returns an associative array with the key and values composing the
+     * Stripe object.
+     *
+     * @return array the associative array
+     */
+    public function toArray()
+    {
+    }
+    /**
+     * Returns a pretty JSON representation of the Stripe object.
+     *
+     * @return string the JSON representation of the Stripe object
+     */
+    public function toJSON()
+    {
+    }
+    public function __toString()
+    {
+    }
+    /**
+     * Sets all keys within the StripeObject as unsaved so that they will be
+     * included with an update when `serializeParameters` is called. This
+     * method is also recursive, so any StripeObjects contained as values or
+     * which are values in a tenant array are also marked as dirty.
+     */
+    public function dirty()
+    {
+    }
+    protected function dirtyValue($value)
+    {
+    }
+    /**
+     * Produces a deep copy of the given object including support for arrays
+     * and StripeObjects.
+     *
+     * @param mixed $obj
+     */
+    protected static function deepCopy($obj)
+    {
+    }
+    /**
+     * Returns a hash of empty values for all the values that are in the given
+     * StripeObject.
+     *
+     * @param mixed $obj
+     */
+    public static function emptyValues($obj)
+    {
+    }
+    /**
+     * @return null|ApiResponse The last response from the Stripe API
+     */
+    public function getLastResponse()
+    {
+    }
+    /**
+     * Sets the last response from the Stripe API.
+     *
+     * @param ApiResponse $resp
+     */
+    public function setLastResponse($resp)
+    {
+    }
+    /**
+     * Indicates whether or not the resource has been deleted on the server.
+     * Note that some, but not all, resources can indicate whether they have
+     * been deleted.
+     *
+     * @return bool whether the resource is deleted
+     */
+    public function isDeleted()
+    {
+    }
 }
 namespace Stripe\ApiOperations;
 
@@ -287,64 +288,64 @@ namespace Stripe\ApiOperations;
  */
 trait Request
 {
-	/**
-	 * @param null|array|mixed $params The list of parameters to validate
-	 *
-	 * @throws \Stripe\Exception\InvalidArgumentException if $params exists and is not an array
-	 */
-	protected static function _validateParams($params = null)
-	{
-	}
-	/**
-	 * @param string $method HTTP method ('get', 'post', etc.)
-	 * @param string $url URL for the request
-	 * @param array $params list of parameters for the request
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return array tuple containing (the JSON response, $options)
-	 */
-	protected function _request($method, $url, $params = [], $options = null)
-	{
-	}
-	/**
-	 * @param string $method HTTP method ('get', 'post', etc.)
-	 * @param string $url URL for the request
-	 * @param callable $readBodyChunk function that will receive chunks of data from a successful request body
-	 * @param array $params list of parameters for the request
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 */
-	protected function _requestStream($method, $url, $readBodyChunk, $params = [], $options = null)
-	{
-	}
-	/**
-	 * @param string $method HTTP method ('get', 'post', etc.)
-	 * @param string $url URL for the request
-	 * @param array $params list of parameters for the request
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return array tuple containing (the JSON response, $options)
-	 */
-	protected static function _staticRequest($method, $url, $params, $options)
-	{
-	}
-	/**
-	 * @param string $method HTTP method ('get', 'post', etc.)
-	 * @param string $url URL for the request
-	 * @param callable $readBodyChunk function that will receive chunks of data from a successful request body
-	 * @param array $params list of parameters for the request
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 */
-	protected static function _staticStreamingRequest($method, $url, $readBodyChunk, $params, $options)
-	{
-	}
+    /**
+     * @param null|array|mixed $params The list of parameters to validate
+     *
+     * @throws \Stripe\Exception\InvalidArgumentException if $params exists and is not an array
+     */
+    protected static function _validateParams($params = null)
+    {
+    }
+    /**
+     * @param string $method HTTP method ('get', 'post', etc.)
+     * @param string $url URL for the request
+     * @param array $params list of parameters for the request
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return array tuple containing (the JSON response, $options)
+     */
+    protected function _request($method, $url, $params = [], $options = null)
+    {
+    }
+    /**
+     * @param string $method HTTP method ('get', 'post', etc.)
+     * @param string $url URL for the request
+     * @param callable $readBodyChunk function that will receive chunks of data from a successful request body
+     * @param array $params list of parameters for the request
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     */
+    protected function _requestStream($method, $url, $readBodyChunk, $params = [], $options = null)
+    {
+    }
+    /**
+     * @param string $method HTTP method ('get', 'post', etc.)
+     * @param string $url URL for the request
+     * @param array $params list of parameters for the request
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return array tuple containing (the JSON response, $options)
+     */
+    protected static function _staticRequest($method, $url, $params, $options)
+    {
+    }
+    /**
+     * @param string $method HTTP method ('get', 'post', etc.)
+     * @param string $url URL for the request
+     * @param callable $readBodyChunk function that will receive chunks of data from a successful request body
+     * @param array $params list of parameters for the request
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     */
+    protected static function _staticStreamingRequest($method, $url, $readBodyChunk, $params, $options)
+    {
+    }
 }
 namespace Stripe;
 
@@ -353,64 +354,65 @@ namespace Stripe;
  */
 abstract class ApiResource extends \Stripe\StripeObject
 {
-	use \Stripe\ApiOperations\Request;
-	/**
-	 * @return \Stripe\Util\Set A list of fields that can be their own type of
-	 * API resource (say a nested card under an account for example), and if
-	 * that resource is set, it should be transmitted to the API on a create or
-	 * update. Doing so is not the default behavior because API resources
-	 * should normally be persisted on their own RESTful endpoints.
-	 */
-	public static function getSavedNestedResources()
-	{
-	}
-	/**
-	 * @var bool A flag that can be set a behavior that will cause this
-	 * resource to be encoded and sent up along with an update of its parent
-	 * resource. This is usually not desirable because resources are updated
-	 * individually on their own endpoints, but there are certain cases,
-	 * replacing a customer's source for example, where this is allowed.
-	 */
-	public $saveWithParent = false;
-	public function __set($k, $v)
-	{
-	}
-	/**
-	 * @throws Exception\ApiErrorException
-	 *
-	 * @return ApiResource the refreshed resource
-	 */
-	public function refresh()
-	{
-	}
-	/**
-	 * @return string the base URL for the given class
-	 */
-	public static function baseUrl()
-	{
-	}
-	/**
-	 * @return string the endpoint URL for the given class
-	 */
-	public static function classUrl()
-	{
-	}
-	/**
-	 * @param null|string $id the ID of the resource
-	 *
-	 * @throws Exception\UnexpectedValueException if $id is null
-	 *
-	 * @return string the instance endpoint URL for the given class
-	 */
-	public static function resourceUrl($id)
-	{
-	}
-	/**
-	 * @return string the full API URL for this API resource
-	 */
-	public function instanceUrl()
-	{
-	}
+    use \Stripe\ApiOperations\Request;
+
+    /**
+     * @return \Stripe\Util\Set A list of fields that can be their own type of
+     * API resource (say a nested card under an account for example), and if
+     * that resource is set, it should be transmitted to the API on a create or
+     * update. Doing so is not the default behavior because API resources
+     * should normally be persisted on their own RESTful endpoints.
+     */
+    public static function getSavedNestedResources()
+    {
+    }
+    /**
+     * @var bool A flag that can be set a behavior that will cause this
+     * resource to be encoded and sent up along with an update of its parent
+     * resource. This is usually not desirable because resources are updated
+     * individually on their own endpoints, but there are certain cases,
+     * replacing a customer's source for example, where this is allowed.
+     */
+    public $saveWithParent = false;
+    public function __set($k, $v)
+    {
+    }
+    /**
+     * @throws Exception\ApiErrorException
+     *
+     * @return ApiResource the refreshed resource
+     */
+    public function refresh()
+    {
+    }
+    /**
+     * @return string the base URL for the given class
+     */
+    public static function baseUrl()
+    {
+    }
+    /**
+     * @return string the endpoint URL for the given class
+     */
+    public static function classUrl()
+    {
+    }
+    /**
+     * @param null|string $id the ID of the resource
+     *
+     * @throws Exception\UnexpectedValueException if $id is null
+     *
+     * @return string the instance endpoint URL for the given class
+     */
+    public static function resourceUrl($id)
+    {
+    }
+    /**
+     * @return string the full API URL for this API resource
+     */
+    public function instanceUrl()
+    {
+    }
 }
 namespace Stripe\ApiOperations;
 
@@ -421,17 +423,17 @@ namespace Stripe\ApiOperations;
  */
 trait All
 {
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection of ApiResources
-	 */
-	public static function all($params = null, $opts = null)
-	{
-	}
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection of ApiResources
+     */
+    public static function all($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Trait for creatable resources. Adds a `create()` static method to the class.
@@ -440,17 +442,17 @@ trait All
  */
 trait Create
 {
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return static the created resource
-	 */
-	public static function create($params = null, $options = null)
-	{
-	}
+    /**
+     * @param null|array $params
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return static the created resource
+     */
+    public static function create($params = null, $options = null)
+    {
+    }
 }
 /**
  * Trait for deletable resources. Adds a `delete()` method to the class.
@@ -459,17 +461,17 @@ trait Create
  */
 trait Delete
 {
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return static the deleted resource
-	 */
-	public function delete($params = null, $opts = null)
-	{
-	}
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return static the deleted resource
+     */
+    public function delete($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Trait for resources that have nested resources.
@@ -478,95 +480,95 @@ trait Delete
  */
 trait NestedResource
 {
-	/**
-	 * @param string $method
-	 * @param string $url
-	 * @param null|array $params
-	 * @param null|array|string $options
-	 *
-	 * @return \Stripe\StripeObject
-	 */
-	protected static function _nestedResourceOperation($method, $url, $params = null, $options = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param string $nestedPath
-	 * @param null|string $nestedId
-	 *
-	 * @return string
-	 */
-	protected static function _nestedResourceUrl($id, $nestedPath, $nestedId = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param string $nestedPath
-	 * @param null|array $params
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject
-	 */
-	protected static function _createNestedResource($id, $nestedPath, $params = null, $options = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param string $nestedPath
-	 * @param null|string $nestedId
-	 * @param null|array $params
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject
-	 */
-	protected static function _retrieveNestedResource($id, $nestedPath, $nestedId, $params = null, $options = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param string $nestedPath
-	 * @param null|string $nestedId
-	 * @param null|array $params
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject
-	 */
-	protected static function _updateNestedResource($id, $nestedPath, $nestedId, $params = null, $options = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param string $nestedPath
-	 * @param null|string $nestedId
-	 * @param null|array $params
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject
-	 */
-	protected static function _deleteNestedResource($id, $nestedPath, $nestedId, $params = null, $options = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param string $nestedPath
-	 * @param null|array $params
-	 * @param null|array|string $options
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject
-	 */
-	protected static function _allNestedResources($id, $nestedPath, $params = null, $options = null)
-	{
-	}
+    /**
+     * @param string $method
+     * @param string $url
+     * @param null|array $params
+     * @param null|array|string $options
+     *
+     * @return \Stripe\StripeObject
+     */
+    protected static function _nestedResourceOperation($method, $url, $params = null, $options = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param string $nestedPath
+     * @param null|string $nestedId
+     *
+     * @return string
+     */
+    protected static function _nestedResourceUrl($id, $nestedPath, $nestedId = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param string $nestedPath
+     * @param null|array $params
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject
+     */
+    protected static function _createNestedResource($id, $nestedPath, $params = null, $options = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param string $nestedPath
+     * @param null|string $nestedId
+     * @param null|array $params
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject
+     */
+    protected static function _retrieveNestedResource($id, $nestedPath, $nestedId, $params = null, $options = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param string $nestedPath
+     * @param null|string $nestedId
+     * @param null|array $params
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject
+     */
+    protected static function _updateNestedResource($id, $nestedPath, $nestedId, $params = null, $options = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param string $nestedPath
+     * @param null|string $nestedId
+     * @param null|array $params
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject
+     */
+    protected static function _deleteNestedResource($id, $nestedPath, $nestedId, $params = null, $options = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param string $nestedPath
+     * @param null|array $params
+     * @param null|array|string $options
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject
+     */
+    protected static function _allNestedResources($id, $nestedPath, $params = null, $options = null)
+    {
+    }
 }
 /**
  * Trait for updatable resources. Adds an `update()` static method and a
@@ -576,32 +578,32 @@ trait NestedResource
  */
 trait Update
 {
-	/**
-	 * @param string $id the ID of the resource to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return static the updated resource
-	 */
-	public static function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return static the saved resource
-	 *
-	 * @deprecated The `save` method is deprecated and will be removed in a
-	 *     future major version of the library. Use the static method `update`
-	 *     on the resource instead.
-	 */
-	public function save($opts = null)
-	{
-	}
+    /**
+     * @param string $id the ID of the resource to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return static the updated resource
+     */
+    public static function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return static the saved resource
+     *
+     * @deprecated The `save` method is deprecated and will be removed in a
+     *     future major version of the library. Use the static method `update`
+     *     on the resource instead.
+     */
+    public function save($opts = null)
+    {
+    }
 }
 /**
  * Trait for retrievable resources. Adds a `retrieve()` static method to the
@@ -611,18 +613,18 @@ trait Update
  */
 trait Retrieve
 {
-	/**
-	 * @param array|string $id the ID of the API resource to retrieve,
-	 *                         or an options array containing an `id` key
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return static
-	 */
-	public static function retrieve($id, $opts = null)
-	{
-	}
+    /**
+     * @param array|string $id the ID of the API resource to retrieve,
+     *                         or an options array containing an `id` key
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return static
+     */
+    public static function retrieve($id, $opts = null)
+    {
+    }
 }
 namespace Stripe;
 
@@ -665,245 +667,246 @@ namespace Stripe;
  */
 class Account extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'account';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\NestedResource;
-	use \Stripe\ApiOperations\Update;
-	const BUSINESS_TYPE_COMPANY = 'company';
-	const BUSINESS_TYPE_GOVERNMENT_ENTITY = 'government_entity';
-	const BUSINESS_TYPE_INDIVIDUAL = 'individual';
-	const BUSINESS_TYPE_NON_PROFIT = 'non_profit';
-	const TYPE_CUSTOM = 'custom';
-	const TYPE_EXPRESS = 'express';
-	const TYPE_STANDARD = 'standard';
-	use \Stripe\ApiOperations\Retrieve {
-		retrieve as protected _retrieve;
-	}
-	public static function getSavedNestedResources()
-	{
-	}
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param null|array|string $id the ID of the account to retrieve, or an
-	 *                              options array containing an `id` key
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Account
-	 */
-	public static function retrieve($id = null, $opts = null)
-	{
-	}
-	public function serializeParameters($force = false)
-	{
-	}
-	/**
-	 * @param null|array $clientId
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject object containing the response from the API
-	 */
-	public function deauthorize($clientId = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Account the rejected account
-	 */
-	public function reject($params = null, $opts = null)
-	{
-	}
-	const PATH_CAPABILITIES = '/capabilities';
-	/**
-	 * @param string $id the ID of the account on which to retrieve the capabilities
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Capability> the list of capabilities
-	 */
-	public static function allCapabilities($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the capability belongs
-	 * @param string $capabilityId the ID of the capability to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Capability
-	 */
-	public static function retrieveCapability($id, $capabilityId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the capability belongs
-	 * @param string $capabilityId the ID of the capability to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Capability
-	 */
-	public static function updateCapability($id, $capabilityId, $params = null, $opts = null)
-	{
-	}
-	const PATH_EXTERNAL_ACCOUNTS = '/external_accounts';
-	/**
-	 * @param string $id the ID of the account on which to retrieve the external accounts
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card> the list of external accounts (BankAccount or Card)
-	 */
-	public static function allExternalAccounts($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account on which to create the external account
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public static function createExternalAccount($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the external account belongs
-	 * @param string $externalAccountId the ID of the external account to delete
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public static function deleteExternalAccount($id, $externalAccountId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the external account belongs
-	 * @param string $externalAccountId the ID of the external account to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public static function retrieveExternalAccount($id, $externalAccountId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the external account belongs
-	 * @param string $externalAccountId the ID of the external account to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public static function updateExternalAccount($id, $externalAccountId, $params = null, $opts = null)
-	{
-	}
-	const PATH_LOGIN_LINKS = '/login_links';
-	/**
-	 * @param string $id the ID of the account on which to create the login link
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\LoginLink
-	 */
-	public static function createLoginLink($id, $params = null, $opts = null)
-	{
-	}
-	const PATH_PERSONS = '/persons';
-	/**
-	 * @param string $id the ID of the account on which to retrieve the persons
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Person> the list of persons
-	 */
-	public static function allPersons($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account on which to create the person
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public static function createPerson($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the person belongs
-	 * @param string $personId the ID of the person to delete
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public static function deletePerson($id, $personId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the person belongs
-	 * @param string $personId the ID of the person to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public static function retrievePerson($id, $personId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the account to which the person belongs
-	 * @param string $personId the ID of the person to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public static function updatePerson($id, $personId, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'account';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\NestedResource;
+    use \Stripe\ApiOperations\Update;
+    const BUSINESS_TYPE_COMPANY = 'company';
+    const BUSINESS_TYPE_GOVERNMENT_ENTITY = 'government_entity';
+    const BUSINESS_TYPE_INDIVIDUAL = 'individual';
+    const BUSINESS_TYPE_NON_PROFIT = 'non_profit';
+    const TYPE_CUSTOM = 'custom';
+    const TYPE_EXPRESS = 'express';
+    const TYPE_STANDARD = 'standard';
+    use \Stripe\ApiOperations\Retrieve {
+        retrieve as protected _retrieve;
+    }
+
+    public static function getSavedNestedResources()
+    {
+    }
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param null|array|string $id the ID of the account to retrieve, or an
+     *                              options array containing an `id` key
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Account
+     */
+    public static function retrieve($id = null, $opts = null)
+    {
+    }
+    public function serializeParameters($force = false)
+    {
+    }
+    /**
+     * @param null|array $clientId
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject object containing the response from the API
+     */
+    public function deauthorize($clientId = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Account the rejected account
+     */
+    public function reject($params = null, $opts = null)
+    {
+    }
+    const PATH_CAPABILITIES = '/capabilities';
+    /**
+     * @param string $id the ID of the account on which to retrieve the capabilities
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Capability> the list of capabilities
+     */
+    public static function allCapabilities($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the capability belongs
+     * @param string $capabilityId the ID of the capability to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Capability
+     */
+    public static function retrieveCapability($id, $capabilityId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the capability belongs
+     * @param string $capabilityId the ID of the capability to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Capability
+     */
+    public static function updateCapability($id, $capabilityId, $params = null, $opts = null)
+    {
+    }
+    const PATH_EXTERNAL_ACCOUNTS = '/external_accounts';
+    /**
+     * @param string $id the ID of the account on which to retrieve the external accounts
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card> the list of external accounts (BankAccount or Card)
+     */
+    public static function allExternalAccounts($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account on which to create the external account
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public static function createExternalAccount($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the external account belongs
+     * @param string $externalAccountId the ID of the external account to delete
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public static function deleteExternalAccount($id, $externalAccountId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the external account belongs
+     * @param string $externalAccountId the ID of the external account to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public static function retrieveExternalAccount($id, $externalAccountId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the external account belongs
+     * @param string $externalAccountId the ID of the external account to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public static function updateExternalAccount($id, $externalAccountId, $params = null, $opts = null)
+    {
+    }
+    const PATH_LOGIN_LINKS = '/login_links';
+    /**
+     * @param string $id the ID of the account on which to create the login link
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\LoginLink
+     */
+    public static function createLoginLink($id, $params = null, $opts = null)
+    {
+    }
+    const PATH_PERSONS = '/persons';
+    /**
+     * @param string $id the ID of the account on which to retrieve the persons
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Person> the list of persons
+     */
+    public static function allPersons($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account on which to create the person
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public static function createPerson($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the person belongs
+     * @param string $personId the ID of the person to delete
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public static function deletePerson($id, $personId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the person belongs
+     * @param string $personId the ID of the person to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public static function retrievePerson($id, $personId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the account to which the person belongs
+     * @param string $personId the ID of the person to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public static function updatePerson($id, $personId, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Account Links are the means by which a Connect platform grants a connected
@@ -921,8 +924,8 @@ class Account extends \Stripe\ApiResource
  */
 class AccountLink extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'account_link';
-	use \Stripe\ApiOperations\Create;
+    const OBJECT_NAME = 'account_link';
+    use \Stripe\ApiOperations\Create;
 }
 namespace Stripe\ApiOperations;
 
@@ -933,18 +936,18 @@ namespace Stripe\ApiOperations;
  */
 trait Search
 {
-	/**
-	 * @param string $searchUrl
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult of ApiResources
-	 */
-	protected static function _searchResource($searchUrl, $params = null, $opts = null)
-	{
-	}
+    /**
+     * @param string $searchUrl
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult of ApiResources
+     */
+    protected static function _searchResource($searchUrl, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Trait for retrievable singleton resources. Adds a `retrieve()` static method to the
@@ -954,18 +957,18 @@ trait Search
  */
 trait SingletonRetrieve
 {
-	/**
-	 * @param array|string $id the ID of the API resource to retrieve,
-	 *                         or an options array containing an `id` key
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return static
-	 */
-	public static function retrieve($opts = null)
-	{
-	}
+    /**
+     * @param array|string $id the ID of the API resource to retrieve,
+     *                         or an options array containing an `id` key
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return static
+     */
+    public static function retrieve($opts = null)
+    {
+    }
 }
 namespace Stripe;
 
@@ -974,107 +977,107 @@ namespace Stripe;
  */
 class ApiRequestor
 {
-	/**
-	 * ApiRequestor constructor.
-	 *
-	 * @param null|string $apiKey
-	 * @param null|string $apiBase
-	 */
-	public function __construct($apiKey = null, $apiBase = null)
-	{
-	}
-	/**
-	 * @param string     $method
-	 * @param string     $url
-	 * @param null|array $params
-	 * @param null|array $headers
-	 *
-	 * @throws Exception\ApiErrorException
-	 *
-	 * @return array tuple containing (ApiReponse, API key)
-	 */
-	public function request($method, $url, $params = null, $headers = null)
-	{
-	}
-	/**
-	 * @param string     $method
-	 * @param string     $url
-	 * @param callable $readBodyChunkCallable
-	 * @param null|array $params
-	 * @param null|array $headers
-	 *
-	 * @throws Exception\ApiErrorException
-	 */
-	public function requestStream($method, $url, $readBodyChunkCallable, $params = null, $headers = null)
-	{
-	}
-	/**
-	 * @param string $rbody a JSON string
-	 * @param int $rcode
-	 * @param array $rheaders
-	 * @param array $resp
-	 *
-	 * @throws Exception\UnexpectedValueException
-	 * @throws Exception\ApiErrorException
-	 */
-	public function handleErrorResponse($rbody, $rcode, $rheaders, $resp)
-	{
-	}
-	/**
-	 * @static
-	 *
-	 * @param HttpClient\ClientInterface $client
-	 */
-	public static function setHttpClient($client)
-	{
-	}
-	/**
-	 * @static
-	 *
-	 * @param HttpClient\StreamingClientInterface $client
-	 */
-	public static function setStreamingHttpClient($client)
-	{
-	}
-	/**
-	 * @static
-	 *
-	 * Resets any stateful telemetry data
-	 */
-	public static function resetTelemetry()
-	{
-	}
+    /**
+     * ApiRequestor constructor.
+     *
+     * @param null|string $apiKey
+     * @param null|string $apiBase
+     */
+    public function __construct($apiKey = null, $apiBase = null)
+    {
+    }
+    /**
+     * @param string     $method
+     * @param string     $url
+     * @param null|array $params
+     * @param null|array $headers
+     *
+     * @throws Exception\ApiErrorException
+     *
+     * @return array tuple containing (ApiReponse, API key)
+     */
+    public function request($method, $url, $params = null, $headers = null)
+    {
+    }
+    /**
+     * @param string     $method
+     * @param string     $url
+     * @param callable $readBodyChunkCallable
+     * @param null|array $params
+     * @param null|array $headers
+     *
+     * @throws Exception\ApiErrorException
+     */
+    public function requestStream($method, $url, $readBodyChunkCallable, $params = null, $headers = null)
+    {
+    }
+    /**
+     * @param string $rbody a JSON string
+     * @param int $rcode
+     * @param array $rheaders
+     * @param array $resp
+     *
+     * @throws Exception\UnexpectedValueException
+     * @throws Exception\ApiErrorException
+     */
+    public function handleErrorResponse($rbody, $rcode, $rheaders, $resp)
+    {
+    }
+    /**
+     * @static
+     *
+     * @param HttpClient\ClientInterface $client
+     */
+    public static function setHttpClient($client)
+    {
+    }
+    /**
+     * @static
+     *
+     * @param HttpClient\StreamingClientInterface $client
+     */
+    public static function setStreamingHttpClient($client)
+    {
+    }
+    /**
+     * @static
+     *
+     * Resets any stateful telemetry data
+     */
+    public static function resetTelemetry()
+    {
+    }
 }
 /**
  * Class ApiResponse.
  */
 class ApiResponse
 {
-	/**
-	 * @var null|array|CaseInsensitiveArray
-	 */
-	public $headers;
-	/**
-	 * @var string
-	 */
-	public $body;
-	/**
-	 * @var null|array
-	 */
-	public $json;
-	/**
-	 * @var int
-	 */
-	public $code;
-	/**
-	 * @param string $body
-	 * @param int $code
-	 * @param null|array|CaseInsensitiveArray $headers
-	 * @param null|array $json
-	 */
-	public function __construct($body, $code, $headers, $json)
-	{
-	}
+    /**
+     * @var null|array|CaseInsensitiveArray
+     */
+    public $headers;
+    /**
+     * @var string
+     */
+    public $body;
+    /**
+     * @var null|array
+     */
+    public $json;
+    /**
+     * @var int
+     */
+    public $code;
+    /**
+     * @param string $body
+     * @param int $code
+     * @param null|array|CaseInsensitiveArray $headers
+     * @param null|array $json
+     */
+    public function __construct($body, $code, $headers, $json)
+    {
+    }
 }
 /**
  * @property string $id Unique identifier for the object.
@@ -1085,18 +1088,19 @@ class ApiResponse
  */
 class ApplePayDomain extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'apple_pay_domain';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	/**
-	 * @return string The class URL for this resource. It needs to be special
-	 *    cased because it doesn't fit into the standard resource pattern.
-	 */
-	public static function classUrl()
-	{
-	}
+    const OBJECT_NAME = 'apple_pay_domain';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+
+    /**
+     * @return string The class URL for this resource. It needs to be special
+     *    cased because it doesn't fit into the standard resource pattern.
+     */
+    public static function classUrl()
+    {
+    }
 }
 /**
  * @property string $id Unique identifier for the object.
@@ -1116,61 +1120,62 @@ class ApplePayDomain extends \Stripe\ApiResource
  */
 class ApplicationFee extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'application_fee';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\NestedResource;
-	use \Stripe\ApiOperations\Retrieve;
-	const PATH_REFUNDS = '/refunds';
-	/**
-	 * @param string $id the ID of the application fee on which to retrieve the fee refunds
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\ApplicationFeeRefund> the list of fee refunds
-	 */
-	public static function allRefunds($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the application fee on which to create the fee refund
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplicationFeeRefund
-	 */
-	public static function createRefund($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the application fee to which the fee refund belongs
-	 * @param string $refundId the ID of the fee refund to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplicationFeeRefund
-	 */
-	public static function retrieveRefund($id, $refundId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the application fee to which the fee refund belongs
-	 * @param string $refundId the ID of the fee refund to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplicationFeeRefund
-	 */
-	public static function updateRefund($id, $refundId, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'application_fee';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\NestedResource;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const PATH_REFUNDS = '/refunds';
+    /**
+     * @param string $id the ID of the application fee on which to retrieve the fee refunds
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\ApplicationFeeRefund> the list of fee refunds
+     */
+    public static function allRefunds($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the application fee on which to create the fee refund
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplicationFeeRefund
+     */
+    public static function createRefund($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the application fee to which the fee refund belongs
+     * @param string $refundId the ID of the fee refund to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplicationFeeRefund
+     */
+    public static function retrieveRefund($id, $refundId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the application fee to which the fee refund belongs
+     * @param string $refundId the ID of the fee refund to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplicationFeeRefund
+     */
+    public static function updateRefund($id, $refundId, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * <code>Application Fee Refund</code> objects allow you to refund an application
@@ -1192,24 +1197,25 @@ class ApplicationFee extends \Stripe\ApiResource
  */
 class ApplicationFeeRefund extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'fee_refund';
-	use \Stripe\ApiOperations\Update {
-		save as protected _save;
-	}
-	/**
-	 * @return string the API URL for this Stripe refund
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param null|array|string $opts
-	 *
-	 * @return ApplicationFeeRefund the saved refund
-	 */
-	public function save($opts = null)
-	{
-	}
+    const OBJECT_NAME = 'fee_refund';
+    use \Stripe\ApiOperations\Update {
+        save as protected _save;
+    }
+
+    /**
+     * @return string the API URL for this Stripe refund
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param null|array|string $opts
+     *
+     * @return ApplicationFeeRefund the saved refund
+     */
+    public function save($opts = null)
+    {
+    }
 }
 namespace Stripe\Apps;
 
@@ -1245,31 +1251,32 @@ namespace Stripe\Apps;
  */
 class Secret extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'apps.secret';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Apps\Secret the deleted secret
-	 */
-	public static function deleteWhere($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Apps\Secret the finded secret
-	 */
-	public static function find($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'apps.secret';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Apps\Secret the deleted secret
+     */
+    public static function deleteWhere($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Apps\Secret the finded secret
+     */
+    public static function find($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe;
 
@@ -1278,18 +1285,18 @@ namespace Stripe;
  */
 abstract class SingletonApiResource extends \Stripe\ApiResource
 {
-	/**
-	 * @return string the endpoint associated with this singleton class
-	 */
-	public static function classUrl()
-	{
-	}
-	/**
-	 * @return string the endpoint associated with this singleton API resource
-	 */
-	public function instanceUrl()
-	{
-	}
+    /**
+     * @return string the endpoint associated with this singleton class
+     */
+    public static function classUrl()
+    {
+    }
+    /**
+     * @return string the endpoint associated with this singleton API resource
+     */
+    public function instanceUrl()
+    {
+    }
 }
 /**
  * This is an object representing your Stripe balance. You can retrieve it to see
@@ -1316,8 +1323,8 @@ abstract class SingletonApiResource extends \Stripe\ApiResource
  */
 class Balance extends \Stripe\SingletonApiResource
 {
-	const OBJECT_NAME = 'balance';
-	use \Stripe\ApiOperations\SingletonRetrieve;
+    const OBJECT_NAME = 'balance';
+    use \Stripe\ApiOperations\SingletonRetrieve;
 }
 /**
  * Balance transactions represent funds moving through your Stripe account. They're
@@ -1346,41 +1353,42 @@ class Balance extends \Stripe\SingletonApiResource
  */
 class BalanceTransaction extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'balance_transaction';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const TYPE_ADJUSTMENT = 'adjustment';
-	const TYPE_ADVANCE = 'advance';
-	const TYPE_ADVANCE_FUNDING = 'advance_funding';
-	const TYPE_ANTICIPATION_REPAYMENT = 'anticipation_repayment';
-	const TYPE_APPLICATION_FEE = 'application_fee';
-	const TYPE_APPLICATION_FEE_REFUND = 'application_fee_refund';
-	const TYPE_CHARGE = 'charge';
-	const TYPE_CONNECT_COLLECTION_TRANSFER = 'connect_collection_transfer';
-	const TYPE_CONTRIBUTION = 'contribution';
-	const TYPE_ISSUING_AUTHORIZATION_HOLD = 'issuing_authorization_hold';
-	const TYPE_ISSUING_AUTHORIZATION_RELEASE = 'issuing_authorization_release';
-	const TYPE_ISSUING_DISPUTE = 'issuing_dispute';
-	const TYPE_ISSUING_TRANSACTION = 'issuing_transaction';
-	const TYPE_PAYMENT = 'payment';
-	const TYPE_PAYMENT_FAILURE_REFUND = 'payment_failure_refund';
-	const TYPE_PAYMENT_REFUND = 'payment_refund';
-	const TYPE_PAYOUT = 'payout';
-	const TYPE_PAYOUT_CANCEL = 'payout_cancel';
-	const TYPE_PAYOUT_FAILURE = 'payout_failure';
-	const TYPE_REFUND = 'refund';
-	const TYPE_REFUND_FAILURE = 'refund_failure';
-	const TYPE_RESERVE_TRANSACTION = 'reserve_transaction';
-	const TYPE_RESERVED_FUNDS = 'reserved_funds';
-	const TYPE_STRIPE_FEE = 'stripe_fee';
-	const TYPE_STRIPE_FX_FEE = 'stripe_fx_fee';
-	const TYPE_TAX_FEE = 'tax_fee';
-	const TYPE_TOPUP = 'topup';
-	const TYPE_TOPUP_REVERSAL = 'topup_reversal';
-	const TYPE_TRANSFER = 'transfer';
-	const TYPE_TRANSFER_CANCEL = 'transfer_cancel';
-	const TYPE_TRANSFER_FAILURE = 'transfer_failure';
-	const TYPE_TRANSFER_REFUND = 'transfer_refund';
+    const OBJECT_NAME = 'balance_transaction';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const TYPE_ADJUSTMENT = 'adjustment';
+    const TYPE_ADVANCE = 'advance';
+    const TYPE_ADVANCE_FUNDING = 'advance_funding';
+    const TYPE_ANTICIPATION_REPAYMENT = 'anticipation_repayment';
+    const TYPE_APPLICATION_FEE = 'application_fee';
+    const TYPE_APPLICATION_FEE_REFUND = 'application_fee_refund';
+    const TYPE_CHARGE = 'charge';
+    const TYPE_CONNECT_COLLECTION_TRANSFER = 'connect_collection_transfer';
+    const TYPE_CONTRIBUTION = 'contribution';
+    const TYPE_ISSUING_AUTHORIZATION_HOLD = 'issuing_authorization_hold';
+    const TYPE_ISSUING_AUTHORIZATION_RELEASE = 'issuing_authorization_release';
+    const TYPE_ISSUING_DISPUTE = 'issuing_dispute';
+    const TYPE_ISSUING_TRANSACTION = 'issuing_transaction';
+    const TYPE_PAYMENT = 'payment';
+    const TYPE_PAYMENT_FAILURE_REFUND = 'payment_failure_refund';
+    const TYPE_PAYMENT_REFUND = 'payment_refund';
+    const TYPE_PAYOUT = 'payout';
+    const TYPE_PAYOUT_CANCEL = 'payout_cancel';
+    const TYPE_PAYOUT_FAILURE = 'payout_failure';
+    const TYPE_REFUND = 'refund';
+    const TYPE_REFUND_FAILURE = 'refund_failure';
+    const TYPE_RESERVE_TRANSACTION = 'reserve_transaction';
+    const TYPE_RESERVED_FUNDS = 'reserved_funds';
+    const TYPE_STRIPE_FEE = 'stripe_fee';
+    const TYPE_STRIPE_FX_FEE = 'stripe_fx_fee';
+    const TYPE_TAX_FEE = 'tax_fee';
+    const TYPE_TOPUP = 'topup';
+    const TYPE_TOPUP_REVERSAL = 'topup_reversal';
+    const TYPE_TRANSFER = 'transfer';
+    const TYPE_TRANSFER_CANCEL = 'transfer_cancel';
+    const TYPE_TRANSFER_FAILURE = 'transfer_failure';
+    const TYPE_TRANSFER_REFUND = 'transfer_refund';
 }
 /**
  * These bank accounts are payment methods on <code>Customer</code> objects.
@@ -1416,249 +1424,250 @@ class BalanceTransaction extends \Stripe\ApiResource
  */
 class BankAccount extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'bank_account';
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Update;
-	/**
-	 * Possible string representations of the bank verification status.
-	 *
-	 * @see https://stripe.com/docs/api/external_account_bank_accounts/object#account_bank_account_object-status
-	 */
-	const STATUS_NEW = 'new';
-	const STATUS_VALIDATED = 'validated';
-	const STATUS_VERIFIED = 'verified';
-	const STATUS_VERIFICATION_FAILED = 'verification_failed';
-	const STATUS_ERRORED = 'errored';
-	/**
-	 * @return string The instance URL for this resource. It needs to be special
-	 *    cased because it doesn't fit into the standard resource pattern.
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param array|string $_id
-	 * @param null|array|string $_opts
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function retrieve($_id, $_opts = null)
-	{
-	}
-	/**
-	 * @param string $_id
-	 * @param null|array $_params
-	 * @param null|array|string $_options
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function update($_id, $_params = null, $_options = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return BankAccount the verified bank account
-	 */
-	public function verify($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'bank_account';
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Update;
+
+    /**
+     * Possible string representations of the bank verification status.
+     *
+     * @see https://stripe.com/docs/api/external_account_bank_accounts/object#account_bank_account_object-status
+     */
+    const STATUS_NEW = 'new';
+    const STATUS_VALIDATED = 'validated';
+    const STATUS_VERIFIED = 'verified';
+    const STATUS_VERIFICATION_FAILED = 'verification_failed';
+    const STATUS_ERRORED = 'errored';
+    /**
+     * @return string The instance URL for this resource. It needs to be special
+     *    cased because it doesn't fit into the standard resource pattern.
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param array|string $_id
+     * @param null|array|string $_opts
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function retrieve($_id, $_opts = null)
+    {
+    }
+    /**
+     * @param string $_id
+     * @param null|array $_params
+     * @param null|array|string $_options
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function update($_id, $_params = null, $_options = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return BankAccount the verified bank account
+     */
+    public function verify($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Interface for a Stripe client.
  */
 interface BaseStripeClientInterface
 {
-	/**
-	 * Gets the API key used by the client to send requests.
-	 *
-	 * @return null|string the API key used by the client to send requests
-	 */
-	public function getApiKey();
-	/**
-	 * Gets the client ID used by the client in OAuth requests.
-	 *
-	 * @return null|string the client ID used by the client in OAuth requests
-	 */
-	public function getClientId();
-	/**
-	 * Gets the base URL for Stripe's API.
-	 *
-	 * @return string the base URL for Stripe's API
-	 */
-	public function getApiBase();
-	/**
-	 * Gets the base URL for Stripe's OAuth API.
-	 *
-	 * @return string the base URL for Stripe's OAuth API
-	 */
-	public function getConnectBase();
-	/**
-	 * Gets the base URL for Stripe's Files API.
-	 *
-	 * @return string the base URL for Stripe's Files API
-	 */
-	public function getFilesBase();
+    /**
+     * Gets the API key used by the client to send requests.
+     *
+     * @return null|string the API key used by the client to send requests
+     */
+    public function getApiKey();
+    /**
+     * Gets the client ID used by the client in OAuth requests.
+     *
+     * @return null|string the client ID used by the client in OAuth requests
+     */
+    public function getClientId();
+    /**
+     * Gets the base URL for Stripe's API.
+     *
+     * @return string the base URL for Stripe's API
+     */
+    public function getApiBase();
+    /**
+     * Gets the base URL for Stripe's OAuth API.
+     *
+     * @return string the base URL for Stripe's OAuth API
+     */
+    public function getConnectBase();
+    /**
+     * Gets the base URL for Stripe's Files API.
+     *
+     * @return string the base URL for Stripe's Files API
+     */
+    public function getFilesBase();
 }
 /**
  * Interface for a Stripe client.
  */
 interface StripeClientInterface extends \Stripe\BaseStripeClientInterface
 {
-	/**
-	 * Sends a request to Stripe's API.
-	 *
-	 * @param string $method the HTTP method
-	 * @param string $path the path of the request
-	 * @param array $params the parameters of the request
-	 * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
-	 *
-	 * @return \Stripe\StripeObject the object returned by Stripe's API
-	 */
-	public function request($method, $path, $params, $opts);
+    /**
+     * Sends a request to Stripe's API.
+     *
+     * @param string $method the HTTP method
+     * @param string $path the path of the request
+     * @param array $params the parameters of the request
+     * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
+     *
+     * @return \Stripe\StripeObject the object returned by Stripe's API
+     */
+    public function request($method, $path, $params, $opts);
 }
 /**
  * Interface for a Stripe client.
  */
 interface StripeStreamingClientInterface extends \Stripe\BaseStripeClientInterface
 {
-	public function requestStream($method, $path, $readBodyChunkCallable, $params, $opts);
+    public function requestStream($method, $path, $readBodyChunkCallable, $params, $opts);
 }
 class BaseStripeClient implements \Stripe\StripeClientInterface, \Stripe\StripeStreamingClientInterface
 {
-	/** @var string default base URL for Stripe's API */
-	const DEFAULT_API_BASE = 'https://api.stripe.com';
-	/** @var string default base URL for Stripe's OAuth API */
-	const DEFAULT_CONNECT_BASE = 'https://connect.stripe.com';
-	/** @var string default base URL for Stripe's Files API */
-	const DEFAULT_FILES_BASE = 'https://files.stripe.com';
-	/**
-	 * Initializes a new instance of the {@link BaseStripeClient} class.
-	 *
-	 * The constructor takes a single argument. The argument can be a string, in which case it
-	 * should be the API key. It can also be an array with various configuration settings.
-	 *
-	 * Configuration settings include the following options:
-	 *
-	 * - api_key (null|string): the Stripe API key, to be used in regular API requests.
-	 * - client_id (null|string): the Stripe client ID, to be used in OAuth requests.
-	 * - stripe_account (null|string): a Stripe account ID. If set, all requests sent by the client
-	 *   will automatically use the {@code Stripe-Account} header with that account ID.
-	 * - stripe_version (null|string): a Stripe API verion. If set, all requests sent by the client
-	 *   will include the {@code Stripe-Version} header with that API version.
-	 *
-	 * The following configuration settings are also available, though setting these should rarely be necessary
-	 * (only useful if you want to send requests to a mock server like stripe-mock):
-	 *
-	 * - api_base (string): the base URL for regular API requests. Defaults to
-	 *   {@link DEFAULT_API_BASE}.
-	 * - connect_base (string): the base URL for OAuth requests. Defaults to
-	 *   {@link DEFAULT_CONNECT_BASE}.
-	 * - files_base (string): the base URL for file creation requests. Defaults to
-	 *   {@link DEFAULT_FILES_BASE}.
-	 *
-	 * @param array<string, mixed>|string $config the API key as a string, or an array containing
-	 *                                            the client configuration settings
-	 */
-	public function __construct($config = [])
-	{
-	}
-	/**
-	 * Gets the API key used by the client to send requests.
-	 *
-	 * @return null|string the API key used by the client to send requests
-	 */
-	public function getApiKey()
-	{
-	}
-	/**
-	 * Gets the client ID used by the client in OAuth requests.
-	 *
-	 * @return null|string the client ID used by the client in OAuth requests
-	 */
-	public function getClientId()
-	{
-	}
-	/**
-	 * Gets the base URL for Stripe's API.
-	 *
-	 * @return string the base URL for Stripe's API
-	 */
-	public function getApiBase()
-	{
-	}
-	/**
-	 * Gets the base URL for Stripe's OAuth API.
-	 *
-	 * @return string the base URL for Stripe's OAuth API
-	 */
-	public function getConnectBase()
-	{
-	}
-	/**
-	 * Gets the base URL for Stripe's Files API.
-	 *
-	 * @return string the base URL for Stripe's Files API
-	 */
-	public function getFilesBase()
-	{
-	}
-	/**
-	 * Sends a request to Stripe's API.
-	 *
-	 * @param string $method the HTTP method
-	 * @param string $path the path of the request
-	 * @param array $params the parameters of the request
-	 * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
-	 *
-	 * @return \Stripe\StripeObject the object returned by Stripe's API
-	 */
-	public function request($method, $path, $params, $opts)
-	{
-	}
-	/**
-	 * Sends a request to Stripe's API, passing chunks of the streamed response
-	 * into a user-provided $readBodyChunkCallable callback.
-	 *
-	 * @param string $method the HTTP method
-	 * @param string $path the path of the request
-	 * @param callable $readBodyChunkCallable a function that will be called
-	 * @param array $params the parameters of the request
-	 * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
-	 *                                                with chunks of bytes from the body if the request is successful
-	 */
-	public function requestStream($method, $path, $readBodyChunkCallable, $params, $opts)
-	{
-	}
-	/**
-	 * Sends a request to Stripe's API.
-	 *
-	 * @param string $method the HTTP method
-	 * @param string $path the path of the request
-	 * @param array $params the parameters of the request
-	 * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
-	 *
-	 * @return \Stripe\Collection of ApiResources
-	 */
-	public function requestCollection($method, $path, $params, $opts)
-	{
-	}
-	/**
-	 * Sends a request to Stripe's API.
-	 *
-	 * @param string $method the HTTP method
-	 * @param string $path the path of the request
-	 * @param array $params the parameters of the request
-	 * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
-	 *
-	 * @return \Stripe\SearchResult of ApiResources
-	 */
-	public function requestSearchResult($method, $path, $params, $opts)
-	{
-	}
+    /** @var string default base URL for Stripe's API */
+    const DEFAULT_API_BASE = 'https://api.stripe.com';
+    /** @var string default base URL for Stripe's OAuth API */
+    const DEFAULT_CONNECT_BASE = 'https://connect.stripe.com';
+    /** @var string default base URL for Stripe's Files API */
+    const DEFAULT_FILES_BASE = 'https://files.stripe.com';
+    /**
+     * Initializes a new instance of the {@link BaseStripeClient} class.
+     *
+     * The constructor takes a single argument. The argument can be a string, in which case it
+     * should be the API key. It can also be an array with various configuration settings.
+     *
+     * Configuration settings include the following options:
+     *
+     * - api_key (null|string): the Stripe API key, to be used in regular API requests.
+     * - client_id (null|string): the Stripe client ID, to be used in OAuth requests.
+     * - stripe_account (null|string): a Stripe account ID. If set, all requests sent by the client
+     *   will automatically use the {@code Stripe-Account} header with that account ID.
+     * - stripe_version (null|string): a Stripe API verion. If set, all requests sent by the client
+     *   will include the {@code Stripe-Version} header with that API version.
+     *
+     * The following configuration settings are also available, though setting these should rarely be necessary
+     * (only useful if you want to send requests to a mock server like stripe-mock):
+     *
+     * - api_base (string): the base URL for regular API requests. Defaults to
+     *   {@link DEFAULT_API_BASE}.
+     * - connect_base (string): the base URL for OAuth requests. Defaults to
+     *   {@link DEFAULT_CONNECT_BASE}.
+     * - files_base (string): the base URL for file creation requests. Defaults to
+     *   {@link DEFAULT_FILES_BASE}.
+     *
+     * @param array<string, mixed>|string $config the API key as a string, or an array containing
+     *                                            the client configuration settings
+     */
+    public function __construct($config = [])
+    {
+    }
+    /**
+     * Gets the API key used by the client to send requests.
+     *
+     * @return null|string the API key used by the client to send requests
+     */
+    public function getApiKey()
+    {
+    }
+    /**
+     * Gets the client ID used by the client in OAuth requests.
+     *
+     * @return null|string the client ID used by the client in OAuth requests
+     */
+    public function getClientId()
+    {
+    }
+    /**
+     * Gets the base URL for Stripe's API.
+     *
+     * @return string the base URL for Stripe's API
+     */
+    public function getApiBase()
+    {
+    }
+    /**
+     * Gets the base URL for Stripe's OAuth API.
+     *
+     * @return string the base URL for Stripe's OAuth API
+     */
+    public function getConnectBase()
+    {
+    }
+    /**
+     * Gets the base URL for Stripe's Files API.
+     *
+     * @return string the base URL for Stripe's Files API
+     */
+    public function getFilesBase()
+    {
+    }
+    /**
+     * Sends a request to Stripe's API.
+     *
+     * @param string $method the HTTP method
+     * @param string $path the path of the request
+     * @param array $params the parameters of the request
+     * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
+     *
+     * @return \Stripe\StripeObject the object returned by Stripe's API
+     */
+    public function request($method, $path, $params, $opts)
+    {
+    }
+    /**
+     * Sends a request to Stripe's API, passing chunks of the streamed response
+     * into a user-provided $readBodyChunkCallable callback.
+     *
+     * @param string $method the HTTP method
+     * @param string $path the path of the request
+     * @param callable $readBodyChunkCallable a function that will be called
+     * @param array $params the parameters of the request
+     * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
+     *                                                with chunks of bytes from the body if the request is successful
+     */
+    public function requestStream($method, $path, $readBodyChunkCallable, $params, $opts)
+    {
+    }
+    /**
+     * Sends a request to Stripe's API.
+     *
+     * @param string $method the HTTP method
+     * @param string $path the path of the request
+     * @param array $params the parameters of the request
+     * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
+     *
+     * @return \Stripe\Collection of ApiResources
+     */
+    public function requestCollection($method, $path, $params, $opts)
+    {
+    }
+    /**
+     * Sends a request to Stripe's API.
+     *
+     * @param string $method the HTTP method
+     * @param string $path the path of the request
+     * @param array $params the parameters of the request
+     * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
+     *
+     * @return \Stripe\SearchResult of ApiResources
+     */
+    public function requestSearchResult($method, $path, $params, $opts)
+    {
+    }
 }
 namespace Stripe\BillingPortal;
 
@@ -1682,11 +1691,11 @@ namespace Stripe\BillingPortal;
  */
 class Configuration extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'billing_portal.configuration';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'billing_portal.configuration';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * The Billing customer portal is a Stripe-hosted UI for subscription and billing
@@ -1720,8 +1729,8 @@ class Configuration extends \Stripe\ApiResource
  */
 class Session extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'billing_portal.session';
-	use \Stripe\ApiOperations\Create;
+    const OBJECT_NAME = 'billing_portal.session';
+    use \Stripe\ApiOperations\Create;
 }
 namespace Stripe;
 
@@ -1743,37 +1752,38 @@ namespace Stripe;
  */
 class Capability extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'capability';
-	use \Stripe\ApiOperations\Update;
-	const STATUS_ACTIVE = 'active';
-	const STATUS_INACTIVE = 'inactive';
-	const STATUS_PENDING = 'pending';
-	const STATUS_UNREQUESTED = 'unrequested';
-	/**
-	 * @return string the API URL for this Stripe account reversal
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param array|string $_id
-	 * @param null|array|string $_opts
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function retrieve($_id, $_opts = null)
-	{
-	}
-	/**
-	 * @param string $_id
-	 * @param null|array $_params
-	 * @param null|array|string $_options
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function update($_id, $_params = null, $_options = null)
-	{
-	}
+    const OBJECT_NAME = 'capability';
+    use \Stripe\ApiOperations\Update;
+
+    const STATUS_ACTIVE = 'active';
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_PENDING = 'pending';
+    const STATUS_UNREQUESTED = 'unrequested';
+    /**
+     * @return string the API URL for this Stripe account reversal
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param array|string $_id
+     * @param null|array|string $_opts
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function retrieve($_id, $_opts = null)
+    {
+    }
+    /**
+     * @param string $_id
+     * @param null|array $_params
+     * @param null|array|string $_options
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function update($_id, $_params = null, $_options = null)
+    {
+    }
 }
 /**
  * You can store multiple cards on a customer in order to charge the customer
@@ -1814,61 +1824,62 @@ class Capability extends \Stripe\ApiResource
  */
 class Card extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'card';
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Update;
-	/**
-	 * Possible string representations of the CVC check status.
-	 *
-	 * @see https://stripe.com/docs/api/cards/object#card_object-cvc_check
-	 */
-	const CVC_CHECK_FAIL = 'fail';
-	const CVC_CHECK_PASS = 'pass';
-	const CVC_CHECK_UNAVAILABLE = 'unavailable';
-	const CVC_CHECK_UNCHECKED = 'unchecked';
-	/**
-	 * Possible string representations of the funding of the card.
-	 *
-	 * @see https://stripe.com/docs/api/cards/object#card_object-funding
-	 */
-	const FUNDING_CREDIT = 'credit';
-	const FUNDING_DEBIT = 'debit';
-	const FUNDING_PREPAID = 'prepaid';
-	const FUNDING_UNKNOWN = 'unknown';
-	/**
-	 * Possible string representations of the tokenization method when using Apple Pay or Google Pay.
-	 *
-	 * @see https://stripe.com/docs/api/cards/object#card_object-tokenization_method
-	 */
-	const TOKENIZATION_METHOD_APPLE_PAY = 'apple_pay';
-	const TOKENIZATION_METHOD_GOOGLE_PAY = 'google_pay';
-	/**
-	 * @return string The instance URL for this resource. It needs to be special
-	 *    cased because cards are nested resources that may belong to different
-	 *    top-level resources.
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param array|string $_id
-	 * @param null|array|string $_opts
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function retrieve($_id, $_opts = null)
-	{
-	}
-	/**
-	 * @param string $_id
-	 * @param null|array $_params
-	 * @param null|array|string $_options
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function update($_id, $_params = null, $_options = null)
-	{
-	}
+    const OBJECT_NAME = 'card';
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Update;
+
+    /**
+     * Possible string representations of the CVC check status.
+     *
+     * @see https://stripe.com/docs/api/cards/object#card_object-cvc_check
+     */
+    const CVC_CHECK_FAIL = 'fail';
+    const CVC_CHECK_PASS = 'pass';
+    const CVC_CHECK_UNAVAILABLE = 'unavailable';
+    const CVC_CHECK_UNCHECKED = 'unchecked';
+    /**
+     * Possible string representations of the funding of the card.
+     *
+     * @see https://stripe.com/docs/api/cards/object#card_object-funding
+     */
+    const FUNDING_CREDIT = 'credit';
+    const FUNDING_DEBIT = 'debit';
+    const FUNDING_PREPAID = 'prepaid';
+    const FUNDING_UNKNOWN = 'unknown';
+    /**
+     * Possible string representations of the tokenization method when using Apple Pay or Google Pay.
+     *
+     * @see https://stripe.com/docs/api/cards/object#card_object-tokenization_method
+     */
+    const TOKENIZATION_METHOD_APPLE_PAY = 'apple_pay';
+    const TOKENIZATION_METHOD_GOOGLE_PAY = 'google_pay';
+    /**
+     * @return string The instance URL for this resource. It needs to be special
+     *    cased because cards are nested resources that may belong to different
+     *    top-level resources.
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param array|string $_id
+     * @param null|array|string $_opts
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function retrieve($_id, $_opts = null)
+    {
+    }
+    /**
+     * @param string $_id
+     * @param null|array $_params
+     * @param null|array|string $_options
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function update($_id, $_params = null, $_options = null)
+    {
+    }
 }
 /**
  * A customer's <code>Cash balance</code> represents real funds. Customers can add
@@ -1883,32 +1894,32 @@ class Card extends \Stripe\ApiResource
  */
 class CashBalance extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'cash_balance';
-	/**
-	 * @return string the API URL for this balance transaction
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param array|string $_id
-	 * @param null|array|string $_opts
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function retrieve($_id, $_opts = null)
-	{
-	}
-	/**
-	 * @param string $_id
-	 * @param null|array $_params
-	 * @param null|array|string $_options
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function update($_id, $_params = null, $_options = null)
-	{
-	}
+    const OBJECT_NAME = 'cash_balance';
+    /**
+     * @return string the API URL for this balance transaction
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param array|string $_id
+     * @param null|array|string $_opts
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function retrieve($_id, $_opts = null)
+    {
+    }
+    /**
+     * @param string $_id
+     * @param null|array $_params
+     * @param null|array|string $_options
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function update($_id, $_params = null, $_options = null)
+    {
+    }
 }
 /**
  * To charge a credit or a debit card, you create a <code>Charge</code> object. You
@@ -1973,89 +1984,90 @@ class CashBalance extends \Stripe\ApiResource
  */
 class Charge extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'charge';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Search;
-	use \Stripe\ApiOperations\Update;
-	const STATUS_FAILED = 'failed';
-	const STATUS_PENDING = 'pending';
-	const STATUS_SUCCEEDED = 'succeeded';
-	/**
-	 * Possible string representations of decline codes.
-	 * These strings are applicable to the decline_code property of the \Stripe\Exception\CardException exception.
-	 *
-	 * @see https://stripe.com/docs/declines/codes
-	 */
-	const DECLINED_AUTHENTICATION_REQUIRED = 'authentication_required';
-	const DECLINED_APPROVE_WITH_ID = 'approve_with_id';
-	const DECLINED_CALL_ISSUER = 'call_issuer';
-	const DECLINED_CARD_NOT_SUPPORTED = 'card_not_supported';
-	const DECLINED_CARD_VELOCITY_EXCEEDED = 'card_velocity_exceeded';
-	const DECLINED_CURRENCY_NOT_SUPPORTED = 'currency_not_supported';
-	const DECLINED_DO_NOT_HONOR = 'do_not_honor';
-	const DECLINED_DO_NOT_TRY_AGAIN = 'do_not_try_again';
-	const DECLINED_DUPLICATED_TRANSACTION = 'duplicate_transaction';
-	const DECLINED_EXPIRED_CARD = 'expired_card';
-	const DECLINED_FRAUDULENT = 'fraudulent';
-	const DECLINED_GENERIC_DECLINE = 'generic_decline';
-	const DECLINED_INCORRECT_NUMBER = 'incorrect_number';
-	const DECLINED_INCORRECT_CVC = 'incorrect_cvc';
-	const DECLINED_INCORRECT_PIN = 'incorrect_pin';
-	const DECLINED_INCORRECT_ZIP = 'incorrect_zip';
-	const DECLINED_INSUFFICIENT_FUNDS = 'insufficient_funds';
-	const DECLINED_INVALID_ACCOUNT = 'invalid_account';
-	const DECLINED_INVALID_AMOUNT = 'invalid_amount';
-	const DECLINED_INVALID_CVC = 'invalid_cvc';
-	const DECLINED_INVALID_EXPIRY_YEAR = 'invalid_expiry_year';
-	const DECLINED_INVALID_NUMBER = 'invalid_number';
-	const DECLINED_INVALID_PIN = 'invalid_pin';
-	const DECLINED_ISSUER_NOT_AVAILABLE = 'issuer_not_available';
-	const DECLINED_LOST_CARD = 'lost_card';
-	const DECLINED_MERCHANT_BLACKLIST = 'merchant_blacklist';
-	const DECLINED_NEW_ACCOUNT_INFORMATION_AVAILABLE = 'new_account_information_available';
-	const DECLINED_NO_ACTION_TAKEN = 'no_action_taken';
-	const DECLINED_NOT_PERMITTED = 'not_permitted';
-	const DECLINED_OFFLINE_PIN_REQUIRED = 'offline_pin_required';
-	const DECLINED_ONLINE_OR_OFFLINE_PIN_REQUIRED = 'online_or_offline_pin_required';
-	const DECLINED_PICKUP_CARD = 'pickup_card';
-	const DECLINED_PIN_TRY_EXCEEDED = 'pin_try_exceeded';
-	const DECLINED_PROCESSING_ERROR = 'processing_error';
-	const DECLINED_REENTER_TRANSACTION = 'reenter_transaction';
-	const DECLINED_RESTRICTED_CARD = 'restricted_card';
-	const DECLINED_REVOCATION_OF_ALL_AUTHORIZATIONS = 'revocation_of_all_authorizations';
-	const DECLINED_REVOCATION_OF_AUTHORIZATION = 'revocation_of_authorization';
-	const DECLINED_SECURITY_VIOLATION = 'security_violation';
-	const DECLINED_SERVICE_NOT_ALLOWED = 'service_not_allowed';
-	const DECLINED_STOLEN_CARD = 'stolen_card';
-	const DECLINED_STOP_PAYMENT_ORDER = 'stop_payment_order';
-	const DECLINED_TESTMODE_DECLINE = 'testmode_decline';
-	const DECLINED_TRANSACTION_NOT_ALLOWED = 'transaction_not_allowed';
-	const DECLINED_TRY_AGAIN_LATER = 'try_again_later';
-	const DECLINED_WITHDRAWAL_COUNT_LIMIT_EXCEEDED = 'withdrawal_count_limit_exceeded';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Charge the captured charge
-	 */
-	public function capture($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<Charge> the charge search results
-	 */
-	public static function search($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'charge';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Search;
+    use \Stripe\ApiOperations\Update;
+
+    const STATUS_FAILED = 'failed';
+    const STATUS_PENDING = 'pending';
+    const STATUS_SUCCEEDED = 'succeeded';
+    /**
+     * Possible string representations of decline codes.
+     * These strings are applicable to the decline_code property of the \Stripe\Exception\CardException exception.
+     *
+     * @see https://stripe.com/docs/declines/codes
+     */
+    const DECLINED_AUTHENTICATION_REQUIRED = 'authentication_required';
+    const DECLINED_APPROVE_WITH_ID = 'approve_with_id';
+    const DECLINED_CALL_ISSUER = 'call_issuer';
+    const DECLINED_CARD_NOT_SUPPORTED = 'card_not_supported';
+    const DECLINED_CARD_VELOCITY_EXCEEDED = 'card_velocity_exceeded';
+    const DECLINED_CURRENCY_NOT_SUPPORTED = 'currency_not_supported';
+    const DECLINED_DO_NOT_HONOR = 'do_not_honor';
+    const DECLINED_DO_NOT_TRY_AGAIN = 'do_not_try_again';
+    const DECLINED_DUPLICATED_TRANSACTION = 'duplicate_transaction';
+    const DECLINED_EXPIRED_CARD = 'expired_card';
+    const DECLINED_FRAUDULENT = 'fraudulent';
+    const DECLINED_GENERIC_DECLINE = 'generic_decline';
+    const DECLINED_INCORRECT_NUMBER = 'incorrect_number';
+    const DECLINED_INCORRECT_CVC = 'incorrect_cvc';
+    const DECLINED_INCORRECT_PIN = 'incorrect_pin';
+    const DECLINED_INCORRECT_ZIP = 'incorrect_zip';
+    const DECLINED_INSUFFICIENT_FUNDS = 'insufficient_funds';
+    const DECLINED_INVALID_ACCOUNT = 'invalid_account';
+    const DECLINED_INVALID_AMOUNT = 'invalid_amount';
+    const DECLINED_INVALID_CVC = 'invalid_cvc';
+    const DECLINED_INVALID_EXPIRY_YEAR = 'invalid_expiry_year';
+    const DECLINED_INVALID_NUMBER = 'invalid_number';
+    const DECLINED_INVALID_PIN = 'invalid_pin';
+    const DECLINED_ISSUER_NOT_AVAILABLE = 'issuer_not_available';
+    const DECLINED_LOST_CARD = 'lost_card';
+    const DECLINED_MERCHANT_BLACKLIST = 'merchant_blacklist';
+    const DECLINED_NEW_ACCOUNT_INFORMATION_AVAILABLE = 'new_account_information_available';
+    const DECLINED_NO_ACTION_TAKEN = 'no_action_taken';
+    const DECLINED_NOT_PERMITTED = 'not_permitted';
+    const DECLINED_OFFLINE_PIN_REQUIRED = 'offline_pin_required';
+    const DECLINED_ONLINE_OR_OFFLINE_PIN_REQUIRED = 'online_or_offline_pin_required';
+    const DECLINED_PICKUP_CARD = 'pickup_card';
+    const DECLINED_PIN_TRY_EXCEEDED = 'pin_try_exceeded';
+    const DECLINED_PROCESSING_ERROR = 'processing_error';
+    const DECLINED_REENTER_TRANSACTION = 'reenter_transaction';
+    const DECLINED_RESTRICTED_CARD = 'restricted_card';
+    const DECLINED_REVOCATION_OF_ALL_AUTHORIZATIONS = 'revocation_of_all_authorizations';
+    const DECLINED_REVOCATION_OF_AUTHORIZATION = 'revocation_of_authorization';
+    const DECLINED_SECURITY_VIOLATION = 'security_violation';
+    const DECLINED_SERVICE_NOT_ALLOWED = 'service_not_allowed';
+    const DECLINED_STOLEN_CARD = 'stolen_card';
+    const DECLINED_STOP_PAYMENT_ORDER = 'stop_payment_order';
+    const DECLINED_TESTMODE_DECLINE = 'testmode_decline';
+    const DECLINED_TRANSACTION_NOT_ALLOWED = 'transaction_not_allowed';
+    const DECLINED_TRY_AGAIN_LATER = 'try_again_later';
+    const DECLINED_WITHDRAWAL_COUNT_LIMIT_EXCEEDED = 'withdrawal_count_limit_exceeded';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Charge the captured charge
+     */
+    public function capture($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<Charge> the charge search results
+     */
+    public static function search($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Checkout;
 
@@ -2129,52 +2141,53 @@ namespace Stripe\Checkout;
  */
 class Session extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'checkout.session';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	const BILLING_ADDRESS_COLLECTION_AUTO = 'auto';
-	const BILLING_ADDRESS_COLLECTION_REQUIRED = 'required';
-	const CUSTOMER_CREATION_ALWAYS = 'always';
-	const CUSTOMER_CREATION_IF_REQUIRED = 'if_required';
-	const MODE_PAYMENT = 'payment';
-	const MODE_SETUP = 'setup';
-	const MODE_SUBSCRIPTION = 'subscription';
-	const PAYMENT_METHOD_COLLECTION_ALWAYS = 'always';
-	const PAYMENT_METHOD_COLLECTION_IF_REQUIRED = 'if_required';
-	const PAYMENT_STATUS_NO_PAYMENT_REQUIRED = 'no_payment_required';
-	const PAYMENT_STATUS_PAID = 'paid';
-	const PAYMENT_STATUS_UNPAID = 'unpaid';
-	const STATUS_COMPLETE = 'complete';
-	const STATUS_EXPIRED = 'expired';
-	const STATUS_OPEN = 'open';
-	const SUBMIT_TYPE_AUTO = 'auto';
-	const SUBMIT_TYPE_BOOK = 'book';
-	const SUBMIT_TYPE_DONATE = 'donate';
-	const SUBMIT_TYPE_PAY = 'pay';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Checkout\Session the expired session
-	 */
-	public function expire($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
-	 */
-	public static function allLineItems($id, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'checkout.session';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const BILLING_ADDRESS_COLLECTION_AUTO = 'auto';
+    const BILLING_ADDRESS_COLLECTION_REQUIRED = 'required';
+    const CUSTOMER_CREATION_ALWAYS = 'always';
+    const CUSTOMER_CREATION_IF_REQUIRED = 'if_required';
+    const MODE_PAYMENT = 'payment';
+    const MODE_SETUP = 'setup';
+    const MODE_SUBSCRIPTION = 'subscription';
+    const PAYMENT_METHOD_COLLECTION_ALWAYS = 'always';
+    const PAYMENT_METHOD_COLLECTION_IF_REQUIRED = 'if_required';
+    const PAYMENT_STATUS_NO_PAYMENT_REQUIRED = 'no_payment_required';
+    const PAYMENT_STATUS_PAID = 'paid';
+    const PAYMENT_STATUS_UNPAID = 'unpaid';
+    const STATUS_COMPLETE = 'complete';
+    const STATUS_EXPIRED = 'expired';
+    const STATUS_OPEN = 'open';
+    const SUBMIT_TYPE_AUTO = 'auto';
+    const SUBMIT_TYPE_BOOK = 'book';
+    const SUBMIT_TYPE_DONATE = 'donate';
+    const SUBMIT_TYPE_PAY = 'pay';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Checkout\Session the expired session
+     */
+    public function expire($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
+     */
+    public static function allLineItems($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe;
 
@@ -2191,168 +2204,169 @@ namespace Stripe;
  */
 class Collection extends \Stripe\StripeObject implements \Countable, \IteratorAggregate
 {
-	const OBJECT_NAME = 'list';
-	use \Stripe\ApiOperations\Request;
-	/** @var array */
-	protected $filters = [];
-	/**
-	 * @return string the base URL for the given class
-	 */
-	public static function baseUrl()
-	{
-	}
-	/**
-	 * Returns the filters.
-	 *
-	 * @return array the filters
-	 */
-	public function getFilters()
-	{
-	}
-	/**
-	 * Sets the filters, removing paging options.
-	 *
-	 * @param array $filters the filters
-	 */
-	public function setFilters($filters)
-	{
-	}
-	/**
-	 * @return mixed
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetGet($k)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws Exception\ApiErrorException
-	 *
-	 * @return Collection<TStripeObject>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws Exception\ApiErrorException
-	 *
-	 * @return TStripeObject
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws Exception\ApiErrorException
-	 *
-	 * @return TStripeObject
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @return int the number of objects in the current page
-	 */
-	#[\ReturnTypeWillChange]
-	public function count()
-	{
-	}
-	/**
-	 * @return \ArrayIterator an iterator that can be used to iterate
-	 *    across objects in the current page
-	 */
-	#[\ReturnTypeWillChange]
-	public function getIterator()
-	{
-	}
-	/**
-	 * @return \ArrayIterator an iterator that can be used to iterate
-	 *    backwards across objects in the current page
-	 */
-	public function getReverseIterator()
-	{
-	}
-	/**
-	 * @return \Generator|TStripeObject[] A generator that can be used to
-	 *    iterate across all objects across all pages. As page boundaries are
-	 *    encountered, the next page will be fetched automatically for
-	 *    continued iteration.
-	 */
-	public function autoPagingIterator()
-	{
-	}
-	/**
-	 * Returns an empty collection. This is returned from {@see nextPage()}
-	 * when we know that there isn't a next page in order to replicate the
-	 * behavior of the API when it attempts to return a page beyond the last.
-	 *
-	 * @param null|array|string $opts
-	 *
-	 * @return Collection
-	 */
-	public static function emptyCollection($opts = null)
-	{
-	}
-	/**
-	 * Returns true if the page object contains no element.
-	 *
-	 * @return bool
-	 */
-	public function isEmpty()
-	{
-	}
-	/**
-	 * Fetches the next page in the resource list (if there is one).
-	 *
-	 * This method will try to respect the limit of the current page. If none
-	 * was given, the default limit will be fetched again.
-	 *
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @return Collection<TStripeObject>
-	 */
-	public function nextPage($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Fetches the previous page in the resource list (if there is one).
-	 *
-	 * This method will try to respect the limit of the current page. If none
-	 * was given, the default limit will be fetched again.
-	 *
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @return Collection<TStripeObject>
-	 */
-	public function previousPage($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Gets the first item from the current page. Returns `null` if the current page is empty.
-	 *
-	 * @return null|TStripeObject
-	 */
-	public function first()
-	{
-	}
-	/**
-	 * Gets the last item from the current page. Returns `null` if the current page is empty.
-	 *
-	 * @return null|TStripeObject
-	 */
-	public function last()
-	{
-	}
+    const OBJECT_NAME = 'list';
+    use \Stripe\ApiOperations\Request;
+
+    /** @var array */
+    protected $filters = [];
+    /**
+     * @return string the base URL for the given class
+     */
+    public static function baseUrl()
+    {
+    }
+    /**
+     * Returns the filters.
+     *
+     * @return array the filters
+     */
+    public function getFilters()
+    {
+    }
+    /**
+     * Sets the filters, removing paging options.
+     *
+     * @param array $filters the filters
+     */
+    public function setFilters($filters)
+    {
+    }
+    /**
+     * @return mixed
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetGet($k)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws Exception\ApiErrorException
+     *
+     * @return Collection<TStripeObject>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws Exception\ApiErrorException
+     *
+     * @return TStripeObject
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws Exception\ApiErrorException
+     *
+     * @return TStripeObject
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @return int the number of objects in the current page
+     */
+    #[\ReturnTypeWillChange]
+    public function count()
+    {
+    }
+    /**
+     * @return \ArrayIterator an iterator that can be used to iterate
+     *    across objects in the current page
+     */
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+    }
+    /**
+     * @return \ArrayIterator an iterator that can be used to iterate
+     *    backwards across objects in the current page
+     */
+    public function getReverseIterator()
+    {
+    }
+    /**
+     * @return \Generator|TStripeObject[] A generator that can be used to
+     *    iterate across all objects across all pages. As page boundaries are
+     *    encountered, the next page will be fetched automatically for
+     *    continued iteration.
+     */
+    public function autoPagingIterator()
+    {
+    }
+    /**
+     * Returns an empty collection. This is returned from {@see nextPage()}
+     * when we know that there isn't a next page in order to replicate the
+     * behavior of the API when it attempts to return a page beyond the last.
+     *
+     * @param null|array|string $opts
+     *
+     * @return Collection
+     */
+    public static function emptyCollection($opts = null)
+    {
+    }
+    /**
+     * Returns true if the page object contains no element.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+    }
+    /**
+     * Fetches the next page in the resource list (if there is one).
+     *
+     * This method will try to respect the limit of the current page. If none
+     * was given, the default limit will be fetched again.
+     *
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @return Collection<TStripeObject>
+     */
+    public function nextPage($params = null, $opts = null)
+    {
+    }
+    /**
+     * Fetches the previous page in the resource list (if there is one).
+     *
+     * This method will try to respect the limit of the current page. If none
+     * was given, the default limit will be fetched again.
+     *
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @return Collection<TStripeObject>
+     */
+    public function previousPage($params = null, $opts = null)
+    {
+    }
+    /**
+     * Gets the first item from the current page. Returns `null` if the current page is empty.
+     *
+     * @return null|TStripeObject
+     */
+    public function first()
+    {
+    }
+    /**
+     * Gets the last item from the current page. Returns `null` if the current page is empty.
+     *
+     * @return null|TStripeObject
+     */
+    public function last()
+    {
+    }
 }
 /**
  * Stripe needs to collect certain pieces of information about each account
@@ -2373,9 +2387,9 @@ class Collection extends \Stripe\StripeObject implements \Countable, \IteratorAg
  */
 class CountrySpec extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'country_spec';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'country_spec';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
 }
 /**
  * A coupon contains information about a percent-off or amount-off discount you
@@ -2408,12 +2422,12 @@ class CountrySpec extends \Stripe\ApiResource
  */
 class Coupon extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'coupon';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'coupon';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * Issue a credit note to adjust an invoice's amount after the invoice is
@@ -2454,66 +2468,67 @@ class Coupon extends \Stripe\ApiResource
  */
 class CreditNote extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'credit_note';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\NestedResource;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const REASON_DUPLICATE = 'duplicate';
-	const REASON_FRAUDULENT = 'fraudulent';
-	const REASON_ORDER_CHANGE = 'order_change';
-	const REASON_PRODUCT_UNSATISFACTORY = 'product_unsatisfactory';
-	const STATUS_ISSUED = 'issued';
-	const STATUS_VOID = 'void';
-	const TYPE_POST_PAYMENT = 'post_payment';
-	const TYPE_PRE_PAYMENT = 'pre_payment';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CreditNote the previewed credit note
-	 */
-	public static function preview($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CreditNoteLineItem> list of CreditNoteLineItems
-	 */
-	public static function previewLines($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CreditNote the voided credit note
-	 */
-	public function voidCreditNote($params = null, $opts = null)
-	{
-	}
-	const PATH_LINES = '/lines';
-	/**
-	 * @param string $id the ID of the credit note on which to retrieve the credit note line items
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CreditNoteLineItem> the list of credit note line items
-	 */
-	public static function allLines($id, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'credit_note';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\NestedResource;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const REASON_DUPLICATE = 'duplicate';
+    const REASON_FRAUDULENT = 'fraudulent';
+    const REASON_ORDER_CHANGE = 'order_change';
+    const REASON_PRODUCT_UNSATISFACTORY = 'product_unsatisfactory';
+    const STATUS_ISSUED = 'issued';
+    const STATUS_VOID = 'void';
+    const TYPE_POST_PAYMENT = 'post_payment';
+    const TYPE_PRE_PAYMENT = 'pre_payment';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CreditNote the previewed credit note
+     */
+    public static function preview($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CreditNoteLineItem> list of CreditNoteLineItems
+     */
+    public static function previewLines($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CreditNote the voided credit note
+     */
+    public function voidCreditNote($params = null, $opts = null)
+    {
+    }
+    const PATH_LINES = '/lines';
+    /**
+     * @param string $id the ID of the credit note on which to retrieve the credit note line items
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CreditNoteLineItem> the list of credit note line items
+     */
+    public static function allLines($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * @property string $id Unique identifier for the object.
@@ -2535,7 +2550,7 @@ class CreditNote extends \Stripe\ApiResource
  */
 class CreditNoteLineItem extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'credit_note_line_item';
+    const OBJECT_NAME = 'credit_note_line_item';
 }
 /**
  * This object represents a customer of your business. It lets you create recurring
@@ -2576,283 +2591,284 @@ class CreditNoteLineItem extends \Stripe\ApiResource
  */
 class Customer extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'customer';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\NestedResource;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Search;
-	use \Stripe\ApiOperations\Update;
-	const TAX_EXEMPT_EXEMPT = 'exempt';
-	const TAX_EXEMPT_NONE = 'none';
-	const TAX_EXEMPT_REVERSE = 'reverse';
-	public static function getSavedNestedResources()
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @return \Stripe\Customer the updated customer
-	 */
-	public function deleteDiscount($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\PaymentMethod> list of PaymentMethods
-	 */
-	public static function allPaymentMethods($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $payment_method
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer the retrieved customer
-	 */
-	public function retrievePaymentMethod($payment_method, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<Customer> the customer search results
-	 */
-	public static function search($params = null, $opts = null)
-	{
-	}
-	const PATH_CASH_BALANCE = '/cash_balance';
-	/**
-	 * @param string $id the ID of the customer to which the cash balance belongs
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 * @param mixed $cashBalanceId
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CashBalance
-	 */
-	public static function retrieveCashBalance($id, $cashBalanceId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the cash balance belongs
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 * @param mixed $cashBalanceId
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CashBalance
-	 */
-	public static function updateCashBalance($id, $cashBalanceId, $params = null, $opts = null)
-	{
-	}
-	const PATH_BALANCE_TRANSACTIONS = '/balance_transactions';
-	/**
-	 * @param string $id the ID of the customer on which to retrieve the customer balance transactions
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CustomerBalanceTransaction> the list of customer balance transactions
-	 */
-	public static function allBalanceTransactions($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer on which to create the customer balance transaction
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerBalanceTransaction
-	 */
-	public static function createBalanceTransaction($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the customer balance transaction belongs
-	 * @param string $balanceTransactionId the ID of the customer balance transaction to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerBalanceTransaction
-	 */
-	public static function retrieveBalanceTransaction($id, $balanceTransactionId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the customer balance transaction belongs
-	 * @param string $balanceTransactionId the ID of the customer balance transaction to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerBalanceTransaction
-	 */
-	public static function updateBalanceTransaction($id, $balanceTransactionId, $params = null, $opts = null)
-	{
-	}
-	const PATH_CASH_BALANCE_TRANSACTIONS = '/cash_balance_transactions';
-	/**
-	 * @param string $id the ID of the customer on which to retrieve the customer cash balance transactions
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CustomerCashBalanceTransaction> the list of customer cash balance transactions
-	 */
-	public static function allCashBalanceTransactions($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the customer cash balance transaction belongs
-	 * @param string $cashBalanceTransactionId the ID of the customer cash balance transaction to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerCashBalanceTransaction
-	 */
-	public static function retrieveCashBalanceTransaction($id, $cashBalanceTransactionId, $params = null, $opts = null)
-	{
-	}
-	const PATH_SOURCES = '/sources';
-	/**
-	 * @param string $id the ID of the customer on which to retrieve the payment sources
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card|\Stripe\Source> the list of payment sources (BankAccount, Card or Source)
-	 */
-	public static function allSources($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer on which to create the payment source
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public static function createSource($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the payment source belongs
-	 * @param string $sourceId the ID of the payment source to delete
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public static function deleteSource($id, $sourceId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the payment source belongs
-	 * @param string $sourceId the ID of the payment source to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public static function retrieveSource($id, $sourceId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the payment source belongs
-	 * @param string $sourceId the ID of the payment source to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public static function updateSource($id, $sourceId, $params = null, $opts = null)
-	{
-	}
-	const PATH_TAX_IDS = '/tax_ids';
-	/**
-	 * @param string $id the ID of the customer on which to retrieve the tax ids
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\TaxId> the list of tax ids
-	 */
-	public static function allTaxIds($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer on which to create the tax id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxId
-	 */
-	public static function createTaxId($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the tax id belongs
-	 * @param string $taxIdId the ID of the tax id to delete
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxId
-	 */
-	public static function deleteTaxId($id, $taxIdId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the customer to which the tax id belongs
-	 * @param string $taxIdId the ID of the tax id to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxId
-	 */
-	public static function retrieveTaxId($id, $taxIdId, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'customer';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\NestedResource;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Search;
+    use \Stripe\ApiOperations\Update;
+
+    const TAX_EXEMPT_EXEMPT = 'exempt';
+    const TAX_EXEMPT_NONE = 'none';
+    const TAX_EXEMPT_REVERSE = 'reverse';
+    public static function getSavedNestedResources()
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @return \Stripe\Customer the updated customer
+     */
+    public function deleteDiscount($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\PaymentMethod> list of PaymentMethods
+     */
+    public static function allPaymentMethods($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $payment_method
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer the retrieved customer
+     */
+    public function retrievePaymentMethod($payment_method, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<Customer> the customer search results
+     */
+    public static function search($params = null, $opts = null)
+    {
+    }
+    const PATH_CASH_BALANCE = '/cash_balance';
+    /**
+     * @param string $id the ID of the customer to which the cash balance belongs
+     * @param null|array $params
+     * @param null|array|string $opts
+     * @param mixed $cashBalanceId
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CashBalance
+     */
+    public static function retrieveCashBalance($id, $cashBalanceId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the cash balance belongs
+     * @param null|array $params
+     * @param null|array|string $opts
+     * @param mixed $cashBalanceId
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CashBalance
+     */
+    public static function updateCashBalance($id, $cashBalanceId, $params = null, $opts = null)
+    {
+    }
+    const PATH_BALANCE_TRANSACTIONS = '/balance_transactions';
+    /**
+     * @param string $id the ID of the customer on which to retrieve the customer balance transactions
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CustomerBalanceTransaction> the list of customer balance transactions
+     */
+    public static function allBalanceTransactions($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer on which to create the customer balance transaction
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerBalanceTransaction
+     */
+    public static function createBalanceTransaction($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the customer balance transaction belongs
+     * @param string $balanceTransactionId the ID of the customer balance transaction to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerBalanceTransaction
+     */
+    public static function retrieveBalanceTransaction($id, $balanceTransactionId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the customer balance transaction belongs
+     * @param string $balanceTransactionId the ID of the customer balance transaction to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerBalanceTransaction
+     */
+    public static function updateBalanceTransaction($id, $balanceTransactionId, $params = null, $opts = null)
+    {
+    }
+    const PATH_CASH_BALANCE_TRANSACTIONS = '/cash_balance_transactions';
+    /**
+     * @param string $id the ID of the customer on which to retrieve the customer cash balance transactions
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CustomerCashBalanceTransaction> the list of customer cash balance transactions
+     */
+    public static function allCashBalanceTransactions($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the customer cash balance transaction belongs
+     * @param string $cashBalanceTransactionId the ID of the customer cash balance transaction to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerCashBalanceTransaction
+     */
+    public static function retrieveCashBalanceTransaction($id, $cashBalanceTransactionId, $params = null, $opts = null)
+    {
+    }
+    const PATH_SOURCES = '/sources';
+    /**
+     * @param string $id the ID of the customer on which to retrieve the payment sources
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card|\Stripe\Source> the list of payment sources (BankAccount, Card or Source)
+     */
+    public static function allSources($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer on which to create the payment source
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public static function createSource($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the payment source belongs
+     * @param string $sourceId the ID of the payment source to delete
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public static function deleteSource($id, $sourceId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the payment source belongs
+     * @param string $sourceId the ID of the payment source to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public static function retrieveSource($id, $sourceId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the payment source belongs
+     * @param string $sourceId the ID of the payment source to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public static function updateSource($id, $sourceId, $params = null, $opts = null)
+    {
+    }
+    const PATH_TAX_IDS = '/tax_ids';
+    /**
+     * @param string $id the ID of the customer on which to retrieve the tax ids
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\TaxId> the list of tax ids
+     */
+    public static function allTaxIds($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer on which to create the tax id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxId
+     */
+    public static function createTaxId($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the tax id belongs
+     * @param string $taxIdId the ID of the tax id to delete
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxId
+     */
+    public static function deleteTaxId($id, $taxIdId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the customer to which the tax id belongs
+     * @param string $taxIdId the ID of the tax id to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxId
+     */
+    public static function retrieveTaxId($id, $taxIdId, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Each customer has a <a
@@ -2883,41 +2899,41 @@ class Customer extends \Stripe\ApiResource
  */
 class CustomerBalanceTransaction extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'customer_balance_transaction';
-	const TYPE_ADJUSTMENT = 'adjustment';
-	const TYPE_APPLIED_TO_INVOICE = 'applied_to_invoice';
-	const TYPE_CREDIT_NOTE = 'credit_note';
-	const TYPE_INITIAL = 'initial';
-	const TYPE_INVOICE_OVERPAID = 'invoice_overpaid';
-	const TYPE_INVOICE_TOO_LARGE = 'invoice_too_large';
-	const TYPE_INVOICE_TOO_SMALL = 'invoice_too_small';
-	const TYPE_UNSPENT_RECEIVER_CREDIT = 'unspent_receiver_credit';
-	const TYPE_ADJUSTEMENT = 'adjustment';
-	/**
-	 * @return string the API URL for this balance transaction
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param array|string $_id
-	 * @param null|array|string $_opts
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function retrieve($_id, $_opts = null)
-	{
-	}
-	/**
-	 * @param string $_id
-	 * @param null|array $_params
-	 * @param null|array|string $_options
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function update($_id, $_params = null, $_options = null)
-	{
-	}
+    const OBJECT_NAME = 'customer_balance_transaction';
+    const TYPE_ADJUSTMENT = 'adjustment';
+    const TYPE_APPLIED_TO_INVOICE = 'applied_to_invoice';
+    const TYPE_CREDIT_NOTE = 'credit_note';
+    const TYPE_INITIAL = 'initial';
+    const TYPE_INVOICE_OVERPAID = 'invoice_overpaid';
+    const TYPE_INVOICE_TOO_LARGE = 'invoice_too_large';
+    const TYPE_INVOICE_TOO_SMALL = 'invoice_too_small';
+    const TYPE_UNSPENT_RECEIVER_CREDIT = 'unspent_receiver_credit';
+    const TYPE_ADJUSTEMENT = 'adjustment';
+    /**
+     * @return string the API URL for this balance transaction
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param array|string $_id
+     * @param null|array|string $_opts
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function retrieve($_id, $_opts = null)
+    {
+    }
+    /**
+     * @param string $_id
+     * @param null|array $_params
+     * @param null|array|string $_options
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function update($_id, $_params = null, $_options = null)
+    {
+    }
 }
 /**
  * Customers with certain payments enabled have a cash balance, representing funds
@@ -2942,16 +2958,17 @@ class CustomerBalanceTransaction extends \Stripe\ApiResource
  */
 class CustomerCashBalanceTransaction extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'customer_cash_balance_transaction';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const TYPE_APPLIED_TO_PAYMENT = 'applied_to_payment';
-	const TYPE_FUNDED = 'funded';
-	const TYPE_FUNDING_REVERSED = 'funding_reversed';
-	const TYPE_REFUNDED_FROM_PAYMENT = 'refunded_from_payment';
-	const TYPE_RETURN_CANCELED = 'return_canceled';
-	const TYPE_RETURN_INITIATED = 'return_initiated';
-	const TYPE_UNAPPLIED_FROM_PAYMENT = 'unapplied_from_payment';
+    const OBJECT_NAME = 'customer_cash_balance_transaction';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const TYPE_APPLIED_TO_PAYMENT = 'applied_to_payment';
+    const TYPE_FUNDED = 'funded';
+    const TYPE_FUNDING_REVERSED = 'funding_reversed';
+    const TYPE_REFUNDED_FROM_PAYMENT = 'refunded_from_payment';
+    const TYPE_RETURN_CANCELED = 'return_canceled';
+    const TYPE_RETURN_INITIATED = 'return_initiated';
+    const TYPE_UNAPPLIED_FROM_PAYMENT = 'unapplied_from_payment';
 }
 /**
  * Class Discount.
@@ -2970,7 +2987,7 @@ class CustomerCashBalanceTransaction extends \Stripe\ApiResource
  */
 class Discount extends \Stripe\StripeObject
 {
-	const OBJECT_NAME = 'discount';
+    const OBJECT_NAME = 'discount';
 }
 /**
  * A dispute occurs when a customer questions your charge with their card issuer.
@@ -3001,43 +3018,44 @@ class Discount extends \Stripe\StripeObject
  */
 class Dispute extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'dispute';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const REASON_BANK_CANNOT_PROCESS = 'bank_cannot_process';
-	const REASON_CHECK_RETURNED = 'check_returned';
-	const REASON_CREDIT_NOT_PROCESSED = 'credit_not_processed';
-	const REASON_CUSTOMER_INITIATED = 'customer_initiated';
-	const REASON_DEBIT_NOT_AUTHORIZED = 'debit_not_authorized';
-	const REASON_DUPLICATE = 'duplicate';
-	const REASON_FRAUDULENT = 'fraudulent';
-	const REASON_GENERAL = 'general';
-	const REASON_INCORRECT_ACCOUNT_DETAILS = 'incorrect_account_details';
-	const REASON_INSUFFICIENT_FUNDS = 'insufficient_funds';
-	const REASON_PRODUCT_NOT_RECEIVED = 'product_not_received';
-	const REASON_PRODUCT_UNACCEPTABLE = 'product_unacceptable';
-	const REASON_SUBSCRIPTION_CANCELED = 'subscription_canceled';
-	const REASON_UNRECOGNIZED = 'unrecognized';
-	const STATUS_CHARGE_REFUNDED = 'charge_refunded';
-	const STATUS_LOST = 'lost';
-	const STATUS_NEEDS_RESPONSE = 'needs_response';
-	const STATUS_UNDER_REVIEW = 'under_review';
-	const STATUS_WARNING_CLOSED = 'warning_closed';
-	const STATUS_WARNING_NEEDS_RESPONSE = 'warning_needs_response';
-	const STATUS_WARNING_UNDER_REVIEW = 'warning_under_review';
-	const STATUS_WON = 'won';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Dispute the closed dispute
-	 */
-	public function close($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'dispute';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const REASON_BANK_CANNOT_PROCESS = 'bank_cannot_process';
+    const REASON_CHECK_RETURNED = 'check_returned';
+    const REASON_CREDIT_NOT_PROCESSED = 'credit_not_processed';
+    const REASON_CUSTOMER_INITIATED = 'customer_initiated';
+    const REASON_DEBIT_NOT_AUTHORIZED = 'debit_not_authorized';
+    const REASON_DUPLICATE = 'duplicate';
+    const REASON_FRAUDULENT = 'fraudulent';
+    const REASON_GENERAL = 'general';
+    const REASON_INCORRECT_ACCOUNT_DETAILS = 'incorrect_account_details';
+    const REASON_INSUFFICIENT_FUNDS = 'insufficient_funds';
+    const REASON_PRODUCT_NOT_RECEIVED = 'product_not_received';
+    const REASON_PRODUCT_UNACCEPTABLE = 'product_unacceptable';
+    const REASON_SUBSCRIPTION_CANCELED = 'subscription_canceled';
+    const REASON_UNRECOGNIZED = 'unrecognized';
+    const STATUS_CHARGE_REFUNDED = 'charge_refunded';
+    const STATUS_LOST = 'lost';
+    const STATUS_NEEDS_RESPONSE = 'needs_response';
+    const STATUS_UNDER_REVIEW = 'under_review';
+    const STATUS_WARNING_CLOSED = 'warning_closed';
+    const STATUS_WARNING_NEEDS_RESPONSE = 'warning_needs_response';
+    const STATUS_WARNING_UNDER_REVIEW = 'warning_under_review';
+    const STATUS_WON = 'won';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Dispute the closed dispute
+     */
+    public function close($params = null, $opts = null)
+    {
+    }
 }
 /**
  * @property string $id Unique identifier for the object.
@@ -3049,23 +3067,24 @@ class Dispute extends \Stripe\ApiResource
  */
 class EphemeralKey extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'ephemeral_key';
-	use \Stripe\ApiOperations\Create {
-		create as protected _create;
-	}
-	use \Stripe\ApiOperations\Delete;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\InvalidArgumentException if stripe_version is missing
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\EphemeralKey the created key
-	 */
-	public static function create($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'ephemeral_key';
+    use \Stripe\ApiOperations\Create {
+        create as protected _create;
+    }
+    use \Stripe\ApiOperations\Delete;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\InvalidArgumentException if stripe_version is missing
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\EphemeralKey the created key
+     */
+    public static function create($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Class ErrorObject.
@@ -3102,156 +3121,156 @@ class EphemeralKey extends \Stripe\ApiResource
  */
 class ErrorObject extends \Stripe\StripeObject
 {
-	/**
-	 * Possible string representations of an error's code.
-	 *
-	 * @see https://stripe.com/docs/error-codes
-	 */
-	const CODE_ACCOUNT_COUNTRY_INVALID_ADDRESS = 'account_country_invalid_address';
-	const CODE_ACCOUNT_ERROR_COUNTRY_CHANGE_REQUIRES_ADDITIONAL_STEPS = 'account_error_country_change_requires_additional_steps';
-	const CODE_ACCOUNT_INFORMATION_MISMATCH = 'account_information_mismatch';
-	const CODE_ACCOUNT_INVALID = 'account_invalid';
-	const CODE_ACCOUNT_NUMBER_INVALID = 'account_number_invalid';
-	const CODE_ACSS_DEBIT_SESSION_INCOMPLETE = 'acss_debit_session_incomplete';
-	const CODE_ALIPAY_UPGRADE_REQUIRED = 'alipay_upgrade_required';
-	const CODE_AMOUNT_TOO_LARGE = 'amount_too_large';
-	const CODE_AMOUNT_TOO_SMALL = 'amount_too_small';
-	const CODE_API_KEY_EXPIRED = 'api_key_expired';
-	const CODE_AUTHENTICATION_REQUIRED = 'authentication_required';
-	const CODE_BALANCE_INSUFFICIENT = 'balance_insufficient';
-	const CODE_BANK_ACCOUNT_BAD_ROUTING_NUMBERS = 'bank_account_bad_routing_numbers';
-	const CODE_BANK_ACCOUNT_DECLINED = 'bank_account_declined';
-	const CODE_BANK_ACCOUNT_EXISTS = 'bank_account_exists';
-	const CODE_BANK_ACCOUNT_UNUSABLE = 'bank_account_unusable';
-	const CODE_BANK_ACCOUNT_UNVERIFIED = 'bank_account_unverified';
-	const CODE_BANK_ACCOUNT_VERIFICATION_FAILED = 'bank_account_verification_failed';
-	const CODE_BILLING_INVALID_MANDATE = 'billing_invalid_mandate';
-	const CODE_BITCOIN_UPGRADE_REQUIRED = 'bitcoin_upgrade_required';
-	const CODE_CARD_DECLINE_RATE_LIMIT_EXCEEDED = 'card_decline_rate_limit_exceeded';
-	const CODE_CARD_DECLINED = 'card_declined';
-	const CODE_CARDHOLDER_PHONE_NUMBER_REQUIRED = 'cardholder_phone_number_required';
-	const CODE_CHARGE_ALREADY_CAPTURED = 'charge_already_captured';
-	const CODE_CHARGE_ALREADY_REFUNDED = 'charge_already_refunded';
-	const CODE_CHARGE_DISPUTED = 'charge_disputed';
-	const CODE_CHARGE_EXCEEDS_SOURCE_LIMIT = 'charge_exceeds_source_limit';
-	const CODE_CHARGE_EXPIRED_FOR_CAPTURE = 'charge_expired_for_capture';
-	const CODE_CHARGE_INVALID_PARAMETER = 'charge_invalid_parameter';
-	const CODE_CLEARING_CODE_UNSUPPORTED = 'clearing_code_unsupported';
-	const CODE_COUNTRY_CODE_INVALID = 'country_code_invalid';
-	const CODE_COUNTRY_UNSUPPORTED = 'country_unsupported';
-	const CODE_COUPON_EXPIRED = 'coupon_expired';
-	const CODE_CUSTOMER_MAX_PAYMENT_METHODS = 'customer_max_payment_methods';
-	const CODE_CUSTOMER_MAX_SUBSCRIPTIONS = 'customer_max_subscriptions';
-	const CODE_DEBIT_NOT_AUTHORIZED = 'debit_not_authorized';
-	const CODE_EMAIL_INVALID = 'email_invalid';
-	const CODE_EXPIRED_CARD = 'expired_card';
-	const CODE_IDEMPOTENCY_KEY_IN_USE = 'idempotency_key_in_use';
-	const CODE_INCORRECT_ADDRESS = 'incorrect_address';
-	const CODE_INCORRECT_CVC = 'incorrect_cvc';
-	const CODE_INCORRECT_NUMBER = 'incorrect_number';
-	const CODE_INCORRECT_ZIP = 'incorrect_zip';
-	const CODE_INSTANT_PAYOUTS_LIMIT_EXCEEDED = 'instant_payouts_limit_exceeded';
-	const CODE_INSTANT_PAYOUTS_UNSUPPORTED = 'instant_payouts_unsupported';
-	const CODE_INSUFFICIENT_FUNDS = 'insufficient_funds';
-	const CODE_INTENT_INVALID_STATE = 'intent_invalid_state';
-	const CODE_INTENT_VERIFICATION_METHOD_MISSING = 'intent_verification_method_missing';
-	const CODE_INVALID_CARD_TYPE = 'invalid_card_type';
-	const CODE_INVALID_CHARACTERS = 'invalid_characters';
-	const CODE_INVALID_CHARGE_AMOUNT = 'invalid_charge_amount';
-	const CODE_INVALID_CVC = 'invalid_cvc';
-	const CODE_INVALID_EXPIRY_MONTH = 'invalid_expiry_month';
-	const CODE_INVALID_EXPIRY_YEAR = 'invalid_expiry_year';
-	const CODE_INVALID_NUMBER = 'invalid_number';
-	const CODE_INVALID_SOURCE_USAGE = 'invalid_source_usage';
-	const CODE_INVOICE_NO_CUSTOMER_LINE_ITEMS = 'invoice_no_customer_line_items';
-	const CODE_INVOICE_NO_PAYMENT_METHOD_TYPES = 'invoice_no_payment_method_types';
-	const CODE_INVOICE_NO_SUBSCRIPTION_LINE_ITEMS = 'invoice_no_subscription_line_items';
-	const CODE_INVOICE_NOT_EDITABLE = 'invoice_not_editable';
-	const CODE_INVOICE_ON_BEHALF_OF_NOT_EDITABLE = 'invoice_on_behalf_of_not_editable';
-	const CODE_INVOICE_PAYMENT_INTENT_REQUIRES_ACTION = 'invoice_payment_intent_requires_action';
-	const CODE_INVOICE_UPCOMING_NONE = 'invoice_upcoming_none';
-	const CODE_LIVEMODE_MISMATCH = 'livemode_mismatch';
-	const CODE_LOCK_TIMEOUT = 'lock_timeout';
-	const CODE_MISSING = 'missing';
-	const CODE_NO_ACCOUNT = 'no_account';
-	const CODE_NOT_ALLOWED_ON_STANDARD_ACCOUNT = 'not_allowed_on_standard_account';
-	const CODE_OUT_OF_INVENTORY = 'out_of_inventory';
-	const CODE_PARAMETER_INVALID_EMPTY = 'parameter_invalid_empty';
-	const CODE_PARAMETER_INVALID_INTEGER = 'parameter_invalid_integer';
-	const CODE_PARAMETER_INVALID_STRING_BLANK = 'parameter_invalid_string_blank';
-	const CODE_PARAMETER_INVALID_STRING_EMPTY = 'parameter_invalid_string_empty';
-	const CODE_PARAMETER_MISSING = 'parameter_missing';
-	const CODE_PARAMETER_UNKNOWN = 'parameter_unknown';
-	const CODE_PARAMETERS_EXCLUSIVE = 'parameters_exclusive';
-	const CODE_PAYMENT_INTENT_ACTION_REQUIRED = 'payment_intent_action_required';
-	const CODE_PAYMENT_INTENT_AUTHENTICATION_FAILURE = 'payment_intent_authentication_failure';
-	const CODE_PAYMENT_INTENT_INCOMPATIBLE_PAYMENT_METHOD = 'payment_intent_incompatible_payment_method';
-	const CODE_PAYMENT_INTENT_INVALID_PARAMETER = 'payment_intent_invalid_parameter';
-	const CODE_PAYMENT_INTENT_KONBINI_REJECTED_CONFIRMATION_NUMBER = 'payment_intent_konbini_rejected_confirmation_number';
-	const CODE_PAYMENT_INTENT_MANDATE_INVALID = 'payment_intent_mandate_invalid';
-	const CODE_PAYMENT_INTENT_PAYMENT_ATTEMPT_EXPIRED = 'payment_intent_payment_attempt_expired';
-	const CODE_PAYMENT_INTENT_PAYMENT_ATTEMPT_FAILED = 'payment_intent_payment_attempt_failed';
-	const CODE_PAYMENT_INTENT_UNEXPECTED_STATE = 'payment_intent_unexpected_state';
-	const CODE_PAYMENT_METHOD_BANK_ACCOUNT_ALREADY_VERIFIED = 'payment_method_bank_account_already_verified';
-	const CODE_PAYMENT_METHOD_BANK_ACCOUNT_BLOCKED = 'payment_method_bank_account_blocked';
-	const CODE_PAYMENT_METHOD_BILLING_DETAILS_ADDRESS_MISSING = 'payment_method_billing_details_address_missing';
-	const CODE_PAYMENT_METHOD_CURRENCY_MISMATCH = 'payment_method_currency_mismatch';
-	const CODE_PAYMENT_METHOD_INVALID_PARAMETER = 'payment_method_invalid_parameter';
-	const CODE_PAYMENT_METHOD_INVALID_PARAMETER_TESTMODE = 'payment_method_invalid_parameter_testmode';
-	const CODE_PAYMENT_METHOD_MICRODEPOSIT_FAILED = 'payment_method_microdeposit_failed';
-	const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_AMOUNTS_INVALID = 'payment_method_microdeposit_verification_amounts_invalid';
-	const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_AMOUNTS_MISMATCH = 'payment_method_microdeposit_verification_amounts_mismatch';
-	const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_ATTEMPTS_EXCEEDED = 'payment_method_microdeposit_verification_attempts_exceeded';
-	const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_DESCRIPTOR_CODE_MISMATCH = 'payment_method_microdeposit_verification_descriptor_code_mismatch';
-	const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_TIMEOUT = 'payment_method_microdeposit_verification_timeout';
-	const CODE_PAYMENT_METHOD_PROVIDER_DECLINE = 'payment_method_provider_decline';
-	const CODE_PAYMENT_METHOD_PROVIDER_TIMEOUT = 'payment_method_provider_timeout';
-	const CODE_PAYMENT_METHOD_UNACTIVATED = 'payment_method_unactivated';
-	const CODE_PAYMENT_METHOD_UNEXPECTED_STATE = 'payment_method_unexpected_state';
-	const CODE_PAYMENT_METHOD_UNSUPPORTED_TYPE = 'payment_method_unsupported_type';
-	const CODE_PAYOUTS_NOT_ALLOWED = 'payouts_not_allowed';
-	const CODE_PLATFORM_ACCOUNT_REQUIRED = 'platform_account_required';
-	const CODE_PLATFORM_API_KEY_EXPIRED = 'platform_api_key_expired';
-	const CODE_POSTAL_CODE_INVALID = 'postal_code_invalid';
-	const CODE_PROCESSING_ERROR = 'processing_error';
-	const CODE_PRODUCT_INACTIVE = 'product_inactive';
-	const CODE_RATE_LIMIT = 'rate_limit';
-	const CODE_REFER_TO_CUSTOMER = 'refer_to_customer';
-	const CODE_REFUND_DISPUTED_PAYMENT = 'refund_disputed_payment';
-	const CODE_RESOURCE_ALREADY_EXISTS = 'resource_already_exists';
-	const CODE_RESOURCE_MISSING = 'resource_missing';
-	const CODE_RETURN_INTENT_ALREADY_PROCESSED = 'return_intent_already_processed';
-	const CODE_ROUTING_NUMBER_INVALID = 'routing_number_invalid';
-	const CODE_SECRET_KEY_REQUIRED = 'secret_key_required';
-	const CODE_SEPA_UNSUPPORTED_ACCOUNT = 'sepa_unsupported_account';
-	const CODE_SETUP_ATTEMPT_FAILED = 'setup_attempt_failed';
-	const CODE_SETUP_INTENT_AUTHENTICATION_FAILURE = 'setup_intent_authentication_failure';
-	const CODE_SETUP_INTENT_INVALID_PARAMETER = 'setup_intent_invalid_parameter';
-	const CODE_SETUP_INTENT_SETUP_ATTEMPT_EXPIRED = 'setup_intent_setup_attempt_expired';
-	const CODE_SETUP_INTENT_UNEXPECTED_STATE = 'setup_intent_unexpected_state';
-	const CODE_SHIPPING_CALCULATION_FAILED = 'shipping_calculation_failed';
-	const CODE_SKU_INACTIVE = 'sku_inactive';
-	const CODE_STATE_UNSUPPORTED = 'state_unsupported';
-	const CODE_TAX_ID_INVALID = 'tax_id_invalid';
-	const CODE_TAXES_CALCULATION_FAILED = 'taxes_calculation_failed';
-	const CODE_TERMINAL_LOCATION_COUNTRY_UNSUPPORTED = 'terminal_location_country_unsupported';
-	const CODE_TESTMODE_CHARGES_ONLY = 'testmode_charges_only';
-	const CODE_TLS_VERSION_UNSUPPORTED = 'tls_version_unsupported';
-	const CODE_TOKEN_ALREADY_USED = 'token_already_used';
-	const CODE_TOKEN_IN_USE = 'token_in_use';
-	const CODE_TRANSFER_SOURCE_BALANCE_PARAMETERS_MISMATCH = 'transfer_source_balance_parameters_mismatch';
-	const CODE_TRANSFERS_NOT_ALLOWED = 'transfers_not_allowed';
-	const CODE_URL_INVALID = 'url_invalid';
-	/**
-	 * Refreshes this object using the provided values.
-	 *
-	 * @param array $values
-	 * @param null|array|string|Util\RequestOptions $opts
-	 * @param bool $partial defaults to false
-	 */
-	public function refreshFrom($values, $opts, $partial = false)
-	{
-	}
+    /**
+     * Possible string representations of an error's code.
+     *
+     * @see https://stripe.com/docs/error-codes
+     */
+    const CODE_ACCOUNT_COUNTRY_INVALID_ADDRESS = 'account_country_invalid_address';
+    const CODE_ACCOUNT_ERROR_COUNTRY_CHANGE_REQUIRES_ADDITIONAL_STEPS = 'account_error_country_change_requires_additional_steps';
+    const CODE_ACCOUNT_INFORMATION_MISMATCH = 'account_information_mismatch';
+    const CODE_ACCOUNT_INVALID = 'account_invalid';
+    const CODE_ACCOUNT_NUMBER_INVALID = 'account_number_invalid';
+    const CODE_ACSS_DEBIT_SESSION_INCOMPLETE = 'acss_debit_session_incomplete';
+    const CODE_ALIPAY_UPGRADE_REQUIRED = 'alipay_upgrade_required';
+    const CODE_AMOUNT_TOO_LARGE = 'amount_too_large';
+    const CODE_AMOUNT_TOO_SMALL = 'amount_too_small';
+    const CODE_API_KEY_EXPIRED = 'api_key_expired';
+    const CODE_AUTHENTICATION_REQUIRED = 'authentication_required';
+    const CODE_BALANCE_INSUFFICIENT = 'balance_insufficient';
+    const CODE_BANK_ACCOUNT_BAD_ROUTING_NUMBERS = 'bank_account_bad_routing_numbers';
+    const CODE_BANK_ACCOUNT_DECLINED = 'bank_account_declined';
+    const CODE_BANK_ACCOUNT_EXISTS = 'bank_account_exists';
+    const CODE_BANK_ACCOUNT_UNUSABLE = 'bank_account_unusable';
+    const CODE_BANK_ACCOUNT_UNVERIFIED = 'bank_account_unverified';
+    const CODE_BANK_ACCOUNT_VERIFICATION_FAILED = 'bank_account_verification_failed';
+    const CODE_BILLING_INVALID_MANDATE = 'billing_invalid_mandate';
+    const CODE_BITCOIN_UPGRADE_REQUIRED = 'bitcoin_upgrade_required';
+    const CODE_CARD_DECLINE_RATE_LIMIT_EXCEEDED = 'card_decline_rate_limit_exceeded';
+    const CODE_CARD_DECLINED = 'card_declined';
+    const CODE_CARDHOLDER_PHONE_NUMBER_REQUIRED = 'cardholder_phone_number_required';
+    const CODE_CHARGE_ALREADY_CAPTURED = 'charge_already_captured';
+    const CODE_CHARGE_ALREADY_REFUNDED = 'charge_already_refunded';
+    const CODE_CHARGE_DISPUTED = 'charge_disputed';
+    const CODE_CHARGE_EXCEEDS_SOURCE_LIMIT = 'charge_exceeds_source_limit';
+    const CODE_CHARGE_EXPIRED_FOR_CAPTURE = 'charge_expired_for_capture';
+    const CODE_CHARGE_INVALID_PARAMETER = 'charge_invalid_parameter';
+    const CODE_CLEARING_CODE_UNSUPPORTED = 'clearing_code_unsupported';
+    const CODE_COUNTRY_CODE_INVALID = 'country_code_invalid';
+    const CODE_COUNTRY_UNSUPPORTED = 'country_unsupported';
+    const CODE_COUPON_EXPIRED = 'coupon_expired';
+    const CODE_CUSTOMER_MAX_PAYMENT_METHODS = 'customer_max_payment_methods';
+    const CODE_CUSTOMER_MAX_SUBSCRIPTIONS = 'customer_max_subscriptions';
+    const CODE_DEBIT_NOT_AUTHORIZED = 'debit_not_authorized';
+    const CODE_EMAIL_INVALID = 'email_invalid';
+    const CODE_EXPIRED_CARD = 'expired_card';
+    const CODE_IDEMPOTENCY_KEY_IN_USE = 'idempotency_key_in_use';
+    const CODE_INCORRECT_ADDRESS = 'incorrect_address';
+    const CODE_INCORRECT_CVC = 'incorrect_cvc';
+    const CODE_INCORRECT_NUMBER = 'incorrect_number';
+    const CODE_INCORRECT_ZIP = 'incorrect_zip';
+    const CODE_INSTANT_PAYOUTS_LIMIT_EXCEEDED = 'instant_payouts_limit_exceeded';
+    const CODE_INSTANT_PAYOUTS_UNSUPPORTED = 'instant_payouts_unsupported';
+    const CODE_INSUFFICIENT_FUNDS = 'insufficient_funds';
+    const CODE_INTENT_INVALID_STATE = 'intent_invalid_state';
+    const CODE_INTENT_VERIFICATION_METHOD_MISSING = 'intent_verification_method_missing';
+    const CODE_INVALID_CARD_TYPE = 'invalid_card_type';
+    const CODE_INVALID_CHARACTERS = 'invalid_characters';
+    const CODE_INVALID_CHARGE_AMOUNT = 'invalid_charge_amount';
+    const CODE_INVALID_CVC = 'invalid_cvc';
+    const CODE_INVALID_EXPIRY_MONTH = 'invalid_expiry_month';
+    const CODE_INVALID_EXPIRY_YEAR = 'invalid_expiry_year';
+    const CODE_INVALID_NUMBER = 'invalid_number';
+    const CODE_INVALID_SOURCE_USAGE = 'invalid_source_usage';
+    const CODE_INVOICE_NO_CUSTOMER_LINE_ITEMS = 'invoice_no_customer_line_items';
+    const CODE_INVOICE_NO_PAYMENT_METHOD_TYPES = 'invoice_no_payment_method_types';
+    const CODE_INVOICE_NO_SUBSCRIPTION_LINE_ITEMS = 'invoice_no_subscription_line_items';
+    const CODE_INVOICE_NOT_EDITABLE = 'invoice_not_editable';
+    const CODE_INVOICE_ON_BEHALF_OF_NOT_EDITABLE = 'invoice_on_behalf_of_not_editable';
+    const CODE_INVOICE_PAYMENT_INTENT_REQUIRES_ACTION = 'invoice_payment_intent_requires_action';
+    const CODE_INVOICE_UPCOMING_NONE = 'invoice_upcoming_none';
+    const CODE_LIVEMODE_MISMATCH = 'livemode_mismatch';
+    const CODE_LOCK_TIMEOUT = 'lock_timeout';
+    const CODE_MISSING = 'missing';
+    const CODE_NO_ACCOUNT = 'no_account';
+    const CODE_NOT_ALLOWED_ON_STANDARD_ACCOUNT = 'not_allowed_on_standard_account';
+    const CODE_OUT_OF_INVENTORY = 'out_of_inventory';
+    const CODE_PARAMETER_INVALID_EMPTY = 'parameter_invalid_empty';
+    const CODE_PARAMETER_INVALID_INTEGER = 'parameter_invalid_integer';
+    const CODE_PARAMETER_INVALID_STRING_BLANK = 'parameter_invalid_string_blank';
+    const CODE_PARAMETER_INVALID_STRING_EMPTY = 'parameter_invalid_string_empty';
+    const CODE_PARAMETER_MISSING = 'parameter_missing';
+    const CODE_PARAMETER_UNKNOWN = 'parameter_unknown';
+    const CODE_PARAMETERS_EXCLUSIVE = 'parameters_exclusive';
+    const CODE_PAYMENT_INTENT_ACTION_REQUIRED = 'payment_intent_action_required';
+    const CODE_PAYMENT_INTENT_AUTHENTICATION_FAILURE = 'payment_intent_authentication_failure';
+    const CODE_PAYMENT_INTENT_INCOMPATIBLE_PAYMENT_METHOD = 'payment_intent_incompatible_payment_method';
+    const CODE_PAYMENT_INTENT_INVALID_PARAMETER = 'payment_intent_invalid_parameter';
+    const CODE_PAYMENT_INTENT_KONBINI_REJECTED_CONFIRMATION_NUMBER = 'payment_intent_konbini_rejected_confirmation_number';
+    const CODE_PAYMENT_INTENT_MANDATE_INVALID = 'payment_intent_mandate_invalid';
+    const CODE_PAYMENT_INTENT_PAYMENT_ATTEMPT_EXPIRED = 'payment_intent_payment_attempt_expired';
+    const CODE_PAYMENT_INTENT_PAYMENT_ATTEMPT_FAILED = 'payment_intent_payment_attempt_failed';
+    const CODE_PAYMENT_INTENT_UNEXPECTED_STATE = 'payment_intent_unexpected_state';
+    const CODE_PAYMENT_METHOD_BANK_ACCOUNT_ALREADY_VERIFIED = 'payment_method_bank_account_already_verified';
+    const CODE_PAYMENT_METHOD_BANK_ACCOUNT_BLOCKED = 'payment_method_bank_account_blocked';
+    const CODE_PAYMENT_METHOD_BILLING_DETAILS_ADDRESS_MISSING = 'payment_method_billing_details_address_missing';
+    const CODE_PAYMENT_METHOD_CURRENCY_MISMATCH = 'payment_method_currency_mismatch';
+    const CODE_PAYMENT_METHOD_INVALID_PARAMETER = 'payment_method_invalid_parameter';
+    const CODE_PAYMENT_METHOD_INVALID_PARAMETER_TESTMODE = 'payment_method_invalid_parameter_testmode';
+    const CODE_PAYMENT_METHOD_MICRODEPOSIT_FAILED = 'payment_method_microdeposit_failed';
+    const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_AMOUNTS_INVALID = 'payment_method_microdeposit_verification_amounts_invalid';
+    const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_AMOUNTS_MISMATCH = 'payment_method_microdeposit_verification_amounts_mismatch';
+    const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_ATTEMPTS_EXCEEDED = 'payment_method_microdeposit_verification_attempts_exceeded';
+    const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_DESCRIPTOR_CODE_MISMATCH = 'payment_method_microdeposit_verification_descriptor_code_mismatch';
+    const CODE_PAYMENT_METHOD_MICRODEPOSIT_VERIFICATION_TIMEOUT = 'payment_method_microdeposit_verification_timeout';
+    const CODE_PAYMENT_METHOD_PROVIDER_DECLINE = 'payment_method_provider_decline';
+    const CODE_PAYMENT_METHOD_PROVIDER_TIMEOUT = 'payment_method_provider_timeout';
+    const CODE_PAYMENT_METHOD_UNACTIVATED = 'payment_method_unactivated';
+    const CODE_PAYMENT_METHOD_UNEXPECTED_STATE = 'payment_method_unexpected_state';
+    const CODE_PAYMENT_METHOD_UNSUPPORTED_TYPE = 'payment_method_unsupported_type';
+    const CODE_PAYOUTS_NOT_ALLOWED = 'payouts_not_allowed';
+    const CODE_PLATFORM_ACCOUNT_REQUIRED = 'platform_account_required';
+    const CODE_PLATFORM_API_KEY_EXPIRED = 'platform_api_key_expired';
+    const CODE_POSTAL_CODE_INVALID = 'postal_code_invalid';
+    const CODE_PROCESSING_ERROR = 'processing_error';
+    const CODE_PRODUCT_INACTIVE = 'product_inactive';
+    const CODE_RATE_LIMIT = 'rate_limit';
+    const CODE_REFER_TO_CUSTOMER = 'refer_to_customer';
+    const CODE_REFUND_DISPUTED_PAYMENT = 'refund_disputed_payment';
+    const CODE_RESOURCE_ALREADY_EXISTS = 'resource_already_exists';
+    const CODE_RESOURCE_MISSING = 'resource_missing';
+    const CODE_RETURN_INTENT_ALREADY_PROCESSED = 'return_intent_already_processed';
+    const CODE_ROUTING_NUMBER_INVALID = 'routing_number_invalid';
+    const CODE_SECRET_KEY_REQUIRED = 'secret_key_required';
+    const CODE_SEPA_UNSUPPORTED_ACCOUNT = 'sepa_unsupported_account';
+    const CODE_SETUP_ATTEMPT_FAILED = 'setup_attempt_failed';
+    const CODE_SETUP_INTENT_AUTHENTICATION_FAILURE = 'setup_intent_authentication_failure';
+    const CODE_SETUP_INTENT_INVALID_PARAMETER = 'setup_intent_invalid_parameter';
+    const CODE_SETUP_INTENT_SETUP_ATTEMPT_EXPIRED = 'setup_intent_setup_attempt_expired';
+    const CODE_SETUP_INTENT_UNEXPECTED_STATE = 'setup_intent_unexpected_state';
+    const CODE_SHIPPING_CALCULATION_FAILED = 'shipping_calculation_failed';
+    const CODE_SKU_INACTIVE = 'sku_inactive';
+    const CODE_STATE_UNSUPPORTED = 'state_unsupported';
+    const CODE_TAX_ID_INVALID = 'tax_id_invalid';
+    const CODE_TAXES_CALCULATION_FAILED = 'taxes_calculation_failed';
+    const CODE_TERMINAL_LOCATION_COUNTRY_UNSUPPORTED = 'terminal_location_country_unsupported';
+    const CODE_TESTMODE_CHARGES_ONLY = 'testmode_charges_only';
+    const CODE_TLS_VERSION_UNSUPPORTED = 'tls_version_unsupported';
+    const CODE_TOKEN_ALREADY_USED = 'token_already_used';
+    const CODE_TOKEN_IN_USE = 'token_in_use';
+    const CODE_TRANSFER_SOURCE_BALANCE_PARAMETERS_MISMATCH = 'transfer_source_balance_parameters_mismatch';
+    const CODE_TRANSFERS_NOT_ALLOWED = 'transfers_not_allowed';
+    const CODE_URL_INVALID = 'url_invalid';
+    /**
+     * Refreshes this object using the provided values.
+     *
+     * @param array $values
+     * @param null|array|string|Util\RequestOptions $opts
+     * @param bool $partial defaults to false
+     */
+    public function refreshFrom($values, $opts, $partial = false)
+    {
+    }
 }
 /**
  * Events are our way of letting you know when something interesting happens in
@@ -3304,230 +3323,231 @@ class ErrorObject extends \Stripe\StripeObject
  */
 class Event extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'event';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const ACCOUNT_APPLICATION_AUTHORIZED = 'account.application.authorized';
-	const ACCOUNT_APPLICATION_DEAUTHORIZED = 'account.application.deauthorized';
-	const ACCOUNT_EXTERNAL_ACCOUNT_CREATED = 'account.external_account.created';
-	const ACCOUNT_EXTERNAL_ACCOUNT_DELETED = 'account.external_account.deleted';
-	const ACCOUNT_EXTERNAL_ACCOUNT_UPDATED = 'account.external_account.updated';
-	const ACCOUNT_UPDATED = 'account.updated';
-	const APPLICATION_FEE_CREATED = 'application_fee.created';
-	const APPLICATION_FEE_REFUND_UPDATED = 'application_fee.refund.updated';
-	const APPLICATION_FEE_REFUNDED = 'application_fee.refunded';
-	const BALANCE_AVAILABLE = 'balance.available';
-	const BILLING_PORTAL_CONFIGURATION_CREATED = 'billing_portal.configuration.created';
-	const BILLING_PORTAL_CONFIGURATION_UPDATED = 'billing_portal.configuration.updated';
-	const BILLING_PORTAL_SESSION_CREATED = 'billing_portal.session.created';
-	const CAPABILITY_UPDATED = 'capability.updated';
-	const CASH_BALANCE_FUNDS_AVAILABLE = 'cash_balance.funds_available';
-	const CHARGE_CAPTURED = 'charge.captured';
-	const CHARGE_DISPUTE_CLOSED = 'charge.dispute.closed';
-	const CHARGE_DISPUTE_CREATED = 'charge.dispute.created';
-	const CHARGE_DISPUTE_FUNDS_REINSTATED = 'charge.dispute.funds_reinstated';
-	const CHARGE_DISPUTE_FUNDS_WITHDRAWN = 'charge.dispute.funds_withdrawn';
-	const CHARGE_DISPUTE_UPDATED = 'charge.dispute.updated';
-	const CHARGE_EXPIRED = 'charge.expired';
-	const CHARGE_FAILED = 'charge.failed';
-	const CHARGE_PENDING = 'charge.pending';
-	const CHARGE_REFUND_UPDATED = 'charge.refund.updated';
-	const CHARGE_REFUNDED = 'charge.refunded';
-	const CHARGE_SUCCEEDED = 'charge.succeeded';
-	const CHARGE_UPDATED = 'charge.updated';
-	const CHECKOUT_SESSION_ASYNC_PAYMENT_FAILED = 'checkout.session.async_payment_failed';
-	const CHECKOUT_SESSION_ASYNC_PAYMENT_SUCCEEDED = 'checkout.session.async_payment_succeeded';
-	const CHECKOUT_SESSION_COMPLETED = 'checkout.session.completed';
-	const CHECKOUT_SESSION_EXPIRED = 'checkout.session.expired';
-	const COUPON_CREATED = 'coupon.created';
-	const COUPON_DELETED = 'coupon.deleted';
-	const COUPON_UPDATED = 'coupon.updated';
-	const CREDIT_NOTE_CREATED = 'credit_note.created';
-	const CREDIT_NOTE_UPDATED = 'credit_note.updated';
-	const CREDIT_NOTE_VOIDED = 'credit_note.voided';
-	const CUSTOMER_CREATED = 'customer.created';
-	const CUSTOMER_DELETED = 'customer.deleted';
-	const CUSTOMER_DISCOUNT_CREATED = 'customer.discount.created';
-	const CUSTOMER_DISCOUNT_DELETED = 'customer.discount.deleted';
-	const CUSTOMER_DISCOUNT_UPDATED = 'customer.discount.updated';
-	const CUSTOMER_SOURCE_CREATED = 'customer.source.created';
-	const CUSTOMER_SOURCE_DELETED = 'customer.source.deleted';
-	const CUSTOMER_SOURCE_EXPIRING = 'customer.source.expiring';
-	const CUSTOMER_SOURCE_UPDATED = 'customer.source.updated';
-	const CUSTOMER_SUBSCRIPTION_CREATED = 'customer.subscription.created';
-	const CUSTOMER_SUBSCRIPTION_DELETED = 'customer.subscription.deleted';
-	const CUSTOMER_SUBSCRIPTION_PAUSED = 'customer.subscription.paused';
-	const CUSTOMER_SUBSCRIPTION_PENDING_UPDATE_APPLIED = 'customer.subscription.pending_update_applied';
-	const CUSTOMER_SUBSCRIPTION_PENDING_UPDATE_EXPIRED = 'customer.subscription.pending_update_expired';
-	const CUSTOMER_SUBSCRIPTION_RESUMED = 'customer.subscription.resumed';
-	const CUSTOMER_SUBSCRIPTION_TRIAL_WILL_END = 'customer.subscription.trial_will_end';
-	const CUSTOMER_SUBSCRIPTION_UPDATED = 'customer.subscription.updated';
-	const CUSTOMER_TAX_ID_CREATED = 'customer.tax_id.created';
-	const CUSTOMER_TAX_ID_DELETED = 'customer.tax_id.deleted';
-	const CUSTOMER_TAX_ID_UPDATED = 'customer.tax_id.updated';
-	const CUSTOMER_UPDATED = 'customer.updated';
-	const CUSTOMER_CASH_BALANCE_TRANSACTION_CREATED = 'customer_cash_balance_transaction.created';
-	const FILE_CREATED = 'file.created';
-	const FINANCIAL_CONNECTIONS_ACCOUNT_CREATED = 'financial_connections.account.created';
-	const FINANCIAL_CONNECTIONS_ACCOUNT_DEACTIVATED = 'financial_connections.account.deactivated';
-	const FINANCIAL_CONNECTIONS_ACCOUNT_DISCONNECTED = 'financial_connections.account.disconnected';
-	const FINANCIAL_CONNECTIONS_ACCOUNT_REACTIVATED = 'financial_connections.account.reactivated';
-	const FINANCIAL_CONNECTIONS_ACCOUNT_REFRESHED_BALANCE = 'financial_connections.account.refreshed_balance';
-	const IDENTITY_VERIFICATION_SESSION_CANCELED = 'identity.verification_session.canceled';
-	const IDENTITY_VERIFICATION_SESSION_CREATED = 'identity.verification_session.created';
-	const IDENTITY_VERIFICATION_SESSION_PROCESSING = 'identity.verification_session.processing';
-	const IDENTITY_VERIFICATION_SESSION_REDACTED = 'identity.verification_session.redacted';
-	const IDENTITY_VERIFICATION_SESSION_REQUIRES_INPUT = 'identity.verification_session.requires_input';
-	const IDENTITY_VERIFICATION_SESSION_VERIFIED = 'identity.verification_session.verified';
-	const INVOICE_CREATED = 'invoice.created';
-	const INVOICE_DELETED = 'invoice.deleted';
-	const INVOICE_FINALIZATION_FAILED = 'invoice.finalization_failed';
-	const INVOICE_FINALIZED = 'invoice.finalized';
-	const INVOICE_MARKED_UNCOLLECTIBLE = 'invoice.marked_uncollectible';
-	const INVOICE_PAID = 'invoice.paid';
-	const INVOICE_PAYMENT_ACTION_REQUIRED = 'invoice.payment_action_required';
-	const INVOICE_PAYMENT_FAILED = 'invoice.payment_failed';
-	const INVOICE_PAYMENT_SUCCEEDED = 'invoice.payment_succeeded';
-	const INVOICE_SENT = 'invoice.sent';
-	const INVOICE_UPCOMING = 'invoice.upcoming';
-	const INVOICE_UPDATED = 'invoice.updated';
-	const INVOICE_VOIDED = 'invoice.voided';
-	const INVOICEITEM_CREATED = 'invoiceitem.created';
-	const INVOICEITEM_DELETED = 'invoiceitem.deleted';
-	const INVOICEITEM_UPDATED = 'invoiceitem.updated';
-	const ISSUING_AUTHORIZATION_CREATED = 'issuing_authorization.created';
-	const ISSUING_AUTHORIZATION_REQUEST = 'issuing_authorization.request';
-	const ISSUING_AUTHORIZATION_UPDATED = 'issuing_authorization.updated';
-	const ISSUING_CARD_CREATED = 'issuing_card.created';
-	const ISSUING_CARD_UPDATED = 'issuing_card.updated';
-	const ISSUING_CARDHOLDER_CREATED = 'issuing_cardholder.created';
-	const ISSUING_CARDHOLDER_UPDATED = 'issuing_cardholder.updated';
-	const ISSUING_DISPUTE_CLOSED = 'issuing_dispute.closed';
-	const ISSUING_DISPUTE_CREATED = 'issuing_dispute.created';
-	const ISSUING_DISPUTE_FUNDS_REINSTATED = 'issuing_dispute.funds_reinstated';
-	const ISSUING_DISPUTE_SUBMITTED = 'issuing_dispute.submitted';
-	const ISSUING_DISPUTE_UPDATED = 'issuing_dispute.updated';
-	const ISSUING_TRANSACTION_CREATED = 'issuing_transaction.created';
-	const ISSUING_TRANSACTION_UPDATED = 'issuing_transaction.updated';
-	const MANDATE_UPDATED = 'mandate.updated';
-	const ORDER_CREATED = 'order.created';
-	const PAYMENT_INTENT_AMOUNT_CAPTURABLE_UPDATED = 'payment_intent.amount_capturable_updated';
-	const PAYMENT_INTENT_CANCELED = 'payment_intent.canceled';
-	const PAYMENT_INTENT_CREATED = 'payment_intent.created';
-	const PAYMENT_INTENT_PARTIALLY_FUNDED = 'payment_intent.partially_funded';
-	const PAYMENT_INTENT_PAYMENT_FAILED = 'payment_intent.payment_failed';
-	const PAYMENT_INTENT_PROCESSING = 'payment_intent.processing';
-	const PAYMENT_INTENT_REQUIRES_ACTION = 'payment_intent.requires_action';
-	const PAYMENT_INTENT_SUCCEEDED = 'payment_intent.succeeded';
-	const PAYMENT_LINK_CREATED = 'payment_link.created';
-	const PAYMENT_LINK_UPDATED = 'payment_link.updated';
-	const PAYMENT_METHOD_ATTACHED = 'payment_method.attached';
-	const PAYMENT_METHOD_AUTOMATICALLY_UPDATED = 'payment_method.automatically_updated';
-	const PAYMENT_METHOD_DETACHED = 'payment_method.detached';
-	const PAYMENT_METHOD_UPDATED = 'payment_method.updated';
-	const PAYOUT_CANCELED = 'payout.canceled';
-	const PAYOUT_CREATED = 'payout.created';
-	const PAYOUT_FAILED = 'payout.failed';
-	const PAYOUT_PAID = 'payout.paid';
-	const PAYOUT_UPDATED = 'payout.updated';
-	const PERSON_CREATED = 'person.created';
-	const PERSON_DELETED = 'person.deleted';
-	const PERSON_UPDATED = 'person.updated';
-	const PLAN_CREATED = 'plan.created';
-	const PLAN_DELETED = 'plan.deleted';
-	const PLAN_UPDATED = 'plan.updated';
-	const PRICE_CREATED = 'price.created';
-	const PRICE_DELETED = 'price.deleted';
-	const PRICE_UPDATED = 'price.updated';
-	const PRODUCT_CREATED = 'product.created';
-	const PRODUCT_DELETED = 'product.deleted';
-	const PRODUCT_UPDATED = 'product.updated';
-	const PROMOTION_CODE_CREATED = 'promotion_code.created';
-	const PROMOTION_CODE_UPDATED = 'promotion_code.updated';
-	const QUOTE_ACCEPTED = 'quote.accepted';
-	const QUOTE_CANCELED = 'quote.canceled';
-	const QUOTE_CREATED = 'quote.created';
-	const QUOTE_FINALIZED = 'quote.finalized';
-	const RADAR_EARLY_FRAUD_WARNING_CREATED = 'radar.early_fraud_warning.created';
-	const RADAR_EARLY_FRAUD_WARNING_UPDATED = 'radar.early_fraud_warning.updated';
-	const RECIPIENT_CREATED = 'recipient.created';
-	const RECIPIENT_DELETED = 'recipient.deleted';
-	const RECIPIENT_UPDATED = 'recipient.updated';
-	const REFUND_CREATED = 'refund.created';
-	const REFUND_UPDATED = 'refund.updated';
-	const REPORTING_REPORT_RUN_FAILED = 'reporting.report_run.failed';
-	const REPORTING_REPORT_RUN_SUCCEEDED = 'reporting.report_run.succeeded';
-	const REPORTING_REPORT_TYPE_UPDATED = 'reporting.report_type.updated';
-	const REVIEW_CLOSED = 'review.closed';
-	const REVIEW_OPENED = 'review.opened';
-	const SETUP_INTENT_CANCELED = 'setup_intent.canceled';
-	const SETUP_INTENT_CREATED = 'setup_intent.created';
-	const SETUP_INTENT_REQUIRES_ACTION = 'setup_intent.requires_action';
-	const SETUP_INTENT_SETUP_FAILED = 'setup_intent.setup_failed';
-	const SETUP_INTENT_SUCCEEDED = 'setup_intent.succeeded';
-	const SIGMA_SCHEDULED_QUERY_RUN_CREATED = 'sigma.scheduled_query_run.created';
-	const SKU_CREATED = 'sku.created';
-	const SKU_DELETED = 'sku.deleted';
-	const SKU_UPDATED = 'sku.updated';
-	const SOURCE_CANCELED = 'source.canceled';
-	const SOURCE_CHARGEABLE = 'source.chargeable';
-	const SOURCE_FAILED = 'source.failed';
-	const SOURCE_MANDATE_NOTIFICATION = 'source.mandate_notification';
-	const SOURCE_REFUND_ATTRIBUTES_REQUIRED = 'source.refund_attributes_required';
-	const SOURCE_TRANSACTION_CREATED = 'source.transaction.created';
-	const SOURCE_TRANSACTION_UPDATED = 'source.transaction.updated';
-	const SUBSCRIPTION_SCHEDULE_ABORTED = 'subscription_schedule.aborted';
-	const SUBSCRIPTION_SCHEDULE_CANCELED = 'subscription_schedule.canceled';
-	const SUBSCRIPTION_SCHEDULE_COMPLETED = 'subscription_schedule.completed';
-	const SUBSCRIPTION_SCHEDULE_CREATED = 'subscription_schedule.created';
-	const SUBSCRIPTION_SCHEDULE_EXPIRING = 'subscription_schedule.expiring';
-	const SUBSCRIPTION_SCHEDULE_RELEASED = 'subscription_schedule.released';
-	const SUBSCRIPTION_SCHEDULE_UPDATED = 'subscription_schedule.updated';
-	const TAX_RATE_CREATED = 'tax_rate.created';
-	const TAX_RATE_UPDATED = 'tax_rate.updated';
-	const TERMINAL_READER_ACTION_FAILED = 'terminal.reader.action_failed';
-	const TERMINAL_READER_ACTION_SUCCEEDED = 'terminal.reader.action_succeeded';
-	const TEST_HELPERS_TEST_CLOCK_ADVANCING = 'test_helpers.test_clock.advancing';
-	const TEST_HELPERS_TEST_CLOCK_CREATED = 'test_helpers.test_clock.created';
-	const TEST_HELPERS_TEST_CLOCK_DELETED = 'test_helpers.test_clock.deleted';
-	const TEST_HELPERS_TEST_CLOCK_INTERNAL_FAILURE = 'test_helpers.test_clock.internal_failure';
-	const TEST_HELPERS_TEST_CLOCK_READY = 'test_helpers.test_clock.ready';
-	const TOPUP_CANCELED = 'topup.canceled';
-	const TOPUP_CREATED = 'topup.created';
-	const TOPUP_FAILED = 'topup.failed';
-	const TOPUP_REVERSED = 'topup.reversed';
-	const TOPUP_SUCCEEDED = 'topup.succeeded';
-	const TRANSFER_CREATED = 'transfer.created';
-	const TRANSFER_REVERSED = 'transfer.reversed';
-	const TRANSFER_UPDATED = 'transfer.updated';
-	const TREASURY_CREDIT_REVERSAL_CREATED = 'treasury.credit_reversal.created';
-	const TREASURY_CREDIT_REVERSAL_POSTED = 'treasury.credit_reversal.posted';
-	const TREASURY_DEBIT_REVERSAL_COMPLETED = 'treasury.debit_reversal.completed';
-	const TREASURY_DEBIT_REVERSAL_CREATED = 'treasury.debit_reversal.created';
-	const TREASURY_DEBIT_REVERSAL_INITIAL_CREDIT_GRANTED = 'treasury.debit_reversal.initial_credit_granted';
-	const TREASURY_FINANCIAL_ACCOUNT_CLOSED = 'treasury.financial_account.closed';
-	const TREASURY_FINANCIAL_ACCOUNT_CREATED = 'treasury.financial_account.created';
-	const TREASURY_FINANCIAL_ACCOUNT_FEATURES_STATUS_UPDATED = 'treasury.financial_account.features_status_updated';
-	const TREASURY_INBOUND_TRANSFER_CANCELED = 'treasury.inbound_transfer.canceled';
-	const TREASURY_INBOUND_TRANSFER_CREATED = 'treasury.inbound_transfer.created';
-	const TREASURY_INBOUND_TRANSFER_FAILED = 'treasury.inbound_transfer.failed';
-	const TREASURY_INBOUND_TRANSFER_SUCCEEDED = 'treasury.inbound_transfer.succeeded';
-	const TREASURY_OUTBOUND_PAYMENT_CANCELED = 'treasury.outbound_payment.canceled';
-	const TREASURY_OUTBOUND_PAYMENT_CREATED = 'treasury.outbound_payment.created';
-	const TREASURY_OUTBOUND_PAYMENT_EXPECTED_ARRIVAL_DATE_UPDATED = 'treasury.outbound_payment.expected_arrival_date_updated';
-	const TREASURY_OUTBOUND_PAYMENT_FAILED = 'treasury.outbound_payment.failed';
-	const TREASURY_OUTBOUND_PAYMENT_POSTED = 'treasury.outbound_payment.posted';
-	const TREASURY_OUTBOUND_PAYMENT_RETURNED = 'treasury.outbound_payment.returned';
-	const TREASURY_OUTBOUND_TRANSFER_CANCELED = 'treasury.outbound_transfer.canceled';
-	const TREASURY_OUTBOUND_TRANSFER_CREATED = 'treasury.outbound_transfer.created';
-	const TREASURY_OUTBOUND_TRANSFER_EXPECTED_ARRIVAL_DATE_UPDATED = 'treasury.outbound_transfer.expected_arrival_date_updated';
-	const TREASURY_OUTBOUND_TRANSFER_FAILED = 'treasury.outbound_transfer.failed';
-	const TREASURY_OUTBOUND_TRANSFER_POSTED = 'treasury.outbound_transfer.posted';
-	const TREASURY_OUTBOUND_TRANSFER_RETURNED = 'treasury.outbound_transfer.returned';
-	const TREASURY_RECEIVED_CREDIT_CREATED = 'treasury.received_credit.created';
-	const TREASURY_RECEIVED_CREDIT_FAILED = 'treasury.received_credit.failed';
-	const TREASURY_RECEIVED_CREDIT_SUCCEEDED = 'treasury.received_credit.succeeded';
-	const TREASURY_RECEIVED_DEBIT_CREATED = 'treasury.received_debit.created';
+    const OBJECT_NAME = 'event';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const ACCOUNT_APPLICATION_AUTHORIZED = 'account.application.authorized';
+    const ACCOUNT_APPLICATION_DEAUTHORIZED = 'account.application.deauthorized';
+    const ACCOUNT_EXTERNAL_ACCOUNT_CREATED = 'account.external_account.created';
+    const ACCOUNT_EXTERNAL_ACCOUNT_DELETED = 'account.external_account.deleted';
+    const ACCOUNT_EXTERNAL_ACCOUNT_UPDATED = 'account.external_account.updated';
+    const ACCOUNT_UPDATED = 'account.updated';
+    const APPLICATION_FEE_CREATED = 'application_fee.created';
+    const APPLICATION_FEE_REFUND_UPDATED = 'application_fee.refund.updated';
+    const APPLICATION_FEE_REFUNDED = 'application_fee.refunded';
+    const BALANCE_AVAILABLE = 'balance.available';
+    const BILLING_PORTAL_CONFIGURATION_CREATED = 'billing_portal.configuration.created';
+    const BILLING_PORTAL_CONFIGURATION_UPDATED = 'billing_portal.configuration.updated';
+    const BILLING_PORTAL_SESSION_CREATED = 'billing_portal.session.created';
+    const CAPABILITY_UPDATED = 'capability.updated';
+    const CASH_BALANCE_FUNDS_AVAILABLE = 'cash_balance.funds_available';
+    const CHARGE_CAPTURED = 'charge.captured';
+    const CHARGE_DISPUTE_CLOSED = 'charge.dispute.closed';
+    const CHARGE_DISPUTE_CREATED = 'charge.dispute.created';
+    const CHARGE_DISPUTE_FUNDS_REINSTATED = 'charge.dispute.funds_reinstated';
+    const CHARGE_DISPUTE_FUNDS_WITHDRAWN = 'charge.dispute.funds_withdrawn';
+    const CHARGE_DISPUTE_UPDATED = 'charge.dispute.updated';
+    const CHARGE_EXPIRED = 'charge.expired';
+    const CHARGE_FAILED = 'charge.failed';
+    const CHARGE_PENDING = 'charge.pending';
+    const CHARGE_REFUND_UPDATED = 'charge.refund.updated';
+    const CHARGE_REFUNDED = 'charge.refunded';
+    const CHARGE_SUCCEEDED = 'charge.succeeded';
+    const CHARGE_UPDATED = 'charge.updated';
+    const CHECKOUT_SESSION_ASYNC_PAYMENT_FAILED = 'checkout.session.async_payment_failed';
+    const CHECKOUT_SESSION_ASYNC_PAYMENT_SUCCEEDED = 'checkout.session.async_payment_succeeded';
+    const CHECKOUT_SESSION_COMPLETED = 'checkout.session.completed';
+    const CHECKOUT_SESSION_EXPIRED = 'checkout.session.expired';
+    const COUPON_CREATED = 'coupon.created';
+    const COUPON_DELETED = 'coupon.deleted';
+    const COUPON_UPDATED = 'coupon.updated';
+    const CREDIT_NOTE_CREATED = 'credit_note.created';
+    const CREDIT_NOTE_UPDATED = 'credit_note.updated';
+    const CREDIT_NOTE_VOIDED = 'credit_note.voided';
+    const CUSTOMER_CREATED = 'customer.created';
+    const CUSTOMER_DELETED = 'customer.deleted';
+    const CUSTOMER_DISCOUNT_CREATED = 'customer.discount.created';
+    const CUSTOMER_DISCOUNT_DELETED = 'customer.discount.deleted';
+    const CUSTOMER_DISCOUNT_UPDATED = 'customer.discount.updated';
+    const CUSTOMER_SOURCE_CREATED = 'customer.source.created';
+    const CUSTOMER_SOURCE_DELETED = 'customer.source.deleted';
+    const CUSTOMER_SOURCE_EXPIRING = 'customer.source.expiring';
+    const CUSTOMER_SOURCE_UPDATED = 'customer.source.updated';
+    const CUSTOMER_SUBSCRIPTION_CREATED = 'customer.subscription.created';
+    const CUSTOMER_SUBSCRIPTION_DELETED = 'customer.subscription.deleted';
+    const CUSTOMER_SUBSCRIPTION_PAUSED = 'customer.subscription.paused';
+    const CUSTOMER_SUBSCRIPTION_PENDING_UPDATE_APPLIED = 'customer.subscription.pending_update_applied';
+    const CUSTOMER_SUBSCRIPTION_PENDING_UPDATE_EXPIRED = 'customer.subscription.pending_update_expired';
+    const CUSTOMER_SUBSCRIPTION_RESUMED = 'customer.subscription.resumed';
+    const CUSTOMER_SUBSCRIPTION_TRIAL_WILL_END = 'customer.subscription.trial_will_end';
+    const CUSTOMER_SUBSCRIPTION_UPDATED = 'customer.subscription.updated';
+    const CUSTOMER_TAX_ID_CREATED = 'customer.tax_id.created';
+    const CUSTOMER_TAX_ID_DELETED = 'customer.tax_id.deleted';
+    const CUSTOMER_TAX_ID_UPDATED = 'customer.tax_id.updated';
+    const CUSTOMER_UPDATED = 'customer.updated';
+    const CUSTOMER_CASH_BALANCE_TRANSACTION_CREATED = 'customer_cash_balance_transaction.created';
+    const FILE_CREATED = 'file.created';
+    const FINANCIAL_CONNECTIONS_ACCOUNT_CREATED = 'financial_connections.account.created';
+    const FINANCIAL_CONNECTIONS_ACCOUNT_DEACTIVATED = 'financial_connections.account.deactivated';
+    const FINANCIAL_CONNECTIONS_ACCOUNT_DISCONNECTED = 'financial_connections.account.disconnected';
+    const FINANCIAL_CONNECTIONS_ACCOUNT_REACTIVATED = 'financial_connections.account.reactivated';
+    const FINANCIAL_CONNECTIONS_ACCOUNT_REFRESHED_BALANCE = 'financial_connections.account.refreshed_balance';
+    const IDENTITY_VERIFICATION_SESSION_CANCELED = 'identity.verification_session.canceled';
+    const IDENTITY_VERIFICATION_SESSION_CREATED = 'identity.verification_session.created';
+    const IDENTITY_VERIFICATION_SESSION_PROCESSING = 'identity.verification_session.processing';
+    const IDENTITY_VERIFICATION_SESSION_REDACTED = 'identity.verification_session.redacted';
+    const IDENTITY_VERIFICATION_SESSION_REQUIRES_INPUT = 'identity.verification_session.requires_input';
+    const IDENTITY_VERIFICATION_SESSION_VERIFIED = 'identity.verification_session.verified';
+    const INVOICE_CREATED = 'invoice.created';
+    const INVOICE_DELETED = 'invoice.deleted';
+    const INVOICE_FINALIZATION_FAILED = 'invoice.finalization_failed';
+    const INVOICE_FINALIZED = 'invoice.finalized';
+    const INVOICE_MARKED_UNCOLLECTIBLE = 'invoice.marked_uncollectible';
+    const INVOICE_PAID = 'invoice.paid';
+    const INVOICE_PAYMENT_ACTION_REQUIRED = 'invoice.payment_action_required';
+    const INVOICE_PAYMENT_FAILED = 'invoice.payment_failed';
+    const INVOICE_PAYMENT_SUCCEEDED = 'invoice.payment_succeeded';
+    const INVOICE_SENT = 'invoice.sent';
+    const INVOICE_UPCOMING = 'invoice.upcoming';
+    const INVOICE_UPDATED = 'invoice.updated';
+    const INVOICE_VOIDED = 'invoice.voided';
+    const INVOICEITEM_CREATED = 'invoiceitem.created';
+    const INVOICEITEM_DELETED = 'invoiceitem.deleted';
+    const INVOICEITEM_UPDATED = 'invoiceitem.updated';
+    const ISSUING_AUTHORIZATION_CREATED = 'issuing_authorization.created';
+    const ISSUING_AUTHORIZATION_REQUEST = 'issuing_authorization.request';
+    const ISSUING_AUTHORIZATION_UPDATED = 'issuing_authorization.updated';
+    const ISSUING_CARD_CREATED = 'issuing_card.created';
+    const ISSUING_CARD_UPDATED = 'issuing_card.updated';
+    const ISSUING_CARDHOLDER_CREATED = 'issuing_cardholder.created';
+    const ISSUING_CARDHOLDER_UPDATED = 'issuing_cardholder.updated';
+    const ISSUING_DISPUTE_CLOSED = 'issuing_dispute.closed';
+    const ISSUING_DISPUTE_CREATED = 'issuing_dispute.created';
+    const ISSUING_DISPUTE_FUNDS_REINSTATED = 'issuing_dispute.funds_reinstated';
+    const ISSUING_DISPUTE_SUBMITTED = 'issuing_dispute.submitted';
+    const ISSUING_DISPUTE_UPDATED = 'issuing_dispute.updated';
+    const ISSUING_TRANSACTION_CREATED = 'issuing_transaction.created';
+    const ISSUING_TRANSACTION_UPDATED = 'issuing_transaction.updated';
+    const MANDATE_UPDATED = 'mandate.updated';
+    const ORDER_CREATED = 'order.created';
+    const PAYMENT_INTENT_AMOUNT_CAPTURABLE_UPDATED = 'payment_intent.amount_capturable_updated';
+    const PAYMENT_INTENT_CANCELED = 'payment_intent.canceled';
+    const PAYMENT_INTENT_CREATED = 'payment_intent.created';
+    const PAYMENT_INTENT_PARTIALLY_FUNDED = 'payment_intent.partially_funded';
+    const PAYMENT_INTENT_PAYMENT_FAILED = 'payment_intent.payment_failed';
+    const PAYMENT_INTENT_PROCESSING = 'payment_intent.processing';
+    const PAYMENT_INTENT_REQUIRES_ACTION = 'payment_intent.requires_action';
+    const PAYMENT_INTENT_SUCCEEDED = 'payment_intent.succeeded';
+    const PAYMENT_LINK_CREATED = 'payment_link.created';
+    const PAYMENT_LINK_UPDATED = 'payment_link.updated';
+    const PAYMENT_METHOD_ATTACHED = 'payment_method.attached';
+    const PAYMENT_METHOD_AUTOMATICALLY_UPDATED = 'payment_method.automatically_updated';
+    const PAYMENT_METHOD_DETACHED = 'payment_method.detached';
+    const PAYMENT_METHOD_UPDATED = 'payment_method.updated';
+    const PAYOUT_CANCELED = 'payout.canceled';
+    const PAYOUT_CREATED = 'payout.created';
+    const PAYOUT_FAILED = 'payout.failed';
+    const PAYOUT_PAID = 'payout.paid';
+    const PAYOUT_UPDATED = 'payout.updated';
+    const PERSON_CREATED = 'person.created';
+    const PERSON_DELETED = 'person.deleted';
+    const PERSON_UPDATED = 'person.updated';
+    const PLAN_CREATED = 'plan.created';
+    const PLAN_DELETED = 'plan.deleted';
+    const PLAN_UPDATED = 'plan.updated';
+    const PRICE_CREATED = 'price.created';
+    const PRICE_DELETED = 'price.deleted';
+    const PRICE_UPDATED = 'price.updated';
+    const PRODUCT_CREATED = 'product.created';
+    const PRODUCT_DELETED = 'product.deleted';
+    const PRODUCT_UPDATED = 'product.updated';
+    const PROMOTION_CODE_CREATED = 'promotion_code.created';
+    const PROMOTION_CODE_UPDATED = 'promotion_code.updated';
+    const QUOTE_ACCEPTED = 'quote.accepted';
+    const QUOTE_CANCELED = 'quote.canceled';
+    const QUOTE_CREATED = 'quote.created';
+    const QUOTE_FINALIZED = 'quote.finalized';
+    const RADAR_EARLY_FRAUD_WARNING_CREATED = 'radar.early_fraud_warning.created';
+    const RADAR_EARLY_FRAUD_WARNING_UPDATED = 'radar.early_fraud_warning.updated';
+    const RECIPIENT_CREATED = 'recipient.created';
+    const RECIPIENT_DELETED = 'recipient.deleted';
+    const RECIPIENT_UPDATED = 'recipient.updated';
+    const REFUND_CREATED = 'refund.created';
+    const REFUND_UPDATED = 'refund.updated';
+    const REPORTING_REPORT_RUN_FAILED = 'reporting.report_run.failed';
+    const REPORTING_REPORT_RUN_SUCCEEDED = 'reporting.report_run.succeeded';
+    const REPORTING_REPORT_TYPE_UPDATED = 'reporting.report_type.updated';
+    const REVIEW_CLOSED = 'review.closed';
+    const REVIEW_OPENED = 'review.opened';
+    const SETUP_INTENT_CANCELED = 'setup_intent.canceled';
+    const SETUP_INTENT_CREATED = 'setup_intent.created';
+    const SETUP_INTENT_REQUIRES_ACTION = 'setup_intent.requires_action';
+    const SETUP_INTENT_SETUP_FAILED = 'setup_intent.setup_failed';
+    const SETUP_INTENT_SUCCEEDED = 'setup_intent.succeeded';
+    const SIGMA_SCHEDULED_QUERY_RUN_CREATED = 'sigma.scheduled_query_run.created';
+    const SKU_CREATED = 'sku.created';
+    const SKU_DELETED = 'sku.deleted';
+    const SKU_UPDATED = 'sku.updated';
+    const SOURCE_CANCELED = 'source.canceled';
+    const SOURCE_CHARGEABLE = 'source.chargeable';
+    const SOURCE_FAILED = 'source.failed';
+    const SOURCE_MANDATE_NOTIFICATION = 'source.mandate_notification';
+    const SOURCE_REFUND_ATTRIBUTES_REQUIRED = 'source.refund_attributes_required';
+    const SOURCE_TRANSACTION_CREATED = 'source.transaction.created';
+    const SOURCE_TRANSACTION_UPDATED = 'source.transaction.updated';
+    const SUBSCRIPTION_SCHEDULE_ABORTED = 'subscription_schedule.aborted';
+    const SUBSCRIPTION_SCHEDULE_CANCELED = 'subscription_schedule.canceled';
+    const SUBSCRIPTION_SCHEDULE_COMPLETED = 'subscription_schedule.completed';
+    const SUBSCRIPTION_SCHEDULE_CREATED = 'subscription_schedule.created';
+    const SUBSCRIPTION_SCHEDULE_EXPIRING = 'subscription_schedule.expiring';
+    const SUBSCRIPTION_SCHEDULE_RELEASED = 'subscription_schedule.released';
+    const SUBSCRIPTION_SCHEDULE_UPDATED = 'subscription_schedule.updated';
+    const TAX_RATE_CREATED = 'tax_rate.created';
+    const TAX_RATE_UPDATED = 'tax_rate.updated';
+    const TERMINAL_READER_ACTION_FAILED = 'terminal.reader.action_failed';
+    const TERMINAL_READER_ACTION_SUCCEEDED = 'terminal.reader.action_succeeded';
+    const TEST_HELPERS_TEST_CLOCK_ADVANCING = 'test_helpers.test_clock.advancing';
+    const TEST_HELPERS_TEST_CLOCK_CREATED = 'test_helpers.test_clock.created';
+    const TEST_HELPERS_TEST_CLOCK_DELETED = 'test_helpers.test_clock.deleted';
+    const TEST_HELPERS_TEST_CLOCK_INTERNAL_FAILURE = 'test_helpers.test_clock.internal_failure';
+    const TEST_HELPERS_TEST_CLOCK_READY = 'test_helpers.test_clock.ready';
+    const TOPUP_CANCELED = 'topup.canceled';
+    const TOPUP_CREATED = 'topup.created';
+    const TOPUP_FAILED = 'topup.failed';
+    const TOPUP_REVERSED = 'topup.reversed';
+    const TOPUP_SUCCEEDED = 'topup.succeeded';
+    const TRANSFER_CREATED = 'transfer.created';
+    const TRANSFER_REVERSED = 'transfer.reversed';
+    const TRANSFER_UPDATED = 'transfer.updated';
+    const TREASURY_CREDIT_REVERSAL_CREATED = 'treasury.credit_reversal.created';
+    const TREASURY_CREDIT_REVERSAL_POSTED = 'treasury.credit_reversal.posted';
+    const TREASURY_DEBIT_REVERSAL_COMPLETED = 'treasury.debit_reversal.completed';
+    const TREASURY_DEBIT_REVERSAL_CREATED = 'treasury.debit_reversal.created';
+    const TREASURY_DEBIT_REVERSAL_INITIAL_CREDIT_GRANTED = 'treasury.debit_reversal.initial_credit_granted';
+    const TREASURY_FINANCIAL_ACCOUNT_CLOSED = 'treasury.financial_account.closed';
+    const TREASURY_FINANCIAL_ACCOUNT_CREATED = 'treasury.financial_account.created';
+    const TREASURY_FINANCIAL_ACCOUNT_FEATURES_STATUS_UPDATED = 'treasury.financial_account.features_status_updated';
+    const TREASURY_INBOUND_TRANSFER_CANCELED = 'treasury.inbound_transfer.canceled';
+    const TREASURY_INBOUND_TRANSFER_CREATED = 'treasury.inbound_transfer.created';
+    const TREASURY_INBOUND_TRANSFER_FAILED = 'treasury.inbound_transfer.failed';
+    const TREASURY_INBOUND_TRANSFER_SUCCEEDED = 'treasury.inbound_transfer.succeeded';
+    const TREASURY_OUTBOUND_PAYMENT_CANCELED = 'treasury.outbound_payment.canceled';
+    const TREASURY_OUTBOUND_PAYMENT_CREATED = 'treasury.outbound_payment.created';
+    const TREASURY_OUTBOUND_PAYMENT_EXPECTED_ARRIVAL_DATE_UPDATED = 'treasury.outbound_payment.expected_arrival_date_updated';
+    const TREASURY_OUTBOUND_PAYMENT_FAILED = 'treasury.outbound_payment.failed';
+    const TREASURY_OUTBOUND_PAYMENT_POSTED = 'treasury.outbound_payment.posted';
+    const TREASURY_OUTBOUND_PAYMENT_RETURNED = 'treasury.outbound_payment.returned';
+    const TREASURY_OUTBOUND_TRANSFER_CANCELED = 'treasury.outbound_transfer.canceled';
+    const TREASURY_OUTBOUND_TRANSFER_CREATED = 'treasury.outbound_transfer.created';
+    const TREASURY_OUTBOUND_TRANSFER_EXPECTED_ARRIVAL_DATE_UPDATED = 'treasury.outbound_transfer.expected_arrival_date_updated';
+    const TREASURY_OUTBOUND_TRANSFER_FAILED = 'treasury.outbound_transfer.failed';
+    const TREASURY_OUTBOUND_TRANSFER_POSTED = 'treasury.outbound_transfer.posted';
+    const TREASURY_OUTBOUND_TRANSFER_RETURNED = 'treasury.outbound_transfer.returned';
+    const TREASURY_RECEIVED_CREDIT_CREATED = 'treasury.received_credit.created';
+    const TREASURY_RECEIVED_CREDIT_FAILED = 'treasury.received_credit.failed';
+    const TREASURY_RECEIVED_CREDIT_SUCCEEDED = 'treasury.received_credit.succeeded';
+    const TREASURY_RECEIVED_DEBIT_CREATED = 'treasury.received_debit.created';
 }
 namespace Stripe\Exception;
 
@@ -3542,154 +3562,154 @@ interface ExceptionInterface extends \Throwable
  */
 abstract class ApiErrorException extends \Exception implements \Stripe\Exception\ExceptionInterface
 {
-	protected $error;
-	protected $httpBody;
-	protected $httpHeaders;
-	protected $httpStatus;
-	protected $jsonBody;
-	protected $requestId;
-	protected $stripeCode;
-	/**
-	 * Creates a new API error exception.
-	 *
-	 * @param string $message the exception message
-	 * @param null|int $httpStatus the HTTP status code
-	 * @param null|string $httpBody the HTTP body as a string
-	 * @param null|array $jsonBody the JSON deserialized body
-	 * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders the HTTP headers array
-	 * @param null|string $stripeCode the Stripe error code
-	 *
-	 * @return static
-	 */
-	public static function factory($message, $httpStatus = null, $httpBody = null, $jsonBody = null, $httpHeaders = null, $stripeCode = null)
-	{
-	}
-	/**
-	 * Gets the Stripe error object.
-	 *
-	 * @return null|\Stripe\ErrorObject
-	 */
-	public function getError()
-	{
-	}
-	/**
-	 * Sets the Stripe error object.
-	 *
-	 * @param null|\Stripe\ErrorObject $error
-	 */
-	public function setError($error)
-	{
-	}
-	/**
-	 * Gets the HTTP body as a string.
-	 *
-	 * @return null|string
-	 */
-	public function getHttpBody()
-	{
-	}
-	/**
-	 * Sets the HTTP body as a string.
-	 *
-	 * @param null|string $httpBody
-	 */
-	public function setHttpBody($httpBody)
-	{
-	}
-	/**
-	 * Gets the HTTP headers array.
-	 *
-	 * @return null|array|\Stripe\Util\CaseInsensitiveArray
-	 */
-	public function getHttpHeaders()
-	{
-	}
-	/**
-	 * Sets the HTTP headers array.
-	 *
-	 * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders
-	 */
-	public function setHttpHeaders($httpHeaders)
-	{
-	}
-	/**
-	 * Gets the HTTP status code.
-	 *
-	 * @return null|int
-	 */
-	public function getHttpStatus()
-	{
-	}
-	/**
-	 * Sets the HTTP status code.
-	 *
-	 * @param null|int $httpStatus
-	 */
-	public function setHttpStatus($httpStatus)
-	{
-	}
-	/**
-	 * Gets the JSON deserialized body.
-	 *
-	 * @return null|array<string, mixed>
-	 */
-	public function getJsonBody()
-	{
-	}
-	/**
-	 * Sets the JSON deserialized body.
-	 *
-	 * @param null|array<string, mixed> $jsonBody
-	 */
-	public function setJsonBody($jsonBody)
-	{
-	}
-	/**
-	 * Gets the Stripe request ID.
-	 *
-	 * @return null|string
-	 */
-	public function getRequestId()
-	{
-	}
-	/**
-	 * Sets the Stripe request ID.
-	 *
-	 * @param null|string $requestId
-	 */
-	public function setRequestId($requestId)
-	{
-	}
-	/**
-	 * Gets the Stripe error code.
-	 *
-	 * Cf. the `CODE_*` constants on {@see \Stripe\ErrorObject} for possible
-	 * values.
-	 *
-	 * @return null|string
-	 */
-	public function getStripeCode()
-	{
-	}
-	/**
-	 * Sets the Stripe error code.
-	 *
-	 * @param null|string $stripeCode
-	 */
-	public function setStripeCode($stripeCode)
-	{
-	}
-	/**
-	 * Returns the string representation of the exception.
-	 *
-	 * @return string
-	 */
-	public function __toString()
-	{
-	}
-	protected function constructErrorObject()
-	{
-	}
+    protected $error;
+    protected $httpBody;
+    protected $httpHeaders;
+    protected $httpStatus;
+    protected $jsonBody;
+    protected $requestId;
+    protected $stripeCode;
+    /**
+     * Creates a new API error exception.
+     *
+     * @param string $message the exception message
+     * @param null|int $httpStatus the HTTP status code
+     * @param null|string $httpBody the HTTP body as a string
+     * @param null|array $jsonBody the JSON deserialized body
+     * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders the HTTP headers array
+     * @param null|string $stripeCode the Stripe error code
+     *
+     * @return static
+     */
+    public static function factory($message, $httpStatus = null, $httpBody = null, $jsonBody = null, $httpHeaders = null, $stripeCode = null)
+    {
+    }
+    /**
+     * Gets the Stripe error object.
+     *
+     * @return null|\Stripe\ErrorObject
+     */
+    public function getError()
+    {
+    }
+    /**
+     * Sets the Stripe error object.
+     *
+     * @param null|\Stripe\ErrorObject $error
+     */
+    public function setError($error)
+    {
+    }
+    /**
+     * Gets the HTTP body as a string.
+     *
+     * @return null|string
+     */
+    public function getHttpBody()
+    {
+    }
+    /**
+     * Sets the HTTP body as a string.
+     *
+     * @param null|string $httpBody
+     */
+    public function setHttpBody($httpBody)
+    {
+    }
+    /**
+     * Gets the HTTP headers array.
+     *
+     * @return null|array|\Stripe\Util\CaseInsensitiveArray
+     */
+    public function getHttpHeaders()
+    {
+    }
+    /**
+     * Sets the HTTP headers array.
+     *
+     * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders
+     */
+    public function setHttpHeaders($httpHeaders)
+    {
+    }
+    /**
+     * Gets the HTTP status code.
+     *
+     * @return null|int
+     */
+    public function getHttpStatus()
+    {
+    }
+    /**
+     * Sets the HTTP status code.
+     *
+     * @param null|int $httpStatus
+     */
+    public function setHttpStatus($httpStatus)
+    {
+    }
+    /**
+     * Gets the JSON deserialized body.
+     *
+     * @return null|array<string, mixed>
+     */
+    public function getJsonBody()
+    {
+    }
+    /**
+     * Sets the JSON deserialized body.
+     *
+     * @param null|array<string, mixed> $jsonBody
+     */
+    public function setJsonBody($jsonBody)
+    {
+    }
+    /**
+     * Gets the Stripe request ID.
+     *
+     * @return null|string
+     */
+    public function getRequestId()
+    {
+    }
+    /**
+     * Sets the Stripe request ID.
+     *
+     * @param null|string $requestId
+     */
+    public function setRequestId($requestId)
+    {
+    }
+    /**
+     * Gets the Stripe error code.
+     *
+     * Cf. the `CODE_*` constants on {@see \Stripe\ErrorObject} for possible
+     * values.
+     *
+     * @return null|string
+     */
+    public function getStripeCode()
+    {
+    }
+    /**
+     * Sets the Stripe error code.
+     *
+     * @param null|string $stripeCode
+     */
+    public function setStripeCode($stripeCode)
+    {
+    }
+    /**
+     * Returns the string representation of the exception.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+    }
+    protected function constructErrorObject()
+    {
+    }
 }
 /**
  * ApiConnection is thrown in the event that the SDK can't connect to Stripe's
@@ -3715,57 +3735,57 @@ class BadMethodCallException extends \BadMethodCallException implements \Stripe\
  */
 class CardException extends \Stripe\Exception\ApiErrorException
 {
-	protected $declineCode;
-	protected $stripeParam;
-	/**
-	 * Creates a new CardException exception.
-	 *
-	 * @param string $message the exception message
-	 * @param null|int $httpStatus the HTTP status code
-	 * @param null|string $httpBody the HTTP body as a string
-	 * @param null|array $jsonBody the JSON deserialized body
-	 * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders the HTTP headers array
-	 * @param null|string $stripeCode the Stripe error code
-	 * @param null|string $declineCode the decline code
-	 * @param null|string $stripeParam the parameter related to the error
-	 *
-	 * @return CardException
-	 */
-	public static function factory($message, $httpStatus = null, $httpBody = null, $jsonBody = null, $httpHeaders = null, $stripeCode = null, $declineCode = null, $stripeParam = null)
-	{
-	}
-	/**
-	 * Gets the decline code.
-	 *
-	 * @return null|string
-	 */
-	public function getDeclineCode()
-	{
-	}
-	/**
-	 * Sets the decline code.
-	 *
-	 * @param null|string $declineCode
-	 */
-	public function setDeclineCode($declineCode)
-	{
-	}
-	/**
-	 * Gets the parameter related to the error.
-	 *
-	 * @return null|string
-	 */
-	public function getStripeParam()
-	{
-	}
-	/**
-	 * Sets the parameter related to the error.
-	 *
-	 * @param null|string $stripeParam
-	 */
-	public function setStripeParam($stripeParam)
-	{
-	}
+    protected $declineCode;
+    protected $stripeParam;
+    /**
+     * Creates a new CardException exception.
+     *
+     * @param string $message the exception message
+     * @param null|int $httpStatus the HTTP status code
+     * @param null|string $httpBody the HTTP body as a string
+     * @param null|array $jsonBody the JSON deserialized body
+     * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders the HTTP headers array
+     * @param null|string $stripeCode the Stripe error code
+     * @param null|string $declineCode the decline code
+     * @param null|string $stripeParam the parameter related to the error
+     *
+     * @return CardException
+     */
+    public static function factory($message, $httpStatus = null, $httpBody = null, $jsonBody = null, $httpHeaders = null, $stripeCode = null, $declineCode = null, $stripeParam = null)
+    {
+    }
+    /**
+     * Gets the decline code.
+     *
+     * @return null|string
+     */
+    public function getDeclineCode()
+    {
+    }
+    /**
+     * Sets the decline code.
+     *
+     * @param null|string $declineCode
+     */
+    public function setDeclineCode($declineCode)
+    {
+    }
+    /**
+     * Gets the parameter related to the error.
+     *
+     * @return null|string
+     */
+    public function getStripeParam()
+    {
+    }
+    /**
+     * Sets the parameter related to the error.
+     *
+     * @param null|string $stripeParam
+     */
+    public function setStripeParam($stripeParam)
+    {
+    }
 }
 /**
  * IdempotencyException is thrown in cases where an idempotency key was used
@@ -3783,39 +3803,39 @@ class InvalidArgumentException extends \InvalidArgumentException implements \Str
  */
 class InvalidRequestException extends \Stripe\Exception\ApiErrorException
 {
-	protected $stripeParam;
-	/**
-	 * Creates a new InvalidRequestException exception.
-	 *
-	 * @param string $message the exception message
-	 * @param null|int $httpStatus the HTTP status code
-	 * @param null|string $httpBody the HTTP body as a string
-	 * @param null|array $jsonBody the JSON deserialized body
-	 * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders the HTTP headers array
-	 * @param null|string $stripeCode the Stripe error code
-	 * @param null|string $stripeParam the parameter related to the error
-	 *
-	 * @return InvalidRequestException
-	 */
-	public static function factory($message, $httpStatus = null, $httpBody = null, $jsonBody = null, $httpHeaders = null, $stripeCode = null, $stripeParam = null)
-	{
-	}
-	/**
-	 * Gets the parameter related to the error.
-	 *
-	 * @return null|string
-	 */
-	public function getStripeParam()
-	{
-	}
-	/**
-	 * Sets the parameter related to the error.
-	 *
-	 * @param null|string $stripeParam
-	 */
-	public function setStripeParam($stripeParam)
-	{
-	}
+    protected $stripeParam;
+    /**
+     * Creates a new InvalidRequestException exception.
+     *
+     * @param string $message the exception message
+     * @param null|int $httpStatus the HTTP status code
+     * @param null|string $httpBody the HTTP body as a string
+     * @param null|array $jsonBody the JSON deserialized body
+     * @param null|array|\Stripe\Util\CaseInsensitiveArray $httpHeaders the HTTP headers array
+     * @param null|string $stripeCode the Stripe error code
+     * @param null|string $stripeParam the parameter related to the error
+     *
+     * @return InvalidRequestException
+     */
+    public static function factory($message, $httpStatus = null, $httpBody = null, $jsonBody = null, $httpHeaders = null, $stripeCode = null, $stripeParam = null)
+    {
+    }
+    /**
+     * Gets the parameter related to the error.
+     *
+     * @return null|string
+     */
+    public function getStripeParam()
+    {
+    }
+    /**
+     * Sets the parameter related to the error.
+     *
+     * @param null|string $stripeParam
+     */
+    public function setStripeParam($stripeParam)
+    {
+    }
 }
 namespace Stripe\Exception\OAuth;
 
@@ -3831,9 +3851,9 @@ interface ExceptionInterface extends \Stripe\Exception\ExceptionInterface
  */
 abstract class OAuthErrorException extends \Stripe\Exception\ApiErrorException
 {
-	protected function constructErrorObject()
-	{
-	}
+    protected function constructErrorObject()
+    {
+    }
 }
 /**
  * InvalidClientException is thrown when the client_id does not belong to you,
@@ -3910,52 +3930,52 @@ class RateLimitException extends \Stripe\Exception\InvalidRequestException
  */
 class SignatureVerificationException extends \Exception implements \Stripe\Exception\ExceptionInterface
 {
-	protected $httpBody;
-	protected $sigHeader;
-	/**
-	 * Creates a new SignatureVerificationException exception.
-	 *
-	 * @param string $message the exception message
-	 * @param null|string $httpBody the HTTP body as a string
-	 * @param null|string $sigHeader the `Stripe-Signature` HTTP header
-	 *
-	 * @return SignatureVerificationException
-	 */
-	public static function factory($message, $httpBody = null, $sigHeader = null)
-	{
-	}
-	/**
-	 * Gets the HTTP body as a string.
-	 *
-	 * @return null|string
-	 */
-	public function getHttpBody()
-	{
-	}
-	/**
-	 * Sets the HTTP body as a string.
-	 *
-	 * @param null|string $httpBody
-	 */
-	public function setHttpBody($httpBody)
-	{
-	}
-	/**
-	 * Gets the `Stripe-Signature` HTTP header.
-	 *
-	 * @return null|string
-	 */
-	public function getSigHeader()
-	{
-	}
-	/**
-	 * Sets the `Stripe-Signature` HTTP header.
-	 *
-	 * @param null|string $sigHeader
-	 */
-	public function setSigHeader($sigHeader)
-	{
-	}
+    protected $httpBody;
+    protected $sigHeader;
+    /**
+     * Creates a new SignatureVerificationException exception.
+     *
+     * @param string $message the exception message
+     * @param null|string $httpBody the HTTP body as a string
+     * @param null|string $sigHeader the `Stripe-Signature` HTTP header
+     *
+     * @return SignatureVerificationException
+     */
+    public static function factory($message, $httpBody = null, $sigHeader = null)
+    {
+    }
+    /**
+     * Gets the HTTP body as a string.
+     *
+     * @return null|string
+     */
+    public function getHttpBody()
+    {
+    }
+    /**
+     * Sets the HTTP body as a string.
+     *
+     * @param null|string $httpBody
+     */
+    public function setHttpBody($httpBody)
+    {
+    }
+    /**
+     * Gets the `Stripe-Signature` HTTP header.
+     *
+     * @return null|string
+     */
+    public function getSigHeader()
+    {
+    }
+    /**
+     * Sets the `Stripe-Signature` HTTP header.
+     *
+     * @param null|string $sigHeader
+     */
+    public function setSigHeader($sigHeader)
+    {
+    }
 }
 class UnexpectedValueException extends \UnexpectedValueException implements \Stripe\Exception\ExceptionInterface
 {
@@ -3989,9 +4009,9 @@ namespace Stripe;
  */
 class ExchangeRate extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'exchange_rate';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'exchange_rate';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
 }
 /**
  * This is an object representing a file hosted on Stripe's servers. The file may
@@ -4018,43 +4038,44 @@ class ExchangeRate extends \Stripe\ApiResource
  */
 class File extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'file';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const PURPOSE_ACCOUNT_REQUIREMENT = 'account_requirement';
-	const PURPOSE_ADDITIONAL_VERIFICATION = 'additional_verification';
-	const PURPOSE_BUSINESS_ICON = 'business_icon';
-	const PURPOSE_BUSINESS_LOGO = 'business_logo';
-	const PURPOSE_CUSTOMER_SIGNATURE = 'customer_signature';
-	const PURPOSE_DISPUTE_EVIDENCE = 'dispute_evidence';
-	const PURPOSE_DOCUMENT_PROVIDER_IDENTITY_DOCUMENT = 'document_provider_identity_document';
-	const PURPOSE_FINANCE_REPORT_RUN = 'finance_report_run';
-	const PURPOSE_IDENTITY_DOCUMENT = 'identity_document';
-	const PURPOSE_IDENTITY_DOCUMENT_DOWNLOADABLE = 'identity_document_downloadable';
-	const PURPOSE_PCI_DOCUMENT = 'pci_document';
-	const PURPOSE_SELFIE = 'selfie';
-	const PURPOSE_SIGMA_SCHEDULED_QUERY = 'sigma_scheduled_query';
-	const PURPOSE_TAX_DOCUMENT_USER_UPLOAD = 'tax_document_user_upload';
-	const PURPOSE_TERMINAL_READER_SPLASHSCREEN = 'terminal_reader_splashscreen';
-	// This resource can have two different object names. In latter API
-	// versions, only `file` is used, but since stripe-php may be used with
-	// any API version, we need to support deserializing the older
-	// `file_upload` object into the same class.
-	const OBJECT_NAME_ALT = 'file_upload';
-	use \Stripe\ApiOperations\Create {
-		create as protected _create;
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\File the created file
-	 */
-	public static function create($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'file';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+    const PURPOSE_ACCOUNT_REQUIREMENT = 'account_requirement';
+    const PURPOSE_ADDITIONAL_VERIFICATION = 'additional_verification';
+    const PURPOSE_BUSINESS_ICON = 'business_icon';
+    const PURPOSE_BUSINESS_LOGO = 'business_logo';
+    const PURPOSE_CUSTOMER_SIGNATURE = 'customer_signature';
+    const PURPOSE_DISPUTE_EVIDENCE = 'dispute_evidence';
+    const PURPOSE_DOCUMENT_PROVIDER_IDENTITY_DOCUMENT = 'document_provider_identity_document';
+    const PURPOSE_FINANCE_REPORT_RUN = 'finance_report_run';
+    const PURPOSE_IDENTITY_DOCUMENT = 'identity_document';
+    const PURPOSE_IDENTITY_DOCUMENT_DOWNLOADABLE = 'identity_document_downloadable';
+    const PURPOSE_PCI_DOCUMENT = 'pci_document';
+    const PURPOSE_SELFIE = 'selfie';
+    const PURPOSE_SIGMA_SCHEDULED_QUERY = 'sigma_scheduled_query';
+    const PURPOSE_TAX_DOCUMENT_USER_UPLOAD = 'tax_document_user_upload';
+    const PURPOSE_TERMINAL_READER_SPLASHSCREEN = 'terminal_reader_splashscreen';
+    // This resource can have two different object names. In latter API
+    // versions, only `file` is used, but since stripe-php may be used with
+    // any API version, we need to support deserializing the older
+    // `file_upload` object into the same class.
+    const OBJECT_NAME_ALT = 'file_upload';
+    use \Stripe\ApiOperations\Create {
+        create as protected _create;
+    }
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\File the created file
+     */
+    public static function create($params = null, $opts = null)
+    {
+    }
 }
 /**
  * To share the contents of a <code>File</code> object with non-Stripe users, you
@@ -4073,11 +4094,11 @@ class File extends \Stripe\ApiResource
  */
 class FileLink extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'file_link';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'file_link';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 namespace Stripe\FinancialConnections;
 
@@ -4105,56 +4126,57 @@ namespace Stripe\FinancialConnections;
  */
 class Account extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'financial_connections.account';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const CATEGORY_CASH = 'cash';
-	const CATEGORY_CREDIT = 'credit';
-	const CATEGORY_INVESTMENT = 'investment';
-	const CATEGORY_OTHER = 'other';
-	const STATUS_ACTIVE = 'active';
-	const STATUS_DISCONNECTED = 'disconnected';
-	const STATUS_INACTIVE = 'inactive';
-	const SUBCATEGORY_CHECKING = 'checking';
-	const SUBCATEGORY_CREDIT_CARD = 'credit_card';
-	const SUBCATEGORY_LINE_OF_CREDIT = 'line_of_credit';
-	const SUBCATEGORY_MORTGAGE = 'mortgage';
-	const SUBCATEGORY_OTHER = 'other';
-	const SUBCATEGORY_SAVINGS = 'savings';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FinancialConnections\Account the disconnected account
-	 */
-	public function disconnect($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\FinancialConnections\AccountOwner> list of BankConnectionsResourceOwners
-	 */
-	public static function allOwners($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FinancialConnections\Account the refreshed account
-	 */
-	public function refreshAccount($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'financial_connections.account';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const CATEGORY_CASH = 'cash';
+    const CATEGORY_CREDIT = 'credit';
+    const CATEGORY_INVESTMENT = 'investment';
+    const CATEGORY_OTHER = 'other';
+    const STATUS_ACTIVE = 'active';
+    const STATUS_DISCONNECTED = 'disconnected';
+    const STATUS_INACTIVE = 'inactive';
+    const SUBCATEGORY_CHECKING = 'checking';
+    const SUBCATEGORY_CREDIT_CARD = 'credit_card';
+    const SUBCATEGORY_LINE_OF_CREDIT = 'line_of_credit';
+    const SUBCATEGORY_MORTGAGE = 'mortgage';
+    const SUBCATEGORY_OTHER = 'other';
+    const SUBCATEGORY_SAVINGS = 'savings';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FinancialConnections\Account the disconnected account
+     */
+    public function disconnect($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\FinancialConnections\AccountOwner> list of BankConnectionsResourceOwners
+     */
+    public static function allOwners($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FinancialConnections\Account the refreshed account
+     */
+    public function refreshAccount($params = null, $opts = null)
+    {
+    }
 }
 /**
  * @property string $id Unique identifier for the object.
@@ -4168,7 +4190,7 @@ class Account extends \Stripe\ApiResource
  */
 class AccountOwner extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'financial_connections.account_owner';
+    const OBJECT_NAME = 'financial_connections.account_owner';
 }
 /**
  * Describes a snapshot of the owners of an account at a particular point in time.
@@ -4180,7 +4202,7 @@ class AccountOwner extends \Stripe\ApiResource
  */
 class AccountOwnership extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'financial_connections.account_ownership';
+    const OBJECT_NAME = 'financial_connections.account_ownership';
 }
 /**
  * A Financial Connections Session is the secure way to programmatically launch the
@@ -4198,9 +4220,9 @@ class AccountOwnership extends \Stripe\ApiResource
  */
 class Session extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'financial_connections.session';
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'financial_connections.session';
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
 }
 namespace Stripe;
 
@@ -4222,184 +4244,184 @@ namespace Stripe;
  */
 class FundingInstructions extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'funding_instructions';
-	const FUNDING_TYPE_BANK_TRANSFER = 'bank_transfer';
+    const OBJECT_NAME = 'funding_instructions';
+    const FUNDING_TYPE_BANK_TRANSFER = 'bank_transfer';
 }
 namespace Stripe\HttpClient;
 
 interface ClientInterface
 {
-	/**
-	 * @param string $method The HTTP method being used
-	 * @param string $absUrl The URL being requested, including domain and protocol
-	 * @param array $headers Headers to be used in the request (full strings, not KV pairs)
-	 * @param array $params KV pairs for parameters. Can be nested for arrays and hashes
-	 * @param bool $hasFile Whether or not $params references a file (via an @ prefix or
-	 *                      CURLFile)
-	 *
-	 * @throws \Stripe\Exception\ApiConnectionException
-	 * @throws \Stripe\Exception\UnexpectedValueException
-	 *
-	 * @return array an array whose first element is raw request body, second
-	 *    element is HTTP status code and third array of HTTP headers
-	 */
-	public function request($method, $absUrl, $headers, $params, $hasFile);
+    /**
+     * @param string $method The HTTP method being used
+     * @param string $absUrl The URL being requested, including domain and protocol
+     * @param array $headers Headers to be used in the request (full strings, not KV pairs)
+     * @param array $params KV pairs for parameters. Can be nested for arrays and hashes
+     * @param bool $hasFile Whether or not $params references a file (via an @ prefix or
+     *                      CURLFile)
+     *
+     * @throws \Stripe\Exception\ApiConnectionException
+     * @throws \Stripe\Exception\UnexpectedValueException
+     *
+     * @return array an array whose first element is raw request body, second
+     *    element is HTTP status code and third array of HTTP headers
+     */
+    public function request($method, $absUrl, $headers, $params, $hasFile);
 }
 interface StreamingClientInterface
 {
-	/**
-	 * @param string $method The HTTP method being used
-	 * @param string $absUrl The URL being requested, including domain and protocol
-	 * @param array $headers Headers to be used in the request (full strings, not KV pairs)
-	 * @param array $params KV pairs for parameters. Can be nested for arrays and hashes
-	 * @param bool $hasFile Whether or not $params references a file (via an @ prefix or
-	 *                      CURLFile)
-	 * @param callable $readBodyChunkCallable a function that will be called with chunks of bytes from the body if the request is successful
-	 *
-	 * @throws \Stripe\Exception\ApiConnectionException
-	 * @throws \Stripe\Exception\UnexpectedValueException
-	 *
-	 * @return array an array whose first element is raw request body, second
-	 *    element is HTTP status code and third array of HTTP headers
-	 */
-	public function requestStream($method, $absUrl, $headers, $params, $hasFile, $readBodyChunkCallable);
+    /**
+     * @param string $method The HTTP method being used
+     * @param string $absUrl The URL being requested, including domain and protocol
+     * @param array $headers Headers to be used in the request (full strings, not KV pairs)
+     * @param array $params KV pairs for parameters. Can be nested for arrays and hashes
+     * @param bool $hasFile Whether or not $params references a file (via an @ prefix or
+     *                      CURLFile)
+     * @param callable $readBodyChunkCallable a function that will be called with chunks of bytes from the body if the request is successful
+     *
+     * @throws \Stripe\Exception\ApiConnectionException
+     * @throws \Stripe\Exception\UnexpectedValueException
+     *
+     * @return array an array whose first element is raw request body, second
+     *    element is HTTP status code and third array of HTTP headers
+     */
+    public function requestStream($method, $absUrl, $headers, $params, $hasFile, $readBodyChunkCallable);
 }
 class CurlClient implements \Stripe\HttpClient\ClientInterface, \Stripe\HttpClient\StreamingClientInterface
 {
-	protected static $instance;
-	public static function instance()
-	{
-	}
-	protected $defaultOptions;
-	/** @var \Stripe\Util\RandomGenerator */
-	protected $randomGenerator;
-	protected $userAgentInfo;
-	protected $enablePersistentConnections = true;
-	protected $enableHttp2;
-	protected $curlHandle;
-	protected $requestStatusCallback;
-	/**
-	 * CurlClient constructor.
-	 *
-	 * Pass in a callable to $defaultOptions that returns an array of CURLOPT_* values to start
-	 * off a request with, or an flat array with the same format used by curl_setopt_array() to
-	 * provide a static set of options. Note that many options are overridden later in the request
-	 * call, including timeouts, which can be set via setTimeout() and setConnectTimeout().
-	 *
-	 * Note that request() will silently ignore a non-callable, non-array $defaultOptions, and will
-	 * throw an exception if $defaultOptions returns a non-array value.
-	 *
-	 * @param null|array|callable $defaultOptions
-	 * @param null|\Stripe\Util\RandomGenerator $randomGenerator
-	 */
-	public function __construct($defaultOptions = null, $randomGenerator = null)
-	{
-	}
-	public function __destruct()
-	{
-	}
-	public function initUserAgentInfo()
-	{
-	}
-	public function getDefaultOptions()
-	{
-	}
-	public function getUserAgentInfo()
-	{
-	}
-	/**
-	 * @return bool
-	 */
-	public function getEnablePersistentConnections()
-	{
-	}
-	/**
-	 * @param bool $enable
-	 */
-	public function setEnablePersistentConnections($enable)
-	{
-	}
-	/**
-	 * @return bool
-	 */
-	public function getEnableHttp2()
-	{
-	}
-	/**
-	 * @param bool $enable
-	 */
-	public function setEnableHttp2($enable)
-	{
-	}
-	/**
-	 * @return null|callable
-	 */
-	public function getRequestStatusCallback()
-	{
-	}
-	/**
-	 * Sets a callback that is called after each request. The callback will
-	 * receive the following parameters:
-	 * <ol>
-	 *   <li>string $rbody The response body</li>
-	 *   <li>integer $rcode The response status code</li>
-	 *   <li>\Stripe\Util\CaseInsensitiveArray $rheaders The response headers</li>
-	 *   <li>integer $errno The curl error number</li>
-	 *   <li>string|null $message The curl error message</li>
-	 *   <li>boolean $shouldRetry Whether the request will be retried</li>
-	 *   <li>integer $numRetries The number of the retry attempt</li>
-	 * </ol>.
-	 *
-	 * @param null|callable $requestStatusCallback
-	 */
-	public function setRequestStatusCallback($requestStatusCallback)
-	{
-	}
-	// USER DEFINED TIMEOUTS
-	const DEFAULT_TIMEOUT = 80;
-	const DEFAULT_CONNECT_TIMEOUT = 30;
-	public function setTimeout($seconds)
-	{
-	}
-	public function setConnectTimeout($seconds)
-	{
-	}
-	public function getTimeout()
-	{
-	}
-	public function getConnectTimeout()
-	{
-	}
-	public function request($method, $absUrl, $headers, $params, $hasFile)
-	{
-	}
-	public function requestStream($method, $absUrl, $headers, $params, $hasFile, $readBodyChunk)
-	{
-	}
-	/**
-	 * Like `executeRequestWithRetries` except:
-	 *   1. Does not buffer the body of a successful (status code < 300)
-	 *      response into memory -- instead, calls the caller-provided
-	 *      $readBodyChunk with each chunk of incoming data.
-	 *   2. Does not retry if a network error occurs while streaming the
-	 *      body of a successful response.
-	 *
-	 * @param array $opts cURL options
-	 * @param string $absUrl
-	 * @param callable $readBodyChunk
-	 *
-	 * @return array
-	 */
-	public function executeStreamingRequestWithRetries($opts, $absUrl, $readBodyChunk)
-	{
-	}
-	/**
-	 * @param array $opts cURL options
-	 * @param string $absUrl
-	 */
-	public function executeRequestWithRetries($opts, $absUrl)
-	{
-	}
+    protected static $instance;
+    public static function instance()
+    {
+    }
+    protected $defaultOptions;
+    /** @var \Stripe\Util\RandomGenerator */
+    protected $randomGenerator;
+    protected $userAgentInfo;
+    protected $enablePersistentConnections = true;
+    protected $enableHttp2;
+    protected $curlHandle;
+    protected $requestStatusCallback;
+    /**
+     * CurlClient constructor.
+     *
+     * Pass in a callable to $defaultOptions that returns an array of CURLOPT_* values to start
+     * off a request with, or an flat array with the same format used by curl_setopt_array() to
+     * provide a static set of options. Note that many options are overridden later in the request
+     * call, including timeouts, which can be set via setTimeout() and setConnectTimeout().
+     *
+     * Note that request() will silently ignore a non-callable, non-array $defaultOptions, and will
+     * throw an exception if $defaultOptions returns a non-array value.
+     *
+     * @param null|array|callable $defaultOptions
+     * @param null|\Stripe\Util\RandomGenerator $randomGenerator
+     */
+    public function __construct($defaultOptions = null, $randomGenerator = null)
+    {
+    }
+    public function __destruct()
+    {
+    }
+    public function initUserAgentInfo()
+    {
+    }
+    public function getDefaultOptions()
+    {
+    }
+    public function getUserAgentInfo()
+    {
+    }
+    /**
+     * @return bool
+     */
+    public function getEnablePersistentConnections()
+    {
+    }
+    /**
+     * @param bool $enable
+     */
+    public function setEnablePersistentConnections($enable)
+    {
+    }
+    /**
+     * @return bool
+     */
+    public function getEnableHttp2()
+    {
+    }
+    /**
+     * @param bool $enable
+     */
+    public function setEnableHttp2($enable)
+    {
+    }
+    /**
+     * @return null|callable
+     */
+    public function getRequestStatusCallback()
+    {
+    }
+    /**
+     * Sets a callback that is called after each request. The callback will
+     * receive the following parameters:
+     * <ol>
+     *   <li>string $rbody The response body</li>
+     *   <li>integer $rcode The response status code</li>
+     *   <li>\Stripe\Util\CaseInsensitiveArray $rheaders The response headers</li>
+     *   <li>integer $errno The curl error number</li>
+     *   <li>string|null $message The curl error message</li>
+     *   <li>boolean $shouldRetry Whether the request will be retried</li>
+     *   <li>integer $numRetries The number of the retry attempt</li>
+     * </ol>.
+     *
+     * @param null|callable $requestStatusCallback
+     */
+    public function setRequestStatusCallback($requestStatusCallback)
+    {
+    }
+    // USER DEFINED TIMEOUTS
+    const DEFAULT_TIMEOUT = 80;
+    const DEFAULT_CONNECT_TIMEOUT = 30;
+    public function setTimeout($seconds)
+    {
+    }
+    public function setConnectTimeout($seconds)
+    {
+    }
+    public function getTimeout()
+    {
+    }
+    public function getConnectTimeout()
+    {
+    }
+    public function request($method, $absUrl, $headers, $params, $hasFile)
+    {
+    }
+    public function requestStream($method, $absUrl, $headers, $params, $hasFile, $readBodyChunk)
+    {
+    }
+    /**
+     * Like `executeRequestWithRetries` except:
+     *   1. Does not buffer the body of a successful (status code < 300)
+     *      response into memory -- instead, calls the caller-provided
+     *      $readBodyChunk with each chunk of incoming data.
+     *   2. Does not retry if a network error occurs while streaming the
+     *      body of a successful response.
+     *
+     * @param array $opts cURL options
+     * @param string $absUrl
+     * @param callable $readBodyChunk
+     *
+     * @return array
+     */
+    public function executeStreamingRequestWithRetries($opts, $absUrl, $readBodyChunk)
+    {
+    }
+    /**
+     * @param array $opts cURL options
+     * @param string $absUrl
+     */
+    public function executeRequestWithRetries($opts, $absUrl)
+    {
+    }
 }
 namespace Stripe\Identity;
 
@@ -4434,11 +4456,12 @@ namespace Stripe\Identity;
  */
 class VerificationReport extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'identity.verification_report';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const TYPE_DOCUMENT = 'document';
-	const TYPE_ID_NUMBER = 'id_number';
+    const OBJECT_NAME = 'identity.verification_report';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const TYPE_DOCUMENT = 'document';
+    const TYPE_ID_NUMBER = 'id_number';
 }
 /**
  * A VerificationSession guides you through the process of collecting and verifying
@@ -4473,39 +4496,40 @@ class VerificationReport extends \Stripe\ApiResource
  */
 class VerificationSession extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'identity.verification_session';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_PROCESSING = 'processing';
-	const STATUS_REQUIRES_INPUT = 'requires_input';
-	const STATUS_VERIFIED = 'verified';
-	const TYPE_DOCUMENT = 'document';
-	const TYPE_ID_NUMBER = 'id_number';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationSession the canceled verification session
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationSession the redacted verification session
-	 */
-	public function redact($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'identity.verification_session';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_REQUIRES_INPUT = 'requires_input';
+    const STATUS_VERIFIED = 'verified';
+    const TYPE_DOCUMENT = 'document';
+    const TYPE_ID_NUMBER = 'id_number';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationSession the canceled verification session
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationSession the redacted verification session
+     */
+    public function redact($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe;
 
@@ -4628,134 +4652,135 @@ namespace Stripe;
  */
 class Invoice extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'invoice';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\NestedResource;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Search;
-	use \Stripe\ApiOperations\Update;
-	const BILLING_CHARGE_AUTOMATICALLY = 'charge_automatically';
-	const BILLING_SEND_INVOICE = 'send_invoice';
-	const BILLING_REASON_AUTOMATIC_PENDING_INVOICE_ITEM_INVOICE = 'automatic_pending_invoice_item_invoice';
-	const BILLING_REASON_MANUAL = 'manual';
-	const BILLING_REASON_QUOTE_ACCEPT = 'quote_accept';
-	const BILLING_REASON_SUBSCRIPTION = 'subscription';
-	const BILLING_REASON_SUBSCRIPTION_CREATE = 'subscription_create';
-	const BILLING_REASON_SUBSCRIPTION_CYCLE = 'subscription_cycle';
-	const BILLING_REASON_SUBSCRIPTION_THRESHOLD = 'subscription_threshold';
-	const BILLING_REASON_SUBSCRIPTION_UPDATE = 'subscription_update';
-	const BILLING_REASON_UPCOMING = 'upcoming';
-	const COLLECTION_METHOD_CHARGE_AUTOMATICALLY = 'charge_automatically';
-	const COLLECTION_METHOD_SEND_INVOICE = 'send_invoice';
-	const STATUS_DELETED = 'deleted';
-	const STATUS_DRAFT = 'draft';
-	const STATUS_OPEN = 'open';
-	const STATUS_PAID = 'paid';
-	const STATUS_UNCOLLECTIBLE = 'uncollectible';
-	const STATUS_VOID = 'void';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice the finalized invoice
-	 */
-	public function finalizeInvoice($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice the uncollectible invoice
-	 */
-	public function markUncollectible($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice the paid invoice
-	 */
-	public function pay($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice the sent invoice
-	 */
-	public function sendInvoice($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice the upcoming invoice
-	 */
-	public static function upcoming($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\InvoiceLineItem> list of InvoiceLineItems
-	 */
-	public static function upcomingLines($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice the voided invoice
-	 */
-	public function voidInvoice($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<Invoice> the invoice search results
-	 */
-	public static function search($params = null, $opts = null)
-	{
-	}
-	const PATH_LINES = '/lines';
-	/**
-	 * @param string $id the ID of the invoice on which to retrieve the line items
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem> the list of line items
-	 */
-	public static function allLines($id, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'invoice';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\NestedResource;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Search;
+    use \Stripe\ApiOperations\Update;
+
+    const BILLING_CHARGE_AUTOMATICALLY = 'charge_automatically';
+    const BILLING_SEND_INVOICE = 'send_invoice';
+    const BILLING_REASON_AUTOMATIC_PENDING_INVOICE_ITEM_INVOICE = 'automatic_pending_invoice_item_invoice';
+    const BILLING_REASON_MANUAL = 'manual';
+    const BILLING_REASON_QUOTE_ACCEPT = 'quote_accept';
+    const BILLING_REASON_SUBSCRIPTION = 'subscription';
+    const BILLING_REASON_SUBSCRIPTION_CREATE = 'subscription_create';
+    const BILLING_REASON_SUBSCRIPTION_CYCLE = 'subscription_cycle';
+    const BILLING_REASON_SUBSCRIPTION_THRESHOLD = 'subscription_threshold';
+    const BILLING_REASON_SUBSCRIPTION_UPDATE = 'subscription_update';
+    const BILLING_REASON_UPCOMING = 'upcoming';
+    const COLLECTION_METHOD_CHARGE_AUTOMATICALLY = 'charge_automatically';
+    const COLLECTION_METHOD_SEND_INVOICE = 'send_invoice';
+    const STATUS_DELETED = 'deleted';
+    const STATUS_DRAFT = 'draft';
+    const STATUS_OPEN = 'open';
+    const STATUS_PAID = 'paid';
+    const STATUS_UNCOLLECTIBLE = 'uncollectible';
+    const STATUS_VOID = 'void';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice the finalized invoice
+     */
+    public function finalizeInvoice($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice the uncollectible invoice
+     */
+    public function markUncollectible($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice the paid invoice
+     */
+    public function pay($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice the sent invoice
+     */
+    public function sendInvoice($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice the upcoming invoice
+     */
+    public static function upcoming($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\InvoiceLineItem> list of InvoiceLineItems
+     */
+    public static function upcomingLines($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice the voided invoice
+     */
+    public function voidInvoice($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<Invoice> the invoice search results
+     */
+    public static function search($params = null, $opts = null)
+    {
+    }
+    const PATH_LINES = '/lines';
+    /**
+     * @param string $id the ID of the invoice on which to retrieve the line items
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem> the list of line items
+     */
+    public static function allLines($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Invoice Items represent the component lines of an <a
@@ -4806,12 +4831,12 @@ class Invoice extends \Stripe\ApiResource
  */
 class InvoiceItem extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'invoiceitem';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'invoiceitem';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * @property string $id Unique identifier for the object.
@@ -4841,7 +4866,7 @@ class InvoiceItem extends \Stripe\ApiResource
  */
 class InvoiceLineItem extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'line_item';
+    const OBJECT_NAME = 'line_item';
 }
 namespace Stripe\Issuing;
 
@@ -4882,32 +4907,33 @@ namespace Stripe\Issuing;
  */
 class Authorization extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'issuing.authorization';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Authorization the approved authorization
-	 */
-	public function approve($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Authorization the declined authorization
-	 */
-	public function decline($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'issuing.authorization';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Authorization the approved authorization
+     */
+    public function approve($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Authorization the declined authorization
+     */
+    public function decline($params = null, $opts = null)
+    {
+    }
 }
 /**
  * You can <a href="https://stripe.com/docs/issuing/cards">create physical or
@@ -4939,11 +4965,11 @@ class Authorization extends \Stripe\ApiResource
  */
 class Card extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'issuing.card';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'issuing.card';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * Class CardDetails.
@@ -4958,7 +4984,7 @@ class Card extends \Stripe\ApiResource
  */
 class CardDetails extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'issuing.card_details';
+    const OBJECT_NAME = 'issuing.card_details';
 }
 /**
  * An Issuing <code>Cardholder</code> object represents an individual or business
@@ -4986,11 +5012,11 @@ class CardDetails extends \Stripe\ApiResource
  */
 class Cardholder extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'issuing.cardholder';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'issuing.cardholder';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * As a <a href="https://stripe.com/docs/issuing">card issuer</a>, you can dispute
@@ -5016,22 +5042,23 @@ class Cardholder extends \Stripe\ApiResource
  */
 class Dispute extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'issuing.dispute';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Dispute the submited dispute
-	 */
-	public function submit($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'issuing.dispute';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Dispute the submited dispute
+     */
+    public function submit($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Any use of an <a href="https://stripe.com/docs/issuing">issued card</a> that
@@ -5066,10 +5093,10 @@ class Dispute extends \Stripe\ApiResource
  */
 class Transaction extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'issuing.transaction';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'issuing.transaction';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 namespace Stripe;
 
@@ -5091,7 +5118,7 @@ namespace Stripe;
  */
 class LineItem extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'item';
+    const OBJECT_NAME = 'item';
 }
 /**
  * @property string $object String representing the object's type. Objects of the same type share the same value.
@@ -5100,7 +5127,7 @@ class LineItem extends \Stripe\ApiResource
  */
 class LoginLink extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'login_link';
+    const OBJECT_NAME = 'login_link';
 }
 /**
  * A Mandate is a record of the permission a customer has given you to debit their
@@ -5119,49 +5146,49 @@ class LoginLink extends \Stripe\ApiResource
  */
 class Mandate extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'mandate';
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'mandate';
+    use \Stripe\ApiOperations\Retrieve;
 }
 abstract class OAuth
 {
-	/**
-	 * Generates a URL to Stripe's OAuth form.
-	 *
-	 * @param null|array $params
-	 * @param null|array $opts
-	 *
-	 * @return string the URL to Stripe's OAuth form
-	 */
-	public static function authorizeUrl($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Use an authoriztion code to connect an account to your platform and
-	 * fetch the user's credentials.
-	 *
-	 * @param null|array $params
-	 * @param null|array $opts
-	 *
-	 * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
-	 *
-	 * @return StripeObject object containing the response from the API
-	 */
-	public static function token($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Disconnects an account from your platform.
-	 *
-	 * @param null|array $params
-	 * @param null|array $opts
-	 *
-	 * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
-	 *
-	 * @return StripeObject object containing the response from the API
-	 */
-	public static function deauthorize($params = null, $opts = null)
-	{
-	}
+    /**
+     * Generates a URL to Stripe's OAuth form.
+     *
+     * @param null|array $params
+     * @param null|array $opts
+     *
+     * @return string the URL to Stripe's OAuth form
+     */
+    public static function authorizeUrl($params = null, $opts = null)
+    {
+    }
+    /**
+     * Use an authoriztion code to connect an account to your platform and
+     * fetch the user's credentials.
+     *
+     * @param null|array $params
+     * @param null|array $opts
+     *
+     * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
+     *
+     * @return StripeObject object containing the response from the API
+     */
+    public static function token($params = null, $opts = null)
+    {
+    }
+    /**
+     * Disconnects an account from your platform.
+     *
+     * @param null|array $params
+     * @param null|array $opts
+     *
+     * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
+     *
+     * @return StripeObject object containing the response from the API
+     */
+    public static function deauthorize($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Class OAuthErrorObject.
@@ -5171,16 +5198,16 @@ abstract class OAuth
  */
 class OAuthErrorObject extends \Stripe\StripeObject
 {
-	/**
-	 * Refreshes this object using the provided values.
-	 *
-	 * @param array $values
-	 * @param null|array|string|Util\RequestOptions $opts
-	 * @param bool $partial defaults to false
-	 */
-	public function refreshFrom($values, $opts, $partial = false)
-	{
-	}
+    /**
+     * Refreshes this object using the provided values.
+     *
+     * @param array $values
+     * @param null|array|string|Util\RequestOptions $opts
+     * @param bool $partial defaults to false
+     */
+    public function refreshFrom($values, $opts, $partial = false)
+    {
+    }
 }
 /**
  * A PaymentIntent guides you through the process of collecting a payment from your
@@ -5238,96 +5265,97 @@ class OAuthErrorObject extends \Stripe\StripeObject
  */
 class PaymentIntent extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'payment_intent';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Search;
-	use \Stripe\ApiOperations\Update;
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_PROCESSING = 'processing';
-	const STATUS_REQUIRES_ACTION = 'requires_action';
-	const STATUS_REQUIRES_CAPTURE = 'requires_capture';
-	const STATUS_REQUIRES_CONFIRMATION = 'requires_confirmation';
-	const STATUS_REQUIRES_PAYMENT_METHOD = 'requires_payment_method';
-	const STATUS_SUCCEEDED = 'succeeded';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent the applied payment intent
-	 */
-	public function applyCustomerBalance($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent the canceled payment intent
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent the captured payment intent
-	 */
-	public function capture($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent the confirmed payment intent
-	 */
-	public function confirm($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent the incremented payment intent
-	 */
-	public function incrementAuthorization($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent the verified payment intent
-	 */
-	public function verifyMicrodeposits($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<PaymentIntent> the payment intent search results
-	 */
-	public static function search($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'payment_intent';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Search;
+    use \Stripe\ApiOperations\Update;
+
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_REQUIRES_ACTION = 'requires_action';
+    const STATUS_REQUIRES_CAPTURE = 'requires_capture';
+    const STATUS_REQUIRES_CONFIRMATION = 'requires_confirmation';
+    const STATUS_REQUIRES_PAYMENT_METHOD = 'requires_payment_method';
+    const STATUS_SUCCEEDED = 'succeeded';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent the applied payment intent
+     */
+    public function applyCustomerBalance($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent the canceled payment intent
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent the captured payment intent
+     */
+    public function capture($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent the confirmed payment intent
+     */
+    public function confirm($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent the incremented payment intent
+     */
+    public function incrementAuthorization($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent the verified payment intent
+     */
+    public function verifyMicrodeposits($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<PaymentIntent> the payment intent search results
+     */
+    public static function search($params = null, $opts = null)
+    {
+    }
 }
 /**
  * A payment link is a shareable URL that will take your customers to a hosted
@@ -5375,33 +5403,34 @@ class PaymentIntent extends \Stripe\ApiResource
  */
 class PaymentLink extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'payment_link';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const BILLING_ADDRESS_COLLECTION_AUTO = 'auto';
-	const BILLING_ADDRESS_COLLECTION_REQUIRED = 'required';
-	const CUSTOMER_CREATION_ALWAYS = 'always';
-	const CUSTOMER_CREATION_IF_REQUIRED = 'if_required';
-	const PAYMENT_METHOD_COLLECTION_ALWAYS = 'always';
-	const PAYMENT_METHOD_COLLECTION_IF_REQUIRED = 'if_required';
-	const SUBMIT_TYPE_AUTO = 'auto';
-	const SUBMIT_TYPE_BOOK = 'book';
-	const SUBMIT_TYPE_DONATE = 'donate';
-	const SUBMIT_TYPE_PAY = 'pay';
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
-	 */
-	public static function allLineItems($id, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'payment_link';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const BILLING_ADDRESS_COLLECTION_AUTO = 'auto';
+    const BILLING_ADDRESS_COLLECTION_REQUIRED = 'required';
+    const CUSTOMER_CREATION_ALWAYS = 'always';
+    const CUSTOMER_CREATION_IF_REQUIRED = 'if_required';
+    const PAYMENT_METHOD_COLLECTION_ALWAYS = 'always';
+    const PAYMENT_METHOD_COLLECTION_IF_REQUIRED = 'if_required';
+    const SUBMIT_TYPE_AUTO = 'auto';
+    const SUBMIT_TYPE_BOOK = 'book';
+    const SUBMIT_TYPE_DONATE = 'donate';
+    const SUBMIT_TYPE_PAY = 'pay';
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
+     */
+    public static function allLineItems($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * PaymentMethod objects represent your customer's payment instruments. You can use
@@ -5457,33 +5486,34 @@ class PaymentLink extends \Stripe\ApiResource
  */
 class PaymentMethod extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'payment_method';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentMethod the attached payment method
-	 */
-	public function attach($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentMethod the detached payment method
-	 */
-	public function detach($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'payment_method';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentMethod the attached payment method
+     */
+    public function attach($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentMethod the detached payment method
+     */
+    public function detach($params = null, $opts = null)
+    {
+    }
 }
 /**
  * A <code>Payout</code> object is created when you receive funds from Stripe, or
@@ -5520,57 +5550,58 @@ class PaymentMethod extends \Stripe\ApiResource
  */
 class Payout extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'payout';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const FAILURE_ACCOUNT_CLOSED = 'account_closed';
-	const FAILURE_ACCOUNT_FROZEN = 'account_frozen';
-	const FAILURE_BANK_ACCOUNT_RESTRICTED = 'bank_account_restricted';
-	const FAILURE_BANK_OWNERSHIP_CHANGED = 'bank_ownership_changed';
-	const FAILURE_COULD_NOT_PROCESS = 'could_not_process';
-	const FAILURE_DEBIT_NOT_AUTHORIZED = 'debit_not_authorized';
-	const FAILURE_DECLINED = 'declined';
-	const FAILURE_INCORRECT_ACCOUNT_HOLDER_ADDRESS = 'incorrect_account_holder_address';
-	const FAILURE_INCORRECT_ACCOUNT_HOLDER_NAME = 'incorrect_account_holder_name';
-	const FAILURE_INCORRECT_ACCOUNT_HOLDER_TAX_ID = 'incorrect_account_holder_tax_id';
-	const FAILURE_INSUFFICIENT_FUNDS = 'insufficient_funds';
-	const FAILURE_INVALID_ACCOUNT_NUMBER = 'invalid_account_number';
-	const FAILURE_INVALID_CURRENCY = 'invalid_currency';
-	const FAILURE_NO_ACCOUNT = 'no_account';
-	const FAILURE_UNSUPPORTED_CARD = 'unsupported_card';
-	const METHOD_INSTANT = 'instant';
-	const METHOD_STANDARD = 'standard';
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_FAILED = 'failed';
-	const STATUS_IN_TRANSIT = 'in_transit';
-	const STATUS_PAID = 'paid';
-	const STATUS_PENDING = 'pending';
-	const TYPE_BANK_ACCOUNT = 'bank_account';
-	const TYPE_CARD = 'card';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Payout the canceled payout
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Payout the reversed payout
-	 */
-	public function reverse($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'payout';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const FAILURE_ACCOUNT_CLOSED = 'account_closed';
+    const FAILURE_ACCOUNT_FROZEN = 'account_frozen';
+    const FAILURE_BANK_ACCOUNT_RESTRICTED = 'bank_account_restricted';
+    const FAILURE_BANK_OWNERSHIP_CHANGED = 'bank_ownership_changed';
+    const FAILURE_COULD_NOT_PROCESS = 'could_not_process';
+    const FAILURE_DEBIT_NOT_AUTHORIZED = 'debit_not_authorized';
+    const FAILURE_DECLINED = 'declined';
+    const FAILURE_INCORRECT_ACCOUNT_HOLDER_ADDRESS = 'incorrect_account_holder_address';
+    const FAILURE_INCORRECT_ACCOUNT_HOLDER_NAME = 'incorrect_account_holder_name';
+    const FAILURE_INCORRECT_ACCOUNT_HOLDER_TAX_ID = 'incorrect_account_holder_tax_id';
+    const FAILURE_INSUFFICIENT_FUNDS = 'insufficient_funds';
+    const FAILURE_INVALID_ACCOUNT_NUMBER = 'invalid_account_number';
+    const FAILURE_INVALID_CURRENCY = 'invalid_currency';
+    const FAILURE_NO_ACCOUNT = 'no_account';
+    const FAILURE_UNSUPPORTED_CARD = 'unsupported_card';
+    const METHOD_INSTANT = 'instant';
+    const METHOD_STANDARD = 'standard';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_FAILED = 'failed';
+    const STATUS_IN_TRANSIT = 'in_transit';
+    const STATUS_PAID = 'paid';
+    const STATUS_PENDING = 'pending';
+    const TYPE_BANK_ACCOUNT = 'bank_account';
+    const TYPE_CARD = 'card';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Payout the canceled payout
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Payout the reversed payout
+     */
+    public function reverse($params = null, $opts = null)
+    {
+    }
 }
 /**
  * This is an object representing a person associated with a Stripe account.
@@ -5620,41 +5651,42 @@ class Payout extends \Stripe\ApiResource
  */
 class Person extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'person';
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Update;
-	const GENDER_FEMALE = 'female';
-	const GENDER_MALE = 'male';
-	const POLITICAL_EXPOSURE_EXISTING = 'existing';
-	const POLITICAL_EXPOSURE_NONE = 'none';
-	const VERIFICATION_STATUS_PENDING = 'pending';
-	const VERIFICATION_STATUS_UNVERIFIED = 'unverified';
-	const VERIFICATION_STATUS_VERIFIED = 'verified';
-	/**
-	 * @return string the API URL for this Stripe account reversal
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param array|string $_id
-	 * @param null|array|string $_opts
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function retrieve($_id, $_opts = null)
-	{
-	}
-	/**
-	 * @param string $_id
-	 * @param null|array $_params
-	 * @param null|array|string $_options
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function update($_id, $_params = null, $_options = null)
-	{
-	}
+    const OBJECT_NAME = 'person';
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Update;
+
+    const GENDER_FEMALE = 'female';
+    const GENDER_MALE = 'male';
+    const POLITICAL_EXPOSURE_EXISTING = 'existing';
+    const POLITICAL_EXPOSURE_NONE = 'none';
+    const VERIFICATION_STATUS_PENDING = 'pending';
+    const VERIFICATION_STATUS_UNVERIFIED = 'unverified';
+    const VERIFICATION_STATUS_VERIFIED = 'verified';
+    /**
+     * @return string the API URL for this Stripe account reversal
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param array|string $_id
+     * @param null|array|string $_opts
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function retrieve($_id, $_opts = null)
+    {
+    }
+    /**
+     * @param string $_id
+     * @param null|array $_params
+     * @param null|array|string $_options
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function update($_id, $_params = null, $_options = null)
+    {
+    }
 }
 /**
  * You can now model subscriptions more flexibly using the <a
@@ -5699,12 +5731,12 @@ class Person extends \Stripe\ApiResource
  */
 class Plan extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'plan';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'plan';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * Prices define the unit cost, currency, and (optional) billing cycle for both
@@ -5749,32 +5781,33 @@ class Plan extends \Stripe\ApiResource
  */
 class Price extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'price';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Search;
-	use \Stripe\ApiOperations\Update;
-	const BILLING_SCHEME_PER_UNIT = 'per_unit';
-	const BILLING_SCHEME_TIERED = 'tiered';
-	const TAX_BEHAVIOR_EXCLUSIVE = 'exclusive';
-	const TAX_BEHAVIOR_INCLUSIVE = 'inclusive';
-	const TAX_BEHAVIOR_UNSPECIFIED = 'unspecified';
-	const TIERS_MODE_GRADUATED = 'graduated';
-	const TIERS_MODE_VOLUME = 'volume';
-	const TYPE_ONE_TIME = 'one_time';
-	const TYPE_RECURRING = 'recurring';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<Price> the price search results
-	 */
-	public static function search($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'price';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Search;
+    use \Stripe\ApiOperations\Update;
+
+    const BILLING_SCHEME_PER_UNIT = 'per_unit';
+    const BILLING_SCHEME_TIERED = 'tiered';
+    const TAX_BEHAVIOR_EXCLUSIVE = 'exclusive';
+    const TAX_BEHAVIOR_INCLUSIVE = 'inclusive';
+    const TAX_BEHAVIOR_UNSPECIFIED = 'unspecified';
+    const TIERS_MODE_GRADUATED = 'graduated';
+    const TIERS_MODE_VOLUME = 'volume';
+    const TYPE_ONE_TIME = 'one_time';
+    const TYPE_RECURRING = 'recurring';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<Price> the price search results
+     */
+    public static function search($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Products describe the specific goods or services you offer to your customers.
@@ -5816,26 +5849,27 @@ class Price extends \Stripe\ApiResource
  */
 class Product extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'product';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Search;
-	use \Stripe\ApiOperations\Update;
-	const TYPE_GOOD = 'good';
-	const TYPE_SERVICE = 'service';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<Product> the product search results
-	 */
-	public static function search($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'product';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Search;
+    use \Stripe\ApiOperations\Update;
+
+    const TYPE_GOOD = 'good';
+    const TYPE_SERVICE = 'service';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<Product> the product search results
+     */
+    public static function search($params = null, $opts = null)
+    {
+    }
 }
 /**
  * A Promotion Code represents a customer-redeemable code for a <a
@@ -5858,11 +5892,11 @@ class Product extends \Stripe\ApiResource
  */
 class PromotionCode extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'promotion_code';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'promotion_code';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * A Quote is a way to model prices that you'd like to provide to a customer. Once
@@ -5907,84 +5941,85 @@ class PromotionCode extends \Stripe\ApiResource
  */
 class Quote extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'quote';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const COLLECTION_METHOD_CHARGE_AUTOMATICALLY = 'charge_automatically';
-	const COLLECTION_METHOD_SEND_INVOICE = 'send_invoice';
-	const STATUS_ACCEPTED = 'accepted';
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_DRAFT = 'draft';
-	const STATUS_OPEN = 'open';
-	/**
-	 * @param callable $readBodyChunkCallable
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 */
-	public function pdf($readBodyChunkCallable, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote the accepted quote
-	 */
-	public function accept($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote the canceled quote
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote the finalized quote
-	 */
-	public function finalizeQuote($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
-	 */
-	public static function allComputedUpfrontLineItems($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
-	 */
-	public static function allLineItems($id, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'quote';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const COLLECTION_METHOD_CHARGE_AUTOMATICALLY = 'charge_automatically';
+    const COLLECTION_METHOD_SEND_INVOICE = 'send_invoice';
+    const STATUS_ACCEPTED = 'accepted';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_DRAFT = 'draft';
+    const STATUS_OPEN = 'open';
+    /**
+     * @param callable $readBodyChunkCallable
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     */
+    public function pdf($readBodyChunkCallable, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote the accepted quote
+     */
+    public function accept($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote the canceled quote
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote the finalized quote
+     */
+    public function finalizeQuote($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
+     */
+    public static function allComputedUpfrontLineItems($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem> list of LineItems
+     */
+    public static function allLineItems($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Radar;
 
@@ -6007,16 +6042,17 @@ namespace Stripe\Radar;
  */
 class EarlyFraudWarning extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'radar.early_fraud_warning';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const FRAUD_TYPE_CARD_NEVER_RECEIVED = 'card_never_received';
-	const FRAUD_TYPE_FRAUDULENT_CARD_APPLICATION = 'fraudulent_card_application';
-	const FRAUD_TYPE_MADE_WITH_COUNTERFEIT_CARD = 'made_with_counterfeit_card';
-	const FRAUD_TYPE_MADE_WITH_LOST_CARD = 'made_with_lost_card';
-	const FRAUD_TYPE_MADE_WITH_STOLEN_CARD = 'made_with_stolen_card';
-	const FRAUD_TYPE_MISC = 'misc';
-	const FRAUD_TYPE_UNAUTHORIZED_USE_OF_CARD = 'unauthorized_use_of_card';
+    const OBJECT_NAME = 'radar.early_fraud_warning';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const FRAUD_TYPE_CARD_NEVER_RECEIVED = 'card_never_received';
+    const FRAUD_TYPE_FRAUDULENT_CARD_APPLICATION = 'fraudulent_card_application';
+    const FRAUD_TYPE_MADE_WITH_COUNTERFEIT_CARD = 'made_with_counterfeit_card';
+    const FRAUD_TYPE_MADE_WITH_LOST_CARD = 'made_with_lost_card';
+    const FRAUD_TYPE_MADE_WITH_STOLEN_CARD = 'made_with_stolen_card';
+    const FRAUD_TYPE_MISC = 'misc';
+    const FRAUD_TYPE_UNAUTHORIZED_USE_OF_CARD = 'unauthorized_use_of_card';
 }
 /**
  * Value lists allow you to group values together which can then be referenced in
@@ -6039,12 +6075,12 @@ class EarlyFraudWarning extends \Stripe\ApiResource
  */
 class ValueList extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'radar.value_list';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'radar.value_list';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * Value list items allow you to add specific values to a given Radar value list,
@@ -6064,11 +6100,11 @@ class ValueList extends \Stripe\ApiResource
  */
 class ValueListItem extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'radar.value_list_item';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'radar.value_list_item';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
 }
 namespace Stripe;
 
@@ -6102,7 +6138,7 @@ namespace Stripe;
  */
 class RecipientTransfer extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'recipient_transfer';
+    const OBJECT_NAME = 'recipient_transfer';
 }
 /**
  * <code>Refund</code> objects allow you to refund a charge that has previously
@@ -6133,34 +6169,35 @@ class RecipientTransfer extends \Stripe\ApiResource
  */
 class Refund extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'refund';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const FAILURE_REASON_EXPIRED_OR_CANCELED_CARD = 'expired_or_canceled_card';
-	const FAILURE_REASON_LOST_OR_STOLEN_CARD = 'lost_or_stolen_card';
-	const FAILURE_REASON_UNKNOWN = 'unknown';
-	const REASON_DUPLICATE = 'duplicate';
-	const REASON_EXPIRED_UNCAPTURED_CHARGE = 'expired_uncaptured_charge';
-	const REASON_FRAUDULENT = 'fraudulent';
-	const REASON_REQUESTED_BY_CUSTOMER = 'requested_by_customer';
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_FAILED = 'failed';
-	const STATUS_PENDING = 'pending';
-	const STATUS_REQUIRES_ACTION = 'requires_action';
-	const STATUS_SUCCEEDED = 'succeeded';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Refund the canceled refund
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'refund';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const FAILURE_REASON_EXPIRED_OR_CANCELED_CARD = 'expired_or_canceled_card';
+    const FAILURE_REASON_LOST_OR_STOLEN_CARD = 'lost_or_stolen_card';
+    const FAILURE_REASON_UNKNOWN = 'unknown';
+    const REASON_DUPLICATE = 'duplicate';
+    const REASON_EXPIRED_UNCAPTURED_CHARGE = 'expired_uncaptured_charge';
+    const REASON_FRAUDULENT = 'fraudulent';
+    const REASON_REQUESTED_BY_CUSTOMER = 'requested_by_customer';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_FAILED = 'failed';
+    const STATUS_PENDING = 'pending';
+    const STATUS_REQUIRES_ACTION = 'requires_action';
+    const STATUS_SUCCEEDED = 'succeeded';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Refund the canceled refund
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Reporting;
 
@@ -6189,10 +6226,10 @@ namespace Stripe\Reporting;
  */
 class ReportRun extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'reporting.report_run';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'reporting.report_run';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
 }
 /**
  * The Report Type resource corresponds to a particular type of report, such as the
@@ -6218,9 +6255,9 @@ class ReportRun extends \Stripe\ApiResource
  */
 class ReportType extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'reporting.report_type';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'reporting.report_type';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
 }
 namespace Stripe;
 
@@ -6231,17 +6268,17 @@ namespace Stripe;
  */
 class RequestTelemetry
 {
-	public $requestId;
-	public $requestDuration;
-	/**
-	 * Initialize a new telemetry object.
-	 *
-	 * @param string $requestId the request's request ID
-	 * @param int $requestDuration the request's duration in milliseconds
-	 */
-	public function __construct($requestId, $requestDuration)
-	{
-	}
+    public $requestId;
+    public $requestDuration;
+    /**
+     * Initialize a new telemetry object.
+     *
+     * @param string $requestId the request's request ID
+     * @param int $requestDuration the request's duration in milliseconds
+     */
+    public function __construct($requestId, $requestDuration)
+    {
+    }
 }
 /**
  * Reviews can be used to supplement automated fraud detection with human
@@ -6267,33 +6304,34 @@ class RequestTelemetry
  */
 class Review extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'review';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	/**
-	 * Possible string representations of the current, the opening or the closure reason of the review.
-	 * Not all of these enumeration apply to all of the ´reason´ fields. Please consult the Review object to
-	 * determine where these are apply.
-	 *
-	 * @see https://stripe.com/docs/api/radar/reviews/object
-	 */
-	const REASON_APPROVED = 'approved';
-	const REASON_DISPUTED = 'disputed';
-	const REASON_MANUAL = 'manual';
-	const REASON_REFUNDED = 'refunded';
-	const REASON_REFUNDED_AS_FRAUD = 'refunded_as_fraud';
-	const REASON_RULE = 'rule';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Review the approved review
-	 */
-	public function approve($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'review';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    /**
+     * Possible string representations of the current, the opening or the closure reason of the review.
+     * Not all of these enumeration apply to all of the ´reason´ fields. Please consult the Review object to
+     * determine where these are apply.
+     *
+     * @see https://stripe.com/docs/api/radar/reviews/object
+     */
+    const REASON_APPROVED = 'approved';
+    const REASON_DISPUTED = 'disputed';
+    const REASON_MANUAL = 'manual';
+    const REASON_REFUNDED = 'refunded';
+    const REASON_REFUNDED_AS_FRAUD = 'refunded_as_fraud';
+    const REASON_RULE = 'rule';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Review the approved review
+     */
+    public function approve($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Search results for an API resource.
@@ -6320,125 +6358,126 @@ class Review extends \Stripe\ApiResource
  */
 class SearchResult extends \Stripe\StripeObject implements \Countable, \IteratorAggregate
 {
-	const OBJECT_NAME = 'search_result';
-	use \Stripe\ApiOperations\Request;
-	/** @var array */
-	protected $filters = [];
-	/**
-	 * @return string the base URL for the given class
-	 */
-	public static function baseUrl()
-	{
-	}
-	/**
-	 * Returns the filters.
-	 *
-	 * @return array the filters
-	 */
-	public function getFilters()
-	{
-	}
-	/**
-	 * Sets the filters, removing paging options.
-	 *
-	 * @param array $filters the filters
-	 */
-	public function setFilters($filters)
-	{
-	}
-	/**
-	 * @return mixed
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetGet($k)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws Exception\ApiErrorException
-	 *
-	 * @return SearchResult<TStripeObject>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @return int the number of objects in the current page
-	 */
-	#[\ReturnTypeWillChange]
-	public function count()
-	{
-	}
-	/**
-	 * @return \ArrayIterator an iterator that can be used to iterate
-	 *    across objects in the current page
-	 */
-	#[\ReturnTypeWillChange]
-	public function getIterator()
-	{
-	}
-	/**
-	 * @return \Generator|TStripeObject[] A generator that can be used to
-	 *    iterate across all objects across all pages. As page boundaries are
-	 *    encountered, the next page will be fetched automatically for
-	 *    continued iteration.
-	 */
-	public function autoPagingIterator()
-	{
-	}
-	/**
-	 * Returns an empty set of search results. This is returned from
-	 * {@see nextPage()} when we know that there isn't a next page in order to
-	 * replicate the behavior of the API when it attempts to return a page
-	 * beyond the last.
-	 *
-	 * @param null|array|string $opts
-	 *
-	 * @return SearchResult
-	 */
-	public static function emptySearchResult($opts = null)
-	{
-	}
-	/**
-	 * Returns true if the page object contains no element.
-	 *
-	 * @return bool
-	 */
-	public function isEmpty()
-	{
-	}
-	/**
-	 * Fetches the next page in the resource list (if there is one).
-	 *
-	 * This method will try to respect the limit of the current page. If none
-	 * was given, the default limit will be fetched again.
-	 *
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @return SearchResult<TStripeObject>
-	 */
-	public function nextPage($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Gets the first item from the current page. Returns `null` if the current page is empty.
-	 *
-	 * @return null|TStripeObject
-	 */
-	public function first()
-	{
-	}
-	/**
-	 * Gets the last item from the current page. Returns `null` if the current page is empty.
-	 *
-	 * @return null|TStripeObject
-	 */
-	public function last()
-	{
-	}
+    const OBJECT_NAME = 'search_result';
+    use \Stripe\ApiOperations\Request;
+
+    /** @var array */
+    protected $filters = [];
+    /**
+     * @return string the base URL for the given class
+     */
+    public static function baseUrl()
+    {
+    }
+    /**
+     * Returns the filters.
+     *
+     * @return array the filters
+     */
+    public function getFilters()
+    {
+    }
+    /**
+     * Sets the filters, removing paging options.
+     *
+     * @param array $filters the filters
+     */
+    public function setFilters($filters)
+    {
+    }
+    /**
+     * @return mixed
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetGet($k)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws Exception\ApiErrorException
+     *
+     * @return SearchResult<TStripeObject>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * @return int the number of objects in the current page
+     */
+    #[\ReturnTypeWillChange]
+    public function count()
+    {
+    }
+    /**
+     * @return \ArrayIterator an iterator that can be used to iterate
+     *    across objects in the current page
+     */
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+    }
+    /**
+     * @return \Generator|TStripeObject[] A generator that can be used to
+     *    iterate across all objects across all pages. As page boundaries are
+     *    encountered, the next page will be fetched automatically for
+     *    continued iteration.
+     */
+    public function autoPagingIterator()
+    {
+    }
+    /**
+     * Returns an empty set of search results. This is returned from
+     * {@see nextPage()} when we know that there isn't a next page in order to
+     * replicate the behavior of the API when it attempts to return a page
+     * beyond the last.
+     *
+     * @param null|array|string $opts
+     *
+     * @return SearchResult
+     */
+    public static function emptySearchResult($opts = null)
+    {
+    }
+    /**
+     * Returns true if the page object contains no element.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+    }
+    /**
+     * Fetches the next page in the resource list (if there is one).
+     *
+     * This method will try to respect the limit of the current page. If none
+     * was given, the default limit will be fetched again.
+     *
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @return SearchResult<TStripeObject>
+     */
+    public function nextPage($params = null, $opts = null)
+    {
+    }
+    /**
+     * Gets the first item from the current page. Returns `null` if the current page is empty.
+     *
+     * @return null|TStripeObject
+     */
+    public function first()
+    {
+    }
+    /**
+     * Gets the last item from the current page. Returns `null` if the current page is empty.
+     *
+     * @return null|TStripeObject
+     */
+    public function last()
+    {
+    }
 }
 namespace Stripe\Service;
 
@@ -6447,53 +6486,53 @@ namespace Stripe\Service;
  */
 abstract class AbstractService
 {
-	/**
-	 * @var \Stripe\StripeClientInterface
-	 */
-	protected $client;
-	/**
-	 * @var \Stripe\StripeStreamingClientInterface
-	 */
-	protected $streamingClient;
-	/**
-	 * Initializes a new instance of the {@link AbstractService} class.
-	 *
-	 * @param \Stripe\StripeClientInterface $client
-	 */
-	public function __construct($client)
-	{
-	}
-	/**
-	 * Gets the client used by this service to send requests.
-	 *
-	 * @return \Stripe\StripeClientInterface
-	 */
-	public function getClient()
-	{
-	}
-	/**
-	 * Gets the client used by this service to send requests.
-	 *
-	 * @return \Stripe\StripeStreamingClientInterface
-	 */
-	public function getStreamingClient()
-	{
-	}
-	protected function request($method, $path, $params, $opts)
-	{
-	}
-	protected function requestStream($method, $path, $readBodyChunkCallable, $params, $opts)
-	{
-	}
-	protected function requestCollection($method, $path, $params, $opts)
-	{
-	}
-	protected function requestSearchResult($method, $path, $params, $opts)
-	{
-	}
-	protected function buildPath($basePath, ...$ids)
-	{
-	}
+    /**
+     * @var \Stripe\StripeClientInterface
+     */
+    protected $client;
+    /**
+     * @var \Stripe\StripeStreamingClientInterface
+     */
+    protected $streamingClient;
+    /**
+     * Initializes a new instance of the {@link AbstractService} class.
+     *
+     * @param \Stripe\StripeClientInterface $client
+     */
+    public function __construct($client)
+    {
+    }
+    /**
+     * Gets the client used by this service to send requests.
+     *
+     * @return \Stripe\StripeClientInterface
+     */
+    public function getClient()
+    {
+    }
+    /**
+     * Gets the client used by this service to send requests.
+     *
+     * @return \Stripe\StripeStreamingClientInterface
+     */
+    public function getStreamingClient()
+    {
+    }
+    protected function request($method, $path, $params, $opts)
+    {
+    }
+    protected function requestStream($method, $path, $readBodyChunkCallable, $params, $opts)
+    {
+    }
+    protected function requestCollection($method, $path, $params, $opts)
+    {
+    }
+    protected function requestSearchResult($method, $path, $params, $opts)
+    {
+    }
+    protected function buildPath($basePath, ...$ids)
+    {
+    }
 }
 /**
  * Abstract base class for all service factories used to expose service
@@ -6507,560 +6546,560 @@ abstract class AbstractService
  */
 abstract class AbstractServiceFactory
 {
-	/**
-	 * @param \Stripe\StripeClientInterface $client
-	 */
-	public function __construct($client)
-	{
-	}
-	/**
-	 * @param string $name
-	 *
-	 * @return null|string
-	 */
-	protected abstract function getServiceClass($name);
-	/**
-	 * @param string $name
-	 *
-	 * @return null|AbstractService|AbstractServiceFactory
-	 */
-	public function __get($name)
-	{
-	}
-	/**
-	 * @param string $name
-	 *
-	 * @return null|AbstractService|AbstractServiceFactory
-	 */
-	public function getService($name)
-	{
-	}
+    /**
+     * @param \Stripe\StripeClientInterface $client
+     */
+    public function __construct($client)
+    {
+    }
+    /**
+     * @param string $name
+     *
+     * @return null|string
+     */
+    abstract protected function getServiceClass($name);
+    /**
+     * @param string $name
+     *
+     * @return null|AbstractService|AbstractServiceFactory
+     */
+    public function __get($name)
+    {
+    }
+    /**
+     * @param string $name
+     *
+     * @return null|AbstractService|AbstractServiceFactory
+     */
+    public function getService($name)
+    {
+    }
 }
 class AccountLinkService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Creates an AccountLink object that includes a single-use Stripe URL that the
-	 * platform can redirect their user to in order to take them through the Connect
-	 * Onboarding flow.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\AccountLink
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
+    /**
+     * Creates an AccountLink object that includes a single-use Stripe URL that the
+     * platform can redirect their user to in order to take them through the Connect
+     * Onboarding flow.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\AccountLink
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
 }
 class AccountService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of accounts connected to your platform via <a
-	 * href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Account>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of capabilities associated with the account. The capabilities are
-	 * returned sorted by creation date, with the most recent capability appearing
-	 * first.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Capability>
-	 */
-	public function allCapabilities($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * List external accounts for an account.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card>
-	 */
-	public function allExternalAccounts($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of people associated with the account’s legal entity. The people
-	 * are returned sorted by creation date, with the most recent people appearing
-	 * first.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Person>
-	 */
-	public function allPersons($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for
-	 * your users. To do this, you’ll first need to <a
-	 * href="https://dashboard.stripe.com/account/applications/settings">register your
-	 * platform</a>.
-	 *
-	 * If you’ve already collected information for your connected accounts, you <a
-	 * href="/docs/connect/best-practices#onboarding">can pre-fill that information</a>
-	 * when creating the account. Connect Onboarding won’t ask for the pre-filled
-	 * information during account onboarding. You can pre-fill any information on the
-	 * account.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Account
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Create an external account for a given account.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public function createExternalAccount($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a single-use login link for an Express account to access their Stripe
-	 * dashboard.
-	 *
-	 * <strong>You may only create login links for <a
-	 * href="/docs/connect/express-accounts">Express accounts</a> connected to your
-	 * platform</strong>.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\LoginLink
-	 */
-	public function createLoginLink($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new person.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public function createPerson($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * With <a href="/docs/connect">Connect</a>, you can delete accounts you manage.
-	 *
-	 * Accounts created using test-mode keys can be deleted at any time. Standard
-	 * accounts created using live-mode keys cannot be deleted. Custom or Express
-	 * accounts created using live-mode keys can only be deleted once all balances are
-	 * zero.
-	 *
-	 * If you want to delete your own account, use the <a
-	 * href="https://dashboard.stripe.com/account">account information tab in your
-	 * account settings</a> instead.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Account
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Delete a specified external account for a given account.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public function deleteExternalAccount($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes an existing person’s relationship to the account’s legal entity. Any
-	 * person with a relationship for an account can be deleted through the API, except
-	 * if the person is the <code>account_opener</code>. If your integration is using
-	 * the <code>executive</code> parameter, you cannot delete the only verified
-	 * <code>executive</code> on file.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public function deletePerson($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * With <a href="/docs/connect">Connect</a>, you may flag accounts as suspicious.
-	 *
-	 * Test-mode Custom and Express accounts can be rejected at any time. Accounts
-	 * created using live-mode keys may only be rejected once all balances are zero.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Account
-	 */
-	public function reject($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves information about the specified Account Capability.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Capability
-	 */
-	public function retrieveCapability($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieve a specified external account for a given account.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public function retrieveExternalAccount($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an existing person.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public function retrievePerson($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a <a href="/docs/connect/accounts">connected account</a> by setting the
-	 * values of the parameters passed. Any parameters not provided are left unchanged.
-	 *
-	 * For Custom accounts, you can update any information on the account. For other
-	 * accounts, you can update all information until that account has started to go
-	 * through Connect Onboarding. Once you create an <a
-	 * href="/docs/api/account_links">Account Link</a> for a Standard or Express
-	 * account, some parameters can no longer be changed. These are marked as
-	 * <strong>Custom Only</strong> or <strong>Custom and Express</strong> below.
-	 *
-	 * To update your own account, use the <a
-	 * href="https://dashboard.stripe.com/account">Dashboard</a>. Refer to our <a
-	 * href="/docs/connect/updating-accounts">Connect</a> documentation to learn more
-	 * about updating accounts.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Account
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing Account Capability.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Capability
-	 */
-	public function updateCapability($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the metadata, account holder name, account holder type of a bank account
-	 * belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and
-	 * optionally sets it as the default for its currency. Other bank account details
-	 * are not editable by design.
-	 *
-	 * You can re-enable a disabled bank account by performing an update call without
-	 * providing any arguments or changes.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card
-	 */
-	public function updateExternalAccount($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing person.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Person
-	 */
-	public function updatePerson($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an account.
-	 *
-	 * @param null|string $id
-	 * @param null|array $params
-	 * @param null|array|StripeUtilRequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Account
-	 */
-	public function retrieve($id = null, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of accounts connected to your platform via <a
+     * href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Account>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of capabilities associated with the account. The capabilities are
+     * returned sorted by creation date, with the most recent capability appearing
+     * first.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Capability>
+     */
+    public function allCapabilities($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * List external accounts for an account.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card>
+     */
+    public function allExternalAccounts($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of people associated with the account’s legal entity. The people
+     * are returned sorted by creation date, with the most recent people appearing
+     * first.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Person>
+     */
+    public function allPersons($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for
+     * your users. To do this, you’ll first need to <a
+     * href="https://dashboard.stripe.com/account/applications/settings">register your
+     * platform</a>.
+     *
+     * If you’ve already collected information for your connected accounts, you <a
+     * href="/docs/connect/best-practices#onboarding">can pre-fill that information</a>
+     * when creating the account. Connect Onboarding won’t ask for the pre-filled
+     * information during account onboarding. You can pre-fill any information on the
+     * account.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Account
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Create an external account for a given account.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public function createExternalAccount($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a single-use login link for an Express account to access their Stripe
+     * dashboard.
+     *
+     * <strong>You may only create login links for <a
+     * href="/docs/connect/express-accounts">Express accounts</a> connected to your
+     * platform</strong>.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\LoginLink
+     */
+    public function createLoginLink($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new person.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public function createPerson($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * With <a href="/docs/connect">Connect</a>, you can delete accounts you manage.
+     *
+     * Accounts created using test-mode keys can be deleted at any time. Standard
+     * accounts created using live-mode keys cannot be deleted. Custom or Express
+     * accounts created using live-mode keys can only be deleted once all balances are
+     * zero.
+     *
+     * If you want to delete your own account, use the <a
+     * href="https://dashboard.stripe.com/account">account information tab in your
+     * account settings</a> instead.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Account
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Delete a specified external account for a given account.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public function deleteExternalAccount($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes an existing person’s relationship to the account’s legal entity. Any
+     * person with a relationship for an account can be deleted through the API, except
+     * if the person is the <code>account_opener</code>. If your integration is using
+     * the <code>executive</code> parameter, you cannot delete the only verified
+     * <code>executive</code> on file.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public function deletePerson($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * With <a href="/docs/connect">Connect</a>, you may flag accounts as suspicious.
+     *
+     * Test-mode Custom and Express accounts can be rejected at any time. Accounts
+     * created using live-mode keys may only be rejected once all balances are zero.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Account
+     */
+    public function reject($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves information about the specified Account Capability.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Capability
+     */
+    public function retrieveCapability($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieve a specified external account for a given account.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public function retrieveExternalAccount($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an existing person.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public function retrievePerson($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a <a href="/docs/connect/accounts">connected account</a> by setting the
+     * values of the parameters passed. Any parameters not provided are left unchanged.
+     *
+     * For Custom accounts, you can update any information on the account. For other
+     * accounts, you can update all information until that account has started to go
+     * through Connect Onboarding. Once you create an <a
+     * href="/docs/api/account_links">Account Link</a> for a Standard or Express
+     * account, some parameters can no longer be changed. These are marked as
+     * <strong>Custom Only</strong> or <strong>Custom and Express</strong> below.
+     *
+     * To update your own account, use the <a
+     * href="https://dashboard.stripe.com/account">Dashboard</a>. Refer to our <a
+     * href="/docs/connect/updating-accounts">Connect</a> documentation to learn more
+     * about updating accounts.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Account
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing Account Capability.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Capability
+     */
+    public function updateCapability($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the metadata, account holder name, account holder type of a bank account
+     * belonging to a <a href="/docs/connect/custom-accounts">Custom account</a>, and
+     * optionally sets it as the default for its currency. Other bank account details
+     * are not editable by design.
+     *
+     * You can re-enable a disabled bank account by performing an update call without
+     * providing any arguments or changes.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card
+     */
+    public function updateExternalAccount($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing person.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Person
+     */
+    public function updatePerson($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an account.
+     *
+     * @param null|string $id
+     * @param null|array $params
+     * @param null|array|StripeUtilRequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Account
+     */
+    public function retrieve($id = null, $params = null, $opts = null)
+    {
+    }
 }
 class ApplePayDomainService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * List apple pay domains.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\ApplePayDomain>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Create an apple pay domain.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplePayDomain
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Delete an apple pay domain.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplePayDomain
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieve an apple pay domain.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplePayDomain
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * List apple pay domains.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\ApplePayDomain>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Create an apple pay domain.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplePayDomain
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Delete an apple pay domain.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplePayDomain
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieve an apple pay domain.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplePayDomain
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class ApplicationFeeService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of application fees you’ve previously collected. The application
-	 * fees are returned in sorted order, with the most recent fees appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\ApplicationFee>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * You can see a list of the refunds belonging to a specific application fee. Note
-	 * that the 10 most recent refunds are always available by default on the
-	 * application fee object. If you need more than those 10, you can use this API
-	 * method and the <code>limit</code> and <code>starting_after</code> parameters to
-	 * page through additional refunds.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\ApplicationFeeRefund>
-	 */
-	public function allRefunds($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Refunds an application fee that has previously been collected but not yet
-	 * refunded. Funds will be refunded to the Stripe account from which the fee was
-	 * originally collected.
-	 *
-	 * You can optionally refund only part of an application fee. You can do so
-	 * multiple times, until the entire fee has been refunded.
-	 *
-	 * Once entirely refunded, an application fee can’t be refunded again. This method
-	 * will raise an error when called on an already-refunded application fee, or when
-	 * trying to refund more money than is left on an application fee.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplicationFeeRefund
-	 */
-	public function createRefund($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an application fee that your account has collected. The
-	 * same information is returned when refunding the application fee.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplicationFee
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * By default, you can see the 10 most recent refunds stored directly on the
-	 * application fee object, but you can also retrieve details about a specific
-	 * refund stored on the application fee.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplicationFeeRefund
-	 */
-	public function retrieveRefund($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified application fee refund by setting the values of the
-	 * parameters passed. Any parameters not provided will be left unchanged.
-	 *
-	 * This request only accepts metadata as an argument.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ApplicationFeeRefund
-	 */
-	public function updateRefund($parentId, $id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of application fees you’ve previously collected. The application
+     * fees are returned in sorted order, with the most recent fees appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\ApplicationFee>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * You can see a list of the refunds belonging to a specific application fee. Note
+     * that the 10 most recent refunds are always available by default on the
+     * application fee object. If you need more than those 10, you can use this API
+     * method and the <code>limit</code> and <code>starting_after</code> parameters to
+     * page through additional refunds.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\ApplicationFeeRefund>
+     */
+    public function allRefunds($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Refunds an application fee that has previously been collected but not yet
+     * refunded. Funds will be refunded to the Stripe account from which the fee was
+     * originally collected.
+     *
+     * You can optionally refund only part of an application fee. You can do so
+     * multiple times, until the entire fee has been refunded.
+     *
+     * Once entirely refunded, an application fee can’t be refunded again. This method
+     * will raise an error when called on an already-refunded application fee, or when
+     * trying to refund more money than is left on an application fee.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplicationFeeRefund
+     */
+    public function createRefund($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an application fee that your account has collected. The
+     * same information is returned when refunding the application fee.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplicationFee
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * By default, you can see the 10 most recent refunds stored directly on the
+     * application fee object, but you can also retrieve details about a specific
+     * refund stored on the application fee.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplicationFeeRefund
+     */
+    public function retrieveRefund($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified application fee refund by setting the values of the
+     * parameters passed. Any parameters not provided will be left unchanged.
+     *
+     * This request only accepts metadata as an argument.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ApplicationFeeRefund
+     */
+    public function updateRefund($parentId, $id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Apps;
 
@@ -7071,123 +7110,123 @@ namespace Stripe\Service\Apps;
  */
 class AppsServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class SecretService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * List all secrets stored on the given scope.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Apps\Secret>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Create or replace a secret in the secret store.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Apps\Secret
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes a secret from the secret store by name and scope.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Apps\Secret
-	 */
-	public function deleteWhere($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Finds a secret in the secret store by name and scope.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Apps\Secret
-	 */
-	public function find($params = null, $opts = null)
-	{
-	}
+    /**
+     * List all secrets stored on the given scope.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Apps\Secret>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Create or replace a secret in the secret store.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Apps\Secret
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes a secret from the secret store by name and scope.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Apps\Secret
+     */
+    public function deleteWhere($params = null, $opts = null)
+    {
+    }
+    /**
+     * Finds a secret in the secret store by name and scope.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Apps\Secret
+     */
+    public function find($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class BalanceService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Retrieves the current account balance, based on the authentication that was used
-	 * to make the request.  For a sample request, see <a
-	 * href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting
-	 * for negative balances</a>.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Balance
-	 */
-	public function retrieve($params = null, $opts = null)
-	{
-	}
+    /**
+     * Retrieves the current account balance, based on the authentication that was used
+     * to make the request.  For a sample request, see <a
+     * href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting
+     * for negative balances</a>.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Balance
+     */
+    public function retrieve($params = null, $opts = null)
+    {
+    }
 }
 class BalanceTransactionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of transactions that have contributed to the Stripe account
-	 * balance (e.g., charges, transfers, and so forth). The transactions are returned
-	 * in sorted order, with the most recent transactions appearing first.
-	 *
-	 * Note that this endpoint was previously called “Balance history” and used the
-	 * path <code>/v1/balance/history</code>.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\BalanceTransaction>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the balance transaction with the given ID.
-	 *
-	 * Note that this endpoint previously used the path
-	 * <code>/v1/balance/history/:id</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BalanceTransaction
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of transactions that have contributed to the Stripe account
+     * balance (e.g., charges, transfers, and so forth). The transactions are returned
+     * in sorted order, with the most recent transactions appearing first.
+     *
+     * Note that this endpoint was previously called “Balance history” and used the
+     * path <code>/v1/balance/history</code>.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\BalanceTransaction>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the balance transaction with the given ID.
+     *
+     * Note that this endpoint previously used the path
+     * <code>/v1/balance/history/:id</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BalanceTransaction
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\BillingPortal;
 
@@ -7199,192 +7238,192 @@ namespace Stripe\Service\BillingPortal;
  */
 class BillingPortalServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class ConfigurationService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of configurations that describe the functionality of the customer
-	 * portal.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\BillingPortal\Configuration>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a configuration that describes the functionality and behavior of a
-	 * PortalSession.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BillingPortal\Configuration
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a configuration that describes the functionality of the customer
-	 * portal.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BillingPortal\Configuration
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a configuration that describes the functionality of the customer portal.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BillingPortal\Configuration
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of configurations that describe the functionality of the customer
+     * portal.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\BillingPortal\Configuration>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a configuration that describes the functionality and behavior of a
+     * PortalSession.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BillingPortal\Configuration
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a configuration that describes the functionality of the customer
+     * portal.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BillingPortal\Configuration
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a configuration that describes the functionality of the customer portal.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BillingPortal\Configuration
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class SessionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Creates a session of the customer portal.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BillingPortal\Session
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
+    /**
+     * Creates a session of the customer portal.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BillingPortal\Session
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class ChargeService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of charges you’ve previously created. The charges are returned in
-	 * sorted order, with the most recent charges appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Charge>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Capture the payment of an existing, uncaptured, charge. This is the second half
-	 * of the two-step payment flow, where first you <a href="#create_charge">created a
-	 * charge</a> with the capture option set to false.
-	 *
-	 * Uncaptured payments expire a set number of days after they are created (<a
-	 * href="/docs/charges/placing-a-hold">7 by default</a>). If they are not captured
-	 * by that point in time, they will be marked as refunded and will no longer be
-	 * capturable.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Charge
-	 */
-	public function capture($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * To charge a credit card or other payment source, you create a
-	 * <code>Charge</code> object. If your API key is in test mode, the supplied
-	 * payment source (e.g., card) won’t actually be charged, although everything else
-	 * will occur as if in live mode. (Stripe assumes that the charge would have
-	 * completed successfully).
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Charge
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a charge that has previously been created. Supply the
-	 * unique charge ID that was returned from your previous request, and Stripe will
-	 * return the corresponding charge information. The same information is returned
-	 * when creating or refunding the charge.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Charge
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Search for charges you’ve previously created using Stripe’s <a
-	 * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
-	 * search in read-after-write flows where strict consistency is necessary. Under
-	 * normal operating conditions, data is searchable in less than a minute.
-	 * Occasionally, propagation of new or updated data can be up to an hour behind
-	 * during outages. Search functionality is not available to merchants in India.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<\Stripe\Charge>
-	 */
-	public function search($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified charge by setting the values of the parameters passed. Any
-	 * parameters not provided will be left unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Charge
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of charges you’ve previously created. The charges are returned in
+     * sorted order, with the most recent charges appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Charge>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Capture the payment of an existing, uncaptured, charge. This is the second half
+     * of the two-step payment flow, where first you <a href="#create_charge">created a
+     * charge</a> with the capture option set to false.
+     *
+     * Uncaptured payments expire a set number of days after they are created (<a
+     * href="/docs/charges/placing-a-hold">7 by default</a>). If they are not captured
+     * by that point in time, they will be marked as refunded and will no longer be
+     * capturable.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Charge
+     */
+    public function capture($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * To charge a credit card or other payment source, you create a
+     * <code>Charge</code> object. If your API key is in test mode, the supplied
+     * payment source (e.g., card) won’t actually be charged, although everything else
+     * will occur as if in live mode. (Stripe assumes that the charge would have
+     * completed successfully).
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Charge
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a charge that has previously been created. Supply the
+     * unique charge ID that was returned from your previous request, and Stripe will
+     * return the corresponding charge information. The same information is returned
+     * when creating or refunding the charge.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Charge
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Search for charges you’ve previously created using Stripe’s <a
+     * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
+     * search in read-after-write flows where strict consistency is necessary. Under
+     * normal operating conditions, data is searchable in less than a minute.
+     * Occasionally, propagation of new or updated data can be up to an hour behind
+     * during outages. Search functionality is not available to merchants in India.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<\Stripe\Charge>
+     */
+    public function search($params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified charge by setting the values of the parameters passed. Any
+     * parameters not provided will be left unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Charge
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Checkout;
 
@@ -7395,86 +7434,86 @@ namespace Stripe\Service\Checkout;
  */
 class CheckoutServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class SessionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Checkout Sessions.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Checkout\Session>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving a Checkout Session, there is an includable
-	 * <strong>line_items</strong> property containing the first handful of those
-	 * items. There is also a URL where you can retrieve the full (paginated) list of
-	 * line items.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem>
-	 */
-	public function allLineItems($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a Session object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Checkout\Session
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * A Session can be expired when it is in one of these statuses: <code>open</code>.
-	 *
-	 * After it expires, a customer can’t complete a Session and customers loading the
-	 * Session see a message saying the Session is expired.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Checkout\Session
-	 */
-	public function expire($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a Session object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Checkout\Session
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Checkout Sessions.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Checkout\Session>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving a Checkout Session, there is an includable
+     * <strong>line_items</strong> property containing the first handful of those
+     * items. There is also a URL where you can retrieve the full (paginated) list of
+     * line items.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem>
+     */
+    public function allLineItems($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a Session object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Checkout\Session
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * A Session can be expired when it is in one of these statuses: <code>open</code>.
+     *
+     * After it expires, a customer can’t complete a Session and customers loading the
+     * Session see a message saying the Session is expired.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Checkout\Session
+     */
+    public function expire($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a Session object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Checkout\Session
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service;
 
@@ -7541,1040 +7580,1040 @@ namespace Stripe\Service;
  */
 class CoreServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class CountrySpecService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Lists all Country Spec objects available in the API.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CountrySpec>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a Country Spec for a given Country code.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CountrySpec
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Lists all Country Spec objects available in the API.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CountrySpec>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a Country Spec for a given Country code.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CountrySpec
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class CouponService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your coupons.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Coupon>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * You can create coupons easily via the <a
-	 * href="https://dashboard.stripe.com/coupons">coupon management</a> page of the
-	 * Stripe dashboard. Coupon creation is also accessible via the API if you need to
-	 * create coupons on the fly.
-	 *
-	 * A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and
-	 * <code>currency</code>. If you set an <code>amount_off</code>, that amount will
-	 * be subtracted from any invoice’s subtotal. For example, an invoice with a
-	 * subtotal of <currency>100</currency> will have a final total of
-	 * <currency>0</currency> if a coupon with an <code>amount_off</code> of
-	 * <amount>200</amount> is applied to it and an invoice with a subtotal of
-	 * <currency>300</currency> will have a final total of <currency>100</currency> if
-	 * a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to
-	 * it.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Coupon
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * You can delete coupons via the <a
-	 * href="https://dashboard.stripe.com/coupons">coupon management</a> page of the
-	 * Stripe dashboard. However, deleting a coupon does not affect any customers who
-	 * have already applied the coupon; it means that new customers can’t redeem the
-	 * coupon. You can also delete coupons via the API.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Coupon
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the coupon with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Coupon
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the metadata of a coupon. Other coupon details (currency, duration,
-	 * amount_off) are, by design, not editable.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Coupon
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your coupons.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Coupon>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * You can create coupons easily via the <a
+     * href="https://dashboard.stripe.com/coupons">coupon management</a> page of the
+     * Stripe dashboard. Coupon creation is also accessible via the API if you need to
+     * create coupons on the fly.
+     *
+     * A coupon has either a <code>percent_off</code> or an <code>amount_off</code> and
+     * <code>currency</code>. If you set an <code>amount_off</code>, that amount will
+     * be subtracted from any invoice’s subtotal. For example, an invoice with a
+     * subtotal of <currency>100</currency> will have a final total of
+     * <currency>0</currency> if a coupon with an <code>amount_off</code> of
+     * <amount>200</amount> is applied to it and an invoice with a subtotal of
+     * <currency>300</currency> will have a final total of <currency>100</currency> if
+     * a coupon with an <code>amount_off</code> of <amount>200</amount> is applied to
+     * it.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Coupon
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * You can delete coupons via the <a
+     * href="https://dashboard.stripe.com/coupons">coupon management</a> page of the
+     * Stripe dashboard. However, deleting a coupon does not affect any customers who
+     * have already applied the coupon; it means that new customers can’t redeem the
+     * coupon. You can also delete coupons via the API.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Coupon
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the coupon with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Coupon
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the metadata of a coupon. Other coupon details (currency, duration,
+     * amount_off) are, by design, not editable.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Coupon
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class CreditNoteService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of credit notes.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CreditNote>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving a credit note, you’ll get a <strong>lines</strong> property
-	 * containing the the first handful of those items. There is also a URL where you
-	 * can retrieve the full (paginated) list of line items.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CreditNoteLineItem>
-	 */
-	public function allLines($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Issue a credit note to adjust the amount of a finalized invoice. For a
-	 * <code>status=open</code> invoice, a credit note reduces its
-	 * <code>amount_due</code>. For a <code>status=paid</code> invoice, a credit note
-	 * does not affect its <code>amount_due</code>. Instead, it can result in any
-	 * combination of the following:.
-	 *
-	 * <ul> <li>Refund: create a new refund (using <code>refund_amount</code>) or link
-	 * an existing refund (using <code>refund</code>).</li> <li>Customer balance
-	 * credit: credit the customer’s balance (using <code>credit_amount</code>) which
-	 * will be automatically applied to their next invoice when it’s finalized.</li>
-	 * <li>Outside of Stripe credit: record the amount that is or will be credited
-	 * outside of Stripe (using <code>out_of_band_amount</code>).</li> </ul>
-	 *
-	 * For post-payment credit notes the sum of the refund, credit and outside of
-	 * Stripe amounts must equal the credit note total.
-	 *
-	 * You may issue multiple credit notes for an invoice. Each credit note will
-	 * increment the invoice’s <code>pre_payment_credit_notes_amount</code> or
-	 * <code>post_payment_credit_notes_amount</code> depending on its
-	 * <code>status</code> at the time of credit note creation.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CreditNote
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Get a preview of a credit note without creating it.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CreditNote
-	 */
-	public function preview($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving a credit note preview, you’ll get a <strong>lines</strong>
-	 * property containing the first handful of those items. This URL you can retrieve
-	 * the full (paginated) list of line items.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CreditNoteLineItem>
-	 */
-	public function previewLines($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the credit note object with the given identifier.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CreditNote
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing credit note.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CreditNote
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Marks a credit note as void. Learn more about <a
-	 * href="/docs/billing/invoices/credit-notes#voiding">voiding credit notes</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CreditNote
-	 */
-	public function voidCreditNote($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of credit notes.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CreditNote>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving a credit note, you’ll get a <strong>lines</strong> property
+     * containing the the first handful of those items. There is also a URL where you
+     * can retrieve the full (paginated) list of line items.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CreditNoteLineItem>
+     */
+    public function allLines($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Issue a credit note to adjust the amount of a finalized invoice. For a
+     * <code>status=open</code> invoice, a credit note reduces its
+     * <code>amount_due</code>. For a <code>status=paid</code> invoice, a credit note
+     * does not affect its <code>amount_due</code>. Instead, it can result in any
+     * combination of the following:.
+     *
+     * <ul> <li>Refund: create a new refund (using <code>refund_amount</code>) or link
+     * an existing refund (using <code>refund</code>).</li> <li>Customer balance
+     * credit: credit the customer’s balance (using <code>credit_amount</code>) which
+     * will be automatically applied to their next invoice when it’s finalized.</li>
+     * <li>Outside of Stripe credit: record the amount that is or will be credited
+     * outside of Stripe (using <code>out_of_band_amount</code>).</li> </ul>
+     *
+     * For post-payment credit notes the sum of the refund, credit and outside of
+     * Stripe amounts must equal the credit note total.
+     *
+     * You may issue multiple credit notes for an invoice. Each credit note will
+     * increment the invoice’s <code>pre_payment_credit_notes_amount</code> or
+     * <code>post_payment_credit_notes_amount</code> depending on its
+     * <code>status</code> at the time of credit note creation.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CreditNote
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Get a preview of a credit note without creating it.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CreditNote
+     */
+    public function preview($params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving a credit note preview, you’ll get a <strong>lines</strong>
+     * property containing the first handful of those items. This URL you can retrieve
+     * the full (paginated) list of line items.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CreditNoteLineItem>
+     */
+    public function previewLines($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the credit note object with the given identifier.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CreditNote
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing credit note.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CreditNote
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Marks a credit note as void. Learn more about <a
+     * href="/docs/billing/invoices/credit-notes#voiding">voiding credit notes</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CreditNote
+     */
+    public function voidCreditNote($id, $params = null, $opts = null)
+    {
+    }
 }
 class CustomerService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your customers. The customers are returned sorted by creation
-	 * date, with the most recent customers appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Customer>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of transactions that updated the customer’s <a
-	 * href="/docs/billing/customer/balance">balances</a>.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CustomerBalanceTransaction>
-	 */
-	public function allBalanceTransactions($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of transactions that modified the customer’s <a
-	 * href="/docs/payments/customer-balance">cash balance</a>.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\CustomerCashBalanceTransaction>
-	 */
-	public function allCashBalanceTransactions($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of PaymentMethods for a given Customer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\PaymentMethod>
-	 */
-	public function allPaymentMethods($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * List sources for a specified customer.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card|\Stripe\Source>
-	 */
-	public function allSources($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of tax IDs for a customer.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\TaxId>
-	 */
-	public function allTaxIds($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new customer object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates an immutable transaction that updates the customer’s credit <a
-	 * href="/docs/billing/customer/balance">balance</a>.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerBalanceTransaction
-	 */
-	public function createBalanceTransaction($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieve funding instructions for a customer cash balance. If funding
-	 * instructions do not yet exist for the customer, new funding instructions will be
-	 * created. If funding instructions have already been created for a given customer,
-	 * the same funding instructions will be retrieved. In other words, we will return
-	 * the same funding instructions each time.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function createFundingInstructions($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * When you create a new credit card, you must specify a customer or recipient on
-	 * which to create it.
-	 *
-	 * If the card’s owner has no default card, then the new card will become the
-	 * default. However, if the owner already has a default, then it will not change.
-	 * To change the default, you should <a href="/docs/api#update_customer">update the
-	 * customer</a> to have a new <code>default_source</code>.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public function createSource($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new <code>TaxID</code> object for a customer.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxId
-	 */
-	public function createTaxId($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Permanently deletes a customer. It cannot be undone. Also immediately cancels
-	 * any active subscriptions on the customer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Removes the currently applied discount on a customer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function deleteDiscount($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public function deleteSource($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes an existing <code>TaxID</code> object.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxId
-	 */
-	public function deleteTaxId($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a Customer object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a specific customer balance transaction that updated the customer’s <a
-	 * href="/docs/billing/customer/balance">balances</a>.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerBalanceTransaction
-	 */
-	public function retrieveBalanceTransaction($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a customer’s cash balance.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CashBalance
-	 */
-	public function retrieveCashBalance($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a specific cash balance transaction, which updated the customer’s <a
-	 * href="/docs/payments/customer-balance">cash balance</a>.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerCashBalanceTransaction
-	 */
-	public function retrieveCashBalanceTransaction($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a PaymentMethod object for a given Customer.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function retrievePaymentMethod($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieve a specified source for a given customer.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public function retrieveSource($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the <code>TaxID</code> object with the given identifier.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxId
-	 */
-	public function retrieveTaxId($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Search for customers you’ve previously created using Stripe’s <a
-	 * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
-	 * search in read-after-write flows where strict consistency is necessary. Under
-	 * normal operating conditions, data is searchable in less than a minute.
-	 * Occasionally, propagation of new or updated data can be up to an hour behind
-	 * during outages. Search functionality is not available to merchants in India.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<\Stripe\Customer>
-	 */
-	public function search($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified customer by setting the values of the parameters passed.
-	 * Any parameters not provided will be left unchanged. For example, if you pass the
-	 * <strong>source</strong> parameter, that becomes the customer’s active source
-	 * (e.g., a card) to be used for all charges in the future. When you update a
-	 * customer to a new valid card source by passing the <strong>source</strong>
-	 * parameter: for each of the customer’s current subscriptions, if the subscription
-	 * bills automatically and is in the <code>past_due</code> state, then the latest
-	 * open invoice for the subscription with automatic collection enabled will be
-	 * retried. This retry will not count as an automatic retry, and will not affect
-	 * the next regularly scheduled payment for the invoice. Changing the
-	 * <strong>default_source</strong> for a customer will not trigger this behavior.
-	 *
-	 * This request accepts mostly the same arguments as the customer creation call.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Most credit balance transaction fields are immutable, but you may update its
-	 * <code>description</code> and <code>metadata</code>.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CustomerBalanceTransaction
-	 */
-	public function updateBalanceTransaction($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Changes the settings on a customer’s cash balance.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\CashBalance
-	 */
-	public function updateCashBalance($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public function updateSource($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
-	 */
-	public function verifySource($parentId, $id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your customers. The customers are returned sorted by creation
+     * date, with the most recent customers appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Customer>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of transactions that updated the customer’s <a
+     * href="/docs/billing/customer/balance">balances</a>.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CustomerBalanceTransaction>
+     */
+    public function allBalanceTransactions($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of transactions that modified the customer’s <a
+     * href="/docs/payments/customer-balance">cash balance</a>.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\CustomerCashBalanceTransaction>
+     */
+    public function allCashBalanceTransactions($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of PaymentMethods for a given Customer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\PaymentMethod>
+     */
+    public function allPaymentMethods($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * List sources for a specified customer.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\BankAccount|\Stripe\Card|\Stripe\Source>
+     */
+    public function allSources($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of tax IDs for a customer.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\TaxId>
+     */
+    public function allTaxIds($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new customer object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates an immutable transaction that updates the customer’s credit <a
+     * href="/docs/billing/customer/balance">balance</a>.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerBalanceTransaction
+     */
+    public function createBalanceTransaction($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieve funding instructions for a customer cash balance. If funding
+     * instructions do not yet exist for the customer, new funding instructions will be
+     * created. If funding instructions have already been created for a given customer,
+     * the same funding instructions will be retrieved. In other words, we will return
+     * the same funding instructions each time.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function createFundingInstructions($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * When you create a new credit card, you must specify a customer or recipient on
+     * which to create it.
+     *
+     * If the card’s owner has no default card, then the new card will become the
+     * default. However, if the owner already has a default, then it will not change.
+     * To change the default, you should <a href="/docs/api#update_customer">update the
+     * customer</a> to have a new <code>default_source</code>.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public function createSource($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new <code>TaxID</code> object for a customer.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxId
+     */
+    public function createTaxId($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Permanently deletes a customer. It cannot be undone. Also immediately cancels
+     * any active subscriptions on the customer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Removes the currently applied discount on a customer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function deleteDiscount($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public function deleteSource($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes an existing <code>TaxID</code> object.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxId
+     */
+    public function deleteTaxId($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a Customer object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a specific customer balance transaction that updated the customer’s <a
+     * href="/docs/billing/customer/balance">balances</a>.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerBalanceTransaction
+     */
+    public function retrieveBalanceTransaction($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a customer’s cash balance.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CashBalance
+     */
+    public function retrieveCashBalance($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a specific cash balance transaction, which updated the customer’s <a
+     * href="/docs/payments/customer-balance">cash balance</a>.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerCashBalanceTransaction
+     */
+    public function retrieveCashBalanceTransaction($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a PaymentMethod object for a given Customer.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function retrievePaymentMethod($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieve a specified source for a given customer.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public function retrieveSource($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the <code>TaxID</code> object with the given identifier.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxId
+     */
+    public function retrieveTaxId($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Search for customers you’ve previously created using Stripe’s <a
+     * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
+     * search in read-after-write flows where strict consistency is necessary. Under
+     * normal operating conditions, data is searchable in less than a minute.
+     * Occasionally, propagation of new or updated data can be up to an hour behind
+     * during outages. Search functionality is not available to merchants in India.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<\Stripe\Customer>
+     */
+    public function search($params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified customer by setting the values of the parameters passed.
+     * Any parameters not provided will be left unchanged. For example, if you pass the
+     * <strong>source</strong> parameter, that becomes the customer’s active source
+     * (e.g., a card) to be used for all charges in the future. When you update a
+     * customer to a new valid card source by passing the <strong>source</strong>
+     * parameter: for each of the customer’s current subscriptions, if the subscription
+     * bills automatically and is in the <code>past_due</code> state, then the latest
+     * open invoice for the subscription with automatic collection enabled will be
+     * retried. This retry will not count as an automatic retry, and will not affect
+     * the next regularly scheduled payment for the invoice. Changing the
+     * <strong>default_source</strong> for a customer will not trigger this behavior.
+     *
+     * This request accepts mostly the same arguments as the customer creation call.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Most credit balance transaction fields are immutable, but you may update its
+     * <code>description</code> and <code>metadata</code>.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CustomerBalanceTransaction
+     */
+    public function updateBalanceTransaction($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Changes the settings on a customer’s cash balance.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\CashBalance
+     */
+    public function updateCashBalance($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public function updateSource($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\BankAccount|\Stripe\Card|\Stripe\Source
+     */
+    public function verifySource($parentId, $id, $params = null, $opts = null)
+    {
+    }
 }
 class DisputeService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your disputes.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Dispute>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Closing the dispute for a charge indicates that you do not have any evidence to
-	 * submit and are essentially dismissing the dispute, acknowledging it as lost.
-	 *
-	 * The status of the dispute will change from <code>needs_response</code> to
-	 * <code>lost</code>. <em>Closing a dispute is irreversible</em>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Dispute
-	 */
-	public function close($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the dispute with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Dispute
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * When you get a dispute, contacting your customer is always the best first step.
-	 * If that doesn’t work, you can submit evidence to help us resolve the dispute in
-	 * your favor. You can do this in your <a
-	 * href="https://dashboard.stripe.com/disputes">dashboard</a>, but if you prefer,
-	 * you can use the API to submit evidence programmatically.
-	 *
-	 * Depending on your dispute type, different evidence fields will give you a better
-	 * chance of winning your dispute. To figure out which evidence fields to provide,
-	 * see our <a href="/docs/disputes/categories">guide to dispute types</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Dispute
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your disputes.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Dispute>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Closing the dispute for a charge indicates that you do not have any evidence to
+     * submit and are essentially dismissing the dispute, acknowledging it as lost.
+     *
+     * The status of the dispute will change from <code>needs_response</code> to
+     * <code>lost</code>. <em>Closing a dispute is irreversible</em>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Dispute
+     */
+    public function close($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the dispute with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Dispute
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * When you get a dispute, contacting your customer is always the best first step.
+     * If that doesn’t work, you can submit evidence to help us resolve the dispute in
+     * your favor. You can do this in your <a
+     * href="https://dashboard.stripe.com/disputes">dashboard</a>, but if you prefer,
+     * you can use the API to submit evidence programmatically.
+     *
+     * Depending on your dispute type, different evidence fields will give you a better
+     * chance of winning your dispute. To figure out which evidence fields to provide,
+     * see our <a href="/docs/disputes/categories">guide to dispute types</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Dispute
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class EphemeralKeyService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Invalidates a short-lived API key for a given resource.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\EphemeralKey
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a short-lived API key for a given resource.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\EphemeralKey
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
+    /**
+     * Invalidates a short-lived API key for a given resource.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\EphemeralKey
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a short-lived API key for a given resource.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\EphemeralKey
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
 }
 class EventService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * List events, going back up to 30 days. Each event data is rendered according to
-	 * Stripe API version at its creation time, specified in <a
-	 * href="/docs/api/events/object">event object</a> <code>api_version</code>
-	 * attribute (not according to your current Stripe API version or
-	 * <code>Stripe-Version</code> header).
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Event>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an event. Supply the unique identifier of the event,
-	 * which you might have received in a webhook.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Event
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * List events, going back up to 30 days. Each event data is rendered according to
+     * Stripe API version at its creation time, specified in <a
+     * href="/docs/api/events/object">event object</a> <code>api_version</code>
+     * attribute (not according to your current Stripe API version or
+     * <code>Stripe-Version</code> header).
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Event>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an event. Supply the unique identifier of the event,
+     * which you might have received in a webhook.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Event
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class ExchangeRateService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of objects that contain the rates at which foreign currencies are
-	 * converted to one another. Only shows the currencies for which Stripe supports.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\ExchangeRate>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the exchange rates from the given currency to every supported
-	 * currency.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ExchangeRate
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of objects that contain the rates at which foreign currencies are
+     * converted to one another. Only shows the currencies for which Stripe supports.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\ExchangeRate>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the exchange rates from the given currency to every supported
+     * currency.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ExchangeRate
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class FileLinkService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of file links.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\FileLink>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new file link object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FileLink
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the file link with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FileLink
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing file link object. Expired links can no longer be updated.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FileLink
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of file links.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\FileLink>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new file link object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FileLink
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the file link with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FileLink
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing file link object. Expired links can no longer be updated.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FileLink
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class FileService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of the files that your account has access to. The files are
-	 * returned sorted by creation date, with the most recently created files appearing
-	 * first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\File>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing file object. Supply the unique file ID from
-	 * a file, and Stripe will return the corresponding file object. To access file
-	 * contents, see the <a href="/docs/file-upload#download-file-contents">File Upload
-	 * Guide</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\File
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Create a file.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @return \Stripe\File
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of the files that your account has access to. The files are
+     * returned sorted by creation date, with the most recently created files appearing
+     * first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\File>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing file object. Supply the unique file ID from
+     * a file, and Stripe will return the corresponding file object. To access file
+     * contents, see the <a href="/docs/file-upload#download-file-contents">File Upload
+     * Guide</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\File
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Create a file.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @return \Stripe\File
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\FinancialConnections;
 
 class AccountService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Financial Connections <code>Account</code> objects.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\FinancialConnections\Account>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Lists all owners for a given <code>Account</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\FinancialConnections\AccountOwner>
-	 */
-	public function allOwners($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Disables your access to a Financial Connections <code>Account</code>. You will
-	 * no longer be able to access data associated with the account (e.g. balances,
-	 * transactions).
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FinancialConnections\Account
-	 */
-	public function disconnect($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Refreshes the data associated with a Financial Connections <code>Account</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FinancialConnections\Account
-	 */
-	public function refresh($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an Financial Connections <code>Account</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FinancialConnections\Account
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Financial Connections <code>Account</code> objects.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\FinancialConnections\Account>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Lists all owners for a given <code>Account</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\FinancialConnections\AccountOwner>
+     */
+    public function allOwners($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Disables your access to a Financial Connections <code>Account</code>. You will
+     * no longer be able to access data associated with the account (e.g. balances,
+     * transactions).
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FinancialConnections\Account
+     */
+    public function disconnect($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Refreshes the data associated with a Financial Connections <code>Account</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FinancialConnections\Account
+     */
+    public function refresh($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an Financial Connections <code>Account</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FinancialConnections\Account
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the FinancialConnections namespace.
@@ -8584,41 +8623,41 @@ class AccountService extends \Stripe\Service\AbstractService
  */
 class FinancialConnectionsServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class SessionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * To launch the Financial Connections authorization flow, create a
-	 * <code>Session</code>. The session’s <code>client_secret</code> can be used to
-	 * launch the flow using Stripe.js.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FinancialConnections\Session
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a Financial Connections <code>Session</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\FinancialConnections\Session
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * To launch the Financial Connections authorization flow, create a
+     * <code>Session</code>. The session’s <code>client_secret</code> can be used to
+     * launch the flow using Stripe.js.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FinancialConnections\Session
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a Financial Connections <code>Session</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\FinancialConnections\Session
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Identity;
 
@@ -8630,798 +8669,798 @@ namespace Stripe\Service\Identity;
  */
 class IdentityServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class VerificationReportService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * List all verification reports.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Identity\VerificationReport>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an existing VerificationReport.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationReport
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * List all verification reports.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Identity\VerificationReport>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an existing VerificationReport.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationReport
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class VerificationSessionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of VerificationSessions.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Identity\VerificationSession>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * A VerificationSession object can be canceled when it is in
-	 * <code>requires_input</code> <a
-	 * href="/docs/identity/how-sessions-work">status</a>.
-	 *
-	 * Once canceled, future submission attempts are disabled. This cannot be undone.
-	 * <a href="/docs/identity/verification-sessions#cancel">Learn more</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationSession
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a VerificationSession object.
-	 *
-	 * After the VerificationSession is created, display a verification modal using the
-	 * session <code>client_secret</code> or send your users to the session’s
-	 * <code>url</code>.
-	 *
-	 * If your API key is in test mode, verification checks won’t actually process,
-	 * though everything else will occur as if in live mode.
-	 *
-	 * Related guide: <a href="/docs/identity/verify-identity-documents">Verify your
-	 * users’ identity documents</a>.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationSession
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Redact a VerificationSession to remove all collected information from Stripe.
-	 * This will redact the VerificationSession and all objects related to it,
-	 * including VerificationReports, Events, request logs, etc.
-	 *
-	 * A VerificationSession object can be redacted when it is in
-	 * <code>requires_input</code> or <code>verified</code> <a
-	 * href="/docs/identity/how-sessions-work">status</a>. Redacting a
-	 * VerificationSession in <code>requires_action</code> state will automatically
-	 * cancel it.
-	 *
-	 * The redaction process may take up to four days. When the redaction process is in
-	 * progress, the VerificationSession’s <code>redaction.status</code> field will be
-	 * set to <code>processing</code>; when the process is finished, it will change to
-	 * <code>redacted</code> and an <code>identity.verification_session.redacted</code>
-	 * event will be emitted.
-	 *
-	 * Redaction is irreversible. Redacted objects are still accessible in the Stripe
-	 * API, but all the fields that contain personal data will be replaced by the
-	 * string <code>[redacted]</code> or a similar placeholder. The
-	 * <code>metadata</code> field will also be erased. Redacted objects cannot be
-	 * updated or used for any purpose.
-	 *
-	 * <a href="/docs/identity/verification-sessions#redact">Learn more</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationSession
-	 */
-	public function redact($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a VerificationSession that was previously created.
-	 *
-	 * When the session status is <code>requires_input</code>, you can use this method
-	 * to retrieve a valid <code>client_secret</code> or <code>url</code> to allow
-	 * re-submission.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationSession
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a VerificationSession object.
-	 *
-	 * When the session status is <code>requires_input</code>, you can use this method
-	 * to update the verification check and options.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Identity\VerificationSession
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of VerificationSessions.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Identity\VerificationSession>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * A VerificationSession object can be canceled when it is in
+     * <code>requires_input</code> <a
+     * href="/docs/identity/how-sessions-work">status</a>.
+     *
+     * Once canceled, future submission attempts are disabled. This cannot be undone.
+     * <a href="/docs/identity/verification-sessions#cancel">Learn more</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationSession
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a VerificationSession object.
+     *
+     * After the VerificationSession is created, display a verification modal using the
+     * session <code>client_secret</code> or send your users to the session’s
+     * <code>url</code>.
+     *
+     * If your API key is in test mode, verification checks won’t actually process,
+     * though everything else will occur as if in live mode.
+     *
+     * Related guide: <a href="/docs/identity/verify-identity-documents">Verify your
+     * users’ identity documents</a>.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationSession
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Redact a VerificationSession to remove all collected information from Stripe.
+     * This will redact the VerificationSession and all objects related to it,
+     * including VerificationReports, Events, request logs, etc.
+     *
+     * A VerificationSession object can be redacted when it is in
+     * <code>requires_input</code> or <code>verified</code> <a
+     * href="/docs/identity/how-sessions-work">status</a>. Redacting a
+     * VerificationSession in <code>requires_action</code> state will automatically
+     * cancel it.
+     *
+     * The redaction process may take up to four days. When the redaction process is in
+     * progress, the VerificationSession’s <code>redaction.status</code> field will be
+     * set to <code>processing</code>; when the process is finished, it will change to
+     * <code>redacted</code> and an <code>identity.verification_session.redacted</code>
+     * event will be emitted.
+     *
+     * Redaction is irreversible. Redacted objects are still accessible in the Stripe
+     * API, but all the fields that contain personal data will be replaced by the
+     * string <code>[redacted]</code> or a similar placeholder. The
+     * <code>metadata</code> field will also be erased. Redacted objects cannot be
+     * updated or used for any purpose.
+     *
+     * <a href="/docs/identity/verification-sessions#redact">Learn more</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationSession
+     */
+    public function redact($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a VerificationSession that was previously created.
+     *
+     * When the session status is <code>requires_input</code>, you can use this method
+     * to retrieve a valid <code>client_secret</code> or <code>url</code> to allow
+     * re-submission.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationSession
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a VerificationSession object.
+     *
+     * When the session status is <code>requires_input</code>, you can use this method
+     * to update the verification check and options.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Identity\VerificationSession
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class InvoiceItemService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your invoice items. Invoice items are returned sorted by
-	 * creation date, with the most recently created invoice items appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\InvoiceItem>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates an item to be added to a draft invoice (up to 250 items per invoice). If
-	 * no invoice is specified, the item will be on the next invoice created for the
-	 * customer specified.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\InvoiceItem
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes an invoice item, removing it from an invoice. Deleting invoice items is
-	 * only possible when they’re not attached to invoices, or if it’s attached to a
-	 * draft invoice.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\InvoiceItem
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the invoice item with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\InvoiceItem
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the amount or description of an invoice item on an upcoming invoice.
-	 * Updating an invoice item is only possible before the invoice it’s attached to is
-	 * closed.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\InvoiceItem
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your invoice items. Invoice items are returned sorted by
+     * creation date, with the most recently created invoice items appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\InvoiceItem>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates an item to be added to a draft invoice (up to 250 items per invoice). If
+     * no invoice is specified, the item will be on the next invoice created for the
+     * customer specified.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\InvoiceItem
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes an invoice item, removing it from an invoice. Deleting invoice items is
+     * only possible when they’re not attached to invoices, or if it’s attached to a
+     * draft invoice.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\InvoiceItem
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the invoice item with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\InvoiceItem
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the amount or description of an invoice item on an upcoming invoice.
+     * Updating an invoice item is only possible before the invoice it’s attached to is
+     * closed.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\InvoiceItem
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class InvoiceService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * You can list all invoices, or list the invoices for a specific customer. The
-	 * invoices are returned sorted by creation date, with the most recently created
-	 * invoices appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Invoice>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving an invoice, you’ll get a <strong>lines</strong> property
-	 * containing the total count of line items and the first handful of those items.
-	 * There is also a URL where you can retrieve the full (paginated) list of line
-	 * items.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\InvoiceLineItem>
-	 */
-	public function allLines($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * This endpoint creates a draft invoice for a given customer. The invoice remains
-	 * a draft until you <a href="#finalize_invoice">finalize</a> the invoice, which
-	 * allows you to <a href="#pay_invoice">pay</a> or <a href="#send_invoice">send</a>
-	 * the invoice to your customers.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to
-	 * delete invoices that are no longer in a draft state will fail; once an invoice
-	 * has been finalized or if an invoice is for a subscription, it must be <a
-	 * href="#void_invoice">voided</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Stripe automatically finalizes drafts before sending and attempting payment on
-	 * invoices. However, if you’d like to finalize a draft invoice manually, you can
-	 * do so using this method.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function finalizeInvoice($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Marking an invoice as uncollectible is useful for keeping track of bad debts
-	 * that can be written off for accounting purposes.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function markUncollectible($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Stripe automatically creates and then attempts to collect payment on invoices
-	 * for customers on subscriptions according to your <a
-	 * href="https://dashboard.stripe.com/account/billing/automatic">subscriptions
-	 * settings</a>. However, if you’d like to attempt payment on an invoice out of the
-	 * normal collection schedule or for some other reason, you can do so.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function pay($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the invoice with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Search for invoices you’ve previously created using Stripe’s <a
-	 * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
-	 * search in read-after-write flows where strict consistency is necessary. Under
-	 * normal operating conditions, data is searchable in less than a minute.
-	 * Occasionally, propagation of new or updated data can be up to an hour behind
-	 * during outages. Search functionality is not available to merchants in India.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<\Stripe\Invoice>
-	 */
-	public function search($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Stripe will automatically send invoices to customers according to your <a
-	 * href="https://dashboard.stripe.com/account/billing/automatic">subscriptions
-	 * settings</a>. However, if you’d like to manually send an invoice to your
-	 * customer out of the normal schedule, you can do so. When sending invoices that
-	 * have already been paid, there will be no reference to the payment in the email.
-	 *
-	 * Requests made in test-mode result in no emails being sent, despite sending an
-	 * <code>invoice.sent</code> event.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function sendInvoice($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * At any time, you can preview the upcoming invoice for a customer. This will show
-	 * you all the charges that are pending, including subscription renewal charges,
-	 * invoice item charges, etc. It will also show you any discounts that are
-	 * applicable to the invoice.
-	 *
-	 * Note that when you are viewing an upcoming invoice, you are simply viewing a
-	 * preview – the invoice has not yet been created. As such, the upcoming invoice
-	 * will not show up in invoice listing calls, and you cannot use the API to pay or
-	 * edit the invoice. If you want to change the amount that your customer will be
-	 * billed, you can add, remove, or update pending invoice items, or update the
-	 * customer’s discount.
-	 *
-	 * You can preview the effects of updating a subscription, including a preview of
-	 * what proration will take place. To ensure that the actual proration is
-	 * calculated exactly the same as the previewed proration, you should pass a
-	 * <code>proration_date</code> parameter when doing the actual subscription update.
-	 * The value passed in should be the same as the
-	 * <code>subscription_proration_date</code> returned on the upcoming invoice
-	 * resource. The recommended way to get only the prorations being previewed is to
-	 * consider only proration line items where <code>period[start]</code> is equal to
-	 * the <code>subscription_proration_date</code> on the upcoming invoice resource.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function upcoming($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving an upcoming invoice, you’ll get a <strong>lines</strong>
-	 * property containing the total count of line items and the first handful of those
-	 * items. There is also a URL where you can retrieve the full (paginated) list of
-	 * line items.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\InvoiceLineItem>
-	 */
-	public function upcomingLines($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Draft invoices are fully editable. Once an invoice is <a
-	 * href="/docs/billing/invoices/workflow#finalized">finalized</a>, monetary values,
-	 * as well as <code>collection_method</code>, become uneditable.
-	 *
-	 * If you would like to stop the Stripe Billing engine from automatically
-	 * finalizing, reattempting payments on, sending reminders for, or <a
-	 * href="/docs/billing/invoices/reconciliation">automatically reconciling</a>
-	 * invoices, pass <code>auto_advance=false</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is
-	 * similar to <a href="#delete_invoice">deletion</a>, however it only applies to
-	 * finalized invoices and maintains a papertrail where the invoice can still be
-	 * found.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Invoice
-	 */
-	public function voidInvoice($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * You can list all invoices, or list the invoices for a specific customer. The
+     * invoices are returned sorted by creation date, with the most recently created
+     * invoices appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Invoice>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving an invoice, you’ll get a <strong>lines</strong> property
+     * containing the total count of line items and the first handful of those items.
+     * There is also a URL where you can retrieve the full (paginated) list of line
+     * items.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\InvoiceLineItem>
+     */
+    public function allLines($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * This endpoint creates a draft invoice for a given customer. The invoice remains
+     * a draft until you <a href="#finalize_invoice">finalize</a> the invoice, which
+     * allows you to <a href="#pay_invoice">pay</a> or <a href="#send_invoice">send</a>
+     * the invoice to your customers.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to
+     * delete invoices that are no longer in a draft state will fail; once an invoice
+     * has been finalized or if an invoice is for a subscription, it must be <a
+     * href="#void_invoice">voided</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Stripe automatically finalizes drafts before sending and attempting payment on
+     * invoices. However, if you’d like to finalize a draft invoice manually, you can
+     * do so using this method.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function finalizeInvoice($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Marking an invoice as uncollectible is useful for keeping track of bad debts
+     * that can be written off for accounting purposes.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function markUncollectible($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Stripe automatically creates and then attempts to collect payment on invoices
+     * for customers on subscriptions according to your <a
+     * href="https://dashboard.stripe.com/account/billing/automatic">subscriptions
+     * settings</a>. However, if you’d like to attempt payment on an invoice out of the
+     * normal collection schedule or for some other reason, you can do so.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function pay($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the invoice with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Search for invoices you’ve previously created using Stripe’s <a
+     * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
+     * search in read-after-write flows where strict consistency is necessary. Under
+     * normal operating conditions, data is searchable in less than a minute.
+     * Occasionally, propagation of new or updated data can be up to an hour behind
+     * during outages. Search functionality is not available to merchants in India.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<\Stripe\Invoice>
+     */
+    public function search($params = null, $opts = null)
+    {
+    }
+    /**
+     * Stripe will automatically send invoices to customers according to your <a
+     * href="https://dashboard.stripe.com/account/billing/automatic">subscriptions
+     * settings</a>. However, if you’d like to manually send an invoice to your
+     * customer out of the normal schedule, you can do so. When sending invoices that
+     * have already been paid, there will be no reference to the payment in the email.
+     *
+     * Requests made in test-mode result in no emails being sent, despite sending an
+     * <code>invoice.sent</code> event.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function sendInvoice($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * At any time, you can preview the upcoming invoice for a customer. This will show
+     * you all the charges that are pending, including subscription renewal charges,
+     * invoice item charges, etc. It will also show you any discounts that are
+     * applicable to the invoice.
+     *
+     * Note that when you are viewing an upcoming invoice, you are simply viewing a
+     * preview – the invoice has not yet been created. As such, the upcoming invoice
+     * will not show up in invoice listing calls, and you cannot use the API to pay or
+     * edit the invoice. If you want to change the amount that your customer will be
+     * billed, you can add, remove, or update pending invoice items, or update the
+     * customer’s discount.
+     *
+     * You can preview the effects of updating a subscription, including a preview of
+     * what proration will take place. To ensure that the actual proration is
+     * calculated exactly the same as the previewed proration, you should pass a
+     * <code>proration_date</code> parameter when doing the actual subscription update.
+     * The value passed in should be the same as the
+     * <code>subscription_proration_date</code> returned on the upcoming invoice
+     * resource. The recommended way to get only the prorations being previewed is to
+     * consider only proration line items where <code>period[start]</code> is equal to
+     * the <code>subscription_proration_date</code> on the upcoming invoice resource.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function upcoming($params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving an upcoming invoice, you’ll get a <strong>lines</strong>
+     * property containing the total count of line items and the first handful of those
+     * items. There is also a URL where you can retrieve the full (paginated) list of
+     * line items.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\InvoiceLineItem>
+     */
+    public function upcomingLines($params = null, $opts = null)
+    {
+    }
+    /**
+     * Draft invoices are fully editable. Once an invoice is <a
+     * href="/docs/billing/invoices/workflow#finalized">finalized</a>, monetary values,
+     * as well as <code>collection_method</code>, become uneditable.
+     *
+     * If you would like to stop the Stripe Billing engine from automatically
+     * finalizing, reattempting payments on, sending reminders for, or <a
+     * href="/docs/billing/invoices/reconciliation">automatically reconciling</a>
+     * invoices, pass <code>auto_advance=false</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is
+     * similar to <a href="#delete_invoice">deletion</a>, however it only applies to
+     * finalized invoices and maintains a papertrail where the invoice can still be
+     * found.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Invoice
+     */
+    public function voidInvoice($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Issuing;
 
 class AuthorizationService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Issuing <code>Authorization</code> objects. The objects are
-	 * sorted in descending order by creation date, with the most recently created
-	 * object appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Issuing\Authorization>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Approves a pending Issuing <code>Authorization</code> object. This request
-	 * should be made within the timeout window of the <a
-	 * href="/docs/issuing/controls/real-time-authorizations">real-time
-	 * authorization</a> flow.  You can also respond directly to the webhook request to
-	 * approve an authorization (preferred). More details can be found <a
-	 * href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Authorization
-	 */
-	public function approve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Declines a pending Issuing <code>Authorization</code> object. This request
-	 * should be made within the timeout window of the <a
-	 * href="/docs/issuing/controls/real-time-authorizations">real time
-	 * authorization</a> flow. You can also respond directly to the webhook request to
-	 * decline an authorization (preferred). More details can be found <a
-	 * href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Authorization
-	 */
-	public function decline($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an Issuing <code>Authorization</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Authorization
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified Issuing <code>Authorization</code> object by setting the
-	 * values of the parameters passed. Any parameters not provided will be left
-	 * unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Authorization
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Issuing <code>Authorization</code> objects. The objects are
+     * sorted in descending order by creation date, with the most recently created
+     * object appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Issuing\Authorization>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Approves a pending Issuing <code>Authorization</code> object. This request
+     * should be made within the timeout window of the <a
+     * href="/docs/issuing/controls/real-time-authorizations">real-time
+     * authorization</a> flow.  You can also respond directly to the webhook request to
+     * approve an authorization (preferred). More details can be found <a
+     * href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Authorization
+     */
+    public function approve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Declines a pending Issuing <code>Authorization</code> object. This request
+     * should be made within the timeout window of the <a
+     * href="/docs/issuing/controls/real-time-authorizations">real time
+     * authorization</a> flow. You can also respond directly to the webhook request to
+     * decline an authorization (preferred). More details can be found <a
+     * href="https://site-admin.stripe.com/docs/issuing/controls/real-time-authorizations#authorization-handling">here</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Authorization
+     */
+    public function decline($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an Issuing <code>Authorization</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Authorization
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified Issuing <code>Authorization</code> object by setting the
+     * values of the parameters passed. Any parameters not provided will be left
+     * unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Authorization
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class CardholderService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Issuing <code>Cardholder</code> objects. The objects are
-	 * sorted in descending order by creation date, with the most recently created
-	 * object appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Issuing\Cardholder>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new Issuing <code>Cardholder</code> object that can be issued cards.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Cardholder
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an Issuing <code>Cardholder</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Cardholder
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified Issuing <code>Cardholder</code> object by setting the
-	 * values of the parameters passed. Any parameters not provided will be left
-	 * unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Cardholder
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Issuing <code>Cardholder</code> objects. The objects are
+     * sorted in descending order by creation date, with the most recently created
+     * object appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Issuing\Cardholder>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new Issuing <code>Cardholder</code> object that can be issued cards.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Cardholder
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an Issuing <code>Cardholder</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Cardholder
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified Issuing <code>Cardholder</code> object by setting the
+     * values of the parameters passed. Any parameters not provided will be left
+     * unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Cardholder
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class CardService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Issuing <code>Card</code> objects. The objects are sorted in
-	 * descending order by creation date, with the most recently created object
-	 * appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Issuing\Card>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates an Issuing <code>Card</code> object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Card
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an Issuing <code>Card</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Card
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified Issuing <code>Card</code> object by setting the values of
-	 * the parameters passed. Any parameters not provided will be left unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Card
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Issuing <code>Card</code> objects. The objects are sorted in
+     * descending order by creation date, with the most recently created object
+     * appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Issuing\Card>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates an Issuing <code>Card</code> object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Card
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an Issuing <code>Card</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Card
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified Issuing <code>Card</code> object by setting the values of
+     * the parameters passed. Any parameters not provided will be left unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Card
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class DisputeService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted
-	 * in descending order by creation date, with the most recently created object
-	 * appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Issuing\Dispute>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence
-	 * within the <code>evidence</code> object are optional at this point. Stripe only
-	 * validates that required evidence is present during submission. Refer to <a
-	 * href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute
-	 * reasons and evidence</a> for more details about evidence requirements.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Dispute
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an Issuing <code>Dispute</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Dispute
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Submits an Issuing <code>Dispute</code> to the card network. Stripe validates
-	 * that all evidence fields required for the dispute’s reason are present. For more
-	 * details, see <a
-	 * href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute
-	 * reasons and evidence</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Dispute
-	 */
-	public function submit($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified Issuing <code>Dispute</code> object by setting the values
-	 * of the parameters passed. Any parameters not provided will be left unchanged.
-	 * Properties on the <code>evidence</code> object can be unset by passing in an
-	 * empty string.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Dispute
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted
+     * in descending order by creation date, with the most recently created object
+     * appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Issuing\Dispute>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence
+     * within the <code>evidence</code> object are optional at this point. Stripe only
+     * validates that required evidence is present during submission. Refer to <a
+     * href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute
+     * reasons and evidence</a> for more details about evidence requirements.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Dispute
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an Issuing <code>Dispute</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Dispute
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Submits an Issuing <code>Dispute</code> to the card network. Stripe validates
+     * that all evidence fields required for the dispute’s reason are present. For more
+     * details, see <a
+     * href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute
+     * reasons and evidence</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Dispute
+     */
+    public function submit($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified Issuing <code>Dispute</code> object by setting the values
+     * of the parameters passed. Any parameters not provided will be left unchanged.
+     * Properties on the <code>evidence</code> object can be unset by passing in an
+     * empty string.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Dispute
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Issuing namespace.
@@ -9434,1174 +9473,1174 @@ class DisputeService extends \Stripe\Service\AbstractService
  */
 class IssuingServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class TransactionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Issuing <code>Transaction</code> objects. The objects are
-	 * sorted in descending order by creation date, with the most recently created
-	 * object appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Issuing\Transaction>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an Issuing <code>Transaction</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Transaction
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified Issuing <code>Transaction</code> object by setting the
-	 * values of the parameters passed. Any parameters not provided will be left
-	 * unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Transaction
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Issuing <code>Transaction</code> objects. The objects are
+     * sorted in descending order by creation date, with the most recently created
+     * object appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Issuing\Transaction>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an Issuing <code>Transaction</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Transaction
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified Issuing <code>Transaction</code> object by setting the
+     * values of the parameters passed. Any parameters not provided will be left
+     * unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Transaction
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class MandateService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Retrieves a Mandate object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Mandate
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Retrieves a Mandate object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Mandate
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class OAuthService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Sends a request to Stripe's Connect API.
-	 *
-	 * @param string $method the HTTP method
-	 * @param string $path the path of the request
-	 * @param array $params the parameters of the request
-	 * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
-	 *
-	 * @return \Stripe\StripeObject the object returned by Stripe's Connect API
-	 */
-	protected function requestConnect($method, $path, $params, $opts)
-	{
-	}
-	/**
-	 * Generates a URL to Stripe's OAuth form.
-	 *
-	 * @param null|array $params
-	 * @param null|array $opts
-	 *
-	 * @return string the URL to Stripe's OAuth form
-	 */
-	public function authorizeUrl($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Use an authoriztion code to connect an account to your platform and
-	 * fetch the user's credentials.
-	 *
-	 * @param null|array $params
-	 * @param null|array $opts
-	 *
-	 * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject object containing the response from the API
-	 */
-	public function token($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Disconnects an account from your platform.
-	 *
-	 * @param null|array $params
-	 * @param null|array $opts
-	 *
-	 * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
-	 *
-	 * @return \Stripe\StripeObject object containing the response from the API
-	 */
-	public function deauthorize($params = null, $opts = null)
-	{
-	}
+    /**
+     * Sends a request to Stripe's Connect API.
+     *
+     * @param string $method the HTTP method
+     * @param string $path the path of the request
+     * @param array $params the parameters of the request
+     * @param array|\Stripe\Util\RequestOptions $opts the special modifiers of the request
+     *
+     * @return \Stripe\StripeObject the object returned by Stripe's Connect API
+     */
+    protected function requestConnect($method, $path, $params, $opts)
+    {
+    }
+    /**
+     * Generates a URL to Stripe's OAuth form.
+     *
+     * @param null|array $params
+     * @param null|array $opts
+     *
+     * @return string the URL to Stripe's OAuth form
+     */
+    public function authorizeUrl($params = null, $opts = null)
+    {
+    }
+    /**
+     * Use an authoriztion code to connect an account to your platform and
+     * fetch the user's credentials.
+     *
+     * @param null|array $params
+     * @param null|array $opts
+     *
+     * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject object containing the response from the API
+     */
+    public function token($params = null, $opts = null)
+    {
+    }
+    /**
+     * Disconnects an account from your platform.
+     *
+     * @param null|array $params
+     * @param null|array $opts
+     *
+     * @throws \Stripe\Exception\OAuth\OAuthErrorException if the request fails
+     *
+     * @return \Stripe\StripeObject object containing the response from the API
+     */
+    public function deauthorize($params = null, $opts = null)
+    {
+    }
 }
 class PaymentIntentService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of PaymentIntents.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\PaymentIntent>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Manually reconcile the remaining amount for a customer_balance PaymentIntent.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function applyCustomerBalance($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * A PaymentIntent object can be canceled when it is in one of these statuses:
-	 * <code>requires_payment_method</code>, <code>requires_capture</code>,
-	 * <code>requires_confirmation</code>, <code>requires_action</code> or, <a
-	 * href="/docs/payments/intents">in rare cases</a>, <code>processing</code>.
-	 *
-	 * Once canceled, no additional charges will be made by the PaymentIntent and any
-	 * operations on the PaymentIntent will fail with an error. For PaymentIntents with
-	 * <code>status=’requires_capture’</code>, the remaining
-	 * <code>amount_capturable</code> will automatically be refunded.
-	 *
-	 * You cannot cancel the PaymentIntent for a Checkout Session. <a
-	 * href="/docs/api/checkout/sessions/expire">Expire the Checkout Session</a>
-	 * instead.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Capture the funds of an existing uncaptured PaymentIntent when its status is
-	 * <code>requires_capture</code>.
-	 *
-	 * Uncaptured PaymentIntents will be canceled a set number of days after they are
-	 * created (7 by default).
-	 *
-	 * Learn more about <a href="/docs/payments/capture-later">separate authorization
-	 * and capture</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function capture($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Confirm that your customer intends to pay with current or provided payment
-	 * method. Upon confirmation, the PaymentIntent will attempt to initiate a payment.
-	 * If the selected payment method requires additional authentication steps, the
-	 * PaymentIntent will transition to the <code>requires_action</code> status and
-	 * suggest additional actions via <code>next_action</code>. If payment fails, the
-	 * PaymentIntent will transition to the <code>requires_payment_method</code>
-	 * status. If payment succeeds, the PaymentIntent will transition to the
-	 * <code>succeeded</code> status (or <code>requires_capture</code>, if
-	 * <code>capture_method</code> is set to <code>manual</code>). If the
-	 * <code>confirmation_method</code> is <code>automatic</code>, payment may be
-	 * attempted using our <a
-	 * href="/docs/stripe-js/reference#stripe-handle-card-payment">client SDKs</a> and
-	 * the PaymentIntent’s <a
-	 * href="#payment_intent_object-client_secret">client_secret</a>. After
-	 * <code>next_action</code>s are handled by the client, no additional confirmation
-	 * is required to complete the payment. If the <code>confirmation_method</code> is
-	 * <code>manual</code>, all payment attempts must be initiated using a secret key.
-	 * If any actions are required for the payment, the PaymentIntent will return to
-	 * the <code>requires_confirmation</code> state after those actions are completed.
-	 * Your server needs to then explicitly re-confirm the PaymentIntent to initiate
-	 * the next payment attempt. Read the <a
-	 * href="/docs/payments/payment-intents/web-manual">expanded documentation</a> to
-	 * learn more about manual confirmation.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function confirm($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a PaymentIntent object.
-	 *
-	 * After the PaymentIntent is created, attach a payment method and <a
-	 * href="/docs/api/payment_intents/confirm">confirm</a> to continue the payment.
-	 * You can read more about the different payment flows available via the Payment
-	 * Intents API <a href="/docs/payments/payment-intents">here</a>.
-	 *
-	 * When <code>confirm=true</code> is used during creation, it is equivalent to
-	 * creating and confirming the PaymentIntent in the same call. You may use any
-	 * parameters available in the <a href="/docs/api/payment_intents/confirm">confirm
-	 * API</a> when <code>confirm=true</code> is supplied.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Perform an incremental authorization on an eligible <a
-	 * href="/docs/api/payment_intents/object">PaymentIntent</a>. To be eligible, the
-	 * PaymentIntent’s status must be <code>requires_capture</code> and <a
-	 * href="/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported">incremental_authorization_supported</a>
-	 * must be <code>true</code>.
-	 *
-	 * Incremental authorizations attempt to increase the authorized amount on your
-	 * customer’s card to the new, higher <code>amount</code> provided. As with the
-	 * initial authorization, incremental authorizations may be declined. A single
-	 * PaymentIntent can call this endpoint multiple times to further increase the
-	 * authorized amount.
-	 *
-	 * If the incremental authorization succeeds, the PaymentIntent object is returned
-	 * with the updated <a
-	 * href="/docs/api/payment_intents/object#payment_intent_object-amount">amount</a>.
-	 * If the incremental authorization fails, a <a
-	 * href="/docs/error-codes#card-declined">card_declined</a> error is returned, and
-	 * no fields on the PaymentIntent or Charge are updated. The PaymentIntent object
-	 * remains capturable for the previously authorized amount.
-	 *
-	 * Each PaymentIntent can have a maximum of 10 incremental authorization attempts,
-	 * including declines. Once captured, a PaymentIntent can no longer be incremented.
-	 *
-	 * Learn more about <a
-	 * href="/docs/terminal/features/incremental-authorizations">incremental
-	 * authorizations</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function incrementAuthorization($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a PaymentIntent that has previously been created.
-	 *
-	 * Client-side retrieval using a publishable key is allowed when the
-	 * <code>client_secret</code> is provided in the query string.
-	 *
-	 * When retrieved with a publishable key, only a subset of properties will be
-	 * returned. Please refer to the <a href="#payment_intent_object">payment
-	 * intent</a> object reference for more details.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Search for PaymentIntents you’ve previously created using Stripe’s <a
-	 * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
-	 * search in read-after-write flows where strict consistency is necessary. Under
-	 * normal operating conditions, data is searchable in less than a minute.
-	 * Occasionally, propagation of new or updated data can be up to an hour behind
-	 * during outages. Search functionality is not available to merchants in India.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<\Stripe\PaymentIntent>
-	 */
-	public function search($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates properties on a PaymentIntent object without confirming.
-	 *
-	 * Depending on which properties you update, you may need to confirm the
-	 * PaymentIntent again. For example, updating the <code>payment_method</code> will
-	 * always require you to confirm the PaymentIntent again. If you prefer to update
-	 * and confirm at the same time, we recommend updating properties via the <a
-	 * href="/docs/api/payment_intents/confirm">confirm API</a> instead.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Verifies microdeposits on a PaymentIntent object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentIntent
-	 */
-	public function verifyMicrodeposits($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of PaymentIntents.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\PaymentIntent>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Manually reconcile the remaining amount for a customer_balance PaymentIntent.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function applyCustomerBalance($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * A PaymentIntent object can be canceled when it is in one of these statuses:
+     * <code>requires_payment_method</code>, <code>requires_capture</code>,
+     * <code>requires_confirmation</code>, <code>requires_action</code> or, <a
+     * href="/docs/payments/intents">in rare cases</a>, <code>processing</code>.
+     *
+     * Once canceled, no additional charges will be made by the PaymentIntent and any
+     * operations on the PaymentIntent will fail with an error. For PaymentIntents with
+     * <code>status=’requires_capture’</code>, the remaining
+     * <code>amount_capturable</code> will automatically be refunded.
+     *
+     * You cannot cancel the PaymentIntent for a Checkout Session. <a
+     * href="/docs/api/checkout/sessions/expire">Expire the Checkout Session</a>
+     * instead.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Capture the funds of an existing uncaptured PaymentIntent when its status is
+     * <code>requires_capture</code>.
+     *
+     * Uncaptured PaymentIntents will be canceled a set number of days after they are
+     * created (7 by default).
+     *
+     * Learn more about <a href="/docs/payments/capture-later">separate authorization
+     * and capture</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function capture($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Confirm that your customer intends to pay with current or provided payment
+     * method. Upon confirmation, the PaymentIntent will attempt to initiate a payment.
+     * If the selected payment method requires additional authentication steps, the
+     * PaymentIntent will transition to the <code>requires_action</code> status and
+     * suggest additional actions via <code>next_action</code>. If payment fails, the
+     * PaymentIntent will transition to the <code>requires_payment_method</code>
+     * status. If payment succeeds, the PaymentIntent will transition to the
+     * <code>succeeded</code> status (or <code>requires_capture</code>, if
+     * <code>capture_method</code> is set to <code>manual</code>). If the
+     * <code>confirmation_method</code> is <code>automatic</code>, payment may be
+     * attempted using our <a
+     * href="/docs/stripe-js/reference#stripe-handle-card-payment">client SDKs</a> and
+     * the PaymentIntent’s <a
+     * href="#payment_intent_object-client_secret">client_secret</a>. After
+     * <code>next_action</code>s are handled by the client, no additional confirmation
+     * is required to complete the payment. If the <code>confirmation_method</code> is
+     * <code>manual</code>, all payment attempts must be initiated using a secret key.
+     * If any actions are required for the payment, the PaymentIntent will return to
+     * the <code>requires_confirmation</code> state after those actions are completed.
+     * Your server needs to then explicitly re-confirm the PaymentIntent to initiate
+     * the next payment attempt. Read the <a
+     * href="/docs/payments/payment-intents/web-manual">expanded documentation</a> to
+     * learn more about manual confirmation.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function confirm($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a PaymentIntent object.
+     *
+     * After the PaymentIntent is created, attach a payment method and <a
+     * href="/docs/api/payment_intents/confirm">confirm</a> to continue the payment.
+     * You can read more about the different payment flows available via the Payment
+     * Intents API <a href="/docs/payments/payment-intents">here</a>.
+     *
+     * When <code>confirm=true</code> is used during creation, it is equivalent to
+     * creating and confirming the PaymentIntent in the same call. You may use any
+     * parameters available in the <a href="/docs/api/payment_intents/confirm">confirm
+     * API</a> when <code>confirm=true</code> is supplied.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Perform an incremental authorization on an eligible <a
+     * href="/docs/api/payment_intents/object">PaymentIntent</a>. To be eligible, the
+     * PaymentIntent’s status must be <code>requires_capture</code> and <a
+     * href="/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported">incremental_authorization_supported</a>
+     * must be <code>true</code>.
+     *
+     * Incremental authorizations attempt to increase the authorized amount on your
+     * customer’s card to the new, higher <code>amount</code> provided. As with the
+     * initial authorization, incremental authorizations may be declined. A single
+     * PaymentIntent can call this endpoint multiple times to further increase the
+     * authorized amount.
+     *
+     * If the incremental authorization succeeds, the PaymentIntent object is returned
+     * with the updated <a
+     * href="/docs/api/payment_intents/object#payment_intent_object-amount">amount</a>.
+     * If the incremental authorization fails, a <a
+     * href="/docs/error-codes#card-declined">card_declined</a> error is returned, and
+     * no fields on the PaymentIntent or Charge are updated. The PaymentIntent object
+     * remains capturable for the previously authorized amount.
+     *
+     * Each PaymentIntent can have a maximum of 10 incremental authorization attempts,
+     * including declines. Once captured, a PaymentIntent can no longer be incremented.
+     *
+     * Learn more about <a
+     * href="/docs/terminal/features/incremental-authorizations">incremental
+     * authorizations</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function incrementAuthorization($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a PaymentIntent that has previously been created.
+     *
+     * Client-side retrieval using a publishable key is allowed when the
+     * <code>client_secret</code> is provided in the query string.
+     *
+     * When retrieved with a publishable key, only a subset of properties will be
+     * returned. Please refer to the <a href="#payment_intent_object">payment
+     * intent</a> object reference for more details.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Search for PaymentIntents you’ve previously created using Stripe’s <a
+     * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
+     * search in read-after-write flows where strict consistency is necessary. Under
+     * normal operating conditions, data is searchable in less than a minute.
+     * Occasionally, propagation of new or updated data can be up to an hour behind
+     * during outages. Search functionality is not available to merchants in India.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<\Stripe\PaymentIntent>
+     */
+    public function search($params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates properties on a PaymentIntent object without confirming.
+     *
+     * Depending on which properties you update, you may need to confirm the
+     * PaymentIntent again. For example, updating the <code>payment_method</code> will
+     * always require you to confirm the PaymentIntent again. If you prefer to update
+     * and confirm at the same time, we recommend updating properties via the <a
+     * href="/docs/api/payment_intents/confirm">confirm API</a> instead.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Verifies microdeposits on a PaymentIntent object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentIntent
+     */
+    public function verifyMicrodeposits($id, $params = null, $opts = null)
+    {
+    }
 }
 class PaymentLinkService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your payment links.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\PaymentLink>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving a payment link, there is an includable
-	 * <strong>line_items</strong> property containing the first handful of those
-	 * items. There is also a URL where you can retrieve the full (paginated) list of
-	 * line items.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem>
-	 */
-	public function allLineItems($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a payment link.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentLink
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieve a payment link.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentLink
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a payment link.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentLink
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your payment links.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\PaymentLink>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving a payment link, there is an includable
+     * <strong>line_items</strong> property containing the first handful of those
+     * items. There is also a URL where you can retrieve the full (paginated) list of
+     * line items.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem>
+     */
+    public function allLineItems($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a payment link.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentLink
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieve a payment link.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentLink
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a payment link.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentLink
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class PaymentMethodService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of PaymentMethods for Treasury flows. If you want to list the
-	 * PaymentMethods attached to a Customer for payments, you should use the <a
-	 * href="/docs/api/payment_methods/customer_list">List a Customer’s
-	 * PaymentMethods</a> API instead.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\PaymentMethod>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Attaches a PaymentMethod object to a Customer.
-	 *
-	 * To attach a new PaymentMethod to a customer for future payments, we recommend
-	 * you use a <a href="/docs/api/setup_intents">SetupIntent</a> or a PaymentIntent
-	 * with <a
-	 * href="/docs/api/payment_intents/create#create_payment_intent-setup_future_usage">setup_future_usage</a>.
-	 * These approaches will perform any necessary steps to set up the PaymentMethod
-	 * for future payments. Using the <code>/v1/payment_methods/:id/attach</code>
-	 * endpoint without first using a SetupIntent or PaymentIntent with
-	 * <code>setup_future_usage</code> does not optimize the PaymentMethod for future
-	 * use, which makes later declines and payment friction more likely. See <a
-	 * href="/docs/payments/payment-intents#future-usage">Optimizing cards for future
-	 * payments</a> for more information about setting up future payments.
-	 *
-	 * To use this PaymentMethod as the default for invoice or subscription payments,
-	 * set <a
-	 * href="/docs/api/customers/update#update_customer-invoice_settings-default_payment_method"><code>invoice_settings.default_payment_method</code></a>,
-	 * on the Customer to the PaymentMethod’s ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentMethod
-	 */
-	public function attach($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a PaymentMethod object. Read the <a
-	 * href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js
-	 * reference</a> to learn how to create PaymentMethods via Stripe.js.
-	 *
-	 * Instead of creating a PaymentMethod directly, we recommend using the <a
-	 * href="/docs/payments/accept-a-payment">PaymentIntents</a> API to accept a
-	 * payment immediately or the <a
-	 * href="/docs/payments/save-and-reuse">SetupIntent</a> API to collect payment
-	 * method details ahead of a future payment.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentMethod
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Detaches a PaymentMethod object from a Customer. After a PaymentMethod is
-	 * detached, it can no longer be used for a payment or re-attached to a Customer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentMethod
-	 */
-	public function detach($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a PaymentMethod object attached to the StripeAccount. To retrieve a
-	 * payment method attached to a Customer, you should use <a
-	 * href="/docs/api/payment_methods/customer">Retrieve a Customer’s
-	 * PaymentMethods</a>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentMethod
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a PaymentMethod object. A PaymentMethod must be attached a customer to
-	 * be updated.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PaymentMethod
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of PaymentMethods for Treasury flows. If you want to list the
+     * PaymentMethods attached to a Customer for payments, you should use the <a
+     * href="/docs/api/payment_methods/customer_list">List a Customer’s
+     * PaymentMethods</a> API instead.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\PaymentMethod>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Attaches a PaymentMethod object to a Customer.
+     *
+     * To attach a new PaymentMethod to a customer for future payments, we recommend
+     * you use a <a href="/docs/api/setup_intents">SetupIntent</a> or a PaymentIntent
+     * with <a
+     * href="/docs/api/payment_intents/create#create_payment_intent-setup_future_usage">setup_future_usage</a>.
+     * These approaches will perform any necessary steps to set up the PaymentMethod
+     * for future payments. Using the <code>/v1/payment_methods/:id/attach</code>
+     * endpoint without first using a SetupIntent or PaymentIntent with
+     * <code>setup_future_usage</code> does not optimize the PaymentMethod for future
+     * use, which makes later declines and payment friction more likely. See <a
+     * href="/docs/payments/payment-intents#future-usage">Optimizing cards for future
+     * payments</a> for more information about setting up future payments.
+     *
+     * To use this PaymentMethod as the default for invoice or subscription payments,
+     * set <a
+     * href="/docs/api/customers/update#update_customer-invoice_settings-default_payment_method"><code>invoice_settings.default_payment_method</code></a>,
+     * on the Customer to the PaymentMethod’s ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentMethod
+     */
+    public function attach($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a PaymentMethod object. Read the <a
+     * href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js
+     * reference</a> to learn how to create PaymentMethods via Stripe.js.
+     *
+     * Instead of creating a PaymentMethod directly, we recommend using the <a
+     * href="/docs/payments/accept-a-payment">PaymentIntents</a> API to accept a
+     * payment immediately or the <a
+     * href="/docs/payments/save-and-reuse">SetupIntent</a> API to collect payment
+     * method details ahead of a future payment.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentMethod
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Detaches a PaymentMethod object from a Customer. After a PaymentMethod is
+     * detached, it can no longer be used for a payment or re-attached to a Customer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentMethod
+     */
+    public function detach($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a PaymentMethod object attached to the StripeAccount. To retrieve a
+     * payment method attached to a Customer, you should use <a
+     * href="/docs/api/payment_methods/customer">Retrieve a Customer’s
+     * PaymentMethods</a>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentMethod
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a PaymentMethod object. A PaymentMethod must be attached a customer to
+     * be updated.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PaymentMethod
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class PayoutService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of existing payouts sent to third-party bank accounts or that
-	 * Stripe has sent you. The payouts are returned in sorted order, with the most
-	 * recently created payouts appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Payout>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * A previously created payout can be canceled if it has not yet been paid out.
-	 * Funds will be refunded to your available balance. You may not cancel automatic
-	 * Stripe payouts.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Payout
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * To send funds to your own bank account, you create a new payout object. Your <a
-	 * href="#balance">Stripe balance</a> must be able to cover the payout amount, or
-	 * you’ll receive an “Insufficient Funds” error.
-	 *
-	 * If your API key is in test mode, money won’t actually be sent, though everything
-	 * else will occur as if in live mode.
-	 *
-	 * If you are creating a manual payout on a Stripe account that uses multiple
-	 * payment source types, you’ll need to specify the source type balance that the
-	 * payout should draw from. The <a href="#balance_object">balance object</a>
-	 * details available and pending amounts by source type.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Payout
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing payout. Supply the unique payout ID from
-	 * either a payout creation request or the payout list, and Stripe will return the
-	 * corresponding payout information.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Payout
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Reverses a payout by debiting the destination bank account. Only payouts for
-	 * connected accounts to US bank accounts may be reversed at this time. If the
-	 * payout is in the <code>pending</code> status,
-	 * <code>/v1/payouts/:id/cancel</code> should be used instead.
-	 *
-	 * By requesting a reversal via <code>/v1/payouts/:id/reverse</code>, you confirm
-	 * that the authorized signatory of the selected bank account has authorized the
-	 * debit on the bank account and that no other authorization is required.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Payout
-	 */
-	public function reverse($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified payout by setting the values of the parameters passed. Any
-	 * parameters not provided will be left unchanged. This request accepts only the
-	 * metadata as arguments.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Payout
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of existing payouts sent to third-party bank accounts or that
+     * Stripe has sent you. The payouts are returned in sorted order, with the most
+     * recently created payouts appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Payout>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * A previously created payout can be canceled if it has not yet been paid out.
+     * Funds will be refunded to your available balance. You may not cancel automatic
+     * Stripe payouts.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Payout
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * To send funds to your own bank account, you create a new payout object. Your <a
+     * href="#balance">Stripe balance</a> must be able to cover the payout amount, or
+     * you’ll receive an “Insufficient Funds” error.
+     *
+     * If your API key is in test mode, money won’t actually be sent, though everything
+     * else will occur as if in live mode.
+     *
+     * If you are creating a manual payout on a Stripe account that uses multiple
+     * payment source types, you’ll need to specify the source type balance that the
+     * payout should draw from. The <a href="#balance_object">balance object</a>
+     * details available and pending amounts by source type.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Payout
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing payout. Supply the unique payout ID from
+     * either a payout creation request or the payout list, and Stripe will return the
+     * corresponding payout information.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Payout
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Reverses a payout by debiting the destination bank account. Only payouts for
+     * connected accounts to US bank accounts may be reversed at this time. If the
+     * payout is in the <code>pending</code> status,
+     * <code>/v1/payouts/:id/cancel</code> should be used instead.
+     *
+     * By requesting a reversal via <code>/v1/payouts/:id/reverse</code>, you confirm
+     * that the authorized signatory of the selected bank account has authorized the
+     * debit on the bank account and that no other authorization is required.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Payout
+     */
+    public function reverse($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified payout by setting the values of the parameters passed. Any
+     * parameters not provided will be left unchanged. This request accepts only the
+     * metadata as arguments.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Payout
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class PlanService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your plans.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Plan>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * You can now model subscriptions more flexibly using the <a href="#prices">Prices
-	 * API</a>. It replaces the Plans API and is backwards compatible to simplify your
-	 * migration.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Plan
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deleting plans means new subscribers can’t be added. Existing subscribers aren’t
-	 * affected.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Plan
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the plan with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Plan
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified plan by setting the values of the parameters passed. Any
-	 * parameters not provided are left unchanged. By design, you cannot change a
-	 * plan’s ID, amount, currency, or billing cycle.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Plan
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your plans.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Plan>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * You can now model subscriptions more flexibly using the <a href="#prices">Prices
+     * API</a>. It replaces the Plans API and is backwards compatible to simplify your
+     * migration.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Plan
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deleting plans means new subscribers can’t be added. Existing subscribers aren’t
+     * affected.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Plan
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the plan with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Plan
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified plan by setting the values of the parameters passed. Any
+     * parameters not provided are left unchanged. By design, you cannot change a
+     * plan’s ID, amount, currency, or billing cycle.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Plan
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class PriceService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your prices.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Price>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new price for an existing product. The price can be recurring or
-	 * one-time.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Price
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the price with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Price
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Search for prices you’ve previously created using Stripe’s <a
-	 * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
-	 * search in read-after-write flows where strict consistency is necessary. Under
-	 * normal operating conditions, data is searchable in less than a minute.
-	 * Occasionally, propagation of new or updated data can be up to an hour behind
-	 * during outages. Search functionality is not available to merchants in India.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<\Stripe\Price>
-	 */
-	public function search($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified price by setting the values of the parameters passed. Any
-	 * parameters not provided are left unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Price
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your prices.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Price>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new price for an existing product. The price can be recurring or
+     * one-time.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Price
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the price with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Price
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Search for prices you’ve previously created using Stripe’s <a
+     * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
+     * search in read-after-write flows where strict consistency is necessary. Under
+     * normal operating conditions, data is searchable in less than a minute.
+     * Occasionally, propagation of new or updated data can be up to an hour behind
+     * during outages. Search functionality is not available to merchants in India.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<\Stripe\Price>
+     */
+    public function search($params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified price by setting the values of the parameters passed. Any
+     * parameters not provided are left unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Price
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class ProductService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your products. The products are returned sorted by creation
-	 * date, with the most recently created products appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Product>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new product object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Product
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Delete a product. Deleting a product is only possible if it has no prices
-	 * associated with it. Additionally, deleting a product with <code>type=good</code>
-	 * is only possible if it has no SKUs associated with it.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Product
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing product. Supply the unique product ID from
-	 * either a product creation request or the product list, and Stripe will return
-	 * the corresponding product information.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Product
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Search for products you’ve previously created using Stripe’s <a
-	 * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
-	 * search in read-after-write flows where strict consistency is necessary. Under
-	 * normal operating conditions, data is searchable in less than a minute.
-	 * Occasionally, propagation of new or updated data can be up to an hour behind
-	 * during outages. Search functionality is not available to merchants in India.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<\Stripe\Product>
-	 */
-	public function search($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specific product by setting the values of the parameters passed. Any
-	 * parameters not provided will be left unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Product
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your products. The products are returned sorted by creation
+     * date, with the most recently created products appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Product>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new product object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Product
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Delete a product. Deleting a product is only possible if it has no prices
+     * associated with it. Additionally, deleting a product with <code>type=good</code>
+     * is only possible if it has no SKUs associated with it.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Product
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing product. Supply the unique product ID from
+     * either a product creation request or the product list, and Stripe will return
+     * the corresponding product information.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Product
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Search for products you’ve previously created using Stripe’s <a
+     * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
+     * search in read-after-write flows where strict consistency is necessary. Under
+     * normal operating conditions, data is searchable in less than a minute.
+     * Occasionally, propagation of new or updated data can be up to an hour behind
+     * during outages. Search functionality is not available to merchants in India.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<\Stripe\Product>
+     */
+    public function search($params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specific product by setting the values of the parameters passed. Any
+     * parameters not provided will be left unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Product
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class PromotionCodeService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your promotion codes.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\PromotionCode>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * A promotion code points to a coupon. You can optionally restrict the code to a
-	 * specific customer, redemption limit, and expiration date.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PromotionCode
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the promotion code with the given ID. In order to retrieve a promotion
-	 * code by the customer-facing <code>code</code> use <a
-	 * href="/docs/api/promotion_codes/list">list</a> with the desired
-	 * <code>code</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PromotionCode
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified promotion code by setting the values of the parameters
-	 * passed. Most fields are, by design, not editable.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\PromotionCode
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your promotion codes.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\PromotionCode>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * A promotion code points to a coupon. You can optionally restrict the code to a
+     * specific customer, redemption limit, and expiration date.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PromotionCode
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the promotion code with the given ID. In order to retrieve a promotion
+     * code by the customer-facing <code>code</code> use <a
+     * href="/docs/api/promotion_codes/list">list</a> with the desired
+     * <code>code</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PromotionCode
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified promotion code by setting the values of the parameters
+     * passed. Most fields are, by design, not editable.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\PromotionCode
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class QuoteService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Accepts the specified quote.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote
-	 */
-	public function accept($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of your quotes.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Quote>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving a quote, there is an includable <a
-	 * href="https://stripe.com/docs/api/quotes/object#quote_object-computed-upfront-line_items"><strong>computed.upfront.line_items</strong></a>
-	 * property containing the first handful of those items. There is also a URL where
-	 * you can retrieve the full (paginated) list of upfront line items.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem>
-	 */
-	public function allComputedUpfrontLineItems($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * When retrieving a quote, there is an includable <strong>line_items</strong>
-	 * property containing the first handful of those items. There is also a URL where
-	 * you can retrieve the full (paginated) list of line items.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\LineItem>
-	 */
-	public function allLineItems($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancels the quote.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * A quote models prices and services for a customer. Default options for
-	 * <code>header</code>, <code>description</code>, <code>footer</code>, and
-	 * <code>expires_at</code> can be set in the dashboard via the <a
-	 * href="https://dashboard.stripe.com/settings/billing/quote">quote template</a>.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Finalizes the quote.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote
-	 */
-	public function finalizeQuote($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the quote with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * A quote models prices and services for a customer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Quote
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Download the PDF for a finalized quote.
-	 *
-	 * @param string $id
-	 * @param callable $readBodyChunkCallable
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 */
-	public function pdf($id, $readBodyChunkCallable, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Accepts the specified quote.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote
+     */
+    public function accept($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of your quotes.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Quote>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving a quote, there is an includable <a
+     * href="https://stripe.com/docs/api/quotes/object#quote_object-computed-upfront-line_items"><strong>computed.upfront.line_items</strong></a>
+     * property containing the first handful of those items. There is also a URL where
+     * you can retrieve the full (paginated) list of upfront line items.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem>
+     */
+    public function allComputedUpfrontLineItems($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * When retrieving a quote, there is an includable <strong>line_items</strong>
+     * property containing the first handful of those items. There is also a URL where
+     * you can retrieve the full (paginated) list of line items.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\LineItem>
+     */
+    public function allLineItems($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancels the quote.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * A quote models prices and services for a customer. Default options for
+     * <code>header</code>, <code>description</code>, <code>footer</code>, and
+     * <code>expires_at</code> can be set in the dashboard via the <a
+     * href="https://dashboard.stripe.com/settings/billing/quote">quote template</a>.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Finalizes the quote.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote
+     */
+    public function finalizeQuote($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the quote with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * A quote models prices and services for a customer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Quote
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Download the PDF for a finalized quote.
+     *
+     * @param string $id
+     * @param callable $readBodyChunkCallable
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     */
+    public function pdf($id, $readBodyChunkCallable, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Radar;
 
 class EarlyFraudWarningService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of early fraud warnings.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Radar\EarlyFraudWarning>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an early fraud warning that has previously been
-	 * created.
-	 *
-	 * Please refer to the <a href="#early_fraud_warning_object">early fraud
-	 * warning</a> object reference for more details.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\EarlyFraudWarning
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of early fraud warnings.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Radar\EarlyFraudWarning>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an early fraud warning that has previously been
+     * created.
+     *
+     * Please refer to the <a href="#early_fraud_warning_object">early fraud
+     * warning</a> object reference for more details.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\EarlyFraudWarning
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Radar namespace.
@@ -10612,230 +10651,230 @@ class EarlyFraudWarningService extends \Stripe\Service\AbstractService
  */
 class RadarServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class ValueListItemService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of <code>ValueListItem</code> objects. The objects are sorted in
-	 * descending order by creation date, with the most recently created object
-	 * appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Radar\ValueListItem>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new <code>ValueListItem</code> object, which is added to the specified
-	 * parent value list.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\ValueListItem
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes a <code>ValueListItem</code> object, removing it from its parent value
-	 * list.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\ValueListItem
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a <code>ValueListItem</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\ValueListItem
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of <code>ValueListItem</code> objects. The objects are sorted in
+     * descending order by creation date, with the most recently created object
+     * appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Radar\ValueListItem>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new <code>ValueListItem</code> object, which is added to the specified
+     * parent value list.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\ValueListItem
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes a <code>ValueListItem</code> object, removing it from its parent value
+     * list.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\ValueListItem
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a <code>ValueListItem</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\ValueListItem
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class ValueListService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of <code>ValueList</code> objects. The objects are sorted in
-	 * descending order by creation date, with the most recently created object
-	 * appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Radar\ValueList>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new <code>ValueList</code> object, which can then be referenced in
-	 * rules.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\ValueList
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes a <code>ValueList</code> object, also deleting any items contained
-	 * within the value list. To be deleted, a value list must not be referenced in any
-	 * rules.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\ValueList
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a <code>ValueList</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\ValueList
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a <code>ValueList</code> object by setting the values of the parameters
-	 * passed. Any parameters not provided will be left unchanged. Note that
-	 * <code>item_type</code> is immutable.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Radar\ValueList
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of <code>ValueList</code> objects. The objects are sorted in
+     * descending order by creation date, with the most recently created object
+     * appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Radar\ValueList>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new <code>ValueList</code> object, which can then be referenced in
+     * rules.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\ValueList
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes a <code>ValueList</code> object, also deleting any items contained
+     * within the value list. To be deleted, a value list must not be referenced in any
+     * rules.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\ValueList
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a <code>ValueList</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\ValueList
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a <code>ValueList</code> object by setting the values of the parameters
+     * passed. Any parameters not provided will be left unchanged. Note that
+     * <code>item_type</code> is immutable.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Radar\ValueList
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class RefundService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of all refunds you’ve previously created. The refunds are
-	 * returned in sorted order, with the most recent refunds appearing first. For
-	 * convenience, the 10 most recent refunds are always available by default on the
-	 * charge object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Refund>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancels a refund with a status of <code>requires_action</code>.
-	 *
-	 * Refunds in other states cannot be canceled, and only refunds for payment methods
-	 * that require customer action will enter the <code>requires_action</code> state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Refund
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Create a refund.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Refund
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing refund.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Refund
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified refund by setting the values of the parameters passed. Any
-	 * parameters not provided will be left unchanged.
-	 *
-	 * This request only accepts <code>metadata</code> as an argument.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Refund
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of all refunds you’ve previously created. The refunds are
+     * returned in sorted order, with the most recent refunds appearing first. For
+     * convenience, the 10 most recent refunds are always available by default on the
+     * charge object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Refund>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancels a refund with a status of <code>requires_action</code>.
+     *
+     * Refunds in other states cannot be canceled, and only refunds for payment methods
+     * that require customer action will enter the <code>requires_action</code> state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Refund
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Create a refund.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Refund
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing refund.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Refund
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified refund by setting the values of the parameters passed. Any
+     * parameters not provided will be left unchanged.
+     *
+     * This request only accepts <code>metadata</code> as an argument.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Refund
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Reporting;
 
@@ -10847,362 +10886,362 @@ namespace Stripe\Service\Reporting;
  */
 class ReportingServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 class ReportRunService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of Report Runs, with the most recent appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Reporting\ReportRun>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new object and begin running the report. (Certain report types require
-	 * a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.).
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Reporting\ReportRun
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing Report Run.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Reporting\ReportRun
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of Report Runs, with the most recent appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Reporting\ReportRun>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new object and begin running the report. (Certain report types require
+     * a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.).
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Reporting\ReportRun
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing Report Run.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Reporting\ReportRun
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class ReportTypeService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a full list of Report Types.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Reporting\ReportType>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a Report Type. (Certain report types require a <a
-	 * href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.).
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Reporting\ReportType
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a full list of Report Types.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Reporting\ReportType>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a Report Type. (Certain report types require a <a
+     * href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.).
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Reporting\ReportType
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class ReviewService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of <code>Review</code> objects that have <code>open</code> set to
-	 * <code>true</code>. The objects are sorted in descending order by creation date,
-	 * with the most recently created object appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Review>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Approves a <code>Review</code> object, closing it and removing it from the list
-	 * of reviews.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Review
-	 */
-	public function approve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a <code>Review</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Review
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of <code>Review</code> objects that have <code>open</code> set to
+     * <code>true</code>. The objects are sorted in descending order by creation date,
+     * with the most recently created object appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Review>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Approves a <code>Review</code> object, closing it and removing it from the list
+     * of reviews.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Review
+     */
+    public function approve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a <code>Review</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Review
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class SetupAttemptService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of SetupAttempts associated with a provided SetupIntent.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\SetupAttempt>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of SetupAttempts associated with a provided SetupIntent.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\SetupAttempt>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
 }
 class SetupIntentService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of SetupIntents.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\SetupIntent>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * A SetupIntent object can be canceled when it is in one of these statuses:
-	 * <code>requires_payment_method</code>, <code>requires_confirmation</code>, or
-	 * <code>requires_action</code>.
-	 *
-	 * Once canceled, setup is abandoned and any operations on the SetupIntent will
-	 * fail with an error.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Confirm that your customer intends to set up the current or provided payment
-	 * method. For example, you would confirm a SetupIntent when a customer hits the
-	 * “Save” button on a payment method management page on your website.
-	 *
-	 * If the selected payment method does not require any additional steps from the
-	 * customer, the SetupIntent will transition to the <code>succeeded</code> status.
-	 *
-	 * Otherwise, it will transition to the <code>requires_action</code> status and
-	 * suggest additional actions via <code>next_action</code>. If setup fails, the
-	 * SetupIntent will transition to the <code>requires_payment_method</code> status.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent
-	 */
-	public function confirm($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a SetupIntent object.
-	 *
-	 * After the SetupIntent is created, attach a payment method and <a
-	 * href="/docs/api/setup_intents/confirm">confirm</a> to collect any required
-	 * permissions to charge the payment method later.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a SetupIntent that has previously been created.
-	 *
-	 * Client-side retrieval using a publishable key is allowed when the
-	 * <code>client_secret</code> is provided in the query string.
-	 *
-	 * When retrieved with a publishable key, only a subset of properties will be
-	 * returned. Please refer to the <a href="#setup_intent_object">SetupIntent</a>
-	 * object reference for more details.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a SetupIntent object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Verifies microdeposits on a SetupIntent object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent
-	 */
-	public function verifyMicrodeposits($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of SetupIntents.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\SetupIntent>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * A SetupIntent object can be canceled when it is in one of these statuses:
+     * <code>requires_payment_method</code>, <code>requires_confirmation</code>, or
+     * <code>requires_action</code>.
+     *
+     * Once canceled, setup is abandoned and any operations on the SetupIntent will
+     * fail with an error.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Confirm that your customer intends to set up the current or provided payment
+     * method. For example, you would confirm a SetupIntent when a customer hits the
+     * “Save” button on a payment method management page on your website.
+     *
+     * If the selected payment method does not require any additional steps from the
+     * customer, the SetupIntent will transition to the <code>succeeded</code> status.
+     *
+     * Otherwise, it will transition to the <code>requires_action</code> status and
+     * suggest additional actions via <code>next_action</code>. If setup fails, the
+     * SetupIntent will transition to the <code>requires_payment_method</code> status.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent
+     */
+    public function confirm($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a SetupIntent object.
+     *
+     * After the SetupIntent is created, attach a payment method and <a
+     * href="/docs/api/setup_intents/confirm">confirm</a> to collect any required
+     * permissions to charge the payment method later.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a SetupIntent that has previously been created.
+     *
+     * Client-side retrieval using a publishable key is allowed when the
+     * <code>client_secret</code> is provided in the query string.
+     *
+     * When retrieved with a publishable key, only a subset of properties will be
+     * returned. Please refer to the <a href="#setup_intent_object">SetupIntent</a>
+     * object reference for more details.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a SetupIntent object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Verifies microdeposits on a SetupIntent object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent
+     */
+    public function verifyMicrodeposits($id, $params = null, $opts = null)
+    {
+    }
 }
 class ShippingRateService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your shipping rates.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\ShippingRate>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new shipping rate object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ShippingRate
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns the shipping rate object with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ShippingRate
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing shipping rate object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\ShippingRate
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your shipping rates.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\ShippingRate>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new shipping rate object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ShippingRate
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns the shipping rate object with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ShippingRate
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing shipping rate object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\ShippingRate
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Sigma;
 
 class ScheduledQueryRunService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of scheduled query runs.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Sigma\ScheduledQueryRun>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an scheduled query run.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Sigma\ScheduledQueryRun
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of scheduled query runs.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Sigma\ScheduledQueryRun>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an scheduled query run.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Sigma\ScheduledQueryRun
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Sigma namespace.
@@ -11211,886 +11250,886 @@ class ScheduledQueryRunService extends \Stripe\Service\AbstractService
  */
 class SigmaServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class SourceService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * List source transactions for a given source.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\SourceTransaction>
-	 */
-	public function allSourceTransactions($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new source object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Source
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Delete a specified source for a given customer.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Source
-	 */
-	public function detach($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves an existing source object. Supply the unique source ID from a source
-	 * creation request and Stripe will return the corresponding up-to-date source
-	 * object information.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Source
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified source by setting the values of the parameters passed. Any
-	 * parameters not provided will be left unchanged.
-	 *
-	 * This request accepts the <code>metadata</code> and <code>owner</code> as
-	 * arguments. It is also possible to update type specific information for selected
-	 * payment methods. Please refer to our <a href="/docs/sources">payment method
-	 * guides</a> for more detail.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Source
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Verify a given source.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Source
-	 */
-	public function verify($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * List source transactions for a given source.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\SourceTransaction>
+     */
+    public function allSourceTransactions($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new source object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Source
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Delete a specified source for a given customer.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Source
+     */
+    public function detach($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves an existing source object. Supply the unique source ID from a source
+     * creation request and Stripe will return the corresponding up-to-date source
+     * object information.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Source
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified source by setting the values of the parameters passed. Any
+     * parameters not provided will be left unchanged.
+     *
+     * This request accepts the <code>metadata</code> and <code>owner</code> as
+     * arguments. It is also possible to update type specific information for selected
+     * payment methods. Please refer to our <a href="/docs/sources">payment method
+     * guides</a> for more detail.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Source
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Verify a given source.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Source
+     */
+    public function verify($id, $params = null, $opts = null)
+    {
+    }
 }
 class SubscriptionItemService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your subscription items for a given subscription.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\SubscriptionItem>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * For the specified subscription item, returns a list of summary objects. Each
-	 * object in the list provides usage information that’s been summarized from
-	 * multiple usage records and over a subscription billing period (e.g., 15 usage
-	 * records in the month of September).
-	 *
-	 * The list is sorted in reverse-chronological order (newest first). The first list
-	 * item represents the most current usage period that hasn’t ended yet. Since new
-	 * usage records can still be added, the returned summary information for the
-	 * subscription item’s ID should be seen as unstable until the subscription billing
-	 * period ends.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\UsageRecordSummary>
-	 */
-	public function allUsageRecordSummaries($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Adds a new item to an existing subscription. No existing items will be changed
-	 * or replaced.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionItem
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a usage record for a specified subscription item and date, and fills it
-	 * with a quantity.
-	 *
-	 * Usage records provide <code>quantity</code> information that Stripe uses to
-	 * track how much a customer is using your service. With usage information and the
-	 * pricing model set up by the <a
-	 * href="https://stripe.com/docs/billing/subscriptions/metered-billing">metered
-	 * billing</a> plan, Stripe helps you send accurate invoices to your customers.
-	 *
-	 * The default calculation for usage is to add up all the <code>quantity</code>
-	 * values of the usage records within a billing period. You can change this default
-	 * behavior with the billing plan’s <code>aggregate_usage</code> <a
-	 * href="/docs/api/plans/create#create_plan-aggregate_usage">parameter</a>. When
-	 * there is more than one usage record with the same timestamp, Stripe adds the
-	 * <code>quantity</code> values together. In most cases, this is the desired
-	 * resolution, however, you can change this behavior with the <code>action</code>
-	 * parameter.
-	 *
-	 * The default pricing model for metered billing is <a
-	 * href="/docs/api/plans/object#plan_object-billing_scheme">per-unit pricing</a>.
-	 * For finer granularity, you can configure metered billing to have a <a
-	 * href="https://stripe.com/docs/billing/subscriptions/tiers">tiered pricing</a>
-	 * model.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\UsageRecord
-	 */
-	public function createUsageRecord($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes an item from the subscription. Removing a subscription item from a
-	 * subscription will not cancel the subscription.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionItem
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the subscription item with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionItem
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the plan or quantity of an item on a current subscription.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionItem
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your subscription items for a given subscription.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\SubscriptionItem>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * For the specified subscription item, returns a list of summary objects. Each
+     * object in the list provides usage information that’s been summarized from
+     * multiple usage records and over a subscription billing period (e.g., 15 usage
+     * records in the month of September).
+     *
+     * The list is sorted in reverse-chronological order (newest first). The first list
+     * item represents the most current usage period that hasn’t ended yet. Since new
+     * usage records can still be added, the returned summary information for the
+     * subscription item’s ID should be seen as unstable until the subscription billing
+     * period ends.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\UsageRecordSummary>
+     */
+    public function allUsageRecordSummaries($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Adds a new item to an existing subscription. No existing items will be changed
+     * or replaced.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionItem
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a usage record for a specified subscription item and date, and fills it
+     * with a quantity.
+     *
+     * Usage records provide <code>quantity</code> information that Stripe uses to
+     * track how much a customer is using your service. With usage information and the
+     * pricing model set up by the <a
+     * href="https://stripe.com/docs/billing/subscriptions/metered-billing">metered
+     * billing</a> plan, Stripe helps you send accurate invoices to your customers.
+     *
+     * The default calculation for usage is to add up all the <code>quantity</code>
+     * values of the usage records within a billing period. You can change this default
+     * behavior with the billing plan’s <code>aggregate_usage</code> <a
+     * href="/docs/api/plans/create#create_plan-aggregate_usage">parameter</a>. When
+     * there is more than one usage record with the same timestamp, Stripe adds the
+     * <code>quantity</code> values together. In most cases, this is the desired
+     * resolution, however, you can change this behavior with the <code>action</code>
+     * parameter.
+     *
+     * The default pricing model for metered billing is <a
+     * href="/docs/api/plans/object#plan_object-billing_scheme">per-unit pricing</a>.
+     * For finer granularity, you can configure metered billing to have a <a
+     * href="https://stripe.com/docs/billing/subscriptions/tiers">tiered pricing</a>
+     * model.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\UsageRecord
+     */
+    public function createUsageRecord($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes an item from the subscription. Removing a subscription item from a
+     * subscription will not cancel the subscription.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionItem
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the subscription item with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionItem
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the plan or quantity of an item on a current subscription.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionItem
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class SubscriptionScheduleService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Retrieves the list of your subscription schedules.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\SubscriptionSchedule>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancels a subscription schedule and its associated subscription immediately (if
-	 * the subscription schedule has an active subscription). A subscription schedule
-	 * can only be canceled if its status is <code>not_started</code> or
-	 * <code>active</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionSchedule
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new subscription schedule object. Each customer can have up to 500
-	 * active or scheduled subscriptions.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionSchedule
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Releases the subscription schedule immediately, which will stop scheduling of
-	 * its phases, but leave any existing subscription in place. A schedule can only be
-	 * released if its status is <code>not_started</code> or <code>active</code>. If
-	 * the subscription schedule is currently associated with a subscription, releasing
-	 * it will remove its <code>subscription</code> property and set the subscription’s
-	 * ID to the <code>released_subscription</code> property.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionSchedule
-	 */
-	public function release($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing subscription schedule. You only need to
-	 * supply the unique subscription schedule identifier that was returned upon
-	 * subscription schedule creation.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionSchedule
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing subscription schedule.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionSchedule
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Retrieves the list of your subscription schedules.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\SubscriptionSchedule>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancels a subscription schedule and its associated subscription immediately (if
+     * the subscription schedule has an active subscription). A subscription schedule
+     * can only be canceled if its status is <code>not_started</code> or
+     * <code>active</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionSchedule
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new subscription schedule object. Each customer can have up to 500
+     * active or scheduled subscriptions.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionSchedule
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Releases the subscription schedule immediately, which will stop scheduling of
+     * its phases, but leave any existing subscription in place. A schedule can only be
+     * released if its status is <code>not_started</code> or <code>active</code>. If
+     * the subscription schedule is currently associated with a subscription, releasing
+     * it will remove its <code>subscription</code> property and set the subscription’s
+     * ID to the <code>released_subscription</code> property.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionSchedule
+     */
+    public function release($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing subscription schedule. You only need to
+     * supply the unique subscription schedule identifier that was returned upon
+     * subscription schedule creation.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionSchedule
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing subscription schedule.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionSchedule
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class SubscriptionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * By default, returns a list of subscriptions that have not been canceled. In
-	 * order to list canceled subscriptions, specify <code>status=canceled</code>.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Subscription>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancels a customer’s subscription immediately. The customer will not be charged
-	 * again for the subscription.
-	 *
-	 * Note, however, that any pending invoice items that you’ve created will still be
-	 * charged for at the end of the period, unless manually <a
-	 * href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel
-	 * at the end of the period, any pending prorations will also be left in place and
-	 * collected at the end of the period. But if the subscription is set to cancel
-	 * immediately, pending prorations will be removed.
-	 *
-	 * By default, upon subscription cancellation, Stripe will stop automatic
-	 * collection of all finalized invoices for the customer. This is intended to
-	 * prevent unexpected payment attempts after the customer has canceled a
-	 * subscription. However, you can resume automatic collection of the invoices
-	 * manually after subscription cancellation to have us proceed. Or, you could check
-	 * for unpaid invoices before allowing the customer to cancel the subscription at
-	 * all.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new subscription on an existing customer. Each customer can have up to
-	 * 500 active or scheduled subscriptions.
-	 *
-	 * When you create a subscription with
-	 * <code>collection_method=charge_automatically</code>, the first invoice is
-	 * finalized as part of the request. The <code>payment_behavior</code> parameter
-	 * determines the exact behavior of the initial payment.
-	 *
-	 * To start subscriptions where the first invoice always begins in a
-	 * <code>draft</code> status, use <a
-	 * href="/docs/billing/subscriptions/subscription-schedules#managing">subscription
-	 * schedules</a> instead. Schedules provide the flexibility to model more complex
-	 * billing configurations that change over time.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Removes the currently applied discount on a subscription.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription
-	 */
-	public function deleteDiscount($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Initiates resumption of a paused subscription, optionally resetting the billing
-	 * cycle anchor and creating prorations. If a resumption invoice is generated, it
-	 * must be paid or marked uncollectible before the subscription will be unpaused.
-	 * If payment succeeds the subscription will become <code>active</code>, and if
-	 * payment fails the subscription will be <code>past_due</code>. The resumption
-	 * invoice will void automatically if not paid by the expiration date.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription
-	 */
-	public function resume($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the subscription with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Search for subscriptions you’ve previously created using Stripe’s <a
-	 * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
-	 * search in read-after-write flows where strict consistency is necessary. Under
-	 * normal operating conditions, data is searchable in less than a minute.
-	 * Occasionally, propagation of new or updated data can be up to an hour behind
-	 * during outages. Search functionality is not available to merchants in India.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<\Stripe\Subscription>
-	 */
-	public function search($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing subscription on a customer to match the specified
-	 * parameters. When changing plans or quantities, we will optionally prorate the
-	 * price we charge next month to make up for any price changes. To preview how the
-	 * proration will be calculated, use the <a href="#upcoming_invoice">upcoming
-	 * invoice</a> endpoint.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * By default, returns a list of subscriptions that have not been canceled. In
+     * order to list canceled subscriptions, specify <code>status=canceled</code>.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Subscription>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancels a customer’s subscription immediately. The customer will not be charged
+     * again for the subscription.
+     *
+     * Note, however, that any pending invoice items that you’ve created will still be
+     * charged for at the end of the period, unless manually <a
+     * href="#delete_invoiceitem">deleted</a>. If you’ve set the subscription to cancel
+     * at the end of the period, any pending prorations will also be left in place and
+     * collected at the end of the period. But if the subscription is set to cancel
+     * immediately, pending prorations will be removed.
+     *
+     * By default, upon subscription cancellation, Stripe will stop automatic
+     * collection of all finalized invoices for the customer. This is intended to
+     * prevent unexpected payment attempts after the customer has canceled a
+     * subscription. However, you can resume automatic collection of the invoices
+     * manually after subscription cancellation to have us proceed. Or, you could check
+     * for unpaid invoices before allowing the customer to cancel the subscription at
+     * all.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new subscription on an existing customer. Each customer can have up to
+     * 500 active or scheduled subscriptions.
+     *
+     * When you create a subscription with
+     * <code>collection_method=charge_automatically</code>, the first invoice is
+     * finalized as part of the request. The <code>payment_behavior</code> parameter
+     * determines the exact behavior of the initial payment.
+     *
+     * To start subscriptions where the first invoice always begins in a
+     * <code>draft</code> status, use <a
+     * href="/docs/billing/subscriptions/subscription-schedules#managing">subscription
+     * schedules</a> instead. Schedules provide the flexibility to model more complex
+     * billing configurations that change over time.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Removes the currently applied discount on a subscription.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription
+     */
+    public function deleteDiscount($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Initiates resumption of a paused subscription, optionally resetting the billing
+     * cycle anchor and creating prorations. If a resumption invoice is generated, it
+     * must be paid or marked uncollectible before the subscription will be unpaused.
+     * If payment succeeds the subscription will become <code>active</code>, and if
+     * payment fails the subscription will be <code>past_due</code>. The resumption
+     * invoice will void automatically if not paid by the expiration date.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription
+     */
+    public function resume($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the subscription with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Search for subscriptions you’ve previously created using Stripe’s <a
+     * href="/docs/search#search-query-language">Search Query Language</a>. Don’t use
+     * search in read-after-write flows where strict consistency is necessary. Under
+     * normal operating conditions, data is searchable in less than a minute.
+     * Occasionally, propagation of new or updated data can be up to an hour behind
+     * during outages. Search functionality is not available to merchants in India.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<\Stripe\Subscription>
+     */
+    public function search($params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing subscription on a customer to match the specified
+     * parameters. When changing plans or quantities, we will optionally prorate the
+     * price we charge next month to make up for any price changes. To preview how the
+     * proration will be calculated, use the <a href="#upcoming_invoice">upcoming
+     * invoice</a> endpoint.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class TaxCodeService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * A list of <a href="https://stripe.com/docs/tax/tax-categories">all tax codes
-	 * available</a> to add to Products in order to allow specific tax calculations.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\TaxCode>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing tax code. Supply the unique tax code ID and
-	 * Stripe will return the corresponding tax code information.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxCode
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * A list of <a href="https://stripe.com/docs/tax/tax-categories">all tax codes
+     * available</a> to add to Products in order to allow specific tax calculations.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\TaxCode>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing tax code. Supply the unique tax code ID and
+     * Stripe will return the corresponding tax code information.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxCode
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class TaxRateService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your tax rates. Tax rates are returned sorted by creation
-	 * date, with the most recently created tax rates appearing first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\TaxRate>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new tax rate.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxRate
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a tax rate with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxRate
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates an existing tax rate.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TaxRate
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your tax rates. Tax rates are returned sorted by creation
+     * date, with the most recently created tax rates appearing first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\TaxRate>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new tax rate.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxRate
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a tax rate with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxRate
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates an existing tax rate.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TaxRate
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Terminal;
 
 class ConfigurationService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of <code>Configuration</code> objects.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Terminal\Configuration>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new <code>Configuration</code> object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Configuration
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes a <code>Configuration</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Configuration
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a <code>Configuration</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Configuration
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a new <code>Configuration</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Configuration
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of <code>Configuration</code> objects.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Terminal\Configuration>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new <code>Configuration</code> object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Configuration
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes a <code>Configuration</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Configuration
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a <code>Configuration</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Configuration
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a new <code>Configuration</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Configuration
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class ConnectionTokenService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived
-	 * connection token from Stripe, proxied through your server. On your backend, add
-	 * an endpoint that creates and returns a connection token.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\ConnectionToken
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
+    /**
+     * To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived
+     * connection token from Stripe, proxied through your server. On your backend, add
+     * an endpoint that creates and returns a connection token.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\ConnectionToken
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
 }
 class LocationService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of <code>Location</code> objects.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Terminal\Location>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new <code>Location</code> object. For further details, including which
-	 * address fields are required in each country, see the <a
-	 * href="/docs/terminal/fleet/locations">Manage locations</a> guide.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Location
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes a <code>Location</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Location
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a <code>Location</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Location
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a <code>Location</code> object by setting the values of the parameters
-	 * passed. Any parameters not provided will be left unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Location
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of <code>Location</code> objects.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Terminal\Location>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new <code>Location</code> object. For further details, including which
+     * address fields are required in each country, see the <a
+     * href="/docs/terminal/fleet/locations">Manage locations</a> guide.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Location
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes a <code>Location</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Location
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a <code>Location</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Location
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a <code>Location</code> object by setting the values of the parameters
+     * passed. Any parameters not provided will be left unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Location
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class ReaderService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of <code>Reader</code> objects.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Terminal\Reader>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancels the current reader action.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function cancelAction($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new <code>Reader</code> object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes a <code>Reader</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Initiates a payment flow on a Reader.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function processPaymentIntent($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Initiates a setup intent flow on a Reader.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function processSetupIntent($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Initiates a refund on a Reader.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function refundPayment($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a <code>Reader</code> object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Sets reader display to show cart details.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function setReaderDisplay($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates a <code>Reader</code> object by setting the values of the parameters
-	 * passed. Any parameters not provided will be left unchanged.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of <code>Reader</code> objects.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Terminal\Reader>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancels the current reader action.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function cancelAction($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new <code>Reader</code> object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes a <code>Reader</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Initiates a payment flow on a Reader.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function processPaymentIntent($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Initiates a setup intent flow on a Reader.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function processSetupIntent($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Initiates a refund on a Reader.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function refundPayment($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a <code>Reader</code> object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Sets reader display to show cart details.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function setReaderDisplay($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates a <code>Reader</code> object by setting the values of the parameters
+     * passed. Any parameters not provided will be left unchanged.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Terminal namespace.
@@ -12102,93 +12141,93 @@ class ReaderService extends \Stripe\Service\AbstractService
  */
 class TerminalServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 namespace Stripe\Service\TestHelpers;
 
 class CustomerService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Create an incoming testmode bank transfer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Customer
-	 */
-	public function fundCashBalance($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Create an incoming testmode bank transfer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Customer
+     */
+    public function fundCashBalance($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\TestHelpers\Issuing;
 
 class CardService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Updates the shipping status of the specified Issuing <code>Card</code> object to
-	 * <code>delivered</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Card
-	 */
-	public function deliverCard($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the shipping status of the specified Issuing <code>Card</code> object to
-	 * <code>failure</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Card
-	 */
-	public function failCard($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the shipping status of the specified Issuing <code>Card</code> object to
-	 * <code>returned</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Card
-	 */
-	public function returnCard($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the shipping status of the specified Issuing <code>Card</code> object to
-	 * <code>shipped</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Issuing\Card
-	 */
-	public function shipCard($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Updates the shipping status of the specified Issuing <code>Card</code> object to
+     * <code>delivered</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Card
+     */
+    public function deliverCard($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the shipping status of the specified Issuing <code>Card</code> object to
+     * <code>failure</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Card
+     */
+    public function failCard($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the shipping status of the specified Issuing <code>Card</code> object to
+     * <code>returned</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Card
+     */
+    public function returnCard($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the shipping status of the specified Issuing <code>Card</code> object to
+     * <code>shipped</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Issuing\Card
+     */
+    public function shipCard($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Issuing namespace.
@@ -12197,48 +12236,48 @@ class CardService extends \Stripe\Service\AbstractService
  */
 class IssuingServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 namespace Stripe\Service\TestHelpers;
 
 class RefundService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Expire a refund with a status of <code>requires_action</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Refund
-	 */
-	public function expire($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Expire a refund with a status of <code>requires_action</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Refund
+     */
+    public function expire($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\TestHelpers\Terminal;
 
 class ReaderService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Presents a payment method on a simulated reader. Can be used to simulate
-	 * accepting a payment, saving a card or refunding a transaction.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader
-	 */
-	public function presentPaymentMethod($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Presents a payment method on a simulated reader. Can be used to simulate
+     * accepting a payment, saving a card or refunding a transaction.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader
+     */
+    public function presentPaymentMethod($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Terminal namespace.
@@ -12247,83 +12286,83 @@ class ReaderService extends \Stripe\Service\AbstractService
  */
 class TerminalServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 namespace Stripe\Service\TestHelpers;
 
 class TestClockService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Starts advancing a test clock to a specified time in the future. Advancement is
-	 * done when status changes to <code>Ready</code>.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TestHelpers\TestClock
-	 */
-	public function advance($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Returns a list of your test clocks.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\TestHelpers\TestClock>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new test clock that can be attached to new customers and quotes.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TestHelpers\TestClock
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Deletes a test clock.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TestHelpers\TestClock
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a test clock.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TestHelpers\TestClock
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Starts advancing a test clock to a specified time in the future. Advancement is
+     * done when status changes to <code>Ready</code>.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TestHelpers\TestClock
+     */
+    public function advance($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Returns a list of your test clocks.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\TestHelpers\TestClock>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new test clock that can be attached to new customers and quotes.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TestHelpers\TestClock
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Deletes a test clock.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TestHelpers\TestClock
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a test clock.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TestHelpers\TestClock
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the TestHelpers namespace.
@@ -12337,200 +12376,200 @@ class TestClockService extends \Stripe\Service\AbstractService
  */
 class TestHelpersServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 namespace Stripe\Service\TestHelpers\Treasury;
 
 class InboundTransferService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Transitions a test mode created InboundTransfer to the <code>failed</code>
-	 * status. The InboundTransfer must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\InboundTransfer
-	 */
-	public function fail($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Marks the test mode InboundTransfer object as returned and links the
-	 * InboundTransfer to a ReceivedDebit. The InboundTransfer must already be in the
-	 * <code>succeeded</code> state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\InboundTransfer
-	 */
-	public function returnInboundTransfer($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Transitions a test mode created InboundTransfer to the <code>succeeded</code>
-	 * status. The InboundTransfer must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\InboundTransfer
-	 */
-	public function succeed($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Transitions a test mode created InboundTransfer to the <code>failed</code>
+     * status. The InboundTransfer must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\InboundTransfer
+     */
+    public function fail($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Marks the test mode InboundTransfer object as returned and links the
+     * InboundTransfer to a ReceivedDebit. The InboundTransfer must already be in the
+     * <code>succeeded</code> state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\InboundTransfer
+     */
+    public function returnInboundTransfer($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Transitions a test mode created InboundTransfer to the <code>succeeded</code>
+     * status. The InboundTransfer must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\InboundTransfer
+     */
+    public function succeed($id, $params = null, $opts = null)
+    {
+    }
 }
 class OutboundPaymentService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Transitions a test mode created OutboundPayment to the <code>failed</code>
-	 * status. The OutboundPayment must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundPayment
-	 */
-	public function fail($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Transitions a test mode created OutboundPayment to the <code>posted</code>
-	 * status. The OutboundPayment must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundPayment
-	 */
-	public function post($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Transitions a test mode created OutboundPayment to the <code>returned</code>
-	 * status. The OutboundPayment must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundPayment
-	 */
-	public function returnOutboundPayment($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Transitions a test mode created OutboundPayment to the <code>failed</code>
+     * status. The OutboundPayment must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundPayment
+     */
+    public function fail($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Transitions a test mode created OutboundPayment to the <code>posted</code>
+     * status. The OutboundPayment must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundPayment
+     */
+    public function post($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Transitions a test mode created OutboundPayment to the <code>returned</code>
+     * status. The OutboundPayment must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundPayment
+     */
+    public function returnOutboundPayment($id, $params = null, $opts = null)
+    {
+    }
 }
 class OutboundTransferService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Transitions a test mode created OutboundTransfer to the <code>failed</code>
-	 * status. The OutboundTransfer must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundTransfer
-	 */
-	public function fail($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Transitions a test mode created OutboundTransfer to the <code>posted</code>
-	 * status. The OutboundTransfer must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundTransfer
-	 */
-	public function post($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Transitions a test mode created OutboundTransfer to the <code>returned</code>
-	 * status. The OutboundTransfer must already be in the <code>processing</code>
-	 * state.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundTransfer
-	 */
-	public function returnOutboundTransfer($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Transitions a test mode created OutboundTransfer to the <code>failed</code>
+     * status. The OutboundTransfer must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundTransfer
+     */
+    public function fail($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Transitions a test mode created OutboundTransfer to the <code>posted</code>
+     * status. The OutboundTransfer must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundTransfer
+     */
+    public function post($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Transitions a test mode created OutboundTransfer to the <code>returned</code>
+     * status. The OutboundTransfer must already be in the <code>processing</code>
+     * state.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundTransfer
+     */
+    public function returnOutboundTransfer($id, $params = null, $opts = null)
+    {
+    }
 }
 class ReceivedCreditService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Use this endpoint to simulate a test mode ReceivedCredit initiated by a third
-	 * party. In live mode, you can’t directly create ReceivedCredits initiated by
-	 * third parties.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\ReceivedCredit
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
+    /**
+     * Use this endpoint to simulate a test mode ReceivedCredit initiated by a third
+     * party. In live mode, you can’t directly create ReceivedCredits initiated by
+     * third parties.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\ReceivedCredit
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
 }
 class ReceivedDebitService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Use this endpoint to simulate a test mode ReceivedDebit initiated by a third
-	 * party. In live mode, you can’t directly create ReceivedDebits initiated by third
-	 * parties.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\ReceivedDebit
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
+    /**
+     * Use this endpoint to simulate a test mode ReceivedDebit initiated by a third
+     * party. In live mode, you can’t directly create ReceivedDebits initiated by third
+     * parties.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\ReceivedDebit
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Treasury namespace.
@@ -12543,731 +12582,731 @@ class ReceivedDebitService extends \Stripe\Service\AbstractService
  */
 class TreasuryServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class TokenService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Creates a single-use token that represents a bank account’s details. This token
-	 * can be used with any API method in place of a bank account dictionary. This
-	 * token can be used only once, by attaching it to a <a href="#accounts">Custom
-	 * account</a>.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Token
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the token with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Token
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Creates a single-use token that represents a bank account’s details. This token
+     * can be used with any API method in place of a bank account dictionary. This
+     * token can be used only once, by attaching it to a <a href="#accounts">Custom
+     * account</a>.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Token
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the token with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Token
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class TopupService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of top-ups.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Topup>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancels a top-up. Only pending top-ups can be canceled.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Topup
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Top up the balance of an account.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Topup
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a top-up that has previously been created. Supply the
-	 * unique top-up ID that was returned from your previous request, and Stripe will
-	 * return the corresponding top-up information.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Topup
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the metadata of a top-up. Other top-up details are not editable by
-	 * design.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Topup
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of top-ups.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Topup>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancels a top-up. Only pending top-ups can be canceled.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Topup
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Top up the balance of an account.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Topup
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a top-up that has previously been created. Supply the
+     * unique top-up ID that was returned from your previous request, and Stripe will
+     * return the corresponding top-up information.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Topup
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the metadata of a top-up. Other top-up details are not editable by
+     * design.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Topup
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 class TransferService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of existing transfers sent to connected accounts. The transfers
-	 * are returned in sorted order, with the most recently created transfers appearing
-	 * first.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Transfer>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * You can see a list of the reversals belonging to a specific transfer. Note that
-	 * the 10 most recent reversals are always available by default on the transfer
-	 * object. If you need more than those 10, you can use this API method and the
-	 * <code>limit</code> and <code>starting_after</code> parameters to page through
-	 * additional reversals.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\TransferReversal>
-	 */
-	public function allReversals($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * To send funds from your Stripe account to a connected account, you create a new
-	 * transfer object. Your <a href="#balance">Stripe balance</a> must be able to
-	 * cover the transfer amount, or you’ll receive an “Insufficient Funds” error.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Transfer
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * When you create a new reversal, you must specify a transfer to create it on.
-	 *
-	 * When reversing transfers, you can optionally reverse part of the transfer. You
-	 * can do so as many times as you wish until the entire transfer has been reversed.
-	 *
-	 * Once entirely reversed, a transfer can’t be reversed again. This method will
-	 * return an error when called on an already-reversed transfer, or when trying to
-	 * reverse more money than is left on a transfer.
-	 *
-	 * @param string $parentId
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TransferReversal
-	 */
-	public function createReversal($parentId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing transfer. Supply the unique transfer ID
-	 * from either a transfer creation request or the transfer list, and Stripe will
-	 * return the corresponding transfer information.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Transfer
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * By default, you can see the 10 most recent reversals stored directly on the
-	 * transfer object, but you can also retrieve details about a specific reversal
-	 * stored on the transfer.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TransferReversal
-	 */
-	public function retrieveReversal($parentId, $id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified transfer by setting the values of the parameters passed.
-	 * Any parameters not provided will be left unchanged.
-	 *
-	 * This request accepts only metadata as an argument.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Transfer
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the specified reversal by setting the values of the parameters passed.
-	 * Any parameters not provided will be left unchanged.
-	 *
-	 * This request only accepts metadata and description as arguments.
-	 *
-	 * @param string $parentId
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TransferReversal
-	 */
-	public function updateReversal($parentId, $id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of existing transfers sent to connected accounts. The transfers
+     * are returned in sorted order, with the most recently created transfers appearing
+     * first.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Transfer>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * You can see a list of the reversals belonging to a specific transfer. Note that
+     * the 10 most recent reversals are always available by default on the transfer
+     * object. If you need more than those 10, you can use this API method and the
+     * <code>limit</code> and <code>starting_after</code> parameters to page through
+     * additional reversals.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\TransferReversal>
+     */
+    public function allReversals($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * To send funds from your Stripe account to a connected account, you create a new
+     * transfer object. Your <a href="#balance">Stripe balance</a> must be able to
+     * cover the transfer amount, or you’ll receive an “Insufficient Funds” error.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Transfer
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * When you create a new reversal, you must specify a transfer to create it on.
+     *
+     * When reversing transfers, you can optionally reverse part of the transfer. You
+     * can do so as many times as you wish until the entire transfer has been reversed.
+     *
+     * Once entirely reversed, a transfer can’t be reversed again. This method will
+     * return an error when called on an already-reversed transfer, or when trying to
+     * reverse more money than is left on a transfer.
+     *
+     * @param string $parentId
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TransferReversal
+     */
+    public function createReversal($parentId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing transfer. Supply the unique transfer ID
+     * from either a transfer creation request or the transfer list, and Stripe will
+     * return the corresponding transfer information.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Transfer
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * By default, you can see the 10 most recent reversals stored directly on the
+     * transfer object, but you can also retrieve details about a specific reversal
+     * stored on the transfer.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TransferReversal
+     */
+    public function retrieveReversal($parentId, $id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified transfer by setting the values of the parameters passed.
+     * Any parameters not provided will be left unchanged.
+     *
+     * This request accepts only metadata as an argument.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Transfer
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the specified reversal by setting the values of the parameters passed.
+     * Any parameters not provided will be left unchanged.
+     *
+     * This request only accepts metadata and description as arguments.
+     *
+     * @param string $parentId
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TransferReversal
+     */
+    public function updateReversal($parentId, $id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\Service\Treasury;
 
 class CreditReversalService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of CreditReversals.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\CreditReversal>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Reverses a ReceivedCredit and creates a CreditReversal object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\CreditReversal
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing CreditReversal by passing the unique
-	 * CreditReversal ID from either the CreditReversal creation request or
-	 * CreditReversal list.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\CreditReversal
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of CreditReversals.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\CreditReversal>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Reverses a ReceivedCredit and creates a CreditReversal object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\CreditReversal
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing CreditReversal by passing the unique
+     * CreditReversal ID from either the CreditReversal creation request or
+     * CreditReversal list.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\CreditReversal
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class DebitReversalService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of DebitReversals.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\DebitReversal>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Reverses a ReceivedDebit and creates a DebitReversal object.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\DebitReversal
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a DebitReversal object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\DebitReversal
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of DebitReversals.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\DebitReversal>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Reverses a ReceivedDebit and creates a DebitReversal object.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\DebitReversal
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a DebitReversal object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\DebitReversal
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class FinancialAccountService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of FinancialAccounts.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\FinancialAccount>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates a new FinancialAccount. For now, each connected account can only have
-	 * one FinancialAccount.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\FinancialAccount
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of a FinancialAccount.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\FinancialAccount
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves Features information associated with the FinancialAccount.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\FinancialAccount
-	 */
-	public function retrieveFeatures($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the details of a FinancialAccount.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\FinancialAccount
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the Features associated with a FinancialAccount.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\FinancialAccount
-	 */
-	public function updateFeatures($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of FinancialAccounts.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\FinancialAccount>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates a new FinancialAccount. For now, each connected account can only have
+     * one FinancialAccount.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\FinancialAccount
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of a FinancialAccount.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\FinancialAccount
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves Features information associated with the FinancialAccount.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\FinancialAccount
+     */
+    public function retrieveFeatures($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the details of a FinancialAccount.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\FinancialAccount
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the Features associated with a FinancialAccount.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\FinancialAccount
+     */
+    public function updateFeatures($id, $params = null, $opts = null)
+    {
+    }
 }
 class InboundTransferService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of InboundTransfers sent from the specified FinancialAccount.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\InboundTransfer>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancels an InboundTransfer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\InboundTransfer
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates an InboundTransfer.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\InboundTransfer
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing InboundTransfer.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\InboundTransfer
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of InboundTransfers sent from the specified FinancialAccount.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\InboundTransfer>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancels an InboundTransfer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\InboundTransfer
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates an InboundTransfer.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\InboundTransfer
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing InboundTransfer.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\InboundTransfer
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class OutboundPaymentService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of OutboundPayments sent from the specified FinancialAccount.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\OutboundPayment>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Cancel an OutboundPayment.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundPayment
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates an OutboundPayment.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundPayment
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing OutboundPayment by passing the unique
-	 * OutboundPayment ID from either the OutboundPayment creation request or
-	 * OutboundPayment list.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundPayment
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of OutboundPayments sent from the specified FinancialAccount.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\OutboundPayment>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Cancel an OutboundPayment.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundPayment
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates an OutboundPayment.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundPayment
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing OutboundPayment by passing the unique
+     * OutboundPayment ID from either the OutboundPayment creation request or
+     * OutboundPayment list.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundPayment
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class OutboundTransferService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of OutboundTransfers sent from the specified FinancialAccount.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\OutboundTransfer>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * An OutboundTransfer can be canceled if the funds have not yet been paid out.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundTransfer
-	 */
-	public function cancel($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Creates an OutboundTransfer.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundTransfer
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing OutboundTransfer by passing the unique
-	 * OutboundTransfer ID from either the OutboundTransfer creation request or
-	 * OutboundTransfer list.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundTransfer
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of OutboundTransfers sent from the specified FinancialAccount.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\OutboundTransfer>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * An OutboundTransfer can be canceled if the funds have not yet been paid out.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundTransfer
+     */
+    public function cancel($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Creates an OutboundTransfer.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundTransfer
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing OutboundTransfer by passing the unique
+     * OutboundTransfer ID from either the OutboundTransfer creation request or
+     * OutboundTransfer list.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundTransfer
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class ReceivedCreditService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of ReceivedCredits.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\ReceivedCredit>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing ReceivedCredit by passing the unique
-	 * ReceivedCredit ID from the ReceivedCredit list.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\ReceivedCredit
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of ReceivedCredits.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\ReceivedCredit>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing ReceivedCredit by passing the unique
+     * ReceivedCredit ID from the ReceivedCredit list.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\ReceivedCredit
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class ReceivedDebitService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of ReceivedDebits.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\ReceivedDebit>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing ReceivedDebit by passing the unique
-	 * ReceivedDebit ID from the ReceivedDebit list.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\ReceivedDebit
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of ReceivedDebits.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\ReceivedDebit>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing ReceivedDebit by passing the unique
+     * ReceivedDebit ID from the ReceivedDebit list.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\ReceivedDebit
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class TransactionEntryService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Retrieves a list of TransactionEntry objects.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\TransactionEntry>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves a TransactionEntry object.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\TransactionEntry
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Retrieves a list of TransactionEntry objects.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\TransactionEntry>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves a TransactionEntry object.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\TransactionEntry
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 class TransactionService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Retrieves a list of Transaction objects.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\Treasury\Transaction>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the details of an existing Transaction.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\Transaction
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Retrieves a list of Transaction objects.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\Treasury\Transaction>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the details of an existing Transaction.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\Transaction
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * Service factory class for API resources in the Treasury namespace.
@@ -13285,93 +13324,93 @@ class TransactionService extends \Stripe\Service\AbstractService
  */
 class TreasuryServiceFactory extends \Stripe\Service\AbstractServiceFactory
 {
-	protected function getServiceClass($name)
-	{
-	}
+    protected function getServiceClass($name)
+    {
+    }
 }
 namespace Stripe\Service;
 
 class WebhookEndpointService extends \Stripe\Service\AbstractService
 {
-	/**
-	 * Returns a list of your webhook endpoints.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\WebhookEndpoint>
-	 */
-	public function all($params = null, $opts = null)
-	{
-	}
-	/**
-	 * A webhook endpoint must have a <code>url</code> and a list of
-	 * <code>enabled_events</code>. You may optionally specify the Boolean
-	 * <code>connect</code> parameter. If set to true, then a Connect webhook endpoint
-	 * that notifies the specified <code>url</code> about events from all connected
-	 * accounts is created; otherwise an account webhook endpoint that notifies the
-	 * specified <code>url</code> only about events from your account is created. You
-	 * can also create webhook endpoints in the <a
-	 * href="https://dashboard.stripe.com/account/webhooks">webhooks settings</a>
-	 * section of the Dashboard.
-	 *
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\WebhookEndpoint
-	 */
-	public function create($params = null, $opts = null)
-	{
-	}
-	/**
-	 * You can also delete webhook endpoints via the <a
-	 * href="https://dashboard.stripe.com/account/webhooks">webhook endpoint
-	 * management</a> page of the Stripe dashboard.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\WebhookEndpoint
-	 */
-	public function delete($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Retrieves the webhook endpoint with the given ID.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\WebhookEndpoint
-	 */
-	public function retrieve($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * Updates the webhook endpoint. You may edit the <code>url</code>, the list of
-	 * <code>enabled_events</code>, and the status of your endpoint.
-	 *
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|\Stripe\Util\RequestOptions $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\WebhookEndpoint
-	 */
-	public function update($id, $params = null, $opts = null)
-	{
-	}
+    /**
+     * Returns a list of your webhook endpoints.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\WebhookEndpoint>
+     */
+    public function all($params = null, $opts = null)
+    {
+    }
+    /**
+     * A webhook endpoint must have a <code>url</code> and a list of
+     * <code>enabled_events</code>. You may optionally specify the Boolean
+     * <code>connect</code> parameter. If set to true, then a Connect webhook endpoint
+     * that notifies the specified <code>url</code> about events from all connected
+     * accounts is created; otherwise an account webhook endpoint that notifies the
+     * specified <code>url</code> only about events from your account is created. You
+     * can also create webhook endpoints in the <a
+     * href="https://dashboard.stripe.com/account/webhooks">webhooks settings</a>
+     * section of the Dashboard.
+     *
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\WebhookEndpoint
+     */
+    public function create($params = null, $opts = null)
+    {
+    }
+    /**
+     * You can also delete webhook endpoints via the <a
+     * href="https://dashboard.stripe.com/account/webhooks">webhook endpoint
+     * management</a> page of the Stripe dashboard.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\WebhookEndpoint
+     */
+    public function delete($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Retrieves the webhook endpoint with the given ID.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\WebhookEndpoint
+     */
+    public function retrieve($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * Updates the webhook endpoint. You may edit the <code>url</code>, the list of
+     * <code>enabled_events</code>, and the status of your endpoint.
+     *
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|\Stripe\Util\RequestOptions $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\WebhookEndpoint
+     */
+    public function update($id, $params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe;
 
@@ -13399,8 +13438,8 @@ namespace Stripe;
  */
 class SetupAttempt extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'setup_attempt';
-	use \Stripe\ApiOperations\All;
+    const OBJECT_NAME = 'setup_attempt';
+    use \Stripe\ApiOperations\All;
 }
 /**
  * A SetupIntent guides you through the process of setting up and saving a
@@ -13464,50 +13503,51 @@ class SetupAttempt extends \Stripe\ApiResource
  */
 class SetupIntent extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'setup_intent';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_PROCESSING = 'processing';
-	const STATUS_REQUIRES_ACTION = 'requires_action';
-	const STATUS_REQUIRES_CONFIRMATION = 'requires_confirmation';
-	const STATUS_REQUIRES_PAYMENT_METHOD = 'requires_payment_method';
-	const STATUS_SUCCEEDED = 'succeeded';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent the canceled setup intent
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent the confirmed setup intent
-	 */
-	public function confirm($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SetupIntent the verified setup intent
-	 */
-	public function verifyMicrodeposits($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'setup_intent';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_REQUIRES_ACTION = 'requires_action';
+    const STATUS_REQUIRES_CONFIRMATION = 'requires_confirmation';
+    const STATUS_REQUIRES_PAYMENT_METHOD = 'requires_payment_method';
+    const STATUS_SUCCEEDED = 'succeeded';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent the canceled setup intent
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent the confirmed setup intent
+     */
+    public function confirm($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SetupIntent the verified setup intent
+     */
+    public function verifyMicrodeposits($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Shipping rates describe the price of shipping presented to your customers and
@@ -13531,15 +13571,16 @@ class SetupIntent extends \Stripe\ApiResource
  */
 class ShippingRate extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'shipping_rate';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const TAX_BEHAVIOR_EXCLUSIVE = 'exclusive';
-	const TAX_BEHAVIOR_INCLUSIVE = 'inclusive';
-	const TAX_BEHAVIOR_UNSPECIFIED = 'unspecified';
-	const TYPE_FIXED_AMOUNT = 'fixed_amount';
+    const OBJECT_NAME = 'shipping_rate';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const TAX_BEHAVIOR_EXCLUSIVE = 'exclusive';
+    const TAX_BEHAVIOR_INCLUSIVE = 'inclusive';
+    const TAX_BEHAVIOR_UNSPECIFIED = 'unspecified';
+    const TYPE_FIXED_AMOUNT = 'fixed_amount';
 }
 namespace Stripe\Sigma;
 
@@ -13564,12 +13605,13 @@ namespace Stripe\Sigma;
  */
 class ScheduledQueryRun extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'scheduled_query_run';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	public static function classUrl()
-	{
-	}
+    const OBJECT_NAME = 'scheduled_query_run';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    public static function classUrl()
+    {
+    }
 }
 namespace Stripe;
 
@@ -13629,57 +13671,58 @@ namespace Stripe;
  */
 class Source extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'source';
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const FLOW_CODE_VERIFICATION = 'code_verification';
-	const FLOW_NONE = 'none';
-	const FLOW_RECEIVER = 'receiver';
-	const FLOW_REDIRECT = 'redirect';
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_CHARGEABLE = 'chargeable';
-	const STATUS_CONSUMED = 'consumed';
-	const STATUS_FAILED = 'failed';
-	const STATUS_PENDING = 'pending';
-	const USAGE_REUSABLE = 'reusable';
-	const USAGE_SINGLE_USE = 'single_use';
-	use \Stripe\ApiOperations\NestedResource;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\UnexpectedValueException if the source is not attached to a customer
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Source the detached source
-	 */
-	public function detach($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\SourceTransaction> list of SourceTransactions
-	 */
-	public static function allSourceTransactions($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Source the verified source
-	 */
-	public function verify($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'source';
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+    const FLOW_CODE_VERIFICATION = 'code_verification';
+    const FLOW_NONE = 'none';
+    const FLOW_RECEIVER = 'receiver';
+    const FLOW_REDIRECT = 'redirect';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_CHARGEABLE = 'chargeable';
+    const STATUS_CONSUMED = 'consumed';
+    const STATUS_FAILED = 'failed';
+    const STATUS_PENDING = 'pending';
+    const USAGE_REUSABLE = 'reusable';
+    const USAGE_SINGLE_USE = 'single_use';
+    use \Stripe\ApiOperations\NestedResource;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\UnexpectedValueException if the source is not attached to a customer
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Source the detached source
+     */
+    public function detach($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\SourceTransaction> list of SourceTransactions
+     */
+    public static function allSourceTransactions($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Source the verified source
+     */
+    public function verify($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Class SourceTransaction.
@@ -13695,197 +13738,197 @@ class Source extends \Stripe\ApiResource
  */
 class SourceTransaction extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'source_transaction';
+    const OBJECT_NAME = 'source_transaction';
 }
 /**
  * Class Stripe.
  */
 class Stripe
 {
-	/** @var string The Stripe API key to be used for requests. */
-	public static $apiKey;
-	/** @var string The Stripe client_id to be used for Connect requests. */
-	public static $clientId;
-	/** @var string The base URL for the Stripe API. */
-	public static $apiBase = 'https://api.stripe.com';
-	/** @var string The base URL for the OAuth API. */
-	public static $connectBase = 'https://connect.stripe.com';
-	/** @var string The base URL for the Stripe API uploads endpoint. */
-	public static $apiUploadBase = 'https://files.stripe.com';
-	/** @var null|string The version of the Stripe API to use for requests. */
-	public static $apiVersion = null;
-	/** @var null|string The account ID for connected accounts requests. */
-	public static $accountId = null;
-	/** @var string Path to the CA bundle used to verify SSL certificates */
-	public static $caBundlePath = null;
-	/** @var bool Defaults to true. */
-	public static $verifySslCerts = true;
-	/** @var array The application's information (name, version, URL) */
-	public static $appInfo = null;
-	/**
-	 * @var null|Util\LoggerInterface the logger to which the library will
-	 *   produce messages
-	 */
-	public static $logger = null;
-	/** @var int Maximum number of request retries */
-	public static $maxNetworkRetries = 0;
-	/** @var bool Whether client telemetry is enabled. Defaults to true. */
-	public static $enableTelemetry = true;
-	const VERSION = '10.7.0';
-	/**
-	 * @return string the API key used for requests
-	 */
-	public static function getApiKey()
-	{
-	}
-	/**
-	 * @return string the client_id used for Connect requests
-	 */
-	public static function getClientId()
-	{
-	}
-	/**
-	 * @return Util\LoggerInterface the logger to which the library will
-	 *   produce messages
-	 */
-	public static function getLogger()
-	{
-	}
-	/**
-	 * @param \Psr\Log\LoggerInterface|Util\LoggerInterface $logger the logger to which the library
-	 *                                                              will produce messages
-	 */
-	public static function setLogger($logger)
-	{
-	}
-	/**
-	 * Sets the API key to be used for requests.
-	 *
-	 * @param string $apiKey
-	 */
-	public static function setApiKey($apiKey)
-	{
-	}
-	/**
-	 * Sets the client_id to be used for Connect requests.
-	 *
-	 * @param string $clientId
-	 */
-	public static function setClientId($clientId)
-	{
-	}
-	/**
-	 * @return string The API version used for requests. null if we're using the
-	 *    latest version.
-	 */
-	public static function getApiVersion()
-	{
-	}
-	/**
-	 * @param string $apiVersion the API version to use for requests
-	 */
-	public static function setApiVersion($apiVersion)
-	{
-	}
-	/**
-	 * @return string
-	 */
-	public static function getCABundlePath()
-	{
-	}
-	/**
-	 * @param string $caBundlePath
-	 */
-	public static function setCABundlePath($caBundlePath)
-	{
-	}
-	/**
-	 * @return bool
-	 */
-	public static function getVerifySslCerts()
-	{
-	}
-	/**
-	 * @param bool $verify
-	 */
-	public static function setVerifySslCerts($verify)
-	{
-	}
-	/**
-	 * @return null|string The Stripe account ID for connected account
-	 *   requests
-	 */
-	public static function getAccountId()
-	{
-	}
-	/**
-	 * @param null|string $accountId the Stripe account ID to set for connected
-	 *                               account requests
-	 */
-	public static function setAccountId($accountId)
-	{
-	}
-	/**
-	 * @return null|array The application's information
-	 */
-	public static function getAppInfo()
-	{
-	}
-	/**
-	 * @param string $appName The application's name
-	 * @param null|string $appVersion The application's version
-	 * @param null|string $appUrl The application's URL
-	 * @param null|string $appPartnerId The application's partner ID
-	 */
-	public static function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null)
-	{
-	}
-	/**
-	 * @return int Maximum number of request retries
-	 */
-	public static function getMaxNetworkRetries()
-	{
-	}
-	/**
-	 * @param int $maxNetworkRetries Maximum number of request retries
-	 */
-	public static function setMaxNetworkRetries($maxNetworkRetries)
-	{
-	}
-	/**
-	 * @return float Maximum delay between retries, in seconds
-	 */
-	public static function getMaxNetworkRetryDelay()
-	{
-	}
-	/**
-	 * @return float Maximum delay between retries, in seconds, that will be respected from the Stripe API
-	 */
-	public static function getMaxRetryAfter()
-	{
-	}
-	/**
-	 * @return float Initial delay between retries, in seconds
-	 */
-	public static function getInitialNetworkRetryDelay()
-	{
-	}
-	/**
-	 * @return bool Whether client telemetry is enabled
-	 */
-	public static function getEnableTelemetry()
-	{
-	}
-	/**
-	 * @param bool $enableTelemetry Enables client telemetry.
-	 *
-	 *                              Client telemetry enables timing and request metrics to be sent back to Stripe as an HTTP Header
-	 *                              with the current request. This enables Stripe to do latency and metrics analysis without adding extra
-	 *                              overhead (such as extra network calls) on the client.
-	 */
-	public static function setEnableTelemetry($enableTelemetry)
-	{
-	}
+    /** @var string The Stripe API key to be used for requests. */
+    public static $apiKey;
+    /** @var string The Stripe client_id to be used for Connect requests. */
+    public static $clientId;
+    /** @var string The base URL for the Stripe API. */
+    public static $apiBase = 'https://api.stripe.com';
+    /** @var string The base URL for the OAuth API. */
+    public static $connectBase = 'https://connect.stripe.com';
+    /** @var string The base URL for the Stripe API uploads endpoint. */
+    public static $apiUploadBase = 'https://files.stripe.com';
+    /** @var null|string The version of the Stripe API to use for requests. */
+    public static $apiVersion = null;
+    /** @var null|string The account ID for connected accounts requests. */
+    public static $accountId = null;
+    /** @var string Path to the CA bundle used to verify SSL certificates */
+    public static $caBundlePath = null;
+    /** @var bool Defaults to true. */
+    public static $verifySslCerts = true;
+    /** @var array The application's information (name, version, URL) */
+    public static $appInfo = null;
+    /**
+     * @var null|Util\LoggerInterface the logger to which the library will
+     *   produce messages
+     */
+    public static $logger = null;
+    /** @var int Maximum number of request retries */
+    public static $maxNetworkRetries = 0;
+    /** @var bool Whether client telemetry is enabled. Defaults to true. */
+    public static $enableTelemetry = true;
+    const VERSION = '10.7.0';
+    /**
+     * @return string the API key used for requests
+     */
+    public static function getApiKey()
+    {
+    }
+    /**
+     * @return string the client_id used for Connect requests
+     */
+    public static function getClientId()
+    {
+    }
+    /**
+     * @return Util\LoggerInterface the logger to which the library will
+     *   produce messages
+     */
+    public static function getLogger()
+    {
+    }
+    /**
+     * @param \Psr\Log\LoggerInterface|Util\LoggerInterface $logger the logger to which the library
+     *                                                              will produce messages
+     */
+    public static function setLogger($logger)
+    {
+    }
+    /**
+     * Sets the API key to be used for requests.
+     *
+     * @param string $apiKey
+     */
+    public static function setApiKey($apiKey)
+    {
+    }
+    /**
+     * Sets the client_id to be used for Connect requests.
+     *
+     * @param string $clientId
+     */
+    public static function setClientId($clientId)
+    {
+    }
+    /**
+     * @return string The API version used for requests. null if we're using the
+     *    latest version.
+     */
+    public static function getApiVersion()
+    {
+    }
+    /**
+     * @param string $apiVersion the API version to use for requests
+     */
+    public static function setApiVersion($apiVersion)
+    {
+    }
+    /**
+     * @return string
+     */
+    public static function getCABundlePath()
+    {
+    }
+    /**
+     * @param string $caBundlePath
+     */
+    public static function setCABundlePath($caBundlePath)
+    {
+    }
+    /**
+     * @return bool
+     */
+    public static function getVerifySslCerts()
+    {
+    }
+    /**
+     * @param bool $verify
+     */
+    public static function setVerifySslCerts($verify)
+    {
+    }
+    /**
+     * @return null|string The Stripe account ID for connected account
+     *   requests
+     */
+    public static function getAccountId()
+    {
+    }
+    /**
+     * @param null|string $accountId the Stripe account ID to set for connected
+     *                               account requests
+     */
+    public static function setAccountId($accountId)
+    {
+    }
+    /**
+     * @return null|array The application's information
+     */
+    public static function getAppInfo()
+    {
+    }
+    /**
+     * @param string $appName The application's name
+     * @param null|string $appVersion The application's version
+     * @param null|string $appUrl The application's URL
+     * @param null|string $appPartnerId The application's partner ID
+     */
+    public static function setAppInfo($appName, $appVersion = null, $appUrl = null, $appPartnerId = null)
+    {
+    }
+    /**
+     * @return int Maximum number of request retries
+     */
+    public static function getMaxNetworkRetries()
+    {
+    }
+    /**
+     * @param int $maxNetworkRetries Maximum number of request retries
+     */
+    public static function setMaxNetworkRetries($maxNetworkRetries)
+    {
+    }
+    /**
+     * @return float Maximum delay between retries, in seconds
+     */
+    public static function getMaxNetworkRetryDelay()
+    {
+    }
+    /**
+     * @return float Maximum delay between retries, in seconds, that will be respected from the Stripe API
+     */
+    public static function getMaxRetryAfter()
+    {
+    }
+    /**
+     * @return float Initial delay between retries, in seconds
+     */
+    public static function getInitialNetworkRetryDelay()
+    {
+    }
+    /**
+     * @return bool Whether client telemetry is enabled
+     */
+    public static function getEnableTelemetry()
+    {
+    }
+    /**
+     * @param bool $enableTelemetry Enables client telemetry.
+     *
+     *                              Client telemetry enables timing and request metrics to be sent back to Stripe as an HTTP Header
+     *                              with the current request. This enables Stripe to do latency and metrics analysis without adding extra
+     *                              overhead (such as extra network calls) on the client.
+     */
+    public static function setEnableTelemetry($enableTelemetry)
+    {
+    }
 }
 /**
  * Client used to send requests to Stripe's API.
@@ -13950,9 +13993,9 @@ class Stripe
  */
 class StripeClient extends \Stripe\BaseStripeClient
 {
-	public function __get($name)
-	{
-	}
+    public function __get($name)
+    {
+    }
 }
 /**
  * Subscriptions allow you to charge a customer on a recurring basis.
@@ -14006,77 +14049,78 @@ class StripeClient extends \Stripe\BaseStripeClient
  */
 class Subscription extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'subscription';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Search;
-	use \Stripe\ApiOperations\Update;
-	const PAYMENT_BEHAVIOR_ALLOW_INCOMPLETE = 'allow_incomplete';
-	const PAYMENT_BEHAVIOR_DEFAULT_INCOMPLETE = 'default_incomplete';
-	const PAYMENT_BEHAVIOR_ERROR_IF_INCOMPLETE = 'error_if_incomplete';
-	const PAYMENT_BEHAVIOR_PENDING_IF_INCOMPLETE = 'pending_if_incomplete';
-	const PRORATION_BEHAVIOR_ALWAYS_INVOICE = 'always_invoice';
-	const PRORATION_BEHAVIOR_CREATE_PRORATIONS = 'create_prorations';
-	const PRORATION_BEHAVIOR_NONE = 'none';
-	const STATUS_ACTIVE = 'active';
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_INCOMPLETE = 'incomplete';
-	const STATUS_INCOMPLETE_EXPIRED = 'incomplete_expired';
-	const STATUS_PAST_DUE = 'past_due';
-	const STATUS_PAUSED = 'paused';
-	const STATUS_TRIALING = 'trialing';
-	const STATUS_UNPAID = 'unpaid';
-	use \Stripe\ApiOperations\Delete {
-		delete as protected _delete;
-	}
-	public static function getSavedNestedResources()
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription the updated subscription
-	 */
-	public function deleteDiscount($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription the canceled subscription
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Subscription the resumed subscription
-	 */
-	public function resume($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SearchResult<Subscription> the subscription search results
-	 */
-	public static function search($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'subscription';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Search;
+    use \Stripe\ApiOperations\Update;
+    const PAYMENT_BEHAVIOR_ALLOW_INCOMPLETE = 'allow_incomplete';
+    const PAYMENT_BEHAVIOR_DEFAULT_INCOMPLETE = 'default_incomplete';
+    const PAYMENT_BEHAVIOR_ERROR_IF_INCOMPLETE = 'error_if_incomplete';
+    const PAYMENT_BEHAVIOR_PENDING_IF_INCOMPLETE = 'pending_if_incomplete';
+    const PRORATION_BEHAVIOR_ALWAYS_INVOICE = 'always_invoice';
+    const PRORATION_BEHAVIOR_CREATE_PRORATIONS = 'create_prorations';
+    const PRORATION_BEHAVIOR_NONE = 'none';
+    const STATUS_ACTIVE = 'active';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_INCOMPLETE = 'incomplete';
+    const STATUS_INCOMPLETE_EXPIRED = 'incomplete_expired';
+    const STATUS_PAST_DUE = 'past_due';
+    const STATUS_PAUSED = 'paused';
+    const STATUS_TRIALING = 'trialing';
+    const STATUS_UNPAID = 'unpaid';
+    use \Stripe\ApiOperations\Delete {
+        delete as protected _delete;
+    }
+
+    public static function getSavedNestedResources()
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription the updated subscription
+     */
+    public function deleteDiscount($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription the canceled subscription
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Subscription the resumed subscription
+     */
+    public function resume($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SearchResult<Subscription> the subscription search results
+     */
+    public static function search($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Subscription items allow you to create customer subscriptions with more than one
@@ -14095,39 +14139,40 @@ class Subscription extends \Stripe\ApiResource
  */
 class SubscriptionItem extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'subscription_item';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\NestedResource;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const PATH_USAGE_RECORDS = '/usage_records';
-	/**
-	 * @param null|string $id the ID of the subscription item on which to create the usage record
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\UsageRecord
-	 */
-	public static function createUsageRecord($id, $params = null, $opts = null)
-	{
-	}
-	const PATH_USAGE_RECORD_SUMMARIES = '/usage_record_summaries';
-	/**
-	 * @param string $id the ID of the subscription item on which to retrieve the usage record summaries
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\UsageRecordSummary> the list of usage record summaries
-	 */
-	public static function allUsageRecordSummaries($id, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'subscription_item';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\NestedResource;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const PATH_USAGE_RECORDS = '/usage_records';
+    /**
+     * @param null|string $id the ID of the subscription item on which to create the usage record
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\UsageRecord
+     */
+    public static function createUsageRecord($id, $params = null, $opts = null)
+    {
+    }
+    const PATH_USAGE_RECORD_SUMMARIES = '/usage_record_summaries';
+    /**
+     * @param string $id the ID of the subscription item on which to retrieve the usage record summaries
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\UsageRecordSummary> the list of usage record summaries
+     */
+    public static function allUsageRecordSummaries($id, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * A subscription schedule allows you to create and manage the lifecycle of a
@@ -14158,33 +14203,34 @@ class SubscriptionItem extends \Stripe\ApiResource
  */
 class SubscriptionSchedule extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'subscription_schedule';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionSchedule the canceled subscription schedule
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\SubscriptionSchedule the released subscription schedule
-	 */
-	public function release($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'subscription_schedule';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionSchedule the canceled subscription schedule
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\SubscriptionSchedule the released subscription schedule
+     */
+    public function release($params = null, $opts = null)
+    {
+    }
 }
 /**
  * <a href="https://stripe.com/docs/tax/tax-categories">Tax codes</a> classify
@@ -14197,9 +14243,9 @@ class SubscriptionSchedule extends \Stripe\ApiResource
  */
 class TaxCode extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'tax_code';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
+    const OBJECT_NAME = 'tax_code';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
 }
 /**
  * You can add one or multiple tax IDs to a <a
@@ -14221,79 +14267,80 @@ class TaxCode extends \Stripe\ApiResource
  */
 class TaxId extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'tax_id';
-	use \Stripe\ApiOperations\Delete;
-	const TYPE_AE_TRN = 'ae_trn';
-	const TYPE_AU_ABN = 'au_abn';
-	const TYPE_AU_ARN = 'au_arn';
-	const TYPE_BG_UIC = 'bg_uic';
-	const TYPE_BR_CNPJ = 'br_cnpj';
-	const TYPE_BR_CPF = 'br_cpf';
-	const TYPE_CA_BN = 'ca_bn';
-	const TYPE_CA_GST_HST = 'ca_gst_hst';
-	const TYPE_CA_PST_BC = 'ca_pst_bc';
-	const TYPE_CA_PST_MB = 'ca_pst_mb';
-	const TYPE_CA_PST_SK = 'ca_pst_sk';
-	const TYPE_CA_QST = 'ca_qst';
-	const TYPE_CH_VAT = 'ch_vat';
-	const TYPE_CL_TIN = 'cl_tin';
-	const TYPE_EG_TIN = 'eg_tin';
-	const TYPE_ES_CIF = 'es_cif';
-	const TYPE_EU_OSS_VAT = 'eu_oss_vat';
-	const TYPE_EU_VAT = 'eu_vat';
-	const TYPE_GB_VAT = 'gb_vat';
-	const TYPE_GE_VAT = 'ge_vat';
-	const TYPE_HK_BR = 'hk_br';
-	const TYPE_HU_TIN = 'hu_tin';
-	const TYPE_ID_NPWP = 'id_npwp';
-	const TYPE_IL_VAT = 'il_vat';
-	const TYPE_IN_GST = 'in_gst';
-	const TYPE_IS_VAT = 'is_vat';
-	const TYPE_JP_CN = 'jp_cn';
-	const TYPE_JP_RN = 'jp_rn';
-	const TYPE_JP_TRN = 'jp_trn';
-	const TYPE_KE_PIN = 'ke_pin';
-	const TYPE_KR_BRN = 'kr_brn';
-	const TYPE_LI_UID = 'li_uid';
-	const TYPE_MX_RFC = 'mx_rfc';
-	const TYPE_MY_FRP = 'my_frp';
-	const TYPE_MY_ITN = 'my_itn';
-	const TYPE_MY_SST = 'my_sst';
-	const TYPE_NO_VAT = 'no_vat';
-	const TYPE_NZ_GST = 'nz_gst';
-	const TYPE_PH_TIN = 'ph_tin';
-	const TYPE_RU_INN = 'ru_inn';
-	const TYPE_RU_KPP = 'ru_kpp';
-	const TYPE_SA_VAT = 'sa_vat';
-	const TYPE_SG_GST = 'sg_gst';
-	const TYPE_SG_UEN = 'sg_uen';
-	const TYPE_SI_TIN = 'si_tin';
-	const TYPE_TH_VAT = 'th_vat';
-	const TYPE_TR_TIN = 'tr_tin';
-	const TYPE_TW_VAT = 'tw_vat';
-	const TYPE_UA_VAT = 'ua_vat';
-	const TYPE_UNKNOWN = 'unknown';
-	const TYPE_US_EIN = 'us_ein';
-	const TYPE_ZA_VAT = 'za_vat';
-	const VERIFICATION_STATUS_PENDING = 'pending';
-	const VERIFICATION_STATUS_UNAVAILABLE = 'unavailable';
-	const VERIFICATION_STATUS_UNVERIFIED = 'unverified';
-	const VERIFICATION_STATUS_VERIFIED = 'verified';
-	/**
-	 * @return string the API URL for this tax id
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param array|string $_id
-	 * @param null|array|string $_opts
-	 *
-	 * @throws \Stripe\Exception\BadMethodCallException
-	 */
-	public static function retrieve($_id, $_opts = null)
-	{
-	}
+    const OBJECT_NAME = 'tax_id';
+    use \Stripe\ApiOperations\Delete;
+
+    const TYPE_AE_TRN = 'ae_trn';
+    const TYPE_AU_ABN = 'au_abn';
+    const TYPE_AU_ARN = 'au_arn';
+    const TYPE_BG_UIC = 'bg_uic';
+    const TYPE_BR_CNPJ = 'br_cnpj';
+    const TYPE_BR_CPF = 'br_cpf';
+    const TYPE_CA_BN = 'ca_bn';
+    const TYPE_CA_GST_HST = 'ca_gst_hst';
+    const TYPE_CA_PST_BC = 'ca_pst_bc';
+    const TYPE_CA_PST_MB = 'ca_pst_mb';
+    const TYPE_CA_PST_SK = 'ca_pst_sk';
+    const TYPE_CA_QST = 'ca_qst';
+    const TYPE_CH_VAT = 'ch_vat';
+    const TYPE_CL_TIN = 'cl_tin';
+    const TYPE_EG_TIN = 'eg_tin';
+    const TYPE_ES_CIF = 'es_cif';
+    const TYPE_EU_OSS_VAT = 'eu_oss_vat';
+    const TYPE_EU_VAT = 'eu_vat';
+    const TYPE_GB_VAT = 'gb_vat';
+    const TYPE_GE_VAT = 'ge_vat';
+    const TYPE_HK_BR = 'hk_br';
+    const TYPE_HU_TIN = 'hu_tin';
+    const TYPE_ID_NPWP = 'id_npwp';
+    const TYPE_IL_VAT = 'il_vat';
+    const TYPE_IN_GST = 'in_gst';
+    const TYPE_IS_VAT = 'is_vat';
+    const TYPE_JP_CN = 'jp_cn';
+    const TYPE_JP_RN = 'jp_rn';
+    const TYPE_JP_TRN = 'jp_trn';
+    const TYPE_KE_PIN = 'ke_pin';
+    const TYPE_KR_BRN = 'kr_brn';
+    const TYPE_LI_UID = 'li_uid';
+    const TYPE_MX_RFC = 'mx_rfc';
+    const TYPE_MY_FRP = 'my_frp';
+    const TYPE_MY_ITN = 'my_itn';
+    const TYPE_MY_SST = 'my_sst';
+    const TYPE_NO_VAT = 'no_vat';
+    const TYPE_NZ_GST = 'nz_gst';
+    const TYPE_PH_TIN = 'ph_tin';
+    const TYPE_RU_INN = 'ru_inn';
+    const TYPE_RU_KPP = 'ru_kpp';
+    const TYPE_SA_VAT = 'sa_vat';
+    const TYPE_SG_GST = 'sg_gst';
+    const TYPE_SG_UEN = 'sg_uen';
+    const TYPE_SI_TIN = 'si_tin';
+    const TYPE_TH_VAT = 'th_vat';
+    const TYPE_TR_TIN = 'tr_tin';
+    const TYPE_TW_VAT = 'tw_vat';
+    const TYPE_UA_VAT = 'ua_vat';
+    const TYPE_UNKNOWN = 'unknown';
+    const TYPE_US_EIN = 'us_ein';
+    const TYPE_ZA_VAT = 'za_vat';
+    const VERIFICATION_STATUS_PENDING = 'pending';
+    const VERIFICATION_STATUS_UNAVAILABLE = 'unavailable';
+    const VERIFICATION_STATUS_UNVERIFIED = 'unverified';
+    const VERIFICATION_STATUS_VERIFIED = 'verified';
+    /**
+     * @return string the API URL for this tax id
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param array|string $_id
+     * @param null|array|string $_opts
+     *
+     * @throws \Stripe\Exception\BadMethodCallException
+     */
+    public static function retrieve($_id, $_opts = null)
+    {
+    }
 }
 /**
  * Tax rates can be applied to <a
@@ -14323,20 +14370,21 @@ class TaxId extends \Stripe\ApiResource
  */
 class TaxRate extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'tax_rate';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const TAX_TYPE_GST = 'gst';
-	const TAX_TYPE_HST = 'hst';
-	const TAX_TYPE_IGST = 'igst';
-	const TAX_TYPE_JCT = 'jct';
-	const TAX_TYPE_PST = 'pst';
-	const TAX_TYPE_QST = 'qst';
-	const TAX_TYPE_RST = 'rst';
-	const TAX_TYPE_SALES_TAX = 'sales_tax';
-	const TAX_TYPE_VAT = 'vat';
+    const OBJECT_NAME = 'tax_rate';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const TAX_TYPE_GST = 'gst';
+    const TAX_TYPE_HST = 'hst';
+    const TAX_TYPE_IGST = 'igst';
+    const TAX_TYPE_JCT = 'jct';
+    const TAX_TYPE_PST = 'pst';
+    const TAX_TYPE_QST = 'qst';
+    const TAX_TYPE_RST = 'rst';
+    const TAX_TYPE_SALES_TAX = 'sales_tax';
+    const TAX_TYPE_VAT = 'vat';
 }
 namespace Stripe\Terminal;
 
@@ -14354,12 +14402,12 @@ namespace Stripe\Terminal;
  */
 class Configuration extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'terminal.configuration';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'terminal.configuration';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * A Connection Token is used by the Stripe Terminal SDK to connect to a reader.
@@ -14373,8 +14421,8 @@ class Configuration extends \Stripe\ApiResource
  */
 class ConnectionToken extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'terminal.connection_token';
-	use \Stripe\ApiOperations\Create;
+    const OBJECT_NAME = 'terminal.connection_token';
+    use \Stripe\ApiOperations\Create;
 }
 /**
  * A Location represents a grouping of readers.
@@ -14392,12 +14440,12 @@ class ConnectionToken extends \Stripe\ApiResource
  */
 class Location extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'terminal.location';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'terminal.location';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 /**
  * A Reader represents a physical device for accepting payment details.
@@ -14421,67 +14469,68 @@ class Location extends \Stripe\ApiResource
  */
 class Reader extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'terminal.reader';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader the canceled reader
-	 */
-	public function cancelAction($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader the processed reader
-	 */
-	public function processPaymentIntent($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader the processed reader
-	 */
-	public function processSetupIntent($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader the refunded reader
-	 */
-	public function refundPayment($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Terminal\Reader the seted reader
-	 */
-	public function setReaderDisplay($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'terminal.reader';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader the canceled reader
+     */
+    public function cancelAction($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader the processed reader
+     */
+    public function processPaymentIntent($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader the processed reader
+     */
+    public function processSetupIntent($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader the refunded reader
+     */
+    public function refundPayment($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Terminal\Reader the seted reader
+     */
+    public function setReaderDisplay($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe\TestHelpers;
 
@@ -14504,25 +14553,26 @@ namespace Stripe\TestHelpers;
  */
 class TestClock extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'test_helpers.test_clock';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	const STATUS_ADVANCING = 'advancing';
-	const STATUS_INTERNAL_FAILURE = 'internal_failure';
-	const STATUS_READY = 'ready';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TestHelpers\TestClock the advanced test clock
-	 */
-	public function advance($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'test_helpers.test_clock';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const STATUS_ADVANCING = 'advancing';
+    const STATUS_INTERNAL_FAILURE = 'internal_failure';
+    const STATUS_READY = 'ready';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TestHelpers\TestClock the advanced test clock
+     */
+    public function advance($params = null, $opts = null)
+    {
+    }
 }
 namespace Stripe;
 
@@ -14567,13 +14617,14 @@ namespace Stripe;
  */
 class Token extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'token';
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	const TYPE_ACCOUNT = 'account';
-	const TYPE_BANK_ACCOUNT = 'bank_account';
-	const TYPE_CARD = 'card';
-	const TYPE_PII = 'pii';
+    const OBJECT_NAME = 'token';
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const TYPE_ACCOUNT = 'account';
+    const TYPE_BANK_ACCOUNT = 'bank_account';
+    const TYPE_CARD = 'card';
+    const TYPE_PII = 'pii';
 }
 /**
  * To top up your Stripe balance, you create a top-up object. You can retrieve
@@ -14602,27 +14653,28 @@ class Token extends \Stripe\ApiResource
  */
 class Topup extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'topup';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_FAILED = 'failed';
-	const STATUS_PENDING = 'pending';
-	const STATUS_REVERSED = 'reversed';
-	const STATUS_SUCCEEDED = 'succeeded';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Topup the canceled topup
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'topup';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_FAILED = 'failed';
+    const STATUS_PENDING = 'pending';
+    const STATUS_REVERSED = 'reversed';
+    const STATUS_SUCCEEDED = 'succeeded';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Topup the canceled topup
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
 }
 /**
  * A <code>Transfer</code> object is created when you move funds between Stripe
@@ -14658,66 +14710,67 @@ class Topup extends \Stripe\ApiResource
  */
 class Transfer extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'transfer';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\NestedResource;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const SOURCE_TYPE_BANK_ACCOUNT = 'bank_account';
-	const SOURCE_TYPE_CARD = 'card';
-	const SOURCE_TYPE_FPX = 'fpx';
-	const PATH_REVERSALS = '/reversals';
-	/**
-	 * @param string $id the ID of the transfer on which to retrieve the transfer reversals
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Collection<\Stripe\TransferReversal> the list of transfer reversals
-	 */
-	public static function allReversals($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the transfer on which to create the transfer reversal
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TransferReversal
-	 */
-	public static function createReversal($id, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the transfer to which the transfer reversal belongs
-	 * @param string $reversalId the ID of the transfer reversal to retrieve
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TransferReversal
-	 */
-	public static function retrieveReversal($id, $reversalId, $params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param string $id the ID of the transfer to which the transfer reversal belongs
-	 * @param string $reversalId the ID of the transfer reversal to update
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\TransferReversal
-	 */
-	public static function updateReversal($id, $reversalId, $params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'transfer';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\NestedResource;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const SOURCE_TYPE_BANK_ACCOUNT = 'bank_account';
+    const SOURCE_TYPE_CARD = 'card';
+    const SOURCE_TYPE_FPX = 'fpx';
+    const PATH_REVERSALS = '/reversals';
+    /**
+     * @param string $id the ID of the transfer on which to retrieve the transfer reversals
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Collection<\Stripe\TransferReversal> the list of transfer reversals
+     */
+    public static function allReversals($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the transfer on which to create the transfer reversal
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TransferReversal
+     */
+    public static function createReversal($id, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the transfer to which the transfer reversal belongs
+     * @param string $reversalId the ID of the transfer reversal to retrieve
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TransferReversal
+     */
+    public static function retrieveReversal($id, $reversalId, $params = null, $opts = null)
+    {
+    }
+    /**
+     * @param string $id the ID of the transfer to which the transfer reversal belongs
+     * @param string $reversalId the ID of the transfer reversal to update
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\TransferReversal
+     */
+    public static function updateReversal($id, $reversalId, $params = null, $opts = null)
+    {
+    }
 }
 /**
  * <a href="https://stripe.com/docs/connect">Stripe Connect</a> platforms can
@@ -14750,26 +14803,27 @@ class Transfer extends \Stripe\ApiResource
  */
 class TransferReversal extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'transfer_reversal';
-	use \Stripe\ApiOperations\Update {
-		save as protected _save;
-	}
-	/**
-	 * @return string the API URL for this Stripe transfer reversal
-	 */
-	public function instanceUrl()
-	{
-	}
-	/**
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return TransferReversal the saved reversal
-	 */
-	public function save($opts = null)
-	{
-	}
+    const OBJECT_NAME = 'transfer_reversal';
+    use \Stripe\ApiOperations\Update {
+        save as protected _save;
+    }
+
+    /**
+     * @return string the API URL for this Stripe transfer reversal
+     */
+    public function instanceUrl()
+    {
+    }
+    /**
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return TransferReversal the saved reversal
+     */
+    public function save($opts = null)
+    {
+    }
 }
 namespace Stripe\Treasury;
 
@@ -14796,15 +14850,16 @@ namespace Stripe\Treasury;
  */
 class CreditReversal extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.credit_reversal';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	const NETWORK_ACH = 'ach';
-	const NETWORK_STRIPE = 'stripe';
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_POSTED = 'posted';
-	const STATUS_PROCESSING = 'processing';
+    const OBJECT_NAME = 'treasury.credit_reversal';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const NETWORK_ACH = 'ach';
+    const NETWORK_STRIPE = 'stripe';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_POSTED = 'posted';
+    const STATUS_PROCESSING = 'processing';
 }
 /**
  * You can reverse some <a
@@ -14830,15 +14885,16 @@ class CreditReversal extends \Stripe\ApiResource
  */
 class DebitReversal extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.debit_reversal';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	const NETWORK_ACH = 'ach';
-	const NETWORK_CARD = 'card';
-	const STATUS_FAILED = 'failed';
-	const STATUS_PROCESSING = 'processing';
-	const STATUS_SUCCEEDED = 'succeeded';
+    const OBJECT_NAME = 'treasury.debit_reversal';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const NETWORK_ACH = 'ach';
+    const NETWORK_CARD = 'card';
+    const STATUS_FAILED = 'failed';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_SUCCEEDED = 'succeeded';
 }
 /**
  * Stripe Treasury provides users with a container for money called a
@@ -14864,35 +14920,36 @@ class DebitReversal extends \Stripe\ApiResource
  */
 class FinancialAccount extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.financial_account';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
-	const STATUS_CLOSED = 'closed';
-	const STATUS_OPEN = 'open';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\FinancialAccount the retrieved financial account
-	 */
-	public function retrieveFeatures($params = null, $opts = null)
-	{
-	}
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\FinancialAccount the updated financial account
-	 */
-	public function updateFeatures($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'treasury.financial_account';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
+
+    const STATUS_CLOSED = 'closed';
+    const STATUS_OPEN = 'open';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\FinancialAccount the retrieved financial account
+     */
+    public function retrieveFeatures($params = null, $opts = null)
+    {
+    }
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\FinancialAccount the updated financial account
+     */
+    public function updateFeatures($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Encodes whether a FinancialAccount has access to a particular Feature, with a
@@ -14910,7 +14967,7 @@ class FinancialAccount extends \Stripe\ApiResource
  */
 class FinancialAccountFeatures extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.financial_account_features';
+    const OBJECT_NAME = 'treasury.financial_account_features';
 }
 /**
  * Use <a
@@ -14943,25 +15000,26 @@ class FinancialAccountFeatures extends \Stripe\ApiResource
  */
 class InboundTransfer extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.inbound_transfer';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_FAILED = 'failed';
-	const STATUS_PROCESSING = 'processing';
-	const STATUS_SUCCEEDED = 'succeeded';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\InboundTransfer the canceled inbound transfer
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'treasury.inbound_transfer';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_FAILED = 'failed';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_SUCCEEDED = 'succeeded';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\InboundTransfer the canceled inbound transfer
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Use OutboundPayments to send funds to another party's external bank account or
@@ -14997,26 +15055,27 @@ class InboundTransfer extends \Stripe\ApiResource
  */
 class OutboundPayment extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.outbound_payment';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_FAILED = 'failed';
-	const STATUS_POSTED = 'posted';
-	const STATUS_PROCESSING = 'processing';
-	const STATUS_RETURNED = 'returned';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundPayment the canceled outbound payment
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'treasury.outbound_payment';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_FAILED = 'failed';
+    const STATUS_POSTED = 'posted';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_RETURNED = 'returned';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundPayment the canceled outbound payment
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
 }
 /**
  * Use OutboundTransfers to transfer funds from a <a
@@ -15052,26 +15111,27 @@ class OutboundPayment extends \Stripe\ApiResource
  */
 class OutboundTransfer extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.outbound_transfer';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Retrieve;
-	const STATUS_CANCELED = 'canceled';
-	const STATUS_FAILED = 'failed';
-	const STATUS_POSTED = 'posted';
-	const STATUS_PROCESSING = 'processing';
-	const STATUS_RETURNED = 'returned';
-	/**
-	 * @param null|array $params
-	 * @param null|array|string $opts
-	 *
-	 * @throws \Stripe\Exception\ApiErrorException if the request fails
-	 *
-	 * @return \Stripe\Treasury\OutboundTransfer the canceled outbound transfer
-	 */
-	public function cancel($params = null, $opts = null)
-	{
-	}
+    const OBJECT_NAME = 'treasury.outbound_transfer';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_FAILED = 'failed';
+    const STATUS_POSTED = 'posted';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_RETURNED = 'returned';
+    /**
+     * @param null|array $params
+     * @param null|array|string $opts
+     *
+     * @throws \Stripe\Exception\ApiErrorException if the request fails
+     *
+     * @return \Stripe\Treasury\OutboundTransfer the canceled outbound transfer
+     */
+    public function cancel($params = null, $opts = null)
+    {
+    }
 }
 /**
  * ReceivedCredits represent funds sent to a <a
@@ -15098,18 +15158,19 @@ class OutboundTransfer extends \Stripe\ApiResource
  */
 class ReceivedCredit extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.received_credit';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const FAILURE_CODE_ACCOUNT_CLOSED = 'account_closed';
-	const FAILURE_CODE_ACCOUNT_FROZEN = 'account_frozen';
-	const FAILURE_CODE_OTHER = 'other';
-	const NETWORK_ACH = 'ach';
-	const NETWORK_CARD = 'card';
-	const NETWORK_STRIPE = 'stripe';
-	const NETWORK_US_DOMESTIC_WIRE = 'us_domestic_wire';
-	const STATUS_FAILED = 'failed';
-	const STATUS_SUCCEEDED = 'succeeded';
+    const OBJECT_NAME = 'treasury.received_credit';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const FAILURE_CODE_ACCOUNT_CLOSED = 'account_closed';
+    const FAILURE_CODE_ACCOUNT_FROZEN = 'account_frozen';
+    const FAILURE_CODE_OTHER = 'other';
+    const NETWORK_ACH = 'ach';
+    const NETWORK_CARD = 'card';
+    const NETWORK_STRIPE = 'stripe';
+    const NETWORK_US_DOMESTIC_WIRE = 'us_domestic_wire';
+    const STATUS_FAILED = 'failed';
+    const STATUS_SUCCEEDED = 'succeeded';
 }
 /**
  * ReceivedDebits represent funds pulled from a <a
@@ -15135,18 +15196,19 @@ class ReceivedCredit extends \Stripe\ApiResource
  */
 class ReceivedDebit extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.received_debit';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const FAILURE_CODE_ACCOUNT_CLOSED = 'account_closed';
-	const FAILURE_CODE_ACCOUNT_FROZEN = 'account_frozen';
-	const FAILURE_CODE_INSUFFICIENT_FUNDS = 'insufficient_funds';
-	const FAILURE_CODE_OTHER = 'other';
-	const NETWORK_ACH = 'ach';
-	const NETWORK_CARD = 'card';
-	const NETWORK_STRIPE = 'stripe';
-	const STATUS_FAILED = 'failed';
-	const STATUS_SUCCEEDED = 'succeeded';
+    const OBJECT_NAME = 'treasury.received_debit';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const FAILURE_CODE_ACCOUNT_CLOSED = 'account_closed';
+    const FAILURE_CODE_ACCOUNT_FROZEN = 'account_frozen';
+    const FAILURE_CODE_INSUFFICIENT_FUNDS = 'insufficient_funds';
+    const FAILURE_CODE_OTHER = 'other';
+    const NETWORK_ACH = 'ach';
+    const NETWORK_CARD = 'card';
+    const NETWORK_STRIPE = 'stripe';
+    const STATUS_FAILED = 'failed';
+    const STATUS_SUCCEEDED = 'succeeded';
 }
 /**
  * Transactions represent changes to a <a
@@ -15171,21 +15233,22 @@ class ReceivedDebit extends \Stripe\ApiResource
  */
 class Transaction extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.transaction';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const FLOW_TYPE_CREDIT_REVERSAL = 'credit_reversal';
-	const FLOW_TYPE_DEBIT_REVERSAL = 'debit_reversal';
-	const FLOW_TYPE_INBOUND_TRANSFER = 'inbound_transfer';
-	const FLOW_TYPE_ISSUING_AUTHORIZATION = 'issuing_authorization';
-	const FLOW_TYPE_OTHER = 'other';
-	const FLOW_TYPE_OUTBOUND_PAYMENT = 'outbound_payment';
-	const FLOW_TYPE_OUTBOUND_TRANSFER = 'outbound_transfer';
-	const FLOW_TYPE_RECEIVED_CREDIT = 'received_credit';
-	const FLOW_TYPE_RECEIVED_DEBIT = 'received_debit';
-	const STATUS_OPEN = 'open';
-	const STATUS_POSTED = 'posted';
-	const STATUS_VOID = 'void';
+    const OBJECT_NAME = 'treasury.transaction';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const FLOW_TYPE_CREDIT_REVERSAL = 'credit_reversal';
+    const FLOW_TYPE_DEBIT_REVERSAL = 'debit_reversal';
+    const FLOW_TYPE_INBOUND_TRANSFER = 'inbound_transfer';
+    const FLOW_TYPE_ISSUING_AUTHORIZATION = 'issuing_authorization';
+    const FLOW_TYPE_OTHER = 'other';
+    const FLOW_TYPE_OUTBOUND_PAYMENT = 'outbound_payment';
+    const FLOW_TYPE_OUTBOUND_TRANSFER = 'outbound_transfer';
+    const FLOW_TYPE_RECEIVED_CREDIT = 'received_credit';
+    const FLOW_TYPE_RECEIVED_DEBIT = 'received_debit';
+    const STATUS_OPEN = 'open';
+    const STATUS_POSTED = 'posted';
+    const STATUS_VOID = 'void';
 }
 /**
  * TransactionEntries represent individual units of money movements within a single
@@ -15207,38 +15270,39 @@ class Transaction extends \Stripe\ApiResource
  */
 class TransactionEntry extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'treasury.transaction_entry';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Retrieve;
-	const FLOW_TYPE_CREDIT_REVERSAL = 'credit_reversal';
-	const FLOW_TYPE_DEBIT_REVERSAL = 'debit_reversal';
-	const FLOW_TYPE_INBOUND_TRANSFER = 'inbound_transfer';
-	const FLOW_TYPE_ISSUING_AUTHORIZATION = 'issuing_authorization';
-	const FLOW_TYPE_OTHER = 'other';
-	const FLOW_TYPE_OUTBOUND_PAYMENT = 'outbound_payment';
-	const FLOW_TYPE_OUTBOUND_TRANSFER = 'outbound_transfer';
-	const FLOW_TYPE_RECEIVED_CREDIT = 'received_credit';
-	const FLOW_TYPE_RECEIVED_DEBIT = 'received_debit';
-	const TYPE_CREDIT_REVERSAL = 'credit_reversal';
-	const TYPE_CREDIT_REVERSAL_POSTING = 'credit_reversal_posting';
-	const TYPE_DEBIT_REVERSAL = 'debit_reversal';
-	const TYPE_INBOUND_TRANSFER = 'inbound_transfer';
-	const TYPE_INBOUND_TRANSFER_RETURN = 'inbound_transfer_return';
-	const TYPE_ISSUING_AUTHORIZATION_HOLD = 'issuing_authorization_hold';
-	const TYPE_ISSUING_AUTHORIZATION_RELEASE = 'issuing_authorization_release';
-	const TYPE_OTHER = 'other';
-	const TYPE_OUTBOUND_PAYMENT = 'outbound_payment';
-	const TYPE_OUTBOUND_PAYMENT_CANCELLATION = 'outbound_payment_cancellation';
-	const TYPE_OUTBOUND_PAYMENT_FAILURE = 'outbound_payment_failure';
-	const TYPE_OUTBOUND_PAYMENT_POSTING = 'outbound_payment_posting';
-	const TYPE_OUTBOUND_PAYMENT_RETURN = 'outbound_payment_return';
-	const TYPE_OUTBOUND_TRANSFER = 'outbound_transfer';
-	const TYPE_OUTBOUND_TRANSFER_CANCELLATION = 'outbound_transfer_cancellation';
-	const TYPE_OUTBOUND_TRANSFER_FAILURE = 'outbound_transfer_failure';
-	const TYPE_OUTBOUND_TRANSFER_POSTING = 'outbound_transfer_posting';
-	const TYPE_OUTBOUND_TRANSFER_RETURN = 'outbound_transfer_return';
-	const TYPE_RECEIVED_CREDIT = 'received_credit';
-	const TYPE_RECEIVED_DEBIT = 'received_debit';
+    const OBJECT_NAME = 'treasury.transaction_entry';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Retrieve;
+
+    const FLOW_TYPE_CREDIT_REVERSAL = 'credit_reversal';
+    const FLOW_TYPE_DEBIT_REVERSAL = 'debit_reversal';
+    const FLOW_TYPE_INBOUND_TRANSFER = 'inbound_transfer';
+    const FLOW_TYPE_ISSUING_AUTHORIZATION = 'issuing_authorization';
+    const FLOW_TYPE_OTHER = 'other';
+    const FLOW_TYPE_OUTBOUND_PAYMENT = 'outbound_payment';
+    const FLOW_TYPE_OUTBOUND_TRANSFER = 'outbound_transfer';
+    const FLOW_TYPE_RECEIVED_CREDIT = 'received_credit';
+    const FLOW_TYPE_RECEIVED_DEBIT = 'received_debit';
+    const TYPE_CREDIT_REVERSAL = 'credit_reversal';
+    const TYPE_CREDIT_REVERSAL_POSTING = 'credit_reversal_posting';
+    const TYPE_DEBIT_REVERSAL = 'debit_reversal';
+    const TYPE_INBOUND_TRANSFER = 'inbound_transfer';
+    const TYPE_INBOUND_TRANSFER_RETURN = 'inbound_transfer_return';
+    const TYPE_ISSUING_AUTHORIZATION_HOLD = 'issuing_authorization_hold';
+    const TYPE_ISSUING_AUTHORIZATION_RELEASE = 'issuing_authorization_release';
+    const TYPE_OTHER = 'other';
+    const TYPE_OUTBOUND_PAYMENT = 'outbound_payment';
+    const TYPE_OUTBOUND_PAYMENT_CANCELLATION = 'outbound_payment_cancellation';
+    const TYPE_OUTBOUND_PAYMENT_FAILURE = 'outbound_payment_failure';
+    const TYPE_OUTBOUND_PAYMENT_POSTING = 'outbound_payment_posting';
+    const TYPE_OUTBOUND_PAYMENT_RETURN = 'outbound_payment_return';
+    const TYPE_OUTBOUND_TRANSFER = 'outbound_transfer';
+    const TYPE_OUTBOUND_TRANSFER_CANCELLATION = 'outbound_transfer_cancellation';
+    const TYPE_OUTBOUND_TRANSFER_FAILURE = 'outbound_transfer_failure';
+    const TYPE_OUTBOUND_TRANSFER_POSTING = 'outbound_transfer_posting';
+    const TYPE_OUTBOUND_TRANSFER_RETURN = 'outbound_transfer_return';
+    const TYPE_RECEIVED_CREDIT = 'received_credit';
+    const TYPE_RECEIVED_DEBIT = 'received_debit';
 }
 namespace Stripe;
 
@@ -15259,7 +15323,7 @@ namespace Stripe;
  */
 class UsageRecord extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'usage_record';
+    const OBJECT_NAME = 'usage_record';
 }
 /**
  * @property string $id Unique identifier for the object.
@@ -15272,13 +15336,13 @@ class UsageRecord extends \Stripe\ApiResource
  */
 class UsageRecordSummary extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'usage_record_summary';
+    const OBJECT_NAME = 'usage_record_summary';
 }
 namespace Stripe\Util;
 
 class ApiVersion
 {
-	const CURRENT = '2022-11-15';
+    const CURRENT = '2022-11-15';
 }
 /**
  * CaseInsensitiveArray is an array-like class that ignores case for keys.
@@ -15292,51 +15356,51 @@ class ApiVersion
  */
 class CaseInsensitiveArray implements \ArrayAccess, \Countable, \IteratorAggregate
 {
-	public function __construct($initial_array = [])
-	{
-	}
-	/**
-	 * @return int
-	 */
-	#[\ReturnTypeWillChange]
-	public function count()
-	{
-	}
-	/**
-	 * @return \ArrayIterator
-	 */
-	#[\ReturnTypeWillChange]
-	public function getIterator()
-	{
-	}
-	/**
-	 * @return void
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetSet($offset, $value)
-	{
-	}
-	/**
-	 * @return bool
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetExists($offset)
-	{
-	}
-	/**
-	 * @return void
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetUnset($offset)
-	{
-	}
-	/**
-	 * @return mixed
-	 */
-	#[\ReturnTypeWillChange]
-	public function offsetGet($offset)
-	{
-	}
+    public function __construct($initial_array = [])
+    {
+    }
+    /**
+     * @return int
+     */
+    #[\ReturnTypeWillChange]
+    public function count()
+    {
+    }
+    /**
+     * @return \ArrayIterator
+     */
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+    }
+    /**
+     * @return void
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetSet($offset, $value)
+    {
+    }
+    /**
+     * @return bool
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetExists($offset)
+    {
+    }
+    /**
+     * @return void
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetUnset($offset)
+    {
+    }
+    /**
+     * @return mixed
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
+    {
+    }
 }
 /**
  * Describes a logger instance.
@@ -15360,13 +15424,13 @@ class CaseInsensitiveArray implements \ArrayAccess, \Countable, \IteratorAggrega
  */
 interface LoggerInterface
 {
-	/**
-	 * Runtime errors that do not require immediate action but should typically
-	 * be logged and monitored.
-	 *
-	 * @param string $message
-	 */
-	public function error($message, array $context = []);
+    /**
+     * Runtime errors that do not require immediate action but should typically
+     * be logged and monitored.
+     *
+     * @param string $message
+     */
+    public function error($message, array $context = []);
 }
 /**
  * A very basic implementation of LoggerInterface that has just enough
@@ -15374,20 +15438,20 @@ interface LoggerInterface
  */
 class DefaultLogger implements \Stripe\Util\LoggerInterface
 {
-	/** @var int */
-	public $messageType = 0;
-	/** @var null|string */
-	public $destination;
-	public function error($message, array $context = [])
-	{
-	}
+    /** @var int */
+    public $messageType = 0;
+    /** @var null|string */
+    public $destination;
+    public function error($message, array $context = [])
+    {
+    }
 }
 class ObjectTypes
 {
-	/**
-	 * @var array Mapping from object types to resource classes
-	 */
-	const mapping = [\Stripe\Account::OBJECT_NAME => \Stripe\Account::class, \Stripe\AccountLink::OBJECT_NAME => \Stripe\AccountLink::class, \Stripe\ApplePayDomain::OBJECT_NAME => \Stripe\ApplePayDomain::class, \Stripe\ApplicationFee::OBJECT_NAME => \Stripe\ApplicationFee::class, \Stripe\ApplicationFeeRefund::OBJECT_NAME => \Stripe\ApplicationFeeRefund::class, \Stripe\Apps\Secret::OBJECT_NAME => \Stripe\Apps\Secret::class, \Stripe\Balance::OBJECT_NAME => \Stripe\Balance::class, \Stripe\BalanceTransaction::OBJECT_NAME => \Stripe\BalanceTransaction::class, \Stripe\BankAccount::OBJECT_NAME => \Stripe\BankAccount::class, \Stripe\BillingPortal\Configuration::OBJECT_NAME => \Stripe\BillingPortal\Configuration::class, \Stripe\BillingPortal\Session::OBJECT_NAME => \Stripe\BillingPortal\Session::class, \Stripe\Capability::OBJECT_NAME => \Stripe\Capability::class, \Stripe\Card::OBJECT_NAME => \Stripe\Card::class, \Stripe\CashBalance::OBJECT_NAME => \Stripe\CashBalance::class, \Stripe\Charge::OBJECT_NAME => \Stripe\Charge::class, \Stripe\Checkout\Session::OBJECT_NAME => \Stripe\Checkout\Session::class, \Stripe\Collection::OBJECT_NAME => \Stripe\Collection::class, \Stripe\CountrySpec::OBJECT_NAME => \Stripe\CountrySpec::class, \Stripe\Coupon::OBJECT_NAME => \Stripe\Coupon::class, \Stripe\CreditNote::OBJECT_NAME => \Stripe\CreditNote::class, \Stripe\CreditNoteLineItem::OBJECT_NAME => \Stripe\CreditNoteLineItem::class, \Stripe\Customer::OBJECT_NAME => \Stripe\Customer::class, \Stripe\CustomerBalanceTransaction::OBJECT_NAME => \Stripe\CustomerBalanceTransaction::class, \Stripe\CustomerCashBalanceTransaction::OBJECT_NAME => \Stripe\CustomerCashBalanceTransaction::class, \Stripe\Discount::OBJECT_NAME => \Stripe\Discount::class, \Stripe\Dispute::OBJECT_NAME => \Stripe\Dispute::class, \Stripe\EphemeralKey::OBJECT_NAME => \Stripe\EphemeralKey::class, \Stripe\Event::OBJECT_NAME => \Stripe\Event::class, \Stripe\ExchangeRate::OBJECT_NAME => \Stripe\ExchangeRate::class, \Stripe\File::OBJECT_NAME => \Stripe\File::class, \Stripe\File::OBJECT_NAME_ALT => \Stripe\File::class, \Stripe\FileLink::OBJECT_NAME => \Stripe\FileLink::class, \Stripe\FinancialConnections\Account::OBJECT_NAME => \Stripe\FinancialConnections\Account::class, \Stripe\FinancialConnections\AccountOwner::OBJECT_NAME => \Stripe\FinancialConnections\AccountOwner::class, \Stripe\FinancialConnections\AccountOwnership::OBJECT_NAME => \Stripe\FinancialConnections\AccountOwnership::class, \Stripe\FinancialConnections\Session::OBJECT_NAME => \Stripe\FinancialConnections\Session::class, \Stripe\FundingInstructions::OBJECT_NAME => \Stripe\FundingInstructions::class, \Stripe\Identity\VerificationReport::OBJECT_NAME => \Stripe\Identity\VerificationReport::class, \Stripe\Identity\VerificationSession::OBJECT_NAME => \Stripe\Identity\VerificationSession::class, \Stripe\Invoice::OBJECT_NAME => \Stripe\Invoice::class, \Stripe\InvoiceItem::OBJECT_NAME => \Stripe\InvoiceItem::class, \Stripe\InvoiceLineItem::OBJECT_NAME => \Stripe\InvoiceLineItem::class, \Stripe\Issuing\Authorization::OBJECT_NAME => \Stripe\Issuing\Authorization::class, \Stripe\Issuing\Card::OBJECT_NAME => \Stripe\Issuing\Card::class, \Stripe\Issuing\CardDetails::OBJECT_NAME => \Stripe\Issuing\CardDetails::class, \Stripe\Issuing\Cardholder::OBJECT_NAME => \Stripe\Issuing\Cardholder::class, \Stripe\Issuing\Dispute::OBJECT_NAME => \Stripe\Issuing\Dispute::class, \Stripe\Issuing\Transaction::OBJECT_NAME => \Stripe\Issuing\Transaction::class, \Stripe\LineItem::OBJECT_NAME => \Stripe\LineItem::class, \Stripe\LoginLink::OBJECT_NAME => \Stripe\LoginLink::class, \Stripe\Mandate::OBJECT_NAME => \Stripe\Mandate::class, \Stripe\PaymentIntent::OBJECT_NAME => \Stripe\PaymentIntent::class, \Stripe\PaymentLink::OBJECT_NAME => \Stripe\PaymentLink::class, \Stripe\PaymentMethod::OBJECT_NAME => \Stripe\PaymentMethod::class, \Stripe\Payout::OBJECT_NAME => \Stripe\Payout::class, \Stripe\Person::OBJECT_NAME => \Stripe\Person::class, \Stripe\Plan::OBJECT_NAME => \Stripe\Plan::class, \Stripe\Price::OBJECT_NAME => \Stripe\Price::class, \Stripe\Product::OBJECT_NAME => \Stripe\Product::class, \Stripe\PromotionCode::OBJECT_NAME => \Stripe\PromotionCode::class, \Stripe\Quote::OBJECT_NAME => \Stripe\Quote::class, \Stripe\Radar\EarlyFraudWarning::OBJECT_NAME => \Stripe\Radar\EarlyFraudWarning::class, \Stripe\Radar\ValueList::OBJECT_NAME => \Stripe\Radar\ValueList::class, \Stripe\Radar\ValueListItem::OBJECT_NAME => \Stripe\Radar\ValueListItem::class, \Stripe\Refund::OBJECT_NAME => \Stripe\Refund::class, \Stripe\Reporting\ReportRun::OBJECT_NAME => \Stripe\Reporting\ReportRun::class, \Stripe\Reporting\ReportType::OBJECT_NAME => \Stripe\Reporting\ReportType::class, \Stripe\Review::OBJECT_NAME => \Stripe\Review::class, \Stripe\SearchResult::OBJECT_NAME => \Stripe\SearchResult::class, \Stripe\SetupAttempt::OBJECT_NAME => \Stripe\SetupAttempt::class, \Stripe\SetupIntent::OBJECT_NAME => \Stripe\SetupIntent::class, \Stripe\ShippingRate::OBJECT_NAME => \Stripe\ShippingRate::class, \Stripe\Sigma\ScheduledQueryRun::OBJECT_NAME => \Stripe\Sigma\ScheduledQueryRun::class, \Stripe\Source::OBJECT_NAME => \Stripe\Source::class, \Stripe\SourceTransaction::OBJECT_NAME => \Stripe\SourceTransaction::class, \Stripe\Subscription::OBJECT_NAME => \Stripe\Subscription::class, \Stripe\SubscriptionItem::OBJECT_NAME => \Stripe\SubscriptionItem::class, \Stripe\SubscriptionSchedule::OBJECT_NAME => \Stripe\SubscriptionSchedule::class, \Stripe\TaxCode::OBJECT_NAME => \Stripe\TaxCode::class, \Stripe\TaxId::OBJECT_NAME => \Stripe\TaxId::class, \Stripe\TaxRate::OBJECT_NAME => \Stripe\TaxRate::class, \Stripe\Terminal\Configuration::OBJECT_NAME => \Stripe\Terminal\Configuration::class, \Stripe\Terminal\ConnectionToken::OBJECT_NAME => \Stripe\Terminal\ConnectionToken::class, \Stripe\Terminal\Location::OBJECT_NAME => \Stripe\Terminal\Location::class, \Stripe\Terminal\Reader::OBJECT_NAME => \Stripe\Terminal\Reader::class, \Stripe\TestHelpers\TestClock::OBJECT_NAME => \Stripe\TestHelpers\TestClock::class, \Stripe\Token::OBJECT_NAME => \Stripe\Token::class, \Stripe\Topup::OBJECT_NAME => \Stripe\Topup::class, \Stripe\Transfer::OBJECT_NAME => \Stripe\Transfer::class, \Stripe\TransferReversal::OBJECT_NAME => \Stripe\TransferReversal::class, \Stripe\Treasury\CreditReversal::OBJECT_NAME => \Stripe\Treasury\CreditReversal::class, \Stripe\Treasury\DebitReversal::OBJECT_NAME => \Stripe\Treasury\DebitReversal::class, \Stripe\Treasury\FinancialAccount::OBJECT_NAME => \Stripe\Treasury\FinancialAccount::class, \Stripe\Treasury\FinancialAccountFeatures::OBJECT_NAME => \Stripe\Treasury\FinancialAccountFeatures::class, \Stripe\Treasury\InboundTransfer::OBJECT_NAME => \Stripe\Treasury\InboundTransfer::class, \Stripe\Treasury\OutboundPayment::OBJECT_NAME => \Stripe\Treasury\OutboundPayment::class, \Stripe\Treasury\OutboundTransfer::OBJECT_NAME => \Stripe\Treasury\OutboundTransfer::class, \Stripe\Treasury\ReceivedCredit::OBJECT_NAME => \Stripe\Treasury\ReceivedCredit::class, \Stripe\Treasury\ReceivedDebit::OBJECT_NAME => \Stripe\Treasury\ReceivedDebit::class, \Stripe\Treasury\Transaction::OBJECT_NAME => \Stripe\Treasury\Transaction::class, \Stripe\Treasury\TransactionEntry::OBJECT_NAME => \Stripe\Treasury\TransactionEntry::class, \Stripe\UsageRecord::OBJECT_NAME => \Stripe\UsageRecord::class, \Stripe\UsageRecordSummary::OBJECT_NAME => \Stripe\UsageRecordSummary::class, \Stripe\WebhookEndpoint::OBJECT_NAME => \Stripe\WebhookEndpoint::class];
+    /**
+     * @var array Mapping from object types to resource classes
+     */
+    const mapping = [\Stripe\Account::OBJECT_NAME => \Stripe\Account::class, \Stripe\AccountLink::OBJECT_NAME => \Stripe\AccountLink::class, \Stripe\ApplePayDomain::OBJECT_NAME => \Stripe\ApplePayDomain::class, \Stripe\ApplicationFee::OBJECT_NAME => \Stripe\ApplicationFee::class, \Stripe\ApplicationFeeRefund::OBJECT_NAME => \Stripe\ApplicationFeeRefund::class, \Stripe\Apps\Secret::OBJECT_NAME => \Stripe\Apps\Secret::class, \Stripe\Balance::OBJECT_NAME => \Stripe\Balance::class, \Stripe\BalanceTransaction::OBJECT_NAME => \Stripe\BalanceTransaction::class, \Stripe\BankAccount::OBJECT_NAME => \Stripe\BankAccount::class, \Stripe\BillingPortal\Configuration::OBJECT_NAME => \Stripe\BillingPortal\Configuration::class, \Stripe\BillingPortal\Session::OBJECT_NAME => \Stripe\BillingPortal\Session::class, \Stripe\Capability::OBJECT_NAME => \Stripe\Capability::class, \Stripe\Card::OBJECT_NAME => \Stripe\Card::class, \Stripe\CashBalance::OBJECT_NAME => \Stripe\CashBalance::class, \Stripe\Charge::OBJECT_NAME => \Stripe\Charge::class, \Stripe\Checkout\Session::OBJECT_NAME => \Stripe\Checkout\Session::class, \Stripe\Collection::OBJECT_NAME => \Stripe\Collection::class, \Stripe\CountrySpec::OBJECT_NAME => \Stripe\CountrySpec::class, \Stripe\Coupon::OBJECT_NAME => \Stripe\Coupon::class, \Stripe\CreditNote::OBJECT_NAME => \Stripe\CreditNote::class, \Stripe\CreditNoteLineItem::OBJECT_NAME => \Stripe\CreditNoteLineItem::class, \Stripe\Customer::OBJECT_NAME => \Stripe\Customer::class, \Stripe\CustomerBalanceTransaction::OBJECT_NAME => \Stripe\CustomerBalanceTransaction::class, \Stripe\CustomerCashBalanceTransaction::OBJECT_NAME => \Stripe\CustomerCashBalanceTransaction::class, \Stripe\Discount::OBJECT_NAME => \Stripe\Discount::class, \Stripe\Dispute::OBJECT_NAME => \Stripe\Dispute::class, \Stripe\EphemeralKey::OBJECT_NAME => \Stripe\EphemeralKey::class, \Stripe\Event::OBJECT_NAME => \Stripe\Event::class, \Stripe\ExchangeRate::OBJECT_NAME => \Stripe\ExchangeRate::class, \Stripe\File::OBJECT_NAME => \Stripe\File::class, \Stripe\File::OBJECT_NAME_ALT => \Stripe\File::class, \Stripe\FileLink::OBJECT_NAME => \Stripe\FileLink::class, \Stripe\FinancialConnections\Account::OBJECT_NAME => \Stripe\FinancialConnections\Account::class, \Stripe\FinancialConnections\AccountOwner::OBJECT_NAME => \Stripe\FinancialConnections\AccountOwner::class, \Stripe\FinancialConnections\AccountOwnership::OBJECT_NAME => \Stripe\FinancialConnections\AccountOwnership::class, \Stripe\FinancialConnections\Session::OBJECT_NAME => \Stripe\FinancialConnections\Session::class, \Stripe\FundingInstructions::OBJECT_NAME => \Stripe\FundingInstructions::class, \Stripe\Identity\VerificationReport::OBJECT_NAME => \Stripe\Identity\VerificationReport::class, \Stripe\Identity\VerificationSession::OBJECT_NAME => \Stripe\Identity\VerificationSession::class, \Stripe\Invoice::OBJECT_NAME => \Stripe\Invoice::class, \Stripe\InvoiceItem::OBJECT_NAME => \Stripe\InvoiceItem::class, \Stripe\InvoiceLineItem::OBJECT_NAME => \Stripe\InvoiceLineItem::class, \Stripe\Issuing\Authorization::OBJECT_NAME => \Stripe\Issuing\Authorization::class, \Stripe\Issuing\Card::OBJECT_NAME => \Stripe\Issuing\Card::class, \Stripe\Issuing\CardDetails::OBJECT_NAME => \Stripe\Issuing\CardDetails::class, \Stripe\Issuing\Cardholder::OBJECT_NAME => \Stripe\Issuing\Cardholder::class, \Stripe\Issuing\Dispute::OBJECT_NAME => \Stripe\Issuing\Dispute::class, \Stripe\Issuing\Transaction::OBJECT_NAME => \Stripe\Issuing\Transaction::class, \Stripe\LineItem::OBJECT_NAME => \Stripe\LineItem::class, \Stripe\LoginLink::OBJECT_NAME => \Stripe\LoginLink::class, \Stripe\Mandate::OBJECT_NAME => \Stripe\Mandate::class, \Stripe\PaymentIntent::OBJECT_NAME => \Stripe\PaymentIntent::class, \Stripe\PaymentLink::OBJECT_NAME => \Stripe\PaymentLink::class, \Stripe\PaymentMethod::OBJECT_NAME => \Stripe\PaymentMethod::class, \Stripe\Payout::OBJECT_NAME => \Stripe\Payout::class, \Stripe\Person::OBJECT_NAME => \Stripe\Person::class, \Stripe\Plan::OBJECT_NAME => \Stripe\Plan::class, \Stripe\Price::OBJECT_NAME => \Stripe\Price::class, \Stripe\Product::OBJECT_NAME => \Stripe\Product::class, \Stripe\PromotionCode::OBJECT_NAME => \Stripe\PromotionCode::class, \Stripe\Quote::OBJECT_NAME => \Stripe\Quote::class, \Stripe\Radar\EarlyFraudWarning::OBJECT_NAME => \Stripe\Radar\EarlyFraudWarning::class, \Stripe\Radar\ValueList::OBJECT_NAME => \Stripe\Radar\ValueList::class, \Stripe\Radar\ValueListItem::OBJECT_NAME => \Stripe\Radar\ValueListItem::class, \Stripe\Refund::OBJECT_NAME => \Stripe\Refund::class, \Stripe\Reporting\ReportRun::OBJECT_NAME => \Stripe\Reporting\ReportRun::class, \Stripe\Reporting\ReportType::OBJECT_NAME => \Stripe\Reporting\ReportType::class, \Stripe\Review::OBJECT_NAME => \Stripe\Review::class, \Stripe\SearchResult::OBJECT_NAME => \Stripe\SearchResult::class, \Stripe\SetupAttempt::OBJECT_NAME => \Stripe\SetupAttempt::class, \Stripe\SetupIntent::OBJECT_NAME => \Stripe\SetupIntent::class, \Stripe\ShippingRate::OBJECT_NAME => \Stripe\ShippingRate::class, \Stripe\Sigma\ScheduledQueryRun::OBJECT_NAME => \Stripe\Sigma\ScheduledQueryRun::class, \Stripe\Source::OBJECT_NAME => \Stripe\Source::class, \Stripe\SourceTransaction::OBJECT_NAME => \Stripe\SourceTransaction::class, \Stripe\Subscription::OBJECT_NAME => \Stripe\Subscription::class, \Stripe\SubscriptionItem::OBJECT_NAME => \Stripe\SubscriptionItem::class, \Stripe\SubscriptionSchedule::OBJECT_NAME => \Stripe\SubscriptionSchedule::class, \Stripe\TaxCode::OBJECT_NAME => \Stripe\TaxCode::class, \Stripe\TaxId::OBJECT_NAME => \Stripe\TaxId::class, \Stripe\TaxRate::OBJECT_NAME => \Stripe\TaxRate::class, \Stripe\Terminal\Configuration::OBJECT_NAME => \Stripe\Terminal\Configuration::class, \Stripe\Terminal\ConnectionToken::OBJECT_NAME => \Stripe\Terminal\ConnectionToken::class, \Stripe\Terminal\Location::OBJECT_NAME => \Stripe\Terminal\Location::class, \Stripe\Terminal\Reader::OBJECT_NAME => \Stripe\Terminal\Reader::class, \Stripe\TestHelpers\TestClock::OBJECT_NAME => \Stripe\TestHelpers\TestClock::class, \Stripe\Token::OBJECT_NAME => \Stripe\Token::class, \Stripe\Topup::OBJECT_NAME => \Stripe\Topup::class, \Stripe\Transfer::OBJECT_NAME => \Stripe\Transfer::class, \Stripe\TransferReversal::OBJECT_NAME => \Stripe\TransferReversal::class, \Stripe\Treasury\CreditReversal::OBJECT_NAME => \Stripe\Treasury\CreditReversal::class, \Stripe\Treasury\DebitReversal::OBJECT_NAME => \Stripe\Treasury\DebitReversal::class, \Stripe\Treasury\FinancialAccount::OBJECT_NAME => \Stripe\Treasury\FinancialAccount::class, \Stripe\Treasury\FinancialAccountFeatures::OBJECT_NAME => \Stripe\Treasury\FinancialAccountFeatures::class, \Stripe\Treasury\InboundTransfer::OBJECT_NAME => \Stripe\Treasury\InboundTransfer::class, \Stripe\Treasury\OutboundPayment::OBJECT_NAME => \Stripe\Treasury\OutboundPayment::class, \Stripe\Treasury\OutboundTransfer::OBJECT_NAME => \Stripe\Treasury\OutboundTransfer::class, \Stripe\Treasury\ReceivedCredit::OBJECT_NAME => \Stripe\Treasury\ReceivedCredit::class, \Stripe\Treasury\ReceivedDebit::OBJECT_NAME => \Stripe\Treasury\ReceivedDebit::class, \Stripe\Treasury\Transaction::OBJECT_NAME => \Stripe\Treasury\Transaction::class, \Stripe\Treasury\TransactionEntry::OBJECT_NAME => \Stripe\Treasury\TransactionEntry::class, \Stripe\UsageRecord::OBJECT_NAME => \Stripe\UsageRecord::class, \Stripe\UsageRecordSummary::OBJECT_NAME => \Stripe\UsageRecordSummary::class, \Stripe\WebhookEndpoint::OBJECT_NAME => \Stripe\WebhookEndpoint::class];
 }
 /**
  * A basic random generator. This is in a separate class so we the generator
@@ -15395,238 +15459,238 @@ class ObjectTypes
  */
 class RandomGenerator
 {
-	/**
-	 * Returns a random value between 0 and $max.
-	 *
-	 * @param float $max (optional)
-	 *
-	 * @return float
-	 */
-	public function randFloat($max = 1.0)
-	{
-	}
-	/**
-	 * Returns a v4 UUID.
-	 *
-	 * @return string
-	 */
-	public function uuid()
-	{
-	}
+    /**
+     * Returns a random value between 0 and $max.
+     *
+     * @param float $max (optional)
+     *
+     * @return float
+     */
+    public function randFloat($max = 1.0)
+    {
+    }
+    /**
+     * Returns a v4 UUID.
+     *
+     * @return string
+     */
+    public function uuid()
+    {
+    }
 }
 class RequestOptions
 {
-	/**
-	 * @var array<string> a list of headers that should be persisted across requests
-	 */
-	public static $HEADERS_TO_PERSIST = ['Stripe-Account', 'Stripe-Version'];
-	/** @var array<string, string> */
-	public $headers;
-	/** @var null|string */
-	public $apiKey;
-	/** @var null|string */
-	public $apiBase;
-	/**
-	 * @param null|string $key
-	 * @param array<string, string> $headers
-	 * @param null|string $base
-	 */
-	public function __construct($key = null, $headers = [], $base = null)
-	{
-	}
-	/**
-	 * @return array<string, string>
-	 */
-	public function __debugInfo()
-	{
-	}
-	/**
-	 * Unpacks an options array and merges it into the existing RequestOptions
-	 * object.
-	 *
-	 * @param null|array|RequestOptions|string $options a key => value array
-	 * @param bool $strict when true, forbid string form and arbitrary keys in array form
-	 *
-	 * @return RequestOptions
-	 */
-	public function merge($options, $strict = false)
-	{
-	}
-	/**
-	 * Discards all headers that we don't want to persist across requests.
-	 */
-	public function discardNonPersistentHeaders()
-	{
-	}
-	/**
-	 * Unpacks an options array into an RequestOptions object.
-	 *
-	 * @param null|array|RequestOptions|string $options a key => value array
-	 * @param bool $strict when true, forbid string form and arbitrary keys in array form
-	 *
-	 * @throws \Stripe\Exception\InvalidArgumentException
-	 *
-	 * @return RequestOptions
-	 */
-	public static function parse($options, $strict = false)
-	{
-	}
+    /**
+     * @var array<string> a list of headers that should be persisted across requests
+     */
+    public static $HEADERS_TO_PERSIST = ['Stripe-Account', 'Stripe-Version'];
+    /** @var array<string, string> */
+    public $headers;
+    /** @var null|string */
+    public $apiKey;
+    /** @var null|string */
+    public $apiBase;
+    /**
+     * @param null|string $key
+     * @param array<string, string> $headers
+     * @param null|string $base
+     */
+    public function __construct($key = null, $headers = [], $base = null)
+    {
+    }
+    /**
+     * @return array<string, string>
+     */
+    public function __debugInfo()
+    {
+    }
+    /**
+     * Unpacks an options array and merges it into the existing RequestOptions
+     * object.
+     *
+     * @param null|array|RequestOptions|string $options a key => value array
+     * @param bool $strict when true, forbid string form and arbitrary keys in array form
+     *
+     * @return RequestOptions
+     */
+    public function merge($options, $strict = false)
+    {
+    }
+    /**
+     * Discards all headers that we don't want to persist across requests.
+     */
+    public function discardNonPersistentHeaders()
+    {
+    }
+    /**
+     * Unpacks an options array into an RequestOptions object.
+     *
+     * @param null|array|RequestOptions|string $options a key => value array
+     * @param bool $strict when true, forbid string form and arbitrary keys in array form
+     *
+     * @throws \Stripe\Exception\InvalidArgumentException
+     *
+     * @return RequestOptions
+     */
+    public static function parse($options, $strict = false)
+    {
+    }
 }
 class Set implements \IteratorAggregate
 {
-	public function __construct($members = [])
-	{
-	}
-	public function includes($elt)
-	{
-	}
-	public function add($elt)
-	{
-	}
-	public function discard($elt)
-	{
-	}
-	public function toArray()
-	{
-	}
-	/**
-	 * @return ArrayIterator
-	 */
-	#[\ReturnTypeWillChange]
-	public function getIterator()
-	{
-	}
+    public function __construct($members = [])
+    {
+    }
+    public function includes($elt)
+    {
+    }
+    public function add($elt)
+    {
+    }
+    public function discard($elt)
+    {
+    }
+    public function toArray()
+    {
+    }
+    /**
+     * @return ArrayIterator
+     */
+    #[\ReturnTypeWillChange]
+    public function getIterator()
+    {
+    }
 }
 abstract class Util
 {
-	/**
-	 * Whether the provided array (or other) is a list rather than a dictionary.
-	 * A list is defined as an array for which all the keys are consecutive
-	 * integers starting at 0. Empty arrays are considered to be lists.
-	 *
-	 * @param array|mixed $array
-	 *
-	 * @return bool true if the given object is a list
-	 */
-	public static function isList($array)
-	{
-	}
-	/**
-	 * Converts a response from the Stripe API to the corresponding PHP object.
-	 *
-	 * @param array $resp the response from the Stripe API
-	 * @param array $opts
-	 *
-	 * @return array|StripeObject
-	 */
-	public static function convertToStripeObject($resp, $opts)
-	{
-	}
-	/**
-	 * @param mixed|string $value a string to UTF8-encode
-	 *
-	 * @return mixed|string the UTF8-encoded string, or the object passed in if
-	 *    it wasn't a string
-	 */
-	public static function utf8($value)
-	{
-	}
-	/**
-	 * Compares two strings for equality. The time taken is independent of the
-	 * number of characters that match.
-	 *
-	 * @param string $a one of the strings to compare
-	 * @param string $b the other string to compare
-	 *
-	 * @return bool true if the strings are equal, false otherwise
-	 */
-	public static function secureCompare($a, $b)
-	{
-	}
-	/**
-	 * Recursively goes through an array of parameters. If a parameter is an instance of
-	 * ApiResource, then it is replaced by the resource's ID.
-	 * Also clears out null values.
-	 *
-	 * @param mixed $h
-	 *
-	 * @return mixed
-	 */
-	public static function objectsToIds($h)
-	{
-	}
-	/**
-	 * @param array $params
-	 *
-	 * @return string
-	 */
-	public static function encodeParameters($params)
-	{
-	}
-	/**
-	 * @param array $params
-	 * @param null|string $parentKey
-	 *
-	 * @return array
-	 */
-	public static function flattenParams($params, $parentKey = null)
-	{
-	}
-	/**
-	 * @param array $value
-	 * @param string $calculatedKey
-	 *
-	 * @return array
-	 */
-	public static function flattenParamsList($value, $calculatedKey)
-	{
-	}
-	/**
-	 * @param string $key a string to URL-encode
-	 *
-	 * @return string the URL-encoded string
-	 */
-	public static function urlEncode($key)
-	{
-	}
-	public static function normalizeId($id)
-	{
-	}
-	/**
-	 * Returns UNIX timestamp in milliseconds.
-	 *
-	 * @return int current time in millis
-	 */
-	public static function currentTimeMillis()
-	{
-	}
+    /**
+     * Whether the provided array (or other) is a list rather than a dictionary.
+     * A list is defined as an array for which all the keys are consecutive
+     * integers starting at 0. Empty arrays are considered to be lists.
+     *
+     * @param array|mixed $array
+     *
+     * @return bool true if the given object is a list
+     */
+    public static function isList($array)
+    {
+    }
+    /**
+     * Converts a response from the Stripe API to the corresponding PHP object.
+     *
+     * @param array $resp the response from the Stripe API
+     * @param array $opts
+     *
+     * @return array|StripeObject
+     */
+    public static function convertToStripeObject($resp, $opts)
+    {
+    }
+    /**
+     * @param mixed|string $value a string to UTF8-encode
+     *
+     * @return mixed|string the UTF8-encoded string, or the object passed in if
+     *    it wasn't a string
+     */
+    public static function utf8($value)
+    {
+    }
+    /**
+     * Compares two strings for equality. The time taken is independent of the
+     * number of characters that match.
+     *
+     * @param string $a one of the strings to compare
+     * @param string $b the other string to compare
+     *
+     * @return bool true if the strings are equal, false otherwise
+     */
+    public static function secureCompare($a, $b)
+    {
+    }
+    /**
+     * Recursively goes through an array of parameters. If a parameter is an instance of
+     * ApiResource, then it is replaced by the resource's ID.
+     * Also clears out null values.
+     *
+     * @param mixed $h
+     *
+     * @return mixed
+     */
+    public static function objectsToIds($h)
+    {
+    }
+    /**
+     * @param array $params
+     *
+     * @return string
+     */
+    public static function encodeParameters($params)
+    {
+    }
+    /**
+     * @param array $params
+     * @param null|string $parentKey
+     *
+     * @return array
+     */
+    public static function flattenParams($params, $parentKey = null)
+    {
+    }
+    /**
+     * @param array $value
+     * @param string $calculatedKey
+     *
+     * @return array
+     */
+    public static function flattenParamsList($value, $calculatedKey)
+    {
+    }
+    /**
+     * @param string $key a string to URL-encode
+     *
+     * @return string the URL-encoded string
+     */
+    public static function urlEncode($key)
+    {
+    }
+    public static function normalizeId($id)
+    {
+    }
+    /**
+     * Returns UNIX timestamp in milliseconds.
+     *
+     * @return int current time in millis
+     */
+    public static function currentTimeMillis()
+    {
+    }
 }
 namespace Stripe;
 
 abstract class Webhook
 {
-	const DEFAULT_TOLERANCE = 300;
-	/**
-	 * Returns an Event instance using the provided JSON payload. Throws an
-	 * Exception\UnexpectedValueException if the payload is not valid JSON, and
-	 * an Exception\SignatureVerificationException if the signature
-	 * verification fails for any reason.
-	 *
-	 * @param string $payload the payload sent by Stripe
-	 * @param string $sigHeader the contents of the signature header sent by
-	 *                          Stripe
-	 * @param string $secret secret used to generate the signature
-	 * @param int $tolerance maximum difference allowed between the header's
-	 *                       timestamp and the current time
-	 *
-	 * @throws Exception\UnexpectedValueException if the payload is not valid JSON,
-	 * @throws Exception\SignatureVerificationException if the verification fails
-	 *
-	 * @return Event the Event instance
-	 */
-	public static function constructEvent($payload, $sigHeader, $secret, $tolerance = self::DEFAULT_TOLERANCE)
-	{
-	}
+    const DEFAULT_TOLERANCE = 300;
+    /**
+     * Returns an Event instance using the provided JSON payload. Throws an
+     * Exception\UnexpectedValueException if the payload is not valid JSON, and
+     * an Exception\SignatureVerificationException if the signature
+     * verification fails for any reason.
+     *
+     * @param string $payload the payload sent by Stripe
+     * @param string $sigHeader the contents of the signature header sent by
+     *                          Stripe
+     * @param string $secret secret used to generate the signature
+     * @param int $tolerance maximum difference allowed between the header's
+     *                       timestamp and the current time
+     *
+     * @throws Exception\UnexpectedValueException if the payload is not valid JSON,
+     * @throws Exception\SignatureVerificationException if the verification fails
+     *
+     * @return Event the Event instance
+     */
+    public static function constructEvent($payload, $sigHeader, $secret, $tolerance = self::DEFAULT_TOLERANCE)
+    {
+    }
 }
 /**
  * You can configure <a href="https://stripe.com/docs/webhooks/">webhook
@@ -15655,34 +15719,34 @@ abstract class Webhook
  */
 class WebhookEndpoint extends \Stripe\ApiResource
 {
-	const OBJECT_NAME = 'webhook_endpoint';
-	use \Stripe\ApiOperations\All;
-	use \Stripe\ApiOperations\Create;
-	use \Stripe\ApiOperations\Delete;
-	use \Stripe\ApiOperations\Retrieve;
-	use \Stripe\ApiOperations\Update;
+    const OBJECT_NAME = 'webhook_endpoint';
+    use \Stripe\ApiOperations\All;
+    use \Stripe\ApiOperations\Create;
+    use \Stripe\ApiOperations\Delete;
+    use \Stripe\ApiOperations\Retrieve;
+    use \Stripe\ApiOperations\Update;
 }
 abstract class WebhookSignature
 {
-	const EXPECTED_SCHEME = 'v1';
-	/**
-	 * Verifies the signature header sent by Stripe. Throws an
-	 * Exception\SignatureVerificationException exception if the verification fails for
-	 * any reason.
-	 *
-	 * @param string $payload the payload sent by Stripe
-	 * @param string $header the contents of the signature header sent by
-	 *                       Stripe
-	 * @param string $secret secret used to generate the signature
-	 * @param int $tolerance maximum difference allowed between the header's
-	 *                       timestamp and the current time
-	 *
-	 * @throws Exception\SignatureVerificationException if the verification fails
-	 *
-	 * @return bool
-	 */
-	public static function verifyHeader($payload, $header, $secret, $tolerance = null)
-	{
-	}
+    const EXPECTED_SCHEME = 'v1';
+    /**
+     * Verifies the signature header sent by Stripe. Throws an
+     * Exception\SignatureVerificationException exception if the verification fails for
+     * any reason.
+     *
+     * @param string $payload the payload sent by Stripe
+     * @param string $header the contents of the signature header sent by
+     *                       Stripe
+     * @param string $secret secret used to generate the signature
+     * @param int $tolerance maximum difference allowed between the header's
+     *                       timestamp and the current time
+     *
+     * @throws Exception\SignatureVerificationException if the verification fails
+     *
+     * @return bool
+     */
+    public static function verifyHeader($payload, $header, $secret, $tolerance = null)
+    {
+    }
 }
 // phpcs:enable

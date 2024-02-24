@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2020		Frédéric France		<frederic.france@netlogic.fr>
@@ -147,7 +148,7 @@ class DolibarrApi
 
         // Remove linkedObjects. We should already have and keep only linkedObjectsIds that avoid huge responses
         unset($object->linkedObjects);
-        //unset($object->lines[$i]->linked_objects);		// This is the array to create linked object during create
+        //unset($object->lines[$i]->linked_objects);        // This is the array to create linked object during create
 
         unset($object->fields);
         unset($object->oldline);

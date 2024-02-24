@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014-2018  Alexandre Spangaro   <aspangaro@open-dsi.fr>
  * Copyright (C) 2015-2023  Frédéric France      <frederic.france@netlogic.fr>
  *
@@ -21,6 +22,7 @@
  *  \ingroup    loan
  *  \brief      Class for loan module
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**

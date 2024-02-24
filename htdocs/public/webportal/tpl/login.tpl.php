@@ -28,14 +28,14 @@ if (empty($context) || !is_object($context)) {
                     <i class="button__icon fas fa-chevron-right"></i>
                 </button>
             </form>
-            <!--			<div class="social-login">-->
-            <!--				<span class="social-login__title">Follow us on</span>-->
-            <!--				<div class="social-icons">-->
-            <!--					<a href="#" class="social-login__icon fab fa-instagram"></a>-->
-            <!--					<a href="#" class="social-login__icon fab fa-facebook"></a>-->
-            <!--					<a href="#" class="social-login__icon fab fa-twitter"></a>-->
-            <!--				</div>-->
-            <!--			</div>-->
+            <!--            <div class="social-login">-->
+            <!--                <span class="social-login__title">Follow us on</span>-->
+            <!--                <div class="social-icons">-->
+            <!--                    <a href="#" class="social-login__icon fab fa-instagram"></a>-->
+            <!--                    <a href="#" class="social-login__icon fab fa-facebook"></a>-->
+            <!--                    <a href="#" class="social-login__icon fab fa-twitter"></a>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
         <div class="login-screen__background">
             <span class="login-screen__background__shape login-screen__background__shape4"></span>

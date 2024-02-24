@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2017	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2009-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2018	    Juanjo Menent			<jmenent@2byte.es>
@@ -124,15 +125,15 @@ if ($source == 'organizedeventregistration') {
         setEventMessages(null, $invoice->errors, "errors");
     } else {
         /*
-		$attendeeid = 0;
+        $attendeeid = 0;
 
-		$invoice->fetchObjectLinked();
-		$linkedAttendees = $invoice->linkedObjectsIds['conferenceorboothattendee'];
+        $invoice->fetchObjectLinked();
+        $linkedAttendees = $invoice->linkedObjectsIds['conferenceorboothattendee'];
 
-		if (is_array($linkedAttendees)) {
-			$linkedAttendees = array_values($linkedAttendees);
-			$attendeeid = $linkedAttendees[0];
-		}*/
+        if (is_array($linkedAttendees)) {
+            $linkedAttendees = array_values($linkedAttendees);
+            $attendeeid = $linkedAttendees[0];
+        }*/
         $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "eventorganization_conferenceorboothattendee";
         $sql .= " WHERE fk_invoice = " . ((int) $invoiceid);
         $resql = $db->query($sql);
@@ -195,7 +196,7 @@ foreach ($_POST as $key => $val) {
 
 // Define $urlwithroot
 //$urlwithouturlroot=preg_replace('/'.preg_quote(DOL_URL_ROOT,'/').'$/i','',trim($dolibarr_main_url_root));
-//$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;		// This is to use external domain name found into config file
+//$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;     // This is to use external domain name found into config file
 $urlwithroot = DOL_MAIN_URL_ROOT; // This is to use same domain name than current. For Paypal payment, we can use internal URL like localhost.
 
 $urlok = $urlwithroot . '/public/payment/paymentok.php?';
@@ -594,13 +595,13 @@ if ($action == 'charge' && isModEnabled('stripe')) {
                 $vatcleaned = $vatnumber ? $vatnumber : null;
 
                 /*$taxinfo = array('type'=>'vat');
-				if ($vatcleaned)
-				{
-					$taxinfo["tax_id"] = $vatcleaned;
-				}
-				// We force data to "null" if not defined as expected by Stripe
-				if (empty($vatcleaned)) $taxinfo=null;
-				*/
+                if ($vatcleaned)
+                {
+                    $taxinfo["tax_id"] = $vatcleaned;
+                }
+                // We force data to "null" if not defined as expected by Stripe
+                if (empty($vatcleaned)) $taxinfo=null;
+                */
 
                 dol_syslog("Create anonymous customer card profile", LOG_DEBUG, 0, '_payment');
 
@@ -614,18 +615,18 @@ if ($action == 'charge' && isModEnabled('stripe')) {
 
                 // Create the VAT record in Stripe
                 /* We don't know country of customer, so we can't create tax
-				if (!empty($conf->global->STRIPE_SAVE_TAX_IDS))	// We setup to save Tax info on Stripe side. Warning: This may result in error when saving customer
-				{
-					if (!empty($vatcleaned))
-					{
-						$isineec=isInEEC($object);
-						if ($object->country_code && $isineec)
-						{
-							//$taxids = $customer->allTaxIds($customer->id);
-							$customer->createTaxId($customer->id, array('type'=>'eu_vat', 'value'=>$vatcleaned));
-						}
-					}
-				}*/
+                if (!empty($conf->global->STRIPE_SAVE_TAX_IDS)) // We setup to save Tax info on Stripe side. Warning: This may result in error when saving customer
+                {
+                    if (!empty($vatcleaned))
+                    {
+                        $isineec=isInEEC($object);
+                        if ($object->country_code && $isineec)
+                        {
+                            //$taxids = $customer->allTaxIds($customer->id);
+                            $customer->createTaxId($customer->id, array('type'=>'eu_vat', 'value'=>$vatcleaned));
+                        }
+                    }
+                }*/
 
                 if (!empty($FULLTAG)) {
                     $metadata["FULLTAG"] = $FULLTAG;
@@ -2544,7 +2545,7 @@ if (preg_match('/^dopayment/', $action)) {            // If we chose/clicked on 
                     save_payment_method:<?php if ($stripecu) {
                         print 'true';
                     } else {
-                        print 'false';
+                                            print 'false';
                     } ?>    /* true when a customer was provided when creating payment intent. true ask to save the card */
                     },
                     }
@@ -2638,7 +2639,7 @@ if (preg_match('/^dopayment/', $action)) {            // If we chose/clicked on 
                     save_payment_method:<?php if ($stripecu) {
                         print 'true';
                     } else {
-                        print 'false';
+                                            print 'false';
                     } ?>    /* true when a customer was provided when creating payment intent. true ask to save the card */
                     }
                     ).then(function(result) {

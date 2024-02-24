@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2011-2019		Juanjo Menent	    <jmenent@2byte.es>
+
+/* Copyright (C) 2011-2019      Juanjo Menent       <jmenent@2byte.es>
  * Copyright (C) 2018			Charlene Benke		<charlie@patas-monkey.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,114 +24,113 @@
  *  \brief      File of class to manage holiday numbering rules Immaculate
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/holiday/modules_holiday.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/holiday/modules_holiday.php';
 
 /**
- *	Class to manage holiday numbering rules Immaculate
+ *  Class to manage holiday numbering rules Immaculate
  */
 class mod_holiday_immaculate extends ModelNumRefHolidays
 {
+    // variables inherited from ModelNumRefHolidays class
+    public $name = 'Immaculate';
+    public $version = 'dolibarr';
+    public $error = '';
+    public $code_auto = 1;
 
-	// variables inherited from ModelNumRefHolidays class
-	public $name = 'Immaculate';
-	public $version = 'dolibarr';
-	public $error = '';
-	public $code_auto = 1;
 
+    /**
+     *  Return default description of numbering model
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $db, $langs;
 
-	/**
-	 *	Return default description of numbering model
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $db, $langs;
+        $langs->load("bills");
 
-		$langs->load("bills");
+        $form = new Form($db);
 
-		$form = new Form($db);
+        $texte = $langs->trans('GenericNumRefModelDesc') . "<br>\n";
+        $texte .= '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST">';
+        $texte .= '<input type="hidden" name="token" value="' . newToken() . '">';
+        $texte .= '<input type="hidden" name="action" value="updateMask">';
+        $texte .= '<input type="hidden" name="maskconstholiday" value="HOLIDAY_IMMACULATE_MASK">';
+        $texte .= '<table class="nobordernopadding" width="100%">';
 
-		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
-		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
-		$texte .= '<input type="hidden" name="action" value="updateMask">';
-		$texte .= '<input type="hidden" name="maskconstholiday" value="HOLIDAY_IMMACULATE_MASK">';
-		$texte .= '<table class="nobordernopadding" width="100%">';
+        $tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Holiday"), $langs->transnoentities("Holiday"));
+        $tooltip .= $langs->trans("GenericMaskCodes2");
+        $tooltip .= $langs->trans("GenericMaskCodes3");
+        $tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Holiday"), $langs->transnoentities("Holiday"));
+        $tooltip .= $langs->trans("GenericMaskCodes5");
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Holiday"), $langs->transnoentities("Holiday"));
-		$tooltip .= $langs->trans("GenericMaskCodes2");
-		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Holiday"), $langs->transnoentities("Holiday"));
-		$tooltip .= $langs->trans("GenericMaskCodes5");
+        $texte .= '<tr><td>' . $langs->trans("Mask") . ':</td>';
+        $texte .= '<td class="right">' . $form->textwithpicto('<input type="text" class="flat minwidth175" name="maskholiday" value="' . getDolGlobalString('HOLIDAY_IMMACULATE_MASK') . '">', $tooltip, 1, 1) . '</td>';
+        $texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="' . $langs->trans("Modify") . '"></td>';
+        $texte .= '</tr>';
+        $texte .= '</table>';
+        $texte .= '</form>';
 
-		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskholiday" value="'.getDolGlobalString('HOLIDAY_IMMACULATE_MASK').'">', $tooltip, 1, 1).'</td>';
-		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="'.$langs->trans("Modify").'"></td>';
-		$texte .= '</tr>';
-		$texte .= '</table>';
-		$texte .= '</form>';
+        return $texte;
+    }
 
-		return $texte;
-	}
+    /**
+     *  Return numbering example
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        global $conf, $langs, $user;
 
-	/**
-	 *	Return numbering example
-	 *
-	 *	@return     string      Example
-	 */
-	public function getExample()
-	{
-		global $conf, $langs, $user;
+        $old_login = $user->login;
+        $user->login = 'UUUUUUU';
+        $numExample = $this->getNextValue($user, '');
+        $user->login = $old_login;
 
-		$old_login = $user->login;
-		$user->login = 'UUUUUUU';
-		$numExample = $this->getNextValue($user, '');
-		$user->login = $old_login;
+        if (!$numExample) {
+            $numExample = $langs->trans('NotConfigured');
+        }
+        return $numExample;
+    }
 
-		if (!$numExample) {
-			$numExample = $langs->trans('NotConfigured');
-		}
-		return $numExample;
-	}
+    /**
+     *  Return next value
+     *
+     *  @param  Societe     $objsoc     third party object
+     *  @param  Object      $holiday    holiday object
+     *  @return string|0                Value if OK, 0 if KO
+     */
+    public function getNextValue($objsoc, $holiday)
+    {
+        global $db, $conf;
 
-	/**
-	 *	Return next value
-	 *
-	 *	@param	Societe		$objsoc     third party object
-	 *	@param	Object		$holiday	holiday object
-	 *	@return string|0      			Value if OK, 0 if KO
-	 */
-	public function getNextValue($objsoc, $holiday)
-	{
-		global $db, $conf;
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+        $mask = getDolGlobalString('HOLIDAY_IMMACULATE_MASK');
 
-		$mask = getDolGlobalString('HOLIDAY_IMMACULATE_MASK');
+        if (!$mask) {
+            $this->error = 'NotConfigured';
+            return 0;
+        }
 
-		if (!$mask) {
-			$this->error = 'NotConfigured';
-			return 0;
-		}
+        $numFinal = get_next_value($db, $mask, 'holiday', 'ref', '', $objsoc, $holiday->date_create);
 
-		$numFinal = get_next_value($db, $mask, 'holiday', 'ref', '', $objsoc, $holiday->date_create);
-
-		return  $numFinal;
-	}
+        return  $numFinal;
+    }
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return next value
-	 *
-	 *  @param  User		$fuser     	User object
-	 *  @param  Object		$objforref	Holiday object
-	 *  @return string|0      			Value if OK, 0 if KO
-	 */
-	public function holiday_get_num($fuser, $objforref)
-	{
+    /**
+     *  Return next value
+     *
+     *  @param  User        $fuser      User object
+     *  @param  Object      $objforref  Holiday object
+     *  @return string|0                Value if OK, 0 if KO
+     */
+    public function holiday_get_num($fuser, $objforref)
+    {
 		// phpcs:enable
-		return $this->getNextValue($fuser, $objforref);
-	}
+        return $this->getNextValue($fuser, $objforref);
+    }
 }

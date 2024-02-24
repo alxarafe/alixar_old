@@ -694,8 +694,8 @@ if (!empty($id) || !empty($ref)) {
                             } ?>
                         </div>
                         <!-- <div class="inline-block valignmiddle">
-						<a href="#" class="inline-block valignmiddle button" id="delfeature"><?php echo img_edit_remove() ?></a>
-						</div>-->
+                        <a href="#" class="inline-block valignmiddle button" id="delfeature"><?php echo img_edit_remove() ?></a>
+                        </div>-->
                     </td>
                     <td>
                     </td>

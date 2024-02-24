@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@capnetworks.com>
@@ -272,7 +273,8 @@ if (empty($reshook)) {
                     $transport_mode_id = $rcp->transport_mode_id;
                 }
 
-                if (empty($cond_reglement_id)
+                if (
+                    empty($cond_reglement_id)
                     || empty($mode_reglement_id)
                     || empty($fk_account)
                     || empty($transport_mode_id)
@@ -676,11 +678,11 @@ if ($search_all) {
 // Search on sale representative
 /*
 if ($search_sale && $search_sale != '-1') {
-	if ($search_sale == -2) {
-		$sql .= " AND NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = c.fk_soc)";
-	} elseif ($search_sale > 0) {
-		$sql .= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = c.fk_soc AND sc.fk_user = ".((int) $search_sale).")";
-	}
+    if ($search_sale == -2) {
+        $sql .= " AND NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = c.fk_soc)";
+    } elseif ($search_sale > 0) {
+        $sql .= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = c.fk_soc AND sc.fk_user = ".((int) $search_sale).")";
+    }
 }
 */
 // Add where from extra fields

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015 Alexandre Spangaro <aspangaro@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,72 +25,72 @@
 /**
  * Return head table for establishment tabs screen
  *
- * @param   Establishment	$object		Object related to tabs
- * @return  array						Array of tabs to show
+ * @param   Establishment   $object     Object related to tabs
+ * @return  array                       Array of tabs to show
  */
 function establishment_prepare_head($object)
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$langs->load('hrm');
+    $langs->load('hrm');
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT.'/hrm/establishment/card.php?id='.$object->id;
-	$head[$h][1] = $langs->trans("Establishment");
-	$head[$h][2] = 'card';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/hrm/establishment/card.php?id=' . $object->id;
+    $head[$h][1] = $langs->trans("Establishment");
+    $head[$h][2] = 'card';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-	// $this->tabs = array('entity:-tabname);   												to remove a tab
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'establishment');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
+    // $this->tabs = array('entity:-tabname);                                                   to remove a tab
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'establishment');
 
-	$head[$h][0] = DOL_URL_ROOT.'/hrm/establishment/info.php?id='.$object->id;
-	$head[$h][1] = $langs->trans("Info");
-	$head[$h][2] = 'info';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/hrm/establishment/info.php?id=' . $object->id;
+    $head[$h][1] = $langs->trans("Info");
+    $head[$h][2] = 'info';
+    $h++;
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm');
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'establishment', 'remove');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'establishment', 'remove');
 
-	return $head;
+    return $head;
 }
 
 /**
  *  Return array head with list of tabs to view object information
  *
- *  @return	array		head
+ *  @return array       head
  */
 function hrm_admin_prepare_head()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$langs->load('hrm');
+    $langs->load('hrm');
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT.'/hrm/admin/admin_hrm.php';
-	$head[$h][1] = $langs->trans("Parameters");
-	$head[$h][2] = 'parameters';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/hrm/admin/admin_hrm.php';
+    $head[$h][1] = $langs->trans("Parameters");
+    $head[$h][2] = 'parameters';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT.'/hrm/admin/admin_establishment.php';
-	$head[$h][1] = $langs->trans("Establishments");
-	$head[$h][2] = 'establishments';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/hrm/admin/admin_establishment.php';
+    $head[$h][1] = $langs->trans("Establishments");
+    $head[$h][2] = 'establishments';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-	// $this->tabs = array('entity:-tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm_admin');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
+    // $this->tabs = array('entity:-tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm_admin');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm_admin', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm_admin', 'remove');
 
-	return $head;
+    return $head;
 }

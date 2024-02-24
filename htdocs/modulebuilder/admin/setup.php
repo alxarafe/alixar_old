@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018 Nicolas ZABOURI   <info@inovea-conseil.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +21,7 @@
  *  \ingroup    modulebuilder
  *  \brief      Page setup for modulebuilder module
  */
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2007-2022	Laurent Destailleur	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2007-2022  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2011		Dimitri Mouillard	<dmouillard@teclib.com>
  * Copyright (C) 2013		Marcos García		<marcosgdf@gmail.com>
  * Copyright (C) 2016		Regis Houssin		<regis.houssin@inodbox.com>
@@ -181,7 +182,7 @@ if (empty($reshook)) {
                 $now=dol_now();
                 $sql = "UPDATE ".MAIN_DB_PREFIX."holiday_config SET";
                 $sql.= " value = '".dol_print_date($now,'%Y%m%d%H%M%S')."'";
-                $sql.= " WHERE name = 'lastUpdate' and value IS NULL";	// Add value IS NULL to be sure to update only at init.
+                $sql.= " WHERE name = 'lastUpdate' and value IS NULL";  // Add value IS NULL to be sure to update only at init.
                 dol_syslog('define_holiday update lastUpdate entry', LOG_DEBUG);
                 $result = $db->query($sql);
                 */

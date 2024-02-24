@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2003	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2011-2019	Alexandre Spangaro		<aspangaro@open-dsi.fr>
@@ -447,14 +448,14 @@ if (!empty($arrayfields['t.datev']['checked'])) {
 
 // Filter: Date payment
 /*if (!empty($arrayfields['t.datep']['checked'])) {
-	print '<td class="liste_titre center">';
-	print '<div class="nowrapfordate">';
+    print '<td class="liste_titre center">';
+    print '<div class="nowrapfordate">';
  print $form->selectDate($search_datepayment_start ? $search_datepayment_start : -1, 'search_datepayment_start', 0, 0, 1, '', 1, 0, 0, '', '', '', '', 1, '', $langs->trans("From"));
-	print '</div>';
-	print '<div class="nowrapfordate">';
+    print '</div>';
+    print '<div class="nowrapfordate">';
  print $form->selectDate($search_datepayment_end ? $search_datepayment_end : -1, 'search_datepayment_end', 0, 0, 1, '', 1, 0, 0, '', '', '', '', 1, '', $langs->trans("to"));
-	print '</div>';
-	print '</td>';
+    print '</div>';
+    print '</td>';
 }*/
 
 // Filter: Type
@@ -659,7 +660,7 @@ while ($i < $imaxinloop) {
         }
 
         // Date payment
-        /*if 		// Buttons
+        /*if        // Buttons
         if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td></td>';
         }(!empty($arrayfields['t.datep']['checked'])) {

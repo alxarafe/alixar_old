@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2008       Raphael Bertrand        <raphael.bertrand@resultic.fr>
@@ -250,7 +251,7 @@ class pdf_standard_recruitmentjobposition extends ModelePDFRecruitmentJobPositio
 
                         foreach ($objphoto->liste_photos($dir, 1) as $key => $obj)
                         {
-                            if (!getDolGlobalInt('CAT_HIGH_QUALITY_IMAGES'))		// If CAT_HIGH_QUALITY_IMAGES not defined, we use thumb if defined and then original photo
+                            if (!getDolGlobalInt('CAT_HIGH_QUALITY_IMAGES'))        // If CAT_HIGH_QUALITY_IMAGES not defined, we use thumb if defined and then original photo
                             {
                                 if ($obj['photo_vignette'])
                                 {

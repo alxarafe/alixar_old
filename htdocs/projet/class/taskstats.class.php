@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014-2015 Florian HENRY <florian.henry@open-concept.pro>
  *
  * This program is free software; you can redistribute it and/or modify

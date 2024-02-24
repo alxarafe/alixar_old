@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2006-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -194,7 +195,7 @@ $thirdpartywithuser_fields = [
     'capital' => ['name' => 'capital', 'type' => 'xsd:string'],
     'tva_assuj' => ['name' => 'tva_assuj', 'type' => 'xsd:string'],
     'tva_intra' => ['name' => 'tva_intra', 'type' => 'xsd:string'],
-    // 	For user
+    //  For user
     'login' => ['name' => 'login', 'type' => 'xsd:string'],
     'password' => ['name' => 'password', 'type' => 'xsd:string'],
     'group_id' => ['name' => 'group_id', 'type' => 'xsd:string'],
@@ -346,10 +347,12 @@ function getUser($authentication, $id, $ref = '', $ref_ext = '')
     if (!$error) {
         $fuser->getrights();
 
-        if ($fuser->hasRight('user', 'user', 'lire')
+        if (
+            $fuser->hasRight('user', 'user', 'lire')
             || ($fuser->hasRight('user', 'self', 'creer') && $id && $id == $fuser->id)
             || ($fuser->hasRight('user', 'self', 'creer') && $ref && $ref == $fuser->login)
-            || ($fuser->hasRight('user', 'self', 'creer') && $ref_ext && $ref_ext == $fuser->ref_ext)) {
+            || ($fuser->hasRight('user', 'self', 'creer') && $ref_ext && $ref_ext == $fuser->ref_ext)
+        ) {
             $user = new User($db);
             $result = $user->fetch($id, $ref, $ref_ext);
             if ($result > 0) {

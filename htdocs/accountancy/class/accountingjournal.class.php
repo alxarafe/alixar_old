@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017-2022  OpenDSI     <support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -621,7 +622,8 @@ class AccountingJournal extends CommonObject
             if (!empty($pre_data_info['disposal'])) {
                 $disposal_date = $pre_data_info['disposal']['date'];
 
-                if ((!($date_start && $date_end) || ($date_start <= $disposal_date && $disposal_date <= $date_end)) &&
+                if (
+                    (!($date_start && $date_end) || ($date_start <= $disposal_date && $disposal_date <= $date_end)) &&
                     (!getDolGlobalString('ACCOUNTING_DATE_START_BINDING') || getDolGlobalInt('ACCOUNTING_DATE_START_BINDING') <= $disposal_date)
                 ) {
                     $disposal_amount = $pre_data_info['disposal']['amount'];

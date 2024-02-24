@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2021 NextGestion         <contact@nextgestion.com>
  *
@@ -234,7 +235,7 @@ class Partnership extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);
@@ -730,10 +731,10 @@ class Partnership extends CommonObject
             $sql .= " SET ref = '" . $this->db->escape($num) . "',";
             $sql .= " status = " . self::STATUS_APPROVED;
             // if (!empty($this->fields['date_validation'])) {
-            // 	$sql .= ", date_validation = '".$this->db->idate($now)."'";
+            //  $sql .= ", date_validation = '".$this->db->idate($now)."'";
             // }
             // if (!empty($this->fields['fk_user_valid'])) {
-            // 	$sql .= ", fk_user_valid = ".$user->id;
+            //  $sql .= ", fk_user_valid = ".$user->id;
             // }
             $sql .= " WHERE rowid = " . ((int) $this->id);
 

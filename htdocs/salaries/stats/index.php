@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018      Alexandre Spangaro <aspangaro@open-dsi.fr>
  * Copyright (C) 2018      Fidesio            <contact@fidesio.com>
  * Copyright (C) 2021		Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>

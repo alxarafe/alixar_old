@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015      Juanjo Menent	    <jmenent@2byte.es>
+
+/* Copyright (C) 2015      Juanjo Menent        <jmenent@2byte.es>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,157 +23,157 @@
  * \brief      File containing class for numbering module Bronan
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/supplier_payment/modules_supplier_payment.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_payment/modules_supplier_payment.php';
 
 /**
- *	Class to manage customer payment numbering rules Cicada
+ *  Class to manage customer payment numbering rules Cicada
  */
 class mod_supplier_payment_bronan extends ModeleNumRefSupplierPayments
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	public $prefix = 'SPAY';
+    public $prefix = 'SPAY';
 
-	/**
-	 * @var string Error code (or message)
-	 */
-	public $error = '';
+    /**
+     * @var string Error code (or message)
+     */
+    public $error = '';
 
-	/**
-	 * @var string Nom du modele
-	 * @deprecated
-	 * @see $name
-	 */
-	public $nom = 'Bronan';
+    /**
+     * @var string Nom du modele
+     * @deprecated
+     * @see $name
+     */
+    public $nom = 'Bronan';
 
-	/**
-	 * @var string model name
-	 */
-	public $name = 'Bronan';
-
-
-	/**
-	 *  Return description of numbering module
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $langs;
-		return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
-	}
+    /**
+     * @var string model name
+     */
+    public $name = 'Bronan';
 
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		return $this->prefix."0501-0001";
-	}
+    /**
+     *  Return description of numbering module
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $langs;
+        return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
+    }
 
 
-	/**
-	 *  Checks if the numbers already in the database do not
-	 *  cause conflicts that would prevent this numbering working.
-	 *
-	 *	@param	Object		$object		Object we need next value for
-	 *  @return boolean     			false if KO (there is a conflict), true if OK
-	 */
-	public function canBeActivated($object)
-	{
-		global $conf, $langs, $db;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        return $this->prefix . "0501-0001";
+    }
 
-		$payyymm = '';
-		$max = '';
 
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."paiementfourn";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity = ".$conf->entity;
+    /**
+     *  Checks if the numbers already in the database do not
+     *  cause conflicts that would prevent this numbering working.
+     *
+     *  @param  Object      $object     Object we need next value for
+     *  @return boolean                 false if KO (there is a conflict), true if OK
+     */
+    public function canBeActivated($object)
+    {
+        global $conf, $langs, $db;
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$row = $db->fetch_row($resql);
-			if ($row) {
-				$payyymm = substr($row[0], 0, 6);
-				$max = $row[0];
-			}
-		}
-		if ($payyymm && !preg_match('/'.$this->prefix.'[0-9][0-9][0-9][0-9]/i', $payyymm)) {
-			$langs->load("errors");
-			$this->error = $langs->trans('ErrorNumRefModel', $max);
-			return false;
-		}
+        $payyymm = '';
+        $max = '';
 
-		return true;
-	}
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "paiementfourn";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity = " . $conf->entity;
 
-	/**
-	 * 	Return next free value
-	 *
-	 *  @param	Societe		$objsoc     Object thirdparty
-	 *  @param  Object		$object		Object we need next value for
-	 *  @return string|-1      			Value if OK, -1 if KO
-	 */
-	public function getNextValue($objsoc, $object)
-	{
-		global $db, $conf;
+        $resql = $db->query($sql);
+        if ($resql) {
+            $row = $db->fetch_row($resql);
+            if ($row) {
+                $payyymm = substr($row[0], 0, 6);
+                $max = $row[0];
+            }
+        }
+        if ($payyymm && !preg_match('/' . $this->prefix . '[0-9][0-9][0-9][0-9]/i', $payyymm)) {
+            $langs->load("errors");
+            $this->error = $langs->trans('ErrorNumRefModel', $max);
+            return false;
+        }
 
-		// First, we get the max value
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."paiementfourn";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity = ".$conf->entity;
+        return true;
+    }
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$obj = $db->fetch_object($resql);
-			if ($obj) {
-				$max = intval($obj->max);
-			} else {
-				$max = 0;
-			}
-		} else {
-			dol_syslog(__METHOD__, LOG_DEBUG);
-			return -1;
-		}
+    /**
+     *  Return next free value
+     *
+     *  @param  Societe     $objsoc     Object thirdparty
+     *  @param  Object      $object     Object we need next value for
+     *  @return string|-1               Value if OK, -1 if KO
+     */
+    public function getNextValue($objsoc, $object)
+    {
+        global $db, $conf;
 
-		//$date=time();
-		$date = $object->datepaye;
-		$yymm = dol_print_date($date, "%y%m");
+        // First, we get the max value
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "paiementfourn";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity = " . $conf->entity;
 
-		if ($max >= (pow(10, 4) - 1)) {
-			$num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
-		} else {
-			$num = sprintf("%04s", $max + 1);
-		}
+        $resql = $db->query($sql);
+        if ($resql) {
+            $obj = $db->fetch_object($resql);
+            if ($obj) {
+                $max = intval($obj->max);
+            } else {
+                $max = 0;
+            }
+        } else {
+            dol_syslog(__METHOD__, LOG_DEBUG);
+            return -1;
+        }
 
-		dol_syslog(__METHOD__." return ".$this->prefix.$yymm."-".$num);
-		return $this->prefix.$yymm."-".$num;
-	}
+        //$date=time();
+        $date = $object->datepaye;
+        $yymm = dol_print_date($date, "%y%m");
+
+        if ($max >= (pow(10, 4) - 1)) {
+            $num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
+        } else {
+            $num = sprintf("%04s", $max + 1);
+        }
+
+        dol_syslog(__METHOD__ . " return " . $this->prefix . $yymm . "-" . $num);
+        return $this->prefix . $yymm . "-" . $num;
+    }
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return next free value
-	 *
-	 *  @param	Societe		$objsoc     Object third party
-	 * 	@param	string		$objforref	Object for number to search
-	 *  @return string      			Next free value
-	 */
-	public function payment_get_num($objsoc, $objforref)
-	{
+    /**
+     *  Return next free value
+     *
+     *  @param  Societe     $objsoc     Object third party
+     *  @param  string      $objforref  Object for number to search
+     *  @return string                  Next free value
+     */
+    public function payment_get_num($objsoc, $objforref)
+    {
 		// phpcs:enable
-		return $this->getNextValue($objsoc, $objforref);
-	}
+        return $this->getNextValue($objsoc, $objforref);
+    }
 }

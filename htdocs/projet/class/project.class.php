@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@inodbox.com>
@@ -28,6 +29,7 @@
  *        \ingroup    projet
  *        \brief      File of class to manage projects
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**
@@ -1192,7 +1194,7 @@ class Project extends CommonObject
         $sql = "UPDATE " . MAIN_DB_PREFIX . "projet";
         $sql .= " SET fk_statut = " . self::STATUS_VALIDATED;
         $sql .= " WHERE rowid = " . ((int) $this->id);
-        //$sql .= " AND entity = ".((int) $conf->entity);	// Disabled, when we use the ID for the where, we must not add any other search condition
+        //$sql .= " AND entity = ".((int) $conf->entity);   // Disabled, when we use the ID for the where, we must not add any other search condition
 
         dol_syslog(get_class($this) . "::setValid", LOG_DEBUG);
         $resql = $this->db->query($sql);
@@ -1517,19 +1519,19 @@ class Project extends CommonObject
         $this->usage_bill_time = 1;
         $this->usage_organize_event = 1;
         /*
-		 $nbp = mt_rand(1, 9);
-		 $xnbp = 0;
-		 while ($xnbp < $nbp)
-		 {
-		 $line = new Task($this->db);
-		 $line->fk_project = 0;
-		 $line->label = $langs->trans("Label") . " " . $xnbp;
-		 $line->description = $langs->trans("Description") . " " . $xnbp;
+         $nbp = mt_rand(1, 9);
+         $xnbp = 0;
+         while ($xnbp < $nbp)
+         {
+         $line = new Task($this->db);
+         $line->fk_project = 0;
+         $line->label = $langs->trans("Label") . " " . $xnbp;
+         $line->description = $langs->trans("Description") . " " . $xnbp;
 
-		 $this->lines[]=$line;
-		 $xnbp++;
-		 }
-		 */
+         $this->lines[]=$line;
+         $xnbp++;
+         }
+         */
     }
 
     /**
@@ -1580,12 +1582,12 @@ class Project extends CommonObject
                     $nblinks++;
                 }
             }
-            //if (empty($nblinks))	// If nobody has permission, we grant creator
+            //if (empty($nblinks))  // If nobody has permission, we grant creator
             //{
-            //	if ((!empty($this->user_author_id) && $this->user_author_id == $user->id))
-            //	{
-            //		$userAccess = 1;
-            //	}
+            //  if ((!empty($this->user_author_id) && $this->user_author_id == $user->id))
+            //  {
+            //      $userAccess = 1;
+            //  }
             //}
         }
 
@@ -1619,7 +1621,7 @@ class Project extends CommonObject
         }
         $sql .= " WHERE p.entity IN (" . getEntity('project') . ")";
         // Internal users must see project he is contact to even if project linked to a third party he can't see.
-        //if ($socid || ! $user->rights->societe->client->voir)	$sql.= " AND (p.fk_soc IS NULL OR p.fk_soc = 0 OR p.fk_soc = ".((int) $socid).")";
+        //if ($socid || ! $user->rights->societe->client->voir) $sql.= " AND (p.fk_soc IS NULL OR p.fk_soc = 0 OR p.fk_soc = ".((int) $socid).")";
         if ($socid > 0) {
             $sql .= " AND (p.fk_soc IS NULL OR p.fk_soc = 0 OR p.fk_soc = " . ((int) $socid) . ")";
         }
@@ -2266,7 +2268,7 @@ class Project extends CommonObject
         }
 
         // No need to check company, as filtering of projects must be done by getProjectsAuthorizedForUser
-        //if ($socid || ! $user->rights->societe->client->voir)	$sql.= "  AND (p.fk_soc IS NULL OR p.fk_soc = 0 OR p.fk_soc = ".((int) $socid).")";
+        //if ($socid || ! $user->rights->societe->client->voir) $sql.= "  AND (p.fk_soc IS NULL OR p.fk_soc = 0 OR p.fk_soc = ".((int) $socid).")";
         // For external user, no check is done on company permission because readability is managed by public status of project and assignment.
         //if (! $user->rights->societe->client->voir && ! $socid) $sql.= " AND ((s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $user->id).") OR (s.rowid IS NULL))";
 
@@ -2494,17 +2496,17 @@ class Project extends CommonObject
         }
         // Date
         /*
-		if (property_exists($this, 'date_start') && $this->date_start) {
-			$return .= '<br><span class="info-box-label">'.dol_print_date($this->date_start, 'day').'</>';
-		}
-		if (property_exists($this, 'date_end') && $this->date_end) {
-			if ($this->date_start) {
-				$return .= ' - ';
-			} else {
-				$return .= '<br>';
-			}
-			$return .= '<span class="info-box-label">'.dol_print_date($this->date_end, 'day').'</span>';
-		}*/
+        if (property_exists($this, 'date_start') && $this->date_start) {
+            $return .= '<br><span class="info-box-label">'.dol_print_date($this->date_start, 'day').'</>';
+        }
+        if (property_exists($this, 'date_end') && $this->date_end) {
+            if ($this->date_start) {
+                $return .= ' - ';
+            } else {
+                $return .= '<br>';
+            }
+            $return .= '<span class="info-box-label">'.dol_print_date($this->date_end, 'day').'</span>';
+        }*/
         if (property_exists($this, 'thirdparty') && is_object($this->thirdparty)) {
             $return .= '<br><div class="info-box-ref tdoverflowmax150 inline-block valignmiddle">' . $this->thirdparty->getNomUrl(1);
             $return .= '</div><div class="inline-block valignmiddle">';
@@ -2524,9 +2526,9 @@ class Project extends CommonObject
             $return .= ' <span class="small valignmiddle">' . $arraydata['assignedusers'] . '</span>';
         }
         /*if (property_exists($this, 'user_author_id')) {
-			$return .= '<br><span class="info-box-label opacitymedium">'.$langs->trans("Author").'</span>';
-			$return .= '<span> : '.$user->getNomUrl(1).'</span>';
-		}*/
+            $return .= '<br><span class="info-box-label opacitymedium">'.$langs->trans("Author").'</span>';
+            $return .= '<span> : '.$user->getNomUrl(1).'</span>';
+        }*/
         $return .= '<br><div>';    // start div line status
         if ($this->usage_opportunity && $this->opp_status_code) {
             //$return .= '<br><span class="info-bo-label opacitymedium">'.$langs->trans("OpportunityStatusShort").'</span>';

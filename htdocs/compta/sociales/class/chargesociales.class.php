@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2007 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2016-2022 Frédéric France      <frederic.france@netlogic.fr>
@@ -24,6 +25,7 @@
  *        \ingroup    facture
  *        \brief      File for the ChargesSociales class
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**

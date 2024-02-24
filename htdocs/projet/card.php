@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -73,7 +74,7 @@ $location = GETPOST('location', 'alphanohtml');
 $fk_project = GETPOSTINT('fk_project');
 
 $mine = GETPOST('mode') == 'mine' ? 1 : 0;
-//if (! $user->rights->projet->all->lire) $mine=1;	// Special for projects
+//if (! $user->rights->projet->all->lire) $mine=1;  // Special for projects
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
 $hookmanager->initHooks(['projectcard', 'globalcard']);
@@ -1559,7 +1560,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
     if (empty($reshook)) {
         if ($action != "edit" && $action != 'presend') {
             // Create event
-            /*if (isModEnabled('agenda') && !empty($conf->global->MAIN_ADD_EVENT_ON_ELEMENT_CARD)) 				// Add hidden condition because this is not a
+            /*if (isModEnabled('agenda') && !empty($conf->global->MAIN_ADD_EVENT_ON_ELEMENT_CARD))              // Add hidden condition because this is not a
                 // "workflow" action so should appears somewhere else on
                 // page.
             {

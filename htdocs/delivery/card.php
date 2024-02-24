@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2005	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2010	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005		Simon TOSSER			<simon@kornog-computing.com>
  * Copyright (C) 2005-2014	Regis Houssin			<regis.houssin@inodbox.com>
@@ -133,9 +134,13 @@ if ($action == 'add') {
 
         $action = 'create';
     }
-} elseif ($action == 'confirm_valid' && $confirm == 'yes' &&
-    ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery', 'creer'))
-        || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery_advance', 'validate')))
+} elseif (
+    $action == 'confirm_valid' &&
+    $confirm == 'yes' &&
+    ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') &&
+    $user->hasRight('expedition', 'delivery', 'creer')) ||
+        (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') &&
+        $user->hasRight('expedition', 'delivery_advance', 'validate')))
 ) {
     $result = $object->valid($user);
 
@@ -623,7 +628,7 @@ if ($action == 'create') {
 
             print dol_get_fiche_end();
 
-            //if ($object->statut == 0)	// only if draft
+            //if ($object->statut == 0) // only if draft
             // print $form->buttonsSaveCancel("Save", '');
 
             print '</form>';
@@ -636,8 +641,10 @@ if ($action == 'create') {
                 print '<div class="tabsAction">';
 
                 if ($object->statut == 0 && $num_prod > 0) {
-                    if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery', 'creer'))
-                        || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery_advance', 'validate'))) {
+                    if (
+                        (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery', 'creer'))
+                        || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery_advance', 'validate'))
+                    ) {
                         print dolGetButtonAction('', $langs->trans('Validate'), 'default', $_SERVER["PHP_SELF"] . '?action=valid&amp;token=' . newToken() . '&amp;id=' . $object->id, '');
                     }
                 }

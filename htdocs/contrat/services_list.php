@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
@@ -405,10 +406,10 @@ $num = $db->num_rows($resql);
 /*
 // Direct jump if only one record found
 if ($num == 1 && getDolGlobalInt('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && $search_all && !$page) {
-	$obj = $db->fetch_object($resql);
-	$id = $obj->id;
-	header("Location: ".DOL_URL_ROOT.'/projet/tasks/task.php?id='.$id.'&withprojet=1');
-	exit;
+    $obj = $db->fetch_object($resql);
+    $id = $obj->id;
+    header("Location: ".DOL_URL_ROOT.'/projet/tasks/task.php?id='.$id.'&withprojet=1');
+    exit;
 }*/
 
 // Output page

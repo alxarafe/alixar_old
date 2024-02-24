@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2020       Maxime Kohlhaas         <maxime@atm-consulting.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -134,7 +135,7 @@ $builddate = dol_now();
 
 // TODO Report from bookkeeping not yet available, so we switch on report on business events
 /*if ($modecompta == "BOOKKEEPING") {
-	$modecompta = "CREANCES-DETTES";
+    $modecompta = "CREANCES-DETTES";
 }*/
 if ($modecompta == "BOOKKEEPINGCOLLECTED") {
     $modecompta = "RECETTES-DEPENSES";

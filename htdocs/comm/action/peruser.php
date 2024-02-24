@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Eric Seigne          <erics@rycks.com>
  * Copyright (C) 2004-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -57,7 +58,7 @@ $showbirthday = 0;
 // If not choice done on calendar owner, we filter on user.
 /*if (empty($filtert) && empty($conf->global->AGENDA_ALL_CALENDARS))
 {
-	$filtert = $user->id;
+    $filtert = $user->id;
 }*/
 
 $sortfield = GETPOST('sortfield', 'aZ09comma');
@@ -722,8 +723,10 @@ if ($resql) {
         //print '<br>'.$i.' - eventid='.$event->id.' '.dol_print_date($event->date_start_in_calendar, 'dayhour').' '.dol_print_date($firstdaytoshow, 'dayhour').' - '.dol_print_date($event->date_end_in_calendar, 'dayhour').' '.dol_print_date($lastdaytoshow, 'dayhour').'<br>'."\n";
 
         // Check values
-        if ($event->date_end_in_calendar < $firstdaytoshow ||
-            $event->date_start_in_calendar >= $lastdaytoshow) {
+        if (
+            $event->date_end_in_calendar < $firstdaytoshow ||
+            $event->date_start_in_calendar >= $lastdaytoshow
+        ) {
             // This record is out of visible range
             unset($event);
         } else {
@@ -1162,7 +1165,7 @@ function show_day_events2($username, $day, $month, $year, $monthshown, $style, &
                 if (!in_array($username->id, $keysofuserassigned)) {
                     continue; // We discard record if event is from another user than user we want to show
                 }
-                //if ($username->id != $event->userownerid) continue;	// We discard record if event is from another user than user we want to show
+                //if ($username->id != $event->userownerid) continue;   // We discard record if event is from another user than user we want to show
 
                 $parameters = [];
                 $reshook = $hookmanager->executeHooks('formatEvent', $parameters, $event, $action); // Note that $action and $object may have been modified by some hooks

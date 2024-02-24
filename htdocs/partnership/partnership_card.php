@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017-2021 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021      NextGestion			<contact@nextgestion.com>
  *
@@ -385,11 +386,11 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         ];
 
         // if (isModEnabled('notification')) {
-        // 	require_once DOL_DOCUMENT_ROOT.'/core/class/notify.class.php';
-        // 	$notify = new Notify($db);
-        // 	$formquestion = array_merge($formquestion, array(
-        // 		array('type' => 'onecolumn', 'value' => $notify->confirmMessage('PARTNERSHIP_CLOSE_DENY', $object->socid, $object)),
-        // 	));
+        //  require_once DOL_DOCUMENT_ROOT.'/core/class/notify.class.php';
+        //  $notify = new Notify($db);
+        //  $formquestion = array_merge($formquestion, array(
+        //      array('type' => 'onecolumn', 'value' => $notify->confirmMessage('PARTNERSHIP_CLOSE_DENY', $object->socid, $object)),
+        //  ));
         // }
 
         $formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('ToRefuse'), '', 'confirm_refuse', $formquestion, '', 1, 250);
@@ -459,9 +460,9 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     print '<table class="border centpercent tableforfield">' . "\n";
 
     // Common attributes
-    //$keyforbreak='fieldkeytoswitchonsecondcolumn';	// We change column just before this field
-    //unset($object->fields['fk_project']);				// Hide field already shown in banner
-    //unset($object->fields['fk_soc']);					// Hide field already shown in banner
+    //$keyforbreak='fieldkeytoswitchonsecondcolumn';    // We change column just before this field
+    //unset($object->fields['fk_project']);             // Hide field already shown in banner
+    //unset($object->fields['fk_soc']);                 // Hide field already shown in banner
     include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
     // End of subscription date

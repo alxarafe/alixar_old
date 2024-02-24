@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2005      Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@inodbox.com>
@@ -215,7 +216,7 @@ $sql .= " AND pl.fk_soc = s.rowid";
 $sql .= " AND pl.statut = 3 ";
 $sql .= " AND pr.fk_prelevement_lignes = pl.rowid";
 /*if ($socid) {
-	$sql .= " AND s.rowid = ".((int) $socid);
+    $sql .= " AND s.rowid = ".((int) $socid);
 }*/
 $sql .= " ORDER BY pl.amount DESC";
 

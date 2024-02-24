@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017       Florian HENRY           <florian.henry@atm-consulting.fr>
  * Copyright (C) 2018-2023  Frédéric France         <frederic.france@netlogic.fr>
  *

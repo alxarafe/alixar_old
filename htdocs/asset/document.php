@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2018-2021 Alexandre Spangaro   <aspangaro@open-dsi.fr>
  *

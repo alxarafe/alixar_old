@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2000-2007	Rodolphe Quiedeville		<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2000-2007  Rodolphe Quiedeville        <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo			<jlb@j1b.org>
  * Copyright (C) 2004-2022	Laurent Destailleur			<eldy@users.sourceforge.net>
  * Copyright (C) 2004		Sebastien Di Cintio			<sdicintio@ressource-toi.org>
@@ -804,7 +805,7 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
                                                 $out .= dol_string_nospecial($val, '', $forbidden_chars_to_replace);
                                             }
                                         }
-                                        //break;	// No break for sortfield and sortorder so we can cumulate fields (is it really useful ?)
+                                        //break;    // No break for sortfield and sortorder so we can cumulate fields (is it really useful ?)
                                     }
                                 }
                             }
@@ -1125,8 +1126,8 @@ function sanitizeVal($out = '', $check = 'alphanohtml', $filter = null, $options
                     return 'BadParameterForGETPOST - Param 3 of sanitizeVal()';
                 }
                 /*if (empty($options)) {
-					return 'BadParameterForGETPOST - Param 4 of sanitizeVal()';
-				}*/
+                    return 'BadParameterForGETPOST - Param 4 of sanitizeVal()';
+                }*/
                 if (is_null($options)) {
                     $options = 0;
                 }
@@ -1285,7 +1286,7 @@ function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
                     // Define $urlwithroot
                     $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($conf->file->dol_main_url_root));
                     $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-                    //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+                    //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
                     $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : $urlwithroot) . '/' . $path; // Test on start with http is for old conf syntax
                 }
@@ -1309,7 +1310,7 @@ function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
                         // Define $urlwithroot
                         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($conf->file->dol_main_url_root));
                         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-                        //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+                        //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
                         $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : $urlwithroot) . $conf->file->dol_url_root[$key] . '/' . $path; // Test on start with http is for old conf syntax
                     }
@@ -1641,7 +1642,7 @@ function dol_escape_js($stringtoescape, $mode = 0, $noescapebackslashn = 0)
 
     // escape quotes and backslashes, newlines, etc.
     $substitjs = ["&#039;" => "\\'", "\r" => '\\r'];
-    //$substitjs['</']='<\/';	// We removed this. Should be useless.
+    //$substitjs['</']='<\/';   // We removed this. Should be useless.
     if (empty($noescapebackslashn)) {
         $substitjs["\n"] = '\\n';
         $substitjs['\\'] = '\\\\';
@@ -1989,8 +1990,10 @@ function dol_syslog($message, $level = LOG_INFO, $ident = 0, $suffixinfilename =
         }
 
         // If adding log inside HTML page is required
-        if ((!empty($_REQUEST['logtohtml']) && getDolGlobalString('MAIN_ENABLE_LOG_TO_HTML'))
-            || (is_object($user) && $user->hasRight('debugbar', 'read') && is_object($debugbar))) {
+        if (
+            (!empty($_REQUEST['logtohtml']) && getDolGlobalString('MAIN_ENABLE_LOG_TO_HTML'))
+            || (is_object($user) && $user->hasRight('debugbar', 'read') && is_object($debugbar))
+        ) {
             $conf->logbuffer[] = dol_print_date(time(), "%Y-%m-%d %H:%M:%S") . " " . $logLevels[$level] . " " . $message;
         }
 
@@ -3339,9 +3342,9 @@ function dol_now($mode = 'auto')
         $tzsecond = getServerTimeZoneInt('now'); // Contains tz+dayling saving time
         $ret = (int) (dol_now('gmt') + ($tzsecond * 3600));
         //} elseif ($mode == 'tzref') {// Time for now with parent company timezone is added
-        //	require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
-        //	$tzsecond=getParentCompanyTimeZoneInt();    // Contains tz+dayling saving time
-        //	$ret=dol_now('gmt')+($tzsecond*3600);
+        //  require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
+        //  $tzsecond=getParentCompanyTimeZoneInt();    // Contains tz+dayling saving time
+        //  $ret=dol_now('gmt')+($tzsecond*3600);
         //}
     } elseif ($mode == 'tzuser' || $mode == 'tzuserrel') {
         // Time for now with user timezone added
@@ -4602,14 +4605,15 @@ function img_picto($titlealt, $picto, $moreatt = '', $pictoisfullpath = false, $
             $enabledisablehtml = '<span class="' . $faprefix . ' ' . $fakey . ($marginleftonlyshort ? ($marginleftonlyshort == 1 ? ' marginleftonlyshort' : ' marginleftonly') : '');
             $enabledisablehtml .= ($morecss ? ' ' . $morecss : '') . '" style="' . ($fasize ? ('font-size: ' . $fasize . ';') : '') . ($facolor ? (' color: ' . $facolor . ';') : '') . ($morestyle ? ' ' . $morestyle : '') . '"' . (($notitle || empty($titlealt)) ? '' : ' title="' . dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt : '') . '>';
             /*if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)) {
-				$enabledisablehtml .= $titlealt;
-			}*/
+                $enabledisablehtml .= $titlealt;
+            }*/
             $enabledisablehtml .= '</span>';
 
             return $enabledisablehtml;
         }
 
-        if (empty($srconly) && in_array($pictowithouttext, [
+        if (
+            empty($srconly) && in_array($pictowithouttext, [
                 '1downarrow', '1uparrow', '1leftarrow', '1rightarrow', '1uparrow_selected', '1downarrow_selected', '1leftarrow_selected', '1rightarrow_selected',
                 'accountancy', 'accounting_account', 'account', 'accountline', 'action', 'add', 'address', 'ai', 'angle-double-down', 'angle-double-up', 'asset',
                 'bank_account', 'barcode', 'bank', 'bell', 'bill', 'billa', 'billr', 'billd', 'birthday-cake', 'bookmark', 'bom', 'briefcase-medical', 'bug', 'building',
@@ -4643,7 +4647,8 @@ function img_picto($titlealt, $picto, $moreatt = '', $pictoisfullpath = false, $
                 'conferenceorbooth', 'eventorganization',
                 'stamp', 'signature',
                 'webportal',
-            ])) {
+            ])
+        ) {
             $fakey = $pictowithouttext;
             $facolor = '';
             $fasize = '';
@@ -4823,8 +4828,8 @@ function img_picto($titlealt, $picto, $moreatt = '', $pictoisfullpath = false, $
             $enabledisablehtml = '<span class="' . $fa . ' ' . $fakey . ($marginleftonlyshort ? ($marginleftonlyshort == 1 ? ' marginleftonlyshort' : ' marginleftonly') : '');
             $enabledisablehtml .= ($morecss ? ' ' . $morecss : '') . '" style="' . ($fasize ? ('font-size: ' . $fasize . ';') : '') . ($facolor ? (' color: ' . $facolor . ';') : '') . ($morestyle ? ' ' . $morestyle : '') . '"' . (($notitle || empty($titlealt)) ? '' : ' title="' . dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt : '') . '>';
             /*if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)) {
-				$enabledisablehtml .= $titlealt;
-			}*/
+                $enabledisablehtml .= $titlealt;
+            }*/
             $enabledisablehtml .= '</span>';
 
             return $enabledisablehtml;
@@ -5561,7 +5566,7 @@ function dol_print_error($db = null, $error = '', $errors = null)
 
     // If error occurs before the $lang object was loaded
     if (!$langs) {
-        //		require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
+        //      require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
         $langs = new Lang('', $conf);
         $langs->load("main");
     }
@@ -5667,7 +5672,7 @@ function dol_print_error($db = null, $error = '', $errors = null)
         if (function_exists('top_httphead')) {    // In CLI context, the method does not exists
             top_httphead();
         }
-        //http_response_code(500);		// If we use 500, message is not output with some command line tools
+        //http_response_code(500);      // If we use 500, message is not output with some command line tools
         http_response_code(202);        // If we use 202, this is not really an error message, but this allow to output message on command line tools
     }
 
@@ -6563,16 +6568,16 @@ function showDimensionInBestUnit($dimension, $unit, $type, $outputlangs, $round 
     }
     // Special case when we want output unit into pound or ounce
     /* TODO
-	if ($unit < 90 && $type == 'weight' && is_numeric($forceunitoutput) && (($forceunitoutput == 98) || ($forceunitoutput == 99))
-	{
-		$dimension = // convert dimension from standard unit into ounce or pound
-		$unit = $forceunitoutput;
-	}
-	if ($unit > 90 && $type == 'weight' && is_numeric($forceunitoutput) && $forceunitoutput < 90)
-	{
-		$dimension = // convert dimension from standard unit into ounce or pound
-		$unit = $forceunitoutput;
-	}*/
+    if ($unit < 90 && $type == 'weight' && is_numeric($forceunitoutput) && (($forceunitoutput == 98) || ($forceunitoutput == 99))
+    {
+        $dimension = // convert dimension from standard unit into ounce or pound
+        $unit = $forceunitoutput;
+    }
+    if ($unit > 90 && $type == 'weight' && is_numeric($forceunitoutput) && $forceunitoutput < 90)
+    {
+        $dimension = // convert dimension from standard unit into ounce or pound
+        $unit = $forceunitoutput;
+    }*/
 
     $ret = price($dimension, 0, $outputlangs, 0, 0, $round);
     $ret .= ' ' . measuringUnitString(0, $type, $unit, $use_short_label, $outputlangs);
@@ -6611,9 +6616,9 @@ function get_localtax($vatrate, $local, $thirdparty_buyer = "", $thirdparty_sell
     }
 
     /*if ($thirdparty_buyer->country_code != $thirdparty_seller->country_code)
-	{
-		return 0;
-	}*/
+    {
+        return 0;
+    }*/
 
     // Some test to guess with no need to make database access
     if ($mysoc->country_code == 'ES') { // For spain localtaxes 1 and 2, tax is qualified if buyer use local tax
@@ -6807,7 +6812,7 @@ function getTaxesFromId($vatrate, $buyer = null, $seller = null, $firstparamisid
 
         $sql .= ", " . MAIN_DB_PREFIX . "c_country as c";
         /*if ($mysoc->country_code == 'ES') $sql.= " WHERE t.fk_pays = c.rowid AND c.code = '".$db->escape($buyer->country_code)."'";    // vat in spain use the buyer country ??
-		else $sql.= " WHERE t.fk_pays = c.rowid AND c.code = '".$db->escape($seller->country_code)."'";*/
+        else $sql.= " WHERE t.fk_pays = c.rowid AND c.code = '".$db->escape($seller->country_code)."'";*/
         $sql .= " WHERE t.fk_pays = c.rowid AND c.code = '" . $db->escape($seller->country_code) . "'";
         $sql .= " AND t.taux = " . ((float) $vatratecleaned) . " AND t.active = 1";
         $sql .= " AND t.entity IN (" . getEntity('c_tva') . ")";
@@ -6995,9 +7000,9 @@ function get_product_vat_for_country($idprod, $thirdpartytouse, $idprodfournpric
                 $defaulttx = getDolGlobalString('MAIN_VAT_DEFAULT_IF_AUTODETECT_FAILS');
             }
             /*if (preg_match('/\((.*)\)/', $defaulttx, $reg)) {
-				$defaultcode = $reg[1];
-				$defaulttx = preg_replace('/\s*\(.*\)/', '', $defaulttx);
-			}*/
+                $defaultcode = $reg[1];
+                $defaulttx = preg_replace('/\s*\(.*\)/', '', $defaulttx);
+            }*/
 
             $ret = $defaulttx;
         }
@@ -7035,10 +7040,10 @@ function get_product_localtax_for_country($idprod, $local, $thirdpartytouse)
 
         if ($mysoc->country_code == $thirdpartytouse->country_code) { // If selling country is ours
             /* Not defined yet, so we don't use this
-			if ($local==1) $ret=$product->localtax1_tx;
-			elseif ($local==2) $ret=$product->localtax2_tx;
-			$found=1;
-			*/
+            if ($local==1) $ret=$product->localtax1_tx;
+            elseif ($local==2) $ret=$product->localtax2_tx;
+            $found=1;
+            */
         } else {
             // TODO Read default product vat according to product and another countrycode.
             // Vat for couple anothercountrycode/product is data that is not managed and store yet, so we will fallback on next rule.
@@ -7133,8 +7138,10 @@ function get_default_tva(Societe $thirdparty_seller, Societe $thirdparty_buyer, 
     }
 
     // If the (seller country = buyer country) then the default VAT = VAT of the product sold. End of rule.
-    if (($seller_country_code == $buyer_country_code)
-        || (in_array($seller_country_code, ['FR', 'MC']) && in_array($buyer_country_code, ['FR', 'MC']))) { // Warning ->country_code not always defined
+    if (
+        ($seller_country_code == $buyer_country_code)
+        || (in_array($seller_country_code, ['FR', 'MC']) && in_array($buyer_country_code, ['FR', 'MC']))
+    ) { // Warning ->country_code not always defined
         //print 'VATRULE 2';
         $tmpvat = get_product_vat_for_country($idprod, $thirdparty_seller, $idprodfournprice);
 
@@ -8053,7 +8060,7 @@ function dol_htmlentitiesbr($stringtoencode, $nl2brmode = 0, $pagecodefrom = 'UT
         $newstring = dol_nl2br(dol_htmlentities($newstring, ENT_COMPAT, $pagecodefrom), $nl2brmode);
     }
     // Other substitutions that htmlentities does not do
-    //$newstring=str_replace(chr(128),'&euro;',$newstring);	// 128 = 0x80. Not in html entity table.     // Seems useles with TCPDF. Make bug with UTF8 languages
+    //$newstring=str_replace(chr(128),'&euro;',$newstring); // 128 = 0x80. Not in html entity table.     // Seems useles with TCPDF. Make bug with UTF8 languages
     return $newstring;
 }
 
@@ -8443,7 +8450,7 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
                 $substitutionarray['__MEMBER_LASTNAME__'] = '__MEMBER_LASTNAME__';
                 $substitutionarray['__MEMBER_USER_LOGIN_INFORMATION__'] = 'Login and pass of the external user account';
                 /*$substitutionarray['__MEMBER_NOTE_PUBLIC__'] = '__MEMBER_NOTE_PUBLIC__';
-				$substitutionarray['__MEMBER_NOTE_PRIVATE__'] = '__MEMBER_NOTE_PRIVATE__';*/
+                $substitutionarray['__MEMBER_NOTE_PRIVATE__'] = '__MEMBER_NOTE_PRIVATE__';*/
             }
             // add substitution variables for ticket
             if (isModEnabled('ticket') && (!is_object($object) || $object->element == 'ticket') && (empty($exclude) || !in_array('ticket', $exclude)) && (empty($include) || in_array('ticket', $include))) {
@@ -8468,7 +8475,7 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
                 $substitutionarray['__PROJECT_REF__'] = '__PROJECT_REF__';
                 $substitutionarray['__PROJECT_NAME__'] = '__PROJECT_NAME__';
                 /*$substitutionarray['__PROJECT_NOTE_PUBLIC__'] = '__PROJECT_NOTE_PUBLIC__';
-				$substitutionarray['__PROJECT_NOTE_PRIVATE__'] = '__PROJECT_NOTE_PRIVATE__';*/
+                $substitutionarray['__PROJECT_NOTE_PRIVATE__'] = '__PROJECT_NOTE_PRIVATE__';*/
             }
             if (isModEnabled('contrat') && (!is_object($object) || $object->element == 'contract') && (empty($exclude) || !in_array('contract', $exclude)) && (empty($include) || in_array('contract', $include))) {
                 $substitutionarray['__CONTRACT_HIGHEST_PLANNED_START_DATE__'] = 'Highest date planned for a service start';
@@ -9087,16 +9094,16 @@ function make_substitutions($text, $substitutionarray, $outputlangs = null, $con
 
     // TODO Implement the lazyload substitution
     /*
-	add a loop to scan $substitutionarray:
-	For each key ending with '@lazyload', we extract the substitution key 'XXX' and we check inside the $text (the 1st parameter of make_substitutions), if the string XXX exists.
-	If no, we don't need to make replacement, so we do nothing.
-	If yes, we can make the substitution:
+    add a loop to scan $substitutionarray:
+    For each key ending with '@lazyload', we extract the substitution key 'XXX' and we check inside the $text (the 1st parameter of make_substitutions), if the string XXX exists.
+    If no, we don't need to make replacement, so we do nothing.
+    If yes, we can make the substitution:
 
-	include_once $path;
-	$tmpobj = new $class($db);
-	$valuetouseforsubstitution = $tmpobj->$method($id, '__XXX__');
-	And make the replacement of "__XXX__@lazyload" with $valuetouseforsubstitution
-	*/
+    include_once $path;
+    $tmpobj = new $class($db);
+    $valuetouseforsubstitution = $tmpobj->$method($id, '__XXX__');
+    And make the replacement of "__XXX__@lazyload" with $valuetouseforsubstitution
+    */
     $memory_object_list = [];
     foreach ($substitutionarray as $key => $value) {
         $lazy_load_arr = [];
@@ -9314,7 +9321,7 @@ function dolGetFirstLastname($firstname, $lastname, $nameorder = -1)
  */
 function setEventMessage($mesgs, $style = 'mesgs', $noduplicate = 0)
 {
-    //dol_syslog(__FUNCTION__ . " is deprecated", LOG_WARNING);		This is not deprecated, it is used by setEventMessages function
+    //dol_syslog(__FUNCTION__ . " is deprecated", LOG_WARNING);     This is not deprecated, it is used by setEventMessages function
     if (!is_array($mesgs)) {
         $mesgs = trim((string) $mesgs);
         // If mesgs is a not an empty string
@@ -9705,9 +9712,9 @@ function utf8_check($str)
 function utf8_valid($str)
 {
     /* 2 other methods to test if string is utf8
-	 $validUTF8 = mb_check_encoding($messagetext, 'UTF-8');
-	 $validUTF8b = ! (false === mb_detect_encoding($messagetext, 'UTF-8', true));
-	 */
+     $validUTF8 = mb_check_encoding($messagetext, 'UTF-8');
+     $validUTF8b = ! (false === mb_detect_encoding($messagetext, 'UTF-8', true));
+     */
     return preg_match('//u', $str) ? true : false;
 }
 
@@ -10003,7 +10010,7 @@ function dol_eval($s, $returnvalue = 0, $hideerrors = 1, $onlysimplestring = '1'
             $oldstringtoclean = $s;
             $s = str_ireplace($forbiddenphpstrings, '__forbiddenstring__', $s);
             $s = preg_replace('/' . $forbiddenphpregex . '/i', '__forbiddenstring__', $s);
-            //$s = preg_replace('/\$[a-zA-Z0-9_\->\$]+\(/i', '', $s);	// Remove $function( call and $mycall->mymethod(
+            //$s = preg_replace('/\$[a-zA-Z0-9_\->\$]+\(/i', '', $s);   // Remove $function( call and $mycall->mymethod(
         } while ($oldstringtoclean != $s);
 
         if (strpos($s, '__forbiddenstring__') !== false) {
@@ -10164,12 +10171,12 @@ function getLanguageCodeFromCountryCode($countrycode)
         'ar-SY',
         'ar-TN',
         'ar-YE',
-        //'as-IN',		// Moved after en-IN
+        //'as-IN',      // Moved after en-IN
         'ba-RU',
         'be-BY',
         'bg-BG',
         'bn-BD',
-        //'bn-IN',		// Moved after en-IN
+        //'bn-IN',      // Moved after en-IN
         'bo-CN',
         'br-FR',
         'ca-ES',
@@ -12705,11 +12712,11 @@ function readfileLowMemory($fullpath_original_file_osencoded, $method = -1)
 function showValueWithClipboardCPButton($valuetocopy, $showonlyonhover = 1, $texttoshow = '')
 {
     /*
-	global $conf;
+    global $conf;
 
-	if (!empty($conf->dol_no_mouse_hover)) {
-		$showonlyonhover = 0;
-	}*/
+    if (!empty($conf->dol_no_mouse_hover)) {
+        $showonlyonhover = 0;
+    }*/
 
     $tag = 'span';    // Using div (like any style of type 'block') does not work when using the js copy code.
     if ($texttoshow === 'none') {
@@ -13308,8 +13315,10 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = '', $n
     }
 
     // Add also event from emailings. TODO This should be replaced by an automatic event ? May be it's too much for very large emailing.
-    if (isModEnabled('mailing') && !empty($objcon->email)
-        && (empty($actioncode) || $actioncode == 'AC_OTH_AUTO' || $actioncode == 'AC_EMAILING')) {
+    if (
+        isModEnabled('mailing') && !empty($objcon->email)
+        && (empty($actioncode) || $actioncode == 'AC_OTH_AUTO' || $actioncode == 'AC_EMAILING')
+    ) {
         $langs->load("mails");
 
         $sql2 = "SELECT m.rowid as id, m.titre as label, mc.date_envoi as dp, mc.date_envoi as dp2, '100' as percent, 'mailing' as type";
@@ -13462,8 +13471,10 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = '', $n
         $out .= '<form name="listactionsfilter" class="listactionsfilter" action="' . $_SERVER["PHP_SELF"] . '" method="POST">';
         $out .= '<input type="hidden" name="token" value="' . newToken() . '">';
 
-        if ($objcon && get_class($objcon) == 'Contact' &&
-            (is_null($filterobj) || get_class($filterobj) == 'Societe')) {
+        if (
+            $objcon && get_class($objcon) == 'Contact' &&
+            (is_null($filterobj) || get_class($filterobj) == 'Societe')
+        ) {
             $out .= '<input type="hidden" name="id" value="' . $objcon->id . '" />';
         } else {
             $out .= '<input type="hidden" name="id" value="' . $filterobj->id . '" />';
@@ -13608,8 +13619,10 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = '', $n
                 $out .= $actionstatic->getNomUrl(1, -1, 'valignmiddle') . ' ';
             }
 
-            if ($user->hasRight('agenda', 'allactions', 'create') ||
-                (($actionstatic->authorid == $user->id || $actionstatic->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))) {
+            if (
+                $user->hasRight('agenda', 'allactions', 'create') ||
+                (($actionstatic->authorid == $user->id || $actionstatic->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))
+            ) {
                 $out .= '<a class="paddingleft paddingright timeline-btn2 editfielda" href="' . DOL_MAIN_URL_ROOT . '/comm/action/card.php?action=edit&token=' . newToken() . '&id=' . $actionstatic->id . '&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?' . $param) . '">';
                 //$out .= '<i class="fa fa-pencil" title="'.$langs->trans("Modify").'" ></i>';
                 $out .= img_picto($langs->trans("Modify"), 'edit', 'class="edita"');
@@ -13721,7 +13734,8 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = '', $n
             $out .= '</h3>';
 
             // Message
-            if (!empty($histo[$key]['message'] && $histo[$key]['message'] != $libelle)
+            if (
+                !empty($histo[$key]['message'] && $histo[$key]['message'] != $libelle)
                 && $actionstatic->code != 'AC_TICKET_CREATE'
                 && $actionstatic->code != 'AC_TICKET_MODIFY'
             ) {

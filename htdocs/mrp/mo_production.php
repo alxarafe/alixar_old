@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2019-2020 	Laurent Destailleur  <eldy@users.sourceforge.net>
+
+/* Copyright (C) 2019-2020  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 		Christian Humpel     <christian.humpel@gmail.com>
  * Copyright (C) 2023 		Vincent de Grandpré  <vincent@de-grandpre.quebec>
  *
@@ -167,7 +168,7 @@ if (empty($reshook)) {
     include DOL_DOCUMENT_ROOT . '/core/actions_sendmails.inc.php';
 
     // Action to move up and down lines of object
-    //include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';	// Must be include, not include_once
+    //include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php'; // Must be include, not include_once
 
     if ($action == 'set_thirdparty' && $permissiontoadd) {
         $object->setValueFrom('fk_soc', GETPOST('fk_soc', 'int'), '', '', 'date', '', $user, $triggermodname);
@@ -180,8 +181,10 @@ if (empty($reshook)) {
         $result = $object->setStatut($object::STATUS_INPROGRESS, 0, '', 'MRP_REOPEN');
     }
 
-    if (($action == 'confirm_addconsumeline' && GETPOST('addconsumelinebutton') && $permissiontoadd)
-        || ($action == 'confirm_addproduceline' && GETPOST('addproducelinebutton') && $permissiontoadd)) {
+    if (
+        ($action == 'confirm_addconsumeline' && GETPOST('addconsumelinebutton') && $permissiontoadd)
+        || ($action == 'confirm_addproduceline' && GETPOST('addproducelinebutton') && $permissiontoadd)
+    ) {
         $moline = new MoLine($db);
 
         // Line to produce
@@ -1400,8 +1403,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			});
 		</script>';
 
-        if (in_array($action, ['consumeorproduce', 'consumeandproduceall']) &&
-            getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE')) {
+        if (
+            in_array($action, ['consumeorproduce', 'consumeandproduceall']) &&
+            getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE')
+        ) {
             print '<script>$(document).ready(function () {
 				$("#fk_default_warehouse").change();
 			});</script>';

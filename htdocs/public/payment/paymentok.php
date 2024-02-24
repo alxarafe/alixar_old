@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2013	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2012		Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2021-2023	Waël Almoman			<info@almoman.com>
@@ -657,7 +658,7 @@ if ($ispaymentok) {
 
                         include_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';    // This also set $stripearrayofkeysbyenv
                         $stripe = new Stripe($db);
-                        //$stripeacc = $stripe->getStripeAccount($service);		Already defined previously
+                        //$stripeacc = $stripe->getStripeAccount($service);     Already defined previously
 
                         $customer = $stripe->customerStripe($thirdparty, $stripeacc, $servicestatus, 0);
 
@@ -873,7 +874,7 @@ if ($ispaymentok) {
                 $paiement->num_payment = '';
                 $paiement->note_public = 'Online payment ' . dol_print_date($now, 'standard') . ' from ' . $ipaddress;
                 $paiement->ext_payment_id = $TRANSACTIONID;        // TODO LDR May be we should store py_... instead of pi_... but we started with pi_... so we continue.
-                //$paiement->ext_payment_id = $TRANSACTIONID.':'.$customer->id.'@'.$stripearrayofkeysbyenv[$servicestatus]['publishable_key'];	// TODO LDR It would be better if we could store this. Do we have customer->id and publishable_key ?
+                //$paiement->ext_payment_id = $TRANSACTIONID.':'.$customer->id.'@'.$stripearrayofkeysbyenv[$servicestatus]['publishable_key'];  // TODO LDR It would be better if we could store this. Do we have customer->id and publishable_key ?
                 $paiement->ext_payment_site = $service;
 
                 if (!$error) {
@@ -1857,7 +1858,7 @@ if ($ispaymentok) {
         // Define $urlwithroot
         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-        //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+        //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
         // Define link to login card
 
@@ -1984,7 +1985,7 @@ if ($ispaymentok) {
         // Define $urlwithroot
         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-        //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+        //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
         $urlback = $_SERVER["REQUEST_URI"];
         $topic = '[' . $appli . '] ' . $companylangs->transnoentitiesnoconv("ValidationOfPaymentFailed");

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019       Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2019       Laurent Destailleur     <eldy@users.sourceforge.net>
  *

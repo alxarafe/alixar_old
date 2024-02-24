@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2010-2012	Regis Houssin	<regis.houssin@inodbox.com>
+/* Copyright (C) 2010-2012  Regis Houssin   <regis.houssin@inodbox.com>
  * Copyright (C) 2017		Charlie Benke	<charlie@patas-monkey.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,7 +30,7 @@ if (empty($form) || !is_object($form)) {
 
 $qtytoconsumeforline = $this->tpl['qty'] / (!empty($this->tpl['efficiency']) ? $this->tpl['efficiency'] : 1);
 /*if ((empty($this->tpl['qty_frozen']) && $this->tpl['qty_bom'] > 1)) {
-	$qtytoconsumeforline = $qtytoconsumeforline / $this->tpl['qty_bom'];
+    $qtytoconsumeforline = $qtytoconsumeforline / $this->tpl['qty_bom'];
 }*/
 $qtytoconsumeforline = price2num($qtytoconsumeforline, 'MS');
 

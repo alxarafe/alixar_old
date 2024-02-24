@@ -17,8 +17,8 @@
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
-	print "Error, template page can't be called as URL";
-	exit;
+    print "Error, template page can't be called as URL";
+    exit;
 }
 
 
@@ -53,7 +53,7 @@ print dol_get_fiche_head('');
 <td class="fieldrequired" width="20%"><?php echo $langs->trans("Ref"); ?></td>
 <td><input name="ref" size="40" maxlength="32" value="<?php echo $object->ref; ?>">
 <?php if ($refalreadyexists == 1) {
-	echo $langs->trans("RefAlreadyExists");
+    echo $langs->trans("RefAlreadyExists");
 } ?>
 </td></tr>
 
@@ -63,12 +63,12 @@ print dol_get_fiche_head('');
 </tr>
 
 <tr>
-<td class="fieldrequired"><?php echo $langs->trans("Status").' ('.$langs->trans("Sell").')'; ?></td>
+<td class="fieldrequired"><?php echo $langs->trans("Status") . ' (' . $langs->trans("Sell") . ')'; ?></td>
 <td><?php echo $form->selectarray('statut', $statutarray, $object->status); ?></td>
 </tr>
 
 <tr>
-<td class="fieldrequired"><?php echo $langs->trans("Status").' ('.$langs->trans("Buy").')'; ?></td>
+<td class="fieldrequired"><?php echo $langs->trans("Status") . ' (' . $langs->trans("Buy") . ')'; ?></td>
 <td><?php echo $form->selectarray('statut_buy', $statutarray, $object->status_buy); ?></td>
 </tr>
 
@@ -114,7 +114,7 @@ print dol_get_fiche_head('');
 
 <tr><td><?php echo $langs->trans("SellingPrice"); ?></td>
 <td><input name="price" size="10" value="<?php echo $object->price; ?>">
-	<?php echo $object->price_base_type; ?>
+    <?php echo $object->price_base_type; ?>
 </td></tr>
 
 <tr><td><?php echo $langs->trans("MinPrice"); ?></td>
@@ -122,7 +122,7 @@ print dol_get_fiche_head('');
 </td></tr>
 
 <tr><td width="20%"><?php echo $langs->trans("VATRate"); ?></td><td>
-	<?php echo $object->tva_tx; ?>
+    <?php echo $object->tva_tx; ?>
 </td></tr>
 
 </table>

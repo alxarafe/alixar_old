@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2007      Rodolphe Quiedeville <rodolphe@quiedeville.org>
@@ -19,19 +20,19 @@
  */
 
 /**
- *	\file       htdocs/admin/debugbar.php
- *	\ingroup    debugbar
- *	\brief      Setup page for debugbar module
+ *  \file       htdocs/admin/debugbar.php
+ *  \ingroup    debugbar
+ *  \brief      Setup page for debugbar module
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 
 global $conf;
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Load translation files required by the page
@@ -47,21 +48,21 @@ $action = GETPOST('action', 'aZ09');
 
 // Set modes
 if ($action == 'set') {
-	$db->begin();
+    $db->begin();
 
-	$result1 = dolibarr_set_const($db, "DEBUGBAR_LOGS_LINES_NUMBER", GETPOST('DEBUGBAR_LOGS_LINES_NUMBER', 'int'), 'chaine', 0, '', 0);
-	$result2 = dolibarr_set_const($db, "DEBUGBAR_USE_LOG_FILE", GETPOST('DEBUGBAR_USE_LOG_FILE', 'int'), 'chaine', 0, '', 0);
-	if ($result1 < 0 || $result2 < 0) {
-		$error++;
-	}
+    $result1 = dolibarr_set_const($db, "DEBUGBAR_LOGS_LINES_NUMBER", GETPOST('DEBUGBAR_LOGS_LINES_NUMBER', 'int'), 'chaine', 0, '', 0);
+    $result2 = dolibarr_set_const($db, "DEBUGBAR_USE_LOG_FILE", GETPOST('DEBUGBAR_USE_LOG_FILE', 'int'), 'chaine', 0, '', 0);
+    if ($result1 < 0 || $result2 < 0) {
+        $error++;
+    }
 
-	if (!$error) {
-		$db->commit();
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		$db->rollback();
-		setEventMessages($error, null, 'errors');
-	}
+    if (!$error) {
+        $db->commit();
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    } else {
+        $db->rollback();
+        setEventMessages($error, null, 'errors');
+    }
 }
 
 
@@ -73,38 +74,38 @@ llxHeader();
 
 $form = new Form($db);
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("DebugBarSetup"), $linkback, 'title_setup');
 
 if (!function_exists('mb_check_encoding')) {
-	$langs->load("errors");
-	print info_admin($langs->trans("ErrorPHPNeedModule", 'mbstring'), 0, 0, 'error');
+    $langs->load("errors");
+    print info_admin($langs->trans("ErrorPHPNeedModule", 'mbstring'), 0, 0, 'error');
 }
 
 print '<br>';
 
 // Level
-print '<form action="'.$_SERVER["PHP_SELF"].'" method="post">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form action="' . $_SERVER["PHP_SELF"] . '" method="post">';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 print '<input type="hidden" name="action" value="set">';
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td>'.$langs->trans("Parameter").'</td><td>'.$langs->trans("Value").'</td>';
-print '<td class="right"><input type="submit" class="button button-edit" value="'.$langs->trans("Modify").'"></td>';
+print '<td>' . $langs->trans("Parameter") . '</td><td>' . $langs->trans("Value") . '</td>';
+print '<td class="right"><input type="submit" class="button button-edit" value="' . $langs->trans("Modify") . '"></td>';
 print "</tr>\n";
 
-print '<tr class="oddeven"><td class="nowrap">'.$langs->trans("DEBUGBAR_USE_LOG_FILE").'</td>';
+print '<tr class="oddeven"><td class="nowrap">' . $langs->trans("DEBUGBAR_USE_LOG_FILE") . '</td>';
 print '<td>';
 print $form->selectyesno('DEBUGBAR_USE_LOG_FILE', getDolGlobalString('DEBUGBAR_USE_LOG_FILE'), 1);
 print '</td><td>';
-print '<span class="opacitymedium"> '.$langs->trans("UsingLogFileShowAllRecordOfSubrequestButIsSlower").'</span>';
+print '<span class="opacitymedium"> ' . $langs->trans("UsingLogFileShowAllRecordOfSubrequestButIsSlower") . '</span>';
 print '</td></tr>';
 
-print '<tr class="oddeven"><td class="nowrap">'.$langs->trans("DEBUGBAR_LOGS_LINES_NUMBER").'</td>';
-print '<td><input type="text" class="flat width75" name="DEBUGBAR_LOGS_LINES_NUMBER" value="'.(!getDolGlobalString('DEBUGBAR_LOGS_LINES_NUMBER') ? 250 : $conf->global->DEBUGBAR_LOGS_LINES_NUMBER).'">'; // This slow seriously output
+print '<tr class="oddeven"><td class="nowrap">' . $langs->trans("DEBUGBAR_LOGS_LINES_NUMBER") . '</td>';
+print '<td><input type="text" class="flat width75" name="DEBUGBAR_LOGS_LINES_NUMBER" value="' . (!getDolGlobalString('DEBUGBAR_LOGS_LINES_NUMBER') ? 250 : $conf->global->DEBUGBAR_LOGS_LINES_NUMBER) . '">'; // This slow seriously output
 print '</td><td>';
-print '<span class="opacitymedium">'.$langs->trans("WarningValueHigherSlowsDramaticalyOutput").'</span>';
+print '<span class="opacitymedium">' . $langs->trans("WarningValueHigherSlowsDramaticalyOutput") . '</span>';
 print '</td></tr>';
 
 print '</table>';

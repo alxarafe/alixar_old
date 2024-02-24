@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -79,8 +80,8 @@ $scandir = GETPOST('scan_dir', 'alpha');
 $type = 'recruitmentjobposition';
 
 $arrayofparameters = [
-    //	'RECRUITMENT_MYPARAM1'=>array('css'=>'minwidth200', 'enabled'=>1),
-    //	'RECRUITMENT_MYPARAM2'=>array('css'=>'minwidth500', 'enabled'=>1)
+    //  'RECRUITMENT_MYPARAM1'=>array('css'=>'minwidth200', 'enabled'=>1),
+    //  'RECRUITMENT_MYPARAM2'=>array('css'=>'minwidth500', 'enabled'=>1)
 ];
 
 $error = 0;

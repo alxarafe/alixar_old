@@ -147,11 +147,11 @@ if (!defined('WEBPORTAL_NOLOGIN') && !empty($context->controllerInstance->access
             }
             // check security graphic code
             //if (!$error && (array_key_exists($anti_spam_session_key, $_SESSION) === false ||
-            //		(strtolower($_SESSION[$anti_spam_session_key]) !== strtolower($security_code)))
+            //      (strtolower($_SESSION[$anti_spam_session_key]) !== strtolower($security_code)))
             //) {
-            //	$context->setEventMessage($langs->trans("ErrorBadValueForCode"), 'errors');
-            //	if (empty($focus_element)) $focus_element = 'security_code';
-            //	$error++;
+            //  $context->setEventMessage($langs->trans("ErrorBadValueForCode"), 'errors');
+            //  if (empty($focus_element)) $focus_element = 'security_code';
+            //  $error++;
             //}
 
             if (!$error) {

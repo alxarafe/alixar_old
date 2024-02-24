@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2002  Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2019  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010  Regis Houssin        <regis.houssin@inodbox.com>
@@ -243,10 +244,12 @@ if (empty($reshook)) {
 $rowids = GETPOST('rowid', 'array');
 
 // Conciliation
-if ((GETPOST('confirm_savestatement', 'alpha') || GETPOST('confirm_reconcile', 'alpha'))
+if (
+    (GETPOST('confirm_savestatement', 'alpha') || GETPOST('confirm_reconcile', 'alpha'))
     && (GETPOST("num_releve", "alpha") || !empty($rowids))
     && $user->hasRight('banque', 'consolidate')
-    && (!GETPOSTISSET('pageplusone') || (GETPOST('pageplusone') == GETPOST('pageplusoneold')))) {
+    && (!GETPOSTISSET('pageplusone') || (GETPOST('pageplusone') == GETPOST('pageplusoneold')))
+) {
     $error = 0;
 
     // Definition, nettoyage parameters
@@ -1683,9 +1686,13 @@ if ($resql) {
                 // TODO Add a cache of loaded companies here ?
                 $companystatic->fetch($companylinked_id);
                 print $companystatic->getNomUrl(1);
-            } elseif ($userlinked_id &&
-                (($type_link == 'payment_salary' && $user->hasRight('salaries', 'read'))
-                    || ($type_link == 'payment_sc' && $user->hasRight('tax', 'charges', 'lire')))) {
+            } elseif (
+                $userlinked_id &&
+                (($type_link == 'payment_salary' &&
+                $user->hasRight('salaries', 'read')) ||
+                    ($type_link == 'payment_sc' &&
+                    $user->hasRight('tax', 'charges', 'lire')))
+            ) {
                 // Get object user from cache or load it
                 if (!empty($conf->cache['user'][$userlinked_id])) {
                     $tmpuser = $conf->cache['user'][$userlinked_id];

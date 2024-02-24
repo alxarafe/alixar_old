@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -26,24 +27,24 @@
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);
-$path=dirname(__FILE__).'/';
+$path = dirname(__FILE__) . '/';
 
 // Test si mode batch
 $sapi_type = php_sapi_name();
 if (substr($sapi_type, 0, 3) == 'cgi') {
-	echo "Error: You are using PHP for CGI. To execute ".$script_file." from command line, you must use PHP for CLI mode.\n";
-	exit;
+    echo "Error: You are using PHP for CGI. To execute " . $script_file . " from command line, you must use PHP for CLI mode.\n";
+    exit;
 }
 
 // Recupere root dolibarr
 //$path=preg_replace('/generate-societe.php/i','',$_SERVER["PHP_SELF"]);
-require __DIR__. '/../../htdocs/master.inc.php';
-include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
-include_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
-include_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
-include_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
-include_once DOL_DOCUMENT_ROOT.'/contrat/class/contrat.class.php';
+require __DIR__ . '/../../htdocs/master.inc.php';
+include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
+include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
+include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+include_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
+include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 
 $listoftown = array("Auray","Baden","Vannes","Pirouville","Haguenau","Souffelweiersheim","Illkirch-Graffenstaden","Lauterbourg","Picauville","Sainte-Mère Eglise","Le Bono");
 $listoflastname = array("Joe","Marc","Steve","Laurent","Nico","Isabelle","Dorothee","Saby","Brigitte","Karine","Jose-Anne","Celine","Virginie");
@@ -56,92 +57,92 @@ $listoflastname = array("Joe","Marc","Steve","Laurent","Nico","Isabelle","Doroth
 define('GEN_NUMBER_SOCIETE', $argv[1] ?? 10);
 
 
-$ret=$user->fetch('', 'admin');
+$ret = $user->fetch('', 'admin');
 if (! $ret > 0) {
-	print 'A user with login "admin" and all permissions must be created to use this script.'."\n";
-	exit;
+    print 'A user with login "admin" and all permissions must be created to use this script.' . "\n";
+    exit;
 }
 $user->getrights();
 
 
-$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."product"; $productsid = array();
-$resql=$db->query($sql);
+$sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "product"; $productsid = array();
+$resql = $db->query($sql);
 if ($resql) {
-	$num = $db->num_rows($resql);
-	$i = 0;
-	while ($i < $num) {
-		$row = $db->fetch_row($resql);
-		$productsid[$i] = $row[0];
-		$i++;
-	}
+    $num = $db->num_rows($resql);
+    $i = 0;
+    while ($i < $num) {
+        $row = $db->fetch_row($resql);
+        $productsid[$i] = $row[0];
+        $i++;
+    }
 }
 
-$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."societe"; $societesid = array();
-$resql=$db->query($sql);
+$sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "societe"; $societesid = array();
+$resql = $db->query($sql);
 if ($resql) {
-	$num = $db->num_rows($resql);
-	$i = 0;
-	while ($i < $num) {
-		$row = $db->fetch_row($resql);
-		$societesid[$i] = $row[0];
-		$i++;
-	}
+    $num = $db->num_rows($resql);
+    $i = 0;
+    while ($i < $num) {
+        $row = $db->fetch_row($resql);
+        $societesid[$i] = $row[0];
+        $i++;
+    }
 } else {
-	print "err";
+    print "err";
 }
 
-$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."commande"; $commandesid = array();
-$resql=$db->query($sql);
+$sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "commande"; $commandesid = array();
+$resql = $db->query($sql);
 if ($resql) {
-	$num = $db->num_rows($resql);
-	$i = 0;
-	while ($i < $num) {
-		$row = $db->fetch_row($resql);
-		$commandesid[$i] = $row[0];
-		$i++;
-	}
+    $num = $db->num_rows($resql);
+    $i = 0;
+    while ($i < $num) {
+        $row = $db->fetch_row($resql);
+        $commandesid[$i] = $row[0];
+        $i++;
+    }
 } else {
-	print "err";
+    print "err";
 }
 
 
 
-print "Generates ".GEN_NUMBER_SOCIETE." companies\n";
+print "Generates " . GEN_NUMBER_SOCIETE . " companies\n";
 for ($s = 0; $s < GEN_NUMBER_SOCIETE; $s++) {
-	print "Company $s\n";
-	$soc = new Societe($db);
-	$soc->name = "Company num ".time()."$s";
-	$soc->town = $listoftown[mt_rand(0, count($listoftown)-1)];
-	$soc->client = mt_rand(1, 2);		// Une societe sur 2 est prospect, l'autre client
-	$soc->fournisseur = mt_rand(0, 1);	// Une societe sur 2 est fournisseur
-	$soc->code_client='CU'.time()."$s";
-	$soc->code_fournisseur='SU'.time()."$s";
-	$soc->tva_assuj=1;
-	$soc->country_id=1;
-	$soc->country_code='FR';
-	// Un client sur 3 a une remise de 5%
-	$user_remise=mt_rand(1, 3);
-	if ($user_remise==3) {
-		$soc->remise_percent=5;
-	}
-	print "> client=".$soc->client.", fournisseur=".$soc->fournisseur.", remise=".$soc->remise_percent."\n";
-	$soc->note_private = 'Company created by the script generate-societe.php';
-	$socid = $soc->create($user);
+    print "Company $s\n";
+    $soc = new Societe($db);
+    $soc->name = "Company num " . time() . "$s";
+    $soc->town = $listoftown[mt_rand(0, count($listoftown) - 1)];
+    $soc->client = mt_rand(1, 2);       // Une societe sur 2 est prospect, l'autre client
+    $soc->fournisseur = mt_rand(0, 1);  // Une societe sur 2 est fournisseur
+    $soc->code_client = 'CU' . time() . "$s";
+    $soc->code_fournisseur = 'SU' . time() . "$s";
+    $soc->tva_assuj = 1;
+    $soc->country_id = 1;
+    $soc->country_code = 'FR';
+    // Un client sur 3 a une remise de 5%
+    $user_remise = mt_rand(1, 3);
+    if ($user_remise == 3) {
+        $soc->remise_percent = 5;
+    }
+    print "> client=" . $soc->client . ", fournisseur=" . $soc->fournisseur . ", remise=" . $soc->remise_percent . "\n";
+    $soc->note_private = 'Company created by the script generate-societe.php';
+    $socid = $soc->create($user);
 
-	if ($socid >= 0) {
-		$rand = mt_rand(1, 4);
-		print "> Generates $rand contact(s)\n";
-		for ($c = 0; $c < $rand; $c++) {
-			$contact = new Contact($db);
-			$contact->socid = $soc->id;
-			$contact->lastname = "Lastname".$c;
-			$contact->firstname = $listoflastname[mt_rand(0, count($listoflastname)-1)];
-			if ($contact->create($user)) {
-			}
-		}
+    if ($socid >= 0) {
+        $rand = mt_rand(1, 4);
+        print "> Generates $rand contact(s)\n";
+        for ($c = 0; $c < $rand; $c++) {
+            $contact = new Contact($db);
+            $contact->socid = $soc->id;
+            $contact->lastname = "Lastname" . $c;
+            $contact->firstname = $listoflastname[mt_rand(0, count($listoflastname) - 1)];
+            if ($contact->create($user)) {
+            }
+        }
 
-		print "Company ".$s." created nom=".$soc->name."\n";
-	} else {
-		print "Error: ".$soc->error."\n";
-	}
+        print "Company " . $s . " created nom=" . $soc->name . "\n";
+    } else {
+        print "Error: " . $soc->error . "\n";
+    }
 }

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018		Andreu Bisquerra	<jove@bisquerra.com>
+
+/* Copyright (C) 2018       Andreu Bisquerra    <jove@bisquerra.com>
  * Copyright (C) 2021-2022	Thibault FOUCART	<support@ptibogxiv.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,10 +23,10 @@
  *    \brief      Page with the content of the popup to enter payments
  */
 
-// if (! defined('NOREQUIREUSER'))		define('NOREQUIREUSER', '1');		// Not disabled cause need to load personalized language
-// if (! defined('NOREQUIREDB'))		define('NOREQUIREDB', '1');			// Not disabled cause need to load personalized language
-// if (! defined('NOREQUIRESOC'))		define('NOREQUIRESOC', '1');
-// if (! defined('NOREQUIRETRAN'))		define('NOREQUIRETRAN', '1');
+// if (! defined('NOREQUIREUSER'))      define('NOREQUIREUSER', '1');       // Not disabled cause need to load personalized language
+// if (! defined('NOREQUIREDB'))        define('NOREQUIREDB', '1');         // Not disabled cause need to load personalized language
+// if (! defined('NOREQUIRESOC'))       define('NOREQUIRESOC', '1');
+// if (! defined('NOREQUIRETRAN'))      define('NOREQUIRETRAN', '1');
 
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1');
@@ -169,10 +170,13 @@ if ($invoiceid > 0) {
     if ($usestripeterminals && $invoice->type != $invoice::TYPE_CREDIT_NOTE) {
     if (!getDolGlobalString($keyforstripeterminalbank)) { ?>
     const config = {
-        simulated: <?php if (empty($servicestatus) && getDolGlobalString('STRIPE_TERMINAL_SIMULATED')) { ?> true <?php } else { ?>
-        false <?php } ?>
-        <?php if (getDolGlobalString('STRIPE_LOCATION')) { ?>,
-        location: '<?php echo $conf->global->STRIPE_LOCATION; ?>'<?php } ?>
+        simulated: <?php if (empty($servicestatus) && getDolGlobalString('STRIPE_TERMINAL_SIMULATED')) { ?> true <?php 
+        } else { ?>
+        false 
+                          <?php } ?>
+                    <?php if (getDolGlobalString('STRIPE_LOCATION')) { ?>,
+        location: '<?php echo $conf->global->STRIPE_LOCATION; ?>'<?php 
+        } ?>
     }
     terminal.discoverReaders(config).then(function (discoverResult) {
         if (discoverResult.error) {
@@ -199,7 +203,7 @@ if ($invoiceid > 0) {
             });
         }
     });
-    <?php } else { ?>
+            <?php } else { ?>
     terminal.connectReader(<?php echo json_encode($stripe->getSelectedReader(getDolGlobalString($keyforstripeterminalbank), $stripeacc, $servicestatus)); ?>).then(function (connectResult) {
         if (connectResult.error) {
             document.getElementById("card-present-alert").innerHTML = '<div class="error clearboth">' + connectResult.error.message + '</div>';
@@ -484,7 +488,7 @@ if ($resql) {
                     parent.$("#poslines").load("invoice.php?place=<?php echo urlencode($place); ?>&action=valid&token=<?php echo newToken(); ?>&pay=CB&amount=" + amountpayed + "&invoiceid=" + invoiceid, function () {
                         //parent.$("#poslines").scrollTop(parent.$("#poslines")[0].scrollHeight);
                         parent.$.colorbox.close();
-                        //parent.setFocusOnSearchField();	// This does not have effect
+                        //parent.setFocusOnSearchField();   // This does not have effect
                     });
                     clearInterval(loop);
                 } else if (data === "FAILED") {

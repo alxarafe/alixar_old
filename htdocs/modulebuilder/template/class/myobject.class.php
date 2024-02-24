@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur      <eldy@users.sourceforge.net>
  * Copyright (C) 2023  Frédéric France          <frederic.france@netlogic.fr>
  * Copyright (C) ---Put here your own copyright and developer email---
@@ -220,7 +221,7 @@ class MyObject extends CommonObject
     // public $class_element_line = 'MyObjectline';
 
     // /**
-    //  * @var array	List of child tables. To test if we can delete object.
+    //  * @var array    List of child tables. To test if we can delete object.
     //  */
     // protected $childtables = array('mychildtable' => array('name'=>'MyObject', 'fk_element'=>'fk_myobject'));
 
@@ -323,7 +324,7 @@ class MyObject extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);

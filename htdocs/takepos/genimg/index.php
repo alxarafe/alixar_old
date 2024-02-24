@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018	Andreu Bisquerra	<jove@bisquerra.com>
+
+/* Copyright (C) 2018   Andreu Bisquerra    <jove@bisquerra.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +19,12 @@
 // This page return an image of public photos of a category or product.
 // Test to check image can be publicly viewed is done inside the viewimage.php wrapper.
 
-//if (! defined('NOREQUIREUSER'))	define('NOREQUIREUSER','1');	// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIREDB'))		define('NOREQUIREDB','1');		// Not disabled cause need to load personalized language
+//if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER','1');    // Not disabled cause need to load personalized language
+//if (! defined('NOREQUIREDB'))     define('NOREQUIREDB','1');      // Not disabled cause need to load personalized language
 if (!defined('NOREQUIRESOC')) {
     define('NOREQUIRESOC', '1');
 }
-//if (! defined('NOREQUIRETRAN'))		define('NOREQUIRETRAN','1');
+//if (! defined('NOREQUIRETRAN'))       define('NOREQUIRETRAN','1');
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1');
 }

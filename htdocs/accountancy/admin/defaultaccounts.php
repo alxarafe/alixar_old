@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2014  Olivier Geffroy         <jeff@jeffinfo.com>
  * Copyright (C) 2013-2014  Florian Henry           <florian.henry@open-concept.pro>
  * Copyright (C) 2013-2024  Alexandre Spangaro      <aspangaro@easya.solutions>
@@ -27,6 +28,7 @@
  * \ingroup        Accountancy (Double entries)
  * \brief        Setup page to configure accounting expert module
  */
+
 require '../../main.inc.php';
 
 // Class
@@ -81,8 +83,8 @@ $list_account[] = 'ACCOUNTING_VAT_SOLD_ACCOUNT';
 $list_account[] = 'ACCOUNTING_VAT_BUY_ACCOUNT';
 
 /*if ($mysoc->useRevenueStamp()) {
-	$list_account[] = 'ACCOUNTING_REVENUESTAMP_SOLD_ACCOUNT';
-	$list_account[] = 'ACCOUNTING_REVENUESTAMP_BUY_ACCOUNT';
+    $list_account[] = 'ACCOUNTING_REVENUESTAMP_SOLD_ACCOUNT';
+    $list_account[] = 'ACCOUNTING_REVENUESTAMP_BUY_ACCOUNT';
 }*/
 
 $list_account[] = 'ACCOUNTING_VAT_PAY_ACCOUNT';

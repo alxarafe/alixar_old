@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2004	Andreu Bisquerra	<jove@bisquerra.com>
+
+/* Copyright (C) 2001-2004  Andreu Bisquerra    <jove@bisquerra.com>
  * Copyright (C) 2020		Thibault FOUCART	<support@ptibogxiv.net>
  *
  * This program is free software; you can redistribute it and/or modify

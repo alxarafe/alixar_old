@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
@@ -26,16 +27,16 @@
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
-require_once dirname(__FILE__).'/../../htdocs/core/lib/admin.lib.php';
-require_once dirname(__FILE__).'/CommonClassTest.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
+require_once dirname(__FILE__) . '/../../htdocs/core/lib/admin.lib.php';
+require_once dirname(__FILE__) . '/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-	print "Load permissions for admin user nb 1\n";
-	$user->fetch(1);
-	$user->getrights();
+    print "Load permissions for admin user nb 1\n";
+    $user->fetch(1);
+    $user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -49,64 +50,64 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  */
 class AdminLibTest extends CommonClassTest
 {
-	/**
-	 * testVersionCompare
-	 *
-	 * @return	void
-	 */
-	public function testVersionCompare()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testVersionCompare
+     *
+     * @return  void
+     */
+    public function testVersionCompare()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$result = versioncompare(array(3,1,-4), array(3,1,1));
-		print __METHOD__." result=".$result."\n";
-		$this->assertEquals(-3, $result);
-		$result = versioncompare(array(3,1,0), array(3,1,1));
-		print __METHOD__." result=".$result."\n";
-		$this->assertEquals(-3, $result);
-		$result = versioncompare(array(3,1,0), array(3,2,0));
-		print __METHOD__." result=".$result."\n";
-		$this->assertEquals(-2, $result);
-		$result = versioncompare(array(3,1,0), array(3,1,0));
-		print __METHOD__." result=".$result."\n";
-		$this->assertEquals(0, $result);
+        $result = versioncompare(array(3,1,-4), array(3,1,1));
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertEquals(-3, $result);
+        $result = versioncompare(array(3,1,0), array(3,1,1));
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertEquals(-3, $result);
+        $result = versioncompare(array(3,1,0), array(3,2,0));
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertEquals(-2, $result);
+        $result = versioncompare(array(3,1,0), array(3,1,0));
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertEquals(0, $result);
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * testEnableModule
-	 *
-	 * @return  void
-	 */
-	public function testEnableModule()
-	{
-		global $conf, $db, $langs, $user;
+    /**
+     * testEnableModule
+     *
+     * @return  void
+     */
+    public function testEnableModule()
+    {
+        global $conf, $db, $langs, $user;
 
-		require_once dirname(__FILE__).'/../../htdocs/core/modules/modExpenseReport.class.php';
-		print "Enable module modExpenseReport";
-		$moduledescriptor = new modExpenseReport($db);
+        require_once dirname(__FILE__) . '/../../htdocs/core/modules/modExpenseReport.class.php';
+        print "Enable module modExpenseReport";
+        $moduledescriptor = new modExpenseReport($db);
 
-		$result = $moduledescriptor->remove();
+        $result = $moduledescriptor->remove();
 
-		$result = $moduledescriptor->init();
-		print __METHOD__." result=".$result."\n";
-		$this->assertEquals(1, $result, "Enable module modExpenseReport");
-		$conf->setValues($db);
+        $result = $moduledescriptor->init();
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertEquals(1, $result, "Enable module modExpenseReport");
+        $conf->setValues($db);
 
-		require_once dirname(__FILE__).'/../../htdocs/core/modules/modApi.class.php';
-		print "Enable module modAPI";
-		$moduledescriptor = new modApi($db);
+        require_once dirname(__FILE__) . '/../../htdocs/core/modules/modApi.class.php';
+        print "Enable module modAPI";
+        $moduledescriptor = new modApi($db);
 
-		$result = $moduledescriptor->remove();
+        $result = $moduledescriptor->remove();
 
-		$result = $moduledescriptor->init();
-		print __METHOD__." result=".$result."\n";
-		$this->assertEquals(1, $result, "Enable module modAPI");
-		$conf->setValues($db);
-	}
+        $result = $moduledescriptor->init();
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertEquals(1, $result, "Enable module modAPI");
+        $conf->setValues($db);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2018 Alexandre Spangaro   <aspangaro@open-dsi.fr>
  *
@@ -138,7 +139,8 @@ if (empty($reshook)) {
 
     $triggermodname = 'ASSETMODEL_MODIFY'; // Name of trigger action code to execute when we modify record
 
-    if (($action == 'edit' && !($permissiontoadd && $object->status == $object::STATUS_DRAFT)) ||
+    if (
+        ($action == 'edit' && !($permissiontoadd && $object->status == $object::STATUS_DRAFT)) ||
         ($action == 'confirm_setdraft' && !($permissiontoadd && $object->status != $object::STATUS_DRAFT)) ||
         ($action == 'confirm_validate' && !($permissiontoadd && $object->status != $object::STATUS_VALIDATED)) ||
         ($action == 'confirm_close' && !($permissiontoadd && $object->status != $object::STATUS_CANCELED))

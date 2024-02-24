@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2016  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2024  Alexandre Spangaro  <aspangaro@easya.solutions>
  * Copyright (C) 2014-2015  Ari Elbaz (elarifr) <github@accedinfo.com>
@@ -24,6 +25,7 @@
  * \ingroup    Accountancy (Double entries)
  * \brief        Page of detail of the lines of ventilation of invoices suppliers
  */
+
 require '../../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
@@ -246,7 +248,7 @@ if (strlen(trim($search_invoice))) {
     $sql .= natural_search(["f.ref", "f.ref_supplier"], $search_invoice);
 }
 /*if (strlen(trim($search_ref_supplier))) {
-	$sql .= natural_search("f.ref_supplier", $search_ref_supplier);
+    $sql .= natural_search("f.ref_supplier", $search_ref_supplier);
 }*/
 if (strlen(trim($search_label))) {
     $sql .= natural_search("f.libelle", $search_label);
@@ -424,7 +426,7 @@ if ($result) {
     print '<td class="liste_titre"><input type="text" class="flat maxwidth75imp" name="search_societe" value="' . dol_escape_htmltag($search_societe) . '"></td>';
     print '<td class="liste_titre">';
     print $form->select_country($search_country, 'search_country', '', 0, 'maxwidth100', 'code2', 1, 0, 1);
-    //	print '<input type="text" class="flat maxwidth50" name="search_country" value="' . dol_escape_htmltag($search_country) . '">';
+    //  print '<input type="text" class="flat maxwidth50" name="search_country" value="' . dol_escape_htmltag($search_country) . '">';
     print '</td>';
     print '<td class="liste_titre"><input type="text" class="flat maxwidth50" name="search_tvaintra" value="' . dol_escape_htmltag($search_tvaintra) . '"></td>';
     print '<td class="liste_titre"><input type="text" class="flat maxwidth50" name="search_account" value="' . dol_escape_htmltag($search_account) . '"></td>';

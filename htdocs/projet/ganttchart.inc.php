@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -88,14 +89,14 @@
                 var graphFormat = "day";
 
                 g.setDateInputFormat('<?php echo $dateformatinput; ?>');  // Set format of input dates ('mm/dd/yyyy', 'dd/mm/yyyy', does not work with 'yyyy-mm-dd')
-                g.setDateTaskTableDisplayFormat('<?php echo $dateformat; ?>');	// Format of date used into line
-                g.setDateTaskDisplayFormat('<?php echo $datehourformat; ?>');		// Format of date used into popup, not into line
+                g.setDateTaskTableDisplayFormat('<?php echo $dateformat; ?>');  // Format of date used into line
+                g.setDateTaskDisplayFormat('<?php echo $datehourformat; ?>');       // Format of date used into popup, not into line
                 g.setDayMajorDateDisplayFormat('dd mon');
-                g.setShowRes(1); 		// Show/Hide Responsible (0/1)
-                g.setShowDur(1); 		// Show/Hide Duration (0/1)
-                g.setShowComp(1); 		// Show/Hide % Complete(0/1)
-                g.setShowStartDate(1); 	// Show/Hide % Complete(0/1)
-                g.setShowEndDate(1); 	// Show/Hide % Complete(0/1)
+                g.setShowRes(1);        // Show/Hide Responsible (0/1)
+                g.setShowDur(1);        // Show/Hide Duration (0/1)
+                g.setShowComp(1);       // Show/Hide % Complete(0/1)
+                g.setShowStartDate(1);  // Show/Hide % Complete(0/1)
+                g.setShowEndDate(1);    // Show/Hide % Complete(0/1)
                 g.setShowTaskInfoLink(1);
                 g.setFormatArr("day", "week", "month") // Set format options (up to 4 : "minute","hour","day","week","month","quarter")
                 g.setCaptionType('Caption');  // Set to Show Caption (None,Caption,Resource,Duration,Complete)
@@ -245,7 +246,7 @@ function constructGanttLine($tarr, $task, $task_dependencies, $level = 0, $proje
 
     $s = "\n// Add task level = " . $level . " id=" . $task["task_id"] . " parent_id=" . $task["task_parent"] . " aternate_id=" . $task["task_alternate_id"] . " parent_aternate_id=" . $task["task_parent_alternate_id"] . "\n";
 
-    //$task["task_is_group"]=1;		// When task_is_group is 1, content will be autocalculated from sum of all low tasks
+    //$task["task_is_group"]=1;     // When task_is_group is 1, content will be autocalculated from sum of all low tasks
 
     // For JSGanttImproved
     $css = $task['task_css'];

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2007-2011	Laurent Destailleur	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2007-2011  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2008-2012	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2008-2011	Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2014       Teddy Andreotti    	<125155@supinfo.com>
@@ -27,11 +28,11 @@ define("NOLOGIN", 1); // This means this output page does not require to be logg
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 if (isModEnabled('ldap')) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/ldap.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/ldap.class.php';
 }
 
 // Load translation files required by page
@@ -39,14 +40,14 @@ $langs->loadLangs(array('errors', 'users', 'companies', 'ldap', 'other'));
 
 // Security check
 if (getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
-	header("Location: ".DOL_URL_ROOT.'/');
-	exit;
+    header("Location: " . DOL_URL_ROOT . '/');
+    exit;
 }
 
 $action = GETPOST('action', 'aZ09');
 $mode = $dolibarr_main_authentication;
 if (!$mode) {
-	$mode = 'http';
+    $mode = 'http';
 }
 
 $username = GETPOST('username', 'alphanohtml');
@@ -60,19 +61,19 @@ $hookmanager->initHooks(array('passwordforgottenpage'));
 
 
 if (GETPOST('dol_hide_leftmenu', 'alpha') || !empty($_SESSION['dol_hide_leftmenu'])) {
-	$conf->dol_hide_leftmenu = 1;
+    $conf->dol_hide_leftmenu = 1;
 }
 if (GETPOST('dol_hide_topmenu', 'alpha') || !empty($_SESSION['dol_hide_topmenu'])) {
-	$conf->dol_hide_topmenu = 1;
+    $conf->dol_hide_topmenu = 1;
 }
 if (GETPOST('dol_optimize_smallscreen', 'alpha') || !empty($_SESSION['dol_optimize_smallscreen'])) {
-	$conf->dol_optimize_smallscreen = 1;
+    $conf->dol_optimize_smallscreen = 1;
 }
 if (GETPOST('dol_no_mouse_hover', 'alpha') || !empty($_SESSION['dol_no_mouse_hover'])) {
-	$conf->dol_no_mouse_hover = 1;
+    $conf->dol_no_mouse_hover = 1;
 }
 if (GETPOST('dol_use_jmobile', 'alpha') || !empty($_SESSION['dol_use_jmobile'])) {
-	$conf->dol_use_jmobile = 1;
+    $conf->dol_use_jmobile = 1;
 }
 
 
@@ -83,93 +84,93 @@ if (GETPOST('dol_use_jmobile', 'alpha') || !empty($_SESSION['dol_use_jmobile']))
 $parameters = array('username' => $username);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	$message = $hookmanager->error;
+    $message = $hookmanager->error;
 } else {
-	$message = '';
+    $message = '';
 }
 
 if (empty($reshook)) {
-	// Validate new password
-	if ($action == 'validatenewpassword' && $username && $passworduidhash) {
-		$edituser = new User($db);
-		$result = $edituser->fetch('', $username, '', 0, $conf->entity);
-		if ($result < 0) {
-			$message = '<div class="error">'.dol_escape_htmltag($langs->trans("ErrorTechnicalError")).'</div>';
-		} else {
-			global $conf;
+    // Validate new password
+    if ($action == 'validatenewpassword' && $username && $passworduidhash) {
+        $edituser = new User($db);
+        $result = $edituser->fetch('', $username, '', 0, $conf->entity);
+        if ($result < 0) {
+            $message = '<div class="error">' . dol_escape_htmltag($langs->trans("ErrorTechnicalError")) . '</div>';
+        } else {
+            global $conf;
 
-			//print $edituser->pass_temp.'-'.$edituser->id.'-'.$conf->file->instance_unique_id.' '.$passworduidhash;
-			if ($edituser->pass_temp && dol_verifyHash($edituser->pass_temp.'-'.$edituser->id.'-'.$conf->file->instance_unique_id, $passworduidhash)) {
-				// Clear session
-				unset($_SESSION['dol_login']);
-				$_SESSION['dol_loginmesg'] = '<!-- warning -->'.$langs->transnoentitiesnoconv('NewPasswordValidated'); // Save message for the session page
+            //print $edituser->pass_temp.'-'.$edituser->id.'-'.$conf->file->instance_unique_id.' '.$passworduidhash;
+            if ($edituser->pass_temp && dol_verifyHash($edituser->pass_temp . '-' . $edituser->id . '-' . $conf->file->instance_unique_id, $passworduidhash)) {
+                // Clear session
+                unset($_SESSION['dol_login']);
+                $_SESSION['dol_loginmesg'] = '<!-- warning -->' . $langs->transnoentitiesnoconv('NewPasswordValidated'); // Save message for the session page
 
-				$newpassword = $edituser->setPassword($user, $edituser->pass_temp, 0);
-				dol_syslog("passwordforgotten.php new password for user->id=".$edituser->id." validated in database");
+                $newpassword = $edituser->setPassword($user, $edituser->pass_temp, 0);
+                dol_syslog("passwordforgotten.php new password for user->id=" . $edituser->id . " validated in database");
 
-				header("Location: ".DOL_URL_ROOT.'/');
-				exit;
-			} else {
-				$langs->load("errors");
-				$message = '<div class="error">'.$langs->trans("ErrorFailedToValidatePasswordReset").'</div>';
-			}
-		}
-	}
+                header("Location: " . DOL_URL_ROOT . '/');
+                exit;
+            } else {
+                $langs->load("errors");
+                $message = '<div class="error">' . $langs->trans("ErrorFailedToValidatePasswordReset") . '</div>';
+            }
+        }
+    }
 
-	// Action to set a temporary password and send email for reset
-	if ($action == 'buildnewpassword' && $username) {
-		$sessionkey = 'dol_antispam_value';
-		$ok = (array_key_exists($sessionkey, $_SESSION) === true && (strtolower($_SESSION[$sessionkey]) == strtolower(GETPOST('code'))));
+    // Action to set a temporary password and send email for reset
+    if ($action == 'buildnewpassword' && $username) {
+        $sessionkey = 'dol_antispam_value';
+        $ok = (array_key_exists($sessionkey, $_SESSION) === true && (strtolower($_SESSION[$sessionkey]) == strtolower(GETPOST('code'))));
 
-		// Verify code
-		if (!$ok) {
-			$message = '<div class="error">'.$langs->trans("ErrorBadValueForCode").'</div>';
-		} else {
-			$isanemail = preg_match('/@/', $username);
+        // Verify code
+        if (!$ok) {
+            $message = '<div class="error">' . $langs->trans("ErrorBadValueForCode") . '</div>';
+        } else {
+            $isanemail = preg_match('/@/', $username);
 
-			$edituser = new User($db);
-			$result = $edituser->fetch('', $username, '', 1, $conf->entity);
-			if ($result == 0 && $isanemail) {
-				$result = $edituser->fetch('', '', '', 1, $conf->entity, $username);
-			}
+            $edituser = new User($db);
+            $result = $edituser->fetch('', $username, '', 1, $conf->entity);
+            if ($result == 0 && $isanemail) {
+                $result = $edituser->fetch('', '', '', 1, $conf->entity, $username);
+            }
 
-			// Set the message to show (must be the same if login/email exists or not
-			// to avoid to guess them.
-			$messagewarning = '<div class="warning paddingtopbottom'.(!getDolGlobalString('MAIN_LOGIN_BACKGROUND') ? '' : ' backgroundsemitransparent boxshadow').'">';
-			if (!$isanemail) {
-				$messagewarning .= $langs->trans("IfLoginExistPasswordRequestSent");
-			} else {
-				$messagewarning .= $langs->trans("IfEmailExistPasswordRequestSent");
-			}
-			$messagewarning .= '</div>';
+            // Set the message to show (must be the same if login/email exists or not
+            // to avoid to guess them.
+            $messagewarning = '<div class="warning paddingtopbottom' . (!getDolGlobalString('MAIN_LOGIN_BACKGROUND') ? '' : ' backgroundsemitransparent boxshadow') . '">';
+            if (!$isanemail) {
+                $messagewarning .= $langs->trans("IfLoginExistPasswordRequestSent");
+            } else {
+                $messagewarning .= $langs->trans("IfEmailExistPasswordRequestSent");
+            }
+            $messagewarning .= '</div>';
 
-			if ($result <= 0 && $edituser->error == 'USERNOTFOUND') {
-				usleep(20000);	// add delay to simulate setPassword() and send_password() actions delay (0.02s)
-				$message .= $messagewarning;
-				$username = '';
-			} else {
-				if (empty($edituser->email)) {
-					usleep(20000);	// add delay to simulate setPassword() and send_password() actions delay (0.02s)
-					$message .= $messagewarning;
-				} else {
-					$newpassword = $edituser->setPassword($user, '', 1);
-					if (is_int($newpassword) && $newpassword < 0) {
-						// Technical failure
-						$message = '<div class="error">'.$langs->trans("ErrorFailedToChangePassword").'</div>';
-					} else {
-						// Success
-						if ($edituser->send_password($user, $newpassword, 1) > 0) {
-							$message .= $messagewarning;
-							$username = '';
-						} else {
-							// Technical failure
-							$message .= '<div class="error">'.$edituser->error.'</div>';
-						}
-					}
-				}
-			}
-		}
-	}
+            if ($result <= 0 && $edituser->error == 'USERNOTFOUND') {
+                usleep(20000);  // add delay to simulate setPassword() and send_password() actions delay (0.02s)
+                $message .= $messagewarning;
+                $username = '';
+            } else {
+                if (empty($edituser->email)) {
+                    usleep(20000);  // add delay to simulate setPassword() and send_password() actions delay (0.02s)
+                    $message .= $messagewarning;
+                } else {
+                    $newpassword = $edituser->setPassword($user, '', 1);
+                    if (is_int($newpassword) && $newpassword < 0) {
+                        // Technical failure
+                        $message = '<div class="error">' . $langs->trans("ErrorFailedToChangePassword") . '</div>';
+                    } else {
+                        // Success
+                        if ($edituser->send_password($user, $newpassword, 1) > 0) {
+                            $message .= $messagewarning;
+                            $username = '';
+                        } else {
+                            // Technical failure
+                            $message .= '<div class="error">' . $edituser->error . '</div>';
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -180,61 +181,61 @@ if (empty($reshook)) {
 $dol_url_root = DOL_URL_ROOT;
 
 // Title
-$title = 'Dolibarr '.DOL_VERSION;
+$title = 'Dolibarr ' . DOL_VERSION;
 if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-	$title = getDolGlobalString('MAIN_APPLICATION_TITLE');
+    $title = getDolGlobalString('MAIN_APPLICATION_TITLE');
 }
 
 // Select templates
-if (file_exists(DOL_DOCUMENT_ROOT."/theme/".$conf->theme."/tpl/passwordforgotten.tpl.php")) {
-	$template_dir = DOL_DOCUMENT_ROOT."/theme/".$conf->theme."/tpl/";
+if (file_exists(DOL_DOCUMENT_ROOT . "/theme/" . $conf->theme . "/tpl/passwordforgotten.tpl.php")) {
+    $template_dir = DOL_DOCUMENT_ROOT . "/theme/" . $conf->theme . "/tpl/";
 } else {
-	$template_dir = DOL_DOCUMENT_ROOT."/core/tpl/";
+    $template_dir = DOL_DOCUMENT_ROOT . "/core/tpl/";
 }
 
 if (!$username) {
-	$focus_element = 'username';
+    $focus_element = 'username';
 } else {
-	$focus_element = 'password';
+    $focus_element = 'password';
 }
 
 // Send password button enabled ?
 $disabled = 'disabled';
 if (preg_match('/dolibarr/i', $mode)) {
-	$disabled = '';
+    $disabled = '';
 }
 if (getDolGlobalString('MAIN_SECURITY_ENABLE_SENDPASSWORD')) {
-	$disabled = ''; // To force button enabled
+    $disabled = ''; // To force button enabled
 }
 
 // Show logo (search in order: small company logo, large company logo, theme logo, common logo)
 $width = 0;
 $rowspan = 2;
-$urllogo = DOL_URL_ROOT.'/theme/common/login_logo.png';
-if (!empty($mysoc->logo_small) && is_readable($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small)) {
-	$urllogo = DOL_URL_ROOT.'/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file='.urlencode('logos/thumbs/'.$mysoc->logo_small);
-} elseif (!empty($mysoc->logo_small) && is_readable($conf->mycompany->dir_output.'/logos/'.$mysoc->logo)) {
-	$urllogo = DOL_URL_ROOT.'/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file='.urlencode('logos/'.$mysoc->logo);
-	$width = 128;
-} elseif (is_readable(DOL_DOCUMENT_ROOT.'/theme/'.$conf->theme.'/img/dolibarr_logo.svg')) {
-	$urllogo = DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/dolibarr_logo.svg';
-} elseif (is_readable(DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.svg')) {
-	$urllogo = DOL_URL_ROOT.'/theme/dolibarr_logo.svg';
+$urllogo = DOL_URL_ROOT . '/theme/common/login_logo.png';
+if (!empty($mysoc->logo_small) && is_readable($conf->mycompany->dir_output . '/logos/thumbs/' . $mysoc->logo_small)) {
+    $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/thumbs/' . $mysoc->logo_small);
+} elseif (!empty($mysoc->logo_small) && is_readable($conf->mycompany->dir_output . '/logos/' . $mysoc->logo)) {
+    $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/' . $mysoc->logo);
+    $width = 128;
+} elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/img/dolibarr_logo.svg')) {
+    $urllogo = DOL_URL_ROOT . '/theme/' . $conf->theme . '/img/dolibarr_logo.svg';
+} elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/dolibarr_logo.svg')) {
+    $urllogo = DOL_URL_ROOT . '/theme/dolibarr_logo.svg';
 }
 
 // Security graphical code
 if (function_exists("imagecreatefrompng") && !$disabled) {
-	$captcha = 1;
-	$captcha_refresh = img_picto($langs->trans("Refresh"), 'refresh', 'id="captcha_refresh_img"');
+    $captcha = 1;
+    $captcha_refresh = img_picto($langs->trans("Refresh"), 'refresh', 'id="captcha_refresh_img"');
 }
 
 // Execute hook getPasswordForgottenPageOptions (for table)
 $parameters = array('entity' => GETPOST('entity', 'int'));
 $hookmanager->executeHooks('getPasswordForgottenPageOptions', $parameters); // Note that $action and $object may have been modified by some hooks
 if (is_array($hookmanager->resArray) && !empty($hookmanager->resArray)) {
-	$morelogincontent = $hookmanager->resArray; // (deprecated) For compatibility
+    $morelogincontent = $hookmanager->resArray; // (deprecated) For compatibility
 } else {
-	$morelogincontent = $hookmanager->resPrint;
+    $morelogincontent = $hookmanager->resPrint;
 }
 
 // Execute hook getPasswordForgottenPageExtraOptions (eg for js)
@@ -243,7 +244,7 @@ $reshook = $hookmanager->executeHooks('getPasswordForgottenPageExtraOptions', $p
 $moreloginextracontent = $hookmanager->resPrint;
 
 if (empty($setnewpassword)) {
-	include $template_dir.'passwordforgotten.tpl.php'; // To use native PHP
+    include $template_dir . 'passwordforgotten.tpl.php'; // To use native PHP
 } else {
-	include $template_dir.'passwordreset.tpl.php'; // To use native PHP
+    include $template_dir . 'passwordreset.tpl.php'; // To use native PHP
 }

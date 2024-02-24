@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  *
@@ -22,6 +23,7 @@
  *  \ingroup    mymodule
  *  \brief      File of class to manage MyObject numbering rules standard
  */
+
 dol_include_once('/mymodule/core/modules/mymodule/modules_myobject.php');
 
 /**

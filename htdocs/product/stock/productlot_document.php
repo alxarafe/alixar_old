@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007 Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Barilley / Ocebo <marc@ocebo.com>
@@ -31,12 +32,12 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT.'/product/stock/class/productlot.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
 
 global $conf, $db, $langs, $user;
 
@@ -52,7 +53,7 @@ $confirm = GETPOST('confirm', 'alpha');
 $fieldvalue = (!empty($id) ? $id : '');
 $fieldtype = 'rowid';
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'produit|service');
 
@@ -65,38 +66,38 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) {
-	$page = 0;
+    $page = 0;
 }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) {
-	$sortorder = "ASC";
+    $sortorder = "ASC";
 }
 if (!$sortfield) {
-	$sortfield = "position_name";
+    $sortfield = "position_name";
 }
 
 $modulepart = 'product_batch';
 $object = new Productlot($db);
 if ($id || $ref) {
-	if ($ref) {
-		$tmp = explode('_', $ref);
-		$productid = $tmp[0];
-		$batch = $tmp[1];
-	}
-	$object->fetch($id, $productid, $batch);
-	$object->ref = $object->batch; // Old system for document management ( it uses $object->ref)
+    if ($ref) {
+        $tmp = explode('_', $ref);
+        $productid = $tmp[0];
+        $batch = $tmp[1];
+    }
+    $object->fetch($id, $productid, $batch);
+    $object->ref = $object->batch; // Old system for document management ( it uses $object->ref)
 
-	if (isModEnabled('productbatch')) {
-		$upload_dir = $conf->productbatch->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 1, $object, $modulepart);
-		$filearray = dol_dir_list($upload_dir, "files");
-		if (empty($filearray)) {
-			// If no files linked yet, use new system on lot id. (Batch is not unique and can be same on different product)
-			$object->fetch($id, $productid, $batch);
-			$upload_dir = $conf->productbatch->multidir_output[$object->entity].'/'.get_exdir(0, 0, 0, 1, $object, $modulepart);
-		}
-	}
+    if (isModEnabled('productbatch')) {
+        $upload_dir = $conf->productbatch->multidir_output[$object->entity] . '/' . get_exdir(0, 0, 0, 1, $object, $modulepart);
+        $filearray = dol_dir_list($upload_dir, "files");
+        if (empty($filearray)) {
+            // If no files linked yet, use new system on lot id. (Batch is not unique and can be same on different product)
+            $object->fetch($id, $productid, $batch);
+            $upload_dir = $conf->productbatch->multidir_output[$object->entity] . '/' . get_exdir(0, 0, 0, 1, $object, $modulepart);
+        }
+    }
 }
 
 $usercanread = $user->hasRight('produit', 'lire');
@@ -104,7 +105,7 @@ $usercancreate = $user->hasRight('produit', 'creer');
 $usercandelete = $user->hasRight('produit', 'supprimer');
 
 if (empty($upload_dir)) {
-	$upload_dir = $conf->productbatch->multidir_output[$conf->entity];
+    $upload_dir = $conf->productbatch->multidir_output[$conf->entity];
 }
 
 $permissiontoread = $usercanread;
@@ -114,16 +115,16 @@ $permtoedit = $user->hasRight('produit', 'creer');
 
 // Security check
 if (!isModEnabled('productbatch')) {
-	accessforbidden('Module not enabled');
+    accessforbidden('Module not enabled');
 }
 $socid = 0;
 if ($user->socid > 0) { // Protection if external user
-	//$socid = $user->socid;
-	accessforbidden();
+    //$socid = $user->socid;
+    accessforbidden();
 }
 //$result = restrictedArea($user, 'productbatch');
 if (!$permissiontoread) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -131,15 +132,15 @@ if (!$permissiontoread) {
  * Actions
  */
 
-$parameters = array('id'=>$id);
+$parameters = array('id' => $id);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	// Action submit/delete file/link
-	include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
+    // Action submit/delete file/link
+    include DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
 }
 
 
@@ -153,60 +154,60 @@ llxHeader('', $langs->trans('ProductLot'), '');
 
 
 if ($object->id) {
-	$head = productlot_prepare_head($object);
-	print dol_get_fiche_head($head, 'documents', $langs->trans("Batch"), -1, 'barcode');
+    $head = productlot_prepare_head($object);
+    print dol_get_fiche_head($head, 'documents', $langs->trans("Batch"), -1, 'barcode');
 
 
-	$parameters = array();
-	$reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-	print $hookmanager->resPrint;
-	if ($reshook < 0) {
-		setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
-	}
+    $parameters = array();
+    $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+    print $hookmanager->resPrint;
+    if ($reshook < 0) {
+        setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    }
 
-	// Build file list
-	$filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
+    // Build file list
+    $filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
 
-	$totalsize = 0;
-	foreach ($filearray as $key => $file) {
-		$totalsize += $file['size'];
-	}
+    $totalsize = 0;
+    foreach ($filearray as $key => $file) {
+        $totalsize += $file['size'];
+    }
 
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/product/stock/productlot_list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/product/stock/productlot_list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
-	$shownav = 1;
-	if ($user->socid && !in_array('batch', explode(',', getDolGlobalString('MAIN_MODULES_FOR_EXTERNAL')))) {
-		$shownav = 0;
-	}
+    $shownav = 1;
+    if ($user->socid && !in_array('batch', explode(',', getDolGlobalString('MAIN_MODULES_FOR_EXTERNAL')))) {
+        $shownav = 0;
+    }
 
-	dol_banner_tab($object, 'id', $linkback, $shownav, 'rowid', 'batch');
+    dol_banner_tab($object, 'id', $linkback, $shownav, 'rowid', 'batch');
 
-	print '<div class="fichecenter">';
+    print '<div class="fichecenter">';
 
-	print '<div class="underbanner clearboth"></div>';
-	print '<table class="border tableforfield" width="100%">';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border tableforfield" width="100%">';
 
-	// Product
-	print '<tr><td class="titlefield">'.$langs->trans("Product").'</td><td>';
-	$producttmp = new Product($db);
-	$producttmp->fetch($object->fk_product);
-	print $producttmp->getNomUrl(1, 'stock')." - ".$producttmp->label;
-	print '</td></tr>';
+    // Product
+    print '<tr><td class="titlefield">' . $langs->trans("Product") . '</td><td>';
+    $producttmp = new Product($db);
+    $producttmp->fetch($object->fk_product);
+    print $producttmp->getNomUrl(1, 'stock') . " - " . $producttmp->label;
+    print '</td></tr>';
 
-	print '<tr><td class="titlefield">'.$langs->trans("NbOfAttachedFiles").'</td><td colspan="3">'.count($filearray).'</td></tr>';
-	print '<tr><td>'.$langs->trans("TotalSizeOfAttachedFiles").'</td><td colspan="3">'.dol_print_size($totalsize, 1, 1).'</td></tr>';
-	print '</table>';
+    print '<tr><td class="titlefield">' . $langs->trans("NbOfAttachedFiles") . '</td><td colspan="3">' . count($filearray) . '</td></tr>';
+    print '<tr><td>' . $langs->trans("TotalSizeOfAttachedFiles") . '</td><td colspan="3">' . dol_print_size($totalsize, 1, 1) . '</td></tr>';
+    print '</table>';
 
-	print '</div>';
-	print '<div class="clearboth"></div>';
+    print '</div>';
+    print '<div class="clearboth"></div>';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 
-	$param = '&id='.$object->id;
-	include DOL_DOCUMENT_ROOT.'/core/tpl/document_actions_post_headers.tpl.php';
+    $param = '&id=' . $object->id;
+    include DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_post_headers.tpl.php';
 } else {
-	print $langs->trans("ErrorUnknown");
+    print $langs->trans("ErrorUnknown");
 }
 
 

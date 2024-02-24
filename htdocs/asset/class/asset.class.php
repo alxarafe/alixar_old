@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2018  Alexandre Spangaro  <aspangaro@open-dsi.fr>
  *
@@ -487,7 +488,8 @@ class Asset extends CommonObject
         if ($result > 0 && $this->fk_asset_model > 0 && $this->fk_asset_model != $this->oldcopy->fk_asset_model) {
             $result = $this->setDataFromAssetModel($user, $notrigger);
         }
-        if ($result > 0 && (
+        if (
+            $result > 0 && (
                 $this->date_start != $this->oldcopy->date_start ||
                 $this->acquisition_value_ht != $this->oldcopy->acquisition_value_ht ||
                 $this->reversal_date != $this->oldcopy->reversal_date ||

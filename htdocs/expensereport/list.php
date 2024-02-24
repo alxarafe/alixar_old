@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003     	Rodolphe Quiedeville <rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003       Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2017	Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2004     	Eric Seigne          <eric.seigne@ryxeo.com>
  * Copyright (C) 2005-2009	Regis Houssin        <regis.houssin@inodbox.com>
@@ -226,8 +227,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 
@@ -329,8 +332,10 @@ if ($search_status != '' && $search_status >= 0) {
     $sql .= " AND d.fk_statut IN (" . $db->sanitize($search_status) . ")";
 }
 // RESTRICT RIGHTS
-if (!$user->hasRight('expensereport', 'readall') && !$user->hasRight('expensereport', 'lire_tous')
-    && (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || !$user->hasRight('expensereport', 'writeall_advance'))) {
+if (
+    !$user->hasRight('expensereport', 'readall') && !$user->hasRight('expensereport', 'lire_tous')
+    && (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || !$user->hasRight('expensereport', 'writeall_advance'))
+) {
     $sql .= " AND d.fk_user_author IN (" . $db->sanitize(implode(',', $childids)) . ")\n";
 }
 // Add where from extra fields

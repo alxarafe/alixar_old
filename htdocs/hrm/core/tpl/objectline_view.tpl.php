@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2010-2013	Regis Houssin		<regis.houssin@inodbox.com>
+/* Copyright (C) 2010-2013  Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2010-2011	Laurent Destailleur	<eldy@users.sourceforge.net>
  * Copyright (C) 2012-2013	Christophe Battarel	<christophe.battarel@altairis.fr>
  * Copyright (C) 2012       Cédric Salvador     <csalvador@gpcsolutions.fr>
@@ -44,105 +44,105 @@
 
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
-	print "Error, template page can't be called as URL";
-	exit;
+    print "Error, template page can't be called as URL";
+    exit;
 }
 
 global $mysoc;
 global $forceall, $senderissupplier, $inputalsopricewithtax, $outputalsopricetotalwithtax;
 
 // add html5 elements
-$domData  = ' data-element="'.$line->element.'"';
-$domData .= ' data-id="'.$line->id.'"';
-$domData .= ' data-qty="'.$line->qty.'"';
-$domData .= ' data-product_type="'.$line->product_type.'"';
+$domData  = ' data-element="' . $line->element . '"';
+$domData .= ' data-id="' . $line->id . '"';
+$domData .= ' data-qty="' . $line->qty . '"';
+$domData .= ' data-product_type="' . $line->product_type . '"';
 
 $coldisplay = 0;
 ?>
 <!-- BEGIN PHP TEMPLATE htm/core/tpl/objectline_view.tpl.php -->
 <tr  id="row-<?php print $line->id?>" class="drag drop oddeven" <?php print $domData; ?> >
 <?php if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) { ?>
-	<td class="linecolnum center"><span class="opacitymedium"><?php $coldisplay++; ?><?php print($i + 1); ?></span></td>
+    <td class="linecolnum center"><span class="opacitymedium"><?php $coldisplay++; ?><?php print($i + 1); ?></span></td>
 <?php } ?>
-	<td class="linecollabel"><?php $coldisplay++; ?><div id="line_<?php print $line->id; ?>"></div>
+    <td class="linecollabel"><?php $coldisplay++; ?><div id="line_<?php print $line->id; ?>"></div>
 <?php
 if ($line->fk_skill > 0) {
-	$skill = new Skill($this->db);
-	$resSkill = $skill->fetch($line->fk_skill);
-	if ($resSkill > 0) {
-		print Skill::typeCodeToLabel($skill->skill_type);
-	}
+    $skill = new Skill($this->db);
+    $resSkill = $skill->fetch($line->fk_skill);
+    if ($resSkill > 0) {
+        print Skill::typeCodeToLabel($skill->skill_type);
+    }
 }
 ?>
-	</td>
-	<td>
+    </td>
+    <td>
 <?php
 if ($line->fk_skill > 0) {
-	print $skill->getNomUrl(1);
+    print $skill->getNomUrl(1);
 }
 ?>
-	</td>
+    </td>
 
-	<td class="linecoldescription minwidth300imp"><?php $coldisplay++; ?>
+    <td class="linecoldescription minwidth300imp"><?php $coldisplay++; ?>
 <?php
 
 // Add description in form
 if ($line->fk_skill > 0 && $resSkill > 0) {
-	//print $skill->description;
+    //print $skill->description;
 }
 
 ?>
-	</td>
-	<td class="linecolrank nowrap right"><?php $coldisplay++; ?>
+    </td>
+    <td class="linecolrank nowrap right"><?php $coldisplay++; ?>
 
 <?php
-	global $permissiontoadd;
+    global $permissiontoadd;
 
-	// Show evaluation boxes
-	print displayRankInfos($line->rankorder, $line->fk_skill, 'TNote', ($this->status == 0 && $permissiontoadd) ? 'edit' : 'view');
+    // Show evaluation boxes
+    print displayRankInfos($line->rankorder, $line->fk_skill, 'TNote', ($this->status == 0 && $permissiontoadd) ? 'edit' : 'view');
 
 ?>
 
-	</td>
+    </td>
 
 <?php
 
 if ($this->statut == 0 && !empty($object_rights->creer) && $action != 'selectlines') {
-	print '<td class="linecoledit center">';
-	$coldisplay++;
-	if (($line->info_bits & 2) == 2 || !empty($disableedit)) {
-	} else { ?>
-		<a class="editfielda reposition" href="<?php print $_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=editline&amp;lineid='.$line->id.'#line_'.$line->id; ?>">
-		<?php print img_edit().'</a>';
-	}
-	print '</td>';
+    print '<td class="linecoledit center">';
+    $coldisplay++;
+    if (($line->info_bits & 2) == 2 || !empty($disableedit)) {
+    } else { ?>
+        <a class="editfielda reposition" href="<?php print $_SERVER["PHP_SELF"] . '?id=' . $this->id . '&amp;action=editline&amp;lineid=' . $line->id . '#line_' . $line->id; ?>">
+        <?php print img_edit() . '</a>';
+    }
+    print '</td>';
 
-	/*
-	if ($num > 1 && $conf->browser->layout != 'phone' && ($this->situation_counter == 1 || !$this->situation_cycle_ref) && empty($disablemove)) {
-	print '<td class="linecolmove tdlineupdown center">';
-	$coldisplay++;
-	if ($i > 0) { ?>
-		<a class="lineupdown" href="<?php print $_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=up&amp;rowid='.$line->id; ?>">
-		<?php print img_up('default', 0, 'imgupforline'); ?>
-		</a>
-	<?php }
-	if ($i < $num - 1) { ?>
-		<a class="lineupdown" href="<?php print $_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=down&amp;rowid='.$line->id; ?>">
-		<?php print img_down('default', 0, 'imgdownforline'); ?>
-		</a>
-	<?php }
-	print '</td>';
-	} else {
-	print '<td '.(($conf->browser->layout != 'phone' && empty($disablemove)) ? ' class="linecolmove tdlineupdown center"' : ' class="linecolmove center"').'></td>';
-	$coldisplay++;
-	}*/
+    /*
+    if ($num > 1 && $conf->browser->layout != 'phone' && ($this->situation_counter == 1 || !$this->situation_cycle_ref) && empty($disablemove)) {
+    print '<td class="linecolmove tdlineupdown center">';
+    $coldisplay++;
+    if ($i > 0) { ?>
+        <a class="lineupdown" href="<?php print $_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=up&amp;rowid='.$line->id; ?>">
+        <?php print img_up('default', 0, 'imgupforline'); ?>
+        </a>
+    <?php }
+    if ($i < $num - 1) { ?>
+        <a class="lineupdown" href="<?php print $_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=down&amp;rowid='.$line->id; ?>">
+        <?php print img_down('default', 0, 'imgdownforline'); ?>
+        </a>
+    <?php }
+    print '</td>';
+    } else {
+    print '<td '.(($conf->browser->layout != 'phone' && empty($disablemove)) ? ' class="linecolmove tdlineupdown center"' : ' class="linecolmove center"').'></td>';
+    $coldisplay++;
+    }*/
 } else {
-	//print '<td colspan="3"></td>';
-	$coldisplay = $coldisplay + 3;
+    //print '<td colspan="3"></td>';
+    $coldisplay = $coldisplay + 3;
 }
 
 if ($action == 'selectlines') { ?>
-	<td class="linecolcheck center"><input type="checkbox" class="linecheckbox" name="line_checkbox[<?php print $i + 1; ?>]" value="<?php print $line->id; ?>" ></td>
+    <td class="linecolcheck center"><input type="checkbox" class="linecheckbox" name="line_checkbox[<?php print $i + 1; ?>]" value="<?php print $line->id; ?>" ></td>
 <?php }
 
 print "</tr>\n";

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015       ATM Consulting          <support@atm-consulting.fr>
  * Copyright (C) 2019-2020  Open-DSI                <support@open-dsi.fr>
  *
@@ -128,7 +129,7 @@ if ($action == 'add' && $permissiontoadd) {
     // Fill array 'array_options' with data from add form
     // $ret = $extrafields->setOptionalsFromPost($extralabels, $object);
     // if ($ret < 0) {
-    // 	$error++;
+    //  $error++;
     // }
 
     if (empty($object->label)) {

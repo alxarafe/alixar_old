@@ -5,7 +5,6 @@
  */
 class Controller
 {
-
     /**
      * if this controller need logged user or not
      *

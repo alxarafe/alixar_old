@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2016	Marcos García	<marcosgdf@gmail.com>
+
+/* Copyright (C) 2016   Marcos García   <marcosgdf@gmail.com>
  * Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -193,8 +194,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 
@@ -236,9 +239,9 @@ $sql = "SELECT COUNT(DISTINCT pav.rowid) AS nb_of_values, COUNT(DISTINCT pac2v.f
 $sql .= $object->getFieldList("t");
 // Add fields from extrafields
 //if (!empty($extrafields->attributes[$object->table_element]['label'])) {
-//	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
-//		$sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key." as options_".$key.", " : "");
-//	}
+//  foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
+//      $sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key." as options_".$key.", " : "");
+//  }
 //}
 // Add fields from hooks
 $parameters = [];
@@ -247,7 +250,7 @@ $sql .= $hookmanager->resPrint;
 $sql = preg_replace('/,\s*$/', '', $sql);
 $sql .= " FROM " . MAIN_DB_PREFIX . $object->table_element . " as t";
 //if (isset($extrafields->attributes[$object->table_element]['label']) && is_array($extrafields->attributes[$object->table_element]['label']) && count($extrafields->attributes[$object->table_element]['label'])) {
-//	$sql .= " LEFT JOIN ".MAIN_DB_PREFIX.$object->table_element."_extrafields as ef on (t.rowid = ef.fk_object)";
+//  $sql .= " LEFT JOIN ".MAIN_DB_PREFIX.$object->table_element."_extrafields as ef on (t.rowid = ef.fk_object)";
 //}
 $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "product_attribute_combination2val AS pac2v ON pac2v.fk_prod_attr = t.rowid";
 $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "product_attribute_value AS pav ON pav.fk_product_attribute = t.rowid";
@@ -307,9 +310,9 @@ foreach ($object->fields as $key => $val) {
 }
 // Add fields from extrafields
 //if (!empty($extrafields->attributes[$object->table_element]['label'])) {
-//	foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
-//		$sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.', ' : '');
-//	}
+//  foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $val) {
+//      $sql .= ($extrafields->attributes[$object->table_element]['type'][$key] != 'separate' ? "ef.".$key.', ' : '');
+//  }
 //}
 // Add where from hooks
 $parameters = [];
@@ -635,11 +638,11 @@ print '</tr>' . "\n";
 // Detect if we need a fetch on each output line
 $needToFetchEachLine = 0;
 //if (isset($extrafields->attributes[$object->table_element]['computed']) && is_array($extrafields->attributes[$object->table_element]['computed']) && count($extrafields->attributes[$object->table_element]['computed']) > 0) {
-//	foreach ($extrafields->attributes[$object->table_element]['computed'] as $key => $val) {
-//		if (!is_null($val) && preg_match('/\$object/', $val)) {
-//			$needToFetchEachLine++; // There is at least one compute field that use $object
-//		}
-//	}
+//  foreach ($extrafields->attributes[$object->table_element]['computed'] as $key => $val) {
+//      if (!is_null($val) && preg_match('/\$object/', $val)) {
+//          $needToFetchEachLine++; // There is at least one compute field that use $object
+//      }
+//  }
 //}
 
 // Loop on record
@@ -848,8 +851,8 @@ $tagidfortablednd = (empty($tagidfortablednd) ? 'tableattributes' : $tagidfortab
             $("#<?php echo $tagidfortablednd; ?>").tableDnD({
                 onDrop: function (table, row) {
                     console.log('drop');
-                    $('#<?php echo $tagidfortablednd; ?> tr[data-element=extrafield]').attr('id', '');	// Set extrafields id to empty value in order to ignore them in tableDnDSerialize function
-                    $('#<?php echo $tagidfortablednd; ?> tr[data-ignoreidfordnd=1]').attr('id', '');	// Set id to empty value in order to ignore them in tableDnDSerialize function
+                    $('#<?php echo $tagidfortablednd; ?> tr[data-element=extrafield]').attr('id', '');  // Set extrafields id to empty value in order to ignore them in tableDnDSerialize function
+                    $('#<?php echo $tagidfortablednd; ?> tr[data-ignoreidfordnd=1]').attr('id', '');    // Set id to empty value in order to ignore them in tableDnDSerialize function
                     var reloadpage = "<?php echo $forcereloadpage; ?>";
                     var roworder = cleanSerialize(decodeURI($("#<?php echo $tagidfortablednd; ?>").tableDnDSerialize()));
                     $.post("<?php echo DOL_URL_ROOT; ?>/variants/ajax/orderAttribute.php",

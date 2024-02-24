@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014-2017  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2015-2022  Alexandre Spangaro  <aspangaro@open-dsi.fr>
  * Copyright (C) 2015-2020  Florian Henry       <florian.henry@open-concept.pro>
@@ -2101,15 +2102,15 @@ class BookKeeping extends CommonObject
             return -1;
         }
         /*
-		$sql = "DELETE FROM ";
-		$sql .= " FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab";
-		$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "accounting_account as aa ON aa.account_number = ab.numero_compte";
-		$sql .= " AND aa.active = 1";
-		$sql .= " INNER JOIN " . MAIN_DB_PREFIX . "accounting_system as asy ON aa.fk_pcg_version = asy.pcg_version";
-		$sql .= " AND asy.rowid = " . ((int) $pcgver);
-		$sql .= " AND ab.entity IN (" . getEntity('accountancy') . ")";
-		$sql .= " ORDER BY account_number ASC";
-		*/
+        $sql = "DELETE FROM ";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab";
+        $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "accounting_account as aa ON aa.account_number = ab.numero_compte";
+        $sql .= " AND aa.active = 1";
+        $sql .= " INNER JOIN " . MAIN_DB_PREFIX . "accounting_system as asy ON aa.fk_pcg_version = asy.pcg_version";
+        $sql .= " AND asy.rowid = " . ((int) $pcgver);
+        $sql .= " AND ab.entity IN (" . getEntity('accountancy') . ")";
+        $sql .= " ORDER BY account_number ASC";
+        */
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps

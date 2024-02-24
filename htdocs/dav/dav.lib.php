@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018	Destailleur Laurent	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2018   Destailleur Laurent <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +60,7 @@ function dav_admin_prepare_head()
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-    // $this->tabs = array('entity:-tabname);   												to remove a tab
+    // $this->tabs = array('entity:-tabname);                                                   to remove a tab
     complete_head_from_modules($conf, $langs, null, $head, $h, 'admindav');
 
     complete_head_from_modules($conf, $langs, null, $head, $h, 'admindav', 'remove');

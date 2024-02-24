@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (C) 2018        Andreu Bisquerra    <jove@bisquerra.com>
  * Copyright (C) 2021        Nicolas ZABOURI        <info@inovea-conseil.com>
@@ -25,10 +26,10 @@
  *    \brief      Page to generate section with list of lines
  */
 
-// if (! defined('NOREQUIREUSER')) 		define('NOREQUIREUSER', '1'); 		// Not disabled cause need to load personalized language
-// if (! defined('NOREQUIREDB')) 		define('NOREQUIREDB', '1'); 		// Not disabled cause need to load personalized language
-// if (! defined('NOREQUIRESOC')) 		define('NOREQUIRESOC', '1');
-// if (! defined('NOREQUIRETRAN')) 		define('NOREQUIRETRAN', '1');
+// if (! defined('NOREQUIREUSER'))      define('NOREQUIREUSER', '1');       // Not disabled cause need to load personalized language
+// if (! defined('NOREQUIREDB'))        define('NOREQUIREDB', '1');         // Not disabled cause need to load personalized language
+// if (! defined('NOREQUIRESOC'))       define('NOREQUIRESOC', '1');
+// if (! defined('NOREQUIRETRAN'))      define('NOREQUIRETRAN', '1');
 
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1');
@@ -266,7 +267,7 @@ if (empty($reshook)) {
         // Restore save values
         //if (!empty($sav_FACTURE_ADDON))
         //{
-        //	$conf->global->FACTURE_ADDON = $sav_FACTURE_ADDON;
+        //  $conf->global->FACTURE_ADDON = $sav_FACTURE_ADDON;
         //}
 
         // Add the payment
@@ -1162,55 +1163,55 @@ if ((getDolGlobalString('TAKEPOS_PHONE_BASIC_LAYOUT') == 1 && $conf->browser->la
 
             if ($action == "order" && !empty($order_receipt_printer1)) {
             if (filter_var($conf->global->TAKEPOS_PRINT_SERVER, FILTER_VALIDATE_URL) == true) {
-            ?>
+                    ?>
             $.ajax({
                 type: "POST",
                 url: '<?php print $conf->global->TAKEPOS_PRINT_SERVER; ?>/printer/index.php',
                 data: 'invoice=' + orderprinter1esc
             });
-            <?php
+                    <?php
             } else {
-            ?>
+                    ?>
             $.ajax({
                 type: "POST",
                 url: 'http://<?php print $conf->global->TAKEPOS_PRINT_SERVER; ?>:8111/print',
                 data: '<?php
                     print $headerorder . $order_receipt_printer1 . $footerorder; ?>'
             });
-            <?php
+                                                                                    <?php
             }
             }
 
             if ($action == "order" && !empty($order_receipt_printer2)) {
             if (filter_var($conf->global->TAKEPOS_PRINT_SERVER, FILTER_VALIDATE_URL) == true) {
-            ?>
+                    ?>
             $.ajax({
                 type: "POST",
                 url: '<?php print $conf->global->TAKEPOS_PRINT_SERVER; ?>/printer/index.php?printer=2',
                 data: 'invoice=' + orderprinter2esc
             });
-            <?php
+                    <?php
             } else {
-            ?>
+                    ?>
             $.ajax({
                 type: "POST",
                 url: 'http://<?php print $conf->global->TAKEPOS_PRINT_SERVER; ?>:8111/print2',
                 data: '<?php
                     print $headerorder . $order_receipt_printer2 . $footerorder; ?>'
             });
-            <?php
+                                                                                    <?php
             }
             }
 
             if ($action == "order" && !empty($order_receipt_printer3)) {
             if (filter_var($conf->global->TAKEPOS_PRINT_SERVER, FILTER_VALIDATE_URL) == true) {
-            ?>
+                    ?>
             $.ajax({
                 type: "POST",
                 url: '<?php print $conf->global->TAKEPOS_PRINT_SERVER; ?>/printer/index.php?printer=3',
                 data: 'invoice=' + orderprinter3esc
             });
-            <?php
+                    <?php
             }
             }
 

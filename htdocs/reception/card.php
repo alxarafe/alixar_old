@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2008	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2008  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005		Simon TOSSER			<simon@kornog-computing.com>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@capnetworks.com>
@@ -181,18 +182,18 @@ if ($reshook < 0) {
 
 if (empty($reshook)) {
     /*
-	$backurlforlist = DOL_URL_ROOT.'/reception/list.php';
+    $backurlforlist = DOL_URL_ROOT.'/reception/list.php';
 
-	if (empty($backtopage) || ($cancel && empty($id))) {
-		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
-			 if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
-				 $backtopage = $backurlforlist;
-			 } else {
-				 $backtopage = dol_buildpath('/mymodule/myobject_card.php', 1).'?id='.((!empty($id) && $id > 0) ? $id : '__ID__');
-			 }
-		}
-	}
-	*/
+    if (empty($backtopage) || ($cancel && empty($id))) {
+        if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
+             if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
+                 $backtopage = $backurlforlist;
+             } else {
+                 $backtopage = dol_buildpath('/mymodule/myobject_card.php', 1).'?id='.((!empty($id) && $id > 0) ? $id : '__ID__');
+             }
+        }
+    }
+    */
 
     if ($cancel) {
         if (!empty($backtopageforcancel)) {
@@ -392,11 +393,11 @@ if (empty($reshook)) {
                     $entrepot_id = is_numeric(GETPOST($ent, 'int')) ? GETPOST($ent, 'int') : GETPOST('entrepot_id', 'int');
 
                     /*
-					if (!empty($lineToTest)) {
-						$fk_product = $lineToTest->fk_product;
-					} else {
-						$fk_product = $linesrc->fk_product;
-					}*/
+                    if (!empty($lineToTest)) {
+                        $fk_product = $lineToTest->fk_product;
+                    } else {
+                        $fk_product = $linesrc->fk_product;
+                    }*/
                     $fk_product = GETPOST("productl" . $i, 'int');
 
                     if ($entrepot_id < 0) {
@@ -493,10 +494,10 @@ if (empty($reshook)) {
 
         // TODO add alternative status
         /*} elseif ($action == 'reopen' && (!empty($user->rights->reception->creer) || !empty($user->rights->reception->reception_advance->validate))) {
-			$result = $object->setStatut(0);
-			if ($result < 0) {
-				setEventMessages($object->error, $object->errors, 'errors');
-		}*/
+            $result = $object->setStatut(0);
+            if ($result < 0) {
+                setEventMessages($object->error, $object->errors, 'errors');
+        }*/
     } elseif ($action == 'setdate_livraison' && $permissiontoadd) {
         $datedelivery = dol_mktime(GETPOST('liv_hour', 'int'), GETPOST('liv_min', 'int'), 0, GETPOST('liv_month', 'int'), GETPOST('liv_day', 'int'), GETPOST('liv_year', 'int'));
 
@@ -505,12 +506,14 @@ if (empty($reshook)) {
         if ($result < 0) {
             setEventMessages($object->error, $object->errors, 'errors');
         }
-    } elseif ($action == 'settracking_number' || $action == 'settracking_url'
+    } elseif (
+        $action == 'settracking_number' || $action == 'settracking_url'
         || $action == 'settrueWeight'
         || $action == 'settrueWidth'
         || $action == 'settrueHeight'
         || $action == 'settrueDepth'
-        || $action == 'setshipping_method_id') {
+        || $action == 'setshipping_method_id'
+    ) {
         // Action update
         $error = 0;
 
@@ -2111,8 +2114,8 @@ if ($action == 'create') {
     $object->fetchObjectLinked($object->id, $object->element);
 
     /*
-	 *    Boutons actions
-	 */
+     *    Boutons actions
+     */
 
     if (($user->socid == 0) && ($action != 'presend')) {
         print '<div class="tabsAction">';
@@ -2121,8 +2124,10 @@ if ($action == 'create') {
         $reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
         if (empty($reshook)) {
             if ($object->statut == Reception::STATUS_DRAFT && $num_prod > 0) {
-                if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'creer'))
-                    || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'reception_advance', 'validate'))) {
+                if (
+                    (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'creer'))
+                    || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('reception', 'reception_advance', 'validate'))
+                ) {
                     print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=valid&token=' . newToken() . '">' . $langs->trans("Validate") . '</a>';
                 } else {
                     print '<a class="butActionRefused" href="#" title="' . $langs->trans("NotAllowed") . '">' . $langs->trans("Validate") . '</a>';
@@ -2178,8 +2183,8 @@ if ($action == 'create') {
     }
 
     /*
-	 * Documents generated
-	 */
+     * Documents generated
+     */
 
     if ($action != 'presend' && $action != 'editline') {
         print '<div class="fichecenter"><div class="fichehalfleft">';

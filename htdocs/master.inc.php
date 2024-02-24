@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2002-2007	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2002-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Xavier Dutoit			<doli@sydesy.com>
  * Copyright (C) 2004-2012	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2004		Sebastien Di Cintio		<sdicintio@ressource-toi.org>
@@ -155,7 +156,7 @@ if (!defined('NOREQUIREDB')) {
 }
 
 // Now database connection is known, so we can forget password
-//unset($dolibarr_main_db_pass); 	// We comment this because this constant is used in some other pages
+//unset($dolibarr_main_db_pass);    // We comment this because this constant is used in some other pages
 unset($conf->db->pass); // This is to avoid password to be shown in memory/swap dump
 
 /*

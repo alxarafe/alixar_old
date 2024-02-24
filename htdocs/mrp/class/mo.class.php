@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2020  Lenin Rivas		   <lenin@leninrivas.com>
  * Copyright (C) 2023-2024  Frédéric France     <frederic.france@free.fr>
@@ -366,7 +367,7 @@ class Mo extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);
@@ -1033,12 +1034,12 @@ class Mo extends CommonObject
         }
 
         /*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mrp->create))
-		 || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mrp->mrp_advance->validate))))
-		 {
-		 $this->error='NotEnoughPermissions';
-		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
-		 return -1;
-		 }*/
+         || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mrp->mrp_advance->validate))))
+         {
+         $this->error='NotEnoughPermissions';
+         dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
+         return -1;
+         }*/
 
         $now = dol_now();
 
@@ -1154,11 +1155,11 @@ class Mo extends CommonObject
         }
 
         /*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->write))
-		 || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->mymodule_advance->validate))))
-		 {
-		 $this->error='Permission denied';
-		 return -1;
-		 }*/
+         || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->mymodule_advance->validate))))
+         {
+         $this->error='Permission denied';
+         return -1;
+         }*/
 
         return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'MRP_MO_UNVALIDATE');
     }
@@ -1180,11 +1181,11 @@ class Mo extends CommonObject
         }
 
         /*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->write))
-		 || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->mymodule_advance->validate))))
-		 {
-		 $this->error='Permission denied';
-		 return -1;
-		 }*/
+         || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->mymodule_advance->validate))))
+         {
+         $this->error='Permission denied';
+         return -1;
+         }*/
 
         $error = 0;
         $this->db->begin();
@@ -1228,11 +1229,11 @@ class Mo extends CommonObject
         }
 
         /*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->write))
-		 || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->mymodule_advance->validate))))
-		 {
-		 $this->error='Permission denied';
-		 return -1;
-		 }*/
+         || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->mymodule->mymodule_advance->validate))))
+         {
+         $this->error='Permission denied';
+         return -1;
+         }*/
 
         return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'MRP_MO_REOPEN');
     }

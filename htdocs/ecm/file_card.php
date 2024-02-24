@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -319,7 +320,7 @@ print '</td></tr>';
 // Define $urlwithroot
 $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
 $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 // Link for internal download
 print '<tr><td>';
@@ -368,8 +369,8 @@ if (!empty($object->share)) {
         }
 
         $fulllink = $urlwithroot . '/document.php' . ($paramlink ? '?' . $paramlink : '');
-        //if (!empty($object->ref))       $fulllink.='&hashn='.$object->ref;		// Hash of file path
-        //elseif (!empty($object->label)) $fulllink.='&hashc='.$object->label;		// Hash of file content
+        //if (!empty($object->ref))       $fulllink.='&hashn='.$object->ref;        // Hash of file path
+        //elseif (!empty($object->label)) $fulllink.='&hashc='.$object->label;      // Hash of file content
 
         print img_picto('', 'globe') . ' ';
         if ($action != 'edit') {

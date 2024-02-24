@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2014  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2014  Florian Henry       <florian.henry@open-concept.pro>
  * Copyright (C) 2013-2024  Alexandre Spangaro  <aspangaro@easya.solutions>
@@ -22,6 +23,7 @@
  * \ingroup Accountancy (Double entries)
  * \brief    Card customer ventilation
  */
+
 require '../../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';

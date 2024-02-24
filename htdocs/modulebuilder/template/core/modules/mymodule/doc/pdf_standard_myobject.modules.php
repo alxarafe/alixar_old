@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2008       Raphael Bertrand        <raphael.bertrand@resultic.fr>
@@ -231,8 +232,8 @@ class pdf_standard_myobject extends ModelePDFMyObject
                         }
 
                         foreach ($objphoto->liste_photos($dir, 1) as $key => $obj) {
-                            if (!getDolGlobalInt('CAT_HIGH_QUALITY_IMAGES')) {		// If CAT_HIGH_QUALITY_IMAGES not defined, we use thumb if defined and then original photo
-                                if ($obj['photo_vignette'])	{
+                            if (!getDolGlobalInt('CAT_HIGH_QUALITY_IMAGES')) {      // If CAT_HIGH_QUALITY_IMAGES not defined, we use thumb if defined and then original photo
+                                if ($obj['photo_vignette']) {
                                     $filename = $obj['photo_vignette'];
                                 } else {
                                     $filename = $obj['photo'];
@@ -670,8 +671,10 @@ class pdf_standard_myobject extends ModelePDFMyObject
                     $vatrate = (string) $object->lines[$i]->tva_tx;
 
                     // Retrieve type from database for backward compatibility with old records
-                    if ((!isset($localtax1_type) || $localtax1_type == '' || !isset($localtax2_type) || $localtax2_type == '') // if tax type not defined
-                        && (!empty($localtax1_rate) || !empty($localtax2_rate))) { // and there is local tax
+                    if (
+                        (!isset($localtax1_type) || $localtax1_type == '' || !isset($localtax2_type) || $localtax2_type == '') // if tax type not defined
+                        && (!empty($localtax1_rate) || !empty($localtax2_rate))
+                    ) { // and there is local tax
                         $localtaxtmp_array = getLocalTaxesFromRate($vatrate, 0, $object->thirdparty, $mysoc);
                         $localtax1_type = isset($localtaxtmp_array[0]) ? $localtaxtmp_array[0] : '';
                         $localtax2_type = isset($localtaxtmp_array[2]) ? $localtaxtmp_array[2] : '';

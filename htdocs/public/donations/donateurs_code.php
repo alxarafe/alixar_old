@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  *

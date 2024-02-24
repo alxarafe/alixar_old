@@ -47,7 +47,8 @@ if ($context->userIsLog()) {
 
     // menu member
     $cardAccess = getDolGlobalString('WEBPORTAL_MEMBER_CARD_ACCESS');
-    if (isModEnabled('adherent')
+    if (
+        isModEnabled('adherent')
         && in_array($cardAccess, ['visible', 'edit'])
         && $context->logged_member
         && $context->logged_member->id > 0
@@ -63,7 +64,8 @@ if ($context->userIsLog()) {
 
     // menu partnership
     $cardAccess = getDolGlobalString('WEBPORTAL_PARTNERSHIP_CARD_ACCESS');
-    if (isModEnabled('partnership')
+    if (
+        isModEnabled('partnership')
         && in_array($cardAccess, ['visible', 'edit'])
         && $context->logged_partnership
         && $context->logged_partnership->id > 0

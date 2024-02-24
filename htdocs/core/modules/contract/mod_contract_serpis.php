@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2011      Juanjo Menent	    <jmenent@2byte.es>
+
+/* Copyright (C) 2011      Juanjo Menent        <jmenent@2byte.es>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,144 +22,144 @@
  *  \ingroup    contract
  *  \brief      File of class to manage contract numbering rules Serpis
  */
-require_once DOL_DOCUMENT_ROOT.'/core/modules/contract/modules_contract.php';
+
+require_once DOL_DOCUMENT_ROOT . '/core/modules/contract/modules_contract.php';
 
 /**
- * 	Class to manage contract numbering rules Serpis
+ *  Class to manage contract numbering rules Serpis
  */
 class mod_contract_serpis extends ModelNumRefContracts
 {
-
-	// variables inherited from ModelNumRefContracts class
-	public $name = 'Serpis';
-	public $version = 'dolibarr';
-	public $error = '';
-	public $code_auto = 1;
-
-
-	// variables not inherited
-
-	/**
-	 * @var string
-	 */
-	public $prefix = 'CT';
+    // variables inherited from ModelNumRefContracts class
+    public $name = 'Serpis';
+    public $version = 'dolibarr';
+    public $error = '';
+    public $code_auto = 1;
 
 
-	/**
-	 *	Return default description of numbering model
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $langs;
-		return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
-	}
+    // variables not inherited
+
+    /**
+     * @var string
+     */
+    public $prefix = 'CT';
 
 
-	/**
-	 *	Return numbering example
-	 *
-	 *	@return     string      Example
-	 */
-	public function getExample()
-	{
-		return $this->prefix."0501-0001";
-	}
+    /**
+     *  Return default description of numbering model
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $langs;
+        return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
+    }
 
 
-	/**
-	 *	Test if existing numbers make problems with numbering
-	 *
-	 *  @param  Object		$object		Object we need next value for
-	 *  @return boolean     			false if conflict, true if ok
-	 */
-	public function canBeActivated($object)
-	{
-		global $conf, $langs, $db;
+    /**
+     *  Return numbering example
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        return $this->prefix . "0501-0001";
+    }
 
-		$coyymm = '';
-		$max = '';
 
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."contrat";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity = ".$conf->entity;
+    /**
+     *  Test if existing numbers make problems with numbering
+     *
+     *  @param  Object      $object     Object we need next value for
+     *  @return boolean                 false if conflict, true if ok
+     */
+    public function canBeActivated($object)
+    {
+        global $conf, $langs, $db;
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$row = $db->fetch_row($resql);
-			if ($row) {
-				$coyymm = substr($row[0], 0, 6);
-				$max = $row[0];
-			}
-		}
-		if ($coyymm && !preg_match('/'.$this->prefix.'[0-9][0-9][0-9][0-9]/i', $coyymm)) {
-			$langs->load("errors");
-			$this->error = $langs->trans('ErrorNumRefModel', $max);
-			return false;
-		}
+        $coyymm = '';
+        $max = '';
 
-		return true;
-	}
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "contrat";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity = " . $conf->entity;
 
-	/**
-	 *	Return next value
-	 *
-	 *	@param	Societe		$objsoc     third party object
-	 *	@param	Object		$contract	contract object
-	 *	@return string|-1      			Value if OK, -1 if KO
-	 */
-	public function getNextValue($objsoc, $contract)
-	{
-		global $db, $conf;
+        $resql = $db->query($sql);
+        if ($resql) {
+            $row = $db->fetch_row($resql);
+            if ($row) {
+                $coyymm = substr($row[0], 0, 6);
+                $max = $row[0];
+            }
+        }
+        if ($coyymm && !preg_match('/' . $this->prefix . '[0-9][0-9][0-9][0-9]/i', $coyymm)) {
+            $langs->load("errors");
+            $this->error = $langs->trans('ErrorNumRefModel', $max);
+            return false;
+        }
 
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."contrat";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity = ".$conf->entity;
+        return true;
+    }
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$obj = $db->fetch_object($resql);
-			if ($obj) {
-				$max = intval($obj->max);
-			} else {
-				$max = 0;
-			}
-		} else {
-			dol_syslog("mod_contract_serpis::getNextValue", LOG_DEBUG);
-			return -1;
-		}
+    /**
+     *  Return next value
+     *
+     *  @param  Societe     $objsoc     third party object
+     *  @param  Object      $contract   contract object
+     *  @return string|-1               Value if OK, -1 if KO
+     */
+    public function getNextValue($objsoc, $contract)
+    {
+        global $db, $conf;
 
-		$date = $contract->date_contrat;
-		$yymm = dol_print_date($date, "%y%m");
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "contrat";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity = " . $conf->entity;
 
-		if ($max >= (pow(10, 4) - 1)) {
-			$num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
-		} else {
-			$num = sprintf("%04s", $max + 1);
-		}
+        $resql = $db->query($sql);
+        if ($resql) {
+            $obj = $db->fetch_object($resql);
+            if ($obj) {
+                $max = intval($obj->max);
+            } else {
+                $max = 0;
+            }
+        } else {
+            dol_syslog("mod_contract_serpis::getNextValue", LOG_DEBUG);
+            return -1;
+        }
 
-		dol_syslog("mod_contract_serpis::getNextValue return ".$this->prefix.$yymm."-".$num);
-		return $this->prefix.$yymm."-".$num;
-	}
+        $date = $contract->date_contrat;
+        $yymm = dol_print_date($date, "%y%m");
+
+        if ($max >= (pow(10, 4) - 1)) {
+            $num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
+        } else {
+            $num = sprintf("%04s", $max + 1);
+        }
+
+        dol_syslog("mod_contract_serpis::getNextValue return " . $this->prefix . $yymm . "-" . $num);
+        return $this->prefix . $yymm . "-" . $num;
+    }
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *	Return next value
-	 *
-	 *	@param	Societe		$objsoc     third party object
-	 *	@param	Object		$objforref  contract object
-	 *	@return string|-1      			Value if OK, -1 if KO
-	 */
-	public function contract_get_num($objsoc, $objforref)
-	{
+    /**
+     *  Return next value
+     *
+     *  @param  Societe     $objsoc     third party object
+     *  @param  Object      $objforref  contract object
+     *  @return string|-1               Value if OK, -1 if KO
+     */
+    public function contract_get_num($objsoc, $objforref)
+    {
 		// phpcs:enable
-		return $this->getNextValue($objsoc, $objforref);
-	}
+        return $this->getNextValue($objsoc, $objforref);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2016	Marcos García	<marcosgdf@gmail.com>
+
+/* Copyright (C) 2016   Marcos García   <marcosgdf@gmail.com>
  * Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify

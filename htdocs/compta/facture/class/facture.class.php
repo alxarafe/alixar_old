@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2013  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2004       Sebastien Di Cintio     <sdicintio@ressource-toi.org>
@@ -563,7 +564,7 @@ class Facture extends CommonInvoice
 
             // Fields always coming from template
             //$this->remise_absolue    = $_facrec->remise_absolue;
-            //$this->remise_percent    = $_facrec->remise_percent;	// TODO deprecated
+            //$this->remise_percent    = $_facrec->remise_percent;  // TODO deprecated
             $this->fk_incoterms = $_facrec->fk_incoterms;
             $this->location_incoterms = $_facrec->location_incoterms;
 
@@ -597,7 +598,7 @@ class Facture extends CommonInvoice
                 }
                 $next_date = $_facrec->getNextDate(); // Calculate next date
                 $result = $_facrec->setValueFrom('date_last_gen', $now, '', null, 'date', '', $user, '');
-                //$_facrec->setValueFrom('nb_gen_done', $_facrec->nb_gen_done + 1);		// Not required, +1 already included into setNextDate when second param is 1.
+                //$_facrec->setValueFrom('nb_gen_done', $_facrec->nb_gen_done + 1);     // Not required, +1 already included into setNextDate when second param is 1.
                 $result = $_facrec->setNextDate($next_date, 1);
             }
 
@@ -645,10 +646,10 @@ class Facture extends CommonInvoice
         // Define due date if not already defined
         if (empty($forceduedate)) {
             $duedate = $this->calculate_date_lim_reglement();
-            /*if ($duedate < 0) {	Regression, a date can be negative if before 1970.
-				dol_syslog(__METHOD__ . ' Error in calculate_date_lim_reglement. We got ' . $duedate, LOG_ERR);
-				return -1;
-			}*/
+            /*if ($duedate < 0) {   Regression, a date can be negative if before 1970.
+                dol_syslog(__METHOD__ . ' Error in calculate_date_lim_reglement. We got ' . $duedate, LOG_ERR);
+                return -1;
+            }*/
             $this->date_lim_reglement = $duedate;
         } else {
             $this->date_lim_reglement = $forceduedate;
@@ -795,8 +796,8 @@ class Facture extends CommonInvoice
             }
 
             /*
-			 *  Insert lines of invoices, if not from template invoice, into database
-			 */
+             *  Insert lines of invoices, if not from template invoice, into database
+             */
             if (!$error && empty($this->fac_rec) && count($this->lines) && is_object($this->lines[0])) {    // If this->lines is array of InvoiceLines (preferred mode)
                 $fk_parent_line = 0;
 
@@ -975,8 +976,8 @@ class Facture extends CommonInvoice
             }
 
             /*
-			 * Insert lines coming from the template invoice
-			 */
+             * Insert lines coming from the template invoice
+             */
             if (!$error && $this->fac_rec > 0) {
                 dol_syslog("There is " . count($_facrec->lines) . " lines from recurring invoice");
                 $fk_parent_line = 0;
@@ -994,12 +995,12 @@ class Facture extends CommonInvoice
 
                     // For line from template invoice, we use data from template invoice
                     /*
-					$tva_tx = get_default_tva($mysoc,$soc,$prod->id);
-					$tva_npr = get_default_npr($mysoc,$soc,$prod->id);
-					if (empty($tva_tx)) $tva_npr=0;
-					$localtax1_tx=get_localtax($tva_tx,1,$soc,$mysoc,$tva_npr);
-					$localtax2_tx=get_localtax($tva_tx,2,$soc,$mysoc,$tva_npr);
-					*/
+                    $tva_tx = get_default_tva($mysoc,$soc,$prod->id);
+                    $tva_npr = get_default_npr($mysoc,$soc,$prod->id);
+                    if (empty($tva_tx)) $tva_npr=0;
+                    $localtax1_tx=get_localtax($tva_tx,1,$soc,$mysoc,$tva_npr);
+                    $localtax2_tx=get_localtax($tva_tx,2,$soc,$mysoc,$tva_npr);
+                    */
                     $tva_tx = $_facrec->lines[$i]->tva_tx . ($_facrec->lines[$i]->vat_src_code ? '(' . $_facrec->lines[$i]->vat_src_code . ')' : '');
                     $tva_npr = $_facrec->lines[$i]->info_bits;
                     if (empty($tva_tx)) {
@@ -1167,7 +1168,7 @@ class Facture extends CommonInvoice
         $facture->cond_reglement_id = $this->cond_reglement_id;
         $facture->mode_reglement_id = $this->mode_reglement_id;
         //$facture->remise_absolue    = $this->remise_absolue;
-        //$facture->remise_percent    = $this->remise_percent;	// TODO deprecated
+        //$facture->remise_percent    = $this->remise_percent;  // TODO deprecated
 
         $facture->origin = $this->origin;
         $facture->origin_id = $this->origin_id;
@@ -1299,8 +1300,10 @@ class Facture extends CommonInvoice
                 //print dol_print_date(dol_mktime(0, 0, 0, $start['mon'], $start['mday'], $start['year'], 'gmt'), 'dayhour').' '.dol_print_date($first, 'dayhour').'<br>';
                 //print dol_mktime(23, 59, 59, $end['mon'], $end['mday'], $end['year'], 'gmt').' '.$last.'<br>';exit;
                 // If start date is first date of month and end date is last date of month
-                if (dol_mktime(0, 0, 0, $start['mon'], $start['mday'], $start['year'], 'gmt') == $first
-                    && dol_mktime(23, 59, 59, $end['mon'], $end['mday'], $end['year'], 'gmt') == $last) {
+                if (
+                    dol_mktime(0, 0, 0, $start['mon'], $start['mday'], $start['year'], 'gmt') == $first
+                    && dol_mktime(23, 59, 59, $end['mon'], $end['mday'], $end['year'], 'gmt') == $last
+                ) {
                     $nextMonth = dol_get_next_month($end['mon'], $end['year']);
                     $newFirst = dol_get_first_day($nextMonth['year'], $nextMonth['month']);
                     $newLast = dol_get_last_day($nextMonth['year'], $nextMonth['month']);
@@ -2436,7 +2439,8 @@ class Facture extends CommonInvoice
             while ($objp = $this->db->fetch_object($result)) {
                 $invoice = new Facture($this->db);
                 if ($invoice->fetch($objp->rowid) > 0) {
-                    if ($objp->situation_counter < $this->situation_counter
+                    if (
+                        $objp->situation_counter < $this->situation_counter
                         || ($objp->situation_counter == $this->situation_counter && $objp->rowid < $this->id) // This case appear when there are credit notes
                     ) {
                         $this->tab_previous_situation_invoice[] = $invoice;
@@ -3222,13 +3226,16 @@ class Facture extends CommonInvoice
             $this->error = $langs->trans("ErrorObjectMustHaveLinesToBeValidated", $this->ref);
             return -1;
         }
-        if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('facture', 'creer'))
-            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('facture', 'invoice_advance', 'validate'))) {
+        if (
+            (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('facture', 'creer'))
+            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('facture', 'invoice_advance', 'validate'))
+        ) {
             $this->error = 'Permission denied';
             dol_syslog(get_class($this) . "::validate " . $this->error . ' MAIN_USE_ADVANCED_PERMS=' . getDolGlobalString('MAIN_USE_ADVANCED_PERMS'), LOG_ERR);
             return -1;
         }
-        if ((preg_match('/^[\(]?PROV/i', $this->ref) || empty($this->ref)) &&    // empty should not happened, but when it occurs, the test save life
+        if (
+            (preg_match('/^[\(]?PROV/i', $this->ref) || empty($this->ref)) &&    // empty should not happened, but when it occurs, the test save life
             getDolGlobalString('FAC_FORCE_DATE_VALIDATION')                        // If option enabled, we force invoice date
         ) {
             $this->date = dol_now();
@@ -3500,9 +3507,9 @@ class Facture extends CommonInvoice
             }
 
             /*
-			 * Set situation_final to 0 if is a credit note and the invoice source is a invoice situation (case when invoice situation is at 100%)
-			 * So we can continue to create new invoice situation
-			 */
+             * Set situation_final to 0 if is a credit note and the invoice source is a invoice situation (case when invoice situation is at 100%)
+             * So we can continue to create new invoice situation
+             */
             if (!$error && $this->type == self::TYPE_CREDIT_NOTE && $this->fk_facture_source > 0) {
                 $invoice_situation = new Facture($this->db);
                 $result = $invoice_situation->fetch($this->fk_facture_source);
@@ -4532,63 +4539,63 @@ class Facture extends CommonInvoice
      * @return        int                Return integer <0 if KO, >0 if OK
      */
     /*
-	public function set_remise_absolue($user, $remise, $notrigger = 0)
-	{
+    public function set_remise_absolue($user, $remise, $notrigger = 0)
+    {
 		// phpcs:enable
-		if (empty($remise)) {
-			$remise = 0;
-		}
+        if (empty($remise)) {
+            $remise = 0;
+        }
 
-		if ($user->hasRight('facture', 'creer')) {
-			$error = 0;
+        if ($user->hasRight('facture', 'creer')) {
+            $error = 0;
 
-			$this->db->begin();
+            $this->db->begin();
 
-			$remise = price2num($remise);
+            $remise = price2num($remise);
 
-			$sql = 'UPDATE '.MAIN_DB_PREFIX.'facture';
-			$sql .= ' SET remise_absolue = '.((float) $remise);
-			$sql .= " WHERE rowid = ".((int) $this->id);
-			$sql .= ' AND fk_statut = '.self::STATUS_DRAFT;
+            $sql = 'UPDATE '.MAIN_DB_PREFIX.'facture';
+            $sql .= ' SET remise_absolue = '.((float) $remise);
+            $sql .= " WHERE rowid = ".((int) $this->id);
+            $sql .= ' AND fk_statut = '.self::STATUS_DRAFT;
 
-			dol_syslog(__METHOD__, LOG_DEBUG);
-			$resql = $this->db->query($sql);
-			if (!$resql) {
-				$this->errors[] = $this->db->error();
-				$error++;
-			}
+            dol_syslog(__METHOD__, LOG_DEBUG);
+            $resql = $this->db->query($sql);
+            if (!$resql) {
+                $this->errors[] = $this->db->error();
+                $error++;
+            }
 
-			if (!$error) {
-				$this->oldcopy = clone $this;
-				$this->remise_absolue = $remise;
-				$this->update_price(1);
-			}
+            if (!$error) {
+                $this->oldcopy = clone $this;
+                $this->remise_absolue = $remise;
+                $this->update_price(1);
+            }
 
-			if (!$notrigger && empty($error)) {
-				// Call trigger
-				$result = $this->call_trigger('BILL_MODIFY', $user);
-				if ($result < 0) {
-					$error++;
-				}
-				// End call triggers
-			}
+            if (!$notrigger && empty($error)) {
+                // Call trigger
+                $result = $this->call_trigger('BILL_MODIFY', $user);
+                if ($result < 0) {
+                    $error++;
+                }
+                // End call triggers
+            }
 
-			if (!$error) {
-				$this->db->commit();
-				return 1;
-			} else {
-				foreach ($this->errors as $errmsg) {
-					dol_syslog(__METHOD__.' Error: '.$errmsg, LOG_ERR);
-					$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
-				}
-				$this->db->rollback();
-				return -1 * $error;
-			}
-		}
+            if (!$error) {
+                $this->db->commit();
+                return 1;
+            } else {
+                foreach ($this->errors as $errmsg) {
+                    dol_syslog(__METHOD__.' Error: '.$errmsg, LOG_ERR);
+                    $this->error .= ($this->error ? ', '.$errmsg : $errmsg);
+                }
+                $this->db->rollback();
+                return -1 * $error;
+            }
+        }
 
-		return 0;
-	}
-	*/
+        return 0;
+    }
+    */
 
     /**
      *      Return next reference of customer invoice not already used (or last reference)
@@ -4896,8 +4903,8 @@ class Facture extends CommonInvoice
         $sql .= " WHERE f.entity IN (" . getEntity('invoice') . ")";
         $sql .= " AND f.fk_statut in (" . self::STATUS_VALIDATED . "," . self::STATUS_CLOSED . ")";
         //  $sql.= " WHERE f.fk_statut >= 1";
-        //	$sql.= " AND (f.paye = 1";				// Classee payee completement
-        //	$sql.= " OR f.close_code IS NOT NULL)";	// Classee payee partiellement
+        //  $sql.= " AND (f.paye = 1";              // Classee payee completement
+        //  $sql.= " OR f.close_code IS NOT NULL)"; // Classee payee partiellement
         $sql .= " AND ff.type IS NULL"; // Renvoi vrai si pas facture de replacement
         $sql .= " AND f.type <> " . self::TYPE_CREDIT_NOTE; // Exclude credit note invoices from selection
 
@@ -5699,11 +5706,11 @@ class Facture extends CommonInvoice
             return 0;
         }
         /*if (empty($conf->global->FACTURE_REMINDER_EMAIL)) {
-			$langs->load("bills");
-			$this->output .= $langs->trans('EventRemindersByEmailNotEnabled', $langs->transnoentitiesnoconv("Facture"));
-			return 0;
-		}
-		*/
+            $langs->load("bills");
+            $this->output .= $langs->trans('EventRemindersByEmailNotEnabled', $langs->transnoentitiesnoconv("Facture"));
+            return 0;
+        }
+        */
 
         require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';

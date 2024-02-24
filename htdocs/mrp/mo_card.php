@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017-2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -279,7 +280,7 @@ if (empty($reshook)) {
     include DOL_DOCUMENT_ROOT . '/core/actions_sendmails.inc.php';
 
     // Action to move up and down lines of object
-    //include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';	// Must be include, not include_once
+    //include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php'; // Must be include, not include_once
 
     // Action close produced
     if ($action == 'confirm_produced' && $confirm == 'yes' && $permissiontoadd) {
@@ -367,31 +368,31 @@ if ($action == 'create') {
                     window.location.href = '<?php echo $_SERVER["PHP_SELF"] ?>?action=create&token=<?php echo newToken(); ?>&fk_bom=' + jQuery('#fk_bom').val();
                     /*
                     $.getJSON('<?php echo DOL_URL_ROOT ?>/mrp/ajax/ajax_bom.php?action=getBoms&idbom='+jQuery('#fk_bom').val(), function(data) {
-						console.log(data);
-						if (typeof data.rowid != "undefined") {
-							console.log("New BOM loaded, we set values in form");
-							console.log(data);
-							$('#qty').val(data.qty);
-							$("#mrptype").val(data.bomtype);	// We set bomtype into mrptype
-							$('#mrptype').trigger('change'); // Notify any JS components that the value changed
-							$("#fk_product").val(data.fk_product);
-							$('#fk_product').trigger('change'); // Notify any JS components that the value changed
-							$('#note_private').val(data.description);
-							$('#note_private').trigger('change'); // Notify any JS components that the value changed
-							$('#fk_warehouse').val(data.fk_warehouse);
-							$('#fk_warehouse').trigger('change'); // Notify any JS components that the value changed
-							if (typeof CKEDITOR != "undefined") {
-								if (typeof CKEDITOR.instances != "undefined") {
-									if (typeof CKEDITOR.instances.note_private != "undefined") {
-										console.log(CKEDITOR.instances.note_private);
-										CKEDITOR.instances.note_private.setData(data.description);
-									}
-								}
-							}
-						} else {
-							console.log("Failed to get BOM");
-						}
-					});*/
+                        console.log(data);
+                        if (typeof data.rowid != "undefined") {
+                            console.log("New BOM loaded, we set values in form");
+                            console.log(data);
+                            $('#qty').val(data.qty);
+                            $("#mrptype").val(data.bomtype);    // We set bomtype into mrptype
+                            $('#mrptype').trigger('change'); // Notify any JS components that the value changed
+                            $("#fk_product").val(data.fk_product);
+                            $('#fk_product').trigger('change'); // Notify any JS components that the value changed
+                            $('#note_private').val(data.description);
+                            $('#note_private').trigger('change'); // Notify any JS components that the value changed
+                            $('#fk_warehouse').val(data.fk_warehouse);
+                            $('#fk_warehouse').trigger('change'); // Notify any JS components that the value changed
+                            if (typeof CKEDITOR != "undefined") {
+                                if (typeof CKEDITOR.instances != "undefined") {
+                                    if (typeof CKEDITOR.instances.note_private != "undefined") {
+                                        console.log(CKEDITOR.instances.note_private);
+                                        CKEDITOR.instances.note_private.setData(data.description);
+                                    }
+                                }
+                            }
+                        } else {
+                            console.log("Failed to get BOM");
+                        }
+                    });*/
                 } else if (jQuery('#fk_bom').val() < 0) {
                     // Redirect to page with all fields defined except fk_bom set
                     console.log(jQuery('#fk_product').val());
@@ -742,7 +743,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         if (empty($reshook)) {
             // Send
             //if (empty($user->socid)) {
-            //	print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=presend&mode=init#formmailbeforetitle">' . $langs->trans('SendMail') . '</a>'."\n";
+            //  print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=presend&mode=init#formmailbeforetitle">' . $langs->trans('SendMail') . '</a>'."\n";
             //}
 
             // Back to draft

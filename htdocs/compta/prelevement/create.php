@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2010-2023  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
@@ -693,41 +694,41 @@ $sql.=$db->plimit($limit);
 $result = $db->query($sql);
 if ($result)
 {
-	$num = $db->num_rows($result);
-	$i = 0;
+    $num = $db->num_rows($result);
+    $i = 0;
 
-	print"\n<!-- debut table -->\n";
-	print '<table class="noborder centpercent">';
-	print '<tr class="liste_titre"><td>'.$langs->trans("Ref").'</td>';
-	print '<td class="center">'.$langs->trans("Date").'</td><td class="right">'.$langs->trans("Amount").'</td>';
-	print '</tr>';
+    print"\n<!-- debut table -->\n";
+    print '<table class="noborder centpercent">';
+    print '<tr class="liste_titre"><td>'.$langs->trans("Ref").'</td>';
+    print '<td class="center">'.$langs->trans("Date").'</td><td class="right">'.$langs->trans("Amount").'</td>';
+    print '</tr>';
 
-	while ($i < min($num,$limit))
-	{
-		$obj = $db->fetch_object($result);
+    while ($i < min($num,$limit))
+    {
+        $obj = $db->fetch_object($result);
 
 
-		print '<tr class="oddeven">';
+        print '<tr class="oddeven">';
 
-		print "<td>";
-		$bprev->id=$obj->rowid;
-		$bprev->ref=$obj->ref;
-		print $bprev->getNomUrl(1);
-		print "</td>\n";
+        print "<td>";
+        $bprev->id=$obj->rowid;
+        $bprev->ref=$obj->ref;
+        print $bprev->getNomUrl(1);
+        print "</td>\n";
 
-		print '<td class="center">'.dol_print_date($db->jdate($obj->datec),'day')."</td>\n";
+        print '<td class="center">'.dol_print_date($db->jdate($obj->datec),'day')."</td>\n";
 
-		print '<td class="right"><span class="amount">'.price($obj->amount,0,$langs,0,0,-1,$conf->currency)."</span></td>\n";
+        print '<td class="right"><span class="amount">'.price($obj->amount,0,$langs,0,0,-1,$conf->currency)."</span></td>\n";
 
-		print "</tr>\n";
-		$i++;
-	}
-	print "</table><br>";
-	$db->free($result);
+        print "</tr>\n";
+        $i++;
+    }
+    print "</table><br>";
+    $db->free($result);
 }
 else
 {
-	dol_print_error($db);
+    dol_print_error($db);
 }
 */
 

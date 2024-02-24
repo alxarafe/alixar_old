@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2019      Nicolas ZABOURI      <info@inovea-conseil.com>
  * Copyright (C) 2019      Frédéric France      <frederic.france@netlogic.fr>

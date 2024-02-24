@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2012	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2012		Regis Houssin			<regis.houssin@inodbox.com>
@@ -20,14 +21,14 @@
 
 /**
  *      \file       htdocs/categories/admin/categorie_extrafields.php
- *		\ingroup    societe
- *		\brief      Page to setup extra fields of category
+ *      \ingroup    societe
+ *      \brief      Page to setup extra fields of category
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/categories.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/categories.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('categories', 'admin'));
@@ -39,7 +40,7 @@ $form = new Form($db);
 $tmptype2label = ExtraFields::$type2label;
 $type2label = array('');
 foreach ($tmptype2label as $key => $val) {
-	$type2label[$key] = $langs->transnoentitiesnoconv($val);
+    $type2label[$key] = $langs->transnoentitiesnoconv($val);
 }
 
 $action = GETPOST('action', 'aZ09');
@@ -47,7 +48,7 @@ $attrname = GETPOST('attrname', 'alpha');
 $elementtype = 'categorie'; //Must be the $element of the class that manage extrafield
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -55,7 +56,7 @@ if (!$user->admin) {
  * Actions
  */
 
-require DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
+require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
 
 
 /*
@@ -68,32 +69,32 @@ $help_url = 'EN:Module Categories|FR:Module Catégories|ES:Módulo Categorías|D
 llxHeader('', $langs->trans("Categories"), $help_url);
 
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("CategoriesSetup"), $linkback, 'title_setup');
 
 $head = categoriesadmin_prepare_head();
 
 print dol_get_fiche_head($head, 'attributes_categories', $langs->trans("Categories"), -1, 'category');
 
-require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
+require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
 print dol_get_fiche_end();
 
 
 // Creation of an optional field
 if ($action == 'create') {
-	print '<br><div id="newattrib"></div>';
-	print load_fiche_titre($langs->trans('NewAttribute'));
+    print '<br><div id="newattrib"></div>';
+    print load_fiche_titre($langs->trans('NewAttribute'));
 
-	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_add.tpl.php';
+    require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_add.tpl.php';
 }
 
 // Edition of an optional field
 if ($action == 'edit' && !empty($attrname)) {
-	print "<br>";
-	print load_fiche_titre($langs->trans("FieldEdition", $attrname));
+    print "<br>";
+    print load_fiche_titre($langs->trans("FieldEdition", $attrname));
 
-	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_edit.tpl.php';
+    require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_edit.tpl.php';
 }
 
 // End of page

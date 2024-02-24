@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2011-2017 Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2021      Thibault FOUCART     <support@ptibogxiv.net>

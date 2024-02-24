@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@capnetworks.com>
@@ -503,11 +504,11 @@ $moreforfilter = '';
 // Filter on categories
 /*
 if (isModEnabled("categorie")) {
-	require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-	$moreforfilter.='<div class="divsearchfield">';
-	$moreforfilter.=$langs->trans('ProjectCategories'). ': ';
-	$moreforfilter.=$formother->select_categories('project', $search_categ, 'search_categ', 1, 1, 'maxwidth300');
-	$moreforfilter.='</div>';
+    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
+    $moreforfilter.='<div class="divsearchfield">';
+    $moreforfilter.=$langs->trans('ProjectCategories'). ': ';
+    $moreforfilter.=$formother->select_categories('project', $search_categ, 'search_categ', 1, 1, 'maxwidth300');
+    $moreforfilter.='</div>';
 }*/
 
 // If the user can view user other than himself
@@ -603,8 +604,8 @@ $isavailable = [];
 // By default, we can edit only tasks we are assigned to
 $restrictviewformytask = ((!isset($conf->global->PROJECT_TIME_SHOW_TASK_NOT_ASSIGNED)) ? 2 : $conf->global->PROJECT_TIME_SHOW_TASK_NOT_ASSIGNED);
 if (count($tasksarray) > 0) {
-    //var_dump($tasksarray);				// contains only selected tasks
-    //var_dump($tasksarraywithoutfilter);	// contains all tasks (if there is a filter, not defined if no filter)
+    //var_dump($tasksarray);                // contains only selected tasks
+    //var_dump($tasksarraywithoutfilter);   // contains all tasks (if there is a filter, not defined if no filter)
     //var_dump($tasksrole);
 
     $j = 0;

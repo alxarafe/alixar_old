@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Jean-Louis Bergamo   <jlb@j1b.org>
  * Copyright (C) 2004-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -50,7 +51,7 @@ $error = 0;
 $helptext = '*' . $langs->trans("FollowingConstantsWillBeSubstituted") . '<br>';
 $helptext .= '__DOL_MAIN_URL_ROOT__, __ID__, __FIRSTNAME__, __LASTNAME__, __FULLNAME__, __LOGIN__, __PASSWORD__, ';
 $helptext .= '__COMPANY__, __ADDRESS__, __ZIP__, __TOWN__, __COUNTRY__, __EMAIL__, __BIRTH__, __PHOTO__, __TYPE__, ';
-//$helptext.='__YEAR__, __MONTH__, __DAY__';	// Not supported
+//$helptext.='__YEAR__, __MONTH__, __DAY__';    // Not supported
 
 // Editing global variables not related to a specific theme
 $constantes = [

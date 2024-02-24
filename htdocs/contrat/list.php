@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2020 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -373,7 +374,7 @@ if ($search_country && $search_country != '-1') {
     $sql .= " AND s.fk_pays IN (" . $db->sanitize($search_country) . ')';
 }
 /*if ($search_sale > 0) {
-	$sql .= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $search_sale);
+    $sql .= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $search_sale);
 }*/
 if ($search_all) {
     $sql .= natural_search(array_keys($fieldstosearchall), $search_all);

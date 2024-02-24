@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019 Frédéric FRANCE <frederic.france@free.fr>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,10 +46,10 @@ function zapierAdminPrepareHead()
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     //$this->tabs = array(
-    //	'entity:+tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
+    //  'entity:+tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
     //); // to add new tab
     //$this->tabs = array(
-    //	'entity:-tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
+    //  'entity:-tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
     //); // to remove a tab
     complete_head_from_modules($conf, $langs, null, $head, $h, 'zapier');
 

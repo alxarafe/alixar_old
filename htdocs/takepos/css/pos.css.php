@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2004-2017	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2004-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2006		Rodolphe Quiedeville	<rodolphe@quiedeville.org>
  * Copyright (C) 2007-2017	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2011		Philippe Grand			<philippe.grand@atoo-net.com>
@@ -21,28 +22,28 @@
  */
 
 /**
- *		\file       htdocs/takepos/css/pos.css.php
- *		\brief      File for CSS style for TakePOS
+ *      \file       htdocs/takepos/css/pos.css.php
+ *      \brief      File for CSS style for TakePOS
  */
 
-//if (! defined('NOREQUIREUSER')) define('NOREQUIREUSER','1');	// Not disabled because need to load personalized language
-//if (! defined('NOREQUIREDB'))   define('NOREQUIREDB','1');	// Not disabled to increase speed. Language code is found on url.
+//if (! defined('NOREQUIREUSER')) define('NOREQUIREUSER','1');  // Not disabled because need to load personalized language
+//if (! defined('NOREQUIREDB'))   define('NOREQUIREDB','1');    // Not disabled to increase speed. Language code is found on url.
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
-//if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');	// Not disabled because need to do translations
+//if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');  // Not disabled because need to do translations
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1);
+    define('NOTOKENRENEWAL', 1);
 }
 if (!defined('NOLOGIN')) {
-	define('NOLOGIN', 1); // File must be accessed by logon page so without login
+    define('NOLOGIN', 1); // File must be accessed by logon page so without login
 }
 //if (! defined('NOREQUIREMENU'))   define('NOREQUIREMENU',1);  // We need top menu content
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', 1);
+    define('NOREQUIREHTML', 1);
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 
@@ -51,22 +52,22 @@ define('ISLOADEDBYSTEELSHEET', '1');
 
 session_cache_limiter('public');
 
-require_once __DIR__.'/../../main.inc.php'; // __DIR__ allow this script to be included in custom themes
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once __DIR__ . '/../../main.inc.php'; // __DIR__ allow this script to be included in custom themes
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Define css type
 top_httphead('text/css');
 // Important: Following code is to avoid page request by browser and PHP CPU at each Dolibarr page access.
 if (empty($dolibarr_nocache)) {
-	header('Cache-Control: max-age=10800, public, must-revalidate');
+    header('Cache-Control: max-age=10800, public, must-revalidate');
 } else {
-	header('Cache-Control: no-cache');
+    header('Cache-Control: no-cache');
 }
 
 
-include DOL_DOCUMENT_ROOT.'/theme/'.$conf->theme.'/theme_vars.inc.php';
+include DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/theme_vars.inc.php';
 if (defined('THEME_ONLY_CONSTANT')) {
-	return;
+    return;
 }
 
 ?>
@@ -1005,7 +1006,7 @@ div#moreinfo, div#infowarehouse {
 
 <?php
 if (!getDolGlobalString('TAKEPOS_USE_ARROW_ON_NAVBAR')) {
-	?>
+    ?>
 
 .arrows {
     display: none;
@@ -1118,4 +1119,4 @@ html {
     display: flex;
 }
 
-<?php } ?>
+<?php } 

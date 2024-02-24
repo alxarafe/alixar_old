@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /* Copyright (C) 2020 Laurent Destailleur <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,17 +24,17 @@
  */
 
 if (!defined('NOSESSION')) {
-	define('NOSESSION', '1');
+    define('NOSESSION', '1');
 }
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);
-$path = __DIR__.'/';
+$path = __DIR__ . '/';
 
 // Test if batch mode
 if (substr($sapi_type, 0, 3) == 'cgi') {
-	echo "Error: You are using PHP for CGI. To execute ".$script_file." from command line, you must use PHP for CLI mode.\n";
-	exit(-1);
+    echo "Error: You are using PHP for CGI. To execute " . $script_file . " from command line, you must use PHP for CLI mode.\n";
+    exit(-1);
 }
 
 @set_time_limit(0); // No timeout for this script
@@ -51,17 +52,17 @@ $excludeid = (empty($argv[5]) ? '' : $argv[5]);
 $forcelang = (empty($argv[6]) ? '' : $argv[6]);
 
 if (empty($argv[3]) || !in_array($argv[1], array('test', 'confirm')) || empty($websiteref)) {
-	print '***** '.$script_file.' *****'."\n";
-	print "Usage: $script_file (test|confirm) website login:pass@serverjoomla/tableprefix/databasejoomla [nbmaxrecord]\n";
-	print "\n";
-	print "Load joomla news and create them into Dolibarr database (if they don't already exist).\n";
-	exit(-1);
+    print '***** ' . $script_file . ' *****' . "\n";
+    print "Usage: $script_file (test|confirm) website login:pass@serverjoomla/tableprefix/databasejoomla [nbmaxrecord]\n";
+    print "\n";
+    print "Load joomla news and create them into Dolibarr database (if they don't already exist).\n";
+    exit(-1);
 }
 
-require $path."../../htdocs/master.inc.php";
-include_once DOL_DOCUMENT_ROOT.'/website/class/website.class.php';
-include_once DOL_DOCUMENT_ROOT.'/website/class/websitepage.class.php';
-include_once DOL_DOCUMENT_ROOT.'/core/lib/website2.lib.php';
+require $path . "../../htdocs/master.inc.php";
+include_once DOL_DOCUMENT_ROOT . '/website/class/website.class.php';
+include_once DOL_DOCUMENT_ROOT . '/website/class/websitepage.class.php';
+include_once DOL_DOCUMENT_ROOT . '/core/lib/website2.lib.php';
 
 $hookmanager->initHooks(array('cli'));
 
@@ -73,8 +74,8 @@ $hookmanager->initHooks(array('cli'));
 $langs->load('main');
 
 if (!empty($dolibarr_main_db_readonly)) {
-	print "Error: instance in read-onyl mode\n";
-	exit(-1);
+    print "Error: instance in read-onyl mode\n";
+    exit(-1);
 }
 
 $joomlaserverinfoarray = preg_split('/(:|@|\/)/', $joomlaserverinfo);
@@ -89,39 +90,39 @@ $joomlaport = 3306;
 $website = new Website($db);
 $result = $website->fetch(0, $websiteref);
 if ($result <= 0) {
-	print 'Error, web site '.$websiteref.' not found'."\n";
-	exit(-1);
+    print 'Error, web site ' . $websiteref . ' not found' . "\n";
+    exit(-1);
 }
 $websiteid = $website->id;
 $importid = dol_print_date(dol_now(), 'dayhourlog');
 
 $dbjoomla = getDoliDBInstance('mysqli', $joomlahost, $joomlalogin, $joomlapass, $joomladatabase, $joomlaport);
 if ($dbjoomla->error) {
-	dol_print_error($dbjoomla, "host=".$joomlahost.", port=".$joomlaport.", user=".$joomlalogin.", databasename=".$joomladatabase.", ".$dbjoomla->error);
-	exit(-1);
+    dol_print_error($dbjoomla, "host=" . $joomlahost . ", port=" . $joomlaport . ", user=" . $joomlalogin . ", databasename=" . $joomladatabase . ", " . $dbjoomla->error);
+    exit(-1);
 }
 
-$sql = 'SELECT c.id, c.title, c.alias, c.created, c.introtext, `fulltext`, c.metadesc, c.metakey, c.language, c.created, c.publish_up, u.username FROM '.$joomlaprefix.'_content as c';
-$sql .= ' LEFT JOIN '.$joomlaprefix.'_users as u ON u.id = c.created_by';
+$sql = 'SELECT c.id, c.title, c.alias, c.created, c.introtext, `fulltext`, c.metadesc, c.metakey, c.language, c.created, c.publish_up, u.username FROM ' . $joomlaprefix . '_content as c';
+$sql .= ' LEFT JOIN ' . $joomlaprefix . '_users as u ON u.id = c.created_by';
 $sql .= ' WHERE featured = 1';
-$sql .= ' AND c.id NOT IN ('.$excludeid.')';
+$sql .= ' AND c.id NOT IN (' . $excludeid . ')';
 $sql .= ' ORDER BY publish_up ASC';
 $resql = $dbjoomla->query($sql);
 
 if (!$resql) {
-	dol_print_error($dbjoomla);
-	exit;
+    dol_print_error($dbjoomla);
+    exit;
 }
 
-$blogpostheader = file_get_contents($path.'blogpost-header.txt');
+$blogpostheader = file_get_contents($path . 'blogpost-header.txt');
 if ($blogpostheader === false) {
-	print "Error: Failed to load file content of 'blogpost-header.txt'\n";
-	exit(-1);
+    print "Error: Failed to load file content of 'blogpost-header.txt'\n";
+    exit(-1);
 }
-$blogpostfooter = file_get_contents($path.'blogpost-footer.txt');
+$blogpostfooter = file_get_contents($path . 'blogpost-footer.txt');
 if ($blogpostfooter === false) {
-	print "Error: Failed to load file content of 'blogpost-footer.txt'\n";
-	exit(-1);
+    print "Error: Failed to load file content of 'blogpost-footer.txt'\n";
+    exit(-1);
 }
 
 
@@ -132,86 +133,86 @@ $i = 0;
 $nbimported = 0;
 $nbalreadyexists = 0;
 while ($obj = $dbjoomla->fetch_object($resql)) {
-	if ($obj) {
-		$i++;
-		$id = $obj->id;
-		$alias = $obj->alias;
-		$title = $obj->title;
-		//$description = dol_string_nohtmltag($obj->introtext);
-		$description = trim(dol_trunc(dol_string_nohtmltag($obj->metadesc), 250));
-		if (empty($description)) {
-			$description = trim(dol_trunc(dol_string_nohtmltag($obj->introtext), 250));
-		}
+    if ($obj) {
+        $i++;
+        $id = $obj->id;
+        $alias = $obj->alias;
+        $title = $obj->title;
+        //$description = dol_string_nohtmltag($obj->introtext);
+        $description = trim(dol_trunc(dol_string_nohtmltag($obj->metadesc), 250));
+        if (empty($description)) {
+            $description = trim(dol_trunc(dol_string_nohtmltag($obj->introtext), 250));
+        }
 
-		$htmltext = "";
-		if ($blogpostheader) {
-			$htmltext .= $blogpostheader."\n";
-		}
-		$htmltext .= '<section id="mysectionnewsintro" contenteditable="true">'."\n";
-		$htmltext .= $obj->introtext;
-		$htmltext .= '</section>'."\n";
-		if ($obj->fulltext) {
-			$htmltext .= '<section id="mysectionnewscontent" contenteditable="true">'."\n";
-			$htmltext .= '<br>'."\n".'<hr>'."\n".'<br>'."\n";
-			$htmltext .= $obj->fulltext;
-			$htmltext .= "</section>";
-		}
-		if ($blogpostfooter) {
-			$htmltext .= "\n".$blogpostfooter;
-		}
+        $htmltext = "";
+        if ($blogpostheader) {
+            $htmltext .= $blogpostheader . "\n";
+        }
+        $htmltext .= '<section id="mysectionnewsintro" contenteditable="true">' . "\n";
+        $htmltext .= $obj->introtext;
+        $htmltext .= '</section>' . "\n";
+        if ($obj->fulltext) {
+            $htmltext .= '<section id="mysectionnewscontent" contenteditable="true">' . "\n";
+            $htmltext .= '<br>' . "\n" . '<hr>' . "\n" . '<br>' . "\n";
+            $htmltext .= $obj->fulltext;
+            $htmltext .= "</section>";
+        }
+        if ($blogpostfooter) {
+            $htmltext .= "\n" . $blogpostfooter;
+        }
 
-		$language = ($forcelang ? $forcelang : ($obj->language && $obj->language != '*' ? $obj->language : 'en'));
-		$keywords = $obj->metakey;
-		$author_alias = $obj->username;
+        $language = ($forcelang ? $forcelang : ($obj->language && $obj->language != '*' ? $obj->language : 'en'));
+        $keywords = $obj->metakey;
+        $author_alias = $obj->username;
 
-		$date_creation = $dbjoomla->jdate($obj->publish_up);
+        $date_creation = $dbjoomla->jdate($obj->publish_up);
 
-		print '#'.$i.' id='.$id.' '.$title.' lang='.$language.' keywords='.$keywords.' importid='.$importid."\n";
+        print '#' . $i . ' id=' . $id . ' ' . $title . ' lang=' . $language . ' keywords=' . $keywords . ' importid=' . $importid . "\n";
 
-		$sqlinsert = 'INSERT INTO '.MAIN_DB_PREFIX.'website_page(fk_website, pageurl, aliasalt, title, description, keywords, content, status, type_container, lang, import_key, image, date_creation, author_alias)';
-		$sqlinsert .= " VALUES(".$websiteid.", '".$db->escape($alias)."', '', '".$db->escape($title)."', '".$db->escape($description)."', '".$db->escape($keywords)."', ";
-		$sqlinsert .= " '".$db->escape($htmltext)."', '1', 'blogpost', '".$db->escape($language)."', '".$db->escape($importid)."', '".$db->escape($image)."', '".$db->idate($date_creation)."', '".$db->escape($author_alias)."')";
-		print $sqlinsert."\n";
+        $sqlinsert = 'INSERT INTO ' . MAIN_DB_PREFIX . 'website_page(fk_website, pageurl, aliasalt, title, description, keywords, content, status, type_container, lang, import_key, image, date_creation, author_alias)';
+        $sqlinsert .= " VALUES(" . $websiteid . ", '" . $db->escape($alias) . "', '', '" . $db->escape($title) . "', '" . $db->escape($description) . "', '" . $db->escape($keywords) . "', ";
+        $sqlinsert .= " '" . $db->escape($htmltext) . "', '1', 'blogpost', '" . $db->escape($language) . "', '" . $db->escape($importid) . "', '" . $db->escape($image) . "', '" . $db->idate($date_creation) . "', '" . $db->escape($author_alias) . "')";
+        print $sqlinsert . "\n";
 
-		$result = $db->query($sqlinsert);
-		if ($result <= 0) {
-			print 'ERROR: '.$db->lasterrno.": ".$sqlinsert."\n";
-			if ($db->lasterrno != 'DB_ERROR_RECORD_ALREADY_EXISTS') {
-				$error++;
-			} else {
-				$nbalreadyexists++;
-			}
-		} else {
-			$pageid = $db->last_insert_id(MAIN_DB_PREFIX.'website_page');
+        $result = $db->query($sqlinsert);
+        if ($result <= 0) {
+            print 'ERROR: ' . $db->lasterrno . ": " . $sqlinsert . "\n";
+            if ($db->lasterrno != 'DB_ERROR_RECORD_ALREADY_EXISTS') {
+                $error++;
+            } else {
+                $nbalreadyexists++;
+            }
+        } else {
+            $pageid = $db->last_insert_id(MAIN_DB_PREFIX . 'website_page');
 
-			if ($pageid > 0) {	// We must also regenerate page on disk
-				global $dolibarr_main_data_root;
-				$pathofwebsite = $dolibarr_main_data_root.'/website/'.$websiteref;
-				$filetpl = $pathofwebsite.'/page'.$pageid.'.tpl.php';
-				$websitepage = new WebsitePage($db);
-				$websitepage->fetch($pageid);
-				dolSavePageContent($filetpl, $website, $websitepage);
-			}
+            if ($pageid > 0) {  // We must also regenerate page on disk
+                global $dolibarr_main_data_root;
+                $pathofwebsite = $dolibarr_main_data_root . '/website/' . $websiteref;
+                $filetpl = $pathofwebsite . '/page' . $pageid . '.tpl.php';
+                $websitepage = new WebsitePage($db);
+                $websitepage->fetch($pageid);
+                dolSavePageContent($filetpl, $website, $websitepage);
+            }
 
-			print "Insert done - pageid = ".$pageid."\n";
-			$nbimported++;
-		}
+            print "Insert done - pageid = " . $pageid . "\n";
+            $nbimported++;
+        }
 
-		if ($max && $i >= $max) {
-			print 'Nb max of record ('.$max.') reached. We stop now.'."\n";
-			break;
-		}
-	}
+        if ($max && $i >= $max) {
+            print 'Nb max of record (' . $max . ') reached. We stop now.' . "\n";
+            break;
+        }
+    }
 }
 
 if ($mode == 'confirm' && !$error) {
-	print "Commit\n";
-	print $nbalreadyexists." page(s) already exists.\n";
-	print $nbimported." page(s) imported with importid=".$importid."\n";
-	$db->commit();
+    print "Commit\n";
+    print $nbalreadyexists . " page(s) already exists.\n";
+    print $nbimported . " page(s) imported with importid=" . $importid . "\n";
+    $db->commit();
 } else {
-	print "Rollback (mode=test)\n";
-	$db->rollback();
+    print "Rollback (mode=test)\n";
+    $db->rollback();
 }
 
 exit($error);

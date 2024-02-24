@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003       Brian Fraval            <brian@fraval.org>
  * Copyright (C) 2004-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
@@ -33,49 +34,49 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formadmin.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 if (isModEnabled('adherent')) {
-	require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 }
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "commercial", "bills", "banks", "users"));
 
 if (isModEnabled('categorie')) {
-	$langs->load("categories");
+    $langs->load("categories");
 }
 if (isModEnabled('incoterm')) {
-	$langs->load("incoterm");
+    $langs->load("incoterm");
 }
 if (isModEnabled('notification')) {
-	$langs->load("mails");
+    $langs->load("mails");
 }
 
 $mesg = ''; $error = 0; $errors = array();
 
 
 // Get parameters
-$action		= (GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view');
-$cancel 	= GETPOST('cancel', 'alpha');
+$action     = (GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view');
+$cancel     = GETPOST('cancel', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
-$confirm 	= GETPOST('confirm');
-$socid 		= GETPOST('socid', 'int') ? GETPOST('socid', 'int') : GETPOST('id', 'int');
+$confirm    = GETPOST('confirm');
+$socid      = GETPOST('socid', 'int') ? GETPOST('socid', 'int') : GETPOST('id', 'int');
 
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 
 if (empty($socid) && $action == 'view') {
-	$action = 'create';
+    $action = 'create';
 }
 
 // Initialize objects
@@ -89,24 +90,24 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 $hookmanager->initHooks(array('thirdpartycontact', 'globalcard'));
 
 if ($object->fetch($socid) <= 0 && $action == 'view') {
-	$langs->load("errors");
-	print($langs->trans('ErrorRecordNotFound'));
-	exit;
+    $langs->load("errors");
+    print($langs->trans('ErrorRecordNotFound'));
+    exit;
 }
 
 // Get object canvas (By default, this is not defined, so standard usage of dolibarr)
 $canvas = $object->canvas ? $object->canvas : GETPOST("canvas");
 $objcanvas = null;
 if (!empty($canvas)) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
-	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('thirdparty', 'card', $canvas);
+    require_once DOL_DOCUMENT_ROOT . '/core/class/canvas.class.php';
+    $objcanvas = new Canvas($db, $action);
+    $objcanvas->getCanvas('thirdparty', 'card', $canvas);
 }
 
 // Security check
 $result = restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', 0);
 if (!$user->hasRight('societe', 'contact', 'lire')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -114,23 +115,23 @@ if (!$user->hasRight('societe', 'contact', 'lire')) {
  * Actions
  */
 
-$parameters = array('id'=>$socid, 'objcanvas'=>$objcanvas);
+$parameters = array('id' => $socid, 'objcanvas' => $objcanvas);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	if ($cancel) {
-		$action = '';
-		if (!empty($backtopage)) {
-			header("Location: ".$backtopage);
-			exit;
-		}
-	}
+    if ($cancel) {
+        $action = '';
+        if (!empty($backtopage)) {
+            header("Location: " . $backtopage);
+            exit;
+        }
+    }
 
-	// Selection of new fields
-	include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
+    // Selection of new fields
+    include DOL_DOCUMENT_ROOT . '/core/actions_changeselectedfields.inc.php';
 }
 
 
@@ -144,24 +145,24 @@ $formadmin = new FormAdmin($db);
 $formcompany = new FormCompany($db);
 
 if ($socid > 0 && empty($object->id)) {
-	$result = $object->fetch($socid);
-	if ($result <= 0) {
-		dol_print_error(null, $object->error);
-	}
+    $result = $object->fetch($socid);
+    if ($result <= 0) {
+        dol_print_error(null, $object->error);
+    }
 }
 
 $title = $langs->trans("ThirdParty");
 if (getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/thirdpartynameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) {
-	$title = $object->name." - ".$langs->trans('ContactsAddresses');
+    $title = $object->name . " - " . $langs->trans('ContactsAddresses');
 }
 $help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
 
-$countrynotdefined = $langs->trans("ErrorSetACountryFirst").' ('.$langs->trans("SeeAbove").')';
+$countrynotdefined = $langs->trans("ErrorSetACountryFirst") . ' (' . $langs->trans("SeeAbove") . ')';
 
 
 if (!empty($object->id)) {
-	$res = $object->fetch_optionals();
+    $res = $object->fetch_optionals();
 }
 //if ($res < 0) { dol_print_error($db); exit; }
 
@@ -170,7 +171,7 @@ $head = societe_prepare_head($object);
 
 print dol_get_fiche_head($head, 'contact', $langs->trans("ThirdParty"), 0, 'company');
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/societe/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/societe/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
 dol_banner_tab($object, 'socid', $linkback, ($user->socid ? 0 : 1), 'rowid', 'nom', '', '', 0, '', '', 'arearefnobottom');
 
@@ -179,10 +180,10 @@ print dol_get_fiche_end();
 print '<br>';
 
 if ($action != 'presend') {
-	// Contacts list
-	if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-		$result = show_contacts($conf, $langs, $db, $object, $_SERVER["PHP_SELF"].'?socid='.$object->id, 1);
-	}
+    // Contacts list
+    if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
+        $result = show_contacts($conf, $langs, $db, $object, $_SERVER["PHP_SELF"] . '?socid=' . $object->id, 1);
+    }
 }
 
 // End of page

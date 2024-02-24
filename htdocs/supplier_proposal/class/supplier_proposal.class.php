@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2002-2004 Rodolphe Quiedeville		<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2002-2004 Rodolphe Quiedeville     <rodolphe@quiedeville.org>
  * Copyright (C) 2004      Eric Seigne				<eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2011 Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Barilley			<marc@ocebo.com>
@@ -1000,8 +1001,8 @@ class SupplierProposal extends CommonObject
                 }
 
                 /*
-				 *  Insertion du detail des produits dans la base
-				 */
+                 *  Insertion du detail des produits dans la base
+                 */
                 if (!$error) {
                     $fk_parent_line = 0;
                     $num = count($this->lines);
@@ -1403,8 +1404,10 @@ class SupplierProposal extends CommonObject
         $error = 0;
         $now = dol_now();
 
-        if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('supplier_proposal', 'creer'))
-            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('supplier_proposal', 'validate_advance'))) {
+        if (
+            (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('supplier_proposal', 'creer'))
+            || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('supplier_proposal', 'validate_advance'))
+        ) {
             $this->db->begin();
 
             // Numbering module definition
@@ -1561,29 +1564,29 @@ class SupplierProposal extends CommonObject
      * @return     int                Return integer <0 if ko, >0 if ok
      */
     /*
-	public function set_remise_percent($user, $remise)
-	{
+    public function set_remise_percent($user, $remise)
+    {
 		// phpcs:enable
-		$remise = trim($remise) ?trim($remise) : 0;
+        $remise = trim($remise) ?trim($remise) : 0;
 
-		if ($user->hasRight('supplier_proposal', 'creer')) {
-			$remise = price2num($remise, 2);
+        if ($user->hasRight('supplier_proposal', 'creer')) {
+            $remise = price2num($remise, 2);
 
-			$sql = "UPDATE ".MAIN_DB_PREFIX."supplier_proposal SET remise_percent = ".((float) $remise);
-			$sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = 0";
+            $sql = "UPDATE ".MAIN_DB_PREFIX."supplier_proposal SET remise_percent = ".((float) $remise);
+            $sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = 0";
 
-			if ($this->db->query($sql)) {
-				$this->remise_percent = ((float) $remise);
-				$this->update_price(1);
-				return 1;
-			} else {
-				$this->error = $this->db->error();
-				return -1;
-			}
-		}
-		return 0;
-	}
-	*/
+            if ($this->db->query($sql)) {
+                $this->remise_percent = ((float) $remise);
+                $this->update_price(1);
+                return 1;
+            } else {
+                $this->error = $this->db->error();
+                return -1;
+            }
+        }
+        return 0;
+    }
+    */
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
     /**
@@ -1595,32 +1598,32 @@ class SupplierProposal extends CommonObject
      * @return     int                Return integer <0 if ko, >0 if ok
      */
     /*
-	public function set_remise_absolue($user, $remise)
-	{
+    public function set_remise_absolue($user, $remise)
+    {
 		// phpcs:enable
-		if (empty($remise)) {
-			$remise = 0;
-		}
+        if (empty($remise)) {
+            $remise = 0;
+        }
 
-		$remise = price2num($remise);
+        $remise = price2num($remise);
 
-		if ($user->hasRight('supplier_proposal', 'creer')) {
-			$sql = "UPDATE ".MAIN_DB_PREFIX."supplier_proposal ";
-			$sql .= " SET remise_absolue = ".((float) $remise);
-			$sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = 0";
+        if ($user->hasRight('supplier_proposal', 'creer')) {
+            $sql = "UPDATE ".MAIN_DB_PREFIX."supplier_proposal ";
+            $sql .= " SET remise_absolue = ".((float) $remise);
+            $sql .= " WHERE rowid = ".((int) $this->id)." AND fk_statut = 0";
 
-			if ($this->db->query($sql)) {
-				$this->remise_absolue = $remise;
-				$this->update_price(1);
-				return 1;
-			} else {
-				$this->error = $this->db->error();
-				return -1;
-			}
-		}
-		return 0;
-	}
-	*/
+            if ($this->db->query($sql)) {
+                $this->remise_absolue = $remise;
+                $this->update_price(1);
+                return 1;
+            } else {
+                $this->error = $this->db->error();
+                return -1;
+            }
+        }
+        return 0;
+    }
+    */
 
     /**
      *    Reopen the commercial proposal
@@ -2908,8 +2911,8 @@ class SupplierProposalLine extends CommonObjectLine
     // 3: option line (when qty = 0)
 
     public $info_bits = 0; // Liste d'options cumulables:
-    // Bit 0: 	0 si TVA normal - 1 if TVA NPR
-    // Bit 1:	0 ligne normal - 1 if fixed reduction
+    // Bit 0:   0 si TVA normal - 1 if TVA NPR
+    // Bit 1:   0 ligne normal - 1 if fixed reduction
 
     public $total_ht; // Total HT de la ligne toute quantite et incluant la remise ligne
     public $total_tva; // Total TVA de la ligne toute quantite et incluant la remise ligne

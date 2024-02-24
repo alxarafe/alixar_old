@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -24,8 +25,8 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/bom/class/bom.class.php';
-require_once DOL_DOCUMENT_ROOT.'/bom/lib/bom.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
+require_once DOL_DOCUMENT_ROOT . '/bom/lib/bom.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("mrp", "companies"));
@@ -45,7 +46,7 @@ $extrafields = new ExtraFields($db);
 $hookmanager->initHooks(array('bomnote', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Massactions
-$diroutputmassaction = $conf->bom->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->bom->dir_output . '/temp/massgeneration/' . $user->id;
 
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
@@ -56,9 +57,9 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 //$result = restrictedArea($user, 'bom', $id);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = (!empty($conf->bom->multidir_output[$object->entity]) ? $conf->bom->multidir_output[$object->entity] : $conf->bom->dir_output)."/".$object->id;
+    $upload_dir = (!empty($conf->bom->multidir_output[$object->entity]) ? $conf->bom->multidir_output[$object->entity] : $conf->bom->dir_output) . "/" . $object->id;
 }
 
 $permissionnote = $user->hasRight('bom', 'write'); // Used by the include of actions_setnotes.inc.php
@@ -77,10 +78,10 @@ restrictedArea($user, 'bom', $object->id, $object->table_element, '', '', 'rowid
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -97,34 +98,34 @@ $help_url = 'EN:Module_BOM';
 llxHeader('', $title, $help_url);
 
 if ($id > 0 || !empty($ref)) {
-	$object->fetch_thirdparty();
+    $object->fetch_thirdparty();
 
-	$head = bomPrepareHead($object);
+    $head = bomPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'note', $langs->trans("BillOfMaterials"), -1, 'bom');
+    print dol_get_fiche_head($head, 'note', $langs->trans("BillOfMaterials"), -1, 'bom');
 
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.DOL_URL_ROOT.'/bom/bom_list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . DOL_URL_ROOT . '/bom/bom_list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
+    $morehtmlref = '<div class="refidno">';
 
-	$morehtmlref .= '</div>';
-
-
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '</div>';
 
-	print dol_get_fiche_end();
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 }
 
 // End of page

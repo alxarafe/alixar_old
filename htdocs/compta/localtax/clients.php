@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2011-2014	Juanjo Menent           <jmenent@2byte.es>
+
+/* Copyright (C) 2011-2014  Juanjo Menent           <jmenent@2byte.es>
  * Copyright (C) 2014	    Ferran Marcet           <fmarcet@2byte.es>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  *

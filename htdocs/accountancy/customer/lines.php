@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2013-2016 Olivier Geffroy		<jeff@jeffinfo.com>
+
+/* Copyright (C) 2013-2016 Olivier Geffroy      <jeff@jeffinfo.com>
  * Copyright (C) 2013-2021 Alexandre Spangaro	<aspangaro@open-dsi.fr>
  * Copyright (C) 2014-2015 Ari Elbaz (elarifr)	<github@accedinfo.com>
  * Copyright (C) 2014-2016 Florian Henry		<florian.henry@open-concept.pro>
@@ -24,6 +25,7 @@
  * \ingroup    Accountancy (Double entries)
  * \brief        Page of detail of the lines of ventilation of invoices customers
  */
+
 require '../../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';

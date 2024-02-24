@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2004      Benoit Mortier       <benoit.mortier@opensides.be>
@@ -29,22 +30,21 @@
  *       \brief      Card of a contact
  */
 
-
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/contact.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
-require_once DOL_DOCUMENT_ROOT.'/user/class/user.class.php';
-require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
+require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
+require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'users', 'other', 'commercial'));
@@ -52,11 +52,11 @@ $langs->loadLangs(array('companies', 'users', 'other', 'commercial'));
 $mesg = ''; $error = 0; $errors = array();
 
 // Get parameters
-$action		= (GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view');
-$confirm	= GETPOST('confirm', 'alpha');
+$action     = (GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view');
+$confirm    = GETPOST('confirm', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 $id = GETPOST('id', 'int');
-$socid		= GETPOST('socid', 'int');
+$socid      = GETPOST('socid', 'int');
 
 // Initialize objects
 $object = new Contact($db);
@@ -70,25 +70,25 @@ $object->getCanvas($id);
 $objcanvas = null;
 $canvas = (!empty($object->canvas) ? $object->canvas : GETPOST("canvas"));
 if (!empty($canvas)) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/canvas.class.php';
-	$objcanvas = new Canvas($db, $action);
-	$objcanvas->getCanvas('contact', 'contactcard', $canvas);
+    require_once DOL_DOCUMENT_ROOT . '/core/class/canvas.class.php';
+    $objcanvas = new Canvas($db, $action);
+    $objcanvas->getCanvas('contact', 'contactcard', $canvas);
 }
 
 if (GETPOST('actioncode', 'array')) {
-	$actioncode = GETPOST('actioncode', 'array', 3);
-	if (!count($actioncode)) {
-		$actioncode = '0';
-	}
+    $actioncode = GETPOST('actioncode', 'array', 3);
+    if (!count($actioncode)) {
+        $actioncode = '0';
+    }
 } else {
-	$actioncode = GETPOST("actioncode", "alpha", 3) ? GETPOST("actioncode", "alpha", 3) : (GETPOST("actioncode") == '0' ? '0' : getDolGlobalString('AGENDA_DEFAULT_FILTER_TYPE_FOR_OBJECT'));
+    $actioncode = GETPOST("actioncode", "alpha", 3) ? GETPOST("actioncode", "alpha", 3) : (GETPOST("actioncode") == '0' ? '0' : getDolGlobalString('AGENDA_DEFAULT_FILTER_TYPE_FOR_OBJECT'));
 }
 $search_rowid = GETPOST('search_rowid');
 $search_agenda_label = GETPOST('search_agenda_label');
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'contact', $id, 'socpeople&societe', '', '', 'rowid', 0); // If we create a contact with no company (shared contacts), no check on write permission
 
@@ -97,16 +97,16 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) {
-	$page = 0;
+    $page = 0;
 }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortfield) {
-	$sortfield = 'a.datep, a.id';
+    $sortfield = 'a.datep, a.id';
 }
 if (!$sortorder) {
-	$sortorder = 'DESC';
+    $sortorder = 'DESC';
 }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
@@ -117,24 +117,24 @@ $hookmanager->initHooks(array('contactagenda', 'globalcard'));
  *	Actions
  */
 
-$parameters = array('id'=>$id, 'objcanvas'=>$objcanvas);
+$parameters = array('id' => $id, 'objcanvas' => $objcanvas);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	// Cancel
-	if (GETPOST('cancel', 'alpha') && !empty($backtopage)) {
-		header("Location: ".$backtopage);
-		exit;
-	}
+    // Cancel
+    if (GETPOST('cancel', 'alpha') && !empty($backtopage)) {
+        header("Location: " . $backtopage);
+        exit;
+    }
 
-	// Purge search criteria
-	if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All test are required to be compatible with all browsers
-		$actioncode = '';
-		$search_agenda_label = '';
-	}
+    // Purge search criteria
+    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All test are required to be compatible with all browsers
+        $actioncode = '';
+        $search_agenda_label = '';
+    }
 }
 
 
@@ -146,155 +146,155 @@ $form = new Form($db);
 
 $title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("Contacts") : $langs->trans("ContactsAddresses"));
 if (getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/contactnameonly/', $conf->global->MAIN_HTML_TITLE) && $object->lastname) {
-	$title = $object->lastname;
+    $title = $object->lastname;
 }
 $help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas|DE:Modul_Partner';
 llxHeader('', $title, $help_url);
 
 
 if ($socid > 0) {
-	$objsoc = new Societe($db);
-	$objsoc->fetch($socid);
+    $objsoc = new Societe($db);
+    $objsoc->fetch($socid);
 }
 
 if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
-	// -----------------------------------------
-	// When used with CANVAS
-	// -----------------------------------------
-	if (empty($object->error) && $id) {
-		$object = new Contact($db);
-		$result = $object->fetch($id);
-		if ($result <= 0) {
-			dol_print_error(null, $object->error);
-		}
-	}
-	$objcanvas->assign_values($action, $object->id, $object->ref); // Set value for templates
-	$objcanvas->display_canvas($action); // Show template
+    // -----------------------------------------
+    // When used with CANVAS
+    // -----------------------------------------
+    if (empty($object->error) && $id) {
+        $object = new Contact($db);
+        $result = $object->fetch($id);
+        if ($result <= 0) {
+            dol_print_error(null, $object->error);
+        }
+    }
+    $objcanvas->assign_values($action, $object->id, $object->ref); // Set value for templates
+    $objcanvas->display_canvas($action); // Show template
 } else {
-	// -----------------------------------------
-	// When used in standard mode
-	// -----------------------------------------
+    // -----------------------------------------
+    // When used in standard mode
+    // -----------------------------------------
 
-	// Confirm deleting contact
-	if ($user->hasRight('societe', 'contact', 'supprimer')) {
-		if ($action == 'delete') {
-			print $form->formconfirm($_SERVER["PHP_SELF"]."?id=".$id.($backtopage ? '&backtopage='.$backtopage : ''), $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
-		}
-	}
+    // Confirm deleting contact
+    if ($user->hasRight('societe', 'contact', 'supprimer')) {
+        if ($action == 'delete') {
+            print $form->formconfirm($_SERVER["PHP_SELF"] . "?id=" . $id . ($backtopage ? '&backtopage=' . $backtopage : ''), $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
+        }
+    }
 
-	/*
-	 * Onglets
-	 */
-	$head = array();
-	if ($id > 0) {
-		// Si edition contact deja existent
-		$object = new Contact($db);
-		$res = $object->fetch($id, $user);
-		if ($res < 0) {
-			dol_print_error($db, $object->error);
-			exit;
-		}
-		$res = $object->fetch_optionals();
-		if ($res < 0) {
-			dol_print_error($db, $object->error);
-			exit;
-		}
+    /*
+     * Onglets
+     */
+    $head = array();
+    if ($id > 0) {
+        // Si edition contact deja existent
+        $object = new Contact($db);
+        $res = $object->fetch($id, $user);
+        if ($res < 0) {
+            dol_print_error($db, $object->error);
+            exit;
+        }
+        $res = $object->fetch_optionals();
+        if ($res < 0) {
+            dol_print_error($db, $object->error);
+            exit;
+        }
 
-		// Show tabs
-		$head = contact_prepare_head($object);
+        // Show tabs
+        $head = contact_prepare_head($object);
 
-		$title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("Contacts") : $langs->trans("ContactsAddresses"));
-	}
+        $title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("Contacts") : $langs->trans("ContactsAddresses"));
+    }
 
-	if (!empty($id) && $action != 'edit' && $action != 'create') {
-		$objsoc = new Societe($db);
+    if (!empty($id) && $action != 'edit' && $action != 'create') {
+        $objsoc = new Societe($db);
 
-		/*
-		 * Card in view mode
-		 */
+        /*
+         * Card in view mode
+         */
 
-		dol_htmloutput_errors($error, $errors);
+        dol_htmloutput_errors($error, $errors);
 
-		print dol_get_fiche_head($head, 'agenda', $title, -1, 'contact');
+        print dol_get_fiche_head($head, 'agenda', $title, -1, 'contact');
 
-		$linkback = '<a href="'.DOL_URL_ROOT.'/contact/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+        $linkback = '<a href="' . DOL_URL_ROOT . '/contact/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
-		$morehtmlref = '<a href="'.DOL_URL_ROOT.'/contact/vcard.php?id='.$object->id.'" class="refid">';
-		$morehtmlref .= img_picto($langs->trans("Download").' '.$langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
-		$morehtmlref .= '</a>';
+        $morehtmlref = '<a href="' . DOL_URL_ROOT . '/contact/vcard.php?id=' . $object->id . '" class="refid">';
+        $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+        $morehtmlref .= '</a>';
 
-		$morehtmlref .= '<div class="refidno">';
-		if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-			$objsoc = new Societe($db);
-			$objsoc->fetch($object->socid);
-			// Thirdparty
-			if ($objsoc->id > 0) {
-				$morehtmlref .= $objsoc->getNomUrl(1);
-			} else {
-				$morehtmlref .= '<span class="opacitymedium">'.$langs->trans("ContactNotLinkedToCompany").'</span>';
-			}
-		}
-		$morehtmlref .= '</div>';
+        $morehtmlref .= '<div class="refidno">';
+        if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
+            $objsoc = new Societe($db);
+            $objsoc->fetch($object->socid);
+            // Thirdparty
+            if ($objsoc->id > 0) {
+                $morehtmlref .= $objsoc->getNomUrl(1);
+            } else {
+                $morehtmlref .= '<span class="opacitymedium">' . $langs->trans("ContactNotLinkedToCompany") . '</span>';
+            }
+        }
+        $morehtmlref .= '</div>';
 
-		dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+        dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
 
-		print '<div class="fichecenter">';
+        print '<div class="fichecenter">';
 
-		print '<div class="underbanner clearboth"></div>';
+        print '<div class="underbanner clearboth"></div>';
 
-		$object->info($id);
-		dol_print_object_info($object, 1);
+        $object->info($id);
+        dol_print_object_info($object, 1);
 
-		print '</div>';
+        print '</div>';
 
-		print dol_get_fiche_end();
+        print dol_get_fiche_end();
 
 
-		// Actions buttons
+        // Actions buttons
 
-		$objcon = $object;
-		$object->fetch_thirdparty();
-		$objthirdparty = $object->thirdparty;
+        $objcon = $object;
+        $object->fetch_thirdparty();
+        $objthirdparty = $object->thirdparty;
 
-		$out = '';
-		$newcardbutton = '';
-		if (isModEnabled('agenda')) {
-			$permok = $user->hasRight('agenda', 'myactions', 'create');
-			if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
-				if (is_object($objthirdparty) && get_class($objthirdparty) == 'Societe') {
-					$out .= '&amp;originid='.$objthirdparty->id.($objthirdparty->id > 0 ? '&amp;socid='.$objthirdparty->id : '');
-				}
-				$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '').'&amp;origin=contact&amp;originid='.$object->id.'&amp;backtopage='.urlencode($_SERVER['PHP_SELF'].($objcon->id > 0 ? '?id='.$objcon->id : ''));
-				$out .= '&amp;datep='.urlencode(dol_print_date(dol_now(), 'dayhourlog'));
-			}
+        $out = '';
+        $newcardbutton = '';
+        if (isModEnabled('agenda')) {
+            $permok = $user->hasRight('agenda', 'myactions', 'create');
+            if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
+                if (is_object($objthirdparty) && get_class($objthirdparty) == 'Societe') {
+                    $out .= '&amp;originid=' . $objthirdparty->id . ($objthirdparty->id > 0 ? '&amp;socid=' . $objthirdparty->id : '');
+                }
+                $out .= (!empty($objcon->id) ? '&amp;contactid=' . $objcon->id : '') . '&amp;origin=contact&amp;originid=' . $object->id . '&amp;backtopage=' . urlencode($_SERVER['PHP_SELF'] . ($objcon->id > 0 ? '?id=' . $objcon->id : ''));
+                $out .= '&amp;datep=' . urlencode(dol_print_date(dol_now(), 'dayhourlog'));
+            }
 
-			if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create')) {
-				$newcardbutton .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create'.$out);
-			}
-		}
+            if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create')) {
+                $newcardbutton .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT . '/comm/action/card.php?action=create' . $out);
+            }
+        }
 
-		if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
-			print '<br>';
+        if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
+            print '<br>';
 
-			$param = '&id='.$id;
-			if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) {
-				$param .= '&contextpage='.$contextpage;
-			}
-			if ($limit > 0 && $limit != $conf->liste_limit) {
-				$param .= '&limit='.$limit;
-			}
+            $param = '&id=' . $id;
+            if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) {
+                $param .= '&contextpage=' . $contextpage;
+            }
+            if ($limit > 0 && $limit != $conf->liste_limit) {
+                $param .= '&limit=' . $limit;
+            }
 
-			print load_fiche_titre($langs->trans("ActionsOnContact"), $newcardbutton, '');
-			//print_barre_liste($langs->trans("ActionsOnCompany"), 0, $_SERVER["PHP_SELF"], '', $sortfield, $sortorder, $morehtmlcenter, 0, -1, '', '', '', '', 0, 1, 1);
+            print load_fiche_titre($langs->trans("ActionsOnContact"), $newcardbutton, '');
+            //print_barre_liste($langs->trans("ActionsOnCompany"), 0, $_SERVER["PHP_SELF"], '', $sortfield, $sortorder, $morehtmlcenter, 0, -1, '', '', '', '', 0, 1, 1);
 
-			// List of all actions
-			$filters = array();
-			$filters['search_agenda_label'] = $search_agenda_label;
-			$filters['search_rowid'] = $search_rowid;
+            // List of all actions
+            $filters = array();
+            $filters['search_agenda_label'] = $search_agenda_label;
+            $filters['search_rowid'] = $search_rowid;
 
-			show_actions_done($conf, $langs, $db, $objthirdparty, $object, 0, $actioncode, '', $filters, $sortfield, $sortorder);
-		}
-	}
+            show_actions_done($conf, $langs, $db, $objthirdparty, $object, 0, $actioncode, '', $filters, $sortfield, $sortorder);
+        }
+    }
 }
 
 

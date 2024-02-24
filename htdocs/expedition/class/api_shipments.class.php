@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016       Laurent Destailleur     <eldy@users.sourceforge.net>
  *
@@ -218,7 +219,7 @@ class Shipments extends DolibarrApi
     //  *
     //  * @param int   $id             Id of shipment
     //  *
-    //  * @url	GET {id}/lines
+    //  * @url  GET {id}/lines
     //  *
     //  * @return int
     //  */
@@ -252,7 +253,7 @@ class Shipments extends DolibarrApi
     //  * @param int   $id             Id of shipment to update
     //  * @param array $request_data   ShipmentLine data
     //  *
-    //  * @url	POST {id}/lines
+    //  * @url  POST {id}/lines
     //  *
     //  * @return int
     //  */
@@ -320,7 +321,7 @@ class Shipments extends DolibarrApi
     //  * @param int   $lineid         Id of line to update
     //  * @param array $request_data   ShipmentLine data
     //  *
-    //  * @url	PUT {id}/lines/{lineid}
+    //  * @url  PUT {id}/lines/{lineid}
     //  *
     //  * @return object
     //  */

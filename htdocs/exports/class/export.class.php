@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2011  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2012       Charles-Fr BENKE    <charles.fr@benke.fr>
@@ -178,8 +179,8 @@ class Export
                                     //print $bool." $perm[0]"."<br>";
 
                                     // Permissions ok
-                                    //	          if ($bool)
-                                    //	          {
+                                    //            if ($bool)
+                                    //            {
                                     // Charge fichier lang en rapport
                                     $langtoload = $module->getLangFilesArray();
                                     if (is_array($langtoload)) {
@@ -223,7 +224,7 @@ class Export
 
                                     dol_syslog(get_class($this) . "::load_arrays loaded for module " . $modulename . " with index " . $i . ", dataset=" . $module->export_code[$r] . ", nb of fields=" . (!empty($module->export_fields_code[$r]) ? count($module->export_fields_code[$r]) : ''));
                                     $i++;
-                                    //	          }
+                                    //            }
                                 }
                             }
                         }
@@ -729,14 +730,16 @@ class Export
                                     $remaintopay = $tmpobjforcomputecall->getRemainToPay();
                                 }
                                 $obj->$alias = $remaintopay;
-                            } elseif (is_array($this->array_export_special[$indice][$key]) &&
+                            } elseif (
+                                is_array($this->array_export_special[$indice][$key]) &&
                                 !empty($this->array_export_special[$indice][$key]['rule']) &&
                                 $this->array_export_special[$indice][$key]['rule'] == 'compute'
                             ) {
                                 // Custom compute
                                 $alias = str_replace(['.', '-', '(', ')'], '_', $key);
                                 $value = '';
-                                if (!empty($this->array_export_special[$indice][$key]['class']) &&
+                                if (
+                                    !empty($this->array_export_special[$indice][$key]['class']) &&
                                     !empty($this->array_export_special[$indice][$key]['classfile']) &&
                                     !empty($this->array_export_special[$indice][$key]['method'])
                                 ) {

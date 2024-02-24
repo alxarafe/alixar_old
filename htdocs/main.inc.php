@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003       Xavier Dutoit           <doli@sydesy.com>
  * Copyright (C) 2004-2021  Laurent Destailleur     <eldy@users.sourceforge.net>
@@ -40,7 +41,7 @@
  *    \brief      File that defines environment for Dolibarr GUI pages only (file not required by scripts)
  */
 
-//@ini_set('memory_limit', '128M');	// This may be useless if memory is hard limited by your PHP
+//@ini_set('memory_limit', '128M'); // This may be useless if memory is hard limited by your PHP
 
 // For optional tuning. Enabled if environment variable MAIN_SHOW_TUNING_INFO is defined.
 use Alxarafe\Core\Base\Lang;
@@ -122,8 +123,8 @@ function testSqlAndScriptInject($val, $type)
     // We should use dol_string_nounprintableascii but function is not yet loaded/available
     // Example of valid UTF8 chars:
     // utf8=utf8mb3:    '\x09', '\x0A', '\x0D', '\x7E'
-    // utf8=utf8mb3: 	'\xE0\xA0\x80'
-    // utf8mb4: 		'\xF0\x9D\x84\x9E'   (but this may be refused by the database insert if pagecode is utf8=utf8mb3)
+    // utf8=utf8mb3:    '\xE0\xA0\x80'
+    // utf8mb4:         '\xF0\x9D\x84\x9E'   (but this may be refused by the database insert if pagecode is utf8=utf8mb3)
     $newval = preg_replace('/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/u', '', $val); // /u operator makes UTF8 valid characters being ignored so are not included into the replace
 
     // Note that $newval may also be completely empty '' when non valid UTF8 are found.
@@ -232,7 +233,7 @@ function analyseVarsForSqlAndScriptsInjection(&$var, $type, $stopcode = 1)
             }
 
             if (analyseVarsForSqlAndScriptsInjection($key, $type, $stopcode) && analyseVarsForSqlAndScriptsInjection($value, $type, $stopcode)) {
-                //$var[$key] = $value;	// This is useless
+                //$var[$key] = $value;  // This is useless
             } else {
                 http_response_code(403);
 
@@ -390,7 +391,7 @@ if (!defined('NOSESSION')) {
     }
     session_name($sessionname);
     session_start();    // This call the open and read of session handler
-    //exit;	// this exist generates a call to write and close
+    //exit; // this exist generates a call to write and close
 }
 
 // Init the 6 global objects, this include will make the 'new Xxx()' and set properties for: $conf, $db, $langs, $user, $mysoc, $hookmanager
@@ -1035,10 +1036,12 @@ if (!defined('NOLOGIN')) {
 
         //var_dump(dol_print_date($user->flagdelsessionsbefore, 'dayhour', 'gmt')." ".dol_print_date($_SESSION["dol_logindate"], 'dayhour', 'gmt'));
 
-        if ($resultFetchUser <= 0
+        if (
+            $resultFetchUser <= 0
             || ($user->flagdelsessionsbefore && !empty($_SESSION["dol_logindate"]) && $user->flagdelsessionsbefore > $_SESSION["dol_logindate"])
             || ($user->status != $user::STATUS_ENABLED)
-            || ($user->isNotIntoValidityDateRange())) {
+            || ($user->isNotIntoValidityDateRange())
+        ) {
             if ($resultFetchUser <= 0) {
                 // Account has been removed after login
                 dol_syslog("Can't load user even if session logged. _SESSION['dol_login']=" . $login, LOG_WARNING);
@@ -1283,8 +1286,8 @@ if (!defined('NOLOGIN')) {
     }
 
     /*
-	 * Overwrite some configs globals (try to avoid this and have code to use instead $user->conf->xxx)
-	 */
+     * Overwrite some configs globals (try to avoid this and have code to use instead $user->conf->xxx)
+     */
 
     // Set liste_limit
     if (isset($user->conf->MAIN_SIZE_LISTE_LIMIT)) {
@@ -1351,7 +1354,8 @@ if (!empty($conf->browser->layout) && $conf->browser->layout != 'classic') {
 }
 
 // If on smartphone or optimized for small screen
-if ((!empty($conf->browser->layout) && $conf->browser->layout == 'phone')
+if (
+    (!empty($conf->browser->layout) && $conf->browser->layout == 'phone')
     || (!empty($_SESSION['dol_screenwidth']) && $_SESSION['dol_screenwidth'] < 400)
     || (!empty($_SESSION['dol_screenheight']) && $_SESSION['dol_screenheight'] < 400
         || getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER'))
@@ -1616,7 +1620,7 @@ function top_httphead($contenttype = 'text/html', $forcenocache = 0)
     }
 
     // X-XSS-Protection
-    //header("X-XSS-Protection: 1");      		// XSS filtering protection of some browsers (note: use of Content-Security-Policy is more efficient). Disabled as deprecated.
+    //header("X-XSS-Protection: 1");            // XSS filtering protection of some browsers (note: use of Content-Security-Policy is more efficient). Disabled as deprecated.
 
     // Content-Security-Policy-Report-Only
     if (!defined('MAIN_SECURITY_FORCECSPRO')) {
@@ -2161,8 +2165,8 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
     }
 
     /*
-	 * Top menu
-	 */
+     * Top menu
+     */
     if ((empty($conf->dol_hide_topmenu) || GETPOST('dol_invisible_topmenu', 'int')) && (!defined('NOREQUIREMENU') || !constant('NOREQUIREMENU'))) {
         if (!isset($form) || !is_object($form)) {
             include_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
@@ -3738,9 +3742,11 @@ if (!function_exists("llxFooter")) {
             //print '<!-- instance_unique_id='.$conf->file->instance_unique_id.' MAIN_FIRST_PING_OK_ID='.$conf->global->MAIN_FIRST_PING_OK_ID.' -->';
             $hash_unique_id = dol_hash('dolibarr' . $conf->file->instance_unique_id, 'sha256');    // Note: if the global salt changes, this hash changes too so ping may be counted twice. We don't mind. It is for statistics purpose only.
 
-            if (!getDolGlobalString('MAIN_FIRST_PING_OK_DATE')
+            if (
+                !getDolGlobalString('MAIN_FIRST_PING_OK_DATE')
                 || (!empty($conf->file->instance_unique_id) && ($hash_unique_id != $conf->global->MAIN_FIRST_PING_OK_ID) && (getDolGlobalString('MAIN_FIRST_PING_OK_ID') != 'disabled'))
-                || $forceping) {
+                || $forceping
+            ) {
                 // No ping done if we are into an alpha version
                 if (strpos('alpha', DOL_VERSION) > 0 && !$forceping) {
                     print "\n<!-- NO JS CODE TO ENABLE the anonymous Ping. It is an alpha version -->\n";
@@ -3798,7 +3804,7 @@ if (!function_exists("llxFooter")) {
                                                 hash_unique_id: '<?php echo dol_escape_js($hash_unique_id); ?>',
                                                 action: 'firstpingok',
                                                 token: '<?php echo currentToken(); ?>'
-                                            },	// for update
+                                            },  // for update
                                         });
                                     },
                                     error: function (data, status, xhr) {   // error callback function

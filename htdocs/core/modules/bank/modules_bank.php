@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2010-2014	Regis Houssin	<regis.houssin@inodbox.com>
+
+/* Copyright (C) 2010-2014  Regis Houssin   <regis.houssin@inodbox.com>
  * Copyright (C) 2014       Marcos García   <marcosgdf@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,36 +19,37 @@
  */
 
 /**
- *		\file       htdocs/core/modules/bank/modules_bank.php
+ *      \file       htdocs/core/modules/bank/modules_bank.php
  *      \ingroup    project
  *      \brief      File that contain parent class for bank models
  *                  and parent class for bank numbering models
  */
-require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
+
+require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
 
 
 /**
- *	Parent class for bank account models
+ *  Parent class for bank account models
  */
 abstract class ModeleBankAccountDoc extends CommonDocGenerator
 {
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return list of active generation modules
-	 *
-	 *  @param	DoliDB	$db     			Database handler
-	 *  @param  integer	$maxfilenamelength  Max length of value to show
-	 *  @return	array						List of templates
-	 */
-	public static function liste_modeles($db, $maxfilenamelength = 0)
-	{
+    /**
+     *  Return list of active generation modules
+     *
+     *  @param  DoliDB  $db                 Database handler
+     *  @param  integer $maxfilenamelength  Max length of value to show
+     *  @return array                       List of templates
+     */
+    public static function liste_modeles($db, $maxfilenamelength = 0)
+    {
 		// phpcs:enable
-		$type = 'bankaccount';
-		$list = array();
+        $type = 'bankaccount';
+        $list = array();
 
-		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-		$list = getListOfModels($db, $type, $maxfilenamelength);
+        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        $list = getListOfModels($db, $type, $maxfilenamelength);
 
-		return $list;
-	}
+        return $list;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007 Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2008 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Barilley / Ocebo <marc@ocebo.com>
@@ -24,6 +25,7 @@
  *    \ingroup    banque
  *    \brief      Page de gestion des documents attaches a un compte bancaire
  */
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/bank.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";

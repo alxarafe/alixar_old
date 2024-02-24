@@ -1,5 +1,5 @@
 <?php
-//define("NOLOGIN",1);		// This means this output page does not require to be logged.
+//define("NOLOGIN",1);      // This means this output page does not require to be logged.
 //if (!defined('NOREQUIREUSER'))  define('NOREQUIREUSER', '1');
 //if (!defined('NOREQUIREDB'))    define('NOREQUIREDB', '1');
 if (!defined('NOREQUIRESOC')) {
@@ -314,45 +314,45 @@ if (!empty($moreforfilter)) {
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#idtableexample2').dataTable( {
-		<?php
+    $('#idtableexample2').dataTable( {
+        <?php
 if ($optioncss == 'print') {
-    print '\'dom\': \'lfrtip\',';
+            print '\'dom\': \'lfrtip\',';
 } else {
-    print '\'dom\': \'Blfrtip\',';
+            print '\'dom\': \'Blfrtip\',';
 }
 ?>
-		"colReorder": true,
-		'buttons': [
-				  'colvis','copy', 'csv', 'excel', 'pdf', 'print'
-			  ],
-		"sPaginationType": "full_numbers",
-		"lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "<?php echo $langs->trans('All'); ?>"]],
-		"oLanguage": {
-			"sLengthMenu": "<?php echo $langs->trans('Show'); ?> _MENU_ <?php echo $langs->trans('Entries'); ?>",
-			"sSearch": "<?php echo $langs->trans('Search'); ?>:",
-			"sZeroRecords": "<?php echo $langs->trans('NoRecordsToDisplay'); ?>",
-			"sInfoEmpty": "<?php echo $langs->trans('NoEntriesToShow'); ?>",
-			"sInfoFiltered": "(<?php echo $langs->trans('FilteredFrom'); ?> _MAX_ <?php echo $langs->trans('TotalEntries'); ?>)",
-			"sInfo": "<?php echo $langs->trans('Showing'); ?> _START_ <?php echo $langs->trans('To'); ?> _END_ <?php echo $langs->trans('WTOf'); ?> _TOTAL_ <?php echo $langs->trans('Entries'); ?>",
-			"oPaginate": {
-				"sFirst": "<?php echo $langs->transnoentities('First'); ?>",
-				"sLast": "<?php echo $langs->transnoentities('Last'); ?>",
-				"sPrevious": "<?php echo $langs->transnoentities('Previous'); ?>",
-				"sNext": "<?php echo $langs->transnoentities('Next'); ?>"
-			}
-		},
-		"aaSorting": [[0,'desc']],
+        "colReorder": true,
+        'buttons': [
+                  'colvis','copy', 'csv', 'excel', 'pdf', 'print'
+              ],
+        "sPaginationType": "full_numbers",
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "<?php echo $langs->trans('All'); ?>"]],
+        "oLanguage": {
+            "sLengthMenu": "<?php echo $langs->trans('Show'); ?> _MENU_ <?php echo $langs->trans('Entries'); ?>",
+            "sSearch": "<?php echo $langs->trans('Search'); ?>:",
+            "sZeroRecords": "<?php echo $langs->trans('NoRecordsToDisplay'); ?>",
+            "sInfoEmpty": "<?php echo $langs->trans('NoEntriesToShow'); ?>",
+            "sInfoFiltered": "(<?php echo $langs->trans('FilteredFrom'); ?> _MAX_ <?php echo $langs->trans('TotalEntries'); ?>)",
+            "sInfo": "<?php echo $langs->trans('Showing'); ?> _START_ <?php echo $langs->trans('To'); ?> _END_ <?php echo $langs->trans('WTOf'); ?> _TOTAL_ <?php echo $langs->trans('Entries'); ?>",
+            "oPaginate": {
+                "sFirst": "<?php echo $langs->transnoentities('First'); ?>",
+                "sLast": "<?php echo $langs->transnoentities('Last'); ?>",
+                "sPrevious": "<?php echo $langs->transnoentities('Previous'); ?>",
+                "sNext": "<?php echo $langs->transnoentities('Next'); ?>"
+            }
+        },
+        "aaSorting": [[0,'desc']],
 /* To use in ajax mode
-			"bProcessing": true,
-		"stateSave": true,
-		"bServerSide": true,
-		"sAjaxSource": "../ajax.php",
-		"aoColumnDefs": [
-						 { "bSortable": false, "aTargets": [ 2,3,4 ] }
-					   ],
+            "bProcessing": true,
+        "stateSave": true,
+        "bServerSide": true,
+        "sAjaxSource": "../ajax.php",
+        "aoColumnDefs": [
+                         { "bSortable": false, "aTargets": [ 2,3,4 ] }
+                       ],
 */
-	})
+    })
 });
 </script>
  -->
@@ -396,7 +396,7 @@ if (!empty($conf->use_javascript_ajax)) {
         <div class="tagtd tdlineupdown">lll</div>
     </div>
     <!-- Using form into div make Firefox crazy (page loading does not end) -->
-    <!--	<form class="liste_titre" method="POST" action="1.php">
+    <!--    <form class="liste_titre" method="POST" action="1.php">
             <div>line1<input type="hidden" name="cartitem" value="1"></div>
             <div><label><input type="checkbox" name="hidedetails" value="2"> A checkbox inside a cell</label></div>
             <div><input name="count" value="4"></div>

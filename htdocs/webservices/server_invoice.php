@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2006-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2016       Juanjo Menent       <jmenent@2byte.es>
  *
@@ -129,16 +130,16 @@ $server->wsdl->addComplexType(
 );
 
 /*$server->wsdl->addComplexType(
-	'LinesArray',
-	'complexType',
-	'array',
-	'',
-	'SOAP-ENC:Array',
-	array(),
-	array(
-		array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:line[]')
-	),
-	'tns:line'
+    'LinesArray',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(
+        array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:line[]')
+    ),
+    'tns:line'
 );*/
 $server->wsdl->addComplexType(
     'LinesArray2',
@@ -192,16 +193,16 @@ $server->wsdl->addComplexType(
 );
 /*
 $server->wsdl->addComplexType(
-	'InvoicesArray',
-	'complexType',
-	'array',
-	'',
-	'SOAP-ENC:Array',
-	array(),
-	array(
-		array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:invoice[]')
-	),
-	'tns:invoice'
+    'InvoicesArray',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(
+        array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:invoice[]')
+    ),
+    'tns:invoice'
 );*/
 $server->wsdl->addComplexType(
     'InvoicesArray2',

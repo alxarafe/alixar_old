@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2008  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
@@ -28,16 +29,16 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 if (isModEnabled('accounting')) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formaccounting.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
 }
 
 // Load translation files required by the page
 $langs->loadLangs(array('admin', 'objects', 'companies', 'products'));
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $action = GETPOST('action', 'aZ09');
@@ -68,74 +69,74 @@ $action = GETPOST('action', 'aZ09');
 $tax_mode = getDolGlobalInt('TAX_MODE');
 
 if ($action == 'update') {
-	$error = 0;
+    $error = 0;
 
-	// Tax mode
-	$tax_mode = GETPOST('tax_mode', 'int');
+    // Tax mode
+    $tax_mode = GETPOST('tax_mode', 'int');
 
-	$db->begin();
+    $db->begin();
 
-	$res = dolibarr_set_const($db, 'TAX_MODE', $tax_mode, 'chaine', 0, '', $conf->entity);
-	if (!($res > 0)) {
-		$error++;
-	}
+    $res = dolibarr_set_const($db, 'TAX_MODE', $tax_mode, 'chaine', 0, '', $conf->entity);
+    if (!($res > 0)) {
+        $error++;
+    }
 
-	switch ($tax_mode) {
-		case 0:
-			$valuesellproduct = 'invoice';
-			$valuebuyproduct = 'invoice';
-			$valuesellservice = 'payment';
-			$valuebuyservice = 'payment';
-			break;
-		case 1:
-			$valuesellproduct = 'invoice';
-			$valuebuyproduct = 'invoice';
-			$valuesellservice = 'invoice';
-			$valuebuyservice = 'invoice';
-			break;
-		case 2:
-			$valuesellproduct = 'payment';
-			$valuebuyproduct = 'payment';
-			$valuesellservice = 'payment';
-			$valuebuyservice = 'payment';
-			break;
-	}
+    switch ($tax_mode) {
+        case 0:
+            $valuesellproduct = 'invoice';
+            $valuebuyproduct = 'invoice';
+            $valuesellservice = 'payment';
+            $valuebuyservice = 'payment';
+            break;
+        case 1:
+            $valuesellproduct = 'invoice';
+            $valuebuyproduct = 'invoice';
+            $valuesellservice = 'invoice';
+            $valuebuyservice = 'invoice';
+            break;
+        case 2:
+            $valuesellproduct = 'payment';
+            $valuebuyproduct = 'payment';
+            $valuesellservice = 'payment';
+            $valuebuyservice = 'payment';
+            break;
+    }
 
-	$res = dolibarr_set_const($db, 'TAX_MODE_SELL_PRODUCT', $valuesellproduct, 'chaine', 0, '', $conf->entity);
-	if (!($res > 0)) {
-		$error++;
-	}
-	$res = dolibarr_set_const($db, 'TAX_MODE_BUY_PRODUCT', $valuebuyproduct, 'chaine', 0, '', $conf->entity);
-	if (!($res > 0)) {
-		$error++;
-	}
-	$res = dolibarr_set_const($db, 'TAX_MODE_SELL_SERVICE', $valuesellservice, 'chaine', 0, '', $conf->entity);
-	if (!($res > 0)) {
-		$error++;
-	}
-	$res = dolibarr_set_const($db, 'TAX_MODE_BUY_SERVICE', $valuebuyservice, 'chaine', 0, '', $conf->entity);
-	if (!($res > 0)) {
-		$error++;
-	}
+    $res = dolibarr_set_const($db, 'TAX_MODE_SELL_PRODUCT', $valuesellproduct, 'chaine', 0, '', $conf->entity);
+    if (!($res > 0)) {
+        $error++;
+    }
+    $res = dolibarr_set_const($db, 'TAX_MODE_BUY_PRODUCT', $valuebuyproduct, 'chaine', 0, '', $conf->entity);
+    if (!($res > 0)) {
+        $error++;
+    }
+    $res = dolibarr_set_const($db, 'TAX_MODE_SELL_SERVICE', $valuesellservice, 'chaine', 0, '', $conf->entity);
+    if (!($res > 0)) {
+        $error++;
+    }
+    $res = dolibarr_set_const($db, 'TAX_MODE_BUY_SERVICE', $valuebuyservice, 'chaine', 0, '', $conf->entity);
+    if (!($res > 0)) {
+        $error++;
+    }
 
-	dolibarr_set_const($db, "MAIN_INFO_TVAINTRA", GETPOST("tva", 'alpha'), 'chaine', 0, '', $conf->entity);
+    dolibarr_set_const($db, "MAIN_INFO_TVAINTRA", GETPOST("tva", 'alpha'), 'chaine', 0, '', $conf->entity);
 
-	dolibarr_set_const($db, "MAIN_INFO_VAT_RETURN", GETPOST("MAIN_INFO_VAT_RETURN", 'alpha'), 'chaine', 0, '', $conf->entity);
+    dolibarr_set_const($db, "MAIN_INFO_VAT_RETURN", GETPOST("MAIN_INFO_VAT_RETURN", 'alpha'), 'chaine', 0, '', $conf->entity);
 
-	dolibarr_set_const($db, "MAIN_INFO_TVA_DAY_DEADLINE_SUBMISSION", GETPOST("deadline_day_vat", 'int'), 'chaine', 0, '', $conf->entity);
+    dolibarr_set_const($db, "MAIN_INFO_TVA_DAY_DEADLINE_SUBMISSION", GETPOST("deadline_day_vat", 'int'), 'chaine', 0, '', $conf->entity);
 
-	if (!$error) {
-		$db->commit();
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		$db->rollback();
-		setEventMessages($langs->trans("Error"), null, 'errors');
-	}
+    if (!$error) {
+        $db->commit();
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    } else {
+        $db->rollback();
+        setEventMessages($langs->trans("Error"), null, 'errors');
+    }
 } elseif (preg_match('/^(set|del)_?([A-Z_]+)$/', $action, $reg)) {
-	// Set boolean (on/off) constants
-	if (!dolibarr_set_const($db, $reg[2], ($reg[1] === 'set' ? '1' : '0'), 'chaine', 0, '', $conf->entity) > 0) {
-		dol_print_error($db);
-	}
+    // Set boolean (on/off) constants
+    if (!dolibarr_set_const($db, $reg[2], ($reg[1] === 'set' ? '1' : '0'), 'chaine', 0, '', $conf->entity) > 0) {
+        dol_print_error($db);
+    }
 }
 
 
@@ -147,132 +148,132 @@ llxHeader('', $langs->trans("TaxSetup"));
 
 $form = new Form($db);
 if (isModEnabled('accounting')) {
-	$formaccounting = new FormAccounting($db);
+    $formaccounting = new FormAccounting($db);
 }
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans('TaxSetup'), $linkback, 'title_setup');
 
 //print dol_get_fiche_head(null, '', '', -1);
 
 if (empty($mysoc->tva_assuj)) {
-	print $langs->trans("YourCompanyDoesNotUseVAT").'<br>';
+    print $langs->trans("YourCompanyDoesNotUseVAT") . '<br>';
 } else {
-	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post">';
-	print '<input type="hidden" name="token" value="'.newToken().'">';
-	print '<input type="hidden" name="action" value="update">';
+    print '<form action="' . $_SERVER["PHP_SELF"] . '" method="post">';
+    print '<input type="hidden" name="token" value="' . newToken() . '">';
+    print '<input type="hidden" name="action" value="update">';
 
-	print '<table class="noborder centpercent">';
-	print '<tr class="liste_titre"><td class="titlefield">'.$langs->trans("CompanyIds").'</td><td>'.$langs->trans("Value").'</td></tr>';
+    print '<table class="noborder centpercent">';
+    print '<tr class="liste_titre"><td class="titlefield">' . $langs->trans("CompanyIds") . '</td><td>' . $langs->trans("Value") . '</td></tr>';
 
-	print '<tr class="oddeven"><td><label for="intra_vat">'.$langs->trans("VATIntra").'</label></td><td>';
-	print '<input name="tva" id="intra_vat" class="minwidth200" value="'.(getDolGlobalString('MAIN_INFO_TVAINTRA') ? $conf->global->MAIN_INFO_TVAINTRA : '').'">';
-	print '</td></tr>';
+    print '<tr class="oddeven"><td><label for="intra_vat">' . $langs->trans("VATIntra") . '</label></td><td>';
+    print '<input name="tva" id="intra_vat" class="minwidth200" value="' . (getDolGlobalString('MAIN_INFO_TVAINTRA') ? $conf->global->MAIN_INFO_TVAINTRA : '') . '">';
+    print '</td></tr>';
 
-	print '<tr class="oddeven"><td><label for="activate_MAIN_INFO_VAT_RETURN">'.$langs->trans("VATReturn").'</label></td>';
-	if (!$conf->use_javascript_ajax) {
-		print '<td class="nowrap right">';
-		print $langs->trans("NotAvailableWhenAjaxDisabled");
-		print "</td>";
-	} else {
-		print '<td width="120">';
-		$listval = array(
-			'0'=>$langs->trans(""),
-			'1'=>$langs->trans("Monthly"),
-			'2'=>$langs->trans("Quarterly"),
-			'3'=>$langs->trans("Annual"),
-		);
-		print $form->selectarray("MAIN_INFO_VAT_RETURN", $listval, $conf->global->MAIN_INFO_VAT_RETURN);
-		print "</td>";
-	}
-	print '</tr>';
+    print '<tr class="oddeven"><td><label for="activate_MAIN_INFO_VAT_RETURN">' . $langs->trans("VATReturn") . '</label></td>';
+    if (!$conf->use_javascript_ajax) {
+        print '<td class="nowrap right">';
+        print $langs->trans("NotAvailableWhenAjaxDisabled");
+        print "</td>";
+    } else {
+        print '<td width="120">';
+        $listval = array(
+            '0' => $langs->trans(""),
+            '1' => $langs->trans("Monthly"),
+            '2' => $langs->trans("Quarterly"),
+            '3' => $langs->trans("Annual"),
+        );
+        print $form->selectarray("MAIN_INFO_VAT_RETURN", $listval, $conf->global->MAIN_INFO_VAT_RETURN);
+        print "</td>";
+    }
+    print '</tr>';
 
-	print '<tr class="oddeven"><td><label for="deadline_day_vat">'.$langs->trans("DeadlineDayVATSubmission").'</label></td><td>';
-	print '<input placeholder="'.$langs->trans("Example").':21" name="deadline_day_vat" id="deadline_day_vat" class="minwidth200" value="'.(getDolGlobalString('MAIN_INFO_TVA_DAY_DEADLINE_SUBMISSION') ? $conf->global->MAIN_INFO_TVA_DAY_DEADLINE_SUBMISSION : '').'">';
-	print '</td></tr>';
+    print '<tr class="oddeven"><td><label for="deadline_day_vat">' . $langs->trans("DeadlineDayVATSubmission") . '</label></td><td>';
+    print '<input placeholder="' . $langs->trans("Example") . ':21" name="deadline_day_vat" id="deadline_day_vat" class="minwidth200" value="' . (getDolGlobalString('MAIN_INFO_TVA_DAY_DEADLINE_SUBMISSION') ? $conf->global->MAIN_INFO_TVA_DAY_DEADLINE_SUBMISSION : '') . '">';
+    print '</td></tr>';
 
-	print '</table>';
+    print '</table>';
 
-	print '<br>';
+    print '<br>';
 
-	print '<table class="noborder centpercent">';
+    print '<table class="noborder centpercent">';
 
-	// Case for the parameters TAX_MODE_SELL/BUY_SERVICE/PRODUCT
-	print '<tr class="liste_titre">';
-	print '<td class="titlefield">'.$langs->trans('OptionVatMode').'</td><td>'.$langs->trans('Description').'</td>';
-	print "</tr>\n";
-	// Standard
-	print '<tr class="oddeven"><td><input type="radio" name="tax_mode" value="0"'.(empty($tax_mode) ? ' checked' : '').'> '.$langs->trans('OptionVATDefault').'</td>';
-	print '<td>'.nl2br($langs->trans('OptionVatDefaultDesc'));
-	print "</td></tr>\n";
-	// On debit for services
-	print '<tr class="oddeven"><td><input type="radio" name="tax_mode" value="1"'.($tax_mode == 1 ? ' checked' : '').'> '.$langs->trans('OptionVATDebitOption').'</td>';
-	print '<td>'.nl2br($langs->trans('OptionVatDebitOptionDesc'))."</td></tr>\n";
-	// On payment for both products and services
-	if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1) {
-		print '<tr class="oddeven"><td><input type="radio" name="tax_mode" value="2"'.($tax_mode == 2 ? ' checked' : '').'> '.$langs->trans('OptionPaymentForProductAndServices').'</td>';
-		print '<td>'.nl2br($langs->trans('OptionPaymentForProductAndServicesDesc'))."</td></tr>\n";
-	}
-	print "</table>\n";
+    // Case for the parameters TAX_MODE_SELL/BUY_SERVICE/PRODUCT
+    print '<tr class="liste_titre">';
+    print '<td class="titlefield">' . $langs->trans('OptionVatMode') . '</td><td>' . $langs->trans('Description') . '</td>';
+    print "</tr>\n";
+    // Standard
+    print '<tr class="oddeven"><td><input type="radio" name="tax_mode" value="0"' . (empty($tax_mode) ? ' checked' : '') . '> ' . $langs->trans('OptionVATDefault') . '</td>';
+    print '<td>' . nl2br($langs->trans('OptionVatDefaultDesc'));
+    print "</td></tr>\n";
+    // On debit for services
+    print '<tr class="oddeven"><td><input type="radio" name="tax_mode" value="1"' . ($tax_mode == 1 ? ' checked' : '') . '> ' . $langs->trans('OptionVATDebitOption') . '</td>';
+    print '<td>' . nl2br($langs->trans('OptionVatDebitOptionDesc')) . "</td></tr>\n";
+    // On payment for both products and services
+    if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1) {
+        print '<tr class="oddeven"><td><input type="radio" name="tax_mode" value="2"' . ($tax_mode == 2 ? ' checked' : '') . '> ' . $langs->trans('OptionPaymentForProductAndServices') . '</td>';
+        print '<td>' . nl2br($langs->trans('OptionPaymentForProductAndServicesDesc')) . "</td></tr>\n";
+    }
+    print "</table>\n";
 
-	print '<br>';
-	print load_fiche_titre('', '', '', 0, 0, '', '-> '.$langs->trans("SummaryOfVatExigibilityUsedByDefault"));
-	//print ' ('.$langs->trans("CanBeChangedWhenMakingInvoice").')';
+    print '<br>';
+    print load_fiche_titre('', '', '', 0, 0, '', '-> ' . $langs->trans("SummaryOfVatExigibilityUsedByDefault"));
+    //print ' ('.$langs->trans("CanBeChangedWhenMakingInvoice").')';
 
 
-	print '<table class="noborder centpercent">';
-	print '<tr class="oddeven"><td class="titlefield">&nbsp;</td><td>'.$langs->trans("Buy").'</td><td>'.$langs->trans("Sell").'</td></tr>';
+    print '<table class="noborder centpercent">';
+    print '<tr class="oddeven"><td class="titlefield">&nbsp;</td><td>' . $langs->trans("Buy") . '</td><td>' . $langs->trans("Sell") . '</td></tr>';
 
-	// Products
-	print '<tr class="oddeven"><td>'.$langs->trans("Product").'</td>';
-	print '<td>';
-	if (getDolGlobalString('TAX_MODE_BUY_PRODUCT') == 'payment') {
-		print $langs->trans("OnPayment");
-		print ' ('.$langs->trans("SupposedToBePaymentDate").')';
-	} else {
-		print $langs->trans("OnDelivery");
-		print ' ('.$langs->trans("SupposedToBeInvoiceDate").')';
-	}
-	print '</td>';
-	print '<td>';
-	if (getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'payment') {
-		print $langs->trans("OnPayment");
-		print ' ('.$langs->trans("SupposedToBePaymentDate").')';
-	} else {
-		print $langs->trans("OnDelivery");
-		print ' ('.$langs->trans("SupposedToBeInvoiceDate").')';
-	}
-	print '</td></tr>';
+    // Products
+    print '<tr class="oddeven"><td>' . $langs->trans("Product") . '</td>';
+    print '<td>';
+    if (getDolGlobalString('TAX_MODE_BUY_PRODUCT') == 'payment') {
+        print $langs->trans("OnPayment");
+        print ' (' . $langs->trans("SupposedToBePaymentDate") . ')';
+    } else {
+        print $langs->trans("OnDelivery");
+        print ' (' . $langs->trans("SupposedToBeInvoiceDate") . ')';
+    }
+    print '</td>';
+    print '<td>';
+    if (getDolGlobalString('TAX_MODE_SELL_PRODUCT') == 'payment') {
+        print $langs->trans("OnPayment");
+        print ' (' . $langs->trans("SupposedToBePaymentDate") . ')';
+    } else {
+        print $langs->trans("OnDelivery");
+        print ' (' . $langs->trans("SupposedToBeInvoiceDate") . ')';
+    }
+    print '</td></tr>';
 
-	// Services
-	print '<tr class="oddeven"><td>'.$langs->trans("Services").'</td>';
-	print '<td>';
-	if (getDolGlobalString('TAX_MODE_BUY_SERVICE') == 'payment') {
-		print $langs->trans("OnPayment");
-		print ' ('.$langs->trans("SupposedToBePaymentDate").')';
-	} else {
-		print $langs->trans("OnInvoice");
-		print ' ('.$langs->trans("InvoiceDateUsed").')';
-	}
-	print '</td>';
-	print '<td>';
-	if (getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'payment') {
-		print $langs->trans("OnPayment");
-		print ' ('.$langs->trans("SupposedToBePaymentDate").')';
-	} else {
-		print $langs->trans("OnInvoice");
-		print ' ('.$langs->trans("InvoiceDateUsed").')';
-	}
-	print '</td></tr>';
+    // Services
+    print '<tr class="oddeven"><td>' . $langs->trans("Services") . '</td>';
+    print '<td>';
+    if (getDolGlobalString('TAX_MODE_BUY_SERVICE') == 'payment') {
+        print $langs->trans("OnPayment");
+        print ' (' . $langs->trans("SupposedToBePaymentDate") . ')';
+    } else {
+        print $langs->trans("OnInvoice");
+        print ' (' . $langs->trans("InvoiceDateUsed") . ')';
+    }
+    print '</td>';
+    print '<td>';
+    if (getDolGlobalString('TAX_MODE_SELL_SERVICE') == 'payment') {
+        print $langs->trans("OnPayment");
+        print ' (' . $langs->trans("SupposedToBePaymentDate") . ')';
+    } else {
+        print $langs->trans("OnInvoice");
+        print ' (' . $langs->trans("InvoiceDateUsed") . ')';
+    }
+    print '</td></tr>';
 
-	print '</table>';
+    print '</table>';
 }
 
 print "<br>\n";
 
 
 print '<div class="center">';
-print '<input type="submit" class="button button-edit" name="Button"value="'.$langs->trans("Modify").'">';
+print '<input type="submit" class="button button-edit" name="Button"value="' . $langs->trans("Modify") . '">';
 print '<br><br>';
 print '</div>';
 
@@ -283,7 +284,7 @@ print '</form>';
 echo '<div>';
 echo '<table class="noborder centpercent">';
 echo '<thead>';
-echo '<tr class="liste_titre"><th>'.$langs->trans('Parameter').'</th><th>'.$langs->trans('Value').'</th></tr>';
+echo '<tr class="liste_titre"><th>' . $langs->trans('Parameter') . '</th><th>' . $langs->trans('Value') . '</th></tr>';
 echo '</thead>';
 echo '<tbody>';
 
@@ -296,8 +297,8 @@ echo '</div>';
 
 
 if (isModEnabled('accounting')) {
-	$langs->load("accountancy");
-	print '<br><br><span class="opacitymedium">'.$langs->trans("AccountingAccountForSalesTaxAreDefinedInto", $langs->transnoentitiesnoconv("MenuAccountancy"), $langs->transnoentitiesnoconv("Setup")).'</span>';
+    $langs->load("accountancy");
+    print '<br><br><span class="opacitymedium">' . $langs->trans("AccountingAccountForSalesTaxAreDefinedInto", $langs->transnoentitiesnoconv("MenuAccountancy"), $langs->transnoentitiesnoconv("Setup")) . '</span>';
 }
 
 // End of page

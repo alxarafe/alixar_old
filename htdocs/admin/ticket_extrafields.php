@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2016  Jean-François FERRY <hello@librethic.io>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,9 +24,9 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT."/core/lib/ticket.lib.php";
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . "/core/lib/ticket.lib.php";
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('ticket', 'admin'));
@@ -37,7 +38,7 @@ $form = new Form($db);
 $tmptype2label = ExtraFields::$type2label;
 $type2label = array('');
 foreach ($tmptype2label as $key => $val) {
-	$type2label[$key] = $langs->trans($val);
+    $type2label[$key] = $langs->trans($val);
 }
 
 $action = GETPOST('action', 'aZ09');
@@ -45,7 +46,7 @@ $attrname = GETPOST('attrname', 'alpha');
 $elementtype = 'ticket'; //Must be the $table_element of the class that manage extrafield
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -53,7 +54,7 @@ if (!$user->admin) {
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
+include DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
 
 
 
@@ -67,32 +68,32 @@ $help_url = "FR:Module_Ticket";
 $page_name = "TicketSetup";
 llxHeader('', $langs->trans($page_name), $help_url);
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("TicketSetup"), $linkback, 'title_setup');
 
 $head = ticketAdminPrepareHead();
 
 print dol_get_fiche_head($head, 'attributes', $langs->trans("Module56000Name"), -1, "ticket");
 
-require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
+require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
 print dol_get_fiche_end();
 
 
 // Creation of an optional field
 if ($action == 'create') {
-	print "<br>";
-	print load_fiche_titre($langs->trans('NewAttribute'));
+    print "<br>";
+    print load_fiche_titre($langs->trans('NewAttribute'));
 
-	include DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_add.tpl.php';
+    include DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_add.tpl.php';
 }
 
 // Edition of an optional field
 if ($action == 'edit' && !empty($attrname)) {
-	print "<br>";
-	print load_fiche_titre($langs->trans("FieldEdition", $attrname));
+    print "<br>";
+    print load_fiche_titre($langs->trans("FieldEdition", $attrname));
 
-	include DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_edit.tpl.php';
+    include DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_edit.tpl.php';
 }
 
 // End of page

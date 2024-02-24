@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2014  Olivier Geffroy         <jeff@jeffinfo.com>
  * Copyright (C) 2013-2014  Florian Henry           <florian.henry@open-concept.pro>
  * Copyright (C) 2013-2024  Alexandre Spangaro      <aspangaro@easya.solutions>
@@ -51,9 +52,9 @@ $nbletter = GETPOST('ACCOUNTING_LETTERING_NBLETTERS', 'int');
 $list = [
     'ACCOUNTING_LENGTH_GACCOUNT',
     'ACCOUNTING_LENGTH_AACCOUNT',
-    //	'ACCOUNTING_LIMIT_LIST_VENTILATION'		   // there is already a global parameter to define the nb of records in lists, we must use it in priority. Having one parameter for nb of record for each page is deprecated.
-    //	'ACCOUNTING_LENGTH_DESCRIPTION',         // adjust size displayed for lines description for dol_trunc
-    //	'ACCOUNTING_LENGTH_DESCRIPTION_ACCOUNT', // adjust size displayed for select account description for dol_trunc
+    //  'ACCOUNTING_LIMIT_LIST_VENTILATION'        // there is already a global parameter to define the nb of records in lists, we must use it in priority. Having one parameter for nb of record for each page is deprecated.
+    //  'ACCOUNTING_LENGTH_DESCRIPTION',         // adjust size displayed for lines description for dol_trunc
+    //  'ACCOUNTING_LENGTH_DESCRIPTION_ACCOUNT', // adjust size displayed for select account description for dol_trunc
 ];
 
 $list_binding = [
@@ -318,13 +319,13 @@ print "</tr>\n";
 print '<tr>';
 print '<td>'.$langs->trans("ACCOUNTING_ENABLE_EXPORT_DRAFT_JOURNAL").'</td>';
 if (getDolGlobalString('ACCOUNTING_ENABLE_EXPORT_DRAFT_JOURNAL')) {
-	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&enabledraftexport&value=0">';
-	print img_picto($langs->trans("Activated"), 'switch_on');
-	print '</a></td>';
+    print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&enabledraftexport&value=0">';
+    print img_picto($langs->trans("Activated"), 'switch_on');
+    print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&enabledraftexport&value=1">';
-	print img_picto($langs->trans("Disabled"), 'switch_off');
-	print '</a></td>';
+    print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&enabledraftexport&value=1">';
+    print img_picto($langs->trans("Disabled"), 'switch_off');
+    print '</a></td>';
 }
 print '</tr>';
 */

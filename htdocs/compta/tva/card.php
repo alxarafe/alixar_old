@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2013  Regis Houssin           <regis.houssin@inodbox.com>
@@ -798,12 +799,14 @@ if ($id > 0) {
         }
 
         // Classify 'paid'
-        if ($object->paye == 0
+        if (
+            $object->paye == 0
             && (
                 (round($resteapayer) <= 0 && $object->amount > 0)
                 || (round($resteapayer) >= 0 && $object->amount < 0)
             )
-            && $user->hasRight('tax', 'charges', 'creer')) {
+            && $user->hasRight('tax', 'charges', 'creer')
+        ) {
             print '<div class="inline-block divButAction"><a class="butAction" href="' . DOL_URL_ROOT . '/compta/tva/card.php?id=' . $object->id . '&token=' . newToken() . '&action=paid">' . $langs->trans("ClassifyPaid") . "</a></div>";
         }
 

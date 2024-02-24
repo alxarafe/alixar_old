@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2017  Laurent Destailleur	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2017  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021  Open-Dsi  			<support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -133,7 +134,7 @@ class AssetModel extends CommonObject
     //  */
     // public $fk_element = 'fk_assetmodel';
     // /**
-    //  * @var array	List of child tables. To test if we can delete object.
+    //  * @var array    List of child tables. To test if we can delete object.
     //  */
     // protected $childtables = array();
     // /**
@@ -232,7 +233,7 @@ class AssetModel extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);

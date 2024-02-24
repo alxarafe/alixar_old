@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2018  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
@@ -207,15 +208,15 @@ llxHeader('', $title, $help_url, '', 0, 0, '', '', '', 'mod-donation page-list')
 // Example : Adding jquery code
 // print '<script type="text/javascript">
 // jQuery(document).ready(function() {
-// 	function init_myfunc()
-// 	{
-// 		jQuery("#myid").removeAttr(\'disabled\');
-// 		jQuery("#myid").attr(\'disabled\',\'disabled\');
-// 	}
-// 	init_myfunc();
-// 	jQuery("#mybutton").click(function() {
-// 		init_myfunc();
-// 	});
+//  function init_myfunc()
+//  {
+//      jQuery("#myid").removeAttr(\'disabled\');
+//      jQuery("#myid").attr(\'disabled\',\'disabled\');
+//  }
+//  init_myfunc();
+//  jQuery("#mybutton").click(function() {
+//      init_myfunc();
+//  });
 // });
 // </script>';
 

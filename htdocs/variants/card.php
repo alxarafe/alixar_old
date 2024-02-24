@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016   Marcos García   <marcosgdf@gmail.com>
  * Copyright (C) 2018   Frédéric France <frederic.france@netlogic.fr>
  * Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>

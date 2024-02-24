@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2016	Marcos García	<marcosgdf@gmail.com>
+
+/* Copyright (C) 2016   Marcos García   <marcosgdf@gmail.com>
  * Copyright (C) 2018	Juanjo Menent	<jmenent@2byte.es>
  * Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
  *
@@ -175,7 +176,8 @@ class ProductCombination
             }
         }
 
-        if (!is_array($this->combination_price_levels)
+        if (
+            !is_array($this->combination_price_levels)
             || empty($fk_price_level) // if fetch an unique level don't erase all already fetched
         ) {
             $this->combination_price_levels = [];
@@ -985,7 +987,8 @@ class ProductCombination
                 $variations[$tmp_pc2v->fk_prod_attr] = $tmp_pc2v->fk_prod_attr_val;
             }
 
-            if ($this->createProductCombination(
+            if (
+                $this->createProductCombination(
                     $user,
                     $destProduct,
                     $variations,
@@ -993,7 +996,8 @@ class ProductCombination
                     $combination->variation_price_percentage,
                     $combination->variation_price,
                     $combination->variation_weight
-                ) < 0) {
+                ) < 0
+            ) {
                 return -1;
             }
         }

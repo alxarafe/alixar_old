@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2013       Olivier Geffroy         <jeff@jeffinfo.com>
  * Copyright (C) 2013-2023  Alexandre Spangaro      <aspangaro@open-dsi.fr>

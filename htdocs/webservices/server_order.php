@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2006-2016	Laurent Destailleur	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2006-2016  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2012		JF FERRY			<jfefe@aternatik.fr>
  * Copyright (C) 2012		Regis Houssin		<regis.houssin@inodbox.com>
 *
@@ -164,19 +165,19 @@ $server->wsdl->addComplexType(
 );
 
 /*$server->wsdl->addComplexType(
-		'LinesArray',
-		'complexType',
-		'array',
-		'',
-		'SOAP-ENC:Array',
-		array(),
-		array(
-				array(
-						'ref'=>'SOAP-ENC:arrayType',
-						'wsdl:arrayType'=>'tns:line[]'
-				)
-		),
-		'tns:line'
+        'LinesArray',
+        'complexType',
+        'array',
+        '',
+        'SOAP-ENC:Array',
+        array(),
+        array(
+                array(
+                        'ref'=>'SOAP-ENC:arrayType',
+                        'wsdl:arrayType'=>'tns:line[]'
+                )
+        ),
+        'tns:line'
 );*/
 $server->wsdl->addComplexType(
     'LinesArray2',
@@ -267,19 +268,19 @@ $server->wsdl->addComplexType(
 
 /*
 $server->wsdl->addComplexType(
-		'OrdersArray',
-		'complexType',
-		'array',
-		'',
-		'SOAP-ENC:Array',
-		array(),
-		array(
-				array(
-						'ref'=>'SOAP-ENC:arrayType',
-						'wsdl:arrayType'=>'tns:order[]'
-				)
-		),
-		'tns:order'
+        'OrdersArray',
+        'complexType',
+        'array',
+        '',
+        'SOAP-ENC:Array',
+        array(),
+        array(
+                array(
+                        'ref'=>'SOAP-ENC:arrayType',
+                        'wsdl:arrayType'=>'tns:order[]'
+                )
+        ),
+        'tns:order'
 );*/
 $server->wsdl->addComplexType(
     'OrdersArray2',

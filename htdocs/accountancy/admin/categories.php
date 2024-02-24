@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016       Jamal Elbaz         <jamelbaz@gmail.pro>
  * Copyright (C) 2017-2024  Alexandre Spangaro  <aspangaro@easya.solutions>
  * Copyright (C) 2022       Laurent Destailleur <eldy@users.sourceforge.net>

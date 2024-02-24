@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) - 2013-2016	Jean-François FERRY    <hello@librethic.io>
+
+/* Copyright (C) - 2013-2016    Jean-François FERRY    <hello@librethic.io>
  * Copyright (C) - 2019     	Laurent Destailleur    <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003		Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2012	Destailleur Laurent		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2014	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2006		Andre Cianfarani		<acianfa@free.fr>
@@ -1225,10 +1226,10 @@ class Contrat extends CommonObject
         if (!$error) {
             // Delete contratdet_log
             /*
-			$sql = "DELETE cdl";
-			$sql.= " FROM ".MAIN_DB_PREFIX."contratdet_log as cdl, ".MAIN_DB_PREFIX."contratdet as cd";
-			$sql.= " WHERE cdl.fk_contratdet=cd.rowid AND cd.fk_contrat=".((int) $this->id);
-			*/
+            $sql = "DELETE cdl";
+            $sql.= " FROM ".MAIN_DB_PREFIX."contratdet_log as cdl, ".MAIN_DB_PREFIX."contratdet as cd";
+            $sql.= " WHERE cdl.fk_contratdet=cd.rowid AND cd.fk_contrat=".((int) $this->id);
+            */
             $sql = "SELECT cdl.rowid as cdlrowid ";
             $sql .= " FROM " . MAIN_DB_PREFIX . "contratdet_log as cdl, " . MAIN_DB_PREFIX . "contratdet as cd";
             $sql .= " WHERE cdl.fk_contratdet=cd.rowid AND cd.fk_contrat=" . ((int) $this->id);
@@ -1975,13 +1976,13 @@ class Contrat extends CommonObject
         }
 
         // Load $this->lines array
-        //		$this->fetch_lines();
+        //      $this->fetch_lines();
 
-        //		$newstatut=1;
-        //		foreach($this->lines as $key => $contractline)
-        //		{
-        //			//			if ($contractline)         // Loop on each service
-        //		}
+        //      $newstatut=1;
+        //      foreach($this->lines as $key => $contractline)
+        //      {
+        //          //          if ($contractline)         // Loop on each service
+        //      }
 
         return 1;
     }
@@ -2076,9 +2077,9 @@ class Contrat extends CommonObject
         if ($user->hasRight('contrat', 'lire')) {
             $datas['picto'] = img_picto('', $this->picto) . ' <u class="paddingrightonly">' . $langs->trans("Contract") . '</u>';
             /* Status of a contract is status of all services, so disabled
-			if (isset($this->statut)) {
-				$label .= ' '.$this->getLibStatut(5);
-			}*/
+            if (isset($this->statut)) {
+                $label .= ' '.$this->getLibStatut(5);
+            }*/
             $datas['ref'] = '<br><b>' . $langs->trans('Ref') . ':</b> ' . ($this->ref ? $this->ref : $this->id);
             if (!$nofetch) {
                 $langs->load('companies');

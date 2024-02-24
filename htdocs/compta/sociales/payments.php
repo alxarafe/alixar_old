@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010  Regis Houssin           <regis.houssin@inodbox.com>
@@ -168,12 +169,14 @@ if ($year > 0) {
     $sql .= " OR (cs.periode IS NULL AND cs.date_ech between '" . $db->idate(dol_get_first_day($year)) . "' AND '" . $db->idate(dol_get_last_day($year)) . "')";
     $sql .= ")";
 }
-if (preg_match('/^cs\./', $sortfield)
+if (
+    preg_match('/^cs\./', $sortfield)
     || preg_match('/^c\./', $sortfield)
     || preg_match('/^pc\./', $sortfield)
     || preg_match('/^pct\./', $sortfield)
     || preg_match('/^u\./', $sortfield)
-    || preg_match('/^ba\./', $sortfield)) {
+    || preg_match('/^ba\./', $sortfield)
+) {
     $sql .= $db->order($sortfield, $sortorder);
 }
 

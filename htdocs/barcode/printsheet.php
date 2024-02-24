@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003	   Rodolphe Quiedeville <rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003	   Jean-Louis Bergamo	<jlb@j1b.org>
  * Copyright (C) 2006-2017 Laurent Destailleur	<eldy@users.sourceforge.net>
  *

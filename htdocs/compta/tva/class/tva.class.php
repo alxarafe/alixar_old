@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2003  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2008  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2011-2017  Alexandre Spangaro      <aspangaro@open-dsi.fr>

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2022 Alice Adminson <aadminson@example.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,10 +56,10 @@ function aiAdminPrepareHead()
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     //$this->tabs = array(
-    //	'entity:+tabname:Title:@ai:/ai/mypage.php?id=__ID__'
+    //  'entity:+tabname:Title:@ai:/ai/mypage.php?id=__ID__'
     //); // to add new tab
     //$this->tabs = array(
-    //	'entity:-tabname:Title:@ai:/ai/mypage.php?id=__ID__'
+    //  'entity:-tabname:Title:@ai:/ai/mypage.php?id=__ID__'
     //); // to remove a tab
     complete_head_from_modules($conf, $langs, null, $head, $h, 'ai@ai');
 

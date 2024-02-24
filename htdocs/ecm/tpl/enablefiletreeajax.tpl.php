@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2012	Regis Houssin			<regis.houssin@inodbox.com>
+/* Copyright (C) 2012   Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2018	Laurent Destailleur 	<eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -43,7 +43,7 @@ if (empty($conf) || !is_object($conf)) {
     $paramwithoutsection = preg_replace('/&?section=(\d+)/', '', $param);
 
     $openeddir = '/'; // The root directory shown
-    // $preopened		// The dir to have preopened
+    // $preopened       // The dir to have preopened
 
     ?>
 
@@ -54,7 +54,7 @@ if (empty($conf) || !is_object($conf)) {
                 // Ajax called if we click to expand a dir (not a file). Parameter 'dir' is provided as a POST parameter by fileTree code to this following URL.
                 // We must use token=currentToken() and not newToken() here because ajaxdirtree has NOTOKENRENEWAL define so there is no rollup of token so we must compare with the one valid on main page
                 script: '<?php echo DOL_URL_ROOT . '/core/ajax/ajaxdirtree.php?token=' . currentToken() . '&modulepart=' . urlencode($module) . (empty($preopened) ? '' : '&preopened=' . urlencode($preopened)) . '&openeddir=' . urlencode($openeddir) . (empty($paramwithoutsection) ? '' : $paramwithoutsection); ?>',
-                folderEvent: 'click',	// 'dblclick'
+                folderEvent: 'click',   // 'dblclick'
                 multiFolder: false
             },
             // Called if we click on a file (not a dir)
@@ -65,7 +65,7 @@ if (empty($conf) || !is_object($conf)) {
             },
             // Called if we click on a dir (not a file)
             function (elem) {
-                id = elem.attr('id').substr(12);	// We get id that is 'fmdirlia_id_xxx' (id we want is xxx)
+                id = elem.attr('id').substr(12);    // We get id that is 'fmdirlia_id_xxx' (id we want is xxx)
                 rel = elem.attr('rel')
                 console.log("We click on a dir id=" + id + ", we call the ajaxdirtree.php with modulepart=<?php echo $module; ?>, param=<?php echo $paramwithoutsection; ?>");
                 console.log("We also save id and dir name into <?php echo $nameforformuserfile ?>_section_id|dir (vars into form to attach new file in filemanager.tpl.php) with id=" + id + " and rel=" + rel);

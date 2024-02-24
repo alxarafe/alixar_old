@@ -1,6 +1,7 @@
 <?php
-// Copyright (C) 2014 Cedric GROSS		<c.gross@kreiz-it.fr>
-// Copyright (C) 2017 Francis Appels	<francis.appels@z-application.com>
+
+// Copyright (C) 2014 Cedric GROSS      <c.gross@kreiz-it.fr>
+// Copyright (C) 2017 Francis Appels    <francis.appels@z-application.com>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -61,9 +62,9 @@ if (empty($dolibarr_nocache)) {
  * addDispatchLine
  * Adds new table row for dispatching to multiple stock locations or multiple lot/serial
  *
- * @param    index    int		index of product line. 0 = first product line
- * @param    type    string	type of dispatch ('batch' = batch dispatch, 'dispatch' = non batch dispatch)
- * @param    mode    string	'qtymissing' will create new line with qty missing, 'lessone' will keep 1 in old line and the rest in new one
+ * @param    index    int       index of product line. 0 = first product line
+ * @param    type    string type of dispatch ('batch' = batch dispatch, 'dispatch' = non batch dispatch)
+ * @param    mode    string 'qtymissing' will create new line with qty missing, 'lessone' will keep 1 in old line and the rest in new one
  */
 function addDispatchLine(index, type, mode) {
     mode = mode || 'qtymissing'
@@ -72,9 +73,9 @@ function addDispatchLine(index, type, mode) {
 
     var $row0 = $("tr[name='" + type + '_0_' + index + "']");
     var $dpopt = $row0.find('.hasDatepicker').first().datepicker('option', 'all'); // get current datepicker options to apply the same to the cloned datepickers
-    var $row = $row0.clone(true); 		// clone first batch line to jQuery object
+    var $row = $row0.clone(true);       // clone first batch line to jQuery object
     var nbrTrs = $("tr[name^='" + type + "_'][name$='_" + index + "']").length; // count nb of tr line with attribute name that starts with 'batch_' or 'dispatch_', and end with _index
-    var qtyOrdered = parseFloat($("#qty_ordered_0_" + index).val()); 		// Qty ordered is same for all rows
+    var qtyOrdered = parseFloat($("#qty_ordered_0_" + index).val());        // Qty ordered is same for all rows
 
     var qty = parseFloat($("#qty_" + (nbrTrs - 1) + "_" + index).val());
     if (isNaN(qty)) {
@@ -134,7 +135,7 @@ function addDispatchLine(index, type, mode) {
         $("tr[name^='" + type + "_'][name$='_" + index + "']:last").after($row);
 
         //remove cloned select2 with duplicate id.
-        $("#s2id_entrepot_" + nbrTrs + '_' + index).detach();			// old way to find duplicated select2 component
+        $("#s2id_entrepot_" + nbrTrs + '_' + index).detach();           // old way to find duplicated select2 component
         $(".csswarehouse_" + nbrTrs + "_" + index + ":first-child").parent("span.selection").parent(".select2").detach();
 
         /*  Suffix of lines are:  _ trs.length _ index  */

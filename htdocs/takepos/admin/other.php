@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2011-2017 Juanjo Menent		<jmenent@2byte.es>
  *
@@ -21,6 +22,7 @@
  *    \ingroup    takepos
  *    \brief      Setup page for TakePos module
  */
+
 require '../../main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';

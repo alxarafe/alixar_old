@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2010  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2011       François Legastelois    <flegastelois@teclib.com>
  * Copyright (C) 2018-2019  Frédéric France         <frederic.france@netlogic.fr>
@@ -107,12 +108,14 @@ if (empty($reshook)) {
         $search_array_options = [];
     }
 
-    if (GETPOST('button_removefilter_x', 'alpha')
+    if (
+        GETPOST('button_removefilter_x', 'alpha')
         || GETPOST('button_removefilter.x', 'alpha')
         || GETPOST('button_removefilter', 'alpha')
         || GETPOST('button_search_x', 'alpha')
         || GETPOST('button_search.x', 'alpha')
-        || GETPOST('button_search', 'alpha')) {
+        || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = '';
     }
 }

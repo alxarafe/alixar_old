@@ -1,278 +1,279 @@
 <?php
+
 // phpcs:disable PEAR.Commenting
 
 namespace MaxMind\Exception {
-	class WebServiceException extends \Exception
-	{
-	}
-	class HttpException extends \MaxMind\Exception\WebServiceException
-	{
-		public function __construct($message, $httpStatus, $uri, \Exception $previous = null)
-		{
-		}
-		public function getUri()
-		{
-		}
-		public function getStatusCode()
-		{
-		}
-	}
-	class InvalidRequestException extends \MaxMind\Exception\HttpException
-	{
-		public function __construct($message, $error, $httpStatus, $uri, \Exception $previous = null)
-		{
-		}
-		public function getErrorCode()
-		{
-		}
-	}
-	class AuthenticationException extends \MaxMind\Exception\InvalidRequestException
-	{
-	}
-	class InsufficientFundsException extends \MaxMind\Exception\InvalidRequestException
-	{
-	}
-	class InvalidInputException extends \MaxMind\Exception\WebServiceException
-	{
-	}
-	class IpAddressNotFoundException extends \MaxMind\Exception\InvalidRequestException
-	{
-	}
-	class PermissionRequiredException extends \MaxMind\Exception\InvalidRequestException
-	{
-	}
+    class WebServiceException extends \Exception
+    {
+    }
+    class HttpException extends \MaxMind\Exception\WebServiceException
+    {
+        public function __construct($message, $httpStatus, $uri, \Exception $previous = null)
+        {
+        }
+        public function getUri()
+        {
+        }
+        public function getStatusCode()
+        {
+        }
+    }
+    class InvalidRequestException extends \MaxMind\Exception\HttpException
+    {
+        public function __construct($message, $error, $httpStatus, $uri, \Exception $previous = null)
+        {
+        }
+        public function getErrorCode()
+        {
+        }
+    }
+    class AuthenticationException extends \MaxMind\Exception\InvalidRequestException
+    {
+    }
+    class InsufficientFundsException extends \MaxMind\Exception\InvalidRequestException
+    {
+    }
+    class InvalidInputException extends \MaxMind\Exception\WebServiceException
+    {
+    }
+    class IpAddressNotFoundException extends \MaxMind\Exception\InvalidRequestException
+    {
+    }
+    class PermissionRequiredException extends \MaxMind\Exception\InvalidRequestException
+    {
+    }
 }
 
 namespace MaxMind\WebService {
-	class Client
-	{
-		const VERSION = '0.2.0';
-		public function __construct($accountId, $licenseKey, $options = [])
-		{
-		}
-		public function post($service, $path, $input)
-		{
-		}
-		public function get($service, $path)
-		{
-		}
-	}
+    class Client
+    {
+        const VERSION = '0.2.0';
+        public function __construct($accountId, $licenseKey, $options = [])
+        {
+        }
+        public function post($service, $path, $input)
+        {
+        }
+        public function get($service, $path)
+        {
+        }
+    }
 }
 
 namespace MaxMind\WebService\Http {
-	interface Request
-	{
-		public function __construct($url, $options);
-		public function post($body);
-		public function get();
-	}
-	class CurlRequest implements \MaxMind\WebService\Http\Request
-	{
-		public function __construct($url, $options)
-		{
-		}
-		public function post($body)
-		{
-		}
-		public function get()
-		{
-		}
-	}
-	class RequestFactory
-	{
-		public function __construct()
-		{
-		}
-		public function request($url, $options)
-		{
-		}
-	}
+    interface Request
+    {
+        public function __construct($url, $options);
+        public function post($body);
+        public function get();
+    }
+    class CurlRequest implements \MaxMind\WebService\Http\Request
+    {
+        public function __construct($url, $options)
+        {
+        }
+        public function post($body)
+        {
+        }
+        public function get()
+        {
+        }
+    }
+    class RequestFactory
+    {
+        public function __construct()
+        {
+        }
+        public function request($url, $options)
+        {
+        }
+    }
 }
 
 namespace GeoIp2 {
-	interface ProviderInterface
-	{
-		/**
-		 * @param string $ipAddress an IPv4 or IPv6 address to lookup
-		 *
-		 * @return \GeoIp2\Model\Country a Country model for the requested IP address
-		 */
-		public function country(string $ipAddress) : \GeoIp2\Model\Country;
-		/**
-		 * @param string $ipAddress an IPv4 or IPv6 address to lookup
-		 *
-		 * @return \GeoIp2\Model\City a City model for the requested IP address
-		 */
-		public function city(string $ipAddress) : \GeoIp2\Model\City;
-	}
+    interface ProviderInterface
+    {
+        /**
+         * @param string $ipAddress an IPv4 or IPv6 address to lookup
+         *
+         * @return \GeoIp2\Model\Country a Country model for the requested IP address
+         */
+        public function country(string $ipAddress): \GeoIp2\Model\Country;
+        /**
+         * @param string $ipAddress an IPv4 or IPv6 address to lookup
+         *
+         * @return \GeoIp2\Model\City a City model for the requested IP address
+         */
+        public function city(string $ipAddress): \GeoIp2\Model\City;
+    }
 }
 
 namespace GeoIp2\Database {
-	/**
-	 * Instances of this class provide a reader for the GeoIP2 database format.
-	 * IP addresses can be looked up using the database specific methods.
-	 *
-	 * ## Usage ##
-	 *
-	 * The basic API for this class is the same for every database. First, you
-	 * create a reader object, specifying a file name. You then call the method
-	 * corresponding to the specific database, passing it the IP address you want
-	 * to look up.
-	 *
-	 * If the request succeeds, the method call will return a model class for
-	 * the method you called. This model in turn contains multiple record classes,
-	 * each of which represents part of the data returned by the database. If
-	 * the database does not contain the requested information, the attributes
-	 * on the record class will have a `null` value.
-	 *
-	 * If the address is not in the database, an
-	 * {@link \GeoIp2\Exception\AddressNotFoundException} exception will be
-	 * thrown. If an invalid IP address is passed to one of the methods, a
-	 * SPL {@link \InvalidArgumentException} will be thrown. If the database is
-	 * corrupt or invalid, a {@link \MaxMind\Db\Reader\InvalidDatabaseException}
-	 * will be thrown.
-	 */
-	class Reader implements \GeoIp2\ProviderInterface
-	{
-		/**
-		 * Constructor.
-		 *
-		 * @param string $filename the path to the GeoIP2 database file
-		 * @param array  $locales  list of locale codes to use in name property
-		 *                         from most preferred to least preferred
-		 *
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function __construct(string $filename, array $locales = ['en'])
-		{
-		}
-		/**
-		 * This method returns a GeoIP2 City model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function city(string $ipAddress) : \GeoIp2\Model\City
-		{
-		}
-		/**
-		 * This method returns a GeoIP2 Country model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function country(string $ipAddress) : \GeoIp2\Model\Country
-		{
-		}
-		/**
-		 * This method returns a GeoIP2 Anonymous IP model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function anonymousIp(string $ipAddress) : \GeoIp2\Model\AnonymousIp
-		{
-		}
-		/**
-		 * This method returns a GeoLite2 ASN model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function asn(string $ipAddress) : \GeoIp2\Model\Asn
-		{
-		}
-		/**
-		 * This method returns a GeoIP2 Connection Type model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function connectionType(string $ipAddress) : \GeoIp2\Model\ConnectionType
-		{
-		}
-		/**
-		 * This method returns a GeoIP2 Domain model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function domain(string $ipAddress) : \GeoIp2\Model\Domain
-		{
-		}
-		/**
-		 * This method returns a GeoIP2 Enterprise model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function enterprise(string $ipAddress) : \GeoIp2\Model\Enterprise
-		{
-		}
-		/**
-		 * This method returns a GeoIP2 ISP model.
-		 *
-		 * @param string $ipAddress an IPv4 or IPv6 address as a string
-		 *
-		 * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
-		 *                                                     not in the database
-		 * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
-		 *                                                     is corrupt or invalid
-		 */
-		public function isp(string $ipAddress) : \GeoIp2\Model\Isp
-		{
-		}
-		/**
-		 * @throws \InvalidArgumentException if arguments are passed to the method
-		 * @throws \BadMethodCallException   if the database has been closed
-		 *
-		 * @return \MaxMind\Db\Reader\Metadata object for the database
-		 */
-		public function metadata() : \MaxMind\Db\Reader\Metadata
-		{
-		}
-		/**
-		 * Closes the GeoIP2 database and returns the resources to the system.
-		 */
-		public function close() : void
-		{
-		}
-	}
+    /**
+     * Instances of this class provide a reader for the GeoIP2 database format.
+     * IP addresses can be looked up using the database specific methods.
+     *
+     * ## Usage ##
+     *
+     * The basic API for this class is the same for every database. First, you
+     * create a reader object, specifying a file name. You then call the method
+     * corresponding to the specific database, passing it the IP address you want
+     * to look up.
+     *
+     * If the request succeeds, the method call will return a model class for
+     * the method you called. This model in turn contains multiple record classes,
+     * each of which represents part of the data returned by the database. If
+     * the database does not contain the requested information, the attributes
+     * on the record class will have a `null` value.
+     *
+     * If the address is not in the database, an
+     * {@link \GeoIp2\Exception\AddressNotFoundException} exception will be
+     * thrown. If an invalid IP address is passed to one of the methods, a
+     * SPL {@link \InvalidArgumentException} will be thrown. If the database is
+     * corrupt or invalid, a {@link \MaxMind\Db\Reader\InvalidDatabaseException}
+     * will be thrown.
+     */
+    class Reader implements \GeoIp2\ProviderInterface
+    {
+        /**
+         * Constructor.
+         *
+         * @param string $filename the path to the GeoIP2 database file
+         * @param array  $locales  list of locale codes to use in name property
+         *                         from most preferred to least preferred
+         *
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function __construct(string $filename, array $locales = ['en'])
+        {
+        }
+        /**
+         * This method returns a GeoIP2 City model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function city(string $ipAddress): \GeoIp2\Model\City
+        {
+        }
+        /**
+         * This method returns a GeoIP2 Country model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function country(string $ipAddress): \GeoIp2\Model\Country
+        {
+        }
+        /**
+         * This method returns a GeoIP2 Anonymous IP model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function anonymousIp(string $ipAddress): \GeoIp2\Model\AnonymousIp
+        {
+        }
+        /**
+         * This method returns a GeoLite2 ASN model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function asn(string $ipAddress): \GeoIp2\Model\Asn
+        {
+        }
+        /**
+         * This method returns a GeoIP2 Connection Type model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function connectionType(string $ipAddress): \GeoIp2\Model\ConnectionType
+        {
+        }
+        /**
+         * This method returns a GeoIP2 Domain model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function domain(string $ipAddress): \GeoIp2\Model\Domain
+        {
+        }
+        /**
+         * This method returns a GeoIP2 Enterprise model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function enterprise(string $ipAddress): \GeoIp2\Model\Enterprise
+        {
+        }
+        /**
+         * This method returns a GeoIP2 ISP model.
+         *
+         * @param string $ipAddress an IPv4 or IPv6 address as a string
+         *
+         * @throws \GeoIp2\Exception\AddressNotFoundException  if the address is
+         *                                                     not in the database
+         * @throws \MaxMind\Db\Reader\InvalidDatabaseException if the database
+         *                                                     is corrupt or invalid
+         */
+        public function isp(string $ipAddress): \GeoIp2\Model\Isp
+        {
+        }
+        /**
+         * @throws \InvalidArgumentException if arguments are passed to the method
+         * @throws \BadMethodCallException   if the database has been closed
+         *
+         * @return \MaxMind\Db\Reader\Metadata object for the database
+         */
+        public function metadata(): \MaxMind\Db\Reader\Metadata
+        {
+        }
+        /**
+         * Closes the GeoIP2 database and returns the resources to the system.
+         */
+        public function close(): void
+        {
+        }
+    }
 }
 
 namespace GeoIp2\Exception {
-	/**
-	 * This class represents a generic error.
-	 */
+    /**
+     * This class represents a generic error.
+     */
 	// phpcs:disable
 	class GeoIp2Exception extends \Exception
 	{

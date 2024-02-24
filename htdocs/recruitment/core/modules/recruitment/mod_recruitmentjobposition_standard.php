@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  *
@@ -22,6 +23,7 @@
  *  \ingroup    recruitment
  *  \brief      File of class to manage RecruitmentJobPosition numbering rules standard
  */
+
 dol_include_once('/recruitment/core/modules/recruitment/modules_recruitmentjobposition.php');
 
 /**

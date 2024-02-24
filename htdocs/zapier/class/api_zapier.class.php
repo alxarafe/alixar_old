@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2019-2020  Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -267,7 +268,7 @@ class Zapier extends DolibarrApi
     //  * @param array $request_data   Datas
     //  * @return int
     //  *
-    //  * @url	PUT /hooks/{id}
+    //  * @url  PUT /hooks/{id}
     //  */
     /*public function put($id, $request_data = null)
     {

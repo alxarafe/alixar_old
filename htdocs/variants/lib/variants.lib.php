@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
+
+/* Copyright (C) 2022   Open-Dsi        <support@open-dsi.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +45,7 @@ function productAttributePrepareHead($object)
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-    // $this->tabs = array('entity:-tabname);   												to remove a tab
+    // $this->tabs = array('entity:-tabname);                                                   to remove a tab
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'product_attribute');
 
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'product_attribute', 'remove');

@@ -136,11 +136,11 @@ $arrayfields['wug.fk_usergroup'] = [
 
 /* disabled because adding resources to workstation seems not yet available in GUI
 $arrayfields['wr.fk_resource'] = array(
-	'label'=>$langs->trans('Resources'),
-	'checked'=>(($visible < 0) ? 0 : 1),
-	'enabled'=>($visible != 3 && dol_eval($val['enabled'], 1, 1, '1')),
-	'position'=>1001,
-	'help' => empty($val['help']) ? '' : $val['help']
+    'label'=>$langs->trans('Resources'),
+    'checked'=>(($visible < 0) ? 0 : 1),
+    'enabled'=>($visible != 3 && dol_eval($val['enabled'], 1, 1, '1')),
+    'position'=>1001,
+    'help' => empty($val['help']) ? '' : $val['help']
 );
 */
 
@@ -192,8 +192,10 @@ if (empty($reshook)) {
         $toselect = [];
         $search_array_options = [];
     }
-    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
-        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')) {
+    if (
+        GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')
+        || GETPOST('button_search_x', 'alpha') || GETPOST('button_search.x', 'alpha') || GETPOST('button_search', 'alpha')
+    ) {
         $massaction = ''; // Protection to avoid mass action if we force a new search during a mass action confirmation
     }
 

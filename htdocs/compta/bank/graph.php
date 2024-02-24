@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -346,7 +347,7 @@ if ($result < 0) {
             }
             $datamin[$i] = $object->min_desired;
             $dataall[$i] = $object->min_allowed;
-            /*if ($xday == '15')	// Set only some label for jflot
+            /*if ($xday == '15')    // Set only some label for jflot
             {
                 $labels[$i] = dol_print_date($day, "%b");
             }*/
@@ -393,7 +394,7 @@ if ($result < 0) {
         $px2->setBgColor('onglet');
         $px2->setBgColorGrid([255, 255, 255]);
         $px2->SetHideXGrid(true);
-        //$px2->SetHorizTickIncrement(30.41);	// 30.41 jours/mois en moyenne
+        //$px2->SetHorizTickIncrement(30.41);   // 30.41 jours/mois en moyenne
         $px2->draw($file, $fileurl);
 
         $show2 = $px2->show();
@@ -464,7 +465,7 @@ if ($result < 0) {
             }
             $datamin[$i] = $object->min_desired;
             $dataall[$i] = $object->min_allowed;
-            /*if (substr($textdate, 6, 2) == '01' || $i == 0)	// Set only few label for jflot
+            /*if (substr($textdate, 6, 2) == '01' || $i == 0)   // Set only few label for jflot
             {
                 $labels[$i] = substr($textdate, 0, 6);
             }*/

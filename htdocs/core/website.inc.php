@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
@@ -106,7 +107,7 @@ if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
     }
 
     // X-XSS-Protection
-    //header("X-XSS-Protection: 1");      		// XSS filtering protection of some browsers (note: use of Content-Security-Policy is more efficient). Disabled as deprecated.
+    //header("X-XSS-Protection: 1");            // XSS filtering protection of some browsers (note: use of Content-Security-Policy is more efficient). Disabled as deprecated.
 
     // Content-Security-Policy-Report-Only
     if (!defined('WEBSITE_MAIN_SECURITY_FORCECSPRO')) {

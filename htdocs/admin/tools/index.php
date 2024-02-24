@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2004	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2006	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
  *
@@ -18,8 +19,8 @@
  */
 
 /**
- *    	\file       htdocs/admin/tools/index.php
- * 		\brief      Page d'accueil de l'espace outils admin
+ *      \file       htdocs/admin/tools/index.php
+ *      \brief      Page d'accueil de l'espace outils admin
  */
 
 // Load Dolibarr environment
@@ -29,7 +30,7 @@ require '../../main.inc.php';
 $langs->loadLangs(array("companies", "admin"));
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -46,10 +47,10 @@ llxHeader('', $title);
 
 print load_fiche_titre($title, '', 'title_setup');
 
-print $langs->trans("SystemToolsAreaDesc").'<br>';
+print $langs->trans("SystemToolsAreaDesc") . '<br>';
 print "<br>";
 
-print info_admin($langs->trans("SystemAreaForAdminOnly")).'<br>';
+print info_admin($langs->trans("SystemAreaForAdminOnly")) . '<br>';
 
 print '<br><br>';
 

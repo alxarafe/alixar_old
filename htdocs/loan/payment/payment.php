@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014-2018  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2015-2018  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2020       Maxime DEMAREST         <maxime@indelog.fr>

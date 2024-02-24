@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Eric Seigne          <erics@rycks.com>
  * Copyright (C) 2004-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -701,8 +702,10 @@ if ($resql) {
         }
 
         // Check values
-        if ($event->date_end_in_calendar < $firstdaytoshow ||
-            $event->date_start_in_calendar >= $lastdaytoshow) {
+        if (
+            $event->date_end_in_calendar < $firstdaytoshow ||
+            $event->date_start_in_calendar >= $lastdaytoshow
+        ) {
             // This record is out of visible range
             unset($event);
         } else {
@@ -998,7 +1001,7 @@ function show_day_events_pertype($username, $day, $month, $year, $monthshown, $s
                 if (!in_array($username->id, $keysofuserassigned)) {
                     continue; // We discard record if event is from another user than user we want to show
                 }
-                //if ($username->id != $event->userownerid) continue;	// We discard record if event is from another user than user we want to show
+                //if ($username->id != $event->userownerid) continue;   // We discard record if event is from another user than user we want to show
 
                 $parameters = [];
                 $reshook = $hookmanager->executeHooks('formatEvent', $parameters, $event, $action); // Note that $action and $object may have been modified by some hooks

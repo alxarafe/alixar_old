@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2001-2002  Jean-Louis Bergamo      <jlb@j1b.org>
  * Copyright (C) 2006-2013  Laurent Destailleur     <eldy@users.sourceforge.net>
@@ -383,8 +384,10 @@ if (empty($reshook) && $action == 'add') {
                 }
 
                 // Send email to the foundation to say a new member subscribed with autosubscribe form
-                if (getDolGlobalString('MAIN_INFO_SOCIETE_MAIL') && getDolGlobalString('ADHERENT_AUTOREGISTER_NOTIF_MAIL_SUBJECT') &&
-                    getDolGlobalString('ADHERENT_AUTOREGISTER_NOTIF_MAIL')) {
+                if (
+                    getDolGlobalString('MAIN_INFO_SOCIETE_MAIL') && getDolGlobalString('ADHERENT_AUTOREGISTER_NOTIF_MAIL_SUBJECT') &&
+                    getDolGlobalString('ADHERENT_AUTOREGISTER_NOTIF_MAIL')
+                ) {
                     // Define link to login card
                     $appli = constant('DOL_APPLICATION_TITLE');
                     if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {

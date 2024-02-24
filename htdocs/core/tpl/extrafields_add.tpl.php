@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2014	Maxime Kohlhaas		<support@atm-consulting.fr>
+/* Copyright (C) 2014   Maxime Kohlhaas     <support@atm-consulting.fr>
  * Copyright (C) 2014	Juanjo Menent		<jmenent@2byte.es>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,8 +27,8 @@
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
-	print "Error, template page can't be called as URL";
-	exit;
+    print "Error, template page can't be called as URL";
+    exit;
 }
 
 ?>
@@ -37,23 +37,23 @@ if (empty($conf) || !is_object($conf)) {
 
 // Other attributes
 if (!isset($parameters)) {
-	$parameters = array();
+    $parameters = array();
 }
 
 $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 
 print $hookmanager->resPrint;
 if (empty($reshook)) {
-	$params = array();
-	$params['cols'] = array_key_exists('colspanvalue', $parameters) ? $parameters['colspanvalue'] : '';
-	if (!empty($parameters['tdclass'])) {
-		$params['tdclass'] = $parameters['tdclass'];
-	}
-	if (!empty($parameters['tpl_context'])) {
-		$params['tpl_context'] = $parameters['tpl_context'];
-	}
+    $params = array();
+    $params['cols'] = array_key_exists('colspanvalue', $parameters) ? $parameters['colspanvalue'] : '';
+    if (!empty($parameters['tdclass'])) {
+        $params['tdclass'] = $parameters['tdclass'];
+    }
+    if (!empty($parameters['tpl_context'])) {
+        $params['tpl_context'] = $parameters['tpl_context'];
+    }
 
-	print $object->showOptionals($extrafields, 'create', $params);
+    print $object->showOptionals($extrafields, 'create', $params);
 }
 
 ?>

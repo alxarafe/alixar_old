@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (c) 2005-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -23,6 +24,7 @@
  *       \ingroup    factures
  *       \brief      File with class for managing the invoice statistics
  */
+
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';

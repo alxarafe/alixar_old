@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021 SuperAdmin
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
@@ -24,18 +25,18 @@
  */
 
 global $conf, $user, $langs, $db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
-require_once dirname(__FILE__).'/../../htdocs/knowledgemanagement/class/knowledgerecord.class.php';
-require_once dirname(__FILE__).'/CommonClassTest.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
+require_once dirname(__FILE__) . '/../../htdocs/knowledgemanagement/class/knowledgerecord.class.php';
+require_once dirname(__FILE__) . '/CommonClassTest.class.php';
 
 $langs->load("main");
 
 if (empty($user->id)) {
-	print "Load permissions for admin user nb 1\n";
-	$user->fetch(1);
-	$user->getrights();
+    print "Load permissions for admin user nb 1\n";
+    $user->fetch(1);
+    $user->getrights();
 }
 
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
@@ -48,127 +49,127 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class KnowledgeRecordTest extends CommonClassTest
 {
-	/**
-	 * Global test setup
-	 *
-	 * @return void
-	 */
-	public static function setUpBeforeClass(): void
-	{
-		global $conf, $user, $langs, $db;
-		$db->begin(); // This is to have all actions inside a transaction even if test launched without suite.
+    /**
+     * Global test setup
+     *
+     * @return void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        global $conf, $user, $langs, $db;
+        $db->begin(); // This is to have all actions inside a transaction even if test launched without suite.
 
-		if (!isModEnabled('knowledgemanagement')) {
-			print __METHOD__." module knowledgemanagement must be enabled.\n";
-			die(1);
-		}
-	}
+        if (!isModEnabled('knowledgemanagement')) {
+            print __METHOD__ . " module knowledgemanagement must be enabled.\n";
+            die(1);
+        }
+    }
 
 
-	/**
-	 * testKnowledgeRecordCreate
-	 *
-	 * @return int
-	 */
-	public function testKnowledgeRecordCreate()
-	{
-		global $conf, $user, $langs, $db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testKnowledgeRecordCreate
+     *
+     * @return int
+     */
+    public function testKnowledgeRecordCreate()
+    {
+        global $conf, $user, $langs, $db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new KnowledgeRecord($db);
-		$localobject->initAsSpecimen();
-		$result = $localobject->create($user);
+        $localobject = new KnowledgeRecord($db);
+        $localobject->initAsSpecimen();
+        $result = $localobject->create($user);
 
-		print __METHOD__." result=".$result."\n";
-		$this->assertGreaterThanOrEqual(0, $result);
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertGreaterThanOrEqual(0, $result);
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * testKnowledgeRecordFetch
-	 *
-	 * @param   int	$id Id order
-	 * @return  KnowledgeRecord
-	 *
-	 * @depends	testKnowledgeRecordCreate
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testKnowledgeRecordFetch($id)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testKnowledgeRecordFetch
+     *
+     * @param   int $id Id order
+     * @return  KnowledgeRecord
+     *
+     * @depends testKnowledgeRecordCreate
+     * The depends says test is run only if previous is ok
+     */
+    public function testKnowledgeRecordFetch($id)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new KnowledgeRecord($db);
-		$result = $localobject->fetch($id);
+        $localobject = new KnowledgeRecord($db);
+        $result = $localobject->fetch($id);
 
-		$this->assertLessThan($result, 0);
-		print __METHOD__." id=".$id." result=".$result."\n";
-		return $localobject;
-	}
+        $this->assertLessThan($result, 0);
+        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
+        return $localobject;
+    }
 
-	/**
-	 * testKnowledgeRecordUpdate
-	 * @param  KnowledgeRecord $localobject KnowledgeRecord
-	 * @return int
-	 *
-	 * @depends	testKnowledgeRecordFetch
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testKnowledgeRecordUpdate($localobject)
-	{
-		global $conf, $user, $langs, $db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testKnowledgeRecordUpdate
+     * @param  KnowledgeRecord $localobject KnowledgeRecord
+     * @return int
+     *
+     * @depends testKnowledgeRecordFetch
+     * The depends says test is run only if previous is ok
+     */
+    public function testKnowledgeRecordUpdate($localobject)
+    {
+        global $conf, $user, $langs, $db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject->note_private = 'New note private after update';
-		$result = $localobject->update($user);
+        $localobject->note_private = 'New note private after update';
+        $result = $localobject->update($user);
 
-		$this->assertLessThan($result, 0);
-		print __METHOD__." id=".$localobject->id." result=".$result."\n";
+        $this->assertLessThan($result, 0);
+        print __METHOD__ . " id=" . $localobject->id . " result=" . $result . "\n";
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * testKnowledgeRecordDelete
-	 *
-	 * @param	int		$id		Id of object
-	 * @return	int
-	 *
-	 * @depends	testKnowledgeRecordUpdate
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testKnowledgeRecordDelete($id)
-	{
-		global $conf, $user, $langs, $db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testKnowledgeRecordDelete
+     *
+     * @param   int     $id     Id of object
+     * @return  int
+     *
+     * @depends testKnowledgeRecordUpdate
+     * The depends says test is run only if previous is ok
+     */
+    public function testKnowledgeRecordDelete($id)
+    {
+        global $conf, $user, $langs, $db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new KnowledgeRecord($db);
-		print __METHOD__." id=".$id."\n";
-		$result = $localobject->fetch($id);
-		print __METHOD__." result=".$result."\n";
-		$this->assertGreaterThanOrEqual(0, $result, 'fetch in testKnowledgeRecordDelete with id='.$id);
+        $localobject = new KnowledgeRecord($db);
+        print __METHOD__ . " id=" . $id . "\n";
+        $result = $localobject->fetch($id);
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertGreaterThanOrEqual(0, $result, 'fetch in testKnowledgeRecordDelete with id=' . $id);
 
-		$result = $localobject->delete($user);
+        $result = $localobject->delete($user);
 
-		print __METHOD__." result=".$result."\n";
-		$this->assertGreaterThanOrEqual(0, $result, 'delete in testKnowledgeRecordDelete');
-		return $result;
-	}
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertGreaterThanOrEqual(0, $result, 'delete in testKnowledgeRecordDelete');
+        return $result;
+    }
 }

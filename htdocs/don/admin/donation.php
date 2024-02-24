@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2005-2010  Laurent Destailleur  	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2005-2010  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2012-2015  Juanjo Menent			<jmenent@2byte.es>
  * Copyright (C) 2013-2017  Philippe Grand			<philippe.grand@atoo-net.com>
  * Copyright (C) 2015-2020  Alexandre Spangaro		<aspangaro@open-dsi.fr>
@@ -25,6 +26,7 @@
  *  \ingroup    donations
  *  \brief      Page to setup the donation module
  */
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';

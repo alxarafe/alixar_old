@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017       Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2020       Gauthier VERDOL     <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2023-2024  Frédéric France     <frederic.france@netlogic.fr>
@@ -295,7 +296,7 @@ class Workstation extends CommonObject
 
         // get lines so they will be clone
         //foreach($this->lines as $line)
-        //	$line->fetch_optionals();
+        //  $line->fetch_optionals();
 
         // Reset some properties
         unset($object->id);

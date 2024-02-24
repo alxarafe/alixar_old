@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -19,143 +20,143 @@
  */
 
 /**
- *	\file       htdocs/core/modules/supplier_order/mod_commande_fournisseur_orchidee.php
- *	\ingroup    commande
- *	\brief      File for class for 'orchidee' type numbering the supplier orders
+ *  \file       htdocs/core/modules/supplier_order/mod_commande_fournisseur_orchidee.php
+ *  \ingroup    commande
+ *  \brief      File for class for 'orchidee' type numbering the supplier orders
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/supplier_order/modules_commandefournisseur.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_order/modules_commandefournisseur.php';
 
 
 /**
- *	Class providing the 'Orchidee' numbering models for supplier orders
+ *  Class providing the 'Orchidee' numbering models for supplier orders
  */
 class mod_commande_fournisseur_orchidee extends ModeleNumRefSuppliersOrders
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	/**
-	 * @var string Error code (or message)
-	 */
-	public $error = '';
+    /**
+     * @var string Error code (or message)
+     */
+    public $error = '';
 
-	/**
-	 * @var string Nom du modele
-	 * @deprecated
-	 * @see $name
-	 */
-	public $nom = 'Orchidee';
+    /**
+     * @var string Nom du modele
+     * @deprecated
+     * @see $name
+     */
+    public $nom = 'Orchidee';
 
-	/**
-	 * @var string model name
-	 */
-	public $name = 'Orchidee';
+    /**
+     * @var string model name
+     */
+    public $name = 'Orchidee';
 
 
-	/**
-	 *  Returns the description of the numbering model
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $db, $langs;
+    /**
+     *  Returns the description of the numbering model
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $db, $langs;
 
-		// Load translation files required by the page
-		$langs->loadLangs(array("bills", "admin"));
+        // Load translation files required by the page
+        $langs->loadLangs(array("bills", "admin"));
 
-		$form = new Form($db);
+        $form = new Form($db);
 
-		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
-		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
-		$texte .= '<input type="hidden" name="action" value="updateMask">';
-		$texte .= '<input type="hidden" name="maskconstorder" value="COMMANDE_FOURNISSEUR_ORCHIDEE_MASK">';
-		$texte .= '<table class="nobordernopadding" width="100%">';
+        $texte = $langs->trans('GenericNumRefModelDesc') . "<br>\n";
+        $texte .= '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST">';
+        $texte .= '<input type="hidden" name="token" value="' . newToken() . '">';
+        $texte .= '<input type="hidden" name="action" value="updateMask">';
+        $texte .= '<input type="hidden" name="maskconstorder" value="COMMANDE_FOURNISSEUR_ORCHIDEE_MASK">';
+        $texte .= '<table class="nobordernopadding" width="100%">';
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Order"), $langs->transnoentities("Order"));
-		$tooltip .= $langs->trans("GenericMaskCodes2");
-		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Order"), $langs->transnoentities("Order"));
-		$tooltip .= $langs->trans("GenericMaskCodes5");
+        $tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Order"), $langs->transnoentities("Order"));
+        $tooltip .= $langs->trans("GenericMaskCodes2");
+        $tooltip .= $langs->trans("GenericMaskCodes3");
+        $tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Order"), $langs->transnoentities("Order"));
+        $tooltip .= $langs->trans("GenericMaskCodes5");
 
-		// Parametrage du prefix
-		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskorder" value="'.getDolGlobalString("COMMANDE_FOURNISSEUR_ORCHIDEE_MASK").'">', $tooltip, 1, 1).'</td>';
+        // Parametrage du prefix
+        $texte .= '<tr><td>' . $langs->trans("Mask") . ':</td>';
+        $texte .= '<td class="right">' . $form->textwithpicto('<input type="text" class="flat minwidth175" name="maskorder" value="' . getDolGlobalString("COMMANDE_FOURNISSEUR_ORCHIDEE_MASK") . '">', $tooltip, 1, 1) . '</td>';
 
-		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="'.$langs->trans("Modify").'"></td>';
+        $texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button"value="' . $langs->trans("Modify") . '"></td>';
 
-		$texte .= '</tr>';
+        $texte .= '</tr>';
 
-		$texte .= '</table>';
-		$texte .= '</form>';
+        $texte .= '</table>';
+        $texte .= '</form>';
 
-		return $texte;
-	}
+        return $texte;
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		global $conf, $langs, $mysoc;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        global $conf, $langs, $mysoc;
 
-		$old_code_client = $mysoc->code_client;
-		$mysoc->code_client = 'CCCCCCCCCC';
-		$numExample = $this->getNextValue($mysoc, '');
-		$mysoc->code_client = $old_code_client;
+        $old_code_client = $mysoc->code_client;
+        $mysoc->code_client = 'CCCCCCCCCC';
+        $numExample = $this->getNextValue($mysoc, '');
+        $mysoc->code_client = $old_code_client;
 
-		if (!$numExample) {
-			$numExample = $langs->trans('NotConfigured');
-		}
-		return $numExample;
-	}
+        if (!$numExample) {
+            $numExample = $langs->trans('NotConfigured');
+        }
+        return $numExample;
+    }
 
-	/**
-	 *  Return next value
-	 *
-	 *  @param	Societe		$objsoc     Object third party
-	 *  @param  Object	    $object		Object
-	 *  @return string|0      			Value if OK, 0 if KO
-	 */
-	public function getNextValue($objsoc = 0, $object = '')
-	{
-		global $db, $conf;
+    /**
+     *  Return next value
+     *
+     *  @param  Societe     $objsoc     Object third party
+     *  @param  Object      $object     Object
+     *  @return string|0                Value if OK, 0 if KO
+     */
+    public function getNextValue($objsoc = 0, $object = '')
+    {
+        global $db, $conf;
 
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-		// On defini critere recherche compteur
-		$mask = getDolGlobalString("COMMANDE_FOURNISSEUR_ORCHIDEE_MASK");
+        // On defini critere recherche compteur
+        $mask = getDolGlobalString("COMMANDE_FOURNISSEUR_ORCHIDEE_MASK");
 
-		if (!$mask) {
-			$this->error = 'NotConfigured';
-			return 0;
-		}
+        if (!$mask) {
+            $this->error = 'NotConfigured';
+            return 0;
+        }
 
-		$numFinal = get_next_value($db, $mask, 'commande_fournisseur', 'ref', '', $objsoc, $object->date_commande);
+        $numFinal = get_next_value($db, $mask, 'commande_fournisseur', 'ref', '', $objsoc, $object->date_commande);
 
-		return  $numFinal;
-	}
+        return  $numFinal;
+    }
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Renvoie la reference de commande suivante non utilisee
-	 *
-	 *  @param	Societe		$objsoc     Object third party
-	 *  @param  Object	    $object		Object
-	 *  @return string      			Descriptive text
-	 */
-	public function commande_get_num($objsoc = 0, $object = '')
-	{
+    /**
+     *  Renvoie la reference de commande suivante non utilisee
+     *
+     *  @param  Societe     $objsoc     Object third party
+     *  @param  Object      $object     Object
+     *  @return string                  Descriptive text
+     */
+    public function commande_get_num($objsoc = 0, $object = '')
+    {
 		// phpcs:enable
-		return $this->getNextValue($objsoc, $object);
-	}
+        return $this->getNextValue($objsoc, $object);
+    }
 }

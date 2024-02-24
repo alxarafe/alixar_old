@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (C) 2020 Laurent Destailleur <eldy@users.sourceforge.net>
  *

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2011	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2012		Regis Houssin			<regis.houssin@inodbox.com>
@@ -22,15 +23,15 @@
 
 /**
  *      \file       admin/knowledgerecord_extrafields.php
- *		\ingroup    knowledgemanagement
- *		\brief      Page to setup extra fields of knowledgerecord
+ *      \ingroup    knowledgemanagement
+ *      \brief      Page to setup extra fields of knowledgerecord
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT.'/knowledgemanagement/lib/knowledgemanagement.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
+require_once DOL_DOCUMENT_ROOT . '/knowledgemanagement/lib/knowledgemanagement.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('knowledgemanagement', 'admin'));
@@ -42,7 +43,7 @@ $form = new Form($db);
 $tmptype2label = ExtraFields::$type2label;
 $type2label = array('');
 foreach ($tmptype2label as $key => $val) {
-	$type2label[$key] = $langs->transnoentitiesnoconv($val);
+    $type2label[$key] = $langs->transnoentitiesnoconv($val);
 }
 
 $action = GETPOST('action', 'aZ09');
@@ -50,7 +51,7 @@ $attrname = GETPOST('attrname', 'alpha');
 $elementtype = 'knowledgemanagement_knowledgerecord'; //Must be the $table_element of the class that manage extrafield
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -58,7 +59,7 @@ if (!$user->admin) {
  * Actions
  */
 
-require DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
+require DOL_DOCUMENT_ROOT . '/core/actions_extrafields.inc.php';
 
 
 
@@ -72,7 +73,7 @@ $page_name = 'KnowledgeManagementSetup';
 llxHeader('', $langs->trans($page_name), $help_url);
 
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 
@@ -80,7 +81,7 @@ $head = knowledgemanagementAdminPrepareHead();
 
 print dol_get_fiche_head($head, 'extra', $langs->trans("KnowledgeRecordExtraFields"), -1, 'knowledgemanagement');
 
-require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
+require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
 print dol_get_fiche_end();
 
@@ -89,20 +90,20 @@ print dol_get_fiche_end();
  * Creation of an optional field
  */
 if ($action == 'create') {
-	print '<br><div id="newattrib"></div>';
-	print load_fiche_titre($langs->trans('NewAttribute'));
+    print '<br><div id="newattrib"></div>';
+    print load_fiche_titre($langs->trans('NewAttribute'));
 
-	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_add.tpl.php';
+    require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_add.tpl.php';
 }
 
 /*
  * Edition of an optional field
  */
 if ($action == 'edit' && !empty($attrname)) {
-	print "<br>";
-	print load_fiche_titre($langs->trans("FieldEdition", $attrname));
+    print "<br>";
+    print load_fiche_titre($langs->trans("FieldEdition", $attrname));
 
-	require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_edit.tpl.php';
+    require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_edit.tpl.php';
 }
 
 // End of page

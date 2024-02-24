@@ -1,6 +1,7 @@
 <?php
-// Copyright (C) 2014 Cedric GROSS		<c.gross@kreiz-it.fr>
-// Copyright (C) 2017 Francis Appels	<francis.appels@z-application.com>
+
+// Copyright (C) 2014 Cedric GROSS      <c.gross@kreiz-it.fr>
+// Copyright (C) 2017 Francis Appels    <francis.appels@z-application.com>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -64,9 +65,9 @@ if (empty($dolibarr_nocache)) {
  * addDispatchLine
  * Adds new table row for dispatching to multiple stock locations or multiple lot/serial
  *
- * @param    index    int		index of product line. 0 = first product line
- * @param    type    string	type of dispatch (batch = batch dispatch, dispatch = non batch dispatch)
- * @param    mode    string	'qtymissing' will create new line with qty missing, 'lessone' will keep 1 in old line and the rest in new one
+ * @param    index    int       index of product line. 0 = first product line
+ * @param    type    string type of dispatch (batch = batch dispatch, dispatch = non batch dispatch)
+ * @param    mode    string 'qtymissing' will create new line with qty missing, 'lessone' will keep 1 in old line and the rest in new one
  */
 function addDispatchLine(index, type, mode) {
     mode = mode || 'qtymissing'
@@ -79,9 +80,9 @@ function addDispatchLine(index, type, mode) {
         var inputId = 'qtytoproduce';
         var warehouseId = 'idwarehousetoproduce';
     }
-    var nbrTrs = $("tr[name^='" + type + "_" + index + "']").length; 				// position of line for batch
-    var $row = $("tr[name='" + type + '_' + index + "_1']").clone(true); 				// clone last batch line to jQuery object
-    var qtyOrdered = parseFloat($("#qty_ordered_" + index).val()); 	// Qty ordered is same for all rows
+    var nbrTrs = $("tr[name^='" + type + "_" + index + "']").length;                // position of line for batch
+    var $row = $("tr[name='" + type + '_' + index + "_1']").clone(true);                // clone last batch line to jQuery object
+    var qtyOrdered = parseFloat($("#qty_ordered_" + index).val());  // Qty ordered is same for all rows
     var qty = parseFloat($("#" + inputId + "-" + index + "-" + nbrTrs).val());
     var qtyDispatched;
 
@@ -175,7 +176,7 @@ function addDispatchTR(qtyOrdered, qtyDispatched, index, nbrTrs, warehouseId, in
         $("tr[name^='" + type + "_" + index + "_" + nbrTrs + "']:last").after($row);
 
         //remove cloned select2 with duplicate id.
-        $("#s2id_entrepot_" + nbrTrs + '_' + index).detach();			// old way to find duplicated select2 component
+        $("#s2id_entrepot_" + nbrTrs + '_' + index).detach();           // old way to find duplicated select2 component
         $(".csswarehouse_" + index + "_" + (nbrTrs + 1) + ":first-child").parent("span.selection").parent(".select2").detach();
 
         /*  Suffix of lines are:  index _ trs.length */

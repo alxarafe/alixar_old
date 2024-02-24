@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2015	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2006-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2011		Juanjo Menent			<jmenent@2byte.es>
@@ -150,49 +151,49 @@ print '<br>';
 
 /*
 if (!empty($conf->global->PARTNERSHIP_ENABLE_PUBLIC)) {
-	print '<br>';
+    print '<br>';
 
-	print '<div class="div-table-responsive-no-min">';
-	print '<table class="noborder centpercent">';
+    print '<div class="div-table-responsive-no-min">';
+    print '<table class="noborder centpercent">';
 
-	print '<tr class="liste_titre">';
-	print '<td>'.$langs->trans("Parameter").'</td>';
-	print '<td class="right">'.$langs->trans("Value").'</td>';
-	print "</tr>\n";
+    print '<tr class="liste_titre">';
+    print '<td>'.$langs->trans("Parameter").'</td>';
+    print '<td class="right">'.$langs->trans("Value").'</td>';
+    print "</tr>\n";
 
-	// Amount
-	print '<tr class="oddeven" id="tramount"><td>';
-	print $langs->trans("DefaultAmount");
-	print '</td><td class="right">';
-	print '<input type="text" class="right width75" id="PARTNERSHIP_NEWFORM_AMOUNT" name="PARTNERSHIP_NEWFORM_AMOUNT" value="'.(!empty($conf->global->PARTNERSHIP_NEWFORM_AMOUNT) ? $conf->global->PARTNERSHIP_NEWFORM_AMOUNT : '').'">';
-	print "</td></tr>\n";
+    // Amount
+    print '<tr class="oddeven" id="tramount"><td>';
+    print $langs->trans("DefaultAmount");
+    print '</td><td class="right">';
+    print '<input type="text" class="right width75" id="PARTNERSHIP_NEWFORM_AMOUNT" name="PARTNERSHIP_NEWFORM_AMOUNT" value="'.(!empty($conf->global->PARTNERSHIP_NEWFORM_AMOUNT) ? $conf->global->PARTNERSHIP_NEWFORM_AMOUNT : '').'">';
+    print "</td></tr>\n";
 
-	// Jump to an online payment page
-	print '<tr class="oddeven" id="trpayment"><td>';
-	print $langs->trans("PARTNERSHIP_NEWFORM_PAYONLINE");
-	print '</td><td class="right">';
-	$listofval = array();
-	$listofval['-1'] = $langs->trans('No');
-	$listofval['all'] = $langs->trans('Yes').' ('.$langs->trans("VisitorCanChooseItsPaymentMode").')';
-	if (isModEnabled('paybox')) {
-		$listofval['paybox'] = 'Paybox';
-	}
-	if (isModEnabled('paypal')) {
-		$listofval['paypal'] = 'PayPal';
-	}
-	if (isModEnabled('stripe')) {
-		$listofval['stripe'] = 'Stripe';
-	}
-	print $form->selectarray("PARTNERSHIP_NEWFORM_PAYONLINE", $listofval, (!empty($conf->global->PARTNERSHIP_NEWFORM_PAYONLINE) ? $conf->global->PARTNERSHIP_NEWFORM_PAYONLINE : ''), 0);
-	print "</td></tr>\n";
+    // Jump to an online payment page
+    print '<tr class="oddeven" id="trpayment"><td>';
+    print $langs->trans("PARTNERSHIP_NEWFORM_PAYONLINE");
+    print '</td><td class="right">';
+    $listofval = array();
+    $listofval['-1'] = $langs->trans('No');
+    $listofval['all'] = $langs->trans('Yes').' ('.$langs->trans("VisitorCanChooseItsPaymentMode").')';
+    if (isModEnabled('paybox')) {
+        $listofval['paybox'] = 'Paybox';
+    }
+    if (isModEnabled('paypal')) {
+        $listofval['paypal'] = 'PayPal';
+    }
+    if (isModEnabled('stripe')) {
+        $listofval['stripe'] = 'Stripe';
+    }
+    print $form->selectarray("PARTNERSHIP_NEWFORM_PAYONLINE", $listofval, (!empty($conf->global->PARTNERSHIP_NEWFORM_PAYONLINE) ? $conf->global->PARTNERSHIP_NEWFORM_PAYONLINE : ''), 0);
+    print "</td></tr>\n";
 
 
-	print '</table>';
-	print '</div>';
+    print '</table>';
+    print '</div>';
 
-	print '<div class="center">';
-	print '<input type="submit" class="button button-edit" value="'.$langs->trans("Modify").'">';
-	print '</div>';
+    print '<div class="center">';
+    print '<input type="submit" class="button button-edit" value="'.$langs->trans("Modify").'">';
+    print '</div>';
 }
 */
 
@@ -213,7 +214,7 @@ if (getDolGlobalString('PARTNERSHIP_ENABLE_PUBLIC')) {
     // Define $urlwithroot
     $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
     $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-    //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+    //$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
     print '<div class="urllink">';
     print '<input type="text" id="publicurlmember" class="quatrevingtpercentminusx" value="' . $urlwithroot . '/public/partnership/new.php' . $entity_qr . '">';

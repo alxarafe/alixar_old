@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@inodbox.com>
@@ -216,7 +217,7 @@ if (empty($reshook)) {
         $error = 0;
         $selectids = GETPOST('toselect', 'array');
         foreach ($selectids as $selectid) {
-            //	$object->fetch($selectid);
+            //  $object->fetch($selectid);
             $object->fetch($selectid);
             $result = $object->setClosed();
         }

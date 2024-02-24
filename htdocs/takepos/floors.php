@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018	Andreu Bisquerra	<jove@bisquerra.com>
+
+/* Copyright (C) 2018   Andreu Bisquerra    <jove@bisquerra.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +22,10 @@
  *    \brief      Page to edit floors and tables.
  */
 
-//if (! defined('NOREQUIREUSER'))	define('NOREQUIREUSER','1');	// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIREDB'))		define('NOREQUIREDB','1');		// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIRESOC'))	define('NOREQUIRESOC','1');
-//if (! defined('NOREQUIRETRAN'))	define('NOREQUIRETRAN','1');
+//if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER','1');    // Not disabled cause need to load personalized language
+//if (! defined('NOREQUIREDB'))     define('NOREQUIREDB','1');      // Not disabled cause need to load personalized language
+//if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC','1');
+//if (! defined('NOREQUIRETRAN'))   define('NOREQUIRETRAN','1');
 if (!defined('NOREQUIREMENU')) {
     define('NOREQUIREMENU', '1');
 }
@@ -226,7 +227,7 @@ top_htmlhead($head, $title, 0, 0, '', $arrayofcss);
                     echo $floor;
                     $floor++;
                 } else {
-                    echo "1";
+                                                                                                                             echo "1";
                 } ?>';">
             <?php } ?>
             <span class="valignmiddle"><?php echo $langs->trans("Floor") . " " . $floor; ?></span>

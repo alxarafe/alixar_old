@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Matthieu Valleton    <mv@seeschloss.org>
  * Copyright (C) 2006-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -27,9 +28,9 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formother.class.php';
+require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 
 // Load translation files required by the page
 $langs->load("categories");
@@ -50,8 +51,8 @@ $visible = (int) GETPOST('visible', 'int');
 $parent = (int) GETPOST('parent', 'int');
 
 if ($id == "") {
-	dol_print_error(null, 'Missing parameter id');
-	exit();
+    dol_print_error(null, 'Missing parameter id');
+    exit();
 }
 
 // Security check
@@ -60,13 +61,13 @@ $result = restrictedArea($user, 'categorie', $id, '&category');
 $object = new Categorie($db);
 $result = $object->fetch($id, $label);
 if ($result <= 0) {
-	dol_print_error($db, $object->error);
-	exit;
+    dol_print_error($db, $object->error);
+    exit;
 }
 
 $type = $object->type;
 if (is_numeric($type)) {
-	$type = Categorie::$MAP_ID_TO_CODE[$type]; // For backward compatibility
+    $type = Categorie::$MAP_ID_TO_CODE[$type]; // For backward compatibility
 }
 
 $extrafields = new ExtraFields($db);
@@ -81,62 +82,62 @@ $error = 0;
 /*
  * Actions
  */
-$parameters = array('id' => $id, 'ref' => $ref, 'cancel'=> $cancel, 'backtopage' => $backtopage, 'socid' => $socid, 'label' => $label, 'description' => $description, 'color' => $color, 'position' => $position, 'visible' => $visible, 'parent' => $parent);
+$parameters = array('id' => $id, 'ref' => $ref, 'cancel' => $cancel, 'backtopage' => $backtopage, 'socid' => $socid, 'label' => $label, 'description' => $description, 'color' => $color, 'position' => $position, 'visible' => $visible, 'parent' => $parent);
 // Note that $action and $object may be modified by some hooks
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action);
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	if ($cancel) {
-		if ($backtopage) {
-			header("Location: ".$backtopage);
-			exit;
-		} else {
-			header('Location: '.DOL_URL_ROOT.'/categories/viewcat.php?id='.$object->id.'&type='.$type);
-			exit;
-		}
-	}
+    if ($cancel) {
+        if ($backtopage) {
+            header("Location: " . $backtopage);
+            exit;
+        } else {
+            header('Location: ' . DOL_URL_ROOT . '/categories/viewcat.php?id=' . $object->id . '&type=' . $type);
+            exit;
+        }
+    }
 
-	// Action mise a jour d'une categorie
-	if ($action == 'update' && $user->hasRight('categorie', 'creer')) {
-		$object->oldcopy = dol_clone($object, 2);
+    // Action mise a jour d'une categorie
+    if ($action == 'update' && $user->hasRight('categorie', 'creer')) {
+        $object->oldcopy = dol_clone($object, 2);
 
-		$object->label = $label;
-		$object->description    = dol_htmlcleanlastbr($description);
-		$object->color          = $color;
-		$object->position       = $position;
-		$object->socid          = ($socid > 0 ? $socid : 0);
-		$object->visible        = $visible;
-		$object->fk_parent = $parent != -1 ? $parent : 0;
+        $object->label = $label;
+        $object->description    = dol_htmlcleanlastbr($description);
+        $object->color          = $color;
+        $object->position       = $position;
+        $object->socid          = ($socid > 0 ? $socid : 0);
+        $object->visible        = $visible;
+        $object->fk_parent = $parent != -1 ? $parent : 0;
 
-		if (empty($object->label)) {
-			$error++;
-			$action = 'edit';
-			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Label")), null, 'errors');
-		}
-		if (!$error && empty($object->error)) {
-			$ret = $extrafields->setOptionalsFromPost(null, $object, '@GETPOSTISSET');
-			if ($ret < 0) {
-				$error++;
-			}
+        if (empty($object->label)) {
+            $error++;
+            $action = 'edit';
+            setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Label")), null, 'errors');
+        }
+        if (!$error && empty($object->error)) {
+            $ret = $extrafields->setOptionalsFromPost(null, $object, '@GETPOSTISSET');
+            if ($ret < 0) {
+                $error++;
+            }
 
-			if (!$error && $object->update($user) > 0) {
-				if ($backtopage) {
-					header("Location: ".$backtopage);
-					exit;
-				} else {
-					header('Location: '.DOL_URL_ROOT.'/categories/viewcat.php?id='.$object->id.'&type='.$type);
-					exit;
-				}
-			} else {
-				setEventMessages($object->error, $object->errors, 'errors');
-			}
-		} else {
-			setEventMessages($object->error, $object->errors, 'errors');
-		}
-	}
+            if (!$error && $object->update($user) > 0) {
+                if ($backtopage) {
+                    header("Location: " . $backtopage);
+                    exit;
+                } else {
+                    header('Location: ' . DOL_URL_ROOT . '/categories/viewcat.php?id=' . $object->id . '&type=' . $type);
+                    exit;
+                }
+            } else {
+                setEventMessages($object->error, $object->errors, 'errors');
+            }
+        } else {
+            setEventMessages($object->error, $object->errors, 'errors');
+        }
+    }
 }
 
 
@@ -155,12 +156,12 @@ $object->fetch($id);
 
 
 print "\n";
-print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 print '<input type="hidden" name="action" value="update">';
-print '<input type="hidden" name="id" value="'.$object->id.'">';
-print '<input type="hidden" name="type" value="'.$type.'">';
-print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
+print '<input type="hidden" name="id" value="' . $object->id . '">';
+print '<input type="hidden" name="type" value="' . $type . '">';
+print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 
 print dol_get_fiche_head('');
 
@@ -168,34 +169,34 @@ print '<table class="border centpercent">';
 
 // Ref
 print '<tr><td class="titlefieldcreate fieldrequired">';
-print $langs->trans("Ref").'</td>';
-print '<td><input type="text" size="25" id="label" name ="label" value="'.$object->label.'" />';
+print $langs->trans("Ref") . '</td>';
+print '<td><input type="text" size="25" id="label" name ="label" value="' . $object->label . '" />';
 print '</tr>';
 
 // Description
 print '<tr>';
-print '<td>'.$langs->trans("Description").'</td>';
+print '<td>' . $langs->trans("Description") . '</td>';
 print '<td>';
-require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 $doleditor = new DolEditor('description', $object->description, '', 200, 'dolibarr_notes', '', false, true, isModEnabled('fckeditor'), ROWS_6, '90%');
 $doleditor->Create();
 print '</td></tr>';
 
 // Color
 print '<tr>';
-print '<td>'.$langs->trans("Color").'</td>';
+print '<td>' . $langs->trans("Color") . '</td>';
 print '<td>';
 print $formother->selectColor($object->color, 'color');
 print '</td></tr>';
 
 // Position
 print '<tr><td>';
-print $langs->trans("Position").'</td>';
-print '<td><input type="text" size="25" id="position" name ="position" value="'.$object->position.'" />';
+print $langs->trans("Position") . '</td>';
+print '<td><input type="text" size="25" id="position" name ="position" value="' . $object->position . '" />';
 print '</tr>';
 
 // Parent category
-print '<tr><td>'.$langs->trans("In").'</td><td>';
+print '<tr><td>' . $langs->trans("In") . '</td><td>';
 print img_picto('', 'category', 'class="pictofixedwidth"');
 print $form->select_all_categories($type, $object->fk_parent, 'parent', 64, $object->id);
 print ajax_combobox('parent');
@@ -205,7 +206,7 @@ $parameters = array();
 $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 if (empty($reshook)) {
-	print $object->showOptionals($extrafields, 'edit', $parameters);
+    print $object->showOptionals($extrafields, 'edit', $parameters);
 }
 
 print '</table>';
@@ -214,7 +215,7 @@ print '</table>';
 print dol_get_fiche_end();
 
 
-print '<div class="center"><input type="submit" class="button" name"submit" value="'.$langs->trans("Modify").'"> &nbsp; <input type="submit" class="button button-cancel" name="cancel" value="'.$langs->trans("Cancel").'"></div>';
+print '<div class="center"><input type="submit" class="button" name"submit" value="' . $langs->trans("Modify") . '"> &nbsp; <input type="submit" class="button button-cancel" name="cancel" value="' . $langs->trans("Cancel") . '"></div>';
 
 print '</form>';
 

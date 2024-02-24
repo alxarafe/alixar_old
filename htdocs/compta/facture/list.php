@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002-2006 Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2004      Eric Seigne           <eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2016 Laurent Destailleur   <eldy@users.sourceforge.net>
@@ -650,7 +651,7 @@ $sql .= ' u.login, u.lastname, u.firstname, u.email as user_email, u.statut as u
 // We disable this. It create a bug when searching with sall and sorting on status. Also it create performance troubles.
 /*
 if (!$sall) {
-	$sql .= ', SUM(pf.amount) as dynamount_payed, SUM(pf.multicurrency_amount) as multicurrency_dynamount_payed';
+    $sql .= ', SUM(pf.amount) as dynamount_payed, SUM(pf.multicurrency_amount) as multicurrency_dynamount_payed';
 }
 */
 // Add fields from extrafields
@@ -861,7 +862,7 @@ if ($search_late == 'late') {
     $sql .= " AND f.date_lim_reglement < '" . $db->idate(dol_now() - $conf->facture->client->warning_delay) . "'";
 }
 /*if ($search_sale > 0) {
-	$sql .= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $search_sale);
+    $sql .= " AND s.rowid = sc.fk_soc AND sc.fk_user = ".((int) $search_sale);
 }*/
 if ($search_user > 0) {
     $sql .= " AND ec.fk_c_type_contact = tc.rowid AND tc.element='facture' AND tc.source='internal' AND ec.element_id = f.rowid AND ec.fk_socpeople = " . ((int) $search_user);
@@ -1911,7 +1912,8 @@ if ($num > 0) {
     $typenArray = $formcompany->typent_array(1);
 
     $with_margin_info = false;
-    if (isModEnabled('margin') && (
+    if (
+        isModEnabled('margin') && (
             !empty($arrayfields['total_pa']['checked'])
             || !empty($arrayfields['total_margin']['checked'])
             || !empty($arrayfields['total_margin_rate']['checked'])

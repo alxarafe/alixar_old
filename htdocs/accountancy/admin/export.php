@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2013-2014  Olivier Geffroy		<jeff@jeffinfo.com>
+
+/* Copyright (C) 2013-2014  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2024  Alexandre Spangaro	<aspangaro@easya.solutions>
  * Copyright (C) 2014	    Florian Henry		<florian.henry@open-concept.pro>
  * Copyright (C) 2014       Marcos García        <marcosgdf@gmail.com>
@@ -26,6 +27,7 @@
  * \ingroup    Accountancy (Double entries)
  * \brief        Setup page to configure accounting export module
  */
+
 require '../../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
@@ -89,7 +91,7 @@ if ($action == 'update') {
             $error++;
         }
         //if ($modelcsv==AccountancyExport::$EXPORT_TYPE_QUADRATUS || $modelcsv==AccountancyExport::$EXPORT_TYPE_CIEL) {
-        //	dolibarr_set_const($db, 'ACCOUNTING_EXPORT_FORMAT', 'txt', 'chaine', 0, '', $conf->entity);
+        //  dolibarr_set_const($db, 'ACCOUNTING_EXPORT_FORMAT', 'txt', 'chaine', 0, '', $conf->entity);
         //}
     } else {
         $error++;

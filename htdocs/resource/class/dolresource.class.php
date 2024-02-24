@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2013-2015		Jean-François Ferry	<jfefe@aternatik.fr>
+
+/* Copyright (C) 2013-2015      Jean-François Ferry <jfefe@aternatik.fr>
  * Copyright (C) 2023-2024		William Mead		<william.mead@manchenumerique.fr>
  *
  * This program is free software; you can redistribute it and/or modify
