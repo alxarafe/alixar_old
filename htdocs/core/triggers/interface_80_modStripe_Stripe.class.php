@@ -29,7 +29,7 @@
  *              - The property name must be Mytrigger
  */
 
-use Alxarafe\Core\Base\Lang;
+use Alxarafe\System\Base\Lang;
 
 require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 

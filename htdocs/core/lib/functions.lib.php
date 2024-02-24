@@ -47,7 +47,7 @@
  *                    This file contains all frequently used functions.
  */
 
-use Alxarafe\Core\Base\Lang;
+use Alxarafe\System\Base\Lang;
 
 include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 

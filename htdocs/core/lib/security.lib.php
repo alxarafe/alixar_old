@@ -27,7 +27,7 @@
  *              because it is used at low code level.
  */
 
-use Alxarafe\Core\Base\Lang;
+use Alxarafe\System\Base\Lang;
 
 /**
  *  Encode a string with base 64 algorithm + specific delta change.

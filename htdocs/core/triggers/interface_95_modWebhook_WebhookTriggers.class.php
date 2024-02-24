@@ -32,7 +32,7 @@
  * - The class name must be InterfaceMytrigger
  */
 
-use Alxarafe\Core\Base\Lang;
+use Alxarafe\System\Base\Lang;
 
 require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 require_once DOL_DOCUMENT_ROOT . '/webhook/class/target.class.php';

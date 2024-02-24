@@ -20,7 +20,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Alxarafe\Core\Base;
+namespace Alxarafe\System\Base;
 
 class Lang
 {

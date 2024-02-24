@@ -23,7 +23,7 @@
  *  \brief      File to manage triggers Mailman and Spip
  */
 
-use Alxarafe\Core\Base\Lang;
+use Alxarafe\System\Base\Lang;
 
 require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 

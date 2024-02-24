@@ -1,6 +1,6 @@
 <?php
 
-use Alxarafe\Core\Base\Lang;
+use Alxarafe\System\Base\Lang;
 
 if (!defined('WEBPORTAL')) {
     define('WEBPORTAL', 1);

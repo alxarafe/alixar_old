@@ -41,7 +41,7 @@
  *    \brief      File of parent class of all other business classes (invoices, contracts, proposals, orders, ...)
  */
 
-use Alxarafe\Core\Base\Lang;
+use Alxarafe\System\Base\Lang;
 
 /**
  *    Parent class of all other business classes (invoices, contracts, proposals, orders, ...)
