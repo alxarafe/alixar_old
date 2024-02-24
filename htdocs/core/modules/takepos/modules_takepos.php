@@ -5,6 +5,9 @@
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@capnetworks.com>
  * Copyright (C) 2011-2012 Philippe Grand	    <philippe.grand@atoo-net.com>
  * Copyright (C) 2020      Open-DSI	            <support@open-dsi.fr>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

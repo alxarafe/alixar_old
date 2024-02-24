@@ -4,6 +4,9 @@
  * Copyright (C) 2004-2008 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Barilley / Ocebo <marc@ocebo.com>
  * Copyright (C) 2005-2017 Regis Houssin         <regis.houssin@inodbox.com>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

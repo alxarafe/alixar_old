@@ -3,6 +3,9 @@
 /* Copyright (C) 2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2005 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2010-2012 Juanjo Menent   <jmenent@2byte.es>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

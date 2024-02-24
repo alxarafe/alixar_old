@@ -1,6 +1,9 @@
 <?php
 /* Copyright (C) 2010-2011 Regis Houssin <regis.houssin@inodbox.com>
  * Copyright (C) 2018      Juanjo Menent <jmenent@2byte.es>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

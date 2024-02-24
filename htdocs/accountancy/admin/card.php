@@ -3,6 +3,9 @@
 /* Copyright (C) 2013-2014  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2024  Alexandre Spangaro  <aspangaro@easya.solutions>
  * Copyright (C) 2014       Florian Henry       <florian.henry@open-concept.pro>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

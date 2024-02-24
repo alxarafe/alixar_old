@@ -6,6 +6,9 @@
  * Copyright (C) 2016		Juanjo Menent   	<jmenent@2byte.es>
  * Copyright (C) 2019	   Nicolas ZABOURI     <info@inovea-conseil.com>
  * Copyright (C) 2021		Ferran Marcet		<fmarcet@2byte.es>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

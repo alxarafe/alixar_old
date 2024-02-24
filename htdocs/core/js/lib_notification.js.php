@@ -3,6 +3,9 @@
 /* Copyright (C) 2016      Sergio Sanchis       <sergiosanchis@hotmail.com>
  * Copyright (C) 2017	   Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2020-2023 Destailleur Laurent  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

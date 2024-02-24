@@ -4,6 +4,9 @@
  * Copyright (C) 2014-2016  Jean-François Ferry	<hello@librethic.io>
  * 				 2016       Christophe Battarel <christophe@altairis.fr>
  * Copyright (C) 2023		Benjamin Falière	<benjamin.faliere@altairis.fr>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

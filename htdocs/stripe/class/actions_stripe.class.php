@@ -3,6 +3,9 @@
 /* Copyright (C) 2009-2016 Regis Houssin  <regis.houssin@inodbox.com>
  * Copyright (C) 2011      Herve Prot     <herve.prot@symeos.com>
  * Copyright (C) 2014      Philippe Grand <philippe.grand@atoo-net.com>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -10,6 +10,9 @@
  * Copyright (C) 2018       Frédéric France         <frederic.francenetlogic.fr>
  * Copyright (C) 2023      Joachim Kueter		  <git-jk@bloxera.com>
  * Copyright (C) 2023      Sylvain Legrand		  <technique@infras.fr>
+ * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
+ * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
+ * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
