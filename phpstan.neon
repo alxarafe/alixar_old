@@ -23,6 +23,7 @@ parameters:
 		- htdocs/support/*
 		analyse:
 		- htdocs/includes/*
+		- htdocs/vendor/*
 	checkAlwaysTrueCheckTypeFunctionCall: false
 	checkAlwaysTrueInstanceof: false
 	checkAlwaysTrueStrictComparison: false
