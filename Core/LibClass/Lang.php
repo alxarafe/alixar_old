@@ -26,6 +26,7 @@ namespace Alxarafe\LibClass;
 
 use Alxarafe\Base\Conf;
 use Alxarafe\Base\DoliDB;
+use Alxarafe\Base\Globals;
 use Alxarafe\Lib\Functions;
 use Exception;
 
@@ -120,7 +121,7 @@ class Lang
      */
     public function setDefaultLang($srclang = 'en_US')
     {
-        global $conf;
+        $conf = Globals::getConf();
 
         //Functions::dol_syslog(get_class($this)."::setDefaultLang srclang=".$srclang,LOG_DEBUG);
 
@@ -310,7 +311,7 @@ class Lang
         foreach ($this->dir as $searchdir) {
             // Directory of translation files
             $file_lang = $searchdir . ($modulename ? '/' . $modulename : '') . "/langs/" . $langofdir . "/" . $newdomain . ".lang";
-            $file_lang_osencoded = dol_osencode($file_lang);
+            $file_lang_osencoded = Functions::dol_osencode($file_lang);
 
             //$filelangexists = is_file($file_lang_osencoded);
             $filelangexists = @is_file($file_lang_osencoded);    // avoid [php:warn]
@@ -325,9 +326,9 @@ class Lang
                 // Enable caching of lang file in memory (not by default)
                 $usecachekey = '';
                 // Using a memcached server
-                if (isModEnabled('memcached') && Functions::getDolGlobalString('MEMCACHED_SERVER')) {
+                if (Functions::isModEnabled('memcached') && Functions::getDolGlobalString('MEMCACHED_SERVER')) {
                     $usecachekey = $newdomain . '_' . $langofdir . '_' . md5($file_lang); // Should not contains special chars
-                } elseif (getDolGlobalInt('MAIN_OPTIMIZE_SPEED') & 0x02) {
+                } elseif (Functions::getDolGlobalInt('MAIN_OPTIMIZE_SPEED') & 0x02) {
                     // Using cache with shmop. Speed gain: 40ms - Memory overusage: 200ko (Size of session cache file)
                     $usecachekey = $newdomain;
                 }
@@ -518,9 +519,9 @@ class Lang
         // Enable caching of lang file in memory (not by default)
         $usecachekey = '';
         // Using a memcached server
-        if (isModEnabled('memcached') && Functions::getDolGlobalString('MEMCACHED_SERVER')) {
+        if (Functions::isModEnabled('memcached') && Functions::getDolGlobalString('MEMCACHED_SERVER')) {
             $usecachekey = $newdomain . '_' . $langofdir; // Should not contains special chars
-        } elseif (getDolGlobalInt('MAIN_OPTIMIZE_SPEED') & 0x02) {
+        } elseif (Functions::getDolGlobalInt('MAIN_OPTIMIZE_SPEED') & 0x02) {
             // Using cache with shmop. Speed gain: 40ms - Memory overusage: 200ko (Size of session cache file)
             $usecachekey = $newdomain;
         }
@@ -654,7 +655,7 @@ class Lang
         }
 
         /* Disabled. There is too many cases where translation of $newstr is not defined is normal (like when output with setEventMessage an already translated string)
-        if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2)
+        if (Functions::getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2)
         {
             Functions::dol_syslog(__METHOD__." MAIN_FEATURES_LEVEL=DEVELOP: missing translation for key '".$newstr."' in ".$_SERVER["PHP_SELF"], LOG_DEBUG);
         }*/
@@ -678,7 +679,7 @@ class Lang
      */
     public function trans($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $maxsize = 0)
     {
-        global $conf;
+        $conf = Globals::getConf();
 
         if (!empty($this->tab_translate[$key])) {    // Translation is available
             $str = $this->tab_translate[$key];
@@ -959,7 +960,7 @@ class Lang
         // phpcs:enable
         // Test si fichier dans repertoire de la langue
         foreach ($this->dir as $searchdir) {
-            if (is_readable(dol_osencode($searchdir . "/langs/" . $this->defaultlang . "/" . $filename))) {
+            if (is_readable(Functions::dol_osencode($searchdir . "/langs/" . $this->defaultlang . "/" . $filename))) {
                 return true;
             }
 
@@ -969,7 +970,7 @@ class Lang
                     $filenamealt = $searchdir . "/langs/en_US/" . $filename;
                 }
                 //else $filenamealt = $searchdir."/langs/fr_FR/".$filename;
-                if (is_readable(dol_osencode($filenamealt))) {
+                if (is_readable(Functions::dol_osencode($filenamealt))) {
                     return true;
                 }
             }
@@ -999,7 +1000,7 @@ class Lang
         $dirsubstitutions = array_merge([], $conf->modules_parts['substitutions']);
         foreach ($dirsubstitutions as $reldir) {
             $dir = dol_buildpath($reldir, 0);
-            $newdir = dol_osencode($dir);
+            $newdir = Functions::dol_osencode($dir);
 
             // Check if directory exists
             if (!is_dir($newdir)) {

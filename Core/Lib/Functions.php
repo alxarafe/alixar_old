@@ -143,7 +143,7 @@ abstract class Functions
      *
      * @return int
      */
-    function getDolGlobalInt($key, $default = 0)
+    public static function getDolGlobalInt($key, $default = 0)
     {
         $conf = Globals::getConf();
         return (int) (isset($conf->global->$key) ? $conf->global->$key : $default);
@@ -9713,7 +9713,7 @@ abstract class Functions
      *
      * @return    string                Encoded string (UTF-8, ISO-8859-1)
      */
-    function dol_osencode($str)
+    public static function dol_osencode($str)
     {
         $tmp = ini_get("unicode.filesystem_encoding");
         if (empty($tmp) && !empty($_SERVER["WINDIR"])) {

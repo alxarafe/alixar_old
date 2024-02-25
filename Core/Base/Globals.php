@@ -30,6 +30,7 @@ abstract class Globals
     {
         self::$conf = new Conf();
         self::$lang = new Lang(BASE_PATH, self::$conf);
+        self::$lang->setDefaultLang();
     }
 
     public static function getConf()
