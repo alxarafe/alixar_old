@@ -155,7 +155,7 @@ if (empty($reshook)) {
 
     // Execute jobs
     if ($action == 'confirm_execute' && $confirm == "yes" && $permissiontoexecute) {
-        if (getDolGlobalString('CRON_KEY') && $conf->global->CRON_KEY != $securitykey) {
+        if (Functions::getDolGlobalString('CRON_KEY') && $conf->global->CRON_KEY != $securitykey) {
             setEventMessages('Security key ' . $securitykey . ' is wrong', null, 'errors');
             $action = '';
         } else {
@@ -433,8 +433,8 @@ $trackid = 'cron' . $object->id;
 include DOL_DOCUMENT_ROOT . '/core/tpl/massactions_pre.tpl.php';
 
 $text = $langs->trans("HoursOnThisPageAreOnServerTZ") . ' ' . $stringcurrentdate . '<br>';
-if (getDolGlobalString('CRON_WARNING_DELAY_HOURS')) {
-    $text .= $langs->trans("WarningCronDelayed", getDolGlobalString('CRON_WARNING_DELAY_HOURS'));
+if (Functions::getDolGlobalString('CRON_WARNING_DELAY_HOURS')) {
+    $text .= $langs->trans("WarningCronDelayed", Functions::getDolGlobalString('CRON_WARNING_DELAY_HOURS'));
 }
 print info_admin($text);
 //print '<br>';
@@ -449,7 +449,7 @@ print '<table class="noborder">';
 
 print '<tr class="liste_titre_filter">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre right">';
     $searchpicto = $form->showFilterButtons();
     print $searchpicto;
@@ -476,7 +476,7 @@ print $form->selectarray('search_status', ['0' => $langs->trans("Disabled"), '1'
 print '</td>';
 print '<td class="liste_titre">&nbsp;</td>';
 // Action column
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre right">';
     $searchpicto = $form->showFilterButtons();
     print $searchpicto;
@@ -486,7 +486,7 @@ print '</tr>';
 
 print '<tr class="liste_titre">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", "", $param, '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print_liste_field_titre("Ref", $_SERVER["PHP_SELF"], "t.rowid", "", $param, '', $sortfield, $sortorder);
@@ -506,7 +506,7 @@ print_liste_field_titre("CronDtNextLaunch", $_SERVER["PHP_SELF"], "t.datenextrun
 print_liste_field_titre("Status", $_SERVER["PHP_SELF"], "t.status,t.priority", "", $param, '', $sortfield, $sortorder, 'center ');
 print_liste_field_titre("", $_SERVER["PHP_SELF"], "", "", $param, '', $sortfield, $sortorder, 'center ');
 // Action column
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", "", $param, '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print "</tr>\n";
@@ -548,7 +548,7 @@ if ($num > 0) {
         print '<tr class="oddeven">';
 
         // Action column
-        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowraponall center">';
             if ($massactionbutton || $massaction) {   // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;
@@ -725,7 +725,7 @@ if ($num > 0) {
         if ($user->hasRight('cron', 'execute')) {
             if (!empty($obj->status)) {
                 print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?id=' . $obj->rowid . '&action=execute';
-                print(!getDolGlobalString('CRON_KEY') ? '' : '&securitykey=' . getDolGlobalString('CRON_KEY'));
+                print(!Functions::getDolGlobalString('CRON_KEY') ? '' : '&securitykey=' . Functions::getDolGlobalString('CRON_KEY'));
                 print($sortfield ? '&sortfield=' . $sortfield : '');
                 print($sortorder ? '&sortorder=' . $sortorder : '');
                 print $param . "\" title=\"" . dol_escape_htmltag($langs->trans('CronExecute')) . "\">" . img_picto($langs->trans('CronExecute'), "play", '', false, 0, 0, '', 'marginleftonly') . '</a>';
@@ -739,7 +739,7 @@ if ($num > 0) {
         print '</td>';
 
         // Action column
-        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowraponall center">';
             if ($massactionbutton || $massaction) {   // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;

@@ -257,29 +257,29 @@ function envoi_mail($mode, $oldemail, $message, $total, $userlang, $oldtarget)
     }
 
     $newlangs = new Lang('', $conf);
-    $newlangs->setDefaultLang(empty($userlang) ? getDolGlobalString('MAIN_LANG_DEFAULT', 'auto') : $userlang);
+    $newlangs->setDefaultLang(empty($userlang) ? Functions::getDolGlobalString('MAIN_LANG_DEFAULT', 'auto') : $userlang);
     $newlangs->load("main");
     $newlangs->load("bills");
 
-    $subject = getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_SUBJECT', $newlangs->trans("ListOfYourUnpaidInvoices"));
+    $subject = Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_SUBJECT', $newlangs->trans("ListOfYourUnpaidInvoices"));
     $sendto = $oldemail;
-    $from = getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
-    $errorsto = getDolGlobalString('MAIN_MAIL_ERRORS_TO');
+    $from = Functions::getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
+    $errorsto = Functions::getDolGlobalString('MAIN_MAIL_ERRORS_TO');
     $msgishtml = -1;
 
     print "- Send email to '" . $oldtarget . "' (" . $oldemail . "), total: " . $total . "\n";
     dol_syslog("email_unpaid_invoices_to_customers.php: send mail to " . $oldemail);
 
     $usehtml = 0;
-    if (getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER') && dol_textishtml(getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER'))) {
+    if (Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER') && dol_textishtml(Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER'))) {
         $usehtml += 1;
     }
-    if (getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_HEADER') && dol_textishtml(getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_HEADER'))) {
+    if (Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_HEADER') && dol_textishtml(Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_HEADER'))) {
         $usehtml += 1;
     }
 
     $allmessage = '';
-    if (getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_HEADER')) {
+    if (Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_HEADER')) {
         $allmessage .= $conf->global->SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_HEADER;
     } else {
         $allmessage .= "Dear customer" . ($usehtml ? "<br>\n" : "\n") . ($usehtml ? "<br>\n" : "\n");
@@ -288,9 +288,9 @@ function envoi_mail($mode, $oldemail, $message, $total, $userlang, $oldtarget)
     }
     $allmessage .= $message . ($usehtml ? "<br>\n" : "\n");
     $allmessage .= $langs->trans("Total") . " = " . price($total, 0, $userlang, 0, 0, -1, $conf->currency) . ($usehtml ? "<br>\n" : "\n");
-    if (getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER')) {
-        $allmessage .= getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER');
-        if (dol_textishtml(getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER'))) {
+    if (Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER')) {
+        $allmessage .= Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER');
+        if (dol_textishtml(Functions::getDolGlobalString('SCRIPT_EMAIL_UNPAID_INVOICES_CUSTOMERS_FOOTER'))) {
             $usehtml += 1;
         }
     }

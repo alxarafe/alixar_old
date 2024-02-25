@@ -149,7 +149,7 @@ if (!getDolUserInt('USER_ENABLE_PUBLIC', 0, $object)) {
     $enabledisablehtml .= '</a>';
 }
 print $enabledisablehtml;
-print '<input type="hidden" id="USER_ENABLE_PUBLIC" name="USER_ENABLE_PUBLIC" value="' . (!getDolGlobalString('USER_ENABLE_PUBLIC') ? 0 : 1) . '">';
+print '<input type="hidden" id="USER_ENABLE_PUBLIC" name="USER_ENABLE_PUBLIC" value="' . (!Functions::getDolGlobalString('USER_ENABLE_PUBLIC') ? 0 : 1) . '">';
 
 print '<br><br>';
 

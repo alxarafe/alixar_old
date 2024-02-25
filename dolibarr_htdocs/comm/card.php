@@ -314,7 +314,7 @@ $form = new Form($db);
 $formcompany = new FormCompany($db);
 
 $title = $langs->trans("ThirdParty") . " - " . $langs->trans('Customer');
-if (getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/thirdpartynameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) {
+if (Functions::getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/thirdpartynameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) {
     $title = $object->name . " - " . $langs->trans('Customer');
 }
 
@@ -342,7 +342,7 @@ if ($object->id > 0) {
     print '</td></tr>';
 
     // Prefix
-    if (getDolGlobalString('SOCIETE_USEPREFIX')) {  // Old not used prefix field
+    if (Functions::getDolGlobalString('SOCIETE_USEPREFIX')) {  // Old not used prefix field
         print '<tr><td>' . $langs->trans("Prefix") . '</td><td>';
         print($object->prefix_comm ? $object->prefix_comm : '&nbsp;');
         print '</td></tr>';
@@ -506,14 +506,14 @@ if ($object->id > 0) {
         print '<td>';
         print $form->editfieldkey("OutstandingBill", 'outstanding_limit', $object->outstanding_limit, $object, $user->hasRight('societe', 'creer'));
         print '</td><td>';
-        $limit_field_type = (getDolGlobalString('MAIN_USE_JQUERY_JEDITABLE')) ? 'numeric' : 'amount';
+        $limit_field_type = (Functions::getDolGlobalString('MAIN_USE_JQUERY_JEDITABLE')) ? 'numeric' : 'amount';
         print $form->editfieldval("OutstandingBill", 'outstanding_limit', $object->outstanding_limit, $object, $user->hasRight('societe', 'creer'), $limit_field_type, ($object->outstanding_limit != '' ? price($object->outstanding_limit) : ''));
         print '</td>';
         print '</tr>';
     }
 
     if ($object->client) {
-        if (isModEnabled('commande') && getDolGlobalString('ORDER_MANAGE_MIN_AMOUNT')) {
+        if (isModEnabled('commande') && Functions::getDolGlobalString('ORDER_MANAGE_MIN_AMOUNT')) {
             print '<!-- Minimum amount for orders -->' . "\n";
             print '<tr class="nowrap">';
             print '<td>';
@@ -526,7 +526,7 @@ if ($object->id > 0) {
     }
 
     // Multiprice level
-    if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY_MULTIPRICES')) {
+    if (Functions::getDolGlobalString('PRODUIT_MULTIPRICES') || Functions::getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY_MULTIPRICES')) {
         print '<tr><td class="nowrap">';
         print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
         print $langs->trans("PriceLevel");
@@ -538,15 +538,15 @@ if ($object->id > 0) {
         print '</td><td>';
         print $object->price_level;
         $keyforlabel = 'PRODUIT_MULTIPRICES_LABEL' . $object->price_level;
-        if (getDolGlobalString($keyforlabel)) {
-            print ' - ' . $langs->trans(getDolGlobalString($keyforlabel));
+        if (Functions::getDolGlobalString($keyforlabel)) {
+            print ' - ' . $langs->trans(Functions::getDolGlobalString($keyforlabel));
         }
         print "</td>";
         print '</tr>';
     }
 
     // Warehouse
-    if (isModEnabled('stock') && getDolGlobalString('SOCIETE_ASK_FOR_WAREHOUSE')) {
+    if (isModEnabled('stock') && Functions::getDolGlobalString('SOCIETE_ASK_FOR_WAREHOUSE')) {
         $langs->load('stocks');
         require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
         $formproduct = new FormProduct($db);
@@ -567,7 +567,7 @@ if ($object->id > 0) {
     }
 
     // Preferred shipping Method
-    if (getDolGlobalString('SOCIETE_ASK_FOR_SHIPPING_METHOD')) {
+    if (Functions::getDolGlobalString('SOCIETE_ASK_FOR_SHIPPING_METHOD')) {
         print '<tr><td class="nowrap">';
         print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
         print $langs->trans('SendingMethod');
@@ -693,7 +693,7 @@ if ($object->id > 0) {
     $boxstat = '';
 
     // Nbre max d'elements des petites listes
-    $MAXLIST = getDolGlobalString('MAIN_SIZE_SHORTLIST_LIMIT');
+    $MAXLIST = Functions::getDolGlobalString('MAIN_SIZE_SHORTLIST_LIMIT');
 
     // Lien recap
     $boxstat .= '<div class="box divboxtable box-halfright">';
@@ -1349,7 +1349,7 @@ if ($object->id > 0) {
                 print '<table class="noborder centpercent lastrecordtable">';
                 print '<tr class="liste_titre">';
                 $colspan = 4;
-                if (getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
+                if (Functions::getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
                     $colspan++;
                 }
                 print '<td colspan="' . $colspan . '">';
@@ -1393,7 +1393,7 @@ if ($object->id > 0) {
                 print price($objp->total_ht);
                 print '</td>';
 
-                if (getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
+                if (Functions::getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
                     print '<td class="right nowraponall">';
                     print price($objp->total_ttc);
                     print '</td>';
@@ -1448,7 +1448,7 @@ if ($object->id > 0) {
                 print '<table class="noborder centpercent lastrecordtable">';
                 print '<tr class="liste_titre">';
                 $colspan = 5;
-                if (getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
+                if (Functions::getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
                     $colspan++;
                 }
                 print '<td colspan="' . $colspan . '">';
@@ -1524,7 +1524,7 @@ if ($object->id > 0) {
                 print price($objp->total_ht);
                 print '</td>';
 
-                if (getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
+                if (Functions::getDolGlobalString('MAIN_SHOW_PRICE_WITH_TAX_IN_SUMMARIES')) {
                     print '<td class="right nowraponall">';
                     print price($objp->total_ttc);
                     print '</td>';
@@ -1628,7 +1628,7 @@ if ($object->id > 0) {
         }
 
         // Add action
-        if (isModEnabled('agenda') && getDolGlobalString('MAIN_REPEATTASKONEACHTAB') && $object->status == 1) {
+        if (isModEnabled('agenda') && Functions::getDolGlobalString('MAIN_REPEATTASKONEACHTAB') && $object->status == 1) {
             if ($user->hasRight('agenda', 'myactions', 'create')) {
                 print '<div class="inline-block divButAction"><a class="butAction" href="' . DOL_URL_ROOT . '/comm/action/card.php?action=create&socid=' . $object->id . '">' . $langs->trans("AddAction") . '</a></div>';
             } else {
@@ -1639,12 +1639,12 @@ if ($object->id > 0) {
 
     print '</div>';
 
-    if (getDolGlobalString('MAIN_DUPLICATE_CONTACTS_TAB_ON_CUSTOMER_CARD')) {
+    if (Functions::getDolGlobalString('MAIN_DUPLICATE_CONTACTS_TAB_ON_CUSTOMER_CARD')) {
         // List of contacts
         show_contacts($conf, $langs, $db, $object, $_SERVER["PHP_SELF"] . '?socid=' . $object->id);
     }
 
-    if (getDolGlobalString('MAIN_REPEATTASKONEACHTAB')) {
+    if (Functions::getDolGlobalString('MAIN_REPEATTASKONEACHTAB')) {
         print load_fiche_titre($langs->trans("ActionsOnCompany"), '', '');
 
         // List of todo actions

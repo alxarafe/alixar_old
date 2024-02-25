@@ -317,7 +317,7 @@ if (!empty($moreforfilter)) {
 }
 
 $varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
-$selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')) : ''); // This also change content of $arrayfields
+$selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')) : ''); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
 print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
@@ -327,7 +327,7 @@ print '<table class="tagtable nobottomiftotal liste' . ($moreforfilter ? " listw
 // --------------------------------------------------------------------
 print '<tr class="liste_titre_filter">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre center maxwidthsearch">';
     $searchpicto = $form->showFilterButtons('left');
     print $searchpicto;
@@ -353,7 +353,7 @@ print '<td class="liste_titre">&nbsp;</td>';
 print '<td class="liste_titre"></td>';
 
 // Action column
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre center maxwidthsearch">';
     $searchpicto = $form->showFilterButtons();
     print $searchpicto;
@@ -368,7 +368,7 @@ $totalarray['nbfield'] = 0;
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print_liste_field_titre('', $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
     $totalarray['nbfield']++;
 }
@@ -384,7 +384,7 @@ print_liste_field_titre("DateEnd", $_SERVER["PHP_SELF"], "l.dateend", "", $param
 $totalarray['nbfield']++;
 print_liste_field_titre("Status", $_SERVER["PHP_SELF"], "l.paid", "", $param, '', $sortfield, $sortorder, 'right ');
 $totalarray['nbfield']++;
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print_liste_field_titre('', $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
     $totalarray['nbfield']++;
 }
@@ -438,7 +438,7 @@ while ($i < $imaxinloop) {
         print '<tr data-rowid="' . $object->id . '" class="oddeven">';
 
         // Action column
-        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td></td>';
         }
 
@@ -462,7 +462,7 @@ while ($i < $imaxinloop) {
         print '</td>';
 
         // Action column
-        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td></td>';
         }
 

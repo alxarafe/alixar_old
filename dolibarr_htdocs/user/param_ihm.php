@@ -203,7 +203,7 @@ if (isModEnabled("societe")) {
 }
 if (isModEnabled('project')) {
     $tmparray['projet/index.php?mainmenu=project&leftmenu='] = array('label' => 'ProjectsArea', 'picto' => 'project');
-    if (getDolGlobalString('PROJECT_USE_OPPORTUNITIES')) {
+    if (Functions::getDolGlobalString('PROJECT_USE_OPPORTUNITIES')) {
         $tmparray['projet/list.php?mainmenu=project&leftmenu=&search_usage_opportunity=1&search_status=99&search_opp_status=openedopp&contextpage=lead'] = array('label' => 'ListOpenLeads', 'picto' => 'project');
     }
 }
@@ -232,7 +232,7 @@ if (isModEnabled('ticket')) {
     $tmparray['ticket/list.php?mainmenu=ticket&leftmenu='] = array('label' => 'Tickets', 'picto' => 'ticket');
 }
 // add bookmarks to available landing pages
-if (!getDolGlobalString('MAIN_NO_BOOKMARKS_FOR_LANDING_PAGES')) {
+if (!Functions::getDolGlobalString('MAIN_NO_BOOKMARKS_FOR_LANDING_PAGES')) {
     $sql = "SELECT b.rowid, b.fk_user, b.url, b.title";
     $sql .= " FROM " . MAIN_DB_PREFIX . "bookmark as b";
     $sql .= " WHERE b.entity IN (" . getEntity('bookmark') . ")";
@@ -346,7 +346,7 @@ if ($action == 'edit') {
     print '<td>';
     $s = picto_from_langcode($conf->global->MAIN_LANG_DEFAULT);
     print $s ? $s . ' ' : '';
-    print(getDolGlobalString('MAIN_LANG_DEFAULT') == 'auto' ? $langs->trans("AutoDetectLang") : $langs->trans("Language_" . getDolGlobalString('MAIN_LANG_DEFAULT')));
+    print(Functions::getDolGlobalString('MAIN_LANG_DEFAULT') == 'auto' ? $langs->trans("AutoDetectLang") : $langs->trans("Language_" . Functions::getDolGlobalString('MAIN_LANG_DEFAULT')));
     print '</td>';
     print '<td class="nowrap" width="20%"><input class="oddeven" name="check_MAIN_LANG_DEFAULT" id="check_MAIN_LANG_DEFAULT" type="checkbox" ' . (!empty($object->conf->MAIN_LANG_DEFAULT) ? " checked" : "");
     print empty($dolibarr_main_demo) ? '' : ' disabled="disabled"'; // Disabled for demo
@@ -358,7 +358,7 @@ if ($action == 'edit') {
     // Landing page
     print '<tr class="oddeven"><td>' . $langs->trans("LandingPage") . '</td>';
     print '<td>';
-    print(!getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE);
+    print(!Functions::getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE);
     print '</td>';
     print '<td class="nowrap" width="20%"><input class="oddeven" name="check_MAIN_LANDING_PAGE" id="check_MAIN_LANDING_PAGE" type="checkbox" ' . (!empty($object->conf->MAIN_LANDING_PAGE) ? " checked" : "");
     print empty($dolibarr_main_demo) ? '' : ' disabled="disabled"'; // Disabled for demo
@@ -382,7 +382,7 @@ if ($action == 'edit') {
 
     // Max size of lists
     print '<tr class="oddeven"><td>' . $langs->trans("MaxSizeList") . '</td>';
-    print '<td>' . getDolGlobalString('MAIN_SIZE_LISTE_LIMIT') . '</td>';
+    print '<td>' . Functions::getDolGlobalString('MAIN_SIZE_LISTE_LIMIT') . '</td>';
     print '<td class="nowrap" width="20%"><input class="oddeven" name="check_SIZE_LISTE_LIMIT" id="check_SIZE_LISTE_LIMIT" type="checkbox" ' . (!empty($object->conf->MAIN_SIZE_LISTE_LIMIT) ? " checked" : "");
     print empty($dolibarr_main_demo) ? '' : ' disabled="disabled"'; // Disabled for demo
     print '> <label for="check_SIZE_LISTE_LIMIT">' . $langs->trans("UsePersonalValue") . '</label></td>';
@@ -451,7 +451,7 @@ if ($action == 'edit') {
     print '<td>';
     $s = picto_from_langcode($conf->global->MAIN_LANG_DEFAULT);
     print($s ? $s . ' ' : '');
-    print(getDolGlobalString('MAIN_LANG_DEFAULT') == 'auto' ? $langs->trans("AutoDetectLang") : $langs->trans("Language_" . getDolGlobalString('MAIN_LANG_DEFAULT')));
+    print(Functions::getDolGlobalString('MAIN_LANG_DEFAULT') == 'auto' ? $langs->trans("AutoDetectLang") : $langs->trans("Language_" . Functions::getDolGlobalString('MAIN_LANG_DEFAULT')));
     print '</td>';
     print '<td class="nowrap"><input class="oddeven" type="checkbox" disabled ' . (!empty($object->conf->MAIN_LANG_DEFAULT) ? " checked" : "") . '> ' . $langs->trans("UsePersonalValue") . '</td>';
     print '<td>';
@@ -463,7 +463,7 @@ if ($action == 'edit') {
     // Landing page
     print '<tr class="oddeven"><td>' . $langs->trans("LandingPage") . '</td>';
     print '<td>';
-    print(!getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE);
+    print(!Functions::getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE);
     print '</td>';
     print '<td class="nowrap"><input class="oddeven" name="check_MAIN_LANDING_PAGE" disabled id="check_MAIN_LANDING_PAGE" type="checkbox" ' . (!empty($object->conf->MAIN_LANDING_PAGE) ? " checked" : "");
     print empty($dolibarr_main_demo) ? '' : ' disabled="disabled"'; // Disabled for demo
@@ -509,7 +509,7 @@ if ($action == 'edit') {
 
     // Max size for lists
     print '<tr class="oddeven"><td>' . $langs->trans("MaxSizeList") . '</td>';
-    print '<td>' . (getDolGlobalString('MAIN_SIZE_LISTE_LIMIT') ? $conf->global->MAIN_SIZE_LISTE_LIMIT : '&nbsp;') . '</td>';
+    print '<td>' . (Functions::getDolGlobalString('MAIN_SIZE_LISTE_LIMIT') ? $conf->global->MAIN_SIZE_LISTE_LIMIT : '&nbsp;') . '</td>';
     print '<td class="nowrap" width="20%"><input class="oddeven" type="checkbox" disabled ' . (!empty($object->conf->MAIN_SIZE_LISTE_LIMIT) ? " checked" : "") . '> ' . $langs->trans("UsePersonalValue") . '</td>';
     print '<td>' . (!empty($object->conf->MAIN_SIZE_LISTE_LIMIT) ? $object->conf->MAIN_SIZE_LISTE_LIMIT : '&nbsp;') . '</td></tr>';
 

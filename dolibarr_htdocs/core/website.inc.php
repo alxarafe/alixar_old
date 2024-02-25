@@ -86,7 +86,7 @@ if ($pageid > 0) {
         header("X-Content-Type-Options: nosniff");
 
         // X-Frame-Options
-        if (empty($websitepage->allowed_in_frames) && !getDolGlobalString('WEBSITE_ALLOW_FRAMES_ON_ALL_PAGES')) {
+        if (empty($websitepage->allowed_in_frames) && !Functions::getDolGlobalString('WEBSITE_ALLOW_FRAMES_ON_ALL_PAGES')) {
             header("X-Frame-Options: SAMEORIGIN");
         }
 
@@ -104,7 +104,7 @@ if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
     header("X-Content-Type-Options: nosniff");
 
     // X-Frame-Options
-    if (empty($websitepage->allowed_in_frames) && !getDolGlobalString('WEBSITE_ALLOW_FRAMES_ON_ALL_PAGES')) {
+    if (empty($websitepage->allowed_in_frames) && !Functions::getDolGlobalString('WEBSITE_ALLOW_FRAMES_ON_ALL_PAGES')) {
         header("X-Frame-Options: SAMEORIGIN");
     }
 
@@ -123,7 +123,7 @@ if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
         //
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
-        $contentsecuritypolicy = getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCECSPRO');
+        $contentsecuritypolicy = Functions::getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCECSPRO');
 
         if (!is_object($hookmanager)) {
             include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
@@ -156,7 +156,7 @@ if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
         //
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
-        $contentsecuritypolicy = getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCECSP');
+        $contentsecuritypolicy = Functions::getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCECSP');
 
         if (!is_object($hookmanager)) {
             include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
@@ -182,7 +182,7 @@ if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
         // The constant WEBSITE_MAIN_SECURITY_FORCERP should never be defined by page, but the variable used just after may be
 
         // For public web sites, we use the same default value than "strict-origin-when-cross-origin"
-        $referrerpolicy = getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCERP', "strict-origin-when-cross-origin");
+        $referrerpolicy = Functions::getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCERP', "strict-origin-when-cross-origin");
 
         header("Referrer-Policy: " . $referrerpolicy);
     }
@@ -192,7 +192,7 @@ if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
         // The constant WEBSITE_MAIN_SECURITY_FORCESTS should never be defined by page, but the variable used just after may be
 
         // Example: "max-age=31536000; includeSubDomains"
-        $sts = getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCESTS');
+        $sts = Functions::getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCESTS');
         if (!empty($sts)) {
             header("Strict-Transport-Security: " . $sts);
         }
@@ -203,7 +203,7 @@ if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
         // The constant WEBSITE_MAIN_SECURITY_FORCEPP should never be defined by page, but the variable used just after may be
 
         // Example: "camera: 'none'; microphone: 'none';"
-        $pp = getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCEPP');
+        $pp = Functions::getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCEPP');
         if (!empty($pp)) {
             header("Permissions-Policy: " . $pp);
         }
@@ -256,7 +256,7 @@ if (!defined('USEDOLIBARREDITOR') && empty($website->status)) {
     header("X-Content-Type-Options: nosniff");
 
     // X-Frame-Options
-    if (empty($websitepage->allowed_in_frames) && !getDolGlobalString('WEBSITE_ALLOW_FRAMES_ON_ALL_PAGES')) {
+    if (empty($websitepage->allowed_in_frames) && !Functions::getDolGlobalString('WEBSITE_ALLOW_FRAMES_ON_ALL_PAGES')) {
         header("X-Frame-Options: SAMEORIGIN");
     }
 

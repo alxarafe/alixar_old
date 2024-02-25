@@ -26,7 +26,7 @@
  *  \brief      Trigger file for blockedlog module
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 

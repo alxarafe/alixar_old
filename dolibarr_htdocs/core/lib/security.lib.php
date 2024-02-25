@@ -30,7 +30,7 @@
  *              because it is used at low code level.
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 /**
  *  Encode a string with base 64 algorithm + specific delta change.

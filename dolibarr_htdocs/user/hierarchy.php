@@ -206,7 +206,7 @@ if (!is_array($user_arbo) && $user_arbo < 0) {
 
     print '<tr class="liste_titre_filter">';
     // Action column
-    if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print '<td class="liste_titre maxwidthsearch">';
         $searchpicto = $form->showFilterAndCheckAddButtons(0);
         print $searchpicto;
@@ -219,7 +219,7 @@ if (!is_array($user_arbo) && $user_arbo < 0) {
     print $form->selectarray('search_statut', array('-1' => '', '1' => $langs->trans('Enabled')), $search_statut, 0, 0, 0, '', 0, 0, 0, '', 'minwidth75imp');
     print '</td>';
     // Action column
-    if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print '<td class="liste_titre maxwidthsearch">';
         $searchpicto = $form->showFilterAndCheckAddButtons(0);
         print $searchpicto;
@@ -229,14 +229,14 @@ if (!is_array($user_arbo) && $user_arbo < 0) {
 
     print '<tr class="liste_titre">';
     // Action column
-    if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print_liste_field_titre('', $_SERVER["PHP_SELF"], "", '', '', '', '', '', 'maxwidthsearch ');
     }
     print_liste_field_titre("HierarchicView");
     print_liste_field_titre('<div id="iddivjstreecontrol"><a href="#">' . img_picto('', 'folder', 'class="paddingright"') . '<span class="hideonsmartphone">' . $langs->trans("UndoExpandAll") . '</span></a> | <a href="#">' . img_picto('', 'folder-open', 'class="paddingright"') . '<span class="hideonsmartphone">' . $langs->trans("ExpandAll") . '</span></a></div>', $_SERVER['PHP_SELF'], "", '', "", 'align="center"');
     print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "", '', "", '', '', '', 'right ');
     // Action column
-    if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print_liste_field_titre('', $_SERVER["PHP_SELF"], "", '', '', '', '', '', 'maxwidthsearch ');
     }
     print '</tr>';
@@ -247,14 +247,14 @@ if (!is_array($user_arbo) && $user_arbo < 0) {
     if ($nbofentries > 0) {
         print '<tr>';
         // Action column
-        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td></td>';
         }
         print '<td colspan="3">';
         tree_recur($data, $data[0], 0);
         print '</td>';
         // Action column
-        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td></td>';
         }
         print '</tr>';

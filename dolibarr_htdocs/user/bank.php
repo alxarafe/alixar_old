@@ -245,7 +245,7 @@ if ($action == 'setnational_registration_number' && $canadduser && !$cancel) {
     }
 }
 
-if (getDolGlobalString('MAIN_USE_EXPENSE_IK')) {
+if (Functions::getDolGlobalString('MAIN_USE_EXPENSE_IK')) {
     // update default_c_exp_tax_cat
     if ($action == 'setdefault_c_exp_tax_cat' && $canadduser) {
         $object->default_c_exp_tax_cat = GETPOST('default_c_exp_tax_cat', 'int');
@@ -516,7 +516,7 @@ if ($action != 'edit' && $action != 'create') {     // If not bank account yet, 
         print '</tr>';
     }
 
-    if (getDolGlobalString('MAIN_USE_EXPENSE_IK')) {
+    if (Functions::getDolGlobalString('MAIN_USE_EXPENSE_IK')) {
         print '<tr class="nowrap">';
         print '<td>';
         print $form->editfieldkey("DefaultCategoryCar", 'default_c_exp_tax_cat', $object->default_c_exp_tax_cat, $object, $user->hasRight('user', 'user', 'creer'));
@@ -602,7 +602,7 @@ if ($action != 'edit' && $action != 'create') {     // If not bank account yet, 
     print '</div><div class="fichehalfright">';
 
     // Max number of elements in small lists
-    $MAXLIST = getDolGlobalString('MAIN_SIZE_SHORTLIST_LIMIT');
+    $MAXLIST = Functions::getDolGlobalString('MAIN_SIZE_SHORTLIST_LIMIT');
 
     // Latest payments of salaries
     if (

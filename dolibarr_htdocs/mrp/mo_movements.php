@@ -141,10 +141,10 @@ $arrayfields = [
     //'m.datec'=>array('label'=>"DateCreation", 'checked'=>0, 'position'=>500),
     //'m.tms'=>array('label'=>"DateModificationShort", 'checked'=>0, 'position'=>500)
 ];
-if (getDolGlobalString('PRODUCT_DISABLE_SELLBY')) {
+if (Functions::getDolGlobalString('PRODUCT_DISABLE_SELLBY')) {
     unset($arrayfields['pl.sellby']);
 }
-if (getDolGlobalString('PRODUCT_DISABLE_EATBY')) {
+if (Functions::getDolGlobalString('PRODUCT_DISABLE_EATBY')) {
     unset($arrayfields['pl.eatby']);
 }
 $objectlist->fields = dol_sort_array($objectlist->fields, 'position');
@@ -332,7 +332,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     // Thirdparty
     if (is_object($object->thirdparty)) {
         $morehtmlref .= $object->thirdparty->getNomUrl(1, 'customer');
-        if (!getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
+        if (!Functions::getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
             $morehtmlref .= ' (<a href="' . DOL_URL_ROOT . '/commande/list.php?socid=' . $object->thirdparty->id . '&search_societe=' . urlencode($object->thirdparty->name) . '">' . $langs->trans("OtherOrders") . '</a>)';
         }
     }
@@ -450,7 +450,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     }
     $sql .= " AND m.fk_entrepot = e.rowid";
     $sql .= " AND e.entity IN (" . getEntity('stock') . ")";
-    if (!getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
+    if (!Functions::getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
         $sql .= " AND p.fk_product_type = 0";
     }
     $sql .= dolSqlDateFilter('m.datem', 0, $month, $year);
@@ -596,7 +596,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     }
 
     $varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
-    $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')); // This also change content of $arrayfields
+    $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')); // This also change content of $arrayfields
     $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
     print '<div class="div-table-responsive">';
@@ -605,7 +605,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     // Fields title search
     print '<tr class="liste_titre_filter">';
     // Actions
-    if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print '<td class="liste_titre maxwidthsearch">';
         $searchpicto = $form->showFilterAndCheckAddButtons(0);
         print $searchpicto;
@@ -737,7 +737,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         print '</td>';
     }
     // Actions
-    if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print '<td class="liste_titre maxwidthsearch">';
         $searchpicto = $form->showFilterAndCheckAddButtons(0);
         print $searchpicto;
@@ -750,7 +750,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
     print '<tr class="liste_titre">';
     // Action column
-    if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
         $totalarray['nbfield']++;
     }
@@ -836,7 +836,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         $totalarray['nbfield']++;
     }
     // Action column
-    if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+    if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
         print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
         $totalarray['nbfield']++;
     }
@@ -899,7 +899,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
         print '<tr class="oddeven">';
         // Action column
-        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowrap center">';
             if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;
@@ -1021,7 +1021,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
             print '</td>';
         }
         // Action column
-        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowrap center">';
             if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;

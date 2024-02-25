@@ -28,7 +28,7 @@
  */
 
 // Load Dolibarr environment
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
@@ -457,7 +457,7 @@ if (empty($reshook)) {
         $result = $object->setStatut($object::STATUS_PRODUCED, 0, '', 'MRP_MO_PRODUCED');
         if ($result >= 0) {
             // Define output language
-            if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+            if (!Functions::getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
                 $outputlangs = $langs;
                 $newlang = '';
                 if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang) && GETPOST('lang_id', 'aZ09')) {
@@ -524,7 +524,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     $res = $object->fetch_thirdparty();
     $res = $object->fetch_optionals();
 
-    if (getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE') && $object->fk_warehouse > 0) {
+    if (Functions::getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE') && $object->fk_warehouse > 0) {
         $tmpwarehouse->fetch($object->fk_warehouse);
         $fk_default_warehouse = $object->fk_warehouse;
     }
@@ -604,7 +604,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                 'label' => $langs->trans('MoCancelConsumedAndProducedLines'),
                 'name' => 'alsoCancelConsumedAndProducedLines',
                 'type' => 'checkbox',
-                'value' => !getDolGlobalString('MO_ALSO_CANCEL_CONSUMED_AND_PRODUCED_LINES_BY_DEFAULT') ? 0 : 1,
+                'value' => !Functions::getDolGlobalString('MO_ALSO_CANCEL_CONSUMED_AND_PRODUCED_LINES_BY_DEFAULT') ? 0 : 1,
             ],
         ];
         $formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('CancelMo'), $langs->trans('ConfirmCancelMo'), 'confirm_cancel', $formquestion, 0, 1);
@@ -637,7 +637,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     // Thirdparty
     if (is_object($object->thirdparty)) {
         $morehtmlref .= $object->thirdparty->getNomUrl(1, 'customer');
-        if (!getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
+        if (!Functions::getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
             $morehtmlref .= ' (<a href="' . DOL_URL_ROOT . '/commande/list.php?socid=' . $object->thirdparty->id . '&search_societe=' . urlencode($object->thirdparty->name) . '">' . $langs->trans("OtherOrders") . '</a>)';
         }
     }
@@ -843,7 +843,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
             print '<td class="right">' . $langs->trans("Unit") . '</td>';
         }
         // Cost price
-        if ($permissiontoupdatecost && getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
+        if ($permissiontoupdatecost && Functions::getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
             print '<td class="right">' . $langs->trans("UnitCost") . '</td>';
         }
         // Qty already consumed
@@ -914,7 +914,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                 print '<td></td>';
             }
             // Cost price
-            if ($permissiontoupdatecost && getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
+            if ($permissiontoupdatecost && Functions::getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
                 print '<td></td>';
             }
             // Qty already consumed + Warehouse
@@ -1100,7 +1100,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                             print $form->textwithpicto('', $help, -1, 'lock') . ' ';
                         }
                         if ($line->disable_stock_change) {
-                            $help = ($help ? '<br>' : '') . '<strong>' . $langs->trans("DisableStockChange") . '</strong>: ' . yn(1) . ' (' . (($tmpproduct->type == Product::TYPE_SERVICE && !getDolGlobalString('STOCK_SUPPORTS_SERVICES')) ? $langs->trans("NoStockChangeOnServices") : $langs->trans("DisableStockChangeHelp")) . ')';
+                            $help = ($help ? '<br>' : '') . '<strong>' . $langs->trans("DisableStockChange") . '</strong>: ' . yn(1) . ' (' . (($tmpproduct->type == Product::TYPE_SERVICE && !Functions::getDolGlobalString('STOCK_SUPPORTS_SERVICES')) ? $langs->trans("NoStockChangeOnServices") : $langs->trans("DisableStockChangeHelp")) . ')';
                             print $form->textwithpicto('', $help, -1, 'help') . ' ';
                         }
                         print price2num($line->qty, 'MS');
@@ -1112,7 +1112,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                             print '</td>';
                         }
                         // Cost price
-                        if ($permissiontoupdatecost && getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
+                        if ($permissiontoupdatecost && Functions::getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
                             print '<td class="right nowraponall">';
                             print price($linecost);
                             print '</td>';
@@ -1148,7 +1148,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                         print '</td>';
                         // Warehouse and/or workstation
                         print '<td>';
-                        if (getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE') && $tmpwarehouse->id > 0) {
+                        if (Functions::getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE') && $tmpwarehouse->id > 0) {
                             print img_picto('', $tmpwarehouse->picto) . " " . $tmpwarehouse->label;
                         }
                         if (isModEnabled('workstation') && $line->fk_default_workstation > 0) {
@@ -1160,11 +1160,11 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                         // Stock
                         if (isModEnabled('stock')) {
                             print '<td class="nowraponall right">';
-                            if (!getDolGlobalString('STOCK_SUPPORTS_SERVICES') && $tmpproduct->type != Product::TYPE_SERVICE) {
+                            if (!Functions::getDolGlobalString('STOCK_SUPPORTS_SERVICES') && $tmpproduct->type != Product::TYPE_SERVICE) {
                                 if (!$line->disable_stock_change && $tmpproduct->stock_reel < ($line->qty - $alreadyconsumed)) {
                                     print img_warning($langs->trans('StockTooLow')) . ' ';
                                 }
-                                if (!getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE') || empty($tmpwarehouse->id)) {
+                                if (!Functions::getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE') || empty($tmpwarehouse->id)) {
                                     print price2num($tmpproduct->stock_reel, 'MS'); // Available
                                 } else {
                                     // Print only the stock in the selected warehouse
@@ -1240,7 +1240,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                         print '<td class="right">' . $line2['qty'] . '</td>';
 
                         // Cost price
-                        if ($permissiontoupdatecost && getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
+                        if ($permissiontoupdatecost && Functions::getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
                             print '<td></td>';
                         }
 
@@ -1311,7 +1311,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                         }
 
                         $disable = '';
-                        if (getDolGlobalString('MRP_NEVER_CONSUME_MORE_THAN_EXPECTED') && ($line->qty - $alreadyconsumed) <= 0) {
+                        if (Functions::getDolGlobalString('MRP_NEVER_CONSUME_MORE_THAN_EXPECTED') && ($line->qty - $alreadyconsumed) <= 0) {
                             $disable = 'disabled';
                         }
 
@@ -1327,7 +1327,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                         }
 
                         // Cost
-                        if ($permissiontoupdatecost && getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
+                        if ($permissiontoupdatecost && Functions::getDolGlobalString('MRP_SHOW_COST_FOR_CONSUMPTION')) {
                             print '<td></td>';
                         }
 
@@ -1336,7 +1336,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
                         // Warehouse
                         print '<td>';
-                        if ($tmpproduct->type == Product::TYPE_PRODUCT || getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
+                        if ($tmpproduct->type == Product::TYPE_PRODUCT || Functions::getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
                             if (empty($line->disable_stock_change)) {
                                 $preselected = (GETPOSTISSET('idwarehouse-' . $line->id . '-' . $i) ? GETPOST('idwarehouse-' . $line->id . '-' . $i) : ($tmpproduct->fk_default_warehouse > 0 ? $tmpproduct->fk_default_warehouse : 'ifone'));
                                 print $formproduct->selectWarehouses($preselected, 'idwarehouse-' . $line->id . '-' . $i, '', 1, 0, $line->fk_product, '', 1, 0, null, 'maxwidth200 csswarehouse_' . $line->id . '_' . $i);
@@ -1408,7 +1408,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
         if (
             in_array($action, ['consumeorproduce', 'consumeandproduceall']) &&
-            getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE')
+            Functions::getDolGlobalString('STOCK_CONSUMPTION_FROM_MANUFACTURING_WAREHOUSE')
         ) {
             print '<script>$(document).ready(function () {
 				$("#fk_default_warehouse").change();
@@ -1746,7 +1746,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                                 }
                             }
 
-                            if ($tmpproduct->type == Product::TYPE_PRODUCT || getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
+                            if ($tmpproduct->type == Product::TYPE_PRODUCT || Functions::getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
                                 $preselected = (GETPOSTISSET('pricetoproduce-' . $line->id . '-' . $i) ? GETPOST('pricetoproduce-' . $line->id . '-' . $i) : ($manufacturingcost ? price($manufacturingcost) : ''));
                                 print '<td class="right"><input type="text" class="width75 right" name="pricetoproduce-' . $line->id . '-' . $i . '" value="' . $preselected . '"></td>';
                             } else {
@@ -1757,7 +1757,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                         print '<td></td>';
                         // Warehouse
                         print '<td>';
-                        if ($tmpproduct->type == Product::TYPE_PRODUCT || getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
+                        if ($tmpproduct->type == Product::TYPE_PRODUCT || Functions::getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
                             $preselected = (GETPOSTISSET('idwarehousetoproduce-' . $line->id . '-' . $i) ? GETPOST('idwarehousetoproduce-' . $line->id . '-' . $i) : ($object->fk_warehouse > 0 ? $object->fk_warehouse : 'ifone'));
                             print $formproduct->selectWarehouses($preselected, 'idwarehousetoproduce-' . $line->id . '-' . $i, '', 1, 0, $line->fk_product, '', 1, 0, null, 'maxwidth200 csswarehouse_' . $line->id . '_' . $i);
                         } else {

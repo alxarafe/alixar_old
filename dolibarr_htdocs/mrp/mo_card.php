@@ -26,7 +26,7 @@
  */
 
 // Load Dolibarr environment
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 require '../main.inc.php';
 
@@ -290,7 +290,7 @@ if (empty($reshook)) {
         $result = $object->setStatut($object::STATUS_PRODUCED, 0, '', 'MRP_MO_PRODUCED');
         if ($result >= 0) {
             // Define output language
-            if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+            if (!Functions::getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
                 $outputlangs = $langs;
                 $newlang = '';
                 if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang) && GETPOST('lang_id', 'aZ09')) {
@@ -501,7 +501,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
                 'label' => $langs->trans('MoCancelConsumedAndProducedLines'),
                 'name' => 'alsoCancelConsumedAndProducedLines',
                 'type' => 'checkbox',
-                'value' => !getDolGlobalString('MO_ALSO_CANCEL_CONSUMED_AND_PRODUCED_LINES_BY_DEFAULT') ? 0 : 1,
+                'value' => !Functions::getDolGlobalString('MO_ALSO_CANCEL_CONSUMED_AND_PRODUCED_LINES_BY_DEFAULT') ? 0 : 1,
             ],
         ];
         $formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('DeleteMo'), $langs->trans('ConfirmDeleteMo'), 'confirm_delete', $formquestion, 0, 1);
@@ -594,7 +594,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     // Thirdparty
     if (is_object($object->thirdparty)) {
         $morehtmlref .= $object->thirdparty->getNomUrl(1, 'customer');
-        if (!getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
+        if (!Functions::getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
             $morehtmlref .= ' (<a href="' . DOL_URL_ROOT . '/commande/list.php?socid=' . $object->thirdparty->id . '&search_societe=' . urlencode($object->thirdparty->name) . '">' . $langs->trans("OtherOrders") . '</a>)';
         }
     }

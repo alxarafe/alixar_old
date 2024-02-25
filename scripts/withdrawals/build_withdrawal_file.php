@@ -68,7 +68,7 @@ $month = dol_print_date($datetimeprev, "%m");
 $year = dol_print_date($datetimeprev, "%Y");
 
 $user = new User($db);
-$user->fetch(getDolGlobalString('PRELEVEMENT_USER'));
+$user->fetch(Functions::getDolGlobalString('PRELEVEMENT_USER'));
 
 if (!isset($argv[1])) { // Check parameters
     print "This script check invoices with a withdrawal request and\n";
@@ -78,7 +78,7 @@ if (!isset($argv[1])) { // Check parameters
 }
 
 $withdrawreceipt = new BonPrelevement($db);
-$result = $withdrawreceipt->create(getDolGlobalString('PRELEVEMENT_CODE_BANQUE'), getDolGlobalString('PRELEVEMENT_CODE_GUICHET'), $argv[1]);
+$result = $withdrawreceipt->create(Functions::getDolGlobalString('PRELEVEMENT_CODE_BANQUE'), Functions::getDolGlobalString('PRELEVEMENT_CODE_GUICHET'), $argv[1]);
 
 $db->close();
 

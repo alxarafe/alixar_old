@@ -289,7 +289,7 @@ $moreheadjs = '';
 
 //$morejs=array();
 $morejs = ['includes/jquery/plugins/blockUI/jquery.blockUI.js', 'core/js/blockUI.js']; // Used by ecm/tpl/enabledfiletreeajax.tpl.pgp
-if (!getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
+if (!Functions::getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
     $morejs[] = "includes/jquery/plugins/jqueryFileTree/jqueryFileTree.js";
 }
 

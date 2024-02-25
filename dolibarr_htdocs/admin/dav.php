@@ -113,9 +113,9 @@ if ($action == 'edit') {
         if ($key == 'DAV_ALLOW_PRIVATE_DIR') {
             print $langs->trans("AlwaysActive");
         } elseif ($key == 'DAV_ALLOW_PUBLIC_DIR' || $key == 'DAV_ALLOW_ECM_DIR') {
-            print $form->selectyesno($key, getDolGlobalString($key), 1);
+            print $form->selectyesno($key, Functions::getDolGlobalString($key), 1);
         } else {
-            print '<input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . getDolGlobalString($key) . '">';
+            print '<input name="' . $key . '"  class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . Functions::getDolGlobalString($key) . '">';
         }
         print '</td></tr>';
     }
@@ -149,9 +149,9 @@ if ($action == 'edit') {
         if ($key == 'DAV_ALLOW_PRIVATE_DIR') {
             print $langs->trans("AlwaysActive");
         } elseif ($key == 'DAV_ALLOW_PUBLIC_DIR' || $key == 'DAV_ALLOW_ECM_DIR') {
-            print yn(getDolGlobalString($key));
+            print yn(Functions::getDolGlobalString($key));
         } else {
-            print getDolGlobalString($key);
+            print Functions::getDolGlobalString($key);
         }
         print '</td></tr>';
     }
@@ -198,7 +198,7 @@ $message .= '</div>';
 $message .= ajax_autoselect('webdavpublicurl');
 
 $message .= '<br>';
-if (getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')) {
+if (Functions::getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')) {
     $urlEntity = (isModEnabled('multicompany') ? '?entity=' . $conf->entity : '');
     $url = '<a href="' . $urlwithroot . '/dav/fileserver.php/public/' . $urlEntity . '" target="_blank" rel="noopener noreferrer">' . $urlwithroot . '/dav/fileserver.php/public/' . $urlEntity . '</a>';
 

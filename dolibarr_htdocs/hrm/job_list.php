@@ -330,7 +330,7 @@ if (!$resql) {
 $num = $db->num_rows($resql);
 
 // Direct jump if only one record found
-if ($num == 1 && getDolGlobalString('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && $search_all && !$page) {
+if ($num == 1 && Functions::getDolGlobalString('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && $search_all && !$page) {
     $obj = $db->fetch_object($resql);
     $id = $obj->rowid;
     header("Location: " . dol_buildpath('/hrm/job_card.php', 1) . '?id=' . $id);
@@ -467,7 +467,7 @@ if (!empty($moreforfilter)) {
 }
 
 $varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
-$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')); // This also change content of $arrayfields
+$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
 print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
@@ -477,7 +477,7 @@ print '<table class="tagtable nobottomiftotal liste' . ($moreforfilter ? " listw
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre maxwidthsearch">';
     $searchpicto = $form->showFilterButtons('left');
     print $searchpicto;
@@ -526,7 +526,7 @@ $parameters = ['arrayfields' => $arrayfields];
 $reshook = $hookmanager->executeHooks('printFieldListOption', $parameters, $object); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 // Action column
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre maxwidthsearch">';
     $searchpicto = $form->showFilterButtons();
     print $searchpicto;
@@ -540,7 +540,7 @@ $totalarray['nbfield'] = 0;
 // Fields title label
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER["PHP_SELF"], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
 }
 foreach ($object->fields as $key => $val) {
@@ -567,7 +567,7 @@ $parameters = ['arrayfields' => $arrayfields, 'param' => $param, 'sortfield' => 
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 // Action column
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER["PHP_SELF"], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
 }
 $totalarray['nbfield']++;
@@ -625,7 +625,7 @@ while ($i < $imaxinloop) {
         $j = 0;
         print '<tr data-rowid="' . $object->id . '" class="oddeven">';
         // Action column
-        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowrap center">';
             if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;
@@ -695,7 +695,7 @@ while ($i < $imaxinloop) {
         $reshook = $hookmanager->executeHooks('printFieldListValue', $parameters, $object); // Note that $action and $object may have been modified by hook
         print $hookmanager->resPrint;
         // Action column
-        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowrap center">';
             if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;

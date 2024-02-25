@@ -19,17 +19,23 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alxarafe\Base\Globals;
+
 require_once 'vendor/autoload.php';
 
 const BASE_PATH = __DIR__;
 
-$confFile = BASE_PATH . '/conf/conf.php';
-if (!file_exists($confFile)) {
-    require BASE_PATH . '/install/index.php';
-}
-
 $page = filter_input(INPUT_GET, 'page');
 $ctrl = filter_input(INPUT_GET, 'ctrl');
+
+/**
+ * If the configuration file does not exist, the installer is invoked.
+ */
+$confFile = BASE_PATH . '/conf/conf.php';
+if (empty($ctrl) && !file_exists($confFile)) {
+    header('Location: index.php?page=Install&ctrl=Install');
+    die();
+}
 
 /**
  * If no controller has been passed, execution of the original 'index.php' is assumed.
@@ -39,13 +45,10 @@ if (empty($ctrl)) {
     die();
 }
 
-$path = BASE_PATH;
-if (!empty($page)) {
-    $path .= DIRECTORY_SEPARATOR . $page;
-}
+Globals::init();
 
-chdir($path);
+$pageName = str_replace('/', '\\', $page);
+$namespace = 'Alixar\\' . $pageName . '\\' . $ctrl;
 
-$path .= DIRECTORY_SEPARATOR . $ctrl . '.php';
-
-require $path;
+$controller = new $namespace();
+$controller->view();

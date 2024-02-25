@@ -226,7 +226,7 @@ print '<td>' . $langs->trans("Example") . '</td>';
 print '<td class="center">' . $langs->trans("Activated") . '</td>';
 print '</tr>';
 
-$tabConf = explode(";", getDolGlobalString('USER_PASSWORD_PATTERN'));
+$tabConf = explode(";", Functions::getDolGlobalString('USER_PASSWORD_PATTERN'));
 
 foreach ($arrayhandler as $key => $module) {
     // Show modules according to features level
@@ -279,7 +279,7 @@ print '</form>';
 
 
 // Pattern for Password Perso
-if (getDolGlobalString('USER_PASSWORD_GENERATED') == "Perso") {
+if (Functions::getDolGlobalString('USER_PASSWORD_GENERATED') == "Perso") {
     print '<br>';
 
     print '<div class="div-table-responsive-no-min">';
@@ -405,18 +405,18 @@ print '</tr>';
 print '<tr class="oddeven">';
 print '<td colspan="3">' . $langs->trans("DoNotStoreClearPassword") . '</td>';
 print '<td class="center" width="60">';
-if (getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
+if (Functions::getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
     print img_picto($langs->trans("Active"), 'tick');
 }
 print '</td>';
-if (!getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
+if (!Functions::getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
     print '<td class="center" width="100">';
     print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?action=activate_encrypt&token=' . newToken() . '">' . $langs->trans("Activate") . '</a>';
     print "</td>";
 }
 
 // Database conf file encryption
-if (getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
+if (Functions::getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
     print '<td class="center" width="100">';
     if ($allow_disable_encryption) {
         //On n'autorise pas l'annulation de l'encryption car les mots de passe ne peuvent pas etre decodes
@@ -465,16 +465,16 @@ print '</tr>';
 print '<tr class="oddeven">';
 print '<td colspan="3">' . $langs->trans("DisableForgetPasswordLinkOnLogonPage") . '</td>';
 print '<td class="center" width="60">';
-if (getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
+if (Functions::getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
     print img_picto($langs->trans("Active"), 'tick');
 }
 print '</td>';
-if (!getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
+if (!Functions::getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
     print '<td class="center" width="100">';
     print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?action=activate_MAIN_SECURITY_DISABLEFORGETPASSLINK&token=' . newToken() . '">' . $langs->trans("Activate") . '</a>';
     print "</td>";
 }
-if (getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
+if (Functions::getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
     print '<td center="center" width="100">';
     print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?action=disable_MAIN_SECURITY_DISABLEFORGETPASSLINK&token=' . newToken() . '">' . $langs->trans("Disable") . '</a>';
     print "</td>";
@@ -495,8 +495,8 @@ if (GETPOSTINT('info') > 0) {
     } else {
         print $langs->trans("Note: The function password_hash does not exist on your PHP") . "<br>\n";
     }
-    print 'MAIN_SECURITY_HASH_ALGO = ' . getDolGlobalString('MAIN_SECURITY_HASH_ALGO') . "<br>\n";
-    print 'MAIN_SECURITY_SALT = ' . getDolGlobalString('MAIN_SECURITY_SALT') . "<br>\n";
+    print 'MAIN_SECURITY_HASH_ALGO = ' . Functions::getDolGlobalString('MAIN_SECURITY_HASH_ALGO') . "<br>\n";
+    print 'MAIN_SECURITY_SALT = ' . Functions::getDolGlobalString('MAIN_SECURITY_SALT') . "<br>\n";
 }
 
 print '</div>';

@@ -130,11 +130,11 @@ if ($id > 0) {
             print '<tr><td class="titlefield fieldrequired">ClickToDial URL</td>';
             print '<td class="valeur">';
             print '<input name="url" value="' . (!empty($object->clicktodial_url) ? $object->clicktodial_url : '') . '" size="92">';
-            if (!getDolGlobalString('CLICKTODIAL_URL') && empty($object->clicktodial_url)) {
+            if (!Functions::getDolGlobalString('CLICKTODIAL_URL') && empty($object->clicktodial_url)) {
                 $langs->load("errors");
                 print '<span class="error">' . $langs->trans("ErrorModuleSetupNotComplete", $langs->transnoentitiesnoconv("ClickToDial")) . '</span>';
             } else {
-                print '<br>' . $form->textwithpicto('<span class="opacitymedium">' . $langs->trans("KeepEmptyToUseDefault") . '</span>:<br>' . getDolGlobalString('CLICKTODIAL_URL'), $langs->trans("ClickToDialUrlDesc"));
+                print '<br>' . $form->textwithpicto('<span class="opacitymedium">' . $langs->trans("KeepEmptyToUseDefault") . '</span>:<br>' . Functions::getDolGlobalString('CLICKTODIAL_URL'), $langs->trans("ClickToDialUrlDesc"));
             }
             print '</td>';
             print '</tr>';
@@ -162,8 +162,8 @@ if ($id > 0) {
         if (!empty($user->admin)) {
             print '<tr><td class="">ClickToDial URL</td>';
             print '<td class="valeur">';
-            if (getDolGlobalString('CLICKTODIAL_URL')) {
-                $url = getDolGlobalString('CLICKTODIAL_URL');
+            if (Functions::getDolGlobalString('CLICKTODIAL_URL')) {
+                $url = Functions::getDolGlobalString('CLICKTODIAL_URL');
             }
             if (!empty($object->clicktodial_url)) {
                 $url = $object->clicktodial_url;

@@ -89,7 +89,7 @@ class ExportTest extends CommonClassTest
         $model = 'csvutf8';
 
         $conf->global->EXPORT_CSV_SEPARATOR_TO_USE = ',';
-        print 'EXPORT_CSV_SEPARATOR_TO_USE = ' . getDolGlobalString('EXPORT_CSV_SEPARATOR_TO_USE');
+        print 'EXPORT_CSV_SEPARATOR_TO_USE = ' . Functions::getDolGlobalString('EXPORT_CSV_SEPARATOR_TO_USE');
 
         // Creation of class to export using model ExportXXX
         $dir = DOL_DOCUMENT_ROOT . "/core/modules/export/";
@@ -178,7 +178,7 @@ class ExportTest extends CommonClassTest
         $model = 'csviso';
 
         $conf->global->EXPORT_CSV_SEPARATOR_TO_USE = ',';
-        print 'EXPORT_CSV_SEPARATOR_TO_USE = ' . getDolGlobalString('EXPORT_CSV_SEPARATOR_TO_USE');
+        print 'EXPORT_CSV_SEPARATOR_TO_USE = ' . Functions::getDolGlobalString('EXPORT_CSV_SEPARATOR_TO_USE');
 
         // Creation of class to export using model ExportXXX
         $dir = DOL_DOCUMENT_ROOT . "/core/modules/export/";

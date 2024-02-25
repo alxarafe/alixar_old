@@ -46,10 +46,10 @@ $actiontest = GETPOST('test', 'alpha');
 $actionsave = GETPOST('save', 'alpha');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'useragenda'; // To manage different context of search
 
-if (!getDolGlobalString('AGENDA_EXT_NB')) {
+if (!Functions::getDolGlobalString('AGENDA_EXT_NB')) {
     $conf->global->AGENDA_EXT_NB = 5;
 }
-$MAXAGENDA = getDolGlobalString('AGENDA_EXT_NB');
+$MAXAGENDA = Functions::getDolGlobalString('AGENDA_EXT_NB');
 
 // List of available colors
 $colorlist = array('BECEDD', 'DDBECE', 'BFDDBE', 'F598B4', 'F68654', 'CBF654', 'A4A4A5');
@@ -225,7 +225,7 @@ print '<br>';
 print '<span class="opacitymedium">' . $langs->trans("AgendaExtSitesDesc") . "</span><br>\n";
 print "<br>\n";
 
-$selectedvalue = !getDolGlobalString('AGENDA_DISABLE_EXT') ? 0 : $conf->global->AGENDA_DISABLE_EXT;
+$selectedvalue = !Functions::getDolGlobalString('AGENDA_DISABLE_EXT') ? 0 : $conf->global->AGENDA_DISABLE_EXT;
 if ($selectedvalue == 1) {
     $selectedvalue = 0;
 } else {

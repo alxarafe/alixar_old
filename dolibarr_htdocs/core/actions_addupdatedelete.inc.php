@@ -145,7 +145,7 @@ if ($action == 'add' && !empty($permissiontoadd)) {
         }
 
         // Validation of fields values
-        if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 || getDolGlobalString('MAIN_ACTIVATE_VALIDATION_RESULT')) {
+        if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 || Functions::getDolGlobalString('MAIN_ACTIVATE_VALIDATION_RESULT')) {
             if (!$error && !empty($val['validate']) && is_callable(array($object, 'validateField'))) {
                 if (!$object->validateField($object->fields, $key, $value)) {
                     $error++;
@@ -291,7 +291,7 @@ if ($action == 'update' && !empty($permissiontoadd)) {
         }
 
         // Validation of fields values
-        if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 || getDolGlobalString('MAIN_ACTIVATE_VALIDATION_RESULT')) {
+        if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 || Functions::getDolGlobalString('MAIN_ACTIVATE_VALIDATION_RESULT')) {
             if (!$error && !empty($val['validate']) && is_callable(array($object, 'validateField'))) {
                 if (!$object->validateField($object->fields, $key, $value)) {
                     $error++;
@@ -454,7 +454,7 @@ if ($action == 'confirm_deleteline' && $confirm == 'yes' && !empty($permissionto
             $outputlangs = new Lang("", $conf);
             $outputlangs->setDefaultLang($newlang);
         }
-        if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+        if (!Functions::getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
             if (method_exists($object, 'generateDocument')) {
                 $ret = $object->fetch($object->id); // Reload to get new records
                 $object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
@@ -485,7 +485,7 @@ if ($action == 'confirm_validate' && $confirm == 'yes' && $permissiontoadd) {
 
     if ($result >= 0) {
         // Define output language
-        if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+        if (!Functions::getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
             if (method_exists($object, 'generateDocument')) {
                 $outputlangs = $langs;
                 $newlang = '';
@@ -522,7 +522,7 @@ if ($action == 'confirm_close' && $confirm == 'yes' && $permissiontoadd) {
     $result = $object->cancel($user);
     if ($result >= 0) {
         // Define output language
-        if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+        if (!Functions::getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
             if (method_exists($object, 'generateDocument')) {
                 $outputlangs = $langs;
                 $newlang = '';
@@ -566,7 +566,7 @@ if ($action == 'confirm_reopen' && $confirm == 'yes' && $permissiontoadd) {
     $result = $object->reopen($user);
     if ($result >= 0) {
         // Define output language
-        if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+        if (!Functions::getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
             if (method_exists($object, 'generateDocument')) {
                 $outputlangs = $langs;
                 $newlang = '';

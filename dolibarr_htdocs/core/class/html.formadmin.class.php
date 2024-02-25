@@ -30,6 +30,8 @@
 
 /**
  *      Class to generate html code for admin pages
+ *
+ * @deprecated Use Alxarafe\LibClass\FormAdmin instead!
  */
 class FormAdmin
 {

@@ -97,7 +97,7 @@ if (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 if ($action == 'warehouse') {
     $value = GETPOST('default_warehouse', 'alpha');
     $res = dolibarr_set_const($db, "MAIN_DEFAULT_WAREHOUSE", $value, 'chaine', 0, '', $conf->entity);
-    if ($value == -1 || empty($value) && getDolGlobalString('MAIN_DEFAULT_WAREHOUSE')) {
+    if ($value == -1 || empty($value) && Functions::getDolGlobalString('MAIN_DEFAULT_WAREHOUSE')) {
         $res = dolibarr_del_const($db, "MAIN_DEFAULT_WAREHOUSE", $conf->entity);
     }
     if (!($res > 0)) {
@@ -486,11 +486,11 @@ print '<br>';
 
 $virtualdiffersfromphysical = 0;
 if (
-    getDolGlobalString('STOCK_CALCULATE_ON_SHIPMENT')
-    || getDolGlobalString('STOCK_CALCULATE_ON_SUPPLIER_DISPATCH_ORDER')
-    || getDolGlobalString('STOCK_CALCULATE_ON_SHIPMENT_CLOSE')
-    || getDolGlobalString('STOCK_CALCULATE_ON_RECEPTION')
-    || getDolGlobalString('STOCK_CALCULATE_ON_RECEPTION_CLOSE')
+    Functions::getDolGlobalString('STOCK_CALCULATE_ON_SHIPMENT')
+    || Functions::getDolGlobalString('STOCK_CALCULATE_ON_SUPPLIER_DISPATCH_ORDER')
+    || Functions::getDolGlobalString('STOCK_CALCULATE_ON_SHIPMENT_CLOSE')
+    || Functions::getDolGlobalString('STOCK_CALCULATE_ON_RECEPTION')
+    || Functions::getDolGlobalString('STOCK_CALCULATE_ON_RECEPTION_CLOSE')
     || isModEnabled('mrp')
 ) {
     $virtualdiffersfromphysical = 1; // According to increase/decrease stock options, virtual and physical stock may differs.
@@ -627,7 +627,7 @@ foreach ($dirmodels as $reldir) {
 
                                 // Default
                                 print '<td class="center">';
-                                if (getDolGlobalString('STOCK_ADDON_PDF') == $name) {
+                                if (Functions::getDolGlobalString('STOCK_ADDON_PDF') == $name) {
                                     print img_picto($langs->trans("Default"), 'on');
                                 } else {
                                     print '<a class="reposition" href="' . $_SERVER["PHP_SELF"] . '?action=setdoc&token=' . newToken() . '&value=' . urlencode($name) . '&scan_dir=' . urlencode($module->scandir) . '&label=' . urlencode($module->name) . '" alt="' . $langs->trans("Default") . '">' . img_picto($langs->trans("Disabled"), 'off') . '</a>';
@@ -695,7 +695,7 @@ print '</tr>' . "\n";
 print '<tr class="oddeven">';
 print '<td>' . $langs->trans("MainDefaultWarehouse") . '</td>';
 print '<td class="right">';
-print $formproduct->selectWarehouses(getDolGlobalString('MAIN_DEFAULT_WAREHOUSE') ? $conf->global->MAIN_DEFAULT_WAREHOUSE : -1, 'default_warehouse', '', 1, 0, 0, '', 0, 0, array(), 'left reposition');
+print $formproduct->selectWarehouses(Functions::getDolGlobalString('MAIN_DEFAULT_WAREHOUSE') ? $conf->global->MAIN_DEFAULT_WAREHOUSE : -1, 'default_warehouse', '', 1, 0, 0, '', 0, 0, array(), 'left reposition');
 print '<input type="submit" class="button button-edit small" value="' . $langs->trans("Modify") . '">';
 print "</td>";
 print "</tr>\n";
@@ -712,7 +712,7 @@ if ($conf->use_javascript_ajax) {
 print "</td>\n";
 print "</tr>\n";
 
-if (getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
+if (Functions::getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
     print '<tr class="oddeven">';
     print '<td>' . $langs->trans("UserWarehouseAutoCreate") . '</td>';
     print '<td class="right">';
@@ -785,7 +785,7 @@ if ($conf->use_javascript_ajax) {
     print ajax_constantonoff('STOCK_SUPPORTS_SERVICES');
 } else {
     $arrval = array('0' => $langs->trans("No"), '1' => $langs->trans("Yes"));
-    print $form->selectarray("STOCK_SUPPORTS_SERVICES", $arrval, getDolGlobalString('STOCK_SUPPORTS_SERVICES'));
+    print $form->selectarray("STOCK_SUPPORTS_SERVICES", $arrval, Functions::getDolGlobalString('STOCK_SUPPORTS_SERVICES'));
 }
 print "</td>\n";
 print "</tr>\n";

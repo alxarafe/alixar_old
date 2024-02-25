@@ -46,7 +46,7 @@
 //@ini_set('memory_limit', '128M'); // This may be useless if memory is hard limited by your PHP
 
 // For optional tuning. Enabled if environment variable MAIN_SHOW_TUNING_INFO is defined.
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 $micro_start_time = 0;
 if (!empty($_SERVER['MAIN_SHOW_TUNING_INFO'])) {
@@ -403,7 +403,7 @@ require_once 'master.inc.php';
 // include DOL_DOCUMENT_ROOT.'/core/lib/phpsessionindb.inc.php
 
 // If software has been locked. Only login $conf->global->MAIN_ONLY_LOGIN_ALLOWED is allowed.
-if (getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
+if (Functions::getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
     $ok = 0;
     if ((!session_id() || !isset($_SESSION["dol_login"])) && !isset($_POST["username"]) && !empty($_SERVER["GATEWAY_INTERFACE"])) {
         $ok = 1; // We let working pages if not logged and inside a web browser (login form, to allow login by admin)
@@ -419,11 +419,11 @@ if (getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
     if (!$ok) {
         if (session_id() && isset($_SESSION["dol_login"]) && $_SESSION["dol_login"] != $conf->global->MAIN_ONLY_LOGIN_ALLOWED) {
             print 'Sorry, your application is offline.' . "\n";
-            print 'You are logged with user "' . $_SESSION["dol_login"] . '" and only administrator user "' . getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED') . '" is allowed to connect for the moment.' . "\n";
+            print 'You are logged with user "' . $_SESSION["dol_login"] . '" and only administrator user "' . Functions::getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED') . '" is allowed to connect for the moment.' . "\n";
             $nexturl = DOL_URL_ROOT . '/user/logout.php?token=' . newToken();
             print 'Please try later or <a href="' . $nexturl . '">click here to disconnect and change login user</a>...' . "\n";
         } else {
-            print 'Sorry, your application is offline. Only administrator user "' . getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED') . '" is allowed to connect for the moment.' . "\n";
+            print 'Sorry, your application is offline. Only administrator user "' . Functions::getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED') . '" is allowed to connect for the moment.' . "\n";
             $nexturl = DOL_URL_ROOT . '/';
             print 'Please try later or <a href="' . $nexturl . '">click here to change login user</a>...' . "\n";
         }
@@ -440,7 +440,7 @@ if (isModEnabled('debugbar') && !GETPOST('dol_use_jmobile') && empty($_SESSION['
     include_once DOL_DOCUMENT_ROOT . '/debugbar/class/DebugBar.php';
     $debugbar = new DolibarrDebugBar();
     $renderer = $debugbar->getRenderer();
-    if (!getDolGlobalString('MAIN_HTML_HEADER')) {
+    if (!Functions::getDolGlobalString('MAIN_HTML_HEADER')) {
         $conf->global->MAIN_HTML_HEADER = '';
     }
     $conf->global->MAIN_HTML_HEADER .= $renderer->renderHead();
@@ -527,27 +527,27 @@ if (!defined('NOREQUIREAJAX')) {
 }
 
 // If install or upgrade process not done or not completely finished, we call the install page.
-if (getDolGlobalString('MAIN_NOT_INSTALLED') || getDolGlobalString('MAIN_NOT_UPGRADED')) {
+if (Functions::getDolGlobalString('MAIN_NOT_INSTALLED') || Functions::getDolGlobalString('MAIN_NOT_UPGRADED')) {
     dol_syslog("main.inc: A previous install or upgrade was not complete. Redirect to install page.", LOG_WARNING);
     header("Location: " . DOL_URL_ROOT . "/install/index.php");
     exit;
 }
 // If an upgrade process is required, we call the install page.
 $checkifupgraderequired = false;
-if (getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') && getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') != DOL_VERSION) {
+if (Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') && Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') != DOL_VERSION) {
     $checkifupgraderequired = true;
 }
-if (!getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') && getDolGlobalString('MAIN_VERSION_LAST_INSTALL') && getDolGlobalString('MAIN_VERSION_LAST_INSTALL') != DOL_VERSION) {
+if (!Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') && Functions::getDolGlobalString('MAIN_VERSION_LAST_INSTALL') && Functions::getDolGlobalString('MAIN_VERSION_LAST_INSTALL') != DOL_VERSION) {
     $checkifupgraderequired = true;
 }
 if ($checkifupgraderequired) {
-    $versiontocompare = getDolGlobalString('MAIN_VERSION_LAST_UPGRADE', getDolGlobalString('MAIN_VERSION_LAST_INSTALL'));
+    $versiontocompare = Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE', Functions::getDolGlobalString('MAIN_VERSION_LAST_INSTALL'));
     require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
     $dolibarrversionlastupgrade = preg_split('/[.-]/', $versiontocompare);
     $dolibarrversionprogram = preg_split('/[.-]/', DOL_VERSION);
     $rescomp = versioncompare($dolibarrversionprogram, $dolibarrversionlastupgrade);
     if ($rescomp > 0) {   // Programs have a version higher than database.
-        if (!getDolGlobalString('MAIN_NO_UPGRADE_REDIRECT_ON_LEVEL_3_CHANGE') || $rescomp < 3) {
+        if (!Functions::getDolGlobalString('MAIN_NO_UPGRADE_REDIRECT_ON_LEVEL_3_CHANGE') || $rescomp < 3) {
             // We did not add "&& $rescomp < 3" because we want upgrade process for build upgrades
             dol_syslog("main.inc: database version " . $versiontocompare . " is lower than programs version " . DOL_VERSION . ". Redirect to install/upgrade page.", LOG_WARNING);
             header("Location: " . DOL_URL_ROOT . "/install/index.php");
@@ -629,8 +629,8 @@ if ((!defined('NOCSRFCHECK') && empty($dolibarr_nocsrfcheck) && getDolGlobalInt(
                     dol_syslog("--- Access to " . (empty($_SERVER["REQUEST_METHOD"]) ? '' : $_SERVER["REQUEST_METHOD"] . ' ') . $_SERVER["PHP_SELF"] . " refused by CSRF protection (POST method or GET with a sensible value for 'action' parameter) in main.inc.php. Token not provided.", LOG_WARNING);
                     print "Access to this page this way (POST method or GET with a sensible value for 'action' parameter) is refused by CSRF protection in main.inc.php. Token not provided.\n";
                     print "If you access your server behind a proxy using url rewriting and the parameter is provided by caller, you might check that all HTTP header are propagated (or add the line \$dolibarr_nocsrfcheck=1 into your conf.php file or MAIN_SECURITY_CSRF_WITH_TOKEN to 0";
-                    if (getDolGlobalString('MAIN_SECURITY_CSRF_WITH_TOKEN')) {
-                        print " instead of " . getDolGlobalString('MAIN_SECURITY_CSRF_WITH_TOKEN');
+                    if (Functions::getDolGlobalString('MAIN_SECURITY_CSRF_WITH_TOKEN')) {
+                        print " instead of " . Functions::getDolGlobalString('MAIN_SECURITY_CSRF_WITH_TOKEN');
                     }
                     print " into setup).\n";
                 }
@@ -787,7 +787,7 @@ if (!defined('NOLOGIN')) {
         }
 
         // Verification security graphic code
-        if ($test && GETPOST("username", "alpha", 2) && getDolGlobalString('MAIN_SECURITY_ENABLECAPTCHA') && !isset($_SESSION['dol_bypass_antispam'])) {
+        if ($test && GETPOST("username", "alpha", 2) && Functions::getDolGlobalString('MAIN_SECURITY_ENABLECAPTCHA') && !isset($_SESSION['dol_bypass_antispam'])) {
             $sessionkey = 'dol_antispam_value';
             $ok = (array_key_exists($sessionkey, $_SESSION) === true && (strtolower($_SESSION[$sessionkey]) === strtolower(GETPOST('code', 'restricthtml'))));
 
@@ -855,7 +855,7 @@ if (!defined('NOLOGIN')) {
         if (!is_object($langs)) { // This can occurs when calling page with NOREQUIRETRAN defined, however we need langs for error messages.
             // include_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
             $langs = new Lang("", $conf);
-            $langcode = (GETPOST('lang', 'aZ09', 1) ? GETPOST('lang', 'aZ09', 1) : getDolGlobalString('MAIN_LANG_DEFAULT', 'auto'));
+            $langcode = (GETPOST('lang', 'aZ09', 1) ? GETPOST('lang', 'aZ09', 1) : Functions::getDolGlobalString('MAIN_LANG_DEFAULT', 'auto'));
             if (defined('MAIN_LANG_DEFAULT')) {
                 $langcode = constant('MAIN_LANG_DEFAULT');
             }
@@ -1187,7 +1187,7 @@ if (!defined('NOLOGIN')) {
         $_SESSION["dol_dst_second"] = isset($dol_dst_second) ? $dol_dst_second : '';
         $_SESSION["dol_screenwidth"] = isset($dol_screenwidth) ? $dol_screenwidth : '';
         $_SESSION["dol_screenheight"] = isset($dol_screenheight) ? $dol_screenheight : '';
-        $_SESSION["dol_company"] = getDolGlobalString("MAIN_INFO_SOCIETE_NOM");
+        $_SESSION["dol_company"] = Functions::getDolGlobalString("MAIN_INFO_SOCIETE_NOM");
         $_SESSION["dol_entity"] = $conf->entity;
         // Store value into session (values stored only if defined)
         if (!empty($dol_hide_topmenu)) {
@@ -1245,7 +1245,7 @@ if (!defined('NOLOGIN')) {
         }
 
         // Change landing page if defined.
-        $landingpage = (empty($user->conf->MAIN_LANDING_PAGE) ? (!getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE) : $user->conf->MAIN_LANDING_PAGE);
+        $landingpage = (empty($user->conf->MAIN_LANDING_PAGE) ? (!Functions::getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE) : $user->conf->MAIN_LANDING_PAGE);
         if (!empty($landingpage)) {    // Example: /index.php
             $newpath = dol_buildpath($landingpage, 1);
             if ($_SERVER["PHP_SELF"] != $newpath) {   // not already on landing page (avoid infinite loop)
@@ -1265,7 +1265,7 @@ if (!defined('NOLOGIN')) {
         $user->rights->user->self->password = 1;
 
         //Required if advanced permissions are used with MAIN_USE_ADVANCED_PERMS
-        if (getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
+        if (Functions::getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
             if (!$user->hasRight('user', 'user_advance')) {
                 $user->rights->user->user_advance = new stdClass(); // To avoid warnings
             }
@@ -1300,7 +1300,7 @@ if (!defined('NOLOGIN')) {
     }
 
     // Replace conf->css by personalized value if theme not forced
-    if (!getDolGlobalString('MAIN_FORCETHEME') && !empty($user->conf->MAIN_THEME)) {
+    if (!Functions::getDolGlobalString('MAIN_FORCETHEME') && !empty($user->conf->MAIN_THEME)) {
         $conf->theme = $user->conf->MAIN_THEME;
         $conf->css = "/theme/" . $conf->theme . "/style.css.php";
     }
@@ -1327,7 +1327,7 @@ if (GETPOST('nojs', 'int')) {  // If javascript was not disabled on URL
 }
 
 // Set MAIN_OPTIMIZEFORTEXTBROWSER for user (must be after login part)
-if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && !empty($user->conf->MAIN_OPTIMIZEFORTEXTBROWSER)) {
+if (!Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && !empty($user->conf->MAIN_OPTIMIZEFORTEXTBROWSER)) {
     $conf->global->MAIN_OPTIMIZEFORTEXTBROWSER = $user->conf->MAIN_OPTIMIZEFORTEXTBROWSER;
 }
 
@@ -1360,7 +1360,7 @@ if (
     (!empty($conf->browser->layout) && $conf->browser->layout == 'phone')
     || (!empty($_SESSION['dol_screenwidth']) && $_SESSION['dol_screenwidth'] < 400)
     || (!empty($_SESSION['dol_screenheight']) && $_SESSION['dol_screenheight'] < 400
-        || getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER'))
+        || Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER'))
 ) {
     $conf->dol_optimize_smallscreen = 1;
 
@@ -1459,10 +1459,10 @@ $heightforframes = 50;
 // Init menu manager
 if (!defined('NOREQUIREMENU')) {
     if (empty($user->socid)) {    // If internal user or not defined
-        $conf->standard_menu = (!getDolGlobalString('MAIN_MENU_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENU_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENU_STANDARD) : $conf->global->MAIN_MENU_STANDARD_FORCED);
+        $conf->standard_menu = (!Functions::getDolGlobalString('MAIN_MENU_STANDARD_FORCED') ? (!Functions::getDolGlobalString('MAIN_MENU_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENU_STANDARD) : $conf->global->MAIN_MENU_STANDARD_FORCED);
     } else {
         // If external user
-        $conf->standard_menu = (!getDolGlobalString('MAIN_MENUFRONT_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENUFRONT_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENUFRONT_STANDARD) : $conf->global->MAIN_MENUFRONT_STANDARD_FORCED);
+        $conf->standard_menu = (!Functions::getDolGlobalString('MAIN_MENUFRONT_STANDARD_FORCED') ? (!Functions::getDolGlobalString('MAIN_MENUFRONT_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENUFRONT_STANDARD) : $conf->global->MAIN_MENUFRONT_STANDARD_FORCED);
     }
 
     // Load the menu manager (only if not already done)
@@ -1553,14 +1553,14 @@ if (!function_exists("llxHeader")) {
 
         $tmpcsstouse = 'sidebar-collapse' . ($morecssonbody ? ' ' . $morecssonbody : '');
         // If theme MD and classic layer, we open the menulayer by default.
-        if ($conf->theme == 'md' && !in_array($conf->browser->layout, ['phone', 'tablet']) && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+        if ($conf->theme == 'md' && !in_array($conf->browser->layout, ['phone', 'tablet']) && !Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
             global $mainmenu;
             if ($mainmenu != 'website') {
                 $tmpcsstouse = $morecssonbody; // We do not use sidebar-collpase by default to have menuhider open by default.
             }
         }
 
-        if (getDolGlobalString('MAIN_OPTIMIZEFORCOLORBLIND')) {
+        if (Functions::getDolGlobalString('MAIN_OPTIMIZEFORCOLORBLIND')) {
             $tmpcsstouse .= ' colorblind-' . strip_tags($conf->global->MAIN_OPTIMIZEFORCOLORBLIND);
         }
 
@@ -1614,7 +1614,7 @@ function top_httphead($contenttype = 'text/html', $forcenocache = 0)
         header("X-Frame-Options: ALLOWALL");
     }
 
-    if (getDolGlobalString('MAIN_SECURITY_FORCE_ACCESS_CONTROL_ALLOW_ORIGIN')) {
+    if (Functions::getDolGlobalString('MAIN_SECURITY_FORCE_ACCESS_CONTROL_ALLOW_ORIGIN')) {
         $tmpurl = constant('DOL_MAIN_URL_ROOT');
         $tmpurl = preg_replace('/^(https?:\/\/[^\/]+)\/.*$/', '\1', $tmpurl);
         header('Access-Control-Allow-Origin: ' . $tmpurl);
@@ -1638,7 +1638,7 @@ function top_httphead($contenttype = 'text/html', $forcenocache = 0)
         //
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
-        $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSPRO');
+        $contentsecuritypolicy = Functions::getDolGlobalString('MAIN_SECURITY_FORCECSPRO');
 
         if (!is_object($hookmanager)) {
             include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
@@ -1675,7 +1675,7 @@ function top_httphead($contenttype = 'text/html', $forcenocache = 0)
         //
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
         // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
-        $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSP');
+        $contentsecuritypolicy = Functions::getDolGlobalString('MAIN_SECURITY_FORCECSP');
 
         if (!is_object($hookmanager)) {
             include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
@@ -1702,7 +1702,7 @@ function top_httphead($contenttype = 'text/html', $forcenocache = 0)
     // Say if we must provide the referrer when we jump onto another web page.
     // Default browser are 'strict-origin-when-cross-origin' (only domain is sent on other domain switching), we want more so we use 'same-origin' so browser doesn't send any referrer when going into another web site domain.
     if (!defined('MAIN_SECURITY_FORCERP')) {
-        $referrerpolicy = getDolGlobalString('MAIN_SECURITY_FORCERP', "same-origin");
+        $referrerpolicy = Functions::getDolGlobalString('MAIN_SECURITY_FORCERP', "same-origin");
 
         header("Referrer-Policy: " . $referrerpolicy);
     }
@@ -1776,8 +1776,8 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
         if (!empty($mysoc->logo_squarred_mini)) {
             $favicon = DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/thumbs/' . $mysoc->logo_squarred_mini);
         }
-        if (getDolGlobalString('MAIN_FAVICON_URL')) {
-            $favicon = getDolGlobalString('MAIN_FAVICON_URL');
+        if (Functions::getDolGlobalString('MAIN_FAVICON_URL')) {
+            $favicon = Functions::getDolGlobalString('MAIN_FAVICON_URL');
         }
         if (empty($conf->dol_use_jmobile)) {
             print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n"; // Not required into an Android webview
@@ -1796,9 +1796,9 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
             print '<link rel="manifest" href="' . $manifest . '" />' . "\n";
         }
 
-        if (getDolGlobalString('THEME_ELDY_TOPMENU_BACK1')) {
+        if (Functions::getDolGlobalString('THEME_ELDY_TOPMENU_BACK1')) {
             // TODO: use auto theme color switch
-            print '<meta name="theme-color" content="rgb(' . getDolGlobalString('THEME_ELDY_TOPMENU_BACK1') . ')">' . "\n";
+            print '<meta name="theme-color" content="rgb(' . Functions::getDolGlobalString('THEME_ELDY_TOPMENU_BACK1') . ')">' . "\n";
         }
 
         // Auto refresh page
@@ -1808,13 +1808,13 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
 
         // Displays title
         $appli = constant('DOL_APPLICATION_TITLE');
-        if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-            $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
+        if (Functions::getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+            $appli = Functions::getDolGlobalString('MAIN_APPLICATION_TITLE');
         }
 
         print '<title>';
         $titletoshow = '';
-        if ($title && getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/noapp/', $conf->global->MAIN_HTML_TITLE)) {
+        if ($title && Functions::getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/noapp/', $conf->global->MAIN_HTML_TITLE)) {
             $titletoshow = dol_htmlentities($title);
         } elseif ($title) {
             $titletoshow = dol_htmlentities($appli . ' - ' . $title);
@@ -1869,7 +1869,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
             $themeparam .= '&amp;THEME_SATURATE_RATIO=' . GETPOST('THEME_SATURATE_RATIO', 'int');
         }
 
-        if (getDolGlobalString('MAIN_ENABLE_FONT_ROBOTO')) {
+        if (Functions::getDolGlobalString('MAIN_ENABLE_FONT_ROBOTO')) {
             print '<link rel="preconnect" href="https://fonts.gstatic.com">' . "\n";
             print '<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;300;400;500;600&display=swap" rel="stylesheet">' . "\n";
         }
@@ -1877,8 +1877,8 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
         if (!defined('DISABLE_JQUERY') && !$disablejs && $conf->use_javascript_ajax) {
             print '<!-- Includes CSS for JQuery (Ajax library) -->' . "\n";
             $jquerytheme = 'base';
-            if (getDolGlobalString('MAIN_USE_JQUERY_THEME')) {
-                $jquerytheme = getDolGlobalString('MAIN_USE_JQUERY_THEME');
+            if (Functions::getDolGlobalString('MAIN_USE_JQUERY_THEME')) {
+                $jquerytheme = Functions::getDolGlobalString('MAIN_USE_JQUERY_THEME');
             }
             if (constant('JS_JQUERY_UI')) {
                 print '<link rel="stylesheet" type="text/css" href="' . JS_JQUERY_UI . 'css/' . $jquerytheme . '/jquery-ui.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // Forced JQuery
@@ -1888,15 +1888,15 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
             if (!defined('DISABLE_JQUERY_JNOTIFY')) {
                 print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify-alt.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JNotify
             }
-            if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {     // jQuery plugin "mutiselect", "multiple-select", "select2"...
-                $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
+            if (!defined('DISABLE_SELECT2') && (Functions::getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {     // jQuery plugin "mutiselect", "multiple-select", "select2"...
+                $tmpplugin = !Functions::getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
                 print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/css/' . $tmpplugin . '.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
             }
         }
 
         if (!defined('DISABLE_FONT_AWSOME')) {
             print '<!-- Includes CSS for font awesome -->' . "\n";
-            $fontawesome_directory = getDolGlobalString('MAIN_FONTAWESOME_DIRECTORY', '/theme/common/fontawesome-5');
+            $fontawesome_directory = Functions::getDolGlobalString('MAIN_FONTAWESOME_DIRECTORY', '/theme/common/fontawesome-5');
             print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . $fontawesome_directory . '/css/all.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
         }
 
@@ -1916,7 +1916,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
 
         //print 'themepath='.$themepath.' themeparam='.$themeparam;exit;
         print '<link rel="stylesheet" type="text/css" href="' . $themepath . $themeparam . '">' . "\n";
-        if (getDolGlobalString('MAIN_FIX_FLASH_ON_CHROME')) {
+        if (Functions::getDolGlobalString('MAIN_FIX_FLASH_ON_CHROME')) {
             print '<!-- Includes CSS that does not exists as a workaround of flash bug of chrome -->' . "\n" . '<link rel="stylesheet" type="text/css" href="filethatdoesnotexiststosolvechromeflashbug">' . "\n";
         }
 
@@ -1962,7 +1962,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
         }
 
         // Custom CSS
-        if (getDolGlobalString('MAIN_IHM_CUSTOM_CSS')) {
+        if (Functions::getDolGlobalString('MAIN_IHM_CUSTOM_CSS')) {
             // If a custom CSS was set, we add link to the custom css php file
             print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/theme/custom.css.php' . ($ext ? '?' . $ext : '') . '&amp;revision=' . getDolGlobalInt("MAIN_IHM_PARAMS_REV") . '">' . "\n";
         }
@@ -1982,7 +1982,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/js/jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
             }
             // jQuery jnotify
-            if (!getDolGlobalString('MAIN_DISABLE_JQUERY_JNOTIFY') && !defined('DISABLE_JQUERY_JNOTIFY')) {
+            if (!Functions::getDolGlobalString('MAIN_DISABLE_JQUERY_JNOTIFY') && !defined('DISABLE_JQUERY_JNOTIFY')) {
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
             }
             // Table drag and drop lines
@@ -1990,12 +1990,12 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/tablednd/jquery.tablednd.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
             }
             // Chart
-            if (empty($disableforlogin) && (!getDolGlobalString('MAIN_JS_GRAPH') || getDolGlobalString('MAIN_JS_GRAPH') == 'chart') && !defined('DISABLE_JS_GRAPH')) {
+            if (empty($disableforlogin) && (!Functions::getDolGlobalString('MAIN_JS_GRAPH') || Functions::getDolGlobalString('MAIN_JS_GRAPH') == 'chart') && !defined('DISABLE_JS_GRAPH')) {
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/nnnick/chartjs/dist/chart.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
             }
 
             // jQuery jeditable for Edit In Place features
-            if (getDolGlobalString('MAIN_USE_JQUERY_JEDITABLE') && !defined('DISABLE_JQUERY_JEDITABLE')) {
+            if (Functions::getDolGlobalString('MAIN_USE_JQUERY_JEDITABLE') && !defined('DISABLE_JQUERY_JEDITABLE')) {
                 print '<!-- JS to manage editInPlace feature -->' . "\n";
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ui-datepicker.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
@@ -2014,13 +2014,13 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ckeditor.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
             }
             // jQuery Timepicker
-            if (getDolGlobalString('MAIN_USE_JQUERY_TIMEPICKER') || defined('REQUIRE_JQUERY_TIMEPICKER')) {
+            if (Functions::getDolGlobalString('MAIN_USE_JQUERY_TIMEPICKER') || defined('REQUIRE_JQUERY_TIMEPICKER')) {
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/timepicker/jquery-ui-timepicker-addon.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/timepicker.js.php?lang=' . $langs->defaultlang . ($ext ? '&amp;' . $ext : '') . '"></script>' . "\n";
             }
-            if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {
+            if (!defined('DISABLE_SELECT2') && (Functions::getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {
                 // jQuery plugin "mutiselect", "multiple-select", "select2", ...
-                $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
+                $tmpplugin = !Functions::getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/js/' . $tmpplugin . '.full.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n"; // We include full because we need the support of containerCssClass
             }
             if (!defined('DISABLE_MULTISELECT')) {     // jQuery plugin "mutiselect" to select with checkboxes. Can be removed once we have an enhanced search tool
@@ -2030,7 +2030,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
 
         if (!$disablejs && !empty($conf->use_javascript_ajax)) {
             // CKEditor
-            if (empty($disableforlogin) && (isModEnabled('fckeditor') && (!getDolGlobalString('FCKEDITOR_EDITORNAME') || getDolGlobalString('FCKEDITOR_EDITORNAME') == 'ckeditor') && !defined('DISABLE_CKEDITOR')) || defined('FORCE_CKEDITOR')) {
+            if (empty($disableforlogin) && (isModEnabled('fckeditor') && (!Functions::getDolGlobalString('FCKEDITOR_EDITORNAME') || Functions::getDolGlobalString('FCKEDITOR_EDITORNAME') == 'ckeditor') && !defined('DISABLE_CKEDITOR')) || defined('FORCE_CKEDITOR')) {
                 print '<!-- Includes JS for CKEditor -->' . "\n";
                 $pathckeditor = DOL_URL_ROOT . '/vendor/ckeditor/ckeditor/';
                 $jsckeditor = 'ckeditor.js';
@@ -2058,7 +2058,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
             // Browser notifications (if NOREQUIREMENU is on, it is mostly a page for popup, so we do not enable notif too. We hide also for public pages).
             if (!defined('NOBROWSERNOTIF') && !defined('NOREQUIREMENU') && !defined('NOLOGIN')) {
                 $enablebrowsernotif = false;
-                if (isModEnabled('agenda') && getDolGlobalString('AGENDA_REMINDER_BROWSER')) {
+                if (isModEnabled('agenda') && Functions::getDolGlobalString('AGENDA_REMINDER_BROWSER')) {
                     $enablebrowsernotif = true;
                 }
                 if ($conf->browser->layout == 'phone') {
@@ -2105,7 +2105,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
         }
 
         //If you want to load custom javascript file from your selected theme directory
-        if (getDolGlobalString('ALLOW_THEME_JS')) {
+        if (Functions::getDolGlobalString('ALLOW_THEME_JS')) {
             $theme_js = dol_buildpath('/theme/' . $conf->theme . '/' . $conf->theme . '.js', 0);
             if (file_exists($theme_js)) {
                 print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/theme/' . $conf->theme . '/' . $conf->theme . '.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
@@ -2115,8 +2115,8 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
         if (!empty($head)) {
             print $head . "\n";
         }
-        if (getDolGlobalString('MAIN_HTML_HEADER')) {
-            print getDolGlobalString('MAIN_HTML_HEADER') . "\n";
+        if (Functions::getDolGlobalString('MAIN_HTML_HEADER')) {
+            print Functions::getDolGlobalString('MAIN_HTML_HEADER') . "\n";
         }
 
         $parameters = [];
@@ -2180,15 +2180,15 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
         print '<header id="id-top" class="side-nav-vert' . (GETPOST('dol_invisible_topmenu', 'int') ? ' hidden' : '') . '">'; // dol_invisible_topmenu differs from dol_hide_topmenu: dol_invisible_topmenu means we output menu but we make it invisible.
 
         // Show menu entries
-        print '<div id="tmenu_tooltip' . (!getDolGlobalString('MAIN_MENU_INVERT') ? '' : 'invert') . '" class="tmenu">' . "\n";
+        print '<div id="tmenu_tooltip' . (!Functions::getDolGlobalString('MAIN_MENU_INVERT') ? '' : 'invert') . '" class="tmenu">' . "\n";
         $menumanager->atarget = $target;
         $menumanager->showmenu('top', ['searchform' => $searchform]); // This contains a \n
         print "</div>\n";
 
         // Define link to login card
         $appli = constant('DOL_APPLICATION_TITLE');
-        if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-            $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
+        if (Functions::getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+            $appli = Functions::getDolGlobalString('MAIN_APPLICATION_TITLE');
             if (preg_match('/\d\.\d/', $appli)) {
                 if (!preg_match('/' . preg_quote(DOL_VERSION) . '/', $appli)) {
                     $appli .= " (" . DOL_VERSION . ")"; // If new title contains a version that is different than core
@@ -2206,7 +2206,7 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
 
         $logouttext = '';
         $logouthtmltext = '';
-        if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+        if (!Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
             //$logouthtmltext=$appli.'<br>';
             $stringforfirstkey = $langs->trans("KeyboardShortcut");
             if ($conf->browser->name == 'chrome') {
@@ -2254,7 +2254,7 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
         }
 
         // Link to print main content area (optioncss=print)
-        if (!getDolGlobalString('MAIN_PRINT_DISABLELINK') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+        if (!Functions::getDolGlobalString('MAIN_PRINT_DISABLELINK') && !Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
             $qs = dol_escape_htmltag($_SERVER["QUERY_STRING"]);
 
             if (isset($_POST) && is_array($_POST)) {
@@ -2285,7 +2285,7 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
         }
 
         // Link to Dolibarr wiki pages
-        if (!getDolGlobalString('MAIN_HELP_DISABLELINK') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+        if (!Functions::getDolGlobalString('MAIN_HELP_DISABLELINK') && !Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
             $langs->load("help");
 
             $helpbaseurl = '';
@@ -2331,13 +2331,13 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
             }
 
             // Version
-            if (getDolGlobalString('MAIN_SHOWDATABASENAMEINHELPPAGESLINK')) {
+            if (Functions::getDolGlobalString('MAIN_SHOWDATABASENAMEINHELPPAGESLINK')) {
                 $langs->load('admin');
                 $appli .= '<br>' . $langs->trans("Database") . ': ' . $db->database_name;
             }
         }
 
-        if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+        if (!Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
             $text = '<span class="aversion"><span class="hideonsmartphone small">' . DOL_VERSION . '</span></span>';
             $toprightmenu .= $form->textwithtooltip('', $appli, 2, 1, $text, 'login_block_elem', 2);
         }
@@ -2354,12 +2354,12 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
         $mode = -1;
         $toprightmenu .= '<div class="inline-block login_block_elem login_block_elem_name nowrap centpercent" style="padding: 0px;">';
 
-        if (getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
+        if (Functions::getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
             // Add search dropdown
             $toprightmenu .= top_menu_search();
         }
 
-        if (getDolGlobalString('MAIN_USE_TOP_MENU_QUICKADD_DROPDOWN')) {
+        if (Functions::getDolGlobalString('MAIN_USE_TOP_MENU_QUICKADD_DROPDOWN')) {
             // Add search dropdown
             $toprightmenu .= top_menu_quickadd();
         }
@@ -2429,24 +2429,24 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 
     $dropdownBody .= '<br><b>' . $langs->trans("Company") . '</b>: <span>' . dol_escape_htmltag($mysoc->name) . '</span>';
     if ($langs->transcountry("ProfId1", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId1", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_SIREN"), 1) . '</span>';
+        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId1", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(Functions::getDolGlobalString("MAIN_INFO_SIREN"), 1) . '</span>';
     }
     if ($langs->transcountry("ProfId2", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId2", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_SIRET"), 2) . '</span>';
+        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId2", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(Functions::getDolGlobalString("MAIN_INFO_SIRET"), 2) . '</span>';
     }
     if ($langs->transcountry("ProfId3", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId3", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_APE"), 3) . '</span>';
+        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId3", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(Functions::getDolGlobalString("MAIN_INFO_APE"), 3) . '</span>';
     }
     if ($langs->transcountry("ProfId4", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId4", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_RCS"), 4) . '</span>';
+        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId4", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(Functions::getDolGlobalString("MAIN_INFO_RCS"), 4) . '</span>';
     }
     if ($langs->transcountry("ProfId5", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId5", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_PROFID5"), 5) . '</span>';
+        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId5", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(Functions::getDolGlobalString("MAIN_INFO_PROFID5"), 5) . '</span>';
     }
     if ($langs->transcountry("ProfId6", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId6", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_PROFID6"), 6) . '</span>';
+        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId6", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(Functions::getDolGlobalString("MAIN_INFO_PROFID6"), 6) . '</span>';
     }
-    $dropdownBody .= '<br><b>' . $langs->trans("VATIntraShort") . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_TVAINTRA"), 'VAT') . '</span>';
+    $dropdownBody .= '<br><b>' . $langs->trans("VATIntraShort") . '</b>: <span>' . dol_print_profids(Functions::getDolGlobalString("MAIN_INFO_TVAINTRA"), 'VAT') . '</span>';
     $dropdownBody .= '<br><b>' . $langs->trans("Country") . '</b>: <span>' . ($mysoc->country_code ? $langs->trans("Country" . $mysoc->country_code) : '') . '</span>';
     if (isModEnabled('multicurrency')) {
         $dropdownBody .= '<br><b>' . $langs->trans("Currency") . '</b>: <span>' . $conf->currency . '</span>';
@@ -2474,7 +2474,7 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 
     $dropdownBody .= '<br><u>' . $langs->trans("Session") . '</u>';
     $dropdownBody .= '<br><b>' . $langs->trans("IPAddress") . '</b>: ' . dol_escape_htmltag($_SERVER["REMOTE_ADDR"]);
-    if (getDolGlobalString('MAIN_MODULE_MULTICOMPANY')) {
+    if (Functions::getDolGlobalString('MAIN_MODULE_MULTICOMPANY')) {
         $dropdownBody .= '<br><b>' . $langs->trans("ConnectedOnMultiCompany") . ':</b> ' . $conf->entity . ' (user entity ' . $user->entity . ')';
     }
     $dropdownBody .= '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . $_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)');
@@ -2542,8 +2542,8 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 
     // Define version to show
     $appli = constant('DOL_APPLICATION_TITLE');
-    if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-        $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
+    if (Functions::getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+        $appli = Functions::getDolGlobalString('MAIN_APPLICATION_TITLE');
         if (preg_match('/\d\.\d/', $appli)) {
             if (!preg_match('/' . preg_quote(DOL_VERSION) . '/', $appli)) {
                 $appli .= " (" . DOL_VERSION . ")"; // If new title contains a version that is different than core
@@ -2555,7 +2555,7 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
         $appli .= " " . DOL_VERSION;
     }
 
-    if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+    if (!Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
         $btnUser = '<!-- div for user link -->
 	    <div id="topmenu-login-dropdown" class="userimg atoplogin dropdown user user-menu inline-block">
 	        <a href="' . DOL_URL_ROOT . '/user/card.php?id=' . $user->id . '" class="dropdown-toggle login-dropdown-a" data-toggle="dropdown">
@@ -2806,7 +2806,7 @@ function printDropdownQuickadd()
                 "title" => "NewSupplierOrderShort@orders",
                 "name" => "SupplierOrder@orders",
                 "picto" => "supplier_order",
-                "activation" => (isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "commande", "write")) || (isModEnabled("supplier_order") && $user->hasRight("supplier_invoice", "write")), // vs hooking
+                "activation" => (isModEnabled("fournisseur") && !Functions::getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "commande", "write")) || (isModEnabled("supplier_order") && $user->hasRight("supplier_invoice", "write")), // vs hooking
                 "position" => 80,
             ],
             [
@@ -2814,7 +2814,7 @@ function printDropdownQuickadd()
                 "title" => "NewBill@bills",
                 "name" => "SupplierBill@bills",
                 "picto" => "supplier_invoice",
-                "activation" => (isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "facture", "write")) || (isModEnabled("supplier_invoice") && $user->hasRight("supplier_invoice", "write")), // vs hooking
+                "activation" => (isModEnabled("fournisseur") && !Functions::getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "facture", "write")) || (isModEnabled("supplier_invoice") && $user->hasRight("supplier_invoice", "write")), // vs hooking
                 "position" => 90,
             ],
             [
@@ -2935,7 +2935,7 @@ function top_menu_bookmark()
         include_once DOL_DOCUMENT_ROOT . '/bookmarks/bookmarks.lib.php';
         $langs->load("bookmarks");
 
-        if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+        if (Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
             $html .= '<div id="topmenu-bookmark-dropdown" class="dropdown inline-block">';
             $html .= printDropdownBookmarksList();
             $html .= '</div>';
@@ -3191,7 +3191,7 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
             $form = new Form($db);
         }
         $selected = -1;
-        if (!getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
+        if (!Functions::getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
             // Select with select2 is awful on smartphone. TODO Is this still true with select2 v4 ?
             if ($conf->browser->layout == 'phone') {
                 $conf->global->MAIN_USE_OLD_SEARCH_FORM = 1;
@@ -3201,7 +3201,7 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
             $arrayresult = [];
             include DOL_DOCUMENT_ROOT . '/core/ajax/selectsearchbox.php'; // This make initHooks('searchform') then set $arrayresult
 
-            if ($conf->use_javascript_ajax && !getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
+            if ($conf->use_javascript_ajax && !Functions::getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
                 // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
                 // accesskey is for Mac:               CTRL + key for all browsers
                 $stringforfirstkey = $langs->trans("KeyboardShortcut");
@@ -3213,7 +3213,7 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
                     $stringforfirstkey .= ' CTL +';
                 }
 
-                $searchform .= $form->selectArrayFilter('searchselectcombo', $arrayresult, $selected, 'accesskey="s"', 1, 0, (!getDolGlobalString('MAIN_SEARCHBOX_CONTENT_LOADED_BEFORE_KEY') ? 1 : 0), 'vmenusearchselectcombo', 1, $langs->trans("Search"), 1, $stringforfirstkey . ' s');
+                $searchform .= $form->selectArrayFilter('searchselectcombo', $arrayresult, $selected, 'accesskey="s"', 1, 0, (!Functions::getDolGlobalString('MAIN_SEARCHBOX_CONTENT_LOADED_BEFORE_KEY') ? 1 : 0), 'vmenusearchselectcombo', 1, $langs->trans("Search"), 1, $stringforfirstkey . ' s');
             } else {
                 if (is_array($arrayresult)) {
                     foreach ($arrayresult as $key => $val) {
@@ -3232,10 +3232,10 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
             }
 
             // Force special value for $searchform for text browsers or very old search form
-            if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') || empty($conf->use_javascript_ajax)) {
+            if (Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') || empty($conf->use_javascript_ajax)) {
                 $urltosearch = DOL_URL_ROOT . '/core/search_page.php?showtitlebefore=1';
                 $searchform = '<div class="blockvmenuimpair blockvmenusearchphone"><div id="divsearchforms1"><a href="' . $urltosearch . '" accesskey="s" alt="' . dol_escape_htmltag($langs->trans("ShowSearchFields")) . '">' . $langs->trans("Search") . '...</a></div></div>';
-            } elseif ($conf->use_javascript_ajax && getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
+            } elseif ($conf->use_javascript_ajax && Functions::getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
                 $searchform = '<div class="blockvmenuimpair blockvmenusearchphone"><div id="divsearchforms1"><a href="#" alt="' . dol_escape_htmltag($langs->trans("ShowSearchFields")) . '">' . $langs->trans("Search") . '...</a></div><div id="divsearchforms2" style="display: none">' . $searchform . '</div>';
                 $searchform .= '<script>
             	jQuery(document).ready(function () {
@@ -3269,7 +3269,7 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
         // Left column
         print '<!-- Begin left menu -->' . "\n";
 
-        print '<div class="vmenu"' . (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') ? '' : ' title="Left menu"') . '>' . "\n\n";
+        print '<div class="vmenu"' . (!Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') ? '' : ' title="Left menu"') . '>' . "\n\n";
 
         // Show left menu with other forms
         $menumanager->menu_array = $menu_array_before;
@@ -3282,7 +3282,7 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
         print '<div id="blockvmenuhelp" class="blockvmenuhelp">' . "\n";
 
         // Version
-        if (getDolGlobalString('MAIN_SHOW_VERSION')) {    // Version is already on help picto and on login page.
+        if (Functions::getDolGlobalString('MAIN_SHOW_VERSION')) {    // Version is already on help picto and on login page.
             $doliurl = 'https://www.dolibarr.org';
             //local communities
             if (preg_match('/fr/i', $langs->defaultlang)) {
@@ -3302,8 +3302,8 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
             }
 
             $appli = constant('DOL_APPLICATION_TITLE');
-            if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-                $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
+            if (Functions::getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+                $appli = Functions::getDolGlobalString('MAIN_APPLICATION_TITLE');
                 $doliurl = '';
                 if (preg_match('/\d\.\d/', $appli)) {
                     if (!preg_match('/' . preg_quote(DOL_VERSION) . '/', $appli)) {
@@ -3331,10 +3331,10 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
         }
 
         // Link to bugtrack
-        if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
+        if (Functions::getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
             require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-            if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK') == 'github') {
+            if (Functions::getDolGlobalString('MAIN_BUGTRACK_ENABLELINK') == 'github') {
                 $bugbaseurl = 'https://github.com/Dolibarr/dolibarr/issues/new?labels=Bug';
                 $bugbaseurl .= '&title=';
                 $bugbaseurl .= urlencode("Bug: ");
@@ -3369,8 +3369,8 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
 
                 $bugbaseurl .= urlencode("\n");
                 $bugbaseurl .= urlencode("## Report\n");
-            } elseif (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
-                $bugbaseurl = getDolGlobalString('MAIN_BUGTRACK_ENABLELINK');
+            } elseif (Functions::getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
+                $bugbaseurl = Functions::getDolGlobalString('MAIN_BUGTRACK_ENABLELINK');
             } else {
                 $bugbaseurl = "";
             }
@@ -3437,12 +3437,12 @@ function main_area($title = '')
     $reshook = $hookmanager->executeHooks('printMainArea', $parameters); // Note that $action and $object may have been modified by some hooks
     print $hookmanager->resPrint;
 
-    if (getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
-        print info_admin($langs->trans("WarningYouAreInMaintenanceMode", getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')), 0, 0, 1, 'warning maintenancemode');
+    if (Functions::getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
+        print info_admin($langs->trans("WarningYouAreInMaintenanceMode", Functions::getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')), 0, 0, 1, 'warning maintenancemode');
     }
 
     // Permit to add user company information on each printed document by setting SHOW_SOCINFO_ON_PRINT
-    if (getDolGlobalString('SHOW_SOCINFO_ON_PRINT') && GETPOST('optioncss', 'aZ09') == 'print' && empty(GETPOST('disable_show_socinfo_on_print', 'aZ09'))) {
+    if (Functions::getDolGlobalString('SHOW_SOCINFO_ON_PRINT') && GETPOST('optioncss', 'aZ09') == 'print' && empty(GETPOST('disable_show_socinfo_on_print', 'aZ09'))) {
         $parameters = [];
         $reshook = $hookmanager->executeHooks('showSocinfoOnPrint', $parameters);
         if (empty($reshook)) {
@@ -3451,20 +3451,20 @@ function main_area($title = '')
             print '<table class="centpercent div-table-responsive">' . "\n";
             print '<tbody>';
             print '<tr><td rowspan="0" class="width20p">';
-            if (getDolGlobalString('MAIN_SHOW_LOGO') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && getDolGlobalString('MAIN_INFO_SOCIETE_LOGO')) {
-                print '<img id="mysoc-info-header-logo" style="max-width:100%" alt="" src="' . DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_LOGO'))) . '">';
+            if (Functions::getDolGlobalString('MAIN_SHOW_LOGO') && !Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && Functions::getDolGlobalString('MAIN_INFO_SOCIETE_LOGO')) {
+                print '<img id="mysoc-info-header-logo" style="max-width:100%" alt="" src="' . DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_LOGO'))) . '">';
             }
             print '</td><td  rowspan="0" class="width50p"></td></tr>' . "\n";
-            print '<tr><td class="titre bold">' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_NOM')) . '</td></tr>' . "\n";
-            print '<tr><td>' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_ADDRESS')) . '<br>' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_ZIP')) . ' ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_TOWN')) . '</td></tr>' . "\n";
-            if (getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) {
-                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Phone") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) . '</td></tr>';
+            print '<tr><td class="titre bold">' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_NOM')) . '</td></tr>' . "\n";
+            print '<tr><td>' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_ADDRESS')) . '<br>' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_ZIP')) . ' ' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_TOWN')) . '</td></tr>' . "\n";
+            if (Functions::getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) {
+                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Phone") . ' : ' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) . '</td></tr>';
             }
-            if (getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) {
-                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Email") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) . '</td></tr>';
+            if (Functions::getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) {
+                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Email") . ' : ' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) . '</td></tr>';
             }
-            if (getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) {
-                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Web") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) . '</td></tr>';
+            if (Functions::getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) {
+                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Web") . ' : ' . dol_escape_htmltag(Functions::getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) . '</td></tr>';
             }
             print '</tbody>';
             print '</table>' . "\n";

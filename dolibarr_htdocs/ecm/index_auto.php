@@ -295,7 +295,7 @@ $moreheadjs = '';
 
 //$morejs=array();
 $morejs = ['includes/jquery/plugins/blockUI/jquery.blockUI.js', 'core/js/blockUI.js']; // Used by ecm/tpl/enabledfiletreeajax.tpl.pgp
-if (!getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
+if (!Functions::getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
     $morejs[] = "includes/jquery/plugins/jqueryFileTree/jqueryFileTree.js";
 }
 
@@ -308,7 +308,7 @@ llxHeader($moreheadcss . $moreheadjs, $langs->trans("ECMArea"), '', '', '', '', 
 // Add sections to manage
 $rowspan = 0;
 $sectionauto = [];
-if (!getDolGlobalString('ECM_AUTO_TREE_HIDEN')) {
+if (!Functions::getDolGlobalString('ECM_AUTO_TREE_HIDEN')) {
     if (isModEnabled("product") || isModEnabled("service")) {
         $langs->load("products");
         $rowspan++;
@@ -427,7 +427,7 @@ if ($action == 'deletefile' && empty($conf->use_javascript_ajax)) {
             print '<div class="inline-block toolbarbutton centpercent">';
 
             // Toolbar
-            $url = ((!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_ECM_DISABLE_JS')) ? '#' : ($_SERVER["PHP_SELF"] . '?action=refreshmanual' . ($module ? '&amp;module=' . $module : '') . ($section ? '&amp;section=' . $section : '')));
+            $url = ((!empty($conf->use_javascript_ajax) && !Functions::getDolGlobalString('MAIN_ECM_DISABLE_JS')) ? '#' : ($_SERVER["PHP_SELF"] . '?action=refreshmanual' . ($module ? '&amp;module=' . $module : '') . ($section ? '&amp;section=' . $section : '')));
             print '<a href="' . $url . '" class="inline-block valignmiddle toolbarbutton paddingtop" title="' . dol_escape_htmltag($langs->trans('Refresh')) . '">';
             print img_picto('', 'refresh', 'id="refreshbutton"', false, 0, 0, '', 'size15x marginrightonly');
             print '</a>';
@@ -476,7 +476,7 @@ if ($action == 'deletefile' && empty($conf->use_javascript_ajax)) {
                         }
 
                         print '<li class="directory collapsed">';
-                        if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
+                        if (!empty($conf->use_javascript_ajax) && !Functions::getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
                             print '<a class="fmdirlia jqft ecmjqft" href="' . $_SERVER["PHP_SELF"] . '?module=' . urlencode($val['module']) . '">';
                             print $val['label'];
                             print '</a>';
@@ -529,7 +529,7 @@ if ($action == 'deletefile' && empty($conf->use_javascript_ajax)) {
 <?php
 // End of page
 
-if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
+if (!empty($conf->use_javascript_ajax) && !Functions::getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
     include DOL_DOCUMENT_ROOT . '/ecm/tpl/enablefiletreeajax.tpl.php';
 }
 

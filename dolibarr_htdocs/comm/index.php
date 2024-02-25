@@ -68,7 +68,7 @@ if (isset($user->socid) && $user->socid > 0) {
 }
 
 $max = getDolGlobalInt('MAIN_SIZE_SHORTLIST_LIMIT');
-$maxofloop = (!getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global->MAIN_MAXLIST_OVERLOAD);
+$maxofloop = (!Functions::getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global->MAIN_MAXLIST_OVERLOAD);
 $now = dol_now();
 
 //restrictedArea($user, 'societe', $socid, '&societe', '', 'fk_soc', 'rowid', 0);
@@ -169,7 +169,7 @@ if (isModEnabled("propal") && $user->hasRight("propal", "lire")) {
                 if ($i >= $max) {
                     $othernb++;
                     $i++;
-                    $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                    $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
                     continue;
                 }
 
@@ -198,11 +198,11 @@ if (isModEnabled("propal") && $user->hasRight("propal", "lire")) {
                 print '<tr class="oddeven">';
                 print '<td class="nowraponall tdoverflowmax100">' . $propalstatic->getNomUrl(1) . '</td>';
                 print '<td class="nowrap tdoverflowmax100">' . $companystatic->getNomUrl(1, 'customer') . '</td>';
-                print '<td class="nowrap right tdamount amount">' . price((getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc)) . '</td>';
+                print '<td class="nowrap right tdamount amount">' . price((Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc)) . '</td>';
                 print '</tr>';
 
                 $i++;
-                $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
             }
 
             if ($othernb) {
@@ -266,7 +266,7 @@ if (isModEnabled('supplier_proposal') && $user->hasRight("supplier_proposal", "l
                 if ($i >= $max) {
                     $othernb += 1;
                     $i++;
-                    $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                    $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
                     continue;
                 }
 
@@ -294,11 +294,11 @@ if (isModEnabled('supplier_proposal') && $user->hasRight("supplier_proposal", "l
                 print '<tr class="oddeven">';
                 print '<td class="nowraponall tdoverflowmax100">' . $supplierproposalstatic->getNomUrl(1) . '</td>';
                 print '<td class="nowrap tdoverflowmax100">' . $companystatic->getNomUrl(1, 'supplier') . '</td>';
-                print '<td class="nowrap right tdamount amount">' . price(getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
+                print '<td class="nowrap right tdamount amount">' . price(Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
                 print '</tr>';
 
                 $i++;
-                $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
             }
 
             if ($othernb) {
@@ -362,7 +362,7 @@ if (isModEnabled('commande') && $user->hasRight('commande', 'lire')) {
                 if ($i >= $max) {
                     $othernb += 1;
                     $i++;
-                    $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                    $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
                     continue;
                 }
 
@@ -391,11 +391,11 @@ if (isModEnabled('commande') && $user->hasRight('commande', 'lire')) {
                 print '<tr class="oddeven">';
                 print '<td class="nowraponall tdoverflowmax100">' . $orderstatic->getNomUrl(1) . '</td>';
                 print '<td class="nowrap tdoverflowmax100">' . $companystatic->getNomUrl(1, 'customer') . '</td>';
-                print '<td class="nowrap right tdamount amount">' . price(getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
+                print '<td class="nowrap right tdamount amount">' . price(Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
                 print '</tr>';
 
                 $i++;
-                $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
             }
 
             if ($othernb) {
@@ -420,7 +420,7 @@ if (isModEnabled('commande') && $user->hasRight('commande', 'lire')) {
  * Draft purchase orders
  */
 
-if ((isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "commande", "lire")) || (isModEnabled("supplier_order") && $user->hasRight("supplier_order", "lire"))) {
+if ((isModEnabled("fournisseur") && !Functions::getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "commande", "lire")) || (isModEnabled("supplier_order") && $user->hasRight("supplier_order", "lire"))) {
     $sql = "SELECT cf.rowid, cf.ref, cf.ref_supplier, cf.total_ht, cf.total_tva, cf.total_ttc, cf.fk_statut as status";
     $sql .= ", s.rowid as socid, s.nom as name, s.name_alias";
     $sql .= ", s.code_client, s.code_compta, s.client";
@@ -459,7 +459,7 @@ if ((isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMO
                 if ($i >= $max) {
                     $othernb += 1;
                     $i++;
-                    $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                    $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
                     continue;
                 }
 
@@ -488,11 +488,11 @@ if ((isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMO
                 print '<tr class="oddeven">';
                 print '<td class="nowraponall tdoverflowmax100">' . $supplierorderstatic->getNomUrl(1) . '</td>';
                 print '<td class="nowrap tdoverflowmax100">' . $companystatic->getNomUrl(1, 'supplier') . '</td>';
-                print '<td class="nowrap right tdamount amount">' . price(getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
+                print '<td class="nowrap right tdamount amount">' . price(Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
                 print '</tr>';
 
                 $i++;
-                $total += (getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
+                $total += (Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc);
             }
 
             if ($othernb) {
@@ -627,9 +627,9 @@ if (isModEnabled("societe") && $user->hasRight('societe', 'lire')) {
 
     $resql = $db->query($sql);
     if ($resql) {
-        if (!getDolGlobalString('SOCIETE_DISABLE_PROSPECTS') && !getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
+        if (!Functions::getDolGlobalString('SOCIETE_DISABLE_PROSPECTS') && !Functions::getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
             $header = "BoxTitleLastCustomersOrProspects";
-        } elseif (getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
+        } elseif (Functions::getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
             $header = "BoxTitleLastModifiedProspects";
         } else {
             $header = "BoxTitleLastModifiedCustomers";
@@ -665,10 +665,10 @@ if (isModEnabled("societe") && $user->hasRight('societe', 'lire')) {
 
                 $obj = $companystatic;
                 $s = '';
-                if (($obj->client == 2 || $obj->client == 3) && !getDolGlobalString('SOCIETE_DISABLE_PROSPECTS')) {
+                if (($obj->client == 2 || $obj->client == 3) && !Functions::getDolGlobalString('SOCIETE_DISABLE_PROSPECTS')) {
                     $s .= '<a class="customer-back opacitymedium" title="' . $langs->trans("Prospect") . '" href="' . DOL_URL_ROOT . '/comm/card.php?socid=' . $companystatic->id . '">' . dol_substr($langs->trans("Prospect"), 0, 1) . '</a>';
                 }
-                if (($obj->client == 1 || $obj->client == 3) && !getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
+                if (($obj->client == 1 || $obj->client == 3) && !Functions::getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
                     $s .= '<a class="customer-back" title="' . $langs->trans("Customer") . '" href="' . DOL_URL_ROOT . '/comm/card.php?socid=' . $companystatic->id . '">' . dol_substr($langs->trans("Customer"), 0, 1) . '</a>';
                 }
                 /*
@@ -914,7 +914,7 @@ if (isModEnabled("propal") && $user->hasRight("propal", "lire")) {
     if ($resql) {
         $total = $total_ttc = 0;
         $num = $db->num_rows($resql);
-        $nbofloop = min($num, (!getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global->MAIN_MAXLIST_OVERLOAD));
+        $nbofloop = min($num, (!Functions::getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global->MAIN_MAXLIST_OVERLOAD));
         startSimpleTable("ProposalsOpened", "comm/propal/list.php", "search_status=1", 4, $num);
 
         if ($num > 0) {
@@ -974,7 +974,7 @@ if (isModEnabled("propal") && $user->hasRight("propal", "lire")) {
                 print '<td class="center tddate" title="' . dol_escape_htmltag($langs->trans("Date") . ': ' . dol_print_date($datem, 'day', 'tzserver')) . '">';
                 print dol_print_date($datem, 'day', 'tzserver');
                 print '</td>';
-                print '<td class="right tdamount amount">' . price(getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
+                print '<td class="right tdamount amount">' . price(Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
                 print '<td align="center" width="14">' . $propalstatic->LibStatut($obj->fk_statut, 3) . '</td>';
 
                 print '</tr>';
@@ -993,7 +993,7 @@ if (isModEnabled("propal") && $user->hasRight("propal", "lire")) {
             }
         }
 
-        addSummaryTableLine(5, $num, $nbofloop, !getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $total_ttc : $total, "NoProposal", true);
+        addSummaryTableLine(5, $num, $nbofloop, !Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $total_ttc : $total, "NoProposal", true);
         finishSimpleTable(true);
 
         $db->free($resql);
@@ -1032,7 +1032,7 @@ if (isModEnabled('commande') && $user->hasRight('commande', 'lire')) {
     if ($resql) {
         $total = $total_ttc = 0;
         $num = $db->num_rows($resql);
-        $nbofloop = min($num, (!getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global->MAIN_MAXLIST_OVERLOAD));
+        $nbofloop = min($num, (!Functions::getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global->MAIN_MAXLIST_OVERLOAD));
         startSimpleTable("OrdersOpened", "commande/list.php", "search_status=" . Commande::STATUS_VALIDATED, 4, $num);
 
         if ($num > 0) {
@@ -1094,7 +1094,7 @@ if (isModEnabled('commande') && $user->hasRight('commande', 'lire')) {
                 print dol_print_date($datem, 'day', 'tzserver');
                 print '</td>';
 
-                print '<td class="right tdamount amount">' . price(getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
+                print '<td class="right tdamount amount">' . price(Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $obj->total_ht : $obj->total_ttc) . '</td>';
                 print '<td align="center" width="14">' . $orderstatic->LibStatut($obj->fk_statut, $obj->billed, 3) . '</td>';
 
                 print '</tr>';
@@ -1113,7 +1113,7 @@ if (isModEnabled('commande') && $user->hasRight('commande', 'lire')) {
             }
         }
 
-        addSummaryTableLine(5, $num, $nbofloop, !getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $total_ttc : $total, "None", true);
+        addSummaryTableLine(5, $num, $nbofloop, !Functions::getDolGlobalString('MAIN_DASHBOARD_USE_TOTAL_HT') ? $total_ttc : $total, "None", true);
         finishSimpleTable(true);
 
         $db->free($resql);

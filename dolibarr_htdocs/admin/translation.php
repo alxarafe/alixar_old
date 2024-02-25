@@ -27,7 +27,7 @@
  */
 
 // Load Dolibarr environment
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';

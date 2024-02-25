@@ -131,13 +131,13 @@ foreach ($modulesdir as $dir) {
 
                                 // We discard modules according to features level (PS: if module is activated we always show it)
                                 $const_name = 'MAIN_MODULE_' . strtoupper(preg_replace('/^mod/i', '', get_class($objMod)));
-                                if ($objMod->version == 'development' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2))) {
+                                if ($objMod->version == 'development' && (!Functions::getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2))) {
                                     $modulequalified = 0;
                                 }
-                                if ($objMod->version == 'experimental' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 1))) {
+                                if ($objMod->version == 'experimental' && (!Functions::getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 1))) {
                                     $modulequalified = 0;
                                 }
-                                if (preg_match('/deprecated/', $objMod->version) && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0))) {
+                                if (preg_match('/deprecated/', $objMod->version) && (!Functions::getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0))) {
                                     $modulequalified = 0;
                                 }
 
@@ -254,7 +254,7 @@ $moduledir = strtolower(preg_replace('/^mod/i', '', get_class($objMod)));
 $const_name = 'MAIN_MODULE_' . strtoupper(preg_replace('/^mod/i', '', get_class($objMod)));
 
 $text = '<span class="opacitymedium">' . $langs->trans("LastActivationDate") . ':</span> ';
-if (getDolGlobalString($const_name)) {
+if (Functions::getDolGlobalString($const_name)) {
     $text .= dol_print_date($objMod->getLastActivationDate(), 'dayhour');
 } else {
     $text .= $langs->trans("Disabled");

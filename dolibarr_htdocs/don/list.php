@@ -305,7 +305,7 @@ if ($search_all) {
 }
 
 $varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
-$selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')) : ''); // This also change content of $arrayfields
+$selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')) : ''); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
 print '<div class="div-table-responsive">';
@@ -315,7 +315,7 @@ print '<table class="tagtable nobottomiftotal liste' . (!empty($moreforfilter) ?
 // --------------------------------------------------------------------
 print '<tr class="liste_titre_filter">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre center maxwidthsearch">';
     $searchpicto = $form->showFilterButtons('left');
     print $searchpicto;
@@ -324,7 +324,7 @@ if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 print '<td class="liste_titre">';
 print '<input class="flat" size="10" type="text" name="search_ref" value="' . $search_ref . '">';
 print '</td>';
-if (getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
+if (Functions::getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
     print '<td class="liste_titre">';
     print '<input class="flat" size="10" type="text" name="search_thirdparty" value="' . $search_thirdparty . '">';
     print '</td>';
@@ -354,7 +354,7 @@ $liststatus = [
 ];
 print $form->selectarray('search_status', $liststatus, $search_status, -4, 0, 0, '', 0, 0, 0, '', 'search_status maxwidth100 onrightofpage');
 print '</td>';
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre center maxwidthsearch">';
     $searchpicto = $form->showFilterButtons();
     print $searchpicto;
@@ -369,13 +369,13 @@ $totalarray['nbfield'] = 0;
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print_liste_field_titre('');
     $totalarray['nbfield']++;
 }
 print_liste_field_titre("Ref", $_SERVER["PHP_SELF"], "d.rowid", "", $param, "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
-if (getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
+if (Functions::getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
     print_liste_field_titre("ThirdParty", $_SERVER["PHP_SELF"], "d.fk_soc", "", $param, "", $sortfield, $sortorder);
     $totalarray['nbfield']++;
 } else {
@@ -395,7 +395,7 @@ print_liste_field_titre("Amount", $_SERVER["PHP_SELF"], "d.amount", "", $param, 
 $totalarray['nbfield']++;
 print_liste_field_titre("Status", $_SERVER["PHP_SELF"], "d.fk_statut", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print_liste_field_titre('');
     $totalarray['nbfield']++;
 }
@@ -448,7 +448,7 @@ while ($i < $imaxinloop) {
         }
     } else {
         print '<tr class="oddeven">';
-        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td></td>';
         }
         $donationstatic->id = $obj->rowid;
@@ -456,7 +456,7 @@ while ($i < $imaxinloop) {
         $donationstatic->lastname = $obj->lastname;
         $donationstatic->firstname = $obj->firstname;
         print "<td>" . $donationstatic->getNomUrl(1) . "</td>";
-        if (getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
+        if (Functions::getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
             if (!empty($obj->socid) && $company->id > 0) {
                 print "<td>" . $company->getNomUrl(1) . "</td>";
             } else {
@@ -485,7 +485,7 @@ while ($i < $imaxinloop) {
 
         // Status
         print '<td class="center">' . $donationstatic->LibStatut($obj->status, 5) . '</td>';
-        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td></td>';
         }
         print "</tr>";

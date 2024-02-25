@@ -124,7 +124,7 @@ $canedituser = (!empty($user->admin) || $user->hasRight("user", "user", "write")
 $candisableuser = (!empty($user->admin) || $user->hasRight("user", "user", "delete"));
 $canreadgroup = $canreaduser;
 $caneditgroup = $canedituser;
-if (getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
+if (Functions::getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
     $canreadgroup = (!empty($user->admin) || $user->hasRight("user", "group_advance", "read"));
     $caneditgroup = (!empty($user->admin) || $user->hasRight("user", "group_advance", "write"));
 }
@@ -334,7 +334,7 @@ if (empty($reshook)) {
                 if (GETPOST('superadmin', 'int')) {
                     $object->entity = 0;
                 } else {
-                    if (getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
+                    if (Functions::getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
                         $object->entity = 1; // all users are forced into master entity
                     } else {
                         $object->entity = ($entity == '' ? 1 : $entity);
@@ -511,7 +511,7 @@ if (empty($reshook)) {
                     if (GETPOST('superadmin', 'int')) {
                         $object->entity = 0;
                     } else {
-                        if (getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
+                        if (Functions::getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
                             $object->entity = 1; // all users are in master entity
                         } else {
                             // We try to change the entity of user
@@ -703,25 +703,25 @@ if (empty($reshook)) {
         $selecteduser = GETPOST('users');
 
         $required_fields = array(
-            getDolGlobalString('LDAP_KEY_USERS'),
-            getDolGlobalString('LDAP_FIELD_NAME'),
-            getDolGlobalString('LDAP_FIELD_FIRSTNAME'),
-            getDolGlobalString('LDAP_FIELD_LOGIN'),
-            getDolGlobalString('LDAP_FIELD_LOGIN_SAMBA'),
-            getDolGlobalString('LDAP_FIELD_PASSWORD'),
-            getDolGlobalString('LDAP_FIELD_PASSWORD_CRYPTED'),
-            getDolGlobalString('LDAP_FIELD_PHONE'),
-            getDolGlobalString('LDAP_FIELD_FAX'),
-            getDolGlobalString('LDAP_FIELD_MOBILE'),
-            getDolGlobalString('LDAP_FIELD_MAIL'),
-            getDolGlobalString('LDAP_FIELD_TITLE'),
-            getDolGlobalString('LDAP_FIELD_DESCRIPTION'),
-            getDolGlobalString('LDAP_FIELD_SID')
+            Functions::getDolGlobalString('LDAP_KEY_USERS'),
+            Functions::getDolGlobalString('LDAP_FIELD_NAME'),
+            Functions::getDolGlobalString('LDAP_FIELD_FIRSTNAME'),
+            Functions::getDolGlobalString('LDAP_FIELD_LOGIN'),
+            Functions::getDolGlobalString('LDAP_FIELD_LOGIN_SAMBA'),
+            Functions::getDolGlobalString('LDAP_FIELD_PASSWORD'),
+            Functions::getDolGlobalString('LDAP_FIELD_PASSWORD_CRYPTED'),
+            Functions::getDolGlobalString('LDAP_FIELD_PHONE'),
+            Functions::getDolGlobalString('LDAP_FIELD_FAX'),
+            Functions::getDolGlobalString('LDAP_FIELD_MOBILE'),
+            Functions::getDolGlobalString('LDAP_FIELD_MAIL'),
+            Functions::getDolGlobalString('LDAP_FIELD_TITLE'),
+            Functions::getDolGlobalString('LDAP_FIELD_DESCRIPTION'),
+            Functions::getDolGlobalString('LDAP_FIELD_SID')
         );
         if (isModEnabled('socialnetworks')) {
             $arrayofsocialnetworks = array('skype', 'twitter', 'facebook', 'linkedin');
             foreach ($arrayofsocialnetworks as $socialnetwork) {
-                $required_fields[] = getDolGlobalString('LDAP_FIELD_' . strtoupper($socialnetwork));
+                $required_fields[] = Functions::getDolGlobalString('LDAP_FIELD_' . strtoupper($socialnetwork));
             }
         }
 
@@ -736,22 +736,22 @@ if (empty($reshook)) {
 
             if (is_array($ldapusers)) {
                 foreach ($ldapusers as $key => $attribute) {
-                    $ldap_lastname = $attribute[getDolGlobalString('LDAP_FIELD_NAME')];
-                    $ldap_firstname = $attribute[getDolGlobalString('LDAP_FIELD_FIRSTNAME')];
-                    $ldap_login = $attribute[getDolGlobalString('LDAP_FIELD_LOGIN')];
-                    $ldap_loginsmb = $attribute[getDolGlobalString('LDAP_FIELD_LOGIN_SAMBA')];
-                    $ldap_pass = $attribute[getDolGlobalString('LDAP_FIELD_PASSWORD')];
-                    $ldap_pass_crypted = $attribute[getDolGlobalString('LDAP_FIELD_PASSWORD_CRYPTED')];
-                    $ldap_phone = $attribute[getDolGlobalString('LDAP_FIELD_PHONE')];
-                    $ldap_fax = $attribute[getDolGlobalString('LDAP_FIELD_FAX')];
-                    $ldap_mobile = $attribute[getDolGlobalString('LDAP_FIELD_MOBILE')];
-                    $ldap_mail = $attribute[getDolGlobalString('LDAP_FIELD_MAIL')];
-                    $ldap_sid = $attribute[getDolGlobalString('LDAP_FIELD_SID')];
+                    $ldap_lastname = $attribute[Functions::getDolGlobalString('LDAP_FIELD_NAME')];
+                    $ldap_firstname = $attribute[Functions::getDolGlobalString('LDAP_FIELD_FIRSTNAME')];
+                    $ldap_login = $attribute[Functions::getDolGlobalString('LDAP_FIELD_LOGIN')];
+                    $ldap_loginsmb = $attribute[Functions::getDolGlobalString('LDAP_FIELD_LOGIN_SAMBA')];
+                    $ldap_pass = $attribute[Functions::getDolGlobalString('LDAP_FIELD_PASSWORD')];
+                    $ldap_pass_crypted = $attribute[Functions::getDolGlobalString('LDAP_FIELD_PASSWORD_CRYPTED')];
+                    $ldap_phone = $attribute[Functions::getDolGlobalString('LDAP_FIELD_PHONE')];
+                    $ldap_fax = $attribute[Functions::getDolGlobalString('LDAP_FIELD_FAX')];
+                    $ldap_mobile = $attribute[Functions::getDolGlobalString('LDAP_FIELD_MOBILE')];
+                    $ldap_mail = $attribute[Functions::getDolGlobalString('LDAP_FIELD_MAIL')];
+                    $ldap_sid = $attribute[Functions::getDolGlobalString('LDAP_FIELD_SID')];
 
                     if (isModEnabled('socialnetworks')) {
                         $arrayofsocialnetworks = array('skype', 'twitter', 'facebook', 'linkedin');
                         foreach ($arrayofsocialnetworks as $socialnetwork) {
-                            $ldap_social[$socialnetwork] = $attribute[getDolGlobalString('LDAP_FIELD_' . strtoupper($socialnetwork))];
+                            $ldap_social[$socialnetwork] = $attribute[Functions::getDolGlobalString('LDAP_FIELD_' . strtoupper($socialnetwork))];
                         }
                     }
                 }
@@ -946,7 +946,7 @@ if ($action == 'create' || $action == 'adduserldap') {
         // Add code to generate the login when creating a new user.
         // Best rule to generate would be to use the same rule than dol_buildlogin() but currently it is a PHP function not available in js.
         // TODO Implement a dol_buildlogin in javascript.
-        $charforseparator = getDolGlobalString("MAIN_USER_SEPARATOR_CHAR_FOR_GENERATED_LOGIN", '.');
+        $charforseparator = Functions::getDolGlobalString("MAIN_USER_SEPARATOR_CHAR_FOR_GENERATED_LOGIN", '.');
         if ($charforseparator == 'none') {
             $charforseparator = '';
         }
@@ -957,7 +957,7 @@ if ($action == 'create' || $action == 'adduserldap') {
 
 					lastname = $("#lastname").val().toLowerCase();
 			';
-        if (getDolGlobalString('MAIN_BUILD_LOGIN_RULE') == 'f.lastname') {
+        if (Functions::getDolGlobalString('MAIN_BUILD_LOGIN_RULE') == 'f.lastname') {
             print '			firstname = $("#firstname").val().toLowerCase()[0];';
         } else {
             print '			firstname = $("#firstname").val().toLowerCase();';
@@ -1171,7 +1171,7 @@ if ($action == 'create' || $action == 'adduserldap') {
     print '</td></tr>';
 
     // State
-    if (!getDolGlobalString('USER_DISABLE_STATE')) {
+    if (!Functions::getDolGlobalString('USER_DISABLE_STATE')) {
         print '<tr><td>' . $form->editfieldkey('State', 'state_id', '', $object, 0) . '</td><td class="maxwidthonsmartphone">';
         print img_picto('', 'state', 'class="pictofixedwidth"');
         print $formcompany->select_state_ajax('country_id', $object->state_id, $object->country_id, 'state_id');
@@ -1215,7 +1215,7 @@ if ($action == 'create' || $action == 'adduserldap') {
     print '</td></tr>';
 
     // EMail
-    print '<tr><td' . (getDolGlobalString('USER_MAIL_REQUIRED') ? ' class="fieldrequired"' : '') . '>' . $langs->trans("EMail") . '</td>';
+    print '<tr><td' . (Functions::getDolGlobalString('USER_MAIL_REQUIRED') ? ' class="fieldrequired"' : '') . '>' . $langs->trans("EMail") . '</td>';
     print '<td>';
     print img_picto('', 'object_email', 'class="pictofixedwidth"');
     if (!empty($ldap_mail)) {
@@ -1290,7 +1290,7 @@ if ($action == 'create' || $action == 'adduserldap') {
     if (isModEnabled('multicompany') && is_object($mc)) {
         // This is now done with hook formObjectOptions. Keep this code for backward compatibility with old multicompany module
         if (!method_exists($mc, 'formObjectOptions')) {
-            if (!getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE') && $conf->entity == 1 && $user->admin && !$user->entity) {  // condition must be same for create and edit mode
+            if (!Functions::getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE') && $conf->entity == 1 && $user->admin && !$user->entity) {  // condition must be same for create and edit mode
                 print "<tr>" . '<td>' . $langs->trans("Entity") . '</td>';
                 print "<td>" . $mc->select_entities($conf->entity);
                 print "</td></tr>\n";
@@ -1309,7 +1309,7 @@ if ($action == 'create' || $action == 'adduserldap') {
     print '<td class="wordbreak">';
     require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
-    $doleditor = new DolEditor('signature', GETPOST('signature', 'restricthtml'), '', 138, 'dolibarr_notes', 'In', true, $acceptlocallinktomedia, !getDolGlobalString('FCKEDITOR_ENABLE_USERSIGN') ? 0 : 1, ROWS_4, '90%');
+    $doleditor = new DolEditor('signature', GETPOST('signature', 'restricthtml'), '', 138, 'dolibarr_notes', 'In', true, $acceptlocallinktomedia, !Functions::getDolGlobalString('FCKEDITOR_ENABLE_USERSIGN') ? 0 : 1, ROWS_4, '90%');
     print $doleditor->Create(1);
     print '</td></tr>';
 
@@ -1318,7 +1318,7 @@ if ($action == 'create' || $action == 'adduserldap') {
     print $langs->trans("NotePublic");
     print '</td><td>';
     require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-    $doleditor = new DolEditor('note_public', GETPOSTISSET('note_public') ? GETPOST('note_public', 'restricthtml') : '', '', 100, 'dolibarr_notes', '', false, true, getDolGlobalString('FCKEDITOR_ENABLE_NOTE_PUBLIC'), ROWS_3, '90%');
+    $doleditor = new DolEditor('note_public', GETPOSTISSET('note_public') ? GETPOST('note_public', 'restricthtml') : '', '', 100, 'dolibarr_notes', '', false, true, Functions::getDolGlobalString('FCKEDITOR_ENABLE_NOTE_PUBLIC'), ROWS_3, '90%');
     $doleditor->Create();
     print "</td></tr>\n";
 
@@ -1327,7 +1327,7 @@ if ($action == 'create' || $action == 'adduserldap') {
     print $langs->trans("NotePrivate");
     print '</td><td>';
     require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-    $doleditor = new DolEditor('note_private', GETPOSTISSET('note_private') ? GETPOST('note_private', 'restricthtml') : '', '', 100, 'dolibarr_notes', '', false, true, getDolGlobalString('FCKEDITOR_ENABLE_NOTE_PRIVATE'), ROWS_3, '90%');
+    $doleditor = new DolEditor('note_private', GETPOSTISSET('note_private') ? GETPOST('note_private', 'restricthtml') : '', '', 100, 'dolibarr_notes', '', false, true, Functions::getDolGlobalString('FCKEDITOR_ENABLE_NOTE_PRIVATE'), ROWS_3, '90%');
     $doleditor->Create();
     print "</td></tr>\n";
 
@@ -1337,7 +1337,7 @@ if ($action == 'create' || $action == 'adduserldap') {
     // TODO Move this into tab RH (HierarchicalResponsible must be on both tab)
 
     // Default warehouse
-    if (isModEnabled('stock') && getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
+    if (isModEnabled('stock') && Functions::getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
         print '<tr><td>' . $langs->trans("DefaultWarehouse") . '</td><td>';
         print $formproduct->selectWarehouses($object->fk_warehouse, 'fk_warehouse', 'warehouseopen', 1);
         print '</td></tr>';
@@ -1427,7 +1427,7 @@ if ($action == 'create' || $action == 'adduserldap') {
         $res = $object->fetch_optionals();
 
         // Check if user has rights
-        if (!getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
+        if (!Functions::getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
             $object->getrights();
             if (empty($object->nb_rights) && $object->statut != 0 && empty($object->admin)) {
                 setEventMessages($langs->trans('UserHasNoPermissions'), null, 'warnings');
@@ -1440,7 +1440,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             $ldap = new Ldap();
             $result = $ldap->connectBind();
             if ($result > 0) {
-                $userSearchFilter = '(' . getDolGlobalString('LDAP_FILTER_CONNECTION') . '(' . $ldap->getUserIdentifier() . '=' . $object->login . '))';
+                $userSearchFilter = '(' . Functions::getDolGlobalString('LDAP_FILTER_CONNECTION') . '(' . $ldap->getUserIdentifier() . '=' . $object->login . '))';
                 $entries = $ldap->fetch($object->login, $userSearchFilter);
                 if (!$entries) {
                     setEventMessages($ldap->error, $ldap->errors, 'errors');
@@ -1713,7 +1713,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             print "</tr>\n";
 
             // Default warehouse
-            if (isModEnabled('stock') && getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
+            if (isModEnabled('stock') && Functions::getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
                 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
                 print '<tr><td>' . $langs->trans("DefaultWarehouse") . '</td><td>';
                 if ($object->fk_warehouse > 0) {
@@ -1765,7 +1765,7 @@ if ($action == 'create' || $action == 'adduserldap') {
                 print '</td></tr>';
             }
 
-            if (isset($conf->file->main_authentication) && preg_match('/openid/', $conf->file->main_authentication) && getDolGlobalString('MAIN_OPENIDURL_PERUSER')) {
+            if (isset($conf->file->main_authentication) && preg_match('/openid/', $conf->file->main_authentication) && Functions::getDolGlobalString('MAIN_OPENIDURL_PERUSER')) {
                 print '<tr><td>' . $langs->trans("OpenIDURL") . '</td>';
                 print '<td>' . $object->openid . '</td>';
                 print "</tr>\n";
@@ -1775,7 +1775,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             if (isModEnabled('multicompany') && is_object($mc)) {
                 // This is now done with hook formObjectOptions. Keep this code for backward compatibility with old multicompany module
                 if (!method_exists($mc, 'formObjectOptions')) {
-                    if (isModEnabled('multicompany') && !getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE') && $conf->entity == 1 && $user->admin && !$user->entity) {
+                    if (isModEnabled('multicompany') && !Functions::getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE') && $conf->entity == 1 && $user->admin && !$user->entity) {
                         print '<tr><td>' . $langs->trans("Entity") . '</td><td>';
                         if (empty($object->entity)) {
                             print $langs->trans("AllEntities");
@@ -2001,7 +2001,7 @@ if ($action == 'create' || $action == 'adduserldap') {
                 }
 
                 if ($caneditfield && (!isModEnabled('multicompany') || !$user->entity || ($object->entity == $conf->entity) || ($conf->global->MULTICOMPANY_TRANSVERSE_MODE && $object->entity == 1))) {
-                    if (getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
+                    if (Functions::getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
                         $params['attr']['title'] = $langs->trans('DisabledInMonoUserMode');
                         print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'] . '#', '', false, $params);
                     } else {
@@ -2023,7 +2023,7 @@ if ($action == 'create' || $action == 'adduserldap') {
                         'class' => 'classfortooltip'
                     )
                 );
-                if (getDolGlobalString('USER_PASSWORD_GENERATED') != 'none') {
+                if (Functions::getDolGlobalString('USER_PASSWORD_GENERATED') != 'none') {
                     if ($object->status == $object::STATUS_DISABLED) {
                         $params['attr']['title'] = $langs->trans('UserDisabled');
                         print dolGetButtonAction($langs->trans('ReinitPassword'), '', 'default', $_SERVER['PHP_SELF'] . '#', '', false, $params);
@@ -2201,7 +2201,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             print '<table class="border centpercent">';
 
             // Ref/ID
-            if (getDolGlobalString('MAIN_SHOW_TECHNICAL_ID')) {
+            if (Functions::getDolGlobalString('MAIN_SHOW_TECHNICAL_ID')) {
                 print '<tr><td class="titlefieldcreate">' . $langs->trans("Ref") . '</td>';
                 print '<td>';
                 print $object->id;
@@ -2496,7 +2496,7 @@ if ($action == 'create' || $action == 'adduserldap') {
                 if ($caneditpasswordandsee) {
                     $valuetoshow .= ($valuetoshow ? (' ' . $langs->trans("or") . ' ') : '') . '<input maxlength="128" type="password" class="flat" id="password" name="password" value="' . dol_escape_htmltag($object->pass) . '" autocomplete="new-password">';
                     if (!empty($conf->use_javascript_ajax)) {
-                        $valuetoshow .= img_picto((getDolGlobalString('USER_PASSWORD_GENERATED') === 'none' ? $langs->trans('NoPasswordGenerationRuleConfigured') : $langs->trans('Generate')), 'refresh', 'id="generate_password" class="paddingleft' . (getDolGlobalString('USER_PASSWORD_GENERATED') === 'none' ? ' opacitymedium' : ' linkobject') . '"');
+                        $valuetoshow .= img_picto((Functions::getDolGlobalString('USER_PASSWORD_GENERATED') === 'none' ? $langs->trans('NoPasswordGenerationRuleConfigured') : $langs->trans('Generate')), 'refresh', 'id="generate_password" class="paddingleft' . (Functions::getDolGlobalString('USER_PASSWORD_GENERATED') === 'none' ? ' opacitymedium' : ' linkobject') . '"');
                     }
                 } else {
                     $valuetoshow .= ($valuetoshow ? (' ' . $langs->trans("or") . ' ') : '') . preg_replace('/./i', '*', $object->pass);
@@ -2528,7 +2528,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             }
 
             // OpenID url
-            if (isset($conf->file->main_authentication) && preg_match('/openid/', $conf->file->main_authentication) && getDolGlobalString('MAIN_OPENIDURL_PERUSER')) {
+            if (isset($conf->file->main_authentication) && preg_match('/openid/', $conf->file->main_authentication) && Functions::getDolGlobalString('MAIN_OPENIDURL_PERUSER')) {
                 print "<tr>" . '<td>' . $langs->trans("OpenIDURL") . '</td>';
                 print '<td>';
                 if ($caneditfield) {
@@ -2588,7 +2588,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             print '</td></tr>';
 
             // State
-            if (!getDolGlobalString('USER_DISABLE_STATE')) {
+            if (!Functions::getDolGlobalString('USER_DISABLE_STATE')) {
                 print '<tr><td class="tdoverflow">' . $form->editfieldkey('State', 'state_id', '', $object, 0) . '</td><td>';
                 if ($caneditfield) {
                     print img_picto('', 'state', 'class="pictofixedwidth"');
@@ -2636,7 +2636,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             print '</td></tr>';
 
             // EMail
-            print "<tr>" . '<td' . (getDolGlobalString('USER_MAIL_REQUIRED') ? ' class="fieldrequired"' : '') . '>' . $langs->trans("EMail") . '</td>';
+            print "<tr>" . '<td' . (Functions::getDolGlobalString('USER_MAIL_REQUIRED') ? ' class="fieldrequired"' : '') . '>' . $langs->trans("EMail") . '</td>';
             print '<td>';
             print img_picto('', 'object_email', 'class="pictofixedwidth"');
             if ($caneditfield && empty($object->ldap_sid)) {
@@ -2672,7 +2672,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             print '</table><hr><table class="border centpercent">';
 
             // Default warehouse
-            if (isModEnabled('stock') && getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
+            if (isModEnabled('stock') && Functions::getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
                 print '<tr><td class="titlefield">' . $langs->trans("DefaultWarehouse") . '</td><td>';
                 print $formproduct->selectWarehouses($object->fk_warehouse, 'fk_warehouse', 'warehouseopen', 1);
                 print ' <a href="' . DOL_URL_ROOT . '/product/stock/card.php?action=create&token=' . newToken() . '&backtopage=' . urlencode($_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=edit&token=' . newToken()) . '"><span class="fa fa-plus-circle valignmiddle paddingleft" title="' . $langs->trans("AddWarehouse") . '"></span></a>';
@@ -2820,7 +2820,7 @@ if ($action == 'create' || $action == 'adduserldap') {
             if ($caneditfield) {
                 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
-                $doleditor = new DolEditor('signature', $object->signature, '', 138, 'dolibarr_notes', 'In', false, $acceptlocallinktomedia, !getDolGlobalString('FCKEDITOR_ENABLE_USERSIGN') ? 0 : 1, ROWS_4, '90%');
+                $doleditor = new DolEditor('signature', $object->signature, '', 138, 'dolibarr_notes', 'In', false, $acceptlocallinktomedia, !Functions::getDolGlobalString('FCKEDITOR_ENABLE_USERSIGN') ? 0 : 1, ROWS_4, '90%');
                 print $doleditor->Create(1);
             } else {
                 print dol_htmlentitiesbr($object->signature);

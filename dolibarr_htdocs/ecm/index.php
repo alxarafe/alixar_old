@@ -105,7 +105,7 @@ $hookmanager->initHooks(['ecmindexcard', 'globalcard']);
 //include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
 
 // Upload file (code similar but different than actions_linkedfiles.inc.php)
-if (GETPOST("sendit", 'alphanohtml') && getDolGlobalString('MAIN_UPLOAD_DOC') && $permissiontocreate) {
+if (GETPOST("sendit", 'alphanohtml') && Functions::getDolGlobalString('MAIN_UPLOAD_DOC') && $permissiontocreate) {
     // Define relativepath and upload_dir
     $relativepath = '';
     if ($ecmdir->id) {
@@ -327,7 +327,7 @@ $moreheadjs = '';
 
 //$morejs=array();
 $morejs = ['includes/jquery/plugins/blockUI/jquery.blockUI.js', 'core/js/blockUI.js']; // Used by ecm/tpl/enabledfiletreeajax.tpl.pgp
-if (!getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
+if (!Functions::getDolGlobalString('MAIN_ECM_DISABLE_JS')) {
     $morejs[] = "includes/jquery/plugins/jqueryFileTree/jqueryFileTree.js";
 }
 

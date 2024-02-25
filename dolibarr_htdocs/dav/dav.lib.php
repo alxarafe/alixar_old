@@ -27,8 +27,8 @@
 
 // define CDAV_CONTACT_TAG if not
 if (!defined('CDAV_CONTACT_TAG')) {
-    if (getDolGlobalString('CDAV_CONTACT_TAG')) {
-        define('CDAV_CONTACT_TAG', getDolGlobalString('CDAV_CONTACT_TAG'));
+    if (Functions::getDolGlobalString('CDAV_CONTACT_TAG')) {
+        define('CDAV_CONTACT_TAG', Functions::getDolGlobalString('CDAV_CONTACT_TAG'));
     } else {
         define('CDAV_CONTACT_TAG', '');
     }
@@ -36,8 +36,8 @@ if (!defined('CDAV_CONTACT_TAG')) {
 
 // define CDAV_URI_KEY if not
 if (!defined('CDAV_URI_KEY')) {
-    if (getDolGlobalString('CDAV_URI_KEY')) {
-        define('CDAV_URI_KEY', getDolGlobalString('CDAV_URI_KEY'));
+    if (Functions::getDolGlobalString('CDAV_URI_KEY')) {
+        define('CDAV_URI_KEY', Functions::getDolGlobalString('CDAV_URI_KEY'));
     } else {
         define('CDAV_URI_KEY', substr(md5($_SERVER['HTTP_HOST']), 0, 8));
     }

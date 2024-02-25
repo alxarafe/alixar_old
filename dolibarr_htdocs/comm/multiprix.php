@@ -111,8 +111,8 @@ if ($_socid > 0) {
         }
         print '>' . $i;
         $keyforlabel = 'PRODUIT_MULTIPRICES_LABEL' . $i;
-        if (getDolGlobalString($keyforlabel)) {
-            print ' - ' . $langs->trans(getDolGlobalString($keyforlabel));
+        if (Functions::getDolGlobalString($keyforlabel)) {
+            print ' - ' . $langs->trans(Functions::getDolGlobalString($keyforlabel));
         }
         print '</option>';
     }

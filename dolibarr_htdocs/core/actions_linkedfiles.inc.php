@@ -54,7 +54,7 @@ if (
 
 
 // Submit file/link
-if (GETPOST('sendit', 'alpha') && getDolGlobalString('MAIN_UPLOAD_DOC') && !empty($permissiontoadd)) {
+if (GETPOST('sendit', 'alpha') && Functions::getDolGlobalString('MAIN_UPLOAD_DOC') && !empty($permissiontoadd)) {
     if (!empty($_FILES) && is_array($_FILES['userfile'])) {
         if (is_array($_FILES['userfile']['tmp_name'])) {
             $userfiles = $_FILES['userfile']['tmp_name'];
@@ -92,7 +92,7 @@ if (GETPOST('sendit', 'alpha') && getDolGlobalString('MAIN_UPLOAD_DOC') && !empt
             }
         }
     }
-} elseif (GETPOST('linkit', 'restricthtml') && getDolGlobalString('MAIN_UPLOAD_DOC') && !empty($permissiontoadd)) {
+} elseif (GETPOST('linkit', 'restricthtml') && Functions::getDolGlobalString('MAIN_UPLOAD_DOC') && !empty($permissiontoadd)) {
     $link = GETPOST('link', 'alpha');
     if ($link) {
         if (substr($link, 0, 7) != 'http://' && substr($link, 0, 8) != 'https://' && substr($link, 0, 7) != 'file://' && substr($link, 0, 7) != 'davs://') {
@@ -103,7 +103,7 @@ if (GETPOST('sendit', 'alpha') && getDolGlobalString('MAIN_UPLOAD_DOC') && !empt
         $newUrlArray = parse_url($link);
 
         // Allow external links to svg ?
-        if (!getDolGlobalString('MAIN_ALLOW_SVG_FILES_AS_EXTERNAL_LINKS')) {
+        if (!Functions::getDolGlobalString('MAIN_ALLOW_SVG_FILES_AS_EXTERNAL_LINKS')) {
             if (!empty($newUrlArray['path']) && preg_match('/\.svg$/i', $newUrlArray['path'])) {
                 $error++;
                 $langs->load("errors");
@@ -111,7 +111,7 @@ if (GETPOST('sendit', 'alpha') && getDolGlobalString('MAIN_UPLOAD_DOC') && !empt
             }
         }
         // Check URL is external (must refuse local link by default)
-        if (!getDolGlobalString('MAIN_ALLOW_LOCAL_LINKS_AS_EXTERNAL_LINKS')) {
+        if (!Functions::getDolGlobalString('MAIN_ALLOW_LOCAL_LINKS_AS_EXTERNAL_LINKS')) {
             // Test $newUrlAray['host'] to check link is external using isIPAllowed() and if not refuse the local link
             // TODO
         }
@@ -244,7 +244,7 @@ if ($action == 'confirm_deletefile' && $confirm == 'yes' && !empty($permissionto
             // Security:
             // Disallow file with some extensions. We rename them.
             // Because if we put the documents directory into a directory inside web root (very bad), this allows to execute on demand arbitrary code.
-            if (isAFileWithExecutableContent($filenameto) && !getDolGlobalString('MAIN_DOCUMENT_IS_OUTSIDE_WEBROOT_SO_NOEXE_NOT_REQUIRED')) {
+            if (isAFileWithExecutableContent($filenameto) && !Functions::getDolGlobalString('MAIN_DOCUMENT_IS_OUTSIDE_WEBROOT_SO_NOEXE_NOT_REQUIRED')) {
                 // $upload_dir ends with a slash, so be must be sure the medias dir to compare to ends with slash too.
                 $publicmediasdirwithslash = $conf->medias->multidir_output[$conf->entity];
                 if (!preg_match('/\/$/', $publicmediasdirwithslash)) {

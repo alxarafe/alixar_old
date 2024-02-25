@@ -211,7 +211,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
             }
         }
 
-        if (getDolGlobalString('MAIN_MAIL_ENABLED_USER_DEST_SELECT')) {
+        if (Functions::getDolGlobalString('MAIN_MAIL_ENABLED_USER_DEST_SELECT')) {
             $receiveruser = GETPOST('receiveruser', 'alphawithlgt');
             if (is_array($receiveruser) && count($receiveruser) > 0) {
                 $fuserdest = new User($db);
@@ -252,7 +252,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
                 }
             }
         }
-        if (getDolGlobalString('MAIN_MAIL_ENABLED_USER_DEST_SELECT')) {
+        if (Functions::getDolGlobalString('MAIN_MAIL_ENABLED_USER_DEST_SELECT')) {
             $receiverccuser = GETPOST('receiverccuser', 'alphawithlgt');
 
             if (is_array($receiverccuser) && count($receiverccuser) > 0) {
@@ -278,16 +278,16 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
             $reg = array();
             $fromtype = GETPOST('fromtype', 'alpha');
             if ($fromtype === 'robot') {
-                $from = dol_string_nospecial($conf->global->MAIN_MAIL_EMAIL_FROM, ' ', array(",")) . ' <' . getDolGlobalString('MAIN_MAIL_EMAIL_FROM') . '>';
+                $from = dol_string_nospecial($conf->global->MAIN_MAIL_EMAIL_FROM, ' ', array(",")) . ' <' . Functions::getDolGlobalString('MAIN_MAIL_EMAIL_FROM') . '>';
             } elseif ($fromtype === 'user') {
                 $from = dol_string_nospecial($user->getFullName($langs), ' ', array(",")) . ' <' . $user->email . '>';
             } elseif ($fromtype === 'company') {
-                $from = dol_string_nospecial($conf->global->MAIN_INFO_SOCIETE_NOM, ' ', array(",")) . ' <' . getDolGlobalString('MAIN_INFO_SOCIETE_MAIL') . '>';
+                $from = dol_string_nospecial($conf->global->MAIN_INFO_SOCIETE_NOM, ' ', array(",")) . ' <' . Functions::getDolGlobalString('MAIN_INFO_SOCIETE_MAIL') . '>';
             } elseif (preg_match('/user_aliases_(\d+)/', $fromtype, $reg)) {
                 $tmp = explode(',', $user->email_aliases);
                 $from = trim($tmp[($reg[1] - 1)]);
             } elseif (preg_match('/global_aliases_(\d+)/', $fromtype, $reg)) {
-                $tmp = explode(',', getDolGlobalString('MAIN_INFO_SOCIETE_MAIL_ALIASES'));
+                $tmp = explode(',', Functions::getDolGlobalString('MAIN_INFO_SOCIETE_MAIL_ALIASES'));
                 $from = trim($tmp[($reg[1] - 1)]);
             } elseif (preg_match('/senderprofile_(\d+)_(\d+)/', $fromtype, $reg)) {
                 $sql = 'SELECT rowid, label, email FROM ' . MAIN_DB_PREFIX . 'c_email_senderprofile';
@@ -324,7 +324,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
             // Autocomplete the $sendtobcc
             // $autocopy can be MAIN_MAIL_AUTOCOPY_PROPOSAL_TO, MAIN_MAIL_AUTOCOPY_ORDER_TO, MAIN_MAIL_AUTOCOPY_INVOICE_TO, MAIN_MAIL_AUTOCOPY_SUPPLIER_PROPOSAL_TO...
             if (!empty($autocopy)) {
-                $sendtobcc .= (empty($conf->global->$autocopy) ? '' : (($sendtobcc ? ", " : "") . getDolGlobalString($autocopy)));
+                $sendtobcc .= (empty($conf->global->$autocopy) ? '' : (($sendtobcc ? ", " : "") . Functions::getDolGlobalString($autocopy)));
             }
 
             $deliveryreceipt = GETPOST('deliveryreceipt');
@@ -356,7 +356,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
             // Make substitution in email content
             $substitutionarray = getCommonSubstitutionArray($langs, 0, null, $object);
             $substitutionarray['__EMAIL__'] = $sendto;
-            $substitutionarray['__CHECK_READ__'] = (is_object($object) && is_object($object->thirdparty)) ? '<img src="' . DOL_MAIN_URL_ROOT . '/public/emailing/mailing-read.php?tag=undefined&securitykey=' . dol_hash(getDolGlobalString('MAILING_EMAIL_UNSUBSCRIBE_KEY') . "-undefined", 'md5') . '" width="1" height="1" style="width:1px;height:1px" border="0"/>' : '';
+            $substitutionarray['__CHECK_READ__'] = (is_object($object) && is_object($object->thirdparty)) ? '<img src="' . DOL_MAIN_URL_ROOT . '/public/emailing/mailing-read.php?tag=undefined&securitykey=' . dol_hash(Functions::getDolGlobalString('MAILING_EMAIL_UNSUBSCRIBE_KEY') . "-undefined", 'md5') . '" width="1" height="1" style="width:1px;height:1px" border="0"/>' : '';
 
             $parameters = array('mode' => 'formemail');
             complete_substitutions_array($substitutionarray, $langs, $object, $parameters);
@@ -392,7 +392,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
                         $object->actiontypecode = $actiontypecode; // Type of event ('AC_OTH', 'AC_OTH_AUTO', 'AC_XXX'...)
                         $object->actionmsg = $message; // Long text
                         $object->actionmsg2 = $actionmsg2; // Short text ($langs->transnoentities('MailSentBy')...);
-                        if (getDolGlobalString('MAIN_MAIL_REPLACE_EVENT_TITLE_BY_EMAIL_SUBJECT')) {
+                        if (Functions::getDolGlobalString('MAIN_MAIL_REPLACE_EVENT_TITLE_BY_EMAIL_SUBJECT')) {
                             $object->actionmsg2     = $subject; // Short text
                         }
 
@@ -402,7 +402,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
                         if (is_array($attachedfiles) && count($attachedfiles) > 0) {
                             $object->attachedfiles = $attachedfiles;
                         }
-                        if (is_array($sendtouserid) && count($sendtouserid) > 0 && getDolGlobalString('MAIN_MAIL_ENABLED_USER_DEST_SELECT')) {
+                        if (is_array($sendtouserid) && count($sendtouserid) > 0 && Functions::getDolGlobalString('MAIN_MAIL_ENABLED_USER_DEST_SELECT')) {
                             $object->sendtouserid = $sendtouserid;
                         }
 
@@ -453,7 +453,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
                         }
                     } else {
                         $mesg .= $langs->transnoentities('ErrorFailedToSendMail', dol_escape_htmltag($from), dol_escape_htmltag($sendto));
-                        if (getDolGlobalString('MAIN_DISABLE_ALL_MAILS')) {
+                        if (Functions::getDolGlobalString('MAIN_DISABLE_ALL_MAILS')) {
                             $mesg .= '<br>Feature is disabled by option MAIN_DISABLE_ALL_MAILS';
                         } else {
                             $mesg .= '<br>Unknown Error, please refer to your administrator';

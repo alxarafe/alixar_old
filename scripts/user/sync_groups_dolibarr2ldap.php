@@ -68,7 +68,7 @@ print "***** " . $script_file . " (" . $version . ") pid=" . dol_getmypid() . " 
 dol_syslog($script_file . " launched with arg " . join(',', $argv));
 
 /*
- * if (getDolGlobalString('LDAP_SYNCHRO_ACTIVE')) {
+ * if (Functions::getDolGlobalString('LDAP_SYNCHRO_ACTIVE')) {
  * print $langs->trans("LDAPSynchronizationNotSetupInDolibarr");
  * exit(-1);
  * }

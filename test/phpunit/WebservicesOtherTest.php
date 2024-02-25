@@ -82,7 +82,7 @@ class WebservicesOtherTest extends CommonClassTest
 
         // Call the WebService method and store its result in $result.
         $authentication = array(
-            'dolibarrkey' => getDolGlobalString('WEBSERVICES_KEY'),
+            'dolibarrkey' => Functions::getDolGlobalString('WEBSERVICES_KEY'),
             'sourceapplication' => 'DEMO',
             'login' => 'admin',
             'password' => 'admin',

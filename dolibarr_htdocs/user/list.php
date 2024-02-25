@@ -129,7 +129,7 @@ $arrayfields = array(
     'u.login' => array('label' => "Login", 'checked' => 1, 'position' => 10),
     'u.lastname' => array('label' => "Lastname", 'checked' => 1, 'position' => 15),
     'u.firstname' => array('label' => "Firstname", 'checked' => 1, 'position' => 20),
-    'u.entity' => array('label' => "Entity", 'checked' => 1, 'position' => 50, 'enabled' => (isModEnabled('multicompany') && !getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE'))),
+    'u.entity' => array('label' => "Entity", 'checked' => 1, 'position' => 50, 'enabled' => (isModEnabled('multicompany') && !Functions::getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE'))),
     'u.gender' => array('label' => "Gender", 'checked' => 0, 'position' => 22),
     'u.employee' => array('label' => "Employee", 'checked' => ($contextpage == 'employeelist' ? 1 : 0), 'position' => 25),
     'u.fk_user' => array('label' => "HierarchicalResponsible", 'checked' => 1, 'position' => 27, 'csslist' => 'maxwidth150'),
@@ -178,8 +178,8 @@ $search_categ = GETPOST("search_categ", 'int');
 $searchCategoryUserOperator = 0;
 if (GETPOSTISSET('formfilteraction')) {
     $searchCategoryUserOperator = GETPOSTINT('search_category_user_operator');
-} elseif (getDolGlobalString('MAIN_SEARCH_CAT_OR_BY_DEFAULT')) {
-    $searchCategoryUserOperator = getDolGlobalString('MAIN_SEARCH_CAT_OR_BY_DEFAULT');
+} elseif (Functions::getDolGlobalString('MAIN_SEARCH_CAT_OR_BY_DEFAULT')) {
+    $searchCategoryUserOperator = Functions::getDolGlobalString('MAIN_SEARCH_CAT_OR_BY_DEFAULT');
 }
 $searchCategoryUserList = GETPOST('search_category_user_list', 'array');
 $catid = GETPOST('catid', 'int');
@@ -206,7 +206,7 @@ $canedituser = (!empty($user->admin) || $user->hasRight("user", "user", "write")
 $candisableuser = (!empty($user->admin) || $user->hasRight("user", "user", "delete"));
 $canreadgroup = $canreaduser;
 $caneditgroup = $canedituser;
-if (getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
+if (Functions::getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
     $canreadgroup = (!empty($user->admin) || $user->hasRight("user", "group_advance", "read"));
     $caneditgroup = (!empty($user->admin) || $user->hasRight("user", "group_advance", "write"));
 }
@@ -542,7 +542,7 @@ if (!$resql) {
 $num = $db->num_rows($resql);
 
 // Direct jump if only one record found
-if ($num == 1 && getDolGlobalString('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && $search_all && !$page) {
+if ($num == 1 && Functions::getDolGlobalString('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && $search_all && !$page) {
     $obj = $db->fetch_object($resql);
     $id = $obj->rowid;
     header("Location: " . DOL_URL_ROOT . '/user/card.php?id=' . $id);
@@ -714,7 +714,7 @@ if (isModEnabled('categorie') && $user->hasRight("categorie", "read")) {
     $moreforfilter .= '</div>';
 }
 // Filter on warehouse
-if (isModEnabled('stock') && getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
+if (isModEnabled('stock') && Functions::getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
     require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
     $formproduct = new FormProduct($db);
     $moreforfilter .= '<div class="divsearchfield">';
@@ -738,7 +738,7 @@ if (!empty($moreforfilter)) {
 }
 
 $varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
-$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')); // This also change content of $arrayfields
+$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN', '')); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
 print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
@@ -748,7 +748,7 @@ print '<table class="tagtable nobottomiftotal liste' . ($moreforfilter ? " listw
 // --------------------------------------------------------------------
 print '<tr class="liste_titre_filter">';
 // Action column
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre center maxwidthsearch">';
     $searchpicto = $form->showFilterButtons('left');
     print $searchpicto;
@@ -845,7 +845,7 @@ if (!empty($arrayfields['u.statut']['checked'])) {
     print '</td>';
 }
 // Action column
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print '<td class="liste_titre maxwidthsearch">';
     $searchpicto = $form->showFilterButtons();
     print $searchpicto;
@@ -859,7 +859,7 @@ $totalarray['nbfield'] = 0;
 // Fields title label
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
-if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER["PHP_SELF"], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
     $totalarray['nbfield']++;
 }
@@ -962,7 +962,7 @@ if (!empty($arrayfields['u.statut']['checked'])) {
     $totalarray['nbfield']++;
 }
 // Action column
-if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
     print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER["PHP_SELF"], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
     $totalarray['nbfield']++;
 }
@@ -1058,7 +1058,7 @@ while ($i < $imaxinloop) {
         $j = 0;
         print '<tr data-rowid="' . $object->id . '" class="oddeven">';
         // Action column
-        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowrap center">';
             if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;
@@ -1228,7 +1228,7 @@ while ($i < $imaxinloop) {
             }
         }
         // Multicompany enabled
-        if (isModEnabled('multicompany') && is_object($mc) && !getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
+        if (isModEnabled('multicompany') && is_object($mc) && !Functions::getDolGlobalString('MULTICOMPANY_TRANSVERSE_MODE')) {
             if (!empty($arrayfields['u.entity']['checked'])) {
                 if (!$obj->entity) {
                     $labeltouse = $langs->trans("AllEntities");
@@ -1346,7 +1346,7 @@ while ($i < $imaxinloop) {
             }
         }
         // Action column
-        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+        if (!Functions::getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
             print '<td class="nowrap center">';
             if ($massactionbutton || $massaction) {   // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
                 $selected = 0;

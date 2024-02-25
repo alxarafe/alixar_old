@@ -30,7 +30,7 @@
  *  \brief      Trigger file for workflows
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 

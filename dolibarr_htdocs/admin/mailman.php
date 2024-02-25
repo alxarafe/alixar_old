@@ -98,7 +98,7 @@ if ($action == 'unset') {
     }
 }
 
-if (($action == 'testsubscribe' || $action == 'testunsubscribe') && getDolGlobalString('ADHERENT_USE_MAILMAN')) {
+if (($action == 'testsubscribe' || $action == 'testunsubscribe') && Functions::getDolGlobalString('ADHERENT_USE_MAILMAN')) {
     $email = GETPOST($action . 'email');
     if (!isValidEmail($email)) {
         $langs->load("errors");
@@ -149,7 +149,7 @@ print load_fiche_titre($langs->trans("MailmanSpipSetup"), $linkback, 'title_setu
 
 $head = mailmanspip_admin_prepare_head();
 
-if (getDolGlobalString('ADHERENT_USE_MAILMAN')) {
+if (Functions::getDolGlobalString('ADHERENT_USE_MAILMAN')) {
     print '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST">';
     print '<input type="hidden" name="token" value="' . newToken() . '">';
     print '<input type="hidden" name="action" value="update">';
@@ -217,7 +217,7 @@ if (getDolGlobalString('ADHERENT_USE_MAILMAN')) {
 }
 
 
-if (getDolGlobalString('ADHERENT_USE_MAILMAN')) {
+if (Functions::getDolGlobalString('ADHERENT_USE_MAILMAN')) {
     print '<form action="' . $_SERVER["PHP_SELF"] . '">';
     print '<input type="hidden" name="token" value="' . newToken() . '">';
     print '<input type="hidden" name="action" value="testsubscribe">';

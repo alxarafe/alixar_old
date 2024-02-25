@@ -70,7 +70,7 @@ if ($user->socid > 0) {
     accessforbidden();
 }
 
-if (!getDolGlobalString('MAIN_INFO_SOCIETE_NOM') || !getDolGlobalString('MAIN_INFO_SOCIETE_COUNTRY')) {
+if (!Functions::getDolGlobalString('MAIN_INFO_SOCIETE_NOM') || !Functions::getDolGlobalString('MAIN_INFO_SOCIETE_COUNTRY')) {
     $setupcompanynotcomplete = 1;
 }
 
@@ -112,7 +112,7 @@ if (!empty($setupcompanynotcomplete)) {
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
-if (getDolGlobalString('MAIN_SEARCH_FORM_ON_HOME_AREAS')) {     // This is useless due to the global search combo
+if (Functions::getDolGlobalString('MAIN_SEARCH_FORM_ON_HOME_AREAS')) {     // This is useless due to the global search combo
     if (isModEnabled('holiday') && $user->hasRight('holiday', 'read')) {
         $langs->load("holiday");
         $listofsearchfields['search_holiday'] = ['text' => 'TitreRequestCP'];
@@ -151,7 +151,7 @@ if (getDolGlobalString('MAIN_SEARCH_FORM_ON_HOME_AREAS')) {     // This is usele
 }
 
 if (isModEnabled('holiday')) {
-    if (!getDolGlobalString('HOLIDAY_HIDE_BALANCE')) {
+    if (!Functions::getDolGlobalString('HOLIDAY_HIDE_BALANCE')) {
         $holidaystatic = new Holiday($db);
         $user_id = $user->id;
 
@@ -176,8 +176,8 @@ if (isModEnabled('holiday')) {
         print '</td>';
         print '</tr>';
         print '</table></div><br>';
-    } elseif (!is_numeric(getDolGlobalString('HOLIDAY_HIDE_BALANCE'))) {
-        print $langs->trans(getDolGlobalString('HOLIDAY_HIDE_BALANCE')) . '<br>';
+    } elseif (!is_numeric(Functions::getDolGlobalString('HOLIDAY_HIDE_BALANCE'))) {
+        print $langs->trans(Functions::getDolGlobalString('HOLIDAY_HIDE_BALANCE')) . '<br>';
     }
 }
 

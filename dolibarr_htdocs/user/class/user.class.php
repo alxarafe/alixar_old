@@ -40,7 +40,7 @@
  *  \ingroup    core
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';

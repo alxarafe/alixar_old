@@ -1,0 +1,42 @@
+# Dolibarr language file - Source file is en_US - multicurrency
+MultiCurrency=רב מטבעות
+ErrorAddRateFail=שגיאה בשיעור נוסף
+ErrorAddCurrencyFail=שגיאה במטבע נוסף
+ErrorDeleteCurrencyFail=שגיאה במחיקה נכשלה
+multicurrency_syncronize_error=שגיאת סנכרון: %s
+MULTICURRENCY_USE_RATE_ON_DOCUMENT_DATE=השתמש בתאריך של המסמך כדי למצוא את שער המטבע, במקום להשתמש בשער האחרון הידוע
+multicurrency_useOriginTx=כאשר אובייקט נוצר מאובייקט אחר, שמור את הקצב המקורי מאובייקט המקור (אחרת השתמש בקצב האחרון הידוע)
+CurrencyLayerAccount=CurrencyLayer API
+CurrencyLayerAccount_help_to_synchronize=עליך ליצור חשבון באתר %s כדי להשתמש בפונקציונליות זו.<br>קבל את <b> שלך /span>מפתח API<span class='notranslate'></b>.<br>אם אתה משתמש בחשבון חינמי, לא תוכל לשנות את ה-<b>מטבע המקור</b> (דולר ארה"ב כברירת מחדל).<br>אם המטבע הראשי שלך אינו דולר ארה"ב, היישום יחשב אותו מחדש באופן אוטומטי.<br><br>אתה מוגבל ל-1000 סנכרון בחודש.
+multicurrency_appId=מפתח API
+multicurrency_appCurrencySource=מטבע המקור
+multicurrency_alternateCurrencySource=מטבע מקור חלופי
+CurrenciesUsed=השתמשו במטבעות
+CurrenciesUsed_help_to_add=הוסף את המטבעות והשערים השונים שבהם אתה צריך להשתמש בהצעות <b></b>, b0aee83365<b0aee83365 /span>הזמנות<span class='notranslate'></b> וכו'.
+rate=ציון
+MulticurrencyReceived=התקבל, מטבע מקורי
+MulticurrencyRemainderToTake=הסכום הנותר, המטבע המקורי
+AmountToOthercurrency=סכום ל (במטבע של החשבון המקבל)
+CurrencyRateSyncSucceed=סנכרון שער מטבע נעשה בהצלחה
+MULTICURRENCY_USE_CURRENCY_ON_DOCUMENT=השתמש במטבע של המסמך לתשלומים מקוונים
+TabTitleMulticurrencyRate=רשימת תעריפים
+ListCurrencyRate=רשימת שערי החליפין של המטבע
+CreateRate=צור תעריף
+FormCreateRate=דרג יצירת
+FormUpdateRate=שינוי תעריף
+successRateCreate=שער המטבע %s נוסף למסד הנתונים
+ConfirmDeleteLineRate=האם אתה בטוח שברצונך להסיר את שער %s עבור המטבע %s ב-%s דייט?
+DeleteLineRate=שיעור ברור
+successRateDelete=דירוג נמחק
+errorRateDelete=שגיאה בעת מחיקת התעריף
+successUpdateRate=בוצע שינוי
+ErrorUpdateRate=שגיאה בעת שינוי התעריף
+Codemulticurrency=קוד מטבע
+UpdateRate=לשנות את התעריף
+CancelUpdate=לְבַטֵל
+NoEmptyRate=שדה התעריף לא יכול להיות ריק
+CurrencyCodeId=מזהה מטבע
+CurrencyCode=קוד מטבע
+CurrencyUnitPrice=מחיר ליחידה במטבע חוץ
+CurrencyPrice=המחיר במטבע חוץ
+MutltiCurrencyAutoUpdateCurrencies=עדכן את כל שערי המטבע

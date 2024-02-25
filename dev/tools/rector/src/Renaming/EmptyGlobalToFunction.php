@@ -106,7 +106,7 @@ class EmptyGlobalToFunction extends AbstractRector
 
             // We found a node !empty(conf->global->XXX)
             return new FuncCall(
-                new Name('getDolGlobalString'),
+                new Name('Functions::getDolGlobalString'),
                 [new Arg($constName)]
             );
         }
@@ -136,7 +136,7 @@ class EmptyGlobalToFunction extends AbstractRector
             $constName = new String_($nameforconst);
 
             return new BooleanNot(new FuncCall(
-                new Name('getDolGlobalString'),
+                new Name('Functions::getDolGlobalString'),
                 [new Arg($constName)]
             ));
         }

@@ -1,0 +1,1 @@
+@extends('master/install_layout')

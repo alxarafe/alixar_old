@@ -26,7 +26,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 use Luracast\Restler\RestException;
 
 require_once DOL_DOCUMENT_ROOT . '/main.inc.php';

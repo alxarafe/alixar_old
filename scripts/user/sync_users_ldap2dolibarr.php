@@ -117,15 +117,15 @@ print "Mails sending disabled (useless in batch mode)\n";
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1; // On bloque les mails
 print "\n";
 print "----- Synchronize all records from LDAP database:\n";
-print "host=" . getDolGlobalString('LDAP_SERVER_HOST') . "\n";
-print "port=" . getDolGlobalString('LDAP_SERVER_PORT') . "\n";
-print "login=" . getDolGlobalString('LDAP_ADMIN_DN') . "\n";
-print "pass=" . preg_replace('/./i', '*', getDolGlobalString('LDAP_ADMIN_PASS')) . "\n";
-print "DN to extract=" . getDolGlobalString('LDAP_USER_DN') . "\n";
-if (getDolGlobalString('LDAP_FILTER_CONNECTION')) {
-    print 'Filter=(' . getDolGlobalString('LDAP_FILTER_CONNECTION') . ')' . "\n"; // Note: filter is defined into function getRecords
+print "host=" . Functions::getDolGlobalString('LDAP_SERVER_HOST') . "\n";
+print "port=" . Functions::getDolGlobalString('LDAP_SERVER_PORT') . "\n";
+print "login=" . Functions::getDolGlobalString('LDAP_ADMIN_DN') . "\n";
+print "pass=" . preg_replace('/./i', '*', Functions::getDolGlobalString('LDAP_ADMIN_PASS')) . "\n";
+print "DN to extract=" . Functions::getDolGlobalString('LDAP_USER_DN') . "\n";
+if (Functions::getDolGlobalString('LDAP_FILTER_CONNECTION')) {
+    print 'Filter=(' . Functions::getDolGlobalString('LDAP_FILTER_CONNECTION') . ')' . "\n"; // Note: filter is defined into function getRecords
 } else {
-    print 'Filter=(' . getDolGlobalString('LDAP_KEY_USERS') . '=*)' . "\n";
+    print 'Filter=(' . Functions::getDolGlobalString('LDAP_KEY_USERS') . '=*)' . "\n";
 }
 print "----- To Dolibarr database:\n";
 print "type=" . $conf->db->type . "\n";
@@ -144,7 +144,7 @@ if (!$confirmed) {
     $input = trim(fgets(STDIN));
 }
 
-if (!getDolGlobalString('LDAP_USER_DN')) {
+if (!Functions::getDolGlobalString('LDAP_USER_DN')) {
     print $langs->trans("Error") . ': ' . $langs->trans("LDAP setup for users not defined inside Dolibarr");
     exit(-1);
 }
@@ -184,51 +184,51 @@ if ($result >= 0) {
     // We disable synchro Dolibarr-LDAP
     $conf->global->LDAP_SYNCHRO_ACTIVE = 0;
 
-    $ldaprecords = $ldap->getRecords('*', getDolGlobalString('LDAP_USER_DN'), getDolGlobalString('LDAP_KEY_USERS'), $required_fields, 'user'); // Filter on 'user' filter param
+    $ldaprecords = $ldap->getRecords('*', Functions::getDolGlobalString('LDAP_USER_DN'), Functions::getDolGlobalString('LDAP_KEY_USERS'), $required_fields, 'user'); // Filter on 'user' filter param
     if (is_array($ldaprecords)) {
         $db->begin();
 
         // Warning $ldapuser has a key in lowercase
         foreach ($ldaprecords as $key => $ldapuser) {
             // If login into exclude list, we discard record
-            if (in_array($ldapuser[getDolGlobalString('LDAP_FIELD_LOGIN')], $excludeuser)) {
-                print $langs->transnoentities("UserDiscarded") . ' # ' . $key . ': login=' . $ldapuser[getDolGlobalString('LDAP_FIELD_LOGIN')] . ' --> Discarded' . "\n";
+            if (in_array($ldapuser[Functions::getDolGlobalString('LDAP_FIELD_LOGIN')], $excludeuser)) {
+                print $langs->transnoentities("UserDiscarded") . ' # ' . $key . ': login=' . $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_LOGIN')] . ' --> Discarded' . "\n";
                 continue;
             }
 
             $fuser = new User($db);
 
-            if (getDolGlobalString('LDAP_KEY_USERS') == getDolGlobalString('LDAP_FIELD_SID')) {
-                $fuser->fetch('', '', $ldapuser[getDolGlobalString('LDAP_KEY_USERS')]); // Chargement du user concerné par le SID
-            } elseif (getDolGlobalString('LDAP_KEY_USERS') == getDolGlobalString('LDAP_FIELD_LOGIN')) {
-                $fuser->fetch('', $ldapuser[getDolGlobalString('LDAP_KEY_USERS')]); // Chargement du user concerné par le login
+            if (Functions::getDolGlobalString('LDAP_KEY_USERS') == Functions::getDolGlobalString('LDAP_FIELD_SID')) {
+                $fuser->fetch('', '', $ldapuser[Functions::getDolGlobalString('LDAP_KEY_USERS')]); // Chargement du user concerné par le SID
+            } elseif (Functions::getDolGlobalString('LDAP_KEY_USERS') == Functions::getDolGlobalString('LDAP_FIELD_LOGIN')) {
+                $fuser->fetch('', $ldapuser[Functions::getDolGlobalString('LDAP_KEY_USERS')]); // Chargement du user concerné par le login
             }
 
             // Propriete membre
-            $fuser->firstname = $ldapuser[getDolGlobalString('LDAP_FIELD_FIRSTNAME')];
-            $fuser->lastname = $ldapuser[getDolGlobalString('LDAP_FIELD_NAME')];
-            $fuser->login = $ldapuser[getDolGlobalString('LDAP_FIELD_LOGIN')];
-            $fuser->pass = $ldapuser[getDolGlobalString('LDAP_FIELD_PASSWORD')];
-            $fuser->pass_indatabase_crypted = $ldapuser[getDolGlobalString('LDAP_FIELD_PASSWORD_CRYPTED')];
+            $fuser->firstname = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_FIRSTNAME')];
+            $fuser->lastname = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_NAME')];
+            $fuser->login = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_LOGIN')];
+            $fuser->pass = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_PASSWORD')];
+            $fuser->pass_indatabase_crypted = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_PASSWORD_CRYPTED')];
 
             // $user->societe;
             /*
-             * $fuser->address=$ldapuser[getDolGlobalString('LDAP_FIELD_ADDRESS')];
-             * $fuser->zip=$ldapuser[getDolGlobalString('LDAP_FIELD_ZIP')];
-             * $fuser->town=$ldapuser[getDolGlobalString('LDAP_FIELD_TOWN')];
-             * $fuser->country=$ldapuser[getDolGlobalString('LDAP_FIELD_COUNTRY')];
+             * $fuser->address=$ldapuser[Functions::getDolGlobalString('LDAP_FIELD_ADDRESS')];
+             * $fuser->zip=$ldapuser[Functions::getDolGlobalString('LDAP_FIELD_ZIP')];
+             * $fuser->town=$ldapuser[Functions::getDolGlobalString('LDAP_FIELD_TOWN')];
+             * $fuser->country=$ldapuser[Functions::getDolGlobalString('LDAP_FIELD_COUNTRY')];
              * $fuser->country_id=$countries[$hashlib2rowid[strtolower($fuser->country)]]['rowid'];
              * $fuser->country_code=$countries[$hashlib2rowid[strtolower($fuser->country)]]['code'];
              */
 
-            $fuser->office_phone = $ldapuser[getDolGlobalString('LDAP_FIELD_PHONE')];
-            $fuser->user_mobile = $ldapuser[getDolGlobalString('LDAP_FIELD_MOBILE')];
-            $fuser->office_fax = $ldapuser[getDolGlobalString('LDAP_FIELD_FAX')];
-            $fuser->email = $ldapuser[getDolGlobalString('LDAP_FIELD_MAIL')];
-            $fuser->ldap_sid = $ldapuser[getDolGlobalString('LDAP_FIELD_SID')];
+            $fuser->office_phone = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_PHONE')];
+            $fuser->user_mobile = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_MOBILE')];
+            $fuser->office_fax = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_FAX')];
+            $fuser->email = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_MAIL')];
+            $fuser->ldap_sid = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_SID')];
 
-            $fuser->job = $ldapuser[getDolGlobalString('LDAP_FIELD_TITLE')];
-            $fuser->note = $ldapuser[getDolGlobalString('LDAP_FIELD_DESCRIPTION')];
+            $fuser->job = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_TITLE')];
+            $fuser->note = $ldapuser[Functions::getDolGlobalString('LDAP_FIELD_DESCRIPTION')];
             $fuser->admin = 0;
             $fuser->socid = 0;
             $fuser->contact_id = 0;
@@ -237,10 +237,10 @@ if ($result >= 0) {
             $fuser->statut = 1;
             // TODO : revoir la gestion du status
             /*
-             * if (isset($ldapuser[getDolGlobalString('LDAP_FIELD_MEMBER_STATUS')])) {
+             * if (isset($ldapuser[Functions::getDolGlobalString('LDAP_FIELD_MEMBER_STATUS')])) {
              * $fuser->datec=dol_stringtotime($ldapuser[$conf->global->LDAP_FIELD_MEMBER_FIRSTSUBSCRIPTION_DATE]);
              * $fuser->datevalid=dol_stringtotime($ldapuser[$conf->global->LDAP_FIELD_MEMBER_FIRSTSUBSCRIPTION_DATE]);
-             * $fuser->statut=$ldapuser[getDolGlobalString('LDAP_FIELD_MEMBER_STATUS')];
+             * $fuser->statut=$ldapuser[Functions::getDolGlobalString('LDAP_FIELD_MEMBER_STATUS')];
              * }
              */
             // if ($fuser->statut > 1) $fuser->statut=1;
@@ -275,7 +275,7 @@ if ($result >= 0) {
             // TODO : Review the group management (or script for syncing groups)
             /*
              * if(!$error) {
-             * foreach ($ldapuser[getDolGlobalString('LDAP_FIELD_USERGROUPS') as $groupdn) {
+             * foreach ($ldapuser[Functions::getDolGlobalString('LDAP_FIELD_USERGROUPS') as $groupdn) {
              * $groupdn;
              * }
              * }

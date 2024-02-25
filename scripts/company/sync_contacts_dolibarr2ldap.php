@@ -93,11 +93,11 @@ print "login=" . $conf->db->user . "\n";
 print "database=" . $conf->db->name . "\n";
 print "\n";
 print "----- To LDAP database:\n";
-print "host=" . getDolGlobalString('LDAP_SERVER_HOST') . "\n";
-print "port=" . getDolGlobalString('LDAP_SERVER_PORT') . "\n";
-print "login=" . getDolGlobalString('LDAP_ADMIN_DN') . "\n";
-print "pass=" . preg_replace('/./i', '*', getDolGlobalString('LDAP_ADMIN_PASS')) . "\n";
-print "DN target=" . getDolGlobalString('LDAP_CONTACT_DN') . "\n";
+print "host=" . Functions::getDolGlobalString('LDAP_SERVER_HOST') . "\n";
+print "port=" . Functions::getDolGlobalString('LDAP_SERVER_PORT') . "\n";
+print "login=" . Functions::getDolGlobalString('LDAP_ADMIN_DN') . "\n";
+print "pass=" . preg_replace('/./i', '*', Functions::getDolGlobalString('LDAP_ADMIN_PASS')) . "\n";
+print "DN target=" . Functions::getDolGlobalString('LDAP_CONTACT_DN') . "\n";
 print "\n";
 
 if (!$confirmed) {
@@ -110,7 +110,7 @@ if (!$confirmed) {
 }
 
 /*
- * if (!getDolGlobalString('LDAP_CONTACT_ACTIVE')) {
+ * if (!Functions::getDolGlobalString('LDAP_CONTACT_ACTIVE')) {
  * print $langs->trans("LDAPSynchronizationNotSetupInDolibarr");
  * exit(-1);
  * }

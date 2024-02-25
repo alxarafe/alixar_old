@@ -61,7 +61,7 @@ class UserTest extends CommonClassTest
     {
         global $conf,$user,$langs,$db;
 
-        if (getDolGlobalString('MAIN_MODULE_LDAP')) {
+        if (Functions::getDolGlobalString('MAIN_MODULE_LDAP')) {
             print "\n" . __METHOD__ . " module LDAP must be disabled.\n";
             die(1);
         }
@@ -84,7 +84,7 @@ class UserTest extends CommonClassTest
         $langs = $this->savlangs;
         $db = $this->savdb;
 
-        print __METHOD__ . " USER_PASSWORD_GENERATED=" . getDolGlobalString('USER_PASSWORD_GENERATED') . "\n";
+        print __METHOD__ . " USER_PASSWORD_GENERATED=" . Functions::getDolGlobalString('USER_PASSWORD_GENERATED') . "\n";
 
         $localobject = new User($db);
         $localobject->initAsSpecimen();

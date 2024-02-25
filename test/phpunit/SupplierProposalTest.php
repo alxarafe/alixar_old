@@ -65,7 +65,7 @@ class SupplierProposalTest extends CommonClassTest
         global $conf,$user,$langs,$db;
         $db->begin();   // This is to have all actions inside a transaction even if test launched without suite.
 
-        if (!getDolGlobalString('MAIN_MODULE_SUPPLIERPROPOSAL')) {
+        if (!Functions::getDolGlobalString('MAIN_MODULE_SUPPLIERPROPOSAL')) {
             print "\n" . __METHOD__ . " module Supplier proposal must be enabled.\n";
             die(1);
         }

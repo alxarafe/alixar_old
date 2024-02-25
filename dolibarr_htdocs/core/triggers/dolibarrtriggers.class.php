@@ -20,7 +20,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 /**
  * Class that all triggers must inherit

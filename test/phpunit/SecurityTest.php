@@ -1123,7 +1123,7 @@ class SecurityTest extends CommonClassTest
 
         // For a string that is already HTML (contains HTML tags) with special tags but badly formatted
         $stringtotest = "testA\n<h1>hhhh</h1><z>ddd</z><header>aaa</header><footer>bbb</footer>";
-        if (getDolGlobalString("MAIN_RESTRICTHTML_ONLY_VALID_HTML_TIDY")) {
+        if (Functions::getDolGlobalString("MAIN_RESTRICTHTML_ONLY_VALID_HTML_TIDY")) {
             $stringfixed = "testA\n<h1>hhhh</h1>\nddd\n<header>aaa</header>\n<footer>bbb</footer>\n";
         } else {
             $stringfixed = "testA\n<h1>hhhh</h1>ddd<header>aaa</header><footer>bbb</footer>";
@@ -1139,7 +1139,7 @@ class SecurityTest extends CommonClassTest
 
         // For a string that is already HTML (contains HTML tags) but badly formatted
         $stringtotest = "testB\n<h1>hhh</h1>\n<td>td alone</td><h1>iii</h1>";
-        if (getDolGlobalString("MAIN_RESTRICTHTML_ONLY_VALID_HTML_TIDY")) {
+        if (Functions::getDolGlobalString("MAIN_RESTRICTHTML_ONLY_VALID_HTML_TIDY")) {
             $stringfixed = "testB\n<h1>hhh</h1>\n<h1>iii</h1>\n<table>\n<tr>\n<td>td alone</td>\n</tr>\n</table>\n";
         } else {
             $stringfixed = "testB\n<h1>hhh</h1>\n<td>td alone</td><h1>iii</h1>";

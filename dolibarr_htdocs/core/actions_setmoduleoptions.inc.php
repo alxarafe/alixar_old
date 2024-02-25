@@ -81,7 +81,7 @@ if ($action == 'update' && is_array($arrayofparameters) && !empty($user->admin))
 if ($action == 'deletefile' && $modulepart == 'doctemplates' && !empty($user->admin)) {
     include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
     $keyforuploaddir = GETPOST('keyforuploaddir', 'aZ09');
-    $listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim(getDolGlobalString($keyforuploaddir))));
+    $listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim(Functions::getDolGlobalString($keyforuploaddir))));
 
     foreach ($listofdir as $key => $tmpdir) {
         $tmpdir = preg_replace('/DOL_DATA_ROOT\/*/', '', $tmpdir);  // Clean string if we found a hardcoded DOL_DATA_ROOT
@@ -132,7 +132,7 @@ if ($action == 'setModuleOptions' && !empty($user->admin)) {
     if (GETPOST('upload', 'alpha') && GETPOST('keyforuploaddir', 'aZ09')) {
         include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
         $keyforuploaddir = GETPOST('keyforuploaddir', 'aZ09');
-        $listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim(getDolGlobalString($keyforuploaddir))));
+        $listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim(Functions::getDolGlobalString($keyforuploaddir))));
 
         foreach ($listofdir as $key => $tmpdir) {
             $tmpdir = trim($tmpdir);

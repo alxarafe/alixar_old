@@ -81,15 +81,15 @@ $s_ftp_port = 'FTP_PORT_' . $numero_ftp;
 $s_ftp_user = 'FTP_USER_' . $numero_ftp;
 $s_ftp_password = 'FTP_PASSWORD_' . $numero_ftp;
 $s_ftp_passive = 'FTP_PASSIVE_' . $numero_ftp;
-$ftp_name = getDolGlobalString($s_ftp_name);
-$ftp_server = getDolGlobalString($s_ftp_server);
-$ftp_port = getDolGlobalString($s_ftp_port);
+$ftp_name = Functions::getDolGlobalString($s_ftp_name);
+$ftp_server = Functions::getDolGlobalString($s_ftp_server);
+$ftp_port = Functions::getDolGlobalString($s_ftp_port);
 if (empty($ftp_port)) {
     $ftp_port = 21;
 }
-$ftp_user = getDolGlobalString($s_ftp_user);
-$ftp_password = getDolGlobalString($s_ftp_password);
-$ftp_passive = getDolGlobalString($s_ftp_passive);
+$ftp_user = Functions::getDolGlobalString($s_ftp_user);
+$ftp_password = Functions::getDolGlobalString($s_ftp_password);
+$ftp_passive = Functions::getDolGlobalString($s_ftp_passive);
 
 // For result on connection
 $ok = 0;
@@ -386,8 +386,8 @@ if (!function_exists('ftp_connect')) {
         print $langs->trans("Server") . ': <b>' . $ftp_server . '</b><br>';
         print $langs->trans("Port") . ': <b>' . $ftp_port . '</b> ' . ($ftp_passive ? "(Passive)" : "(Active)") . '<br>';
         print $langs->trans("User") . ': <b>' . $ftp_user . '</b><br>';
-        print $langs->trans("FTPs (FTP over SSH)") . ': <b>' . yn(getDolGlobalString('FTP_CONNECT_WITH_SSL')) . '</b><br>';
-        print $langs->trans("SFTP (FTP as a subsystem of SSH)") . ': <b>' . yn(getDolGlobalString('FTP_CONNECT_WITH_SFTP')) . '</b><br>';
+        print $langs->trans("FTPs (FTP over SSH)") . ': <b>' . yn(Functions::getDolGlobalString('FTP_CONNECT_WITH_SSL')) . '</b><br>';
+        print $langs->trans("SFTP (FTP as a subsystem of SSH)") . ': <b>' . yn(Functions::getDolGlobalString('FTP_CONNECT_WITH_SFTP')) . '</b><br>';
         print $langs->trans("Directory") . ': ';
         $sectionarray = preg_split('|[\/]|', $section);
         // For /
@@ -453,7 +453,7 @@ if (!function_exists('ftp_connect')) {
             //$newsection='/home';
 
             // List content of directory ($newsection = '/', '/home', ...)
-            if (getDolGlobalString('FTP_CONNECT_WITH_SFTP')) {
+            if (Functions::getDolGlobalString('FTP_CONNECT_WITH_SFTP')) {
                 if ($newsection == '/') {
                     //$newsection = '/./';
                     $newsection = ssh2_sftp_realpath($conn_id, ".") . '/./'; // workaround for bug https://bugs.php.net/bug.php?id=64169
@@ -643,7 +643,7 @@ if (!function_exists('ftp_connect')) {
         while ($i <= $MAXFTP) {
             $paramkey = 'FTP_NAME_' . $i;
             //print $paramkey;
-            if (getDolGlobalString($paramkey)) {
+            if (Functions::getDolGlobalString($paramkey)) {
                 $foundsetup = true;
                 break;
             }

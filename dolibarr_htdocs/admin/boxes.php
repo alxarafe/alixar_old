@@ -457,7 +457,7 @@ print '<td>';
 print $langs->trans("MaxNbOfLinesForBoxes");
 print '</td>' . "\n";
 print '<td>';
-print '<input type="text" class="flat" size="6" name="MAIN_BOXES_MAXLINES" value="' . (getDolGlobalString('MAIN_BOXES_MAXLINES')) . '">';
+print '<input type="text" class="flat" size="6" name="MAIN_BOXES_MAXLINES" value="' . (Functions::getDolGlobalString('MAIN_BOXES_MAXLINES')) . '">';
 print '</td>';
 print '</tr>';
 

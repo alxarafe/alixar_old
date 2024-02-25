@@ -71,11 +71,11 @@ if (empty($conf->dav->enabled)) {
 }
 
 // Restrict API to some IPs
-if (getDolGlobalString('DAV_RESTRICT_ON_IP')) {
-    $allowedip = explode(' ', getDolGlobalString('DAV_RESTRICT_ON_IP'));
+if (Functions::getDolGlobalString('DAV_RESTRICT_ON_IP')) {
+    $allowedip = explode(' ', Functions::getDolGlobalString('DAV_RESTRICT_ON_IP'));
     $ipremote = getUserRemoteIP();
     if (!in_array($ipremote, $allowedip)) {
-        dol_syslog('Remote ip is ' . $ipremote . ', not into list ' . getDolGlobalString('DAV_RESTRICT_ON_IP'));
+        dol_syslog('Remote ip is ' . $ipremote . ', not into list ' . Functions::getDolGlobalString('DAV_RESTRICT_ON_IP'));
         print 'DAV not allowed from the IP ' . $ipremote;
         header('HTTP/1.1 503 DAV not allowed from your IP ' . $ipremote);
         exit(0);
@@ -168,13 +168,13 @@ $nodes = [];
 
 // Enable directories and features according to DAV setup
 // Public dir
-if (getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')) {
+if (Functions::getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')) {
     $nodes[] = new \Sabre\DAV\FS\Directory($publicDir);
 }
 // Private dir
 $nodes[] = new \Sabre\DAV\FS\Directory($privateDir);
 // ECM dir
-if (isModEnabled('ecm') && getDolGlobalString('DAV_ALLOW_ECM_DIR')) {
+if (isModEnabled('ecm') && Functions::getDolGlobalString('DAV_ALLOW_ECM_DIR')) {
     $nodes[] = new \Sabre\DAV\FS\Directory($ecmDir);
 }
 
@@ -202,7 +202,7 @@ if (isset($baseUri)) {
 
 // Add authentication function
 if (
-    (!getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')
+    (!Functions::getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')
         || !preg_match('/' . preg_quote(DOL_URL_ROOT . '/dav/fileserver.php/public', '/') . '/', $_SERVER["PHP_SELF"]))
     && !preg_match('/^sabreAction=asset&assetName=[a-zA-Z0-9%\-\/]+\.(png|css|woff|ico|ttf)$/', $_SERVER["QUERY_STRING"])    // URL for Sabre browser resources
 ) {
@@ -215,7 +215,7 @@ $lockPlugin = new \Sabre\DAV\Locks\Plugin($lockBackend);
 $server->addPlugin($lockPlugin);
 
 // Support for the html browser
-if (!getDolGlobalString('DAV_DISABLE_BROWSER')) {
+if (!Functions::getDolGlobalString('DAV_DISABLE_BROWSER')) {
     $browser = new \Sabre\DAV\Browser\Plugin();
     $server->addPlugin($browser);
 }

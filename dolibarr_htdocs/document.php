@@ -189,7 +189,7 @@ if (preg_match('/\.(html|htm)$/i', $original_file)) {
 if (isset($_GET["attachment"])) {
     $attachment = GETPOST("attachment", 'alpha') ? true : false;
 }
-if (getDolGlobalString('MAIN_DISABLE_FORCE_SAVEAS')) {
+if (Functions::getDolGlobalString('MAIN_DISABLE_FORCE_SAVEAS')) {
     $attachment = false;
 }
 
@@ -317,7 +317,7 @@ $readfile = true;
 
 // on view document, can output images with good orientation according to exif infos
 // TODO Why this on document.php and not in viewimage.php ?
-if (!$attachment && getDolGlobalString('MAIN_USE_EXIF_ROTATION') && image_format_supported($fullpath_original_file_osencoded) == 1) {
+if (!$attachment && Functions::getDolGlobalString('MAIN_USE_EXIF_ROTATION') && image_format_supported($fullpath_original_file_osencoded) == 1) {
     $imgres = correctExifImageOrientation($fullpath_original_file_osencoded, null);
     $readfile = !$imgres;
 }

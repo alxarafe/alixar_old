@@ -109,7 +109,7 @@ if (preg_match('/api\/index\.php$/', $url)) {    // sometimes $_SERVER['PHP_SELF
     $url = $_SERVER['PHP_SELF'] . (empty($_SERVER['PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']);
 }
 // Fix for some NGINX setups (this should not be required even with NGINX, however setup of NGINX are often mysterious and this may help is such cases)
-if (getDolGlobalString('MAIN_NGINX_FIX')) {
+if (Functions::getDolGlobalString('MAIN_NGINX_FIX')) {
     $url = (isset($_SERVER['SCRIPT_URI']) && $_SERVER["SCRIPT_URI"] !== null) ? $_SERVER["SCRIPT_URI"] : $_SERVER['PHP_SELF'];
 }
 
@@ -124,7 +124,7 @@ if (!isModEnabled('api')) {
 }
 
 // Test if explorer is not disabled
-if (preg_match('/api\/index\.php\/explorer/', $url) && getDolGlobalString('API_EXPLORER_DISABLED')) {
+if (preg_match('/api\/index\.php\/explorer/', $url) && Functions::getDolGlobalString('API_EXPLORER_DISABLED')) {
     $langs->load("admin");
     dol_syslog("Call Dolibarr API interfaces with module API REST disabled");
     print $langs->trans("WarningAPIExplorerDisabled") . '.<br><br>';
@@ -154,7 +154,7 @@ $hookmanager->initHooks(['api']);
 // But, if we set $refreshcache to false, so it may have only one API in the routes.php file if we make a call for one API without
 // using the explorer. And when we make another call for another API, the API is not into the api/temp/routes.php and a 404 is returned.
 // So we force refresh to each call.
-$refreshcache = (getDolGlobalString('API_PRODUCTION_DO_NOT_ALWAYS_REFRESH_CACHE') ? false : true);
+$refreshcache = (Functions::getDolGlobalString('API_PRODUCTION_DO_NOT_ALWAYS_REFRESH_CACHE') ? false : true);
 if (!empty($reg[1]) && $reg[1] == 'explorer' && ($reg[2] == '/swagger.json' || $reg[2] == '/swagger.json/root' || $reg[2] == '/resources.json' || $reg[2] == '/resources.json/root')) {
     $refreshcache = true;
     if (!is_writable($conf->api->dir_temp)) {
@@ -167,7 +167,7 @@ $api = new DolibarrApi($db, '', $refreshcache);
 //var_dump($api->r->apiVersionMap);
 
 // If MAIN_API_DEBUG is set to 1, we save logs into file "dolibarr_api.log"
-if (getDolGlobalString('MAIN_API_DEBUG')) {
+if (Functions::getDolGlobalString('MAIN_API_DEBUG')) {
     $r = $api->r;
     $r->onCall(function () use ($r) {
         // Don't log Luracast Restler Explorer resources calls
@@ -195,11 +195,11 @@ $api->r->addAuthenticationClass('DolibarrApiAccess', '');
 UploadFormat::$allowedMimeTypes = ['image/jpeg', 'image/png', 'text/plain', 'application/octet-stream'];
 
 // Restrict API to some IPs
-if (getDolGlobalString('API_RESTRICT_ON_IP')) {
-    $allowedip = explode(' ', getDolGlobalString('API_RESTRICT_ON_IP'));
+if (Functions::getDolGlobalString('API_RESTRICT_ON_IP')) {
+    $allowedip = explode(' ', Functions::getDolGlobalString('API_RESTRICT_ON_IP'));
     $ipremote = getUserRemoteIP();
     if (!in_array($ipremote, $allowedip)) {
-        dol_syslog('Remote ip is ' . $ipremote . ', not into list ' . getDolGlobalString('API_RESTRICT_ON_IP'));
+        dol_syslog('Remote ip is ' . $ipremote . ', not into list ' . Functions::getDolGlobalString('API_RESTRICT_ON_IP'));
         print 'APIs are not allowed from the IP ' . $ipremote;
         header('HTTP/1.1 503 API not allowed from your IP ' . $ipremote);
         //session_destroy();
@@ -258,7 +258,7 @@ if (!empty($reg[1]) && $reg[1] == 'explorer' && ($reg[2] == '/swagger.json' || $
                                 }
 
                                 //$conf->global->MAIN_MODULE_API_LOGIN_DISABLED = 1;
-                                if ($file_searched == 'api_login.class.php' && getDolGlobalString('MAIN_MODULE_API_LOGIN_DISABLED')) {
+                                if ($file_searched == 'api_login.class.php' && Functions::getDolGlobalString('MAIN_MODULE_API_LOGIN_DISABLED')) {
                                     continue;
                                 }
 
@@ -339,8 +339,8 @@ if (!empty($reg[1]) && ($reg[1] != 'explorer' || ($reg[2] != '/swagger.json' && 
 
     // Test rules on endpoints. For example:
     // $conf->global->API_ENDPOINT_RULES = 'endpoint1:1,endpoint2:1,...'
-    if (getDolGlobalString('API_ENDPOINT_RULES')) {
-        $listofendpoints = explode(',', getDolGlobalString('API_ENDPOINT_RULES'));
+    if (Functions::getDolGlobalString('API_ENDPOINT_RULES')) {
+        $listofendpoints = explode(',', Functions::getDolGlobalString('API_ENDPOINT_RULES'));
         $endpointisallowed = false;
 
         foreach ($listofendpoints as $endpointrule) {
@@ -384,7 +384,7 @@ if (!empty($reg[1]) && ($reg[1] != 'explorer' || ($reg[2] != '/swagger.json' && 
 
 // We do not want that restler outputs data if we use native compression (default behaviour) but we want to have it returned into a string.
 // If API_DISABLE_COMPRESSION is set, returnResponse is false => It use default handling so output result directly.
-$usecompression = (!getDolGlobalString('API_DISABLE_COMPRESSION') && !empty($_SERVER['HTTP_ACCEPT_ENCODING']));
+$usecompression = (!Functions::getDolGlobalString('API_DISABLE_COMPRESSION') && !empty($_SERVER['HTTP_ACCEPT_ENCODING']));
 $foundonealgorithm = 0;
 if ($usecompression) {
     if (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'br') !== false && function_exists('brotli_compress')) {

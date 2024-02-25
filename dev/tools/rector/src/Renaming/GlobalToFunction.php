@@ -98,7 +98,7 @@ class GlobalToFunction extends AbstractRector
                     return;
                 }
                 $node->expr = new FuncCall(
-                    new Name('getDolGlobalString'),
+                    new Name('Functions::getDolGlobalString'),
                     [new Arg($constName)]
                     );
             }
@@ -114,7 +114,7 @@ class GlobalToFunction extends AbstractRector
                     return;
                 }
                 $node->value = new FuncCall(
-                    new Name('getDolGlobalString'),
+                    new Name('Functions::getDolGlobalString'),
                     [new Arg($constName)]
                     );
             }
@@ -131,7 +131,7 @@ class GlobalToFunction extends AbstractRector
                     return;
                 }
                 $node->dim = new FuncCall(
-                    new Name('getDolGlobalString'),
+                    new Name('Functions::getDolGlobalString'),
                     [new Arg($constName)]
                 );
             }
@@ -156,7 +156,7 @@ class GlobalToFunction extends AbstractRector
                             if (empty($constName)) {
                                 return;
                             }
-                            $a = new FuncCall(new Name('getDolGlobalString'), [new Arg($constName)]);
+                            $a = new FuncCall(new Name('Functions::getDolGlobalString'), [new Arg($constName)]);
                             $tmpargs[$key] = new Arg($a);
 
                             $r = new FuncCall(new Name($tmpfunctionname), $tmpargs);
@@ -187,7 +187,7 @@ class GlobalToFunction extends AbstractRector
                             if (empty($constName)) {
                                 return;
                             }
-                            $a = new FuncCall(new Name('getDolGlobalString'), [new Arg($constName)]);
+                            $a = new FuncCall(new Name('Functions::getDolGlobalString'), [new Arg($constName)]);
                             $tmpargs[$key] = new Arg($a);
 
                             $r = new MethodCall($expr, $tmpmethodname, $tmpargs);
@@ -206,7 +206,7 @@ class GlobalToFunction extends AbstractRector
                     return;
                 }
                 $leftConcat = new FuncCall(
-                    new Name('getDolGlobalString'),
+                    new Name('Functions::getDolGlobalString'),
                     [new Arg($constName)]
                 );
                 $rightConcat = $node->right;
@@ -217,7 +217,7 @@ class GlobalToFunction extends AbstractRector
                     return;
                 }
                 $rightConcat = new FuncCall(
-                    new Name('getDolGlobalString'),
+                    new Name('Functions::getDolGlobalString'),
                     [new Arg($constName)]
                 );
                 $leftConcat = $node->left;
@@ -279,7 +279,7 @@ class GlobalToFunction extends AbstractRector
                 $funcName = 'getDolGlobalInt';
                 break;
             case 'Scalar_String':
-                $funcName = 'getDolGlobalString';
+                $funcName = 'Functions::getDolGlobalString';
                 break;
             default:
                 return;

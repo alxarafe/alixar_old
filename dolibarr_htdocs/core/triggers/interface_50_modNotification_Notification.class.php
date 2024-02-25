@@ -28,7 +28,7 @@
  *  \brief      File of class of triggers for notification module
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\Class\Lang;
 
 require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/class/notify.class.php';

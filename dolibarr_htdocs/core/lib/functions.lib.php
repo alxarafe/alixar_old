@@ -49,7 +49,7 @@
  *                    This file contains all frequently used functions.
  */
 
-use Alxarafe\Base\Lang;
+use Alxarafe\LibClass\Lang;
 
 include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 
