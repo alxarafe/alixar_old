@@ -2,8 +2,8 @@
 
 /* Copyright (C) 2001-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
+ * Copyright (C) 2024       Francesc Pineda         <fpineda@alxarafe.com>
+ * Copyright (C) 2024       Cayetano Hernández      <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,17 @@ require_once 'vendor/autoload.php';
 
 const BASE_PATH = __DIR__;
 
+$confFile = BASE_PATH . '/conf/conf.php';
+if (!file_exists($confFile)) {
+    require BASE_PATH . '/install/index.php';
+}
+
 $page = filter_input(INPUT_GET, 'page');
 $ctrl = filter_input(INPUT_GET, 'ctrl');
 
+/**
+ * If no controller has been passed, execution of the original 'index.php' is assumed.
+ */
 if (empty($ctrl)) {
     require 'index_dol.php';
     die();

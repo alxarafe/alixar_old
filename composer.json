@@ -68,7 +68,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Alxarafe\\": "htdocs/"
+      "Alxarafe\\": "Core/",
+      "Alixar\\": "htdocs/"
     }
   }
 }

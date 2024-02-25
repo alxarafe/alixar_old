@@ -26,7 +26,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alxarafe\System\Base\Lang;
+use Alxarafe\Base\Lang;
 
 /**
  *  \file       htdocs/install/inc.php
