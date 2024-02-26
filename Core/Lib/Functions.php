@@ -25,6 +25,7 @@ namespace Alxarafe\Lib;
 
 use Alxarafe\Base\Globals;
 use Alxarafe\DB\DB;
+use Mobile_Detect;
 
 abstract class Functions
 {
@@ -391,7 +392,7 @@ abstract class Functions
      *
      * @return    array Check function documentation
      */
-    function getBrowserInfo($user_agent)
+    public static function getBrowserInfo($user_agent)
     {
         // include_once DOL_DOCUMENT_ROOT.'/includes/mobiledetect/mobiledetectlib/Mobile_Detect.php';
 

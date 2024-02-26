@@ -31,7 +31,8 @@ use Alxarafe\Base\Globals;
  *  \brief      Page called to enhance interface with Javascript and Ajax features.
  */
 
-class Ajax {
+class Ajax
+{
     /**
      * Generic function that return javascript to add to a page to transform a common input field into an autocomplete field by calling an Ajax page (ex: /societe/ajax/ajaxcompanies.php).
      * The HTML field must be an input text with id=search_$htmlname.

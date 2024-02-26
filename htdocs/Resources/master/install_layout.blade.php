@@ -16,8 +16,10 @@
 <div class="divlogoinstall" style="text-align:center">
     <img class="imglogoinstall" src="Resources/img/alixar_logo.svg" alt="Alixar logo" width="300px"><br>20.0.0-alpha
 </div><br><span class="titre">{!! $lang->trans('DolibarrSetup') !!}</span>
+<br>
 @section('body')
     <p>You need to define a body section in your template</p>
 @show
+<br>
 </body>
 </html>

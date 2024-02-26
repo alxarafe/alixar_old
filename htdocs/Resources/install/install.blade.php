@@ -27,5 +27,5 @@
         </table>
         <!-- pFooter -->
         <div class="nextbutton" id="nextbutton"><input type="submit" value="{!! $lang->trans('NextStep') !!} ->"></div>
-    </form><br>
+    </form>
 @endsection
