@@ -24,6 +24,7 @@
 namespace Alxarafe\Lib;
 
 use Alxarafe\Base\Globals;
+use Alxarafe\DB\DB;
 
 abstract class Functions
 {
@@ -246,15 +247,11 @@ abstract class Functions
      * @param string $name Name of database
      * @param int    $port Port of database server
      *
-     * @return    DoliDB                A DoliDB instance
+     * @return    DB                A DoliDB instance
      */
-    function getDoliDBInstance($type, $host, $user, $pass, $name, $port)
+    static public function getDoliDBInstance($type, $host, $user, $pass, $name, $port)
     {
-        require_once DOL_DOCUMENT_ROOT . "/core/db/" . $type . '.class.php';
-
-        $class = 'DoliDB' . ucfirst($type);
-        $db = new $class($type, $host, $user, $pass, $name, $port);
-        return $db;
+        return DB::DB($type, $host, $user, $pass, $name, $port);
     }
 
     /**

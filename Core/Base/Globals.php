@@ -19,18 +19,32 @@
 
 namespace Alxarafe\Base;
 
+use Alxarafe\Lib\Functions;
 use Alxarafe\LibClass\Lang;
 
 abstract class Globals
 {
     private static $conf;
     private static $lang;
+    private static $db;
 
-    public static  function init()
+    public static function init()
     {
-        self::$conf = new Conf();
+        self::$conf = $conf = new Conf();
         self::$lang = new Lang(BASE_PATH, self::$conf);
-        self::$lang->setDefaultLang();
+        self::$lang->setDefaultLang('auto');
+
+        $conf = self::$conf::getConfig();
+        if (!empty($conf->main_db_pass)) {
+            static::$db = Functions::getDoliDBInstance(
+                $conf->main_db_type,
+                $conf->main_db_host,
+                $conf->main_db_user,
+                $conf->main_db_pass,
+                $conf->main_db_name,
+                (int) $conf->main_db_port
+            );
+        }
     }
 
     public static function getConf()
@@ -41,6 +55,11 @@ abstract class Globals
     public static function getLang()
     {
         return static::$lang;
+    }
+
+    public static function getDb()
+    {
+        return static::$db;
     }
 
 }

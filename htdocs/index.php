@@ -28,6 +28,8 @@ const BASE_PATH = __DIR__;
 $page = filter_input(INPUT_GET, 'page');
 $ctrl = filter_input(INPUT_GET, 'ctrl');
 
+Globals::init();
+
 /**
  * If the configuration file does not exist, the installer is invoked.
  */
@@ -44,8 +46,6 @@ if (empty($ctrl)) {
     require 'index_dol.php';
     die();
 }
-
-Globals::init();
 
 $pageName = str_replace('/', '\\', $page);
 $namespace = 'Alixar\\' . $pageName . '\\' . $ctrl;

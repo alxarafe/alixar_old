@@ -25,8 +25,33 @@ use Jenssegers\Blade\Blade;
 abstract class BasicController extends Globals
 {
     protected $template;
+    protected $action;
 
-    abstract public function body();
+    public $db;
+    public $lang;
+
+    public function __construct()
+    {
+        $this->db = Globals::getDb();
+        $this->lang = Globals::getLang();
+    }
+
+    public function body()
+    {
+        $this->checkAction();
+    }
+
+    abstract public function noAction(): bool;
+
+    public function checkAction(): bool
+    {
+        $this->action = filter_input(INPUT_POST, 'action');
+        switch ($this->action) {
+            case '':
+                return $this->noAction();
+        }
+        return false;
+    }
 
     public function view()
     {

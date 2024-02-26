@@ -254,7 +254,8 @@ class Lang
      */
     public function load($domain, $alt = 0, $stopafterdirection = 0, $forcelangdir = '', $loadfromfileonly = 0, $forceloadifalreadynotfound = 0)
     {
-        global $conf, $db;
+        $conf = Globals::getConf();
+        $db = Globals::getDb();
 
         //Functions::dol_syslog("Translate::Load Start domain=".$domain." alt=".$alt." forcelangdir=".$forcelangdir." this->defaultlang=".$this->defaultlang);
 

@@ -1,7 +1,13 @@
 <?php
-/* Copyright (C) 2024 Rafael San José     <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda     <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández  <chernandez@alxarafe.com>
+
+/* Copyright (C) 2003-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
+ * Copyright (C) 2003      Xavier Dutoit        <doli@sydesy.com>
+ * Copyright (C) 2004-2020 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2017 Regis Houssin      	<regis.houssin@inodbox.com>
+ * Copyright (C) 2006 	   Jean Heimburger    	<jean@tiaris.info>
+ * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
+ * Copyright (C) 2024      Francesc Pineda      <fpineda@alxarafe.com>
+ * Copyright (C) 2024      Cayetano Hernández   <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +27,38 @@ namespace Alxarafe\Base;
 
 use stdClass;
 
-$conf = new Conf();
-
 /**
  *  Class to stock current configuration
  */
 class Conf extends stdClass
 {
+    private const CONFIG_VAR = [
+        'main_url_root' => null,
+        'main_document_root' => BASE_PATH,
+        'main_url_root_alt' => null,
+        'main_document_root_alt' => null,
+        'main_data_root' => null,
+        'main_db_host' => null,
+        'main_db_port' => 3306,
+        'main_db_name' => null,
+        'main_db_user' => null,
+        'main_db_pass' => null,
+        'main_db_type' => 'mysqli',
+        'main_db_prefix' => 'llx_',
+        'main_db_character_set' => 'utf8mb4',
+        'main_db_collation' => 'utf8mb4_unicode_ci',
+        'main_db_readonly' => '0',
+        'main_instance_unique_id' => null,
+        'main_dolcrypt_key' => null,
+        'main_authentication' => null,
+        'main_force_https' => null,
+        'main_prod' => null,
+        'main_restrict_os_commands' => null,
+        'main_restrict_ip' => null,
+        'nocsrfcheck' => null,
+        'cron_allow_cli' => null,
+    ];
+
     /**
      * @var Object  Associative array with properties found in conf file
      */
@@ -53,7 +84,6 @@ class Conf extends stdClass
     //! To store module status of special module names
     public $expedition_bon;
     public $delivery_note;
-
 
     //! To store if javascript/ajax is enabked
     public $use_javascript_ajax;
@@ -85,17 +115,17 @@ class Conf extends stdClass
     /**
      * @var string[]
      */
-    public $logbuffer = array();
+    public $logbuffer = [];
 
     /**
      * @var LogHandlerInterface[]
      */
-    public $loghandlers = array();
+    public $loghandlers = [];
 
     //! Used to store running instance for multi-company (default 1)
     public $entity = 1;
     //! Used to store list of entities to use for each element
-    public $entities = array();
+    public $entities = [];
 
     public $dol_hide_topmenu; // Set if we force param dol_hide_topmenu into login url
     public $dol_hide_leftmenu; // Set if we force param dol_hide_leftmenu into login url
@@ -117,7 +147,6 @@ class Conf extends stdClass
     public $liste_limit;
 
     public $tzuserinputkey = 'tzserver';        // Use 'tzuserrel' to always store date in GMT and show date in time zone of user.
-
 
     // TODO Remove this part.
     public $fournisseur;
@@ -162,6 +191,7 @@ class Conf extends stdClass
     public $supplier_invoice;
     public $category;
 
+    private static $config;
 
     /**
      * Constructor
@@ -184,28 +214,28 @@ class Conf extends stdClass
         $this->browser = new stdClass();
 
         // Common arrays
-        $this->cache = array();
-        $this->modules = array();
-        $this->modules_parts = array(
-            'css' => array(),
-            'js' => array(),
-            'tabs' => array(),
-            'triggers' => array(),
-            'login' => array(),
-            'substitutions' => array(),
-            'menus' => array(),
-            'theme' => array(),
-            'sms' => array(),
-            'tpl' => array(),
-            'barcode' => array(),
-            'models' => array(),
-            'societe' => array(),
-            'member' => array(),
-            'hooks' => array(),
-            'dir' => array(),
-            'syslog' => array(),
-            'websitetemplates' => array()
-        );
+        $this->cache = [];
+        $this->modules = [];
+        $this->modules_parts = [
+            'css' => [],
+            'js' => [],
+            'tabs' => [],
+            'triggers' => [],
+            'login' => [],
+            'substitutions' => [],
+            'menus' => [],
+            'theme' => [],
+            'sms' => [],
+            'tpl' => [],
+            'barcode' => [],
+            'models' => [],
+            'societe' => [],
+            'member' => [],
+            'hooks' => [],
+            'dir' => [],
+            'syslog' => [],
+            'websitetemplates' => [],
+        ];
 
         // First level object that are modules.
         // TODO Remove this part.
@@ -225,14 +255,18 @@ class Conf extends stdClass
         $this->notification = new stdClass();
         $this->expensereport = new stdClass();
         $this->productbatch = new stdClass();
+
+        static::loadConfig();
     }
 
     /**
      * Load setup values into conf object (read llx_const) for a specified entity
-     * Note that this->db->xxx, this->file->xxx and this->multicompany have been already loaded when setEntityValues is called.
+     * Note that this->db->xxx, this->file->xxx and this->multicompany have been already loaded when setEntityValues is
+     * called.
      *
-     * @param   DoliDB  $db         Database handler
-     * @param   int     $entity     Entity to get
+     * @param DoliDB $db     Database handler
+     * @param int    $entity Entity to get
+     *
      * @return  int                 Return integer < 0 if KO, >= 0 if OK
      */
     public function setEntityValues($db, $entity)
@@ -250,8 +284,9 @@ class Conf extends stdClass
      *  Load setup values into conf object (read llx_const)
      *  Note that this->db->xxx, this->file->xxx have been already set when setValues is called.
      *
-     *  @param      DoliDB      $db     Database handler
-     *  @return     int                 Return integer < 0 if KO, >= 0 if OK
+     * @param DoliDB $db Database handler
+     *
+     * @return     int                 Return integer < 0 if KO, >= 0 if OK
      */
     public function setValues($db)
     {
@@ -294,28 +329,28 @@ class Conf extends stdClass
         $this->productbatch = new stdClass();
 
         // Common arrays
-        $this->cache = array();
-        $this->modules = array();
-        $this->modules_parts = array(
-            'css' => array(),
-            'js' => array(),
-            'tabs' => array(),
-            'triggers' => array(),
-            'login' => array(),
-            'substitutions' => array(),
-            'menus' => array(),
-            'theme' => array(),
-            'sms' => array(),
-            'tpl' => array(),
-            'barcode' => array(),
-            'models' => array(),
-            'societe' => array(),
-            'member' => array(),
-            'hooks' => array(),
-            'dir' => array(),
-            'syslog' => array(),
-            'websitetemplates' => array(),
-        );
+        $this->cache = [];
+        $this->modules = [];
+        $this->modules_parts = [
+            'css' => [],
+            'js' => [],
+            'tabs' => [],
+            'triggers' => [],
+            'login' => [],
+            'substitutions' => [],
+            'menus' => [],
+            'theme' => [],
+            'sms' => [],
+            'tpl' => [],
+            'barcode' => [],
+            'models' => [],
+            'societe' => [],
+            'member' => [],
+            'hooks' => [],
+            'dir' => [],
+            'syslog' => [],
+            'websitetemplates' => [],
+        ];
 
         if (!is_null($db) && is_object($db)) {
             include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
@@ -346,13 +381,13 @@ class Conf extends stdClass
                         $this->global->$key = dolDecrypt($value);   // decrypt data excrypted with dolibarr_set_const($db, $name, $value)
 
                         if ($value && strpos($key, 'MAIN_MODULE_') === 0) {
-                            $reg = array();
+                            $reg = [];
                             // If this is constant for a new tab page activated by a module. It initializes modules_parts['tabs'].
                             if (preg_match('/^MAIN_MODULE_([0-9A-Z_]+)_TABS_/i', $key)) {
                                 $partname = 'tabs';
                                 $params = explode(':', $value, 2);
                                 if (!is_array($this->modules_parts[$partname])) {
-                                    $this->modules_parts[$partname] = array();
+                                    $this->modules_parts[$partname] = [];
                                 }
                                 $this->modules_parts[$partname][$params[0]][] = $value; // $value may be a string or an array
                             } elseif (preg_match('/^MAIN_MODULE_([0-9A-Z_]+)_([A-Z]+)$/i', $key, $reg)) {
@@ -365,16 +400,16 @@ class Conf extends stdClass
                                 $modulename = strtolower($reg[1]);
                                 $partname = strtolower($reg[2]);
                                 if (!isset($this->modules_parts[$partname]) || !is_array($this->modules_parts[$partname])) {
-                                    $this->modules_parts[$partname] = array();
+                                    $this->modules_parts[$partname] = [];
                                 }
 
                                 $arrValue = json_decode($value, true);
 
                                 if (is_array($arrValue)) {
                                     $newvalue = $arrValue;
-                                } elseif (in_array($partname, array('login', 'menus', 'substitutions', 'triggers', 'tpl'))) {
+                                } elseif (in_array($partname, ['login', 'menus', 'substitutions', 'triggers', 'tpl'])) {
                                     $newvalue = '/' . $modulename . '/core/' . $partname . '/';
-                                } elseif (in_array($partname, array('models', 'theme', 'websitetemplates'))) {
+                                } elseif (in_array($partname, ['models', 'theme', 'websitetemplates'])) {
                                     $newvalue = '/' . $modulename . '/';
                                 } elseif ($value == 1) {
                                     $newvalue = '/' . $modulename . '/core/modules/' . $partname . '/'; // ex: partname = societe
@@ -383,7 +418,7 @@ class Conf extends stdClass
                                 }
 
                                 if (!empty($newvalue)) {
-                                    $this->modules_parts[$partname] = array_merge($this->modules_parts[$partname], array($modulename => $newvalue)); // $value may be a string or an array
+                                    $this->modules_parts[$partname] = array_merge($this->modules_parts[$partname], [$modulename => $newvalue]); // $value may be a string or an array
                                 }
                             } elseif (preg_match('/^MAIN_MODULE_([0-9A-Z_]+)$/i', $key, $reg)) {
                                 // If this is a module constant (must be at end)
@@ -499,8 +534,8 @@ class Conf extends stdClass
             foreach ($this->modules as $module) {
                 //var_dump($module);
                 // For multicompany sharings
-                $this->$module->multidir_output = array($this->entity => $rootfordata . "/" . $module);
-                $this->$module->multidir_temp = array($this->entity => $rootfortemp . "/" . $module . "/temp");
+                $this->$module->multidir_output = [$this->entity => $rootfordata . "/" . $module];
+                $this->$module->multidir_temp = [$this->entity => $rootfortemp . "/" . $module . "/temp"];
                 // For backward compatibility
                 $this->$module->dir_output = $rootfordata . "/" . $module;
                 $this->$module->dir_temp = $rootfortemp . "/" . $module . "/temp";
@@ -516,13 +551,13 @@ class Conf extends stdClass
 
                             if ($type != 'temp') {
                                 // For multicompany sharings
-                                $this->$module->$multidirname = array($this->entity => $rootfordata . "/" . $name);
+                                $this->$module->$multidirname = [$this->entity => $rootfordata . "/" . $name];
 
                                 // For backward compatibility
                                 $this->$module->$dirname = $rootfordata . "/" . $name;
                             } else {
                                 // For multicompany sharings
-                                $this->$module->$multidirname = array($this->entity => $rootfortemp . "/" . $name . "/temp");
+                                $this->$module->$multidirname = [$this->entity => $rootfortemp . "/" . $name . "/temp"];
 
                                 // For backward compatibility
                                 $this->$module->$dirname = $rootfortemp . "/" . $name . "/temp";
@@ -533,8 +568,8 @@ class Conf extends stdClass
             }
 
             // For mycompany storage
-            $this->mycompany->multidir_output = array($this->entity => $rootfordata . "/mycompany");
-            $this->mycompany->multidir_temp = array($this->entity => $rootfortemp . "/mycompany/temp");
+            $this->mycompany->multidir_output = [$this->entity => $rootfordata . "/mycompany"];
+            $this->mycompany->multidir_temp = [$this->entity => $rootfortemp . "/mycompany/temp"];
             // For backward compatibility
             $this->mycompany->dir_output = $rootfordata . "/mycompany";
             $this->mycompany->dir_temp = $rootfortemp . "/mycompany/temp";
@@ -544,48 +579,48 @@ class Conf extends stdClass
             $this->admin->dir_temp = $rootfortemp . '/admin/temp';
 
             // For user storage
-            $this->user->multidir_output = array($this->entity => $rootfordata . "/users");
-            $this->user->multidir_temp = array($this->entity => $rootfortemp . "/users/temp");
+            $this->user->multidir_output = [$this->entity => $rootfordata . "/users"];
+            $this->user->multidir_temp = [$this->entity => $rootfortemp . "/users/temp"];
             // For backward compatibility
             $this->user->dir_output = $rootforuser . "/users";
             $this->user->dir_temp = $rootfortemp . "/users/temp";
 
             // For proposal storage
-            $this->propal->multidir_output = array($this->entity => $rootfordata . "/propale");
-            $this->propal->multidir_temp = array($this->entity => $rootfortemp . "/propale/temp");
+            $this->propal->multidir_output = [$this->entity => $rootfordata . "/propale"];
+            $this->propal->multidir_temp = [$this->entity => $rootfortemp . "/propale/temp"];
             // For backward compatibility
             $this->propal->dir_output = $rootfordata . "/propale";
             $this->propal->dir_temp = $rootfortemp . "/propale/temp";
 
             // For medias storage
-            $this->medias->multidir_output = array($this->entity => $rootfordata . "/medias");
-            $this->medias->multidir_temp = array($this->entity => $rootfortemp . "/medias/temp");
+            $this->medias->multidir_output = [$this->entity => $rootfordata . "/medias"];
+            $this->medias->multidir_temp = [$this->entity => $rootfortemp . "/medias/temp"];
 
             // Exception: Some dir are not the name of module. So we keep exception here for backward compatibility.
 
             // Module fournisseur
             if (!empty($this->fournisseur)) {
                 $this->fournisseur->commande = new stdClass();
-                $this->fournisseur->commande->multidir_output = array($this->entity => $rootfordata . "/fournisseur/commande");
-                $this->fournisseur->commande->multidir_temp = array($this->entity => $rootfortemp . "/fournisseur/commande/temp");
+                $this->fournisseur->commande->multidir_output = [$this->entity => $rootfordata . "/fournisseur/commande"];
+                $this->fournisseur->commande->multidir_temp = [$this->entity => $rootfortemp . "/fournisseur/commande/temp"];
                 $this->fournisseur->commande->dir_output = $rootfordata . "/fournisseur/commande"; // For backward compatibility
                 $this->fournisseur->commande->dir_temp = $rootfortemp . "/fournisseur/commande/temp"; // For backward compatibility
 
                 $this->fournisseur->facture = new stdClass();
-                $this->fournisseur->facture->multidir_output = array($this->entity => $rootfordata . "/fournisseur/facture");
-                $this->fournisseur->facture->multidir_temp = array($this->entity => $rootfortemp . "/fournisseur/facture/temp");
+                $this->fournisseur->facture->multidir_output = [$this->entity => $rootfordata . "/fournisseur/facture"];
+                $this->fournisseur->facture->multidir_temp = [$this->entity => $rootfortemp . "/fournisseur/facture/temp"];
                 $this->fournisseur->facture->dir_output = $rootfordata . "/fournisseur/facture"; // For backward compatibility
                 $this->fournisseur->facture->dir_temp = $rootfortemp . "/fournisseur/facture/temp"; // For backward compatibility
 
                 $this->supplier_proposal = new stdClass();
-                $this->supplier_proposal->multidir_output = array($this->entity => $rootfordata . "/supplier_proposal");
-                $this->supplier_proposal->multidir_temp = array($this->entity => $rootfortemp . "/supplier_proposal/temp");
+                $this->supplier_proposal->multidir_output = [$this->entity => $rootfordata . "/supplier_proposal"];
+                $this->supplier_proposal->multidir_temp = [$this->entity => $rootfortemp . "/supplier_proposal/temp"];
                 $this->supplier_proposal->dir_output = $rootfordata . "/supplier_proposal"; // For backward compatibility
                 $this->supplier_proposal->dir_temp = $rootfortemp . "/supplier_proposal/temp"; // For backward compatibility
 
                 $this->fournisseur->payment = new stdClass();
-                $this->fournisseur->payment->multidir_output = array($this->entity => $rootfordata . "/fournisseur/payment");
-                $this->fournisseur->payment->multidir_temp = array($this->entity => $rootfortemp . "/fournisseur/payment/temp");
+                $this->fournisseur->payment->multidir_output = [$this->entity => $rootfordata . "/fournisseur/payment"];
+                $this->fournisseur->payment->multidir_temp = [$this->entity => $rootfortemp . "/fournisseur/payment/temp"];
                 $this->fournisseur->payment->dir_output = $rootfordata . "/fournisseur/payment"; // For backward compatibility
                 $this->fournisseur->payment->dir_temp = $rootfortemp . "/fournisseur/payment/temp"; // For backward compatibility
 
@@ -593,45 +628,45 @@ class Conf extends stdClass
                 if (!empty($this->fournisseur->enabled) && empty($this->global->MAIN_USE_NEW_SUPPLIERMOD)) {  // By default, if module supplier is on, and we don't use yet the new modules, we set artificially the module properties
                     $this->supplier_order = new stdClass();
                     $this->supplier_order->enabled = 1;
-                    $this->supplier_order->multidir_output = array($this->entity => $rootfordata . "/fournisseur/commande");
-                    $this->supplier_order->multidir_temp = array($this->entity => $rootfortemp . "/fournisseur/commande/temp");
+                    $this->supplier_order->multidir_output = [$this->entity => $rootfordata . "/fournisseur/commande"];
+                    $this->supplier_order->multidir_temp = [$this->entity => $rootfortemp . "/fournisseur/commande/temp"];
                     $this->supplier_order->dir_output = $rootfordata . "/fournisseur/commande"; // For backward compatibility
                     $this->supplier_order->dir_temp = $rootfortemp . "/fournisseur/commande/temp"; // For backward compatibility
 
                     $this->supplier_invoice = new stdClass();
                     $this->supplier_invoice->enabled = 1;
-                    $this->supplier_invoice->multidir_output = array($this->entity => $rootfordata . "/fournisseur/facture");
-                    $this->supplier_invoice->multidir_temp = array($this->entity => $rootfortemp . "/fournisseur/facture/temp");
+                    $this->supplier_invoice->multidir_output = [$this->entity => $rootfordata . "/fournisseur/facture"];
+                    $this->supplier_invoice->multidir_temp = [$this->entity => $rootfortemp . "/fournisseur/facture/temp"];
                     $this->supplier_invoice->dir_output = $rootfordata . "/fournisseur/facture"; // For backward compatibility
                     $this->supplier_invoice->dir_temp = $rootfortemp . "/fournisseur/facture/temp"; // For backward compatibility
                 }
             }
 
             // Module product/service
-            $this->product->multidir_output         = array($this->entity => $rootfordata . "/produit");
-            $this->product->multidir_temp           = array($this->entity => $rootfortemp . "/produit/temp");
-            $this->service->multidir_output         = array($this->entity => $rootfordata . "/produit");
-            $this->service->multidir_temp           = array($this->entity => $rootfortemp . "/produit/temp");
+            $this->product->multidir_output = [$this->entity => $rootfordata . "/produit"];
+            $this->product->multidir_temp = [$this->entity => $rootfortemp . "/produit/temp"];
+            $this->service->multidir_output = [$this->entity => $rootfordata . "/produit"];
+            $this->service->multidir_temp = [$this->entity => $rootfortemp . "/produit/temp"];
             // For backward compatibility
-            $this->product->dir_output              = $rootfordata . "/produit";
-            $this->product->dir_temp                = $rootfortemp . "/produit/temp";
-            $this->service->dir_output              = $rootfordata . "/produit";
-            $this->service->dir_temp                = $rootfortemp . "/produit/temp";
+            $this->product->dir_output = $rootfordata . "/produit";
+            $this->product->dir_temp = $rootfortemp . "/produit/temp";
+            $this->service->dir_output = $rootfordata . "/produit";
+            $this->service->dir_temp = $rootfortemp . "/produit/temp";
 
             // Module productbatch
-            $this->productbatch->multidir_output = array($this->entity => $rootfordata . "/productlot");
-            $this->productbatch->multidir_temp = array($this->entity => $rootfortemp . "/productlot/temp");
+            $this->productbatch->multidir_output = [$this->entity => $rootfordata . "/productlot"];
+            $this->productbatch->multidir_temp = [$this->entity => $rootfortemp . "/productlot/temp"];
 
             // Module contrat
-            $this->contrat->multidir_output = array($this->entity => $rootfordata . "/contract");
-            $this->contrat->multidir_temp = array($this->entity => $rootfortemp . "/contract/temp");
+            $this->contrat->multidir_output = [$this->entity => $rootfordata . "/contract"];
+            $this->contrat->multidir_temp = [$this->entity => $rootfortemp . "/contract/temp"];
             // For backward compatibility
             $this->contrat->dir_output = $rootfordata . "/contract";
             $this->contrat->dir_temp = $rootfortemp . "/contract/temp";
 
             // Module bank
-            $this->bank->multidir_output = array($this->entity => $rootfordata . "/bank");
-            $this->bank->multidir_temp = array($this->entity => $rootfortemp . "/bank/temp");
+            $this->bank->multidir_output = [$this->entity => $rootfordata . "/bank"];
+            $this->bank->multidir_temp = [$this->entity => $rootfortemp . "/bank/temp"];
             // For backward compatibility
             $this->bank->dir_output = $rootfordata . "/bank";
             $this->bank->dir_temp = $rootfortemp . "/bank/temp";
@@ -1091,11 +1126,11 @@ class Conf extends stdClass
                 if (!empty($this->global->SYSLOG_HANDLERS)) {
                     $handlers = json_decode($this->global->SYSLOG_HANDLERS);
                 } else {
-                    $handlers = array();
+                    $handlers = [];
                 }
                 foreach ($handlers as $handler) {
                     $handler_file_found = '';
-                    $dirsyslogs = array('/core/modules/syslog/');
+                    $dirsyslogs = ['/core/modules/syslog/'];
                     if (!empty($this->modules_parts['syslog']) && is_array($this->modules_parts['syslog'])) {
                         $dirsyslogs = array_merge($dirsyslogs, $this->modules_parts['syslog']);
                     }
@@ -1145,5 +1180,79 @@ class Conf extends stdClass
         }
 
         return 0;
+    }
+
+    /**
+     *  Original vars of conf.php file:
+     *
+     *  - dolibarr_main_url_root, root URL of index.php like 'http://myserver.com/htdocs' (without ending "/")
+     *  - dolibarr_main_document_root, root of htdocs directory, like '/srv/http/dolibarr/htdocs' (without ending "/")
+     *
+     *  - dolibarr_main_url_root_alt (for modules developers, alternatives routes separated by comma).
+     *  - dolibarr_main_document_root_alt (for modules developers, alternatives routes separated by comma).
+     *
+     *  - dolibarr_main_data_root for contain the user documents, like '/srv/http/dolibarr/documents'.
+     *
+     *  - dolibarr_main_db_host like 'localhost', '127.0.0.1' or 'mysql.myserver.com'.
+     *  - dolibarr_main_db_port like '3306'.
+     *  - dolibarr_main_db_name like 'dolibarr_db' or 'db_name'.
+     *  - dolibarr_main_db_user like 'dolibarr_user' or 'db_user'.
+     *  - dolibarr_main_db_pass encrypted with dol_encode/dol_decode if 'crypted:pass' or dolEncrypt/dolDecrypt if
+     *  'dolcrypt:pass'.
+     *  - dolibarr_main_db_type must be mysqli or pgsql.
+     *  - dolibarr_main_db_character_set like 'utf8'.
+     *  - dolibarr_main_db_collation like 'utf8_unicode_ci'.
+     *  - dolibarr_main_db_readonly must be '0'. If '1' the application working in readonly mode.
+     *
+     *  - dolibarr_main_instance_unique_id
+     *  - dolibarr_main_dolcrypt_key
+     *  - dolibarr_main_authentication, by default 'dolibarr', but others such as 'ldap' or 'http' can be used.
+     *      * Depending on the authentication type selected, there may be additional variables.
+     *
+     *  - dolibarr_main_force_https, by default '0', '1' recommended.
+     *  - dolibarr_main_prod, by default '1', '0' if working in debug mode.
+     *  - dolibarr_main_restrict_os_commands
+     *  - dolibarr_main_restrict_ip
+     *  - dolibarr_nocsrfcheck
+     *  - dolibarr_cron_allow_cli
+     */
+    public static function loadConfig()
+    {
+        static::$config = null;
+        $configFile = BASE_PATH . '/conf/conf.php';
+
+        if (!file_exists($configFile)) {
+            return false;
+        }
+
+        static::$config = new stdClass();
+
+        require_once($configFile);
+
+        foreach (static::CONFIG_VAR as $var => $default) {
+            $var_name = 'dolibarr_' . $var;
+            $value = $$var_name ?? $default;
+            if ($value !== null) {
+                static::$config->{$var} = $value;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Return any o all config values.
+     *
+     * @param null $var
+     *
+     * @return mixed|null
+     */
+    public static function getConfig($var = null)
+    {
+        if ($var) {
+            return static::$config->{$var} ?? null;
+        }
+
+        return static::$config;
     }
 }
