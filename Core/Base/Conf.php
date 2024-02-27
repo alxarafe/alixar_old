@@ -1219,7 +1219,8 @@ class Conf extends stdClass
     public static function loadConfig()
     {
         static::$config = null;
-        $configFile = BASE_PATH . '/conf/conf.php';
+
+        $configFile = Globals::getConfFilename();
 
         if (!file_exists($configFile)) {
             return false;

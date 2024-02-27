@@ -45,6 +45,28 @@ abstract class Globals
                 (int) $conf->main_db_port
             );
         }
+
+        if (!defined('DOL_APPLICATION_TITLE')) {
+            define('DOL_APPLICATION_TITLE', 'Alixar');
+        }
+        if (!defined('DOL_VERSION')) {
+            define('DOL_VERSION', '20.0.0-alpha'); // a.b.c-alpha, a.b.c-beta, a.b.c-rcX or a.b.c
+        }
+
+        if (!defined('EURO')) {
+            define('EURO', chr(128));
+        }
+
+        // The value of the constant DOL_URL_ROOT is calculated from HTTP_REFERER
+        $http_referer = $_SERVER['HTTP_REFERER'];
+        $pos = strpos($http_referer, '/htdocs/index.php') + strlen('/htdocs');
+        $dol_url_root = substr($http_referer, 0, $pos);
+        define('DOL_URL_ROOT', $dol_url_root);
+    }
+
+    public static function getConfFilename()
+    {
+        return BASE_PATH . '/conf/conf.php';
     }
 
     public static function getConf()

@@ -38,7 +38,7 @@ abstract class BasicController extends Globals
 
     public function body()
     {
-        $this->checkAction();
+        return $this->checkAction();
     }
 
     abstract public function noAction(): bool;
@@ -55,7 +55,9 @@ abstract class BasicController extends Globals
 
     public function view()
     {
-        $this->body();
+        if (!$this->body()) {
+            // Action failed!?
+        }
 
         $route = realpath('Resources');
         $cache = realpath('../Cache');

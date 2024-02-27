@@ -33,7 +33,7 @@ Globals::init();
 /**
  * If the configuration file does not exist, the installer is invoked.
  */
-$confFile = BASE_PATH . '/conf/conf.php';
+$confFile = Globals::getConfFilename();
 if (empty($ctrl) && !file_exists($confFile)) {
     header('Location: index.php?page=Install&ctrl=Install');
     die();
