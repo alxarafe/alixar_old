@@ -25,7 +25,10 @@ namespace Alxarafe\Lib;
 
 use Alxarafe\Base\Globals;
 use Alxarafe\DB\DB;
+use DateTime;
+use DateTimeZone;
 use Mobile_Detect;
+use Transliterator;
 
 abstract class Functions
 {
@@ -527,7 +530,7 @@ abstract class Functions
      * @return    boolean                    True if we have just submit a POST or GET request with the parameter
      *                                       provided (even if param is empty)
      */
-    function GETPOSTISSET($paramname)
+    public static function GETPOSTISSET($paramname)
     {
         $isset = false;
 
@@ -1419,13 +1422,13 @@ abstract class Functions
      *
      * @see            dol_string_nospecial(), dol_string_unaccent(), dol_sanitizeFileName()
      */
-    function dol_sanitizePathName($str, $newstr = '_', $unaccent = 1)
+    public static function dol_sanitizePathName($str, $newstr = '_', $unaccent = 1)
     {
         // List of special chars for filenames in windows are defined on page https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file
         // Char '>' '<' '|' '$' and ';' are special chars for shells.
         // Chars '--' can be used into filename to inject special parameters like --use-compress-program to make command with file as parameter making remote execution of command
         $filesystem_forbidden_chars = ['<', '>', '?', '*', '|', '"', '°', '$', ';', '`'];
-        $tmp = dol_string_nospecial($unaccent ? dol_string_unaccent($str) : $str, $newstr, $filesystem_forbidden_chars);
+        $tmp = static::dol_string_nospecial($unaccent ? static::dol_string_unaccent($str) : $str, $newstr, $filesystem_forbidden_chars);
         $tmp = preg_replace('/\-\-+/', '_', $tmp);
         $tmp = preg_replace('/\s+\-([^\s])/', ' _$1', $tmp);
         $tmp = preg_replace('/\s+\-$/', '', $tmp);
@@ -1497,7 +1500,7 @@ abstract class Functions
      *
      * @see            dol_sanitizeFilename(), dol_string_nospecial()
      */
-    function dol_string_unaccent($str)
+    public static function dol_string_unaccent($str)
     {
         $conf = Globals::getConf();
 
@@ -1505,7 +1508,7 @@ abstract class Functions
             return '';
         }
 
-        if (utf8_check($str)) {
+        if (Functions::utf8_check($str)) {
             if (extension_loaded('intl') && Functions::getDolGlobalString('MAIN_UNACCENT_USE_TRANSLITERATOR')) {
                 $transliterator = Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', Transliterator::FORWARD);
                 return $transliterator->transliterate($str);
@@ -1570,7 +1573,7 @@ abstract class Functions
      *
      * @see            dol_sanitizeFilename(), dol_string_unaccent(), dol_string_nounprintableascii()
      */
-    function dol_string_nospecial($str, $newstr = '_', $badcharstoreplace = '', $badcharstoremove = '', $keepspaces = 0)
+    public static function dol_string_nospecial($str, $newstr = '_', $badcharstoreplace = '', $badcharstoremove = '', $keepspaces = 0)
     {
         $forbidden_chars_to_replace = ["'", "/", "\\", ":", "*", "?", "\"", "<", ">", "|", "[", "]", ",", ";", "=", '°', '$', ';']; // more complete than dol_sanitizeFileName
         if (empty($keepspaces)) {
@@ -1671,7 +1674,7 @@ abstract class Functions
      *
      * @return     string                            Escaped string for json content.
      */
-    function dol_escape_php($stringtoescape, $stringforquotes = 2)
+    public static function dol_escape_php($stringtoescape, $stringforquotes = 2)
     {
         if (is_null($stringtoescape)) {
             return '';
@@ -2964,12 +2967,12 @@ abstract class Functions
      *
      * @see        dol_mktime(), dol_stringtotime(), dol_getdate(), selectDate()
      */
-    function dol_print_date($time, $format = '', $tzoutput = 'auto', $outputlangs = null, $encodetooutput = false)
+    public static function dol_print_date($time, $format = '', $tzoutput = 'auto', $outputlangs = null, $encodetooutput = false)
     {
         global $conf, $langs;
 
         // If date undefined or "", we return ""
-        if (dol_strlen($time) == 0) {
+        if (static::dol_strlen($time) == 0) {
             return ''; // $time=0 allowed (it means 01/01/1970 00:00:00)
         }
 
@@ -3006,7 +3009,7 @@ abstract class Functions
             }
         }
         if (!is_object($outputlangs)) {
-            $outputlangs = $langs;
+            $outputlangs = Globals::getLang();
         }
         if (!$format) {
             $format = 'daytextshort';
@@ -3355,7 +3358,7 @@ abstract class Functions
      *
      * @return int   $date    Timestamp
      */
-    function dol_now($mode = 'auto')
+    public static function dol_now($mode = 'auto')
     {
         $ret = 0;
 
@@ -3707,19 +3710,19 @@ abstract class Functions
             // France
             // (see https://www.economie.gouv.fr/entreprises/numeros-identification-entreprise)
 
-            if ($id == 1 && dol_strlen($newProfID) == 9) {
+            if ($id == 1 && static::dol_strlen($newProfID) == 9) {
                 // SIREN (ex: 123 123 123)
                 $newProfID = substr($newProfID, 0, 3) . ' ' . substr($newProfID, 3, 3) . ' ' . substr($newProfID, 6, 3);
             }
-            if ($id == 2 && dol_strlen($newProfID) == 14) {
+            if ($id == 2 && static::dol_strlen($newProfID) == 14) {
                 // SIRET (ex: 123 123 123 12345)
                 $newProfID = substr($newProfID, 0, 3) . ' ' . substr($newProfID, 3, 3) . ' ' . substr($newProfID, 6, 3) . ' ' . substr($newProfID, 9, 5);
             }
-            if ($id == 3 && dol_strlen($newProfID) == 5) {
+            if ($id == 3 && static::dol_strlen($newProfID) == 5) {
                 // NAF/APE (ex: 69.20Z)
                 $newProfID = substr($newProfID, 0, 2) . '.' . substr($newProfID, 2, 3);
             }
-            if ($profIDtype === 'VAT' && dol_strlen($newProfID) == 13) {
+            if ($profIDtype === 'VAT' && static::dol_strlen($newProfID) == 13) {
                 // TVA intracommunautaire (ex: FR12 123 123 123)
                 $newProfID = substr($newProfID, 0, 4) . ' ' . substr($newProfID, 4, 3) . ' ' . substr($newProfID, 7, 3) . ' ' . substr($newProfID, 10, 3);
             }
@@ -3775,191 +3778,191 @@ abstract class Functions
         $newphonewa = $phone;
         if (strtoupper($countrycode) == "FR") {
             // France
-            if (dol_strlen($phone) == 10) {
+            if (static::dol_strlen($phone) == 10) {
                 $newphone = substr($newphone, 0, 2) . $separ . substr($newphone, 2, 2) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2);
-            } elseif (dol_strlen($phone) == 7) {
+            } elseif (static::dol_strlen($phone) == 7) {
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 2) . $separ . substr($newphone, 5, 2);
-            } elseif (dol_strlen($phone) == 9) {
+            } elseif (static::dol_strlen($phone) == 9) {
                 $newphone = substr($newphone, 0, 2) . $separ . substr($newphone, 2, 3) . $separ . substr($newphone, 5, 2) . $separ . substr($newphone, 7, 2);
-            } elseif (dol_strlen($phone) == 11) {
+            } elseif (static::dol_strlen($phone) == 11) {
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 2) . $separ . substr($newphone, 5, 2) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2);
-            } elseif (dol_strlen($phone) == 12) {
+            } elseif (static::dol_strlen($phone) == 12) {
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 1) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
-            } elseif (dol_strlen($phone) == 13) {
+            } elseif (static::dol_strlen($phone) == 13) {
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 3) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "CA") {
-            if (dol_strlen($phone) == 10) {
+            if (static::dol_strlen($phone) == 10) {
                 $newphone = ($separ != '' ? '(' : '') . substr($newphone, 0, 3) . ($separ != '' ? ')' : '') . $separ . substr($newphone, 3, 3) . ($separ != '' ? '-' : '') . substr($newphone, 6, 4);
             }
         } elseif (strtoupper($countrycode) == "PT") {//Portugal
-            if (dol_strlen($phone) == 13) {//ex: +351_ABC_DEF_GHI
+            if (static::dol_strlen($phone) == 13) {//ex: +351_ABC_DEF_GHI
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 3) . $separ . substr($newphone, 10, 3);
             }
         } elseif (strtoupper($countrycode) == "SR") {//Suriname
-            if (dol_strlen($phone) == 10) {//ex: +597_ABC_DEF
+            if (static::dol_strlen($phone) == 10) {//ex: +597_ABC_DEF
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 3);
-            } elseif (dol_strlen($phone) == 11) {//ex: +597_ABC_DEFG
+            } elseif (static::dol_strlen($phone) == 11) {//ex: +597_ABC_DEFG
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 4);
             }
         } elseif (strtoupper($countrycode) == "DE") {//Allemagne
-            if (dol_strlen($phone) == 14) {//ex:  +49_ABCD_EFGH_IJK
+            if (static::dol_strlen($phone) == 14) {//ex:  +49_ABCD_EFGH_IJK
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 4) . $separ . substr($newphone, 7, 4) . $separ . substr($newphone, 11, 3);
-            } elseif (dol_strlen($phone) == 13) {//ex: +49_ABC_DEFG_HIJ
+            } elseif (static::dol_strlen($phone) == 13) {//ex: +49_ABC_DEFG_HIJ
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 4) . $separ . substr($newphone, 10, 3);
             }
         } elseif (strtoupper($countrycode) == "ES") {//Espagne
-            if (dol_strlen($phone) == 12) {//ex:  +34_ABC_DEF_GHI
+            if (static::dol_strlen($phone) == 12) {//ex:  +34_ABC_DEF_GHI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 3);
             }
         } elseif (strtoupper($countrycode) == "BF") {// Burkina Faso
-            if (dol_strlen($phone) == 12) {//ex :  +22 A BC_DE_FG_HI
+            if (static::dol_strlen($phone) == 12) {//ex :  +22 A BC_DE_FG_HI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 1) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
             }
         } elseif (strtoupper($countrycode) == "RO") {// Roumanie
-            if (dol_strlen($phone) == 12) {//ex :  +40 AB_CDE_FG_HI
+            if (static::dol_strlen($phone) == 12) {//ex :  +40 AB_CDE_FG_HI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 2) . $separ . substr($newphone, 5, 3) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
             }
         } elseif (strtoupper($countrycode) == "TR") {//Turquie
-            if (dol_strlen($phone) == 13) {//ex :  +90 ABC_DEF_GHIJ
+            if (static::dol_strlen($phone) == 13) {//ex :  +90 ABC_DEF_GHIJ
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 4);
             }
         } elseif (strtoupper($countrycode) == "US") {//Etat-Unis
-            if (dol_strlen($phone) == 12) {//ex: +1 ABC_DEF_GHIJ
+            if (static::dol_strlen($phone) == 12) {//ex: +1 ABC_DEF_GHIJ
                 $newphone = substr($newphone, 0, 2) . $separ . substr($newphone, 2, 3) . $separ . substr($newphone, 5, 3) . $separ . substr($newphone, 8, 4);
             }
         } elseif (strtoupper($countrycode) == "MX") {//Mexique
-            if (dol_strlen($phone) == 12) {//ex: +52 ABCD_EFG_HI
+            if (static::dol_strlen($phone) == 12) {//ex: +52 ABCD_EFG_HI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 4) . $separ . substr($newphone, 7, 3) . $separ . substr($newphone, 10, 2);
-            } elseif (dol_strlen($phone) == 11) {//ex: +52 AB_CD_EF_GH
+            } elseif (static::dol_strlen($phone) == 11) {//ex: +52 AB_CD_EF_GH
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 2) . $separ . substr($newphone, 5, 2) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2);
-            } elseif (dol_strlen($phone) == 13) {//ex: +52 ABC_DEF_GHIJ
+            } elseif (static::dol_strlen($phone) == 13) {//ex: +52 ABC_DEF_GHIJ
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 4);
             }
         } elseif (strtoupper($countrycode) == "ML") {//Mali
-            if (dol_strlen($phone) == 12) {//ex: +223 AB_CD_EF_GH
+            if (static::dol_strlen($phone) == 12) {//ex: +223 AB_CD_EF_GH
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
             }
         } elseif (strtoupper($countrycode) == "TH") {//Thaïlande
-            if (dol_strlen($phone) == 11) {//ex: +66_ABC_DE_FGH
+            if (static::dol_strlen($phone) == 11) {//ex: +66_ABC_DE_FGH
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 3);
-            } elseif (dol_strlen($phone) == 12) {//ex: +66_A_BCD_EF_GHI
+            } elseif (static::dol_strlen($phone) == 12) {//ex: +66_A_BCD_EF_GHI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 1) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 3);
             }
         } elseif (strtoupper($countrycode) == "MU") {
             //Maurice
-            if (dol_strlen($phone) == 11) {//ex: +230_ABC_DE_FG
+            if (static::dol_strlen($phone) == 11) {//ex: +230_ABC_DE_FG
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2);
-            } elseif (dol_strlen($phone) == 12) {//ex: +230_ABCD_EF_GH
+            } elseif (static::dol_strlen($phone) == 12) {//ex: +230_ABCD_EF_GH
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 4) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
             }
         } elseif (strtoupper($countrycode) == "ZA") {//Afrique du sud
-            if (dol_strlen($phone) == 12) {//ex: +27_AB_CDE_FG_HI
+            if (static::dol_strlen($phone) == 12) {//ex: +27_AB_CDE_FG_HI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 2) . $separ . substr($newphone, 5, 3) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
             }
         } elseif (strtoupper($countrycode) == "SY") {//Syrie
-            if (dol_strlen($phone) == 12) {//ex: +963_AB_CD_EF_GH
+            if (static::dol_strlen($phone) == 12) {//ex: +963_AB_CD_EF_GH
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
-            } elseif (dol_strlen($phone) == 13) {//ex: +963_AB_CD_EF_GHI
+            } elseif (static::dol_strlen($phone) == 13) {//ex: +963_AB_CD_EF_GHI
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 3);
             }
         } elseif (strtoupper($countrycode) == "AE") {//Emirats Arabes Unis
-            if (dol_strlen($phone) == 12) {//ex: +971_ABC_DEF_GH
+            if (static::dol_strlen($phone) == 12) {//ex: +971_ABC_DEF_GH
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 3) . $separ . substr($newphone, 10, 2);
-            } elseif (dol_strlen($phone) == 13) {//ex: +971_ABC_DEF_GHI
+            } elseif (static::dol_strlen($phone) == 13) {//ex: +971_ABC_DEF_GHI
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 3) . $separ . substr($newphone, 10, 3);
-            } elseif (dol_strlen($phone) == 14) {//ex: +971_ABC_DEF_GHIK
+            } elseif (static::dol_strlen($phone) == 14) {//ex: +971_ABC_DEF_GHIK
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 3) . $separ . substr($newphone, 10, 4);
             }
         } elseif (strtoupper($countrycode) == "DZ") {//Algérie
-            if (dol_strlen($phone) == 13) {//ex: +213_ABC_DEF_GHI
+            if (static::dol_strlen($phone) == 13) {//ex: +213_ABC_DEF_GHI
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 3) . $separ . substr($newphone, 10, 3);
             }
         } elseif (strtoupper($countrycode) == "BE") {//Belgique
-            if (dol_strlen($phone) == 11) {//ex: +32_ABC_DE_FGH
+            if (static::dol_strlen($phone) == 11) {//ex: +32_ABC_DE_FGH
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 3);
-            } elseif (dol_strlen($phone) == 12) {//ex: +32_ABC_DEF_GHI
+            } elseif (static::dol_strlen($phone) == 12) {//ex: +32_ABC_DEF_GHI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 3);
             }
         } elseif (strtoupper($countrycode) == "PF") {//Polynésie française
-            if (dol_strlen($phone) == 12) {//ex: +689_AB_CD_EF_GH
+            if (static::dol_strlen($phone) == 12) {//ex: +689_AB_CD_EF_GH
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
             }
         } elseif (strtoupper($countrycode) == "CO") {//Colombie
-            if (dol_strlen($phone) == 13) {//ex: +57_ABC_DEF_GH_IJ
+            if (static::dol_strlen($phone) == 13) {//ex: +57_ABC_DEF_GH_IJ
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 2) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "JO") {//Jordanie
-            if (dol_strlen($phone) == 12) {//ex: +962_A_BCD_EF_GH
+            if (static::dol_strlen($phone) == 12) {//ex: +962_A_BCD_EF_GH
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 1) . $separ . substr($newphone, 5, 3) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2);
             }
         } elseif (strtoupper($countrycode) == "JM") {//Jamaïque
-            if (dol_strlen($newphone) == 12) {//ex: +1867_ABC_DEFG
+            if (static::dol_strlen($newphone) == 12) {//ex: +1867_ABC_DEFG
                 $newphone = substr($newphone, 0, 5) . $separ . substr($newphone, 5, 3) . $separ . substr($newphone, 8, 4);
             }
         } elseif (strtoupper($countrycode) == "MG") {//Madagascar
-            if (dol_strlen($phone) == 13) {//ex: +261_AB_CD_EFG_HI
+            if (static::dol_strlen($phone) == 13) {//ex: +261_AB_CD_EFG_HI
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 3) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "GB") {//Royaume uni
-            if (dol_strlen($phone) == 13) {//ex: +44_ABCD_EFG_HIJ
+            if (static::dol_strlen($phone) == 13) {//ex: +44_ABCD_EFG_HIJ
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 4) . $separ . substr($newphone, 7, 3) . $separ . substr($newphone, 10, 3);
             }
         } elseif (strtoupper($countrycode) == "CH") {//Suisse
-            if (dol_strlen($phone) == 12) {//ex: +41_AB_CDE_FG_HI
+            if (static::dol_strlen($phone) == 12) {//ex: +41_AB_CDE_FG_HI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 2) . $separ . substr($newphone, 5, 3) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
-            } elseif (dol_strlen($phone) == 15) {// +41_AB_CDE_FGH_IJKL
+            } elseif (static::dol_strlen($phone) == 15) {// +41_AB_CDE_FGH_IJKL
                 $newphone = $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 2) . $separ . substr($newphone, 5, 3) . $separ . substr($newphone, 8, 3) . $separ . substr($newphone, 11, 4);
             }
         } elseif (strtoupper($countrycode) == "TN") {//Tunisie
-            if (dol_strlen($phone) == 12) {//ex: +216_AB_CDE_FGH
+            if (static::dol_strlen($phone) == 12) {//ex: +216_AB_CDE_FGH
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 3);
             }
         } elseif (strtoupper($countrycode) == "GF") {//Guyane francaise
-            if (dol_strlen($phone) == 13) {//ex: +594_ABC_DE_FG_HI  (ABC=594 de nouveau)
+            if (static::dol_strlen($phone) == 13) {//ex: +594_ABC_DE_FG_HI  (ABC=594 de nouveau)
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "GP") {//Guadeloupe
-            if (dol_strlen($phone) == 13) {//ex: +590_ABC_DE_FG_HI  (ABC=590 de nouveau)
+            if (static::dol_strlen($phone) == 13) {//ex: +590_ABC_DE_FG_HI  (ABC=590 de nouveau)
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "MQ") {//Martinique
-            if (dol_strlen($phone) == 13) {//ex: +596_ABC_DE_FG_HI  (ABC=596 de nouveau)
+            if (static::dol_strlen($phone) == 13) {//ex: +596_ABC_DE_FG_HI  (ABC=596 de nouveau)
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "IT") {//Italie
-            if (dol_strlen($phone) == 12) {//ex: +39_ABC_DEF_GHI
+            if (static::dol_strlen($phone) == 12) {//ex: +39_ABC_DEF_GHI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 3);
-            } elseif (dol_strlen($phone) == 13) {//ex: +39_ABC_DEF_GH_IJ
+            } elseif (static::dol_strlen($phone) == 13) {//ex: +39_ABC_DEF_GH_IJ
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 9, 2) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "AU") {
             //Australie
-            if (dol_strlen($phone) == 12) {
+            if (static::dol_strlen($phone) == 12) {
                 //ex: +61_A_BCDE_FGHI
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 1) . $separ . substr($newphone, 4, 4) . $separ . substr($newphone, 8, 4);
             }
         } elseif (strtoupper($countrycode) == "LU") {
             // Luxembourg
-            if (dol_strlen($phone) == 10) {// fix 6 digits +352_AA_BB_CC
+            if (static::dol_strlen($phone) == 10) {// fix 6 digits +352_AA_BB_CC
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2);
-            } elseif (dol_strlen($phone) == 11) {// fix 7 digits +352_AA_BB_CC_D
+            } elseif (static::dol_strlen($phone) == 11) {// fix 7 digits +352_AA_BB_CC_D
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 1);
-            } elseif (dol_strlen($phone) == 12) {// fix 8 digits +352_AA_BB_CC_DD
+            } elseif (static::dol_strlen($phone) == 12) {// fix 8 digits +352_AA_BB_CC_DD
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 2) . $separ . substr($newphone, 6, 2) . $separ . substr($newphone, 8, 2) . $separ . substr($newphone, 10, 2);
-            } elseif (dol_strlen($phone) == 13) {// mobile +352_AAA_BB_CC_DD
+            } elseif (static::dol_strlen($phone) == 13) {// mobile +352_AAA_BB_CC_DD
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 7, 2) . $separ . substr($newphone, 9, 2) . $separ . substr($newphone, 11, 2);
             }
         } elseif (strtoupper($countrycode) == "PE") {
             // Peru
-            if (dol_strlen($phone) == 7) {// fix 7 chiffres without code AAA_BBBB
+            if (static::dol_strlen($phone) == 7) {// fix 7 chiffres without code AAA_BBBB
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 4);
-            } elseif (dol_strlen($phone) == 9) {// mobile add code and fix 9 chiffres +51_AAA_BBB_CCC
+            } elseif (static::dol_strlen($phone) == 9) {// mobile add code and fix 9 chiffres +51_AAA_BBB_CCC
                 $newphonewa = '+51' . $newphone;
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 10, 3);
-            } elseif (dol_strlen($phone) == 11) {// fix 11 chiffres +511_AAA_BBBB
+            } elseif (static::dol_strlen($phone) == 11) {// fix 11 chiffres +511_AAA_BBBB
                 $newphone = substr($newphone, 0, 4) . $separ . substr($newphone, 4, 3) . $separ . substr($newphone, 8, 4);
-            } elseif (dol_strlen($phone) == 12) {// mobile +51_AAA_BBB_CCC
+            } elseif (static::dol_strlen($phone) == 12) {// mobile +51_AAA_BBB_CCC
                 $newphonewa = $newphone;
                 $newphone = substr($newphone, 0, 3) . $separ . substr($newphone, 3, 3) . $separ . substr($newphone, 6, 3) . $separ . substr($newphone, 10, 3) . $separ . substr($newphone, 14, 3);
             }
@@ -4384,7 +4387,7 @@ abstract class Functions
      *
      * @return  int                                Length of string
      */
-    function dol_strlen($string, $stringencoding = 'UTF-8')
+    public static function dol_strlen($string, $stringencoding = 'UTF-8')
     {
         if (is_null($string)) {
             return 0;
@@ -4470,34 +4473,34 @@ abstract class Functions
         // We go always here
         if ($trunc == 'right') {
             $newstring = dol_textishtml($string) ? Functions::dol_string_nohtmltag($string, 1) : $string;
-            if (dol_strlen($newstring, $stringencoding) > ($size + ($nodot ? 0 : 1))) {
+            if (static::dol_strlen($newstring, $stringencoding) > ($size + ($nodot ? 0 : 1))) {
                 // If nodot is 0 and size is 1 chars more, we don't trunc and don't add …
                 return dol_substr($newstring, 0, $size, $stringencoding) . ($nodot ? '' : '…');
             } else {
-                //return 'u'.$size.'-'.$newstring.'-'.dol_strlen($newstring,$stringencoding).'-'.$string;
+                //return 'u'.$size.'-'.$newstring.'-'.static::dol_strlen($newstring,$stringencoding).'-'.$string;
                 return $string;
             }
         } elseif ($trunc == 'middle') {
             $newstring = dol_textishtml($string) ? Functions::dol_string_nohtmltag($string, 1) : $string;
-            if (dol_strlen($newstring, $stringencoding) > 2 && dol_strlen($newstring, $stringencoding) > ($size + 1)) {
+            if (static::dol_strlen($newstring, $stringencoding) > 2 && static::dol_strlen($newstring, $stringencoding) > ($size + 1)) {
                 $size1 = round($size / 2);
                 $size2 = round($size / 2);
-                return dol_substr($newstring, 0, $size1, $stringencoding) . '…' . dol_substr($newstring, dol_strlen($newstring, $stringencoding) - $size2, $size2, $stringencoding);
+                return dol_substr($newstring, 0, $size1, $stringencoding) . '…' . dol_substr($newstring, static::dol_strlen($newstring, $stringencoding) - $size2, $size2, $stringencoding);
             } else {
                 return $string;
             }
         } elseif ($trunc == 'left') {
             $newstring = dol_textishtml($string) ? Functions::dol_string_nohtmltag($string, 1) : $string;
-            if (dol_strlen($newstring, $stringencoding) > ($size + ($nodot ? 0 : 1))) {
+            if (static::dol_strlen($newstring, $stringencoding) > ($size + ($nodot ? 0 : 1))) {
                 // If nodot is 0 and size is 1 chars more, we don't trunc and don't add …
-                return '…' . dol_substr($newstring, dol_strlen($newstring, $stringencoding) - $size, $size, $stringencoding);
+                return '…' . dol_substr($newstring, static::dol_strlen($newstring, $stringencoding) - $size, $size, $stringencoding);
             } else {
                 return $string;
             }
         } elseif ($trunc == 'wrap') {
             $newstring = dol_textishtml($string) ? Functions::dol_string_nohtmltag($string, 1) : $string;
-            if (dol_strlen($newstring, $stringencoding) > ($size + 1)) {
-                return dol_substr($newstring, 0, $size, $stringencoding) . "\n" . dol_trunc(dol_substr($newstring, $size, dol_strlen($newstring, $stringencoding) - $size, $stringencoding), $size, $trunc);
+            if (static::dol_strlen($newstring, $stringencoding) > ($size + 1)) {
+                return dol_substr($newstring, 0, $size, $stringencoding) . "\n" . dol_trunc(dol_substr($newstring, $size, static::dol_strlen($newstring, $stringencoding) - $size, $stringencoding), $size, $trunc);
             } else {
                 return $string;
             }
@@ -6039,10 +6042,10 @@ abstract class Functions
         $return .= '<td class="nobordernopadding valignmiddle col-title">';
         $return .= '<div class="titre inline-block">' . $titre . '</div>';
         $return .= '</td>';
-        if (dol_strlen($morehtmlcenter)) {
+        if (static::dol_strlen($morehtmlcenter)) {
             $return .= '<td class="nobordernopadding center valignmiddle col-center">' . $morehtmlcenter . '</td>';
         }
-        if (dol_strlen($morehtmlright)) {
+        if (static::dol_strlen($morehtmlright)) {
             $return .= '<td class="nobordernopadding titre_right wordbreakimp right valignmiddle col-right">' . $morehtmlright . '</td>';
         }
         $return .= '</tr></table>' . "\n";
@@ -6444,8 +6447,8 @@ abstract class Functions
         $end = '';
 
         // We increase nbdecimal if there is more decimal than asked (to not loose information)
-        if (dol_strlen($decpart) > $nbdecimal) {
-            $nbdecimal = dol_strlen($decpart);
+        if (static::dol_strlen($decpart) > $nbdecimal) {
+            $nbdecimal = static::dol_strlen($decpart);
         }
         // Si on depasse max
         if ($trunc && $nbdecimal > $conf->global->MAIN_MAX_DECIMALS_SHOWN) {
@@ -6575,7 +6578,7 @@ abstract class Functions
                 // We put in temps value of decimal ("0.00001"). Works with 0 and 2.0E-5 and 9999.10
                 $temps = sprintf("%0.10F", $amount - intval($amount)); // temps=0.0000000000 or 0.0000200000 or 9999.1000000000
                 $temps = preg_replace('/([\.1-9])0+$/', '\\1', $temps); // temps=0. or 0.00002 or 9999.1
-                $nbofdec = max(0, dol_strlen($temps) - 2); // -2 to remove "0."
+                $nbofdec = max(0, static::dol_strlen($temps) - 2); // -2 to remove "0."
                 $amount = number_format($amount, $nbofdec, $dec, $thousand);
             }
             //print "QQ".$amount."<br>\n";
@@ -6611,7 +6614,7 @@ abstract class Functions
             }
 
             //print " RR".$amount.' - '.$nbofdectoround.'<br>';
-            if (dol_strlen($nbofdectoround)) {
+            if (static::dol_strlen($nbofdectoround)) {
                 $amount = round(is_string($amount) ? (float) $amount : $amount, $nbofdectoround); // $nbofdectoround can be 0.
             } else {
                 return 'ErrorBadParameterProvidedToFunction';
@@ -6624,7 +6627,7 @@ abstract class Functions
                 // We put in temps value of decimal ("0.00001"). Works with 0 and 2.0E-5 and 9999.10
                 $temps = sprintf("%0.10F", $amount - intval($amount)); // temps=0.0000000000 or 0.0000200000 or 9999.1000000000
                 $temps = preg_replace('/([\.1-9])0+$/', '\\1', $temps); // temps=0. or 0.00002 or 9999.1
-                $nbofdec = max(0, dol_strlen($temps) - 2); // -2 to remove "0."
+                $nbofdec = max(0, static::dol_strlen($temps) - 2); // -2 to remove "0."
                 $amount = number_format($amount, min($nbofdec, $nbofdectoround), $dec, $thousand); // Convert amount to format with dolibarr dec and thousand
             }
             //print "TT".$amount.'<br>';
@@ -7536,13 +7539,13 @@ abstract class Functions
      *
      * @return int                    Return integer < 0 if KO, 0 = already exists, > 0 if OK
      */
-    function dol_mkdir($dir, $dataroot = '', $newmask = '')
+    public static function dol_mkdir($dir, $dataroot = '', $newmask = '')
     {
         $conf = Globals::getConf();
 
         Functions::dol_syslog("functions.lib::dol_mkdir: dir=" . $dir, LOG_INFO);
 
-        $dir_osencoded = dol_osencode($dir);
+        $dir_osencoded = static::dol_osencode($dir);
         if (@is_dir($dir_osencoded)) {
             return 0;
         }
@@ -7573,7 +7576,7 @@ abstract class Functions
             // Attention, is_dir() can fail event if the directory exists
             // (i.e. according the open_basedir configuration)
             if ($ccdir) {
-                $ccdir_osencoded = dol_osencode($ccdir);
+                $ccdir_osencoded = static::dol_osencode($ccdir);
                 if (!@is_dir($ccdir_osencoded)) {
                     Functions::dol_syslog("functions.lib::dol_mkdir: Directory '" . $ccdir . "' does not exists or is outside open_basedir PHP setting.", LOG_DEBUG);
 
@@ -7608,7 +7611,7 @@ abstract class Functions
      *
      * @return void
      */
-    function dolChmod($filepath, $newmask = '')
+    public static function dolChmod($filepath, $newmask = '')
     {
         $conf = Globals::getConf();
 
@@ -8290,7 +8293,7 @@ abstract class Functions
      */
     function dol_string_is_good_iso($s, $clean = 0)
     {
-        $len = dol_strlen($s);
+        $len = static::dol_strlen($s);
         $out = '';
         $ok = 1;
         for ($scursor = 0; $scursor < $len; $scursor++) {
@@ -8363,10 +8366,10 @@ abstract class Functions
         // count possible auto line breaks
         if ($maxlinesize) {
             foreach ($a as $line) {
-                if (dol_strlen($line) > $maxlinesize) {
+                if (static::dol_strlen($line) > $maxlinesize) {
                     //$line_dec = html_entity_decode(strip_tags($line));
                     $line_dec = html_entity_decode($line);
-                    if (dol_strlen($line_dec) > $maxlinesize) {
+                    if (static::dol_strlen($line_dec) > $maxlinesize) {
                         $line_dec = wordwrap($line_dec, $maxlinesize, '\n', true);
                         $nblines += substr_count($line_dec, '\n');
                     }
@@ -9831,11 +9834,11 @@ abstract class Functions
      *                                   special non utf8 char or Binary)
      * @see utf8_valid()
      */
-    function utf8_check($str)
+    public static function utf8_check($str)
     {
         $str = (string) $str;    // Sometimes string is an int.
 
-        // We must use here a binary strlen function (so not dol_strlen)
+        // We must use here a binary strlen function (so not static::dol_strlen)
         $strLength = strlen($str);
         for ($i = 0; $i < $strLength; $i++) {
             if (ord($str[$i]) < 0x80) {
@@ -13035,7 +13038,7 @@ abstract class Functions
     function dolForgeExplodeAnd($sqlfilters)
     {
         $arrayofandtags = [];
-        $nbofchars = dol_strlen($sqlfilters);
+        $nbofchars = static::dol_strlen($sqlfilters);
 
         $error = '';
         $parenthesislevel = 0;
@@ -13108,7 +13111,7 @@ abstract class Functions
         //$tmp=preg_replace_all('/'.$regexstring.'/', '', $sqlfilters);
         $tmp = $sqlfilters;
 
-        $nb = dol_strlen($tmp);
+        $nb = static::dol_strlen($tmp);
         $counter = 0;
         $parenthesislevel = 0;
 

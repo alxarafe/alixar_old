@@ -48,6 +48,7 @@ abstract class DB
     //    const LABEL = self::LABEL;
 
     /** @var bool|resource|mysqli|SQLite3|PgSql\Connection Database handler */
+    public static $dbengine;
     public static $db;
     /** @var string Database type */
     public $type;
@@ -92,29 +93,32 @@ abstract class DB
 
     public static function DB($type, $host, $user, $pass, $name, $port)
     {
-        if (isset(static::$db)) {
+        if (isset(static::$dbengine)) {
             // Already instantiated!
-            return static::$db;
+            return static::$dbengine;
         }
         switch ($type) {
             case 'mysqli':
-                static::$db = new MySqliEngine($host, $user, $pass, $name, $port);
+            case 'MySqliEngine':
+                static::$dbengine = new MySqliEngine($host, $user, $pass, $name, $port);
                 break;
             case 'pgsql':
-                static::$db = new PgSqlEngine($host, $user, $pass, $name, $port);
+            case 'PgSqlEngine':
+                static::$dbengine = new PgSqlEngine($host, $user, $pass, $name, $port);
                 break;
             case 'sqlite3':
-                static::$db = new Sqlite3Engine($host, $user, $pass, $name, $port);
+            case 'Sqlite3Engine':
+                static::$dbengine = new Sqlite3Engine($host, $user, $pass, $name, $port);
                 break;
             default:
-                static::$db = null;
+                static::$dbengine = null;
         }
-        return static::$db;
+        return static::$dbengine;
     }
 
 
     /**
-     *  Return the DB prefix found into prefix_db (if it was set manually by doing $dbhandler->prefix_db=...).
+     *  Return the DB prefix found into prefix_db (if it was set manually by doing $dbenginehandler->prefix_db=...).
      *  Otherwise return MAIN_DB_PREFIX (common use).
      *
      * @return string      The DB prefix

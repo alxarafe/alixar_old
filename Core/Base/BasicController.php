@@ -29,11 +29,13 @@ abstract class BasicController extends Globals
 
     public $db;
     public $lang;
+    public $config;
 
     public function __construct()
     {
         $this->db = Globals::getDb();
         $this->lang = Globals::getLang();
+        $this->config = Globals::getConfig();
     }
 
     public function body()

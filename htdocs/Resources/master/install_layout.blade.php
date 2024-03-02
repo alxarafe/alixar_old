@@ -6,7 +6,7 @@
     <meta name="generator" content="Alixar installer">
     <link rel="stylesheet" type="text/css" href="Resources/css/install_default.css">
     <!-- Includes CSS for JQuery -->
-    <link rel="stylesheet" type="text/css" href="includes/jquery/css/base/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="includes/jquery/css/base/jquery-ui.min.css"/>
     <!-- Includes JS for JQuery -->
     <script type="text/javascript" src="includes/jquery/js/jquery.min.js"></script>
     <script type="text/javascript" src="includes/jquery/js/jquery-ui.min.js"></script>
@@ -15,11 +15,38 @@
 <body>
 <div class="divlogoinstall" style="text-align:center">
     <img class="imglogoinstall" src="Resources/img/alixar_logo.svg" alt="Alixar logo" width="300px"><br>20.0.0-alpha
-</div><br><span class="titre">{!! $lang->trans('DolibarrSetup') !!}</span>
+</div>
+<br><span class="titre">{!! $lang->trans('DolibarrSetup') !!}
+    @if(isset($subtitle))
+        - {!! $subtitle !!}
+    @endif
+</span>
 <br>
-@section('body')
-    <p>You need to define a body section in your template</p>
-@show
+<form name="forminstall" style="width: 100%" method="POST">
+    <table class="main" width="100%">
+        <tr>
+            <td>
+                <table class="main-inside" width="100%">
+                    @section('body')
+                        <p>You need to define a body section in your template</p>
+                    @show
+                </table>
+            </td>
+        </tr>
+    </table>
+    @if(isset($nextButton) && ($nextButton))
+        <!-- pFooter -->
+        <div class="nextbutton" id="nextbutton">
+            <input
+                    type="submit"
+                    value="{!! $lang->trans('NextStep') !!} ->"
+                    @if(isset($nextButtonJs) && !empty($nextButtonJs))
+                        onclick="{!! $nextButtonJs !!}"
+                    @endif
+            >
+        </div>
+    @endif
+</form>
 <br>
 </body>
 </html>

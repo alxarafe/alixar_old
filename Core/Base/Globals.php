@@ -24,9 +24,31 @@ use Alxarafe\LibClass\Lang;
 
 abstract class Globals
 {
+    const DEFAULT_DB_PREFIX = 'llx_';
+
     private static $conf;
     private static $lang;
     private static $db;
+
+    private static function url($forwarded_host = false)
+    {
+        $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
+        $proto = strtolower($_SERVER['SERVER_PROTOCOL']);
+        $proto = substr($proto, 0, strpos($proto, '/')) . ($ssl ? 's' : '');
+        if ($forwarded_host && isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+            $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
+        } else {
+            if (isset($_SERVER['HTTP_HOST'])) {
+                $host = $_SERVER['HTTP_HOST'];
+            } else {
+                $port = $_SERVER['SERVER_PORT'];
+                $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
+                $host = $_SERVER['SERVER_NAME'] . $port;
+            }
+        }
+        $request = $_SERVER['REQUEST_URI'];
+        return $proto . '://' . $host . $request;
+    }
 
     public static function init()
     {
@@ -57,10 +79,10 @@ abstract class Globals
             define('EURO', chr(128));
         }
 
-        // The value of the constant DOL_URL_ROOT is calculated from HTTP_REFERER
-        $http_referer = $_SERVER['HTTP_REFERER'];
-        $pos = strpos($http_referer, '/htdocs/index.php') + strlen('/htdocs');
-        $dol_url_root = substr($http_referer, 0, $pos);
+
+        $url = static::url();
+        $pos = strpos($url, '/htdocs/index.php') + strlen('/htdocs');
+        $dol_url_root = substr($url, 0, $pos);
         define('DOL_URL_ROOT', $dol_url_root);
     }
 
@@ -72,6 +94,14 @@ abstract class Globals
     public static function getConf()
     {
         return static::$conf;
+    }
+
+    public static function getConfig()
+    {
+        if (!isset(static::$conf)) {
+            return null;
+        }
+        return static::$conf::getConfig();
     }
 
     public static function getLang()
