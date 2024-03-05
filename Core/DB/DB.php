@@ -24,6 +24,7 @@
 
 namespace Alxarafe\DB;
 
+use Alxarafe\Base\Globals;
 use Alxarafe\DB\Engines\MySqli;
 use Alxarafe\DB\Engines\MySqliEngine;
 use Alxarafe\DB\Engines\Pgsql;
@@ -125,7 +126,8 @@ abstract class DB
      */
     public function prefix()
     {
-        return (empty($this->prefix_db) ? MAIN_DB_PREFIX : $this->prefix_db);
+        return (empty($this->prefix_db) ? Globals::DEFAULT_DB_PREFIX : $this->prefix_db);
+        // return (empty($this->prefix_db) ? MAIN_DB_PREFIX : $this->prefix_db);
     }
 
     /**

@@ -20,7 +20,7 @@
 
             @if(isset($printVersion) && $printVersion)
                 {!! $lang->trans("VersionLastUpgrade") !!}:
-                <b><span class="ok">{!! (!getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') ? $conf->global->MAIN_VERSION_LAST_INSTALL : $conf->global->MAIN_VERSION_LAST_UPGRADE) !!}</span></b>
+                <b><span class="ok">{!! (!\Alxarafe\Lib\Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') ? $conf->global->MAIN_VERSION_LAST_INSTALL : $conf->global->MAIN_VERSION_LAST_UPGRADE) !!}</span></b>
                 -
                 {!! $lang->trans("VersionProgram") !!}:
                 <b><span class="ok">{!! DOL_VERSION !!}</span></b>

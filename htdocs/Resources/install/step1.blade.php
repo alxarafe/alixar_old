@@ -3,7 +3,7 @@
 @section('body')
     <tbody>
     <input type="hidden" name="testpost" value="ok">
-    <input type="hidden" name="action" value="configfile">
+    <input type="hidden" name="action" value="step2">
     <tr>
         @foreach($errors as $error)
             <div class="error">{!! $error !!}</div>
@@ -17,7 +17,7 @@
                 function jsinfo() {
                     ok = true;
 
-                    //alert('<?php echo dol_escape_js($lang->transnoentities("NextStepMightLastALongTime")); ?>');
+                    //alert('<?php echo \Alxarafe\Lib\Functions::dol_escape_js($lang->transnoentities("NextStepMightLastALongTime")); ?>');
 
                     document.getElementById('nextbutton').style.visibility = "hidden";
                     document.getElementById('pleasewait').style.visibility = "visible";

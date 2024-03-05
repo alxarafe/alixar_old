@@ -49,6 +49,7 @@ abstract class BasicController extends Globals
     {
         $this->action = filter_input(INPUT_POST, 'action');
         switch ($this->action) {
+            case null:
             case '':
                 return $this->noAction();
         }

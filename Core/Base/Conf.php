@@ -25,6 +25,9 @@
 
 namespace Alxarafe\Base;
 
+use Alxarafe\Lib\Functions;
+use Alxarafe\Lib\Security;
+use Exception;
 use stdClass;
 
 /**
@@ -257,6 +260,8 @@ class Conf extends stdClass
         $this->productbatch = new stdClass();
 
         static::loadConfig();
+
+        $this->file->instance_unique_id = static::$config->main_instance_unique_id;
     }
 
     /**
@@ -290,7 +295,7 @@ class Conf extends stdClass
      */
     public function setValues($db)
     {
-        dol_syslog(get_class($this) . "::setValues");
+        Functions::dol_syslog(get_class($this) . "::setValues");
 
         // Unset all old modules values
         if (!empty($this->modules)) {
@@ -353,8 +358,6 @@ class Conf extends stdClass
         ];
 
         if (!is_null($db) && is_object($db)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
-
             // Define all global constants into $this->global->key=value
             $sql = "SELECT " . $db->decrypt('name') . " as name,";
             $sql .= " " . $db->decrypt('value') . " as value, entity";
@@ -378,7 +381,7 @@ class Conf extends stdClass
                             $value = $_ENV['DOLIBARR_' . $key];
                         }
 
-                        $this->global->$key = dolDecrypt($value);   // decrypt data excrypted with dolibarr_set_const($db, $name, $value)
+                        $this->global->$key = Security::dolDecrypt($value);   // decrypt data excrypted with dolibarr_set_const($db, $name, $value)
 
                         if ($value && strpos($key, 'MAIN_MODULE_') === 0) {
                             $reg = [];
@@ -471,7 +474,7 @@ class Conf extends stdClass
             }
 
             // Object $mc
-            if (!defined('NOREQUIREMC') && isModEnabled('multicompany')) {
+            if (!defined('NOREQUIREMC') && Functions::isModEnabled('multicompany')) {
                 global $mc;
                 $ret = @dol_include_once('/multicompany/class/actions_multicompany.class.php');
                 if ($ret && class_exists('ActionsMulticompany')) {
@@ -521,10 +524,10 @@ class Conf extends stdClass
                 $this->global->MAIN_LANG_DEFAULT = "en_US";
             }
 
-            $rootfordata = DOL_DATA_ROOT;
-            $rootforuser = DOL_DATA_ROOT;
+            $rootfordata = BASE_PATH;
+            $rootforuser = BASE_PATH;
             // If multicompany module is enabled, we redefine the root of data
-            if (isModEnabled('multicompany') && !empty($this->entity) && $this->entity > 1) {
+            if (Functions::isModEnabled('multicompany') && !empty($this->entity) && $this->entity > 1) {
                 $rootfordata .= '/' . $this->entity;
             }
             // Set standard temporary folder name or global override
@@ -722,7 +725,7 @@ class Conf extends stdClass
                 unset($this->global->PROJECT_USE_SEARCH_TO_SELECT);
             }
 
-            if (isModEnabled('productbatch')) {
+            if (Functions::isModEnabled('productbatch')) {
                 // If module lot/serial enabled, we force the inc/dec mode to STOCK_CALCULATE_ON_SHIPMENT_CLOSE and STOCK_CALCULATE_ON_RECEPTION_CLOSE
                 $this->global->STOCK_CALCULATE_ON_BILL = 0;
                 $this->global->STOCK_CALCULATE_ON_VALIDATE_ORDER = 0;
@@ -734,7 +737,7 @@ class Conf extends stdClass
                 }
                 $this->global->STOCK_CALCULATE_ON_SUPPLIER_BILL = 0;
                 $this->global->STOCK_CALCULATE_ON_SUPPLIER_VALIDATE_ORDER = 0;
-                if (!isModEnabled('reception')) {
+                if (!Functions::isModEnabled('reception')) {
                     $this->global->STOCK_CALCULATE_ON_SUPPLIER_DISPATCH_ORDER = 1;
                 } else {
                     if (empty($this->global->STOCK_CALCULATE_ON_RECEPTION)) {
@@ -816,7 +819,7 @@ class Conf extends stdClass
             }
 
             // conf->notification->email_from = email by default to send Dolibarr notifications
-            if (isModEnabled('notification')) {
+            if (Functions::isModEnabled('notification')) {
                 $this->notification->email_from = $this->email_from;
                 if (!empty($this->global->NOTIFICATION_EMAIL_FROM)) {
                     $this->notification->email_from = $this->global->NOTIFICATION_EMAIL_FROM;
@@ -952,9 +955,9 @@ class Conf extends stdClass
                 $this->agenda->warning_delay = (isset($this->global->MAIN_DELAY_ACTIONS_TODO) ? (int) $this->global->MAIN_DELAY_ACTIONS_TODO : 7) * 86400;
             }
             if (isset($this->projet)) {
-                $this->projet->warning_delay = (getDolGlobalInt('MAIN_DELAY_PROJECT_TO_CLOSE', 7) * 86400);
+                $this->projet->warning_delay = (Functions::getDolGlobalInt('MAIN_DELAY_PROJECT_TO_CLOSE', 7) * 86400);
                 $this->projet->task = new StdClass();
-                $this->projet->task->warning_delay = (getDolGlobalInt('MAIN_DELAY_TASKS_TODO', 7) * 86400);
+                $this->projet->task->warning_delay = (Functions::getDolGlobalInt('MAIN_DELAY_TASKS_TODO', 7) * 86400);
             }
 
             if (isset($this->commande)) {
@@ -1115,13 +1118,13 @@ class Conf extends stdClass
             }
 
             // Object $mc
-            if (!defined('NOREQUIREMC') && isModEnabled('multicompany')) {
+            if (!defined('NOREQUIREMC') && Functions::isModEnabled('multicompany')) {
                 if (is_object($mc)) {
                     $mc->setValues($this);
                 }
             }
 
-            if (isModEnabled('syslog')) {
+            if (Functions::isModEnabled('syslog')) {
                 // We init log handlers
                 if (!empty($this->global->SYSLOG_HANDLERS)) {
                     $handlers = json_decode($this->global->SYSLOG_HANDLERS);
@@ -1135,8 +1138,8 @@ class Conf extends stdClass
                         $dirsyslogs = array_merge($dirsyslogs, $this->modules_parts['syslog']);
                     }
                     foreach ($dirsyslogs as $reldir) {
-                        $dir = dol_buildpath($reldir, 0);
-                        $newdir = dol_osencode($dir);
+                        $dir = Functions::dol_buildpath($reldir, 0);
+                        $newdir = Functions::dol_osencode($dir);
                         if (is_dir($newdir)) {
                             $file = $newdir . $handler . '.php';
                             if (file_exists($file)) {
@@ -1221,7 +1224,6 @@ class Conf extends stdClass
         static::$config = null;
 
         $configFile = Globals::getConfFilename();
-
         if (!file_exists($configFile)) {
             return false;
         }

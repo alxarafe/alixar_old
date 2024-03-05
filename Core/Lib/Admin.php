@@ -143,7 +143,7 @@ class Admin
      *  @return     array               Tableau de version (vermajeur,vermineur,autre)
      *  @see versioncompare()
      */
-    function versiondolibarrarray()
+    public static function versiondolibarrarray()
     {
         return explode('.', DOL_VERSION);
     }
