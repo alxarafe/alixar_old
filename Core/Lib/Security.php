@@ -48,14 +48,14 @@ abstract class Security
     {
         if (is_numeric($key) && $key == '1') {  // rule 1 is offset of 17 for char
             $output_tab = [];
-            $strlength = dol_strlen($chain);
+            $strlength = Functions::dol_strlen($chain);
             for ($i = 0; $i < $strlength; $i++) {
                 $output_tab[$i] = chr(ord(substr($chain, $i, 1)) + 17);
             }
             $chain = implode("", $output_tab);
         } elseif ($key) {
             $result = '';
-            $strlength = dol_strlen($chain);
+            $strlength = Functions::dol_strlen($chain);
             for ($i = 0; $i < $strlength; $i++) {
                 $keychar = substr($key, ($i % strlen($key)) - 1, 1);
                 $result .= chr(ord(substr($chain, $i, 1)) + (ord($keychar) - 65));
@@ -82,7 +82,7 @@ abstract class Security
 
         if (is_numeric($key) && $key == '1') {  // rule 1 is offset of 17 for char
             $output_tab = [];
-            $strlength = dol_strlen($chain);
+            $strlength = Functions::dol_strlen($chain);
             for ($i = 0; $i < $strlength; $i++) {
                 $output_tab[$i] = chr(ord(substr($chain, $i, 1)) - 17);
             }
@@ -90,7 +90,7 @@ abstract class Security
             $chain = implode("", $output_tab);
         } elseif ($key) {
             $result = '';
-            $strlength = dol_strlen($chain);
+            $strlength = Functions::dol_strlen($chain);
             for ($i = 0; $i < $strlength; $i++) {
                 $keychar = substr($key, ($i % strlen($key)) - 1, 1);
                 $result .= chr(ord(substr($chain, $i, 1)) - (ord($keychar) - 65));
@@ -294,14 +294,14 @@ abstract class Security
      * @return     bool                    True if the computed hash is the same as the given one
      * @see dol_hash()
      */
-    function dol_verifyHash($chain, $hash, $type = '0')
+    public static function dol_verifyHash($chain, $hash, $type = '0')
     {
         if ($type == '0' && Functions::getDolGlobalString('MAIN_SECURITY_HASH_ALGO') && Functions::getDolGlobalString('MAIN_SECURITY_HASH_ALGO') == 'password_hash' && function_exists('password_verify')) {
             if (!empty($hash[0]) && $hash[0] == '$') {
                 return password_verify($chain, $hash);
-            } elseif (dol_strlen($hash) == 32) {
+            } elseif (Functions::dol_strlen($hash) == 32) {
                 return dol_verifyHash($chain, $hash, '3'); // md5
-            } elseif (dol_strlen($hash) == 40) {
+            } elseif (Functions::dol_strlen($hash) == 40) {
                 return dol_verifyHash($chain, $hash, '2'); // sha1md5
             }
 

@@ -31,6 +31,7 @@ use Alxarafe\DB\Engines\Pgsql;
 use Alxarafe\DB\Engines\PgSqlEngine;
 use Alxarafe\DB\Engines\Sqlite3;
 use Alxarafe\DB\Engines\Sqlite3Engine;
+use Alxarafe\Lib\Functions;
 use Database;
 
 /**
@@ -189,7 +190,7 @@ abstract class DB
     public function idate($param, $gm = 'tzserver')
     {
         // TODO $param should be gmt, so we should have default $gm to 'gmt' instead of default 'tzserver'
-        return dol_print_date($param, "%Y-%m-%d %H:%M:%S", $gm);
+        return Functions::dol_print_date($param, "%Y-%m-%d %H:%M:%S", $gm);
     }
 
     /**
@@ -231,13 +232,13 @@ abstract class DB
             $ret = $this->query("BEGIN");
             if ($ret) {
                 $this->transaction_opened++;
-                dol_syslog("BEGIN Transaction" . ($textinlog ? ' ' . $textinlog : ''), LOG_DEBUG);
-                dol_syslog('', 0, 1);
+                Functions::dol_syslog("BEGIN Transaction" . ($textinlog ? ' ' . $textinlog : ''), LOG_DEBUG);
+                Functions::dol_syslog('', 0, 1);
             }
             return $ret;
         } else {
             $this->transaction_opened++;
-            dol_syslog('', 0, 1);
+            Functions::dol_syslog('', 0, 1);
             return 1;
         }
     }
@@ -251,12 +252,12 @@ abstract class DB
      */
     public function commit($log = '')
     {
-        dol_syslog('', 0, -1);
+        Functions::dol_syslog('', 0, -1);
         if ($this->transaction_opened <= 1) {
             $ret = $this->query("COMMIT");
             if ($ret) {
                 $this->transaction_opened = 0;
-                dol_syslog("COMMIT Transaction" . ($log ? ' ' . $log : ''), LOG_DEBUG);
+                Functions::dol_syslog("COMMIT Transaction" . ($log ? ' ' . $log : ''), LOG_DEBUG);
                 return 1;
             } else {
                 return 0;
@@ -276,11 +277,11 @@ abstract class DB
      */
     public function rollback($log = '')
     {
-        dol_syslog('', 0, -1);
+        Functions::dol_syslog('', 0, -1);
         if ($this->transaction_opened <= 1) {
             $ret = $this->query("ROLLBACK");
             $this->transaction_opened = 0;
-            dol_syslog("ROLLBACK Transaction" . ($log ? ' ' . $log : ''), LOG_DEBUG);
+            Functions::dol_syslog("ROLLBACK Transaction" . ($log ? ' ' . $log : ''), LOG_DEBUG);
             return $ret;
         } else {
             $this->transaction_opened--;
@@ -407,7 +408,7 @@ abstract class DB
         }
         $string = preg_replace('/([^0-9])/i', '', $string);
         $tmp = $string . '000000';
-        $date = dol_mktime((int) substr($tmp, 8, 2), (int) substr($tmp, 10, 2), (int) substr($tmp, 12, 2), (int) substr($tmp, 4, 2), (int) substr($tmp, 6, 2), (int) substr($tmp, 0, 4), $gm);
+        $date = Functions::dol_mktime((int) substr($tmp, 8, 2), (int) substr($tmp, 10, 2), (int) substr($tmp, 12, 2), (int) substr($tmp, 4, 2), (int) substr($tmp, 6, 2), (int) substr($tmp, 0, 4), $gm);
         return $date;
     }
 

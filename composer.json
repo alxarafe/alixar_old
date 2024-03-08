@@ -69,6 +69,7 @@
   "autoload": {
     "psr-4": {
       "Alxarafe\\": "Core/",
+      "Modules\\": "Modules/",
       "Alixar\\": "htdocs/"
     }
   }

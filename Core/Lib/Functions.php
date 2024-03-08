@@ -25,6 +25,7 @@ namespace Alxarafe\Lib;
 
 use Alxarafe\Base\Globals;
 use Alxarafe\DB\DB;
+use Alxarafe\Lib\HookManager;
 use DateTime;
 use DateTimeZone;
 use Mobile_Detect;
@@ -278,14 +279,16 @@ abstract class Functions
      *
      * @return    mixed                    Entity id(s) to use ( eg. entity IN ('.getEntity(elementname).')' )
      */
-    function getEntity($element, $shared = 1, $currentobject = null)
+    public static function getEntity($element, $shared = 1, $currentobject = null)
     {
-        global $conf, $mc, $hookmanager, $object, $action, $db;
+        //global $conf, $mc, $hookmanager, $object, $action, $db;
+        global $object;
 
-        if (!is_object($hookmanager)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-            $hookmanager = new HookManager($db);
-        }
+        $conf = Globals::getConf();
+        $db = Globals::getDb();
+        $mc = $conf->multicompany;
+
+        $hookmanager = new HookManager($db);
 
         // fix different element names (France to English)
         switch ($element) {
@@ -303,7 +306,7 @@ abstract class Functions
                 break; // "/fourn/class/fournisseur.facture.class.php"
         }
 
-        if (is_object($mc)) {
+        if (is_object($mc) && method_exists($mc, 'getEntity')) {
             $out = $mc->getEntity($element, $shared, $currentobject);
         } else {
             $out = '';
@@ -318,7 +321,7 @@ abstract class Functions
         $parameters = [
             'element' => $element,
             'shared' => $shared,
-            'object' => $object,
+            'object' => $object??null,
             'currentobject' => $currentobject,
             'out' => $out,
         ];
@@ -399,7 +402,7 @@ abstract class Functions
      */
     public static function getBrowserInfo($user_agent)
     {
-        // include_once DOL_DOCUMENT_ROOT.'/includes/mobiledetect/mobiledetectlib/Mobile_Detect.php';
+        // include_once BASE_PATH.'/includes/mobiledetect/mobiledetectlib/Mobile_Detect.php';
 
         $name = 'unknown';
         $version = '';
@@ -1152,7 +1155,7 @@ abstract class Functions
             }
 
             // For backward compatibility when instance_unique_id is not set
-            return sha1(DOL_DOCUMENT_ROOT . DOL_URL_ROOT);
+            return sha1(BASE_PATH . DOL_URL_ROOT);
         }
 
         // If prefix is for session (no need to have $conf loaded)
@@ -1166,15 +1169,15 @@ abstract class Functions
 
         // For backward compatibility when instance_unique_id is not set
         if (isset($_SERVER["SERVER_NAME"]) && isset($_SERVER["DOCUMENT_ROOT"])) {
-            return sha1($_SERVER["SERVER_NAME"] . $_SERVER["DOCUMENT_ROOT"] . DOL_DOCUMENT_ROOT . DOL_URL_ROOT);
+            return sha1($_SERVER["SERVER_NAME"] . $_SERVER["DOCUMENT_ROOT"] . BASE_PATH . DOL_URL_ROOT);
         } else {
-            return sha1(DOL_DOCUMENT_ROOT . DOL_URL_ROOT);
+            return sha1(BASE_PATH . DOL_URL_ROOT);
         }
     }
 
     /**
      *    Make an include_once using default root and alternate root if it fails.
-     *  To link to a core file, use include(DOL_DOCUMENT_ROOT.'/pathtofile')
+     *  To link to a core file, use include(BASE_PATH.'/pathtofile')
      *  To link to a module file from a module file, use include './mymodulefile';
      *  To link to a module file from a core file, then this function can be used (call by hook / trigger / speciales
      *  pages)
@@ -1229,9 +1232,9 @@ abstract class Functions
         $path = preg_replace('/^\//', '', $path);
 
         if (empty($type)) {    // For a filesystem path
-            $res = DOL_DOCUMENT_ROOT . '/' . $path; // Standard default path
-            if (is_array($conf->file->dol_document_root)) {
-                foreach ($conf->file->dol_document_root as $key => $dirroot) {    // ex: array("main"=>"/home/main/htdocs", "alt0"=>"/home/dirmod/htdocs", ...)
+            $res = BASE_PATH . '/' . $path; // Standard default path
+            if (is_array($conf->file->BASE_PATH)) {
+                foreach ($conf->file->BASE_PATH as $key => $dirroot) {    // ex: array("main"=>"/home/main/htdocs", "alt0"=>"/home/dirmod/htdocs", ...)
                     if ($key == 'main') {
                         continue;
                     }
@@ -1265,7 +1268,7 @@ abstract class Functions
                 $res = DOL_URL_ROOT . '/' . $path;
             }
 
-            foreach ($conf->file->dol_document_root as $key => $dirroot) {    // ex: array(["main"]=>"/home/main/htdocs", ["alt0"]=>"/home/dirmod/htdocs", ...)
+            foreach ($conf->file->BASE_PATH as $key => $dirroot) {    // ex: array(["main"]=>"/home/main/htdocs", ["alt0"]=>"/home/dirmod/htdocs", ...)
                 if ($key == 'main') {
                     if ($type == 3) {
                         /*global $dolibarr_main_url_root;*/
@@ -1709,7 +1712,7 @@ abstract class Functions
      */
     function dolPrintHTML($s, $allowiframe = 0)
     {
-        return dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(dol_htmlentitiesbr($s), 1, 1, 1, $allowiframe)), 1, 1, 'common', 0, 1);
+        return Functions::dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(Functions::dol_htmlentitiesbr($s), 1, 1, 1, $allowiframe)), 1, 1, 'common', 0, 1);
     }
 
     /**
@@ -1722,9 +1725,9 @@ abstract class Functions
      */
     function dolPrintHTMLForAttribute($s)
     {
-        // The dol_htmlentitiesbr will convert simple text into html
-        // The dol_escape_htmltag will escape html chars.
-        return dol_escape_htmltag(dol_string_onlythesehtmltags(dol_htmlentitiesbr($s), 1, 0, 0, 0, ['br', 'b', 'font', 'span']), 1, -1, '', 0, 1);
+        // The Functions::dol_htmlentitiesbr will convert simple text into html
+        // The Functions::dol_escape_htmltag will escape html chars.
+        return Functions::dol_escape_htmltag(dol_string_onlythesehtmltags(Functions::dol_htmlentitiesbr($s), 1, 0, 0, 0, ['br', 'b', 'font', 'span']), 1, -1, '', 0, 1);
     }
 
     /**
@@ -1738,7 +1741,7 @@ abstract class Functions
      */
     function dolPrintHTMLForTextArea($s, $allowiframe = 0)
     {
-        return dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(dol_htmlentitiesbr($s), 1, 1, 1, $allowiframe)), 1, 1, '', 0, 1);
+        return Functions::dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(Functions::dol_htmlentitiesbr($s), 1, 1, 1, $allowiframe)), 1, 1, '', 0, 1);
     }
 
     /**
@@ -1757,8 +1760,8 @@ abstract class Functions
      *  Returns text escaped for inclusion in HTML alt or title or value tags, or into values of HTML input fields.
      *  When we need to output strings on pages, we should use:
      *        - dolPrintHTML... that is
-     *        dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(dol_htmlentitiesbr(), 1, 1, 1)), 1, 1)
-     *        for notes or descriptions into textarea, add 'common' if into a html content
+     *        Functions::dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(Functions::dol_htmlentitiesbr(),
+     *        1, 1, 1)), 1, 1) for notes or descriptions into textarea, add 'common' if into a html content
      *        - dolPrintPassword that is abelhtmlspecialchars( , ENT_COMPAT, 'UTF-8') for passwords.
      *
      * @param string $stringtoescape      String to escape
@@ -1772,7 +1775,7 @@ abstract class Functions
      *
      * @return     string                                Escaped string
      * @see        Functions::dol_string_nohtmltag(), dol_string_onlythesehtmltags(), dol_string_nospecial(),
-     *             dol_string_unaccent(), dol_htmlentitiesbr()
+     *             dol_string_unaccent(), Functions::dol_htmlentitiesbr()
      */
     public static function dol_escape_htmltag($stringtoescape, $keepb = 0, $keepn = 0, $noescapetags = '', $escapeonlyhtmltags = 0, $cleanalsojavascript = 0)
     {
@@ -1859,7 +1862,7 @@ abstract class Functions
      *
      * @return    string                            String converted
      */
-    function dol_strtolower($string, $encoding = "UTF-8")
+    public static function dol_strtolower($string, $encoding = "UTF-8")
     {
         if (function_exists('mb_strtolower')) {
             return mb_strtolower($string, $encoding);
@@ -2006,7 +2009,7 @@ abstract class Functions
             // If html log tag enabled and url parameter log defined, we show output log on HTML comments
             if (Functions::getDolGlobalString('MAIN_ENABLE_LOG_INLINE_HTML') && !empty($_GET["log"])) {
                 print "\n\n<!-- Log start\n";
-                print dol_escape_htmltag($message) . "\n";
+                print Functions::dol_escape_htmltag($message) . "\n";
                 print "Log end -->\n";
             }
 
@@ -2100,9 +2103,9 @@ abstract class Functions
             $url .= '&backtopagejsfields=' . urlencode($backtopagejsfields);
         }
 
-        //print '<input type="submit" class="button bordertransp"'.$disabled.' value="'.dol_escape_htmltag($langs->trans("MediaFiles")).'" name="file_manager">';
+        //print '<input type="submit" class="button bordertransp"'.$disabled.' value="'.Functions::dol_escape_htmltag($langs->trans("MediaFiles")).'" name="file_manager">';
         $out .= '<!-- a link for button to open url into a dialog popup with backtopagejsfields = ' . $backtopagejsfields . ' -->';
-        $out .= '<a ' . ($accesskey ? ' accesskey="' . $accesskey . '"' : '') . ' class="cursorpointer reposition button_' . $name . ($morecss ? ' ' . $morecss : '') . '"' . $disabled . ' title="' . dol_escape_htmltag($label) . '"';
+        $out .= '<a ' . ($accesskey ? ' accesskey="' . $accesskey . '"' : '') . ' class="cursorpointer reposition button_' . $name . ($morecss ? ' ' . $morecss : '') . '"' . $disabled . ' title="' . Functions::dol_escape_htmltag($label) . '"';
         if (empty($conf->use_javascript_ajax)) {
             $out .= ' href="' . DOL_URL_ROOT . $url . '" target="_blank"';
         } elseif ($jsonopen) {
@@ -2240,7 +2243,7 @@ abstract class Functions
                 }
                 $out .= img_picto($title, ($noprefix ? '' : 'object_') . $picto, '', $pictoisfullpath, 0, 0, '', 'imgTabTitle') . ' ';
             }
-            $out .= '<span class="tabTitleText">' . dol_escape_htmltag(dol_trunc($title, $limittitle)) . '</span>';
+            $out .= '<span class="tabTitleText">' . Functions::dol_escape_htmltag(dol_trunc($title, $limittitle)) . '</span>';
             $out .= '</a>';
         }
 
@@ -2286,7 +2289,7 @@ abstract class Functions
 
             if ($i < $limittoshow || $isactive) {
                 // Output entry with a visible tab
-                $out .= '<div class="inline-block tabsElem' . ($isactive ? ' tabsElemActive' : '') . ((!$isactive && Functions::getDolGlobalString('MAIN_HIDE_INACTIVETAB_ON_PRINT')) ? ' hideonprint' : '') . '"><!-- id tab = ' . (empty($links[$i][2]) ? '' : dol_escape_htmltag($links[$i][2])) . ' -->';
+                $out .= '<div class="inline-block tabsElem' . ($isactive ? ' tabsElemActive' : '') . ((!$isactive && Functions::getDolGlobalString('MAIN_HIDE_INACTIVETAB_ON_PRINT')) ? ' hideonprint' : '') . '"><!-- id tab = ' . (empty($links[$i][2]) ? '' : Functions::dol_escape_htmltag($links[$i][2])) . ' -->';
 
                 if (isset($links[$i][2]) && $links[$i][2] == 'image') {
                     if (!empty($links[$i][0])) {
@@ -2299,7 +2302,7 @@ abstract class Functions
                     $out .= '<div class="tab tab' . ($isactive ? 'active' : 'unactive') . '" style="margin: 0 !important">';
                     if (!empty($links[$i][0])) {
                         $titletoshow = preg_replace('/<.*$/', '', $links[$i][1]);
-                        $out .= '<a' . (!empty($links[$i][2]) ? ' id="' . $links[$i][2] . '"' : '') . ' class="tab inline-block valignmiddle' . ($morecss ? ' ' . $morecss : '') . (!empty($links[$i][5]) ? ' ' . $links[$i][5] : '') . '" href="' . $links[$i][0] . '" title="' . dol_escape_htmltag($titletoshow) . '">';
+                        $out .= '<a' . (!empty($links[$i][2]) ? ' id="' . $links[$i][2] . '"' : '') . ' class="tab inline-block valignmiddle' . ($morecss ? ' ' . $morecss : '') . (!empty($links[$i][5]) ? ' ' . $links[$i][5] : '') . '" href="' . $links[$i][0] . '" title="' . Functions::dol_escape_htmltag($titletoshow) . '">';
                     }
                     $out .= $links[$i][1];
                     if (!empty($links[$i][0])) {
@@ -2377,7 +2380,7 @@ abstract class Functions
             $out .= "\n" . '<div id="dragDropAreaTabBar" class="tabBar' . ($notab == -1 ? '' : ($notab == -2 ? ' tabBarNoTop' : (($notab == -3 ? ' noborderbottom' : '') . ' tabBarWithBottom'))) . '">' . "\n";
         }
         if (!empty($dragdropfile)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/core/lib/files.lib.php';
             $out .= dragAndDropFileUpload("dragDropAreaTabBar");
         }
         $parameters = ['tabname' => $active, 'out' => $out];
@@ -2495,7 +2498,7 @@ abstract class Functions
                     $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"></div>';
                 } else {    // Show no photo link
                     $nophoto = '/public/theme/common/nophoto.png';
-                    $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photo' . $modulepart . ($cssclass ? ' ' . $cssclass : '') . '" title="' . dol_escape_htmltag($langs->trans("UploadAnImageToSeeAPhotoHere", $langs->transnoentitiesnoconv("Documents"))) . '" alt="No photo"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ' src="' . DOL_URL_ROOT . $nophoto . '"></div>';
+                    $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photo' . $modulepart . ($cssclass ? ' ' . $cssclass : '') . '" title="' . Functions::dol_escape_htmltag($langs->trans("UploadAnImageToSeeAPhotoHere", $langs->transnoentitiesnoconv("Documents"))) . '" alt="No photo"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ' src="' . DOL_URL_ROOT . $nophoto . '"></div>';
                 }
             }
         } elseif ($object->element == 'category') {
@@ -2515,7 +2518,7 @@ abstract class Functions
                     $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"></div>';
                 } else {    // Show no photo link
                     $nophoto = '/public/theme/common/nophoto.png';
-                    $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photo' . $modulepart . ($cssclass ? ' ' . $cssclass : '') . '" title="' . dol_escape_htmltag($langs->trans("UploadAnImageToSeeAPhotoHere", $langs->transnoentitiesnoconv("Documents"))) . '" alt="No photo"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ' src="' . DOL_URL_ROOT . $nophoto . '"></div>';
+                    $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photo' . $modulepart . ($cssclass ? ' ' . $cssclass : '') . '" title="' . Functions::dol_escape_htmltag($langs->trans("UploadAnImageToSeeAPhotoHere", $langs->transnoentitiesnoconv("Documents"))) . '" alt="No photo"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ' src="' . DOL_URL_ROOT . $nophoto . '"></div>';
                 }
             }
         } elseif ($object->element == 'bom') {
@@ -2535,7 +2538,7 @@ abstract class Functions
                     $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"></div>';
                 } else {    // Show no photo link
                     $nophoto = '/public/theme/common/nophoto.png';
-                    $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photo' . $modulepart . ($cssclass ? ' ' . $cssclass : '') . '" title="' . dol_escape_htmltag($langs->trans("UploadAnImageToSeeAPhotoHere", $langs->transnoentitiesnoconv("Documents"))) . '" alt="No photo"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ' src="' . DOL_URL_ROOT . $nophoto . '"></div>';
+                    $morehtmlleft .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photo' . $modulepart . ($cssclass ? ' ' . $cssclass : '') . '" title="' . Functions::dol_escape_htmltag($langs->trans("UploadAnImageToSeeAPhotoHere", $langs->transnoentitiesnoconv("Documents"))) . '" alt="No photo"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ' src="' . DOL_URL_ROOT . $nophoto . '"></div>';
                 }
             }
         } elseif ($object->element == 'ticket') {
@@ -2602,7 +2605,7 @@ abstract class Functions
                             // Conversion du PDF en image png si fichier png non existent
                             if (!file_exists($fileimage) || (filemtime($fileimage) < filemtime($filepdf))) {
                                 if (!Functions::getDolGlobalString('MAIN_DISABLE_PDF_THUMBS')) {        // If you experience trouble with pdf thumb generation and imagick, you can disable here.
-                                    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                                    include_once BASE_PATH . '/core/lib/files.lib.php';
                                     $ret = dol_convert_file($filepdf, 'png', $fileimage, '0'); // Convert first page of PDF into a file _preview.png
                                     if ($ret < 0) {
                                         $error++;
@@ -2739,7 +2742,7 @@ abstract class Functions
 
         // Add alias for thirdparty
         if (!empty($object->name_alias)) {
-            $morehtmlref .= '<div class="refidno opacitymedium">' . dol_escape_htmltag($object->name_alias) . '</div>';
+            $morehtmlref .= '<div class="refidno opacitymedium">' . Functions::dol_escape_htmltag($object->name_alias) . '</div>';
         }
 
         // Add label
@@ -3085,7 +3088,7 @@ abstract class Functions
         // Analyze date
         $reg = [];
         if (preg_match('/^([0-9][0-9][0-9][0-9])([0-9][0-9])([0-9][0-9])([0-9][0-9])([0-9][0-9])([0-9][0-9])$/i', $time, $reg)) {    // Deprecated. Ex: 1970-01-01, 1970-01-01 01:00:00, 19700101010000
-            dol_print_error(null, "Functions.lib::dol_print_date function called with a bad value from page " . (empty($_SERVER["PHP_SELF"]) ? 'unknown' : $_SERVER["PHP_SELF"]));
+            static::dol_print_error(null, "Functions.lib::dol_print_date function called with a bad value from page " . (empty($_SERVER["PHP_SELF"]) ? 'unknown' : $_SERVER["PHP_SELF"]));
             return '';
         } elseif (preg_match('/^([0-9]+)\-([0-9]+)\-([0-9]+) ?([0-9]+)?:?([0-9]+)?:?([0-9]+)?/i', $time, $reg)) {    // Still available to solve problems in extrafields of type date
             // This part of code should not be used anymore.
@@ -3270,7 +3273,7 @@ abstract class Functions
      * @return    int|string                    Date as a timestamp, '' if error
      * @see                                dol_print_date(), dol_stringtotime(), dol_getdate()
      */
-    function dol_mktime($hour, $minute, $second, $month, $day, $year, $gm = 'auto', $check = 1)
+    public static function dol_mktime($hour, $minute, $second, $month, $day, $year, $gm = 'auto', $check = 1)
     {
         $conf = Globals::getConf();
         //print "- ".$hour.",".$minute.",".$second.",".$month.",".$day.",".$year.",".$_SERVER["WINDIR"]." -";
@@ -3369,11 +3372,11 @@ abstract class Functions
         if ($mode == 'gmt') {
             $ret = time(); // Time for now at greenwich.
         } elseif ($mode == 'tzserver') {        // Time for now with PHP server timezone added
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            require_once BASE_PATH . '/core/lib/date.lib.php';
             $tzsecond = getServerTimeZoneInt('now'); // Contains tz+dayling saving time
             $ret = (int) (dol_now('gmt') + ($tzsecond * 3600));
             //} elseif ($mode == 'tzref') {// Time for now with parent company timezone is added
-            //  require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
+            //  require_once BASE_PATH.'/core/lib/date.lib.php';
             //  $tzsecond=getParentCompanyTimeZoneInt();    // Contains tz+dayling saving time
             //  $ret=dol_now('gmt')+($tzsecond*3600);
             //}
@@ -3493,7 +3496,7 @@ abstract class Functions
         //$conf = Globals::getConf(); $conf->global->AGENDA_ADDACTIONFOREMAIL = 1;
         //$showinvalid = 1; $email = 'rrrrr';
 
-        $newemail = dol_escape_htmltag($email);
+        $newemail = Functions::dol_escape_htmltag($email);
 
         if (Functions::getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && $withpicto) {
             $withpicto = 0;
@@ -3568,7 +3571,7 @@ abstract class Functions
 
         $socialnetworks = [];
         // Enable caching of array
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+        require_once BASE_PATH . '/core/lib/memory.lib.php';
         $cachekey = 'socialnetworks_' . $conf->entity;
         $dataretrieved = dol_getcache($cachekey);
         if (!is_null($dataretrieved)) {
@@ -3620,14 +3623,14 @@ abstract class Functions
             // Use dictionary definition for picto $dictsocialnetworks[$type]['icon']
             $htmllink .= '<span class="fab pictofixedwidth ' . ($dictsocialnetworks[$type]['icon'] ? $dictsocialnetworks[$type]['icon'] : 'fa-link') . '"></span>';
             if ($type == 'skype') {
-                $htmllink .= dol_escape_htmltag($value);
+                $htmllink .= Functions::dol_escape_htmltag($value);
                 $htmllink .= '&nbsp; <a href="skype:';
                 $htmllink .= dol_string_nospecial($value, '_', '', ['@']);
-                $htmllink .= '?call" alt="' . $langs->trans("Call") . '&nbsp;' . $value . '" title="' . dol_escape_htmltag($langs->trans("Call") . ' ' . $value) . '">';
+                $htmllink .= '?call" alt="' . $langs->trans("Call") . '&nbsp;' . $value . '" title="' . Functions::dol_escape_htmltag($langs->trans("Call") . ' ' . $value) . '">';
                 $htmllink .= '<img src="' . DOL_URL_ROOT . '/theme/common/skype_callbutton.png" border="0">';
                 $htmllink .= '</a><a href="skype:';
                 $htmllink .= dol_string_nospecial($value, '_', '', ['@']);
-                $htmllink .= '?chat" alt="' . $langs->trans("Chat") . '&nbsp;' . $value . '" title="' . dol_escape_htmltag($langs->trans("Chat") . ' ' . $value) . '">';
+                $htmllink .= '?chat" alt="' . $langs->trans("Chat") . '&nbsp;' . $value . '" title="' . Functions::dol_escape_htmltag($langs->trans("Chat") . ' ' . $value) . '">';
                 $htmllink .= '<img class="paddingleft" src="' . DOL_URL_ROOT . '/theme/common/skype_chatbutton.png" border="0">';
                 $htmllink .= '</a>';
                 if (($cid || $socid) && Functions::isModEnabled('agenda') && $user->hasRight('agenda', 'myactions', 'create')) {
@@ -3643,9 +3646,9 @@ abstract class Functions
                 if (Functions::getDolGlobalString($networkconstname)) {
                     $link = str_replace('{socialid}', $value, Functions::getDolGlobalString($networkconstname));
                     if (preg_match('/^https?:\/\//i', $link)) {
-                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 0) . '" target="_blank" rel="noopener noreferrer">' . dol_escape_htmltag($value) . '</a>';
+                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 0) . '" target="_blank" rel="noopener noreferrer">' . Functions::dol_escape_htmltag($value) . '</a>';
                     } else {
-                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 1) . '" target="_blank" rel="noopener noreferrer">' . dol_escape_htmltag($value) . '</a>';
+                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 1) . '" target="_blank" rel="noopener noreferrer">' . Functions::dol_escape_htmltag($value) . '</a>';
                     }
                 } elseif (!empty($dictsocialnetworks[$type]['url'])) {
                     $tmpvirginurl = preg_replace('/\/?{socialid}/', '', $dictsocialnetworks[$type]['url']);
@@ -3667,12 +3670,12 @@ abstract class Functions
                     }
                     $link = str_replace('{socialid}', $value, $dictsocialnetworks[$type]['url']);
                     if (preg_match('/^https?:\/\//i', $link)) {
-                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 0) . '" target="_blank" rel="noopener noreferrer">' . dol_escape_htmltag($value) . '</a>';
+                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 0) . '" target="_blank" rel="noopener noreferrer">' . Functions::dol_escape_htmltag($value) . '</a>';
                     } else {
-                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 1) . '" target="_blank" rel="noopener noreferrer">' . dol_escape_htmltag($value) . '</a>';
+                        $htmllink .= '<a href="' . dol_sanitizeUrl($link, 1) . '" target="_blank" rel="noopener noreferrer">' . Functions::dol_escape_htmltag($value) . '</a>';
                     }
                 } else {
-                    $htmllink .= dol_escape_htmltag($value);
+                    $htmllink .= Functions::dol_escape_htmltag($value);
                 }
             }
             $htmllink .= '</div>';
@@ -3728,7 +3731,7 @@ abstract class Functions
             }
         }
         if (!empty($addcpButton)) {
-            $ret = showValueWithClipboardCPButton(dol_escape_htmltag($profID), ($addcpButton == 1 ? 1 : 0), $newProfID);
+            $ret = showValueWithClipboardCPButton(Functions::dol_escape_htmltag($profID), ($addcpButton == 1 ? 1 : 0), $newProfID);
         } else {
             $ret = $newProfID;
         }
@@ -4101,7 +4104,7 @@ abstract class Functions
         if ($mode != 2) {
             $countrycode = dolGetCountryCodeFromIp($ip);
             if ($countrycode) {    // If success, countrycode is us, fr, ...
-                if (file_exists(DOL_DOCUMENT_ROOT . '/theme/common/flags/' . $countrycode . '.png')) {
+                if (file_exists(BASE_PATH . '/theme/common/flags/' . $countrycode . '.png')) {
                     $ret .= ' ' . img_picto($countrycode . ' ' . $langs->trans("AccordingToGeoIPDatabase"), DOL_URL_ROOT . '/theme/common/flags/' . $countrycode . '.png', '', 1);
                 } else {
                     $ret .= ' (' . $countrycode . ')';
@@ -4176,7 +4179,7 @@ abstract class Functions
             $datafile = Functions::getDolGlobalString('GEOIPMAXMIND_COUNTRY_DATAFILE');
             //$ip='24.24.24.24';
             //$datafile='/usr/share/GeoIP/GeoIP.dat';    Note that this must be downloaded datafile (not same than datafile provided with ubuntu packages)
-            include_once DOL_DOCUMENT_ROOT . '/core/class/dolgeoip.class.php';
+            include_once BASE_PATH . '/core/class/dolgeoip.class.php';
             $geoip = new DolGeoIP('country', $datafile);
             //print 'ip='.$ip.' databaseType='.$geoip->gi->databaseType." GEOIP_CITY_EDITION_REV1=".GEOIP_CITY_EDITION_REV1."\n";
             $countrycode = $geoip->getCountryCodeFromIP($ip);
@@ -4202,7 +4205,7 @@ abstract class Functions
             $datafile = Functions::getDolGlobalString('GEOIPMAXMIND_COUNTRY_DATAFILE');
             //$ip='24.24.24.24';
             //$datafile='E:\Mes Sites\Web\Admin1\awstats\maxmind\GeoIP.dat';
-            include_once DOL_DOCUMENT_ROOT . '/core/class/dolgeoip.class.php';
+            include_once BASE_PATH . '/core/class/dolgeoip.class.php';
             $geoip = new DolGeoIP('country', $datafile);
             $countrycode = $geoip->getCountryCodeFromIP($ip);
             $ret = $countrycode;
@@ -4554,31 +4557,37 @@ abstract class Functions
     /**
      *    Show picto whatever it's its name (generic function)
      *
-     * @param string      $titlealt                       Text on title tag for tooltip. Not used if param notitle is
-     *                                                    set to 1.
-     * @param string      $picto                          Name of image file to show ('filenew', ...).
-     *                                                    For font awesome icon (example 'user'), you can use
-     *                                                    picto_nocolor to not have the color of picto forced. If no
-     *                                                    extension provided and it is not a font awesome icon, we use
-     *                                                    '.png'. Image must be stored into theme/xxx/img directory.
-     *                                                    Example: picto.png                  if picto.png is stored
-     *                                                    into htdocs/theme/mytheme/img Example: picto.png@mymodule
+     * @param string      $titlealt                           Text on title tag for tooltip. Not used if param notitle
+     *                                                        is set to 1.
+     * @param string      $picto                              Name of image file to show ('filenew', ...).
+     *                                                        For font awesome icon (example 'user'), you can use
+     *                                                        picto_nocolor to not have the color of picto forced. If
+     *                                                        no
+     *                                                        extension provided and it is not a font awesome icon, we
+     *                                                        use
+     *                                                        '.png'. Image must be stored into theme/xxx/img
+     *                                                        directory.
+     *                                                        Example: picto.png                  if picto.png is
+     *                                                        stored
+     *                                                        into htdocs/theme/mytheme/img Example: picto.png@mymodule
      *                                                        if picto.png is stored into htdocs/mymodule/img Example:
      *                                                        /mydir/mysubdir/picto.png  if picto.png is stored into
      *                                                        htdocs/mydir/mysubdir (pictoisfullpath must be set to 1)
      *                                                        Example: fontawesome_envelope-open-text_fas_red_1em if
-     *                                                        you want to use fontaweseome icons: fontawesome_<icon-name>_<style>_<color>_<size> (only icon-name is mandatory)
-     * @param string      $moreatt                        Add more attribute on img tag (For example
-     *                                                    'class="pictofixedwidth"')
-     * @param boolean|int $pictoisfullpath                If true or 1, image path is a full path
-     * @param int         $srconly                        Return only content of the src attribute of img.
-     * @param int         $notitle                        1=Disable tag title. Use it if you add js tooltip, to avoid
-     *                                                    duplicate tooltip.
-     * @param string      $alt                            Force alt for bind people
-     * @param string      $morecss                        Add more class css on img tag (For example 'myclascss').
-     * @param string      $marginleftonlyshort            1 = Add a short left margin on picto, 2 = Add a larger left
-     *                                                    margin on picto, 0 = No margin left. Works for fontawesome
-     *                                                    picto only.
+     *                                                        you want to use fontaweseome icons:
+     *                                                        fontawesome_<icon-name>_<style>_<color>_<size> (only
+     *                                                        icon-name is mandatory)
+     * @param string      $moreatt                            Add more attribute on img tag (For example
+     *                                                        'class="pictofixedwidth"')
+     * @param boolean|int $pictoisfullpath                    If true or 1, image path is a full path
+     * @param int         $srconly                            Return only content of the src attribute of img.
+     * @param int         $notitle                            1=Disable tag title. Use it if you add js tooltip, to
+     *                                                        avoid duplicate tooltip.
+     * @param string      $alt                                Force alt for bind people
+     * @param string      $morecss                            Add more class css on img tag (For example 'myclascss').
+     * @param string      $marginleftonlyshort                1 = Add a short left margin on picto, 2 = Add a larger
+     *                                                        left margin on picto, 0 = No margin left. Works for
+     *                                                        fontawesome picto only.
      *
      * @return     string                            Return img tag
      * @see        img_object(), img_picto_common()
@@ -4653,7 +4662,7 @@ abstract class Functions
                 $moreatt = trim($moreatt);
 
                 $enabledisablehtml = '<span class="' . $faprefix . ' ' . $fakey . ($marginleftonlyshort ? ($marginleftonlyshort == 1 ? ' marginleftonlyshort' : ' marginleftonly') : '');
-                $enabledisablehtml .= ($morecss ? ' ' . $morecss : '') . '" style="' . ($fasize ? ('font-size: ' . $fasize . ';') : '') . ($facolor ? (' color: ' . $facolor . ';') : '') . ($morestyle ? ' ' . $morestyle : '') . '"' . (($notitle || empty($titlealt)) ? '' : ' title="' . dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt : '') . '>';
+                $enabledisablehtml .= ($morecss ? ' ' . $morecss : '') . '" style="' . ($fasize ? ('font-size: ' . $fasize . ';') : '') . ($facolor ? (' color: ' . $facolor . ';') : '') . ($morestyle ? ' ' . $morestyle : '') . '"' . (($notitle || empty($titlealt)) ? '' : ' title="' . Functions::dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt : '') . '>';
                 /*if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)) {
                 $enabledisablehtml .= $titlealt;
             }*/
@@ -4876,7 +4885,7 @@ abstract class Functions
                 $moreatt = trim($moreatt);
 
                 $enabledisablehtml = '<span class="' . $fa . ' ' . $fakey . ($marginleftonlyshort ? ($marginleftonlyshort == 1 ? ' marginleftonlyshort' : ' marginleftonly') : '');
-                $enabledisablehtml .= ($morecss ? ' ' . $morecss : '') . '" style="' . ($fasize ? ('font-size: ' . $fasize . ';') : '') . ($facolor ? (' color: ' . $facolor . ';') : '') . ($morestyle ? ' ' . $morestyle : '') . '"' . (($notitle || empty($titlealt)) ? '' : ' title="' . dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt : '') . '>';
+                $enabledisablehtml .= ($morecss ? ' ' . $morecss : '') . '" style="' . ($fasize ? ('font-size: ' . $fasize . ';') : '') . ($facolor ? (' color: ' . $facolor . ';') : '') . ($morestyle ? ' ' . $morestyle : '') . '"' . (($notitle || empty($titlealt)) ? '' : ' title="' . Functions::dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt : '') . '>';
                 /*if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)) {
                 $enabledisablehtml .= $titlealt;
             }*/
@@ -4906,7 +4915,7 @@ abstract class Functions
             }
             // If alt path are defined, define url where img file is, according to physical path
             // ex: array(["main"]=>"/home/maindir/htdocs", ["alt0"]=>"/home/moddir0/htdocs", ...)
-            foreach ($conf->file->dol_document_root as $type => $dirroot) {
+            foreach ($conf->file->BASE_PATH as $type => $dirroot) {
                 if ($type == 'main') {
                     continue;
                 }
@@ -4926,7 +4935,7 @@ abstract class Functions
         }
 
         // tag title is used for tooltip on <a>, tag alt can be used with very simple text on image for blind people
-        return '<img src="' . $fullpathpicto . '"' . ($notitle ? '' : ' alt="' . dol_escape_htmltag($alt) . '"') . (($notitle || empty($titlealt)) ? '' : ' title="' . dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt . ($morecss ? ' class="' . $morecss . '"' : '') : ' class="inline-block' . ($morecss ? ' ' . $morecss : '') . '"') . '>'; // Alt is used for accessibility, title for popup
+        return '<img src="' . $fullpathpicto . '"' . ($notitle ? '' : ' alt="' . Functions::dol_escape_htmltag($alt) . '"') . (($notitle || empty($titlealt)) ? '' : ' title="' . Functions::dol_escape_htmltag($titlealt) . '"') . ($moreatt ? ' ' . $moreatt . ($morecss ? ' class="' . $morecss . '"' : '') : ' class="inline-block' . ($morecss ? ' ' . $morecss : '') . '"') . '>'; // Alt is used for accessibility, title for popup
     }
 
     /**
@@ -5015,7 +5024,7 @@ abstract class Functions
             $path = DOL_URL_ROOT . '/theme/common/' . $picto;
 
             if (getDolGlobalInt('MAIN_MODULE_CAN_OVERWRITE_COMMONICONS')) {
-                $themepath = DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/img/' . $picto;
+                $themepath = BASE_PATH . '/theme/' . $conf->theme . '/img/' . $picto;
 
                 if (file_exists($themepath)) {
                     $path = $themepath;
@@ -5252,7 +5261,7 @@ abstract class Functions
 
         if ($usealttitle) {
             if (is_string($usealttitle)) {
-                $usealttitle = dol_escape_htmltag($usealttitle);
+                $usealttitle = Functions::dol_escape_htmltag($usealttitle);
             } else {
                 $usealttitle = $langs->trans('Info');
             }
@@ -5340,7 +5349,7 @@ abstract class Functions
         }
 
         //return img_picto($titlealt, 'next.png', $moreatt);
-        return '<span class="fa fa-chevron-right paddingright paddingleft" title="' . dol_escape_htmltag($titlealt) . '"></span>';
+        return '<span class="fa fa-chevron-right paddingright paddingleft" title="' . Functions::dol_escape_htmltag($titlealt) . '"></span>';
     }
 
     /**
@@ -5361,7 +5370,7 @@ abstract class Functions
         }
 
         //return img_picto($titlealt, 'previous.png', $moreatt);
-        return '<span class="fa fa-chevron-left paddingright paddingleft" title="' . dol_escape_htmltag($titlealt) . '"></span>';
+        return '<span class="fa fa-chevron-left paddingright paddingleft" title="' . Functions::dol_escape_htmltag($titlealt) . '"></span>';
     }
 
     /**
@@ -5517,7 +5526,7 @@ abstract class Functions
      */
     function img_mime($file, $titlealt = '', $morecss = '')
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/core/lib/files.lib.php';
 
         $mimetype = dol_mimetype($file, '', 1);
         $mimeimg = dol_mimetype($file, '', 2);
@@ -5551,7 +5560,7 @@ abstract class Functions
         $img = img_picto($titlealt, 'search.png', $other, false, 1);
 
         $input = '<input type="image" class="liste_titre" name="button_search" src="' . $img . '" ';
-        $input .= 'value="' . dol_escape_htmltag($titlealt) . '" title="' . dol_escape_htmltag($titlealt) . '" >';
+        $input .= 'value="' . Functions::dol_escape_htmltag($titlealt) . '" title="' . Functions::dol_escape_htmltag($titlealt) . '" >';
 
         return $input;
     }
@@ -5576,7 +5585,7 @@ abstract class Functions
         $img = img_picto($titlealt, 'searchclear.png', $other, false, 1);
 
         $input = '<input type="image" class="liste_titre" name="button_removefilter" src="' . $img . '" ';
-        $input .= 'value="' . dol_escape_htmltag($titlealt) . '" title="' . dol_escape_htmltag($titlealt) . '" >';
+        $input .= 'value="' . Functions::dol_escape_htmltag($titlealt) . '" title="' . Functions::dol_escape_htmltag($titlealt) . '" >';
 
         return $input;
     }
@@ -5607,8 +5616,8 @@ abstract class Functions
             }
 
             $class = (empty($admin) ? 'undefined' : ($admin == '1' ? 'info' : $admin));
-            $result = ($nodiv ? '' : '<div class="' . $class . ($morecss ? ' ' . $morecss : '') . ($textfordropdown ? ' hidden' : '') . '">') . '<span class="fa fa-info-circle" title="' . dol_escape_htmltag($admin ? $langs->trans('InfoAdmin') : $langs->trans('Note')) . '"></span> ';
-            $result .= dol_escape_htmltag($text, 1, 0, 'div,span,b,br,a');
+            $result = ($nodiv ? '' : '<div class="' . $class . ($morecss ? ' ' . $morecss : '') . ($textfordropdown ? ' hidden' : '') . '">') . '<span class="fa fa-info-circle" title="' . Functions::dol_escape_htmltag($admin ? $langs->trans('InfoAdmin') : $langs->trans('Note')) . '"></span> ';
+            $result .= Functions::dol_escape_htmltag($text, 1, 0, 'div,span,b,br,a');
             $result .= ($nodiv ? '' : '</div>');
 
             if ($textfordropdown) {
@@ -5641,51 +5650,44 @@ abstract class Functions
      * @return    void
      * @see        dol_htmloutput_errors()
      */
-    function dol_print_error($db = null, $error = '', $errors = null)
+    public static function dol_print_error($db = null, $error = '', $errors = null)
     {
-        global $conf, $langs, $argv;
-        global $dolibarr_main_prod;
+        $db = Globals::getDb();
+        $langs = Globals::getLang();
 
         $out = '';
         $syslog = '';
-
-        // If error occurs before the $lang object was loaded
-        if (!$langs) {
-            //      require_once DOL_DOCUMENT_ROOT.'/core/class/translate.class.php';
-            $langs = new Lang('', $conf);
-            $langs->load("main");
-        }
 
         // Load translation files required by the error messages
         $langs->loadLangs(['main', 'errors']);
 
         if ($_SERVER['DOCUMENT_ROOT']) {    // Mode web
             $out .= $langs->trans("DolibarrHasDetectedError") . ".<br>\n";
-            if (getDolGlobalInt('MAIN_FEATURES_LEVEL') > 0) {
+            if (static::getDolGlobalInt('MAIN_FEATURES_LEVEL') > 0) {
                 $out .= "You use an experimental or develop level of features, so please do NOT report any bugs or vulnerability, except if problem is confirmed after moving option MAIN_FEATURES_LEVEL back to 0.<br>\n";
             }
             $out .= $langs->trans("InformationToHelpDiagnose") . ":<br>\n";
 
-            $out .= "<b>" . $langs->trans("Date") . ":</b> " . dol_print_date(time(), 'dayhourlog') . "<br>\n";
+            $out .= "<b>" . $langs->trans("Date") . ":</b> " . static::dol_print_date(time(), 'dayhourlog') . "<br>\n";
             $out .= "<b>" . $langs->trans("Dolibarr") . ":</b> " . DOL_VERSION . " - https://www.dolibarr.org<br>\n";
             if (isset($conf->global->MAIN_FEATURES_LEVEL)) {
-                $out .= "<b>" . $langs->trans("LevelOfFeature") . ":</b> " . getDolGlobalInt('MAIN_FEATURES_LEVEL') . "<br>\n";
+                $out .= "<b>" . $langs->trans("LevelOfFeature") . ":</b> " . Functions::getDolGlobalInt('MAIN_FEATURES_LEVEL') . "<br>\n";
             }
             if (function_exists("phpversion")) {
                 $out .= "<b>" . $langs->trans("PHP") . ":</b> " . phpversion() . "<br>\n";
             }
-            $out .= "<b>" . $langs->trans("Server") . ":</b> " . (isset($_SERVER["SERVER_SOFTWARE"]) ? dol_htmlentities($_SERVER["SERVER_SOFTWARE"], ENT_COMPAT) : '') . "<br>\n";
+            $out .= "<b>" . $langs->trans("Server") . ":</b> " . (isset($_SERVER["SERVER_SOFTWARE"]) ? Functions::dol_htmlentities($_SERVER["SERVER_SOFTWARE"], ENT_COMPAT) : '') . "<br>\n";
             if (function_exists("php_uname")) {
                 $out .= "<b>" . $langs->trans("OS") . ":</b> " . php_uname() . "<br>\n";
             }
-            $out .= "<b>" . $langs->trans("UserAgent") . ":</b> " . (isset($_SERVER["HTTP_USER_AGENT"]) ? dol_htmlentities($_SERVER["HTTP_USER_AGENT"], ENT_COMPAT) : '') . "<br>\n";
+            $out .= "<b>" . $langs->trans("UserAgent") . ":</b> " . (isset($_SERVER["HTTP_USER_AGENT"]) ? Functions::dol_htmlentities($_SERVER["HTTP_USER_AGENT"], ENT_COMPAT) : '') . "<br>\n";
             $out .= "<br>\n";
-            $out .= "<b>" . $langs->trans("RequestedUrl") . ":</b> " . dol_htmlentities($_SERVER["REQUEST_URI"], ENT_COMPAT) . "<br>\n";
-            $out .= "<b>" . $langs->trans("Referer") . ":</b> " . (isset($_SERVER["HTTP_REFERER"]) ? dol_htmlentities($_SERVER["HTTP_REFERER"], ENT_COMPAT) : '') . "<br>\n";
-            $out .= "<b>" . $langs->trans("MenuManager") . ":</b> " . (isset($conf->standard_menu) ? dol_htmlentities($conf->standard_menu, ENT_COMPAT) : '') . "<br>\n";
+            $out .= "<b>" . $langs->trans("RequestedUrl") . ":</b> " . Functions::dol_htmlentities($_SERVER["REQUEST_URI"], ENT_COMPAT) . "<br>\n";
+            $out .= "<b>" . $langs->trans("Referer") . ":</b> " . (isset($_SERVER["HTTP_REFERER"]) ? Functions::dol_htmlentities($_SERVER["HTTP_REFERER"], ENT_COMPAT) : '') . "<br>\n";
+            $out .= "<b>" . $langs->trans("MenuManager") . ":</b> " . (isset($conf->standard_menu) ? Functions::dol_htmlentities($conf->standard_menu, ENT_COMPAT) : '') . "<br>\n";
             $out .= "<br>\n";
-            $syslog .= "url=" . dol_escape_htmltag($_SERVER["REQUEST_URI"]);
-            $syslog .= ", query_string=" . dol_escape_htmltag($_SERVER["QUERY_STRING"]);
+            $syslog .= "url=" . Functions::dol_escape_htmltag($_SERVER["REQUEST_URI"]);
+            $syslog .= ", query_string=" . Functions::dol_escape_htmltag($_SERVER["QUERY_STRING"]);
         } else { // Mode CLI
             $out .= '> ' . $langs->transnoentities("ErrorInternalErrorDetected") . ":\n" . $argv[0] . "\n";
             $syslog .= "pid=" . dol_getmypid();
@@ -5699,15 +5701,15 @@ abstract class Functions
             if ($_SERVER['DOCUMENT_ROOT']) {  // Mode web
                 $out .= "<b>" . $langs->trans("DatabaseTypeManager") . ":</b> " . $db->type . "<br>\n";
                 $lastqueryerror = $db->lastqueryerror();
-                if (!utf8_check($lastqueryerror)) {
+                if (!Functions::utf8_check($lastqueryerror)) {
                     $lastqueryerror = "SQL error string is not a valid UTF8 string. We can't show it.";
                 }
-                $out .= "<b>" . $langs->trans("RequestLastAccessInError") . ":</b> " . ($lastqueryerror ? dol_escape_htmltag($lastqueryerror) : $langs->trans("ErrorNoRequestInError")) . "<br>\n";
-                $out .= "<b>" . $langs->trans("ReturnCodeLastAccessInError") . ":</b> " . ($db->lasterrno() ? dol_escape_htmltag($db->lasterrno()) : $langs->trans("ErrorNoRequestInError")) . "<br>\n";
-                $out .= "<b>" . $langs->trans("InformationLastAccessInError") . ":</b> " . ($db->lasterror() ? dol_escape_htmltag($db->lasterror()) : $langs->trans("ErrorNoRequestInError")) . "<br>\n";
+                $out .= "<b>" . $langs->trans("RequestLastAccessInError") . ":</b> " . ($lastqueryerror ? Functions::dol_escape_htmltag($lastqueryerror) : $langs->trans("ErrorNoRequestInError")) . "<br>\n";
+                $out .= "<b>" . $langs->trans("ReturnCodeLastAccessInError") . ":</b> " . ($db->lasterrno() ? Functions::dol_escape_htmltag($db->lasterrno()) : $langs->trans("ErrorNoRequestInError")) . "<br>\n";
+                $out .= "<b>" . $langs->trans("InformationLastAccessInError") . ":</b> " . ($db->lasterror() ? Functions::dol_escape_htmltag($db->lasterror()) : $langs->trans("ErrorNoRequestInError")) . "<br>\n";
                 $out .= "<br>\n";
             } else { // Mode CLI
-                // No dol_escape_htmltag for output, we are in CLI mode
+                // No Functions::dol_escape_htmltag for output, we are in CLI mode
                 $out .= '> ' . $langs->transnoentities("DatabaseTypeManager") . ":\n" . $db->type . "\n";
                 $out .= '> ' . $langs->transnoentities("RequestLastAccessInError") . ":\n" . ($db->lastqueryerror() ? $db->lastqueryerror() : $langs->transnoentities("ErrorNoRequestInError")) . "\n";
                 $out .= '> ' . $langs->transnoentities("ReturnCodeLastAccessInError") . ":\n" . ($db->lasterrno() ? $db->lasterrno() : $langs->transnoentities("ErrorNoRequestInError")) . "\n";
@@ -5736,7 +5738,7 @@ abstract class Functions
                     continue;
                 }
                 if ($_SERVER['DOCUMENT_ROOT']) {  // Mode web
-                    $out .= "<b>" . $langs->trans("Message") . ":</b> " . dol_escape_htmltag($msg) . "<br>\n";
+                    $out .= "<b>" . $langs->trans("Message") . ":</b> " . Functions::dol_escape_htmltag($msg) . "<br>\n";
                 } else { // Mode CLI
                     $out .= '> ' . $langs->transnoentities("Message") . ":\n" . $msg . "\n";
                 }
@@ -5793,7 +5795,8 @@ abstract class Functions
      */
     function dol_print_error_email($prefixcode, $errormessage = '', $errormessages = [], $morecss = 'error', $email = '')
     {
-        global $langs, $conf;
+        $conf = Globals::getConf();
+        $langs = Globals::getLang();
 
         if (empty($email)) {
             $email = Functions::getDolGlobalString('MAIN_INFO_SOCIETE_MAIL');
@@ -5897,8 +5900,8 @@ abstract class Functions
         }
 
         $tagstart = '<' . $tag . ' class="' . $prefix . $liste_titre . '" ' . $moreattrib;
-        //$out .= (($field && empty($conf->global->MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE) && preg_match('/^[a-zA-Z_0-9\s\.\-:&;]*$/', $name)) ? ' title="'.dol_escape_htmltag($langs->trans($name)).'"' : '');
-        $tagstart .= ($name && !Functions::getDolGlobalString('MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE') && empty($forcenowrapcolumntitle) && !dol_textishtml($name)) ? ' title="' . dol_escape_htmltag($langs->trans($name)) . '"' : '';
+        //$out .= (($field && empty($conf->global->MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE) && preg_match('/^[a-zA-Z_0-9\s\.\-:&;]*$/', $name)) ? ' title="'.Functions::dol_escape_htmltag($langs->trans($name)).'"' : '');
+        $tagstart .= ($name && !Functions::getDolGlobalString('MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE') && empty($forcenowrapcolumntitle) && !dol_textishtml($name)) ? ' title="' . Functions::dol_escape_htmltag($langs->trans($name)) . '"' : '';
         $tagstart .= '>';
 
         if (empty($thead) && $field && empty($disablesortlink)) {    // If this is a sort field
@@ -5925,7 +5928,7 @@ abstract class Functions
             }
             $sortordertouseinlink = preg_replace('/,$/', '', $sortordertouseinlink);
             $out .= '<a class="reposition" href="' . $file . '?sortfield=' . $field . '&sortorder=' . $sortordertouseinlink . '&begin=' . $begin . $options . '"';
-            //$out .= (empty($conf->global->MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE) ? ' title="'.dol_escape_htmltag($langs->trans($name)).'"' : '');
+            //$out .= (empty($conf->global->MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE) ? ' title="'.Functions::dol_escape_htmltag($langs->trans($name)).'"' : '');
             $out .= '>';
         }
         if ($tooltip) {
@@ -6268,7 +6271,7 @@ abstract class Functions
                 }
 
                 print '<li class="pagination">';
-                print '<select class="flat selectlimit" name="limit" title="' . dol_escape_htmltag($langs->trans("MaxNbOfRecordPerPage")) . '">';
+                print '<select class="flat selectlimit" name="limit" title="' . Functions::dol_escape_htmltag($langs->trans("MaxNbOfRecordPerPage")) . '">';
                 $tmpchoice = explode(',', $pagesizechoices);
                 $tmpkey = $limit . ':' . $limit;
                 if (!in_array($tmpkey, $tmpchoice)) {
@@ -6288,7 +6291,7 @@ abstract class Functions
                         if ((int) $key == (int) $limit) {
                             $selected = ' selected="selected"';
                         }
-                        print '<option name="' . $key . '"' . $selected . '>' . dol_escape_htmltag($val) . '</option>' . "\n";
+                        print '<option name="' . $key . '"' . $selected . '>' . Functions::dol_escape_htmltag($val) . '</option>' . "\n";
                     }
                 }
                 print '</select>';
@@ -6307,7 +6310,7 @@ abstract class Functions
                 print '</li>';
             }
             if ($page > 0) {
-                print '<li class="pagination paginationpage paginationpageleft"><a class="paginationprevious reposition" href="' . $file . '?page=' . ($page - 1) . $options . '"><i class="fa fa-chevron-left" title="' . dol_escape_htmltag($langs->trans("Previous")) . '"></i></a></li>';
+                print '<li class="pagination paginationpage paginationpageleft"><a class="paginationprevious reposition" href="' . $file . '?page=' . ($page - 1) . $options . '"><i class="fa fa-chevron-left" title="' . Functions::dol_escape_htmltag($langs->trans("Previous")) . '"></i></a></li>';
             }
             if ($betweenarrows) {
                 print '<!--<div class="betweenarrows nowraponall inline-block">-->';
@@ -6315,7 +6318,7 @@ abstract class Functions
                 print '<!--</div>-->';
             }
             if ($nextpage > 0) {
-                print '<li class="pagination paginationpage paginationpageright"><a class="paginationnext reposition" href="' . $file . '?page=' . ($page + 1) . $options . '"><i class="fa fa-chevron-right" title="' . dol_escape_htmltag($langs->trans("Next")) . '"></i></a></li>';
+                print '<li class="pagination paginationpage paginationpageright"><a class="paginationnext reposition" href="' . $file . '?page=' . ($page + 1) . $options . '"><i class="fa fa-chevron-right" title="' . Functions::dol_escape_htmltag($langs->trans("Next")) . '"></i></a></li>';
             }
             if ($afterarrows) {
                 print '<li class="paginationafterarrows">';
@@ -6664,7 +6667,7 @@ abstract class Functions
      */
     function showDimensionInBestUnit($dimension, $unit, $type, $outputlangs, $round = -1, $forceunitoutput = 'no', $use_short_label = 0)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+        require_once BASE_PATH . '/core/lib/product.lib.php';
 
         if (($forceunitoutput == 'no' && $dimension < 1 / 10000 && $unit < 90) || (is_numeric($forceunitoutput) && $forceunitoutput == -6)) {
             $dimension = $dimension * 1000000;
@@ -6955,7 +6958,7 @@ abstract class Functions
                 return [];
             }
         } else {
-            dol_print_error($db);
+            static::dol_print_error($db);
         }
 
         return [];
@@ -7051,7 +7054,7 @@ abstract class Functions
     {
         global $db, $conf, $mysoc;
 
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+        require_once BASE_PATH . '/product/class/product.class.php';
 
         $ret = 0;
         $found = 0;
@@ -7107,7 +7110,7 @@ abstract class Functions
                     }
                     $db->free($resql);
                 } else {
-                    dol_print_error($db);
+                    static::dol_print_error($db);
                 }
             } else {
                 // Forced value if autodetect fails. MAIN_VAT_DEFAULT_IF_AUTODETECT_FAILS can be
@@ -7145,7 +7148,7 @@ abstract class Functions
         global $db, $mysoc;
 
         if (!class_exists('Product')) {
-            require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+            require_once BASE_PATH . '/product/class/product.class.php';
         }
 
         $ret = 0;
@@ -7188,7 +7191,7 @@ abstract class Functions
                     }
                 }
             } else {
-                dol_print_error($db);
+                static::dol_print_error($db);
             }
         }
 
@@ -7220,7 +7223,7 @@ abstract class Functions
     {
         $conf = Globals::getConf();
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        require_once BASE_PATH . '/core/lib/company.lib.php';
 
         // Note: possible values for tva_assuj are 0/1 or franchise/reel
         $seller_use_vat = ((is_numeric($thirdparty_seller->tva_assuj) && !$thirdparty_seller->tva_assuj) || (!is_numeric($thirdparty_seller->tva_assuj) && $thirdparty_seller->tva_assuj == 'franchise')) ? 0 : 1;
@@ -7239,7 +7242,7 @@ abstract class Functions
             if ($seller_in_cee && $buyer_in_cee) {
                 $isacompany = $thirdparty_buyer->isACompany();
                 if ($isacompany && Functions::getDolGlobalString('MAIN_USE_VAT_COMPANIES_IN_EEC_WITH_INVALID_VAT_ID_ARE_INDIVIDUAL')) {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                    require_once BASE_PATH . '/core/lib/functions2.lib.php';
                     if (!isValidVATID($thirdparty_buyer)) {
                         $isacompany = 0;
                     }
@@ -7290,7 +7293,7 @@ abstract class Functions
         if (($seller_in_cee && $buyer_in_cee)) {
             $isacompany = $thirdparty_buyer->isACompany();
             if ($isacompany && Functions::getDolGlobalString('MAIN_USE_VAT_COMPANIES_IN_EEC_WITH_INVALID_VAT_ID_ARE_INDIVIDUAL')) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                require_once BASE_PATH . '/core/lib/functions2.lib.php';
                 if (!isValidVATID($thirdparty_buyer)) {
                     $isacompany = 0;
                 }
@@ -7338,14 +7341,14 @@ abstract class Functions
 
         if ($idprodfournprice > 0) {
             if (!class_exists('ProductFournisseur')) {
-                require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
+                require_once BASE_PATH . '/fourn/class/fournisseur.product.class.php';
             }
             $prodprice = new ProductFournisseur($db);
             $prodprice->fetch_product_fournisseur_price($idprodfournprice);
             return $prodprice->fourn_tva_npr;
         } elseif ($idprod > 0) {
             if (!class_exists('Product')) {
-                require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+                require_once BASE_PATH . '/product/class/product.class.php';
             }
             $prod = new Product($db);
             $prod->fetch($idprod);
@@ -7652,8 +7655,8 @@ abstract class Functions
      *
      * @return string                        String cleaned
      *
-     * @see    dol_escape_htmltag() strip_tags() dol_string_onlythesehtmltags() dol_string_neverthesehtmltags(),
-     *         dolStripPhpCode()
+     * @see    Functions::dol_escape_htmltag() strip_tags() dol_string_onlythesehtmltags()
+     *         dol_string_neverthesehtmltags(), dolStripPhpCode()
      */
     public static function dol_string_nohtmltag($stringtoclean, $removelinefeed = 1, $pagecodeto = 'UTF-8', $strip_tags = 0, $removedoublespaces = 1)
     {
@@ -7728,7 +7731,7 @@ abstract class Functions
      *
      * @return string                            String cleaned
      *
-     * @see    dol_htmlwithnojs() dol_escape_htmltag() strip_tags() Functions::dol_string_nohtmltag()
+     * @see    dol_htmlwithnojs() Functions::dol_escape_htmltag() strip_tags() Functions::dol_string_nohtmltag()
      *         dol_string_neverthesehtmltags()
      */
     function dol_string_onlythesehtmltags($stringtoclean, $cleanalsosomestyles = 1, $removeclassattribute = 1, $cleanalsojavascript = 0, $allowiframe = 0, $allowed_tags = [], $allowlink = 0)
@@ -7768,7 +7771,7 @@ abstract class Functions
         $temp = strip_tags($stringtoclean, $allowed_tags_string);    // Warning: This remove also undesired </>, so may changes string obfuscated with </> that pass the injection detection into a harmfull string
 
         if ($cleanalsosomestyles) {    // Clean for remaining html tags
-            $temp = preg_replace('/position\s*:\s*(absolute|fixed)\s*!\s*important/i', '', $temp); // Note: If hacker try to introduce css comment into string to bypass this regex, the string must also be encoded by the dol_htmlentitiesbr during output so it become harmless
+            $temp = preg_replace('/position\s*:\s*(absolute|fixed)\s*!\s*important/i', '', $temp); // Note: If hacker try to introduce css comment into string to bypass this regex, the string must also be encoded by the Functions::dol_htmlentitiesbr during output so it become harmless
         }
         if ($removeclassattribute) {    // Clean for remaining html tags
             $temp = preg_replace('/(<[^>]+)\s+class=((["\']).*?\\3|\\w*)/i', '\\1', $temp);
@@ -7798,8 +7801,8 @@ abstract class Functions
      *
      * @return string                            String cleaned
      *
-     * @see    dol_escape_htmltag() strip_tags() Functions::dol_string_nohtmltag() dol_string_onlythesehtmltags()
-     *         dol_string_neverthesehtmltags()
+     * @see    Functions::dol_escape_htmltag() strip_tags() Functions::dol_string_nohtmltag()
+     *         dol_string_onlythesehtmltags() dol_string_neverthesehtmltags()
      */
     function dol_string_onlythesehtmlattributes($stringtoclean, $allowed_attributes = null)
     {
@@ -7876,8 +7879,8 @@ abstract class Functions
      *
      * @return string                            String cleaned
      *
-     * @see    dol_escape_htmltag() strip_tags() Functions::dol_string_nohtmltag() dol_string_onlythesehtmltags()
-     *         dol_string_onlythesehtmlattributes()
+     * @see    Functions::dol_escape_htmltag() strip_tags() Functions::dol_string_nohtmltag()
+     *         dol_string_onlythesehtmltags() dol_string_onlythesehtmlattributes()
      */
     function dol_string_neverthesehtmltags($stringtoclean, $disallowed_tags = ['textarea'], $cleanalsosomestyles = 0)
     {
@@ -7888,7 +7891,7 @@ abstract class Functions
         }
 
         if ($cleanalsosomestyles) {
-            $temp = preg_replace('/position\s*:\s*(absolute|fixed)\s*!\s*important/', '', $temp); // Note: If hacker try to introduce css comment into string to avoid this, string should be encoded by the dol_htmlentitiesbr so be harmless
+            $temp = preg_replace('/position\s*:\s*(absolute|fixed)\s*!\s*important/', '', $temp); // Note: If hacker try to introduce css comment into string to avoid this, string should be encoded by the Functions::dol_htmlentitiesbr so be harmless
         }
 
         return $temp;
@@ -7902,7 +7905,7 @@ abstract class Functions
      * @param string $charset   Charset of $text string (UTF-8 by default)
      *
      * @return    string                Output text
-     * @see dol_nboflines_bis(), Functions::dol_string_nohtmltag(), dol_escape_htmltag()
+     * @see dol_nboflines_bis(), Functions::dol_string_nohtmltag(), Functions::dol_escape_htmltag()
      */
     function dolGetFirstLineOfText($text, $nboflines = 1, $charset = 'UTF-8')
     {
@@ -7970,14 +7973,14 @@ abstract class Functions
     /**
      * Replace CRLF in string with a HTML BR tag.
      * WARNING: The content after operation contains some HTML tags (the <br>) so be sure to also have
-     *          encoded the special chars of stringtoencode into HTML before with dol_htmlentitiesbr().
+     *          encoded the special chars of stringtoencode into HTML before with Functions::dol_htmlentitiesbr().
      *
      * @param string $stringtoencode String to encode
      * @param int    $nl2brmode      0=Adding br before \n, 1=Replacing \n by br
      * @param bool   $forxml         false=Use <br>, true=Use <br />
      *
      * @return    string                        String encoded
-     * @see dol_htmlentitiesbr(), dol_nboflines(), dolGetFirstLineOfText()
+     * @see Functions::dol_htmlentitiesbr(), dol_nboflines(), dolGetFirstLineOfText()
      */
     function dol_nl2br($stringtoencode, $nl2brmode = 0, $forxml = false)
     {
@@ -8167,8 +8170,8 @@ abstract class Functions
      *        Because writeHTMLCell convert also \n into <br>, if function is used to build PDF, nl2brmode must be 1.
      *  Note: When we output string on pages, we should use
      *        - dolPrintHTML... that is
-     *        dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(dol_htmlentitiesbr(), 1, 1, 1), 1, 1)
-     *        for notes or descriptions,
+     *        Functions::dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(Functions::dol_htmlentitiesbr(),
+     *        1, 1, 1), 1, 1) for notes or descriptions,
      *        - dolPrintPassword that is abelhtmlspecialchars( , ENT_COMPAT, 'UTF-8') for passwords.
      *
      * @param string $stringtoencode  String to encode
@@ -8178,7 +8181,7 @@ abstract class Functions
      * @param int    $removelasteolbr 1=Remove last br or lasts \n (default), 0=Do nothing
      *
      * @return    string                        String encoded
-     * @see dol_escape_htmltag(), dolGetFirstLineOfText(), dol_string_onlythesehtmltags()
+     * @see Functions::dol_escape_htmltag(), dolGetFirstLineOfText(), dol_string_onlythesehtmltags()
      */
     function dol_htmlentitiesbr($stringtoencode, $nl2brmode = 0, $pagecodefrom = 'UTF-8', $removelasteolbr = 1)
     {
@@ -8193,13 +8196,13 @@ abstract class Functions
                 $newstring = preg_replace('/<br>$/i', '', $newstring); // Remove last <br> (remove only last one)
             }
             $newstring = strtr($newstring, ['&' => '__and__', '<' => '__lt__', '>' => '__gt__', '"' => '__dquot__']);
-            $newstring = dol_htmlentities($newstring, ENT_COMPAT, $pagecodefrom); // Make entity encoding
+            $newstring = Functions::dol_htmlentities($newstring, ENT_COMPAT, $pagecodefrom); // Make entity encoding
             $newstring = strtr($newstring, ['__and__' => '&', '__lt__' => '<', '__gt__' => '>', '__dquot__' => '"']);
         } else {
             if ($removelasteolbr) {
                 $newstring = preg_replace('/(\r\n|\r|\n)$/i', '', $newstring); // Remove last \n (may remove several)
             }
-            $newstring = dol_nl2br(dol_htmlentities($newstring, ENT_COMPAT, $pagecodefrom), $nl2brmode);
+            $newstring = dol_nl2br(Functions::dol_htmlentities($newstring, ENT_COMPAT, $pagecodefrom), $nl2brmode);
         }
         // Other substitutions that htmlentities does not do
         //$newstring=str_replace(chr(128),'&euro;',$newstring); // 128 = 0x80. Not in html entity table.     // Seems useles with TCPDF. Make bug with UTF8 languages
@@ -8272,9 +8275,9 @@ abstract class Functions
      * @param bool   $double_encode When double_encode is turned off, PHP will not encode existing html entities
      *
      * @return  string  $ret            Encoded string
-     * @see dol_htmlentitiesbr()
+     * @see Functions::dol_htmlentitiesbr()
      */
-    function dol_htmlentities($string, $flags = ENT_QUOTES | ENT_SUBSTITUTE, $encoding = 'UTF-8', $double_encode = false)
+    public static function dol_htmlentities($string, $flags = ENT_QUOTES | ENT_SUBSTITUTE, $encoding = 'UTF-8', $double_encode = false)
     {
         return htmlentities($string, $flags, $encoding, $double_encode);
     }
@@ -8467,9 +8470,9 @@ abstract class Functions
         }
 
         $ret = '';
-        $ret .= (!dol_textishtml($text1) && dol_textishtml($text2)) ? dol_nl2br(dol_escape_htmltag($text1, 0, 1, '', 1), 0, $forxml) : $text1;
+        $ret .= (!dol_textishtml($text1) && dol_textishtml($text2)) ? dol_nl2br(Functions::dol_escape_htmltag($text1, 0, 1, '', 1), 0, $forxml) : $text1;
         $ret .= (!empty($text1) && !empty($text2)) ? ((dol_textishtml($text1) || dol_textishtml($text2)) ? ($forxml ? "<br \>\n" : "<br>\n") : "\n") : "";
-        $ret .= (dol_textishtml($text1) && !dol_textishtml($text2)) ? dol_nl2br(dol_escape_htmltag($text2, 0, 1, '', 1), 0, $forxml) : $text2;
+        $ret .= (dol_textishtml($text1) && !dol_textishtml($text2)) ? dol_nl2br(Functions::dol_escape_htmltag($text2, 0, 1, '', 1), 0, $forxml) : $text2;
         return $ret;
     }
 
@@ -8745,8 +8748,8 @@ abstract class Functions
                     $substitutionarray['__THIRDPARTY_IDPROF5__'] = (is_object($object) ? $object->idprof5 : '');
                     $substitutionarray['__THIRDPARTY_IDPROF6__'] = (is_object($object) ? $object->idprof6 : '');
                     $substitutionarray['__THIRDPARTY_TVAINTRA__'] = (is_object($object) ? $object->tva_intra : '');
-                    $substitutionarray['__THIRDPARTY_NOTE_PUBLIC__'] = (is_object($object) ? dol_htmlentitiesbr($object->note_public) : '');
-                    $substitutionarray['__THIRDPARTY_NOTE_PRIVATE__'] = (is_object($object) ? dol_htmlentitiesbr($object->note_private) : '');
+                    $substitutionarray['__THIRDPARTY_NOTE_PUBLIC__'] = (is_object($object) ? Functions::dol_htmlentitiesbr($object->note_public) : '');
+                    $substitutionarray['__THIRDPARTY_NOTE_PRIVATE__'] = (is_object($object) ? Functions::dol_htmlentitiesbr($object->note_private) : '');
                 } elseif (is_object($object->thirdparty)) {
                     $substitutionarray['__THIRDPARTY_ID__'] = (is_object($object->thirdparty) ? $object->thirdparty->id : '');
                     $substitutionarray['__THIRDPARTY_NAME__'] = (is_object($object->thirdparty) ? $object->thirdparty->name : '');
@@ -8768,8 +8771,8 @@ abstract class Functions
                     $substitutionarray['__THIRDPARTY_IDPROF5__'] = (is_object($object->thirdparty) ? $object->thirdparty->idprof5 : '');
                     $substitutionarray['__THIRDPARTY_IDPROF6__'] = (is_object($object->thirdparty) ? $object->thirdparty->idprof6 : '');
                     $substitutionarray['__THIRDPARTY_TVAINTRA__'] = (is_object($object->thirdparty) ? $object->thirdparty->tva_intra : '');
-                    $substitutionarray['__THIRDPARTY_NOTE_PUBLIC__'] = (is_object($object->thirdparty) ? dol_htmlentitiesbr($object->thirdparty->note_public) : '');
-                    $substitutionarray['__THIRDPARTY_NOTE_PRIVATE__'] = (is_object($object->thirdparty) ? dol_htmlentitiesbr($object->thirdparty->note_private) : '');
+                    $substitutionarray['__THIRDPARTY_NOTE_PUBLIC__'] = (is_object($object->thirdparty) ? Functions::dol_htmlentitiesbr($object->thirdparty->note_public) : '');
+                    $substitutionarray['__THIRDPARTY_NOTE_PRIVATE__'] = (is_object($object->thirdparty) ? Functions::dol_htmlentitiesbr($object->thirdparty->note_private) : '');
                 }
 
                 if (is_object($object) && $object->element == 'recruitmentcandidature') {
@@ -8905,7 +8908,7 @@ abstract class Functions
                     $paymenturl = '';
                 } else {
                     // Set the online payment url link into __ONLINE_PAYMENT_URL__ key
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                    require_once BASE_PATH . '/core/lib/payments.lib.php';
                     $outputlangs->loadLangs(['paypal', 'other']);
 
                     $amounttouse = 0;
@@ -8970,7 +8973,7 @@ abstract class Functions
 
                     if (is_object($object) && $object->element == 'propal') {
                         $substitutionarray['__URL_PROPOSAL__'] = DOL_MAIN_URL_ROOT . "/comm/propal/card.php?id=" . $object->id;
-                        require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                        require_once BASE_PATH . '/core/lib/signature.lib.php';
                         $substitutionarray['__ONLINE_SIGN_URL__'] = getOnlineSignatureUrl(0, 'proposal', $object->ref, 1, $object);
                     }
                     if (is_object($object) && $object->element == 'commande') {
@@ -8981,12 +8984,12 @@ abstract class Functions
                     }
                     if (is_object($object) && $object->element == 'contrat') {
                         $substitutionarray['__URL_CONTRACT__'] = DOL_MAIN_URL_ROOT . "/contrat/card.php?id=" . $object->id;
-                        require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                        require_once BASE_PATH . '/core/lib/signature.lib.php';
                         $substitutionarray['__ONLINE_SIGN_URL__'] = getOnlineSignatureUrl(0, 'contract', $object->ref, 1, $object);
                     }
                     if (is_object($object) && $object->element == 'fichinter') {
                         $substitutionarray['__URL_FICHINTER__'] = DOL_MAIN_URL_ROOT . "/fichinter/card.php?id=" . $object->id;
-                        require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                        require_once BASE_PATH . '/core/lib/signature.lib.php';
                         $substitutionarray['__ONLINE_SIGN_FICHINTER_URL__'] = getOnlineSignatureUrl(0, 'fichinter', $object->ref, 1, $object);
                     }
                     if (is_object($object) && $object->element == 'supplier_proposal') {
@@ -9006,7 +9009,7 @@ abstract class Functions
             }
         }
         if ((empty($exclude) || !in_array('objectamount', $exclude)) && (empty($include) || in_array('objectamount', $include))) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functionsnumtoword.lib.php';
+            include_once BASE_PATH . '/core/lib/functionsnumtoword.lib.php';
 
             $substitutionarray['__DATE_YMD__'] = is_object($object) ? (isset($object->date) ? dol_print_date($object->date, 'day', 0, $outputlangs) : null) : '';
             $substitutionarray['__DATE_DUE_YMD__'] = is_object($object) ? (isset($object->date_lim_reglement) ? dol_print_date($object->date_lim_reglement, 'day', 0, $outputlangs) : null) : '';
@@ -9064,7 +9067,7 @@ abstract class Functions
 
         //var_dump($substitutionarray['__AMOUNT_FORMATED__']);
         if ((empty($exclude) || !in_array('date', $exclude)) && (empty($include) || in_array('date', $include))) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            include_once BASE_PATH . '/core/lib/date.lib.php';
 
             $now = dol_now();
 
@@ -9166,14 +9169,14 @@ abstract class Functions
 
                 if (empty($converttextinhtmlifnecessary)) {
                     // convert $newval into HTML is necessary
-                    $text = preg_replace('/__\(' . preg_quote($reg[1], '/') . '\)__/', $msgishtml ? dol_htmlentitiesbr($value) : $value, $text);
+                    $text = preg_replace('/__\(' . preg_quote($reg[1], '/') . '\)__/', $msgishtml ? Functions::dol_htmlentitiesbr($value) : $value, $text);
                 } else {
                     if (!$msgishtml) {
                         $valueishtml = dol_textishtml($value, 1);
                         //var_dump("valueishtml=".$valueishtml);
 
                         if ($valueishtml) {
-                            $text = dol_htmlentitiesbr($text);
+                            $text = Functions::dol_htmlentitiesbr($text);
                             $msgishtml = 1;
                         }
                     } else {
@@ -9198,13 +9201,13 @@ abstract class Functions
 
             if (empty($converttextinhtmlifnecessary)) {
                 // convert $newval into HTML is necessary
-                $text = preg_replace('/__\[' . preg_quote($keyfound, '/') . '\]__/', $msgishtml ? dol_htmlentitiesbr($value) : $value, $text);
+                $text = preg_replace('/__\[' . preg_quote($keyfound, '/') . '\]__/', $msgishtml ? Functions::dol_htmlentitiesbr($value) : $value, $text);
             } else {
                 if (!$msgishtml) {
                     $valueishtml = dol_textishtml($value, 1);
 
                     if ($valueishtml) {
-                        $text = dol_htmlentitiesbr($text);
+                        $text = Functions::dol_htmlentitiesbr($text);
                         $msgishtml = 1;
                     }
                 } else {
@@ -9232,7 +9235,7 @@ abstract class Functions
                     $valueishtml = dol_textishtml($value, 1);
 
                     if ($valueishtml) {
-                        $text = dol_htmlentitiesbr($text);
+                        $text = Functions::dol_htmlentitiesbr($text);
                         $msgishtml = 1;
                     }
                 } else {
@@ -9271,8 +9274,8 @@ abstract class Functions
 
                             // load class file and init object list in memory
                             if (!isset($memory_object_list[$class])) {
-                                if (dol_is_file(DOL_DOCUMENT_ROOT . $path)) {
-                                    require_once DOL_DOCUMENT_ROOT . $path;
+                                if (dol_is_file(BASE_PATH . $path)) {
+                                    require_once BASE_PATH . $path;
                                     if (class_exists($class)) {
                                         $memory_object_list[$class] = [
                                             'list' => [],
@@ -9324,7 +9327,7 @@ abstract class Functions
     {
         global $conf, $user;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/core/lib/files.lib.php';
 
         // Note: substitution key for each extrafields, using key __EXTRA_XXX__ is already available into the getCommonSubstitutionArray used to build the substitution array.
 
@@ -9472,7 +9475,7 @@ abstract class Functions
      * @return    void
      * @see    dol_htmloutput_events()
      */
-    function setEventMessage($mesgs, $style = 'mesgs', $noduplicate = 0)
+    public static function setEventMessage($mesgs, $style = 'mesgs', $noduplicate = 0)
     {
         //Functions::dol_syslog(__FUNCTION__ . " is deprecated", LOG_WARNING);     This is not deprecated, it is used by setEventMessages function
         if (!is_array($mesgs)) {
@@ -9511,7 +9514,7 @@ abstract class Functions
      * @return    void
      * @see    dol_htmloutput_events()
      */
-    function setEventMessages($mesg, $mesgs, $style = 'mesgs', $messagekey = '', $noduplicate = 0)
+    public static function setEventMessages($mesg, $mesgs, $style = 'mesgs', $messagekey = '', $noduplicate = 0)
     {
         if (empty($mesg) && empty($mesgs)) {
             Functions::dol_syslog("Try to add a message in stack, but value to add is empty message", LOG_WARNING);
@@ -9523,15 +9526,15 @@ abstract class Functions
             }
             if (empty($messagekey) || empty($_COOKIE["DOLHIDEMESSAGE" . $messagekey])) {
                 if (!in_array((string) $style, ['mesgs', 'warnings', 'errors'])) {
-                    dol_print_error(null, 'Bad parameter style=' . $style . ' for setEventMessages');
+                    static::dol_print_error(null, 'Bad parameter style=' . $style . ' for setEventMessages');
                 }
                 if (empty($mesgs)) {
-                    setEventMessage($mesg, $style, $noduplicate);
+                    static::setEventMessage($mesg, $style, $noduplicate);
                 } else {
                     if (!empty($mesg) && !in_array($mesg, $mesgs)) {
-                        setEventMessage($mesg, $style, $noduplicate); // Add message string if not already into array
+                        static::setEventMessage($mesg, $style, $noduplicate); // Add message string if not already into array
                     }
-                    setEventMessage($mesgs, $style, $noduplicate);
+                    static::setEventMessage($mesgs, $style, $noduplicate);
                 }
             }
         }
@@ -9585,7 +9588,7 @@ abstract class Functions
      *
      * @return    string                        Return html output
      *
-     * @see    dol_print_error()
+     * @see    static::dol_print_error()
      * @see    dol_htmloutput_errors()
      * @see    setEventMessages()
      */
@@ -9657,7 +9660,7 @@ abstract class Functions
      *
      * @return string                        Return html output
      *
-     * @see    dol_print_error()
+     * @see    static::dol_print_error()
      * @see    dol_htmloutput_mesg()
      */
     function get_htmloutput_errors($mesgstring = '', $mesgarray = [], $keepembedded = 0)
@@ -9676,7 +9679,7 @@ abstract class Functions
      *
      * @return    void
      *
-     * @see    dol_print_error()
+     * @see    static::dol_print_error()
      * @see    dol_htmloutput_errors()
      * @see    setEventMessages()
      */
@@ -9747,7 +9750,7 @@ abstract class Functions
      *
      * @return    void
      *
-     * @see    dol_print_error()
+     * @see    static::dol_print_error()
      * @see    dol_htmloutput_mesg()
      */
     function dol_htmloutput_errors($mesgstring = '', $mesgarray = [], $keepembedded = 0)
@@ -9866,12 +9869,12 @@ abstract class Functions
     }
 
     /**
-     *      Check if a string is in UTF8. Seems similar to utf8_check().
+     *      Check if a string is in UTF8. Seems similar to Functions::utf8_check().
      *
      * @param string $str String to check
      *
      * @return    boolean                True if string is valid UTF8 string, false if corrupted
-     * @see utf8_check()
+     * @see Functions::utf8_check()
      */
     function utf8_valid($str)
     {
@@ -11711,7 +11714,7 @@ abstract class Functions
                     $dictvalues[$obj->$rowidfield] = $obj;    // $obj is stdClass
                 }
             } else {
-                dol_print_error($db);
+                static::dol_print_error($db);
             }
 
             $conf->cache['dictvalues_' . $tablename] = $dictvalues;
@@ -11869,7 +11872,7 @@ abstract class Functions
         // TODO: add hook
 
         // escape all attribute
-        $attr = array_map('dol_escape_htmltag', $attr);
+        $attr = array_map('Functions::dol_escape_htmltag', $attr);
 
         $TCompiledAttr = [];
         foreach ($attr as $key => $value) {
@@ -12050,7 +12053,7 @@ abstract class Functions
 
             if (count($url) > 1) {
                 $out .= '<div class="dropdown inline-block dropdown-holder">';
-                $out .= '<a style="margin-right: auto;" class="dropdown-toggle classfortooltip butAction' . ($userRight ? '' : 'Refused') . '" title="' . dol_escape_htmltag($label) . '" data-toggle="dropdown">' . ($text ? $text : $label) . '</a>';
+                $out .= '<a style="margin-right: auto;" class="dropdown-toggle classfortooltip butAction' . ($userRight ? '' : 'Refused') . '" title="' . Functions::dol_escape_htmltag($label) . '" data-toggle="dropdown">' . ($text ? $text : $label) . '</a>';
                 $out .= '<div class="dropdown-content">';
                 foreach ($url as $subbutton) {
                     if (!empty($subbutton['lang'])) {
@@ -12156,7 +12159,7 @@ abstract class Functions
         }
 
         // escape all attribute
-        $attr = array_map('dol_escape_htmltag', $attr);
+        $attr = array_map('Functions::dol_escape_htmltag', $attr);
 
         $TCompiledAttr = [];
         foreach ($attr as $key => $value) {
@@ -12183,14 +12186,14 @@ abstract class Functions
 
         $reshook = $hookmanager->executeHooks('dolGetButtonAction', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook < 0) {
-            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+            static::setEventMessagess($hookmanager->error, $hookmanager->errors, 'errors');
         }
 
         if (empty($reshook)) {
             if (dol_textishtml($text)) {    // If content already HTML encoded
                 return '<' . $tag . ' ' . $compiledAttributes . '>' . $text . '</' . $tag . '>';
             } else {
-                return '<' . $tag . ' ' . $compiledAttributes . '>' . dol_escape_htmltag($text) . '</' . $tag . '>';
+                return '<' . $tag . ' ' . $compiledAttributes . '>' . Functions::dol_escape_htmltag($text) . '</' . $tag . '>';
             }
         } else {
             return $hookmanager->resPrint;
@@ -12220,7 +12223,7 @@ abstract class Functions
     {
         $out = '';
         if (!empty($fieldValidationErrorMsg)) {
-            $out .= '<span class="field-error-icon classfortooltip" title="' . dol_escape_htmltag($fieldValidationErrorMsg, 1) . '"  role="alert" >'; // role alert is used for accessibility
+            $out .= '<span class="field-error-icon classfortooltip" title="' . Functions::dol_escape_htmltag($fieldValidationErrorMsg, 1) . '"  role="alert" >'; // role alert is used for accessibility
             $out .= '<span class="fa fa-exclamation-circle" aria-hidden="true" ></span>'; // For accessibility icon is separated and aria-hidden
             $out .= '</span>';
         }
@@ -12267,7 +12270,7 @@ abstract class Functions
         ];
 
         if (!empty($helpText)) {
-            $attr['title'] = dol_escape_htmltag($helpText);
+            $attr['title'] = Functions::dol_escape_htmltag($helpText);
         } elseif (empty($attr['title']) && $label) {
             $attr['title'] = $label;
             $useclassfortooltip = 0;
@@ -12281,9 +12284,9 @@ abstract class Functions
             $attr['href'] = '';
 
             if ($status == -1) { // disable
-                $attr['title'] = dol_escape_htmltag($langs->transnoentitiesnoconv("FeatureDisabled"));
+                $attr['title'] = Functions::dol_escape_htmltag($langs->transnoentitiesnoconv("FeatureDisabled"));
             } elseif ($status == 0) { // Not enough permissions
-                $attr['title'] = dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions"));
+                $attr['title'] = Functions::dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions"));
             }
         }
 
@@ -12315,7 +12318,7 @@ abstract class Functions
         // TODO : add a hook
 
         // escape all attribute
-        $attr = array_map('dol_escape_htmltag', $attr);
+        $attr = array_map('Functions::dol_escape_htmltag', $attr);
 
         $TCompiledAttr = [];
         foreach ($attr as $key => $value) {
@@ -12948,11 +12951,11 @@ abstract class Functions
 
         $tag = 'span';    // Using div (like any style of type 'block') does not work when using the js copy code.
         if ($texttoshow === 'none') {
-            $result = '<span class="clipboardCP' . ($showonlyonhover ? ' clipboardCPShowOnHover' : '') . '"><' . $tag . ' class="clipboardCPValue hidewithsize">' . dol_escape_htmltag($valuetocopy, 1, 1) . '</' . $tag . '><span class="clipboardCPValueToPrint"></span><span class="clipboardCPButton far fa-clipboard opacitymedium paddingleft paddingright"></span><span class="clipboardCPText"></span></span>';
+            $result = '<span class="clipboardCP' . ($showonlyonhover ? ' clipboardCPShowOnHover' : '') . '"><' . $tag . ' class="clipboardCPValue hidewithsize">' . Functions::dol_escape_htmltag($valuetocopy, 1, 1) . '</' . $tag . '><span class="clipboardCPValueToPrint"></span><span class="clipboardCPButton far fa-clipboard opacitymedium paddingleft paddingright"></span><span class="clipboardCPText"></span></span>';
         } elseif ($texttoshow) {
-            $result = '<span class="clipboardCP' . ($showonlyonhover ? ' clipboardCPShowOnHover' : '') . '"><' . $tag . ' class="clipboardCPValue hidewithsize">' . dol_escape_htmltag($valuetocopy, 1, 1) . '</' . $tag . '><span class="clipboardCPValueToPrint">' . dol_escape_htmltag($texttoshow, 1, 1) . '</span><span class="clipboardCPButton far fa-clipboard opacitymedium paddingleft paddingright"></span><span class="clipboardCPText"></span></span>';
+            $result = '<span class="clipboardCP' . ($showonlyonhover ? ' clipboardCPShowOnHover' : '') . '"><' . $tag . ' class="clipboardCPValue hidewithsize">' . Functions::dol_escape_htmltag($valuetocopy, 1, 1) . '</' . $tag . '><span class="clipboardCPValueToPrint">' . Functions::dol_escape_htmltag($texttoshow, 1, 1) . '</span><span class="clipboardCPButton far fa-clipboard opacitymedium paddingleft paddingright"></span><span class="clipboardCPText"></span></span>';
         } else {
-            $result = '<span class="clipboardCP' . ($showonlyonhover ? ' clipboardCPShowOnHover' : '') . '"><' . $tag . ' class="clipboardCPValue">' . dol_escape_htmltag($valuetocopy, 1, 1) . '</' . $tag . '><span class="clipboardCPButton far fa-clipboard opacitymedium paddingleft paddingright"></span><span class="clipboardCPText"></span></span>';
+            $result = '<span class="clipboardCP' . ($showonlyonhover ? ' clipboardCPShowOnHover' : '') . '"><' . $tag . ' class="clipboardCPValue">' . Functions::dol_escape_htmltag($valuetocopy, 1, 1) . '</' . $tag . '><span class="clipboardCPButton far fa-clipboard opacitymedium paddingleft paddingright"></span><span class="clipboardCPText"></span></span>';
         }
 
         return $result;
@@ -13392,7 +13395,7 @@ abstract class Functions
 
         // Check parameters
         if (!is_object($filterobj) && !is_object($objcon)) {
-            dol_print_error(null, 'BadParameter');
+            static::dol_print_error(null, 'BadParameter');
         }
 
         $histo = [];
@@ -13610,8 +13613,8 @@ abstract class Functions
                         $contactaction->id = $obj->id;
                         $result = $contactaction->fetchResources();
                         if ($result < 0) {
-                            dol_print_error($db);
-                            setEventMessage("actions.lib::show_actions_messaging Error fetch resource", 'errors');
+                            static::dol_print_error($db);
+                            static::setEventMessages("actions.lib::show_actions_messaging Error fetch resource", 'errors');
                         }
 
                         //if ($donetodo == 'todo') $sql.= " AND ((a.percent >= 0 AND a.percent < 100) OR (a.percent = -1 AND a.datep > '".$db->idate($now)."'))";
@@ -13674,7 +13677,7 @@ abstract class Functions
                     $i++;
                 }
             } else {
-                dol_print_error($db);
+                static::dol_print_error($db);
             }
         }
 
@@ -13689,10 +13692,10 @@ abstract class Functions
         if (Functions::isModEnabled('agenda') || (Functions::isModEnabled('mailing') && !empty($objcon->email))) {
             $delay_warning = $conf->global->MAIN_DELAY_ACTIONS_TODO * 24 * 60 * 60;
 
-            require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
-            require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+            require_once BASE_PATH . '/comm/action/class/actioncomm.class.php';
+            include_once BASE_PATH . '/core/lib/functions2.lib.php';
+            require_once BASE_PATH . '/core/class/html.formactions.class.php';
+            require_once BASE_PATH . '/contact/class/contact.class.php';
 
             $formactions = new FormActions($db);
 
@@ -13790,7 +13793,7 @@ abstract class Functions
                 $out .= getTitleFieldOfList($tmp);
             }
 
-            require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
+            require_once BASE_PATH . '/comm/action/class/cactioncomm.class.php';
             $caction = new CActionComm($db);
             $arraylist = $caction->liste_array(1, 'code', '', (!Functions::getDolGlobalString('AGENDA_USE_EVENT_TYPE') ? 1 : 0), '', 1);
 
@@ -13937,15 +13940,15 @@ abstract class Functions
                         $libelle = ($transcode != "Action" . $histo[$key]['acode'] ? $transcode : $histo[$key]['alabel']);
                         $libelle = $histo[$key]['note'];
                         $actionstatic->id = $histo[$key]['id'];
-                        $out .= dol_escape_htmltag(dol_trunc($libelle, 120));
+                        $out .= Functions::dol_escape_htmltag(dol_trunc($libelle, 120));
                     } elseif ($histo[$key]['type'] == 'mailing') {
                         $out .= '<a href="' . DOL_URL_ROOT . '/comm/mailing/card.php?id=' . $histo[$key]['id'] . '">' . img_object($langs->trans("ShowEMailing"), "email") . ' ';
                         $transcode = $langs->transnoentitiesnoconv("Action" . $histo[$key]['acode']);
                         $libelle = ($transcode != "Action" . $histo[$key]['acode'] ? $transcode : 'Send mass mailing');
-                        $out .= dol_escape_htmltag(dol_trunc($libelle, 120));
+                        $out .= Functions::dol_escape_htmltag(dol_trunc($libelle, 120));
                     } else {
                         $libelle .= $histo[$key]['note'];
-                        $out .= dol_escape_htmltag(dol_trunc($libelle, 120));
+                        $out .= Functions::dol_escape_htmltag(dol_trunc($libelle, 120));
                     }
                 }
 
@@ -13974,7 +13977,7 @@ abstract class Functions
                     && $actionstatic->code != 'AC_TICKET_CREATE'
                     && $actionstatic->code != 'AC_TICKET_MODIFY'
                 ) {
-                    $out .= '<div class="timeline-body classfortooltip" title="' . dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(dol_htmlentitiesbr($histo[$key]['message']), 1, 1, 1)), 1, 1) . '">';
+                    $out .= '<div class="timeline-body classfortooltip" title="' . Functions::dol_escape_htmltag(dol_htmlwithnojs(dol_string_onlythesehtmltags(Functions::dol_htmlentitiesbr($histo[$key]['message']), 1, 1, 1)), 1, 1) . '">';
                     $out .= dolGetFirstLineOfText($histo[$key]['message'], 3);
                     $out .= '</div>';
                 }
@@ -14032,7 +14035,7 @@ abstract class Functions
                         $footer .= '<span id="document_' . $doc->id . '" class="timeline-documents" ';
                         $footer .= ' data-id="' . $doc->id . '" ';
                         $footer .= ' data-path="' . $doc->filepath . '"';
-                        $footer .= ' data-filename="' . dol_escape_htmltag($doc->filename) . '" ';
+                        $footer .= ' data-filename="' . Functions::dol_escape_htmltag($doc->filename) . '" ';
                         $footer .= '>';
 
                         $filePath = DOL_DATA_ROOT . '/' . $doc->filepath . '/' . $doc->filename;
