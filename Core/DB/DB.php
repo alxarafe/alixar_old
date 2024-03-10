@@ -49,7 +49,7 @@ abstract class DB
     /** Force subclass to implement LABEL - description of DB type */
     //    const LABEL = self::LABEL;
 
-    /** @var bool|resource|mysqli|SQLite3|PgSql\Connection Database handler */
+    /** @var null|DB Database handler */
     public static $dbengine;
     public static $db;
     /** @var string Database type */
@@ -63,7 +63,7 @@ abstract class DB
     private $_results;
 
     /** @var bool true if connected, else false */
-    public $connected;
+    public static $connected;
     /** @var bool true if database selected, else false */
     public $database_selected;
     /** @var string Selected database name */
@@ -93,6 +93,18 @@ abstract class DB
     /** @var string */
     public $error;
 
+    /**
+     * Returns a database connection or null
+     *
+     * @param $type
+     * @param $host
+     * @param $user
+     * @param $pass
+     * @param $name
+     * @param $port
+     *
+     * @return null|DB
+     */
     public static function DB($type, $host, $user, $pass, $name, $port)
     {
         if (isset(static::$dbengine)) {
@@ -115,9 +127,26 @@ abstract class DB
             default:
                 static::$dbengine = null;
         }
+        static::$connected = isset(static::$dbengine);
         return static::$dbengine;
     }
 
+    public static function disconnect()
+    {
+        if (!isset(static::$dbengine)) {
+            return true;
+        }
+        if (!static::$dbengine->close()) {
+            return false;
+        }
+        static::$dbengine = null;
+        return true;
+    }
+
+    public function connected(): bool
+    {
+        return DB::$connected;
+    }
 
     /**
      *  Return the DB prefix found into prefix_db (if it was set manually by doing $dbenginehandler->prefix_db=...).

@@ -20,31 +20,97 @@
 
 namespace Alxarafe\Base;
 
+use Alxarafe\DB\DB;
+use Alxarafe\LibClass\Lang;
 use Jenssegers\Blade\Blade;
+use stdClass;
 
+/**
+ * Class BasicController
+ *
+ * Loads the configuration, executes the defined action and after finishing,
+ * displays the selected template.
+ *
+ * @package Alxarafe\Base
+ */
 abstract class BasicController extends Globals
 {
+    /**
+     * Template to show
+     *
+     * @var string
+     */
     protected $template;
+
+    /**
+     * Action to execute. If none are executed, noAction would be thrown.
+     *
+     * @var string|null
+     */
     protected $action;
 
+    /**
+     * Database controller (DB descendant), or null.
+     *
+     * @var null|DB
+     */
     public $db;
+
+    /**
+     * Translation class instance
+     *
+     * @var Lang
+     */
     public $lang;
+
+    /**
+     * Config class instance
+     *
+     * @var Conf
+     */
     public $config;
 
+    /**
+     * Application configuration parameters
+     *
+     * @var stdClass
+     */
+    public $conf;
+
+    /**
+     * Initilize global variables
+     */
     public function __construct()
     {
         $this->db = Globals::getDb();
         $this->lang = Globals::getLang();
+        $this->conf = Globals::getConf();
         $this->config = Globals::getConfig();
     }
 
+    /**
+     * Controller main code
+     * By default, it only executes the selected action.
+     *
+     * @return bool
+     */
     public function body()
     {
         return $this->checkAction();
     }
 
+    /**
+     * Code to execute if there is no action defined.
+     *
+     * @return bool
+     */
     abstract public function noAction(): bool;
 
+    /**
+     * Executes the selected action.
+     *
+     * @return bool
+     */
     public function checkAction(): bool
     {
         $this->action = filter_input(INPUT_POST, 'action');
@@ -56,6 +122,9 @@ abstract class BasicController extends Globals
         return false;
     }
 
+    /**
+     * Show the selected view.
+     */
     public function view()
     {
         if (!$this->body()) {

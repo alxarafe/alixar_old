@@ -26,19 +26,21 @@
 
 namespace Alxarafe\Lib;
 
+use Alxarafe\Base\Globals;
+
 /**
  *  \file           htdocs/core/lib/admin.lib.php
  *  \brief          Library of admin functions
  */
-
 class Admin
 {
     /**
      *  Renvoi une version en chaine depuis une version en tableau
      *
-     *  @param      array       $versionarray       Tableau de version (vermajeur,vermineur,autre)
-     *  @return     string                          Chaine version
-     *  @see versioncompare()
+     * @param array $versionarray Tableau de version (vermajeur,vermineur,autre)
+     *
+     * @return     string                          Chaine version
+     * @see versioncompare()
      */
     public static function versiontostring($versionarray)
     {
@@ -57,18 +59,22 @@ class Admin
 
     /**
      *  Compare 2 versions (stored into 2 arrays).
-     *  To check if Dolibarr version is lower than (x,y,z), do "if versioncompare(versiondolibarrarray(), array(x.y.z)) <= 0"
-     *  For example: if (versioncompare(versiondolibarrarray(),array(4,0,-5)) >= 0) is true if version is 4.0 alpha or higher.
-     *  For example: if (versioncompare(versiondolibarrarray(),array(4,0,0)) >= 0) is true if version is 4.0 final or higher.
-     *  For example: if (versioncompare(versiondolibarrarray(),array(4,0,1)) >= 0) is true if version is 4.0.1 or higher.
-     *  Alternative way to compare: if ((float) DOL_VERSION >= 4.0) is true if version is 4.0 alpha or higher (works only to compare first and second level)
+     *  To check if Dolibarr version is lower than (x,y,z), do "if versioncompare(versiondolibarrarray(), array(x.y.z))
+     *  <= 0" For example: if (versioncompare(versiondolibarrarray(),array(4,0,-5)) >= 0) is true if version is 4.0
+     *  alpha or higher. For example: if (versioncompare(versiondolibarrarray(),array(4,0,0)) >= 0) is true if version
+     *  is 4.0 final or higher. For example: if (versioncompare(versiondolibarrarray(),array(4,0,1)) >= 0) is true if
+     *  version is 4.0.1 or higher. Alternative way to compare: if ((float) DOL_VERSION >= 4.0) is true if version is
+     *  4.0 alpha or higher (works only to compare first and second level)
      *
-     *  @param      array       $versionarray1      Array of version (vermajor,verminor,patch)
-     *  @param      array       $versionarray2      Array of version (vermajor,verminor,patch)
-     *  @return     int                             -4,-3,-2,-1 if versionarray1<versionarray2 (value depends on level of difference)
+     * @param array $versionarray1 Array of version (vermajor,verminor,patch)
+     * @param array $versionarray2 Array of version (vermajor,verminor,patch)
+     *
+     * @return     int                             -4,-3,-2,-1 if versionarray1<versionarray2 (value depends on level
+     *                                             of difference)
      *                                              0 if same
-     *                                              1,2,3,4 if versionarray1>versionarray2 (value depends on level of difference)
-     *  @see versiontostring()
+     *                                              1,2,3,4 if versionarray1>versionarray2 (value depends on level of
+     *                                              difference)
+     * @see versiontostring()
      */
     public static function versioncompare($versionarray1, $versionarray2)
     {
@@ -129,8 +135,8 @@ class Admin
     /**
      *  Return version PHP
      *
-     *  @return     array               Tableau de version (vermajeur,vermineur,autre)
-     *  @see versioncompare()
+     * @return     array               Tableau de version (vermajeur,vermineur,autre)
+     * @see versioncompare()
      */
     public static function versionphparray()
     {
@@ -140,8 +146,8 @@ class Admin
     /**
      *  Return version Dolibarr
      *
-     *  @return     array               Tableau de version (vermajeur,vermineur,autre)
-     *  @see versioncompare()
+     * @return     array               Tableau de version (vermajeur,vermineur,autre)
+     * @see versioncompare()
      */
     public static function versiondolibarrarray()
     {
@@ -156,30 +162,38 @@ class Admin
      *  - Running specific Sql by a module init
      *  - Loading sql file of website import package
      *  Install process however does not use it.
-     *  Note that Sql files must have all comments at start of line. Also this function take ';' as the char to detect end of sql request
+     *  Note that Sql files must have all comments at start of line. Also this function take ';' as the char to detect
+     *  end of sql request
      *
-     *  @param      string      $sqlfile                    Full path to sql file
-     *  @param      int         $silent                     1=Do not output anything, 0=Output line for update page
-     *  @param      int         $entity                     Entity targeted for multicompany module
-     *  @param      int         $usesavepoint               1=Run a savepoint before each request and a rollback to savepoint if error (this allow to have some request with errors inside global transactions).
-     *  @param      string      $handler                    Handler targeted for menu (replace __HANDLER__ with this value between quotes)
-     *  @param      string      $okerror                    Family of errors we accept ('default', 'none')
-     *  @param      int         $linelengthlimit            Limit for length of each line (Use 0 if unknown, may be faster if defined)
-     *  @param      int         $nocommentremoval           Do no try to remove comments (in such a case, we consider that each line is a request, so use also $linelengthlimit=0)
-     *  @param      int         $offsetforchartofaccount    Offset to use to load chart of account table to update sql on the fly to add offset to rowid and account_parent value
-     *  @param      int         $colspan                    2=Add a colspan=2 on td
-     *  @param      int         $onlysqltoimportwebsite     Only sql requests used to import a website template are allowed
-     *  @param      string      $database                   Database (replace __DATABASE__ with this value)
-     *  @return     int                                     Return integer <=0 if KO, >0 if OK
+     * @param string $sqlfile                 Full path to sql file
+     * @param int    $silent                  1=Do not output anything, 0=Output line for update page
+     * @param int    $entity                  Entity targeted for multicompany module
+     * @param int    $usesavepoint            1=Run a savepoint before each request and a rollback to savepoint if
+     *                                        error (this allow to have some request with errors inside global
+     *                                        transactions).
+     * @param string $handler                 Handler targeted for menu (replace __HANDLER__ with this value between
+     *                                        quotes)
+     * @param string $okerror                 Family of errors we accept ('default', 'none')
+     * @param int    $linelengthlimit         Limit for length of each line (Use 0 if unknown, may be faster if
+     *                                        defined)
+     * @param int    $nocommentremoval        Do no try to remove comments (in such a case, we consider that each line
+     *                                        is a request, so use also $linelengthlimit=0)
+     * @param int    $offsetforchartofaccount Offset to use to load chart of account table to update sql on the fly to
+     *                                        add offset to rowid and account_parent value
+     * @param int    $colspan                 2=Add a colspan=2 on td
+     * @param int    $onlysqltoimportwebsite  Only sql requests used to import a website template are allowed
+     * @param string $database                Database (replace __DATABASE__ with this value)
+     *
+     * @return     int                                     Return integer <=0 if KO, >0 if OK
      */
     function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler = '', $okerror = 'default', $linelengthlimit = 32768, $nocommentremoval = 0, $offsetforchartofaccount = 0, $colspan = 0, $onlysqltoimportwebsite = 0, $database = '')
     {
         global $db, $conf, $langs, $user;
 
-        dol_syslog("Admin.lib::run_sql run sql file " . $sqlfile . " silent=" . $silent . " entity=" . $entity . " usesavepoint=" . $usesavepoint . " handler=" . $handler . " okerror=" . $okerror, LOG_DEBUG);
+        Functions::dol_syslog("Admin.lib::run_sql run sql file " . $sqlfile . " silent=" . $silent . " entity=" . $entity . " usesavepoint=" . $usesavepoint . " handler=" . $handler . " okerror=" . $okerror, LOG_DEBUG);
 
         if (!is_numeric($linelengthlimit)) {
-            dol_syslog("Admin.lib::run_sql param linelengthlimit is not a numeric", LOG_ERR);
+            Functions::dol_syslog("Admin.lib::run_sql param linelengthlimit is not a numeric", LOG_ERR);
             return -1;
         }
 
@@ -187,7 +201,7 @@ class Admin
         $error = 0;
         $i = 0;
         $buffer = '';
-        $arraysql = array();
+        $arraysql = [];
 
         // Get version of database
         $versionarray = $db->getVersionArray();
@@ -203,7 +217,7 @@ class Admin
                 }
 
                 // Test if request must be ran only for particular database or version (if yes, we must remove the -- comment)
-                $reg = array();
+                $reg = [];
                 if (preg_match('/^--\sV(MYSQL|PGSQL)([^\s]*)/i', $buf, $reg)) {
                     $qualified = 1;
 
@@ -271,11 +285,11 @@ class Admin
             }
             fclose($fp);
         } else {
-            dol_syslog("Admin.lib::run_sql failed to open file " . $sqlfile, LOG_ERR);
+            Functions::dol_syslog("Admin.lib::run_sql failed to open file " . $sqlfile, LOG_ERR);
         }
 
         // Loop on each request to see if there is a __+MAX_table__ key
-        $listofmaxrowid = array(); // This is a cache table
+        $listofmaxrowid = []; // This is a cache table
         foreach ($arraysql as $i => $sql) {
             $newsql = $sql;
 
@@ -306,7 +320,7 @@ class Admin
                 $from = '__+MAX_' . $table . '__';
                 $to = '+' . $listofmaxrowid[$table];
                 $newsql = str_replace($from, $to, $newsql);
-                dol_syslog('Admin.lib::run_sql New Request ' . ($i + 1) . ' (replacing ' . $from . ' to ' . $to . ')', LOG_DEBUG);
+                Functions::dol_syslog('Admin.lib::run_sql New Request ' . ($i + 1) . ' (replacing ' . $from . ' to ' . $to . ')', LOG_DEBUG);
 
                 $arraysql[$i] = $newsql;
             }
@@ -329,13 +343,13 @@ class Admin
 
         // Loop on each request to execute request
         $cursorinsert = 0;
-        $listofinsertedrowid = array();
+        $listofinsertedrowid = [];
         $keyforsql = md5($sqlfile);
         foreach ($arraysql as $i => $sql) {
             if ($sql) {
                 // Test if th SQL is allowed SQL
                 if ($onlysqltoimportwebsite) {
-                    $newsql = str_replace(array("\'"), '__BACKSLASHQUOTE__', $sql); // Replace the \' char
+                    $newsql = str_replace(["\'"], '__BACKSLASHQUOTE__', $sql); // Replace the \' char
 
                     // Remove all strings contents including the ' so we can analyse SQL instruction only later
                     $l = strlen($newsql);
@@ -355,7 +369,7 @@ class Admin
                         }
                         $is++;
                     }
-                    $newsqlclean = str_replace(array("null"), '__000__', $newsqlclean);
+                    $newsqlclean = str_replace(["null"], '__000__', $newsqlclean);
                     //print $newsqlclean."<br>\n";
 
                     $qualified = 0;
@@ -382,8 +396,8 @@ class Admin
                         $error++;
                         //print 'Request '.($i + 1)." contains non allowed instructions.<br>\n";
                         //print "newsqlclean = ".$newsqlclean."<br>\n";
-                        dol_syslog('Admin.lib::run_sql Request ' . ($i + 1) . " contains non allowed instructions.", LOG_WARNING);
-                        dol_syslog('$newsqlclean=' . $newsqlclean, LOG_DEBUG);
+                        Functions::dol_syslog('Admin.lib::run_sql Request ' . ($i + 1) . " contains non allowed instructions.", LOG_WARNING);
+                        Functions::dol_syslog('$newsqlclean=' . $newsqlclean, LOG_DEBUG);
                         break;
                     }
                 }
@@ -407,7 +421,7 @@ class Admin
                 if (!$silent) {
                     print '<tr class="trforrunsql' . $keyforsql . '"><td class="tdtop opacitymedium"' . ($colspan ? ' colspan="' . $colspan . '"' : '') . '>' . $langs->trans("Request") . ' ' . ($i + 1) . " sql='" . dol_htmlentities($newsql, ENT_NOQUOTES) . "'</td></tr>\n";
                 }
-                dol_syslog('Admin.lib::run_sql Request ' . ($i + 1), LOG_DEBUG);
+                Functions::dol_syslog('Admin.lib::run_sql Request ' . ($i + 1), LOG_DEBUG);
                 $sqlmodified = 0;
 
                 // Replace for encrypt data
@@ -454,7 +468,7 @@ class Admin
                 }
 
                 if ($sqlmodified) {
-                    dol_syslog('Admin.lib::run_sql New Request ' . ($i + 1), LOG_DEBUG);
+                    Functions::dol_syslog('Admin.lib::run_sql New Request ' . ($i + 1), LOG_DEBUG);
                 }
 
                 $result = $db->query($newsql, $usesavepoint);
@@ -470,7 +484,7 @@ class Admin
                         $table = preg_replace('/([^a-zA-Z_]+)/i', '', $reg[1]);
                         $insertedrowid = $db->last_insert_id($table);
                         $listofinsertedrowid[$cursorinsert] = $insertedrowid;
-                        dol_syslog('Admin.lib::run_sql Insert nb ' . $cursorinsert . ', done in table ' . $table . ', rowid is ' . $listofinsertedrowid[$cursorinsert], LOG_DEBUG);
+                        Functions::dol_syslog('Admin.lib::run_sql Insert nb ' . $cursorinsert . ', done in table ' . $table . ', rowid is ' . $listofinsertedrowid[$cursorinsert], LOG_DEBUG);
                     }
                     //            print '<td class="right">OK</td>';
                 } else {
@@ -480,7 +494,7 @@ class Admin
                     }
 
                     // Define list of errors we accept (array $okerrors)
-                    $okerrors = array(  // By default
+                    $okerrors = [  // By default
                         'DB_ERROR_TABLE_ALREADY_EXISTS',
                         'DB_ERROR_COLUMN_ALREADY_EXISTS',
                         'DB_ERROR_KEY_NAME_ALREADY_EXISTS',
@@ -493,10 +507,10 @@ class Admin
                         'DB_ERROR_CANNOT_CREATE', // Qd contrainte deja existante
                         'DB_ERROR_CANT_DROP_PRIMARY_KEY',
                         'DB_ERROR_PRIMARY_KEY_ALREADY_EXISTS',
-                        'DB_ERROR_22P02'
-                    );
+                        'DB_ERROR_22P02',
+                    ];
                     if ($okerror == 'none') {
-                        $okerrors = array();
+                        $okerrors = [];
                     }
 
                     // Is it an error we accept
@@ -506,7 +520,7 @@ class Admin
                             print '<div class="error">' . $langs->trans("Error") . " " . $db->errno() . " (Req " . ($i + 1) . "): " . $newsql . "<br>" . $db->error() . "</div>";
                             print '</td></tr>' . "\n";
                         }
-                        dol_syslog('Admin.lib::run_sql Request ' . ($i + 1) . " Error " . $db->errno() . " " . $newsql . "<br>" . $db->error(), LOG_ERR);
+                        Functions::dol_syslog('Admin.lib::run_sql Request ' . ($i + 1) . " Error " . $db->errno() . " " . $newsql . "<br>" . $db->error(), LOG_ERR);
                         $error++;
                     }
                 }
@@ -559,12 +573,13 @@ class Admin
     /**
      *  Delete a constant
      *
-     *  @param      DoliDB      $db         Database handler
-     *  @param      string|int  $name       Name of constant or rowid of line
-     *  @param      int         $entity     Multi company id, -1 for all entities
-     *  @return     int                     Return integer <0 if KO, >0 if OK
+     * @param DoliDB     $db     Database handler
+     * @param string|int $name   Name of constant or rowid of line
+     * @param int        $entity Multi company id, -1 for all entities
      *
-     *  @see        dolibarr_get_const(), dolibarr_set_const(), dol_set_user_param()
+     * @return     int                     Return integer <0 if KO, >0 if OK
+     *
+     * @see        dolibarr_get_const(), dolibarr_set_const(), dol_set_user_param()
      */
     function dolibarr_del_const($db, $name, $entity = 1)
     {
@@ -585,7 +600,7 @@ class Admin
             $sql .= " AND entity = " . ((int) $entity);
         }
 
-        dol_syslog("admin.lib::dolibarr_del_const", LOG_DEBUG);
+        Functions::dol_syslog("admin.lib::dolibarr_del_const", LOG_DEBUG);
         $resql = $db->query($sql);
         if ($resql) {
             $conf->global->$name = '';
@@ -599,12 +614,13 @@ class Admin
     /**
      *  Get the value of a setup constant from database
      *
-     *  @param      DoliDB      $db         Database handler
-     *  @param      string      $name       Name of constant
-     *  @param      int         $entity     Multi company id
-     *  @return     string                  Value of constant
+     * @param DoliDB $db     Database handler
+     * @param string $name   Name of constant
+     * @param int    $entity Multi company id
      *
-     *  @see        dolibarr_del_const(), dolibarr_set_const(), dol_set_user_param()
+     * @return     string                  Value of constant
+     *
+     * @see        dolibarr_del_const(), dolibarr_set_const(), dol_set_user_param()
      */
     function dolibarr_get_const($db, $name, $entity = 1)
     {
@@ -615,7 +631,7 @@ class Admin
         $sql .= " WHERE name = " . $db->encrypt($name);
         $sql .= " AND entity = " . ((int) $entity);
 
-        dol_syslog("admin.lib::dolibarr_get_const", LOG_DEBUG);
+        Functions::dol_syslog("admin.lib::dolibarr_get_const", LOG_DEBUG);
         $resql = $db->query($sql);
         if ($resql) {
             $obj = $db->fetch_object($resql);
@@ -631,20 +647,23 @@ class Admin
     /**
      *  Insert a parameter (key,value) into database (delete old key then insert it again).
      *
-     *  @param      DoliDB      $db         Database handler
-     *  @param      string      $name       Name of constant
-     *  @param      string      $value      Value of constant
-     *  @param      string      $type       Type of constant. Deprecated, only strings are allowed for $value. Caller must json encode/decode to store other type of data.
-     *  @param      int         $visible    Is constant visible in Setup->Other page (0 by default)
-     *  @param      string      $note       Note on parameter
-     *  @param      int         $entity     Multi company id (0 means all entities)
-     *  @return     int                     -1 if KO, 1 if OK
+     * @param DoliDB $db      Database handler
+     * @param string $name    Name of constant
+     * @param string $value   Value of constant
+     * @param string $type    Type of constant. Deprecated, only strings are allowed for $value. Caller must json
+     *                        encode/decode to store other type of data.
+     * @param int    $visible Is constant visible in Setup->Other page (0 by default)
+     * @param string $note    Note on parameter
+     * @param int    $entity  Multi company id (0 means all entities)
      *
-     *  @see        dolibarr_del_const(), dolibarr_get_const(), dol_set_user_param()
+     * @return     int                     -1 if KO, 1 if OK
+     *
+     * @see        dolibarr_del_const(), dolibarr_get_const(), dol_set_user_param()
      */
-    function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, $note = '', $entity = 1)
+    public static function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, $note = '', $entity = 1)
     {
-        global $conf;
+        $conf = Globals::getConf();
+        $config = Globals::getConfig();
 
         // Clean parameters
         $name = trim($name);
@@ -655,17 +674,17 @@ class Admin
             exit;
         }
 
-        //dol_syslog("dolibarr_set_const name=$name, value=$value type=$type, visible=$visible, note=$note entity=$entity");
+        //Functions::dol_syslog("dolibarr_set_const name=$name, value=$value type=$type, visible=$visible, note=$note entity=$entity");
 
         $db->begin();
 
-        $sql = "DELETE FROM " . MAIN_DB_PREFIX . "const";
+        $sql = "DELETE FROM " . $config->main_db_prefix . "const";
         $sql .= " WHERE name = " . $db->encrypt($name);
         if ($entity >= 0) {
             $sql .= " AND entity = " . ((int) $entity);
         }
 
-        dol_syslog("admin.lib::dolibarr_set_const", LOG_DEBUG);
+        Functions::dol_syslog("admin.lib::dolibarr_set_const", LOG_DEBUG);
         $resql = $db->query($sql);
 
         if (strcmp($value, '')) {   // true if different. Must work for $value='0' or $value=0
@@ -680,7 +699,7 @@ class Admin
                 $newvalue = $value;
             }
 
-            $sql = "INSERT INTO " . MAIN_DB_PREFIX . "const(name, value, type, visible, note, entity)";
+            $sql = "INSERT INTO " . $config->main_db_prefix . "const(name, value, type, visible, note, entity)";
             $sql .= " VALUES (";
             $sql .= $db->encrypt($name);
             $sql .= ", " . $db->encrypt($newvalue);
@@ -688,7 +707,7 @@ class Admin
 
             //print "sql".$value."-".pg_escape_string($value)."-".$sql;exit;
             //print "xx".$db->escape($value);
-            dol_syslog("admin.lib::dolibarr_set_const", LOG_DEBUG);
+            Functions::dol_syslog("admin.lib::dolibarr_set_const", LOG_DEBUG);
             $resql = $db->query($sql);
         }
 
@@ -704,14 +723,13 @@ class Admin
     }
 
 
-
-
     /**
      * Prepare array with list of tabs
      *
-     * @param   int     $nbofactivatedmodules       Number if activated modules
-     * @param   int     $nboftotalmodules           Nb of total modules
-     * @param   int     $nbmodulesnotautoenabled    Nb of modules not auto enabled that are activated
+     * @param int $nbofactivatedmodules    Number if activated modules
+     * @param int $nboftotalmodules        Nb of total modules
+     * @param int $nbmodulesnotautoenabled Nb of modules not auto enabled that are activated
+     *
      * @return  array                               Array of tabs to show
      */
     function modules_prepare_head($nbofactivatedmodules, $nboftotalmodules, $nbmodulesnotautoenabled)
@@ -722,7 +740,7 @@ class Admin
         $desc = str_replace('{picto}', img_picto('', 'switch_off'), $desc);
 
         $h = 0;
-        $head = array();
+        $head = [];
         $mode = getDolGlobalString('MAIN_MODULE_SETUP_ON_LIST_BY_DEFAULT', 'commonkanban');
         $head[$h][0] = DOL_URL_ROOT . "/admin/modules.php?mode=" . $mode;
         if ($nbmodulesnotautoenabled <= getDolGlobalInt('MAIN_MIN_NB_ENABLED_MODULE_FOR_WARNING', 1)) { // If only minimal initial modules enabled)
@@ -763,7 +781,7 @@ class Admin
     {
         global $langs, $conf, $user;
         $h = 0;
-        $head = array();
+        $head = [];
 
         $head[$h][0] = DOL_URL_ROOT . "/admin/ihm.php?mode=other";
         $head[$h][1] = $langs->trans("LanguageAndPresentation");
@@ -808,7 +826,7 @@ class Admin
     {
         global $db, $langs, $conf, $user;
         $h = 0;
-        $head = array();
+        $head = [];
 
         $head[$h][0] = DOL_URL_ROOT . "/admin/security_other.php";
         $head[$h][1] = $langs->trans("Miscellaneous");
@@ -877,14 +895,15 @@ class Admin
     /**
      * Prepare array with list of tabs
      *
-     * @param   object  $object     Descriptor class
+     * @param object $object Descriptor class
+     *
      * @return  array               Array of tabs to show
      */
     function modulehelp_prepare_head($object)
     {
         global $langs, $conf;
         $h = 0;
-        $head = array();
+        $head = [];
 
         // FIX for compatibility habitual tabs
         $object->id = $object->numero;
@@ -913,6 +932,7 @@ class Admin
 
         return $head;
     }
+
     /**
      * Prepare array with list of tabs
      *
@@ -922,7 +942,7 @@ class Admin
     {
         global $langs, $conf;
         $h = 0;
-        $head = array();
+        $head = [];
 
         $head[$h][0] = DOL_URL_ROOT . "/admin/translation.php?mode=searchkey";
         $head[$h][1] = $langs->trans("TranslationKeySearch");
@@ -952,7 +972,7 @@ class Admin
     {
         global $langs, $conf, $user;
         $h = 0;
-        $head = array();
+        $head = [];
 
         $head[$h][0] = DOL_URL_ROOT . "/admin/defaultvalues.php?mode=createform";
         $head[$h][1] = $langs->trans("DefaultCreateForm");
@@ -998,13 +1018,13 @@ class Admin
     /**
      *  Return list of session
      *
-     *  @return     array           Array list of sessions
+     * @return     array           Array list of sessions
      */
     function listOfSessions()
     {
         global $conf;
 
-        $arrayofSessions = array();
+        $arrayofSessions = [];
         // session.save_path can be returned empty so we set a default location and work from there
         $sessPath = '/tmp';
         $iniPath = ini_get("session.save_path");
@@ -1012,7 +1032,7 @@ class Admin
             $sessPath = $iniPath;
         }
         $sessPath .= '/'; // We need the trailing slash
-        dol_syslog('admin.lib:listOfSessions sessPath=' . $sessPath);
+        Functions::dol_syslog('admin.lib:listOfSessions sessPath=' . $sessPath);
 
         $dh = @opendir(dol_osencode($sessPath));
         if ($dh) {
@@ -1033,7 +1053,7 @@ class Admin
                         ) { // limit to company name
                             $tmp = explode('_', $file);
                             $idsess = $tmp[1];
-                            $regs = array();
+                            $regs = [];
                             $loginfound = preg_match('/dol_login\|s:[0-9]+:"([A-Za-z0-9]+)"/i', $sessValues, $regs);
                             if ($loginfound) {
                                 $arrayofSessions[$idsess]["login"] = $regs[1];
@@ -1055,15 +1075,16 @@ class Admin
     /**
      *  Purge existing sessions
      *
-     *  @param      int     $mysessionid        To avoid to try to delete my own session
-     *  @return     int                         >0 if OK, <0 if KO
+     * @param int $mysessionid To avoid to try to delete my own session
+     *
+     * @return     int                         >0 if OK, <0 if KO
      */
     function purgeSessions($mysessionid)
     {
         global $conf;
 
         $sessPath = ini_get("session.save_path") . "/";
-        dol_syslog('admin.lib:purgeSessions mysessionid=' . $mysessionid . ' sessPath=' . $sessPath);
+        Functions::dol_syslog('admin.lib:purgeSessions mysessionid=' . $mysessionid . ' sessPath=' . $sessPath);
 
         $error = 0;
 
@@ -1104,20 +1125,22 @@ class Admin
     }
 
 
-
     /**
      *  Enable a module
      *
-     *  @param      string      $value                  Name of module to activate
-     *  @param      int         $withdeps               Activate/Disable also all dependencies
-     *  @param      int         $noconfverification     Remove verification of $conf variable for module
-     *  @return     array                               array('nbmodules'=>nb modules activated with success, 'errors=>array of error messages, 'nbperms'=>Nb permission added);
+     * @param string $value              Name of module to activate
+     * @param int    $withdeps           Activate/Disable also all dependencies
+     * @param int    $noconfverification Remove verification of $conf variable for module
+     *
+     * @return     array                               array('nbmodules'=>nb modules activated with success,
+     *                                                 'errors=>array of error messages, 'nbperms'=>Nb permission
+     *                                                 added);
      */
     function activateModule($value, $withdeps = 1, $noconfverification = 0)
     {
         global $db, $langs, $conf, $mysoc;
 
-        $ret = array();
+        $ret = [];
 
         // Check parameters
         if (empty($value)) {
@@ -1125,7 +1148,7 @@ class Admin
             return $ret;
         }
 
-        $ret = array('nbmodules' => 0, 'errors' => array(), 'nbperms' => 0);
+        $ret = ['nbmodules' => 0, 'errors' => [], 'nbperms' => 0];
         $modName = $value;
         $modFile = $modName . ".class.php";
 
@@ -1187,12 +1210,12 @@ class Admin
                     foreach ($objMod->depends as $key => $modulestringorarray) {
                         //var_dump((! is_numeric($key)) && ! preg_match('/^always/', $key) && $mysoc->country_code && ! preg_match('/^'.$mysoc->country_code.'/', $key));exit;
                         if ((!is_numeric($key)) && !preg_match('/^always/', $key) && $mysoc->country_code && !preg_match('/^' . $mysoc->country_code . '/', $key)) {
-                            dol_syslog("We are not concerned by dependency with key=" . $key . " because our country is " . $mysoc->country_code);
+                            Functions::dol_syslog("We are not concerned by dependency with key=" . $key . " because our country is " . $mysoc->country_code);
                             continue;
                         }
 
                         if (!is_array($modulestringorarray)) {
-                            $modulestringorarray = array($modulestringorarray);
+                            $modulestringorarray = [$modulestringorarray];
                         }
 
                         foreach ($modulestringorarray as $modulestring) {
@@ -1206,7 +1229,7 @@ class Admin
                                     } else {
                                         $activateerr = implode(', ', $resarray['errors']);
                                         foreach ($resarray['errors'] as $errorMessage) {
-                                            dol_syslog($errorMessage, LOG_ERR);
+                                            Functions::dol_syslog($errorMessage, LOG_ERR);
                                         }
                                     }
                                     break;
@@ -1252,9 +1275,10 @@ class Admin
     /**
      *  Disable a module
      *
-     *  @param      string      $value               Nom du module a desactiver
-     *  @param      int         $requiredby          1=Desactive aussi modules dependants
-     *  @return     string                           Error message or '';
+     * @param string $value      Nom du module a desactiver
+     * @param int    $requiredby 1=Desactive aussi modules dependants
+     *
+     * @return     string                           Error message or '';
      */
     function unActivateModule($value, $requiredby = 1)
     {
@@ -1297,7 +1321,7 @@ class Admin
             $genericMod->name = preg_replace('/^mod/i', '', $modName);
             $genericMod->rights_class = strtolower(preg_replace('/^mod/i', '', $modName));
             $genericMod->const_name = 'MAIN_MODULE_' . strtoupper(preg_replace('/^mod/i', '', $modName));
-            dol_syslog("modules::unActivateModule Failed to find module file, we use generic function with name " . $modName);
+            Functions::dol_syslog("modules::unActivateModule Failed to find module file, we use generic function with name " . $modName);
             $genericMod->remove('');
         }
 
@@ -1318,25 +1342,26 @@ class Admin
      *  Add external modules to list of dictionaries.
      *  Addition is done into var $taborder, $tabname, etc... that are passed with pointers.
      *
-     *  @param      array       $taborder           Taborder
-     *  @param      array       $tabname            Tabname
-     *  @param      array       $tablib             Tablib
-     *  @param      array       $tabsql             Tabsql
-     *  @param      array       $tabsqlsort         Tabsqlsort
-     *  @param      array       $tabfield           Tabfield
-     *  @param      array       $tabfieldvalue      Tabfieldvalue
-     *  @param      array       $tabfieldinsert     Tabfieldinsert
-     *  @param      array       $tabrowid           Tabrowid
-     *  @param      array       $tabcond            Tabcond
-     *  @param      array       $tabhelp            Tabhelp
-     *  @param      array       $tabcomplete        Tab complete (will replace all other in future). Key is table name.
-     *  @return     int         1
+     * @param array $taborder       Taborder
+     * @param array $tabname        Tabname
+     * @param array $tablib         Tablib
+     * @param array $tabsql         Tabsql
+     * @param array $tabsqlsort     Tabsqlsort
+     * @param array $tabfield       Tabfield
+     * @param array $tabfieldvalue  Tabfieldvalue
+     * @param array $tabfieldinsert Tabfieldinsert
+     * @param array $tabrowid       Tabrowid
+     * @param array $tabcond        Tabcond
+     * @param array $tabhelp        Tabhelp
+     * @param array $tabcomplete    Tab complete (will replace all other in future). Key is table name.
+     *
+     * @return     int         1
      */
     function complete_dictionary_with_modules(&$taborder, &$tabname, &$tablib, &$tabsql, &$tabsqlsort, &$tabfield, &$tabfieldvalue, &$tabfieldinsert, &$tabrowid, &$tabcond, &$tabhelp, &$tabcomplete)
     {
         global $db, $modules, $conf, $langs;
 
-        dol_syslog("complete_dictionary_with_modules Search external modules to complete the list of dictionary tables", LOG_DEBUG, 1);
+        Functions::dol_syslog("complete_dictionary_with_modules Search external modules to complete the list of dictionary tables", LOG_DEBUG, 1);
 
         // Search modules
         $modulesdir = dolGetModulesDirs();
@@ -1346,7 +1371,7 @@ class Admin
         foreach ($modulesdir as $dir) {
             // Load modules attributes in arrays (name, numero, orders) from dir directory
             //print $dir."\n<br>";
-            dol_syslog("Scan directory " . $dir . " for modules");
+            Functions::dol_syslog("Scan directory " . $dir . " for modules");
             $handle = @opendir(dol_osencode($dir));
             if (is_resource($handle)) {
                 while (($file = readdir($handle)) !== false) {
@@ -1397,7 +1422,7 @@ class Admin
                                 if (!empty($objMod->dictionaries)) {
                                     //var_dump($objMod->dictionaries['tabname']);
                                     $nbtabname = $nbtablib = $nbtabsql = $nbtabsqlsort = $nbtabfield = $nbtabfieldvalue = $nbtabfieldinsert = $nbtabrowid = $nbtabcond = $nbtabfieldcheck = $nbtabhelp = 0;
-                                    $tabnamerelwithkey = array();
+                                    $tabnamerelwithkey = [];
                                     foreach ($objMod->dictionaries['tabname'] as $key => $val) {
                                         $tmptablename = preg_replace('/' . MAIN_DB_PREFIX . '/', '', $val);
                                         $nbtabname++;
@@ -1481,18 +1506,18 @@ class Admin
                                 $j++;
                                 $i++;
                             } else {
-                                dol_syslog("Module " . get_class($objMod) . " not qualified");
+                                Functions::dol_syslog("Module " . get_class($objMod) . " not qualified");
                             }
                         }
                     }
                 }
                 closedir($handle);
             } else {
-                dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
+                Functions::dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
             }
         }
 
-        dol_syslog("", LOG_DEBUG, -1);
+        Functions::dol_syslog("", LOG_DEBUG, -1);
 
         return 1;
     }
@@ -1500,8 +1525,9 @@ class Admin
     /**
      *  Activate external modules mandatory when country is country_code
      *
-     *  @param      string      $country_code   CountryCode
-     *  @return     int         1
+     * @param string $country_code CountryCode
+     *
+     * @return     int         1
      */
     function activateModulesRequiredByCountry($country_code)
     {
@@ -1511,7 +1537,7 @@ class Admin
 
         foreach ($modulesdir as $dir) {
             // Load modules attributes in arrays (name, numero, orders) from dir directory
-            dol_syslog("Scan directory " . $dir . " for modules");
+            Functions::dol_syslog("Scan directory " . $dir . " for modules");
             $handle = @opendir(dol_osencode($dir));
             if (is_resource($handle)) {
                 while (($file = readdir($handle)) !== false) {
@@ -1545,14 +1571,14 @@ class Admin
                                     setEventMessages($objMod->automatic_activation[$country_code], null, 'warnings');
                                 }
                             } else {
-                                dol_syslog("Module " . get_class($objMod) . " not qualified");
+                                Functions::dol_syslog("Module " . get_class($objMod) . " not qualified");
                             }
                         }
                     }
                 }
                 closedir($handle);
             } else {
-                dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
+                Functions::dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
             }
         }
 
@@ -1562,31 +1588,32 @@ class Admin
     /**
      *  Search external modules to complete the list of contact element
      *
-     *  @param      array       $elementList            elementList
-     *  @return     int         1
+     * @param array $elementList elementList
+     *
+     * @return     int         1
      */
     function complete_elementList_with_modules(&$elementList)
     {
         global $db, $modules, $conf, $langs;
 
         // Search modules
-        $filename = array();
-        $modules = array();
-        $orders = array();
-        $categ = array();
-        $dirmod = array();
+        $filename = [];
+        $modules = [];
+        $orders = [];
+        $categ = [];
+        $dirmod = [];
 
         $i = 0; // is a sequencer of modules found
         $j = 0; // j is module number. Automatically affected if module number not defined.
 
-        dol_syslog("complete_elementList_with_modules Search external modules to complete the list of contact element", LOG_DEBUG, 1);
+        Functions::dol_syslog("complete_elementList_with_modules Search external modules to complete the list of contact element", LOG_DEBUG, 1);
 
         $modulesdir = dolGetModulesDirs();
 
         foreach ($modulesdir as $dir) {
             // Load modules attributes in arrays (name, numero, orders) from dir directory
             //print $dir."\n<br>";
-            dol_syslog("Scan directory " . $dir . " for modules");
+            Functions::dol_syslog("Scan directory " . $dir . " for modules");
             $handle = @opendir(dol_osencode($dir));
             if (is_resource($handle)) {
                 while (($file = readdir($handle)) !== false) {
@@ -1629,7 +1656,7 @@ class Admin
 
                                 $modules[$i] = $objMod;
                                 $filename[$i] = $modName;
-                                $orders[$i]  = $objMod->family . "_" . $j; // Sort on family then module number
+                                $orders[$i] = $objMod->family . "_" . $j; // Sort on family then module number
                                 $dirmod[$i] = $dir;
                                 //print "x".$modName." ".$orders[$i]."\n<br>";
 
@@ -1646,18 +1673,18 @@ class Admin
                                 $j++;
                                 $i++;
                             } else {
-                                dol_syslog("Module " . get_class($objMod) . " not qualified");
+                                Functions::dol_syslog("Module " . get_class($objMod) . " not qualified");
                             }
                         }
                     }
                 }
                 closedir($handle);
             } else {
-                dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
+                Functions::dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
             }
         }
 
-        dol_syslog("", LOG_DEBUG, -1);
+        Functions::dol_syslog("", LOG_DEBUG, -1);
 
         return 1;
     }
@@ -1665,12 +1692,16 @@ class Admin
     /**
      *  Show array with constants to edit
      *
-     *  @param  array   $tableau        Array of constants array('key'=>array('type'=>type, 'label'=>label)
-     *                                  where type can be 'string', 'text', 'textarea', 'html', 'yesno', 'emailtemplate:xxx', ...
-     *  @param  int     $strictw3c      0=Include form into table (deprecated), 1=Form is outside table to respect W3C (deprecated), 2=No form nor button at all, 3=No form nor button at all and each field has a unique name (form is output by caller, recommended)
-     *  @param  string  $helptext       Tooltip help to use for the column name of values
-     *  @param  string  $text           Text to use for the column name of values
-     *  @return void
+     * @param array  $tableau           Array of constants array('key'=>array('type'=>type, 'label'=>label)
+     *                                  where type can be 'string', 'text', 'textarea', 'html', 'yesno',
+     *                                  'emailtemplate:xxx', ...
+     * @param int    $strictw3c         0=Include form into table (deprecated), 1=Form is outside table to respect W3C
+     *                                  (deprecated), 2=No form nor button at all, 3=No form nor button at all and each
+     *                                  field has a unique name (form is output by caller, recommended)
+     * @param string $helptext          Tooltip help to use for the column name of values
+     * @param string $text              Text to use for the column name of values
+     *
+     * @return void
      */
     function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Value')
     {
@@ -1680,7 +1711,7 @@ class Admin
         $form = new Form($db);
 
         if (empty($strictw3c)) {
-            dol_syslog("Warning: Function 'form_constantes' was called with parameter strictw3c = 0, this is deprecated. Value must be 2 now.", LOG_DEBUG);
+            Functions::dol_syslog("Warning: Function 'form_constantes' was called with parameter strictw3c = 0, this is deprecated. Value must be 2 now.", LOG_DEBUG);
         }
         if (!empty($strictw3c) && $strictw3c == 1) {
             print "\n" . '<form action="' . $_SERVER["PHP_SELF"] . '" method="POST">';
@@ -1730,12 +1761,12 @@ class Admin
             $sql .= " ORDER BY name ASC, entity DESC";
             $result = $db->query($sql);
 
-            dol_syslog("List params", LOG_DEBUG);
+            Functions::dol_syslog("List params", LOG_DEBUG);
             if ($result) {
                 $obj = $db->fetch_object($result); // Take first result of select
 
                 if (empty($obj)) {  // If not yet into table
-                    $obj = (object) array('rowid' => '', 'name' => $const, 'value' => '', 'type' => $type, 'note' => '');
+                    $obj = (object) ['rowid' => '', 'name' => $const, 'value' => '', 'type' => $type, 'note' => ''];
                 }
 
                 if (empty($strictw3c)) {
@@ -1795,7 +1826,7 @@ class Admin
                     print '<td>';
                     // List of possible labels (defined into $_Avery_Labels variable set into format_cards.lib.php)
                     require_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
-                    $arrayoflabels = array();
+                    $arrayoflabels = [];
                     foreach (array_keys($_Avery_Labels) as $codecards) {
                         $arrayoflabels[$codecards] = $_Avery_Labels[$codecards]['name'];
                     }
@@ -1807,7 +1838,7 @@ class Admin
                     print '<td>';
                     print '<input type="hidden" name="consttype' . (empty($strictw3c) ? '' : ($strictw3c == 3 ? '_' . $const : '[]')) . '" value="' . ($obj->type ? $obj->type : 'string') . '">';
                     print '<input type="hidden" name="constnote' . (empty($strictw3c) ? '' : ($strictw3c == 3 ? '_' . $const : '[]')) . '" value="' . nl2br(dol_escape_htmltag($obj->note)) . '">';
-                    if ($obj->type == 'textarea' || in_array($const, array('ADHERENT_CARD_TEXT', 'ADHERENT_CARD_TEXT_RIGHT', 'ADHERENT_ETIQUETTE_TEXT'))) {
+                    if ($obj->type == 'textarea' || in_array($const, ['ADHERENT_CARD_TEXT', 'ADHERENT_CARD_TEXT_RIGHT', 'ADHERENT_ETIQUETTE_TEXT'])) {
                         print '<textarea class="flat" name="constvalue' . (empty($strictw3c) ? '' : ($strictw3c == 3 ? '_' . $const : '[]')) . '" cols="50" rows="5" wrap="soft">' . "\n";
                         print $obj->value;
                         print "</textarea>\n";
@@ -1825,7 +1856,7 @@ class Admin
 
                         $nboftemplates = $formmail->fetchAllEMailTemplate($tmp[1], $user, null, -1); // We set lang=null to get in priority record with no lang
                         //$arraydefaultmessage = $formmail->getEMailTemplate($db, $tmp[1], $user, null, 0, 1, '');
-                        $arrayofmessagename = array();
+                        $arrayofmessagename = [];
                         if (is_array($formmail->lines_model)) {
                             foreach ($formmail->lines_model as $modelmail) {
                                 //var_dump($modelmail);
@@ -1875,8 +1906,9 @@ class Admin
     /**
      *  Show array with constants to edit
      *
-     *  @param  array   $modules        Array of all modules
-     *  @return string                  HTML string with warning
+     * @param array $modules Array of all modules
+     *
+     * @return string                  HTML string with warning
      */
     function showModulesExludedForExternal($modules)
     {
@@ -1922,11 +1954,12 @@ class Admin
     /**
      *  Add document model used by doc generator
      *
-     *  @param      string  $name           Model name
-     *  @param      string  $type           Model type
-     *  @param      string  $label          Model label
-     *  @param      string  $description    Model description
-     *  @return     int                     Return integer <0 if KO, >0 if OK
+     * @param string $name        Model name
+     * @param string $type        Model type
+     * @param string $label       Model label
+     * @param string $description Model description
+     *
+     * @return     int                     Return integer <0 if KO, >0 if OK
      */
     function addDocumentModel($name, $type, $label = '', $description = '')
     {
@@ -1940,7 +1973,7 @@ class Admin
         $sql .= (!empty($description) ? "'" . $db->escape($description) . "'" : "null");
         $sql .= ")";
 
-        dol_syslog("admin.lib::addDocumentModel", LOG_DEBUG);
+        Functions::dol_syslog("admin.lib::addDocumentModel", LOG_DEBUG);
         $resql = $db->query($sql);
         if ($resql) {
             $db->commit();
@@ -1955,9 +1988,10 @@ class Admin
     /**
      *  Delete document model used by doc generator
      *
-     *  @param      string  $name           Model name
-     *  @param      string  $type           Model type
-     *  @return     int                     Return integer <0 if KO, >0 if OK
+     * @param string $name Model name
+     * @param string $type Model type
+     *
+     * @return     int                     Return integer <0 if KO, >0 if OK
      */
     function delDocumentModel($name, $type)
     {
@@ -1970,7 +2004,7 @@ class Admin
         $sql .= " AND type = '" . $db->escape($type) . "'";
         $sql .= " AND entity = " . ((int) $conf->entity);
 
-        dol_syslog("admin.lib::delDocumentModel", LOG_DEBUG);
+        Functions::dol_syslog("admin.lib::delDocumentModel", LOG_DEBUG);
         $resql = $db->query($sql);
         if ($resql) {
             $db->commit();
@@ -1986,7 +2020,7 @@ class Admin
     /**
      *  Return the php_info into an array
      *
-     *  @return     array       Array with PHP infos
+     * @return     array       Array with PHP infos
      */
     function phpinfo_array()
     {
@@ -1995,18 +2029,18 @@ class Admin
         $phpinfostring = ob_get_contents();
         ob_end_clean();
 
-        $info_arr = array();
+        $info_arr = [];
         $info_lines = explode("\n", strip_tags($phpinfostring, "<tr><td><h2>"));
         $cat = "General";
         foreach ($info_lines as $line) {
             // new cat?
-            $title = array();
+            $title = [];
             preg_match("~<h2>(.*)</h2>~", $line, $title) ? $cat = $title[1] : null;
-            $val = array();
+            $val = [];
             if (preg_match("~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~", $line, $val)) {
                 $info_arr[trim($cat)][trim($val[1])] = $val[2];
             } elseif (preg_match("~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~", $line, $val)) {
-                $info_arr[trim($cat)][trim($val[1])] = array("local" => $val[2], "master" => $val[3]);
+                $info_arr[trim($cat)][trim($val[1])] = ["local" => $val[2], "master" => $val[3]];
             }
         }
         return $info_arr;
@@ -2015,14 +2049,14 @@ class Admin
     /**
      *  Return array head with list of tabs to view object information.
      *
-     *  @return array                       head array with tabs
+     * @return array                       head array with tabs
      */
     function company_admin_prepare_head()
     {
         global $langs, $conf;
 
         $h = 0;
-        $head = array();
+        $head = [];
 
         $head[$h][0] = DOL_URL_ROOT . "/admin/company.php";
         $head[$h][1] = $langs->trans("Company");
@@ -2054,14 +2088,14 @@ class Admin
     /**
      *  Return array head with list of tabs to view object information.
      *
-     *  @return array                       head array with tabs
+     * @return array                       head array with tabs
      */
     function email_admin_prepare_head()
     {
         global $langs, $conf, $user;
 
         $h = 0;
-        $head = array();
+        $head = [];
 
         if (!empty($user->admin) && (empty($_SESSION['leftmenu']) || $_SESSION['leftmenu'] != 'email_templates')) {
             $head[$h][0] = DOL_URL_ROOT . "/admin/mails.php";

@@ -31,6 +31,7 @@
 
 namespace Alxarafe\DB\Engines;
 
+use Alxarafe\Base\Globals;
 use Alxarafe\DB\DB;
 use Alxarafe\Lib\Functions;
 use Exception;
@@ -64,7 +65,8 @@ class MySqliEngine extends DB
      */
     public function __construct($host, $user, $pass, $name = '', $port = 0)
     {
-        global $conf, $langs;
+        $conf = Globals::getConf();
+        $langs = Globals::getLang();
 
         // Note that having "static" property for "$forcecharset" and "$forcecollate" will make error here in strict mode, so they are not static
         if (!empty($conf->db->character_set)) {
@@ -83,14 +85,14 @@ class MySqliEngine extends DB
         //print "Name DB: $host,$user,$pass,$name<br>";
 
         if (!class_exists('mysqli')) {
-            $this->connected = false;
+            static::$connected = false;
             $this->ok = false;
             $this->error = "Mysqli PHP functions for using Mysqli driver are not available in this version of PHP. Try to use another driver.";
             Functions::dol_syslog(get_class($this) . "::DoliDBMysqli : Mysqli PHP functions for using Mysqli driver are not available in this version of PHP. Try to use another driver.", LOG_ERR);
         }
 
         if (!$host) {
-            $this->connected = false;
+            static::$connected = false;
             $this->ok = false;
             $this->error = $langs->trans("ErrorWrongHostParameter");
             Functions::dol_syslog(get_class($this) . "::DoliDBMysqli : Connect error, wrong host parameters", LOG_ERR);
@@ -101,17 +103,17 @@ class MySqliEngine extends DB
         static::$db = $this->connect($host, $user, $pass, '', $port);
 
         if (static::$db && empty(static::$db->connect_errno)) {
-            $this->connected = true;
+            static::$connected = true;
             $this->ok = true;
         } else {
-            $this->connected = false;
+            static::$connected = false;
             $this->ok = false;
             $this->error = empty(static::$db) ? 'Failed to connect' : static::$db->connect_error;
             Functions::dol_syslog(get_class($this) . "::DoliDBMysqli Connect error: " . $this->error, LOG_ERR);
         }
 
         // If server connection is ok, we try to connect to the database
-        if ($this->connected && $name) {
+        if (static::$connected && $name) {
             if ($this->select_db($name)) {
                 $this->database_selected = true;
                 $this->database_name = $name;
@@ -139,7 +141,7 @@ class MySqliEngine extends DB
                         exit;
                     }
 
-                    $collation = (empty($conf) ? 'utf8_unicode_ci' : $conf->db->dolibarr_main_db_collation);
+                    $collation = $conf->db->dolibarr_main_db_collation ?? 'utf8_unicode_ci';
                     if (preg_match('/latin1/', $collation)) {
                         $collation = 'utf8_unicode_ci';
                     }
@@ -159,7 +161,7 @@ class MySqliEngine extends DB
             // No selection of database done. We may only be connected or not (ok or ko) to the server.
             $this->database_selected = false;
 
-            if ($this->connected) {
+            if (static::$connected) {
                 // If client is old latin, we force utf8
                 $clientmustbe = empty($conf->db->character_set) ? 'utf8' : $conf->db->character_set;
                 if (preg_match('/latin1/', $clientmustbe)) {
@@ -187,7 +189,6 @@ class MySqliEngine extends DB
             }
         }
     }
-
 
     /**
      * Return SQL string to force an index
@@ -276,7 +277,7 @@ class MySqliEngine extends DB
      */
     public function getVersion()
     {
-        return static::$db->server_info;
+        return static::$db->server_info ?? 'No connected!';
     }
 
     /**
@@ -286,7 +287,7 @@ class MySqliEngine extends DB
      */
     public function getDriverInfo()
     {
-        return static::$db->client_info;
+        return static::$db->client_info ?? 'No connected!';
     }
 
 
@@ -302,8 +303,12 @@ class MySqliEngine extends DB
             if ($this->transaction_opened > 0) {
                 Functions::dol_syslog(get_class($this) . "::close Closing a connection with an opened transaction depth=" . $this->transaction_opened, LOG_ERR);
             }
-            $this->connected = false;
-            return static::$db->close();
+            static::$connected = false;
+            if (static::$db->close()) {
+                static::$db = null;
+                return true;
+            }
+            return false;
         }
         return false;
     }
@@ -535,7 +540,7 @@ class MySqliEngine extends DB
      */
     public function errno()
     {
-        if (!$this->connected) {
+        if (!static::$connected) {
             // Si il y a eu echec de connection, static::$db n'est pas valide.
             return 'DB_ERROR_FAILED_TO_CONNECT';
         } else {
@@ -587,7 +592,7 @@ class MySqliEngine extends DB
      */
     public function error()
     {
-        if (!$this->connected) {
+        if (!static::$connected) {
             // Si il y a eu echec de connection, static::$db n'est pas valide pour mysqli_error.
             return 'Not connected. Check setup parameters in conf/conf.php file and your mysql client and server versions';
         } else {

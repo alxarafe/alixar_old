@@ -5,11 +5,11 @@
         <td>
             <input type="hidden" name="testpost" value="ok">
             <input type="hidden" name="action" value="checked">
-            <br><span class="opacitymedium">{!! $lang->trans('NoReadableConfFileSoStartInstall') !!}</span><br><br>
+            <br><span class="opacitymedium">{!! $noReadableConfig !!}</span><br><br>
             <div class="center">
                 <table>
                     <tr>
-                        <td>{!! $lang->trans('DefaultLanguage') !!}:</td>
+                        <td>{!! $defaultLanguage !!}:</td>
                         <td>{!! $htmlComboLanguages !!}</td>
                     </tr>
                 </table>

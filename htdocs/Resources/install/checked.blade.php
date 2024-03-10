@@ -7,25 +7,25 @@
         <td>
             <h3>
                 <img class="valignmiddle inline-block paddingright" src="Resources/img/gear.svg" width="20" alt="Database">
-                <span class="inline-block">{!! $lang->trans('MiscellaneousChecks') !!}</span></h3>
+                <span class="inline-block">{!! $miscellaneousChecks !!}</span></h3>
             @foreach($checks as $check)
                 <img src="{!! 'Resources/img/'.$check['icon'].'.png' !!}" alt="{!! ucfirst($check['icon']) !!}" class="valignmiddle"> {!! $check['text'] !!}
                 <br>
             @endforeach
             <br>
 
-            @if (!empty($errorBadMainDocumentRoot))
-                <span class="error">{!! $lang->trans($errorBadMainDocumentRoot) !!}</span><br>
+            @if (!empty($badMainDocumentRoot))
+                <span class="error">{!! $badMainDocumentRoot !!}</span><br>
             @endif
 
             @if(isset($printVersion) && $printVersion)
-                {!! $lang->trans("VersionLastUpgrade") !!}:
-                <b><span class="ok">{!! (!\Alxarafe\Lib\Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') ? $conf->global->MAIN_VERSION_LAST_INSTALL : $conf->global->MAIN_VERSION_LAST_UPGRADE) !!}</span></b>
+                {!! $versionLastUpgradeMessage !!}:
+                <b><span class="ok">{!! $versionLastUpgrade !!}</span></b>
                 -
-                {!! $lang->trans("VersionProgram") !!}:
+                {!! $versionProgramMessage !!}:
                 <b><span class="ok">{!! DOL_VERSION !!}</span></b>
             @endif
-            <h3><span class="soustitre">{!! $lang->trans("ChooseYourSetupMode") !!}</span></h3>
+            <h3><span class="soustitre">{!! $chooseYourSetupMode !!}</span></h3>
 
             @if ($errorMigrations !== false)
                 <div class="error">{!! $errorMigrations !!}</div>
@@ -46,7 +46,7 @@
 
                 @if(count($notAvailableChoices)>0)
                     <br>
-                    <div id="AShowChoices" style="opacity: 0.5">{!! $lang->trans('ShowNotAvailableOptions') !!}
+                    <div id="AShowChoices" style="opacity: 0.5">{!! $showNotAvailableOptions !!}
                         ...
                     </div>
                     <div id="navail_choices" style="display:none"><br>
@@ -75,7 +75,7 @@
                 });
 
                 $(".runupgrade").click(function () {
-                    return confirm("{!! \Alxarafe\Lib\Functions::dol_escape_js($lang->transnoentitiesnoconv('WarningUpdates'), 0, 1) !!}");
+                    return confirm("{!! $warningUpdates !!}");
                 });
             </script>
             <!-- pFooter -->

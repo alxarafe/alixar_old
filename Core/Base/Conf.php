@@ -261,7 +261,7 @@ class Conf extends stdClass
 
         static::loadConfig();
 
-        $this->file->instance_unique_id = static::$config->main_instance_unique_id;
+        $this->file->instance_unique_id = static::$config->main_instance_unique_id ?? null;
     }
 
     /**

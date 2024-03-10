@@ -16,7 +16,7 @@
                 </tr>
                 <tr>
                     <td class="label">
-                        <label for="main_dir"><b>{!! $lang->trans("WebPagesDirectory") !!}</b></label></td>
+                        <label for="main_dir"><b>{!! $webPagesDirectory !!}</b></label></td>
                     <td class="label">
                         <input type="text"
                                class="minwidth300"

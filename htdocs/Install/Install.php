@@ -4,6 +4,7 @@ namespace Alixar\Install;
 
 use Alxarafe\Base\BasicController;
 use Alxarafe\Base\Globals;
+use Alxarafe\DB\DB;
 use Alxarafe\Lib\Admin;
 use Alxarafe\Lib\Files;
 use Alxarafe\Lib\Functions;
@@ -32,6 +33,19 @@ class Install extends BasicController
      * @var false
      */
     public $errorMigrations;
+
+    private static function getDataDir(string $dir): string
+    {
+        $dir = trim($dir, ' /');
+        $fullDir = realpath(BASE_PATH . '/../dolibarr_htdocs/install/' . $dir);
+        if (!file_exists(BASE_PATH)) {
+            $fullDir = realpath(BASE_PATH . '/Install/' . $dir);
+        }
+        if ($fullDir === false) {
+            $fullDir = '/Install/' . $dir;
+        }
+        return $fullDir . '/';
+    }
 
     private function syslog($message, $level = LOG_DEBUG)
     {
@@ -458,23 +472,6 @@ class Install extends BasicController
         return $error;
     }
 
-    public function noAction(): bool
-    {
-        $this->lang->loadLangs(['main', 'admin', 'install']);
-
-        if (isset($this->config->main_url_root)) {
-            return $this->actionChecked();
-        }
-
-        $this->template = 'install/install';
-        $this->nextButton = true;
-
-        $form = new FormAdmin(null);
-        $this->htmlComboLanguages = $form->select_language('auto', 'selectlang', 1, 0, 0, 1);
-
-        return true;
-    }
-
     private function checkBrowser()
     {
         $useragent = $_SERVER['HTTP_USER_AGENT'];
@@ -750,13 +747,12 @@ class Install extends BasicController
 
     private function checkConfFile()
     {
-        $result = false;
         $conffile = Globals::getConfFilename();
 
         clearstatcache();
         if (is_readable($conffile) && filesize($conffile) > 8) {
             $this->syslog("check: conf file '" . $conffile . "' already defined");
-            return $result;
+            return false;
         }
 
         // If not, we create it
@@ -766,23 +762,25 @@ class Install extends BasicController
         if (@copy($conffile . ".example", $conffile)) {
             // Success
             $this->syslog("check: successfully copied file " . $conffile . ".example into " . $conffile);
-        } else {
-            // If failed, we try to create an empty file
-            $this->syslog("check: failed to copy file " . $conffile . ".example into " . $conffile . ". We try to create it.", LOG_WARNING);
-
-            $fp = @fopen($conffile, "w");
-            if ($fp) {
-                @fwrite($fp, '<?php');
-                @fwrite($fp, "\n");
-                fclose($fp);
-            } else {
-                $this->syslog("check: failed to create a new file " . $conffile . " into current dir " . getcwd() . ". Please check permissions.", LOG_ERR);
-                $result = [];
-                $result['ok'] = false;
-                $result['icon'] = 'error';
-                $result['text'] = $this->lang->trans('ConfFileDoesNotExistsAndCouldNotBeCreated', 'conf.php');
-            }
+            return false;
         }
+
+        // If failed, we try to create an empty file
+        $this->syslog("check: failed to copy file " . $conffile . ".example into " . $conffile . ". We try to create it.", LOG_WARNING);
+
+        $fp = @fopen($conffile, "w");
+        if ($fp) {
+            @fwrite($fp, '<?php');
+            @fwrite($fp, "\n");
+            fclose($fp);
+            return false;
+        }
+
+        $this->syslog("check: failed to create a new file " . $conffile . " into current dir " . getcwd() . ". Please check permissions.", LOG_ERR);
+        $result = [];
+        $result['ok'] = false;
+        $result['icon'] = 'error';
+        $result['text'] = $this->lang->trans('ConfFileDoesNotExistsAndCouldNotBeCreated', 'conf.php');
         return $result;
     }
 
@@ -810,7 +808,7 @@ class Install extends BasicController
 
     private function getMigrationScript()
     {
-        $dir = BASE_PATH . "/Install/mysql/migration/";   // We use mysql migration scripts whatever is database driver
+        $dir = static::getDataDir('mysql/migration');   // We use mysql migration scripts whatever is database driver
         $this->dolibarr_install_syslog("Scan sql files for migration files in " . $dir);
 
         // Get files list of migration file x.y.z-a.b.c.sql into /install/mysql/migration
@@ -837,40 +835,38 @@ class Install extends BasicController
     public function next()
     {
 
-        $configFilename = Globals::getConfFilename();
-        $this->conf = Globals::getConf();
-        if (!empty($conf)) {
-            $config = $conf::getConfig();
-        }
+        $this->configFilename = Globals::getConfFilename();
 
         $ok = false;
-        if (!empty($config->main_db_type) && !empty($config->main_document_root)) {
-            $this->errorBadMainDocumentRoot = '';
-            if ($config->main_document_root !== BASE_PATH) {
-                $this->errorBadMainDocumentRoot = "A $configFilename file exists with a dolibarr_main_document_root to $config->main_document_root that seems wrong. Try to fix or remove the $configFilename file.";
+        $this->errorBadMainDocumentRoot = '';
+
+        // It's a update?
+        if (!empty($this->config->main_db_type) && !empty($this->config->main_document_root)) {
+            if ($this->config->main_document_root !== BASE_PATH) {
+                $this->errorBadMainDocumentRoot = "A $this->configFilename file exists with a dolibarr_main_document_root to $this->config->main_document_root that seems wrong. Try to fix or remove the $this->configFilename file.";
                 Functions::dol_syslog($this->errorBadMainDocumentRoot, LOG_WARNING);
             } else {
                 // If password is encoded, we decode it
                 // TODO: Pending
-                if (preg_match('/crypted:/i', $config->main_db_pass) || !empty($dolibarr_main_db_encrypted_pass)) {
+                if (preg_match('/crypted:/i', $this->config->main_db_pass) || !empty($dolibarr_main_db_encrypted_pass)) {
                     require_once $this->dolibarr_main_document_root . '/core/lib/security.lib.php';
-                    if (preg_match('/crypted:/i', $config->main_db_pass)) {
-                        $dolibarr_main_db_encrypted_pass = preg_replace('/crypted:/i', '', $config->main_db_pass); // We need to set this as it is used to know the password was initially encrypted
-                        $config->main_db_pass = dol_decode($dolibarr_main_db_encrypted_pass);
+                    if (preg_match('/crypted:/i', $this->config->main_db_pass)) {
+                        $dolibarr_main_db_encrypted_pass = preg_replace('/crypted:/i', '', $this->config->main_db_pass); // We need to set this as it is used to know the password was initially encrypted
+                        $this->config->main_db_pass = dol_decode($dolibarr_main_db_encrypted_pass);
                     } else {
-                        $config->main_db_pass = dol_decode($dolibarr_main_db_encrypted_pass);
+                        $this->config->main_db_pass = dol_decode($dolibarr_main_db_encrypted_pass);
                     }
                 }
 
                 // $conf already created in inc.php
-                $this->conf->db->type = $config->main_db_type;
-                $this->conf->db->host = $config->main_db_host;
-                $this->conf->db->port = $config->main_db_port;
-                $this->conf->db->name = $config->main_db_name;
-                $this->conf->db->user = $config->main_db_user;
-                $this->conf->db->pass = $config->main_db_pass;
+                $this->conf->db->type = $this->config->main_db_type;
+                $this->conf->db->host = $this->config->main_db_host;
+                $this->conf->db->port = $this->config->main_db_port;
+                $this->conf->db->name = $this->config->main_db_name;
+                $this->conf->db->user = $this->config->main_db_user;
+                $this->conf->db->pass = $this->config->main_db_pass;
                 $db = Functions::getDoliDBInstance($this->conf->db->type, $this->conf->db->host, $this->conf->db->user, $this->conf->db->pass, $this->conf->db->name, (int) $this->conf->db->port);
-                if ($db->connected && $db->database_selected) {
+                if (DB::$connected && $db->database_selected) {
                     $ok = true;
                 }
             }
@@ -925,22 +921,20 @@ class Install extends BasicController
             'button' => $button,
         ];
 
-        if (!isset($config->main_db_host) || empty($config->main_db_host)) {
+        if (!isset($this->config->main_db_host) || empty($this->config->main_db_host)) {
             $choice['long'] .= '<br><div class="center"><div class="ok suggestedchoice">' . $this->lang->trans("InstallChoiceSuggested") . '</div></div>';
         }
 
-        $this->availableChoices[] = $choice;
-
         $positionkey = ($foundrecommandedchoice ? 999 : 0);
         if ($this->allowInstall) {
-            $available_choices[$positionkey] = $choice;
+            $this->availableChoices[$positionkey] = $choice;
         } else {
-            $notavailable_choices[$positionkey] = $choice;
+            $this->notAvailableChoices[$positionkey] = $choice;
         }
 
         // Show upgrade lines
         $allowupgrade = true;
-        if (empty($config->main_db_host)) {    // This means install process was not run
+        if (empty($this->config->main_db_host)) {    // This means install process was not run
             $allowupgrade = false;
         }
         if (Functions::getDolGlobalInt("MAIN_NOT_INSTALLED")) {
@@ -1042,78 +1036,11 @@ class Install extends BasicController
     private function checks($value): bool
     {
         $ok = true;
-        if ($value) {
+        if (isset($value['ok'])) {
             $this->checks[] = $value;
             $ok = $value['ok'];
         }
         return $ok;
-    }
-
-    /**
-     * Perform a prerequisite check
-     *
-     * @return bool
-     */
-    public function actionChecked(): bool
-    {
-        $ok = true;
-
-        $this->template = 'install/checked';
-
-        $this->checks = [];
-        $ok = $ok && $this->checks($this->checkBrowser());
-        $ok = $ok && $this->checks($this->checkMinPhp());
-        $ok = $ok && $this->checks($this->checkMaxPhp());
-        $ok = $ok && $this->checks($this->checkGetPostSupport());
-        $ok = $ok && $this->checks($this->checkSessionId());
-        $ok = $ok && $this->checks($this->checkMbStringExtension());
-        $ok = $ok && $this->checks($this->checkJsonExtension());
-        $ok = $ok && $this->checks($this->checkGdExtension());
-        $ok = $ok && $this->checks($this->checkCurlExtension());
-        $ok = $ok && $this->checks($this->checkCalendarExtension());
-        $ok = $ok && $this->checks($this->checkXmlExtension());
-        $ok = $ok && $this->checks($this->checkUtfExtension());
-        $ok = $ok && $this->checks($this->checkIntlExtension());
-        $ok = $ok && $this->checks($this->checkImapExtension());
-        $ok = $ok && $this->checks($this->checkZipExtension());
-        $ok = $ok && $this->checks($this->checkMemory());
-
-        if (!$ok) {
-            $this->checks[] = [
-                'icon' => 'error',
-                'text' => $this->lang->trans('ErrorGoBackAndCorrectParameters'),
-            ];
-            return $ok;
-        }
-
-        $ok = $this->checks($this->checkConfFile());
-
-        $conffile = Globals::getConfFilename();
-        if (!file_exists($conffile)) {
-            $text = $this->lang->trans('YouMustCreateWithPermission', $conffile);
-            $text .= '<br><br>';
-            $text .= '<span class="opacitymedium">' . $this->lang->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'] . '?testget=ok') . '</span>';
-
-            $this->checks[] = [
-                'icon' => 'error',
-                'text' => $text,
-            ];
-
-            return false;
-        }
-
-        $ok = $ok && $this->checks($this->checkIfWritable());
-        if (!$ok) {
-            $this->checks[] = [
-                'icon' => 'error',
-                'text' => $this->lang->trans('ErrorGoBackAndCorrectParameters'),
-            ];
-            return false;
-        }
-
-        $this->next();
-
-        return true;
     }
 
     private function getDbTypes()
@@ -1171,103 +1098,180 @@ class Install extends BasicController
 
     }
 
+    /**
+     * Code to execute if there is no action defined.
+     * During installation, the only case in which there is no defined action is
+     * on the direct execution.
+     *
+     * Views: install/install
+     *
+     * The install/install view allows to select the language.
+     *
+     * @return bool
+     */
+    public function noAction(): bool
+    {
+        $this->lang->loadLangs(['main', 'admin', 'install']);
+
+        if (isset($this->config->main_url_root)) {
+            return $this->actionChecked();
+        }
+
+        $this->template = 'install/install';
+        $this->nextButton = true;
+
+        $form = new FormAdmin(null);
+        $this->noReadableConfig = $this->lang->trans('NoReadableConfFileSoStartInstall');
+        $this->defaultLanguage = $this->lang->trans('DefaultLanguage');
+        $this->htmlComboLanguages = $form->select_language('auto', 'selectlang', 1, 0, 0, 1);
+
+        return true;
+    }
+
+    /**
+     * Perform a prerequisite check
+     *
+     * Views: install/checked
+     *
+     * Performs a check of the prerequisites, to verify that the installation can be carried out and
+     * informing if there is anything to correct.
+     * Shows a list with all the options available or not, for installing or updating the application.
+     *
+     * @return bool
+     */
+    public function actionChecked(): bool
+    {
+        $this->template = 'install/checked';
+
+        $this->checks = [];
+        $ok = true;
+        $ok = $ok && $this->checks($this->checkBrowser());
+        $ok = $ok && $this->checks($this->checkMinPhp());
+        $ok = $ok && $this->checks($this->checkMaxPhp());
+        $ok = $ok && $this->checks($this->checkGetPostSupport());
+        $ok = $ok && $this->checks($this->checkSessionId());
+        $ok = $ok && $this->checks($this->checkMbStringExtension());
+        $ok = $ok && $this->checks($this->checkJsonExtension());
+        $ok = $ok && $this->checks($this->checkGdExtension());
+        $ok = $ok && $this->checks($this->checkCurlExtension());
+        $ok = $ok && $this->checks($this->checkCalendarExtension());
+        $ok = $ok && $this->checks($this->checkXmlExtension());
+        $ok = $ok && $this->checks($this->checkUtfExtension());
+        $ok = $ok && $this->checks($this->checkIntlExtension());
+        $ok = $ok && $this->checks($this->checkImapExtension());
+        $ok = $ok && $this->checks($this->checkZipExtension());
+        $ok = $ok && $this->checks($this->checkMemory());
+
+        if (!$ok) {
+            $this->checks[] = [
+                'icon' => 'error',
+                'text' => $this->lang->trans('ErrorGoBackAndCorrectParameters'),
+            ];
+            return $ok;
+        }
+
+        $ok = $this->checks($this->checkConfFile());
+
+        $conffile = Globals::getConfFilename();
+        if (!file_exists($conffile)) {
+            $text = $this->lang->trans('YouMustCreateWithPermission', $conffile);
+            $text .= '<br><br>';
+            $text .= '<span class="opacitymedium">' . $this->lang->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'] . '?testget=ok') . '</span>';
+
+            $this->checks[] = [
+                'icon' => 'error',
+                'text' => $text,
+            ];
+
+            return false;
+        }
+
+        $ok = $ok && $this->checks($this->checkIfWritable());
+        if (!$ok) {
+            $this->checks[] = [
+                'icon' => 'error',
+                'text' => $this->lang->trans('ErrorGoBackAndCorrectParameters'),
+            ];
+            return false;
+        }
+
+        $this->next();
+
+        $this->miscellaneousChecks = $this->lang->trans('MiscellaneousChecks');
+        $this->badMainDocumentRoot = '';
+        if ($this->errorBadMainDocumentRoot) {
+            $this->badMainDocumentRoot = $this->lang->trans($this->errorBadMainDocumentRoot);
+        }
+        $this->versionLastUpgradeMessage = $this->lang->trans("VersionLastUpgrade");
+        $this->versionLastUpgrade = '';
+        if (Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') || Functions::getDolGlobalString('MAIN_VERSION_LAST_INSTALL')) {
+            $this->versionLastUpgrade = (!Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE')
+                ? $this->conf->global->MAIN_VERSION_LAST_INSTALL
+                : $this->conf->global->MAIN_VERSION_LAST_UPGRADE
+            );
+        }
+        $this->versionProgramMessage = $this->lang->trans("VersionProgram");
+        $this->chooseYourSetupMode = $this->lang->trans("ChooseYourSetupMode");
+        $this->showNotAvailableOptions = $this->lang->trans('ShowNotAvailableOptions');
+        $this->warningUpdates = Functions::dol_escape_js($this->lang->transnoentitiesnoconv('WarningUpdates'), 0, 1);
+
+        return true;
+    }
+
+    /**
+     * Shows a form with all the application configuration options.
+     *
+     * Views: install/start
+     *
+     * @return true
+     */
     public function actionStart()
     {
         $this->template = 'install/start';
         $this->nextButton = true;
-
-        $err = 0;
+        $this->nextButtonJs = 'return jscheckparam();';
 
         $this->dolibarr_install_syslog("- fileconf: entering fileconf.php page");
 
-// You can force preselected values of the config step of Dolibarr by adding a file
-// install.forced.php into directory htdocs/install (This is the case with some wizard
-// installer like DoliWamp, DoliMamp or DoliBuntu).
-// We first init "forced values" to nothing.
-        if (!isset($force_install_noedit)) {
-            $force_install_noedit = ''; // 1=To block vars specific to distrib, 2 to block all technical parameters
-        }
-        if (!isset($force_install_type)) {
-            $force_install_type = '';
-        }
-        if (!isset($force_install_dbserver)) {
-            $force_install_dbserver = '';
-        }
-        if (!isset($force_install_port)) {
-            $force_install_port = '';
-        }
-        if (!isset($force_install_database)) {
-            $force_install_database = '';
-        }
-        if (!isset($force_install_prefix)) {
-            $force_install_prefix = '';
-        }
-        if (!isset($force_install_createdatabase)) {
-            $force_install_createdatabase = '';
-        }
-        if (!isset($force_install_databaselogin)) {
-            $force_install_databaselogin = '';
-        }
-        if (!isset($force_install_databasepass)) {
-            $force_install_databasepass = '';
-        }
-        if (!isset($force_install_databaserootlogin)) {
-            $force_install_databaserootlogin = '';
-        }
-        if (!isset($force_install_databaserootpass)) {
-            $force_install_databaserootpass = '';
-        }
-
-        $this->force_install_noedit = $force_install_noedit;
-        $this->force_install_database = $force_install_database;
-
-
-        /*
-        // Now we load forced values from install.forced.php file.
-        $useforcedwizard = false;
-        $forcedfile = "./install.forced.php";
-        if ($conffile == "/etc/dolibarr/conf.php") {
-            $forcedfile = "/etc/dolibarr/install.forced.php"; // Must be after inc.php
-        }
-        if (@file_exists($forcedfile)) {
-            $useforcedwizard = true;
-            include_once $forcedfile;
-        }
-        */
+        /**
+         * TODO: It could be implemented using a file to force configuration.
+         *
+         * // Now we load forced values from install.forced.php file.
+         * $useforcedwizard = false;
+         * $forcedfile = "./install.forced.php";
+         * if ($conffile == "/etc/dolibarr/conf.php") {
+         *    $forcedfile = "/etc/dolibarr/install.forced.php"; // Must be after inc.php
+         * }
+         * if (@file_exists($forcedfile)) {
+         *    $useforcedwizard = true;
+         *    include_once $forcedfile;
+         * }
+         */
 
         session_start(); // To be able to keep info into session (used for not losing pass during navigation. pass must not transit through parameters)
 
         $this->subtitle = $this->lang->trans("ConfigurationFile");
 
-        /**
-         * It has been verified before
-         *
-         *
-         * // Test if we can run a first install process
-         * if (!is_writable($conffile)) {
-         * print $this->lang->trans("ConfFileIsNotWritable", $conffiletoshow);
-         * $this->dolibarr_install_syslog("fileconf: config file is not writable", LOG_WARNING);
-         * $this->dolibarr_install_syslog("- fileconf: end");
-         * pFooter(1, $setuplang, 'jscheckparam');
-         * exit;
-         * }
-         */
-
         if (empty($this->config->main_document_root)) {
             $this->config->main_document_root = BASE_PATH;
         }
+
         if (!empty($force_install_main_data_root)) {
-            $this->config->main_data_root = @$force_install_main_data_root;
+            $this->config->main_data_root = $force_install_main_data_root;
         }
+
         if (empty($this->config->main_data_root)) {
             $this->config->main_data_root = Functions::GETPOSTISSET('main_data_dir') ? Functions::GETPOST('main_data_dir') : $this->detect_dolibarr_main_data_root($this->config->main_document_root);
         }
+
         if (empty($this->config->main_url_root)) {
             $this->config->main_url_root = Functions::GETPOSTISSET('main_url') ? Functions::GETPOST('main_url') : $this->detect_dolibarr_main_url_root();
         }
+
         if (empty($this->config->main_db_type)) {
             $this->config->main_db_type = 'mysqli';
         }
+
         if (!isset($this->config->main_db_host)) {
             $this->config->main_db_host = "localhost";
         }
@@ -1275,7 +1279,7 @@ class Install extends BasicController
         $this->db_types = $this->getDbTypes();
 
         // If $force_install_databasepass is on, we don't want to set password, we just show '***'. Real value will be extracted from the forced install file at step1.
-        $autofill = ((!empty($_SESSION['dol_save_pass'])) ? $_SESSION['dol_save_pass'] : str_pad('', strlen($force_install_databasepass), '*'));
+        $autofill = ((!empty($_SESSION['dol_save_pass'])) ? $_SESSION['dol_save_pass'] : str_pad('', strlen($force_install_databasepass ?? ''), '*'));
         if (!empty($dolibarr_main_prod) && empty($_SESSION['dol_save_pass'])) {    // So value can't be found if install page still accessible
             $autofill = '';
         }
@@ -1284,11 +1288,11 @@ class Install extends BasicController
         $this->install_port = !empty($force_install_port) ? $force_install_port : $this->config->main_db_port;
         $this->install_prefix = !empty($force_install_prefix) ? $force_install_prefix : (!empty($this->config->main_db_prefix) ? $this->config->main_db_prefix : Globals::DEFAULT_DB_PREFIX);
 
-        $this->install_createdatabase = $force_install_createdatabase;
-        $this->install_noedit = $force_install_noedit == 2 && $force_install_createdatabase !== null;
+        $this->install_createdatabase = $force_install_createdatabase ?? '';
+        $this->install_noedit = ($force_install_noedit ?? '') == 2 && $force_install_createdatabase !== null;
 
-        $this->force_install_databaserootlogin = $this->parse_database_login($force_install_databaserootlogin);
-        $this->force_install_databaserootpass = $this->parse_database_pass($force_install_databaserootpass);
+        $this->force_install_databaserootlogin = $this->parse_database_login($force_install_databaserootlogin ?? '');
+        $this->force_install_databaserootpass = $this->parse_database_pass($force_install_databaserootpass ?? '');
 
         $this->install_databaserootlogin = (!empty($force_install_databaserootlogin)) ? $force_install_databaserootlogin : (Functions::GETPOSTISSET('db_user_root') ? Functions::GETPOST('db_user_root') : (isset($this->db_user_root) ? $this->db_user_root : ''));
 
@@ -1309,7 +1313,9 @@ class Install extends BasicController
         }    // Do not autofill password for remote access
         $this->autofill_pass_root = Functions::dol_escape_htmltag($autofill_pass_root);
 
-        $this->nextButtonJs = 'return jscheckparam();';
+        $this->force_install_noedit = $force_install_noedit ?? false;
+        $this->force_install_database = $force_install_database ?? false;
+        $this->webPagesDirectory = $this->lang->trans("WebPagesDirectory");
 
         return true;
     }
@@ -1325,16 +1331,16 @@ class Install extends BasicController
 
         $this->lang->loadLangs(["admin", "install", "errors"]);
 
-// Dolibarr pages directory
+        // Dolibarr pages directory
         $this->main_dir = Functions::GETPOST('main_dir') ? Functions::GETPOST('main_dir') : (empty($argv[3]) ? '' : $argv[3]);
-// Directory for generated documents (invoices, orders, ecm, etc...)
+        // Directory for generated documents (invoices, orders, ecm, etc...)
         $this->main_data_dir = Functions::GETPOST('main_data_dir') ? Functions::GETPOST('main_data_dir') : (empty($argv[4]) ? ($this->main_dir . '/documents') : $argv[4]);
-// Dolibarr root URL
+        // Dolibarr root URL
         $this->main_url = Functions::GETPOST('main_url') ? Functions::GETPOST('main_url') : (empty($argv[5]) ? '' : $argv[5]);
-// Database login information
+        // Database login information
         $userroot = Functions::GETPOST('db_user_root', 'alpha') ? Functions::GETPOST('db_user_root', 'alpha') : (empty($argv[6]) ? '' : $argv[6]);
         $passroot = Functions::GETPOST('db_pass_root', 'none') ? Functions::GETPOST('db_pass_root', 'none') : (empty($argv[7]) ? '' : $argv[7]);
-// Database server
+        // Database server
         $this->db_type = Functions::GETPOST('db_type', 'aZ09') ? Functions::GETPOST('db_type', 'aZ09') : (empty($argv[8]) ? '' : $argv[8]);
         $this->db_host = Functions::GETPOST('db_host', 'alpha') ? Functions::GETPOST('db_host', 'alpha') : (empty($argv[9]) ? '' : $argv[9]);
         $this->db_name = Functions::GETPOST('db_name', 'aZ09') ? Functions::GETPOST('db_name', 'aZ09') : (empty($argv[10]) ? '' : $argv[10]);
@@ -1344,24 +1350,27 @@ class Install extends BasicController
         $this->db_prefix = Functions::GETPOST('db_prefix', 'aZ09') ? Functions::GETPOST('db_prefix', 'aZ09') : (empty($argv[14]) ? '' : $argv[14]);
         $this->db_create_database = Functions::GETPOST('db_create_database', 'alpha') ? Functions::GETPOST('db_create_database', 'alpha') : (empty($argv[15]) ? '' : $argv[15]);
         $this->db_create_user = Functions::GETPOST('db_create_user', 'alpha') ? Functions::GETPOST('db_create_user', 'alpha') : (empty($argv[16]) ? '' : $argv[16]);
-// Force https
+        // Force https
         $this->main_force_https = ((Functions::GETPOST("main_force_https", 'alpha') && (Functions::GETPOST("main_force_https", 'alpha') == "on" || Functions::GETPOST("main_force_https", 'alpha') == 1)) ? '1' : '0');
-// Use alternative directory
+        // Use alternative directory
         $this->main_use_alt_dir = ((Functions::GETPOST("main_use_alt_dir", 'alpha') == '' || (Functions::GETPOST("main_use_alt_dir", 'alpha') == "on" || Functions::GETPOST("main_use_alt_dir", 'alpha') == 1)) ? '' : '//');
-// Alternative root directory name
+        // Alternative root directory name
         $this->main_alt_dir_name = ((Functions::GETPOST("main_alt_dir_name", 'alpha') && Functions::GETPOST("main_alt_dir_name", 'alpha') != '') ? Functions::GETPOST("main_alt_dir_name", 'alpha') : 'custom');
 
         $this->dolibarr_main_distrib = 'standard';
 
         session_start(); // To be able to keep info into session (used for not losing password during navigation. The password must not transit through parameters)
 
-// Save a flag to tell to restore input value if we go back
+        // Save a flag to tell to restore input value if we go back
         $_SESSION['dol_save_pass'] = $this->db_pass;
-//$_SESSION['dol_save_passroot']=$passroot;
+        //$_SESSION['dol_save_passroot']=$passroot;
 
         $conffile = Globals::getConfFilename();
 
-// Now we load forced values from install.forced.php file.
+        // Now we load forced values from install.forced.php file.
+        /*
+         * TODO: It could be implemented using a file to force configuration.
+         *
         $useforcedwizard = false;
         $forcedfile = "./install.forced.php";
         if ($conffile == "/etc/dolibarr/conf.php") {
@@ -1439,6 +1448,7 @@ class Install extends BasicController
                 $this->dolibarr_main_distrib = $force_install_distrib;
             }
         }
+        */
 
         $this->dolibarr_install_syslog("--- step1: entering step1.php page");
 
@@ -1507,119 +1517,104 @@ class Install extends BasicController
 
         // Test database connection
         if (!$error) {
-            $result = @include_once $enginesDir . $this->db_type . '.php';
-
-            if ($result) {
-                // If we require database or user creation we need to connect as root, so we need root login credentials
-                if (!empty($this->db_create_database) && !$userroot) {
-                    print '
+            // If we require database or user creation we need to connect as root, so we need root login credentials
+            if (!empty($this->db_create_database) && !$userroot) {
+                print '
         <div class="error">' . $this->lang->trans("YouAskDatabaseCreationSoDolibarrNeedToConnect", $this->db_name) . '</div>
         ';
-                    print '<br>';
-                    print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
-                    $error++;
-                }
-                if (!empty($this->db_create_user) && !$userroot) {
-                    print '
+                print '<br>';
+                print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                $error++;
+            }
+            if (!empty($this->db_create_user) && !$userroot) {
+                print '
         <div class="error">' . $this->lang->trans("YouAskLoginCreationSoDolibarrNeedToConnect", $this->db_user) . '</div>
         ';
-                    print '<br>';
-                    print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
-                    $error++;
+                print '<br>';
+                print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                $error++;
+            }
+
+            // If we need root access
+            if (!$error && (!empty($this->db_create_database) || !empty($this->db_create_user))) {
+                $databasefortest = $this->db_name;
+                if (!empty($this->db_create_database)) {
+                    if ($this->db_type == 'mysql' || $this->db_type == 'mysqli') {
+                        $databasefortest = 'mysql';
+                    } elseif ($this->db_type == 'pgsql') {
+                        $databasefortest = 'postgres';
+                    } else {
+                        $databasefortest = 'master';
+                    }
                 }
 
-                // If we need root access
-                if (!$error && (!empty($this->db_create_database) || !empty($this->db_create_user))) {
-                    $databasefortest = $this->db_name;
-                    if (!empty($this->db_create_database)) {
-                        if ($this->db_type == 'mysql' || $this->db_type == 'mysqli') {
-                            $databasefortest = 'mysql';
-                        } elseif ($this->db_type == 'pgsql') {
-                            $databasefortest = 'postgres';
-                        } else {
-                            $databasefortest = 'master';
-                        }
-                    }
+                $db = Functions::getDoliDBInstance($this->db_type, $this->db_host, $userroot, $passroot, $databasefortest, (int) $this->db_port);
 
-                    $db = Functions::getDoliDBInstance($this->db_type, $this->db_host, $userroot, $passroot, $databasefortest, (int) $this->db_port);
+                Functions::dol_syslog("databasefortest=" . $databasefortest . " connected=" . DB::$connected . " database_selected=" . $db->database_selected, LOG_DEBUG);
+                //print "databasefortest=".$databasefortest." connected=".DB::$connected." database_selected=".$db->database_selected;
 
-                    Functions::dol_syslog("databasefortest=" . $databasefortest . " connected=" . $db->connected . " database_selected=" . $db->database_selected, LOG_DEBUG);
-                    //print "databasefortest=".$databasefortest." connected=".$db->connected." database_selected=".$db->database_selected;
-
-                    if (empty($this->db_create_database) && $db->connected && !$db->database_selected) {
-                        print '
+                if (empty($this->db_create_database) && DB::$connected && !$db->database_selected) {
+                    print '
         <div class="error">' . $this->lang->trans("ErrorConnectedButDatabaseNotFound", $this->db_name) . '</div>
         ';
-                        print '<br>';
-                        if (!$db->connected) {
-                            print $this->lang->trans("IfDatabaseNotExistsGoBackAndUncheckCreate") . '<br><br>';
-                        }
-                        print $this->lang->trans("ErrorGoBackAndCorrectParameters");
-                        $error++;
-                    } elseif ($db->error && !(!empty($this->db_create_database) && $db->connected)) {
-                        // Note: you may experience error here with message "No such file or directory" when mysql was installed for the first time but not yet launched.
-                        if ($db->error == "No such file or directory") {
-                            print '
+                    print '<br>';
+                    if (!DB::$connected) {
+                        print $this->lang->trans("IfDatabaseNotExistsGoBackAndUncheckCreate") . '<br><br>';
+                    }
+                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                    $error++;
+                } elseif ($db->error && !(!empty($this->db_create_database) && DB::$connected)) {
+                    // Note: you may experience error here with message "No such file or directory" when mysql was installed for the first time but not yet launched.
+                    if ($db->error == "No such file or directory") {
+                        print '
         <div class="error">' . $this->lang->trans("ErrorToConnectToMysqlCheckInstance") . '</div>
         ';
-                        } else {
-                            print '
-        <div class="error">' . $db->error . '</div>
-        ';
-                        }
-                        if (!$db->connected) {
-                            print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                        }
-                        //print '<a href="#" onClick="javascript: history.back();">';
-                        print $this->lang->trans("ErrorGoBackAndCorrectParameters");
-                        //print '</a>';
-                        $error++;
-                    }
-                }
-
-                // If we need simple access
-                if (!$error && (empty($this->db_create_database) && empty($this->db_create_user))) {
-                    $db = Functions::getDoliDBInstance($this->db_type, $this->db_host, $this->db_user, $this->db_pass, $this->db_name, (int) $this->db_port);
-
-                    if ($db->error) {
+                    } else {
                         print '
         <div class="error">' . $db->error . '</div>
         ';
-                        if (!$db->connected) {
-                            print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                        }
-                        //print '<a href="#" onClick="javascript: history.back();">';
-                        print $this->lang->trans("ErrorGoBackAndCorrectParameters");
-                        //print '</a>';
-                        $error++;
                     }
+                    if (!DB::$connected) {
+                        print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                    }
+                    //print '<a href="#" onClick="javascript: history.back();">';
+                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                    //print '</a>';
+                    $error++;
                 }
-            } else {
-                print "<br>\nFailed to include_once(\"" . $enginesDir . $this->db_type . ".class.php\")<br>\n";
-                print '
-        <div class="error">' . $this->lang->trans("ErrorWrongValueForParameter",
-                        $this->lang->transnoentities("WebPagesDirectory")) . '
-        </div>
+            }
+
+            // If we need simple access
+            if (!$error && (empty($this->db_create_database) && empty($this->db_create_user))) {
+                $db = Functions::getDoliDBInstance($this->db_type, $this->db_host, $this->db_user, $this->db_pass, $this->db_name, (int) $this->db_port);
+
+                if ($db->error) {
+                    print '
+        <div class="error">' . $db->error . '</div>
         ';
-                //print '<a href="#" onClick="javascript: history.back();">';
-                print $this->lang->trans("ErrorGoBackAndCorrectParameters");
-                //print '</a>';
-                $error++;
+                    if (!DB::$connected) {
+                        print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                    }
+                    //print '<a href="#" onClick="javascript: history.back();">';
+                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                    //print '</a>';
+                    $error++;
+                }
             }
         } else {
             if (isset($db)) {
                 print $db->lasterror();
             }
-            if (isset($db) && !$db->connected) {
+            if (isset($db) && !DB::$connected) {
                 print '<br>' . $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
             }
             print $this->lang->trans("ErrorGoBackAndCorrectParameters");
             $error++;
         }
 
-        if (!$error && $db->connected) {
+        if (!$error && DB::$connected) {
             if (!empty($this->db_create_database)) {
                 $result = $db->select_db($this->db_name);
                 if ($result) {
@@ -1631,8 +1626,8 @@ class Install extends BasicController
             }
         }
 
-// Define $defaultCharacterSet and $defaultDBSortingCollation
-        if (!$error && $db->connected) {
+        // Define $defaultCharacterSet and $defaultDBSortingCollation
+        if (!$error && DB::$connected) {
             if (!empty($this->db_create_database)) {    // If we create database, we force default value
                 // Default values come from the database handler
 
@@ -1662,8 +1657,8 @@ class Install extends BasicController
             $this->dolibarr_install_syslog("step1: db_character_set=" . $this->db_character_set . " db_collation=" . $this->db_collation);
         }
 
-// Create config file
-        if (!$error && $db->connected) {
+        // Create config file
+        if (!$error && DB::$connected) {
             umask(0);
             if (is_array($_POST)) {
                 foreach ($_POST as $key => $value) {
@@ -1841,19 +1836,19 @@ class Install extends BasicController
                 if (isset($this->db_create_user) && ($this->db_create_user == "1" || $this->db_create_user == "on")) {
                     $this->dolibarr_install_syslog("step1: create database user: " . $this->config->main_db_user);
 
-                    //print $this->conf->db->host." , ".$this->conf->db->name." , ".$this->conf->db->user." , ".$this->conf->db->port;
-                    $databasefortest = $this->conf->db->name;
-                    if ($this->conf->db->type == 'mysql' || $this->conf->db->type == 'mysqli') {
+                    //print $this->db_host." , ".$this->db_name." , ".$this->db_user." , ".$this->db_port;
+                    $databasefortest = $this->db_name;
+                    if ($this->db_type == 'mysql' || $this->db_type == 'mysqli') {
                         $databasefortest = 'mysql';
-                    } elseif ($this->conf->db->type == 'pgsql') {
+                    } elseif ($this->db_type == 'pgsql') {
                         $databasefortest = 'postgres';
-                    } elseif ($this->conf->db->type == 'mssql') {
+                    } elseif ($this->db_type == 'mssql') {
                         $databasefortest = 'master';
                     }
 
                     // Check database connection
 
-                    $db = Functions::getDoliDBInstance($this->conf->db->type, $this->conf->db->host, $userroot, $passroot, $databasefortest, (int) $this->conf->db->port);
+                    $db = Functions::getDoliDBInstance($this->db_type, $this->db_host, $userroot, $passroot, $databasefortest, (int) $this->db_port);
 
                     if ($db->error) {
                         print '<div class="error">' . $db->error . '</div>';
@@ -1861,7 +1856,7 @@ class Install extends BasicController
                     }
 
                     if (!$error) {
-                        if ($db->connected) {
+                        if (DB::$connected) {
                             $resultbis = 1;
 
                             if (empty($dolibarr_main_db_pass)) {
@@ -1911,6 +1906,7 @@ class Install extends BasicController
                                 }
                             }
 
+                            dd(['1 $db->close()' => $db]);
                             $db->close();
                         } else {
                             print '<tr><td>';
@@ -1933,17 +1929,14 @@ class Install extends BasicController
                     }
                 }   // end of user account creation
 
-
                 // If database creation was asked, we create it
                 if (!$error && (isset($this->db_create_database) && ($this->db_create_database == "1" || $this->db_create_database == "on"))) {
                     $this->dolibarr_install_syslog("step1: create database: " . $dolibarr_main_db_name . " " . $dolibarr_main_db_character_set . " " . $dolibarr_main_db_collation . " " . $dolibarr_main_db_user);
-                    $newdb = Functions::getDoliDBInstance($this->conf->db->type, $this->conf->db->host, $userroot, $passroot, '', (int) $this->conf->db->port);
-                    //print 'eee'.$this->conf->db->type." ".$this->conf->db->host." ".$userroot." ".$passroot." ".$this->conf->db->port." ".$newdb->connected." ".$newdb->forcecharset;exit;
+                    $newdb = Functions::getDoliDBInstance($this->db_type, $this->db_host, $userroot, $passroot, '', (int) $this->db_port);
+                    //print 'eee'.$this->db_type." ".$this->db_host." ".$userroot." ".$passroot." ".$this->db_port." ".$newdb->connected." ".$newdb->forcecharset;exit;
 
-                    if ($newdb->connected) {
-                        $result = $newdb->DDLCreateDb($dolibarr_main_db_name, $dolibarr_main_db_character_set, $dolibarr_main_db_collation, $dolibarr_main_db_user);
-
-                        if ($result) {
+                    if ($newdb->connected()) {
+                        if ($newdb->DDLCreateDb($dolibarr_main_db_name, $dolibarr_main_db_character_set, $dolibarr_main_db_collation, $dolibarr_main_db_user)) {
                             print '<tr><td>';
                             print $this->lang->trans("DatabaseCreation") . " (" . $this->lang->trans("User") . " " . $userroot . ") : ";
                             print $dolibarr_main_db_name;
@@ -1970,7 +1963,9 @@ class Install extends BasicController
                             $this->dolibarr_install_syslog('step1: failed to create database ' . $dolibarr_main_db_name . ' ' . $newdb->lasterrno() . ' ' . $newdb->lasterror(), LOG_ERR);
                             $error++;
                         }
-                        $newdb->close();
+
+                        $newdb = null;
+                        DB::disconnect();
                     } else {
                         print '<tr><td>';
                         print $this->lang->trans("DatabaseCreation") . " (" . $this->lang->trans("User") . " " . $userroot . ") : ";
@@ -1991,18 +1986,25 @@ class Install extends BasicController
                     }
                 }   // end of create database
 
-
                 // We test access with dolibarr database user (not admin)
                 if (!$error) {
-                    $this->dolibarr_install_syslog("step1: connection type=" . $this->conf->db->type . " on host=" . $this->conf->db->host . " port=" . $this->conf->db->port . " user=" . $this->conf->db->user . " name=" . $this->conf->db->name);
-                    //print "connection de type=".$this->conf->db->type." sur host=".$this->conf->db->host." port=".$this->conf->db->port." user=".$this->conf->db->user." name=".$this->conf->db->name;
+                    $this->dolibarr_install_syslog("step1: connection type=" . $this->db_type . " on host=" . $this->db_host . " port=" . $this->db_port . " user=" . $this->db_user . " name=" . $this->db_name);
+                    //print "connection de type=".$this->db_type." sur host=".$this->db_host." port=".$this->db_port." user=".$this->db_user." name=".$this->db_name;
 
-                    $db = Functions::getDoliDBInstance($this->conf->db->type, $this->conf->db->host, $this->conf->db->user, $this->conf->db->pass, $this->conf->db->name, (int) $this->conf->db->port);
+                    DB::disconnect();
+                    $db = Functions::getDoliDBInstance(
+                        $this->db_type,
+                        $this->db_host,
+                        $this->db_user,
+                        $this->db_pass,
+                        $this->db_name,
+                        (int) $this->db_port
+                    );
 
-                    if ($db->connected) {
-                        $this->dolibarr_install_syslog("step1: connection to server by user " . $this->conf->db->user . " ok");
+                    if (DB::$connected) {
+                        $this->dolibarr_install_syslog("step1: connection to server by user " . $this->db_user . " ok");
                         print "<tr><td>";
-                        print $this->lang->trans("ServerConnection") . " (" . $this->lang->trans("User") . " " . $this->conf->db->user . ") : ";
+                        print $this->lang->trans("ServerConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
                         print $this->db_host;
                         print "</td><td>";
                         print '<img src="Resources/img/ok.png" alt="Ok">';
@@ -2010,9 +2012,9 @@ class Install extends BasicController
 
                         // server access ok, basic access ok
                         if ($db->database_selected) {
-                            $this->dolibarr_install_syslog("step1: connection to database " . $this->conf->db->name . " by user " . $this->conf->db->user . " ok");
+                            $this->dolibarr_install_syslog("step1: connection to database " . $this->db_name . " by user " . $this->db_user . " ok");
                             print "<tr><td>";
-                            print $this->lang->trans("DatabaseConnection") . " (" . $this->lang->trans("User") . " " . $this->conf->db->user . ") : ";
+                            print $this->lang->trans("DatabaseConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
                             print $this->db_name;
                             print "</td><td>";
                             print '<img src="Resources/img/ok.png" alt="Ok">';
@@ -2020,9 +2022,9 @@ class Install extends BasicController
 
                             $error = 0;
                         } else {
-                            $this->dolibarr_install_syslog("step1: connection to database " . $this->conf->db->name . " by user " . $this->conf->db->user . " failed", LOG_ERR);
+                            $this->dolibarr_install_syslog("step1: connection to database " . $this->db_name . " by user " . $this->db_user . " failed", LOG_ERR);
                             print "<tr><td>";
-                            print $this->lang->trans("DatabaseConnection") . " (" . $this->lang->trans("User") . " " . $this->conf->db->user . ") : ";
+                            print $this->lang->trans("DatabaseConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
                             print $this->db_name;
                             print '</td><td>';
                             print '<img src="Resources/img/error.png" alt="Error">';
@@ -2038,9 +2040,9 @@ class Install extends BasicController
                             $error++;
                         }
                     } else {
-                        $this->dolibarr_install_syslog("step1: connection to server by user " . $this->conf->db->user . " failed", LOG_ERR);
+                        $this->dolibarr_install_syslog("step1: connection to server by user " . $this->db_user . " failed", LOG_ERR);
                         print "<tr><td>";
-                        print $this->lang->trans("ServerConnection") . " (" . $this->lang->trans("User") . " " . $this->conf->db->user . ") : ";
+                        print $this->lang->trans("ServerConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
                         print $this->db_host;
                         print '</td><td>';
                         print '<img src="Resources/img/error.png" alt="Error">';
@@ -2048,7 +2050,7 @@ class Install extends BasicController
 
                         // warning message
                         print '<tr><td colspan="2"><br>';
-                        print $this->lang->trans("ErrorConnection", $this->conf->db->host, $this->conf->db->name, $this->conf->db->user);
+                        print $this->lang->trans("ErrorConnection", $this->db_host, $this->db_name, $this->db_user);
                         print $this->lang->trans('IfLoginDoesNotExistsCheckCreateUser') . '<br>';
                         print $this->lang->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
                         print '</td></tr>';
@@ -2088,6 +2090,8 @@ class Install extends BasicController
         $this->subtitle = $this->lang->trans("CreateDatabaseObjects");
         $this->nextButton = true;
 
+        $this->errors = [];
+
 // This page can be long. We increase the time allowed. / Cette page peut etre longue. On augmente le delai autorise.
 // Only works if you are not in safe_mode. / Ne fonctionne que si on est pas en safe_mode.
 
@@ -2103,6 +2107,7 @@ class Install extends BasicController
         $conffile = Globals::getConfFilename();
         $conf = Globals::getConfig();
         $this->conf = Globals::getConf();
+        $db = Globals::getDb();
 
 // Choice of DBMS
         $choix = 0;
@@ -2127,6 +2132,9 @@ class Install extends BasicController
 // Now we load forced values from install.forced.php file.
 
         $useforcedwizard = false;
+        /*
+         * TODO: It could be implemented using a file to force configuration.
+         *
         $forcedfile = "./install.forced.php";
         if ($conffile == "/etc/dolibarr/conf.php") {
             $forcedfile = "/etc/dolibarr/install.forced.php";
@@ -2139,59 +2147,53 @@ class Install extends BasicController
                 $action = "set";
             }
         }
+*/
 
         $this->dolibarr_install_syslog("--- step2: entering step2.php page");
 
-
-        /*
-         *	View
-         */
-
-// Test if we can run a first install process
+        // Test if we can run a first install process
+        $this->fatalError = false;
         if (!is_writable($conffile)) {
-            print $this->lang->trans("ConfFileIsNotWritable", $conffiletoshow);
-            //pFooter(1, $setuplang, 'jscheckparam');
+            $this->fatalError = $this->lang->trans("ConfFileIsNotWritable", $conffile);
             exit;
         }
 
-        if ($action == "set") {
-            print '<h3><img class="valignmiddle inline-block paddingright" src="../theme/common/octicons/build/svg/database.svg" width="20" alt="Database"> ' . $this->lang->trans("Database") . '</h3>';
-
-            print '<table cellspacing="0" style="padding: 4px 4px 4px 0" border="0" width="100%">';
+        if ($action == "set" || true) {
             $error = 0;
 
-            $db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+            //$db = Functions::getDoliDBInstance($conf->main_db_type, $conf->main_db_host, $conf->main_db_user, $conf->main_db_pass, $conf->main_db_name, (int) $conf->main_db_port);
 
-            if ($db->connected) {
-                print "<tr><td>";
-                print $this->lang->trans("ServerConnection") . " : " . $conf->db->host . '</td><td><img src="../theme/eldy/img/tick.png" alt="Ok"></td></tr>';
+            if (DB::$connected) {
+                $this->connectionMessage = $this->lang->trans("ServerConnection") . ": " . $conf->main_db_host;
+                $this->connectionResult = '<img src="Resources/img/ok.png" alt="Ok">';
                 $ok = 1;
             } else {
-                print "<tr><td>Failed to connect to server : " . $conf->db->host . '</td><td><img src="../theme/eldy/img/error.png" alt="Error"></td></tr>';
+                $this->connectionMessage = 'Failed to connect to server: ' . $conf->main_db_host;
+                $this->connectionResult = '<img src="Resources/img/error.png" alt="Error">';
             }
 
             if ($ok) {
                 if ($db->database_selected) {
-                    $this->dolibarr_install_syslog("step2: successful connection to database: " . $conf->db->name);
+                    $this->dolibarr_install_syslog("step2: successful connection to database: " . $conf->main_db_name);
                 } else {
-                    $this->dolibarr_install_syslog("step2: failed connection to database :" . $conf->db->name, LOG_ERR);
-                    print "<tr><td>Failed to select database " . $conf->db->name . '</td><td><img src="../theme/eldy/img/error.png" alt="Error"></td></tr>';
-                    $ok = 0;
+                    $this->dolibarr_install_syslog("step2: failed connection to database :" . $conf->main_db_name, LOG_ERR);
+                    $this->errors[] = [
+                        'text' => 'Failed to select database '.$conf->main_db_name,
+                        'icon'=>'<img src="Resources/img/error.png" alt="Error">',
+                    ];
                 }
             }
-
 
             // Display version / Affiche version
             if ($ok) {
                 $version = $db->getVersion();
                 $versionarray = $db->getVersionArray();
-                print '<tr><td>' . $this->lang->trans("DatabaseVersion") . '</td>';
-                print '<td>' . $version . '</td></tr>';
-                //print '<td class="right">'.join('.',$versionarray).'</td></tr>';
 
-                print '<tr><td>' . $this->lang->trans("DatabaseName") . '</td>';
-                print '<td>' . $db->database_name . '</td></tr>';
-                //print '<td class="right">'.join('.',$versionarray).'</td></tr>';
+                $this->databaseVersionMessage = $this->lang->trans("DatabaseVersion");
+                $this->databaseVersionVersion = $version;
+
+                $this->databaseNameMessage = $this->lang->trans("DatabaseName");
+                $this->databaseNameName = $db->database_name;
             }
 
             $requestnb = 0;
@@ -2217,7 +2219,7 @@ class Install extends BasicController
              ***************************************************************************************/
             if ($ok && $createtables) {
                 // We always choose in mysql directory (Conversion is done by driver to translate SQL syntax)
-                $dir = "mysql/tables/";
+                $dir = static::getDataDir('mysql/tables');
 
                 $ok = 0;
                 $handle = opendir($dir);
@@ -2251,7 +2253,7 @@ class Install extends BasicController
                         fclose($fp);
 
                         $buffer = trim($buffer);
-                        if ($conf->db->type == 'mysql' || $conf->db->type == 'mysqli') {    // For Mysql 5.5+, we must replace type=innodb with ENGINE=innodb
+                        if ($conf->main_db_type == 'mysql' || $conf->main_db_type == 'mysqli') {    // For Mysql 5.5+, we must replace type=innodb with ENGINE=innodb
                             $buffer = preg_replace('/type=innodb/i', 'ENGINE=innodb', $buffer);
                         } else {
                             // Keyword ENGINE is MySQL-specific, so scrub it for
@@ -2261,8 +2263,8 @@ class Install extends BasicController
                         }
 
                         // Replace the prefix tables
-                        if ($conf->$config->main_db_prefix != 'llx_') {
-                            $buffer = preg_replace('/llx_/i', $conf->$config->main_db_prefix, $buffer);
+                        if ($conf->main_db_prefix != 'llx_') {
+                            $buffer = preg_replace('/llx_/i', $conf->main_db_prefix, $buffer);
                         }
 
                         //print "<tr><td>Creation of table $name/td>";
@@ -2280,17 +2282,18 @@ class Install extends BasicController
                             ) {
                                 //print "<td>already existing</td></tr>";
                             } else {
-                                print "<tr><td>" . $this->lang->trans("CreateTableAndPrimaryKey", $name);
-                                print "<br>\n" . $this->lang->trans("Request") . ' ' . $requestnb . ' : ' . $buffer . ' <br>Executed query : ' . $db->lastquery;
-                                print "\n</td>";
-                                print '<td><span class="error">' . $this->lang->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span></td></tr>';
+                                $this->errors[] = [
+                                    'text' => $this->lang->trans("CreateTableAndPrimaryKey", $name) .'<br>'.$this->lang->trans("Request") . ' ' . $requestnb . ': ' . $buffer . ' <br>Executed query : ' . $db->lastquery,
+                                    'icon'=>'<span class="error">' . $this->lang->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span>',
+                                ];
                                 $error++;
                             }
                         }
                     } else {
-                        print "<tr><td>" . $this->lang->trans("CreateTableAndPrimaryKey", $name);
-                        print "</td>";
-                        print '<td><span class="error">' . $this->lang->trans("Error") . ' Failed to open file ' . $dir . $file . '</span></td></tr>';
+                        $this->errors[] = [
+                            'text' =>$this->lang->trans("CreateTableAndPrimaryKey", $name),
+                            'icon'=>'<span class="error">' . $this->lang->trans("Error") . ' Failed to open file ' . $dir . $file . '</span>',
+                        ];
                         $error++;
                         $this->dolibarr_install_syslog("step2: failed to open file " . $dir . $file, LOG_ERR);
                     }
@@ -2298,12 +2301,17 @@ class Install extends BasicController
 
                 if ($tablefound) {
                     if ($error == 0) {
-                        print '<tr><td>';
-                        print $this->lang->trans("TablesAndPrimaryKeysCreation") . '</td><td><img src="../theme/eldy/img/tick.png" alt="Ok"></td></tr>';
+                        $this->errors[] = [
+                            'text' =>$this->lang->trans("TablesAndPrimaryKeysCreation"),
+                            'icon'=>'<img src="Resources/img/ok.png" alt="Ok">',
+                        ];
                         $ok = 1;
                     }
                 } else {
-                    print '<tr><td>' . $this->lang->trans("ErrorFailedToFindSomeFiles", $dir) . '</td><td><img src="../theme/eldy/img/error.png" alt="Error"></td></tr>';
+                    $this->errors[] = [
+                        'text' =>$this->lang->trans("ErrorFailedToFindSomeFiles", $dir),
+                        'icon'=>'<img src="Resources/img/error.png" alt="Error">',
+                    ];
                     $this->dolibarr_install_syslog("step2: failed to find files to create database in directory " . $dir, LOG_ERR);
                 }
             }
@@ -2317,7 +2325,7 @@ class Install extends BasicController
              ***************************************************************************************/
             if ($ok && $createkeys) {
                 // We always choose in mysql directory (Conversion is done by driver to translate SQL syntax)
-                $dir = "mysql/tables/";
+                $dir = static::getDataDir('mysql/tables');
 
                 $okkeys = 0;
                 $handle = opendir($dir);
@@ -2353,7 +2361,7 @@ class Install extends BasicController
                                 //var_dump($versionarray);
                                 if (
                                     count($versioncommande) && count($versionarray)
-                                    && versioncompare($versioncommande, $versionarray) <= 0
+                                    && Admin::versioncompare($versioncommande, $versionarray) <= 0
                                 ) {
                                     // Version qualified, delete SQL comments
                                     $buf = preg_replace('/^--\sV([0-9\.]+)/i', '', $buf);
@@ -2388,8 +2396,8 @@ class Install extends BasicController
                             $buffer = trim($req);
                             if ($buffer) {
                                 // Replace the prefix tables
-                                if ($conf->$config->main_db_prefix != 'llx_') {
-                                    $buffer = preg_replace('/llx_/i', $conf->$config->main_db_prefix, $buffer);
+                                if ($conf->main_db_prefix != 'llx_') {
+                                    $buffer = preg_replace('/llx_/i', $conf->main_db_prefix, $buffer);
                                 }
 
                                 //print "<tr><td>Creation of keys and table index $name: '$buffer'</td>";
@@ -2453,6 +2461,7 @@ class Install extends BasicController
                 } elseif ($choix == 4) {
                     $dir = "sqlite3/functions/";
                 }
+                $dir = static::getDataDir($dir);
 
                 // Creation of data
                 $file = "functions.sql";
@@ -2477,8 +2486,8 @@ class Install extends BasicController
                         $buffer = trim($buffer);
                         if ($buffer) {
                             // Replace the prefix in table names
-                            if ($conf->$config->main_db_prefix != 'llx_') {
-                                $buffer = preg_replace('/llx_/i', $conf->$config->main_db_prefix, $buffer);
+                            if ($conf->main_db_prefix != 'llx_') {
+                                $buffer = preg_replace('/llx_/i', $conf->main_db_prefix, $buffer);
                             }
                             $this->dolibarr_install_syslog("step2: request: " . $buffer);
                             print "<!-- Insert line : " . $buffer . "<br>-->\n";
@@ -2523,7 +2532,7 @@ class Install extends BasicController
              ***************************************************************************************/
             if ($ok && $createdata) {
                 // We always choose in mysql directory (Conversion is done by driver to translate SQL syntax)
-                $dir = "mysql/data/";
+                $dir = static::getDataDir("mysql/data/");
 
                 // Insert data
                 $handle = opendir($dir);
@@ -2590,8 +2599,8 @@ class Install extends BasicController
                         // We loop on each requests of file
                         foreach ($arrayofrequests as $buffer) {
                             // Replace the tables prefixes
-                            if ($conf->$config->main_db_prefix != 'llx_') {
-                                $buffer = preg_replace('/llx_/i', $conf->$config->main_db_prefix, $buffer);
+                            if ($conf->main_db_prefix != 'llx_') {
+                                $buffer = preg_replace('/llx_/i', $conf->main_db_prefix, $buffer);
                             }
 
                             //dolibarr_install_syslog("step2: request: " . $buffer);
@@ -2681,6 +2690,7 @@ class Install extends BasicController
 
         // Now we load forced value from install.forced.php file.
         $useforcedwizard = false;
+        /*
         $forcedfile = "./install.forced.php";
         if ($conffile == "/etc/dolibarr/conf.php") {
             $forcedfile = "/etc/dolibarr/install.forced.php";
@@ -2689,6 +2699,7 @@ class Install extends BasicController
             $useforcedwizard = true;
             include_once $forcedfile;
         }
+        */
 
         $this->dolibarr_install_syslog("--- step4: entering step4.php page");
 
@@ -2709,7 +2720,7 @@ class Install extends BasicController
         print '<h3><img class="valignmiddle inline-block paddingright" src="../theme/common/octicons/build/svg/key.svg" width="20" alt="Database"> ' . $this->lang->trans("DolibarrAdminLogin") . '</h3>';
 
 
-        //$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+        //$db = getDoliDBInstance($this->db_type, $this->db_host, $this->db_user, $this->db_pass, $this->db_name, (int) $this->db_port);
         $db = Globals::getDb();
 
         $this->login_value = (Functions::GETPOSTISSET(" login")
@@ -2748,7 +2759,7 @@ class Install extends BasicController
 
         //pFooter($error, $setuplang);
 
-        $db->close();
+        DB::disconnect();
 
 // Return code if ran from command line
         if ($ret) {
@@ -2798,6 +2809,7 @@ class Install extends BasicController
         $conffile = Globals::getConfFilename();
 
         $useforcedwizard = false;
+        /*
         $forcedfile = "./install.forced.php";
         if ($conffile == "/etc/dolibarr/conf.php") {
             $forcedfile = "/etc/dolibarr/install.forced.php";
@@ -2812,6 +2824,7 @@ class Install extends BasicController
                 }
             }
         }
+        */
 
         $this->dolibarr_install_syslog("--- step5: entering step5.php page " . $versionfrom . " " . $versionto);
 
@@ -2873,16 +2886,16 @@ class Install extends BasicController
             }
 
             /*
-            $conf->db->type = $dolibarr_main_db_type;
-            $conf->db->host = $dolibarr_main_db_host;
-            $conf->db->port = $dolibarr_main_db_port;
-            $conf->db->name = $dolibarr_main_db_name;
-            $conf->db->user = $dolibarr_main_db_user;
-            $conf->db->pass = $dolibarr_main_db_pass;
-            $conf->db->dolibarr_main_db_encryption = isset($dolibarr_main_db_encryption) ? $dolibarr_main_db_encryption : '';
-            $conf->db->dolibarr_main_db_cryptkey = isset($dolibarr_main_db_cryptkey) ? $dolibarr_main_db_cryptkey : '';
+            $this->db_type = $dolibarr_main_db_type;
+            $this->db_host = $dolibarr_main_db_host;
+            $this->db_port = $dolibarr_main_db_port;
+            $this->db_name = $dolibarr_main_db_name;
+            $this->db_user = $dolibarr_main_db_user;
+            $this->db_pass = $dolibarr_main_db_pass;
+            $this->db_dolibarr_main_db_encryption = isset($dolibarr_main_db_encryption) ? $dolibarr_main_db_encryption : '';
+            $this->db_dolibarr_main_db_cryptkey = isset($dolibarr_main_db_cryptkey) ? $dolibarr_main_db_cryptkey : '';
 
-            $db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+            $db = getDoliDBInstance($this->db_type, $this->db_host, $this->db_user, $this->db_pass, $this->db_name, (int) $this->db_port);
             */
             $db = Globals::getDb();
 
@@ -2903,7 +2916,7 @@ class Install extends BasicController
                     print "ERROR: failed to init module file = " . BASE_PATH . 'Modules/UserModule.php';
                 }
 
-                if ($db->connected) {
+                if (DB::$connected) {
                     $conf->setValues($db);
                     // Reset forced setup after the setValues
                     if (defined('SYSLOG_FILE')) {
@@ -2922,12 +2935,12 @@ class Install extends BasicController
                         $numrows = $db->num_rows($resql);
                         if ($numrows == 0) {
                             // Define default setup for password encryption
-                            dolibarr_set_const($db, "DATABASE_PWD_ENCRYPTED", "1", 'chaine', 0, '', $conf->entity);
-                            dolibarr_set_const($db, "MAIN_SECURITY_SALT", dol_print_date(dol_now(), 'dayhourlog'), 'chaine', 0, '', 0); // All entities
+                            Admin::dolibarr_set_const($db, "DATABASE_PWD_ENCRYPTED", "1", 'chaine', 0, '', $conf->entity);
+                            Admin::dolibarr_set_const($db, "MAIN_SECURITY_SALT", Functions::dol_print_date(Functions::dol_now(), 'dayhourlog'), 'chaine', 0, '', 0); // All entities
                             if (function_exists('password_hash')) {
-                                dolibarr_set_const($db, "MAIN_SECURITY_HASH_ALGO", 'password_hash', 'chaine', 0, '', 0); // All entities
+                                Admin::dolibarr_set_const($db, "MAIN_SECURITY_HASH_ALGO", 'password_hash', 'chaine', 0, '', 0); // All entities
                             } else {
-                                dolibarr_set_const($db, "MAIN_SECURITY_HASH_ALGO", 'sha1md5', 'chaine', 0, '', 0); // All entities
+                                Admin::dolibarr_set_const($db, "MAIN_SECURITY_HASH_ALGO", 'sha1md5', 'chaine', 0, '', 0); // All entities
                             }
                         }
 
@@ -3101,7 +3114,7 @@ class Install extends BasicController
                 }
             } elseif (empty($action) || preg_match('/upgrade/i', $action)) {
                 // If upgrade
-                if ($db->connected) {
+                if (DB::$connected) {
                     $conf->setValues($db);
                     // Reset forced setup after the setValues
                     if (defined('SYSLOG_FILE')) {
@@ -3149,7 +3162,7 @@ class Install extends BasicController
                 Functions::dol_print_error(null, 'step5.php: unknown choice of action');
             }
 
-            $db->close();
+            DB::disconnect();
         }
 
 
@@ -3288,6 +3301,8 @@ class Install extends BasicController
         switch (htmlentities($this->action)) {
             case 'checked':
                 return $this->actionChecked();
+            case $this->lang->trans("Start"):
+                return $this->actionStart();
             case 'config':
                 return $this->actionConfig();
             case 'step2':
@@ -3296,8 +3311,6 @@ class Install extends BasicController
                 return $this->actionStep4();
             case 'step5':
                 return $this->actionStep5();
-            case $this->lang->trans("Start"):
-                return $this->actionStart();
             default:
                 $this->syslog("The action $this->action is not defined!");
         }
