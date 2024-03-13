@@ -24,12 +24,10 @@
 
 namespace Alxarafe\DB;
 
+use Alxarafe\Base\Config;
 use Alxarafe\Base\Globals;
-use Alxarafe\DB\Engines\MySqli;
 use Alxarafe\DB\Engines\MySqliEngine;
-use Alxarafe\DB\Engines\Pgsql;
 use Alxarafe\DB\Engines\PgSqlEngine;
-use Alxarafe\DB\Engines\Sqlite3;
 use Alxarafe\DB\Engines\Sqlite3Engine;
 use Alxarafe\Lib\Functions;
 use Database;
@@ -131,14 +129,54 @@ abstract class DB
         return static::$dbengine;
     }
 
+    /**
+     * Check the database parameters and try the connection.
+     * If the connection is successful and save is passed true, save the parameters in the application settings.
+     * Calling this method closes any previous connections.
+     *
+     * @param $type
+     * @param $host
+     * @param $user
+     * @param $pass
+     * @param $name
+     * @param $port
+     * @param $save
+     *
+     * @return DB|false
+     */
+    public static function checkConnection($type, $host, $user, $pass, $name, $port, $save = false)
+    {
+        if (!static::disconnect()) {
+            return false;
+        }
+
+        $db = static::DB($type, $host, $user, $pass, $name, $port);
+        if (empty($db)) {
+            return false;
+        }
+
+        if ($save) {
+            return Config::saveParams([
+                'DB' => [
+                    'DB_CONNECTION' => $type,
+                    'DB_HOST' => $host,
+                    'DB_PORT' => $port,
+                    'DB_USERNAME' => $user,
+                    'DB_PASSWORD' => $pass,
+                    'DB_DATABASE' => $name,
+                ],
+            ]);
+        }
+
+        return $db;
+    }
+
     public static function disconnect()
     {
         if (!isset(static::$dbengine)) {
             return true;
         }
-        if (!static::$dbengine->close()) {
-            return false;
-        }
+        static::$dbengine->close();
         static::$dbengine = null;
         return true;
     }

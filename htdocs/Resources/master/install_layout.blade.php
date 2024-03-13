@@ -34,18 +34,16 @@
             </td>
         </tr>
     </table>
-    @if(isset($nextButton) && ($nextButton))
+    @foreach($buttons as $button)
         <!-- pFooter -->
         <div class="nextbutton" id="nextbutton">
-            <input
-                    type="submit"
-                    value="{!! $lang->trans('NextStep') !!} ->"
-                    @if(isset($nextButtonJs) && !empty($nextButtonJs))
-                        onclick="{!! $nextButtonJs !!}"
+            <button name="action" type="submit" value="{!! $button['value'] !!}"
+                    @if(isset($button['js']))
+                        onclick="{!! $button['js'] !!}"
                     @endif
-            >
+            >{!! $button['text'] !!}</button>
         </div>
-    @endif
+    @endforeach
 </form>
 <br>
 </body>

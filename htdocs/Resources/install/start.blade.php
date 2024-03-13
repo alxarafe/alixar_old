@@ -2,8 +2,6 @@
 
 @section('body')
     <tbody>
-    <input type="hidden" name="testpost" value="ok">
-    <input type="hidden" name="action" value="config">
     <tr>
         <div>
             <table class="nobordernopadding @if ($force_install_noedit) hidewhennoedit @endif">
@@ -22,7 +20,7 @@
                                class="minwidth300"
                                id="main_dir"
                                name="main_dir"
-                               value="{!! $config->main_document_root !!}"
+                               value="{!! $main_dir !!}"
                                @if (!empty($force_install_noedit)) disabled @endif
                         >
                     </td>
@@ -46,7 +44,7 @@
                                class="minwidth300"
                                id="main_data_dir"
                                name="main_data_dir"
-                               value="{!! $config->main_data_root !!}"
+                               value="{!! $main_data_dir !!}"
                                @if (!empty($force_install_noedit)) disabled @endif
                         >
                     </td>
@@ -70,7 +68,7 @@
                                class="minwidth300"
                                id="main_url"
                                name="main_url"
-                               value="{!!  $config->main_url_root!!} "
+                               value="{!!  $main_url!!} "
                                @if (!empty($force_install_noedit)) disabled @endif
                         >
                     </td>
@@ -135,11 +133,11 @@
                                 name="db_type"
                                 @if ($force_install_noedit == 2 && $force_install_type !== null) disabled @endif
                         >
-                            @foreach($db_types as $key => $db_type)
-                                <option value="{!! $db_type['classname'] !!}"
-                                        @if($key === $config->main_db_type) selected @endif
-                                        @if(!empty($db_type['comment'])) disabled @endif
-                                >{!! $db_type['shortname'] . ' ' . $db_type['classname'] . ' ' . $db_type['min_version'] . ' ' . $db_type['comment'] !!}</option>
+                            @foreach($db_types as $key => $db_type_element)
+                                <option value="{!! $db_type_element['name'] !!}"
+                                        @if($key === $db_type) selected @endif
+                                        @if(!empty($db_type_element['comment'])) disabled @endif
+                                >{!! $db_type_element['shortname'] . ' ' . $db_type_element['classname'] . ' ' . $db_type_element['min_version'] . ' ' . $db_type_element['comment'] !!}</option>
                             @endforeach
                         </select>
                     </td>
@@ -213,7 +211,7 @@
                         <input type="text"
                                id="db_user"
                                name="db_user"
-                               value="{!!  (!empty($force_install_databaselogin)) ? $force_install_databaselogin : $config->main_db_user!!}"
+                               value="{!! $db_user !!}"
                                @if($force_install_noedit == 2 && $force_install_databaselogin !== null) disabled @endif
                         >
                     </td>

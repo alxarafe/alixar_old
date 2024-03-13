@@ -2,6 +2,7 @@
 
 namespace Alixar\Install;
 
+use Alixar\Install\Lib\CheckPrerequisites;
 use Alxarafe\Base\BasicController;
 use Alxarafe\Base\Globals;
 use Alxarafe\DB\DB;
@@ -11,6 +12,7 @@ use Alxarafe\Lib\Functions;
 use Alxarafe\Lib\HookManager;
 use Alxarafe\Lib\Security;
 use Alxarafe\LibClass\FormAdmin;
+use Alxarafe\LibClass\Lang;
 use Exception;
 use Modules\UserModule;
 use Modules\User\User;
@@ -33,19 +35,6 @@ class Install extends BasicController
      * @var false
      */
     public $errorMigrations;
-
-    private static function getDataDir(string $dir): string
-    {
-        $dir = trim($dir, ' /');
-        $fullDir = realpath(BASE_PATH . '/../dolibarr_htdocs/install/' . $dir);
-        if (!file_exists(BASE_PATH)) {
-            $fullDir = realpath(BASE_PATH . '/Install/' . $dir);
-        }
-        if ($fullDir === false) {
-            $fullDir = '/Install/' . $dir;
-        }
-        return $fullDir . '/';
-    }
 
     private function syslog($message, $level = LOG_DEBUG)
     {
@@ -472,577 +461,6 @@ class Install extends BasicController
         return $error;
     }
 
-    private function checkBrowser()
-    {
-        $useragent = $_SERVER['HTTP_USER_AGENT'];
-        if (empty($useragent)) {
-            return false;
-        }
-
-        $tmp = Functions::getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
-        $browsername = $tmp['browsername'];
-        $browserversion = $tmp['browserversion'];
-        if ($browsername == 'ie' && $browserversion < 7) {
-            $result = [];
-            $result['ok'] = true;
-            $result['icon'] = 'warning';
-            $result['text'] = $this->lang->trans("WarningBrowserTooOld");
-            return $result;
-        }
-
-        return false;
-    }
-
-    private function checkMinPhp()
-    {
-        $arrayphpminversionerror = [7, 0, 0];
-        $arrayphpminversionwarning = [7, 1, 0];
-
-        $result = [];
-        $result['ok'] = true;
-
-        if (Admin::versioncompare(Admin::versionphparray(), $arrayphpminversionerror) < 0) {        // Minimum to use (error if lower)
-            $result['ok'] = false;
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPVersionTooLow", Admin::versiontostring($arrayphpminversionerror));
-        } elseif (Admin::versioncompare(Admin::versionphparray(), $arrayphpminversionwarning) < 0) {    // Minimum supported (warning if lower)
-            $result['icon'] = 'warning';
-            $result['text'] = $this->lang->trans("ErrorPHPVersionTooLow", Admin::versiontostring($arrayphpminversionwarning));
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPVersion") . " " . Admin::versiontostring(Admin::versionphparray());
-        }
-
-        if (empty($force_install_nophpinfo)) {
-            $result['text'] .= ' (<a href="phpinfo.php" target="_blank" rel="noopener noreferrer">' . $this->lang->trans("MoreInformation") . '</a>)';
-        }
-
-        return $result;
-    }
-
-    private function checkMaxPhp()
-    {
-        $arrayphpmaxversionwarning = [8, 2, 0];
-        if (Admin::versioncompare(Admin::versionphparray(), $arrayphpmaxversionwarning) > 0 && Admin::versioncompare(Admin::versionphparray(), $arrayphpmaxversionwarning) < 3) {        // Maximum to use (warning if higher)
-            $result = [];
-            $result['ok'] = false;
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPVersionTooHigh", Admin::versiontostring($arrayphpmaxversionwarning));
-            return $result;
-        }
-
-        return false;
-    }
-
-    private function checkGetPostSupport()
-    {
-        $result = [];
-        $result['ok'] = true;
-        if (empty($_GET) || empty($_POST)) {   // We must keep $_GET and $_POST here
-            $result['icon'] = 'warning';
-            $result['text'] = $this->lang->trans("PHPSupportPOSTGETKo") . ' (<a href="' . Functions::dol_escape_htmltag($_SERVER["PHP_SELF"]) . '?testget=ok">' . $this->lang->trans("Recheck") . '</a>)';
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupportPOSTGETOk");
-        }
-        return $result;
-    }
-
-    private function checkSessionId()
-    {
-        $result = [];
-        $result['ok'] = function_exists("session_id");
-        if ($result['ok']) {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupportSessions");
-        } else {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupportSessions");
-        }
-        return $result;
-    }
-
-    private function checkMbStringExtension()
-    {
-        $result = [];
-        $result['ok'] = extension_loaded("mbstring");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "MBString");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "MBString");
-        }
-        return $result;
-    }
-
-    private function checkJsonExtension()
-    {
-        $result = [];
-        $result['ok'] = extension_loaded("json");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "JSON");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "JSON");
-        }
-        return $result;
-    }
-
-    private function checkGdExtension()
-    {
-        $result = [];
-        $result['ok'] = true;
-        if (!function_exists("imagecreate")) {
-            $result['icon'] = 'warning';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "GD");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "GD");
-        }
-        return $result;
-    }
-
-    private function checkCurlExtension()
-    {
-        $result = [];
-        $result['ok'] = true;
-        if (!function_exists("curl_init")) {
-            $result['icon'] = 'warning';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "Curl");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "Curl");
-        }
-        return $result;
-    }
-
-    private function checkCalendarExtension()
-    {
-        $result = [];
-        $result['ok'] = function_exists("easter_date");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "Calendar");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "Calendar");
-        }
-        return $result;
-    }
-
-    private function checkXmlExtension()
-    {
-        $result = [];
-        $result['ok'] = function_exists("simplexml_load_string");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "Xml");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "Xml");
-        }
-        return $result;
-    }
-
-    private function checkUtfExtension()
-    {
-        $result = [];
-        $result['ok'] = function_exists("utf8_encode");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "UTF8");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "UTF8");
-        }
-        return $result;
-    }
-
-    private function checkIntlExtension()
-    {
-        if (empty($_SERVER["SERVER_ADMIN"]) || $_SERVER["SERVER_ADMIN"] != 'doliwamp@localhost') {
-            $result = [];
-            $result['ok'] = function_exists("locale_get_primary_language") && function_exists("locale_get_region");
-            if (!$result['ok']) {
-                $result['icon'] = 'error';
-                $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "Intl");
-            } else {
-                $result['icon'] = 'ok';
-                $result['text'] = $this->lang->trans("PHPSupport", "Intl");
-            }
-            return $result;
-        }
-
-        return false;
-    }
-
-    private function checkImapExtension()
-    {
-        if (PHP_VERSION_ID > 80300) {
-            return false;
-        }
-
-        $result = [];
-        $result['ok'] = function_exists("imap_open");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "IMAP");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "IMAP");
-        }
-        return $result;
-    }
-
-    private function checkZipExtension()
-    {
-        $result = [];
-        $result['ok'] = class_exists('ZipArchive');
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->lang->trans("ErrorPHPDoesNotSupport", "ZIP");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPSupport", "ZIP");
-        }
-        return $result;
-    }
-
-    private function checkMemory()
-    {
-        $memmaxorig = @ini_get("memory_limit");
-        if (empty($memmaxorig)) {
-            return false;
-        }
-
-        $memmax = $memmaxorig;
-        $memrequiredorig = '64M';
-        $memrequired = 64 * 1024 * 1024;
-        preg_match('/([0-9]+)([a-zA-Z]*)/i', $memmax, $reg);
-        if ($reg[2]) {
-            if (strtoupper($reg[2]) == 'G') {
-                $memmax = $reg[1] * 1024 * 1024 * 1024;
-            }
-            if (strtoupper($reg[2]) == 'M') {
-                $memmax = $reg[1] * 1024 * 1024;
-            }
-            if (strtoupper($reg[2]) == 'K') {
-                $memmax = $reg[1] * 1024;
-            }
-        }
-
-        $result = [];
-        $result['ok'] = $memmax >= $memrequired || $memmax == -1;
-        if ($result['ok']) {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->lang->trans("PHPMemoryOK", $memmaxorig, $memrequiredorig);
-        } else {
-            $result['icon'] = 'warning';
-            $result['text'] = $this->lang->trans("PHPMemoryTooLow", $memmaxorig, $memrequiredorig);
-        }
-        return $result;
-    }
-
-    private function checkConfFile()
-    {
-        $conffile = Globals::getConfFilename();
-
-        clearstatcache();
-        if (is_readable($conffile) && filesize($conffile) > 8) {
-            $this->syslog("check: conf file '" . $conffile . "' already defined");
-            return false;
-        }
-
-        // If not, we create it
-        $this->syslog("check: we try to create conf file '" . $conffile . "'");
-
-        // First we try by copying example
-        if (@copy($conffile . ".example", $conffile)) {
-            // Success
-            $this->syslog("check: successfully copied file " . $conffile . ".example into " . $conffile);
-            return false;
-        }
-
-        // If failed, we try to create an empty file
-        $this->syslog("check: failed to copy file " . $conffile . ".example into " . $conffile . ". We try to create it.", LOG_WARNING);
-
-        $fp = @fopen($conffile, "w");
-        if ($fp) {
-            @fwrite($fp, '<?php');
-            @fwrite($fp, "\n");
-            fclose($fp);
-            return false;
-        }
-
-        $this->syslog("check: failed to create a new file " . $conffile . " into current dir " . getcwd() . ". Please check permissions.", LOG_ERR);
-        $result = [];
-        $result['ok'] = false;
-        $result['icon'] = 'error';
-        $result['text'] = $this->lang->trans('ConfFileDoesNotExistsAndCouldNotBeCreated', 'conf.php');
-        return $result;
-    }
-
-    public function checkIfWritable()
-    {
-        $conffile = Globals::getConfFilename();
-
-        $result = [];
-        $result['ok'] = false;
-        $result['icon'] = 'error';
-
-        if (is_dir($conffile)) {
-            $result['text'] = $this->lang->trans('ConfFileMustBeAFileNotADir', $conffile);
-            return $result;
-        }
-
-        $this->allowInstall = is_writable($conffile);
-        if (!$this->allowInstall) {
-            $result['text'] = $this->lang->trans('ConfFileIsNotWritable', $conffile);
-            return $result;
-        }
-
-        return false;
-    }
-
-    private function getMigrationScript()
-    {
-        $dir = static::getDataDir('mysql/migration');   // We use mysql migration scripts whatever is database driver
-        $this->dolibarr_install_syslog("Scan sql files for migration files in " . $dir);
-
-        // Get files list of migration file x.y.z-a.b.c.sql into /install/mysql/migration
-        $migrationscript = [];
-        $handle = opendir($dir);
-        if (!is_resource($handle)) {
-            $this->errorMigrations = $this->lang->trans("ErrorCanNotReadDir", $dir);
-            return [];
-        }
-
-        $versiontousetoqualifyscript = preg_replace('/-.*/', '', DOL_VERSION);
-        while (($file = readdir($handle)) !== false) {
-            $reg = [];
-            if (preg_match('/^(\d+\.\d+\.\d+)-(\d+\.\d+\.\d+)\.sql$/i', $file, $reg)) {
-                //var_dump(DOL_VERSION." ".$reg[2]." ".$versiontousetoqualifyscript." ".version_compare($versiontousetoqualifyscript, $reg[2]));
-                if (!empty($reg[2]) && version_compare($versiontousetoqualifyscript, $reg[2]) >= 0) {
-                    $migrationscript[] = ['from' => $reg[1], 'to' => $reg[2]];
-                }
-            }
-        }
-        return Functions::dol_sort_array($migrationscript, 'from', 'asc', 1);
-    }
-
-    public function next()
-    {
-
-        $this->configFilename = Globals::getConfFilename();
-
-        $ok = false;
-        $this->errorBadMainDocumentRoot = '';
-
-        // It's a update?
-        if (!empty($this->config->main_db_type) && !empty($this->config->main_document_root)) {
-            if ($this->config->main_document_root !== BASE_PATH) {
-                $this->errorBadMainDocumentRoot = "A $this->configFilename file exists with a dolibarr_main_document_root to $this->config->main_document_root that seems wrong. Try to fix or remove the $this->configFilename file.";
-                Functions::dol_syslog($this->errorBadMainDocumentRoot, LOG_WARNING);
-            } else {
-                // If password is encoded, we decode it
-                // TODO: Pending
-                if (preg_match('/crypted:/i', $this->config->main_db_pass) || !empty($dolibarr_main_db_encrypted_pass)) {
-                    require_once $this->dolibarr_main_document_root . '/core/lib/security.lib.php';
-                    if (preg_match('/crypted:/i', $this->config->main_db_pass)) {
-                        $dolibarr_main_db_encrypted_pass = preg_replace('/crypted:/i', '', $this->config->main_db_pass); // We need to set this as it is used to know the password was initially encrypted
-                        $this->config->main_db_pass = dol_decode($dolibarr_main_db_encrypted_pass);
-                    } else {
-                        $this->config->main_db_pass = dol_decode($dolibarr_main_db_encrypted_pass);
-                    }
-                }
-
-                // $conf already created in inc.php
-                $this->conf->db->type = $this->config->main_db_type;
-                $this->conf->db->host = $this->config->main_db_host;
-                $this->conf->db->port = $this->config->main_db_port;
-                $this->conf->db->name = $this->config->main_db_name;
-                $this->conf->db->user = $this->config->main_db_user;
-                $this->conf->db->pass = $this->config->main_db_pass;
-                $db = Functions::getDoliDBInstance($this->conf->db->type, $this->conf->db->host, $this->conf->db->user, $this->conf->db->pass, $this->conf->db->name, (int) $this->conf->db->port);
-                if (DB::$connected && $db->database_selected) {
-                    $ok = true;
-                }
-            }
-        }
-
-        $this->availableChoices = [];
-        $this->notAvailableChoices = [];
-
-        // If database access is available, we set more variables
-        // TODO: Pending
-        if ($ok) {
-            if (empty($dolibarr_main_db_encryption)) {
-                $dolibarr_main_db_encryption = 0;
-            }
-            $this->conf->db->dolibarr_main_db_encryption = $dolibarr_main_db_encryption;
-            if (empty($dolibarr_main_db_cryptkey)) {
-                $dolibarr_main_db_cryptkey = '';
-            }
-            $this->conf->db->dolibarr_main_db_cryptkey = $dolibarr_main_db_cryptkey;
-
-            $this->conf->setValues($db);
-            // Reset forced setup after the setValues
-            if (defined('SYSLOG_FILE')) {
-                $this->conf->global->SYSLOG_FILE = constant('SYSLOG_FILE');
-            }
-            $this->conf->global->MAIN_ENABLE_LOG_TO_HTML = 1;
-
-            // Current version is $this->conf->global->MAIN_VERSION_LAST_UPGRADE
-            // Version to install is DOL_VERSION
-            $dolibarrlastupgradeversionarray = preg_split('/[\.-]/', isset($this->conf->global->MAIN_VERSION_LAST_UPGRADE) ? $this->conf->global->MAIN_VERSION_LAST_UPGRADE : (isset($this->conf->global->MAIN_VERSION_LAST_INSTALL) ? $this->conf->global->MAIN_VERSION_LAST_INSTALL : ''));
-            $dolibarrversiontoinstallarray = Admin::versiondolibarrarray();
-        }
-
-        $this->printVersion = Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') || Functions::getDolGlobalString('MAIN_VERSION_LAST_INSTALL');
-
-        $foundrecommandedchoice = 0;
-
-        if (empty($dolibarr_main_db_host)) {    // This means install process was not run
-            $foundrecommandedchoice = 1; // To show only once
-        }
-
-        $button = $this->allowInstall
-            ? '<input class="button" type="submit" name="action" value="' . $this->lang->trans("Start") . '">'
-            : ($foundrecommandedchoice ? '<span class="warning">' : '') . $this->lang->trans("InstallNotAllowed") . ($foundrecommandedchoice ? '</span>' : '');
-
-        // Show line of first install choice
-        $choice = [
-            'selected' => true,
-            'short' => $this->lang->trans("FreshInstall"),
-            'long' => $this->lang->trans("FreshInstallDesc"),
-            'active' => $this->allowInstall,
-            'button' => $button,
-        ];
-
-        if (!isset($this->config->main_db_host) || empty($this->config->main_db_host)) {
-            $choice['long'] .= '<br><div class="center"><div class="ok suggestedchoice">' . $this->lang->trans("InstallChoiceSuggested") . '</div></div>';
-        }
-
-        $positionkey = ($foundrecommandedchoice ? 999 : 0);
-        if ($this->allowInstall) {
-            $this->availableChoices[$positionkey] = $choice;
-        } else {
-            $this->notAvailableChoices[$positionkey] = $choice;
-        }
-
-        // Show upgrade lines
-        $allowupgrade = true;
-        if (empty($this->config->main_db_host)) {    // This means install process was not run
-            $allowupgrade = false;
-        }
-        if (Functions::getDolGlobalInt("MAIN_NOT_INSTALLED")) {
-            $allowupgrade = false;
-        }
-        if (Functions::GETPOST('allowupgrade')) {
-            $allowupgrade = true;
-        }
-
-        $this->errorMigrations = false;
-        $migrationscript = $this->getMigrationScript();
-
-        $count = 0;
-        foreach ($migrationscript as $migarray) {
-            $choice = '';
-
-            $count++;
-            $recommended_choice = false;
-            $version = DOL_VERSION;
-            $versionfrom = $migarray['from'];
-            $versionto = $migarray['to'];
-            $versionarray = preg_split('/[\.-]/', $version);
-            $dolibarrversionfromarray = preg_split('/[\.-]/', $versionfrom);
-            $dolibarrversiontoarray = preg_split('/[\.-]/', $versionto);
-            // Define string newversionxxx that are used for text to show
-            $newversionfrom = preg_replace('/(\.[0-9]+)$/i', '.*', $versionfrom);
-            $newversionto = preg_replace('/(\.[0-9]+)$/i', '.*', $versionto);
-            $newversionfrombis = '';
-            if (Admin::versioncompare($dolibarrversiontoarray, $versionarray) < -2) {  // From x.y.z -> x.y.z+1
-                $newversionfrombis = ' ' . $this->lang->trans("or") . ' ' . $versionto;
-            }
-
-            if ($ok) {
-                if (count($dolibarrlastupgradeversionarray) >= 2) { // If database access is available and last upgrade version is known
-                    // Now we check if this is the first qualified choice
-                    if (
-                        $allowupgrade && empty($foundrecommandedchoice) &&
-                        (Admin::versioncompare($dolibarrversiontoarray, $dolibarrlastupgradeversionarray) > 0 || Admin::versioncompare($dolibarrversiontoarray, $versionarray) < -2)
-                    ) {
-                        $foundrecommandedchoice = 1; // To show only once
-                        $recommended_choice = true;
-                    }
-                } else {
-                    // We cannot recommend a choice.
-                    // A version of install may be known, but we need last upgrade.
-                }
-            }
-
-            $button = $this->lang->trans("NotAvailable");
-            if ($allowupgrade) {
-                $disabled = false;
-                if ($foundrecommandedchoice == 2) {
-                    $disabled = true;
-                }
-                if ($foundrecommandedchoice == 1) {
-                    $foundrecommandedchoice = 2;
-                }
-                if ($disabled) {
-                    $button = '<span class="opacitymedium">' . $this->lang->trans("NotYetAvailable") . '</span>';
-                } else {
-                    // TODO: Pending fix how to pass the version in an action
-                    $button = '<a class="button runupgrade" href="upgrade.php?action=upgrade' . ($count < count($migrationscript) ? '_' . $versionto : '') . '&selectlang=' . $this->selectLang . '&versionfrom=' . $versionfrom . '&versionto=' . $versionto . '">' . $this->lang->trans("Start") . '</a>';
-                }
-            }
-
-            $choice = [
-                'selected' => $recommended_choice,
-                'short' => $this->lang->trans("Upgrade") . '<br>' . $newversionfrom . $newversionfrombis . ' -> ' . $newversionto,
-                'long' => $this->lang->trans("UpgradeDesc"),
-                'active' => $this->allowInstall,
-                'button' => $button,
-            ];
-
-            if ($recommended_choice) {
-                $choice['long'] .= '<br><div class="center"><div class="ok suggestedchoice">' . $this->lang->trans("InstallChoiceSuggested") . '</div>';
-                if ($count < count($migarray)) {
-                    $choice['long'] .= $this->lang->trans('MigrateIsDoneStepByStep', DOL_VERSION);
-                }
-                $choice['long'] .= '</div>';
-            }
-
-            if ($allowupgrade) {
-                $this->availableChoices[$count] = $choice;
-            } else {
-                $this->notAvailableChoices[$count] = $choice;
-            }
-        }
-
-        // If there is no choice at all, we show all of them.
-        if (empty($this->availableChoices)) {
-            $this->availableChoices = $this->notAvailableChoices;
-            $this->notAvailableChoices = [];
-        }
-
-        // Array of install choices
-        krsort($this->availableChoices, SORT_NATURAL);
-    }
-
-    private function checks($value): bool
-    {
-        $ok = true;
-        if (isset($value['ok'])) {
-            $this->checks[] = $value;
-            $ok = $value['ok'];
-        }
-        return $ok;
-    }
-
     private function getDbTypes()
     {
         $options = [];
@@ -1073,10 +491,11 @@ class Install extends BasicController
 
                     $comment = '';
                     if (!function_exists($testfunction)) {
-                        $comment = ' - ' . $this->lang->trans("FunctionNotAvailableInThisPHP");
+                        $comment = ' - ' . Lang::_("FunctionNotAvailableInThisPHP");
                     }
 
                     $options[] = [
+                        'name' => $oldname,
                         'shortname' => $shortName,
                         'classname' => $className,
                         'min_version' => $note,
@@ -1118,11 +537,16 @@ class Install extends BasicController
         }
 
         $this->template = 'install/install';
-        $this->nextButton = true;
+        $this->buttons = [
+            [
+                'value' => 'checked',
+                'text' => Lang::_('NextStep') . ' ->',
+            ],
+        ];
 
         $form = new FormAdmin(null);
-        $this->noReadableConfig = $this->lang->trans('NoReadableConfFileSoStartInstall');
-        $this->defaultLanguage = $this->lang->trans('DefaultLanguage');
+        $this->noReadableConfig = Lang::_('NoReadableConfFileSoStartInstall');
+        $this->defaultLanguage = Lang::_('DefaultLanguage');
         $this->htmlComboLanguages = $form->select_language('auto', 'selectlang', 1, 0, 0, 1);
 
         return true;
@@ -1142,141 +566,65 @@ class Install extends BasicController
     public function actionChecked(): bool
     {
         $this->template = 'install/checked';
+        $this->ok = CheckPrerequisites::getErrors();
 
-        $this->checks = [];
-        $ok = true;
-        $ok = $ok && $this->checks($this->checkBrowser());
-        $ok = $ok && $this->checks($this->checkMinPhp());
-        $ok = $ok && $this->checks($this->checkMaxPhp());
-        $ok = $ok && $this->checks($this->checkGetPostSupport());
-        $ok = $ok && $this->checks($this->checkSessionId());
-        $ok = $ok && $this->checks($this->checkMbStringExtension());
-        $ok = $ok && $this->checks($this->checkJsonExtension());
-        $ok = $ok && $this->checks($this->checkGdExtension());
-        $ok = $ok && $this->checks($this->checkCurlExtension());
-        $ok = $ok && $this->checks($this->checkCalendarExtension());
-        $ok = $ok && $this->checks($this->checkXmlExtension());
-        $ok = $ok && $this->checks($this->checkUtfExtension());
-        $ok = $ok && $this->checks($this->checkIntlExtension());
-        $ok = $ok && $this->checks($this->checkImapExtension());
-        $ok = $ok && $this->checks($this->checkZipExtension());
-        $ok = $ok && $this->checks($this->checkMemory());
-
-        if (!$ok) {
-            $this->checks[] = [
-                'icon' => 'error',
-                'text' => $this->lang->trans('ErrorGoBackAndCorrectParameters'),
+        $this->buttons = [];
+        if (!$this->ok) {
+            $this->buttons = [
+                [
+                    'value' => 'checked',
+                    'text' => Lang::_('retry'),
+                ],
             ];
-            return $ok;
         }
 
-        $ok = $this->checks($this->checkConfFile());
+        $this->miscellaneousChecks = Lang::_('MiscellaneousChecks');
 
-        $conffile = Globals::getConfFilename();
-        if (!file_exists($conffile)) {
-            $text = $this->lang->trans('YouMustCreateWithPermission', $conffile);
-            $text .= '<br><br>';
-            $text .= '<span class="opacitymedium">' . $this->lang->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'] . '?testget=ok') . '</span>';
-
-            $this->checks[] = [
-                'icon' => 'error',
-                'text' => $text,
-            ];
-
-            return false;
+        $this->checks = CheckPrerequisites::$checks;
+        foreach (CheckPrerequisites::$messages as $field => $value) {
+            $this->{$field} = $value;
         }
-
-        $ok = $ok && $this->checks($this->checkIfWritable());
-        if (!$ok) {
-            $this->checks[] = [
-                'icon' => 'error',
-                'text' => $this->lang->trans('ErrorGoBackAndCorrectParameters'),
-            ];
-            return false;
-        }
-
-        $this->next();
-
-        $this->miscellaneousChecks = $this->lang->trans('MiscellaneousChecks');
-        $this->badMainDocumentRoot = '';
-        if ($this->errorBadMainDocumentRoot) {
-            $this->badMainDocumentRoot = $this->lang->trans($this->errorBadMainDocumentRoot);
-        }
-        $this->versionLastUpgradeMessage = $this->lang->trans("VersionLastUpgrade");
-        $this->versionLastUpgrade = '';
-        if (Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') || Functions::getDolGlobalString('MAIN_VERSION_LAST_INSTALL')) {
-            $this->versionLastUpgrade = (!Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE')
-                ? $this->conf->global->MAIN_VERSION_LAST_INSTALL
-                : $this->conf->global->MAIN_VERSION_LAST_UPGRADE
-            );
-        }
-        $this->versionProgramMessage = $this->lang->trans("VersionProgram");
-        $this->chooseYourSetupMode = $this->lang->trans("ChooseYourSetupMode");
-        $this->showNotAvailableOptions = $this->lang->trans('ShowNotAvailableOptions');
-        $this->warningUpdates = Functions::dol_escape_js($this->lang->transnoentitiesnoconv('WarningUpdates'), 0, 1);
 
         return true;
     }
 
-    /**
-     * Shows a form with all the application configuration options.
-     *
-     * Views: install/start
-     *
-     * @return true
-     */
-    public function actionStart()
+    private function getStartPostData()
     {
-        $this->template = 'install/start';
-        $this->nextButton = true;
-        $this->nextButtonJs = 'return jscheckparam();';
-
-        $this->dolibarr_install_syslog("- fileconf: entering fileconf.php page");
-
-        /**
-         * TODO: It could be implemented using a file to force configuration.
-         *
-         * // Now we load forced values from install.forced.php file.
-         * $useforcedwizard = false;
-         * $forcedfile = "./install.forced.php";
-         * if ($conffile == "/etc/dolibarr/conf.php") {
-         *    $forcedfile = "/etc/dolibarr/install.forced.php"; // Must be after inc.php
-         * }
-         * if (@file_exists($forcedfile)) {
-         *    $useforcedwizard = true;
-         *    include_once $forcedfile;
-         * }
-         */
-
-        session_start(); // To be able to keep info into session (used for not losing pass during navigation. pass must not transit through parameters)
-
-        $this->subtitle = $this->lang->trans("ConfigurationFile");
-
-        if (empty($this->config->main_document_root)) {
-            $this->config->main_document_root = BASE_PATH;
+        $this->main_dir = Functions::FilterInputPost('main_dir', $this->config->MAIN->APP_BASEPATH);
+        if (empty($this->main_dir)) {
+            $this->main_dir = BASE_PATH;
         }
 
+        $this->main_data_dir = Functions::FilterInputPost('main_data_dir', $this->config->MAIN->APP_BASEPATH_DOCUMENTS);
+        if (empty($this->main_data_dir)) {
+            $this->main_data_dir = $this->detect_dolibarr_main_data_root($this->main_dir);
+        }
         if (!empty($force_install_main_data_root)) {
-            $this->config->main_data_root = $force_install_main_data_root;
+            $this->main_data_dir = $force_install_main_data_root;
         }
 
-        if (empty($this->config->main_data_root)) {
-            $this->config->main_data_root = Functions::GETPOSTISSET('main_data_dir') ? Functions::GETPOST('main_data_dir') : $this->detect_dolibarr_main_data_root($this->config->main_document_root);
+        $this->main_url = Functions::FilterInputPost('main_url', $this->config->MAIN->APP_URL);
+        if (empty($this->main_url)) {
+            $this->main_url = $this->detect_dolibarr_main_url_root();
         }
 
-        if (empty($this->config->main_url_root)) {
-            $this->config->main_url_root = Functions::GETPOSTISSET('main_url') ? Functions::GETPOST('main_url') : $this->detect_dolibarr_main_url_root();
-        }
+        $this->db_types = $this->getDbTypes();
 
-        if (empty($this->config->main_db_type)) {
-            $this->config->main_db_type = 'mysqli';
+        $this->db_name = Functions::FilterInputPost('db_name', $this->config->DB->DB_DATABASE);
+        $this->db_type = Functions::FilterInputPost('db_type', $this->config->DB->DB_CONNECTION);
+        $this->db_host = Functions::FilterInputPost('db_host', $this->config->DB->DB_HOST);
+        $this->db_port = Functions::FilterInputPost('db_port', $this->config->DB->DB_PORT);
+        $this->db_prefix = Functions::FilterInputPost('db_prefix', $this->config->DB->DB_PREFIX ?? Globals::DEFAULT_DB_PREFIX);
+        $this->db_user = Functions::FilterInputPost('db_user', $this->config->DB->DB_USERNAME);
+        $this->db_pass = Functions::FilterInputPost('db_pass', $this->config->DB->DB_PASSWORD);
+
+        if (empty($this->db_type)) {
+            $this->db_type = 'mysqli';
         }
 
         if (!isset($this->config->main_db_host)) {
             $this->config->main_db_host = "localhost";
         }
-
-        $this->db_types = $this->getDbTypes();
 
         // If $force_install_databasepass is on, we don't want to set password, we just show '***'. Real value will be extracted from the forced install file at step1.
         $autofill = ((!empty($_SESSION['dol_save_pass'])) ? $_SESSION['dol_save_pass'] : str_pad('', strlen($force_install_databasepass ?? ''), '*'));
@@ -1285,7 +633,7 @@ class Install extends BasicController
         }
         $this->autofill = Functions::dol_escape_htmltag($autofill);
 
-        $this->install_port = !empty($force_install_port) ? $force_install_port : $this->config->main_db_port;
+        $this->install_port = !empty($force_install_port) ? $force_install_port : $this->config->main_db_port ?? '';
         $this->install_prefix = !empty($force_install_prefix) ? $force_install_prefix : (!empty($this->config->main_db_prefix) ? $this->config->main_db_prefix : Globals::DEFAULT_DB_PREFIX);
 
         $this->install_createdatabase = $force_install_createdatabase ?? '';
@@ -1315,16 +663,64 @@ class Install extends BasicController
 
         $this->force_install_noedit = $force_install_noedit ?? false;
         $this->force_install_database = $force_install_database ?? false;
-        $this->webPagesDirectory = $this->lang->trans("WebPagesDirectory");
+        $this->webPagesDirectory = Lang::_("WebPagesDirectory");
+
+        /**
+         * db_create_database   => install_createdatabase
+         * db_create_user       =>
+         * db_user_root         =>
+         * db_pass_root         =>
+         */
+    }
+
+    /**
+     * Shows a form with all the application configuration options.
+     *
+     * Views: install/start
+     *
+     * @return true
+     */
+    public function actionStart()
+    {
+        $this->template = 'install/start';
+        $this->buttons = [
+            [
+                'value' => 'config',
+                'text' => Lang::_('NextStep') . ' ->',
+                'js' => 'return jscheckparam();',
+            ],
+        ];
+
+        $this->dolibarr_install_syslog("- fileconf: entering fileconf.php page");
+
+        session_start(); // To be able to keep info into session (used for not losing pass during navigation. pass must not transit through parameters)
+
+        $this->subtitle = Lang::_("ConfigurationFile");
+
+        static::getStartPostData();
+
 
         return true;
     }
 
     private function actionConfig()
     {
+        /*
+        // If no connection
+        $db = Globals::dbConnect();
+        if ($db !== null && empty($db->error)) {
+            dump([$_POST,$db]);
+            die('Hay conexión no es necesario configurar');
+            return $this->actionStart();
+        }
+        */
+
         $this->template = 'install/step1';
         $this->nextButton = true;
 
+        $this->getStartPostData();
+
+        /*
         $action = Functions::GETPOST('action', 'aZ09') ? Functions::GETPOST('action', 'aZ09') : (empty($argv[1]) ? '' : $argv[1]);
         $setuplang = Functions::GETPOST('selectlang', 'aZ09', 3) ? Functions::GETPOST('selectlang', 'aZ09', 3) : (empty($argv[2]) ? 'auto' : $argv[2]);
         $this->lang->setDefaultLang($setuplang);
@@ -1358,137 +754,25 @@ class Install extends BasicController
         $this->main_alt_dir_name = ((Functions::GETPOST("main_alt_dir_name", 'alpha') && Functions::GETPOST("main_alt_dir_name", 'alpha') != '') ? Functions::GETPOST("main_alt_dir_name", 'alpha') : 'custom');
 
         $this->dolibarr_main_distrib = 'standard';
-
-        session_start(); // To be able to keep info into session (used for not losing password during navigation. The password must not transit through parameters)
-
-        // Save a flag to tell to restore input value if we go back
-        $_SESSION['dol_save_pass'] = $this->db_pass;
-        //$_SESSION['dol_save_passroot']=$passroot;
-
-        $conffile = Globals::getConfFilename();
-
-        // Now we load forced values from install.forced.php file.
-        /*
-         * TODO: It could be implemented using a file to force configuration.
-         *
-        $useforcedwizard = false;
-        $forcedfile = "./install.forced.php";
-        if ($conffile == "/etc/dolibarr/conf.php") {
-            $forcedfile = "/etc/dolibarr/install.forced.php";
-        }
-        if (@file_exists($forcedfile)) {
-            $useforcedwizard = true;
-            include_once $forcedfile;
-            // If forced install is enabled, replace the post values. These are empty because form fields are disabled.
-            if ($force_install_noedit) {
-                $this->main_dir = detect_dolibarr_main_document_root();
-                if (!empty($argv[3])) {
-                    $this->main_dir = $argv[3]; // override when executing the script in command line
-                }
-                if (!empty($force_install_main_data_root)) {
-                    $this->main_data_dir = $force_install_main_data_root;
-                } else {
-                    $this->main_data_dir = detect_dolibarr_main_data_root($this->main_dir);
-                }
-                if (!empty($argv[4])) {
-                    $this->main_data_dir = $argv[4]; // override when executing the script in command line
-                }
-                $this->main_url = detect_dolibarr_main_url_root();
-                if (!empty($argv[5])) {
-                    $this->main_url = $argv[5]; // override when executing the script in command line
-                }
-
-                if (!empty($force_install_databaserootlogin)) {
-                    $userroot = parse_database_login($force_install_databaserootlogin);
-                }
-                if (!empty($argv[6])) {
-                    $userroot = $argv[6]; // override when executing the script in command line
-                }
-                if (!empty($force_install_databaserootpass)) {
-                    $passroot = parse_database_pass($force_install_databaserootpass);
-                }
-                if (!empty($argv[7])) {
-                    $passroot = $argv[7]; // override when executing the script in command line
-                }
-            }
-            if ($force_install_noedit == 2) {
-                if (!empty($force_install_type)) {
-                    $this->db_type = $force_install_type;
-                }
-                if (!empty($force_install_dbserver)) {
-                    $this->db_host = $force_install_dbserver;
-                }
-                if (!empty($force_install_database)) {
-                    $this->db_name = $force_install_database;
-                }
-                if (!empty($force_install_databaselogin)) {
-                    $this->db_user = $force_install_databaselogin;
-                }
-                if (!empty($force_install_databasepass)) {
-                    $this->db_pass = $force_install_databasepass;
-                }
-                if (!empty($force_install_port)) {
-                    $this->db_port = $force_install_port;
-                }
-                if (!empty($force_install_prefix)) {
-                    $this->db_prefix = $force_install_prefix;
-                }
-                if (!empty($force_install_createdatabase)) {
-                    $this->db_create_database = $force_install_createdatabase;
-                }
-                if (!empty($force_install_createuser)) {
-                    $this->db_create_user = $force_install_createuser;
-                }
-                if (!empty($force_install_mainforcehttps)) {
-                    $this->main_force_https = $force_install_mainforcehttps;
-                }
-            }
-
-            if (!empty($force_install_distrib)) {
-                $this->dolibarr_main_distrib = $force_install_distrib;
-            }
-        }
         */
+
+        $db = DB::checkConnection(
+            $this->db_type,
+            $this->db_host,
+            $this->db_user,
+            $this->db_pass,
+            $this->db_name,
+            (int) $this->db_port,
+            true
+        );
+
+        if ($db === false || !empty($db->error)) {
+            return $this->actionStart();
+        }
 
         $this->dolibarr_install_syslog("--- step1: entering step1.php page");
 
-        // Test if we can run a first install process
-        if (!is_writable($conffile)) {
-            $this->template = 'install/step1-error';
-            $this->errorMessage = $this->lang->trans("ConfFileIsNotWritable", $conffile);
-            return false;
-        }
-
         $errors = [];
-
-        // Check parameters
-        $is_sqlite = false;
-
-        if (empty($this->db_type)) {
-            $errors[] = $this->lang->trans("ErrorFieldRequired", $this->lang->transnoentities("DatabaseType"));
-        } else {
-            $is_sqlite = ($this->db_type === 'sqlite' || $this->db_type === 'sqlite3');
-        }
-
-        if (empty($this->db_host) && !$is_sqlite) {
-            $errors[] = $this->lang->trans("ErrorFieldRequired", $this->lang->transnoentities("Server"));
-        }
-
-        if (empty($this->db_name)) {
-            $errors[] = $this->lang->trans("ErrorFieldRequired", $this->lang->transnoentities("DatabaseName"));
-        }
-
-        if (empty($this->db_user) && !$is_sqlite) {
-            $errors[] = $this->lang->trans("ErrorFieldRequired", $this->lang->transnoentities("Login"));
-        }
-
-        if (!empty($this->db_port) && !is_numeric($this->db_port)) {
-            $errors[] = $this->lang->trans("ErrorBadValueForParameter", $this->db_port, $this->lang->transnoentities("Port"));
-        }
-
-        if (!empty($this->db_prefix) && !preg_match('/^[a-z0-9]+_$/i', $this->db_prefix)) {
-            $errors[] = $this->lang->trans("ErrorBadValueForParameter", $this->db_prefix, $this->lang->transnoentities("DatabasePrefix"));
-        }
 
         $this->main_dir = Functions::dol_sanitizePathName($this->main_dir);
         $this->main_data_dir = Functions::dol_sanitizePathName($this->main_data_dir);
@@ -1520,20 +804,20 @@ class Install extends BasicController
             // If we require database or user creation we need to connect as root, so we need root login credentials
             if (!empty($this->db_create_database) && !$userroot) {
                 print '
-        <div class="error">' . $this->lang->trans("YouAskDatabaseCreationSoDolibarrNeedToConnect", $this->db_name) . '</div>
+        <div class="error">' . Lang::_("YouAskDatabaseCreationSoDolibarrNeedToConnect", $this->db_name) . '</div>
         ';
                 print '<br>';
-                print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                print Lang::_("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                print Lang::_("ErrorGoBackAndCorrectParameters");
                 $error++;
             }
             if (!empty($this->db_create_user) && !$userroot) {
                 print '
-        <div class="error">' . $this->lang->trans("YouAskLoginCreationSoDolibarrNeedToConnect", $this->db_user) . '</div>
+        <div class="error">' . Lang::_("YouAskLoginCreationSoDolibarrNeedToConnect", $this->db_user) . '</div>
         ';
                 print '<br>';
-                print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                print Lang::_("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                print Lang::_("ErrorGoBackAndCorrectParameters");
                 $error++;
             }
 
@@ -1557,19 +841,19 @@ class Install extends BasicController
 
                 if (empty($this->db_create_database) && DB::$connected && !$db->database_selected) {
                     print '
-        <div class="error">' . $this->lang->trans("ErrorConnectedButDatabaseNotFound", $this->db_name) . '</div>
+        <div class="error">' . Lang::_("ErrorConnectedButDatabaseNotFound", $this->db_name) . '</div>
         ';
                     print '<br>';
                     if (!DB::$connected) {
-                        print $this->lang->trans("IfDatabaseNotExistsGoBackAndUncheckCreate") . '<br><br>';
+                        print Lang::_("IfDatabaseNotExistsGoBackAndUncheckCreate") . '<br><br>';
                     }
-                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                    print Lang::_("ErrorGoBackAndCorrectParameters");
                     $error++;
                 } elseif ($db->error && !(!empty($this->db_create_database) && DB::$connected)) {
                     // Note: you may experience error here with message "No such file or directory" when mysql was installed for the first time but not yet launched.
                     if ($db->error == "No such file or directory") {
                         print '
-        <div class="error">' . $this->lang->trans("ErrorToConnectToMysqlCheckInstance") . '</div>
+        <div class="error">' . Lang::_("ErrorToConnectToMysqlCheckInstance") . '</div>
         ';
                     } else {
                         print '
@@ -1577,10 +861,10 @@ class Install extends BasicController
         ';
                     }
                     if (!DB::$connected) {
-                        print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                        print Lang::_("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
                     }
                     //print '<a href="#" onClick="javascript: history.back();">';
-                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                    print Lang::_("ErrorGoBackAndCorrectParameters");
                     //print '</a>';
                     $error++;
                 }
@@ -1595,10 +879,10 @@ class Install extends BasicController
         <div class="error">' . $db->error . '</div>
         ';
                     if (!DB::$connected) {
-                        print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                        print Lang::_("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
                     }
                     //print '<a href="#" onClick="javascript: history.back();">';
-                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                    print Lang::_("ErrorGoBackAndCorrectParameters");
                     //print '</a>';
                     $error++;
                 }
@@ -1608,9 +892,9 @@ class Install extends BasicController
                 print $db->lasterror();
             }
             if (isset($db) && !DB::$connected) {
-                print '<br>' . $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                print '<br>' . Lang::_("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
             }
-            print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+            print Lang::_("ErrorGoBackAndCorrectParameters");
             $error++;
         }
 
@@ -1618,9 +902,9 @@ class Install extends BasicController
             if (!empty($this->db_create_database)) {
                 $result = $db->select_db($this->db_name);
                 if ($result) {
-                    print '<div class="error">' . $this->lang->trans("ErrorDatabaseAlreadyExists", $this->db_name) . '</div>';
-                    print $this->lang->trans("IfDatabaseExistsGoBackAndCheckCreate") . '<br><br>';
-                    print $this->lang->trans("ErrorGoBackAndCorrectParameters");
+                    print '<div class="error">' . Lang::_("ErrorDatabaseAlreadyExists", $this->db_name) . '</div>';
+                    print Lang::_("IfDatabaseExistsGoBackAndCheckCreate") . '<br><br>';
+                    print Lang::_("ErrorGoBackAndCorrectParameters");
                     $error++;
                 }
             }
@@ -1669,7 +953,7 @@ class Install extends BasicController
             }
 
             // Show title of step
-            print '<h3><img class="valignmiddle inline-block paddingright" src="Resources/img/gear.svg" width="20" alt="Configuration"> ' . $this->lang->trans("ConfigurationFile") . '</h3>';
+            print '<h3><img class="valignmiddle inline-block paddingright" src="Resources/img/gear.svg" width="20" alt="Configuration"> ' . Lang::_("ConfigurationFile") . '</h3>';
             print '<table cellspacing="0" width="100%" cellpadding="1" border="0">';
 
             // Check parameter main_dir
@@ -1678,11 +962,11 @@ class Install extends BasicController
                     $this->dolibarr_install_syslog("step1: directory '" . $this->main_dir . "' is unavailable or can't be accessed");
 
                     print "<tr><td>";
-                    print $this->lang->trans("ErrorDirDoesNotExists", $this->main_dir) . '<br>';
-                    print $this->lang->trans("ErrorWrongValueForParameter", $this->lang->transnoentitiesnoconv("WebPagesDirectory")) . '<br>';
-                    print $this->lang->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
+                    print Lang::_("ErrorDirDoesNotExists", $this->main_dir) . '<br>';
+                    print Lang::_("ErrorWrongValueForParameter", $this->lang->transnoentitiesnoconv("WebPagesDirectory")) . '<br>';
+                    print Lang::_("ErrorGoBackAndCorrectParameters") . '<br><br>';
                     print '</td><td>';
-                    print $this->lang->trans("Error");
+                    print Lang::_("Error");
                     print "</td></tr>";
                     $error++;
                 }
@@ -1701,12 +985,12 @@ class Install extends BasicController
                 }
 
                 if (!is_dir($this->main_data_dir)) {
-                    print "<tr><td>" . $this->lang->trans("ErrorDirDoesNotExists", $this->main_data_dir);
-                    print ' ' . $this->lang->trans("YouMustCreateItAndAllowServerToWrite");
+                    print "<tr><td>" . Lang::_("ErrorDirDoesNotExists", $this->main_data_dir);
+                    print ' ' . Lang::_("YouMustCreateItAndAllowServerToWrite");
                     print '</td><td>';
-                    print '<span class="error">' . $this->lang->trans("Error") . '</span>';
+                    print '<span class="error">' . Lang::_("Error") . '</span>';
                     print "</td></tr>";
-                    print '<tr><td colspan="2"><br>' . $this->lang->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'] . '?testget=ok') . '</td></tr>';
+                    print '<tr><td colspan="2"><br>' . Lang::_("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'] . '?testget=ok') . '</td></tr>';
                     $error++;
                 } else {
                     // Create .htaccess file in document directory
@@ -1741,7 +1025,7 @@ class Install extends BasicController
                             $this->dolibarr_install_syslog("step1: directory '" . $dir[$i] . "' exists");
                         } else {
                             if (Functions::dol_mkdir($dir[$i]) < 0) {
-                                $this->errors[] = $this->lang->trans('ErrorFailToCreateDir', $dir[$i]);
+                                $this->errors[] = Lang::_('ErrorFailToCreateDir', $dir[$i]);
                             } else {
                                 $this->dolibarr_install_syslog("step1: directory '" . $dir[$i] . "' created");
                             }
@@ -1754,12 +1038,12 @@ class Install extends BasicController
                     Files::dolCopyDir($srcroot, $destroot, 0, 0);
 
                     if ($error) {
-                        print "<tr><td>" . $this->lang->trans("ErrorDirDoesNotExists", $this->main_data_dir);
-                        print ' ' . $this->lang->trans("YouMustCreateItAndAllowServerToWrite");
+                        print "<tr><td>" . Lang::_("ErrorDirDoesNotExists", $this->main_data_dir);
+                        print ' ' . Lang::_("YouMustCreateItAndAllowServerToWrite");
                         print '</td><td>';
-                        print '<span class="error">' . $this->lang->trans("Error") . '</span>';
+                        print '<span class="error">' . Lang::_("Error") . '</span>';
                         print "</td></tr>";
-                        print '<tr><td colspan="2"><br>' . $this->lang->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'] . '?testget=ok') . '</td></tr>';
+                        print '<tr><td colspan="2"><br>' . Lang::_("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'] . '?testget=ok') . '</td></tr>';
                     } else {
                         //ODT templates
                         $srcroot = $this->main_dir . '/Install/DocTemplates';
@@ -1786,7 +1070,7 @@ class Install extends BasicController
                             Functions::dol_mkdir($dirodt);
                             $result = Files::dol_copy($src, $dest, 0, 0);
                             if ($result < 0) {
-                                $this->errors[] = $this->lang->trans('ErrorFailToCopyFile', $src, $dest);
+                                $this->errors[] = Lang::_('ErrorFailToCopyFile', $src, $dest);
                             }
                         }
                     }
@@ -1812,7 +1096,7 @@ class Install extends BasicController
                     $this->conf($this->main_dir);
 
                     print "<tr><td>";
-                    print $this->lang->trans("SaveConfigurationFile");
+                    print Lang::_("SaveConfigurationFile");
                     print ' <strong>' . $conffile . '</strong>';
                     print "</td><td>";
                     print '<img src="Resources/img/ok.png" alt="Ok">';
@@ -1828,7 +1112,7 @@ class Install extends BasicController
                 $this->conf();
 
                 print '<tr><td>';
-                print $this->lang->trans("ConfFileReload");
+                print Lang::_("ConfFileReload");
                 print '</td>';
                 print '<td><img src="Resources/img/ok.png" alt="Ok"></td></tr>';
 
@@ -1862,10 +1146,10 @@ class Install extends BasicController
                             if (empty($dolibarr_main_db_pass)) {
                                 $this->dolibarr_install_syslog("step1: failed to create user, password is empty", LOG_ERR);
                                 print '<tr><td>';
-                                print $this->lang->trans("UserCreation") . ' : ';
+                                print Lang::_("UserCreation") . ' : ';
                                 print $dolibarr_main_db_user;
                                 print '</td>';
-                                print '<td>' . $this->lang->trans("Error") . ": A password for database user is mandatory.</td></tr>";
+                                print '<td>' . Lang::_("Error") . ": A password for database user is mandatory.</td></tr>";
                             } else {
                                 // Create user
                                 $result = $db->DDLCreateUser($dolibarr_main_db_host, $dolibarr_main_db_user, $dolibarr_main_db_pass, $dolibarr_main_db_name);
@@ -1879,7 +1163,7 @@ class Install extends BasicController
 
                                 if ($result > 0 && $resultbis > 0) {
                                     print '<tr><td>';
-                                    print $this->lang->trans("UserCreation") . ' : ';
+                                    print Lang::_("UserCreation") . ' : ';
                                     print $dolibarr_main_db_user;
                                     print '</td>';
                                     print '<td><img src="Resources/img/ok.png" alt="Ok"></td></tr>';
@@ -1891,17 +1175,17 @@ class Install extends BasicController
                                     ) {
                                         $this->dolibarr_install_syslog("step1: user already exists");
                                         print '<tr><td>';
-                                        print $this->lang->trans("UserCreation") . ' : ';
+                                        print Lang::_("UserCreation") . ' : ';
                                         print $dolibarr_main_db_user;
                                         print '</td>';
-                                        print '<td>' . $this->lang->trans("LoginAlreadyExists") . '</td></tr>';
+                                        print '<td>' . Lang::_("LoginAlreadyExists") . '</td></tr>';
                                     } else {
                                         $this->dolibarr_install_syslog("step1: failed to create user", LOG_ERR);
                                         print '<tr><td>';
-                                        print $this->lang->trans("UserCreation") . ' : ';
+                                        print Lang::_("UserCreation") . ' : ';
                                         print $dolibarr_main_db_user;
                                         print '</td>';
-                                        print '<td>' . $this->lang->trans("Error") . ': ' . $db->errno() . ' ' . $db->error() . ($db->error ? '. ' . $db->error : '') . "</td></tr>";
+                                        print '<td>' . Lang::_("Error") . ': ' . $db->errno() . ' ' . $db->error() . ($db->error ? '. ' . $db->error : '') . "</td></tr>";
                                     }
                                 }
                             }
@@ -1910,7 +1194,7 @@ class Install extends BasicController
                             $db->close();
                         } else {
                             print '<tr><td>';
-                            print $this->lang->trans("UserCreation") . ' : ';
+                            print Lang::_("UserCreation") . ' : ';
                             print $dolibarr_main_db_user;
                             print '</td>';
                             print '<td><img src="Resources/img/error.png" alt="Error"></td>';
@@ -1918,10 +1202,10 @@ class Install extends BasicController
 
                             // warning message due to connection failure
                             print '<tr><td colspan="2"><br>';
-                            print $this->lang->trans("YouAskDatabaseCreationSoDolibarrNeedToConnect", $dolibarr_main_db_user, $dolibarr_main_db_host, $userroot);
+                            print Lang::_("YouAskDatabaseCreationSoDolibarrNeedToConnect", $dolibarr_main_db_user, $dolibarr_main_db_host, $userroot);
                             print '<br>';
-                            print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                            print $this->lang->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
+                            print Lang::_("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                            print Lang::_("ErrorGoBackAndCorrectParameters") . '<br><br>';
                             print '</td></tr>';
 
                             $error++;
@@ -1938,7 +1222,7 @@ class Install extends BasicController
                     if ($newdb->connected()) {
                         if ($newdb->DDLCreateDb($dolibarr_main_db_name, $dolibarr_main_db_character_set, $dolibarr_main_db_collation, $dolibarr_main_db_user)) {
                             print '<tr><td>';
-                            print $this->lang->trans("DatabaseCreation") . " (" . $this->lang->trans("User") . " " . $userroot . ") : ";
+                            print Lang::_("DatabaseCreation") . " (" . Lang::_("User") . " " . $userroot . ") : ";
                             print $dolibarr_main_db_name;
                             print '</td>';
                             print '<td><img src="Resources/img/ok.png" alt="Ok"></td></tr>';
@@ -1954,9 +1238,9 @@ class Install extends BasicController
                         } else {
                             // warning message
                             print '<tr><td colspan="2"><br>';
-                            print $this->lang->trans("ErrorFailedToCreateDatabase", $dolibarr_main_db_name) . '<br>';
+                            print Lang::_("ErrorFailedToCreateDatabase", $dolibarr_main_db_name) . '<br>';
                             print $newdb->lasterror() . '<br>';
-                            print $this->lang->trans("IfDatabaseExistsGoBackAndCheckCreate");
+                            print Lang::_("IfDatabaseExistsGoBackAndCheckCreate");
                             print '<br>';
                             print '</td></tr>';
 
@@ -1968,7 +1252,7 @@ class Install extends BasicController
                         DB::disconnect();
                     } else {
                         print '<tr><td>';
-                        print $this->lang->trans("DatabaseCreation") . " (" . $this->lang->trans("User") . " " . $userroot . ") : ";
+                        print Lang::_("DatabaseCreation") . " (" . Lang::_("User") . " " . $userroot . ") : ";
                         print $dolibarr_main_db_name;
                         print '</td>';
                         print '<td><img src="Resources/img/error.png" alt="Error"></td>';
@@ -1976,10 +1260,10 @@ class Install extends BasicController
 
                         // warning message
                         print '<tr><td colspan="2"><br>';
-                        print $this->lang->trans("YouAskDatabaseCreationSoDolibarrNeedToConnect", $dolibarr_main_db_user, $dolibarr_main_db_host, $userroot);
+                        print Lang::_("YouAskDatabaseCreationSoDolibarrNeedToConnect", $dolibarr_main_db_user, $dolibarr_main_db_host, $userroot);
                         print '<br>';
-                        print $this->lang->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                        print $this->lang->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
+                        print Lang::_("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
+                        print Lang::_("ErrorGoBackAndCorrectParameters") . '<br><br>';
                         print '</td></tr>';
 
                         $error++;
@@ -2004,7 +1288,7 @@ class Install extends BasicController
                     if (DB::$connected) {
                         $this->dolibarr_install_syslog("step1: connection to server by user " . $this->db_user . " ok");
                         print "<tr><td>";
-                        print $this->lang->trans("ServerConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
+                        print Lang::_("ServerConnection") . " (" . Lang::_("User") . " " . $this->db_user . ") : ";
                         print $this->db_host;
                         print "</td><td>";
                         print '<img src="Resources/img/ok.png" alt="Ok">';
@@ -2014,7 +1298,7 @@ class Install extends BasicController
                         if ($db->database_selected) {
                             $this->dolibarr_install_syslog("step1: connection to database " . $this->db_name . " by user " . $this->db_user . " ok");
                             print "<tr><td>";
-                            print $this->lang->trans("DatabaseConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
+                            print Lang::_("DatabaseConnection") . " (" . Lang::_("User") . " " . $this->db_user . ") : ";
                             print $this->db_name;
                             print "</td><td>";
                             print '<img src="Resources/img/ok.png" alt="Ok">';
@@ -2024,7 +1308,7 @@ class Install extends BasicController
                         } else {
                             $this->dolibarr_install_syslog("step1: connection to database " . $this->db_name . " by user " . $this->db_user . " failed", LOG_ERR);
                             print "<tr><td>";
-                            print $this->lang->trans("DatabaseConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
+                            print Lang::_("DatabaseConnection") . " (" . Lang::_("User") . " " . $this->db_user . ") : ";
                             print $this->db_name;
                             print '</td><td>';
                             print '<img src="Resources/img/error.png" alt="Error">';
@@ -2032,9 +1316,9 @@ class Install extends BasicController
 
                             // warning message
                             print '<tr><td colspan="2"><br>';
-                            print $this->lang->trans('CheckThatDatabasenameIsCorrect', $this->config->main_db_name) . '<br>';
-                            print $this->lang->trans('IfAlreadyExistsCheckOption') . '<br>';
-                            print $this->lang->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
+                            print Lang::_('CheckThatDatabasenameIsCorrect', $this->config->main_db_name) . '<br>';
+                            print Lang::_('IfAlreadyExistsCheckOption') . '<br>';
+                            print Lang::_("ErrorGoBackAndCorrectParameters") . '<br><br>';
                             print '</td></tr>';
 
                             $error++;
@@ -2042,7 +1326,7 @@ class Install extends BasicController
                     } else {
                         $this->dolibarr_install_syslog("step1: connection to server by user " . $this->db_user . " failed", LOG_ERR);
                         print "<tr><td>";
-                        print $this->lang->trans("ServerConnection") . " (" . $this->lang->trans("User") . " " . $this->db_user . ") : ";
+                        print Lang::_("ServerConnection") . " (" . Lang::_("User") . " " . $this->db_user . ") : ";
                         print $this->db_host;
                         print '</td><td>';
                         print '<img src="Resources/img/error.png" alt="Error">';
@@ -2050,9 +1334,9 @@ class Install extends BasicController
 
                         // warning message
                         print '<tr><td colspan="2"><br>';
-                        print $this->lang->trans("ErrorConnection", $this->db_host, $this->db_name, $this->db_user);
-                        print $this->lang->trans('IfLoginDoesNotExistsCheckCreateUser') . '<br>';
-                        print $this->lang->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
+                        print Lang::_("ErrorConnection", $this->db_host, $this->db_name, $this->db_user);
+                        print Lang::_('IfLoginDoesNotExistsCheckCreateUser') . '<br>';
+                        print Lang::_("ErrorGoBackAndCorrectParameters") . '<br><br>';
                         print '</td></tr>';
 
                         $error++;
@@ -2087,7 +1371,7 @@ class Install extends BasicController
         $ok = 0;
 
         $this->template = 'install/step2';
-        $this->subtitle = $this->lang->trans("CreateDatabaseObjects");
+        $this->subtitle = Lang::_("CreateDatabaseObjects");
         $this->nextButton = true;
 
         $this->errors = [];
@@ -2154,7 +1438,7 @@ class Install extends BasicController
         // Test if we can run a first install process
         $this->fatalError = false;
         if (!is_writable($conffile)) {
-            $this->fatalError = $this->lang->trans("ConfFileIsNotWritable", $conffile);
+            $this->fatalError = Lang::_("ConfFileIsNotWritable", $conffile);
             exit;
         }
 
@@ -2164,7 +1448,7 @@ class Install extends BasicController
             //$db = Functions::getDoliDBInstance($conf->main_db_type, $conf->main_db_host, $conf->main_db_user, $conf->main_db_pass, $conf->main_db_name, (int) $conf->main_db_port);
 
             if (DB::$connected) {
-                $this->connectionMessage = $this->lang->trans("ServerConnection") . ": " . $conf->main_db_host;
+                $this->connectionMessage = Lang::_("ServerConnection") . ": " . $conf->main_db_host;
                 $this->connectionResult = '<img src="Resources/img/ok.png" alt="Ok">';
                 $ok = 1;
             } else {
@@ -2178,8 +1462,8 @@ class Install extends BasicController
                 } else {
                     $this->dolibarr_install_syslog("step2: failed connection to database :" . $conf->main_db_name, LOG_ERR);
                     $this->errors[] = [
-                        'text' => 'Failed to select database '.$conf->main_db_name,
-                        'icon'=>'<img src="Resources/img/error.png" alt="Error">',
+                        'text' => 'Failed to select database ' . $conf->main_db_name,
+                        'icon' => '<img src="Resources/img/error.png" alt="Error">',
                     ];
                 }
             }
@@ -2189,10 +1473,10 @@ class Install extends BasicController
                 $version = $db->getVersion();
                 $versionarray = $db->getVersionArray();
 
-                $this->databaseVersionMessage = $this->lang->trans("DatabaseVersion");
+                $this->databaseVersionMessage = Lang::_("DatabaseVersion");
                 $this->databaseVersionVersion = $version;
 
-                $this->databaseNameMessage = $this->lang->trans("DatabaseName");
+                $this->databaseNameMessage = Lang::_("DatabaseName");
                 $this->databaseNameName = $db->database_name;
             }
 
@@ -2283,16 +1567,16 @@ class Install extends BasicController
                                 //print "<td>already existing</td></tr>";
                             } else {
                                 $this->errors[] = [
-                                    'text' => $this->lang->trans("CreateTableAndPrimaryKey", $name) .'<br>'.$this->lang->trans("Request") . ' ' . $requestnb . ': ' . $buffer . ' <br>Executed query : ' . $db->lastquery,
-                                    'icon'=>'<span class="error">' . $this->lang->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span>',
+                                    'text' => Lang::_("CreateTableAndPrimaryKey", $name) . '<br>' . Lang::_("Request") . ' ' . $requestnb . ': ' . $buffer . ' <br>Executed query : ' . $db->lastquery,
+                                    'icon' => '<span class="error">' . Lang::_("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span>',
                                 ];
                                 $error++;
                             }
                         }
                     } else {
                         $this->errors[] = [
-                            'text' =>$this->lang->trans("CreateTableAndPrimaryKey", $name),
-                            'icon'=>'<span class="error">' . $this->lang->trans("Error") . ' Failed to open file ' . $dir . $file . '</span>',
+                            'text' => Lang::_("CreateTableAndPrimaryKey", $name),
+                            'icon' => '<span class="error">' . Lang::_("Error") . ' Failed to open file ' . $dir . $file . '</span>',
                         ];
                         $error++;
                         $this->dolibarr_install_syslog("step2: failed to open file " . $dir . $file, LOG_ERR);
@@ -2302,15 +1586,15 @@ class Install extends BasicController
                 if ($tablefound) {
                     if ($error == 0) {
                         $this->errors[] = [
-                            'text' =>$this->lang->trans("TablesAndPrimaryKeysCreation"),
-                            'icon'=>'<img src="Resources/img/ok.png" alt="Ok">',
+                            'text' => Lang::_("TablesAndPrimaryKeysCreation"),
+                            'icon' => '<img src="Resources/img/ok.png" alt="Ok">',
                         ];
                         $ok = 1;
                     }
                 } else {
                     $this->errors[] = [
-                        'text' =>$this->lang->trans("ErrorFailedToFindSomeFiles", $dir),
-                        'icon'=>'<img src="Resources/img/error.png" alt="Error">',
+                        'text' => Lang::_("ErrorFailedToFindSomeFiles", $dir),
+                        'icon' => '<img src="Resources/img/error.png" alt="Error">',
                     ];
                     $this->dolibarr_install_syslog("step2: failed to find files to create database in directory " . $dir, LOG_ERR);
                 }
@@ -2419,19 +1703,19 @@ class Install extends BasicController
                                         //print "<td>Deja existante</td></tr>";
                                         $key_exists = 1;
                                     } else {
-                                        print "<tr><td>" . $this->lang->trans("CreateOtherKeysForTable", $name);
-                                        print "<br>\n" . $this->lang->trans("Request") . ' ' . $requestnb . ' : ' . $db->lastqueryerror();
+                                        print "<tr><td>" . Lang::_("CreateOtherKeysForTable", $name);
+                                        print "<br>\n" . Lang::_("Request") . ' ' . $requestnb . ' : ' . $db->lastqueryerror();
                                         print "\n</td>";
-                                        print '<td><span class="error">' . $this->lang->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span></td></tr>';
+                                        print '<td><span class="error">' . Lang::_("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span></td></tr>';
                                         $error++;
                                     }
                                 }
                             }
                         }
                     } else {
-                        print "<tr><td>" . $this->lang->trans("CreateOtherKeysForTable", $name);
+                        print "<tr><td>" . Lang::_("CreateOtherKeysForTable", $name);
                         print "</td>";
-                        print '<td><span class="error">' . $this->lang->trans("Error") . " Failed to open file " . $dir . $file . "</span></td></tr>";
+                        print '<td><span class="error">' . Lang::_("Error") . " Failed to open file " . $dir . $file . "</span></td></tr>";
                         $error++;
                         $this->dolibarr_install_syslog("step2: failed to open file " . $dir . $file, LOG_ERR);
                     }
@@ -2439,7 +1723,7 @@ class Install extends BasicController
 
                 if ($tablefound && $error == 0) {
                     print '<tr><td>';
-                    print $this->lang->trans("OtherKeysCreation") . '</td><td><img src="../theme/eldy/img/tick.png" alt="Ok"></td></tr>';
+                    print Lang::_("OtherKeysCreation") . '</td><td><img src="../theme/eldy/img/tick.png" alt="Ok"></td></tr>';
                     $okkeys = 1;
                 }
             }
@@ -2504,17 +1788,17 @@ class Install extends BasicController
                                 } else {
                                     $ok = 0;
 
-                                    print "<tr><td>" . $this->lang->trans("FunctionsCreation");
-                                    print "<br>\n" . $this->lang->trans("Request") . ' ' . $requestnb . ' : ' . $buffer;
+                                    print "<tr><td>" . Lang::_("FunctionsCreation");
+                                    print "<br>\n" . Lang::_("Request") . ' ' . $requestnb . ' : ' . $buffer;
                                     print "\n</td>";
-                                    print '<td><span class="error">' . $this->lang->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span></td></tr>';
+                                    print '<td><span class="error">' . Lang::_("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span></td></tr>';
                                     $error++;
                                 }
                             }
                         }
                     }
 
-                    print "<tr><td>" . $this->lang->trans("FunctionsCreation") . "</td>";
+                    print "<tr><td>" . Lang::_("FunctionsCreation") . "</td>";
                     if ($ok) {
                         print '<td><img src="../theme/eldy/img/tick.png" alt="Ok"></td></tr>';
                     } else {
@@ -2613,7 +1897,7 @@ class Install extends BasicController
                                 } else {
                                     $ok = 0;
                                     $okallfile = 0;
-                                    print '<span class="error">' . $this->lang->trans("ErrorSQL") . " : " . $db->lasterrno() . " - " . $db->lastqueryerror() . " - " . $db->lasterror() . "</span><br>";
+                                    print '<span class="error">' . Lang::_("ErrorSQL") . " : " . $db->lasterrno() . " - " . $db->lastqueryerror() . " - " . $db->lasterror() . "</span><br>";
                                 }
                             }
                         }
@@ -2626,7 +1910,7 @@ class Install extends BasicController
                     }
                 }
 
-                print "<tr><td>" . $this->lang->trans("ReferenceDataLoading") . "</td>";
+                print "<tr><td>" . Lang::_("ReferenceDataLoading") . "</td>";
                 if ($ok) {
                     print '<td><img src="../theme/eldy/img/tick.png" alt="Ok"></td></tr>';
                 } else {
@@ -2656,7 +1940,7 @@ class Install extends BasicController
         $hash_unique_id = Security::dol_hash('dolibarr' . $this->conf->file->instance_unique_id, 'sha256');   // Note: if the global salt changes, this hash changes too so ping may be counted twice. We don't mind. It is for statistics purpose only.
 
         $out = '<input type="checkbox" name="dolibarrpingno" id="dolibarrpingno"' . ((Functions::getDolGlobalString('MAIN_FIRST_PING_OK_ID') == 'disabled') ? '' : ' value="checked"') . '> ';
-        $out .= '<label for="dolibarrpingno">' . $this->lang->trans("MakeAnonymousPing") . '</label>';
+        $out .= '<label for="dolibarrpingno">' . Lang::_("MakeAnonymousPing") . '</label>';
 
         $out .= '<!-- Add js script to manage the uncheck of option to not send the ping -->';
         $out .= '<script type="text/javascript">';
@@ -2707,17 +1991,17 @@ class Install extends BasicController
         $ok = 0;
 
         $this->template = 'install/step4';
-        $this->subtitle = $this->lang->trans("AdminAccountCreation");
+        $this->subtitle = Lang::_("AdminAccountCreation");
         $this->nextButton = true;
 
         // Test if we can run a first install process
         if (!is_writable($conffile)) {
-            print $this->lang->trans("ConfFileIsNotWritable", $conffiletoshow);
+            print Lang::_("ConfFileIsNotWritable", $conffiletoshow);
             //pFooter(1, $setuplang, 'jscheckparam');
             exit;
         }
 
-        print '<h3><img class="valignmiddle inline-block paddingright" src="../theme/common/octicons/build/svg/key.svg" width="20" alt="Database"> ' . $this->lang->trans("DolibarrAdminLogin") . '</h3>';
+        print '<h3><img class="valignmiddle inline-block paddingright" src="../theme/common/octicons/build/svg/key.svg" width="20" alt="Database"> ' . Lang::_("DolibarrAdminLogin") . '</h3>';
 
 
         //$db = getDoliDBInstance($this->db_type, $this->db_host, $this->db_user, $this->db_pass, $this->db_name, (int) $this->db_port);
@@ -2731,21 +2015,21 @@ class Install extends BasicController
 
         if (isset($_GET["error"]) && $_GET["error"] == 1) {
             print '<br>';
-            print '<div class="error">' . $this->lang->trans("PasswordsMismatch") . '</div>';
+            print '<div class="error">' . Lang::_("PasswordsMismatch") . '</div>';
             $error = 0; // We show button
         }
 
         if (isset($_GET["error"]) && $_GET["error"] == 2) {
             print '<br>';
             print '<div class="error">';
-            print $this->lang->trans("PleaseTypePassword");
+            print Lang::_("PleaseTypePassword");
             print '</div>';
             $error = 0; // We show button
         }
 
         if (isset($_GET["error"]) && $_GET["error"] == 3) {
             print '<br>';
-            print '<div class="error">' . $this->lang->trans("PleaseTypeALogin") . '</div>';
+            print '<div class="error">' . Lang::_("PleaseTypeALogin") . '</div>';
             $error = 0; // We show button
         }
 
@@ -2860,12 +2144,12 @@ class Install extends BasicController
         */
 
         $this->template = 'install/step5';
-        $this->subtitle = $this->lang->trans("SetupEnd");
+        $this->subtitle = Lang::_("SetupEnd");
         $this->nextButton = true;
 
         // Test if we can run a first install process
         if (empty($versionfrom) && empty($versionto) && !is_writable($conffile)) {
-            print $this->lang->trans("ConfFileIsNotWritable", $conffiletoshow);
+            print Lang::_("ConfFileIsNotWritable", $conffiletoshow);
             //pFooter(1, $setuplang, 'jscheckparam');
             exit;
         }
@@ -2966,7 +2250,7 @@ class Install extends BasicController
 
                     $result = $newuser->create($createuser, 1);
                     if ($result > 0) {
-                        print $this->lang->trans("AdminLoginCreatedSuccessfuly", $login) . "<br>";
+                        print Lang::_("AdminLoginCreatedSuccessfuly", $login) . "<br>";
                         $success = 1;
                     } else {
                         if ($result == -6) {    //login or email already exists
@@ -2975,10 +2259,10 @@ class Install extends BasicController
                             $success = 1;
                         } else {
                             $this->dolibarr_install_syslog('step5: FailedToCreateAdminLogin ' . $newuser->error, LOG_ERR);
-                            Functions::setEventMessages($this->lang->trans("FailedToCreateAdminLogin") . ' ' . $newuser->error, null, 'errors');
+                            Functions::setEventMessages(Lang::_("FailedToCreateAdminLogin") . ' ' . $newuser->error, null, 'errors');
                             //header("Location: step4.php?error=3&selectlang=$setuplang".(isset($login) ? '&login='.$login : ''));
-                            print '<br><div class="error">' . $this->lang->trans("FailedToCreateAdminLogin") . ': ' . $newuser->error . '</div><br><br>';
-                            print $this->lang->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
+                            print '<br><div class="error">' . Lang::_("FailedToCreateAdminLogin") . ': ' . $newuser->error . '</div><br><br>';
+                            print Lang::_("ErrorGoBackAndCorrectParameters") . '<br><br>';
                             $success = 1;
                         }
                     }
@@ -3081,7 +2365,7 @@ class Install extends BasicController
                         if (!empty($tmparray)) {
                             foreach ($tmparray as $modtoactivate) {
                                 $modtoactivatenew = preg_replace('/\.class\.php$/i', '', $modtoactivate);
-                                //print $this->lang->trans("ActivateModule", $modtoactivatenew).'<br>';
+                                //print Lang::_("ActivateModule", $modtoactivatenew).'<br>';
 
                                 $file = $modtoactivatenew . '.class.php';
                                 $this->dolibarr_install_syslog('step5: activate module file=' . $file);
@@ -3110,7 +2394,7 @@ class Install extends BasicController
                         $db->commit();
                     }
                 } else {
-                    print $this->lang->trans("ErrorFailedToConnect") . "<br>";
+                    print Lang::_("ErrorFailedToConnect") . "<br>";
                 }
             } elseif (empty($action) || preg_match('/upgrade/i', $action)) {
                 // If upgrade
@@ -3156,7 +2440,7 @@ class Install extends BasicController
                         }
                     }
                 } else {
-                    print $this->lang->trans("ErrorFailedToConnect") . "<br>";
+                    print Lang::_("ErrorFailedToConnect") . "<br>";
                 }
             } else {
                 Functions::dol_print_error(null, 'step5.php: unknown choice of action');
@@ -3173,7 +2457,7 @@ class Install extends BasicController
             if ($success) {
                 if (!Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') || ($conf->global->MAIN_VERSION_LAST_UPGRADE == DOL_VERSION)) {
                     // Install is finished (database is on same version than files)
-                    print '<br>' . $this->lang->trans("SystemIsInstalled") . "<br>";
+                    print '<br>' . Lang::_("SystemIsInstalled") . "<br>";
 
                     // Create install.lock file
                     // No need for the moment to create it automatically, creation by web assistant means permissions are given
@@ -3196,25 +2480,25 @@ class Install extends BasicController
                         }
                     }
                     if (empty($createlock)) {
-                        print '<div class="warning">' . $this->lang->trans("WarningRemoveInstallDir") . "</div>";
+                        print '<div class="warning">' . Lang::_("WarningRemoveInstallDir") . "</div>";
                     }
 
                     print "<br>";
 
-                    print $this->lang->trans("YouNeedToPersonalizeSetup") . "<br><br><br>";
+                    print Lang::_("YouNeedToPersonalizeSetup") . "<br><br><br>";
 
                     print '<div class="center">&gt; <a href="../admin/index.php?mainmenu=home&leftmenu=setup' . (isset($login) ? '&username=' . urlencode($login) : '') . '">';
-                    print '<span class="fas fa-external-link-alt"></span> ' . $this->lang->trans("GoToSetupArea");
+                    print '<span class="fas fa-external-link-alt"></span> ' . Lang::_("GoToSetupArea");
                     print '</a></div><br>';
                 } else {
                     // If here MAIN_VERSION_LAST_UPGRADE is not empty
-                    print $this->lang->trans("VersionLastUpgrade") . ': <b><span class="ok">' . Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') . '</span></b><br>';
-                    print $this->lang->trans("VersionProgram") . ': <b><span class="ok">' . DOL_VERSION . '</span></b><br>';
-                    print $this->lang->trans("MigrationNotFinished") . '<br>';
+                    print Lang::_("VersionLastUpgrade") . ': <b><span class="ok">' . Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') . '</span></b><br>';
+                    print Lang::_("VersionProgram") . ': <b><span class="ok">' . DOL_VERSION . '</span></b><br>';
+                    print Lang::_("MigrationNotFinished") . '<br>';
                     print "<br>";
 
                     print '<div class="center"><a href="' . $dolibarr_main_url_root . '/install/index.php">';
-                    print '<span class="fas fa-link-alt"></span> ' . $this->lang->trans("GoToUpgradePage");
+                    print '<span class="fas fa-link-alt"></span> ' . Lang::_("GoToUpgradePage");
                     print '</a></div>';
                 }
             }
@@ -3223,7 +2507,7 @@ class Install extends BasicController
             if (!Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') || ($conf->global->MAIN_VERSION_LAST_UPGRADE == DOL_VERSION)) {
                 // Upgrade is finished (database is on the same version than files)
                 print '<img class="valignmiddle inline-block paddingright" src="../theme/common/octicons/build/svg/checklist.svg" width="20" alt="Configuration">';
-                print ' <span class="valignmiddle">' . $this->lang->trans("SystemIsUpgraded") . "</span><br>";
+                print ' <span class="valignmiddle">' . Lang::_("SystemIsUpgraded") . "</span><br>";
 
                 // Create install.lock file if it does not exists.
                 // Note: it should always exists. A better solution to allow upgrade will be to add an upgrade.unlock file
@@ -3244,7 +2528,7 @@ class Install extends BasicController
                     }
                 }
                 if (empty($createlock)) {
-                    print '<br><div class="warning">' . $this->lang->trans("WarningRemoveInstallDir") . "</div>";
+                    print '<br><div class="warning">' . Lang::_("WarningRemoveInstallDir") . "</div>";
                 }
 
                 // Delete the upgrade.unlock file it it exists
@@ -3254,17 +2538,17 @@ class Install extends BasicController
                 print "<br>";
 
                 $morehtml = '<br><div class="center"><a href="../index.php?mainmenu=home' . (isset($login) ? '&username=' . urlencode($login) : '') . '">';
-                $morehtml .= '<span class="fas fa-link-alt"></span> ' . $this->lang->trans("GoToDolibarr") . '...';
+                $morehtml .= '<span class="fas fa-link-alt"></span> ' . Lang::_("GoToDolibarr") . '...';
                 $morehtml .= '</a></div><br>';
             } else {
                 // If here MAIN_VERSION_LAST_UPGRADE is not empty
-                print $this->lang->trans("VersionLastUpgrade") . ': <b><span class="ok">' . Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') . '</span></b><br>';
-                print $this->lang->trans("VersionProgram") . ': <b><span class="ok">' . DOL_VERSION . '</span></b>';
+                print Lang::_("VersionLastUpgrade") . ': <b><span class="ok">' . Functions::getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') . '</span></b><br>';
+                print Lang::_("VersionProgram") . ': <b><span class="ok">' . DOL_VERSION . '</span></b>';
 
                 print "<br>";
 
                 $morehtml = '<br><div class="center"><a href="../install/index.php">';
-                $morehtml .= '<span class="fas fa-link-alt"></span> ' . $this->lang->trans("GoToUpgradePage");
+                $morehtml .= '<span class="fas fa-link-alt"></span> ' . Lang::_("GoToUpgradePage");
                 $morehtml .= '</a></div>';
             }
         } else {
@@ -3301,7 +2585,7 @@ class Install extends BasicController
         switch (htmlentities($this->action)) {
             case 'checked':
                 return $this->actionChecked();
-            case $this->lang->trans("Start"):
+            case 'start':
                 return $this->actionStart();
             case 'config':
                 return $this->actionConfig();

@@ -19,6 +19,7 @@
 
 namespace Alxarafe\Base;
 
+use Alxarafe\DB\DB;
 use Alxarafe\Lib\Functions;
 use Alxarafe\LibClass\Lang;
 
@@ -26,9 +27,34 @@ abstract class Globals
 {
     const DEFAULT_DB_PREFIX = 'llx_';
 
-    private static $conf;
+    /**
+     * Contains all configuration data
+     *
+     * @var \stdClass
+     */
+    private static $config;
+
+    /**
+     * Contains a Lang instance
+     *
+     * @var Lang
+     */
     private static $lang;
+
+    /**
+     * Contains a DB instance
+     *
+     * @var DB
+     */
     private static $db;
+
+    /**
+     * Contains a Conf instance
+     *
+     * @var Conf
+     * @deprecated
+     */
+    private static $conf;
 
     private static function url($forwarded_host = false)
     {
@@ -50,23 +76,28 @@ abstract class Globals
         return $proto . '://' . $host . $request;
     }
 
-    public static function init()
+    public static function resetConfig()
+    {
+        self::$conf = $conf = null;
+        self::$config = null;
+        Config::resetConfig();
+        DB::disconnect();
+        self::$db = null;
+        self::$lang = null;
+    }
+
+    public static function loadConfig()
     {
         self::$conf = $conf = new Conf();
-        self::$lang = new Lang(BASE_PATH, self::$conf);
+        self::$config = Config::loadConfig();
+        self::$db = self::dbConnect();
+        self::$lang = new Lang(BASE_PATH);
         self::$lang->setDefaultLang('auto');
+    }
 
-        $conf = self::$conf::getConfig();
-        if (!empty($conf->main_db_pass)) {
-            static::$db = Functions::getDoliDBInstance(
-                $conf->main_db_type,
-                $conf->main_db_host,
-                $conf->main_db_user,
-                $conf->main_db_pass,
-                $conf->main_db_name,
-                (int) $conf->main_db_port
-            );
-        }
+    public static function init()
+    {
+        static::loadConfig();
 
         if (!defined('DOL_APPLICATION_TITLE')) {
             define('DOL_APPLICATION_TITLE', 'Alixar');
@@ -86,29 +117,65 @@ abstract class Globals
         define('DOL_URL_ROOT', $dol_url_root);
     }
 
-    public static function getConfFilename()
+    public static function dbConnect()
     {
-        return BASE_PATH . '/conf/conf.php';
+        static::$db = null;
+        if (!isset(self::$config->DB)) {
+            return false;
+        }
+        $db = self::$config->DB;
+        return static::$db = Functions::getDoliDBInstance(
+            $db->DB_CONNECTION,
+            $db->DB_HOST,
+            $db->DB_USERNAME,
+            $db->DB_PASSWORD,
+            $db->DB_DATABASE,
+            (int) $db->DB_PORT
+        );
     }
 
+    /**
+     * Returns Dolibarr config obsolete info
+     *
+     * @return Conf
+     *
+     * @deprecated Use new configuration info
+     */
     public static function getConf()
     {
         return static::$conf;
     }
 
-    public static function getConfig()
+    public static function getDolibarrConfig()
     {
-        if (!isset(static::$conf)) {
-            return null;
-        }
         return static::$conf::getConfig();
     }
 
+    /**
+     * Returns the configuration info.
+     *
+     * @return \stdClass
+     */
+    public static function getConfig()
+    {
+        return static::$config;
+    }
+
+    /**
+     * Returns a Lang instance
+     *
+     * @return Lang
+     */
     public static function getLang()
     {
         return static::$lang;
     }
 
+    /**
+     * Returns a DB instance
+     *
+     * @return DB
+     */
     public static function getDb()
     {
         return static::$db;

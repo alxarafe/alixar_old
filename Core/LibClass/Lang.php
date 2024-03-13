@@ -97,11 +97,13 @@ class Lang
     /**
      *    Constructor
      *
-     * @param string $dir  Force directory that contains /langs subdirectory (value is sometimes '..' like into install/* pages or support/* pages). Use '' by default.
+     * @param string $dir  Force directory that contains /langs subdirectory (value is sometimes '..' like into
+     *                     install/* pages or support/* pages). Use '' by default.
      * @param Conf   $conf Object with Dolibarr configuration
      */
-    public function __construct($dir, $conf)
+    public function __construct($dir)
     {
+        $conf = Globals::getConf();
         if (!empty($conf->file->character_set_client)) {
             $this->charset_output = $conf->file->character_set_client; // If charset output is forced
         }
@@ -110,6 +112,12 @@ class Lang
         } else {
             $this->dir = $conf->file->dol_document_root;
         }
+    }
+
+    public static function _($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $maxsize = 0)
+    {
+        $lang = Globals::getLang();
+        return $lang->trans($key, $param1, $param2, $param3, $param4, $maxsize);
     }
 
     /**
@@ -214,7 +222,8 @@ class Lang
      *
      * @param array $domains Array of lang files to load
      *
-     * @return    int                            Return integer <0 if KO, 0 if already loaded or loading not required, >0 if OK
+     * @return    int                            Return integer <0 if KO, 0 if already loaded or loading not required,
+     *                                           >0 if OK
      */
     public function loadLangs($domains)
     {
@@ -239,17 +248,20 @@ class Lang
      *
      *  Value for hash are: 1:Loaded from disk, 2:Not found, 3:Loaded from cache
      *
-     * @param string  $domain                         File name to load (.lang file). Must be "file" or "file@module" for module language files:
-     *                                                If $domain is "file@module" instead of "file" then we look for module lang file
-     *                                                in htdocs/custom/modules/mymodule/langs/code_CODE/file.lang
-     *                                                then in htdocs/module/langs/code_CODE/file.lang instead of htdocs/langs/code_CODE/file.lang
+     * @param string  $domain                         File name to load (.lang file). Must be "file" or "file@module"
+     *                                                for module language files: If $domain is "file@module" instead of
+     *                                                "file" then we look for module lang file in
+     *                                                htdocs/custom/modules/mymodule/langs/code_CODE/file.lang then in
+     *                                                htdocs/module/langs/code_CODE/file.lang instead of
+     *                                                htdocs/langs/code_CODE/file.lang
      * @param integer $alt                            0 (try xx_ZZ then 1), 1 (try xx_XX then 2), 2 (try en_US)
      * @param int     $stopafterdirection             Stop when the DIRECTION tag is found (optimize speed)
      * @param string  $forcelangdir                   To force a different lang directory
      * @param int     $loadfromfileonly               1=Do not load overwritten translation from file or old conf.
      * @param int     $forceloadifalreadynotfound     Force attempt to reload lang file if it was previously not found
      *
-     * @return    int                                    Return integer <0 if KO, 0 if already loaded or loading not required, >0 if OK
+     * @return    int                                    Return integer <0 if KO, 0 if already loaded or loading not
+     *                                                   required, >0 if OK
      * @see loadLangs()
      */
     public function load($domain, $alt = 0, $stopafterdirection = 0, $forcelangdir = '', $loadfromfileonly = 0, $forceloadifalreadynotfound = 0)
@@ -481,7 +493,8 @@ class Lang
      *
      * @param DoliDB $db Database handler
      *
-     * @return    int                            Return integer <0 if KO, 0 if already loaded or loading not required, >0 if OK
+     * @return    int                            Return integer <0 if KO, 0 if already loaded or loading not required,
+     *                                           >0 if OK
      */
     public function loadFromDatabase($db)
     {
@@ -622,8 +635,8 @@ class Lang
      * Search in lang file, then into database. Key must be any complete entry into lang file: CurrencyEUR, ...
      * If not found, return key.
      * The string return is not formatted (translated with transnoentitiesnoconv).
-     * NOTE: To avoid infinite loop (getLabelFromKey->transnoentities->getTradFromKey->getLabelFromKey), if you modify this function,
-     * check that getLabelFromKey is never called with the same value than $key.
+     * NOTE: To avoid infinite loop (getLabelFromKey->transnoentities->getTradFromKey->getLabelFromKey), if you modify
+     * this function, check that getLabelFromKey is never called with the same value than $key.
      *
      * @param string $key Key to translate
      *
@@ -666,8 +679,10 @@ class Lang
 
     /**
      *  Return text translated of text received as parameter (and encode it into HTML)
-     *  If there is no match for this text, we look in alternative file and if still not found, it is returned as it is.
-     *  The parameters of this method should not contain HTML tags. If there is, they will be htmlencoded to have no effect.
+     *  If there is no match for this text, we look in alternative file and if still not found, it is returned as it
+     *  is.
+     *  The parameters of this method should not contain HTML tags. If there is, they will be htmlencoded to have no
+     *  effect.
      *
      * @param string $key     Key to translate
      * @param string $param1  param1 string
@@ -846,7 +861,8 @@ class Lang
     }
 
     /**
-     *  Convert a string into output charset (this->charset_output that should be defined to conf->file->character_set_client)
+     *  Convert a string into output charset (this->charset_output that should be defined to
+     *  conf->file->character_set_client)
      *
      * @param string $str          String to convert
      * @param string $pagecodefrom Page code of src string
@@ -986,7 +1002,8 @@ class Lang
      *      same number (this module is not provided by default as it use non GPL source code).
      *
      * @param int|string $number   Number to encode in full text
-     * @param string     $isamount ''=it's just a number, '1'=It's an amount (default currency), 'currencycode'=It's an amount (foreign currency)
+     * @param string     $isamount ''=it's just a number, '1'=It's an amount (default currency), 'currencycode'=It's an
+     *                             amount (foreign currency)
      *
      * @return string                    Label translated in UTF8 (but without entities)
      *                                        10 if setDefaultLang was en_US => ten
@@ -1028,9 +1045,12 @@ class Lang
      *
      * @param DoliDB $db             Database handler
      * @param string $key            Translation key to get label (key in language file)
-     * @param string $tablename      Table name without prefix. This value must always be a hardcoded string and not a value coming from user input.
-     * @param string $fieldkey       Field for key. This value must always be a hardcoded string and not a value coming from user input.
-     * @param string $fieldlabel     Field for label. This value must always be a hardcoded string and not a value coming from user input.
+     * @param string $tablename      Table name without prefix. This value must always be a hardcoded string and not a
+     *                               value coming from user input.
+     * @param string $fieldkey       Field for key. This value must always be a hardcoded string and not a value coming
+     *                               from user input.
+     * @param string $fieldlabel     Field for label. This value must always be a hardcoded string and not a value
+     *                               coming from user input.
      * @param string $keyforselect   Use another value than the translation key for the where into select
      * @param int    $filteronentity Use a filter on entity
      *
@@ -1113,7 +1133,8 @@ class Lang
      *  If mb_convert_encoding is not available, return currency code.
      *
      * @param string  $currency_code Currency code
-     * @param integer $forceloadall  1=Force to load all currencies into cache. We know we need to use all of them. By default read and cache only the requested currency.
+     * @param integer $forceloadall  1=Force to load all currencies into cache. We know we need to use all of them. By
+     *                               default read and cache only the requested currency.
      *
      * @return    string                        Currency symbol encoded into UTF8
      */

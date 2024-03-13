@@ -8,6 +8,8 @@ custom2/
 test/report/
 nbproject
 default.properties
+config.yaml
+.env
 .settings/
 .buildpath
 .gitmodules

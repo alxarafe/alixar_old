@@ -1223,7 +1223,7 @@ class Conf extends stdClass
     {
         static::$config = null;
 
-        $configFile = Globals::getConfFilename();
+        $configFile = Config::getDolibarrConfigFilename();
         if (!file_exists($configFile)) {
             return false;
         }

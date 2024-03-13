@@ -321,7 +321,7 @@ abstract class Functions
         $parameters = [
             'element' => $element,
             'shared' => $shared,
-            'object' => $object??null,
+            'object' => $object ?? null,
             'currentobject' => $currentobject,
             'out' => $out,
         ];
@@ -519,6 +519,23 @@ abstract class Functions
             $disconnectdone = $db->close();
         }
         Functions::dol_syslog("--- End access to " . (empty($_SERVER["PHP_SELF"]) ? 'unknown' : $_SERVER["PHP_SELF"]) . (($disconnectdone && $depth) ? ' (Warn: db disconnection forced, transaction depth was ' . $depth . ')' : ''), (($disconnectdone && $depth) ? LOG_WARNING : LOG_INFO));
+    }
+
+    /**
+     * Returns a POST var. If not exists, return the default value.
+     *
+     * @param $postVar
+     * @param $default
+     *
+     * @return false|mixed
+     */
+    public static function FilterInputPost($postVar, $default = false)
+    {
+        $result = filter_input(INPUT_POST, $postVar);
+        if (empty($result)) {
+            return $default;
+        }
+        return $result;
     }
 
     /**
@@ -1924,6 +1941,14 @@ abstract class Functions
         } else {
             return ucwords($string);
         }
+    }
+
+    public static function syslog($message, $level = LOG_DEBUG)
+    {
+        if (!defined('LOG_DEBUG')) {
+            define('LOG_DEBUG', 6);
+        }
+        static::dol_syslog($message, $level);
     }
 
     /**
