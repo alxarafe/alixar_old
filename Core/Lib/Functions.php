@@ -1453,7 +1453,7 @@ abstract class Functions
         $tmp = preg_replace('/\s+\-([^\s])/', ' _$1', $tmp);
         $tmp = preg_replace('/\s+\-$/', '', $tmp);
         $tmp = str_replace('..', '', $tmp);
-        return $tmp;
+        return trim($tmp);
     }
 
     /**

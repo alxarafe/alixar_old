@@ -116,7 +116,7 @@
                         <input type="text"
                                id="db_name"
                                name="db_name"
-                               value="{!! !empty($config->main_db_name) ? $config->main_db_name : ($force_install_database ? $force_install_database : 'dolibarr') !!}"
+                               value="{!! $db_name ?? 'alixar' !!}"
                                @if ($force_install_noedit == 2 && $force_install_database !== null)  disabled @endif
                         >
                     </td>
@@ -151,7 +151,7 @@
                         <input type="text"
                                id="db_host"
                                name="db_host"
-                               value="{!! (!empty($force_install_dbserver) ? $force_install_dbserver : (!empty($dolibarr_main_db_host) ? $dolibarr_main_db_host : 'localhost')) !!}"
+                               value="{!! $db_host ?? 'localhost' !!}"
                                @if ($force_install_noedit == 2 && $force_install_dbserver !== null) disabled @endif
                         >
                     </td>
@@ -166,7 +166,7 @@
                         <input type="text"
                                name="db_port"
                                id="db_port"
-                               value="{!! $install_port !!}"
+                               value="{!! $db_port !!}"
                                @if ($force_install_noedit == 2 && $force_install_port !== null) disabled @endif
                         >
                     </td>
@@ -181,7 +181,7 @@
                         <input type="text"
                                id="db_prefix"
                                name="db_prefix"
-                               value="{!! $install_prefix !!}"
+                               value="{!! $db_prefix !!}"
                                @if ($force_install_noedit == 2 && $force_install_prefix !== null) disabled @endif
                         >
                     </td>
@@ -196,7 +196,7 @@
                                id="db_create_database"
                                name="db_create_database"
                                value="on"
-                               @if ($install_createdatabase) checked @endif
+                               @if ($db_create_database) checked @endif
                                @if ($install_noedit) disabled @endif
                         >
                     </td>
@@ -224,7 +224,7 @@
                         <input type="password" class="text-security"
                                id="db_pass" autocomplete="off"
                                name="db_pass"
-                               value="{!! $autofill !!}"
+                               value="{!! $db_pass !!}"
                                @if($force_install_noedit == 2 && $force_install_databasepass !== null) disabled @endif
                         >
                     </td>
@@ -239,7 +239,7 @@
                                id="db_create_user"
                                name="db_create_user"
                                value="on"
-                               @if (!empty($force_install_createuser)) checked @endif
+                               @if ($db_create_user) checked @endif
                                @if($force_install_noedit == 2 && $force_install_createuser !== null) disabled @endif
                         >
                     </td>
@@ -265,7 +265,7 @@
                                id="db_user_root"
                                name="db_user_root"
                                class="needroot"
-                               value="{!! $install_databaserootlogin !!}"
+                               value="{!! $db_user_root !!}"
                                @if ($force_install_noedit > 0 && !empty($force_install_databaserootlogin)) disabled @endif
                         >
                     </td>
@@ -288,7 +288,7 @@
                                id="db_pass_root"
                                name="db_pass_root"
                                class="needroot text-security"
-                               value="{!! $autofill_pass_root !!}"
+                               value="{!! $db_pass_root !!}"
                                @if ($force_install_noedit > 0 && !empty($force_install_databaserootpass)) disabled /*
                         May be removed by javascript*/ @endif
                         >

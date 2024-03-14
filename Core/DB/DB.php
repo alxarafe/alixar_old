@@ -144,7 +144,7 @@ abstract class DB
      *
      * @return DB|false
      */
-    public static function checkConnection($type, $host, $user, $pass, $name, $port, $save = false)
+    public static function checkConnection($type, $host, $user, $pass, $name, $port, $prefix = null, $save = false)
     {
         if (!static::disconnect()) {
             return false;
@@ -155,17 +155,20 @@ abstract class DB
             return false;
         }
 
+        $params = [
+            'DB_CONNECTION' => $type,
+            'DB_HOST' => $host,
+            'DB_PORT' => $port,
+            'DB_USERNAME' => $user,
+            'DB_PASSWORD' => $pass,
+            'DB_DATABASE' => $name,
+        ];
+        if (isset($prefix)) {
+            $params['DB_PREFIX'] = $prefix;
+        }
+
         if ($save) {
-            return Config::saveParams([
-                'DB' => [
-                    'DB_CONNECTION' => $type,
-                    'DB_HOST' => $host,
-                    'DB_PORT' => $port,
-                    'DB_USERNAME' => $user,
-                    'DB_PASSWORD' => $pass,
-                    'DB_DATABASE' => $name,
-                ],
-            ]);
+            return Config::saveParams(['DB' => $params]);
         }
 
         return $db;

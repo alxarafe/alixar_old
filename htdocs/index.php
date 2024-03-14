@@ -35,7 +35,7 @@ Globals::init();
  */
 $config = Globals::getConfig();
 if (empty($ctrl) && !isset($config)) {
-    header('Location: index.php?page=Install&ctrl=Install');
+    header('Location: index.php?page=Update&ctrl=Update');
     die();
 }
 

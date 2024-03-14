@@ -2,8 +2,6 @@
 
 @section('body')
     <tbody>
-    <input type="hidden" name="testpost" value="ok">
-    <input type="hidden" name="action" value="step2">
     <tr>
         @foreach($errors as $error)
             <div class="error">{!! $error !!}</div>

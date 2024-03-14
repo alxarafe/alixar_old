@@ -2,8 +2,6 @@
 
 @section('body')
     <tbody>
-    <input type="hidden" name="testpost" value="ok">
-    <input type="hidden" name="action" value="step4">
     <tr>
         <div>
             <h3>

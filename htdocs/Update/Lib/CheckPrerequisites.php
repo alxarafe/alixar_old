@@ -1,6 +1,6 @@
 <?php
 
-namespace Alixar\Install\Lib;
+namespace Alixar\Update\Lib;
 
 use Alxarafe\Base\Config;
 use Alxarafe\Base\Globals;
@@ -398,7 +398,7 @@ abstract class CheckPrerequisites
 
     private static function checkConfFile()
     {
-        $conffile = Config::getDolibarrConfigFilename();
+        $conffile = /** @scrutinizer ignore-deprecated */ Config::getDolibarrConfigFilename();
 
         clearstatcache();
         if (is_readable($conffile) && filesize($conffile) > 8) {
@@ -437,7 +437,7 @@ abstract class CheckPrerequisites
 
     private static function checkIfWritable()
     {
-        $conffile = Config::getDolibarrConfigFilename();
+        $conffile = /** @scrutinizer ignore-deprecated */ Config::getDolibarrConfigFilename();
 
         $result = [];
         $result['ok'] = false;
@@ -457,7 +457,7 @@ abstract class CheckPrerequisites
         return false;
     }
 
-    private static function getDataDir(string $dir): string
+    public static function getDataDir(string $dir): string
     {
         $dir = trim($dir, ' /');
         $fullDir = realpath(BASE_PATH . '/../dolibarr_htdocs/install/' . $dir);
@@ -502,7 +502,7 @@ abstract class CheckPrerequisites
         $errorBadMainDocumentRoot = '';
 
         $config = Config::loadConfig();
-        $conf = Globals::getConf();
+        $conf = /** @scrutinizer ignore-deprecated */ Globals::getConf();
 
         // It's a update?
         if (!empty($config->DB->DB_CONNECTION) && !empty($config->MAIN->APP_BASEPATH)) {
@@ -799,7 +799,7 @@ abstract class CheckPrerequisites
 
         $ok = static::checks(static::checkConfFile());
 
-        $conffile = Config::getDolibarrConfigFilename();
+        $conffile = /** @scrutinizer ignore-deprecated */ Config::getDolibarrConfigFilename();
         if (!file_exists($conffile)) {
             $text = Lang::_('YouMustCreateWithPermission', $conffile);
             $text .= '<br><br>';
