@@ -406,9 +406,9 @@ class User extends CommonObject
      *
      * @param DoliDB $db Database handler
      */
-    public function __construct($db)
+    public function __construct($db = null)
     {
-        $this->db = $db;
+        $this->db = Globals::getDb();
 
         // User preference
         $this->clicktodial_loaded = 0;
@@ -4179,6 +4179,7 @@ class User extends CommonObject
         Functions::dol_syslog(__METHOD__, LOG_DEBUG);
 
         $resql = $this->db->query($sql);
+
         if ($resql) {
             $this->users = [];
             $num = $this->db->num_rows($resql);

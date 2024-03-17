@@ -164,7 +164,7 @@ class MySqliEngine extends DB
 
             if (static::$connected) {
                 // If client is old latin, we force utf8
-                $clientmustbe = empty($config->DB->DB_CHARSET) ? 'utf8' : $config->DB->DB_CHARSET;
+                $clientmustbe = empty($config->db->db_charset) ? 'utf8' : $config->db->db_charset;
                 if (preg_match('/latin1/', $clientmustbe)) {
                     $clientmustbe = 'utf8';
                 }
@@ -175,7 +175,7 @@ class MySqliEngine extends DB
                 if (static::$db->character_set_name() != $clientmustbe) {
                     static::$db->set_charset($clientmustbe); // This set utf8_unicode_ci
 
-                    $collation = $config->DB->DB_COLLATION;
+                    $collation = $config->db->db_collation;
                     if (preg_match('/latin1/', $collation)) {
                         $collation = 'utf8_unicode_ci';
                     }

@@ -997,7 +997,7 @@ abstract class Files
                                 $newfile = str_replace($key, $val, $newfile);
                             }
                         }
-                        $tmpresult = dol_copy($srcfile . "/" . $file, $destfile . "/" . $newfile, $newmask, $overwriteifexists);
+                        $tmpresult = Files::dol_copy($srcfile . "/" . $file, $destfile . "/" . $newfile, $newmask, $overwriteifexists);
                     }
                     // Set result
                     if ($result > 0 && $tmpresult >= 0) {

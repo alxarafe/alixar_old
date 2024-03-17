@@ -25,6 +25,7 @@
 namespace Alxarafe\LibClass;
 
 use Alxarafe\Base\Conf;
+use Alxarafe\Base\Config;
 use Alxarafe\Base\DoliDB;
 use Alxarafe\Base\Globals;
 use Alxarafe\Lib\Functions;
@@ -114,12 +115,6 @@ class Lang
         }
     }
 
-    public static function _($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '', $maxsize = 0)
-    {
-        $lang = Globals::getLang();
-        return $lang->trans($key, $param1, $param2, $param3, $param4, $maxsize);
-    }
-
     /**
      *  Set accessor for this->defaultlang
      *
@@ -127,7 +122,7 @@ class Lang
      *
      * @return    void
      */
-    public function setDefaultLang($srclang = 'en_US')
+    public function setDefaultLang($srclang = 'en_US', $save=true)
     {
         $conf = Globals::getConf();
 
@@ -198,6 +193,10 @@ class Lang
         $this->defaultlang = $srclang;
         $this->shortlang = substr($srclang, 0, 2);
         //print 'this->defaultlang='.$this->defaultlang;
+
+        if ($save) {
+            Config::saveParams(['main' => ['app_lang' => $this->defaultlang]]);
+        }
     }
 
     /**
@@ -210,6 +209,11 @@ class Lang
      */
     public function getDefaultLang($mode = 0)
     {
+        $config = Config::loadConfig();
+        if (isset($config->main->app_lang)) {
+            $this->defaultlang = $config->main->app_lang;
+        }
+
         if (empty($mode)) {
             return $this->defaultlang;
         } else {

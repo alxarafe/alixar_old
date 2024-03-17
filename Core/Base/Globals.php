@@ -25,7 +25,7 @@ use Alxarafe\LibClass\Lang;
 
 abstract class Globals
 {
-    const DEFAULT_DB_PREFIX = 'llx_';
+    const DEFAULT_DB_PREFIX = 'alx_';
 
     /**
      * Contains all configuration data
@@ -120,17 +120,17 @@ abstract class Globals
     public static function dbConnect()
     {
         static::$db = null;
-        if (!isset(self::$config->DB)) {
+        if (!isset(self::$config->db->db_connection)) {
             return false;
         }
-        $db = self::$config->DB;
+        $db = self::$config->db;
         return static::$db = Functions::getDoliDBInstance(
-            $db->DB_CONNECTION,
-            $db->DB_HOST,
-            $db->DB_USERNAME,
-            $db->DB_PASSWORD,
-            $db->DB_DATABASE,
-            (int) $db->DB_PORT
+            $db->db_connection,
+            $db->db_host,
+            $db->db_username,
+            $db->db_password,
+            $db->db_database,
+            (int) $db->db_port
         );
     }
 

@@ -1,9 +1,6 @@
 <?php
 
-/* Copyright (C) 2001-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
- * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
- * Copyright (C) 2024       Francesc Pineda         <fpineda@alxarafe.com>
- * Copyright (C) 2024       Cayetano Hernández      <chernandez@alxarafe.com>
+/* Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,36 +16,53 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alxarafe\Base\Globals;
+require_once realpath('../vendor/autoload.php');
 
-require_once 'vendor/autoload.php';
+/**
+ * Obtains main url
+ *
+ * @param $forwarded_host
+ *
+ * @return string
+ */
+function get_url()
+{
+    $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
+    $proto = strtolower($_SERVER['SERVER_PROTOCOL']);
+    $proto = substr($proto, 0, strpos($proto, '/')) . ($ssl ? 's' : '');
+    if (isset($_SERVER['HTTP_HOST'])) {
+        $host = $_SERVER['HTTP_HOST'];
+    } else {
+        $port = $_SERVER['SERVER_PORT'];
+        $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
+        $host = $_SERVER['SERVER_NAME'] . $port;
+    }
+
+    $script = $_SERVER['SCRIPT_NAME'];
+
+    $script = substr($script, 0, strlen($script) - strlen('/index.php'));
+    return $proto . '://' . $host . $script;
+}
 
 const BASE_PATH = __DIR__;
 
-$page = filter_input(INPUT_GET, 'page');
-$ctrl = filter_input(INPUT_GET, 'ctrl');
+define('DOL_DOCUMENT_ROOT', BASE_PATH);
+define('DOL_URL_ROOT', get_url());
 
-Globals::init();
+define('GET_ROUTE_VAR', 'url_route');
+define('GET_FILENAME_VAR', 'url_filename');
 
-/**
- * If the configuration file does not exist, the installer is invoked.
- */
-$config = Globals::getConfig();
-if (empty($ctrl) && !isset($config)) {
-    header('Location: index.php?page=Update&ctrl=Update');
+$page = filter_input(INPUT_GET, GET_ROUTE_VAR);
+$ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
+
+define('DOL_PHP_SELF', "/$page/$ctrl.php");
+
+if (empty($page) && empty($ctrl)) {
+    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
     die();
 }
 
-/**
- * If no controller has been passed, execution of the original 'index.php' is assumed.
- */
-if (empty($ctrl)) {
-    require 'index_dol.php';
-    die();
-}
+chdir(BASE_PATH . DIRECTORY_SEPARATOR . $page);
 
-$pageName = str_replace('/', '\\', $page);
-$namespace = 'Alixar\\' . $pageName . '\\' . $ctrl;
-
-$controller = new $namespace();
-$controller->view();
+$path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
+require $path;

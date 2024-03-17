@@ -22,9 +22,9 @@ filter:
     - doc/*
     - documents/*
     - htdocs/includes/*
-    - htdocs/vendor/*
     - node_modules/*
     - test/*
+    - vendor/*
   paths:
     - htdocs/*
     - scripts/*
@@ -37,7 +37,7 @@ tools:
       - php
     dependency_paths:
       - htdocs/includes/
-      - htdocs/vendor/
+      - vendor/
     filter:
       excluded_paths:
         - build/*
@@ -45,8 +45,8 @@ tools:
         - doc/*
         - test/*
         - htdocs/includes/*
-        - htdocs/vendor/*
         - htdocs/core/class/lessc.class.php
+        - vendor/*
       paths:
         - htdocs/
         - scripts/
@@ -171,7 +171,7 @@ tools:
         - 'doc/*'
         - 'test/*'
         - 'htdocs/includes/*'
-        - 'htdocs/vendor/*'
+        - 'vendor/*'
       paths: { }
 
   # change tracking
@@ -189,7 +189,7 @@ tools:
         - 'doc/*'
         - 'test/*'
         - 'htdocs/includes/*'
-        - 'htdocs/vendor/*'
+        - 'vendor/*'
       paths: { }
 
   # Similar code detection
@@ -203,7 +203,7 @@ tools:
         - 'doc/*'
         - 'test/*'
         - 'htdocs/includes/*'
-        - 'htdocs/vendor/*'
+        - 'vendor/*'
       paths: { }
 
   # Coding-Style / Bug Detection
@@ -219,7 +219,7 @@ tools:
         - 'doc/*'
         - 'test/*'
         - 'htdocs/includes/*'
-        - 'htdocs/vendor/*'
+        - 'vendor/*'
       paths: { }
     config: { }
     path_configs: { }

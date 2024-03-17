@@ -27,7 +27,7 @@
     "source": "https://github.com/alxarafe/alixar"
   },
   "config": {
-    "vendor-dir": "htdocs/vendor",
+    "vendor-dir": "vendor",
     "platform": {
       "php": "7.3"
     }

@@ -30,7 +30,6 @@ use Alxarafe\DB\Engines\MySqliEngine;
 use Alxarafe\DB\Engines\PgSqlEngine;
 use Alxarafe\DB\Engines\Sqlite3Engine;
 use Alxarafe\Lib\Functions;
-use Database;
 
 /**
  * \file        htdocs/core/db/DoliDB.class.php
@@ -134,13 +133,14 @@ abstract class DB
      * If the connection is successful and save is passed true, save the parameters in the application settings.
      * Calling this method closes any previous connections.
      *
-     * @param $type
-     * @param $host
-     * @param $user
-     * @param $pass
-     * @param $name
-     * @param $port
-     * @param $save
+     * @param      $type
+     * @param      $host
+     * @param      $user
+     * @param      $pass
+     * @param      $name
+     * @param      $port
+     * @param null $prefix
+     * @param bool $save
      *
      * @return DB|false
      */
@@ -156,19 +156,19 @@ abstract class DB
         }
 
         $params = [
-            'DB_CONNECTION' => $type,
-            'DB_HOST' => $host,
-            'DB_PORT' => $port,
-            'DB_USERNAME' => $user,
-            'DB_PASSWORD' => $pass,
-            'DB_DATABASE' => $name,
+            'db_connection' => $type,
+            'db_host' => $host,
+            'db_port' => $port,
+            'db_username' => $user,
+            'db_password' => $pass,
+            'db_database' => $name,
         ];
         if (isset($prefix)) {
-            $params['DB_PREFIX'] = $prefix;
+            $params['db_prefix'] = $prefix;
         }
 
         if ($save) {
-            return Config::saveParams(['DB' => $params]);
+            return Config::saveParams(['db' => $params]);
         }
 
         return $db;

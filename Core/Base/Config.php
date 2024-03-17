@@ -38,38 +38,37 @@ class Config
      * to use them where appropriate.
      */
     private const VARS = [
-        'MAIN' => [
-            'APP_BASEPATH' => 'main_document_root',
-            'APP_BASEPATH_ALT' => 'main_document_root_alt',
-            'APP_BASEPATH_DOCUMENTS' => 'main_data_root',
-            'APP_URL' => 'main_url_root',
-            'APP_URL_ALT' => 'main_url_root_alt',
+        'main' => [
+            'app_basepath' => 'main_document_root',
+            'app_basepath_alt' => 'main_document_root_alt',
+            'app_basepath_documents' => 'main_data_root',
+            'app_url' => 'main_url_root',
+            'app_url_alt' => 'main_url_root_alt',
         ],
-        'DB' => [
-            'DB_HOST' => 'main_db_host',
-            'DB_PORT' => 'main_db_port',
-            'DB_DATABASE' => 'main_db_name',
-            'DB_PREFIX' => 'main_db_prefix',
-            'DB_USERNAME' => 'main_db_user',
-            'DB_PASSWORD' => 'main_db_pass',
-            'DB_CONNECTION' => 'main_db_type',
-            'DB_CHARSET' => 'main_db_character_set',
-            'DB_COLLATION' => 'main_db_collation',
+        'db' => [
+            'db_host' => 'main_db_host',
+            'db_port' => 'main_db_port',
+            'db_database' => 'main_db_name',
+            'db_prefix' => 'main_db_prefix',
+            'db_username' => 'main_db_user',
+            'db_password' => 'main_db_pass',
+            'db_connection' => 'main_db_type',
+            'db_charset' => 'main_db_character_set',
+            'db_collation' => 'main_db_collation',
         ],
-
-        'LOGIN' => [
-            'APP_MAIN_AUTHENTICATION' => 'main_authentication',
-            // 'APP_MAIN_DEMO' => 'main_demo',
-            'APP_MAIN_PROD' => 'main_prod',
+        'login' => [
+            'app_main_authentication' => 'main_authentication',
+            // 'app_main_demo' => 'main_demo',
+            'app_main_prod' => 'main_prod',
         ],
-        'SECURITY' => [
-            'APP_FORCE_HTTPS' => 'main_force_https',
-            'APP_RESTRICT_OS_COMMANDS' => 'main_restrict_os_commands',
-            'APP_NOCSRFCHECK' => 'nocsrfcheck',
-            'APP_UNIQUE_ID' => 'main_instance_unique_id',
-            'APP_MAILING_LIMIT_SENDBYWEB' => 'mailing_limit_sendbyweb',
-            'APP_MAILING_LIMIT_SENDBYCLI' => 'mailing_limit_sendbycli',
-            'APP_MAIN_DISTRIBUTION' => 'main_distrib',
+        'security' => [
+            'app_force_https' => 'main_force_https',
+            'app_restrict_os_commands' => 'main_restrict_os_commands',
+            'app_nocsrfcheck' => 'nocsrfcheck',
+            'app_unique_id' => 'main_instance_unique_id',
+            'app_mailing_limit_sendbyweb' => 'mailing_limit_sendbyweb',
+            'app_mailing_limit_sendbycli' => 'mailing_limit_sendbycli',
+            'app_main_distribution' => 'main_distrib',
         ],
         // 'EXTERNAL_LIBRARIES' => [
         // '' => 'lib_FPDF_PATH',
@@ -179,7 +178,7 @@ class Config
     public static function saveParams($params)
     {
         $filename = static::getConfigFilename();
-        $config = Yaml::parseFile($filename);
+        $config = file_exists($filename) ? Yaml::parseFile($filename) : [];
         foreach ($params as $section => $block) {
             foreach ($block as $var => $value) {
                 $config[$section][$var] = $value;
@@ -192,7 +191,7 @@ class Config
 
         static::saveDolibarrConfig($config);
 
-        if (!isset($params['DB'])) {
+        if (!isset($params['db'])) {
             return Globals::getDb();
         }
 

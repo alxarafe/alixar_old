@@ -678,7 +678,7 @@ class Admin
 
         $db->begin();
 
-        $sql = "DELETE FROM " . $config->main_db_prefix . "const";
+        $sql = "DELETE FROM " . $config->db->db_prefix . "const";
         $sql .= " WHERE name = " . $db->encrypt($name);
         if ($entity >= 0) {
             $sql .= " AND entity = " . ((int) $entity);
@@ -699,7 +699,7 @@ class Admin
                 $newvalue = $value;
             }
 
-            $sql = "INSERT INTO " . $config->main_db_prefix . "const(name, value, type, visible, note, entity)";
+            $sql = "INSERT INTO " . $config->db->db_prefix . "const(name, value, type, visible, note, entity)";
             $sql .= " VALUES (";
             $sql .= $db->encrypt($name);
             $sql .= ", " . $db->encrypt($newvalue);
