@@ -2025,7 +2025,7 @@ function dol_syslog($message, $level = LOG_INFO, $ident = 0, $suffixinfilename =
 
 		$data = array(
 			'message' => $message,
-			'script' => (isset(DOL_PHP_SELF) ? basename(DOL_PHP_SELF, '.php') : false),
+			'script' => DOL_PHP_SELF,
 			'level' => $level,
 			'user' => ((is_object($user) && $user->id) ? $user->login : false),
 			'ip' => false

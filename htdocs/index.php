@@ -55,7 +55,18 @@ define('GET_FILENAME_VAR', 'url_filename');
 $page = filter_input(INPUT_GET, GET_ROUTE_VAR);
 $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
 
-define('DOL_PHP_SELF', "/$page/$ctrl.php");
+$php_self = '';
+if (!empty($page)) {
+    $php_self .= '/' . $page;
+}
+if (!empty($ctrl)) {
+    $php_self .= '/' . $ctrl . '.php';
+}
+if (empty($php_self)) {
+    $php_self = false;
+}
+
+define('DOL_PHP_SELF', $php_self);
 
 if (empty($page) && empty($ctrl)) {
     require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';

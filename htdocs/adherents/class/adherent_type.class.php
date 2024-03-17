@@ -747,7 +747,7 @@ class AdherentType extends CommonObject
 		if ($option != 'nolink') {
 			// Add param to save lastsearch_values or not
 			$add_save_lastsearch_values = ($save_lastsearch_value == 1 ? 1 : 0);
-			if ($save_lastsearch_value == -1 && isset(DOL_PHP_SELF) && preg_match('/list\.php/', DOL_PHP_SELF)) {
+			if ($save_lastsearch_value == -1 && DOL_PHP_SELF && preg_match('/list\.php/', DOL_PHP_SELF)) {
 				$add_save_lastsearch_values = 1;
 			}
 			if ($add_save_lastsearch_values) {
