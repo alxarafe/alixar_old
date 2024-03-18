@@ -154,7 +154,7 @@ if (getDolGlobalString('MAIN_MANIFEST_APPLI_LOGO_URL')) {
 // Add Dolibarr std icon
 if (empty($manifest->icons)) {
 	$icon = new stdClass();
-	$icon->src = DOL_URL_ROOT.'/theme/dolibarr_256x256_color.png';
+	$icon->src = DOL_URL_ROOT.'/theme/alixar_square_logo_256x256_color.png';
 	$icon->sizes = "256x256";
 	$icon->type = "image/png";
 	$manifest->icons[] = $icon;
