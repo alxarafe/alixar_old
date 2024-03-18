@@ -303,7 +303,7 @@ dol_htmloutput_errors($errmsg);
 if ($action == 'create') {
 	$backtopage = $_SERVER['PHP_SELF'].'?id='.$id.'&datechosen='.$datechosen;
 } else {
-	$backtopage = DOL_URL_ROOT.'/public/bookcal/index.php?id='.$id;
+	$backtopage = '/public/bookcal/index.php?id='.$id;
 }
 
 //print '<div class="">';

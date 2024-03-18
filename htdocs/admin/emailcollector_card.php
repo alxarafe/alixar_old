@@ -122,9 +122,9 @@ if (empty($reshook)) {
 	$permissiontoadd = 1;
 	$permissiontodelete = 1;
 	if (empty($backtopage)) {
-		$backtopage = DOL_URL_ROOT.'/admin/emailcollector_card.php?id='.($id > 0 ? $id : '__ID__');
+		$backtopage = '/admin/emailcollector_card.php?id='.($id > 0 ? $id : '__ID__');
 	}
-	$backurlforlist = DOL_URL_ROOT.'/admin/emailcollector_list.php';
+	$backurlforlist = '/admin/emailcollector_list.php';
 
 	// Actions cancel, add, update, delete or clone
 	include DOL_DOCUMENT_ROOT.'/core/actions_addupdatedelete.inc.php';

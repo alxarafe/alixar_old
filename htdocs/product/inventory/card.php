@@ -114,7 +114,7 @@ if (empty($reshook)) {
 	$savaction = $action;
 	$error = 0;
 
-	$backurlforlist = DOL_URL_ROOT.'/product/inventory/list.php';
+	$backurlforlist = '/product/inventory/list.php';
 
 	if (empty($backtopage) || ($cancel && empty($id))) {
 		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {

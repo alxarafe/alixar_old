@@ -1,11 +1,7 @@
 <?php
-
 /* Copyright (C) 2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
- * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,21 +20,21 @@
 
 /**
  *      \file       test/phpunit/ModulesTest.php
- *      \ingroup    test
+ *		\ingroup    test
  *      \brief      PHPUnit test
- *      \remarks    To run this script as CLI:  phpunit filename.php
+ *		\remarks	To run this script as CLI:  phpunit filename.php
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
-require_once dirname(__FILE__) . '/CommonClassTest.class.php';
+require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
+require_once dirname(__FILE__).'/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-    print "Load permissions for admin user nb 1\n";
-    $user->fetch(1);
-    $user->getrights();
+	print "Load permissions for admin user nb 1\n";
+	$user->fetch(1);
+	$user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -50,60 +46,60 @@ use PHPUnit\Framework\TestCase;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class ModulesTest extends CommonClassTest // TestCase //CommonClassTest
 {
-    /**
-     * Return list of modules for which to test initialisation
-     *
-     * @return array<array{0:string}> List of module labels to test (class is mod<module_label>)
-     */
-    public function moduleInitListProvider()
-    {
-        $full_list = self::VALID_MODULE_MAPPING;
-        $filtered_list = array_map(function ($value) {
-            return array($value);
-        }, array_filter($full_list, function ($value) {
-            return $value !== null;
-        }));
-        return $filtered_list;
-    }
+	/**
+	 * Return list of modules for which to test initialisation
+	 *
+	 * @return array<array{0:string}> List of module labels to test (class is mod<module_label>)
+	 */
+	public function moduleInitListProvider()
+	{
+		$full_list = self::VALID_MODULE_MAPPING;
+		$filtered_list = array_map(function ($value) {
+			return array($value);
+		}, array_filter($full_list, function ($value) {
+			return $value !== null;
+		}));
+		return $filtered_list;
+	}
 
-    /**
-     * testModulesInit
-     *
-     * @param string    $modlabel   Module label (class is mod<modlabel>)
-     *
-     * @return int
-     *
-     * @dataProvider moduleInitListProvider
-     */
-    public function testModulesInit(string $modlabel)
-    {
-        global $conf,$user,$langs,$db;
+	/**
+	 * testModulesInit
+	 *
+	 * @param string	$modlabel	Module label (class is mod<modlabel>)
+	 *
+	 * @return int
+	 *
+	 * @dataProvider moduleInitListProvider
+	 */
+	public function testModulesInit(string $modlabel)
+	{
+		global $conf,$user,$langs,$db;
 
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $this->nbLinesToShow = 0; // Only 3 lines of the log.
+		$this->nbLinesToShow = 0; // Only 3 lines of the log.
 
-        require_once DOL_DOCUMENT_ROOT . '/core/modules/mod' . $modlabel . '.class.php';
-        $class = 'mod' . $modlabel;
-        $mod = new $class($db);
+		require_once DOL_DOCUMENT_ROOT.'/core/modules/mod'.$modlabel.'.class.php';
+		$class = 'mod'.$modlabel;
+		$mod = new $class($db);
 
-        $result = $mod->remove();
-        $result = $mod->init();
+		$result = $mod->remove();
+		$result = $mod->init();
 
-        $this->assertLessThan($result, 0, $modlabel . " " . $mod->error);
-        print __METHOD__ . " test remove/init for module " . $modlabel . ", result=" . $result . "\n";
+		$this->assertLessThan($result, 0, $modlabel." ".$mod->error);
+		print __METHOD__." test remove/init for module ".$modlabel.", result=".$result."\n";
 
-        if (in_array($modlabel, array('Ldap', 'MailmanSpip'))) {
-            $result = $mod->remove();
-        }
+		if (in_array($modlabel, array('Ldap', 'MailmanSpip'))) {
+			$result = $mod->remove();
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 }

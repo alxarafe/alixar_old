@@ -55,8 +55,6 @@ define('GET_FILENAME_VAR', 'url_filename');
 $page = filter_input(INPUT_GET, GET_ROUTE_VAR);
 $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
 
-$_SERVER['PHP_SELF'] = DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
-
 if (empty($page) && empty($ctrl)) {
     require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
     die();
@@ -64,5 +62,6 @@ if (empty($page) && empty($ctrl)) {
 
 chdir(BASE_PATH . DIRECTORY_SEPARATOR . $page);
 
+$_SERVER['PHP_SELF'] = DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
 require $path;

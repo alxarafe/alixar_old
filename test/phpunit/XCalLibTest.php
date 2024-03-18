@@ -1,10 +1,6 @@
 <?php
-
 /* Copyright (C) 2010-2012  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2023       Alexandre Janniaux   <alexandre.janniaux@gmail.com>
- * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,14 +27,14 @@
 global $conf,$user,$langs,$db;
 //define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
-require_once dirname(__FILE__) . '/../../htdocs/core/lib/xcal.lib.php';
-require_once dirname(__FILE__) . '/CommonClassTest.class.php';
+require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
+require_once dirname(__FILE__).'/../../htdocs/core/lib/xcal.lib.php';
+require_once dirname(__FILE__).'/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-    print "Load permissions for admin user nb 1\n";
-    $user->fetch(1);
-    $user->getrights();
+	print "Load permissions for admin user nb 1\n";
+	$user->fetch(1);
+	$user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -52,26 +48,26 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  */
 class XCalLibTest extends CommonClassTest
 {
-    /**
-     * testQuotedPrintEncodeDecode
-     *
-     * @return  void
-     */
-    public function testQuotedPrintEncodeDecode()
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testQuotedPrintEncodeDecode
+	 *
+	 * @return  void
+	 */
+	public function testQuotedPrintEncodeDecode()
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $stringtoencode = 'ABCD=1234;';
-        $result = quotedPrintEncode($stringtoencode);
-        print __METHOD__ . " result=" . $result . "\n";
-        $this->assertEquals('ABCD=3D1234;', $result);
+		$stringtoencode = 'ABCD=1234;';
+		$result = quotedPrintEncode($stringtoencode);
+		print __METHOD__." result=".$result."\n";
+		$this->assertEquals('ABCD=3D1234;', $result);
 
-        $resultback = quotedPrintDecode($result);
-        print __METHOD__ . " result=" . $resultback . "\n";
-        $this->assertEquals($stringtoencode, $resultback);
-    }
+		$resultback = quotedPrintDecode($result);
+		print __METHOD__." result=".$resultback."\n";
+		$this->assertEquals($stringtoencode, $resultback);
+	}
 }

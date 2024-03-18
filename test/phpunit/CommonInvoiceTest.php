@@ -1,10 +1,6 @@
 <?php
-
 /* Copyright (C) 2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
- * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,16 +25,16 @@
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
-require_once dirname(__FILE__) . '/../../htdocs/compta/facture/class/facture.class.php';
-require_once dirname(__FILE__) . '/CommonClassTest.class.php';
+require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
+require_once dirname(__FILE__).'/../../htdocs/compta/facture/class/facture.class.php';
+require_once dirname(__FILE__).'/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-    print "Load permissions for admin user nb 1\n";
-    $user->fetch(1);
-    $user->getrights();
+	print "Load permissions for admin user nb 1\n";
+	$user->fetch(1);
+	$user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -48,35 +44,35 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class CommonInvoiceTest extends CommonClassTest
 {
-    /**
-     *  testCalculateDateLimReglement
-     *
-     *  @return void
-     */
-    public function testCalculateDateLimReglement()
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 *  testCalculateDateLimReglement
+	 *
+	 *  @return void
+	 */
+	public function testCalculateDateLimReglement()
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject = new Facture($db);
-        $localobject->fetch(1);
-        $localobject->date = dol_mktime(12, 0, 0, 1, 1, 2010);
+		$localobject = new Facture($db);
+		$localobject->fetch(1);
+		$localobject->date = dol_mktime(12, 0, 0, 1, 1, 2010);
 
-        $result = 0;
+		$result = 0;
 
-        // TODO Insert payment terms
+		// TODO Insert payment terms
 
 
-        //$result=$localobject->calculate_date_lim_reglement(1);
-        //print __METHOD__." result=".$result."\n";
-        $this->assertEquals($result, 0);
-        return $result;
-    }
+		//$result=$localobject->calculate_date_lim_reglement(1);
+		//print __METHOD__." result=".$result."\n";
+		$this->assertEquals($result, 0);
+		return $result;
+	}
 }

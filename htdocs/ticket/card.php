@@ -163,14 +163,14 @@ if (empty($reshook)) {
 		$search_agenda_label = '';
 	}
 
-	$backurlforlist = DOL_URL_ROOT.'/ticket/list.php';
+	$backurlforlist = '/ticket/list.php';
 
 	if (empty($backtopage) || ($cancel && empty($id))) {
 		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
 			if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
 				$backtopage = $backurlforlist;
 			} else {
-				$backtopage = DOL_URL_ROOT.'/ticket/card.php?id='.((!empty($id) && $id > 0) ? $id : '__ID__');
+				$backtopage = '/ticket/card.php?id='.((!empty($id) && $id > 0) ? $id : '__ID__');
 			}
 		}
 	}

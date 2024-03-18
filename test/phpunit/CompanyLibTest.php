@@ -1,10 +1,6 @@
 <?php
-
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
- * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,16 +25,16 @@
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
-require_once dirname(__FILE__) . '/../../htdocs/core/lib/company.lib.php';
-require_once dirname(__FILE__) . '/CommonClassTest.class.php';
+require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
+require_once dirname(__FILE__).'/../../htdocs/core/lib/company.lib.php';
+require_once dirname(__FILE__).'/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-    print "Load permissions for admin user nb 1\n";
-    $user->fetch(1);
-    $user->getrights();
+	print "Load permissions for admin user nb 1\n";
+	$user->fetch(1);
+	$user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -52,30 +48,30 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  */
 class CompanyLibTest extends CommonClassTest
 {
-    /**
-     * testNameCurrency
-     *
-     * @return  void
-     */
-    public function testNameCurrency()
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testNameCurrency
+	 *
+	 * @return	void
+	 */
+	public function testNameCurrency()
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $result = currency_name('USD');
-        print __METHOD__ . " result=" . $result . "\n";
-        $this->assertEquals('US Dollars', $result, 'Test to get currency name USD in default language ' . $langs->defaultlang);
+		$result = currency_name('USD');
+		print __METHOD__." result=".$result."\n";
+		$this->assertEquals('US Dollars', $result, 'Test to get currency name USD in default language '.$langs->defaultlang);
 
-        $outputlangs = new Translate('', $conf);
-        $outputlangs->setDefaultLang('fr_FR');
+		$outputlangs = new Translate('', $conf);
+		$outputlangs->setDefaultLang('fr_FR');
 
-        $result = currency_name('USD', 1, $outputlangs);
-        print __METHOD__ . " result=" . $result . "\n";
-        $this->assertEquals('USD - Dollars US', $result, 'Test to get currency name USD in default language ' . $outputlangs->getDefaultLang());
+		$result = currency_name('USD', 1, $outputlangs);
+		print __METHOD__." result=".$result."\n";
+		$this->assertEquals('USD - Dollars US', $result, 'Test to get currency name USD in default language '.$outputlangs->getDefaultLang());
 
-        return $result;
-    }
+		return $result;
+	}
 }

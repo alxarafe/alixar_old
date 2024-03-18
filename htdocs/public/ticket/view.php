@@ -85,7 +85,7 @@ if (!isModEnabled('ticket')) {
  */
 
 if ($cancel) {
-	$backtopage = DOL_URL_ROOT.'/public/ticket/index.php';
+	$backtopage = '/public/ticket/index.php';
 
 	if (!empty($backtopage)) {
 		header("Location: ".$backtopage);

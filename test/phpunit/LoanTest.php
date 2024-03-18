@@ -1,10 +1,6 @@
 <?php
-
 /* Copyright (C) 2018 Maxime Kohlhaas <support@atm-consulting.fr>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
- * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,22 +19,22 @@
 
 /**
  *      \file       test/phpunit/LoanTest.php
- *      \ingroup    test
+ *		\ingroup    test
  *      \brief      PHPUnit test
- *      \remarks    To run this script as CLI:  phpunit filename.php
+ *		\remarks	To run this script as CLI:  phpunit filename.php
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
-require_once dirname(__FILE__) . '/../../htdocs/loan/class/loan.class.php';
-require_once dirname(__FILE__) . '/CommonClassTest.class.php';
+require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
+require_once dirname(__FILE__).'/../../htdocs/loan/class/loan.class.php';
+require_once dirname(__FILE__).'/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-    print "Load permissions for admin user nb 1\n";
-    $user->fetch(1);
-    $user->getrights();
+	print "Load permissions for admin user nb 1\n";
+	$user->fetch(1);
+	$user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -48,104 +44,104 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class LoanTest extends CommonClassTest
 {
-    /**
-     * testLoanCreate
-     *
-     * @return  void
-     */
-    public function testLoanCreate()
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testLoanCreate
+	 *
+	 * @return	void
+	 */
+	public function testLoanCreate()
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject = new Loan($db);
-        $localobject->initAsSpecimen();
-        $result = $localobject->create($user);
+		$localobject = new Loan($db);
+		$localobject->initAsSpecimen();
+		$result = $localobject->create($user);
 
-        $this->assertLessThan($result, 0);
-        print __METHOD__ . " result=" . $result . "\n";
-        return $result;
-    }
+		$this->assertLessThan($result, 0);
+		print __METHOD__." result=".$result."\n";
+		return $result;
+	}
 
-    /**
-     * testLoanFetch
-     *
-     * @param   int     $id     Id of object
-     * @return  void
-     *
-     * @depends testLoanCreate
-     * The depends says test is run only if previous is ok
-     */
-    public function testLoanFetch($id)
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testLoanFetch
+	 *
+	 * @param	int		$id		Id of object
+	 * @return	void
+	 *
+	 * @depends	testLoanCreate
+	 * The depends says test is run only if previous is ok
+	 */
+	public function testLoanFetch($id)
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject = new Loan($db);
-        $result = $localobject->fetch($id);
+		$localobject = new Loan($db);
+		$result = $localobject->fetch($id);
 
-        $this->assertLessThan($result, 0);
-        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
-        return $localobject;
-    }
+		$this->assertLessThan($result, 0);
+		print __METHOD__." id=".$id." result=".$result."\n";
+		return $localobject;
+	}
 
-    /**
-     * testLoanOther
-     *
-     * @param   Loan    $localobject    Loan
-     * @return  int
-     *
-     * @depends testLoanFetch
-     * The depends says test is run only if previous is ok
-     */
-    public function testLoanOther($localobject)
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testLoanOther
+	 *
+	 * @param	Loan	$localobject	Loan
+	 * @return	int
+	 *
+	 * @depends testLoanFetch
+	 * The depends says test is run only if previous is ok
+	 */
+	public function testLoanOther($localobject)
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $result = $localobject->setPaid($user);
+		$result = $localobject->setPaid($user);
 
-        print __METHOD__ . " id=" . $localobject->id . " result=" . $result . "\n";
-        $this->assertLessThan($result, 0);
-        return $localobject->id;
-    }
+		print __METHOD__." id=".$localobject->id." result=".$result."\n";
+		$this->assertLessThan($result, 0);
+		return $localobject->id;
+	}
 
-    /**
-     * testLoanDelete
-     *
-     * @param   int     $id     Id of loan
-     * @return  void
-     *
-     * @depends testLoanCreate
-     * The depends says test is run only if previous is ok
-     */
-    public function testLoanDelete($id)
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testLoanDelete
+	 *
+	 * @param	int		$id		Id of loan
+	 * @return	void
+	 *
+	 * @depends	testLoanCreate
+	 * The depends says test is run only if previous is ok
+	 */
+	public function testLoanDelete($id)
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject = new Loan($db);
-        $result = $localobject->fetch($id);
-        $result = $localobject->delete($user);
+		$localobject = new Loan($db);
+		$result = $localobject->fetch($id);
+		$result = $localobject->delete($user);
 
-        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
-        $this->assertLessThan($result, 0);
-        return $result;
-    }
+		print __METHOD__." id=".$id." result=".$result."\n";
+		$this->assertLessThan($result, 0);
+		return $result;
+	}
 }

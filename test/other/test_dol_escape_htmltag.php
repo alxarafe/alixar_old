@@ -4,24 +4,24 @@
 $path = __DIR__ . '/';
 
 
-$res = @include_once $path . '/../htdocs/master.inc.php';
-$res = @include_once $path . '/../../htdocs/master.inc.php';
+$res=@include_once $path.'/../htdocs/master.inc.php';
+$res=@include_once $path.'/../../htdocs/master.inc.php';
 if (! $res) {
-    @include_once '../../master.inc.php';
+	@include_once '../../master.inc.php';
 }
 if (! $res) {
-    @include_once '../master.inc.php';
+	@include_once '../master.inc.php';
 }
 if (! $res) {
-    @include_once './master.inc.php';
+	@include_once './master.inc.php';
 }
 
 
 // Show information
 print "\n";
-print "*** PHP Version : " . PHP_VERSION . " - Dolibarr Version : " . DOL_VERSION . "\n";
+print "*** PHP Version : ".PHP_VERSION." - Dolibarr Version : ".DOL_VERSION."\n";
 
-$a = "Wéarning: Permanently added '1.2.3.4' (ECDSA) to the list of known hosts.<br>
+$a="Wéarning: Permanently added '1.2.3.4' (ECDSA) to the list of known hosts.<br>
 receiving file list ... done<br>
 rsync: send_files failed to open &quot;aaa: Permission denied (13)<br>
 <br>

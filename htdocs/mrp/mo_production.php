@@ -118,14 +118,14 @@ if ($reshook < 0) {
 if (empty($reshook)) {
 	$error = 0;
 
-	$backurlforlist = DOL_URL_ROOT.'/mrp/mo_list.php';
+	$backurlforlist = '/mrp/mo_list.php';
 
 	if (empty($backtopage) || ($cancel && empty($id))) {
 		//var_dump($backurlforlist);exit;
 		if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
 			$backtopage = $backurlforlist;
 		} else {
-			$backtopage = DOL_URL_ROOT.'/mrp/mo_production.php?id='.($id > 0 ? $id : '__ID__');
+			$backtopage = '/mrp/mo_production.php?id='.($id > 0 ? $id : '__ID__');
 		}
 	}
 	$triggermodname = 'MO_MODIFY'; // Name of trigger action code to execute when we modify record

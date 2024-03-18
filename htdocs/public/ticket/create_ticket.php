@@ -111,7 +111,7 @@ if ($reshook < 0) {
 // Add file in email form
 if (empty($reshook)) {
 	if ($cancel) {
-		$backtopage = DOL_URL_ROOT.'/public/ticket/index.php';
+		$backtopage = '/public/ticket/index.php';
 
 		header("Location: ".$backtopage);
 		exit;

@@ -92,14 +92,14 @@ if ($reshook < 0) {
 	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	$backurlforlist = DOL_URL_ROOT.'/asset/list.php';
+	$backurlforlist = '/asset/list.php';
 
 	if (empty($backtopage) || ($cancel && empty($id))) {
 		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
 			if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
 				$backtopage = $backurlforlist;
 			} else {
-				$backtopage = DOL_URL_ROOT.'/asset/accountancy_codes.php?id='.((!empty($id) && $id > 0) ? $id : '__ID__');
+				$backtopage = '/asset/accountancy_codes.php?id='.((!empty($id) && $id > 0) ? $id : '__ID__');
 			}
 		}
 	}

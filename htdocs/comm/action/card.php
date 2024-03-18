@@ -302,9 +302,9 @@ if (empty($reshook) && $action == 'add') {
 
 	if (empty($backtopage)) {
 		if ($socid > 0) {
-			$backtopage = DOL_URL_ROOT.'/societe/agenda.php?socid='.$socid;
+			$backtopage = '/societe/agenda.php?socid='.$socid;
 		} else {
-			$backtopage = DOL_URL_ROOT.'/comm/action/index.php';
+			$backtopage = '/comm/action/index.php';
 		}
 	}
 

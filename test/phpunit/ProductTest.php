@@ -1,10 +1,6 @@
 <?php
-
 /* Copyright (C) 2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
- * Copyright (C) 2024 Rafael San José <rsanjose@alxarafe.com>
- * Copyright (C) 2024 Francesc Pineda <fpineda@alxarafe.com>
- * Copyright (C) 2024 Cayetano Hernández <chernandez@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,16 +25,16 @@
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
-require_once dirname(__FILE__) . '/../../htdocs/product/class/product.class.php';
-require_once dirname(__FILE__) . '/CommonClassTest.class.php';
+require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
+require_once dirname(__FILE__).'/../../htdocs/product/class/product.class.php';
+require_once dirname(__FILE__).'/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-    print "Load permissions for admin user nb 1\n";
-    $user->fetch(1);
-    $user->getrights();
+	print "Load permissions for admin user nb 1\n";
+	$user->fetch(1);
+	$user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -52,146 +48,146 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  */
 class ProductTest extends CommonClassTest
 {
-    /**
-     * setUpBeforeClass
-     *
-     * @return void
-     */
-    public static function setUpBeforeClass(): void
-    {
-        global $conf,$user,$langs,$db;
+	/**
+	 * setUpBeforeClass
+	 *
+	 * @return void
+	 */
+	public static function setUpBeforeClass(): void
+	{
+		global $conf,$user,$langs,$db;
 
-        if (!isModEnabled('product')) {
-            print __METHOD__ . " Module Product must be enabled.\n";
-            die(1);
-        }
+		if (!isModEnabled('product')) {
+			print __METHOD__." Module Product must be enabled.\n";
+			die(1);
+		}
 
-        $db->begin(); // This is to have all actions inside a transaction even if test launched without suite.
+		$db->begin(); // This is to have all actions inside a transaction even if test launched without suite.
 
-        print __METHOD__ . "\n";
-    }
+		print __METHOD__."\n";
+	}
 
 
-    /**
-     * testProductCreate
-     *
-     * @return  void
-     */
-    public function testProductCreate()
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testProductCreate
+	 *
+	 * @return  void
+	 */
+	public function testProductCreate()
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject = new Product($db);
-        $localobject->initAsSpecimen();
-        $result = $localobject->create($user);
+		$localobject = new Product($db);
+		$localobject->initAsSpecimen();
+		$result = $localobject->create($user);
 
-        print __METHOD__ . " result=" . $result . "\n";
-        $this->assertLessThanOrEqual($result, 0, "Creation of product");
+		print __METHOD__." result=".$result."\n";
+		$this->assertLessThanOrEqual($result, 0, "Creation of product");
 
-        return $result;
-    }
+		return $result;
+	}
 
-    /**
-     * testProductFetch
-     *
-     * @param   int $id     Id product
-     * @return  Product
-     *
-     * @depends testProductCreate
-     * The depends says test is run only if previous is ok
-     */
-    public function testProductFetch($id)
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testProductFetch
+	 *
+	 * @param   int $id     Id product
+	 * @return  Product
+	 *
+	 * @depends testProductCreate
+	 * The depends says test is run only if previous is ok
+	 */
+	public function testProductFetch($id)
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject = new Product($db);
-        $result = $localobject->fetch($id);
-        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
-        $this->assertLessThan($result, 0);
+		$localobject = new Product($db);
+		$result = $localobject->fetch($id);
+		print __METHOD__." id=".$id." result=".$result."\n";
+		$this->assertLessThan($result, 0);
 
-        return $localobject;
-    }
+		return $localobject;
+	}
 
-    /**
-     * testProductUpdate
-     *
-     * @param   Product $localobject    Product
-     * @return  void
-     *
-     * @depends testProductFetch
-     * The depends says test is run only if previous is ok
-     */
-    public function testProductUpdate($localobject)
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testProductUpdate
+	 *
+	 * @param   Product $localobject    Product
+	 * @return  void
+	 *
+	 * @depends testProductFetch
+	 * The depends says test is run only if previous is ok
+	 */
+	public function testProductUpdate($localobject)
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject->note_public = 'New public note after update';
-        $localobject->note_private = 'New private note after update';
-        $result = $localobject->update($localobject->id, $user);
-        print __METHOD__ . " id=" . $localobject->id . " result=" . $result . "\n";
-        $this->assertLessThan($result, 0, 'Error ' . $localobject->error);
+		$localobject->note_public = 'New public note after update';
+		$localobject->note_private = 'New private note after update';
+		$result = $localobject->update($localobject->id, $user);
+		print __METHOD__." id=".$localobject->id." result=".$result."\n";
+		$this->assertLessThan($result, 0, 'Error '.$localobject->error);
 
-        return $localobject;
-    }
+		return $localobject;
+	}
 
-    /**
-     * testProductOther
-     *
-     * @param   Product $localobject    Product
-     * @return  void
-     *
-     * @depends testProductUpdate
-     * The depends says test is run only if previous is ok
-     */
-    public function testProductOther($localobject)
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testProductOther
+	 *
+	 * @param   Product $localobject    Product
+	 * @return  void
+	 *
+	 * @depends	testProductUpdate
+	 * The depends says test is run only if previous is ok
+	 */
+	public function testProductOther($localobject)
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $this->assertEquals(0, 0);
+		$this->assertEquals(0, 0);
 
-        return $localobject->id;
-    }
+		return $localobject->id;
+	}
 
-    /**
-     * testProductDelete
-     *
-     * @param       int $id     Id of product
-     * @return      void
-     *
-     * @depends testProductOther
-     * The depends says test is run only if previous is ok
-     */
-    public function testProductDelete($id)
-    {
-        global $conf,$user,$langs,$db;
-        $conf = $this->savconf;
-        $user = $this->savuser;
-        $langs = $this->savlangs;
-        $db = $this->savdb;
+	/**
+	 * testProductDelete
+	 *
+	 * @param       int $id     Id of product
+	 * @return      void
+	 *
+	 * @depends testProductOther
+	 * The depends says test is run only if previous is ok
+	 */
+	public function testProductDelete($id)
+	{
+		global $conf,$user,$langs,$db;
+		$conf = $this->savconf;
+		$user = $this->savuser;
+		$langs = $this->savlangs;
+		$db = $this->savdb;
 
-        $localobject = new Product($db);
-        $result = $localobject->fetch($id);
+		$localobject = new Product($db);
+		$result = $localobject->fetch($id);
 
-        $result = $localobject->delete($user);
-        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
-        $this->assertLessThan($result, 0);
+		$result = $localobject->delete($user);
+		print __METHOD__." id=".$id." result=".$result."\n";
+		$this->assertLessThan($result, 0);
 
-        return $result;
-    }
+		return $result;
+	}
 }
