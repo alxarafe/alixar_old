@@ -191,7 +191,7 @@ class ActionsTicket extends CommonHookActions
 		print '<!-- initial message of ticket -->'."\n";
 		if ($user->hasRight('ticket', 'manage') && $action == 'edit_message_init') {
 			// MESSAGE
-			print '<form action="'.DOL_PHP_SELF.'" method="post">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="track_id" value="'.$object->track_id.'">';
 			print '<input type="hidden" name="action" value="set_message">';
@@ -204,7 +204,7 @@ class ActionsTicket extends CommonHookActions
 		print $langs->trans("InitialMessage");
 		print '</td><td>';
 		if ($user->hasRight("ticket", "manage")) {
-			print '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=edit_message_init&token='.newToken().'&track_id='.$object->track_id.'">'.img_edit($langs->trans('Modify')).'</a>';
+			print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit_message_init&token='.newToken().'&track_id='.$object->track_id.'">'.img_edit($langs->trans('Modify')).'</a>';
 		}
 		print '</td></tr>';
 
@@ -481,9 +481,9 @@ class ActionsTicket extends CommonHookActions
 				print '<div class="inline-block center marginbottomonly">';
 
 				if ($status == 1) {
-					$urlforbutton = DOL_PHP_SELF.'?track_id='.$object->track_id.'&action=set_read&token='.newToken(); // To set as read, we use a dedicated action
+					$urlforbutton = $_SERVER['PHP_SELF'].'?track_id='.$object->track_id.'&action=set_read&token='.newToken(); // To set as read, we use a dedicated action
 				} else {
-					$urlforbutton = DOL_PHP_SELF.'?track_id='.$object->track_id.'&action=confirm_set_status&token='.newToken().'&new_status='.((int) $status);
+					$urlforbutton = $_SERVER['PHP_SELF'].'?track_id='.$object->track_id.'&action=confirm_set_status&token='.newToken().'&new_status='.((int) $status);
 				}
 
 				print '<a class="butAction butStatus marginbottomonly" href="'.$urlforbutton.'">';

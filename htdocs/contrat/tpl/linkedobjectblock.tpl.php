@@ -61,7 +61,7 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
 		echo price($totalcontrat);
 	} ?></td>
 	<td class="right"><?php echo $objectlink->getLibStatut(7); ?></td>
-	<td class="right"><a class="reposition" href="<?php echo DOL_PHP_SELF.'?id='.$object->id.'&action=dellink&token='.newToken().'&dellinkid='.$key; ?>"><?php echo img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink'); ?></a></td>
+	<td class="right"><a class="reposition" href="<?php echo $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=dellink&token='.newToken().'&dellinkid='.$key; ?>"><?php echo img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink'); ?></a></td>
 </tr>
 	<?php
 }

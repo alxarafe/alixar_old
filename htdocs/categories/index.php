@@ -82,7 +82,7 @@ llxHeader('', $title, '', '', 0, 0, $arrayofjs, $arrayofcss);
 
 $newcardbutton = '';
 if ($user->hasRight('categorie', 'creer')) {
-	$newcardbutton .= dolGetButtonTitle($langs->trans('NewCategory'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/categories/card.php?action=create&type='.$type.'&backtopage='.urlencode(DOL_PHP_SELF.'?type='.$type.$moreparam).$moreparam);
+	$newcardbutton .= dolGetButtonTitle($langs->trans('NewCategory'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/categories/card.php?action=create&type='.$type.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?type='.$type.$moreparam).$moreparam);
 }
 
 print load_fiche_titre($title, $newcardbutton, 'object_category');
@@ -195,7 +195,7 @@ foreach ($fulltree as $key => $val) {
 	}
 
 	$color = $categstatic->color ? ' style="background: #'.sprintf("%06s", $categstatic->color).';"' : ' style="background: #bbb"';
-	$li = $categstatic->getNomUrl(1, '', 60, '&backtolist='.urlencode(DOL_PHP_SELF.'?type='.$type.$moreparam));
+	$li = $categstatic->getNomUrl(1, '', 60, '&backtolist='.urlencode($_SERVER['PHP_SELF'].'?type='.$type.$moreparam));
 
 	$entry = '<table class="nobordernopadding centpercent">';
 	$entry .= '<tr>';
@@ -208,16 +208,16 @@ foreach ($fulltree as $key => $val) {
 	$entry .= $counter;
 
 	$entry .= '<td class="right" width="20px;">';
-	$entry .= '<a href="'.DOL_URL_ROOT.'/categories/viewcat.php?id='.$val['id'].'&type='.$type.$moreparam.'&backtolist='.urlencode(DOL_PHP_SELF.'?type='.$type).'">'.img_view().'</a>';
+	$entry .= '<a href="'.DOL_URL_ROOT.'/categories/viewcat.php?id='.$val['id'].'&type='.$type.$moreparam.'&backtolist='.urlencode($_SERVER['PHP_SELF'].'?type='.$type).'">'.img_view().'</a>';
 	$entry .= '</td>';
 	$entry .= '<td class="right" width="20px;">';
 	if ($user->hasRight('categorie', 'creer')) {
-		$entry .= '<a class="editfielda" href="' . DOL_URL_ROOT . '/categories/edit.php?id=' . $val['id'] . '&type=' . $type . $moreparam . '&backtopage=' . urlencode(DOL_PHP_SELF . '?type=' . $type) . '">' . img_edit() . '</a>';
+		$entry .= '<a class="editfielda" href="' . DOL_URL_ROOT . '/categories/edit.php?id=' . $val['id'] . '&type=' . $type . $moreparam . '&backtopage=' . urlencode($_SERVER['PHP_SELF'] . '?type=' . $type) . '">' . img_edit() . '</a>';
 	}
 	$entry .= '</td>';
 	$entry .= '<td class="right" width="20px;">';
 	if ($user->hasRight('categorie', 'supprimer')) {
-		$entry .= '<a class="deletefilelink" href="' . DOL_URL_ROOT . '/categories/viewcat.php?action=delete&token=' . newToken() . '&id=' . $val['id'] . '&type=' . $type . $moreparam . '&backtopage=' . urlencode(DOL_PHP_SELF . '?type=' . $type . $moreparam) . '&backtolist=' . urlencode(DOL_PHP_SELF . '?type=' . $type . $moreparam) . '">' . img_delete() . '</a>';
+		$entry .= '<a class="deletefilelink" href="' . DOL_URL_ROOT . '/categories/viewcat.php?action=delete&token=' . newToken() . '&id=' . $val['id'] . '&type=' . $type . $moreparam . '&backtopage=' . urlencode($_SERVER['PHP_SELF'] . '?type=' . $type . $moreparam) . '&backtolist=' . urlencode($_SERVER['PHP_SELF'] . '?type=' . $type . $moreparam) . '">' . img_delete() . '</a>';
 	}
 	$entry .= '</td>';
 

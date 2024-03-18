@@ -294,7 +294,7 @@ $num = $db->num_rows($resql);
 $i = 0;
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -341,7 +341,7 @@ if ($search_amount) {
 // Add $param from extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -353,7 +353,7 @@ print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
 // @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-print_barre_liste($langs->trans('SupplierPayments'), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'supplier_invoice', 0, '', '', $limit, 0, 0, 1);
+print_barre_liste($langs->trans('SupplierPayments'), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'supplier_invoice', 0, '', '', $limit, 0, 0, 1);
 
 if ($search_all) {
 	foreach ($fieldstosearchall as $key => $val) {
@@ -378,7 +378,7 @@ if ($moreforfilter) {
 	print '</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 if (!empty($massactionbutton)) {
 	$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
@@ -482,39 +482,39 @@ $totalarray['nbfield'] = 0;
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER_IN_LIST')) {
-	print_liste_field_titre('#', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre('#', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.ref']['checked'])) {
-	print_liste_field_titre($arrayfields['p.ref']['label'], DOL_PHP_SELF, 'p.rowid', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.ref']['label'], $_SERVER['PHP_SELF'], 'p.rowid', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.datep']['checked'])) {
-	print_liste_field_titre($arrayfields['p.datep']['label'], DOL_PHP_SELF, 'p.datep', '', $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['p.datep']['label'], $_SERVER['PHP_SELF'], 'p.datep', '', $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.nom']['checked'])) {
-	print_liste_field_titre($arrayfields['s.nom']['label'], DOL_PHP_SELF, 's.nom', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['s.nom']['label'], $_SERVER['PHP_SELF'], 's.nom', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['c.libelle']['checked'])) {
-	print_liste_field_titre($arrayfields['c.libelle']['label'], DOL_PHP_SELF, 'c.libelle', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['c.libelle']['label'], $_SERVER['PHP_SELF'], 'c.libelle', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.num_paiement']['checked'])) {
-	print_liste_field_titre($arrayfields['p.num_paiement']['label'], DOL_PHP_SELF, "p.num_paiement", '', $param, '', $sortfield, $sortorder, '', $arrayfields['p.num_paiement']['tooltip']);
+	print_liste_field_titre($arrayfields['p.num_paiement']['label'], $_SERVER['PHP_SELF'], "p.num_paiement", '', $param, '', $sortfield, $sortorder, '', $arrayfields['p.num_paiement']['tooltip']);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['ba.label']['checked'])) {
-	print_liste_field_titre($arrayfields['ba.label']['label'], DOL_PHP_SELF, 'ba.label', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['ba.label']['label'], $_SERVER['PHP_SELF'], 'ba.label', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.amount']['checked'])) {
-	print_liste_field_titre($arrayfields['p.amount']['label'], DOL_PHP_SELF, 'p.amount', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['p.amount']['label'], $_SERVER['PHP_SELF'], 'p.amount', '', $param, '', $sortfield, $sortorder, 'right ');
 	$totalarray['nbfield']++;
 }
 
@@ -525,7 +525,7 @@ print $hookmanager->resPrint;
 
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
 print '</tr>';

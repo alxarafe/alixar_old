@@ -105,7 +105,7 @@ class doc_generic_product_odt extends ModelePDFProduct
 		$form = new Form($this->db);
 
 		$texte = $this->description.".<br>\n";
-		$texte .= '<form action="'.DOL_PHP_SELF.'" method="POST" enctype="multipart/form-data">';
+		$texte .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" enctype="multipart/form-data">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="page_y" value="">';
 		$texte .= '<input type="hidden" name="action" value="setModuleOptions">';
@@ -160,7 +160,7 @@ class doc_generic_product_odt extends ModelePDFProduct
 			foreach ($listoffiles as $file) {
 				$texte .= '- '.$file['name'];
 				$texte .= ' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=products/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a>';
-				$texte .= ' &nbsp; <a class="reposition" href="'.DOL_PHP_SELF.'?modulepart=doctemplates&keyforuploaddir=PRODUCT_ADDON_PDF_ODT_PATH&action=deletefile&token='.newToken().'&file='.urlencode(basename($file['name'])).'">'.img_picto('', 'delete').'</a>';
+				$texte .= ' &nbsp; <a class="reposition" href="'.$_SERVER['PHP_SELF'].'?modulepart=doctemplates&keyforuploaddir=PRODUCT_ADDON_PDF_ODT_PATH&action=deletefile&token='.newToken().'&file='.urlencode(basename($file['name'])).'">'.img_picto('', 'delete').'</a>';
 				$texte .= '<br>';
 			}
 			$texte .= '</div>';

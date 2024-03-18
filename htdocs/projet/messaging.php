@@ -194,22 +194,22 @@ if (!empty($object->id)) {
 
 	// // Show link to send an email (if read and not closed)
 	// $btnstatus = $object->status < Ticket::STATUS_CLOSED && $action != "presend" && $action != "presend_addmessage";
-	// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&private_message=0&send_email=1&backtopage='.urlencode(DOL_PHP_SELF.'?track_id='.$object->track_id).'#formmailbeforetitle';
+	// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&private_message=0&send_email=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?track_id='.$object->track_id).'#formmailbeforetitle';
 	// $morehtmlright .= dolGetButtonTitle($langs->trans('SendMail'), '', 'fa fa-paper-plane', $url, 'email-title-button', $btnstatus);
 
 	// // Show link to add a private message (if read and not closed)
 	// $btnstatus = $object->status < Ticket::STATUS_CLOSED && $action != "presend" && $action != "presend_addmessage";
-	// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&backtopage='.urlencode(DOL_PHP_SELF.'?track_id='.$object->track_id).'#formmailbeforetitle';
+	// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&backtopage='.urlencode($_SERVER['PHP_SELF'].'?track_id='.$object->track_id).'#formmailbeforetitle';
 	// $morehtmlright .= dolGetButtonTitle($langs->trans('TicketAddMessage'), '', 'fa fa-comment-dots', $url, 'add-new-ticket-title-button', $btnstatus);
 
 	// Show link to add event
 	if (isModEnabled('agenda')) {
 		$addActionBtnRight = $user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create');
-		$morehtmlright .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create'.$out.'&socid='.$object->socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id), '', $addActionBtnRight);
+		$morehtmlright .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create'.$out.'&socid='.$object->socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id), '', $addActionBtnRight);
 	}
 
 	$param = '&id='.$object->id;
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -222,7 +222,7 @@ if (!empty($object->id)) {
 
 	$titlelist = $langs->trans("ActionsOnProject").(is_numeric($nbEvent) ? '<span class="opacitymedium colorblack paddingleft">('.$nbEvent.')</span>' : '');
 
-	print_barre_liste($titlelist, 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 0);
+	print_barre_liste($titlelist, 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 0);
 
 	// List of all actions
 	$filters = array();

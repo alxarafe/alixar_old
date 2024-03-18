@@ -205,7 +205,7 @@ foreach ($modules as $key => $module) {
 
 llxHeader();
 print $info_admin;
-print '<form action="'.DOL_PHP_SELF.'" method="post" name="formulaire">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post" name="formulaire">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -216,7 +216,7 @@ print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
-print_barre_liste($langs->trans("AvailableModules"), empty($page) ? 0 : $page, DOL_PHP_SELF, '', $sortfield, $sortorder, '', -1, '', 'title_setup', 0, '', '', 0, 1, 1);
+print_barre_liste($langs->trans("AvailableModules"), empty($page) ? 0 : $page, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', -1, '', 'title_setup', 0, '', '', 0, 1, 1);
 
 print '<span class="opacitymedium">'.$langs->trans("ToActivateModule").'</span>';
 print '<br>';
@@ -225,7 +225,7 @@ print '<br>';
 $mode = '';
 $arrayofmassactions = array();
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -279,22 +279,22 @@ print '</tr>';
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn');
 }
 if ($arrayfields['name']['checked']) {
-	print_liste_field_titre($arrayfields['name']['label'], DOL_PHP_SELF, "name", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['name']['label'], $_SERVER['PHP_SELF'], "name", "", "", "", $sortfield, $sortorder);
 }
 if ($arrayfields['version']['checked']) {
-	print_liste_field_titre($arrayfields['version']['label'], DOL_PHP_SELF, "version", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['version']['label'], $_SERVER['PHP_SELF'], "version", "", "", "", $sortfield, $sortorder);
 }
 if ($arrayfields['id']['checked']) {
-	print_liste_field_titre($arrayfields['id']['label'], DOL_PHP_SELF, "id", "", "", "", $sortfield, $sortorder, 'nowraponall ');
+	print_liste_field_titre($arrayfields['id']['label'], $_SERVER['PHP_SELF'], "id", "", "", "", $sortfield, $sortorder, 'nowraponall ');
 }
 if ($arrayfields['permission']['checked']) {
-	print_liste_field_titre($arrayfields['permission']['label'], DOL_PHP_SELF, "permission", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['permission']['label'], $_SERVER['PHP_SELF'], "permission", "", "", "", $sortfield, $sortorder);
 }
 if ($arrayfields['module_position']['checked']) {
-	print_liste_field_titre($arrayfields['module_position']['label'], DOL_PHP_SELF, "module_position", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['module_position']['label'], $_SERVER['PHP_SELF'], "module_position", "", "", "", $sortfield, $sortorder);
 }
 
 // Fields from hook
@@ -303,7 +303,7 @@ $reshook = $hookmanager->executeHooks('printFieldListOption', $parameters); // N
 print $hookmanager->resPrint;
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print '</tr>';
 

@@ -198,7 +198,7 @@ if (empty($reshook)) {
 
 		$result = $objectutil->createFromClone($user, $id);
 		if ($result > 0) {
-			header("Location: ".DOL_PHP_SELF.'?id='.$result);
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$result);
 			exit;
 		} else {
 			$langs->load("errors");
@@ -330,7 +330,7 @@ if (empty($reshook)) {
 				$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
 			}*/
 
-			header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -750,7 +750,7 @@ if (empty($reshook)) {
 			if ($result > 0) {
 				$result = $paiementfourn->delete($user);
 				if ($result > 0) {
-					header("Location: ".DOL_PHP_SELF."?id=".$id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 					exit;
 				}
 			}
@@ -1406,7 +1406,7 @@ if (empty($reshook)) {
 				}
 			}
 
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		}
 	} elseif ($action == 'updateline' && $usercancreate) {
@@ -1934,7 +1934,7 @@ if (empty($reshook)) {
 		|| ($object->statut == FactureFournisseur::STATUS_ABANDONED && $object->close_code != 'replaced')) {
 			$result = $object->setUnpaid($user);
 			if ($result > 0) {
-				header('Location: '.DOL_PHP_SELF.'?id='.$id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -2004,7 +2004,7 @@ if (empty($reshook)) {
 			}
 
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -2027,7 +2027,7 @@ if (empty($reshook)) {
 			$result = $object->delete_contact(GETPOSTINT("lineid"));
 
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				dol_print_error($db);
@@ -2250,7 +2250,7 @@ if ($action == 'create') {
 		print info_admin($text, 0, 0, 0, 'opacitymedium').'<br>';
 	}
 
-	print '<form name="add" action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form name="add" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="changecompany" value="0">';	// will be set to 1 by javascript so we know post is done after a company change
@@ -2309,7 +2309,7 @@ if ($action == 'create') {
 					</script>';
 			}
 			if ($fac_recid <= 0) {
-				print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&client=0&fournisseur=1&backtopage='.urlencode(DOL_PHP_SELF.'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
+				print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&client=0&fournisseur=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
 			}
 		}
 		print '</td></tr>';
@@ -2634,7 +2634,7 @@ if ($action == 'create') {
 
 			$thirdparty = $societe;
 			$discount_type = 1;
-			$backtopage = urlencode(DOL_PHP_SELF.'?socid='.$societe->id.'&action='.$action.'&origin='.GETPOST('origin').'&originid='.GETPOST('originid'));
+			$backtopage = urlencode($_SERVER['PHP_SELF'].'?socid='.$societe->id.'&action='.$action.'&origin='.GETPOST('origin').'&originid='.GETPOST('originid'));
 			include DOL_DOCUMENT_ROOT.'/core/tpl/object_discounts.tpl.php';
 
 			print '</td></tr>';
@@ -2683,7 +2683,7 @@ if ($action == 'create') {
 			$langs->load('projects');
 			print '<tr><td>'.$langs->trans('Project').'</td><td>';
 			print img_picto('', 'project', 'class="pictofixedwidth"').$formproject->select_projects((!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $societe->id : -1), $projectid, 'projectid', 0, 0, 1, 1, 0, 0, 0, '', 1, 0, 'maxwidth500 widthcentpercentminusxx');
-			print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.(!empty($soc->id) ? $soc->id : 0).'&action=create&status=1&backtopage='.urlencode(DOL_PHP_SELF.'?action=create&socid='.(!empty($soc->id) ? $soc->id : 0).($fac_recid > 0 ? '&fac_rec='.$fac_recid : '')).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
+			print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.(!empty($soc->id) ? $soc->id : 0).'&action=create&status=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create&socid='.(!empty($soc->id) ? $soc->id : 0).($fac_recid > 0 ? '&fac_rec='.$fac_recid : '')).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
 			print '</td></tr>';
 		}
 
@@ -2960,7 +2960,7 @@ if ($action == 'create') {
 			}
 			$text = $langs->trans('ConfirmConvertToReducSupplier', strtolower($langs->transnoentities($type_fac)));
 			$text .= '<br>'.$langs->trans('ConfirmConvertToReducSupplier2');
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?facid='.$object->id, $langs->trans('ConvertToReduc'), $text, 'confirm_converttoreduc', '', "yes", 2);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?facid='.$object->id, $langs->trans('ConvertToReduc'), $text, 'confirm_converttoreduc', '', "yes", 2);
 		}
 
 		// Clone confirmation
@@ -2971,7 +2971,7 @@ if ($action == 'create') {
 				array('type' => 'date', 'name' => 'newdate', 'label' => $langs->trans("Date"), 'value' => dol_now())
 			);
 			// Ask confirmation to clone
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneInvoice', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 250);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneInvoice', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 250);
 		}
 
 		// Confirmation of validation
@@ -3023,7 +3023,7 @@ if ($action == 'create') {
 					);
 				}
 
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ValidateBill'), $text, 'confirm_valid', $formquestion, 1, 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ValidateBill'), $text, 'confirm_valid', $formquestion, 1, 1);
 			}
 		}
 
@@ -3054,12 +3054,12 @@ if ($action == 'create') {
 					array('type' => 'other', 'name' => 'idwarehouse', 'label' => $label, 'value' => $value)
 				);
 			}
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('UnvalidateBill'), $langs->trans('ConfirmUnvalidateBill', $object->ref), 'confirm_edit', $formquestion, 1, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('UnvalidateBill'), $langs->trans('ConfirmUnvalidateBill', $object->ref), 'confirm_edit', $formquestion, 1, 1);
 		}
 
 		// Confirmation set paid
 		if ($action == 'paid' && ($resteapayer <= 0 || (getDolGlobalString('SUPPLIER_INVOICE_CAN_SET_PAID_EVEN_IF_PARTIALLY_PAID') && $resteapayer == $object->total_ttc))) {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ClassifyPaid'), $langs->trans('ConfirmClassifyPaidBill', $object->ref), 'confirm_paid', '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ClassifyPaid'), $langs->trans('ConfirmClassifyPaidBill', $object->ref), 'confirm_paid', '', 0, 1);
 		}
 
 		if ($action == 'paid' && $resteapayer > 0 && (!getDolGlobalString('SUPPLIER_INVOICE_CAN_SET_PAID_EVEN_IF_PARTIALLY_PAID') || $resteapayer != $object->total_ttc)) {
@@ -3097,7 +3097,7 @@ if ($action == 'create') {
 			// Create a form table
 			$formquestion = array('text' => $langs->trans("ConfirmClassifyPaidPartiallyQuestion"), 0 => array('type' => 'radio', 'name' => 'close_code', 'label' => $langs->trans("Reason"), 'values' => $arrayreasons), 1 => array('type' => 'text', 'name' => 'close_note', 'label' => $langs->trans("Comment"), 'value' => '', 'morecss' => 'minwidth300'));
 			// Incomplete payment. We ask if the reason is discount or other
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?facid='.$object->id, $langs->trans('ClassifyPaid'), $langs->trans('ConfirmClassifyPaidPartially', $object->ref), 'confirm_paid_partially', $formquestion, "yes", 1, 310);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?facid='.$object->id, $langs->trans('ClassifyPaid'), $langs->trans('ConfirmClassifyPaidPartially', $object->ref), 'confirm_paid_partially', $formquestion, "yes", 1, 310);
 		}
 
 		// Confirmation of the abandoned classification
@@ -3118,7 +3118,7 @@ if ($action == 'create') {
 			// Create a form table
 			$formquestion = array('text' => $langs->trans("ConfirmCancelBillQuestion"), 0 => array('type' => 'radio', 'name' => 'close_code', 'label' => $langs->trans("Reason"), 'values' => $arrayreasons), 1 => array('type' => 'text', 'name' => 'close_note', 'label' => $langs->trans("Comment"), 'value' => '', 'morecss' => 'minwidth300'));
 
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('CancelBill'), $langs->trans('ConfirmCancelBill', $object->ref), 'confirm_canceled', $formquestion, "yes", 1, 280);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('CancelBill'), $langs->trans('ConfirmCancelBill', $object->ref), 'confirm_canceled', $formquestion, "yes", 1, 280);
 		}
 
 		// Confirmation de la suppression de la facture fournisseur
@@ -3169,16 +3169,16 @@ if ($action == 'create') {
 				);
 			}
 
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteBill'), $langs->trans('ConfirmDeleteBill'), 'confirm_delete', $formquestion, 1, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteBill'), $langs->trans('ConfirmDeleteBill'), 'confirm_delete', $formquestion, 1, 1);
 		}
 		if ($action == 'deletepayment') {
 			$payment_id = GETPOST('paiement_id');
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&paiement_id='.$payment_id, $langs->trans('DeletePayment'), $langs->trans('ConfirmDeletePayment'), 'confirm_delete_paiement', '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&paiement_id='.$payment_id, $langs->trans('DeletePayment'), $langs->trans('ConfirmDeletePayment'), 'confirm_delete_paiement', '', 0, 1);
 		}
 
 		// Confirmation to delete line
 		if ($action == 'ask_deleteline') {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteProductLine'), $langs->trans('ConfirmDeleteProductLine'), 'confirm_deleteline', '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteProductLine'), $langs->trans('ConfirmDeleteProductLine'), 'confirm_deleteline', '', 0, 1);
 		}
 
 		if (!$formconfirm) {
@@ -3214,9 +3214,9 @@ if ($action == 'create') {
 			if ($permissiontoadd) {
 				$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.((int) $object->id).'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.((int) $object->id).'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 				}
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 			} else {
 				if (!empty($object->fk_project)) {
 					$proj = new Project($db);
@@ -3348,14 +3348,14 @@ if ($action == 'create') {
 			print $langs->trans('PaymentConditions');
 			print '<td>';
 			if ($action != 'editconditions' && $form_permission) {
-				print '<td class="right"><a class="editfielda reposition" href="'.DOL_PHP_SELF.'?action=editconditions&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
+				print '<td class="right"><a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?action=editconditions&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td><td>';
 			if ($action == 'editconditions') {
-				$form->form_conditions_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->cond_reglement_id, 'cond_reglement_id');
+				$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->cond_reglement_id, 'cond_reglement_id');
 			} else {
-				$form->form_conditions_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->cond_reglement_id, 'none');
+				$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->cond_reglement_id, 'none');
 			}
 			print "</td>";
 			print '</tr>';
@@ -3377,14 +3377,14 @@ if ($action == 'create') {
 			print $langs->trans('PaymentMode');
 			print '</td>';
 			if ($action != 'editmode' && $form_permission) {
-				print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+				print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td><td>';
 			if ($action == 'editmode') {
-				$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', 'DBIT', 1, 1);
+				$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', 'DBIT', 1, 1);
 			} else {
-				$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->mode_reglement_id, 'none');
+				$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->mode_reglement_id, 'none');
 			}
 			print '</td></tr>';
 
@@ -3397,14 +3397,14 @@ if ($action == 'create') {
 				print $form->editfieldkey('Currency', 'multicurrency_code', '', $object, 0);
 				print '</td>';
 				if ($action != 'editmulticurrencycode' && $object->statut == $object::STATUS_DRAFT) {
-					print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmulticurrencycode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetMultiCurrencyCode'), 1).'</a></td>';
+					print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmulticurrencycode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetMultiCurrencyCode'), 1).'</a></td>';
 				}
 				print '</tr></table>';
 				print '</td><td>';
 				if ($action == 'editmulticurrencycode') {
-					$form->form_multicurrency_code(DOL_PHP_SELF.'?id='.$object->id, $object->multicurrency_code, 'multicurrency_code');
+					$form->form_multicurrency_code($_SERVER['PHP_SELF'].'?id='.$object->id, $object->multicurrency_code, 'multicurrency_code');
 				} else {
-					$form->form_multicurrency_code(DOL_PHP_SELF.'?id='.$object->id, $object->multicurrency_code, 'none');
+					$form->form_multicurrency_code($_SERVER['PHP_SELF'].'?id='.$object->id, $object->multicurrency_code, 'none');
 				}
 				print '</td></tr>';
 
@@ -3416,7 +3416,7 @@ if ($action == 'create') {
 					print $form->editfieldkey('CurrencyRate', 'multicurrency_tx', '', $object, 0);
 					print '</td>';
 					if ($action != 'editmulticurrencyrate' && $object->statut == $object::STATUS_DRAFT && $object->multicurrency_code && $object->multicurrency_code != $conf->currency) {
-						print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmulticurrencyrate&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetMultiCurrencyCode'), 1).'</a></td>';
+						print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmulticurrencyrate&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetMultiCurrencyCode'), 1).'</a></td>';
 					}
 					print '</tr></table>';
 					print '</td><td>';
@@ -3424,12 +3424,12 @@ if ($action == 'create') {
 						if ($action == 'actualizemulticurrencyrate') {
 							list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
 						}
-						$form->form_multicurrency_rate(DOL_PHP_SELF.'?id='.$object->id, $object->multicurrency_tx, 'multicurrency_tx', $object->multicurrency_code);
+						$form->form_multicurrency_rate($_SERVER['PHP_SELF'].'?id='.$object->id, $object->multicurrency_tx, 'multicurrency_tx', $object->multicurrency_code);
 					} else {
-						$form->form_multicurrency_rate(DOL_PHP_SELF.'?id='.$object->id, $object->multicurrency_tx, 'none', $object->multicurrency_code);
+						$form->form_multicurrency_rate($_SERVER['PHP_SELF'].'?id='.$object->id, $object->multicurrency_tx, 'none', $object->multicurrency_code);
 						if ($object->statut == $object::STATUS_DRAFT && $object->multicurrency_code && $object->multicurrency_code != $conf->currency) {
 							print '<div class="inline-block"> &nbsp; &nbsp; &nbsp; &nbsp; ';
-							print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=actualizemulticurrencyrate">'.$langs->trans("ActualizeCurrency").'</a>';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=actualizemulticurrencyrate">'.$langs->trans("ActualizeCurrency").'</a>';
 							print '</div>';
 						}
 					}
@@ -3444,14 +3444,14 @@ if ($action == 'create') {
 				print $langs->trans('BankAccount');
 				print '<td>';
 				if ($action != 'editbankaccount' && $usercancreate) {
-					print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+					print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 				}
 				print '</tr></table>';
 				print '</td><td>';
 				if ($action == 'editbankaccount') {
-					$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'fk_account', 1);
+					$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'fk_account', 1);
 				} else {
-					$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'none');
+					$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'none');
 				}
 				print "</td>";
 				print '</tr>';
@@ -3464,12 +3464,12 @@ if ($action == 'create') {
 				print $langs->trans('VATReverseCharge');
 				print '<td>';
 				if ($action != 'editvatreversecharge' && $usercancreate) {
-					print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editvatreversecharge&amp;id='.$object->id.'">'.img_edit($langs->trans('SetVATReverseCharge'), 1).'</a></td>';
+					print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editvatreversecharge&amp;id='.$object->id.'">'.img_edit($langs->trans('SetVATReverseCharge'), 1).'</a></td>';
 				}
 				print '</tr></table>';
 				print '</td><td>';
 				if ($action == 'editvatreversecharge') {
-					print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+					print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 					print '<input type="hidden" name="action" value="setvatreversecharge">';
 					print '<input type="hidden" name="token" value="'.newToken().'">';
 
@@ -3500,7 +3500,7 @@ if ($action == 'create') {
 				if ($action != 'editincoterm') {
 					print $form->textwithpicto($object->display_incoterms(), $object->label_incoterms, 1);
 				} else {
-					print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), DOL_PHP_SELF.'?id='.$object->id);
+					print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), $_SERVER['PHP_SELF'].'?id='.$object->id);
 				}
 				print '</td></tr>';
 			}
@@ -3514,15 +3514,15 @@ if ($action == 'create') {
 				print $langs->trans('IntracommReportTransportMode');
 				print '</td>';
 				if ($action != 'edittransportmode' && ($user->hasRight("fournisseur", "facture", "creer") || $user->hasRight("supplier_invoice", "creer"))) {
-					print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=edittransportmode&token='.newToken().'&id='.$object->id.'">'.img_edit().'</a></td>';
+					print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edittransportmode&token='.newToken().'&id='.$object->id.'">'.img_edit().'</a></td>';
 				}
 				print '</tr></table>';
 				print '</td>';
 				print '<td>';
 				if ($action == 'edittransportmode') {
-					$form->formSelectTransportMode(DOL_PHP_SELF.'?id='.$object->id, $object->transport_mode_id, 'transport_mode_id', 1, 1);
+					$form->formSelectTransportMode($_SERVER['PHP_SELF'].'?id='.$object->id, $object->transport_mode_id, 'transport_mode_id', 1, 1);
 				} else {
-					$form->formSelectTransportMode(DOL_PHP_SELF.'?id='.$object->id, $object->transport_mode_id, 'none');
+					$form->formSelectTransportMode($_SERVER['PHP_SELF'].'?id='.$object->id, $object->transport_mode_id, 'none');
 				}
 				print '</td></tr>';
 			}
@@ -3563,9 +3563,9 @@ if ($action == 'create') {
 			// Show link for "recalculate"
 			if ($object->getVentilExportCompta() == 0) {
 				$s = '<span class="hideonsmartphone opacitymedium">' . $langs->trans("ReCalculate") . ' </span>';
-				$s .= '<a href="' . DOL_PHP_SELF . '?id=' . $object->id . '&action=calculate&calculationrule=totalofround">' . $langs->trans("Mode1") . '</a>';
+				$s .= '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=calculate&calculationrule=totalofround">' . $langs->trans("Mode1") . '</a>';
 				$s .= ' / ';
-				$s .= '<a href="' . DOL_PHP_SELF . '?id=' . $object->id . '&action=calculate&calculationrule=roundoftotal">' . $langs->trans("Mode2") . '</a>';
+				$s .= '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=calculate&calculationrule=roundoftotal">' . $langs->trans("Mode2") . '</a>';
 				print '<div class="inline-block">';
 				print $form->textwithtooltip($s, $langs->trans("CalculationRuleDesc", $calculationrulenum) . '<br>' . $langs->trans("CalculationRuleDescSupplier"), 2, 1, img_picto('', 'help'), '', 3, '', 0, 'recalculate');
 				print '&nbsp; &nbsp; &nbsp; &nbsp;';
@@ -3710,7 +3710,7 @@ if ($action == 'create') {
 						print '<td class="right">'.price($sign * $objp->amount).'</td>';
 						print '<td class="center">';
 						if ($object->statut == FactureFournisseur::STATUS_VALIDATED && $object->paye == 0 && $user->socid == 0) {
-							print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=deletepayment&token='.newToken().'&paiement_id='.$objp->rowid.'">';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=deletepayment&token='.newToken().'&paiement_id='.$objp->rowid.'">';
 							print img_delete();
 							print '</a>';
 						}
@@ -3785,7 +3785,7 @@ if ($action == 'create') {
 						print ' :</td>';
 						print '<td class="right">'.price($obj->amount_ttc).'</td>';
 						print '<td class="right">';
-						print '<a href="'.DOL_PHP_SELF.'?facid='.$object->id.'&action=unlinkdiscount&discountid='.$obj->rowid.'">';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?facid='.$object->id.'&action=unlinkdiscount&discountid='.$obj->rowid.'">';
 						print img_picto($langs->transnoentitiesnoconv("RemoveDiscount"), 'unlink');
 						print '</a>';
 						print '</td></tr>';
@@ -3943,7 +3943,7 @@ if ($action == 'create') {
 			/*
 			 * Lines
 			 */
-			print '<form name="addproduct" id="addproduct" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+			print '<form name="addproduct" id="addproduct" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="'.(($action != 'editline') ? 'addline' : 'updateline').'">';
 			print '<input type="hidden" name="mode" value="">';
@@ -4017,7 +4017,7 @@ if ($action == 'create') {
 					$ventilExportCompta = $object->getVentilExportCompta(); // Should be 0 since the sum of payments are zero. But we keep the protection.
 
 					if ($ventilExportCompta == 0) {
-						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans('Modify').'</a>';
+						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans('Modify').'</a>';
 					} else {
 						print '<span class="butActionRefused classfortooltip" title="'.$langs->trans("DisabledBecauseDispatchedInBookkeeping").'">'.$langs->trans('Modify').'</span>';
 					}
@@ -4032,7 +4032,7 @@ if ($action == 'create') {
 					|| ($object->type == FactureFournisseur::TYPE_DEPOSIT && empty($discount->id)))
 					&& ($object->statut == FactureFournisseur::STATUS_CLOSED || $object->statut == FactureFournisseur::STATUS_ABANDONED)) {				// A paid invoice (partially or completely)
 					if (!$objectidnext && $object->close_code != 'replaced' && $usercancreate) {	// Not replaced by another invoice
-						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=reopen&token='.newToken().'">'.$langs->trans('ReOpen').'</a>';
+						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken().'">'.$langs->trans('ReOpen').'</a>';
 					} else {
 						if ($usercancreate) {
 							print '<span class="butActionRefused classfortooltip" title="'.$langs->trans("DisabledBecauseReplacedInvoice").'">'.$langs->trans('ReOpen').'</span>';
@@ -4046,7 +4046,7 @@ if ($action == 'create') {
 				if ($action != 'confirm_edit' && $object->statut == FactureFournisseur::STATUS_DRAFT) {
 					if (count($object->lines)) {
 						if ($usercanvalidate) {
-							print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=valid"';
+							print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=valid"';
 							print '>'.$langs->trans('Validate').'</a>';
 						} else {
 							print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NotAllowed")).'"';
@@ -4059,7 +4059,7 @@ if ($action == 'create') {
 				if (empty($user->socid)) {
 					if (($object->statut == FactureFournisseur::STATUS_VALIDATED || $object->statut == FactureFournisseur::STATUS_CLOSED)) {
 						if ($usercansend) {
-							print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a>';
+							print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a>';
 						} else {
 							print '<span class="butActionRefused classfortooltip">'.$langs->trans('SendMail').'</span>';
 						}
@@ -4084,17 +4084,17 @@ if ($action == 'create') {
 
 					// For standard invoice with excess paid
 					if ($object->type == FactureFournisseur::TYPE_STANDARD && empty($object->paye) && ($object->total_ttc - $totalpaid - $totalcreditnotes - $totaldeposits) < 0 && $usercancreate && empty($discount->id)) {
-						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?facid='.$object->id.'&amp;action=converttoreduc">'.$langs->trans('ConvertExcessPaidToReduc').'</a>';
+						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?facid='.$object->id.'&amp;action=converttoreduc">'.$langs->trans('ConvertExcessPaidToReduc').'</a>';
 					}
 					// For credit note
 					if ($object->type == FactureFournisseur::TYPE_CREDIT_NOTE && $object->statut == 1 && $object->paye == 0 && $usercancreate
 						&& (getDolGlobalString('SUPPLIER_INVOICE_ALLOW_REUSE_OF_CREDIT_WHEN_PARTIALLY_REFUNDED') || $object->getSommePaiement() == 0)
 					) {
-						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?facid='.$object->id.'&amp;action=converttoreduc" title="'.dol_escape_htmltag($langs->trans("ConfirmConvertToReducSupplier2")).'">'.$langs->trans('ConvertToReduc').'</a>';
+						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?facid='.$object->id.'&amp;action=converttoreduc" title="'.dol_escape_htmltag($langs->trans("ConfirmConvertToReducSupplier2")).'">'.$langs->trans('ConvertToReduc').'</a>';
 					}
 					// For deposit invoice
 					if ($object->type == FactureFournisseur::TYPE_DEPOSIT && $usercancreate && $object->statut > 0 && empty($discount->id)) {
-						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?facid='.$object->id.'&amp;action=converttoreduc">'.$langs->trans('ConvertToReduc').'</a>';
+						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?facid='.$object->id.'&amp;action=converttoreduc">'.$langs->trans('ConvertToReduc').'</a>';
 					}
 				}
 
@@ -4105,17 +4105,17 @@ if ($action == 'create') {
 						($object->type == FactureFournisseur::TYPE_DEPOSIT && $object->total_ttc > 0 && ($resteapayer == 0 || (getDolGlobalString('SUPPLIER_INVOICE_CAN_SET_PAID_EVEN_IF_PARTIALLY_PAID') && $object->total_ttc == $resteapayer)))
 				)
 				) {
-					print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=paid">'.$langs->trans('ClassifyPaid').'</a>';
+					print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=paid">'.$langs->trans('ClassifyPaid').'</a>';
 				}
 
 				// Classify 'closed not completely paid' (possible if validated and not yet filed paid)
 				if ($object->statut == FactureFournisseur::STATUS_VALIDATED && $object->paye == 0 && $resteapayer > 0 && (!getDolGlobalString('SUPPLIER_INVOICE_CAN_SET_PAID_EVEN_IF_PARTIALLY_PAID') || $object->total_ttc != $resteapayer)) {
 					if ($totalpaid > 0 || $totalcreditnotes > 0) {
 						// If one payment or one credit note was linked to this invoice
-						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=paid">'.$langs->trans('ClassifyPaidPartially').'</a>';
+						print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=paid">'.$langs->trans('ClassifyPaidPartially').'</a>';
 					} else {
 						if (!getDolGlobalString('INVOICE_CAN_NEVER_BE_CANCELED')) {
-							print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=canceled">'.$langs->trans('ClassifyCanceled').'</a>';
+							print '<a class="butAction'.($conf->use_javascript_ajax ? ' reposition' : '').'" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=canceled">'.$langs->trans('ClassifyCanceled').'</a>';
 						}
 					}
 				}
@@ -4129,13 +4129,13 @@ if ($action == 'create') {
 				// Create a credit note
 				if (($object->type == FactureFournisseur::TYPE_STANDARD || $object->type == FactureFournisseur::TYPE_DEPOSIT) && $object->statut > 0 && $usercancreate) {
 					if (!$objectidnext) {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?socid='.$object->socid.'&amp;fac_avoir='.$object->id.'&amp;action=create&amp;type=2'.($object->fk_project > 0 ? '&amp;projectid='.$object->fk_project : '').'">'.$langs->trans("CreateCreditNote").'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->socid.'&amp;fac_avoir='.$object->id.'&amp;action=create&amp;type=2'.($object->fk_project > 0 ? '&amp;projectid='.$object->fk_project : '').'">'.$langs->trans("CreateCreditNote").'</a>';
 					}
 				}
 
 				// Clone
 				if ($action != 'edit' && $usercancreate) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=clone&amp;socid='.$object->socid.'">'.$langs->trans('ToClone').'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=clone&amp;socid='.$object->socid.'">'.$langs->trans('ToClone').'</a>';
 				}
 
 				// Clone as predefined / Create template
@@ -4166,7 +4166,7 @@ if ($action == 'create') {
 						$enableDelete = true;
 						$htmltooltip = '';
 					}
-					print dolGetButtonAction($htmltooltip, $langs->trans("Delete"), 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), $object->id, $enableDelete, $params);
+					print dolGetButtonAction($htmltooltip, $langs->trans("Delete"), 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), $object->id, $enableDelete, $params);
 				}
 				print '</div>';
 
@@ -4179,7 +4179,7 @@ if ($action == 'create') {
 					$ref = dol_sanitizeFileName($object->ref);
 					$subdir = get_exdir($object->id, 2, 0, 0, $object, 'invoice_supplier').$ref;
 					$filedir = $conf->fournisseur->facture->dir_output.'/'.$subdir;
-					$urlsource = DOL_PHP_SELF.'?id='.$object->id;
+					$urlsource = $_SERVER['PHP_SELF'].'?id='.$object->id;
 					$genallowed = $usercanread;
 					$delallowed = $usercancreate;
 					$modelpdf = (!empty($object->model_pdf) ? $object->model_pdf : (!getDolGlobalString('INVOICE_SUPPLIER_ADDON_PDF') ? '' : $conf->global->INVOICE_SUPPLIER_ADDON_PDF));

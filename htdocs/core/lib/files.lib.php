@@ -3609,17 +3609,17 @@ function dragAndDropFileUpload($htmlname)
 						}
 						console.log(nboferror);
 						if (nboferror > 0) {
-							window.location.href = "'.DOL_PHP_SELF.'?id='.dol_escape_js($object->id).'&seteventmessages=ErrorOnAtLeastOneFileUpload:warnings";
+							window.location.href = "'.$_SERVER['PHP_SELF'].'?id='.dol_escape_js($object->id).'&seteventmessages=ErrorOnAtLeastOneFileUpload:warnings";
 						} else {
-							window.location.href = "'.DOL_PHP_SELF.'?id='.dol_escape_js($object->id).'&seteventmessages=UploadFileDragDropSuccess:mesgs";
+							window.location.href = "'.$_SERVER['PHP_SELF'].'?id='.dol_escape_js($object->id).'&seteventmessages=UploadFileDragDropSuccess:mesgs";
 						}
 					},
 					error:function() {
 						console.log("Error Uploading.", arguments)
 						if (arguments[0].status == 403) {
-							window.location.href = "'.DOL_PHP_SELF.'?id='.dol_escape_js($object->id).'&seteventmessages=ErrorUploadPermissionDenied:errors";
+							window.location.href = "'.$_SERVER['PHP_SELF'].'?id='.dol_escape_js($object->id).'&seteventmessages=ErrorUploadPermissionDenied:errors";
 						}
-						window.location.href = "'.DOL_PHP_SELF.'?id='.dol_escape_js($object->id).'&seteventmessages=ErrorUploadFileDragDropPermissionDenied:errors";
+						window.location.href = "'.$_SERVER['PHP_SELF'].'?id='.dol_escape_js($object->id).'&seteventmessages=ErrorUploadFileDragDropPermissionDenied:errors";
 					},
 				})
 			});

@@ -201,7 +201,7 @@ if ($this->status == 0 && ($object_rights->write) && $action != 'selectlines') {
 	$coldisplay++;
 	if (($line->info_bits & 2) == 2 || !empty($disableedit)) {
 	} else {
-		print '<a class="editfielda reposition" href="'.DOL_PHP_SELF.'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">'.img_edit().'</a>';
+		print '<a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&action=editline&token='.newToken().'&lineid='.$line->id.'">'.img_edit().'</a>';
 	}
 	print '</td>';
 
@@ -209,7 +209,7 @@ if ($this->status == 0 && ($object_rights->write) && $action != 'selectlines') {
 	$coldisplay++;
 	if (($line->fk_prev_id == null) && empty($disableremove)) {
 		//La suppression n'est autorisée que si il n'y a pas de ligne dans une précédente situation
-		print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$this->id.'&action=deleteline&token='.newToken().'&lineid='.$line->id.'">';
+		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&action=deleteline&token='.newToken().'&lineid='.$line->id.'">';
 		print img_delete();
 		print '</a>';
 	}
@@ -219,12 +219,12 @@ if ($this->status == 0 && ($object_rights->write) && $action != 'selectlines') {
 		print '<td class="linecolmove tdlineupdown center">';
 		$coldisplay++;
 		if ($i > 0) {
-			print '<a class="lineupdown" href="'.DOL_PHP_SELF.'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id.'">';
+			print '<a class="lineupdown" href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id.'">';
 			echo img_up('default', 0, 'imgupforline');
 			print '</a>';
 		}
 		if ($i < $num - 1) {
-			print '<a class="lineupdown" href="'.DOL_PHP_SELF.'?id='.$this->id.'&action=down&token='.newToken().'&rowid='.$line->id.'">';
+			print '<a class="lineupdown" href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&action=down&token='.newToken().'&rowid='.$line->id.'">';
 			echo img_down('default', 0, 'imgdownforline');
 			print '</a>';
 		}

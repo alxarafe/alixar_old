@@ -504,7 +504,7 @@ if (empty($reshook)) {
 				setEventMessages($langs->trans("NoRecordDeleted"), null, 'mesgs');
 			}
 
-			header("Location: ".DOL_PHP_SELF."?noreset=1".($param ? '&'.$param : ''));
+			header("Location: ".$_SERVER['PHP_SELF']."?noreset=1".($param ? '&'.$param : ''));
 			exit;
 		} else {
 			$db->rollback();
@@ -531,7 +531,7 @@ if (empty($reshook)) {
 			}
 
 			if (!$error) {
-				header('Location: ' . DOL_PHP_SELF . '?noreset=1' . $param);
+				header('Location: ' . $_SERVER['PHP_SELF'] . '?noreset=1' . $param);
 				exit();
 			}
 		} elseif ($massaction == 'letteringmanual') {
@@ -541,7 +541,7 @@ if (empty($reshook)) {
 				setEventMessages('', $lettering->errors, 'errors');
 			} else {
 				setEventMessages($langs->trans('AccountancyOneLetteringModifiedSuccessfully'), array(), 'mesgs');
-				header('Location: ' . DOL_PHP_SELF . '?noreset=1' . $param);
+				header('Location: ' . $_SERVER['PHP_SELF'] . '?noreset=1' . $param);
 				exit();
 			}
 		} elseif ($action == 'unletteringauto' && $confirm == "yes") {
@@ -562,7 +562,7 @@ if (empty($reshook)) {
 			}
 
 			if (!$error) {
-				header('Location: ' . DOL_PHP_SELF . '?noreset=1' . $param);
+				header('Location: ' . $_SERVER['PHP_SELF'] . '?noreset=1' . $param);
 				exit();
 			}
 		} elseif ($action == 'unletteringmanual' && $confirm == "yes") {
@@ -572,7 +572,7 @@ if (empty($reshook)) {
 				setEventMessages('', $lettering->errors, 'errors');
 			} else {
 				setEventMessages($langs->trans('AccountancyOneUnletteringModifiedSuccessfully'), array(), 'mesgs');
-				header('Location: ' . DOL_PHP_SELF . '?noreset=1' . $param);
+				header('Location: ' . $_SERVER['PHP_SELF'] . '?noreset=1' . $param);
 				exit();
 			}
 		}
@@ -740,7 +740,7 @@ $formconfirm = '';
 print $formconfirm;
 
 //$param='';	param started before
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -763,7 +763,7 @@ if (GETPOSTINT('nomassaction') || in_array($massaction, array('preunletteringaut
 }
 $massactionbutton = $form->selectMassAction($massaction, $arrayofmassactions);
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="list">';
 if ($optioncss != '') {
@@ -801,14 +801,14 @@ if (empty($reshook)) {
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewAccountingMvt'), '', 'fa fa-plus-circle paddingleft', $url, '', $user->hasRight('accounting', 'mouvements', 'creer'));
 }
 
-print_barre_liste($title_page, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'title_accountancy', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title_page, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'title_accountancy', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 if ($massaction == 'preunletteringauto') {
-	print $form->formconfirm(DOL_PHP_SELF, $langs->trans("ConfirmMassUnletteringAuto"), $langs->trans("ConfirmMassUnletteringQuestion", count($toselect)), "unletteringauto", null, '', 0, 200, 500, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'], $langs->trans("ConfirmMassUnletteringAuto"), $langs->trans("ConfirmMassUnletteringQuestion", count($toselect)), "unletteringauto", null, '', 0, 200, 500, 1);
 } elseif ($massaction == 'preunletteringmanual') {
-	print $form->formconfirm(DOL_PHP_SELF, $langs->trans("ConfirmMassUnletteringManual"), $langs->trans("ConfirmMassUnletteringQuestion", count($toselect)), "unletteringmanual", null, '', 0, 200, 500, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'], $langs->trans("ConfirmMassUnletteringManual"), $langs->trans("ConfirmMassUnletteringQuestion", count($toselect)), "unletteringmanual", null, '', 0, 200, 500, 1);
 } elseif ($massaction == 'predeletebookkeepingwriting') {
-	print $form->formconfirm(DOL_PHP_SELF, $langs->trans("ConfirmMassDeleteBookkeepingWriting"), $langs->trans("ConfirmMassDeleteBookkeepingWritingQuestion", count($toselect)), "deletebookkeepingwriting", null, '', 0, 200, 500, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'], $langs->trans("ConfirmMassDeleteBookkeepingWriting"), $langs->trans("ConfirmMassDeleteBookkeepingWritingQuestion", count($toselect)), "deletebookkeepingwriting", null, '', 0, 200, 500, 1);
 }
 
 //$topicmail = "Information";
@@ -817,7 +817,7 @@ if ($massaction == 'preunletteringauto') {
 //$trackid = 'bk'.$object->id;
 include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 if ($massactionbutton && $contextpage != 'poslist') {
 	$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
@@ -1000,59 +1000,59 @@ print "</tr>\n";
 
 print '<tr class="liste_titre">';
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn ');
 }
 if (!empty($arrayfields['t.piece_num']['checked'])) {
-	print_liste_field_titre($arrayfields['t.piece_num']['label'], DOL_PHP_SELF, "t.piece_num", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.piece_num']['label'], $_SERVER['PHP_SELF'], "t.piece_num", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.code_journal']['checked'])) {
-	print_liste_field_titre($arrayfields['t.code_journal']['label'], DOL_PHP_SELF, "t.code_journal", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.code_journal']['label'], $_SERVER['PHP_SELF'], "t.code_journal", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 if (!empty($arrayfields['t.doc_date']['checked'])) {
-	print_liste_field_titre($arrayfields['t.doc_date']['label'], DOL_PHP_SELF, "t.doc_date", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.doc_date']['label'], $_SERVER['PHP_SELF'], "t.doc_date", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 if (!empty($arrayfields['t.doc_ref']['checked'])) {
-	print_liste_field_titre($arrayfields['t.doc_ref']['label'], DOL_PHP_SELF, "t.doc_ref", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.doc_ref']['label'], $_SERVER['PHP_SELF'], "t.doc_ref", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.numero_compte']['checked'])) {
-	print_liste_field_titre($arrayfields['t.numero_compte']['label'], DOL_PHP_SELF, "t.numero_compte", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.numero_compte']['label'], $_SERVER['PHP_SELF'], "t.numero_compte", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.subledger_account']['checked'])) {
-	print_liste_field_titre($arrayfields['t.subledger_account']['label'], DOL_PHP_SELF, "t.subledger_account", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.subledger_account']['label'], $_SERVER['PHP_SELF'], "t.subledger_account", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.label_operation']['checked'])) {
-	print_liste_field_titre($arrayfields['t.label_operation']['label'], DOL_PHP_SELF, "t.label_operation", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.label_operation']['label'], $_SERVER['PHP_SELF'], "t.label_operation", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.debit']['checked'])) {
-	print_liste_field_titre($arrayfields['t.debit']['label'], DOL_PHP_SELF, "t.debit", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['t.debit']['label'], $_SERVER['PHP_SELF'], "t.debit", "", $param, '', $sortfield, $sortorder, 'right ');
 }
 if (!empty($arrayfields['t.credit']['checked'])) {
-	print_liste_field_titre($arrayfields['t.credit']['label'], DOL_PHP_SELF, "t.credit", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['t.credit']['label'], $_SERVER['PHP_SELF'], "t.credit", "", $param, '', $sortfield, $sortorder, 'right ');
 }
 if (!empty($arrayfields['t.lettering_code']['checked'])) {
-	print_liste_field_titre($arrayfields['t.lettering_code']['label'], DOL_PHP_SELF, "t.lettering_code", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.lettering_code']['label'], $_SERVER['PHP_SELF'], "t.lettering_code", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 // Hook fields
 $parameters = array('arrayfields' => $arrayfields, 'param' => $param, 'sortfield' => $sortfield, 'sortorder' => $sortorder);
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 if (!empty($arrayfields['t.date_creation']['checked'])) {
-	print_liste_field_titre($arrayfields['t.date_creation']['label'], DOL_PHP_SELF, "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.date_creation']['label'], $_SERVER['PHP_SELF'], "t.date_creation", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 if (!empty($arrayfields['t.tms']['checked'])) {
-	print_liste_field_titre($arrayfields['t.tms']['label'], DOL_PHP_SELF, "t.tms", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.tms']['label'], $_SERVER['PHP_SELF'], "t.tms", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 if (!empty($arrayfields['t.date_export']['checked'])) {
-	print_liste_field_titre($arrayfields['t.date_export']['label'], DOL_PHP_SELF, "t.date_export,t.doc_date", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.date_export']['label'], $_SERVER['PHP_SELF'], "t.date_export,t.doc_date", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 if (!empty($arrayfields['t.date_validated']['checked'])) {
-	print_liste_field_titre($arrayfields['t.date_validated']['label'], DOL_PHP_SELF, "t.date_validated,t.doc_date", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.date_validated']['label'], $_SERVER['PHP_SELF'], "t.date_validated,t.doc_date", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 if (!empty($arrayfields['t.import_key']['checked'])) {
-	print_liste_field_titre($arrayfields['t.import_key']['label'], DOL_PHP_SELF, "t.import_key", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['t.import_key']['label'], $_SERVER['PHP_SELF'], "t.import_key", "", $param, '', $sortfield, $sortorder, 'center ');
 }
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print "</tr>\n";
 
@@ -1167,7 +1167,7 @@ while ($i < min($num, $limit)) {
 
 			$filename = dol_sanitizeFileName($line->doc_ref);
 			$filedir = $conf->facture->dir_output.'/'.dol_sanitizeFileName($line->doc_ref);
-			$urlsource = DOL_PHP_SELF.'?id='.$objectstatic->id;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$objectstatic->id;
 			$documentlink = $formfile->getDocumentsLink($objectstatic->element, $filename, $filedir);
 		} elseif ($line->doc_type == 'supplier_invoice') {
 			$langs->loadLangs(array('bills'));
@@ -1191,7 +1191,7 @@ while ($i < min($num, $limit)) {
 
 			$filename = dol_sanitizeFileName($line->doc_ref);
 			$filedir = $conf->expensereport->dir_output.'/'.dol_sanitizeFileName($line->doc_ref);
-			$urlsource = DOL_PHP_SELF.'?id='.$objectstatic->id;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$objectstatic->id;
 			$documentlink = $formfile->getDocumentsLink($objectstatic->element, $filename, $filedir);
 		} elseif ($line->doc_type == 'bank') {
 			require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';

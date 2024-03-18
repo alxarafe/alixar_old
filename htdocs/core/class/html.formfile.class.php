@@ -1282,12 +1282,12 @@ class FormFile
 				print load_fiche_titre($title ? $title : $langs->trans("AttachedFiles"), '', 'file-upload', 0, '', 'table-list-of-attached-files');
 			}
 			if (empty($url)) {
-				$url = DOL_PHP_SELF;
+				$url = $_SERVER['PHP_SELF'];
 			}
 
 			print '<!-- html.formfile::list_of_documents -->'."\n";
 			if (GETPOST('action', 'aZ09') == 'editfile' && $permtoeditline) {
-				print '<form action="'.DOL_PHP_SELF.'?'.$param.'" method="POST">';
+				print '<form action="'.$_SERVER['PHP_SELF'].'?'.$param.'" method="POST">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="action" value="renamefile">';
 				print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -1574,10 +1574,10 @@ class FormFile
 							if ($nboffiles > 1 && $conf->browser->layout != 'phone') {
 								print '<td class="linecolmove tdlineupdown center">';
 								if ($i > 0) {
-									print '<a class="lineupdown" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=up&rowid='.$object->id.'">'.img_up('default', 0, 'imgupforline').'</a>';
+									print '<a class="lineupdown" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=up&rowid='.$object->id.'">'.img_up('default', 0, 'imgupforline').'</a>';
 								}
 								if ($i < ($nboffiles - 1)) {
-									print '<a class="lineupdown" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=down&rowid='.$object->id.'">'.img_down('default', 0, 'imgdownforline').'</a>';
+									print '<a class="lineupdown" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=down&rowid='.$object->id.'">'.img_down('default', 0, 'imgdownforline').'</a>';
 								}
 								print '</td>';
 							} else {
@@ -1669,11 +1669,11 @@ class FormFile
 			print load_fiche_titre($langs->trans("AttachedFiles"));
 		}
 		if (empty($url)) {
-			$url = DOL_PHP_SELF;
+			$url = $_SERVER['PHP_SELF'];
 		}
 
 		if (!empty($addfilterfields)) {
-			print '<form action="'.DOL_PHP_SELF.'">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="module" value="'.$modulepart.'">';
 		}
@@ -1935,7 +1935,7 @@ class FormFile
 
 				//$filedir=$conf->$modulepart->dir_output . '/' . dol_sanitizeFileName($obj->ref);
 				//$filedir = $file['path'];
-				//$urlsource=DOL_PHP_SELF.'?id='.$obj->rowid;
+				//$urlsource=$_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 				//print $formfile->getDocumentsLink($modulepart, $filename, $filedir);
 				print '</td>';
 
@@ -2061,14 +2061,14 @@ class FormFile
 		// Show list of associated links
 		print load_fiche_titre($langs->trans("LinkedFiles"), '', 'link', 0, '', 'table-list-of-links');
 
-		print '<form action="'.DOL_PHP_SELF.($param ? '?'.$param : '').'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].($param ? '?'.$param : '').'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
 		print '<table class="liste noborder nobottom centpercent">';
 		print '<tr class="liste_titre">';
 		print_liste_field_titre(
 			$langs->trans("Links"),
-			DOL_PHP_SELF,
+			$_SERVER['PHP_SELF'],
 			"name",
 			"",
 			$param,
@@ -2090,7 +2090,7 @@ class FormFile
 		);
 		print_liste_field_titre(
 			$langs->trans("Date"),
-			DOL_PHP_SELF,
+			$_SERVER['PHP_SELF'],
 			"date",
 			"",
 			$param,
@@ -2101,7 +2101,7 @@ class FormFile
 		);
 		print_liste_field_titre(
 			'',
-			DOL_PHP_SELF,
+			$_SERVER['PHP_SELF'],
 			"",
 			"",
 			$param,
@@ -2147,9 +2147,9 @@ class FormFile
 				print '<td class="center">'.dol_print_date($link->datea, "dayhour", "tzuser").'</td>';
 				print '<td class="center"></td>';
 				print '<td class="right">';
-				print '<a href="'.DOL_PHP_SELF.'?action=update&linkid='.$link->id.$param.'&token='.newToken().'" class="editfilelink editfielda reposition" >'.img_edit().'</a>'; // id= is included into $param
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=update&linkid='.$link->id.$param.'&token='.newToken().'" class="editfilelink editfielda reposition" >'.img_edit().'</a>'; // id= is included into $param
 				if ($permissiontodelete) {
-					print ' &nbsp; <a class="deletefilelink reposition" href="'.DOL_PHP_SELF.'?action=deletelink&token='.newToken().'&linkid='.((int) $link->id).$param.'">'.img_delete().'</a>'; // id= is included into $param
+					print ' &nbsp; <a class="deletefilelink reposition" href="'.$_SERVER['PHP_SELF'].'?action=deletelink&token='.newToken().'&linkid='.((int) $link->id).$param.'">'.img_delete().'</a>'; // id= is included into $param
 				} else {
 					print '&nbsp;';
 				}

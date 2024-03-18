@@ -69,7 +69,7 @@ print load_fiche_titre($langs->trans("CronSetup"), $linkback, 'title_setup');
 // Configuration header
 $head = cronadmin_prepare_head();
 
-print '<form name="agendasetupform" action="'.DOL_PHP_SELF.'" method="post">';
+print '<form name="agendasetupform" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print dol_get_fiche_head($head, 'setup', $langs->trans("Module2300Name"), -1, 'cron');

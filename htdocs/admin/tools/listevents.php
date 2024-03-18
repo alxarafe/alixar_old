@@ -268,7 +268,7 @@ if ($result) {
 	$i = 0;
 
 	$param = '';
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -319,18 +319,18 @@ if ($result) {
 
 	$center = '';
 	if ($num) {
-		$center = '<a class="butActionDelete small" href="'.DOL_PHP_SELF.'?action=purge">'.$langs->trans("Purge").'</a>';
+		$center = '<a class="butActionDelete small" href="'.$_SERVER['PHP_SELF'].'?action=purge">'.$langs->trans("Purge").'</a>';
 	}
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("ListOfSecurityEvents"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $center, $num, $nbtotalofrecords, 'setup', 0, '', '', $limit);
+	print_barre_liste($langs->trans("ListOfSecurityEvents"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $center, $num, $nbtotalofrecords, 'setup', 0, '', '', $limit);
 
 	if ($action == 'purge') {
 		$formquestion = array();
-		print $form->formconfirm(DOL_PHP_SELF.'?noparam=noparam', $langs->trans('PurgeAuditEvents'), $langs->trans('ConfirmPurgeAuditEvents'), 'confirm_purge', $formquestion, 'no', 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?noparam=noparam', $langs->trans('PurgeAuditEvents'), $langs->trans('ConfirmPurgeAuditEvents'), 'confirm_purge', $formquestion, 'no', 1);
 	}
 
 	// Check some parameters
@@ -415,15 +415,15 @@ if ($result) {
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 		print_liste_field_titre('');
 	}
-	print_liste_field_titre("ID", DOL_PHP_SELF, "e.rowid", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Date", DOL_PHP_SELF, "e.dateevent", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Code", DOL_PHP_SELF, "e.type", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("IP", DOL_PHP_SELF, "e.ip", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("User", DOL_PHP_SELF, "u.login", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Description", DOL_PHP_SELF, "e.description", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("UserAgent", DOL_PHP_SELF, "e.user_agent", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("ID", $_SERVER['PHP_SELF'], "e.rowid", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "e.dateevent", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Code", $_SERVER['PHP_SELF'], "e.type", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("IP", $_SERVER['PHP_SELF'], "e.ip", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("User", $_SERVER['PHP_SELF'], "u.login", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Description", $_SERVER['PHP_SELF'], "e.description", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("UserAgent", $_SERVER['PHP_SELF'], "e.user_agent", "", $param, '', $sortfield, $sortorder);
 	if (!empty($arrayfields['e.prefix_session']['checked'])) {
-		print_liste_field_titre("SuffixSessionName", DOL_PHP_SELF, "e.prefix_session", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("SuffixSessionName", $_SERVER['PHP_SELF'], "e.prefix_session", "", $param, '', $sortfield, $sortorder);
 	}
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {

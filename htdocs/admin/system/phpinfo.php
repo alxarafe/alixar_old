@@ -117,7 +117,7 @@ print '<tr><td>GET and POST support</td><td>';
 
 if (!isset($_GET["testget"]) && !isset($_POST["testpost"]) && !isset($_GET["mainmenu"])) {	// We must keep $_GET and $_POST here
 	print '<img src="'.$WarningPicturePath.'" alt="Warning"> '.$langs->trans("PHPSupportPOSTGETKo");
-	print ' (<a href="'.DOL_PHP_SELF.'?testget=ok">'.$langs->trans("Recheck").'</a>)';
+	print ' (<a href="'.$_SERVER['PHP_SELF'].'?testget=ok">'.$langs->trans("Recheck").'</a>)';
 } else {
 	print '<img src="'.$OkayPicturePath.'" alt="Ok"> '.$langs->trans("PHPSupportPOSTGETOk");
 }

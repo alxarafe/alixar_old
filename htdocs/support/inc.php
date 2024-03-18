@@ -43,7 +43,7 @@ $_REQUEST["logtohtml"] = 1;
 // Correction PHP_SELF (ex pour apache via caudium) car PHP_SELF doit valoir URL relative
 // et non path absolu.
 if (isset($_SERVER["DOCUMENT_URI"]) && $_SERVER["DOCUMENT_URI"]) {
-	DOL_PHP_SELF = $_SERVER["DOCUMENT_URI"];
+	$_SERVER['PHP_SELF'] = $_SERVER["DOCUMENT_URI"];
 }
 
 

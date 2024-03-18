@@ -183,7 +183,7 @@ if ($action == 'confirm_deletefile' && $confirm == 'yes' && !empty($permissionto
 			header('Location: '.$backtopage);
 			exit;
 		} else {
-			$tmpurl = DOL_PHP_SELF.'?id='.$object->id.(GETPOST('section_dir', 'alpha') ? '&section_dir='.urlencode(GETPOST('section_dir', 'alpha')) : '').(!empty($withproject) ? '&withproject=1' : '');
+			$tmpurl = $_SERVER['PHP_SELF'].'?id='.$object->id.(GETPOST('section_dir', 'alpha') ? '&section_dir='.urlencode(GETPOST('section_dir', 'alpha')) : '').(!empty($withproject) ? '&withproject=1' : '');
 			header('Location: '.$tmpurl);
 			exit;
 		}

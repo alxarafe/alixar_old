@@ -155,7 +155,7 @@ if (empty($reshook)) {
 				if ($id > 0) {
 					$db->commit();
 
-					header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				} else {
 					$db->rollback();
@@ -188,7 +188,7 @@ if (empty($reshook)) {
 				}
 
 				if ($result > 0) {
-					header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				} else {
 					setEventMessages($edituser->error, $edituser->errors, 'errors');
@@ -269,7 +269,7 @@ if ($action == 'create') {
 
 	dol_set_focus('#nom');
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -320,7 +320,7 @@ if ($action == 'create') {
 		 * Confirmation suppression
 		 */
 		if ($action == 'delete') {
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("DeleteAGroup"), $langs->trans("ConfirmDeleteGroup", $object->name), "confirm_delete", '', 0, 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("DeleteAGroup"), $langs->trans("ConfirmDeleteGroup", $object->name), "confirm_delete", '', 0, 1);
 		}
 
 		/*
@@ -388,11 +388,11 @@ if ($action == 'create') {
 			}
 
 			if ($caneditperms) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 			}
 
 			if ($candisableperms) {
-				print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans("DeleteGroup").'</a>';
+				print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans("DeleteGroup").'</a>';
 			}
 
 			print "</div>\n";
@@ -417,7 +417,7 @@ if ($action == 'create') {
 
 			if (empty($reshook)) {
 				if ($caneditperms) {
-					print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">'."\n";
+					print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">'."\n";
 					print '<input type="hidden" name="token" value="'.newToken().'">';
 					print '<input type="hidden" name="action" value="adduser">';
 					print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
@@ -467,7 +467,7 @@ if ($action == 'create') {
 						print '<td class="center">'.$useringroup->getLibStatut(5).'</td>';
 						print '<td class="right">';
 						if (!empty($user->admin)) {
-							print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=removeuser&token='.newToken().'&user='.$useringroup->id.'">';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=removeuser&token='.newToken().'&user='.$useringroup->id.'">';
 							print img_picto($langs->trans("RemoveFromGroup"), 'unlink');
 							print '</a>';
 						} else {
@@ -492,7 +492,7 @@ if ($action == 'create') {
 
 			$filename = dol_sanitizeFileName($object->ref);
 			$filedir = $conf->user->dir_output."/usergroups/".dol_sanitizeFileName($object->ref);
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 			$genallowed = $user->hasRight("user", "user", "write");
 			$delallowed = $user->hasRight("user", "user", "delete");
 
@@ -517,7 +517,7 @@ if ($action == 'create') {
 		 */
 
 		if ($action == 'edit' && $caneditperms) {
-			print '<form action="'.DOL_PHP_SELF.'" method="post" name="updategroup" enctype="multipart/form-data">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'" method="post" name="updategroup" enctype="multipart/form-data">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update">';
 			print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';

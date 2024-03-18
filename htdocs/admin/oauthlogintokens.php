@@ -62,7 +62,7 @@ if (!$user->admin) {
 /*if (($mode == 'test' || $mode == 'setup') && empty($driver))
 {
 	setEventMessages($langs->trans('PleaseSelectaDriverfromList'), null);
-	header("Location: ".DOL_PHP_SELF.'?mode=config');
+	header("Location: ".$_SERVER['PHP_SELF'].'?mode=config');
 	exit;
 }*/
 
@@ -261,7 +261,7 @@ if ($mode == 'setup' && $user->admin) {
 
 		$submit_enabled = 0;
 
-		print '<form method="post" action="'.DOL_PHP_SELF.'?mode=setup&amp;driver='.$driver.'" autocomplete="off">';
+		print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?mode=setup&amp;driver='.$driver.'" autocomplete="off">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="setconst">';
 

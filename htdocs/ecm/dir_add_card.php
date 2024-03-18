@@ -215,7 +215,7 @@ if ($action == 'create') {
 	//***********************
 	// Create
 	//***********************
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="module" value="'.dol_escape_htmltag($module).'">';
@@ -282,7 +282,7 @@ if (empty($action) || $action == 'delete_section') {
 
 	// Confirmation de la suppression d'une ligne categorie
 	if ($action == 'delete_section') {
-		print $form->formconfirm(DOL_PHP_SELF.'?section='.$section, $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', $ecmdir->label), 'confirm_deletesection');
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?section='.$section, $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', $ecmdir->label), 'confirm_deletesection');
 	}
 
 
@@ -290,7 +290,7 @@ if (empty($action) || $action == 'delete_section') {
 	print '<div class="tabsAction">';
 
 	// Delete
-	print dolGetButtonAction($langs->trans('Delete'), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), '', $user->hasRight('ecm', 'setup'));
+	print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), '', $user->hasRight('ecm', 'setup'));
 
 	print '</div>';
 }

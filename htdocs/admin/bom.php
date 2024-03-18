@@ -240,7 +240,7 @@ foreach ($dirmodels as $reldir) {
 						if ($conf->global->BOM_ADDON == $file) {
 							print img_picto($langs->trans("Activated"), 'switch_on');
 						} else {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
 							print img_picto($langs->trans("Disabled"), 'switch_off');
 							print '</a>';
 						}
@@ -368,13 +368,13 @@ foreach ($dirmodels as $reldir) {
 								// Active
 								if (in_array($name, $def)) {
 									print '<td class="center">'."\n";
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del&token='.newToken().'&value='.urlencode($name).'">';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del&token='.newToken().'&value='.urlencode($name).'">';
 									print img_picto($langs->trans("Enabled"), 'switch_on');
 									print '</a>';
 									print '</td>';
 								} else {
 									print '<td class="center">'."\n";
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 									print "</td>";
 								}
 
@@ -383,7 +383,7 @@ foreach ($dirmodels as $reldir) {
 								if ($conf->global->BOM_ADDON_PDF == $name) {
 									print img_picto($langs->trans("Default"), 'on');
 								} else {
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&amp;label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&amp;label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 								}
 								print '</td>';
 
@@ -407,7 +407,7 @@ foreach ($dirmodels as $reldir) {
 								// Preview
 								print '<td class="center">';
 								if ($module->type == 'pdf') {
-									print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 								} else {
 									print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 								}
@@ -449,7 +449,7 @@ foreach ($substitutionarray as $key => $val) {
 }
 $htmltext .= '</i>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_BOM_FREE_TEXT">';
 print '<tr class="oddeven"><td colspan="2">';
@@ -469,7 +469,7 @@ print '</form>';
 
 //Use draft Watermark
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_BOM_DRAFT_WATERMARK">';
 print '<tr class="oddeven"><td>';

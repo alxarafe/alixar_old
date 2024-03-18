@@ -109,7 +109,7 @@ class doc_generic_supplier_proposal_odt extends ModelePDFSupplierProposal
 		$odtPath = trim(getDolGlobalString('SUPPLIER_PROPOSAL_ADDON_PDF_ODT_PATH'));
 
 		$texte = $this->description.".<br>\n";
-		$texte .= '<form action="'.DOL_PHP_SELF.'" method="POST">';
+		$texte .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="page_y" value="">';
 		$texte .= '<input type="hidden" name="action" value="setModuleOptions">';
@@ -172,7 +172,7 @@ class doc_generic_supplier_proposal_odt extends ModelePDFSupplierProposal
 			// Show list of found files
 			foreach ($listoffiles as $file) {
 				$texte .= '- '.$file['name'].' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=supplier_proposal/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a>';
-				$texte .= ' &nbsp; <a class="reposition" href="'.DOL_PHP_SELF.'?modulepart=doctemplates&keyforuploaddir=SUPPLIER_PROPOSAL_ADDON_PDF_ODT_PATH&action=deletefile&token='.newToken().'&file='.urlencode(basename($file['name'])).'">'.img_picto('', 'delete').'</a>';
+				$texte .= ' &nbsp; <a class="reposition" href="'.$_SERVER['PHP_SELF'].'?modulepart=doctemplates&keyforuploaddir=SUPPLIER_PROPOSAL_ADDON_PDF_ODT_PATH&action=deletefile&token='.newToken().'&file='.urlencode(basename($file['name'])).'">'.img_picto('', 'delete').'</a>';
 				$texte .= '<br>';
 			}
 			$texte .= '</div>';

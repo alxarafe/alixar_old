@@ -31,7 +31,7 @@
 if (GETPOST('formfilteraction', 'alphanohtml') == 'listafterchangingselectedfields') {
 	$tabparam = array();
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 
 	if (GETPOST("selectedfields")) {
 		$tabparam["MAIN_SELECTEDFIELDS_".$varpage] = GETPOST("selectedfields");

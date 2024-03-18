@@ -389,7 +389,7 @@ if ($result) {
 	$arrayofselected = is_array($toselect) ? $toselect : array();
 
 	$param = '';
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -456,7 +456,7 @@ if ($result) {
 		$massactionbutton = $form->selectMassAction('ventil', $arrayofmassactions, 1);
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post">'."\n";
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">'."\n";
 	print '<input type="hidden" name="action" value="ventil">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -468,7 +468,7 @@ if ($result) {
 	print '<input type="hidden" name="page" value="'.$page.'">';
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("InvoiceLines"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num_lines, $nbtotalofrecords, 'title_accountancy', 0, '', '', $limit);
+	print_barre_liste($langs->trans("InvoiceLines"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num_lines, $nbtotalofrecords, 'title_accountancy', 0, '', '', $limit);
 
 	if ($massaction == 'set_default_account') {
 		$formquestion = array();
@@ -476,7 +476,7 @@ if ($result) {
 			'name' => 'set_default_account',
 			'label' => $langs->trans("AccountancyCode"),
 			'value' => $formaccounting->select_account('', 'default_account', 1, array(), 0, 0, 'maxwidth200 maxwidthonsmartphone', 'cachewithshowemptyone'));
-		print $form->formconfirm(DOL_PHP_SELF, $langs->trans("ConfirmPreselectAccount"), $langs->trans("ConfirmPreselectAccountQuestion", count($toselect)), "confirm_set_default_account", $formquestion, 1, 0, 200, 500, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'], $langs->trans("ConfirmPreselectAccount"), $langs->trans("ConfirmPreselectAccountQuestion", count($toselect)), "confirm_set_default_account", $formquestion, 1, 0, 200, 500, 1);
 	}
 
 	print '<span class="opacitymedium">'.$langs->trans("DescVentilTodoCustomer").'</span></br><br>';
@@ -521,17 +521,17 @@ if ($result) {
 	print "</tr>\n";
 
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("LineId", DOL_PHP_SELF, "l.rowid", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Invoice", DOL_PHP_SELF, "f.ref", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Date", DOL_PHP_SELF, "f.datef, f.ref, l.rowid", "", $param, '', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre("ProductRef", DOL_PHP_SELF, "p.ref", "", $param, '', $sortfield, $sortorder);
-	//print_liste_field_titre("ProductLabel", DOL_PHP_SELF, "p.label", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("ProductDescription", DOL_PHP_SELF, "l.description", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Amount", DOL_PHP_SELF, "l.total_ht", "", $param, '', $sortfield, $sortorder, 'right maxwidth50 ');
-	print_liste_field_titre("VATRate", DOL_PHP_SELF, "l.tva_tx", "", $param, '', $sortfield, $sortorder, 'right ', '', 1);
-	print_liste_field_titre("ThirdParty", DOL_PHP_SELF, "s.nom", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Country", DOL_PHP_SELF, "co.label", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("VATIntraShort", DOL_PHP_SELF, "s.tva_intra", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("LineId", $_SERVER['PHP_SELF'], "l.rowid", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Invoice", $_SERVER['PHP_SELF'], "f.ref", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "f.datef, f.ref, l.rowid", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("ProductRef", $_SERVER['PHP_SELF'], "p.ref", "", $param, '', $sortfield, $sortorder);
+	//print_liste_field_titre("ProductLabel", $_SERVER['PHP_SELF'], "p.label", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("ProductDescription", $_SERVER['PHP_SELF'], "l.description", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Amount", $_SERVER['PHP_SELF'], "l.total_ht", "", $param, '', $sortfield, $sortorder, 'right maxwidth50 ');
+	print_liste_field_titre("VATRate", $_SERVER['PHP_SELF'], "l.tva_tx", "", $param, '', $sortfield, $sortorder, 'right ', '', 1);
+	print_liste_field_titre("ThirdParty", $_SERVER['PHP_SELF'], "s.nom", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Country", $_SERVER['PHP_SELF'], "co.label", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("VATIntraShort", $_SERVER['PHP_SELF'], "s.tva_intra", "", $param, '', $sortfield, $sortorder);
 	print_liste_field_titre("DataUsedToSuggestAccount", '', '', '', '', '', '', '', 'nowraponall ');
 	print_liste_field_titre("AccountAccountingSuggest", '', '', '', '', '', '', '', 'center ');
 	$checkpicto = '';

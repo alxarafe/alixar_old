@@ -298,7 +298,7 @@ if ($step == 5 && $action == 'confirm_deletefile' && $confirm == 'yes') {
 	} else {
 		setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('file')), null, 'errors');
 	}
-	header('Location: '.DOL_PHP_SELF.'?step='.$step.'&datatoexport='.$datatoexport);
+	header('Location: '.$_SERVER['PHP_SELF'].'?step='.$step.'&datatoexport='.$datatoexport);
 	exit;
 }
 
@@ -513,7 +513,7 @@ if ($step == 2 && $datatoexport) {
 	print '<br>';
 
 	// Combo list of export models
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="select_model">';
 	print '<input type="hidden" name="step" value="2">';
@@ -533,9 +533,9 @@ if ($step == 2 && $datatoexport) {
 	print '<td>'.$langs->trans("Object").'</td>';
 	print '<td>'.$langs->trans("ExportableFields").'</td>';
 	print '<td width="100" class="center">';
-	print '<a class="liste_titre commonlink" title='.$langs->trans("All").' alt='.$langs->trans("All").' href="'.DOL_PHP_SELF.'?step=2&datatoexport='.$datatoexport.'&action=selectfield&field=all">'.$langs->trans("All")."</a>";
+	print '<a class="liste_titre commonlink" title='.$langs->trans("All").' alt='.$langs->trans("All").' href="'.$_SERVER['PHP_SELF'].'?step=2&datatoexport='.$datatoexport.'&action=selectfield&field=all">'.$langs->trans("All")."</a>";
 	print ' / ';
-	print '<a class="liste_titre commonlink" title='.$langs->trans("None").' alt='.$langs->trans("None").' href="'.DOL_PHP_SELF.'?step=2&datatoexport='.$datatoexport.'&action=unselectfield&field=all">'.$langs->trans("None")."</a>";
+	print '<a class="liste_titre commonlink" title='.$langs->trans("None").' alt='.$langs->trans("None").' href="'.$_SERVER['PHP_SELF'].'?step=2&datatoexport='.$datatoexport.'&action=unselectfield&field=all">'.$langs->trans("None")."</a>";
 	print '</td>';
 	print '<td width="44%">'.$langs->trans("ExportedFields").'</td>';
 	print '</tr>';
@@ -598,7 +598,7 @@ if ($step == 2 && $datatoexport) {
 		if (isset($array_selected[$code]) && $array_selected[$code]) {
 			// Selected fields
 			print '<td>&nbsp;</td>';
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?step=2&datatoexport='.$datatoexport.'&action=unselectfield&field='.$code.'">'.img_left('default', 0, 'style="max-width: 20px"').'</a></td>';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?step=2&datatoexport='.$datatoexport.'&action=unselectfield&field='.$code.'">'.img_left('default', 0, 'style="max-width: 20px"').'</a></td>';
 			print '<td>';
 			//print $text.'-'.$htmltext."<br>";
 			print $form->textwithpicto($text, $htmltext);
@@ -611,7 +611,7 @@ if ($step == 2 && $datatoexport) {
 			print $form->textwithpicto($text, $htmltext);
 			//print ' ('.$code.')';
 			print '</td>';
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?step=2&datatoexport='.$datatoexport.'&action=selectfield&field='.$code.'">'.img_right('default', 0, 'style="max-width: 20px"').'</a></td>';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?step=2&datatoexport='.$datatoexport.'&action=selectfield&field='.$code.'">'.img_right('default', 0, 'style="max-width: 20px"').'</a></td>';
 			print '<td>&nbsp;</td>';
 		}
 
@@ -705,7 +705,7 @@ if ($step == 3 && $datatoexport) {
 
 
 	// un formulaire en plus pour recuperer les filtres
-	print '<form action="'.DOL_PHP_SELF.'?step=4&action=submitFormField&datatoexport='.$datatoexport.'" name="FilterField" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?step=4&action=submitFormField&datatoexport='.$datatoexport.'" name="FilterField" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
@@ -964,10 +964,10 @@ if ($step == 4 && $datatoexport) {
 		print $value.' ';
 		print '</td><td class="center nowraponall" width="40">';
 		if ($value < count($array_selected)) {
-			print '<a href="'.DOL_PHP_SELF.'?step='.$step.'&datatoexport='.$datatoexport.'&action=downfield&field='.$code.'">'.img_down().'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?step='.$step.'&datatoexport='.$datatoexport.'&action=downfield&field='.$code.'">'.img_down().'</a>';
 		}
 		if ($value > 1) {
-			print '<a href="'.DOL_PHP_SELF.'?step='.$step.'&datatoexport='.$datatoexport.'&action=upfield&field='.$code.'">'.img_up().'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?step='.$step.'&datatoexport='.$datatoexport.'&action=upfield&field='.$code.'">'.img_up().'</a>';
 		}
 		print '</td>';
 
@@ -1056,7 +1056,7 @@ if ($step == 4 && $datatoexport) {
 				}
 				print '</td>';
 				print '<td class="right">';
-				print '<a class="reposition" href="'.DOL_PHP_SELF.'?step='.$step.'&datatoexport='.$datatoexport.'&action=deleteprof&token='.newToken().'&id='.$obj->rowid.'">';
+				print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?step='.$step.'&datatoexport='.$datatoexport.'&action=deleteprof&token='.newToken().'&id='.$obj->rowid.'">';
 				print img_delete();
 				print '</a>';
 				print '</tr>';
@@ -1118,7 +1118,7 @@ if ($step == 5 && $datatoexport) {
 	 * Confirmation suppression fichier
 	 */
 	if ($action == 'remove_file') {
-		print $form->formconfirm(DOL_PHP_SELF.'?step=5&datatoexport='.$datatoexport.'&file='.urlencode(GETPOST("file")), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', 0, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?step=5&datatoexport='.$datatoexport.'&file='.urlencode(GETPOST("file")), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', 0, 1);
 	}
 
 	print '<div class="fichecenter">';
@@ -1229,7 +1229,7 @@ if ($step == 5 && $datatoexport) {
 
 	// Show existing generated documents
 	// NB: La fonction show_documents rescanne les modules qd genallowed=1, sinon prend $liste
-	print $formfile->showdocuments('export', '', $upload_dir, DOL_PHP_SELF.'?step=5&datatoexport='.$datatoexport, $liste, 1, (GETPOST('model') ? GETPOST('model') : 'csv'), 1, 1, 0, 0, 0, '', 'none', '', '', '');
+	print $formfile->showdocuments('export', '', $upload_dir, $_SERVER['PHP_SELF'].'?step=5&datatoexport='.$datatoexport, $liste, 1, (GETPOST('model') ? GETPOST('model') : 'csv'), 1, 1, 0, 0, 0, '', 'none', '', '', '');
 }
 
 llxFooter();

@@ -162,7 +162,7 @@ if (empty($reshook)) {
 
 				$result = $object->createFromClone($user, $socid);
 				if ($result > 0) {
-					header("Location: ".DOL_PHP_SELF.'?id='.$result);
+					header("Location: ".$_SERVER['PHP_SELF'].'?id='.$result);
 					exit;
 				} else {
 					setEventMessages($object->error, $object->errors, 'errors');
@@ -194,7 +194,7 @@ if (empty($reshook)) {
 				$result = fichinter_create($db, $object, (!GETPOST('model', 'alpha')) ? $object->model_pdf : GETPOST('model', 'alpha'), $outputlangs);
 			}
 
-			header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			$mesg = $object->error;
@@ -219,7 +219,7 @@ if (empty($reshook)) {
 				$result = fichinter_create($db, $object, (!GETPOST('model', 'alpha')) ? $object->model_pdf : GETPOST('model', 'alpha'), $outputlangs);
 			}
 
-			header('Location: ' . DOL_PHP_SELF . '?id=' . $object->id);
+			header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
 			exit;
 		} else {
 			$mesg = $object->error;
@@ -245,7 +245,7 @@ if (empty($reshook)) {
 				$result = fichinter_create($db, $object, (!GETPOST('model', 'alpha')) ? $object->model_pdf : GETPOST('model', 'alpha'), $outputlangs);
 			}
 
-			header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			$mesg = $object->error;
@@ -568,7 +568,7 @@ if (empty($reshook)) {
 				if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
 					fichinter_create($db, $object, $object->model_pdf, $outputlangs);
 				}
-				header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 				exit;
 			} else {
 				$mesg = $object->error;
@@ -579,7 +579,7 @@ if (empty($reshook)) {
 		// Classify Billed
 		$result = $object->setStatut(Fichinter::STATUS_BILLED);
 		if ($result > 0) {
-			header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -588,7 +588,7 @@ if (empty($reshook)) {
 		// Classify unbilled
 		$result = $object->setStatut(Fichinter::STATUS_VALIDATED);
 		if ($result > 0) {
-			header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			$mesg = $object->error;
@@ -597,7 +597,7 @@ if (empty($reshook)) {
 		// Reopen
 		$result = $object->setStatut(Fichinter::STATUS_VALIDATED);
 		if ($result > 0) {
-			header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			$mesg = $object->error;
@@ -654,7 +654,7 @@ if (empty($reshook)) {
 			fichinter_create($db, $object, $object->model_pdf, $outputlangs);
 		}
 
-		header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 		exit;
 	} elseif ($action == 'confirm_deleteline' && $confirm == 'yes' && $user->hasRight('ficheinter', 'creer')) {
 		// Supprime une ligne d'intervention AVEC confirmation
@@ -707,7 +707,7 @@ if (empty($reshook)) {
 			fichinter_create($db, $object, $object->model_pdf, $outputlangs);
 		}
 
-		header('Location: '.DOL_PHP_SELF.'?id='.$object->id.'#'.$lineid);
+		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.$lineid);
 		exit;
 	} elseif ($action == 'down' && $user->hasRight('ficheinter', 'creer')) {
 		$object->line_down($lineid);
@@ -729,7 +729,7 @@ if (empty($reshook)) {
 			fichinter_create($db, $object, $object->model_pdf, $outputlangs);
 		}
 
-		header('Location: '.DOL_PHP_SELF.'?id='.$object->id.'#'.$lineid);
+		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.$lineid);
 		exit;
 	}
 
@@ -779,7 +779,7 @@ if (empty($reshook)) {
 			}
 
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -797,7 +797,7 @@ if (empty($reshook)) {
 			$result = $object->delete_contact(GETPOSTINT('lineid'));
 
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				dol_print_error($db);
@@ -912,7 +912,7 @@ if ($action == 'create') {
 		$soc = new Societe($db);
 		$soc->fetch($socid);
 
-		print '<form name="fichinter" action="'.DOL_PHP_SELF.'" method="POST">';
+		print '<form name="fichinter" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="socid" value='.$soc->id.'>';
 		print '<input type="hidden" name="action" value="add">';
@@ -1067,7 +1067,7 @@ if ($action == 'create') {
 
 		print '</form>';
 	} else {
-		print '<form name="fichinter" action="'.DOL_PHP_SELF.'" method="POST">';
+		print '<form name="fichinter" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="create">';		// We go back to create action
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -1083,7 +1083,7 @@ if ($action == 'create') {
 		print '<table class="border centpercent">';
 		print '<tr><td class="fieldrequired">'.$langs->trans("ThirdParty").'</td><td>';
 		print $form->select_company('', 'socid', '', 'SelectThirdParty', 1, 0, null, 0, 'minwidth300');
-		print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&backtopage='.urlencode(DOL_PHP_SELF.'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
+		print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
 		print '</td></tr>';
 		print '</table>';
 
@@ -1116,7 +1116,7 @@ if ($action == 'create') {
 
 	// Confirm deletion of intervention
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteIntervention'), $langs->trans('ConfirmDeleteIntervention'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteIntervention'), $langs->trans('ConfirmDeleteIntervention'), 'confirm_delete', '', 0, 1);
 	}
 
 	// Confirm validation
@@ -1140,7 +1140,7 @@ if ($action == 'create') {
 			$text .= $notify->confirmMessage('FICHINTER_VALIDATE', $object->socid, $object);
 		}
 
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ValidateIntervention'), $text, 'confirm_validate', '', 1, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ValidateIntervention'), $text, 'confirm_validate', '', 1, 1);
 	}
 
 	// Confirm done
@@ -1152,22 +1152,22 @@ if ($action == 'create') {
 			$text .= '<br>';
 			$text .= $notify->confirmMessage('FICHINTER_CLOSE', $object->socid, $object);
 		}
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('CloseIntervention'), $text, 'confirm_done', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('CloseIntervention'), $text, 'confirm_done', '', 0, 1);
 	}
 
 	// Confirm back to draft
 	if ($action == 'modify') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ModifyIntervention'), $langs->trans('ConfirmModifyIntervention'), 'confirm_modify', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ModifyIntervention'), $langs->trans('ConfirmModifyIntervention'), 'confirm_modify', '', 0, 1);
 	}
 
 	// Confirm back to open
 	if ($action == 'reopen') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ReOpen'), $langs->trans('ConfirmReopenIntervention', $object->ref), 'confirm_reopen', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ReOpen'), $langs->trans('ConfirmReopenIntervention', $object->ref), 'confirm_reopen', '', 0, 1);
 	}
 
 	// Confirm deletion of line
 	if ($action == 'ask_deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&line_id='.$lineid, $langs->trans('DeleteInterventionLine'), $langs->trans('ConfirmDeleteInterventionLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&line_id='.$lineid, $langs->trans('DeleteInterventionLine'), $langs->trans('ConfirmDeleteInterventionLine'), 'confirm_deleteline', '', 0, 1);
 	}
 
 	// Clone confirmation
@@ -1181,7 +1181,7 @@ if ($action == 'create') {
 							// => 1),
 							array('type' => 'other', 'name' => 'socid', 'label' => $langs->trans("SelectThirdParty"), 'value' => $form->select_company(GETPOSTINT('socid'), 'socid', '', '', 0, 0, null, 0, 'minwidth200')));
 		// Paiement incomplet. On demande si motif = escompte ou autre
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneIntervention', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneIntervention', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}
 
 	if (!$formconfirm) {
@@ -1215,9 +1215,9 @@ if ($action == 'create') {
 		if ($usercancreate) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);
@@ -1281,7 +1281,7 @@ if ($action == 'create') {
 		print $langs->trans('Contract');
 		print '</td>';
 		if ($action != 'contrat') {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=contrat&amp;id='.$object->id.'">';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=contrat&amp;id='.$object->id.'">';
 			print img_edit($langs->trans('SetContract'), 1);
 			print '</a></td>';
 		}
@@ -1289,7 +1289,7 @@ if ($action == 'create') {
 		print '</td><td>';
 		if ($action == 'contrat') {
 			$formcontract = new FormContract($db);
-			$formcontract->formSelectContract(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_contrat, 'contratid', 0, 1, 1);
+			$formcontract->formSelectContract($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_contrat, 'contratid', 0, 1, 1);
 		} else {
 			if ($object->fk_contrat) {
 				$contratstatic = new Contrat($db);
@@ -1345,7 +1345,7 @@ if ($action == 'create') {
 
 	// Line of interventions
 	if (!getDolGlobalString('FICHINTER_DISABLE_DETAILS')) {
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" name="addinter" method="post">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" name="addinter" method="post">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
 		if ($action == 'editline') {
@@ -1432,21 +1432,21 @@ if ($action == 'create') {
 					// Icon to edit and delete
 					if ($object->statut == 0 && $user->hasRight('ficheinter', 'creer')) {
 						print '<td class="center">';
-						print '<a class="editfielda marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=editline&token='.newToken().'&line_id='.$objp->rowid.'#'.$objp->rowid.'">';
+						print '<a class="editfielda marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=editline&token='.newToken().'&line_id='.$objp->rowid.'#'.$objp->rowid.'">';
 						print img_edit();
 						print '</a>';
-						print '<a class="marginleftonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=ask_deleteline&token='.newToken().'&line_id='.$objp->rowid.'">';
+						print '<a class="marginleftonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=ask_deleteline&token='.newToken().'&line_id='.$objp->rowid.'">';
 						print img_delete();
 						print '</a></td>';
 						print '<td class="center">';
 						if ($num > 1) {
 							if ($i > 0) {
-								print '<a class="marginleftonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=up&token='.newToken().'&line_id='.$objp->rowid.'">';
+								print '<a class="marginleftonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=up&token='.newToken().'&line_id='.$objp->rowid.'">';
 								print img_up();
 								print '</a>';
 							}
 							if ($i < $num - 1) {
-								print '<a class="marginleftonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=down&token='.newToken().'&line_id='.$objp->rowid.'">';
+								print '<a class="marginleftonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=down&token='.newToken().'&line_id='.$objp->rowid.'">';
 								print img_down();
 								print '</a>';
 							}
@@ -1664,7 +1664,7 @@ if ($action == 'create') {
 				// Reopen
 				if ($object->statut >= Fichinter::STATUS_CLOSED) {
 					if ($user->hasRight('ficheinter', 'creer')) {
-						print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=reopen&token='.newToken().'">'.$langs->trans('ReOpen').'</a></div>';
+						print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken().'">'.$langs->trans('ReOpen').'</a></div>';
 					} else {
 						print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#">'.$langs->trans('ReOpen').'</a></div>';
 					}
@@ -1674,7 +1674,7 @@ if ($action == 'create') {
 				if (empty($user->socid)) {
 					if ($object->statut > Fichinter::STATUS_DRAFT) {
 						if (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || $user->hasRight('ficheinter', 'ficheinter_advance', 'send')) {
-							print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a></div>';
+							print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a></div>';
 						} else {
 							print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#">'.$langs->trans('SendMail').'</a></div>';
 						}
@@ -1684,7 +1684,7 @@ if ($action == 'create') {
 				// Create intervention model
 				if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 && $object->statut == Fichinter::STATUS_DRAFT && $user->hasRight('ficheinter', 'creer') && (count($object->lines) > 0)) {
 					print '<div class="inline-block divButAction">';
-					print '<a class="butAction" href="'.DOL_URL_ROOT.'/fichinter/card-rec.php?id='.$object->id.'&action=create&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'">'.$langs->trans("ChangeIntoRepeatableIntervention").'</a>';
+					print '<a class="butAction" href="'.DOL_URL_ROOT.'/fichinter/card-rec.php?id='.$object->id.'&action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'">'.$langs->trans("ChangeIntoRepeatableIntervention").'</a>';
 					print '</div>';
 				}
 
@@ -1713,25 +1713,25 @@ if ($action == 'create') {
 
 					if (getDolGlobalString('FICHINTER_CLASSIFY_BILLED')) {    // Option deprecated. In a future, billed must be managed with a dedicated field to 0 or 1
 						if ($object->statut != Fichinter::STATUS_BILLED) {
-							print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=classifybilled&token='.newToken().'">'.$langs->trans("InterventionClassifyBilled").'</a></div>';
+							print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=classifybilled&token='.newToken().'">'.$langs->trans("InterventionClassifyBilled").'</a></div>';
 						} else {
-							print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=classifyunbilled&token='.newToken().'">'.$langs->trans("InterventionClassifyUnBilled").'</a></div>';
+							print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=classifyunbilled&token='.newToken().'">'.$langs->trans("InterventionClassifyUnBilled").'</a></div>';
 						}
 					}
 				}
 
 				// Done
 				if (!getDolGlobalString('FICHINTER_CLASSIFY_BILLED') && $object->statut > Fichinter::STATUS_DRAFT && $object->statut < Fichinter::STATUS_CLOSED) {
-					print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=classifydone&token='.newToken().'">'.$langs->trans("InterventionClassifyDone").'</a></div>';
+					print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=classifydone&token='.newToken().'">'.$langs->trans("InterventionClassifyDone").'</a></div>';
 				}
 
 				// Clone
 				if ($user->hasRight('ficheinter', 'creer')) {
-					print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&socid='.$object->socid.'&action=clone&token='.newToken().'&object=ficheinter">'.$langs->trans("ToClone").'</a></div>';
+					print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&socid='.$object->socid.'&action=clone&token='.newToken().'&object=ficheinter">'.$langs->trans("ToClone").'</a></div>';
 				}
 
 				// Delete
-				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
+				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
 			}
 		}
 	}
@@ -1746,7 +1746,7 @@ if ($action == 'create') {
 		 */
 		$filename = dol_sanitizeFileName($object->ref);
 		$filedir = $conf->ficheinter->dir_output."/".$filename;
-		$urlsource = DOL_PHP_SELF."?id=".$object->id;
+		$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 		$genallowed = $user->hasRight('ficheinter', 'lire');
 		$delallowed = $user->hasRight('ficheinter', 'creer');
 		print $formfile->showdocuments('ficheinter', $filename, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);

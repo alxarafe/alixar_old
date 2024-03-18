@@ -310,7 +310,7 @@ if (empty($mysoc->country_code)) {
 	$warnpicto = img_error($langs->trans("WarningMandatorySetupNotComplete"));
 	print '<br><a href="'.DOL_URL_ROOT.'/admin/company.php?mainmenu=home">'.$warnpicto.' '.$langs->trans("WarningMandatorySetupNotComplete").'</a>';
 } else {
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'" />';
 	print '<input type="hidden" name="action" value="convert" />';
 

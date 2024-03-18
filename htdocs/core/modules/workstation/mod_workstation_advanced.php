@@ -67,7 +67,7 @@ class mod_workstation_advanced extends ModeleNumRefWorkstation
 		$form = new Form($db);
 
 		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.DOL_PHP_SELF.'" method="POST">';
+		$texte .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="action" value="updateMask">';
 		$texte .= '<input type="hidden" name="maskconstWorkstation" value="WORKSTATION_WORKSTATION_ADVANCED_MASK">';

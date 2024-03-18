@@ -493,7 +493,7 @@ if ($action == 'create' || $action == 'confirm_paiement' || $action == 'add_paie
 				print '	</script>'."\n";
 			}
 
-			print '<form id="payment_form" name="addpaiement" action="'.DOL_PHP_SELF.'" method="POST">';
+			print '<form id="payment_form" name="addpaiement" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="add_paiement">';
 			print '<input type="hidden" name="facid" value="'.$facid.'">';
@@ -841,7 +841,7 @@ if ($action == 'create' || $action == 'confirm_paiement' || $action == 'add_paie
 					$text .= '<br>'.$langs->trans("AllCompletelyPayedInvoiceWillBeClosed");
 					print '<input type="hidden" name="closepaidinvoices" value="'.GETPOST('closepaidinvoices').'">';
 				}
-				print $form->formconfirm(DOL_PHP_SELF.'?facid='.$object->id.'&socid='.$object->socid.'&type='.$object->type, $langs->trans('PayedSuppliersPayments'), $text, 'confirm_paiement', $formquestion, $preselectedchoice);
+				print $form->formconfirm($_SERVER['PHP_SELF'].'?facid='.$object->id.'&socid='.$object->socid.'&type='.$object->type, $langs->trans('PayedSuppliersPayments'), $text, 'confirm_paiement', $formquestion, $preselectedchoice);
 			}
 
 			print '</form>';

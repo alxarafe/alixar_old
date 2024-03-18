@@ -234,9 +234,9 @@ if ($type == 'bank-transfer') {
 	$newcardbutton = '<a class="marginrightonly" href="'.DOL_URL_ROOT.'/compta/paymentbybanktransfer/index.php">'.$langs->trans("Back").'</a>';
 }
 if ($sourcetype != 'salary') {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST"  id="searchFormList" name="searchFormList">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST"  id="searchFormList" name="searchFormList">';
 } else {
-	print '<form action="'.DOL_PHP_SELF.'?status=0&type=bank-transfer&sourcetype='.$sourcetype.'" method="POST"  id="searchFormList" name="searchFormList">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?status=0&type=bank-transfer&sourcetype='.$sourcetype.'" method="POST"  id="searchFormList" name="searchFormList">';
 }
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -259,7 +259,7 @@ if ($type == 'bank-transfer') {
 }
 $newcardbutton .= dolGetButtonTitle($langs->trans($label), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/compta/prelevement/create.php'.($typefilter ? '?'.$typefilter : '').($sourcetype ? '&sourcetype='.$sourcetype : ''));
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'generic', 0, $newcardbutton, '', $limit);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'generic', 0, $newcardbutton, '', $limit);
 
 print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 print '<table class="liste centpercent">';
@@ -289,10 +289,10 @@ print '<tr class="liste_titre">';
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 	print_liste_field_titre('');
 }
-print_liste_field_titre(($sourcetype ? "RefSalary" : "Bill"), DOL_PHP_SELF);
-print_liste_field_titre(($sourcetype ? "Employee" : "Company"), DOL_PHP_SELF);
-print_liste_field_titre("AmountRequested", DOL_PHP_SELF, "", "", $param, '', '', '', 'right ');
-print_liste_field_titre("DateRequest", DOL_PHP_SELF, "", "", $param, '', '', '', 'center ');
+print_liste_field_titre(($sourcetype ? "RefSalary" : "Bill"), $_SERVER['PHP_SELF']);
+print_liste_field_titre(($sourcetype ? "Employee" : "Company"), $_SERVER['PHP_SELF']);
+print_liste_field_titre("AmountRequested", $_SERVER['PHP_SELF'], "", "", $param, '', '', '', 'right ');
+print_liste_field_titre("DateRequest", $_SERVER['PHP_SELF'], "", "", $param, '', '', '', 'center ');
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 	print_liste_field_titre('');
 }

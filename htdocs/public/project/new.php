@@ -399,7 +399,7 @@ if (empty($reshook) && $action == 'add') {
 					$urlback = getDolGlobalString('PROJECT_URL_REDIRECT_LEAD');
 					// TODO Make replacement of __AMOUNT__, etc...
 				} else {
-					$urlback = DOL_PHP_SELF."?action=added&token=".newToken();
+					$urlback = $_SERVER['PHP_SELF']."?action=added&token=".newToken();
 				}
 
 				if (!empty($entity)) {
@@ -472,7 +472,7 @@ print '</div>';
 dol_htmloutput_errors($errmsg);
 
 // Print form
-print '<form action="'.DOL_PHP_SELF.'" method="POST" name="newlead">'."\n";
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" name="newlead">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'" / >';
 print '<input type="hidden" name="entity" value="'.$entity.'" />';
 print '<input type="hidden" name="action" value="add" />';

@@ -65,7 +65,7 @@ if (preg_match('/set_(.*)/', $action, $reg)) {
 	}
 
 	if (dolibarr_set_const($db, $code, $values, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -75,7 +75,7 @@ if (preg_match('/set_(.*)/', $action, $reg)) {
 if (preg_match('/del_(.*)/', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, 0) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -94,7 +94,7 @@ llxHeader('', $langs->trans("ModulebuilderSetup"), $help_url);
 
 $linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php').'">'.$langs->trans("BackToModuleList").'</a>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 
@@ -126,9 +126,9 @@ if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 		print ajax_constantonoff('MODULEBUILDER_USE_ABOUT');
 	} else {
 		if (!getDolGlobalString('MODULEBUILDER_USE_ABOUT')) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set_MODULEBUILDER_USE_ABOUT&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set_MODULEBUILDER_USE_ABOUT&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 		} else {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del_MODULEBUILDER_USE_ABOUT&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del_MODULEBUILDER_USE_ABOUT&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 		}
 	}
 	print '</td></tr>';

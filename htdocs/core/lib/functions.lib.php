@@ -294,7 +294,7 @@ function isModEnabled($module)
 function isDolTms($timestamp)
 {
 	if ($timestamp === '') {
-		dol_syslog('Using empty string for a timestamp is deprecated, prefer use of null when calling page '.DOL_PHP_SELF, LOG_NOTICE);
+		dol_syslog('Using empty string for a timestamp is deprecated, prefer use of null when calling page '.$_SERVER['PHP_SELF'], LOG_NOTICE);
 		return false;
 	}
 	if (is_null($timestamp) || !is_numeric($timestamp)) {
@@ -576,7 +576,7 @@ function dol_shutdown()
 		$depth = $db->transaction_opened;
 		$disconnectdone = $db->close();
 	}
-	dol_syslog("--- End access to ".(empty(DOL_PHP_SELF) ? 'unknown' : DOL_PHP_SELF).(($disconnectdone && $depth) ? ' (Warn: db disconnection forced, transaction depth was '.$depth.')' : ''), (($disconnectdone && $depth) ? LOG_WARNING : LOG_INFO));
+	dol_syslog("--- End access to ".(empty($_SERVER['PHP_SELF']) ? 'unknown' : $_SERVER['PHP_SELF']).(($disconnectdone && $depth) ? ' (Warn: db disconnection forced, transaction depth was '.$depth.')' : ''), (($disconnectdone && $depth) ? LOG_WARNING : LOG_INFO));
 }
 
 /**
@@ -592,7 +592,7 @@ function GETPOSTISSET($paramname)
 {
 	$isset = false;
 
-	$relativepathstring = DOL_PHP_SELF;
+	$relativepathstring = $_SERVER['PHP_SELF'];
 	// Clean $relativepathstring
 	if (constant('DOL_URL_ROOT')) {
 		$relativepathstring = preg_replace('/^'.preg_quote(constant('DOL_URL_ROOT'), '/').'/', '', $relativepathstring);
@@ -696,7 +696,7 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
 		return 'BadFirstParameterForGETPOST';
 	}
 	if (empty($check)) {
-		dol_syslog("Deprecated use of GETPOST, called with 1st param = ".$paramname." and a 2nd param that is '', when calling page ".DOL_PHP_SELF, LOG_WARNING);
+		dol_syslog("Deprecated use of GETPOST, called with 1st param = ".$paramname." and a 2nd param that is '', when calling page ".$_SERVER['PHP_SELF'], LOG_WARNING);
 		// Enable this line to know who call the GETPOST with '' $check parameter.
 		//var_dump(debug_backtrace()[0]);
 	}
@@ -714,7 +714,7 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
 	}
 
 	if (empty($method) || $method == 3 || $method == 4) {
-		$relativepathstring = (empty(DOL_PHP_SELF) ? '' : DOL_PHP_SELF);
+		$relativepathstring = (empty($_SERVER['PHP_SELF']) ? '' : $_SERVER['PHP_SELF']);
 		// Clean $relativepathstring
 		if (constant('DOL_URL_ROOT')) {
 			$relativepathstring = preg_replace('/^'.preg_quote(constant('DOL_URL_ROOT'), '/').'/', '', $relativepathstring);
@@ -2025,7 +2025,7 @@ function dol_syslog($message, $level = LOG_INFO, $ident = 0, $suffixinfilename =
 
 		$data = array(
 			'message' => $message,
-			'script' => (isset(DOL_PHP_SELF) ? basename(DOL_PHP_SELF, '.php') : false),
+			'script' => (isset($_SERVER['PHP_SELF']) ? basename($_SERVER['PHP_SELF'], '.php') : false),
 			'level' => $level,
 			'user' => ((is_object($user) && $user->id) ? $user->login : false),
 			'ip' => false
@@ -3073,11 +3073,11 @@ function dol_print_date($time, $format = '', $tzoutput = 'auto', $outputlangs = 
 	// Analyze date
 	$reg = array();
 	if (preg_match('/^([0-9][0-9][0-9][0-9])([0-9][0-9])([0-9][0-9])([0-9][0-9])([0-9][0-9])([0-9][0-9])$/i', $time, $reg)) {	// Deprecated. Ex: 1970-01-01, 1970-01-01 01:00:00, 19700101010000
-		dol_print_error(null, "Functions.lib::dol_print_date function called with a bad value from page ".(empty(DOL_PHP_SELF) ? 'unknown' : DOL_PHP_SELF));
+		dol_print_error(null, "Functions.lib::dol_print_date function called with a bad value from page ".(empty($_SERVER['PHP_SELF']) ? 'unknown' : $_SERVER['PHP_SELF']));
 		return '';
 	} elseif (preg_match('/^([0-9]+)\-([0-9]+)\-([0-9]+) ?([0-9]+)?:?([0-9]+)?:?([0-9]+)?/i', $time, $reg)) {    // Still available to solve problems in extrafields of type date
 		// This part of code should not be used anymore.
-		dol_syslog("Functions.lib::dol_print_date function called with a bad value from page ".(empty(DOL_PHP_SELF) ? 'unknown' : DOL_PHP_SELF), LOG_WARNING);
+		dol_syslog("Functions.lib::dol_print_date function called with a bad value from page ".(empty($_SERVER['PHP_SELF']) ? 'unknown' : $_SERVER['PHP_SELF']), LOG_WARNING);
 		//if (function_exists('debug_print_backtrace')) debug_print_backtrace();
 		// Date has format 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS'
 		$syear	= (!empty($reg[1]) ? $reg[1] : '');
@@ -6103,7 +6103,7 @@ function print_barre_liste($titre, $page, $file, $options = '', $sortfield = '',
  *	Function to show navigation arrows into lists
  *
  *	@param	int				$page				Number of page
- *	@param	string			$file				Page URL (in most cases provided with DOL_PHP_SELF)
+ *	@param	string			$file				Page URL (in most cases provided with $_SERVER['PHP_SELF'])
  *	@param	string			$options         	Other url parameters to propagate ("" by default, may include sortfield and sortorder)
  *	@param	integer			$nextpage	    	Do we show a next page button
  *	@param	string			$betweenarrows		HTML content to show between arrows. MUST contains '<li> </li>' tags or '<li><span> </span></li>'.
@@ -10549,9 +10549,9 @@ function printCommonFooter($zone = 'private')
 			}
 
 			// Management of focus and mandatory for fields
-			if ($action == 'create' || $action == 'edit' || (empty($action) && (preg_match('/new\.php/', DOL_PHP_SELF))) || ((empty($action) || $action == 'addline') && (preg_match('/card\.php/', DOL_PHP_SELF)))) {
+			if ($action == 'create' || $action == 'edit' || (empty($action) && (preg_match('/new\.php/', $_SERVER['PHP_SELF']))) || ((empty($action) || $action == 'addline') && (preg_match('/card\.php/', $_SERVER['PHP_SELF'])))) {
 				print '/* JS CODE TO ENABLE to manage focus and mandatory form fields */'."\n";
-				$relativepathstring = DOL_PHP_SELF;
+				$relativepathstring = $_SERVER['PHP_SELF'];
 				// Clean $relativepathstring
 				if (constant('DOL_URL_ROOT')) {
 					$relativepathstring = preg_replace('/^'.preg_quote(constant('DOL_URL_ROOT'), '/').'/', '', $relativepathstring);
@@ -13494,7 +13494,7 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
 		$contactGetNomUrlCache = array();
 
 		$out .= '<div class="filters-container" >';
-		$out .= '<form name="listactionsfilter" class="listactionsfilter" action="'.DOL_PHP_SELF.'" method="POST">';
+		$out .= '<form name="listactionsfilter" class="listactionsfilter" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$out .= '<input type="hidden" name="token" value="'.newToken().'">';
 
 		if ($objcon && get_class($objcon) == 'Contact' &&
@@ -13524,7 +13524,7 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
 			$out .= '</th>';
 		}
 
-		$out .= getTitleFieldOfList('Date', 0, DOL_PHP_SELF, 'a.datep', '', $param, '', $sortfield, $sortorder, '')."\n";
+		$out .= getTitleFieldOfList('Date', 0, $_SERVER['PHP_SELF'], 'a.datep', '', $param, '', $sortfield, $sortorder, '')."\n";
 
 		$out .= '<th class="liste_titre"><strong class="hideonsmartphone">'.$langs->trans("Search").' : </strong></th>';
 		if ($donetodo) {
@@ -13647,7 +13647,7 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
 
 			if ($user->hasRight('agenda', 'allactions', 'create') ||
 				(($actionstatic->authorid == $user->id || $actionstatic->userownerid == $user->id) && $user->hasRight('agenda', 'myactions', 'create'))) {
-				$out .= '<a class="paddingleft paddingright timeline-btn2 editfielda" href="'.DOL_MAIN_URL_ROOT.'/comm/action/card.php?action=edit&token='.newToken().'&id='.$actionstatic->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?'.$param).'">';
+				$out .= '<a class="paddingleft paddingright timeline-btn2 editfielda" href="'.DOL_MAIN_URL_ROOT.'/comm/action/card.php?action=edit&token='.newToken().'&id='.$actionstatic->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?'.$param).'">';
 				//$out .= '<i class="fa fa-pencil" title="'.$langs->trans("Modify").'" ></i>';
 				$out .= img_picto($langs->trans("Modify"), 'edit', 'class="edita"');
 				$out .= '</a>';

@@ -161,7 +161,7 @@ $help_url = '';
 llxHeader('', $title, $help_url, '', 0, 0, $arrayofjs, $arrayofcss);
 
 
-print '<form name="extsitesconfig" action="'.DOL_PHP_SELF.'" method="post">';
+print '<form name="extsitesconfig" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="id" value="'.$id.'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 

@@ -122,7 +122,7 @@ if ($cancel) {
 		header("Location: ".$backtopage);
 		exit;
 	} else {
-		header('Location: '.DOL_PHP_SELF.'?urlfile='.urlencode($urlfile).'&section='.urlencode($section).($module ? '&module='.urlencode($module) : ''));
+		header('Location: '.$_SERVER['PHP_SELF'].'?urlfile='.urlencode($urlfile).'&section='.urlencode($section).($module ? '&module='.urlencode($module) : ''));
 		exit;
 	}
 }
@@ -223,7 +223,7 @@ if ($action == 'update' && $permissiontoadd) {
 			$urlfile .= '.noexe';
 		}
 
-		header('Location: '.DOL_PHP_SELF.'?urlfile='.urlencode($urlfile).'&section='.urlencode($section));
+		header('Location: '.$_SERVER['PHP_SELF'].'?urlfile='.urlencode($urlfile).'&section='.urlencode($section));
 		exit;
 	} else {
 		$db->rollback();
@@ -245,7 +245,7 @@ $object->label = $urlfile;
 $head = ecm_file_prepare_head($object);
 
 if ($action == 'edit') {
-	print '<form name="update" action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="section" value="'.$section.'">';
 	print '<input type="hidden" name="urlfile" value="'.$urlfile.'">';
@@ -414,7 +414,7 @@ if ($action == 'edit') {
 
 // Confirm deletion of a file
 if ($action == 'deletefile') {
-	print $form->formconfirm(DOL_PHP_SELF.'?section='.urlencode($section), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile', $urlfile), 'confirm_deletefile', '', 1, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?section='.urlencode($section), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile', $urlfile), 'confirm_deletefile', '', 1, 1);
 }
 
 if ($action != 'edit') {
@@ -422,7 +422,7 @@ if ($action != 'edit') {
 	print '<div class="tabsAction">';
 
 	if ($user->hasRight('ecm', 'setup')) {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&section='.urlencode($section).'&urlfile='.urlencode($urlfile).'">'.$langs->trans('Edit').'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&section='.urlencode($section).'&urlfile='.urlencode($urlfile).'">'.$langs->trans('Edit').'</a>';
 	}
 
 	print '</div>';

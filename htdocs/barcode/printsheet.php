@@ -306,7 +306,7 @@ print '<br>';
 //print img_picto('','puce').' '.$langs->trans("PrintsheetForOneBarCode").'<br>';
 //print '<br>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">'; // The target is for brothers that open the file instead of downloading it
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'; // The target is for brothers that open the file instead of downloading it
 print '<input type="hidden" name="mode" value="label">';
 print '<input type="hidden" name="action" value="builddoc">';
 print '<input type="hidden" name="token" value="'.currentToken().'">'; // The page will not renew the token but force download of a file, so we must use here currentToken

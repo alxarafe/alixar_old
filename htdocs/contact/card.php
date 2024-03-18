@@ -182,7 +182,7 @@ if (empty($reshook)) {
 		if ($object->setstatus(0) < 0) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		} else {
-			header("Location: ".DOL_PHP_SELF.'?id='.$id);
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$id);
 			exit;
 		}
 	}
@@ -193,7 +193,7 @@ if (empty($reshook)) {
 		if ($object->setstatus(1) < 0) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		} else {
-			header("Location: ".DOL_PHP_SELF.'?id='.$id);
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$id);
 			exit;
 		}
 	}
@@ -600,7 +600,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// Confirm deleting contact
 	if ($user->hasRight('societe', 'contact', 'supprimer')) {
 		if ($action == 'delete') {
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$id.($backtopage ? '&backtopage='.$backtopage : ''), $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id.($backtopage ? '&backtopage='.$backtopage : ''), $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
 		}
 	}
 
@@ -668,7 +668,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</script>'."\n";
 			}
 
-			print '<form method="post" name="formsoc" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" name="formsoc" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="add">';
 			print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -969,7 +969,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print '</script>'."\n";
 			}
 
-			print '<form enctype="multipart/form-data" method="post" action="'.DOL_PHP_SELF.'?id='.$id.'" name="formsoc">';
+			print '<form enctype="multipart/form-data" method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" name="formsoc">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
 			print '<input type="hidden" name="action" value="update">';
@@ -1309,7 +1309,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 					$text .= $langs->trans("UserWillBeInternalUser");
 				}
 			}
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("CreateDolibarrLogin"), $text, "confirm_create_user", $formquestion, 'yes');
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("CreateDolibarrLogin"), $text, "confirm_create_user", $formquestion, 'yes');
 		}
 
 		$linkback = '<a href="'.DOL_URL_ROOT.'/contact/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
@@ -1406,12 +1406,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				print $langs->trans('ProspectLevel');
 				print '<td>';
 				if ($action != 'editlevel' && $user->hasRight('societe', 'contact', 'creer')) {
-					print '<td align="right"><a href="'.DOL_PHP_SELF.'?action=editlevel&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('Modify'), 1).'</a></td>';
+					print '<td align="right"><a href="'.$_SERVER['PHP_SELF'].'?action=editlevel&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('Modify'), 1).'</a></td>';
 				}
 				print '</tr></table>';
 				print '</td><td>';
 				if ($action == 'editlevel') {
-					$formcompany->formProspectContactLevel(DOL_PHP_SELF.'?id='.$object->id, $object->fk_prospectlevel, 'prospect_contact_level_id', 1);
+					$formcompany->formProspectContactLevel($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_prospectlevel, 'prospect_contact_level_id', 1);
 				} else {
 					print $object->getLibProspLevel();
 				}
@@ -1429,7 +1429,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 						$titlealt = $val['label'];
 					}
 					if ($object->stcomm_id != $val['id']) {
-						print '<a class="pictosubstatus" href="'.DOL_PHP_SELF.'?id='.$object->id.'&stcomm='.urlencode($val['code']).'&action=setstcomm&token='.newToken().'">'.img_action($titlealt, $val['code'], $val['picto']).'</a>';
+						print '<a class="pictosubstatus" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&stcomm='.urlencode($val['code']).'&action=setstcomm&token='.newToken().'">'.img_action($titlealt, $val['code'], $val['picto']).'</a>';
 					}
 				}
 				print '</div></td></tr>';
@@ -1499,7 +1499,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		} else {
 			//print '<span class="opacitymedium">'.$langs->trans("NoDolibarrAccess").'</span>';
 			if (!$object->user_id && $user->hasRight('user', 'user', 'creer')) {
-				print '<a class="aaa" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=create_user&token='.newToken().'">'.img_picto($langs->trans("CreateDolibarrLogin"), 'add', 'class="pictofixedwidth"').$langs->trans("CreateDolibarrLogin").'</a>';
+				print '<a class="aaa" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=create_user&token='.newToken().'">'.img_picto($langs->trans("CreateDolibarrLogin"), 'add', 'class="pictofixedwidth"').$langs->trans("CreateDolibarrLogin").'</a>';
 			}
 		}
 		print '</td></tr>';
@@ -1522,7 +1522,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			if (empty($user->socid)) {
 				if (!empty($object->email)) {
 					$langs->load("mails");
-					print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a></div>';
+					print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a></div>';
 				} else {
 					$langs->load("mails");
 					print '<div class="inline-block divButAction"><a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NoEMail")).'">'.$langs->trans('SendMail').'</a></div>';
@@ -1530,21 +1530,21 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 
 			if ($user->hasRight('societe', 'contact', 'creer')) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans('Modify').'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans('Modify').'</a>';
 			}
 
 			// Activer
 			if ($object->statut == 0 && $user->hasRight('societe', 'contact', 'creer')) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=enable&token='.newToken().'">'.$langs->trans("Reactivate").'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=enable&token='.newToken().'">'.$langs->trans("Reactivate").'</a>';
 			}
 			// Desactiver
 			if ($object->statut == 1 && $user->hasRight('societe', 'contact', 'creer')) {
-				print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=disable&id='.$object->id.'&token='.newToken().'">'.$langs->trans("DisableUser").'</a>';
+				print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=disable&id='.$object->id.'&token='.newToken().'">'.$langs->trans("DisableUser").'</a>';
 			}
 
 			// Delete
 			if ($user->hasRight('societe', 'contact', 'supprimer')) {
-				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().($backtopage ? '&backtopage='.urlencode($backtopage) : ''), 'delete', $user->hasRight('societe', 'contact', 'supprimer'));
+				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().($backtopage ? '&backtopage='.urlencode($backtopage) : ''), 'delete', $user->hasRight('societe', 'contact', 'supprimer'));
 			}
 		}
 

@@ -174,7 +174,7 @@ if ($action == 'updateMask') {
 		setEventMessages($langs->trans('Error'), null, 'errors');
 	} else {
 		setEventMessages($langs->trans('SetupSaved'), null, 'mesgs');
-		header("Location: " . DOL_PHP_SELF);
+		header("Location: " . $_SERVER['PHP_SELF']);
 		exit();
 	}
 } elseif (preg_match('/del_(.*)/', $action, $reg)) {
@@ -189,7 +189,7 @@ if ($action == 'updateMask') {
 		setEventMessages($langs->trans('Error'), null, 'errors');
 	} else {
 		setEventMessages($langs->trans('SetupSaved'), null, 'mesgs');
-		header("Location: " . DOL_PHP_SELF);
+		header("Location: " . $_SERVER['PHP_SELF']);
 		exit();
 	}
 }
@@ -275,7 +275,7 @@ foreach ($dirmodels as $reldir) {
 						if ($conf->global->CONTRACT_ADDON == "$file") {
 							print img_picto($langs->trans("Activated"), 'switch_on');
 						} else {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
 							print img_picto($langs->trans("Disabled"), 'switch_off');
 							print '</a>';
 						}
@@ -401,22 +401,22 @@ foreach ($dirmodels as $reldir) {
 								// Active
 								if (in_array($name, $def)) {
 									print '<td class="center">'."\n";
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del&token='.newToken().'&value='.urlencode($name).'">';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del&token='.newToken().'&value='.urlencode($name).'">';
 									print img_picto($langs->trans("Enabled"), 'switch_on');
 									print '</a>';
 									print '</td>';
 								} else {
 									print '<td class="center">'."\n";
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 									print "</td>";
 								}
 
 								// Default
 								print '<td class="center">';
 								if (getDolGlobalString('CONTRACT_ADDON_PDF') == $name) {
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=unsetdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier" alt="'.$langs->trans("Disable").'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=unsetdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier" alt="'.$langs->trans("Disable").'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 								} else {
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 								}
 								print '</td>';
 
@@ -443,7 +443,7 @@ foreach ($dirmodels as $reldir) {
 								// Preview
 								print '<td class="center">';
 								if ($module->type == 'pdf') {
-									print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 								} else {
 									print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 								}
@@ -468,7 +468,7 @@ print "<br>";
  *
  */
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_other">';
 
@@ -522,11 +522,11 @@ print '<tr class="oddeven">';
 print '<td>'.$langs->trans("AllowOnlineSign").'</td>';
 print '<td class="right">';
 if (getDolGlobalString('CONTRACT_ALLOW_ONLINESIGN')) {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=allowonlinesign&token='.newToken().'&value=0">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=allowonlinesign&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a>';
 } else {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=allowonlinesign&token='.newToken().'&value=1">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=allowonlinesign&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a>';
 }

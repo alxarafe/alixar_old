@@ -279,7 +279,7 @@ print '<script type="text/javascript" language="javascript">
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewEval"), '', 'object_' . $object->picto);
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	if ($backtopage) {
@@ -312,7 +312,7 @@ if ($action == 'create') {
 if (($id || $ref) && $action == 'edit') {
 	print load_fiche_titre($langs->trans("Evaluation"), '', 'object_'.$object->picto);
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -376,23 +376,23 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		}
 
 		if (!$error) {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ValidateEvaluation'), $text, 'confirm_validate', '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ValidateEvaluation'), $text, 'confirm_validate', '', 0, 1);
 		}
 	}
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteEvaluation'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteEvaluation'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
 	}
 	// Confirmation to delete line
 	if ($action == 'deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 	}
 	// Clone confirmation
 	if ($action == 'clone') {
 		// Create an array for form
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}
 
 	// Confirmation of action xxxx (You can use it for xxx = 'close', xxx = 'reopen', ...)
@@ -401,7 +401,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 		$formquestion = array();
 
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
 	}
 
 	// Call Hook formConfirm
@@ -469,7 +469,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 		print '<br>';
 
-		print '	<form name="form_save_rank" id="form_save_rank" action="'.DOL_PHP_SELF.'?id='.$object->id.(($action != 'editline') ? '' : '#line_'.GETPOSTINT('lineid')).'" method="POST">
+		print '	<form name="form_save_rank" id="form_save_rank" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.(($action != 'editline') ? '' : '#line_'.GETPOSTINT('lineid')).'" method="POST">
 		<input type="hidden" name="token" value="' . newToken().'">
 		<input type="hidden" name="action" value="saveSkill">
 		<input type="hidden" name="mode" value="">
@@ -639,19 +639,19 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if (empty($reshook)) {
 			// Send
 			if (empty($user->socid)) {
-				print dolGetButtonAction('', $langs->trans('SendMail'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=presend&mode=init&token='.newToken().'#formmailbeforetitle');
+				print dolGetButtonAction('', $langs->trans('SendMail'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&mode=init&token='.newToken().'#formmailbeforetitle');
 			}
 
 			// Back to draft
 			if ($object->status == $object::STATUS_VALIDATED) {
-				print dolGetButtonAction('', $langs->trans('SetToDraft'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_setdraft&confirm=yes&token='.newToken(), '', $permissiontoadd);
-				print dolGetButtonAction('', $langs->trans('Close'), 'close', DOL_PHP_SELF.'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontodelete || ($object->status == $object::STATUS_CLOSED && $permissiontoclose));
+				print dolGetButtonAction('', $langs->trans('SetToDraft'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_setdraft&confirm=yes&token='.newToken(), '', $permissiontoadd);
+				print dolGetButtonAction('', $langs->trans('Close'), 'close', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontodelete || ($object->status == $object::STATUS_CLOSED && $permissiontoclose));
 			} elseif ($object->status != $object::STATUS_CLOSED) {
-				print dolGetButtonAction('', $langs->trans('Modify'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken(), '', $permissiontoadd);
+				print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken(), '', $permissiontoadd);
 			}
 
 			if ($object->status == $object::STATUS_CLOSED) {
-				print dolGetButtonAction($langs->trans('ReOpen'), '', 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=reopen&token='.newToken(), '', $permissiontoadd);
+				print dolGetButtonAction($langs->trans('ReOpen'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken(), '', $permissiontoadd);
 			}
 
 
@@ -667,7 +667,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 
 			// Delete (need delete permission, or if draft, just need create/modify permission)
-			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), '', $permissiontodelete);
+			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), '', $permissiontodelete);
 		}
 
 
@@ -690,7 +690,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			$objref = dol_sanitizeFileName($object->ref);
 			$relativepath = $objref.'/'.$objref.'.pdf';
 			$filedir = $conf->hrm->dir_output.'/'.$object->element.'/'.$objref;
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 			$genallowed = $user->hasRight('hrm', 'evaluation', 'read'); // If you can read, you can build the PDF to read content
 			$delallowed = $user->hasRight('hrm', 'evaluation', 'write'); // If you can create/edit, you can remove a file on card
 			print $formfile->showdocuments('hrm:Evaluation', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang, '', $object, 0, 'remove_file_comfirm');

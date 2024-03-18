@@ -385,7 +385,7 @@ $paramnoaction = preg_replace('/action=[a-z_]+/', '', $param);
 
 $head = calendars_prepare_head($paramnoaction);
 
-print '<form method="POST" id="searchFormList" class="listactionsfilter" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" id="searchFormList" class="listactionsfilter" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 
 $showextcals = $listofextcals;
 // Legend
@@ -498,14 +498,14 @@ if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda'
 
 	$urltocreateaction = DOL_URL_ROOT.'/comm/action/card.php?action=create';
 	$urltocreateaction .= '&apyear='.$tmpforcreatebutton['year'].'&apmonth='.$tmpforcreatebutton['mon'].'&apday='.$tmpforcreatebutton['mday'].'&aphour='.$tmpforcreatebutton['hours'].'&apmin='.$tmpforcreatebutton['minutes'];
-	$urltocreateaction .= '&backtopage='.urlencode(DOL_PHP_SELF.($newparam ? '?'.$newparam : ''));
+	$urltocreateaction .= '&backtopage='.urlencode($_SERVER['PHP_SELF'].($newparam ? '?'.$newparam : ''));
 
 	$newcardbutton .= dolGetButtonTitle($langs->trans("AddAction"), '', 'fa fa-plus-circle', $urltocreateaction);
 }
 
 $num = '';
 
-print_barre_liste($langs->trans("Agenda"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, -1, 'object_action', 0, $nav.'<span class="marginleftonly"></span>'.$newcardbutton, '', $limit, 1, 0, 1, $viewmode);
+print_barre_liste($langs->trans("Agenda"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, -1, 'object_action', 0, $nav.'<span class="marginleftonly"></span>'.$newcardbutton, '', $limit, 1, 0, 1, $viewmode);
 
 $link = '';
 //print load_fiche_titre('', $link.' &nbsp; &nbsp; '.$nav.' '.$newcardbutton, '');
@@ -801,7 +801,7 @@ $newparam = preg_replace('/showbirthday_=/i', 'showbirthday=', $newparam); // Re
 $newparam .= '&viewweek=1';
 
 echo '<input type="hidden" name="actionmove" value="mupdate">';
-echo '<input type="hidden" name="backtopage" value="'.dol_escape_htmltag(DOL_PHP_SELF).'?'.dol_escape_htmltag($_SERVER['QUERY_STRING']).'">';
+echo '<input type="hidden" name="backtopage" value="'.dol_escape_htmltag($_SERVER['PHP_SELF']).'?'.dol_escape_htmltag($_SERVER['QUERY_STRING']).'">';
 echo '<input type="hidden" name="newdate" id="newdate">';
 
 
@@ -1076,7 +1076,7 @@ jQuery(document).ready(function() {
 		if (ids == \'none\') /* No event */
 		{
 			/* alert(\'no event\'); */
-			url = "'.DOL_URL_ROOT.'/comm/action/card.php?action=create&assignedtouser="+userid+"&datep="+year+month+day+hour+min+"00&backtopage='.urlencode(DOL_PHP_SELF.'?year='.$year.'&month='.$month.'&day='.$day.($begin_h !== '' ? '&begin_h='.$begin_h : '').($end_h !== '' ? '&end_h='.$end_h : '').($begin_d !== '' ? '&begin_d='.$begin_d : '').($end_d !== '' ? '&end_d='.$end_d : '')).'"
+			url = "'.DOL_URL_ROOT.'/comm/action/card.php?action=create&assignedtouser="+userid+"&datep="+year+month+day+hour+min+"00&backtopage='.urlencode($_SERVER['PHP_SELF'].'?year='.$year.'&month='.$month.'&day='.$day.($begin_h !== '' ? '&begin_h='.$begin_h : '').($end_h !== '' ? '&end_h='.$end_h : '').($begin_d !== '' ? '&begin_d='.$begin_d : '').($end_d !== '' ? '&end_d='.$end_d : '')).'"
 			window.location.href = url;
 		}
 		else if (ids.indexOf(",") > -1)	/* There is several events */

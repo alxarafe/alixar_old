@@ -133,7 +133,7 @@ print load_fiche_titre($langs->trans('ComptaSetup'), $linkback, 'title_setup');
 
 print '<br>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 

@@ -104,7 +104,7 @@ print "<br>\n";
  * Edit parameters
  */
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 

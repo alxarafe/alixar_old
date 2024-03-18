@@ -481,7 +481,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 
 
 		// Formulaire de demande
-		print '<form method="POST" action="'.DOL_PHP_SELF.'" name="demandeCP">'."\n";
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'" name="demandeCP">'."\n";
 		print '<input type="hidden" name="token" value="'.newToken().'" />'."\n";
 		print '<input type="hidden" name="action" value="add" />'."\n";
 

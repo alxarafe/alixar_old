@@ -288,7 +288,7 @@ print '</div>';
 
 print '<div class="tabsAction">'."\n";
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="action" value="create">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="type" value="'.$type.'">';
@@ -470,7 +470,7 @@ if ($resql) {
 		$param .= "&option=".urlencode($option);
 	}
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="page" value="'.$page.'">';
 	if (!empty($limit)) {
@@ -489,7 +489,7 @@ if ($resql) {
 			$picto = 'salary';
 		}
 	}
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, '', '', $massactionbutton, $num, $nbtotalofrecords, $picto, 0, '', '', $limit);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, '', '', $massactionbutton, $num, $nbtotalofrecords, $picto, 0, '', '', $limit);
 
 
 	$tradinvoice = "Invoice";

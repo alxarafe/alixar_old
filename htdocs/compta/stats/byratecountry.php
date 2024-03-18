@@ -250,7 +250,7 @@ if ($modecompta == "BOOKKEEPINGCOLLECTED") {
 if ($modecompta == "CREANCES-DETTES") {
 	$name = $langs->trans("Turnover").', '.$langs->trans("ByVatRate");
 	$calcmode = $langs->trans("CalcModeDebt");
-	//$calcmode.='<br>('.$langs->trans("SeeReportInInputOutputMode",'<a href="'.DOL_PHP_SELF.'?year='.$year_start.'&modecompta=RECETTES-DEPENSES">','</a>').')';
+	//$calcmode.='<br>('.$langs->trans("SeeReportInInputOutputMode",'<a href="'.$_SERVER['PHP_SELF'].'?year='.$year_start.'&modecompta=RECETTES-DEPENSES">','</a>').')';
 
 	$description .= '<br>'.$langs->trans("RulesCADue");
 	if (getDolGlobalString('FACTURE_DEPOSITS_ARE_JUST_PAYMENTS')) {
@@ -266,7 +266,7 @@ if ($modecompta == "CREANCES-DETTES") {
 } elseif ($modecompta == "RECETTES-DEPENSES") {
 	$name = $langs->trans("TurnoverCollected").', '.$langs->trans("ByVatRate");
 	$calcmode = $langs->trans("CalcModePayment");
-	//$calcmode.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.DOL_PHP_SELF.'?year='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
+	//$calcmode.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.$_SERVER['PHP_SELF'].'?year='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
 
 	$description .= $langs->trans("RulesCAIn");
 	$description .= $langs->trans("DepositsAreIncluded");
@@ -279,7 +279,7 @@ $period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0);
 $period .= ' - ';
 $period .= $form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
 if ($date_end == dol_time_plus_duree($date_start, 1, 'y') - 1) {
-	$periodlink = '<a href="'.DOL_PHP_SELF.'?year='.($year_start - 1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.DOL_PHP_SELF.'?year='.($year_start + 1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
+	$periodlink = '<a href="'.$_SERVER['PHP_SELF'].'?year='.($year_start - 1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.$_SERVER['PHP_SELF'].'?year='.($year_start + 1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
 } else {
 	$periodlink = '';
 }

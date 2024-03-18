@@ -139,18 +139,18 @@ $resql = $db->query($sql);
 if ($resql) {
 	$num = $db->num_rows($resql);
 
-	print_barre_liste($langs->trans("TripsAndExpenses"), $page, DOL_PHP_SELF, "&socid=$socid", $sortfield, $sortorder, '', $num);
+	print_barre_liste($langs->trans("TripsAndExpenses"), $page, $_SERVER['PHP_SELF'], "&socid=$socid", $sortfield, $sortorder, '', $num);
 
 	$i = 0;
-	print '<form method="get" action="'.DOL_PHP_SELF.'">'."\n";
+	print '<form method="get" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 	print '<table class="noborder centpercent">';
 	print "<tr class=\"liste_titre\">";
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "d.rowid", "", "&socid=$socid", '', $sortfield, $sortorder);
-	print_liste_field_titre("Type", DOL_PHP_SELF, "d.type", "", "&socid=$socid", '', $sortfield, $sortorder);
-	print_liste_field_titre("Date", DOL_PHP_SELF, "d.dated", "", "&socid=$socid", 'align="center"', $sortfield, $sortorder);
-	print_liste_field_titre("Person", DOL_PHP_SELF, "u.lastname", "", "&socid=$socid", '', $sortfield, $sortorder);
-	print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", "&socid=$socid", '', $sortfield, $sortorder);
-	print_liste_field_titre("FeesKilometersOrAmout", DOL_PHP_SELF, "d.km", "", "&socid=$socid", 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "d.rowid", "", "&socid=$socid", '', $sortfield, $sortorder);
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "d.type", "", "&socid=$socid", '', $sortfield, $sortorder);
+	print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "d.dated", "", "&socid=$socid", 'align="center"', $sortfield, $sortorder);
+	print_liste_field_titre("Person", $_SERVER['PHP_SELF'], "u.lastname", "", "&socid=$socid", '', $sortfield, $sortorder);
+	print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", "&socid=$socid", '', $sortfield, $sortorder);
+	print_liste_field_titre("FeesKilometersOrAmout", $_SERVER['PHP_SELF'], "d.km", "", "&socid=$socid", 'class="right"', $sortfield, $sortorder);
 	print_liste_field_titre('');
 	print "</tr>\n";
 

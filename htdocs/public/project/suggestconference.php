@@ -546,7 +546,7 @@ print '<br>';
 dol_htmloutput_errors($errmsg, $errors);
 
 // Print form
-print '<form action="'.DOL_PHP_SELF.'" method="POST" name="newmember">'."\n";
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" name="newmember">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'" / >';
 print '<input type="hidden" name="entity" value="'.$entity.'" />';
 print '<input type="hidden" name="action" value="add" />';

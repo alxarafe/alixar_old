@@ -121,7 +121,7 @@ if (empty($reshook)) {
 		$object->fetch($id);
 		$res = $object->delete($user);
 		if ($res > 0) {
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -221,7 +221,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -252,7 +252,7 @@ if (GETPOSTINT('nomassaction') || in_array($massaction, array('presend', 'predel
 }
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -270,7 +270,7 @@ print '<input type="hidden" name="mode" value="'.$mode.'">';
 $newcardbutton = '';
 $newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/bookmarks/card.php?action=create&backtopage='.urlencode(DOL_URL_ROOT.'/bookmarks/list.php'), '', $permissiontoadd);
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'bookmark', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'bookmark', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "SendBookmarkRef";
@@ -295,7 +295,7 @@ if (!empty($moreforfilter)) {
 	print '</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -313,25 +313,25 @@ $totalarray['nbfield'] = 0;
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Ref", DOL_PHP_SELF, "b.rowid", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "b.rowid", "", $param, '', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Title", DOL_PHP_SELF, "b.title", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Title", $_SERVER['PHP_SELF'], "b.title", "", $param, '', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Link", DOL_PHP_SELF, "b.url", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Link", $_SERVER['PHP_SELF'], "b.url", "", $param, '', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Target", DOL_PHP_SELF, "b.target", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Target", $_SERVER['PHP_SELF'], "b.target", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
-print_liste_field_titre("Visibility", DOL_PHP_SELF, "u.lastname", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Visibility", $_SERVER['PHP_SELF'], "u.lastname", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
-print_liste_field_titre("DateCreation", DOL_PHP_SELF, "b.dateb", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("DateCreation", $_SERVER['PHP_SELF'], "b.dateb", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
-print_liste_field_titre("Position", DOL_PHP_SELF, "b.position", "", $param, '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre("Position", $_SERVER['PHP_SELF'], "b.position", "", $param, '', $sortfield, $sortorder, 'right ');
 $totalarray['nbfield']++;
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
 print '</tr>'."\n";

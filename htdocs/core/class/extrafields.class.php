@@ -1438,7 +1438,7 @@ class ExtraFields
 						// current object id can be use into filter
 						if (strpos($InfoFieldList[4], '$ID$') !== false && !empty($objectid)) {
 							$InfoFieldList[4] = str_replace('$ID$', $objectid, $InfoFieldList[4]);
-						} elseif (preg_match("#^.*list.php$#", DOL_PHP_SELF)) {
+						} elseif (preg_match("#^.*list.php$#", $_SERVER['PHP_SELF'])) {
 							// Pattern for word=$ID$
 							$word = '\b[a-zA-Z0-9-\.-_]+\b=\$ID\$';
 
@@ -2091,7 +2091,7 @@ class ExtraFields
 						$out .= '   jQuery(".trextrafields_collapse'.$collapse_group.'").hide();'."\n";
 					} else {
 						$out .= '   console.log("Inject js for collapsing of extrafield '.$key.' - keep visible and set cookie");'."\n";
-						$out .= '   document.cookie = "DOLCOLLAPSE_'.$object->table_element.'_extrafields_'.$key.'=1; path='.DOL_PHP_SELF.'"'."\n";
+						$out .= '   document.cookie = "DOLCOLLAPSE_'.$object->table_element.'_extrafields_'.$key.'=1; path='.$_SERVER['PHP_SELF'].'"'."\n";
 					}
 				}
 				$out .= '   jQuery("#trextrafieldseparator'.$key.(!empty($object->id) ? '_'.$object->id : '').'").click(function(){'."\n";
@@ -2099,10 +2099,10 @@ class ExtraFields
 				$out .= '       jQuery(".trextrafields_collapse'.$collapse_group.'").toggle(100, function(){'."\n";
 				$out .= '           if (jQuery(".trextrafields_collapse'.$collapse_group.'").is(":hidden")) {'."\n";
 				$out .= '               jQuery("#trextrafieldseparator'.$key.(!empty($object->id) ? '_'.$object->id : '').' '.$tagtype_dyn.' span").addClass("fa-plus-square").removeClass("fa-minus-square");'."\n";
-				$out .= '               document.cookie = "DOLCOLLAPSE_'.$object->table_element.'_extrafields_'.$key.'=0; path='.DOL_PHP_SELF.'"'."\n";
+				$out .= '               document.cookie = "DOLCOLLAPSE_'.$object->table_element.'_extrafields_'.$key.'=0; path='.$_SERVER['PHP_SELF'].'"'."\n";
 				$out .= '           } else {'."\n";
 				$out .= '               jQuery("#trextrafieldseparator'.$key.(!empty($object->id) ? '_'.$object->id : '').' '.$tagtype_dyn.' span").addClass("fa-minus-square").removeClass("fa-plus-square");'."\n";
-				$out .= '               document.cookie = "DOLCOLLAPSE_'.$object->table_element.'_extrafields_'.$key.'=1; path='.DOL_PHP_SELF.'"'."\n";
+				$out .= '               document.cookie = "DOLCOLLAPSE_'.$object->table_element.'_extrafields_'.$key.'=1; path='.$_SERVER['PHP_SELF'].'"'."\n";
 				$out .= '           }'."\n";
 				$out .= '       });'."\n";
 				$out .= '   });'."\n";

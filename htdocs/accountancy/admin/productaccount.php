@@ -416,7 +416,7 @@ if ($resql) {
 	$i = 0;
 
 	$param = '';
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -450,7 +450,7 @@ if ($resql) {
 		$param .= '&accounting_product_mode='.urlencode($accounting_product_mode);
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -499,7 +499,7 @@ if ($resql) {
 
 	// Filter on categories
 	$moreforfilter = '';
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 
 	if ($massaction !== 'set_default_account') {
@@ -514,7 +514,7 @@ if ($resql) {
 	//print '<br><div class="center">'.$buttonsave.'</div>';
 
 	$texte = $langs->trans("ListOfProductsServices");
-	print_barre_liste($texte, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, '', 0, '', '', $limit, 0, 0, 1);
+	print_barre_liste($texte, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, '', 0, '', '', $limit, 0, 0, 1);
 
 	if ($massaction == 'set_default_account') {
 		$formquestion = array();
@@ -522,7 +522,7 @@ if ($resql) {
 			'name' => 'set_default_account',
 			'label' => $langs->trans("AccountancyCode"),
 			'value' => $form->select_account('', 'default_account', 1, array(), 0, 0, 'maxwidth200 maxwidthonsmartphone', 'cachewithshowemptyone'));
-		print $form->formconfirm(DOL_PHP_SELF, $langs->trans("ConfirmPreselectAccount"), $langs->trans("ConfirmPreselectAccountQuestion", count($chk_prod)), "confirm_set_default_account", $formquestion, 1, 0, 200, 500, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'], $langs->trans("ConfirmPreselectAccount"), $langs->trans("ConfirmPreselectAccountQuestion", count($chk_prod)), "confirm_set_default_account", $formquestion, 1, 0, 200, 500, 1);
 	}
 
 	// Filter on categories
@@ -610,19 +610,19 @@ if ($resql) {
 		$clickpitco = $form->showCheckAddButtons('checkforselect', 1);
 		print_liste_field_titre($clickpitco, '', '', '', '', '', '', '', 'center ');
 	}
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "p.ref", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Label", DOL_PHP_SELF, "p.label", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "p.ref", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "p.label", "", $param, '', $sortfield, $sortorder);
 	if (getDolGlobalInt('ACCOUNTANCY_SHOW_PROD_DESC')) {
-		print_liste_field_titre("Description", DOL_PHP_SELF, "p.description", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("Description", $_SERVER['PHP_SELF'], "p.description", "", $param, '', $sortfield, $sortorder);
 	}
-	print_liste_field_titre("VATRate", DOL_PHP_SELF, "p.tva_tx", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("VATRate", $_SERVER['PHP_SELF'], "p.tva_tx", "", $param, '', $sortfield, $sortorder, 'right ');
 	// On sell / On purchase
 	if ($accounting_product_mode == 'ACCOUNTANCY_SELL' || $accounting_product_mode == 'ACCOUNTANCY_SELL_INTRA' || $accounting_product_mode == 'ACCOUNTANCY_SELL_EXPORT') {
-		print_liste_field_titre("OnSell", DOL_PHP_SELF, "p.tosell", "", $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("OnSell", $_SERVER['PHP_SELF'], "p.tosell", "", $param, '', $sortfield, $sortorder, 'center ');
 	} else {
-		print_liste_field_titre("OnBuy", DOL_PHP_SELF, "p.tobuy", "", $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("OnBuy", $_SERVER['PHP_SELF'], "p.tobuy", "", $param, '', $sortfield, $sortorder, 'center ');
 	}
-	print_liste_field_titre("CurrentDedicatedAccountingAccount", DOL_PHP_SELF, (!getDolGlobalString('MAIN_PRODUCT_PERENTITY_SHARED') ? "p." : "ppe.") . $accountancy_field_name, "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("CurrentDedicatedAccountingAccount", $_SERVER['PHP_SELF'], (!getDolGlobalString('MAIN_PRODUCT_PERENTITY_SHARED') ? "p." : "ppe.") . $accountancy_field_name, "", $param, '', $sortfield, $sortorder);
 	print_liste_field_titre("AssignDedicatedAccountingAccount");
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {

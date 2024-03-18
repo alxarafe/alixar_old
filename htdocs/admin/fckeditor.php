@@ -179,9 +179,9 @@ if (empty($conf->use_javascript_ajax)) {
 		print '<td class="center centpercent width100">';
 		$value = getDolGlobalInt($constante, 0);
 		if ($value == 0) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=enable_'.strtolower($const).'&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=enable_'.strtolower($const).'&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 		} elseif ($value == 1) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=disable_'.strtolower($const).'&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'switch_on').'</a>';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=disable_'.strtolower($const).'&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'switch_on').'</a>';
 		}
 
 		print "</td>";
@@ -192,7 +192,7 @@ if (empty($conf->use_javascript_ajax)) {
 
 	print '<br>'."\n";
 
-	print '<form name="formtest" method="POST" action="'.DOL_PHP_SELF.'">'."\n";
+	print '<form name="formtest" method="POST" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="page_y" value="">';
 
@@ -206,7 +206,7 @@ if (empty($conf->use_javascript_ajax)) {
 		if ($linkstomode) {
 			$linkstomode .= ' - ';
 		}
-		$linkstomode .= '<a class="reposition" href="'.DOL_PHP_SELF.'?mode='.$newmode.'">';
+		$linkstomode .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?mode='.$newmode.'">';
 		if ($mode == $newmode) {
 			$linkstomode .= '<strong>';
 		}

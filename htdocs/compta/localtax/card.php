@@ -152,7 +152,7 @@ if ($action == 'create') {
 
 	print load_fiche_titre($langs->transcountry($lttype == 2 ? "newLT2Payment" : "newLT1Payment", $mysoc->country_code));
 
-	print '<form name="add" action="'.DOL_PHP_SELF.'" name="formlocaltax" method="post">'."\n";
+	print '<form name="add" action="'.$_SERVER['PHP_SELF'].'" name="formlocaltax" method="post">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="localTaxType" value="'.$lttype.'">';
 	print '<input type="hidden" name="action" value="add">';

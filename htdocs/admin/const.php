@@ -190,7 +190,7 @@ print "<br>\n";
 
 $param = '';
 
-print '<form action="'.DOL_PHP_SELF.((empty($user->entity) && $debug) ? '?debug=1' : '').'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].((empty($user->entity) && $debug) ? '?debug=1' : '').'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" id="action" name="action" value="add">';
 print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
@@ -199,14 +199,14 @@ print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print getTitleFieldOfList('Name', 0, DOL_PHP_SELF, 'name', '', $param, '', $sortfield, $sortorder, '') . "\n";
-print getTitleFieldOfList("Value", 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
-print getTitleFieldOfList("Comment", 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
-print getTitleFieldOfList('DateModificationShort', 0, DOL_PHP_SELF, 'tms', '', $param, '', $sortfield, $sortorder, 'center ') . "\n";
+print getTitleFieldOfList('Name', 0, $_SERVER['PHP_SELF'], 'name', '', $param, '', $sortfield, $sortorder, '') . "\n";
+print getTitleFieldOfList("Value", 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
+print getTitleFieldOfList("Comment", 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
+print getTitleFieldOfList('DateModificationShort', 0, $_SERVER['PHP_SELF'], 'tms', '', $param, '', $sortfield, $sortorder, 'center ') . "\n";
 if (isModEnabled('multicompany') && !$user->entity) {
-	print getTitleFieldOfList('Entity', 0, DOL_PHP_SELF, 'tms', '', $param, '', $sortfield, $sortorder, 'center ') . "\n";
+	print getTitleFieldOfList('Entity', 0, $_SERVER['PHP_SELF'], 'tms', '', $param, '', $sortfield, $sortorder, 'center ') . "\n";
 }
-print getTitleFieldOfList("", 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ');
+print getTitleFieldOfList("", 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
 print "</tr>\n";
 
 
@@ -307,7 +307,7 @@ if ($result) {
 		if (!empty($conf->use_javascript_ajax)) {
 			print '<input type="checkbox" class="flat checkboxfordelete" id="check_'.$i.'" name="const['.$i.'][check]" value="1">';
 		} else {
-			print '<a href="'.DOL_PHP_SELF.'?rowid='.$obj->rowid.'&entity='.$obj->entity.'&action=delete&token='.newToken().((empty($user->entity) && $debug) ? '&debug=1' : '').'">'.img_delete().'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?rowid='.$obj->rowid.'&entity='.$obj->entity.'&action=delete&token='.newToken().((empty($user->entity) && $debug) ? '&debug=1' : '').'">'.img_delete().'</a>';
 		}
 
 		print "</td></tr>\n";

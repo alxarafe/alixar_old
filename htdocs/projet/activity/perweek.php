@@ -350,7 +350,7 @@ if ($action == 'addtime' && $user->hasRight('projet', 'lire') && GETPOST('formfi
 			include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
 
 			// Redirect to avoid submit twice on back
-			header('Location: '.DOL_PHP_SELF.'?'.$param);
+			header('Location: '.$_SERVER['PHP_SELF'].'?'.$param);
 			exit;
 		}
 	}
@@ -426,7 +426,7 @@ $tasksrole = $taskstatic->getUserRolesForProjectsOrTasks(null, $usertoprocess, (
 
 llxHeader("", $title, "", '', '', '', array('/core/js/timesheet.js'));
 
-//print_barre_liste($title, $page, DOL_PHP_SELF, "", $sortfield, $sortorder, "", $num, '', 'project');
+//print_barre_liste($title, $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, "", $num, '', 'project');
 
 $param = '';
 $param .= ($mode ? '&mode='.urlencode($mode) : '');
@@ -453,7 +453,7 @@ $nav .= ' <button type="submit" name="submitdateselect" value="x" class="noborde
 
 $picto = 'clock';
 
-print '<form name="addtime" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form name="addtime" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="addtime">';
 print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
@@ -587,7 +587,7 @@ if (!empty($moreforfilter)) {
 }
 
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 
@@ -693,7 +693,7 @@ for ($idw = 0; $idw < 7; $idw++) {
 	print '<br>'.dol_print_date($dayinloopfromfirstdaytoshow, 'dayreduceformat').'</th>';
 }
 //print '<td></td>';
-print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 
 
 print "</tr>\n";

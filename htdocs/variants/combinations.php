@@ -513,7 +513,7 @@ if (!empty($id) || !empty($ref)) {
 						continue;
 					}
 					$toprint[] = '<li class="select2-search-choice-dolibarr noborderoncategories" style="background: #ddd;">' . $prodattr->label.' : '.$prodattr_val->value .
-						' <a class="reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=create&subaction=delete&feature='.urlencode($feature).'">' . img_delete() . '</a></li>';
+						' <a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=create&subaction=delete&feature='.urlencode($feature).'">' . img_delete() . '</a></li>';
 				}
 				$listofvariantselected .= '<div class="select2-container-multi-dolibarr" style="width: 90%;"><ul class="select2-choices-dolibarr">' . implode(' ', $toprint) . '</ul></div>';
 			}
@@ -611,7 +611,7 @@ if (!empty($id) || !empty($ref)) {
 
 		print load_fiche_titre($title);
 
-		print '<form method="post" id="combinationform" action="'.DOL_PHP_SELF .'?id='.$object->id.'">'."\n";
+		print '<form method="post" id="combinationform" action="'.$_SERVER['PHP_SELF'] .'?id='.$object->id.'">'."\n";
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="'.(($valueid > 0) ? "update" : "create").'">'."\n";
 		if ($valueid > 0) {
@@ -639,7 +639,7 @@ if (!empty($id) || !empty($ref)) {
 
 			$htmltext = $langs->trans("GoOnMenuToCreateVairants", $langs->transnoentities("Product"), $langs->transnoentities("VariantAttributes"));
 			print $form->textwithpicto('', $htmltext);
-			/*print ' &nbsp; &nbsp; <a href="'.DOL_URL_ROOT.'/variants/create.php?action=create&backtopage='.urlencode(DOL_PHP_SELF.'?action=add&token='.newToken().'&id='.$object->id).'">';
+			/*print ' &nbsp; &nbsp; <a href="'.DOL_URL_ROOT.'/variants/create.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=add&token='.newToken().'&id='.$object->id).'">';
 			print $langs->trans("Create");
 			print '</a>';*/
 
@@ -656,7 +656,7 @@ if (!empty($id) || !empty($ref)) {
 					$htmltext = $langs->trans("GoOnMenuToCreateVairants", $langs->transnoentities("Product"), $langs->transnoentities("VariantAttributes"));
 					print $form->textwithpicto('', $htmltext);
 					/*
-					print ' &nbsp; &nbsp; <a href="'.DOL_URL_ROOT.'/variants/create.php?action=create&backtopage='.urlencode(DOL_PHP_SELF.'?action=add&token='.newToken().'&id='.$object->id).'">';
+					print ' &nbsp; &nbsp; <a href="'.DOL_URL_ROOT.'/variants/create.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=add&token='.newToken().'&id='.$object->id).'">';
 					print $langs->trans("Create");
 					print '</a>';
 					*/ ?>
@@ -855,7 +855,7 @@ if (!empty($id) || !empty($ref)) {
 
 
 		// List of variants
-		print '<form method="POST" action="'.DOL_PHP_SELF .'?id='.$object->id.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'] .'?id='.$object->id.'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="massaction">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -879,7 +879,7 @@ if (!empty($id) || !empty($ref)) {
 
 		$title = $langs->trans("ProductCombinations");
 
-		print_barre_liste($title, 0, DOL_PHP_SELF, '', $sortfield, $sortorder, $aaa, 0);
+		print_barre_liste($title, 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, $aaa, 0);
 
 		print '<div class="div-table-responsive">'; ?>
 		<table class="liste">
@@ -950,8 +950,8 @@ if (!empty($id) || !empty($ref)) {
 				print '<td class="center">'.$prodstatic->getLibStatut(2, 1).'</td>';
 
 				print '<td class="right">';
-				print '<a class="paddingleft paddingright editfielda" href="'.DOL_PHP_SELF.'?id='.$id.'&action=edit&token='.newToken().'&valueid='.$currcomb->id.'">'.img_edit().'</a>';
-				print '<a class="paddingleft paddingright" href="'.DOL_PHP_SELF.'?id='.$id.'&action=delete&token='.newToken().'&valueid='.$currcomb->id.'">'.img_delete().'</a>';
+				print '<a class="paddingleft paddingright editfielda" href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&action=edit&token='.newToken().'&valueid='.$currcomb->id.'">'.img_edit().'</a>';
+				print '<a class="paddingleft paddingright" href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&action=delete&token='.newToken().'&valueid='.$currcomb->id.'">'.img_delete().'</a>';
 				print '</td>';
 
 				// Action column

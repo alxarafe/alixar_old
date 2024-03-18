@@ -335,7 +335,7 @@ if ($resql) {
 			print '<td width="16" class="right nobordernopadding hideonsmartphone">';
 			$filename = dol_sanitizeFileName($obj->ref);
 			$filedir = $conf->commande->dir_output.'/'.dol_sanitizeFileName($obj->ref);
-			$urlsource = DOL_PHP_SELF.'?id='.$obj->rowid;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 			print $formfile->getDocumentsLink($commandestatic->element, $filename, $filedir);
 			print '</td></tr></table>';
 
@@ -404,7 +404,7 @@ print '</td>';
 print '<td width="16" class="right nobordernopadding hideonsmartphone">';
 $filename=dol_sanitizeFileName($obj->ref);
 $filedir=$conf->commande->dir_output . '/' . dol_sanitizeFileName($obj->ref);
-$urlsource=DOL_PHP_SELF.'?id='.$obj->rowid;
+$urlsource=$_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 print $formfile->getDocumentsLink($commandestatic->element, $filename, $filedir);
 print '</td></tr></table>';
 

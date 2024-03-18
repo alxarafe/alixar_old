@@ -97,7 +97,7 @@ class FileUpload
 		}
 
 		$this->options = array(
-			'script_url' => DOL_PHP_SELF,
+			'script_url' => $_SERVER['PHP_SELF'],
 			'upload_dir' => $dir_output.'/'.$object_ref.'/',
 			'upload_url' => DOL_URL_ROOT.'/document.php?modulepart='.$element.'&attachment=1&file=/'.$object_ref.'/',
 			'param_name' => 'files',

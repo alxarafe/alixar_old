@@ -1076,12 +1076,12 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 
 				if (!empty($projectidforalltimes)) {
 					// We are on tab 'Time Spent' of project
-					$backtourl = DOL_PHP_SELF . '?projectid=' . $projectstatic->id . ($withproject ? '&withproject=1' : '');
-					$linktocreatetimeUrl = DOL_PHP_SELF . '?' . ($withproject ? 'withproject=1' : '') . '&projectid=' . $projectstatic->id . '&action=createtime&token=' . newToken() . $param . '&backtopage=' . urlencode($backtourl);
+					$backtourl = $_SERVER['PHP_SELF'] . '?projectid=' . $projectstatic->id . ($withproject ? '&withproject=1' : '');
+					$linktocreatetimeUrl = $_SERVER['PHP_SELF'] . '?' . ($withproject ? 'withproject=1' : '') . '&projectid=' . $projectstatic->id . '&action=createtime&token=' . newToken() . $param . '&backtopage=' . urlencode($backtourl);
 				} else {
 					// We are on tab 'Time Spent' of task
-					$backtourl = DOL_PHP_SELF . '?id=' . $object->id . ($withproject ? '&withproject=1' : '');
-					$linktocreatetimeUrl = DOL_PHP_SELF . '?' . ($withproject ? 'withproject=1' : '') . ($object->id > 0 ? '&id=' . $object->id : '&projectid=' . $projectstatic->id) . '&action=createtime&token=' . newToken() . $param . '&backtopage=' . urlencode($backtourl);
+					$backtourl = $_SERVER['PHP_SELF'] . '?id=' . $object->id . ($withproject ? '&withproject=1' : '');
+					$linktocreatetimeUrl = $_SERVER['PHP_SELF'] . '?' . ($withproject ? 'withproject=1' : '') . ($object->id > 0 ? '&id=' . $object->id : '&projectid=' . $projectstatic->id) . '&action=createtime&token=' . newToken() . $param . '&backtopage=' . urlencode($backtourl);
 				}
 			} else {
 				$linktocreatetimeBtnStatus = -2;
@@ -1126,7 +1126,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 		print dol_get_fiche_head($head, 'task_time', $langs->trans("Task"), -1, 'projecttask', 0, '', 'reposition');
 
 		if ($action == 'deleteline') {
-			$urlafterconfirm = DOL_PHP_SELF . "?" . ($object->id > 0 ? "id=" . $object->id : 'projectid=' . $projectstatic->id) . '&lineid=' . GETPOSTINT("lineid") . ($withproject ? '&withproject=1' : '');
+			$urlafterconfirm = $_SERVER['PHP_SELF'] . "?" . ($object->id > 0 ? "id=" . $object->id : 'projectid=' . $projectstatic->id) . '&lineid=' . GETPOSTINT("lineid") . ($withproject ? '&withproject=1' : '');
 			print $form->formconfirm($urlafterconfirm, $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_deleteline", '', '', 1);
 		}
 
@@ -1233,7 +1233,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 		print dol_get_fiche_end();
 	} else {
 		if ($action == 'deleteline') {
-			$urlafterconfirm = DOL_PHP_SELF . "?" . ($object->id > 0 ? "id=" . $object->id : 'projectid=' . $projectstatic->id) . '&lineid=' . GETPOSTINT("lineid") . ($withproject ? '&withproject=1' : '');
+			$urlafterconfirm = $_SERVER['PHP_SELF'] . "?" . ($object->id > 0 ? "id=" . $object->id : 'projectid=' . $projectstatic->id) . '&lineid=' . GETPOSTINT("lineid") . ($withproject ? '&withproject=1' : '');
 			print $form->formconfirm($urlafterconfirm, $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_deleteline", '', '', 1);
 		}
 	}
@@ -1247,7 +1247,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 
 		if ($action == 'deleteline' && !empty($projectidforalltimes)) {
 			// We must use projectidprojectid if on list of timespent of project and id=taskid if on list of timespent of a task
-			$urlafterconfirm = DOL_PHP_SELF . "?" . ($projectstatic->id > 0 ? 'projectid=' . $projectstatic->id : ($object->id > 0 ? "id=" . $object->id : '')) . '&lineid=' . GETPOSTINT('lineid') . ($withproject ? '&withproject=1' : '') . "&contextpage=" . urlencode($contextpage);
+			$urlafterconfirm = $_SERVER['PHP_SELF'] . "?" . ($projectstatic->id > 0 ? 'projectid=' . $projectstatic->id : ($object->id > 0 ? "id=" . $object->id : '')) . '&lineid=' . GETPOSTINT('lineid') . ($withproject ? '&withproject=1' : '') . "&contextpage=" . urlencode($contextpage);
 			$formconfirm = $form->formconfirm($urlafterconfirm, $langs->trans("DeleteATimeSpent"), $langs->trans("ConfirmDeleteATimeSpent"), "confirm_deleteline", '', '', 1);
 		}
 
@@ -1290,7 +1290,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 		$arrayfields = dol_sort_array($arrayfields, 'position');
 
 		$param = '';
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage=' . urlencode($contextpage);
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -1381,7 +1381,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 		$reshook = $hookmanager->executeHooks('printFieldListSearchParam', $parameters, $object); // Note that $action and $object may have been modified by hook
 		$param .= $hookmanager->resPrint;
 
-		print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+		print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 		if ($optioncss != '') {
 			print '<input type="hidden" name="optioncss" value="' . $optioncss . '">';
 		}
@@ -1547,7 +1547,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 		 */
 		$tasks = array();
 
-		$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+		$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 		$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 
 		$sql = "SELECT t.rowid, t.fk_element, t.element_date, t.element_datehour, t.element_date_withhour, t.element_duration, t.fk_user, t.note, t.thm,";
@@ -1703,13 +1703,13 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 
 				$title = $langs->trans("ListTaskTimeUserProject");
 
-				print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'clock', 0, $linktocreatetime, '', $limit, 0, 0, 1);
+				print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'clock', 0, $linktocreatetime, '', $limit, 0, 0, 1);
 			} else {
 				print '<!-- List of time spent -->' . "\n";
 
 				$title = $langs->trans("ListTaskTimeForTask");
 
-				print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'clock', 0, $linktocreatetime, '', $limit, 0, 0, 1);
+				print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'clock', 0, $linktocreatetime, '', $limit, 0, 0, 1);
 			}
 
 			$i = 0;
@@ -1870,7 +1870,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 			print '</div>';
 		}
 
-		$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+		$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 		$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 		$selectedfields .= (is_array($arrayofmassactions) && count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -1993,64 +1993,64 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 		// --------------------------------------------------------------------
 		print '<tr class="liste_titre">';
 		if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+			print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 			$totalarray['nbfield']++;
 		}
 		if (!empty($arrayfields['t.element_date']['checked'])) {
-			print_liste_field_titre($arrayfields['t.element_date']['label'], DOL_PHP_SELF, 't.element_date,t.element_datehour,t.rowid', '', $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['t.element_date']['label'], $_SERVER['PHP_SELF'], 't.element_date,t.element_datehour,t.rowid', '', $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 		if (!empty($arrayfields['p.fk_soc']['checked'])) {
-			print_liste_field_titre($arrayfields['p.fk_soc']['label'], DOL_PHP_SELF, 't.element_date,t.element_datehour,t.rowid', '', $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['p.fk_soc']['label'], $_SERVER['PHP_SELF'], 't.element_date,t.element_datehour,t.rowid', '', $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 		if (!empty($arrayfields['s.name_alias']['checked'])) {
-			print_liste_field_titre($arrayfields['s.name_alias']['label'], DOL_PHP_SELF, 's.name_alias', '', $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['s.name_alias']['label'], $_SERVER['PHP_SELF'], 's.name_alias', '', $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 		if (!empty($allprojectforuser)) {
 			if (!empty($arrayfields['p.project_ref']['checked'])) {
-				print_liste_field_titre("Project", DOL_PHP_SELF, 'p.ref', '', $param, '', $sortfield, $sortorder);
+				print_liste_field_titre("Project", $_SERVER['PHP_SELF'], 'p.ref', '', $param, '', $sortfield, $sortorder);
 				$totalarray['nbfield']++;
 			}
 			if (!empty($arrayfields['p.project_label']['checked'])) {
-				print_liste_field_titre("ProjectLabel", DOL_PHP_SELF, 'p.title', '', $param, '', $sortfield, $sortorder);
+				print_liste_field_titre("ProjectLabel", $_SERVER['PHP_SELF'], 'p.title', '', $param, '', $sortfield, $sortorder);
 				$totalarray['nbfield']++;
 			}
 		}
 		if ((empty($id) && empty($ref)) || !empty($projectidforalltimes)) {	// Not a dedicated task
 			if (!empty($arrayfields['t.element_ref']['checked'])) {
-				print_liste_field_titre($arrayfields['t.element_ref']['label'], DOL_PHP_SELF, 'pt.ref', '', $param, '', $sortfield, $sortorder);
+				print_liste_field_titre($arrayfields['t.element_ref']['label'], $_SERVER['PHP_SELF'], 'pt.ref', '', $param, '', $sortfield, $sortorder);
 				$totalarray['nbfield']++;
 			}
 			if (!empty($arrayfields['t.element_label']['checked'])) {
-				print_liste_field_titre($arrayfields['t.element_label']['label'], DOL_PHP_SELF, 'pt.label', '', $param, '', $sortfield, $sortorder);
+				print_liste_field_titre($arrayfields['t.element_label']['label'], $_SERVER['PHP_SELF'], 'pt.label', '', $param, '', $sortfield, $sortorder);
 				$totalarray['nbfield']++;
 			}
 		}
 		if (!empty($arrayfields['author']['checked'])) {
-			print_liste_field_titre($arrayfields['author']['label'], DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['author']['label'], $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 		if (!empty($arrayfields['t.note']['checked'])) {
-			print_liste_field_titre($arrayfields['t.note']['label'], DOL_PHP_SELF, 't.note', '', $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['t.note']['label'], $_SERVER['PHP_SELF'], 't.note', '', $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 		if (!empty($arrayfields['t.element_duration']['checked'])) {
-			print_liste_field_titre($arrayfields['t.element_duration']['label'], DOL_PHP_SELF, 't.element_duration', '', $param, '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre($arrayfields['t.element_duration']['label'], $_SERVER['PHP_SELF'], 't.element_duration', '', $param, '', $sortfield, $sortorder, 'right ');
 			$totalarray['nbfield']++;
 		}
 		if (!empty($arrayfields['t.fk_product']['checked'])) {
-			print_liste_field_titre($arrayfields['t.fk_product']['label'], DOL_PHP_SELF, 't.fk_product', '', $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['t.fk_product']['label'], $_SERVER['PHP_SELF'], 't.fk_product', '', $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 
 		if (!empty($arrayfields['value']['checked'])) {
-			print_liste_field_titre($arrayfields['value']['label'], DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre($arrayfields['value']['label'], $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 			$totalarray['nbfield']++;
 		}
 		if (!empty($arrayfields['valuebilled']['checked'])) {
-			print_liste_field_titre($arrayfields['valuebilled']['label'], DOL_PHP_SELF, 'il.total_ht', '', $param, '', $sortfield, $sortorder, 'center ', $langs->trans("SelectLinesOfTimeSpentToInvoice"));
+			print_liste_field_titre($arrayfields['valuebilled']['label'], $_SERVER['PHP_SELF'], 'il.total_ht', '', $param, '', $sortfield, $sortorder, 'center ', $langs->trans("SelectLinesOfTimeSpentToInvoice"));
 			$totalarray['nbfield']++;
 		}
 		/*
@@ -2062,7 +2062,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 		$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook
 		print $hookmanager->resPrint;
 		if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', 'width="80"', $sortfield, $sortorder, 'center maxwidthsearch ');
+			print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', 'width="80"', $sortfield, $sortorder, 'center maxwidthsearch ');
 			$totalarray['nbfield']++;
 		}
 		print "</tr>\n";
@@ -2102,16 +2102,16 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 					if (in_array($task_time->fk_user, $childids) || $user->hasRight('projet', 'all', 'creer')) {
 						if (getDolGlobalString('MAIN_FEATURES_LEVEL') >= 2) {
 							print '&nbsp;';
-							print '<a class="reposition" href="' . DOL_PHP_SELF . '?action=splitline&token=' . newToken() . '&lineid=' . $task_time->rowid . $param . ((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '') . '">';
+							print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=splitline&token=' . newToken() . '&lineid=' . $task_time->rowid . $param . ((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '') . '">';
 							print img_split('', 'class="pictofixedwidth"');
 							print '</a>';
 						}
 
-						print '<a class="reposition editfielda" href="'.DOL_PHP_SELF.'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=editline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
+						print '<a class="reposition editfielda" href="'.$_SERVER['PHP_SELF'].'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=editline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
 						print img_edit('default', 0, 'class="pictofixedwidth paddingleft"');
 						print '</a>';
 
-						print '<a class="reposition paddingleft" href="'.DOL_PHP_SELF.'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=deleteline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
+						print '<a class="reposition paddingleft" href="'.$_SERVER['PHP_SELF'].'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=deleteline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
 						print img_delete('default', 'class="pictodelete paddingleft"');
 						print '</a>';
 
@@ -2443,16 +2443,16 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
 					if (in_array($task_time->fk_user, $childids) || $user->hasRight('projet', 'all', 'creer')) {
 						if (getDolGlobalString('MAIN_FEATURES_LEVEL') >= 2) {
 							print '&nbsp;';
-							print '<a class="reposition" href="' . DOL_PHP_SELF . '?action=splitline&token=' . newToken() . '&lineid=' . $task_time->rowid . $param . ((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '') . '">';
+							print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=splitline&token=' . newToken() . '&lineid=' . $task_time->rowid . $param . ((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '') . '">';
 							print img_split('', 'class="pictofixedwidth"');
 							print '</a>';
 						}
 
-						print '<a class="reposition editfielda" href="'.DOL_PHP_SELF.'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=editline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
+						print '<a class="reposition editfielda" href="'.$_SERVER['PHP_SELF'].'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=editline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
 						print img_edit('default', 0, 'class="pictofixedwidth paddingleft"');
 						print '</a>';
 
-						print '<a class="reposition paddingleft" href="'.DOL_PHP_SELF.'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=deleteline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
+						print '<a class="reposition paddingleft" href="'.$_SERVER['PHP_SELF'].'?'.($withproject ? 'id='.$task_time->fk_element : '').'&action=deleteline&token='.newToken().'&lineid='.$task_time->rowid.$param.((empty($id) || $tab == 'timespent') ? '&tab=timespent' : '').'">';
 						print img_delete('default', 'class="pictodelete paddingleft"');
 						print '</a>';
 

@@ -184,7 +184,7 @@ if ($id > 0 || !empty($ref)) {
 			if ($result) {
 				$num = $db->num_rows($result);
 
-				print_barre_liste($langs->trans("MarginDetails"), $page, DOL_PHP_SELF, "&amp;id=$object->id", $sortfield, $sortorder, '', 0, 0, '');
+				print_barre_liste($langs->trans("MarginDetails"), $page, $_SERVER['PHP_SELF'], "&amp;id=$object->id", $sortfield, $sortorder, '', 0, 0, '');
 
 				$i = 0;
 
@@ -192,21 +192,21 @@ if ($id > 0 || !empty($ref)) {
 				print '<table class="noborder centpercent">';
 
 				print '<tr class="liste_titre">';
-				print_liste_field_titre("Invoice", DOL_PHP_SELF, "f.ref", "", "&amp;id=".$object->id, '', $sortfield, $sortorder);
-				print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", "&amp;id=".$object->id, '', $sortfield, $sortorder);
-				print_liste_field_titre("CustomerCode", DOL_PHP_SELF, "s.code_client", "", "&amp;id=".$object->id, '', $sortfield, $sortorder);
-				print_liste_field_titre("DateInvoice", DOL_PHP_SELF, "f.datef", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'left ');
-				print_liste_field_titre("SellingPrice", DOL_PHP_SELF, "selling_price", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
-				print_liste_field_titre("BuyingPrice", DOL_PHP_SELF, "buying_price", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
-				print_liste_field_titre("Qty", DOL_PHP_SELF, "d.qty", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
-				print_liste_field_titre("Margin", DOL_PHP_SELF, "marge", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("Invoice", $_SERVER['PHP_SELF'], "f.ref", "", "&amp;id=".$object->id, '', $sortfield, $sortorder);
+				print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", "&amp;id=".$object->id, '', $sortfield, $sortorder);
+				print_liste_field_titre("CustomerCode", $_SERVER['PHP_SELF'], "s.code_client", "", "&amp;id=".$object->id, '', $sortfield, $sortorder);
+				print_liste_field_titre("DateInvoice", $_SERVER['PHP_SELF'], "f.datef", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'left ');
+				print_liste_field_titre("SellingPrice", $_SERVER['PHP_SELF'], "selling_price", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("BuyingPrice", $_SERVER['PHP_SELF'], "buying_price", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("Qty", $_SERVER['PHP_SELF'], "d.qty", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("Margin", $_SERVER['PHP_SELF'], "marge", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
 				if (getDolGlobalString('DISPLAY_MARGIN_RATES')) {
-					print_liste_field_titre("MarginRate", DOL_PHP_SELF, "", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("MarginRate", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
 				}
 				if (getDolGlobalString('DISPLAY_MARK_RATES')) {
-					print_liste_field_titre("MarkRate", DOL_PHP_SELF, "", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("MarkRate", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
 				}
-				print_liste_field_titre("Status", DOL_PHP_SELF, "f.paye,f.fk_statut", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "f.paye,f.fk_statut", "", "&amp;id=".$object->id, '', $sortfield, $sortorder, 'right ');
 				print "</tr>\n";
 
 				$cumul_achat = 0;

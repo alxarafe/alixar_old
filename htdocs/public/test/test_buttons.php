@@ -67,7 +67,7 @@ llxHeader('', 'Documentation and examples for theme');
 		$actionType = 'delete';
 		$n++;
 		$id = 'mybuttonid'.$n;
-		$url = DOL_PHP_SELF . '?token='.newToken().'#'.$id;
+		$url = $_SERVER['PHP_SELF'] . '?token='.newToken().'#'.$id;
 		print dolGetButtonAction($label, $html, $actionType, $url, $id, $userRight);
 
 
@@ -75,7 +75,7 @@ llxHeader('', 'Documentation and examples for theme');
 		$actionType = 'danger';
 		$n++;
 		$id = 'mybuttonid'.$n;
-		$url = DOL_PHP_SELF . '?token='.newToken().'#'.$id;
+		$url = $_SERVER['PHP_SELF'] . '?token='.newToken().'#'.$id;
 		print dolGetButtonAction($label, $html, $actionType, $url, $id, $userRight);
 
 	?>
@@ -100,7 +100,7 @@ llxHeader('', 'Documentation and examples for theme');
 		$actionType = 'delete';
 		$n++;
 		$id = 'mybuttonid'.$n;
-		$url = DOL_PHP_SELF . '?token='.newToken().'#'.$id;
+		$url = $_SERVER['PHP_SELF'] . '?token='.newToken().'#'.$id;
 		print dolGetButtonAction($label, $html, $actionType, $url, $id, $userRight);
 
 
@@ -108,7 +108,7 @@ llxHeader('', 'Documentation and examples for theme');
 		$actionType = 'danger';
 		$n++;
 		$id = 'mybuttonid'.$n;
-		$url = DOL_PHP_SELF . '?token='.newToken().'#'.$id;
+		$url = $_SERVER['PHP_SELF'] . '?token='.newToken().'#'.$id;
 		print dolGetButtonAction($label, $html, $actionType, $url, $id, $userRight);
 
 	?>
@@ -139,7 +139,7 @@ llxHeader('', 'Documentation and examples for theme');
 		$actionType = 'delete';
 		$n++;
 		$id = 'mybuttonid'.$n;
-		$url = DOL_PHP_SELF . '?token='.newToken().'#'.$id;
+		$url = $_SERVER['PHP_SELF'] . '?token='.newToken().'#'.$id;
 
 		$params = array(
 			'confirm' => array(
@@ -178,7 +178,7 @@ llxHeader('', 'Documentation and examples for theme');
 		$actionType = 'delete';
 		$n++;
 		$id = 'mybuttonid'.$n;
-		$url = DOL_PHP_SELF . '?token='.newToken().'#'.$id;
+		$url = $_SERVER['PHP_SELF'] . '?token='.newToken().'#'.$id;
 
 		$params = array(
 			'confirm' => array(

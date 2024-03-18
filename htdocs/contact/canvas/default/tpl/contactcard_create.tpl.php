@@ -36,7 +36,7 @@ echo $this->control->tpl['ajax_selectcountry']; ?>
 
 <br>
 
-<form method="post" name="formsoc" action="<?php echo DOL_PHP_SELF; ?>">
+<form method="post" name="formsoc" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <input type="hidden" name="token" value="<?php echo newToken(); ?>">
 <input type="hidden" name="canvas" value="<?php echo $canvas ?>">
 <input type="hidden" name="action" value="add">

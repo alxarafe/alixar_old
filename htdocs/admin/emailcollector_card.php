@@ -279,7 +279,7 @@ llxHeader('', 'EmailCollector', $help_url);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewEmailCollector", $langs->transnoentitiesnoconv("EmailCollector")));
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -309,7 +309,7 @@ if ($action == 'create') {
 if (($id || $ref) && $action == 'edit') {
 	print load_fiche_titre($langs->trans("EmailCollector"));
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -348,20 +348,20 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteEmailCollector'), $langs->trans('ConfirmDeleteEmailCollector'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteEmailCollector'), $langs->trans('ConfirmDeleteEmailCollector'), 'confirm_delete', '', 0, 1);
 	}
 
 	// Clone confirmation
 	if ($action == 'clone') {
 		// Create an array for form
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneEmailCollector', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneEmailCollector', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}
 
 	// Confirmation of action process
 	if ($action == 'collect') {
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('EmailCollectorConfirmCollectTitle'), $langs->trans('EmailCollectorConfirmCollect'), 'confirm_collect', $formquestion, 0, 1, 220);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('EmailCollectorConfirmCollectTitle'), $langs->trans('EmailCollectorConfirmCollect'), 'confirm_collect', $formquestion, 0, 1, 220);
 	}
 
 	// Call Hook formConfirm
@@ -576,7 +576,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	}
 
 	$morehtml = $form->textwithpicto($langs->trans("NbOfEmailsInInbox"), 'Connect string = '.$connectstringserver.'<br>Option MAIN_IMAP_USE_PHPIMAP = '.getDolGlobalInt('MAIN_IMAP_USE_PHPIMAP')).': '.($morehtml !== '' ? $morehtml : '?');
-	$morehtml .= '<a class="flat paddingleft marginleftonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=scan&token='.newToken().'">'.img_picto('', 'refresh', 'class="paddingrightonly"').$langs->trans("Refresh").'</a>';
+	$morehtml .= '<a class="flat paddingleft marginleftonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=scan&token='.newToken().'">'.img_picto('', 'refresh', 'class="paddingrightonly"').$langs->trans("Refresh").'</a>';
 
 	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref.'<div class="refidno">'.$morehtml.'</div>', '', 0, '', '', 0, '');
 
@@ -595,7 +595,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	print '</table>';
 
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="updatefiltersactions">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -683,7 +683,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		print '</td>';
 		print '<td>'.$rulefilter['rulevalue'].'</td>';
 		print '<td class="right">';
-		print ' <a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=deletefilter&token='.urlencode(newToken()).'&filterid='.$rulefilter['id'].'">'.img_delete().'</a>';
+		print ' <a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=deletefilter&token='.urlencode(newToken()).'&filterid='.$rulefilter['id'].'">'.img_delete().'</a>';
 		print '</td>';
 		print '</tr>';
 	}
@@ -792,16 +792,16 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		// Move up/down
 		print '<td class="center linecolmove tdlineupdown">';
 		if ($i > 0) {
-			print '<a class="lineupdown" href="'.DOL_PHP_SELF.'?action=up&amp;rowid='.$ruleaction['id'].'">'.img_up('default', 0, 'imgupforline').'</a>';
+			print '<a class="lineupdown" href="'.$_SERVER['PHP_SELF'].'?action=up&amp;rowid='.$ruleaction['id'].'">'.img_up('default', 0, 'imgupforline').'</a>';
 		}
 		if ($i < count($object->actions) - 1) {
-			print '<a class="lineupdown" href="'.DOL_PHP_SELF.'?action=down&amp;rowid='.$ruleaction['id'].'">'.img_down('default', 0, 'imgdownforline').'</a>';
+			print '<a class="lineupdown" href="'.$_SERVER['PHP_SELF'].'?action=down&amp;rowid='.$ruleaction['id'].'">'.img_down('default', 0, 'imgdownforline').'</a>';
 		}
 		print '</td>';
 		// Delete
 		print '<td class="right nowraponall">';
-		print '<a class="editfielda marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=editoperation&token='.newToken().'&operationid='.$ruleaction['id'].'">'.img_edit().'</a>';
-		print ' <a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=deleteoperation&token='.newToken().'&operationid='.$ruleaction['id'].'">'.img_delete().'</a>';
+		print '<a class="editfielda marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=editoperation&token='.newToken().'&operationid='.$ruleaction['id'].'">'.img_edit().'</a>';
+		print ' <a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=deleteoperation&token='.newToken().'&operationid='.$ruleaction['id'].'">'.img_delete().'</a>';
 		print '</td>';
 		print '</tr>';
 		$i++;
@@ -837,21 +837,21 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 		if (empty($reshook)) {
 			// Edit
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Edit").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Edit").'</a></div>';
 
 			// Clone
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=clone&token='.newToken().'&object=order">'.$langs->trans("ToClone").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=clone&token='.newToken().'&object=order">'.$langs->trans("ToClone").'</a></div>';
 
 			// Collect now
-			print '<div class="inline-block divButAction"><a class="butAction reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=collecttest&token='.newToken().'">'.$langs->trans("TestCollectNow").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=collecttest&token='.newToken().'">'.$langs->trans("TestCollectNow").'</a></div>';
 
 			if (count($object->actions) > 0) {
-				print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=collect&token='.newToken().'">'.$langs->trans("CollectNow").'</a></div>';
+				print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=collect&token='.newToken().'">'.$langs->trans("CollectNow").'</a></div>';
 			} else {
 				print '<div class="inline-block divButAction"><a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NoOperations")).'">'.$langs->trans("CollectNow").'</a></div>';
 			}
 
-			print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.urlencode(newToken()).'">'.$langs->trans('Delete').'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.urlencode(newToken()).'">'.$langs->trans('Delete').'</a></div>';
 		}
 		print '</div>'."\n";
 	}

@@ -197,7 +197,7 @@ print dol_get_fiche_end();
 print '<br>';
 
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'?id='.$id.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'?id='.$id.'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 $sql_select = '';
@@ -383,7 +383,7 @@ if ($sql_select) {
 	$num = $db->num_rows($resql);
 
 	$param = (!empty($socid) ? "&socid=".urlencode((string) ($socid)) : "")."&type_element=".urlencode((string) ($type_element))."&id=".urlencode((string) ($id));
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -405,7 +405,7 @@ if ($sql_select) {
 		$param .= '&optioncss='.urlencode($optioncss);
 	}
 
-	print_barre_liste($langs->trans('ProductsIntoElements').' '.$typeElementString.' '.$button, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $totalnboflines, '', 0, '', '', $limit);
+	print_barre_liste($langs->trans('ProductsIntoElements').' '.$typeElementString.' '.$button, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $totalnboflines, '', 0, '', '', $limit);
 
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="liste centpercent">'."\n";
@@ -438,14 +438,14 @@ if ($sql_select) {
 
 	// Titles with sort buttons
 	print '<tr class="liste_titre">';
-	print_liste_field_titre('Ref', DOL_PHP_SELF, 'doc_number', '', $param, '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre('Date', DOL_PHP_SELF, 'dateprint', '', $param, 'width="150"', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre('Status', DOL_PHP_SELF, 'fk_statut', '', $param, '', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre('Product', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre('ContactType', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre('Quantity', DOL_PHP_SELF, 'prod_qty', '', $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre('TotalHT', DOL_PHP_SELF, 'total_ht', '', $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre('UnitPrice', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre('Ref', $_SERVER['PHP_SELF'], 'doc_number', '', $param, '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre('Date', $_SERVER['PHP_SELF'], 'dateprint', '', $param, 'width="150"', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre('Status', $_SERVER['PHP_SELF'], 'fk_statut', '', $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre('Product', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre('ContactType', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre('Quantity', $_SERVER['PHP_SELF'], 'prod_qty', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre('TotalHT', $_SERVER['PHP_SELF'], 'total_ht', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre('UnitPrice', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 	print "</tr>\n";
 
 
@@ -647,27 +647,27 @@ if ($sql_select) {
 	print '</div>';
 
 	if ($num > $limit) {
-		print_barre_liste('', $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num);
+		print_barre_liste('', $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num);
 	}
 	$db->free($resql);
 } elseif (empty($type_element) || $type_element == -1) {
-	print_barre_liste($langs->trans('ProductsIntoElements').' '.$typeElementString.' '.$button, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, '', '');
+	print_barre_liste($langs->trans('ProductsIntoElements').' '.$typeElementString.' '.$button, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, '', '');
 
 	print '<table class="liste centpercent">'."\n";
 	// Titles with sort buttons
 	print '<tr class="liste_titre">';
-	print_liste_field_titre('Ref', DOL_PHP_SELF, 'doc_number', '', $param, '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre('Date', DOL_PHP_SELF, 'dateprint', '', $param, 'width="150"', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre('Status', DOL_PHP_SELF, 'fk_status', '', $param, '', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre('Product', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre('Quantity', DOL_PHP_SELF, 'prod_qty', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre('Ref', $_SERVER['PHP_SELF'], 'doc_number', '', $param, '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre('Date', $_SERVER['PHP_SELF'], 'dateprint', '', $param, 'width="150"', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre('Status', $_SERVER['PHP_SELF'], 'fk_status', '', $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre('Product', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre('Quantity', $_SERVER['PHP_SELF'], 'prod_qty', '', $param, '', $sortfield, $sortorder, 'right ');
 	print "</tr>\n";
 
 	print '<tr class="oddeven"><td colspan="5"><span class="opacitymedium">'.$langs->trans("SelectElementAndClick", $langs->transnoentitiesnoconv("Search")).'</span></td></tr>';
 
 	print "</table>";
 } else {
-	print_barre_liste($langs->trans('ProductsIntoElements').' '.$typeElementString.' '.$button, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, '', '');
+	print_barre_liste($langs->trans('ProductsIntoElements').' '.$typeElementString.' '.$button, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, '', '');
 
 	print '<table class="liste centpercent">'."\n";
 

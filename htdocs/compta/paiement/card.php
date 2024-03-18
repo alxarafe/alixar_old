@@ -197,7 +197,7 @@ if (empty($reshook)) {
 			}
 
 			if (! $error) {
-				header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 				exit;
 			}
 		} else {
@@ -283,13 +283,13 @@ print dol_get_fiche_head($head, 'payment', $langs->trans("PaymentCustomerInvoice
 
 // Confirmation of payment delete
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans("DeletePayment"), $langs->trans("ConfirmDeletePayment"), 'confirm_delete', '', 0, 2);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans("DeletePayment"), $langs->trans("ConfirmDeletePayment"), 'confirm_delete', '', 0, 2);
 }
 
 // Confirmation of payment validation
 if ($action == 'valide') {
 	$facid = $_GET['facid'];
-	print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&amp;facid='.$facid, $langs->trans("ValidatePayment"), $langs->trans("ConfirmValidatePayment"), 'confirm_validate', '', 0, 2);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;facid='.$facid, $langs->trans("ValidatePayment"), $langs->trans("ConfirmValidatePayment"), 'confirm_validate', '', 0, 2);
 }
 
 $linkback = '<a href="'.DOL_URL_ROOT.'/compta/paiement/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
@@ -599,7 +599,7 @@ print '<div class="tabsAction">';
 if (getDolGlobalString('BILL_ADD_PAYMENT_VALIDATION')) {
 	if ($user->socid == 0 && $object->statut == 0 && $action == '') {
 		if ($user->hasRight('facture', 'paiement')) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$id.'&action=valide&token='.newToken().'">'.$langs->trans('Valid').'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&action=valide&token='.newToken().'">'.$langs->trans('Valid').'</a>';
 		}
 	}
 }
@@ -610,7 +610,7 @@ if (! empty($title_button)) {
 }
 
 if ($user->socid == 0 && $action == '') {
-	print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $user->hasRight('facture', 'paiement') && !$disable_delete, $params);
+	print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $user->hasRight('facture', 'paiement') && !$disable_delete, $params);
 }
 
 print '</div>';

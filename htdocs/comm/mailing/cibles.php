@@ -151,7 +151,7 @@ if (GETPOSTINT('clearlist') && $user->hasRight('mailing', 'creer')) {
 	$obj = new MailingTargets($db);
 	$obj->clear_target($id);
 	/* Avoid this to allow reposition
-	header("Location: ".DOL_PHP_SELF."?id=".$id);
+	header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 	exit;
 	*/
 }
@@ -246,7 +246,7 @@ if ($action == 'settitle' || $action == 'setemail_from' || $action == 'setreplyt
 	if (!$mesg) {
 		$result = $object->update($user);
 		if ($result >= 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		}
 		$mesg = $object->error;
@@ -413,7 +413,7 @@ if ($object->fetch($id) >= 0) {
 		$allowaddtarget = 1;
 	}
 	if (!$allowaddtarget) {
-		$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?id='.$object->id.'&allowaddtarget=1', '', $user->hasRight('mailing', 'creer'));
+		$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?id='.$object->id.'&allowaddtarget=1', '', $user->hasRight('mailing', 'creer'));
 	}
 
 	// Show email selectors
@@ -498,7 +498,7 @@ if ($object->fetch($id) >= 0) {
 					$var = !$var;
 
 					if ($allowaddtarget) {
-						print '<form '.$bctag[$var].' name="'.$modulename.'" action="'.DOL_PHP_SELF.'?id='.$object->id.'&module='.$modulename.'" method="POST" enctype="multipart/form-data">';
+						print '<form '.$bctag[$var].' name="'.$modulename.'" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&module='.$modulename.'" method="POST" enctype="multipart/form-data">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
 						print '<input type="hidden" name="action" value="add">';
 						print '<input type="hidden" name="page_y" value="'.newToken().'">';
@@ -646,7 +646,7 @@ if ($object->fetch($id) >= 0) {
 		$num = $db->num_rows($resql);
 
 		$param = "&id=".$object->id;
-		//if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) $param.='&contextpage='.urlencode($contextpage);
+		//if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) $param.='&contextpage='.urlencode($contextpage);
 		if ($limit > 0 && $limit != $conf->liste_limit) {
 			$param .= '&limit='.((int) $limit);
 		}
@@ -663,7 +663,7 @@ if ($object->fetch($id) >= 0) {
 			$param .= "&search_other=".urlencode($search_other);
 		}
 
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 		print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
@@ -673,19 +673,19 @@ if ($object->fetch($id) >= 0) {
 
 		$morehtmlcenter = '';
 		if ($object->status == $object::STATUS_DRAFT) {
-			$morehtmlcenter = '<span class="opacitymedium hideonsmartphone">'.$langs->trans("ToClearAllRecipientsClickHere").'</span> <a href="'.DOL_PHP_SELF.'?clearlist=1&id='.$object->id.'" class="button reposition smallpaddingimp">'.$langs->trans("TargetsReset").'</a>';
+			$morehtmlcenter = '<span class="opacitymedium hideonsmartphone">'.$langs->trans("ToClearAllRecipientsClickHere").'</span> <a href="'.$_SERVER['PHP_SELF'].'?clearlist=1&id='.$object->id.'" class="button reposition smallpaddingimp">'.$langs->trans("TargetsReset").'</a>';
 		}
-		$morehtmlcenter .= ' &nbsp; <a class="reposition" href="'.DOL_PHP_SELF.'?action=exportcsv&token='.newToken().'&exportcsv=1&id='.$object->id.'">'.img_picto('', 'download', 'class="pictofixedwidth"').$langs->trans("Download").'</a>';
+		$morehtmlcenter .= ' &nbsp; <a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=exportcsv&token='.newToken().'&exportcsv=1&id='.$object->id.'">'.img_picto('', 'download', 'class="pictofixedwidth"').$langs->trans("Download").'</a>';
 
 		$massactionbutton = '';
 
 		// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-		print_barre_liste($langs->trans("MailSelectedRecipients"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $morehtmlcenter, $num, $nbtotalofrecords, 'generic', 0, $newcardbutton, '', $limit, 0, 0, 1);
+		print_barre_liste($langs->trans("MailSelectedRecipients"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $morehtmlcenter, $num, $nbtotalofrecords, 'generic', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 		print '</form>';
 
 		print "\n<!-- Liste destinataires selectionnes -->\n";
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 		print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
@@ -760,21 +760,21 @@ if ($object->fetch($id) >= 0) {
 		print '<tr class="liste_titre">';
 		// Action column
 		if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			print_liste_field_titre('', DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
+			print_liste_field_titre('', $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
 		}
-		print_liste_field_titre("EMail", DOL_PHP_SELF, "mc.email", $param, "", "", $sortfield, $sortorder);
-		print_liste_field_titre("Lastname", DOL_PHP_SELF, "mc.lastname", $param, "", "", $sortfield, $sortorder);
-		print_liste_field_titre("Firstname", DOL_PHP_SELF, "mc.firstname", $param, "", "", $sortfield, $sortorder);
-		print_liste_field_titre("OtherInformations", DOL_PHP_SELF, "", $param, "", "", $sortfield, $sortorder);
-		print_liste_field_titre("Source", DOL_PHP_SELF, "", $param, "", '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("EMail", $_SERVER['PHP_SELF'], "mc.email", $param, "", "", $sortfield, $sortorder);
+		print_liste_field_titre("Lastname", $_SERVER['PHP_SELF'], "mc.lastname", $param, "", "", $sortfield, $sortorder);
+		print_liste_field_titre("Firstname", $_SERVER['PHP_SELF'], "mc.firstname", $param, "", "", $sortfield, $sortorder);
+		print_liste_field_titre("OtherInformations", $_SERVER['PHP_SELF'], "", $param, "", "", $sortfield, $sortorder);
+		print_liste_field_titre("Source", $_SERVER['PHP_SELF'], "", $param, "", '', $sortfield, $sortorder, 'center ');
 		// Date last update
-		print_liste_field_titre("DateLastModification", DOL_PHP_SELF, "mc.tms", $param, "", '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("DateLastModification", $_SERVER['PHP_SELF'], "mc.tms", $param, "", '', $sortfield, $sortorder, 'center ');
 		// Date sending
-		print_liste_field_titre("DateSending", DOL_PHP_SELF, "mc.date_envoi", $param, '', '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre("Status", DOL_PHP_SELF, "mc.statut", $param, '', '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("DateSending", $_SERVER['PHP_SELF'], "mc.date_envoi", $param, '', '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "mc.statut", $param, '', '', $sortfield, $sortorder, 'center ');
 		// Action column
 		if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			print_liste_field_titre('', DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
+			print_liste_field_titre('', $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
 		}
 		print '</tr>';
 
@@ -804,12 +804,12 @@ if ($object->fetch($id) >= 0) {
 					print '<!-- ID mailing_cibles = '.$obj->rowid.' -->';
 					if ($obj->status == $object::STATUS_DRAFT) {	// Not sent yet
 						if ($user->hasRight('mailing', 'creer')) {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&rowid='.((int) $obj->rowid).$param.'">'.img_delete($langs->trans("RemoveRecipient")).'</a>';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&rowid='.((int) $obj->rowid).$param.'">'.img_delete($langs->trans("RemoveRecipient")).'</a>';
 						}
 					}
 					/*if ($obj->status == -1)	// Sent with error
 					 {
-					 print '<a href="'.DOL_PHP_SELF.'?action=retry&rowid='.$obj->rowid.$param.'">'.$langs->trans("Retry").'</a>';
+					 print '<a href="'.$_SERVER['PHP_SELF'].'?action=retry&rowid='.$obj->rowid.$param.'">'.$langs->trans("Retry").'</a>';
 					 }*/
 					print '</td>';
 				}
@@ -881,12 +881,12 @@ if ($object->fetch($id) >= 0) {
 					print '<!-- ID mailing_cibles = '.$obj->rowid.' -->';
 					if ($obj->status == $object::STATUS_DRAFT) {	// Not sent yet
 						if ($user->hasRight('mailing', 'creer')) {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&rowid='.((int) $obj->rowid).$param.'">'.img_delete($langs->trans("RemoveRecipient")).'</a>';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&rowid='.((int) $obj->rowid).$param.'">'.img_delete($langs->trans("RemoveRecipient")).'</a>';
 						}
 					}
 					/*if ($obj->status == -1)	// Sent with error
 					{
-						print '<a href="'.DOL_PHP_SELF.'?action=retry&rowid='.$obj->rowid.$param.'">'.$langs->trans("Retry").'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=retry&rowid='.$obj->rowid.$param.'">'.$langs->trans("Retry").'</a>';
 					}*/
 					print '</td>';
 				}

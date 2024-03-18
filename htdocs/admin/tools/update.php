@@ -119,7 +119,7 @@ if (function_exists('curl_init')) {
 			print $langs->trans("LastStableVersion").' : <b>'.$langs->trans("UpdateServerOffline").'</b><br>';
 		}
 	} else {
-		print $langs->trans("LastStableVersion").' : <a href="'.DOL_PHP_SELF.'?action=getlastversion&token='.newToken().'" class="button smallpaddingimp">'.$langs->trans("Check").'</a><br>';
+		print $langs->trans("LastStableVersion").' : <a href="'.$_SERVER['PHP_SELF'].'?action=getlastversion&token='.newToken().'" class="button smallpaddingimp">'.$langs->trans("Check").'</a><br>';
 	}
 }
 

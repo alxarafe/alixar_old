@@ -97,7 +97,7 @@ if ($action == 'update' && !$cancel) {
 	dolibarr_set_const($db, "MAIN_MAIL_EMAIL_STARTTLS_EMAILING", GETPOST("MAIN_MAIL_EMAIL_STARTTLS_EMAILING"), 'chaine', 0, '', $conf->entity);
 	dolibarr_set_const($db, "MAIN_MAIL_EMAIL_SMTP_ALLOW_SELF_SIGNED_EMAILING", GETPOST("MAIN_MAIL_EMAIL_SMTP_ALLOW_SELF_SIGNED_EMAILING"), 'chaine', 0, '', $conf->entity);
 
-	header("Location: ".DOL_PHP_SELF."?mainmenu=home&leftmenu=setup");
+	header("Location: ".$_SERVER['PHP_SELF']."?mainmenu=home&leftmenu=setup");
 	exit;
 }
 
@@ -297,7 +297,7 @@ if ($action == 'edit') {
 		print '</script>'."\n";
 	}
 
-	print '<form method="post" action="'.DOL_PHP_SELF.'">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
@@ -652,21 +652,21 @@ if ($action == 'edit') {
 
 	print '<div class="tabsAction">';
 
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 
 	if (getDolGlobalString('MAIN_MAIL_SENDMODE_EMAILING') && getDolGlobalString('MAIN_MAIL_SENDMODE_EMAILING') != 'default') {
 		if (getDolGlobalString('MAIN_MAIL_SENDMODE_EMAILING') != 'mail' || !$linuxlike) {
 			if (function_exists('fsockopen') && $port && $server) {
-				print '<a class="butAction" href="' . DOL_PHP_SELF . '?action=testconnect">' . $langs->trans("DoTestServerAvailability") . '</a>';
+				print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=testconnect">' . $langs->trans("DoTestServerAvailability") . '</a>';
 			}
 		} else {
 			print '<a class="butActionRefused classfortooltip" href="#" title="' . $langs->trans("FeatureNotAvailableOnLinux") . '">' . $langs->trans("DoTestServerAvailability") . '</a>';
 		}
 
-		print '<a class="butAction" href="' . DOL_PHP_SELF . '?action=test&amp;mode=init">' . $langs->trans("DoTestSend") . '</a>';
+		print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=test&amp;mode=init">' . $langs->trans("DoTestSend") . '</a>';
 
 		if (isModEnabled('fckeditor')) {
-			print '<a class="butAction" href="' . DOL_PHP_SELF . '?action=testhtml&amp;mode=init">' . $langs->trans("DoTestSendHTML") . '</a>';
+			print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=testhtml&amp;mode=init">' . $langs->trans("DoTestSendHTML") . '</a>';
 		}
 	}
 
@@ -738,7 +738,7 @@ if ($action == 'edit') {
 		$formmail->param["action"] = "send";
 		$formmail->param["models"] = "body";
 		$formmail->param["mailid"] = 0;
-		$formmail->param["returnurl"] = DOL_PHP_SELF;
+		$formmail->param["returnurl"] = $_SERVER['PHP_SELF'];
 
 		// Init list of files
 		if (GETPOST("mode", "aZ09") == 'init') {

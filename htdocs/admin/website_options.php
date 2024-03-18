@@ -136,9 +136,9 @@ if (!empty($conf->use_javascript_ajax)) {
 	print ajax_constantonoff('WEBSITE_USE_WEBSITE_ACCOUNTS');
 } else {
 	if (!getDolGlobalString('WEBSITE_USE_WEBSITE_ACCOUNTS')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_WEBSITE_USE_WEBSITE_ACCOUNTS&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_WEBSITE_USE_WEBSITE_ACCOUNTS&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=del_WEBSITE_USE_WEBSITE_ACCOUNTS&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_WEBSITE_USE_WEBSITE_ACCOUNTS&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	}
 }
 print '</td></tr>';
@@ -148,7 +148,7 @@ print '</table>';
 
 if (empty($conf->use_javascript_ajax)) {
 	print '<div class="tabsAction">';
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 	print '</div>';
 }
 

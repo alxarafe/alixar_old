@@ -161,7 +161,7 @@ if ($action == 'add' && $user->hasRight('ftp', 'setup')) {
 
 	$id = $ecmdir->create($user);
 	if ($id > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages($langs->trans("ErrorFailToCreateDir"), null, 'errors');
@@ -379,12 +379,12 @@ if (!function_exists('ftp_connect')) {
 	if (!empty($ftp_server)) {
 		// Confirm remove file
 		if ($action == 'delete') {
-			print $form->formconfirm(DOL_PHP_SELF.'?numero_ftp='.$numero_ftp.'&section='.urlencode(GETPOST('section')).'&file='.urlencode(GETPOST('file')), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile', GETPOST('file')), 'confirm_deletefile', '', '', 1);
+			print $form->formconfirm($_SERVER['PHP_SELF'].'?numero_ftp='.$numero_ftp.'&section='.urlencode(GETPOST('section')).'&file='.urlencode(GETPOST('file')), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile', GETPOST('file')), 'confirm_deletefile', '', '', 1);
 		}
 
 		// Confirmation de la suppression d'une ligne categorie
 		if ($action == 'delete_section') {
-			print $form->formconfirm(DOL_PHP_SELF.'?numero_ftp='.$numero_ftp.'&section='.urlencode(GETPOST('section')).'&file='.urlencode(GETPOST('file')), $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', GETPOST('file')), 'confirm_deletesection', '', '', 1);
+			print $form->formconfirm($_SERVER['PHP_SELF'].'?numero_ftp='.$numero_ftp.'&section='.urlencode(GETPOST('section')).'&file='.urlencode(GETPOST('file')), $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', GETPOST('file')), 'confirm_deletesection', '', '', 1);
 		}
 
 		print $langs->trans("Server").': <b>'.$ftp_server.'</b><br>';
@@ -396,7 +396,7 @@ if (!function_exists('ftp_connect')) {
 		$sectionarray = preg_split('|[\/]|', $section);
 		// For /
 		$newsection = '/';
-		print '<a href="'.DOL_PHP_SELF.'?action=refreshmanual&numero_ftp='.$numero_ftp.($newsection ? '&section='.urlencode($newsection) : '').'">';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=refreshmanual&numero_ftp='.$numero_ftp.($newsection ? '&section='.urlencode($newsection) : '').'">';
 		print '/';
 		print '</a> ';
 		// For other directories
@@ -410,7 +410,7 @@ if (!function_exists('ftp_connect')) {
 				$newsection .= '/';
 			}
 			$newsection .= $val;
-			print '<a href="'.DOL_PHP_SELF.'?action=refreshmanual&numero_ftp='.$numero_ftp.($newsection ? '&section='.urlencode($newsection) : '').'">';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=refreshmanual&numero_ftp='.$numero_ftp.($newsection ? '&section='.urlencode($newsection) : '').'">';
 			print $val;
 			print '</a>';
 			$i++;
@@ -418,7 +418,7 @@ if (!function_exists('ftp_connect')) {
 		print '<br>';
 		print "<br>\n";
 
-		print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		print '<input type="hidden" name="numero_ftp" value="'.$numero_ftp.'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
@@ -437,7 +437,7 @@ if (!function_exists('ftp_connect')) {
 		if ($conf->use_javascript_ajax) {
 			print '<a href="#" id="checkall">'.$langs->trans("All").'</a> / <a href="#" id="checknone">'.$langs->trans("None").'</a> ';
 		}
-		print '<a href="'.DOL_PHP_SELF.'?action=refreshmanual&numero_ftp='.$numero_ftp.($section ? '&section='.urlencode($section) : '').'">'.img_picto($langs->trans("Refresh"), 'refresh').'</a>&nbsp;';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=refreshmanual&numero_ftp='.$numero_ftp.($section ? '&section='.urlencode($section) : '').'">'.img_picto($langs->trans("Refresh"), 'refresh').'</a>&nbsp;';
 		print '</td>'."\n";
 		print '</tr>'."\n";
 
@@ -542,7 +542,7 @@ if (!function_exists('ftp_connect')) {
 				$newsection = $section.(preg_match('@[\\\/]$@', $section) ? '' : '/').$file;
 				$newsection = preg_replace('@[\\\/][^\\\/]+[\\\/]\.\.$@', '/', $newsection); // Change aaa/xxx/.. to new aaa
 				if ($is_directory) {
-					print '<a href="'.DOL_PHP_SELF.'?section='.urlencode($newsection).'&numero_ftp='.$numero_ftp.'">';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?section='.urlencode($newsection).'&numero_ftp='.$numero_ftp.'">';
 				}
 				print dol_escape_htmltag($file);
 				if ($is_directory) {
@@ -577,20 +577,20 @@ if (!function_exists('ftp_connect')) {
 				print '<td class="right nowrap" width="64">';
 				if ($is_directory) {
 					if ($file != '..') {
-						print '<a href="'.DOL_PHP_SELF.'?action=delete_section&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($file).'">'.img_delete().'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=delete_section&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($file).'">'.img_delete().'</a>';
 					} else {
 						print '&nbsp;';
 					}
 				} elseif ($is_link) {
 					$newfile = $file;
 					$newfile = preg_replace('/ ->.*/', '', $newfile);
-					print '<a href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($newfile).'">'.img_delete().'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($newfile).'">'.img_delete().'</a>';
 				} else {
-					print '<a href="'.DOL_PHP_SELF.'?action=download&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($file).'">'.img_picto('', 'file').'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=download&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($file).'">'.img_picto('', 'file').'</a>';
 					print ' &nbsp; ';
 					print '<input type="checkbox" class="flat checkboxfordelete" id="check_'.$i.'" name="const['.$i.'][check]" value="1">';
 					print ' &nbsp; ';
-					print '<a href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($file).'">'.img_delete().'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&numero_ftp='.$numero_ftp.'&section='.urlencode($section).'&file='.urlencode($file).'">'.img_delete().'</a>';
 					print '<input type="hidden" name="const['.$i.'][section]" value="'.$section.'">';
 					print '<input type="hidden" name="const['.$i.'][file]" value="'.$file.'">';
 				}
@@ -621,7 +621,7 @@ if (!function_exists('ftp_connect')) {
 
 		if ($user->hasRight('ftp', 'write')) {
 			print load_fiche_titre($langs->trans("AttachANewFile"), null, null);
-			print '<form enctype="multipart/form-data" action="'.DOL_PHP_SELF.'" method="post">';
+			print '<form enctype="multipart/form-data" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="numero_ftp" value="'.$numero_ftp.'">';
 			print '<input type="hidden" name="section" value="'.$section.'">';
@@ -634,7 +634,7 @@ if (!function_exists('ftp_connect')) {
 			print '<br><br>';
 
 			print load_fiche_titre($langs->trans("AddFolder"), null, null);
-			print '<form enctype="multipart/form-data" action="'.DOL_PHP_SELF.'" method="post">';
+			print '<form enctype="multipart/form-data" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="numero_ftp" value="'.$numero_ftp.'">';
 			print '<input type="hidden" name="section" value="'.$section.'">';

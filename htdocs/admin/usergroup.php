@@ -81,7 +81,7 @@ if ($action == 'set_default') {
 } elseif (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_set_const($db, $code, 1, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -89,7 +89,7 @@ if ($action == 'set_default') {
 } elseif (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -192,13 +192,13 @@ foreach ($dirmodels as $reldir) {
 								// Active
 								if (in_array($name, $def)) {
 									print '<td class="center">'."\n";
-									print '<a href="'.DOL_PHP_SELF.'?action=del_default&token='.newToken().'&value='.urlencode($name).'">';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_default&token='.newToken().'&value='.urlencode($name).'">';
 									print img_picto($langs->trans("Enabled"), 'switch_on');
 									print '</a>';
 									print '</td>';
 								} else {
 									print '<td class="center">'."\n";
-									print '<a href="'.DOL_PHP_SELF.'?action=set_default&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_default&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 									print "</td>";
 								}
 
@@ -207,7 +207,7 @@ foreach ($dirmodels as $reldir) {
 								if (getDolGlobalString('USERGROUP_ADDON_PDF') == $name) {
 									print img_picto($langs->trans("Default"), 'on');
 								} else {
-									print '<a href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 								}
 								print '</td>';
 
@@ -229,7 +229,7 @@ foreach ($dirmodels as $reldir) {
 								// Preview
 								print '<td class="center">';
 								if ($module->type == 'pdf') {
-									print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 								} else {
 									print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 								}

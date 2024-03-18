@@ -182,7 +182,7 @@ if ($id > 0 || !empty($ref)) {
 				$option .= '&search_year='.urlencode((string) ($search_year));
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$product->id.'" name="search_form">'."\n";
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$product->id.'" name="search_form">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			if (!empty($sortfield)) {
 				print '<input type="hidden" name="sortfield" value="'.$sortfield.'"/>';
@@ -192,7 +192,7 @@ if ($id > 0 || !empty($ref)) {
 			}
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Contrats"), $page, DOL_PHP_SELF, $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
+			print_barre_liste($langs->trans("Contrats"), $page, $_SERVER['PHP_SELF'], $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
 
 			if (!empty($page)) {
 				$option .= '&page='.urlencode((string) ($page));
@@ -203,14 +203,14 @@ if ($id > 0 || !empty($ref)) {
 			print '<table class="tagtable liste listwithfilterbefore" width="100%">';
 
 			print '<tr class="liste_titre">';
-			print_liste_field_titre("Ref", DOL_PHP_SELF, "c.rowid", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
-			print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
-			print_liste_field_titre("CustomerCode", DOL_PHP_SELF, "s.code_client", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
-			print_liste_field_titre("Date", DOL_PHP_SELF, "c.date_contrat", "", "&amp;id=".$product->id, 'align="center"', $sortfield, $sortorder);
-			//print_liste_field_titre("AmountHT"),DOL_PHP_SELF,"c.amount","","&amp;id=".$product->id,'align="right"',$sortfield,$sortorder);
-			print_liste_field_titre($staticcontratligne->LibStatut($staticcontratligne::STATUS_INITIAL, 3, -1, 'class="nochangebackground"'), DOL_PHP_SELF, "", '', '', 'align="center" width="16"', $sortfield, $sortorder, 'maxwidthsearch ');
-			print_liste_field_titre($staticcontratligne->LibStatut($staticcontratligne::STATUS_OPEN, 3, -1, 'class="nochangebackground"'), DOL_PHP_SELF, "", '', '', 'align="center" width="16"', $sortfield, $sortorder, 'maxwidthsearch ');
-			print_liste_field_titre($staticcontratligne->LibStatut($staticcontratligne::STATUS_CLOSED, 3, -1, 'class="nochangebackground"'), DOL_PHP_SELF, "", '', '', 'align="center" width="16"', $sortfield, $sortorder, 'maxwidthsearch ');
+			print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "c.rowid", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
+			print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
+			print_liste_field_titre("CustomerCode", $_SERVER['PHP_SELF'], "s.code_client", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
+			print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "c.date_contrat", "", "&amp;id=".$product->id, 'align="center"', $sortfield, $sortorder);
+			//print_liste_field_titre("AmountHT"),$_SERVER['PHP_SELF'],"c.amount","","&amp;id=".$product->id,'align="right"',$sortfield,$sortorder);
+			print_liste_field_titre($staticcontratligne->LibStatut($staticcontratligne::STATUS_INITIAL, 3, -1, 'class="nochangebackground"'), $_SERVER['PHP_SELF'], "", '', '', 'align="center" width="16"', $sortfield, $sortorder, 'maxwidthsearch ');
+			print_liste_field_titre($staticcontratligne->LibStatut($staticcontratligne::STATUS_OPEN, 3, -1, 'class="nochangebackground"'), $_SERVER['PHP_SELF'], "", '', '', 'align="center" width="16"', $sortfield, $sortorder, 'maxwidthsearch ');
+			print_liste_field_titre($staticcontratligne->LibStatut($staticcontratligne::STATUS_CLOSED, 3, -1, 'class="nochangebackground"'), $_SERVER['PHP_SELF'], "", '', '', 'align="center" width="16"', $sortfield, $sortorder, 'maxwidthsearch ');
 			print "</tr>\n";
 
 			$contracttmp = new Contrat($db);

@@ -70,7 +70,7 @@ if (($action == 'update' && !GETPOST("cancel", 'alpha'))
 
 	if ($action != 'updateedit' && !$error) {
 		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	}
 }
@@ -112,7 +112,7 @@ if (!empty($conf->use_javascript_ajax)) {
 	print '</script>'."\n";
 }
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'" name="form_index">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'" name="form_index">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 

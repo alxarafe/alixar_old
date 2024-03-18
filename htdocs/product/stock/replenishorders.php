@@ -175,15 +175,15 @@ if ($resql) {
 	$num = $db->num_rows($resql);
 	$i = 0;
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	print '<span class="opacitymedium hideonsmartphone">'.$langs->trans("ReplenishmentOrdersDesc").'</span><br class="hideonsmartphone">';
 
-	print_barre_liste('', $page, DOL_PHP_SELF, '', $sortfield, $sortorder, '', $num, 0, '');
+	print_barre_liste('', $page, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', $num, 0, '');
 
 	$param = '';
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -242,7 +242,7 @@ if ($resql) {
 	print '<tr class="liste_titre">';
 	print_liste_field_titre(
 		'Ref',
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		'cf.ref',
 		'',
 		$param,
@@ -252,7 +252,7 @@ if ($resql) {
 	);
 	print_liste_field_titre(
 		'Company',
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		's.nom',
 		'',
 		$param,
@@ -262,7 +262,7 @@ if ($resql) {
 	);
 	print_liste_field_titre(
 		'Author',
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		'u.login',
 		'',
 		'',
@@ -272,7 +272,7 @@ if ($resql) {
 	);
 	print_liste_field_titre(
 		'AmountTTC',
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		'cf.total_ttc',
 		'',
 		$param,
@@ -283,7 +283,7 @@ if ($resql) {
 	);
 	print_liste_field_titre(
 		'OrderCreation',
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		'cf.date_creation',
 		'',
 		$param,
@@ -294,7 +294,7 @@ if ($resql) {
 	);
 	print_liste_field_titre(
 		'Status',
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		'cf.fk_statut',
 		'',
 		$param,

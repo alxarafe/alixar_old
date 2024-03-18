@@ -113,7 +113,7 @@ function show_ldap_test_button($butlabel, $testlabel, $key, $dn, $objectclass)
 		$langs->load("errors");
 		print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans('ErrorLDAPSetupNotComplete').'">'.$butlabel.'</a>';
 	} else {
-		print '<a class="butAction reposition" href="'.DOL_PHP_SELF.'?action='.$testlabel.'">'.$butlabel.'</a>';
+		print '<a class="butAction reposition" href="'.$_SERVER['PHP_SELF'].'?action='.$testlabel.'">'.$butlabel.'</a>';
 	}
 	print '<br><br>';
 }

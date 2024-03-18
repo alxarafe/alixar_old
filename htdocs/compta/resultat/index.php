@@ -152,7 +152,7 @@ $decaiss_ttc = array();
 if ($modecompta == 'CREANCES-DETTES') {
 	$name = $langs->trans("ReportInOut").', '.$langs->trans("ByYear");
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesAmountWithTaxExcluded");
 	$description .= '<br>'.$langs->trans("RulesResultDue");
 	if (getDolGlobalString('FACTURE_DEPOSITS_ARE_JUST_PAYMENTS')) {
@@ -168,7 +168,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 } elseif ($modecompta == "RECETTES-DEPENSES") {
 	$name = $langs->trans("ReportInOut").', '.$langs->trans("ByYear");
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesAmountWithTaxIncluded");
 	$description .= '<br>'.$langs->trans("RulesResultInOut");
 	$builddate = dol_now();
@@ -176,7 +176,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 } elseif ($modecompta == "BOOKKEEPING") {
 	$name = $langs->trans("ReportInOut").', '.$langs->trans("ByYear");
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesAmountOnInOutBookkeepingRecord");
 	$description .= ' ('.$langs->trans("SeePageForSetup", DOL_URL_ROOT.'/accountancy/admin/account.php?mainmenu=accountancy&leftmenu=accountancy_admin', $langs->transnoentitiesnoconv("Accountancy").' / '.$langs->transnoentitiesnoconv("Setup").' / '.$langs->transnoentitiesnoconv("Chartofaccounts")).')';
 	$builddate = dol_now();

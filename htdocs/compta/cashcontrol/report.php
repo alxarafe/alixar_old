@@ -189,12 +189,12 @@ if ($resql) {
 
 	// Fields title
 	print '<tr class="liste_titre">';
-	print_liste_field_titre($arrayfields['b.rowid']['label'], DOL_PHP_SELF, 'b.rowid', '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre($arrayfields['b.dateo']['label'], DOL_PHP_SELF, 'b.dateo', '', $param, '"', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre($arrayfields['ba.ref']['label'], DOL_PHP_SELF, 'ba.ref', '', $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre($arrayfields['cp.code']['label'], DOL_PHP_SELF, 'cp.code', '', $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre($arrayfields['b.debit']['label'], DOL_PHP_SELF, 'b.amount', '', $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre($arrayfields['b.credit']['label'], DOL_PHP_SELF, 'b.amount', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['b.rowid']['label'], $_SERVER['PHP_SELF'], 'b.rowid', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['b.dateo']['label'], $_SERVER['PHP_SELF'], 'b.dateo', '', $param, '"', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['ba.ref']['label'], $_SERVER['PHP_SELF'], 'ba.ref', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['cp.code']['label'], $_SERVER['PHP_SELF'], 'cp.code', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['b.debit']['label'], $_SERVER['PHP_SELF'], 'b.amount', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['b.credit']['label'], $_SERVER['PHP_SELF'], 'b.amount', '', $param, '', $sortfield, $sortorder, 'right ');
 	print "</tr>\n";
 
 	// Loop on each record

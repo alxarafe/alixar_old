@@ -110,7 +110,7 @@ if ($action == 'update' && !$cancel) {
 		$db->close();
 
 		// We make a header redirect because we need to change menu NOW.
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	}
 }
@@ -142,7 +142,7 @@ $head[$h][1] = $langs->trans("MenuAdmin");
 $head[$h][2] = 'editor';
 $h++;
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 

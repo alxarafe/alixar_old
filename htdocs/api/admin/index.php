@@ -62,7 +62,7 @@ if ($action == 'setproductionmode') {
 		}
 
 		if (!$error) {
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		}
 	} else {
@@ -75,7 +75,7 @@ if ($action == 'setdisablecompression') {
 	$status = GETPOST('status', 'alpha');
 
 	if (dolibarr_set_const($db, 'API_DISABLE_COMPRESSION', $status, 'chaine', 0, '', 0) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -102,7 +102,7 @@ print load_fiche_titre($langs->trans("ApiSetup"), $linkback, 'title_setup');
 print '<span class="opacitymedium">'.$langs->trans("ApiDesc")."</span><br>\n";
 print "<br>\n";
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="save">';
 
@@ -118,11 +118,11 @@ print '<tr class="oddeven">';
 print '<td>'.$langs->trans("ApiProductionMode").'</td>';
 $production_mode = (!getDolGlobalString('API_PRODUCTION_MODE') ? false : true);
 if ($production_mode) {
-	print '<td><a class="reposition" href="'.DOL_PHP_SELF.'?action=setproductionmode&token='.newToken().'&status=0">';
+	print '<td><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setproductionmode&token='.newToken().'&status=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td><a class="reposition" href="'.DOL_PHP_SELF.'?action=setproductionmode&token='.newToken().'&status=1">';
+	print '<td><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setproductionmode&token='.newToken().'&status=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -133,11 +133,11 @@ print '<tr class="oddeven">';
 print '<td>'.$langs->trans("API_DISABLE_COMPRESSION").'</td>';
 $disable_compression = (!getDolGlobalString('API_DISABLE_COMPRESSION') ? false : true);
 if ($disable_compression) {
-	print '<td><a class="reposition" href="'.DOL_PHP_SELF.'?action=setdisablecompression&token='.newToken().'&status=0">';
+	print '<td><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdisablecompression&token='.newToken().'&status=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td><a class="reposition" href="'.DOL_PHP_SELF.'?action=setdisablecompression&token='.newToken().'&status=1">';
+	print '<td><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdisablecompression&token='.newToken().'&status=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }

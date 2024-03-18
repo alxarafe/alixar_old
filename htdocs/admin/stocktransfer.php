@@ -179,7 +179,7 @@ print '<span class="opacitymedium">'.$langs->trans("StockTransferSetupPage").'</
 
 /*if ($action == 'edit')
 {
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
@@ -220,7 +220,7 @@ print '<span class="opacitymedium">'.$langs->trans("StockTransferSetupPage").'</
 		print '</table>';
 
 		print '<div class="tabsAction">';
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit">'.$langs->trans("Modify").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit">'.$langs->trans("Modify").'</a>';
 		print '</div>';
 	}
 	else
@@ -304,7 +304,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 								if (getDolGlobalString($constforvar) == $file) {
 									print img_picto($langs->trans("Activated"), 'switch_on');
 								} else {
-									print '<a href="'.DOL_PHP_SELF.'?action=setmod&object='.strtolower($myTmpObjectKey).'&value='.$file.'">';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=setmod&object='.strtolower($myTmpObjectKey).'&value='.$file.'">';
 									print img_picto($langs->trans("Disabled"), 'switch_off');
 									print '</a>';
 								}
@@ -433,13 +433,13 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 										// Active
 										if (in_array($name, $def)) {
 											print '<td class="center">'."\n";
-											print '<a href="'.DOL_PHP_SELF.'?action=del&value='.urlencode($name).'&token='.newToken().'">';
+											print '<a href="'.$_SERVER['PHP_SELF'].'?action=del&value='.urlencode($name).'&token='.newToken().'">';
 											print img_picto($langs->trans("Enabled"), 'switch_on');
 											print '</a>';
 											print '</td>';
 										} else {
 											print '<td class="center">'."\n";
-											print '<a href="'.DOL_PHP_SELF.'?action=set&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+											print '<a href="'.$_SERVER['PHP_SELF'].'?action=set&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 											print "</td>";
 										}
 
@@ -449,7 +449,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 										if (getDolGlobalString($constforvar) == $name) {
 											print img_picto($langs->trans("Default"), 'on');
 										} else {
-											print '<a href="'.DOL_PHP_SELF.'?action=setdoc&object='.urlencode($myTmpObjectKey).'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+											print '<a href="'.$_SERVER['PHP_SELF'].'?action=setdoc&object='.urlencode($myTmpObjectKey).'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 										}
 										print '</td>';
 
@@ -472,7 +472,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 										// Preview
 										print '<td class="center">';
 										if ($module->type == 'pdf') {
-											print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'&object='.$myTmpObjectKey.'">'.img_object($langs->trans("Preview"), 'generic').'</a>';
+											print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'&object='.$myTmpObjectKey.'">'.img_object($langs->trans("Preview"), 'generic').'</a>';
 										} else {
 											print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 										}

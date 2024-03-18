@@ -30,14 +30,14 @@ print $langs->trans('SalesRepresentatives');
 print '</td>';
 if ($action != 'editsalesrepresentatives' && $user->hasRight('societe', 'creer')) {
 	print '<td class="right">';
-	print '<a class="editfielda reposition" href="'.DOL_PHP_SELF.'?action=editsalesrepresentatives&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a>';
+	print '<a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?action=editsalesrepresentatives&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a>';
 	print '</td>';
 }
 print '</tr></table>';
 print '</td><td colspan="3">';
 
 if ($action == 'editsalesrepresentatives') {
-	print '<form method="post" action="'.DOL_PHP_SELF.'">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="action" value="set_salesrepresentatives" />';
 	print '<input type="hidden" name="token" value="'.newToken().'" />';
 	print '<input type="hidden" name="socid" value="'.$object->id.'" />';

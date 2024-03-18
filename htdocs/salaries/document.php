@@ -173,7 +173,7 @@ if ($object->id) {
 		$morehtmlref .= $object->label;
 	} else {
 		$morehtmlref .= $langs->trans('Label').' :&nbsp;';
-		$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+		$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 		$morehtmlref .= '<input type="hidden" name="action" value="setlabel">';
 		$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$morehtmlref .= '<input type="text" name="label" value="'.$object->label.'"/>';
@@ -192,9 +192,9 @@ if ($object->id) {
 		if ($usercancreate) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, -1, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, -1, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);

@@ -96,7 +96,7 @@ class FormSetup
 		$this->db = $db;
 
 		$this->form = new Form($this->db);
-		$this->formAttributes['action'] = DOL_PHP_SELF;
+		$this->formAttributes['action'] = $_SERVER['PHP_SELF'];
 
 		$this->formHiddenInputs['token'] = newToken();
 		$this->formHiddenInputs['action'] = 'update';

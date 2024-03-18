@@ -46,7 +46,7 @@ if (empty($conf) || !is_object($conf)) {
 	echo $this->control->tpl['js_checkVatPopup'];
 } ?>
 
-<form action="<?php echo DOL_PHP_SELF; ?>" method="POST" name="formsoc">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" name="formsoc">
 
 <input type="hidden" name="canvas" value="<?php echo $canvas ?>">
 <input type="hidden" name="action" value="add">

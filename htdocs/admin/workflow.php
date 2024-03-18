@@ -326,11 +326,11 @@ foreach ($workflowcodes as $key => $params) {
 		print ajax_constantonoff($key);
 	} else {
 		if (getDolGlobalString($key)) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del'.$key.'&token='.newToken().'">';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del'.$key.'&token='.newToken().'">';
 			print img_picto($langs->trans("Activated"), 'switch_on');
 			print '</a>';
 		} else {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set'.$key.'&token='.newToken().'">';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set'.$key.'&token='.newToken().'">';
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 			print '</a>';
 		}

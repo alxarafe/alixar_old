@@ -168,7 +168,7 @@ if (empty($reshook)) {
 		$result = $object->active_line($user, GETPOSTINT('ligne'), $date_start, $date_end, GETPOST('comment'));
 
 		if ($result > 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -185,7 +185,7 @@ if (empty($reshook)) {
 		if (!$error) {
 			$result = $object->close_line($user, GETPOSTINT('ligne'), $date_end, urldecode(GETPOST('comment')));
 			if ($result > 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -413,7 +413,7 @@ if (empty($reshook)) {
 			} else {
 				$result = $object->create($user);
 				if ($result > 0) {
-					header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				} else {
 					setEventMessages($object->error, $object->errors, 'errors');
@@ -826,7 +826,7 @@ if (empty($reshook)) {
 		$result = $object->deleteLine(GETPOSTINT('lineid'), $user);
 
 		if ($result >= 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -891,7 +891,7 @@ if (empty($reshook)) {
 			$contractline->fk_contrat = GETPOSTINT('newcid');
 			$result = $contractline->update($user, 1);
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				return;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -931,11 +931,11 @@ if (empty($reshook)) {
 				setEventMessages($object->error, $object->errors, 'errors');
 				$action = 'editref_supplier';
 			} else {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			}
 		} else {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		}
 	} elseif ($action == 'setref_customer' && $permissiontoadd) {
@@ -947,11 +947,11 @@ if (empty($reshook)) {
 				setEventMessages($object->error, $object->errors, 'errors');
 				$action = 'editref_customer';
 			} else {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			}
 		} else {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		}
 	} elseif ($action == 'setref' && $permissiontoadd) {
@@ -975,11 +975,11 @@ if (empty($reshook)) {
 				// Rename directory of contract with new name
 				dol_move_dir($old_filedir, $new_filedir);
 
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			}
 		} else {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		}
 	} elseif ($action == 'setdate_contrat' && $permissiontoadd) {
@@ -994,11 +994,11 @@ if (empty($reshook)) {
 				setEventMessages($object->error, $object->errors, 'errors');
 				$action = 'editdate_contrat';
 			} else {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			}
 		} else {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		}
 	}
@@ -1025,7 +1025,7 @@ if (empty($reshook)) {
 			$result = $object->add_contact($contactid, $typeid, GETPOST("source", 'aZ09'));
 
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -1043,7 +1043,7 @@ if (empty($reshook)) {
 			$result = $object->delete_contact(GETPOSTINT('lineid'));
 
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -1059,7 +1059,7 @@ if (empty($reshook)) {
 			if ($object->id > 0) {
 				$result = $object->createFromClone($user, $socid);
 				if ($result > 0) {
-					header("Location: ".DOL_PHP_SELF.'?id='.$result);
+					header("Location: ".$_SERVER['PHP_SELF'].'?id='.$result);
 					exit();
 				} else {
 					if (count($object->errors) > 0) {
@@ -1169,7 +1169,7 @@ if ($action == 'create') {
 
 	$object->date_contrat = dol_now();
 
-	print '<form name="form_contract" action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form name="form_contract" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="socid" value="'.$soc->id.'">'."\n";
@@ -1210,7 +1210,7 @@ if ($action == 'create') {
 		print '<td>';
 		print img_picto('', 'company', 'class="pictofixedwidth"');
 		print $form->select_company('', 'socid', '', 'SelectThirdParty', 1, 0, null, 0, 'minwidth300 widthcentpercentminusxx maxwidth500');
-		print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&backtopage='.urlencode(DOL_PHP_SELF.'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
+		print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
 		print '</td>';
 	}
 	print '</tr>'."\n";
@@ -1258,7 +1258,7 @@ if ($action == 'create') {
 		print '<tr><td>'.$langs->trans("Project").'</td><td>';
 		print img_picto('', 'project', 'class="pictofixedwidth"');
 		$formproject->select_projects(($soc->id > 0 ? $soc->id : -1), $projectid, "projectid", 0, 0, 1, 1);
-		print ' &nbsp; <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.$soc->id.'&action=create&status=1&backtopage='.urlencode(DOL_PHP_SELF.'?action=create&socid='.$soc->id).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
+		print ' &nbsp; <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.$soc->id.'&action=create&status=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create&socid='.$soc->id).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
 		print "</td></tr>";
 	}
 
@@ -1335,7 +1335,7 @@ if ($action == 'create') {
 
 		if ($action == 'delete') {
 			//Confirmation de la suppression du contrat
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("DeleteAContract"), $langs->trans("ConfirmDeleteAContract"), "confirm_delete", '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("DeleteAContract"), $langs->trans("ConfirmDeleteAContract"), "confirm_delete", '', 0, 1);
 		} elseif ($action == 'valid') {
 			//Confirmation de la validation
 			$ref = substr($object->ref, 1, 4);
@@ -1345,22 +1345,22 @@ if ($action == 'create') {
 				$numref = $object->ref;
 			}
 			$text = $langs->trans('ConfirmValidateContract', $numref);
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("ValidateAContract"), $text, "confirm_valid", '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("ValidateAContract"), $text, "confirm_valid", '', 0, 1);
 		} elseif ($action == 'close') {
 			// Confirmation de la fermeture
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("CloseAContract"), $langs->trans("ConfirmCloseContract"), "confirm_close", '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("CloseAContract"), $langs->trans("ConfirmCloseContract"), "confirm_close", '', 0, 1);
 		} elseif ($action == 'activate') {
 			$formquestion = array(
 				array('type' => 'date', 'name' => 'd_start', 'label' => $langs->trans("DateServiceActivate"), 'value' => dol_now()),
 				array('type' => 'date', 'name' => 'd_end', 'label' => $langs->trans("DateEndPlanned"), /*'value' => $form->selectDate('', "end", $usehm, $usehm, '', "active", 1, 0),*/ 0 => '', 1 => ''),
 				array('type' => 'text', 'name' => 'comment', 'label' => $langs->trans("Comment"), 'value' => '', 0 => '', 1 => '', 'class' => 'minwidth300', 'moreattr' => 'autofocus')
 			);
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("ActivateAllOnContract"), $langs->trans("ConfirmActivateAllOnContract"), "confirm_activate", $formquestion, 'yes', 1, 280);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("ActivateAllOnContract"), $langs->trans("ConfirmActivateAllOnContract"), "confirm_activate", $formquestion, 'yes', 1, 280);
 		} elseif ($action == 'clone') {
 			$filter = '(s.client:IN:1,2,3)';
 			// Clone confirmation
 			$formquestion = array(array('type' => 'other', 'name' => 'socid', 'label' => $langs->trans("SelectThirdParty"), 'value' => $form->select_company(GETPOSTINT('socid'), 'socid', $filter)));
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneContract', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneContract', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 		}
 
 
@@ -1384,7 +1384,7 @@ if ($action == 'create') {
 
 		// Contract
 		if ($object->status == $object::STATUS_DRAFT && $user->hasRight('contrat', 'creer')) {
-			print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="setremise">';
 			print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -1423,9 +1423,9 @@ if ($action == 'create') {
 			if ($permissiontoadd) {
 				$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 				}
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 			} else {
 				if (!empty($object->fk_project)) {
 					$proj = new Project($db);
@@ -1525,7 +1525,7 @@ if ($action == 'create') {
 		print '<div id="contrat-lines-container"  id="contractlines" data-contractid="'.$object->id.'"  data-element="'.$object->element.'" >';
 		while ($cursorline <= $nbofservices) {
 			print '<div id="contrat-line-container'.$object->lines[$cursorline - 1]->id.'" data-contratlineid = "'.$object->lines[$cursorline - 1]->id.'" data-element="'.$object->lines[$cursorline - 1]->element.'" >';
-			print '<form name="update" id="addproduct" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post">';
+			print '<form name="update" id="addproduct" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="updateline">';
 			print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -1575,12 +1575,12 @@ if ($action == 'create') {
 				if ($nbofservices > 1 && $conf->browser->layout != 'phone' && $user->hasRight('contrat', 'creer')) {
 					print '<td width="30" class="linecolmove tdlineupdown center">';
 					if ($cursorline > 1) {
-						print '<a class="lineupdown reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=up&token='.newToken().'&rowid='.$objp->rowid.'">';
+						print '<a class="lineupdown reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=up&token='.newToken().'&rowid='.$objp->rowid.'">';
 						echo img_up('default', 0, 'imgupforline');
 						print '</a>';
 					}
 					if ($cursorline < $nbofservices) {
-						print '<a class="lineupdown reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=down&token='.newToken().'&rowid='.$objp->rowid.'">';
+						print '<a class="lineupdown reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=down&token='.newToken().'&rowid='.$objp->rowid.'">';
 						echo img_down('default', 0, 'imgdownforline');
 						print '</a>';
 					}
@@ -1665,17 +1665,17 @@ if ($action == 'create') {
 					print '<td class="nowraponall right">';
 					if ($user->hasRight('contrat', 'creer') && is_array($arrayothercontracts) && count($arrayothercontracts) && ($object->statut >= 0)) {
 						print '<!-- link to move service line into another contract -->';
-						print '<a class="reposition marginrightonly" style="padding-left: 5px;" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=move&token='.newToken().'&rowid='.$objp->rowid.'">';
+						print '<a class="reposition marginrightonly" style="padding-left: 5px;" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=move&token='.newToken().'&rowid='.$objp->rowid.'">';
 						print img_picto($langs->trans("MoveToAnotherContract"), 'uparrow');
 						print '</a>';
 					}
 					if ($user->hasRight('contrat', 'creer') && ($object->statut >= 0)) {
-						print '<a class="reposition marginrightonly editfielda" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=editline&token='.newToken().'&rowid='.$objp->rowid.'">';
+						print '<a class="reposition marginrightonly editfielda" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=editline&token='.newToken().'&rowid='.$objp->rowid.'">';
 						print img_edit();
 						print '</a>';
 					}
 					if ($user->hasRight('contrat', 'creer') && ($object->statut >= 0)) {
-						print '<a class="reposition marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=deleteline&token='.newToken().'&rowid='.$objp->rowid.'">';
+						print '<a class="reposition marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=deleteline&token='.newToken().'&rowid='.$objp->rowid.'">';
 						print img_delete();
 						print '</a>';
 					}
@@ -1873,7 +1873,7 @@ if ($action == 'create') {
 			 * Confirmation to delete service line of contract
 			 */
 			if ($action == 'deleteline' && !$_REQUEST["cancel"] && $user->hasRight('contrat', 'creer') && $object->lines[$cursorline - 1]->id == GETPOST('rowid')) {
-				print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id."&lineid=".GETPOST('rowid'), $langs->trans("DeleteContractLine"), $langs->trans("ConfirmDeleteContractLine"), "confirm_deleteline", '', 0, 1);
+				print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id."&lineid=".GETPOST('rowid'), $langs->trans("DeleteContractLine"), $langs->trans("ConfirmDeleteContractLine"), "confirm_deleteline", '', 0, 1);
 				if ($ret == 'html') {
 					print '<table class="notopnoleftnoright" width="100%"><tr class="oddeven" height="6"><td></td></tr></table>';
 				}
@@ -1893,7 +1893,7 @@ if ($action == 'create') {
 				'text' => $langs->trans("ConfirmMoveToAnotherContractQuestion"),
 				0 => array('type' => 'select', 'name' => 'newcid', 'values' => $arraycontractid));
 
-				print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id."&lineid=".GETPOSTINT('rowid'), $langs->trans("MoveToAnotherContract"), $langs->trans("ConfirmMoveToAnotherContract"), "confirm_move", $formquestion);
+				print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id."&lineid=".GETPOSTINT('rowid'), $langs->trans("MoveToAnotherContract"), $langs->trans("ConfirmMoveToAnotherContract"), "confirm_move", $formquestion);
 				print '<table class="notopnoleftnoright" width="100%"><tr class="oddeven" height="6"><td></td></tr></table>';
 			}
 
@@ -1915,7 +1915,7 @@ if ($action == 'create') {
 							$tmpactiontext = $langs->trans("Disable");
 						}
 						if (($tmpaction == 'activateline' && $user->hasRight('contrat', 'activer')) || ($tmpaction == 'unactivateline' && $user->hasRight('contrat', 'desactiver'))) {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;ligne='.$object->lines[$cursorline - 1]->id.'&amp;action='.$tmpaction.'">';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;ligne='.$object->lines[$cursorline - 1]->id.'&amp;action='.$tmpaction.'">';
 							print img_picto($tmpactiontext, $tmpactionpicto);
 							print '</a>';
 						}
@@ -1962,7 +1962,7 @@ if ($action == 'create') {
 
 			// Form to activate line
 			if ($user->hasRight('contrat', 'activer') && $action == 'activateline' && $object->lines[$cursorline - 1]->id == GETPOSTINT('ligne')) {
-				print '<form name="active" action="'.DOL_PHP_SELF.'" method="POST">';
+				print '<form name="active" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="action" value="confirm_active">';
 				print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -2021,7 +2021,7 @@ if ($action == 'create') {
 				 * Disable a contract line
 				 */
 				print '<!-- Form to disabled a line -->'."\n";
-				print '<form name="confirm_closeline" action="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;ligne='.$object->lines[$cursorline - 1]->id.'" method="post">';
+				print '<form name="confirm_closeline" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;ligne='.$object->lines[$cursorline - 1]->id.'" method="post">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="confirm" value="yes">';
 				print '<input type="hidden" name="action" value="confirm_closeline">';
@@ -2085,7 +2085,7 @@ if ($action == 'create') {
 			$dateSelector = 1;
 
 			print "\n";
-			print '	<form name="addproduct" id="addproduct" action="'.DOL_PHP_SELF.'?id='.$object->id.(($action != 'editline') ? '' : '#line_'.GETPOSTINT('lineid')).'" method="POST">
+			print '	<form name="addproduct" id="addproduct" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.(($action != 'editline') ? '' : '#line_'.GETPOSTINT('lineid')).'" method="POST">
 			<input type="hidden" name="token" value="'.newToken().'">
 			<input type="hidden" name="action" value="'.(($action != 'editline') ? 'addline' : 'updateline').'">
 			<input type="hidden" name="mode" value="">
@@ -2149,7 +2149,7 @@ if ($action == 'create') {
 				if (empty($user->socid)) {
 					if ($object->status == $object::STATUS_VALIDATED) {
 						if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || $user->hasRight('contrat', 'creer'))) {
-							print dolGetButtonAction('', $langs->trans('SendMail'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle', '', true, $params);
+							print dolGetButtonAction('', $langs->trans('SendMail'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle', '', true, $params);
 						} else {
 							print dolGetButtonAction('', $langs->trans('SendMail'), 'default', '#', '', false, $params);
 						}
@@ -2159,7 +2159,7 @@ if ($action == 'create') {
 				if ($object->status == $object::STATUS_DRAFT && $nbofservices) {
 					if ($user->hasRight('contrat', 'creer')) {
 						unset($params['attr']['title']);
-						print dolGetButtonAction($langs->trans('Validate'), '', 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=valid&token='.newToken(), '', true, $params);
+						print dolGetButtonAction($langs->trans('Validate'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=valid&token='.newToken(), '', true, $params);
 					} else {
 						$params['attr']['title'] = $langs->trans("NotEnoughPermissions");
 						print dolGetButtonAction($langs->trans('Validate'), '', 'default', '#', '', false, $params);
@@ -2168,7 +2168,7 @@ if ($action == 'create') {
 				if ($object->status == $object::STATUS_VALIDATED) {
 					if ($user->hasRight('contrat', 'creer')) {
 						unset($params['attr']['title']);
-						print dolGetButtonAction($langs->trans('Modify'), '', 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=reopen&token='.newToken(), '', true, $params);
+						print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken(), '', true, $params);
 					} else {
 						$params['attr']['title'] = $langs->trans("NotEnoughPermissions");
 						print dolGetButtonAction($langs->trans('Modify'), '', 'default', '#', '', false, $params);
@@ -2209,7 +2209,7 @@ if ($action == 'create') {
 				if ($object->nbofservicesclosed > 0 || $object->nbofserviceswait > 0) {
 					if ($user->hasRight('contrat', 'activer')) {
 						unset($params['attr']['title']);
-						print dolGetButtonAction($langs->trans('ActivateAllContracts'), '', 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=activate&token='.newToken(), '', true, $params);
+						print dolGetButtonAction($langs->trans('ActivateAllContracts'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=activate&token='.newToken(), '', true, $params);
 					} else {
 						unset($params['attr']['title']);
 						print dolGetButtonAction($langs->trans('ActivateAllContracts'), '', 'default', '#', '', false, $params);
@@ -2218,7 +2218,7 @@ if ($action == 'create') {
 				if ($object->nbofservicesclosed < $nbofservices) {
 					if ($user->hasRight('contrat', 'desactiver')) {
 						unset($params['attr']['title']);
-						print dolGetButtonAction($langs->trans('CloseAllContracts'), '', 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=close&token='.newToken(), '', true, $params);
+						print dolGetButtonAction($langs->trans('CloseAllContracts'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', true, $params);
 					} else {
 						unset($params['attr']['title']);
 						print dolGetButtonAction($langs->trans('CloseAllContracts'), '', 'default', '#', '', false, $params);
@@ -2235,21 +2235,21 @@ if ($action == 'create') {
 
 				if (getDolGlobalString('CONTRACT_HIDE_CLOSED_SERVICES_BY_DEFAULT') && $object->nbofservicesclosed > 0) {
 					if ($action == 'showclosedlines') {
-						print '<div class="inline-block divButAction"><a class="butAction" id="btnhideclosedlines" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=hideclosedlines">'.$langs->trans("HideClosedServices").'</a></div>';
+						print '<div class="inline-block divButAction"><a class="butAction" id="btnhideclosedlines" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=hideclosedlines">'.$langs->trans("HideClosedServices").'</a></div>';
 					} else {
-						print '<div class="inline-block divButAction"><a class="butAction" id="btnshowclosedlines" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=showclosedlines">'.$langs->trans("ShowClosedServices").'</a></div>';
+						print '<div class="inline-block divButAction"><a class="butAction" id="btnshowclosedlines" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=showclosedlines">'.$langs->trans("ShowClosedServices").'</a></div>';
 					}
 				}
 
 				// Clone
 				if ($user->hasRight('contrat', 'creer')) {
 					unset($params['attr']['title']);
-					print dolGetButtonAction($langs->trans('ToClone'), '', 'default', DOL_PHP_SELF.'?id='.$object->id.'&socid='.$object->socid.'&action=clone&token='.newToken(), '', true, $params);
+					print dolGetButtonAction($langs->trans('ToClone'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&socid='.$object->socid.'&action=clone&token='.newToken(), '', true, $params);
 				}
 
 				// Delete
 				unset($params['attr']['title']);
-				print dolGetButtonAction($langs->trans('Delete'), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), '', $permissiontodelete, $params);
+				print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), '', $permissiontodelete, $params);
 			}
 
 			print "</div>";
@@ -2263,7 +2263,7 @@ if ($action == 'create') {
 			 */
 			$filename = dol_sanitizeFileName($object->ref);
 			$filedir = $conf->contrat->multidir_output[$object->entity]."/".dol_sanitizeFileName($object->ref);
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 			$genallowed = $user->hasRight('contrat', 'lire');
 			$delallowed = $user->hasRight('contrat', 'creer');
 

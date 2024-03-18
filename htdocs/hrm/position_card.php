@@ -221,7 +221,7 @@ function displayPositionCard(&$object)
 	if (($id || $ref) && $action == 'edit') {
 		print load_fiche_titre($langs->trans("Position"), '', 'object_' . $object->picto);
 
-		print '<form method="POST" action="' . DOL_PHP_SELF . '?id=' . $object->id . '">';
+		print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
 		print '<input type="hidden" name="token" value="' . newToken() . '">';
 		print '<input type="hidden" name="action" value="update">';
 		print '<input type="hidden" name="id" value="' . $object->id . '">';
@@ -267,7 +267,7 @@ function displayPositionCard(&$object)
 
 		// Confirmation to delete
 		if ($action == 'delete') {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id, $langs->trans('DeletePosition'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('DeletePosition'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
 		}
 
 		// Call Hook formConfirm
@@ -332,10 +332,10 @@ function displayPositionCard(&$object)
 		$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 
 
-		print dolGetButtonAction($langs->trans('Modify'), '', 'default', DOL_PHP_SELF . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
+		print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
 
 		// Delete (need delete permission, or if draft, just need create/modify permission)
-		print dolGetButtonAction($langs->trans('Delete'), '', 'delete', DOL_PHP_SELF . '?id=' . $object->id . '&action=delete&token=' . newToken(), '', $permissiontodelete);
+		print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=delete&token=' . newToken(), '', $permissiontodelete);
 	}
 }
 
@@ -350,7 +350,7 @@ function displayPositionCard(&$object)
 //		 * Generated documents
 //		 */
 //		$filedir = $conf->societe->multidir_output[$object->entity].'/'.$object->id;
-//		$urlsource = DOL_PHP_SELF."?socid=".$object->id;
+//		$urlsource = $_SERVER['PHP_SELF']."?socid=".$object->id;
 //		$genallowed = $user->hasRight('societe', 'lire');
 //		$delallowed = $user->hasRight('societe', 'creer');
 //

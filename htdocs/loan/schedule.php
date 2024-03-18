@@ -157,17 +157,17 @@ if (isModEnabled('project')) {
 	$morehtmlref .= '<br>'.$langs->trans('Project').' : ';
 	if ($user->hasRight('loan', 'write')) {
 		if ($action != 'classify') {
-			//$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
+			//$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
 			if ($action == 'classify') {
-				//$morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-				$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+				$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				$morehtmlref .= '<input type="hidden" name="action" value="classin">';
 				$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 				$morehtmlref .= $formproject->select_projects(-1, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
 				$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 				$morehtmlref .= '</form>';
 			} else {
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, -1, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, -1, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
 			}
 		}
 	} else {
@@ -228,7 +228,7 @@ if ($pay_without_schedule == 1) {
 	print '<div class="warning">'.$langs->trans('CantUseScheduleWithLoanStartedToPaid').'</div>'."\n";
 }
 
-print '<form name="createecheancier" action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form name="createecheancier" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="loanid" value="'.$loanid.'">';
 if (count($echeances->lines) > 0) {

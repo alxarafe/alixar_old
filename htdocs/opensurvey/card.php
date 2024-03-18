@@ -214,7 +214,7 @@ foreach ($toutsujet as $value) {
 $toutsujet = str_replace("@", "<br>", $toutsujet);
 $toutsujet = str_replace("°", "'", $toutsujet);
 
-print '<form name="updatesurvey" action="'.DOL_PHP_SELF.'?id='.$numsondage.'" method="POST">'."\n";
+print '<form name="updatesurvey" action="'.$_SERVER['PHP_SELF'].'?id='.$numsondage.'" method="POST">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 
@@ -374,31 +374,31 @@ print '<div class="tabsAction">';
 
 if ($action != 'edit' && $user->hasRight('opensurvey', 'write')) {
 	// Modify button
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.urlencode($numsondage).'">'.$langs->trans("Modify").'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.urlencode($numsondage).'">'.$langs->trans("Modify").'</a>';
 
 	if ($object->status == Opensurveysondage::STATUS_VALIDATED) {
 		// Close button
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=close&token='.newToken().'&id='.urlencode($numsondage).'">'.$langs->trans("Close").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=close&token='.newToken().'&id='.urlencode($numsondage).'">'.$langs->trans("Close").'</a>';
 	}
 	if ($object->status == Opensurveysondage::STATUS_CLOSED) {
 		// Re-Open
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=reopen&token='.newToken().'&id='.urlencode($numsondage).'">'.$langs->trans("ReOpen").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=reopen&token='.newToken().'&id='.urlencode($numsondage).'">'.$langs->trans("ReOpen").'</a>';
 	}
 
 	// Delete
-	print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?suppressionsondage=1&id='.urlencode($numsondage).'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
+	print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?suppressionsondage=1&id='.urlencode($numsondage).'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
 }
 
 print '</div>';
 
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?&id='.urlencode($numsondage), $langs->trans("RemovePoll"), $langs->trans("ConfirmRemovalOfPoll", $id), 'delete_confirm', '', '', 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?&id='.urlencode($numsondage), $langs->trans("RemovePoll"), $langs->trans("ConfirmRemovalOfPoll", $id), 'delete_confirm', '', '', 1);
 }
 
 
 
 
-print '<form name="formulaire5" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+print '<form name="formulaire5" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="addcomment">';
 print '<input type="hidden" name="id" value="'.urlencode($numsondage).'">';

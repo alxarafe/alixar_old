@@ -623,7 +623,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -681,7 +681,7 @@ if (!empty($user->admin) && (empty($_SESSION['leftmenu']) || $_SESSION['leftmenu
 
 // Confirm deletion of record
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.((int) $rowid).'&code='.urlencode($code).'&id='.((int) $id), $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.((int) $rowid).'&code='.urlencode($code).'&id='.((int) $id), $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
 }
 
 
@@ -702,7 +702,7 @@ if ($action == 'create') {
 	$obj->content = GETPOST('content', 'restricthtml');
 
 	// Form to add a new line
-	print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="from" value="'.dol_escape_htmltag(GETPOST('from', 'alpha')).'">';
@@ -874,7 +874,7 @@ if (!$resql) {
 
 $num = $db->num_rows($resql);
 
-print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="from" value="'.dol_escape_htmltag(GETPOST('from', 'alpha')).'">';
 
@@ -917,7 +917,7 @@ if (GETPOST('from', 'alpha')) {
 // There is several pages
 if ($num > $listlimit) {
 	print '<tr class="none"><td class="right" colspan="'.(3 + count($fieldlist)).'">';
-	print_fleche_navigation($page, DOL_PHP_SELF, $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
+	print_fleche_navigation($page, $_SERVER['PHP_SELF'], $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
 	print '</td></tr>';
 }
 
@@ -1043,11 +1043,11 @@ foreach ($fieldlist as $field => $value) {
 		if ($sortfieldtouse == 'type_template') {
 			$sortfieldtouse .= 'type_template,lang,position,label';
 		}
-		print getTitleFieldOfList($valuetoshow, 0, DOL_PHP_SELF, $sortfieldtouse, ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, $css.' ');
+		print getTitleFieldOfList($valuetoshow, 0, $_SERVER['PHP_SELF'], $sortfieldtouse, ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, $css.' ');
 	}
 }
 
-print getTitleFieldOfList($langs->trans("Status"), 0, DOL_PHP_SELF, "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
+print getTitleFieldOfList($langs->trans("Status"), 0, $_SERVER['PHP_SELF'], "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 	print getTitleFieldOfList('');
@@ -1194,7 +1194,7 @@ if ($num) {
 					$canbemodified = 0;
 				}
 
-				$url = DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
+				$url = $_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
 				if ($param) {
 					$url .= '&'.$param;
 				}

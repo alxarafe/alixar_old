@@ -185,7 +185,7 @@ print $langs->trans("NotificationsDescGlobal").'<br>';
 print '</span>';
 print '<br>';
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="setvalue">';
 
@@ -253,7 +253,7 @@ print '</form>';
 print '<br><br>';
 
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="settemplates">';
 
@@ -375,7 +375,7 @@ print '</form>';
 print '<br><br>';
 
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="setfixednotif">';
 print '<input type="hidden" name="page_y" value="">';

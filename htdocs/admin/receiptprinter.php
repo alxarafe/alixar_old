@@ -308,7 +308,7 @@ $head = receiptprinteradmin_prepare_head($mode);
 
 // mode = config
 if ($mode == 'config' && $user->admin) {
-	print '<form method="post" action="'.DOL_PHP_SELF.'?mode=config" autocomplete="off">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?mode=config" autocomplete="off">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	if ($action != 'editprinter') {
 		print '<input type="hidden" name="action" value="addprinter">';
@@ -384,19 +384,19 @@ if ($mode == 'config' && $user->admin) {
 				print '<td>'.$printer->listprinters[$line]['parameter'].'</td>';
 				// edit icon
 				print '<td class="center">';
-				print '<a class="editfielda marginrightonly" href="'.DOL_PHP_SELF.'?mode=config&action=editprinter&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'">';
+				print '<a class="editfielda marginrightonly" href="'.$_SERVER['PHP_SELF'].'?mode=config&action=editprinter&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'">';
 				print img_picto($langs->trans("Edit"), 'edit', 'class="paddingright"');
 				print '</a>';
 				// delete icon
-				print '<a class="marginrightonly" href="'.DOL_PHP_SELF.'?mode=config&action=deleteprinter&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'&printername='.urlencode($printer->listprinters[$line]['name']).'">';
+				print '<a class="marginrightonly" href="'.$_SERVER['PHP_SELF'].'?mode=config&action=deleteprinter&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'&printername='.urlencode($printer->listprinters[$line]['name']).'">';
 				print img_picto($langs->trans("Delete"), 'delete', 'class="paddingright"');
 				print '</a>';
 				// test icon
-				print '<a class="marginrightonly nowraponall" href="'.DOL_PHP_SELF.'?mode=config&action=testprinter&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'&printername='.urlencode($printer->listprinters[$line]['name']).'">';
+				print '<a class="marginrightonly nowraponall" href="'.$_SERVER['PHP_SELF'].'?mode=config&action=testprinter&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'&printername='.urlencode($printer->listprinters[$line]['name']).'">';
 				print img_picto($langs->trans("TestPrinterDesc"), 'printer', 'class="paddingright paddingleft"').'TXT';
 				print '</a>';
 				// test icon
-				print '<a class="marginrightonly nowraponall" href="'.DOL_PHP_SELF.'?mode=config&action=testprinter2&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'&printername='.urlencode($printer->listprinters[$line]['name']).'">';
+				print '<a class="marginrightonly nowraponall" href="'.$_SERVER['PHP_SELF'].'?mode=config&action=testprinter2&token='.newToken().'&printerid='.$printer->listprinters[$line]['rowid'].'&printername='.urlencode($printer->listprinters[$line]['name']).'">';
 				print img_picto($langs->trans("TestPrinterDesc2"), 'printer', 'class="paddingright paddingleft"').'IMG';
 				print '</a>';
 				print '</td>';
@@ -438,7 +438,7 @@ if ($mode == 'template' && $user->admin) {
 
 	print '<br>';
 
-	print '<form method="post" action="'.DOL_PHP_SELF.'?mode=template" autocomplete="off">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?mode=template" autocomplete="off">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	if ($action != 'edittemplate') {
 		print '<input type="hidden" name="action" value="addtemplate">';
@@ -474,15 +474,15 @@ if ($mode == 'template' && $user->admin) {
 				print '<td>'.$printer->listprinterstemplates[$line]['name'].'</td>';
 				print '<td class="wordbreak">'.dol_htmlentitiesbr($printer->listprinterstemplates[$line]['template']).'</td>';
 				// edit icon
-				print '<td class="center"><a class="editfielda paddingleftonly marginrightonly" href="'.DOL_PHP_SELF.'?mode=template&action=edittemplate&token='.newToken().'&templateid='.$printer->listprinterstemplates[$line]['rowid'].'">';
+				print '<td class="center"><a class="editfielda paddingleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?mode=template&action=edittemplate&token='.newToken().'&templateid='.$printer->listprinterstemplates[$line]['rowid'].'">';
 				print img_picto($langs->trans("Edit"), 'edit');
 				print '</a>';
 				// delete icon
-				print '<a class="paddingleftonly marginrightonly" href="'.DOL_PHP_SELF.'?mode=template&action=deletetemplate&token='.newToken().'&templateid='.$printer->listprinterstemplates[$line]['rowid'].'&templatename='.urlencode($printer->listprinterstemplates[$line]['name']).'">';
+				print '<a class="paddingleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?mode=template&action=deletetemplate&token='.newToken().'&templateid='.$printer->listprinterstemplates[$line]['rowid'].'&templatename='.urlencode($printer->listprinterstemplates[$line]['name']).'">';
 				print img_picto($langs->trans("Delete"), 'delete');
 				print '</a>';
 				// test icon
-				print '<a class="paddingleftonly marginrightonly" href="'.DOL_PHP_SELF.'?mode=template&action=testtemplate&token='.newToken().'&templateid='.$printer->listprinterstemplates[$line]['rowid'].'&templatename='.urlencode($printer->listprinterstemplates[$line]['name']).'">';
+				print '<a class="paddingleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?mode=template&action=testtemplate&token='.newToken().'&templateid='.$printer->listprinterstemplates[$line]['rowid'].'&templatename='.urlencode($printer->listprinterstemplates[$line]['name']).'">';
 				print img_picto($langs->trans("TestPrinterTemplate"), 'printer');
 				print '</a></td>';
 			}

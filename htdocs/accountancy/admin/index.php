@@ -304,7 +304,7 @@ if (!$user->admin) {
 	}
 }
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 
@@ -321,11 +321,11 @@ print "</tr>\n";
 print '<tr>';
 print '<td>'.$langs->trans("ACCOUNTING_ENABLE_EXPORT_DRAFT_JOURNAL").'</td>';
 if (getDolGlobalString('ACCOUNTING_ENABLE_EXPORT_DRAFT_JOURNAL')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&enabledraftexport&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&enabledraftexport&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&enabledraftexport&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&enabledraftexport&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -335,11 +335,11 @@ print '</tr>';
 print '<tr class="oddeven">';
 print '<td>'.$langs->trans("BANK_DISABLE_DIRECT_INPUT").'</td>';
 if (getDolGlobalString('BANK_DISABLE_DIRECT_INPUT')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setBANK_DISABLE_DIRECT_INPUT&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setBANK_DISABLE_DIRECT_INPUT&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setBANK_DISABLE_DIRECT_INPUT&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setBANK_DISABLE_DIRECT_INPUT&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -351,11 +351,11 @@ print ' - <span class="opacitymedium">'.$langs->trans("NotRecommended").'</span>
 print '</td>';
 
 if (getDolGlobalString('ACCOUNTANCY_COMBO_FOR_AUX')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setACCOUNTANCY_COMBO_FOR_AUX&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setACCOUNTANCY_COMBO_FOR_AUX&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setACCOUNTANCY_COMBO_FOR_AUX&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setACCOUNTANCY_COMBO_FOR_AUX&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -364,11 +364,11 @@ print '</tr>';
 print '<tr class="oddeven">';
 print '<td>'.$langs->trans("ACCOUNTING_MANAGE_ZERO").'</td>';
 if (getDolGlobalInt('ACCOUNTING_MANAGE_ZERO')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setACCOUNTING_MANAGE_ZERO&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setACCOUNTING_MANAGE_ZERO&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setACCOUNTING_MANAGE_ZERO&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setACCOUNTING_MANAGE_ZERO&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -429,11 +429,11 @@ foreach ($list_binding as $key) {
 print '<tr class="oddeven">';
 print '<td>'.$langs->trans("ACCOUNTING_DISABLE_BINDING_ON_SALES").'</td>';
 if (getDolGlobalString('ACCOUNTING_DISABLE_BINDING_ON_SALES')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setdisablebindingonsales&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setdisablebindingonsales&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on', '', false, 0, 0, '', 'warning');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setdisablebindingonsales&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setdisablebindingonsales&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -442,11 +442,11 @@ print '</tr>';
 print '<tr class="oddeven">';
 print '<td>'.$langs->trans("ACCOUNTING_DISABLE_BINDING_ON_PURCHASES").'</td>';
 if (getDolGlobalString('ACCOUNTING_DISABLE_BINDING_ON_PURCHASES')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setdisablebindingonpurchases&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setdisablebindingonpurchases&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on', '', false, 0, 0, '', 'warning');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setdisablebindingonpurchases&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setdisablebindingonpurchases&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -455,11 +455,11 @@ print '</tr>';
 print '<tr class="oddeven">';
 print '<td>'.$langs->trans("ACCOUNTING_DISABLE_BINDING_ON_EXPENSEREPORTS").'</td>';
 if (getDolGlobalString('ACCOUNTING_DISABLE_BINDING_ON_EXPENSEREPORTS')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setdisablebindingonexpensereports&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setdisablebindingonexpensereports&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on', '', false, 0, 0, '', 'warning');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setdisablebindingonexpensereports&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setdisablebindingonexpensereports&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -485,11 +485,11 @@ print '<tr class="oddeven">';
 print '<td>';
 print $form->textwithpicto($langs->trans("ACCOUNTING_ENABLE_LETTERING"), $langs->trans("ACCOUNTING_ENABLE_LETTERING_DESC", $langs->transnoentitiesnoconv("NumMvts")).'<br>'.$langs->trans("EnablingThisFeatureIsNotNecessary")).'</td>';
 if (getDolGlobalInt('ACCOUNTING_ENABLE_LETTERING')) {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setenablelettering&value=0">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setenablelettering&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&action=setenablelettering&value=1">';
+	print '<td class="right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&action=setenablelettering&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -518,11 +518,11 @@ if (getDolGlobalInt('ACCOUNTING_ENABLE_LETTERING')) {
 	print '<td>';
 	print $form->textwithpicto($langs->trans("ACCOUNTING_ENABLE_AUTOLETTERING"), $langs->trans("ACCOUNTING_ENABLE_AUTOLETTERING_DESC")) . '</td>';
 	if (getDolGlobalInt('ACCOUNTING_ENABLE_AUTOLETTERING')) {
-		print '<td class="right"><a class="reposition" href="' . DOL_PHP_SELF . '?token=' . newToken() . '&action=setenableautolettering&value=0">';
+		print '<td class="right"><a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?token=' . newToken() . '&action=setenableautolettering&value=0">';
 		print img_picto($langs->trans("Activated"), 'switch_on');
 		print '</a></td>';
 	} else {
-		print '<td class="right"><a class="reposition" href="' . DOL_PHP_SELF . '?token=' . newToken() . '&action=setenableautolettering&value=1">';
+		print '<td class="right"><a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?token=' . newToken() . '&action=setenableautolettering&value=1">';
 		print img_picto($langs->trans("Disabled"), 'switch_off');
 		print '</a></td>';
 	}
@@ -533,11 +533,11 @@ print '<tr class="oddeven">';
 print '<td>';
 print $form->textwithpicto($langs->trans("ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE"), $langs->trans("ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE_DESC", $langs->transnoentities("MenuDefaultAccounts"))).'</td>';
 if (getDolGlobalString('ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE')) {
-	print '<td class="right"><a class="reposition" href="' . DOL_PHP_SELF . '?token=' . newToken() . '&action=setenablevatreversecharge&value=0">';
+	print '<td class="right"><a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?token=' . newToken() . '&action=setenablevatreversecharge&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td class="right"><a class="reposition" href="' . DOL_PHP_SELF . '?token=' . newToken() . '&action=setenablevatreversecharge&value=1">';
+	print '<td class="right"><a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?token=' . newToken() . '&action=setenablevatreversecharge&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }

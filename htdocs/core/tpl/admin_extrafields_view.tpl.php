@@ -36,7 +36,7 @@ $langs->load("modulebuilder");
 
 if ($action == 'delete') {
 	$attributekey = GETPOST('attrname', 'aZ09');
-	print $form->formconfirm(DOL_PHP_SELF."?attrname=$attributekey", $langs->trans("DeleteExtrafield"), $langs->trans("ConfirmDeleteExtrafield", $attributekey), "confirm_delete", '', 0, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF']."?attrname=$attributekey", $langs->trans("DeleteExtrafield"), $langs->trans("ConfirmDeleteExtrafield", $attributekey), "confirm_delete", '', 0, 1);
 }
 
 ?>
@@ -47,7 +47,7 @@ if ($action == 'delete') {
 $title = '<span class="opacitymedium">'.$langs->trans("DefineHereComplementaryAttributes", empty($textobject) ? '' : $textobject).'</span><br>'."\n";
 //if ($action != 'create' && $action != 'edit') {
 $newcardbutton = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('NewAttribute'), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?action=create', '', 1);
+$newcardbutton .= dolGetButtonTitle($langs->trans('NewAttribute'), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?action=create', '', 1);
 /*} else {
 	$newcardbutton = '';
 }*/
@@ -114,10 +114,10 @@ if (isset($extrafields->attributes[$elementtype]['type']) && is_array($extrafiel
 		// Actions
 		if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 			print '<td class="center nowraponall">';
-			print '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&attrname='.urlencode($key).'#formeditextrafield">'.img_edit().'</a>';
-			print '&nbsp; <a class="paddingleft" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&attrname='.urlencode($key).'">'.img_delete().'</a>';
+			print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&attrname='.urlencode($key).'#formeditextrafield">'.img_edit().'</a>';
+			print '&nbsp; <a class="paddingleft" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&attrname='.urlencode($key).'">'.img_delete().'</a>';
 			if ($extrafields->attributes[$elementtype]['type'][$key] == 'password' && !empty($extrafields->attributes[$elementtype]['param'][$key]['options']) && array_key_exists('dolcrypt', $extrafields->attributes[$elementtype]['param'][$key]['options'])) {
-				print '&nbsp; <a class="aaa" href="'.DOL_PHP_SELF.'?action=encrypt&token='.newToken().'&attrname='.urlencode($key).'" title="'.dol_escape_htmltag($langs->trans("ReEncryptDesc")).'">'.img_picto('', 'refresh').'</a>';
+				print '&nbsp; <a class="aaa" href="'.$_SERVER['PHP_SELF'].'?action=encrypt&token='.newToken().'&attrname='.urlencode($key).'" title="'.dol_escape_htmltag($langs->trans("ReEncryptDesc")).'">'.img_picto('', 'refresh').'</a>';
 			}
 			print '</td>'."\n";
 		}
@@ -181,10 +181,10 @@ if (isset($extrafields->attributes[$elementtype]['type']) && is_array($extrafiel
 		// Actions
 		if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 			print '<td class="right nowraponall">';
-			print '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&attrname='.urlencode($key).'#formeditextrafield">'.img_edit().'</a>';
-			print '&nbsp; <a class="paddingleft" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&attrname='.urlencode($key).'">'.img_delete().'</a>';
+			print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&attrname='.urlencode($key).'#formeditextrafield">'.img_edit().'</a>';
+			print '&nbsp; <a class="paddingleft" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&attrname='.urlencode($key).'">'.img_delete().'</a>';
 			if ($extrafields->attributes[$elementtype]['type'][$key] == 'password' && !empty($extrafields->attributes[$elementtype]['param'][$key]['options']) && array_key_exists('dolcrypt', $extrafields->attributes[$elementtype]['param'][$key]['options'])) {
-				print '&nbsp; <a class="aaa" href="'.DOL_PHP_SELF.'?action=encrypt&token='.newToken().'&attrname='.urlencode($key).'" title="'.dol_escape_htmltag($langs->trans("ReEncryptDesc")).'">'.img_picto('', 'refresh').'</a>';
+				print '&nbsp; <a class="aaa" href="'.$_SERVER['PHP_SELF'].'?action=encrypt&token='.newToken().'&attrname='.urlencode($key).'" title="'.dol_escape_htmltag($langs->trans("ReEncryptDesc")).'">'.img_picto('', 'refresh').'</a>';
 			}
 			print '</td>'."\n";
 		}

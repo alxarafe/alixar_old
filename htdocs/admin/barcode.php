@@ -232,11 +232,11 @@ if (isModEnabled('product')) {
 					print '<td class="nowrap">'.$modBarCode->getExample($langs)."</td>\n";
 
 					if (getDolGlobalString('BARCODE_PRODUCT_ADDON_NUM') && $conf->global->BARCODE_PRODUCT_ADDON_NUM == "$file") {
-						print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setbarcodeproductoff&token='.newToken().'&amp;value='.urlencode($file).'">';
+						print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setbarcodeproductoff&token='.newToken().'&amp;value='.urlencode($file).'">';
 						print img_picto($langs->trans("Activated"), 'switch_on');
 						print '</a></td>';
 					} else {
-						print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setbarcodeproducton&token='.newToken().'&amp;value='.urlencode($file).'">';
+						print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setbarcodeproducton&token='.newToken().'&amp;value='.urlencode($file).'">';
 						print img_picto($langs->trans("Disabled"), 'switch_off');
 						print '</a></td>';
 					}
@@ -293,11 +293,11 @@ if (isModEnabled('societe')) {
 					print '<td class="nowrap">'.$modBarCode->getExample($langs)."</td>\n";
 
 					if (getDolGlobalString('BARCODE_THIRDPARTY_ADDON_NUM') && $conf->global->BARCODE_THIRDPARTY_ADDON_NUM == "$file") {
-						print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setbarcodethirdpartyoff&token='.newToken().'&amp;value='.urlencode($file).'">';
+						print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setbarcodethirdpartyoff&token='.newToken().'&amp;value='.urlencode($file).'">';
 						print img_picto($langs->trans("Activated"), 'switch_on');
 						print '</a></td>';
 					} else {
-						print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setbarcodethirdpartyon&token='.newToken().'&amp;value='.urlencode($file).'">';
+						print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setbarcodethirdpartyon&token='.newToken().'&amp;value='.urlencode($file).'">';
 						print img_picto($langs->trans("Disabled"), 'switch_off');
 						print '</a></td>';
 					}
@@ -323,7 +323,7 @@ print '<br>';
 print load_fiche_titre($langs->trans("BarcodeEncodeModule"), '', '');
 
 if (empty($conf->use_javascript_ajax)) {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST" id="form_engine">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" id="form_engine">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="updateengine">';
 }
@@ -425,7 +425,7 @@ print "<br>";
  */
 print load_fiche_titre($langs->trans("OtherOptions"), '', '');
 
-print "<form method=\"post\" action=\"".DOL_PHP_SELF."\">";
+print "<form method=\"post\" action=\"".$_SERVER['PHP_SELF']."\">";
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print "<input type=\"hidden\" name=\"action\" value=\"update\">";
 

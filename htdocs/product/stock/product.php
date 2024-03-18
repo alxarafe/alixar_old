@@ -201,7 +201,7 @@ if ($action == 'addlimitstockwarehouse' && $user->hasRight('produit', 'creer')) 
 		}
 	}
 
-	header("Location: ".DOL_PHP_SELF."?id=".$id);
+	header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 	exit;
 }
 
@@ -325,7 +325,7 @@ if ($action == "correct_stock" && !$cancel) {
 					header("Location: ".$backtopage);
 					exit;
 				} else {
-					header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				}
 			} else {
@@ -937,7 +937,7 @@ if (empty($reshook)) {
 
 		if ($user->hasRight('stock', 'mouvement', 'creer')) {
 			if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PARENT')) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=transfert">'.$langs->trans("TransferStock").'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=transfert">'.$langs->trans("TransferStock").'</a>';
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("ActionAvailableOnVariantProductOnly").'">'.$langs->trans("TransferStock").'</a>';
 			}
@@ -947,7 +947,7 @@ if (empty($reshook)) {
 
 		if ($user->hasRight('stock', 'mouvement', 'creer')) {
 			if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PARENT')) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=correction">'.$langs->trans("CorrectStock").'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=correction">'.$langs->trans("CorrectStock").'</a>';
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("ActionAvailableOnVariantProductOnly").'">'.$langs->trans("CorrectStock").'</a>';
 			}
@@ -1141,7 +1141,7 @@ if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PA
 					if ($action == 'editline' && GETPOSTINT('lineid') == $pdluo->id) { //Current line edit
 						print "\n".'<tr>';
 						print '<td colspan="9">';
-						print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+						print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
 						print '<input type="hidden" name="pdluoid" value="'.$pdluo->id.'"><input type="hidden" name="action" value="updateline"><input type="hidden" name="id" value="'.$id.'"><table class="noborder centpercent"><tr><td width="10%"></td>';
 						print '<td class="right" width="10%"><input type="text" name="batch_number" value="'.$pdluo->batch.'"></td>';
@@ -1187,25 +1187,25 @@ if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PA
 						print '<td colspan="4"></td>';
 						print '<td class="center tdoverflowmax125" title="'.dol_escape_htmltag($langs->trans("TransferStock")).'">';
 						if ($entrepotstatic->status != $entrepotstatic::STATUS_CLOSED) {
-							print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;id_entrepot='.$entrepotstatic->id.'&amp;action=transfert&amp;pdluoid='.$pdluo->id.'">';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;id_entrepot='.$entrepotstatic->id.'&amp;action=transfert&amp;pdluoid='.$pdluo->id.'">';
 							print img_picto($langs->trans("TransferStock"), 'add', 'class="hideonsmartphone paddingright" style="color: #a69944"');
 							print $langs->trans("TransferStock");
 							print '</a>';
 							// Disabled, because edition of stock content must use the "Correct stock menu".
 							// Do not use this, or data will be wrong (bad tracking of movement label, inventory code, ...
-							//print '<a href="'.DOL_PHP_SELF.'?id='.$id.'&action=editline&token='.newToken().'&lineid='.$pdluo->id.'#'.$pdluo->id.'">';
+							//print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&action=editline&token='.newToken().'&lineid='.$pdluo->id.'#'.$pdluo->id.'">';
 							//print img_edit().'</a>';
 						}
 						print '</td>';
 						print '<td class="center tdoverflowmax125" title="'.dol_escape_htmltag($langs->trans("CorrectStock")).'">';
 						if ($entrepotstatic->status != $entrepotstatic::STATUS_CLOSED) {
-							print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;id_entrepot='.$entrepotstatic->id.'&amp;action=correction&amp;pdluoid='.$pdluo->id.'">';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;id_entrepot='.$entrepotstatic->id.'&amp;action=correction&amp;pdluoid='.$pdluo->id.'">';
 							print img_picto($langs->trans("CorrectStock"), 'add', 'class="hideonsmartphone paddingright" style="color: #a69944"');
 							print $langs->trans("CorrectStock");
 							print '</a>';
 							// Disabled, because edition of stock content must use the "Correct stock menu".
 							// Do not use this, or data will be wrong (bad tracking of movement label, inventory code, ...
-							//print '<a href="'.DOL_PHP_SELF.'?id='.$id.'&action=editline&token='.newToken().'&lineid='.$pdluo->id.'#'.$pdluo->id.'">';
+							//print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&action=editline&token='.newToken().'&lineid='.$pdluo->id.'#'.$pdluo->id.'">';
 							//print img_edit().'</a>';
 						}
 						print '</td>';
@@ -1270,7 +1270,7 @@ if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PA
 		print load_fiche_titre($langs->trans('AddNewProductStockWarehouse'));
 
 		if ($user->hasRight('produit', 'creer')) {
-			print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="addlimitstockwarehouse">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
@@ -1301,7 +1301,7 @@ if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PA
 				print '<td class="right">'.$line['seuil_stock_alerte'].'</td>';
 				print '<td class="right">'.$line['desiredstock'].'</td>';
 				if ($user->hasRight('produit', 'creer')) {
-					print '<td class="right"><a href="'.DOL_PHP_SELF.'?id='.$id.'&fk_productstockwarehouse='.$line['id'].'&action=delete_productstockwarehouse&token='.newToken().'">'.img_delete().'</a></td>';
+					print '<td class="right"><a href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&fk_productstockwarehouse='.$line['id'].'&action=delete_productstockwarehouse&token='.newToken().'">'.img_delete().'</a></td>';
 				}
 				print '</tr>';
 			}
@@ -1322,7 +1322,7 @@ if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PA
 	$comb2val = new ProductCombination2ValuePair($db);
 	$productCombinations = $prodcomb->fetchAllByFkProductParent($object->id);
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="massaction">';
 	print '<input type="hidden" name="id" value="'.$id.'">';
@@ -1331,7 +1331,7 @@ if (!$variants || getDolGlobalString('VARIANT_ALLOW_STOCK_MOVEMENT_ON_VARIANT_PA
 	// load variants
 	$title = $langs->trans("ProductCombinations");
 
-	print_barre_liste($title, 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0);
+	print_barre_liste($title, 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0);
 
 	print '<div class="div-table-responsive">'; ?>
 	<table class="liste">

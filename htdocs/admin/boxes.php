@@ -302,7 +302,7 @@ $boxtoadd = InfoBox::listBoxes($db, 'available', -1, null, $actives);
 // Activated boxes
 $boxactivated = InfoBox::listBoxes($db, 'activated', -1, null);
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 print '<input type="hidden" name="action" value="add">'."\n";
 
@@ -436,7 +436,7 @@ print '</form>';
 
 print "\n\n".'<!-- Other Const -->'."\n";
 print load_fiche_titre($langs->trans("Other"), '', '');
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="addconst">';
 print '<input type="hidden" name="page_y" value="">';

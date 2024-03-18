@@ -211,7 +211,7 @@ if (empty($reshook)) {
 					}
 				}
 
-				$url = DOL_PHP_SELF.'?socid='.$object->id;
+				$url = $_SERVER['PHP_SELF'].'?socid='.$object->id;
 				header('Location: '.$url);
 				exit;
 			}
@@ -273,7 +273,7 @@ if (empty($reshook)) {
 					}
 				}
 
-				$url = DOL_PHP_SELF.'?socid='.$object->id;
+				$url = $_SERVER['PHP_SELF'].'?socid='.$object->id;
 				header('Location: '.$url);
 				exit;
 			}
@@ -367,7 +367,7 @@ if (empty($reshook)) {
 			if (!$error) {
 				$db->commit();
 
-				$url = DOL_PHP_SELF.'?socid='.$object->id;
+				$url = $_SERVER['PHP_SELF'].'?socid='.$object->id;
 				header('Location: '.$url);
 				exit;
 			} else {
@@ -435,7 +435,7 @@ if (empty($reshook)) {
 			if (!$error) {
 				$db->commit();
 
-				$url = DOL_PHP_SELF.'?socid='.$object->id;
+				$url = $_SERVER['PHP_SELF'].'?socid='.$object->id;
 				header('Location: '.$url);
 				exit;
 			} else {
@@ -472,7 +472,7 @@ if (empty($reshook)) {
 
 			$result = $companypaymentmode->delete($user);
 			if ($result > 0) {
-				$url = DOL_PHP_SELF."?socid=".$object->id;
+				$url = $_SERVER['PHP_SELF']."?socid=".$object->id;
 
 				header('Location: '.$url);
 				exit;
@@ -500,7 +500,7 @@ if (empty($reshook)) {
 			$result = $companybankaccount->delete($user);
 
 			if ($result > 0) {
-				$url = DOL_PHP_SELF."?socid=".$object->id;
+				$url = $_SERVER['PHP_SELF']."?socid=".$object->id;
 
 				header('Location: '.$url);
 				exit;
@@ -905,7 +905,7 @@ if (empty($companybankaccount->socid)) {
 }
 
 if ($socid && ($action == 'edit' || $action == 'editcard') && $permissiontoaddupdatepaymentinformation) {
-	print '<form action="'.DOL_PHP_SELF.'?socid='.$object->id.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	$actionforadd = 'update';
 	if ($action == 'editcard') {
@@ -915,7 +915,7 @@ if ($socid && ($action == 'edit' || $action == 'editcard') && $permissiontoaddup
 	print '<input type="hidden" name="id" value="'.GETPOSTINT("id").'">';
 }
 if ($socid && ($action == 'create' || $action == 'createcard') && $permissiontoaddupdatepaymentinformation) {
-	print '<form action="'.DOL_PHP_SELF.'?socid='.$object->id.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	$actionforadd = 'add';
 	if ($action == 'createcard') {
@@ -931,11 +931,11 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 
 	// Confirm delete ban
 	if ($action == 'deletebank') {
-		print $form->formconfirm(DOL_PHP_SELF."?socid=".$object->id."&ribid=".($ribid ? $ribid : $id), $langs->trans("DeleteARib"), $langs->trans("ConfirmDeleteRib", $companybankaccount->getRibLabel()), "confirm_deletebank", '', 0, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?socid=".$object->id."&ribid=".($ribid ? $ribid : $id), $langs->trans("DeleteARib"), $langs->trans("ConfirmDeleteRib", $companybankaccount->getRibLabel()), "confirm_deletebank", '', 0, 1);
 	}
 	// Confirm delete card
 	if ($action == 'deletecard') {
-		print $form->formconfirm(DOL_PHP_SELF."?socid=".$object->id."&ribid=".($ribid ? $ribid : $id), $langs->trans("DeleteACard"), $langs->trans("ConfirmDeleteCard", $companybankaccount->getRibLabel()), "confirm_deletecard", '', 0, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?socid=".$object->id."&ribid=".($ribid ? $ribid : $id), $langs->trans("DeleteACard"), $langs->trans("ConfirmDeleteCard", $companybankaccount->getRibLabel()), "confirm_deletecard", '', 0, 1);
 	}
 
 	$linkback = '<a href="'.DOL_URL_ROOT.'/societe/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
@@ -1013,7 +1013,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 			}
 			print '</td><td class="right">';
 			if (empty($tmpstripecu)) {
-				print '<form action="'.DOL_PHP_SELF.'" method="post">';
+				print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 				print '<input type="hidden" name="action" value="synccustomertostripetest">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="socid" value="'.$object->id.'">';
@@ -1043,7 +1043,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 			}
 			print '</td><td class="right">';
 			if (empty($tmpstripecu)) {
-				print '<form action="'.DOL_PHP_SELF.'" method="post">';
+				print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 				print '<input type="hidden" name="action" value="synccustomertostripe">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="socid" value="'.$object->id.'">';
@@ -1106,7 +1106,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 		}
 		print '</td><td class="right">';
 		if (empty($stripesupplieracc)) {
-			print '<form action="'.DOL_PHP_SELF.'" method="post">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 			print '<input type="hidden" name="action" value="syncsuppliertostripe">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="socid" value="'.$object->id.'">';
@@ -1183,7 +1183,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 	if ($showcardpaymentmode && $object->client) {
 		$morehtmlright = '';
 		if (getDolGlobalString('STRIPE_ALLOW_LOCAL_CARD')) {
-			$morehtmlright .= dolGetButtonTitle($langs->trans('Add'), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?socid='.$object->id.'&amp;action=createcard');
+			$morehtmlright .= dolGetButtonTitle($langs->trans('Add'), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?socid='.$object->id.'&amp;action=createcard');
 		}
 		print load_fiche_titre($langs->trans('CreditCard'), $morehtmlright, 'fa-credit-card');
 		//($stripeacc ? ' (Stripe connection with StripeConnect account '.$stripeacc.')' : ' (Stripe connection with keys from Stripe module setup)')
@@ -1315,7 +1315,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 							print '<td class="right minwidth50 nowraponall">';
 							if ($permissiontoaddupdatepaymentinformation) {
 								if ($stripecu && empty($companypaymentmodetemp->stripe_card_ref)) {
-									print '<a href="'.DOL_PHP_SELF.'?action=synccardtostripe&socid='.$object->id.'&id='.$companypaymentmodetemp->id.'" class="paddingrightonly marginrightonly">'.$langs->trans("CreateCardOnStripe").'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=synccardtostripe&socid='.$object->id.'&id='.$companypaymentmodetemp->id.'" class="paddingrightonly marginrightonly">'.$langs->trans("CreateCardOnStripe").'</a>';
 								}
 
 								print '<a class="editfielda marginleftonly marginrightonly" href="'.DOL_URL_ROOT.'/societe/paymentmodes.php?socid='.$object->id.'&id='.$companypaymentmodetemp->id.'&action=editcard&token='.newToken().'">';
@@ -1533,7 +1533,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 
 	// List of bank accounts
 	if ($permissiontoaddupdatepaymentinformation) {
-		$morehtmlright = dolGetButtonTitle($langs->trans('Add'), '', 'fa fa-plus-circle', DOL_PHP_SELF . '?socid=' . $object->id . '&amp;action=create');
+		$morehtmlright = dolGetButtonTitle($langs->trans('Add'), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'] . '?socid=' . $object->id . '&amp;action=create');
 	}
 
 	print load_fiche_titre($langs->trans("BankAccounts"), $morehtmlright, 'bank');
@@ -1569,7 +1569,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 		$parameters = array('arrayfields' => array(), 'linetype' => 'stripebantitle');
 		$reshook = $hookmanager->executeHooks('printFieldListValue', $parameters, $object); // Note that $action and $object may have been modified by hook
 		print $hookmanager->resPrint;
-		print_liste_field_titre('', DOL_PHP_SELF, "", '', '', '', '', '', 'maxwidthsearch ');
+		print_liste_field_titre('', $_SERVER['PHP_SELF'], "", '', '', '', '', '', 'maxwidthsearch ');
 		print "</tr>\n";
 
 		// List of local BAN
@@ -1664,7 +1664,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 			// Default
 			print '<td class="center" width="70">';
 			if (!$rib->default_rib) {
-				print '<a href="'.DOL_PHP_SELF.'?socid='.((int) $object->id).'&ribid='.((int) $rib->id).'&action=setasbankdefault&token='.newToken().'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?socid='.((int) $object->id).'&ribid='.((int) $rib->id).'&action=setasbankdefault&token='.newToken().'">';
 				print img_picto($langs->trans("Disabled"), 'off');
 				print '</a>';
 			} else {
@@ -1683,7 +1683,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 
 			$out = '';
 			if (is_array($modellist) && count($modellist)) {
-				$out .= '<form action="'.DOL_PHP_SELF.(!getDolGlobalString('MAIN_JUMP_TAG') ? '' : '#builddoc').'" name="'.$forname.'" id="'.$forname.'_form" method="post">';
+				$out .= '<form action="'.$_SERVER['PHP_SELF'].(!getDolGlobalString('MAIN_JUMP_TAG') ? '' : '#builddoc').'" name="'.$forname.'" id="'.$forname.'_form" method="post">';
 				$out .= '<input type="hidden" name="action" value="builddocrib">';
 				$out .= '<input type="hidden" name="token" value="'.newToken().'">';
 				$out .= '<input type="hidden" name="socid" value="'.$object->id.'">';
@@ -1744,7 +1744,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 					if (empty($rib->stripe_card_ref)) {
 						if ($object->client) {
 							// Add link to create BAN on Stripe
-							print '<a class="editfielda marginrightonly marginleftonly" href="'.DOL_PHP_SELF.'?socid='.$object->id.'&id='.$rib->id.'&action=syncsepatostripe&token='.newToken().'">';
+							print '<a class="editfielda marginrightonly marginleftonly" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&id='.$rib->id.'&action=syncsepatostripe&token='.newToken().'">';
 							print img_picto($langs->trans("CreateBANOnStripe"), 'stripe');
 							print '</a>';
 						} else {
@@ -1755,11 +1755,11 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 					}
 				}
 
-				print '<a class="editfielda marginrightonly marginleftonly" href="'.DOL_PHP_SELF.'?socid='.$object->id.'&id='.$rib->id.'&action=edit">';
+				print '<a class="editfielda marginrightonly marginleftonly" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&id='.$rib->id.'&action=edit">';
 				print img_picto($langs->trans("Modify"), 'edit');
 				print '</a>';
 
-				print '<a class="marginrightonly marginleftonly reposition" href="'.DOL_PHP_SELF.'?socid='.$object->id.'&id='.$rib->id.'&action=deletebank&token='.newToken().'">';
+				print '<a class="marginrightonly marginleftonly reposition" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&id='.$rib->id.'&action=deletebank&token='.newToken().'">';
 				print img_picto($langs->trans("Delete"), 'delete');
 				print '</a>';
 			}
@@ -1901,7 +1901,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
 		 * Generated documents
 		 */
 		$filedir = $conf->societe->multidir_output[$object->entity].'/'.$object->id;
-		$urlsource = DOL_PHP_SELF."?socid=".$object->id;
+		$urlsource = $_SERVER['PHP_SELF']."?socid=".$object->id;
 
 		print $formfile->showdocuments('company', $object->id, $filedir, $urlsource, $permissiontoread, $permissiontoaddupdatepaymentinformation, $object->model_pdf, 0, 0, 0, 28, 0, 'entity='.$object->entity, 0, '', $object->default_lang);
 

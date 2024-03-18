@@ -55,7 +55,7 @@ $result = restrictedArea($user, 'variants');
 
 top_httphead();
 
-print '<!-- Ajax page called with url '.dol_escape_htmltag(DOL_PHP_SELF).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
+print '<!-- Ajax page called with url '.dol_escape_htmltag($_SERVER['PHP_SELF']).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
 
 // Registering the location of boxes
 if (GETPOST('roworder', 'alpha', 3)) {

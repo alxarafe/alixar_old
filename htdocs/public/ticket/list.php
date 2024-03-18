@@ -421,7 +421,7 @@ if ($action == "view_ticketlist") {
 				print_barre_liste($langs->trans('TicketList'), $page, 'list.php', $param, $sortfield, $sortorder, '', $num, $num_total, 'ticket');
 
 				// Search bar
-				print '<form method="POST" action="'.DOL_PHP_SELF.(!empty($entity) && isModEnabled('multicompany') ? '?entity='.$entity : '').'" id="searchFormList" >'."\n";
+				print '<form method="POST" action="'.$_SERVER['PHP_SELF'].(!empty($entity) && isModEnabled('multicompany') ? '?entity='.$entity : '').'" id="searchFormList" >'."\n";
 				print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="action" value="view_ticketlist">';
@@ -732,7 +732,7 @@ if ($action == "view_ticketlist") {
 			dol_print_error($db);
 		}
 	} else {
-		print '<div class="error">Not Allowed<br><a href="'.DOL_PHP_SELF.'?track_id='.$object->track_id.'">'.$langs->trans('Back').'</a></div>';
+		print '<div class="error">Not Allowed<br><a href="'.$_SERVER['PHP_SELF'].'?track_id='.$object->track_id.'">'.$langs->trans('Back').'</a></div>';
 	}
 
 	print '</div>';
@@ -743,7 +743,7 @@ if ($action == "view_ticketlist") {
 	print '<br>';
 
 	print '<div id="form_view_ticket">';
-	print '<form method="post" name="form_view_ticketlist" action="'.DOL_PHP_SELF.(!empty($entity) && isModEnabled('multicompany') ? '?entity='.$entity : '').'">';
+	print '<form method="post" name="form_view_ticketlist" action="'.$_SERVER['PHP_SELF'].(!empty($entity) && isModEnabled('multicompany') ? '?entity='.$entity : '').'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="view_ticketlist">';
 	//print '<input type="hidden" name="search_fk_status" value="non_closed">';

@@ -386,7 +386,7 @@ $listofreferent = array(
 		'class'=>'Entrepot',
 		'table'=>'entrepot',
 		'datefieldname'=>'date_entrepot',
-		'urlnew'=>DOL_URL_ROOT.'/product/stock/card.php?action=create&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/product/stock/card.php?action=create&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'entrepot',
 		'buttonnew'=>'AddWarehouse',
 		'project_field'=>'fk_project',
@@ -399,7 +399,7 @@ $listofreferent = array(
 		'class'=>'Propal',
 		'table'=>'propal',
 		'datefieldname'=>'datep',
-		'urlnew'=>DOL_URL_ROOT.'/comm/propal/card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/comm/propal/card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'propal',
 		'buttonnew'=>'AddProp',
 		'testnew'=>$user->hasRight('propal', 'creer'),
@@ -411,7 +411,7 @@ $listofreferent = array(
 		'class'=>'Commande',
 		'table'=>'commande',
 		'datefieldname'=>'date_commande',
-		'urlnew'=>DOL_URL_ROOT.'/commande/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/commande/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'orders',
 		'buttonnew'=>'CreateOrder',
 		'testnew'=>$user->hasRight('commande', 'creer'),
@@ -424,7 +424,7 @@ $listofreferent = array(
 		'margin'=>'add',
 		'table'=>'facture',
 		'datefieldname'=>'datef',
-		'urlnew'=>DOL_URL_ROOT.'/compta/facture/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/compta/facture/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'bills',
 		'buttonnew'=>'CreateBill',
 		'testnew'=>$user->hasRight('facture', 'creer'),
@@ -436,7 +436,7 @@ $listofreferent = array(
 		'class'=>'FactureRec',
 		'table'=>'facture_rec',
 		'datefieldname'=>'datec',
-		'urlnew'=>DOL_URL_ROOT.'/compta/facture/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/compta/facture/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'bills',
 		'buttonnew'=>'CreateBill',
 		'testnew'=>$user->hasRight('facture', 'creer'),
@@ -448,7 +448,7 @@ $listofreferent = array(
 		'class'=>'SupplierProposal',
 		'table'=>'supplier_proposal',
 		'datefieldname'=>'date_valid',
-		'urlnew'=>DOL_URL_ROOT.'/supplier_proposal/card.php?action=create&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id), // No socid parameter here, the socid is often the customer and we create a supplier object
+		'urlnew'=>DOL_URL_ROOT.'/supplier_proposal/card.php?action=create&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id), // No socid parameter here, the socid is often the customer and we create a supplier object
 		'lang'=>'supplier_proposal',
 		'buttonnew'=>'AddSupplierProposal',
 		'testnew'=>$user->hasRight('supplier_proposal', 'creer'),
@@ -460,7 +460,7 @@ $listofreferent = array(
 		'class'=>'CommandeFournisseur',
 		'table'=>'commande_fournisseur',
 		'datefieldname'=>'date_commande',
-		'urlnew'=>DOL_URL_ROOT.'/fourn/commande/card.php?action=create&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id), // No socid parameter here, the socid is often the customer and we create a supplier object
+		'urlnew'=>DOL_URL_ROOT.'/fourn/commande/card.php?action=create&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id), // No socid parameter here, the socid is often the customer and we create a supplier object
 		'lang'=>'suppliers',
 		'buttonnew'=>'AddSupplierOrder',
 		'testnew'=>$user->hasRight('fournisseur', 'commande', 'creer') || $user->hasRight('supplier_order', 'creer'),
@@ -473,7 +473,7 @@ $listofreferent = array(
 		'margin'=>'minus',
 		'table'=>'facture_fourn',
 		'datefieldname'=>'datef',
-		'urlnew'=>DOL_URL_ROOT.'/fourn/facture/card.php?action=create&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id), // No socid parameter here, the socid is often the customer and we create a supplier object
+		'urlnew'=>DOL_URL_ROOT.'/fourn/facture/card.php?action=create&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id), // No socid parameter here, the socid is often the customer and we create a supplier object
 		'lang'=>'suppliers',
 		'buttonnew'=>'AddSupplierInvoice',
 		'testnew'=>$user->hasRight('fournisseur', 'facture', 'creer') || $user->hasRight('supplier_invoice', 'creer'),
@@ -485,7 +485,7 @@ $listofreferent = array(
 		'class'=>'Contrat',
 		'table'=>'contrat',
 		'datefieldname'=>'date_contrat',
-		'urlnew'=>DOL_URL_ROOT.'/contrat/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/contrat/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'contracts',
 		'buttonnew'=>'AddContract',
 		'testnew'=>$user->hasRight('contrat', 'creer'),
@@ -499,7 +499,7 @@ $listofreferent = array(
 		'datefieldname'=>'date_valid',
 		'disableamount'=>0,
 		'margin'=>'',
-		'urlnew'=>DOL_URL_ROOT.'/fichinter/card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/fichinter/card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'interventions',
 		'buttonnew'=>'AddIntervention',
 		'testnew'=>$user->hasRight('ficheinter', 'creer'),
@@ -511,7 +511,7 @@ $listofreferent = array(
 		'class'=>'Expedition',
 		'table'=>'expedition',
 		'datefieldname'=>'date_valid',
-		'urlnew'=>DOL_URL_ROOT.'/expedition/card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/expedition/card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'sendings',
 		'buttonnew'=>'CreateShipment',
 		'testnew'=>0,
@@ -523,7 +523,7 @@ $listofreferent = array(
 		'class'=>'Mo',
 		'table'=>'mrp_mo',
 		'datefieldname'=>'date_valid',
-		'urlnew'=>DOL_URL_ROOT.'/mrp/mo_card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/mrp/mo_card.php?action=create&origin=project&originid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'mrp',
 		'buttonnew'=>'CreateMO',
 		'testnew'=>$user->hasRight('mrp', 'write'),
@@ -539,7 +539,7 @@ $listofreferent = array(
 		'datefieldname'=>'dated',
 		'margin'=>'minus',
 		'disableamount'=>1,
-		'urlnew'=>DOL_URL_ROOT.'/deplacement/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/deplacement/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'trips',
 		'buttonnew'=>'AddTrip',
 		'testnew'=>$user->hasRight('deplacement', 'creer'),
@@ -553,7 +553,7 @@ $listofreferent = array(
 		'datefieldname'=>'date',
 		'margin'=>'minus',
 		'disableamount'=>0,
-		'urlnew'=>DOL_URL_ROOT.'/expensereport/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/expensereport/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'trips',
 		'buttonnew'=>'AddTrip',
 		'testnew'=>$user->hasRight('expensereport', 'creer'),
@@ -567,7 +567,7 @@ $listofreferent = array(
 		'table'=>'don',
 		'datefieldname'=>'datedon',
 		'disableamount'=>0,
-		'urlnew'=>DOL_URL_ROOT.'/don/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/don/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'donations',
 		'buttonnew'=>'AddDonation',
 		'testnew'=>$user->hasRight('don', 'creer'),
@@ -581,7 +581,7 @@ $listofreferent = array(
 		'table'=>'loan',
 		'datefieldname'=>'datestart',
 		'disableamount'=>0,
-		'urlnew'=>DOL_URL_ROOT.'/loan/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/loan/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'loan',
 		'buttonnew'=>'AddLoan',
 		'testnew'=>$user->hasRight('loan', 'write'),
@@ -595,7 +595,7 @@ $listofreferent = array(
 		'table'=>'chargesociales',
 		'datefieldname'=>'date_ech',
 		'disableamount'=>0,
-		'urlnew'=>DOL_URL_ROOT.'/compta/sociales/card.php?action=create&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/compta/sociales/card.php?action=create&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'compta',
 		'buttonnew'=>'AddSocialContribution',
 		'testnew'=>$user->hasRight('tax', 'charges', 'lire'),
@@ -609,7 +609,7 @@ $listofreferent = array(
 		'table'=>'projet_task',
 		'datefieldname'=>'element_date',
 		'disableamount'=>0,
-		'urlnew'=>DOL_URL_ROOT.'/projet/tasks/time.php?withproject=1&action=createtime&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/projet/tasks/time.php?withproject=1&action=createtime&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'buttonnew'=>'AddTimeSpent',
 		'testnew'=>$user->hasRight('project', 'creer'),
 		'test'=>isModEnabled('project') && $user->hasRight('projet', 'lire') && !getDolGlobalString('PROJECT_HIDE_TASKS')
@@ -633,7 +633,7 @@ $listofreferent = array(
 		'datefieldname'=>'datesp',
 		'margin'=>'minus',
 		'disableamount'=>0,
-		'urlnew'=>DOL_URL_ROOT.'/salaries/card.php?action=create&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/salaries/card.php?action=create&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'salaries',
 		'buttonnew'=>'AddSalary',
 		'testnew'=>$user->hasRight('salaries', 'write'),
@@ -647,7 +647,7 @@ $listofreferent = array(
 		'datefieldname'=>'datev',
 		'margin'=>'minus',
 		'disableamount'=>0,
-		'urlnew'=>DOL_URL_ROOT.'/compta/bank/various_payment/card.php?action=create&projectid='.$id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		'urlnew'=>DOL_URL_ROOT.'/compta/bank/various_payment/card.php?action=create&projectid='.$id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		'lang'=>'banks',
 		'buttonnew'=>'AddVariousPayment',
 		'testnew'=>$user->hasRight('banque', 'modifier'),
@@ -661,7 +661,7 @@ $listofreferent = array(
 		 'table'=>'actioncomm',
 		 'datefieldname'=>'datep',
 		 'disableamount'=>1,
-		 'urlnew'=>DOL_URL_ROOT.'/comm/action/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id),
+		 'urlnew'=>DOL_URL_ROOT.'/comm/action/card.php?action=create&projectid='.$id.'&socid='.$socid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id),
 		 'lang'=>'agenda',
 		 'buttonnew'=>'AddEvent',
 		 'testnew'=>$user->rights->agenda->myactions->create,
@@ -727,7 +727,7 @@ $showdatefilter = 0;
 // Show the filter on date on top of element list
 if (!$showdatefilter) {
 	print '<div class="center centpercent">';
-	print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="tablename" value="'.(empty($tablename) ? '' : $tablename).'">';
 	print '<input type="hidden" name="action" value="view">';
@@ -1064,7 +1064,7 @@ foreach ($listofreferent as $key => $value) {
 			} elseif ($selectList) {
 				// Define form with the combo list of elements to link
 				$addform .= '<div class="inline-block valignmiddle">';
-				$addform .= '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post">';
+				$addform .= '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 				$addform .= '<input type="hidden" name="token" value="'.newToken().'">';
 				$addform .= '<input type="hidden" name="tablename" value="'.$tablename.'">';
 				$addform .= '<input type="hidden" name="action" value="addelement">';
@@ -1250,7 +1250,7 @@ foreach ($listofreferent as $key => $value) {
 				print '<td style="width: 24px">';
 				if ($tablename != 'projet_task' && $tablename != 'stock_mouvement') {
 					if (!getDolGlobalString('PROJECT_DISABLE_UNLINK_FROM_OVERVIEW') || $user->admin) {		// PROJECT_DISABLE_UNLINK_FROM_OVERVIEW is empty by default, so this test true
-						print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=unlink&tablename='.$tablename.'&elementselect='.$element->id.($project_field ? '&projectfield='.$project_field : '').'" class="reposition">';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=unlink&tablename='.$tablename.'&elementselect='.$element->id.($project_field ? '&projectfield='.$project_field : '').'" class="reposition">';
 						print img_picto($langs->trans('Unlink'), 'unlink');
 						print '</a>';
 					}

@@ -219,7 +219,7 @@ if ($resql) {
 			print '<td width="16" class="nobordernopadding hideonsmartphone right">';
 			$filename = dol_sanitizeFileName($obj->ref);
 			$filedir = $conf->commande->multidir_output[$obj->entity].'/'.dol_sanitizeFileName($obj->ref);
-			$urlsource = DOL_PHP_SELF.'?id='.$obj->rowid;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 			print $formfile->getDocumentsLink($commandestatic->element, $filename, $filedir);
 			print '</td></tr></table>';
 
@@ -302,7 +302,7 @@ if (isModEnabled('order')) {
 				print '<td width="16" class="nobordernopadding hideonsmartphone right">';
 				$filename = dol_sanitizeFileName($obj->ref);
 				$filedir = $conf->commande->multidir_output[$obj->entity].'/'.dol_sanitizeFileName($obj->ref);
-				$urlsource = DOL_PHP_SELF.'?id='.$obj->rowid;
+				$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 				print $formfile->getDocumentsLink($commandestatic->element, $filename, $filedir);
 				print '</td></tr></table>';
 
@@ -391,7 +391,7 @@ if (isModEnabled('order')) {
 				print '<td width="16" class="nobordernopadding hideonsmartphone right">';
 				$filename = dol_sanitizeFileName($obj->ref);
 				$filedir = $conf->commande->multidir_output[$obj->entity].'/'.dol_sanitizeFileName($obj->ref);
-				$urlsource = DOL_PHP_SELF.'?id='.$obj->rowid;
+				$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 				print $formfile->getDocumentsLink($commandestatic->element, $filename, $filedir);
 				print '</td></tr></table>';
 

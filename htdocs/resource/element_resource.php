@@ -186,7 +186,7 @@ if (empty($reshook)) {
 
 		if (!$error && $res > 0) {
 			setEventMessages($langs->trans('ResourceLinkedWithSuccess'), null, 'mesgs');
-			header("Location: ".DOL_PHP_SELF.'?element='.$element.'&element_id='.$objstat->id);
+			header("Location: ".$_SERVER['PHP_SELF'].'?element='.$element.'&element_id='.$objstat->id);
 			exit;
 		} elseif ($objstat) {
 			setEventMessages($objstat->error, $objstat->errors, 'errors');
@@ -266,7 +266,7 @@ if (empty($reshook)) {
 				setEventMessages($object->error, $object->errors, 'errors');
 			} else {
 				setEventMessages($langs->trans('RessourceLineSuccessfullyUpdated'), null, 'mesgs');
-				header("Location: ".DOL_PHP_SELF."?element=".$element."&element_id=".$element_id);
+				header("Location: ".$_SERVER['PHP_SELF']."?element=".$element."&element_id=".$element_id);
 				exit;
 			}
 		}
@@ -278,7 +278,7 @@ if (empty($reshook)) {
 
 		if ($result >= 0) {
 			setEventMessages($langs->trans('RessourceLineSuccessfullyDeleted'), null, 'mesgs');
-			header("Location: ".DOL_PHP_SELF."?element=".$element."&element_id=".$element_id);
+			header("Location: ".$_SERVER['PHP_SELF']."?element=".$element."&element_id=".$element_id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -385,9 +385,9 @@ if (!$ret) {
 				if (0) {
 					$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 					if ($action != 'classify') {
-						$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+						$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 					}
-					$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+					$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 				} else {
 					if (!empty($object->fk_project)) {
 						$proj = new Project($db);
@@ -564,9 +564,9 @@ if (!$ret) {
 				if ($usercancreate && 0) {
 					$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 					if ($action != 'classify') {
-						$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$fichinter->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+						$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$fichinter->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 					}
-					$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$fichinter->id, $fichinter->socid, $fichinter->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+					$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$fichinter->id, $fichinter->socid, $fichinter->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 				} else {
 					if (!empty($fichinter->fk_project)) {
 						$proj = new Project($db);

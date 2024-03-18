@@ -226,7 +226,7 @@ $replacemainarea = (empty($conf->dol_hide_leftmenu) ? '<div>' : '').'<div>';
 llxHeader($head, $langs->trans("OnlineSignature"), '', '', 0, 0, '', '', '', 'onlinepaymentbody', $replacemainarea, 1);
 
 if ($action == 'refusepropal') {
-	print $form->formconfirm(DOL_PHP_SELF.'?ref='.urlencode($ref).'&securekey='.urlencode($SECUREKEY).(isModEnabled('multicompany') ? '&entity='.$entity : ''), $langs->trans('RefusePropal'), $langs->trans('ConfirmRefusePropal', $object->ref), 'confirm_refusepropal', '', '', 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?ref='.urlencode($ref).'&securekey='.urlencode($SECUREKEY).(isModEnabled('multicompany') ? '&entity='.$entity : ''), $langs->trans('RefusePropal'), $langs->trans('ConfirmRefusePropal', $object->ref), 'confirm_refusepropal', '', '', 1);
 }
 
 // Check link validity for param 'source' to avoid use of the examples as value
@@ -241,7 +241,7 @@ if (!empty($source) && in_array($ref, array('member_ref', 'contractline_ref', 'i
 
 print '<span id="dolpaymentspan"></span>'."\n";
 print '<div class="center">'."\n";
-print '<form id="dolpaymentform" class="center" name="paymentform" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+print '<form id="dolpaymentform" class="center" name="paymentform" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 print '<input type="hidden" name="action" value="dosign">'."\n";
 print '<input type="hidden" name="tag" value="'.GETPOST("tag", 'alpha').'">'."\n";
@@ -711,7 +711,7 @@ if ($action == "dosign" && empty($cancel)) {
 					success: function(response) {
 						if(response == "success"){
 							console.log("Success on saving signature");
-							window.location.replace("'.DOL_PHP_SELF.'?ref='.urlencode($ref).'&source='.urlencode($source).'&message=signed&securekey='.urlencode($SECUREKEY).(isModEnabled('multicompany') ? '&entity='.$entity : '').'");
+							window.location.replace("'.$_SERVER['PHP_SELF'].'?ref='.urlencode($ref).'&source='.urlencode($source).'&message=signed&securekey='.urlencode($SECUREKEY).(isModEnabled('multicompany') ? '&entity='.$entity : '').'");
 						}else{
 							console.error(response);
 						}

@@ -7715,7 +7715,7 @@ abstract class CommonObject
 			$out = $form->selectForForms($param_list_array[0], $keyprefix.$key.$keysuffix, $value, $showempty, '', '', $morecss, $moreparam, 0, (empty($val['disabled']) ? 0 : 1), '', $objectfield);
 
 			if (!empty($param_list_array[2])) {		// If the entry into $fields is set, we must add a create button
-				if ((!GETPOSTISSET('backtopage') || strpos(GETPOST('backtopage'), DOL_PHP_SELF) === 0)	// // To avoid to open several times the 'Plus' button (we accept only one level)
+				if ((!GETPOSTISSET('backtopage') || strpos(GETPOST('backtopage'), $_SERVER['PHP_SELF']) === 0)	// // To avoid to open several times the 'Plus' button (we accept only one level)
 					&& empty($val['disabled']) && empty($nonewbutton)) {	// and to avoid to show the button if the field is protected by a "disabled".
 					list($class, $classfile) = explode(':', $param_list[0]);
 					if (file_exists(dol_buildpath(dirname(dirname($classfile)).'/card.php'))) {
@@ -7730,7 +7730,7 @@ abstract class CommonObject
 					$paramforthenewlink .= (GETPOSTISSET('originid') ? '&originid='.GETPOSTINT('originid') : '');
 					$paramforthenewlink .= '&fk_'.strtolower($class).'=--IDFORBACKTOPAGE--';
 					// TODO Add JavaScript code to add input fields already filled into $paramforthenewlink so we won't loose them when going back to main page
-					$out .= '<a class="butActionNew" title="'.$langs->trans("New").'" href="'.$url_path.'?action=create&backtopage='.urlencode(DOL_PHP_SELF.($paramforthenewlink ? '?'.$paramforthenewlink : '')).'"><span class="fa fa-plus-circle valignmiddle"></span></a>';
+					$out .= '<a class="butActionNew" title="'.$langs->trans("New").'" href="'.$url_path.'?action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].($paramforthenewlink ? '?'.$paramforthenewlink : '')).'"><span class="fa fa-plus-circle valignmiddle"></span></a>';
 				}
 			}
 		} elseif ($type == 'password') {
@@ -9235,7 +9235,7 @@ abstract class CommonObject
 							$return .= '<br>';
 							// If $photo_vignette set, we add link to generate thumbs if file is an image and ->imgWidth or->imgHeight higher than limits
 							if ($photo_vignette && (image_format_supported($photo) > 0) && ((isset($this->imgWidth) && $this->imgWidth > $maxWidth) || (isset($this->imgHeight) && $this->imgHeight > $maxHeight))) {
-								$return .= '<a href="'.DOL_PHP_SELF.'?id='.$this->id.'&action=addthumb&token='.newToken().'&file='.urlencode($pdir.$viewfilename).'">'.img_picto($langs->trans('GenerateThumb'), 'refresh').'&nbsp;&nbsp;</a>';
+								$return .= '<a href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&action=addthumb&token='.newToken().'&file='.urlencode($pdir.$viewfilename).'">'.img_picto($langs->trans('GenerateThumb'), 'refresh').'&nbsp;&nbsp;</a>';
 							}
 							// Special case for product
 							if ($modulepart == 'product' && ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
@@ -9243,7 +9243,7 @@ abstract class CommonObject
 								$return .= '<a href="'.DOL_URL_ROOT.'/core/photos_resize.php?modulepart='.urlencode('produit|service').'&id='.$this->id.'&file='.urlencode($pdir.$viewfilename).'" title="'.dol_escape_htmltag($langs->trans("Resize")).'">'.img_picto($langs->trans("Resize"), 'resize', '').'</a> &nbsp; ';
 
 								// Link to delete
-								$return .= '<a href="'.DOL_PHP_SELF.'?id='.$this->id.'&action=delete&token='.newToken().'&file='.urlencode($pdir.$viewfilename).'">';
+								$return .= '<a href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&action=delete&token='.newToken().'&file='.urlencode($pdir.$viewfilename).'">';
 								$return .= img_delete().'</a>';
 							}
 						}
@@ -9272,7 +9272,7 @@ abstract class CommonObject
 								$return .= '<a href="'.DOL_URL_ROOT.'/core/photos_resize.php?modulepart='.urlencode('produit|service').'&id='.$this->id.'&file='.urlencode($pdir.$viewfilename).'" title="'.dol_escape_htmltag($langs->trans("Resize")).'">'.img_picto($langs->trans("Resize"), 'resize', '').'</a> &nbsp; ';
 
 								// Link to delete
-								$return .= '<a href="'.DOL_PHP_SELF.'?id='.$this->id.'&action=delete&token='.newToken().'&file='.urlencode($pdir.$viewfilename).'">';
+								$return .= '<a href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&action=delete&token='.newToken().'&file='.urlencode($pdir.$viewfilename).'">';
 								$return .= img_delete().'</a>';
 							}
 						}

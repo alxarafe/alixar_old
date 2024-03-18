@@ -52,7 +52,7 @@ function report_header($reportname, $notused, $period, $periodlink, $description
 
 	print_barre_liste($title, 0, '', '', '', '', '', -1, '', 'generic', 0, '', '', -1, 1, 1);
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.$varlink.'">'."\n";
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].$varlink.'">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 
 	print dol_get_fiche_head();

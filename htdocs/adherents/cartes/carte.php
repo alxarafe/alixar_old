@@ -276,7 +276,7 @@ dol_htmloutput_errors($mesg);
 print '<br>';
 
 print img_picto('', 'card').' '.$langs->trans("DocForAllMembersCards", getDolGlobalString('ADHERENT_CARD_TYPE', $langs->transnoentitiesnoconv("None"))).' ';
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="foruserid" value="all">';
 print '<input type="hidden" name="mode" value="card">';
@@ -295,7 +295,7 @@ print '</form>';
 print '<br><br>';
 
 print img_picto('', 'card').' '.$langs->trans("DocForOneMemberCards", getDolGlobalString('ADHERENT_CARD_TYPE', $langs->transnoentitiesnoconv("None"))).' ';
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="mode" value="cardlogin">';
 print '<input type="hidden" name="action" value="builddoc">';
@@ -314,7 +314,7 @@ print '</form>';
 print '<br><br>';
 
 print img_picto('', 'card').' '.$langs->trans("DocForLabels", getDolGlobalString('ADHERENT_ETIQUETTE_TYPE')).' ';
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="mode" value="label">';
 print '<input type="hidden" name="action" value="builddoc">';

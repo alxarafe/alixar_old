@@ -78,7 +78,7 @@ if (preg_match('/set_(.*)/', $action, $reg)) {
 	} else {
 		$db->commit();
 		setEventMessage($langs->trans('SetupSaved'));
-		header('Location: ' . DOL_PHP_SELF);
+		header('Location: ' . $_SERVER['PHP_SELF']);
 		exit();
 	}
 } elseif (preg_match('/del_(.*)/', $action, $reg)) {
@@ -98,7 +98,7 @@ if (preg_match('/set_(.*)/', $action, $reg)) {
 	} else {
 		$db->commit();
 		setEventMessage($langs->trans('SetupSaved'));
-		header('Location: ' . DOL_PHP_SELF);
+		header('Location: ' . $_SERVER['PHP_SELF']);
 		exit();
 	}
 } elseif ($action == 'save') {
@@ -193,7 +193,7 @@ llxHeader('', $langs->trans("AgendaSetup"), $wikihelp, '', 0, 0, $arrayofjs, $ar
 $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
 print load_fiche_titre($langs->trans("AgendaSetup"), $linkback, 'title_setup');
 
-print '<form name="extsitesconfig" action="'.DOL_PHP_SELF.'" method="post">';
+print '<form name="extsitesconfig" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="save">';
 
@@ -228,9 +228,9 @@ if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('AGENDA_DISABLE_EXT', array('enabled' => array(0 => '.hideifnotset')), null, 1);
 } else {
 	if (!getDolGlobalString('AGENDA_DISABLE_EXT')) {
-		print '<a href="'.DOL_PHP_SELF.'?save=1&AGENDA_DISABLE_EXT=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?save=1&AGENDA_DISABLE_EXT=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?save=1&AGENDA_DISABLE_EXT=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?save=1&AGENDA_DISABLE_EXT=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	}
 }
 print "</td>";
@@ -289,9 +289,9 @@ while ($i <= $MAXAGENDA) {
 	} else {
 		// @phan-suppress-next-line PhanPluginSuspiciousParamPosition
 		if (getDolGlobalString($default)) {
-			print '<a href="' . DOL_PHP_SELF . '?action=del_AGENDA_EXT_ACTIVEBYDEFAULT' . $key . '&token='.newToken().'">' . img_picto($langs->trans("Disabled"), 'off') . '</a>';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=del_AGENDA_EXT_ACTIVEBYDEFAULT' . $key . '&token='.newToken().'">' . img_picto($langs->trans("Disabled"), 'off') . '</a>';
 		} else {
-			print '<a href="' . DOL_PHP_SELF . '?action=set_AGENDA_EXT_ACTIVEBYDEFAULT' . $key . '&token='.newToken().'">' . img_picto($langs->trans("Enabled"), 'on') . '</a>';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=set_AGENDA_EXT_ACTIVEBYDEFAULT' . $key . '&token='.newToken().'">' . img_picto($langs->trans("Enabled"), 'on') . '</a>';
 		}
 	}
 	print '</td>';

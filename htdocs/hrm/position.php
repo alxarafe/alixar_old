@@ -251,7 +251,7 @@ if ($action == 'create') {
 	$extrafields->fetch_name_optionals_label($object->table_element);
 	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("Position")), '', 'object_' . $object->picto);
 
-	print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+	print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="add">';
 	if ($backtopage) {
@@ -447,7 +447,7 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
 	$arrayofselected = is_array($toselect) ? $toselect : array();
 
 	$param = 'fk_job=' . $fk_job;
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage=' . urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -487,7 +487,7 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
 	}
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-	print '<form method="POST" id="searchFormList" action="' . DOL_PHP_SELF . '?fk_job=' . $fk_job . '">' . "\n";
+	print '<form method="POST" id="searchFormList" action="' . $_SERVER['PHP_SELF'] . '?fk_job=' . $fk_job . '">' . "\n";
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="' . $optioncss . '">';
 	}
@@ -501,9 +501,9 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
 	print '<input type="hidden" name="contextpage" value="' . $contextpage . '">';
 
 	$newcardbutton = '';
-	$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', dol_buildpath('/hrm/position.php', 1).'?action=create&backtopage='.urlencode(DOL_PHP_SELF).'&fk_job='.((int) $fk_job), '', $permissiontoadd);
+	$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', dol_buildpath('/hrm/position.php', 1).'?action=create&backtopage='.urlencode($_SERVER['PHP_SELF']).'&fk_job='.((int) $fk_job), '', $permissiontoadd);
 
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_' . $object->picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_' . $object->picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 	// Add code for pre mass action (confirmation or email presend form)
 	$topicmail = "SendPositionRef";
@@ -538,7 +538,7 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
 		print '</div>';
 	}
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 	$selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -608,7 +608,7 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
 			$cssforfield .= ($cssforfield ? ' ' : '') . 'right';
 		}
 		if (!empty($arrayfields['t.' . $key]['checked'])) {
-			print getTitleFieldOfList($arrayfields['t.' . $key]['label'], 0, DOL_PHP_SELF, 't.' . $key, '', $param, ($cssforfield ? 'class="' . $cssforfield . '"' : ''), $sortfield, $sortorder, ($cssforfield ? $cssforfield . ' ' : '')) . "\n";
+			print getTitleFieldOfList($arrayfields['t.' . $key]['label'], 0, $_SERVER['PHP_SELF'], 't.' . $key, '', $param, ($cssforfield ? 'class="' . $cssforfield . '"' : ''), $sortfield, $sortorder, ($cssforfield ? $cssforfield . ' ' : '')) . "\n";
 		}
 	}
 	// Extra fields
@@ -618,7 +618,7 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
 	$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object); // Note that $action and $object may have been modified by hook
 	print $hookmanager->resPrint;
 	// Action column
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
 	print '</tr>' . "\n";
 
 	// Detect if we need a fetch on each output line
@@ -755,7 +755,7 @@ if ($job->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'
 		$formfile = new FormFile($db);
 
 		// Show list of available documents
-		$urlsource = DOL_PHP_SELF . '?sortfield=' . $sortfield . '&sortorder=' . $sortorder;
+		$urlsource = $_SERVER['PHP_SELF'] . '?sortfield=' . $sortfield . '&sortorder=' . $sortorder;
 		$urlsource .= str_replace('&amp;', '&', $param);
 
 		$filedir = $diroutputmassaction;

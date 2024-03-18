@@ -155,9 +155,9 @@ if ($object->id > 0) {
 		if (0) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);
@@ -192,7 +192,7 @@ if ($object->id > 0) {
 	$objcon = new stdClass();
 
 	$out = '&origin='.urlencode((string) ($object->element.(property_exists($object, 'module') ? '@'.$object->module : ''))).'&originid='.urlencode((string) ($object->id));
-	$urlbacktopage = DOL_PHP_SELF.'?id='.$object->id;
+	$urlbacktopage = $_SERVER['PHP_SELF'].'?id='.$object->id;
 	$out .= '&backtopage='.urlencode($urlbacktopage);
 	$permok = $user->hasRight('agenda', 'myactions', 'create');
 	if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
@@ -226,7 +226,7 @@ if ($object->id > 0) {
 		print '<br>';
 
 		$param = '&id='.$object->id.(!empty($socid) ? '&socid='.$socid : '');
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage='.urlencode($contextpage);
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -238,8 +238,8 @@ if ($object->id > 0) {
 		$cachekey = 'count_events_propal_'.$object->id;
 		$nbEvent = dol_getcache($cachekey);
 
-		print_barre_liste($langs->trans("ActionsOnPropal").(is_numeric($nbEvent) ? '<span class="opacitymedium colorblack paddingleft">('.$nbEvent.')</span>' : ''), 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
-		//print_barre_liste($langs->trans("ActionsOnPropal"), 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
+		print_barre_liste($langs->trans("ActionsOnPropal").(is_numeric($nbEvent) ? '<span class="opacitymedium colorblack paddingleft">('.$nbEvent.')</span>' : ''), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
+		//print_barre_liste($langs->trans("ActionsOnPropal"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
 
 		// List of all actions
 		$filters = array();

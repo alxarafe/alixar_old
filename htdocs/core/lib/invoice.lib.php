@@ -1097,7 +1097,7 @@ function getCustomerInvoiceUnpaidOpenTable($maxCount = 500, $socid = 0)
 					print '<td width="16" class="nobordernopadding hideonsmartphone right">';
 					$filename = dol_sanitizeFileName($obj->ref);
 					$filedir = $conf->facture->dir_output.'/'.dol_sanitizeFileName($obj->ref);
-					$urlsource = DOL_PHP_SELF.'?facid='.$obj->rowid;
+					$urlsource = $_SERVER['PHP_SELF'].'?facid='.$obj->rowid;
 					print $formfile->getDocumentsLink($tmpinvoice->element, $filename, $filedir);
 					print '</td></tr></table>';
 

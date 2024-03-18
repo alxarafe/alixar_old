@@ -62,7 +62,7 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
 	echo '</td>';
 	echo '<td class="linkedcol-statut right">'.$objectlink->getLibStatut(3).'</td>';
 	echo '<td class="linkedcol-action right">';
-	echo '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=dellink&token='.newToken().'&dellinkid='.$key.'">'.img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink').'</a>';
+	echo '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=dellink&token='.newToken().'&dellinkid='.$key.'">'.img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink').'</a>';
 	echo '</td>';
 	echo "</tr>\n";
 }

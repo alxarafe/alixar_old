@@ -231,7 +231,7 @@ if (empty($reshook)) {
 
 		$action = '';
 		// Redirect to refresh the tab information
-		header("Location: ".DOL_PHP_SELF.'?id='.$object->id);
+		header("Location: ".$_SERVER['PHP_SELF'].'?id='.$object->id);
 		exit;
 	}
 
@@ -442,7 +442,7 @@ if (empty($reshook)) {
 			$db->commit();
 
 			// Redirect to avoid to action done a second time if we make a back from browser
-			header("Location: ".DOL_PHP_SELF.'?id='.$object->id);
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		}
 	}
@@ -488,10 +488,10 @@ if (empty($reshook)) {
 			$res = $moline->update($user);
 			if ($res < 0) {
 				setEventMessages($moline->error, $moline->errors, 'errors');
-				header("Location: ".DOL_PHP_SELF.'?id='.$object->id);
+				header("Location: ".$_SERVER['PHP_SELF'].'?id='.$object->id);
 				exit;
 			}
-			header("Location: ".DOL_PHP_SELF.'?id='.$object->id);
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		}
 	}
@@ -542,17 +542,17 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				'value' => 0
 			),
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteMo'), $langs->trans('ConfirmDeleteMo'), 'confirm_delete', $formquestion, 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteMo'), $langs->trans('ConfirmDeleteMo'), 'confirm_delete', $formquestion, 0, 1);
 	}
 	// Confirmation to delete line
 	if ($action == 'deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid.'&fk_movement='.$fk_movement, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid.'&fk_movement='.$fk_movement, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 	}
 	// Clone confirmation
 	if ($action == 'clone') {
 		// Create an array for form
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneMo', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneMo', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}
 
 	// Confirmation of validation
@@ -591,7 +591,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			);
 		}
 
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('Validate'), $text, 'confirm_validate', $formquestion, 0, 1, 220);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('Validate'), $text, 'confirm_validate', $formquestion, 0, 1, 220);
 	}
 
 	// Confirmation to cancel
@@ -604,7 +604,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				'value' => !getDolGlobalString('MO_ALSO_CANCEL_CONSUMED_AND_PRODUCED_LINES_BY_DEFAULT') ? 0 : 1
 			),
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id, $langs->trans('CancelMo'), $langs->trans('ConfirmCancelMo'), 'confirm_cancel', $formquestion, 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('CancelMo'), $langs->trans('ConfirmCancelMo'), 'confirm_cancel', $formquestion, 0, 1);
 	}
 
 	// Call Hook formConfirm
@@ -649,9 +649,9 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if ($permissiontoadd) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);
@@ -703,7 +703,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			if ($object->status == $object::STATUS_DRAFT) {
 				if ($permissiontoadd) {
 					if (empty($object->table_element_line) || (is_array($object->lines) && count($object->lines) > 0)) {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=validate&token='.$newToken.'">'.$langs->trans("Validate").'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=validate&token='.$newToken.'">'.$langs->trans("Validate").'</a>';
 					} else {
 						$langs->load("errors");
 						print '<a class="butActionRefused" href="" title="'.$langs->trans("ErrorAddAtLeastOneLineFirst").'">'.$langs->trans("Validate").'</a>';
@@ -714,7 +714,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			// Consume or produce
 			if ($object->status == Mo::STATUS_VALIDATED || $object->status == Mo::STATUS_INPROGRESS) {
 				if ($permissiontoproduce) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=consumeorproduce&token='.$newToken.'">'.$langs->trans('ConsumeOrProduce').'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=consumeorproduce&token='.$newToken.'">'.$langs->trans('ConsumeOrProduce').'</a>';
 				} else {
 					print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans('ConsumeOrProduce').'</a>';
 				}
@@ -725,7 +725,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			// ConsumeAndProduceAll
 			if ($object->status == Mo::STATUS_VALIDATED || $object->status == Mo::STATUS_INPROGRESS) {
 				if ($permissiontoproduce) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=consumeandproduceall&token='.$newToken.'">'.$langs->trans('ConsumeAndProduceAll').'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=consumeandproduceall&token='.$newToken.'">'.$langs->trans('ConsumeAndProduceAll').'</a>';
 				} else {
 					print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans('ConsumeAndProduceAll').'</a>';
 				}
@@ -742,21 +742,21 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 						$nbProduced += $lineproduced['qty'];
 					}
 					if ($nbProduced > 0) {	// If production has started, we can close it
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_produced&confirm=yes&token='.$newToken.'">'.$langs->trans("Close").'</a>'."\n";
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_produced&confirm=yes&token='.$newToken.'">'.$langs->trans("Close").'</a>'."\n";
 					} else {
 						print '<a class="butActionRefused" href="#" title="'.$langs->trans("GoOnTabProductionToProduceFirst", $langs->transnoentitiesnoconv("Production")).'">'.$langs->trans("Close").'</a>'."\n";
 					}
 
-					print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=cancel&token='.$newToken.'">'.$langs->trans("Cancel").'</a>'."\n";
+					print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=cancel&token='.$newToken.'">'.$langs->trans("Cancel").'</a>'."\n";
 				}
 
 				if ($object->status == $object::STATUS_CANCELED) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_reopen&confirm=yes&token='.$newToken.'">'.$langs->trans("ReOpen").'</a>'."\n";
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_reopen&confirm=yes&token='.$newToken.'">'.$langs->trans("ReOpen").'</a>'."\n";
 				}
 
 				if ($object->status == $object::STATUS_PRODUCED) {
 					if ($permissiontoproduce) {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_reopen&token='.$newToken.'">'.$langs->trans('ReOpen').'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_reopen&token='.$newToken.'">'.$langs->trans('ReOpen').'</a>';
 					} else {
 						print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotEnoughPermissions").'">'.$langs->trans('ReOpen').'</a>';
 					}
@@ -768,7 +768,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	}
 
 	if (in_array($action, array('consumeorproduce', 'consumeandproduceall', 'addconsumeline', 'addproduceline', 'editline'))) {
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="confirm_'.$action.'">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -821,7 +821,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		print '<div class="fichehalfleft">';
 		print '<div class="clearboth"></div>';
 
-		$url = DOL_PHP_SELF.'?id='.$object->id.'&action=addconsumeline&token='.newToken();
+		$url = $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=addconsumeline&token='.newToken();
 		$permissiontoaddaconsumeline = $object->status != $object::STATUS_PRODUCED && $object->status != $object::STATUS_CANCELED;
 		$parameters = array('morecss'=>'reposition');
 
@@ -1135,7 +1135,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 							});';
 							print '</script>';
 							if (empty($conf->use_javascript_ajax)) {
-								print '<a href="' . DOL_PHP_SELF . '?collapse=' . $collapse . ',' . $line->id . '">';
+								print '<a href="' . $_SERVER['PHP_SELF'] . '?collapse=' . $collapse . ',' . $line->id . '">';
 							}
 							print img_picto($langs->trans("ShowDetails"), "chevron-down", 'id="expandtoproduce' . $line->id . '"');
 							if (empty($conf->use_javascript_ajax)) {
@@ -1194,7 +1194,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 						// Action Edit line
 						if ($object->status == Mo::STATUS_DRAFT) {
-							$href = DOL_PHP_SELF . '?id=' . ((int) $object->id) . '&action=editline&token=' . newToken() . '&lineid=' . ((int) $line->id);
+							$href = $_SERVER['PHP_SELF'] . '?id=' . ((int) $object->id) . '&action=editline&token=' . newToken() . '&lineid=' . ((int) $line->id);
 							print '<td class="center">';
 							print '<a class="reposition" href="' . $href . '">';
 							print img_picto($langs->trans('TooltipEditAndRevertStockMovement'), 'edit');
@@ -1204,7 +1204,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 						// Action delete line
 						if ($permissiontodelete) {
-							$href = DOL_PHP_SELF . '?id=' . ((int) $object->id) . '&action=deleteline&token=' . newToken() . '&lineid=' . ((int) $line->id);
+							$href = $_SERVER['PHP_SELF'] . '?id=' . ((int) $object->id) . '&action=deleteline&token=' . newToken() . '&lineid=' . ((int) $line->id);
 							print '<td class="center">';
 							print '<a class="reposition" href="' . $href . '">';
 							print img_picto($langs->trans('TooltipDeleteAndRevertStockMovement'), 'delete');
@@ -1279,7 +1279,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 						// Action Edit line
 						if ($object->status == Mo::STATUS_DRAFT) {
-							$href = DOL_PHP_SELF . '?id=' . ((int) $object->id) . '&action=editline&token=' . newToken() . '&lineid=' . ((int) $line2['rowid']);
+							$href = $_SERVER['PHP_SELF'] . '?id=' . ((int) $object->id) . '&action=editline&token=' . newToken() . '&lineid=' . ((int) $line2['rowid']);
 							print '<td class="center">';
 							print '<a class="reposition" href="' . $href . '">';
 							print img_picto($langs->trans('TooltipEditAndRevertStockMovement'), 'edit');
@@ -1289,7 +1289,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 						// Action delete line
 						if ($permissiontodelete) {
-							$href = DOL_PHP_SELF.'?id='.((int) $object->id).'&action=deleteline&token='.newToken().'&lineid='.((int) $line2['rowid']).'&fk_movement='.((int) $line2['fk_stock_movement']);
+							$href = $_SERVER['PHP_SELF'].'?id='.((int) $object->id).'&action=deleteline&token='.newToken().'&lineid='.((int) $line2['rowid']).'&fk_movement='.((int) $line2['fk_stock_movement']);
 							print '<td class="center">';
 							print '<a class="reposition" href="'.$href.'">';
 							print img_picto($langs->trans('TooltipDeleteAndRevertStockMovement'), 'delete');
@@ -1430,7 +1430,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		}
 
 		$newcardbutton = '';
-		$url = DOL_PHP_SELF.'?id='.$object->id.'&action=addproduceline&token='.newToken();
+		$url = $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=addproduceline&token='.newToken();
 		$permissiontoaddaproductline = $object->status != $object::STATUS_PRODUCED && $object->status != $object::STATUS_CANCELED;
 		$parameters = array('morecss'=>'reposition');
 		if ($action != 'consumeorproduce' && $action != 'consumeandproduceall') {
@@ -1617,7 +1617,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 						});';
 						print '</script>';
 						if (empty($conf->use_javascript_ajax)) {
-							print '<a href="'.DOL_PHP_SELF.'?collapse='.$collapse.','.$line->id.'">';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?collapse='.$collapse.','.$line->id.'">';
 						}
 						print img_picto($langs->trans("ShowDetails"), "chevron-down", 'id="expandtoproduce'.$line->id.'"');
 						if (empty($conf->use_javascript_ajax)) {
@@ -1642,7 +1642,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 					// Delete
 					if ($permissiontodelete) {
 						if ($line->origin_type == 'free') {
-							$href = DOL_PHP_SELF;
+							$href = $_SERVER['PHP_SELF'];
 							$href .= '?id='.$object->id;
 							$href .= '&action=deleteline';
 							$href .= '&lineid='.$line->id;

@@ -300,7 +300,7 @@ llxHeader('', $title, $help_url);
 $listofextcals = array();
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -640,7 +640,7 @@ $tabactive = 'cardlist';
 
 $head = calendars_prepare_head($param);
 
-print '<form method="POST" id="searchFormList" class="listactionsfilter" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" id="searchFormList" class="listactionsfilter" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -726,13 +726,13 @@ $newparam = '&month='.str_pad($month, 2, "0", STR_PAD_LEFT).'&year='.$tmpforcrea
 
 $url = DOL_URL_ROOT.'/comm/action/card.php?action=create';
 $url .= '&apyear='.$tmpforcreatebutton['year'].'&apmonth='.$tmpforcreatebutton['mon'].'&apday='.$tmpforcreatebutton['mday'].'&aphour='.$tmpforcreatebutton['hours'].'&apmin='.$tmpforcreatebutton['minutes'];
-$url .= '&backtopage='.urlencode(DOL_PHP_SELF.($newparam ? '?'.$newparam : ''));
+$url .= '&backtopage='.urlencode($_SERVER['PHP_SELF'].($newparam ? '?'.$newparam : ''));
 
 $newcardbutton = dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', $url, '', $user->rights->agenda->myactions->create || $user->hasRight('agenda', 'allactions', 'create'));
 
 $param .= '&mode='.urlencode($mode);
 
-print_barre_liste($langs->trans("Agenda"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, is_numeric($nbtotalofrecords) ? -1 * $nbtotalofrecords : $nbtotalofrecords, 'object_action', 0, $nav.$newcardbutton, '', $limit, 0, 0, 1, $viewmode);
+print_barre_liste($langs->trans("Agenda"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, is_numeric($nbtotalofrecords) ? -1 * $nbtotalofrecords : $nbtotalofrecords, 'object_action', 0, $nav.$newcardbutton, '', $limit, 0, 0, 1, $viewmode);
 
 print $s;
 
@@ -741,7 +741,7 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
 $moreforfilter = '';
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 if ($massactionbutton) {
 	$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
@@ -843,48 +843,48 @@ $totalarray['nbfield'] = 0;
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['a.id']['checked'])) {
-	print_liste_field_titre($arrayfields['a.id']['label'], DOL_PHP_SELF, "a.id", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['a.id']['label'], $_SERVER['PHP_SELF'], "a.id", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['owner']['checked'])) {
-	print_liste_field_titre($arrayfields['owner']['label'], DOL_PHP_SELF, "", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['owner']['label'], $_SERVER['PHP_SELF'], "", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['c.libelle']['checked'])) {
-	print_liste_field_titre($arrayfields['c.libelle']['label'], DOL_PHP_SELF, "c.libelle", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['c.libelle']['label'], $_SERVER['PHP_SELF'], "c.libelle", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['a.label']['checked'])) {
-	print_liste_field_titre($arrayfields['a.label']['label'], DOL_PHP_SELF, "a.label", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['a.label']['label'], $_SERVER['PHP_SELF'], "a.label", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['a.note']['checked'])) {
-	print_liste_field_titre($arrayfields['a.note']['label'], DOL_PHP_SELF, "a.note", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['a.note']['label'], $_SERVER['PHP_SELF'], "a.note", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 //if (!empty($conf->global->AGENDA_USE_EVENT_TYPE))
 if (!empty($arrayfields['a.datep']['checked'])) {
-	print_liste_field_titre($arrayfields['a.datep']['label'], DOL_PHP_SELF, "a.datep,a.id", $param, '', '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['a.datep']['label'], $_SERVER['PHP_SELF'], "a.datep,a.id", $param, '', '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['a.datep2']['checked'])) {
-	print_liste_field_titre($arrayfields['a.datep2']['label'], DOL_PHP_SELF, "a.datep2", $param, '', '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['a.datep2']['label'], $_SERVER['PHP_SELF'], "a.datep2", $param, '', '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.nom']['checked'])) {
-	print_liste_field_titre($arrayfields['s.nom']['label'], DOL_PHP_SELF, "s.nom", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['s.nom']['label'], $_SERVER['PHP_SELF'], "s.nom", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['a.fk_contact']['checked'])) {
-	print_liste_field_titre($arrayfields['a.fk_contact']['label'], DOL_PHP_SELF, "", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['a.fk_contact']['label'], $_SERVER['PHP_SELF'], "", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['a.fk_element']['checked'])) {
-	print_liste_field_titre($arrayfields['a.fk_element']['label'], DOL_PHP_SELF, "", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['a.fk_element']['label'], $_SERVER['PHP_SELF'], "", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 // Extra fields
@@ -895,20 +895,20 @@ $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // No
 print $hookmanager->resPrint;
 
 if (!empty($arrayfields['a.datec']['checked'])) {
-	print_liste_field_titre($arrayfields['a.datec']['label'], DOL_PHP_SELF, "a.datec,a.id", $param, "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['a.datec']['label'], $_SERVER['PHP_SELF'], "a.datec,a.id", $param, "", '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['a.tms']['checked'])) {
-	print_liste_field_titre($arrayfields['a.tms']['label'], DOL_PHP_SELF, "a.tms,a.id", $param, "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['a.tms']['label'], $_SERVER['PHP_SELF'], "a.tms,a.id", $param, "", '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 // Status
 if (!empty($arrayfields['a.percent']['checked'])) {
-	print_liste_field_titre("Status", DOL_PHP_SELF, "a.percent", $param, "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "a.percent", $param, "", '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ');
 	$totalarray['nbfield']++;
 }
 print "</tr>\n";

@@ -196,7 +196,7 @@ if ($id > 0 || $ref) {
 			if (get_class($objproduct) == 'Product') {
 				$out .= '&amp;prodid='.$objproduct->id.'&origin=product&originid='.$id;
 			}
-			$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '').'&amp;backtopage='.DOL_PHP_SELF.'?id='.$object->id;
+			$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '').'&amp;backtopage='.$_SERVER['PHP_SELF'].'?id='.$object->id;
 		}
 
 		$linktocreatetimeBtnStatus = $user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create');
@@ -207,7 +207,7 @@ if ($id > 0 || $ref) {
 		print '<br>';
 
 		$param = '&id='.$id;
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage='.$contextpage;
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -215,7 +215,7 @@ if ($id > 0 || $ref) {
 		}
 
 		// @phan-suppress-next-line PhanPluginSuspiciousParamPosition, PhanPluginSuspiciousParamOrder
-		print_barre_liste($langs->trans("ActionsOnProduct"), 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlcenter, '', 0, 1, 1);
+		print_barre_liste($langs->trans("ActionsOnProduct"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlcenter, '', 0, 1, 1);
 
 		// List of all actions
 		$filters = array();

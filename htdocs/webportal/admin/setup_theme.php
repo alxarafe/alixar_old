@@ -132,7 +132,7 @@ if ($action == 'edit') {
 } elseif (!empty($formSetup->items)) {
 	print $formSetup->generateOutput();
 	print '<div class="tabsAction">';
-	print '<a class="butAction" href="' . DOL_PHP_SELF . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
+	print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
 	print '</div>';
 } else {
 	print '<br>' . $langs->trans("NothingToSetup");

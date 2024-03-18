@@ -470,7 +470,7 @@ if ($action == 'create' || $action == 'confirm_paiement' || $action == 'add_paie
 			print '	</script>'."\n";
 		}
 
-		print '<form id="payment_form" name="add_paiement" action="'.DOL_PHP_SELF.'" method="POST">';
+		print '<form id="payment_form" name="add_paiement" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add_paiement">';
 		print '<input type="hidden" name="facid" value="'.$facture->id.'">';
@@ -906,7 +906,7 @@ if ($action == 'create' || $action == 'confirm_paiement' || $action == 'add_paie
 				$text .= '<br>'.$langs->trans("AllCompletelyPayedInvoiceWillBeClosed");
 				print '<input type="hidden" name="closepaidinvoices" value="'.GETPOST('closepaidinvoices').'">';
 			}
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?facid='.$facture->id.'&socid='.$facture->socid.'&type='.$facture->type, $langs->trans('ReceivedCustomersPayments'), $text, 'confirm_paiement', $formquestion, $preselectedchoice);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?facid='.$facture->id.'&socid='.$facture->socid.'&type='.$facture->type, $langs->trans('ReceivedCustomersPayments'), $text, 'confirm_paiement', $formquestion, $preselectedchoice);
 		}
 
 		// Call Hook formConfirm
@@ -961,14 +961,14 @@ if (!GETPOST('action', 'aZ09')) {
 		$num = $db->num_rows($resql);
 		$i = 0;
 
-		print_barre_liste($langs->trans('Payments'), $page, DOL_PHP_SELF, '', $sortfield, $sortorder, '', $num);
+		print_barre_liste($langs->trans('Payments'), $page, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', $num);
 		print '<table class="noborder centpercent">';
 		print '<tr class="liste_titre">';
-		print_liste_field_titre('Invoice', DOL_PHP_SELF, 'f.ref', '', '', '', $sortfield, $sortorder);
-		print_liste_field_titre('Date', DOL_PHP_SELF, 'p.datep', '', '', '', $sortfield, $sortorder);
-		print_liste_field_titre('Type', DOL_PHP_SELF, 'c.libelle', '', '', '', $sortfield, $sortorder);
-		print_liste_field_titre('Amount', DOL_PHP_SELF, 'p.amount', '', '', '', $sortfield, $sortorder, 'right ');
-		print_liste_field_titre('', DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
+		print_liste_field_titre('Invoice', $_SERVER['PHP_SELF'], 'f.ref', '', '', '', $sortfield, $sortorder);
+		print_liste_field_titre('Date', $_SERVER['PHP_SELF'], 'p.datep', '', '', '', $sortfield, $sortorder);
+		print_liste_field_titre('Type', $_SERVER['PHP_SELF'], 'c.libelle', '', '', '', $sortfield, $sortorder);
+		print_liste_field_titre('Amount', $_SERVER['PHP_SELF'], 'p.amount', '', '', '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre('', $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch ');
 		print "</tr>\n";
 
 		while ($i < min($num, $limit)) {

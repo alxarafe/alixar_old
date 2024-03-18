@@ -67,7 +67,7 @@ if ($action == 'validate' && $user->hasRight('deplacement', 'creer')) {
 	if ($object->statut == Deplacement::STATUS_DRAFT) {
 		$result = $object->setStatut(1);
 		if ($result > 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -78,7 +78,7 @@ if ($action == 'validate' && $user->hasRight('deplacement', 'creer')) {
 	if ($object->statut == Deplacement::STATUS_VALIDATED) {
 		$result = $object->setStatut(Deplacement::STATUS_REFUNDED);
 		if ($result > 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -122,7 +122,7 @@ if ($action == 'validate' && $user->hasRight('deplacement', 'creer')) {
 			$id = $object->create($user);
 
 			if ($id > 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -151,13 +151,13 @@ if ($action == 'validate' && $user->hasRight('deplacement', 'creer')) {
 		$result = $object->update($user);
 
 		if ($result > 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} else {
-		header("Location: ".DOL_PHP_SELF."?id=".$id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 		exit;
 	}
 } elseif ($action == 'classin' && $user->hasRight('deplacement', 'creer')) {
@@ -203,7 +203,7 @@ if ($action == 'create') {
 
 	$datec = dol_mktime(12, 0, 0, GETPOSTINT('remonth'), GETPOSTINT('reday'), GETPOSTINT('reyear'));
 
-	print '<form name="add" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+	print '<form name="add" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -285,7 +285,7 @@ if ($action == 'create') {
 				$soc->fetch($object->socid);
 			}
 
-			print '<form name="update" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+			print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
@@ -367,7 +367,7 @@ if ($action == 'create') {
 			 * Confirm delete trip
 			 */
 			if ($action == 'delete') {
-				print $form->formconfirm(DOL_PHP_SELF."?id=".urlencode((string) ($id)), $langs->trans("DeleteTrip"), $langs->trans("ConfirmDeleteTrip"), "confirm_delete");
+				print $form->formconfirm($_SERVER['PHP_SELF']."?id=".urlencode((string) ($id)), $langs->trans("DeleteTrip"), $langs->trans("ConfirmDeleteTrip"), "confirm_delete");
 			}
 
 			$soc = new Societe($db);
@@ -432,16 +432,16 @@ if ($action == 'create') {
 				print $langs->trans('Project');
 				print '</td>';
 				if ($action != 'classify' && $user->hasRight('deplacement', 'creer')) {
-					print '<td class="right"><a href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">';
+					print '<td class="right"><a href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">';
 					print img_edit($langs->trans('SetProject'), 1);
 					print '</a></td>';
 				}
 				print '</tr></table>';
 				print '</td><td colspan="3">';
 				if ($action == 'classify') {
-					$form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1);
+					$form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1);
 				} else {
-					$form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0);
+					$form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0);
 				}
 				print '</td>';
 				print '</tr>';
@@ -470,7 +470,7 @@ if ($action == 'create') {
 
 			if ($object->statut < Deplacement::STATUS_REFUNDED) { 	// if not refunded
 				if ($user->hasRight('deplacement', 'creer')) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$id.'">'.$langs->trans('Modify').'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$id.'">'.$langs->trans('Modify').'</a>';
 				} else {
 					print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NotAllowed")).'">'.$langs->trans('Modify').'</a>';
 				}
@@ -478,7 +478,7 @@ if ($action == 'create') {
 
 			if ($object->statut == Deplacement::STATUS_DRAFT) { 	// if draft
 				if ($user->hasRight('deplacement', 'creer')) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=validate&id='.$id.'">'.$langs->trans('Validate').'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=validate&id='.$id.'">'.$langs->trans('Validate').'</a>';
 				} else {
 					print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NotAllowed")).'">'.$langs->trans('Validate').'</a>';
 				}
@@ -486,14 +486,14 @@ if ($action == 'create') {
 
 			if ($object->statut == Deplacement::STATUS_VALIDATED) { 	// if validated
 				if ($user->hasRight('deplacement', 'creer')) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=classifyrefunded&token='.newToken().'&id='.$id.'">'.$langs->trans('ClassifyRefunded').'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=classifyrefunded&token='.newToken().'&id='.$id.'">'.$langs->trans('ClassifyRefunded').'</a>';
 				} else {
 					print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NotAllowed")).'">'.$langs->trans('ClassifyRefunded').'</a>';
 				}
 			}
 
 			$permissiontodelete = $user->hasRight('deplacement', 'supprimer');
-			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
+			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
 
 			print '</div>';
 		}

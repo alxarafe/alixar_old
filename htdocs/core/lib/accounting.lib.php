@@ -192,11 +192,11 @@ function journalHead($nom, $variant, $period, $periodlink, $description, $buildd
 
 	$head = array();
 	$h = 0;
-	$head[$h][0] = DOL_PHP_SELF.$varlink;
+	$head[$h][0] = $_SERVER['PHP_SELF'].$varlink;
 	$head[$h][1] = $langs->trans("Journalization");
 	$head[$h][2] = 'journal';
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.$varlink.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].$varlink.'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	print dol_get_fiche_head($head, 'journal');

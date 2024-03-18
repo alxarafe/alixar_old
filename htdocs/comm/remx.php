@@ -150,7 +150,7 @@ if ($action == 'confirm_split' && GETPOST("confirm", "alpha") == 'yes' && $permi
 		$newid2 = $newdiscount2->create($user);
 		if ($res > 0 && $newid1 > 0 && $newid2 > 0) {
 			$db->commit();
-			header("Location: ".DOL_PHP_SELF.'?id='.$id.($backtopage ? '&backtopage='.urlencode($backtopage) : '')); // To avoid pb with back
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$id.($backtopage ? '&backtopage='.urlencode($backtopage) : '')); // To avoid pb with back
 			exit;
 		} else {
 			$db->rollback();
@@ -203,7 +203,7 @@ if (GETPOST('action', 'aZ09') == 'confirm_remove' && GETPOST("confirm") == 'yes'
 	$result = $discount->delete($user);
 	if ($result > 0) {
 		$db->commit();
-		header("Location: ".DOL_PHP_SELF.'?id='.$id); // To avoid pb with back
+		header("Location: ".$_SERVER['PHP_SELF'].'?id='.$id); // To avoid pb with back
 		exit;
 	} else {
 		setEventMessages($discount->error, $discount->errors, 'errors');
@@ -235,7 +235,7 @@ if ($socid > 0) {
 
 	$head = societe_prepare_head($object);
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="setremise">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -404,7 +404,7 @@ if ($socid > 0) {
 	print '<br>';
 
 	if ($action == 'remove') {
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&remid='.GETPOST('remid'), $langs->trans('RemoveDiscount'), $langs->trans('ConfirmRemoveDiscount'), 'confirm_remove', '', 0, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&remid='.GETPOST('remid'), $langs->trans('RemoveDiscount'), $langs->trans('ConfirmRemoveDiscount'), 'confirm_remove', '', 0, 1);
 	}
 
 
@@ -413,9 +413,9 @@ if ($socid > 0) {
 	 */
 
 	if ($isCustomer && !$isSupplier) {
-		$newcardbutton = dolGetButtonTitle($langs->trans("NewGlobalDiscount"), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?action=create_remise&id='.$id.'&discount_type=0&backtopage='.DOL_PHP_SELF.'?id='.$id.'&token='.newToken());
+		$newcardbutton = dolGetButtonTitle($langs->trans("NewGlobalDiscount"), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?action=create_remise&id='.$id.'&discount_type=0&backtopage='.$_SERVER['PHP_SELF'].'?id='.$id.'&token='.newToken());
 	} elseif (!$isCustomer && $isSupplier) {
-		$newcardbutton = dolGetButtonTitle($langs->trans("NewGlobalDiscount"), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?action=create_remise&id='.$id.'&discount_type=1&backtopage='.DOL_PHP_SELF.'?id='.$id.'&token='.newToken());
+		$newcardbutton = dolGetButtonTitle($langs->trans("NewGlobalDiscount"), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?action=create_remise&id='.$id.'&discount_type=1&backtopage='.$_SERVER['PHP_SELF'].'?id='.$id.'&token='.newToken());
 	} else {
 		$newcardbutton = '';
 	}
@@ -423,7 +423,7 @@ if ($socid > 0) {
 	print load_fiche_titre($langs->trans("DiscountStillRemaining"), $newcardbutton);
 
 	if ($isCustomer) {
-		$newcardbutton = dolGetButtonTitle($langs->trans("NewClientGlobalDiscount"), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?action=create_remise&id='.$id.'&discount_type=0&backtopage='.DOL_PHP_SELF.'?id='.$id.'&token='.newToken());
+		$newcardbutton = dolGetButtonTitle($langs->trans("NewClientGlobalDiscount"), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?action=create_remise&id='.$id.'&discount_type=0&backtopage='.$_SERVER['PHP_SELF'].'?id='.$id.'&token='.newToken());
 		if ($isSupplier) {
 			print '<div class="fichecenter">';
 			print '<div class="fichehalfleft fichehalfleft-lg">';
@@ -531,8 +531,8 @@ if ($socid > 0) {
 
 					if ($user->hasRight('societe', 'creer') || $user->hasRight('facture', 'creer')) {
 						print '<td class="center nowrap">';
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=split&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_split($langs->trans("SplitDiscount")).'</a>';
-						print '<a class="reposition marginleftonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=remove&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_delete($langs->trans("RemoveDiscount")).'</a>';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=split&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_split($langs->trans("SplitDiscount")).'</a>';
+						print '<a class="reposition marginleftonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=remove&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_delete($langs->trans("RemoveDiscount")).'</a>';
 						print '</td>';
 					} else {
 						print '<td>&nbsp;</td>';
@@ -565,7 +565,7 @@ if ($socid > 0) {
 					1 => array('type' => 'text', 'name' => 'amount_ttc_2', 'label' => $langs->trans("AmountTTC").' 2', 'value' => $amount2, 'size' => '5')
 				);
 				$langs->load("dict");
-				print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&remid='.$showconfirminfo['rowid'].($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('SplitDiscount'), $langs->trans('ConfirmSplitDiscount', price($showconfirminfo['amount_ttc']), $langs->transnoentities("Currency".$conf->currency)), 'confirm_split', $formquestion, '', 0);
+				print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&remid='.$showconfirminfo['rowid'].($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('SplitDiscount'), $langs->trans('ConfirmSplitDiscount', price($showconfirminfo['amount_ttc']), $langs->transnoentities("Currency".$conf->currency)), 'confirm_split', $formquestion, '', 0);
 			}
 		} else {
 			dol_print_error($db);
@@ -574,7 +574,7 @@ if ($socid > 0) {
 
 	if ($isSupplier) {
 		if ($isCustomer) {
-			$newcardbutton = dolGetButtonTitle($langs->trans("NewSupplierGlobalDiscount"), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?action=create_remise&id='.$id.'&discount_type=1&backtopage='.DOL_PHP_SELF.'?id='.$id.'&token='.newToken());
+			$newcardbutton = dolGetButtonTitle($langs->trans("NewSupplierGlobalDiscount"), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?action=create_remise&id='.$id.'&discount_type=1&backtopage='.$_SERVER['PHP_SELF'].'?id='.$id.'&token='.newToken());
 			print '</div>'; // class="fichehalfleft"
 			print '<div class="fichehalfright fichehalfright-lg">';
 			print load_fiche_titre($langs->trans("SupplierDiscounts"), $newcardbutton, '');
@@ -678,8 +678,8 @@ if ($socid > 0) {
 
 					if ($user->hasRight('societe', 'creer') || $user->hasRight('facture', 'creer')) {
 						print '<td class="center nowrap">';
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=split&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_split($langs->trans("SplitDiscount")).'</a>';
-						print '<a class="reposition marginleftonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=remove&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_delete($langs->trans("RemoveDiscount")).'</a>';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=split&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_split($langs->trans("SplitDiscount")).'</a>';
+						print '<a class="reposition marginleftonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=remove&token='.newToken().'&remid='.$obj->rowid.($backtopage ? '&backtopage='.urlencode($backtopage) : '').'">'.img_delete($langs->trans("RemoveDiscount")).'</a>';
 						print '</td>';
 					} else {
 						print '<td>&nbsp;</td>';
@@ -712,7 +712,7 @@ if ($socid > 0) {
 					1 => array('type' => 'text', 'name' => 'amount_ttc_2', 'label' => $langs->trans("AmountTTC").' 2', 'value' => $amount2, 'size' => '5')
 				);
 				$langs->load("dict");
-				print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&remid='.$showconfirminfo['rowid'].($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('SplitDiscount'), $langs->trans('ConfirmSplitDiscount', price($showconfirminfo['amount_ttc']), $langs->transnoentities("Currency".$conf->currency)), 'confirm_split', $formquestion, 0, 0);
+				print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&remid='.$showconfirminfo['rowid'].($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('SplitDiscount'), $langs->trans('ConfirmSplitDiscount', price($showconfirminfo['amount_ttc']), $langs->transnoentities("Currency".$conf->currency)), 'confirm_split', $formquestion, 0, 0);
 			}
 		} else {
 			dol_print_error($db);

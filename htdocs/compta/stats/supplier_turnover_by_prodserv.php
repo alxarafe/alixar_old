@@ -228,14 +228,14 @@ if ($modecompta == "BOOKKEEPINGCOLLECTED") {
 if ($modecompta == "CREANCES-DETTES") {
 	$name = $langs->trans("PurchaseTurnover").', '.$langs->trans("ByProductsAndServices");
 	$calcmode = $langs->trans("CalcModeDebt");
-	//$calcmode.='<br>('.$langs->trans("SeeReportInInputOutputMode",'<a href="'.DOL_PHP_SELF.'?year='.$year_start.'&modecompta=RECETTES-DEPENSES">','</a>').')';
+	//$calcmode.='<br>('.$langs->trans("SeeReportInInputOutputMode",'<a href="'.$_SERVER['PHP_SELF'].'?year='.$year_start.'&modecompta=RECETTES-DEPENSES">','</a>').')';
 
 	$description = $langs->trans("RulesPurchaseTurnoverDue");
 	$builddate = dol_now();
 } elseif ($modecompta == "RECETTES-DEPENSES") {
 	$name = $langs->trans("PurchaseTurnoverCollected").', '.$langs->trans("ByProductsAndServices");
 	$calcmode = $langs->trans("CalcModePayment");
-	//$calcmode.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.DOL_PHP_SELF.'?year='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
+	//$calcmode.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.$_SERVER['PHP_SELF'].'?year='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
 	$description = $langs->trans("RulesPurchaseTurnoverIn");
 
 	$builddate = dol_now();
@@ -247,7 +247,7 @@ $period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0, 0, '',
 $period .= ' - ';
 $period .= $form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0, 0, '', '', '', '', 1, '', '', 'tzserver');
 if ($date_end == dol_time_plus_duree($date_start, 1, 'y') - 1) {
-	$periodlink = '<a href="'.DOL_PHP_SELF.'?year='.($year_start - 1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.DOL_PHP_SELF.'?year='.($year_start + 1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
+	$periodlink = '<a href="'.$_SERVER['PHP_SELF'].'?year='.($year_start - 1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.$_SERVER['PHP_SELF'].'?year='.($year_start + 1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
 } else {
 	$periodlink = '';
 }
@@ -340,7 +340,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 
 	// Show Array
 	$i = 0;
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 	// Extra parameters management
 	foreach ($headerparams as $key => $value) {
@@ -383,7 +383,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 	print '<tr class="liste_titre">';
 	print_liste_field_titre(
 		$langs->trans("Product"),
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		"ref",
 		"",
 		$paramslink,
@@ -393,7 +393,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 	);
 	print_liste_field_titre(
 		$langs->trans('Quantity'),
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		"qty",
 		"",
 		$paramslink,
@@ -403,7 +403,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 	);
 	print_liste_field_titre(
 		$langs->trans("Percentage"),
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		"qty",
 		"",
 		$paramslink,
@@ -413,7 +413,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 	);
 	print_liste_field_titre(
 		$langs->trans('AmountHT'),
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		"amount",
 		"",
 		$paramslink,
@@ -423,7 +423,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 	);
 	print_liste_field_titre(
 		$langs->trans("AmountTTC"),
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		"amount_ttc",
 		"",
 		$paramslink,
@@ -433,7 +433,7 @@ if ($modecompta == 'CREANCES-DETTES') {
 	);
 	print_liste_field_titre(
 		$langs->trans("Percentage"),
-		DOL_PHP_SELF,
+		$_SERVER['PHP_SELF'],
 		"amount_ttc",
 		"",
 		$paramslink,

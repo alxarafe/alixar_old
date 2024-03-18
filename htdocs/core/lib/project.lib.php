@@ -1490,11 +1490,11 @@ function projectLinesPerDay(&$inc, $parent, $fuser, $lines, &$level, &$projectsr
 					print '<tr class="liste_titre">';
 
 					// PROJECT fields
-					if (!empty($arrayfields['p.fk_opp_status']['checked'])) print_liste_field_titre($arrayfields['p.fk_opp_status']['label'], DOL_PHP_SELF, 'p.fk_opp_status', "", $param, '', $sortfield, $sortorder, 'center ');
-					if (!empty($arrayfields['p.opp_amount']['checked']))    print_liste_field_titre($arrayfields['p.opp_amount']['label'], DOL_PHP_SELF, 'p.opp_amount', "", $param, '', $sortfield, $sortorder, 'right ');
-					if (!empty($arrayfields['p.opp_percent']['checked']))   print_liste_field_titre($arrayfields['p.opp_percent']['label'], DOL_PHP_SELF, 'p.opp_percent', "", $param, '', $sortfield, $sortorder, 'right ');
-					if (!empty($arrayfields['p.budget_amount']['checked'])) print_liste_field_titre($arrayfields['p.budget_amount']['label'], DOL_PHP_SELF, 'p.budget_amount', "", $param, '', $sortfield, $sortorder, 'right ');
-					if (!empty($arrayfields['p.usage_bill_time']['checked']))     print_liste_field_titre($arrayfields['p.usage_bill_time']['label'], DOL_PHP_SELF, 'p.usage_bill_time', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.fk_opp_status']['checked'])) print_liste_field_titre($arrayfields['p.fk_opp_status']['label'], $_SERVER['PHP_SELF'], 'p.fk_opp_status', "", $param, '', $sortfield, $sortorder, 'center ');
+					if (!empty($arrayfields['p.opp_amount']['checked']))    print_liste_field_titre($arrayfields['p.opp_amount']['label'], $_SERVER['PHP_SELF'], 'p.opp_amount', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.opp_percent']['checked']))   print_liste_field_titre($arrayfields['p.opp_percent']['label'], $_SERVER['PHP_SELF'], 'p.opp_percent', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.budget_amount']['checked'])) print_liste_field_titre($arrayfields['p.budget_amount']['label'], $_SERVER['PHP_SELF'], 'p.budget_amount', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.usage_bill_time']['checked']))     print_liste_field_titre($arrayfields['p.usage_bill_time']['label'], $_SERVER['PHP_SELF'], 'p.usage_bill_time', "", $param, '', $sortfield, $sortorder, 'right ');
 
 					$extrafieldsobjectkey='projet';
 					$extrafieldsobjectprefix='efp.';
@@ -1889,11 +1889,11 @@ function projectLinesPerWeek(&$inc, $firstdaytoshow, $fuser, $parent, $lines, &$
 					print '<tr class="liste_titre">';
 
 					// PROJECT fields
-					if (!empty($arrayfields['p.fk_opp_status']['checked'])) print_liste_field_titre($arrayfields['p.fk_opp_status']['label'], DOL_PHP_SELF, 'p.fk_opp_status', "", $param, '', $sortfield, $sortorder, 'center ');
-					if (!empty($arrayfields['p.opp_amount']['checked']))    print_liste_field_titre($arrayfields['p.opp_amount']['label'], DOL_PHP_SELF, 'p.opp_amount', "", $param, '', $sortfield, $sortorder, 'right ');
-					if (!empty($arrayfields['p.opp_percent']['checked']))   print_liste_field_titre($arrayfields['p.opp_percent']['label'], DOL_PHP_SELF, 'p.opp_percent', "", $param, '', $sortfield, $sortorder, 'right ');
-					if (!empty($arrayfields['p.budget_amount']['checked'])) print_liste_field_titre($arrayfields['p.budget_amount']['label'], DOL_PHP_SELF, 'p.budget_amount', "", $param, '', $sortfield, $sortorder, 'right ');
-					if (!empty($arrayfields['p.usage_bill_time']['checked']))     print_liste_field_titre($arrayfields['p.usage_bill_time']['label'], DOL_PHP_SELF, 'p.usage_bill_time', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.fk_opp_status']['checked'])) print_liste_field_titre($arrayfields['p.fk_opp_status']['label'], $_SERVER['PHP_SELF'], 'p.fk_opp_status', "", $param, '', $sortfield, $sortorder, 'center ');
+					if (!empty($arrayfields['p.opp_amount']['checked']))    print_liste_field_titre($arrayfields['p.opp_amount']['label'], $_SERVER['PHP_SELF'], 'p.opp_amount', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.opp_percent']['checked']))   print_liste_field_titre($arrayfields['p.opp_percent']['label'], $_SERVER['PHP_SELF'], 'p.opp_percent', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.budget_amount']['checked'])) print_liste_field_titre($arrayfields['p.budget_amount']['label'], $_SERVER['PHP_SELF'], 'p.budget_amount', "", $param, '', $sortfield, $sortorder, 'right ');
+					if (!empty($arrayfields['p.usage_bill_time']['checked']))     print_liste_field_titre($arrayfields['p.usage_bill_time']['label'], $_SERVER['PHP_SELF'], 'p.usage_bill_time', "", $param, '', $sortfield, $sortorder, 'right ');
 
 					$extrafieldsobjectkey='projet';
 					$extrafieldsobjectprefix='efp.';
@@ -2621,8 +2621,8 @@ function print_projecttasks_array($db, $form, $socid, $projectsListId, $mytasks 
 		$i = 0;
 
 		print '<tr class="liste_titre">';
-		print_liste_field_titre($title.'<a href="'.DOL_URL_ROOT.'/projet/list.php?search_status='.((int) $status).'"><span class="badge marginleftonlyshort">'.$num.'</span></a>', DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder);
-		print_liste_field_titre("ThirdParty", DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder);
+		print_liste_field_titre($title.'<a href="'.DOL_URL_ROOT.'/projet/list.php?search_status='.((int) $status).'"><span class="badge marginleftonlyshort">'.$num.'</span></a>', $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder);
+		print_liste_field_titre("ThirdParty", $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder);
 		if (getDolGlobalString('PROJECT_USE_OPPORTUNITIES')) {
 			if (!in_array('prospectionstatus', $hiddenfields)) {
 				print_liste_field_titre("OpportunityStatus", "", "", "", "", 'style="max-width: 100px"', $sortfield, $sortorder, 'center ');
@@ -2817,7 +2817,7 @@ function print_projecttasks_array($db, $form, $socid, $projectsListId, $mytasks 
 
 	if (getDolGlobalString('PROJECT_LIMIT_YEAR_RANGE')) {
 		//Add the year filter input
-		print '<form method="get" action="'.DOL_PHP_SELF.'">';
+		print '<form method="get" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<table width="100%">';
 		print '<tr>';
 		print '<td>'.$langs->trans("Year").'</td>';

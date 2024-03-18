@@ -220,7 +220,7 @@ $title = $langs->trans('Resources');
 $morejs = array();
 $morecss = array();
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 
 $sql = "SELECT";
@@ -361,7 +361,7 @@ llxHeader('', $title, $help_url, '', 0, 0, $morejs, $morecss, '', 'bodyforlist')
 $arrayofselected = is_array($toselect) ? $toselect : array();
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -414,10 +414,10 @@ if (GETPOSTINT('nomassaction') || in_array($massaction, array('presend', 'predel
 }
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN'));
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -434,13 +434,13 @@ $url = DOL_URL_ROOT.'/resource/card.php?action=create';
 
 $newcardbutton = dolGetButtonTitle($langs->trans('NewResource'), '', 'fa fa-plus-circle', $url, '', $permissiontoadd);
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_'.$object->picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_'.$object->picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 $objecttmp = new Dolresource($db);
 $trackid = 'int'.$object->id;
 include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = ($form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN'))); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -524,43 +524,43 @@ $totalarray['nbfield'] = 0;
 
 print '<tr class="liste_titre">';
 if (!empty($arrayfields['t.ref']['checked'])) {
-	print_liste_field_titre($arrayfields['t.ref']['label'], DOL_PHP_SELF, "t.ref", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER['PHP_SELF'], "t.ref", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['ty.label']['checked'])) {
-	print_liste_field_titre($arrayfields['ty.label']['label'], DOL_PHP_SELF, "ty.label", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['ty.label']['label'], $_SERVER['PHP_SELF'], "ty.label", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.address']['checked'])) {
-	print_liste_field_titre($arrayfields['t.address']['label'], DOL_PHP_SELF, "t.address", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.address']['label'], $_SERVER['PHP_SELF'], "t.address", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.zip']['checked'])) {
-	print_liste_field_titre($arrayfields['t.zip']['label'], DOL_PHP_SELF, "t.zip", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.zip']['label'], $_SERVER['PHP_SELF'], "t.zip", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.town']['checked'])) {
-	print_liste_field_titre($arrayfields['t.town']['label'], DOL_PHP_SELF, "t.town", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.town']['label'], $_SERVER['PHP_SELF'], "t.town", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['st.nom']['checked'])) {
-	print_liste_field_titre($arrayfields['st.nom']['label'], DOL_PHP_SELF, "st.nom", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['st.nom']['label'], $_SERVER['PHP_SELF'], "st.nom", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['co.label']['checked'])) {
-	print_liste_field_titre($arrayfields['co.label']['label'], DOL_PHP_SELF, "co.label", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['co.label']['label'], $_SERVER['PHP_SELF'], "co.label", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.phone']['checked'])) {
-	print_liste_field_titre($arrayfields['t.phone']['label'], DOL_PHP_SELF, "t.phone", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.phone']['label'], $_SERVER['PHP_SELF'], "t.phone", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.email']['checked'])) {
-	print_liste_field_titre($arrayfields['t.email']['label'], DOL_PHP_SELF, "t.email", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.email']['label'], $_SERVER['PHP_SELF'], "t.email", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.max_users']['checked'])) {
-	print_liste_field_titre($arrayfields['t.max_users']['label'], DOL_PHP_SELF, "t.max_users", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.max_users']['label'], $_SERVER['PHP_SELF'], "t.max_users", "", $param, "", $sortfield, $sortorder);
 }
 if (!empty($arrayfields['t.url']['checked'])) {
-	print_liste_field_titre($arrayfields['t.url']['label'], DOL_PHP_SELF, "t.url", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['t.url']['label'], $_SERVER['PHP_SELF'], "t.url", "", $param, "", $sortfield, $sortorder);
 }
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print "</tr>\n";
 

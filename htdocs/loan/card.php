@@ -218,14 +218,14 @@ if (empty($reshook)) {
 			$result = $object->update($user);
 
 			if ($result > 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit;
 			} else {
 				$error++;
 				setEventMessages($object->error, $object->errors, 'errors');
 			}
 		} else {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		}
 	}
@@ -278,7 +278,7 @@ if ($action == 'create') {
 
 	$datec = dol_mktime(12, 0, 0, GETPOSTINT('remonth'), GETPOSTINT('reday'), GETPOSTINT('reyear'));
 
-	print '<form name="loan" method="POST" action="'.DOL_PHP_SELF.'">'."\n";
+	print '<form name="loan" method="POST" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -414,16 +414,16 @@ if ($id > 0) {
 		// Confirm for loan
 		if ($action == 'paid') {
 			$text = $langs->trans('ConfirmPayLoan');
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans('PayLoan'), $text, "confirm_paid", '', '', 2);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans('PayLoan'), $text, "confirm_paid", '', '', 2);
 		}
 
 		if ($action == 'delete') {
 			$text = $langs->trans('ConfirmDeleteLoan');
-			print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteLoan'), $text, 'confirm_delete', '', '', 2);
+			print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteLoan'), $text, 'confirm_delete', '', '', 2);
 		}
 
 		if ($action == 'edit') {
-			print '<form name="update" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+			print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
@@ -444,18 +444,18 @@ if ($id > 0) {
 			$morehtmlref .= '<br>'.$langs->trans('Project').' ';
 			if ($user->hasRight('loan', 'write')) {
 				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
+					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
 				}
 				if ($action == 'classify') {
-					//$morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-					$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+					//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+					$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 					$morehtmlref .= '<input type="hidden" name="action" value="classin">';
 					$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 					$morehtmlref .= $formproject->select_projects(-1, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
 					$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 					$morehtmlref .= '</form>';
 				} else {
-					$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, -1, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+					$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, -1, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
 				}
 			} else {
 				if (!empty($object->fk_project)) {

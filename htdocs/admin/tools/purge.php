@@ -88,7 +88,7 @@ print '<span class="opacitymedium">'.$langs->trans("PurgeAreaDesc", $dolibarr_ma
 print '<br>';
 
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'" />';
 print '<input type="hidden" name="action" value="purge" />';
 
@@ -135,7 +135,7 @@ print '</form>';
 if (preg_match('/^confirm/i', $choice)) {
 	print '<br>';
 	$formquestion = array();
-	print $form->formconfirm(DOL_PHP_SELF.'?choice=allfiles&nbsecondsold='.$nbsecondsold, $langs->trans('Purge'), $langs->trans('ConfirmPurge').img_warning().' ', 'purge', $formquestion, 'no', 2);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?choice=allfiles&nbsecondsold='.$nbsecondsold, $langs->trans('Purge'), $langs->trans('ConfirmPurge').img_warning().' ', 'purge', $formquestion, 'no', 2);
 }
 
 // End of page

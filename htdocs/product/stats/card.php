@@ -188,7 +188,7 @@ if ((!($id > 0) && empty($ref)) || $notab) {
 
 
 if ($result || !($id > 0)) {
-	print '<form name="stats" method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form name="stats" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	if (empty($id) || $notab) {
 		print '<input type="hidden" name="notab" value="1">';
@@ -264,7 +264,7 @@ if ($result || !($id > 0)) {
 	}
 
 	if ($mode != 'byunit') {
-		print '<a class="a-mesure-disabled marginleftonly marginrightonly reposition" href="'.DOL_PHP_SELF.'?mode=byunit'.$param.'">';
+		print '<a class="a-mesure-disabled marginleftonly marginrightonly reposition" href="'.$_SERVER['PHP_SELF'].'?mode=byunit'.$param.'">';
 	} else {
 		print '<span class="a-mesure marginleftonly marginrightonly">';
 	}
@@ -286,7 +286,7 @@ if ($result || !($id > 0)) {
 	}
 
 	if ($mode != 'bynumber') {
-		print '<a class="a-mesure-disabled marginleftonly marginrightonly reposition" href="'.DOL_PHP_SELF.'?mode=bynumber'.$param.'">';
+		print '<a class="a-mesure-disabled marginleftonly marginrightonly reposition" href="'.$_SERVER['PHP_SELF'].'?mode=bynumber'.$param.'">';
 	} else {
 		print '<span class="a-mesure marginleftonly marginrightonly">';
 	}
@@ -302,7 +302,7 @@ if ($result || !($id > 0)) {
 	}
 
 	if ($mode != 'byamount') {
-		print '<a class="a-mesure-disabled marginleftonly marginrightonly reposition" href="'.DOL_PHP_SELF.'?mode=byamount'.$param.'">';
+		print '<a class="a-mesure-disabled marginleftonly marginrightonly reposition" href="'.$_SERVER['PHP_SELF'].'?mode=byamount'.$param.'">';
 	} else {
 		print '<span class="a-mesure marginleftonly marginrightonly">';
 	}
@@ -516,7 +516,7 @@ if ($result || !($id > 0)) {
 			} else {
 				$dategenerated = ($mesg ? '<span class="error">'.$mesg.'</span>' : $langs->trans("ChartNotGenerated"));
 			}
-			$linktoregenerate = '<a class="reposition" href="'.DOL_PHP_SELF.'?'.(GETPOSTISSET('id') ? 'id='.GETPOSTINT('id') : 'id='.$object->id).(((string) $type != '' && $type != '-1') ? '&type='.((int) $type) : '').'&action=recalcul&mode='.urlencode($mode).'&search_year='.((int) $search_year).($search_categ > 0 ? '&search_categ='.((int) $search_categ) : '').'">';
+			$linktoregenerate = '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?'.(GETPOSTISSET('id') ? 'id='.GETPOSTINT('id') : 'id='.$object->id).(((string) $type != '' && $type != '-1') ? '&type='.((int) $type) : '').'&action=recalcul&mode='.urlencode($mode).'&search_year='.((int) $search_year).($search_categ > 0 ? '&search_categ='.((int) $search_categ) : '').'">';
 			$linktoregenerate .= img_picto($langs->trans("ReCalculate").' ('.$dategenerated.')', 'refresh');
 			$linktoregenerate .= '</a>';
 

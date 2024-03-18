@@ -322,7 +322,7 @@ if ($action == 'addtime' && $user->hasRight('projet', 'lire') && GETPOST('formfi
 			setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
 
 			// Redirect to avoid submit twice on back
-			header('Location: '.DOL_PHP_SELF.'?'.($projectid ? 'id='.$projectid : '').($search_usertoprocessid ? '&search_usertoprocessid='.urlencode($search_usertoprocessid) : '').($mode ? '&mode='.$mode : '').'&year='.$yearofday.'&month='.$monthofday.'&day='.$dayofday);
+			header('Location: '.$_SERVER['PHP_SELF'].'?'.($projectid ? 'id='.$projectid : '').($search_usertoprocessid ? '&search_usertoprocessid='.urlencode($search_usertoprocessid) : '').($mode ? '&mode='.$mode : '').'&year='.$yearofday.'&month='.$monthofday.'&day='.$dayofday);
 			exit;
 		}
 	} else {
@@ -410,7 +410,7 @@ $tasksrole = $taskstatic->getUserRolesForProjectsOrTasks(null, $usertoprocess, (
 
 llxHeader("", $title, "", '', '', '', array('/core/js/timesheet.js'));
 
-//print_barre_liste($title, $page, DOL_PHP_SELF, "", $sortfield, $sortorder, "", $num, '', 'project');
+//print_barre_liste($title, $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, "", $num, '', 'project');
 
 $param = '';
 $param .= ($mode ? '&mode='.urlencode($mode) : '');
@@ -440,7 +440,7 @@ $nav .= ' <button type="submit" name="button_search_x" value="x" class="bordertr
 
 $picto = 'clock';
 
-print '<form name="addtime" method="POST" action="'.DOL_PHP_SELF.($project->id > 0 ? '?id='.$project->id : '').'">';
+print '<form name="addtime" method="POST" action="'.$_SERVER['PHP_SELF'].($project->id > 0 ? '?id='.$project->id : '').'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="addtime">';
 print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
@@ -538,7 +538,7 @@ if (!empty($moreforfilter)) {
 	print '</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 
 // This must be after the $selectedfields
@@ -672,7 +672,7 @@ if (!$isavailable[$daytoparse]['morning'] && !$isavailable[$daytoparse]['afterno
 print '<th class="center'.($cssonholiday ? ' '.$cssonholiday : '').($cssweekend ? ' '.$cssweekend : '').'">'.$langs->trans("Duration").'</th>';
 print '<th class="center">'.$langs->trans("Note").'</th>';
 //print '<td class="center"></td>';
-print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 
 print "</tr>\n";
 

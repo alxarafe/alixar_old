@@ -219,7 +219,7 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
 // Show filter box
-print '<form name="stats" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form name="stats" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="mode" value="'.$mode.'">';
 
@@ -276,7 +276,7 @@ foreach ($data as $val) {
 		$oldyear--;
 
 		print '<tr class="oddeven" height="24">';
-		print '<td class="center"><a href="'.DOL_PHP_SELF.'?year='.$oldyear.'&amp;mode='.$mode.'">'.$oldyear.'</a></td>';
+		print '<td class="center"><a href="'.$_SERVER['PHP_SELF'].'?year='.$oldyear.'&amp;mode='.$mode.'">'.$oldyear.'</a></td>';
 		print '<td class="right">0</td>';
 		print '<td class="right amount nowraponall">0</td>';
 		print '<td class="right amount nowraponall">0</td>';
@@ -285,7 +285,7 @@ foreach ($data as $val) {
 
 
 	print '<tr class="oddeven" height="24">';
-	print '<td class="center"><a href="'.DOL_PHP_SELF.'?year='.$year.'&amp;mode='.$mode.'">'.$year.'</a></td>';
+	print '<td class="center"><a href="'.$_SERVER['PHP_SELF'].'?year='.$year.'&amp;mode='.$mode.'">'.$year.'</a></td>';
 	print '<td class="right">'.$val['nb'].'</td>';
 	print '<td class="right amount nowraponall">'.price(price2num($val['total'], 'MT'), 1).'</td>';
 	print '<td class="right amount nowraponall">'.price(price2num($val['avg'], 'MT'), 1).'</td>';

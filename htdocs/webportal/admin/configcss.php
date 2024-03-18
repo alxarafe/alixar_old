@@ -112,7 +112,7 @@ echo '<span class="opacitymedium">' . $langs->trans("WebPortalCSS") . '</span><b
 //WYSIWYG Editor
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
-print '<form enctype="multipart/form-data" method="POST" action="' . DOL_PHP_SELF . '">';
+print '<form enctype="multipart/form-data" method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 
 print '<input type="hidden" name="token" value="' . newToken() . '">';
 print '<input type="hidden" name="action" value="updatecss">';

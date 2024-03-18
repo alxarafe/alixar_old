@@ -299,7 +299,7 @@ if ($action == 'create') {
 
 	dol_set_focus('input[name="libelle"]');
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post">'."\n";
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -323,7 +323,7 @@ if ($action == 'create') {
 		$langs->load('projects');
 		print '<tr><td>'.$langs->trans('Project').'</td><td colspan="2">';
 		print img_picto('', 'project').$formproject->select_projects(($socid > 0 ? $socid : -1), $projectid, 'projectid', 0, 0, 1, 1, 0, 0, 0, '', 1, 0, 'maxwidth500');
-		print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.$socid.'&action=create&status=1&backtopage='.urlencode(DOL_PHP_SELF.'?action=create&socid='.$socid).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
+		print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.$socid.'&action=create&status=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create&socid='.$socid).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
 		print '</td></tr>';
 	}
 
@@ -419,7 +419,7 @@ if ($action == 'create') {
 				$formquestion = array(
 					array('type' => 'other', 'name' => 'info', 'label' => img_warning('').$langs->trans("WarningThisWIllAlsoDeleteStock"), 'morecss' => 'warning')
 				);
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("DeleteAWarehouse"), $langs->trans("ConfirmDeleteWarehouse", $object->label), "confirm_delete", $formquestion, 0, 2);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("DeleteAWarehouse"), $langs->trans("ConfirmDeleteWarehouse", $object->label), "confirm_delete", $formquestion, 0, 2);
 			}
 
 			// Call Hook formConfirm
@@ -446,18 +446,18 @@ if ($action == 'create') {
 				$morehtmlref .= '<br>'.img_picto('', 'project').' '.$langs->trans('Project').' ';
 				if ($usercancreate) {
 					if ($action != 'classify') {
-						$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
+						$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
 					}
 					if ($action == 'classify') {
 						$projectid = $object->fk_project;
-						$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+						$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 						$morehtmlref .= '<input type="hidden" name="action" value="classin">';
 						$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 						$morehtmlref .= $formproject->select_projects(($socid > 0 ? $socid : -1), $projectid, 'projectid', 0, 0, 1, 1, 0, 0, 0, '', 1, 0, 'maxwidth500');
 						$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 						$morehtmlref .= '</form>';
 					} else {
-						$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, ($socid > 0 ? $socid : -1), $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+						$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, ($socid > 0 ? $socid : -1), $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
 					}
 				} else {
 					if (!empty($object->fk_project)) {
@@ -814,7 +814,7 @@ if ($action == 'create') {
 
 					// Link to transfer
 					if ($user->hasRight('stock', 'mouvement', 'creer')) {
-						print '<td class="center"><a href="'.DOL_URL_ROOT.'/product/stock/product.php?dwid='.$object->id.'&id='.$objp->rowid.'&action=transfert&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id).'">';
+						print '<td class="center"><a href="'.DOL_URL_ROOT.'/product/stock/product.php?dwid='.$object->id.'&id='.$objp->rowid.'&action=transfert&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id).'">';
 						print img_picto($langs->trans("TransferStock"), 'add', 'class="hideonsmartphone pictofixedwidth" style="color: #a69944"');
 						print $langs->trans("TransferStock");
 						print "</a></td>";
@@ -822,7 +822,7 @@ if ($action == 'create') {
 
 					// Link to stock
 					if ($user->hasRight('stock', 'creer')) {
-						print '<td class="center"><a href="'.DOL_URL_ROOT.'/product/stock/product.php?dwid='.$object->id.'&id='.$objp->rowid.'&action=correction&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id).'">';
+						print '<td class="center"><a href="'.DOL_URL_ROOT.'/product/stock/product.php?dwid='.$object->id.'&id='.$objp->rowid.'&action=correction&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id).'">';
 						print img_picto($langs->trans("CorrectStock"), 'add', 'class="hideonsmartphone pictofixedwidth" style="color: #a69944"');
 						print $langs->trans("CorrectStock");
 						print "</a></td>";
@@ -896,7 +896,7 @@ if ($action == 'create') {
 				$langs->load('projects');
 				print '<tr><td>'.$langs->trans('Project').'</td><td colspan="2">';
 				print img_picto('', 'project').$formproject->select_projects(($socid > 0 ? $socid : -1), $projectid, 'projectid', 0, 0, 1, 1, 0, 0, 0, '', 1, 0, 'maxwidth500');
-				print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.($socid > 0 ? $socid : "").'&action=create&status=1&backtopage='.urlencode(DOL_PHP_SELF.'?action=create'.($socid > 0 ? '&socid='.$socid : "")).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
+				print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.($socid > 0 ? $socid : "").'&action=create&status=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create'.($socid > 0 ? '&socid='.$socid : "")).'"><span class="fa fa-plus-circle valignmiddle" title="'.$langs->trans("AddProject").'"></span></a>';
 				print '</td></tr>';
 			}
 
@@ -1000,7 +1000,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete') {
 	$objectref = dol_sanitizeFileName($object->ref);
 	$relativepath = $object->ref.'/'.$objectref.'.pdf';
 	$filedir = $conf->stock->dir_output.'/'.$objectref;
-	$urlsource = DOL_PHP_SELF."?id=".$object->id;
+	$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 	$genallowed = $usercanread;
 	$delallowed = $usercancreate;
 	$modulepart = 'stock';

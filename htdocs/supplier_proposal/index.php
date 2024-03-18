@@ -271,7 +271,7 @@ if ($resql) {
 			print '<td width="16" class="right nobordernopadding">';
 			$filename = dol_sanitizeFileName($obj->ref);
 			$filedir = $conf->supplier_proposal->dir_output.'/'.dol_sanitizeFileName($obj->ref);
-			$urlsource = DOL_PHP_SELF.'?id='.$obj->rowid;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 			print $formfile->getDocumentsLink($supplier_proposalstatic->element, $filename, $filedir);
 			print '</td></tr></table>';
 
@@ -356,7 +356,7 @@ if (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'l
 				print '<td width="16" class="center nobordernopadding">';
 				$filename = dol_sanitizeFileName($obj->ref);
 				$filedir = $conf->supplier_proposal->dir_output.'/'.dol_sanitizeFileName($obj->ref);
-				$urlsource = DOL_PHP_SELF.'?id='.$obj->supplier_proposalid;
+				$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->supplier_proposalid;
 				print $formfile->getDocumentsLink($supplier_proposalstatic->element, $filename, $filedir);
 				print '</td></tr></table>';
 

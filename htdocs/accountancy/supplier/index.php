@@ -301,8 +301,8 @@ $help_url ='EN:Module_Double_Entry_Accounting|FR:Module_Comptabilit&eacute;_en_P
 
 llxHeader('', $langs->trans("SuppliersVentilation"), $help_url);
 
-$textprevyear = '<a href="'.DOL_PHP_SELF.'?year='.($year_current - 1).'">'.img_previous().'</a>';
-$textnextyear = '&nbsp;<a href="'.DOL_PHP_SELF.'?year='.($year_current + 1).'">'.img_next().'</a>';
+$textprevyear = '<a href="'.$_SERVER['PHP_SELF'].'?year='.($year_current - 1).'">'.img_previous().'</a>';
+$textnextyear = '&nbsp;<a href="'.$_SERVER['PHP_SELF'].'?year='.($year_current + 1).'">'.img_next().'</a>';
 
 print load_fiche_titre($langs->trans("SuppliersVentilation")." ".$textprevyear."&nbsp;".$langs->trans("Year")."&nbsp;".$year_start."&nbsp;".$textnextyear, '', 'title_accountancy');
 
@@ -312,7 +312,7 @@ print '</span><br>';
 
 $y = $year_current;
 
-$buttonbind = '<a class="button small" href="'.DOL_PHP_SELF.'?action=validatehistory&token='.newToken().'">'.img_picto('', 'link', 'class="paddingright fa-color-unset smallpaddingimp"').$langs->trans("ValidateHistory").'</a>';
+$buttonbind = '<a class="button small" href="'.$_SERVER['PHP_SELF'].'?action=validatehistory&token='.newToken().'">'.img_picto('', 'link', 'class="paddingright fa-color-unset smallpaddingimp"').$langs->trans("ValidateHistory").'</a>';
 
 
 print_barre_liste(img_picto('', 'unlink', 'class="paddingright fa-color-unset"').$langs->trans("OverviewOfAmountOfLinesNotBound"), '', '', '', '', '', '', -1, '', '', 0, '', '', 0, 1, 1, 0, $buttonbind);
@@ -421,7 +421,7 @@ if ($resql) {
 			print price($row[$i]);
 			// Add link to make binding
 			if (!empty(price2num($row[$i]))) {
-				print '<a href="'.DOL_PHP_SELF.'?action=validatehistory&year='.$y.'&validatemonth='.((int) $cursormonth).'&validateyear='.((int) $cursoryear).'&token='.newToken().'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=validatehistory&year='.$y.'&validatemonth='.((int) $cursormonth).'&validateyear='.((int) $cursoryear).'&token='.newToken().'">';
 				print img_picto($langs->trans("ValidateHistory").' ('.$langs->trans('Month'.str_pad($cursormonth, 2, '0', STR_PAD_LEFT)).' '.$cursoryear.')', 'link', 'class="marginleft2"');
 				print '</a>';
 			}

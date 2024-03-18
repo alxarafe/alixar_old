@@ -54,7 +54,7 @@ if (!getDolGlobalString('MAIN_USE_ZIPTOWN_DICTIONNARY')) {
  * View
  */
 
-//print '<!-- Ajax page called with url '.dol_escape_htmltag(DOL_PHP_SELF).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
+//print '<!-- Ajax page called with url '.dol_escape_htmltag($_SERVER['PHP_SELF']).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
 
 dol_syslog('ziptown call with MAIN_USE_ZIPTOWN_DICTIONNARY='.getDolGlobalString('MAIN_USE_ZIPTOWN_DICTIONNARY'));
 //var_dump($_GET);

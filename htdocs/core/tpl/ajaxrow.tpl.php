@@ -80,7 +80,7 @@ $(document).ready(function(){
 						console.log("tableDND end of ajax call");
 						if (reloadpage == 1) {
 							<?php
-							$redirectURL = empty($urltorefreshaftermove) ? (DOL_PHP_SELF.'?'.dol_escape_js($_SERVER['QUERY_STRING'])) : $urltorefreshaftermove;
+							$redirectURL = empty($urltorefreshaftermove) ? ($_SERVER['PHP_SELF'].'?'.dol_escape_js($_SERVER['QUERY_STRING'])) : $urltorefreshaftermove;
 							// remove action parameter from URL
 							$redirectURL = preg_replace('/(&|\?)action=[^&#]*/', '', $redirectURL);
 							?>

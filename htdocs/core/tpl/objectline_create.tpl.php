@@ -333,13 +333,13 @@ if ($nolinesbefore) {
 					echo '<span class="fa fa-plus-circle valignmiddle paddingleft"></span>';
 					echo '</a>';
 					echo '<div class="dropdown-menu" aria-labelledby="dropdownAddProductAndServiceLink" style="top:auto; left:auto;">';
-					echo '<a class="dropdown-item" href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=0&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'"> '.$langs->trans("NewProduct").'</a>';
-					echo '<a class="dropdown-item" href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=1&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'"> '.$langs->trans("NewService").'</a>';
+					echo '<a class="dropdown-item" href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=0&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'"> '.$langs->trans("NewProduct").'</a>';
+					echo '<a class="dropdown-item" href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'"> '.$langs->trans("NewService").'</a>';
 					echo '</div>';
 					echo '</div>';
 				} else {
 					if ($addproducton) {
-						$url = '/product/card.php?leftmenu=product&action=create&type=0&backtopage='.urlencode(DOL_PHP_SELF);
+						$url = '/product/card.php?leftmenu=product&action=create&type=0&backtopage='.urlencode($_SERVER['PHP_SELF']);
 						$newbutton = '<span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("NewProduct").'"></span>';
 						if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 							// @FIXME Not working yet
@@ -347,11 +347,11 @@ if ($nolinesbefore) {
 							// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
 							print dolButtonToOpenUrlInDialogPopup('addproduct', $langs->transnoentitiesnoconv('AddProduct'), $newbutton, $url, '', '', $tmpbacktopagejsfields);
 						} else {
-							print '<a href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=0&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'" title="'.dol_escape_htmltag($langs->trans("NewProduct")).'"><span class="fa fa-plus-circle valignmiddle paddingleft"></span></a>';
+							print '<a href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=0&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'" title="'.dol_escape_htmltag($langs->trans("NewProduct")).'"><span class="fa fa-plus-circle valignmiddle paddingleft"></span></a>';
 						}
 					}
 					if ($addserviceon) {
-						$url = '/product/card.php?leftmenu=product&action=create&type=1&backtopage='.urlencode(DOL_PHP_SELF);
+						$url = '/product/card.php?leftmenu=product&action=create&type=1&backtopage='.urlencode($_SERVER['PHP_SELF']);
 						$newbutton = '<span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("NewService").'"></span>';
 						if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 							// @FIXME Not working yet
@@ -359,7 +359,7 @@ if ($nolinesbefore) {
 							// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
 							print dolButtonToOpenUrlInDialogPopup('addproduct', $langs->transnoentitiesnoconv('AddService'), $newbutton, $url, '', '', $tmpbacktopagejsfields);
 						} else {
-							print '<a href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=1&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'" title="'.dol_escape_htmltag($langs->trans("NewService")).'"><span class="fa fa-plus-circle valignmiddle paddingleft"></span></a>';
+							print '<a href="'.DOL_URL_ROOT.'/product/card.php?action=create&type=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'" title="'.dol_escape_htmltag($langs->trans("NewService")).'"><span class="fa fa-plus-circle valignmiddle paddingleft"></span></a>';
 						}
 					}
 				}

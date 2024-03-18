@@ -182,7 +182,7 @@ if (empty($reshook)) {
 
 	if ($action == 'confirm_clone' && $confirm == 'yes' && $permissiontoadd) {
 		$id = $result->id;
-		header("Location: ".DOL_PHP_SELF."?id=".$id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 		exit;
 	}
 }
@@ -205,7 +205,7 @@ llxHeader('', $title, $help_url);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewSkill"), '', 'object_' . $object->picto);
 
-	print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+	print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="add">';
 	$backtopage .= (strpos($backtopage, '?') > 0 ? '&' : '?') ."objecttype=job";
@@ -252,7 +252,7 @@ if ($action == 'create') {
 if (($id || $ref) && $action == 'edit') {
 	print load_fiche_titre($langs->trans("Skill"), '', 'object_' . $object->picto);
 
-	print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+	print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
@@ -381,18 +381,18 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id, $langs->trans('DeleteSkill'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('DeleteSkill'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
 	}
 	// Confirmation to delete line
 	if ($action == 'deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id . '&lineid=' . $lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id . '&lineid=' . $lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 	}
 	// Confirmation clone
 	if ($action === 'clone') {
 		$formquestion = array(
 			array('type' => 'text', 'name' => 'clone_label', 'label' => $langs->trans("Label"), 'value' => $langs->trans("CopyOf").' '.$object->label),
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->label), 'confirm_clone', $formquestion, 'yes', 1, 280);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->label), 'confirm_clone', $formquestion, 'yes', 1, 280);
 	}
 
 	// Confirmation of action xxxx
@@ -408,7 +408,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			// array('type' => 'other',    'name' => 'idwarehouse',   'label' => $langs->trans("SelectWarehouseForStockDecrease"), 'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1, 0, 0, '', 0, $forcecombo))
 		);
 		*/
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
 	}
 
 	// Call Hook formConfirm
@@ -471,17 +471,17 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if (empty($reshook)) {
 			// Back to draft
 			if ($object->status == $object::STATUS_VALIDATED) {
-				print dolGetButtonAction($langs->trans('SetToDraft'), '', 'default', DOL_PHP_SELF . '?id=' . $object->id . '&action=confirm_setdraft&confirm=yes&token=' . newToken(), '', $permissiontoadd);
+				print dolGetButtonAction($langs->trans('SetToDraft'), '', 'default', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=confirm_setdraft&confirm=yes&token=' . newToken(), '', $permissiontoadd);
 			}
 
-			print dolGetButtonAction($langs->trans('Modify'), '', 'default', DOL_PHP_SELF . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
+			print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
 
 			// Clone
 			if ($permissiontoadd) {
-				print dolGetButtonAction('', $langs->trans('ToClone'), 'default', DOL_PHP_SELF.'?action=clone&token='.newToken().'&id='.$object->id, '');
+				print dolGetButtonAction('', $langs->trans('ToClone'), 'default', $_SERVER['PHP_SELF'].'?action=clone&token='.newToken().'&id='.$object->id, '');
 			}
 			// Delete (need delete permission, or if draft, just need create/modify permission)
-			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', DOL_PHP_SELF . '?id=' . $object->id . '&action=delete&token=' . newToken(), '', $permissiontodelete);
+			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=delete&token=' . newToken(), '', $permissiontodelete);
 		}
 		print '</div>' . "\n";
 	}
@@ -611,7 +611,7 @@ if ($action != "create" && $action != "edit") {
 	$nbtotalofrecords = $db->num_rows($resql);
 	$num = $db->num_rows($resql);
 
-	print '<form method="POST" id="searchFormList" action="' . DOL_PHP_SELF . '">' . "\n";
+	print '<form method="POST" id="searchFormList" action="' . $_SERVER['PHP_SELF'] . '">' . "\n";
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="' . $optioncss . '">';
 	}
@@ -630,9 +630,9 @@ if ($action != "create" && $action != "edit") {
 	$backtopage = dol_buildpath('/hrm/skill_card.php', 1) . '?id=' . $id;
 	$param = "";
 	$massactionbutton = "";
-	//$newcardbutton = dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', dol_buildpath('/hrm/skilldet_card.php', 1) . '?action=create&backtopage=' . urlencode(DOL_PHP_SELF) . $param_fk . '&backtopage=' . $backtopage, '', $permissiontoadd);
+	//$newcardbutton = dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', dol_buildpath('/hrm/skilldet_card.php', 1) . '?action=create&backtopage=' . urlencode($_SERVER['PHP_SELF']) . $param_fk . '&backtopage=' . $backtopage, '', $permissiontoadd);
 
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_' . $object->picto, 0, "", '', '', 0, 0, 1);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_' . $object->picto, 0, "", '', '', 0, 0, 1);
 
 	// Add code for pre mass action (confirmation or email presend form)
 	$topicmail = "SendSkilldetRef";
@@ -667,7 +667,7 @@ if ($action != "create" && $action != "edit") {
 		print '</div>';
 	}
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	//  $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 	//  $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -690,7 +690,7 @@ if ($action != "create" && $action != "edit") {
 		//          $cssforfield .= ($cssforfield ? ' ' : '') . 'right';
 		//      }
 		if (!empty($arrayfields['t.' . $key]['checked'])) {
-			print getTitleFieldOfList($arrayfields['t.' . $key]['label'], 0, DOL_PHP_SELF, 't.' . $key, '', $param, (!empty($cssforfield) ? 'class="' . $cssforfield . '"' : ''), $sortfield, $sortorder, (!empty($cssforfield) ? $cssforfield . ' ' : '')) . "\n";
+			print getTitleFieldOfList($arrayfields['t.' . $key]['label'], 0, $_SERVER['PHP_SELF'], 't.' . $key, '', $param, (!empty($cssforfield) ? 'class="' . $cssforfield . '"' : ''), $sortfield, $sortorder, (!empty($cssforfield) ? $cssforfield . ' ' : '')) . "\n";
 		}
 	}
 	//print '<td></td>';
@@ -839,7 +839,7 @@ if ($action != "create" && $action != "edit") {
 	//      $formfile = new FormFile($db);
 	//
 	//      // Show list of available documents
-	//      $urlsource = DOL_PHP_SELF . '?sortfield=' . $sortfield . '&sortorder=' . $sortorder;
+	//      $urlsource = $_SERVER['PHP_SELF'] . '?sortfield=' . $sortfield . '&sortorder=' . $sortorder;
 	//      $urlsource .= str_replace('&amp;', '&', $param);
 	//
 	//      $filedir = $diroutputmassaction;

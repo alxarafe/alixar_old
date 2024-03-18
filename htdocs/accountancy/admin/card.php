@@ -160,7 +160,7 @@ if ($action == 'add' && $user->hasRight('accounting', 'chartofaccount')) {
 			$result = $object->update($user);
 
 			if ($result > 0) {
-				$urltogo = $backtopage ? $backtopage : (DOL_PHP_SELF . "?id=" . $id);
+				$urltogo = $backtopage ? $backtopage : ($_SERVER['PHP_SELF'] . "?id=" . $id);
 				header("Location: " . $urltogo);
 				exit();
 			} elseif ($result == -2) {
@@ -170,7 +170,7 @@ if ($action == 'add' && $user->hasRight('accounting', 'chartofaccount')) {
 			}
 		}
 	} else {
-		$urltogo = $backtopage ? $backtopage : (DOL_PHP_SELF."?id=".$id);
+		$urltogo = $backtopage ? $backtopage : ($_SERVER['PHP_SELF']."?id=".$id);
 		header("Location: ".$urltogo);
 		exit();
 	}
@@ -213,7 +213,7 @@ llxHeader('', $title, $help_url);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans('NewAccountingAccount'));
 
-	print '<form name="add" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+	print '<form name="add" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -295,7 +295,7 @@ if ($action == 'create') {
 		if ($action == 'update') {
 			print dol_get_fiche_head($head, 'card', $langs->trans('AccountAccounting'), 0, 'accounting_account');
 
-			print '<form name="update" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+			print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="edit">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
@@ -411,14 +411,14 @@ if ($action == 'create') {
 			print '<div class="tabsAction">';
 
 			if ($user->hasRight('accounting', 'chartofaccount')) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=update&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Modify').'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=update&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Modify').'</a>';
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NotAllowed")).'">'.$langs->trans('Modify').'</a>';
 			}
 
 			// Delete
 			$permissiontodelete = $user->hasRight('accounting', 'chartofaccount');
-			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
+			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
 
 			print '</div>';
 		}

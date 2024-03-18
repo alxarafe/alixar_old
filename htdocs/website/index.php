@@ -411,7 +411,7 @@ if ($cancel) {
 }
 
 $savbacktopage = $backtopage;
-$backtopage = DOL_PHP_SELF.'?file_manager=1&website='.urlencode($websitekey).'&pageid='.urlencode($pageid).(GETPOST('section_dir', 'alpha') ? '&section_dir='.urlencode(GETPOST('section_dir', 'alpha')) : ''); // used after a confirm_deletefile into actions_linkedfiles.inc.php
+$backtopage = $_SERVER['PHP_SELF'].'?file_manager=1&website='.urlencode($websitekey).'&pageid='.urlencode($pageid).(GETPOST('section_dir', 'alpha') ? '&section_dir='.urlencode(GETPOST('section_dir', 'alpha')) : ''); // used after a confirm_deletefile into actions_linkedfiles.inc.php
 if ($sortfield) {
 	$backtopage .= '&sortfield='.urlencode($sortfield);
 }
@@ -431,36 +431,36 @@ if ($action == 'renamefile') {	// Must be after include DOL_DOCUMENT_ROOT.'/core
 if ($action == 'setwebsiteonline' && $usercanedit) {
 	$website->setStatut($website::STATUS_VALIDATED, null, '', 'WEBSITE_MODIFY', 'status');
 
-	header("Location: ".DOL_PHP_SELF.'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('websitepage'));
+	header("Location: ".$_SERVER['PHP_SELF'].'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('websitepage'));
 	exit;
 }
 if ($action == 'setwebsiteoffline' && $usercanedit) {
 	$result = $website->setStatut($website::STATUS_DRAFT, null, '', 'WEBSITE_MODIFY', 'status');
 
-	header("Location: ".DOL_PHP_SELF.'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('websitepage'));
+	header("Location: ".$_SERVER['PHP_SELF'].'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('websitepage'));
 	exit;
 }
 if ($action == 'seteditinline') {	// No need of write permission
 	dolibarr_set_const($db, 'WEBSITE_EDITINLINE', 1);
 	setEventMessages($langs->trans("FeatureNotYetAvailable"), null, 'warnings');
 	//dolibarr_set_const($db, 'WEBSITE_SUBCONTAINERSINLINE', 0); // Force disable of 'Include dynamic content'
-	header("Location: ".DOL_PHP_SELF.'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
+	header("Location: ".$_SERVER['PHP_SELF'].'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
 	exit;
 }
 if ($action == 'unseteditinline') {	// No need of write permission
 	dolibarr_del_const($db, 'WEBSITE_EDITINLINE');
-	header("Location: ".DOL_PHP_SELF.'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
+	header("Location: ".$_SERVER['PHP_SELF'].'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
 	exit;
 }
 if ($action == 'setshowsubcontainers') {	// No need of write permission
 	dolibarr_set_const($db, 'WEBSITE_SUBCONTAINERSINLINE', 1);
 	//dolibarr_set_const($db, 'WEBSITE_EDITINLINE', 0); // Force disable of edit inline
-	header("Location: ".DOL_PHP_SELF.'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
+	header("Location: ".$_SERVER['PHP_SELF'].'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
 	exit;
 }
 if ($action == 'unsetshowsubcontainers') {	// No need of write permission
 	dolibarr_del_const($db, 'WEBSITE_SUBCONTAINERSINLINE');
-	header("Location: ".DOL_PHP_SELF.'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
+	header("Location: ".$_SERVER['PHP_SELF'].'?website='.urlencode(GETPOST('website')).'&pageid='.GETPOSTINT('pageid'));
 	exit;
 }
 
@@ -670,7 +670,7 @@ if ($action == 'adddir' && $permtouploadfile)
 	//$id = $ecmdir->create($user);
 	if ($id > 0)
 	{
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	}
 	else
@@ -735,7 +735,7 @@ if ($action == 'addsite' && $usercanedit) {
 		setEventMessages($langs->trans("SiteAdded", $object->ref), null, 'mesgs');
 		$action = '';
 
-		header("Location: ".DOL_PHP_SELF.'?website='.$tmpobject->ref);
+		header("Location: ".$_SERVER['PHP_SELF'].'?website='.$tmpobject->ref);
 		exit;
 	} else {
 		$db->rollback();
@@ -1395,7 +1395,7 @@ if ($action == 'confirm_deletesite' && $confirm == 'yes' && $permissiontodelete)
 		$db->commit();
 		setEventMessages($langs->trans("SiteDeleted", $object->ref), null, 'mesgs');
 
-		header("Location: ".DOL_PHP_SELF.'?id='.$object->id);
+		header("Location: ".$_SERVER['PHP_SELF'].'?id='.$object->id);
 		exit;
 	} else {
 		$db->rollback();
@@ -1426,7 +1426,7 @@ if (GETPOSTISSET('pageid') && $action == 'delete' && $permissiontodelete && !GET
 		$db->commit();
 		setEventMessages($langs->trans("PageDeleted", $objectpage->pageurl, $websitekey), null, 'mesgs');
 
-		header("Location: ".DOL_PHP_SELF.'?website='.$websitekey);
+		header("Location: ".$_SERVER['PHP_SELF'].'?website='.$websitekey);
 		exit;
 	} else {
 		$db->rollback();
@@ -2158,7 +2158,7 @@ if ($action == 'updatemeta' && $usercanedit) {
 			setEventMessages($langs->trans("Saved"), null, 'mesgs');
 
 			if (!GETPOSTISSET('updateandstay')) {	// If we click on "Save And Stay", we do not make the redirect
-				//header("Location: ".DOL_PHP_SELF.'?website='.$websitekey.'&pageid='.$pageid);
+				//header("Location: ".$_SERVER['PHP_SELF'].'?website='.$websitekey.'&pageid='.$pageid);
 				//exit;
 				$action = 'preview';
 			} else {
@@ -2166,7 +2166,7 @@ if ($action == 'updatemeta' && $usercanedit) {
 			}
 		} else {
 			setEventMessages('Failed to write file '.$filetpl, null, 'errors');
-			//header("Location: ".DOL_PHP_SELF.'?website='.$websitekey.'&pageid='.$pageid);
+			//header("Location: ".$_SERVER['PHP_SELF'].'?website='.$websitekey.'&pageid='.$pageid);
 			//exit;
 			$action = 'preview';
 		}
@@ -2382,7 +2382,7 @@ if ($usercanedit && (($action == 'updatesource' || $action == 'updatecontent' ||
 							header("Location: ".$backtopage);
 							exit;
 						} else {
-							header("Location: ".DOL_PHP_SELF.'?website='.$websitekey.'&pageid='.$pageid);
+							header("Location: ".$_SERVER['PHP_SELF'].'?website='.$websitekey.'&pageid='.$pageid);
 							exit;
 						}
 					} else {
@@ -2395,14 +2395,14 @@ if ($usercanedit && (($action == 'updatesource' || $action == 'updatecontent' ||
 					}
 				} else {
 					setEventMessages('Failed to write file '.$filetpl, null, 'errors');
-					header("Location: ".DOL_PHP_SELF.'?website='.$websitekey.'&pageid='.$pageid);
+					header("Location: ".$_SERVER['PHP_SELF'].'?website='.$websitekey.'&pageid='.$pageid);
 					exit;
 				}
 			} else {
 				$db->rollback();
 			}
 		} else {
-			header("Location: ".DOL_PHP_SELF.'?website='.$websitekey.'&pageid='.$pageid);
+			header("Location: ".$_SERVER['PHP_SELF'].'?website='.$websitekey.'&pageid='.$pageid);
 			exit;
 		}
 	} else {
@@ -2575,7 +2575,7 @@ if ($action == 'importsiteconfirm' && $usercanedit) {
 						// Force mode dynamic on
 						dolibarr_set_const($db, 'WEBSITE_SUBCONTAINERSINLINE', 1, 'chaine', 0, '', $conf->entity);
 
-						header("Location: ".DOL_PHP_SELF.'?website='.$object->ref);
+						header("Location: ".$_SERVER['PHP_SELF'].'?website='.$object->ref);
 						exit();
 					}
 				}
@@ -2828,7 +2828,7 @@ $formconfirm = "";
 
 // Confirm generation of website sitemaps
 if ($action == 'confirmgeneratesitemaps') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?website='.urlencode($website->ref), $langs->trans('ConfirmSitemapsCreation'), $langs->trans('ConfirmGenerateSitemaps', $object->ref), 'generatesitemaps', '', "yes", 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?website='.urlencode($website->ref), $langs->trans('ConfirmSitemapsCreation'), $langs->trans('ConfirmGenerateSitemaps', $object->ref), 'generatesitemaps', '', "yes", 1);
 	$action = 'preview';
 }
 $helpurl = 'EN:Module_Website|FR:Module_Website_FR|ES:M&oacute;dulo_Website';
@@ -2859,7 +2859,7 @@ llxHeader($moreheadcss.$moreheadjs, $langs->trans("Website").(empty($website->re
 
 print "\n";
 print '<!-- Open form for all page -->'."\n";
-print '<form action="'.DOL_PHP_SELF.($action == 'file_manager' ? '?uploadform=1' : '').'" method="POST" enctype="multipart/form-data" class="websiteformtoolbar">';
+print '<form action="'.$_SERVER['PHP_SELF'].($action == 'file_manager' ? '?uploadform=1' : '').'" method="POST" enctype="multipart/form-data" class="websiteformtoolbar">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 print '<input type="hidden" name="dol_openinpopup" value="'.$dol_openinpopup.'">';
@@ -2958,7 +2958,7 @@ if (!GETPOST('hide_websitemenu')) {
 		print '</div>';
 
 		// Button Add new website
-		$urltocreatenewwebsite = DOL_PHP_SELF.'?action=createsite';
+		$urltocreatenewwebsite = $_SERVER['PHP_SELF'].'?action=createsite';
 		print '<span class="websiteselection paddingrightonly">';
 		print '<a href="'.$urltocreatenewwebsite.'" class=""'.$disabled.' title="'.dol_escape_htmltag($langs->trans("AddWebsite")).'"><span class="fa fa-plus-circle valignmiddle btnTitle-icon"><span></a>';
 		print '</span>';
@@ -3004,7 +3004,7 @@ if (!GETPOST('hide_websitemenu')) {
 			$out .= '   	if (jQuery("#website option:selected").val() == \'-2\') {';
 			$out .= '  			window.location.href = "'.dol_escape_js($urltocreatenewwebsite).'";';
 			$out .= '		} else {';
-			$out .= '  			window.location.href = "'.DOL_PHP_SELF.'?website="+jQuery("#website option:selected").val();';
+			$out .= '  			window.location.href = "'.$_SERVER['PHP_SELF'].'?website="+jQuery("#website option:selected").val();';
 			$out .= '       }';
 			$out .= '   });';
 			$out .= '});';
@@ -3023,10 +3023,10 @@ if (!GETPOST('hide_websitemenu')) {
 			//print '</div>';
 			if ($website->status == $website::STATUS_DRAFT) {
 				$text_off = 'Offline';
-				print '<a href="'.DOL_PHP_SELF.'?action=setwebsiteonline&token='.newToken().'&website='.urlencode($website->ref).'&websitepage='.((int) $websitepage->id).'">'.img_picto($langs->trans($text_off), 'switch_off').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=setwebsiteonline&token='.newToken().'&website='.urlencode($website->ref).'&websitepage='.((int) $websitepage->id).'">'.img_picto($langs->trans($text_off), 'switch_off').'</a>';
 			} else {
 				$text_off = 'Online';
-				print '<a href="'.DOL_PHP_SELF.'?action=setwebsiteoffline&token='.newToken().'&website='.urlencode($website->ref).'&websitepage='.((int) $websitepage->id).'">'.img_picto($langs->trans($text_off), 'switch_on').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=setwebsiteoffline&token='.newToken().'&website='.urlencode($website->ref).'&websitepage='.((int) $websitepage->id).'">'.img_picto($langs->trans($text_off), 'switch_on').'</a>';
 			}
 			print '</span>';
 		}
@@ -3043,7 +3043,7 @@ if (!GETPOST('hide_websitemenu')) {
 
 		if ($websitekey && $websitekey != '-1' && ($action == 'preview' || $action == 'createfromclone' || $action == 'createpagefromclone' || $action == 'deletesite')) {
 			// Edit website properties
-			print '<a href="'.DOL_PHP_SELF.'?website='.urlencode($object->ref).'&pageid='.((int) $pageid).'&action=editcss&token='.newToken().'" class="button bordertransp" title="'.dol_escape_htmltag($langs->trans("EditCss")).'"'.$disabled.'><span class="fa fa-cog paddingrightonly"></span><span class="hideonsmartphone">'.dol_escape_htmltag($langs->trans("EditCss")).'</span></a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?website='.urlencode($object->ref).'&pageid='.((int) $pageid).'&action=editcss&token='.newToken().'" class="button bordertransp" title="'.dol_escape_htmltag($langs->trans("EditCss")).'"'.$disabled.'><span class="fa fa-cog paddingrightonly"></span><span class="hideonsmartphone">'.dol_escape_htmltag($langs->trans("EditCss")).'</span></a>';
 
 			// Import web site
 			$importlabel = $langs->trans("ImportSite");
@@ -3064,7 +3064,7 @@ if (!GETPOST('hide_websitemenu')) {
 
 			if (getDolGlobalString('WEBSITE_ALLOW_OVERWRITE_GIT_SOURCE')) {
 				// Overwrite template in sources
-				print '<a href="'.DOL_PHP_SELF.'?action=overwritesite&website='.urlencode($website->ref).'" class="button bordertransp" title="'.dol_escape_htmltag($langs->trans("ExportIntoGIT").". Directory ".getDolGlobalString('WEBSITE_ALLOW_OVERWRITE_GIT_SOURCE')).'">'.dol_escape_htmltag($langs->trans("ExportIntoGIT")).'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=overwritesite&website='.urlencode($website->ref).'" class="button bordertransp" title="'.dol_escape_htmltag($langs->trans("ExportIntoGIT").". Directory ".getDolGlobalString('WEBSITE_ALLOW_OVERWRITE_GIT_SOURCE')).'">'.dol_escape_htmltag($langs->trans("ExportIntoGIT")).'</a>';
 			}
 
 			// Clone web site
@@ -3083,19 +3083,19 @@ if (!GETPOST('hide_websitemenu')) {
 				} else {
 					$disabled = '';
 					$title = $langs->trans("Delete");
-					$url = DOL_PHP_SELF.'?action=deletesite&token='.newToken().'&website='.urlencode($website->ref);
+					$url = $_SERVER['PHP_SELF'].'?action=deletesite&token='.newToken().'&website='.urlencode($website->ref);
 				}
 			}
 			print '<a href="'.$url.'" class="button buttonDelete bordertransp'.($disabled ? ' disabled' : '').'"'.$disabled.' title="'.dol_escape_htmltag($title).'">'.img_picto('', 'delete', 'class=""').'<span class="hideonsmartphone paddingleft">'.$langs->trans("Delete").'</span></a>';
 
 			// Regenerate all pages
-			print '<a href="'.DOL_PHP_SELF.'?action=regeneratesite&token='.newToken().'&website='.urlencode($website->ref).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("RegenerateWebsiteContent")).'"><span class="far fa-hdd"></span></a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=regeneratesite&token='.newToken().'&website='.urlencode($website->ref).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("RegenerateWebsiteContent")).'"><span class="far fa-hdd"></span></a>';
 
 			// Generate site map
-			print '<a href="'.DOL_PHP_SELF.'?action=confirmgeneratesitemaps&token='.newToken().'&website='.urlencode($website->ref).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("GenerateSitemaps")).'"><span class="fa fa-sitemap"></span></a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=confirmgeneratesitemaps&token='.newToken().'&website='.urlencode($website->ref).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("GenerateSitemaps")).'"><span class="fa fa-sitemap"></span></a>';
 
 			// Find / replace tool
-			print '<a href="'.DOL_PHP_SELF.'?action=replacesite&website='.urlencode($website->ref).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("ReplaceWebsiteContent")).'"><span class="fa fa-search"></span></a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=replacesite&website='.urlencode($website->ref).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("ReplaceWebsiteContent")).'"><span class="fa fa-search"></span></a>';
 		}
 
 		print '</span>';
@@ -3219,7 +3219,7 @@ if (!GETPOST('hide_websitemenu')) {
 
 		// Button Add new web page
 		print '<span class="websiteselection paddingrightonly">';
-		print '<a href="'.DOL_PHP_SELF.'?action=createcontainer&token='.newToken().'&website='.urlencode($website->ref).'" class=""'.$disabled.' title="'.dol_escape_htmltag($langs->trans("AddPage")).'"><span class="fa fa-plus-circle valignmiddle btnTitle-icon"></span></a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=createcontainer&token='.newToken().'&website='.urlencode($website->ref).'" class=""'.$disabled.' title="'.dol_escape_htmltag($langs->trans("AddPage")).'"><span class="fa fa-plus-circle valignmiddle btnTitle-icon"></span></a>';
 		print '</span>';
 
 
@@ -3231,7 +3231,7 @@ if (!GETPOST('hide_websitemenu')) {
 		$out .= $s;
 		$out .= '</span>';
 
-		$urltocreatenewpage = DOL_PHP_SELF.'?action=createcontainer&token='.newToken().'&website='.urlencode($website->ref);
+		$urltocreatenewpage = $_SERVER['PHP_SELF'].'?action=createcontainer&token='.newToken().'&website='.urlencode($website->ref);
 
 		if (!empty($conf->use_javascript_ajax)) {
 			$out .= '<script type="text/javascript">';
@@ -3241,7 +3241,7 @@ if (!GETPOST('hide_websitemenu')) {
 			$out .= '   	if (jQuery("#pageid option:selected").val() == \'-2\') {';
 			$out .= '  			window.location.href = "'.$urltocreatenewpage.'";';
 			$out .= '		} else {';
-			$out .= '  			window.location.href = "'.DOL_PHP_SELF.'?website='.urlencode($website->ref).'&pageid="+jQuery("#pageid option:selected").val();';
+			$out .= '  			window.location.href = "'.$_SERVER['PHP_SELF'].'?website='.urlencode($website->ref).'&pageid="+jQuery("#pageid option:selected").val();';
 			$out .= '       }';
 			$out .= '   });';
 			$out .= '});';
@@ -3298,12 +3298,12 @@ if (!GETPOST('hide_websitemenu')) {
 		}
 
 		if ($pagepreviousid) {
-			print '<a class="valignmiddle" href="'.DOL_PHP_SELF.'?website='.urlencode($object->ref).'&pageid='.((int) $pagepreviousid).'&action='.urlencode($action).'&token='.newToken().'">'.img_previous($langs->trans("PreviousContainer")).'</a>';
+			print '<a class="valignmiddle" href="'.$_SERVER['PHP_SELF'].'?website='.urlencode($object->ref).'&pageid='.((int) $pagepreviousid).'&action='.urlencode($action).'&token='.newToken().'">'.img_previous($langs->trans("PreviousContainer")).'</a>';
 		} else {
 			print '<span class="valignmiddle opacitymedium">'.img_previous($langs->trans("PreviousContainer")).'</span>';
 		}
 		if ($pagenextid) {
-			print '<a class="valignmiddle" href="'.DOL_PHP_SELF.'?website='.urlencode($object->ref).'&pageid='.((int) $pagenextid).'&action='.urlencode($action).'&token='.newToken().'">'.img_next($langs->trans("NextContainer")).'</a>';
+			print '<a class="valignmiddle" href="'.$_SERVER['PHP_SELF'].'?website='.urlencode($object->ref).'&pageid='.((int) $pagenextid).'&action='.urlencode($action).'&token='.newToken().'">'.img_next($langs->trans("NextContainer")).'</a>';
 		} else {
 			print '<span class="valignmiddle opacitymedium">'.img_next($langs->trans("NextContainer")).'</span>';
 		}
@@ -3331,7 +3331,7 @@ if (!GETPOST('hide_websitemenu')) {
 					$formquestion[] = array('type' => 'onecolumn', 'value' => '<div class="warning">'.$langs->trans("WarningPagesWillBeDeleted").'</div>');
 				}
 
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteWebsite'), '', 'confirm_deletesite', $formquestion, 0, 1, 210 + ($atleastonepage ? 70 : 0), 580);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteWebsite'), '', 'confirm_deletesite', $formquestion, 0, 1, 210 + ($atleastonepage ? 70 : 0), 580);
 
 				print $formconfirm;
 			}
@@ -3343,7 +3343,7 @@ if (!GETPOST('hide_websitemenu')) {
 					array('type' => 'text', 'name' => 'siteref', 'label' => $langs->trans("WebSite"), 'value' => 'copy_of_'.$object->ref)
 				);
 
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('CloneSite'), '', 'confirm_createfromclone', $formquestion, 0, 1, 200);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('CloneSite'), '', 'confirm_createfromclone', $formquestion, 0, 1, 200);
 
 				print $formconfirm;
 			}
@@ -3382,7 +3382,7 @@ if (!GETPOST('hide_websitemenu')) {
 					$value = $formadmin->select_language($preselectedlanguage, 'newlang', 0, null, $textifempty, 0, 0, 'minwidth200', 1, 0, 0, $onlylang, 1);
 					$formquestion[] = array('type' => 'other', 'name' => 'newlang', 'label' => $form->textwithpicto($langs->trans("Language"), $langs->trans("DefineListOfAltLanguagesInWebsiteProperties")), 'value' => $value);
 
-					$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$pageid, $langs->trans('ClonePage'), '', 'confirm_createpagefromclone', $formquestion, 0, 1, 300, 550);
+					$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$pageid, $langs->trans('ClonePage'), '', 'confirm_createpagefromclone', $formquestion, 0, 1, 300, 550);
 
 					print $formconfirm;
 				}
@@ -3390,14 +3390,14 @@ if (!GETPOST('hide_websitemenu')) {
 				print '<span class="websiteselection">';
 
 				// Edit web page properties
-				print '<a href="'.DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$pageid.'&action=editmeta&token='.newToken().'" class="button bordertransp" title="'.dol_escape_htmltag($langs->trans("EditPageMeta")).'"'.$disabled.'><span class="fa fa-cog paddingrightonly"></span><span class="hideonsmartphone">'.dol_escape_htmltag($langs->trans("EditPageMeta")).'</span></a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$pageid.'&action=editmeta&token='.newToken().'" class="button bordertransp" title="'.dol_escape_htmltag($langs->trans("EditPageMeta")).'"'.$disabled.'><span class="fa fa-cog paddingrightonly"></span><span class="hideonsmartphone">'.dol_escape_htmltag($langs->trans("EditPageMeta")).'</span></a>';
 
 				// Edit HTML content
-				print '<a href="'.DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$pageid.'&action=editsource&token='.newToken().'" class="button bordertransp"'.$disabled.'>'.dol_escape_htmltag($langs->trans($conf->dol_optimize_smallscreen ? "HTML" : "EditHTMLSource")).'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$pageid.'&action=editsource&token='.newToken().'" class="button bordertransp"'.$disabled.'>'.dol_escape_htmltag($langs->trans($conf->dol_optimize_smallscreen ? "HTML" : "EditHTMLSource")).'</a>';
 
 				// Edit CKEditor
 				if (getDolGlobalInt('WEBSITE_ALLOW_CKEDITOR')) {
-					print '<a href="'.DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$pageid.'&action=editcontent&token='.newToken().'" class="button bordertransp"'.$disabled.'>'.dol_escape_htmltag("CKEditor").'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$pageid.'&action=editcontent&token='.newToken().'" class="button bordertransp"'.$disabled.'>'.dol_escape_htmltag("CKEditor").'</a>';
 				}
 
 				print '</span>';
@@ -3410,9 +3410,9 @@ if (!GETPOST('hide_websitemenu')) {
 				print '<div class="inline-block marginrightonly">';	// Button includes dynamic content
 				print $langs->trans("ShowSubcontainers");
 				if (!getDolGlobalString('WEBSITE_SUBCONTAINERSINLINE')) {
-					print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=setshowsubcontainers&token='.newToken().'">'.img_picto($langs->trans("ShowSubContainersOnOff", $langs->transnoentitiesnoconv("Off")), 'switch_off', '', false, 0, 0, '', 'nomarginleft').'</a>';
+					print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.$_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=setshowsubcontainers&token='.newToken().'">'.img_picto($langs->trans("ShowSubContainersOnOff", $langs->transnoentitiesnoconv("Off")), 'switch_off', '', false, 0, 0, '', 'nomarginleft').'</a>';
 				} else {
-					print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=unsetshowsubcontainers&token='.newToken().'">'.img_picto($langs->trans("ShowSubContainersOnOff", $langs->transnoentitiesnoconv("On")), 'switch_on', '', false, 0, 0, '', 'nomarginleft').'</a>';
+					print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.$_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=unsetshowsubcontainers&token='.newToken().'">'.img_picto($langs->trans("ShowSubContainersOnOff", $langs->transnoentitiesnoconv("On")), 'switch_on', '', false, 0, 0, '', 'nomarginleft').'</a>';
 				}
 				print '</div>';
 
@@ -3502,9 +3502,9 @@ if (!GETPOST('hide_websitemenu')) {
 				} else {
 					//print '<input type="submit" class="button nobordertransp"'.$disabled.' value="'.dol_escape_htmltag($langs->trans("EditWithEditor")).'" name="editcontent">';
 					if (!getDolGlobalString('WEBSITE_EDITINLINE')) {
-						print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=seteditinline&token='.newToken().'">'.img_picto($langs->trans("EditInLineOnOff", $langs->transnoentitiesnoconv("Off")), 'switch_off', '', false, 0, 0, '', 'nomarginleft').'</a>';
+						print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.$_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=seteditinline&token='.newToken().'">'.img_picto($langs->trans("EditInLineOnOff", $langs->transnoentitiesnoconv("Off")), 'switch_off', '', false, 0, 0, '', 'nomarginleft').'</a>';
 					} else {
-						print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.DOL_PHP_SELF.'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=unseteditinline&token='.newToken().'">'.img_picto($langs->trans("EditInLineOnOff", $langs->transnoentitiesnoconv("On")), 'switch_on', '', false, 0, 0, '', 'nomarginleft').'</a>';
+						print '<a class="nobordertransp nohoverborder marginleftonlyshort valignmiddle"'.$disabled.' href="'.$_SERVER['PHP_SELF'].'?website='.$object->ref.'&pageid='.$websitepage->id.'&action=unseteditinline&token='.newToken().'">'.img_picto($langs->trans("EditInLineOnOff", $langs->transnoentitiesnoconv("On")), 'switch_on', '', false, 0, 0, '', 'nomarginleft').'</a>';
 					}
 				}
 
@@ -3522,7 +3522,7 @@ if (!GETPOST('hide_websitemenu')) {
 				} else {
 					//$disabled='';
 					//print '<input type="submit" class="button bordertransp"'.$disabled.' value="'.dol_escape_htmltag($langs->trans("SetAsHomePage")).'" name="setashome">';
-					print '<a href="'.DOL_PHP_SELF.'?action=setashome&token='.newToken().'&website='.urlencode($website->ref).'&pageid='.((int) $pageid).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("SetAsHomePage")).'"><span class="fas fa-home valignmiddle btnTitle-icon"></span></a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=setashome&token='.newToken().'&website='.urlencode($website->ref).'&pageid='.((int) $pageid).'" class="button bordertransp"'.$disabled.' title="'.dol_escape_htmltag($langs->trans("SetAsHomePage")).'"><span class="fas fa-home valignmiddle btnTitle-icon"></span></a>';
 				}
 				print '<input type="submit" class="button bordertransp"'.$disabled.' value="'.dol_escape_htmltag($langs->trans("ClonePage")).'" name="createpagefromclone">';
 
@@ -3534,7 +3534,7 @@ if (!GETPOST('hide_websitemenu')) {
 				} else {
 					$disabled = '';
 					$title = '';
-					$url = DOL_PHP_SELF.'?action=delete&token='.newToken().'&pageid='.((int) $websitepage->id).'&website='.urlencode($website->ref);	// action=delete for webpage, deletesite for website
+					$url = $_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&pageid='.((int) $websitepage->id).'&website='.urlencode($website->ref);	// action=delete for webpage, deletesite for website
 				}
 				print '<a href="'.$url.'" class="button buttonDelete bordertransp'.($disabled ? ' disabled' : '').'"'.$disabled.' title="'.dol_escape_htmltag($title).'">'.img_picto('', 'delete', 'class=""').'<span class="hideonsmartphone paddingleft">'.$langs->trans("Delete").'</span></a>';
 				print '</span>';
@@ -4389,7 +4389,7 @@ if ($action == 'editmeta' || $action == 'createcontainer') {	// Edit properties 
 						}
 						$tmpstring .= $tmppage->getNomUrl(1).' '.picto_from_langcode($tmppage->lang).' '.$tmppage->lang;
 						// Button unlink
-						$tmpstring .= ' <a class="paddingleft" href="'.DOL_PHP_SELF.'?website='.urlencode($object->ref).'&pageid='.((int) $objectpage->id).'&action=deletelang&token='.newToken().'&deletelangforid='.((int) $tmppage->id).'">'.img_picto($langs->trans("Remove"), 'unlink').'</a>';
+						$tmpstring .= ' <a class="paddingleft" href="'.$_SERVER['PHP_SELF'].'?website='.urlencode($object->ref).'&pageid='.((int) $objectpage->id).'&action=deletelang&token='.newToken().'&deletelangforid='.((int) $tmppage->id).'">'.img_picto($langs->trans("Remove"), 'unlink').'</a>';
 						$translatedby++;
 						$i++;
 					}
@@ -4425,7 +4425,7 @@ if ($action == 'editmeta' || $action == 'createcontainer') {	// Edit properties 
 			if ($translationof > 0 && $sourcepage->lang) {
 				print picto_from_langcode($sourcepage->lang).' '.$sourcepage->lang;
 				// Button unlink
-				print ' <a class="paddingleft" href="'.DOL_PHP_SELF.'?website='.urlencode($object->ref).'&pageid='.((int) $objectpage->id).'&action=deletelang&token='.newToken().'&deletelangforid='.((int) $objectpage->id).'">'.img_picto($langs->trans("Remove"), 'unlink').'</a>';
+				print ' <a class="paddingleft" href="'.$_SERVER['PHP_SELF'].'?website='.urlencode($object->ref).'&pageid='.((int) $objectpage->id).'&action=deletelang&token='.newToken().'&deletelangforid='.((int) $objectpage->id).'">'.img_picto($langs->trans("Remove"), 'unlink').'</a>';
 			}
 		}
 	}
@@ -4707,7 +4707,7 @@ print "</form>\n";
 
 
 if ($mode == 'replacesite' || $massaction == 'replace') {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="replacesiteconfirm">';
 	print '<input type="hidden" name="mode" value="replacesite">';
@@ -4832,13 +4832,13 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
 			$massactionbutton .= ajax_combobox('setcategory');
 			$massactionbutton .= '</div>';
 
-			$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+			$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 
 			//$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 			$selectedfields = '';
 			$selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
-			print_barre_liste($langs->trans("Results"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'generic', 0, '', '', $limit, 1, 1, 1);
+			print_barre_liste($langs->trans("Results"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'generic', 0, '', '', $limit, 1, 1, 1);
 
 			$topicmail = "WebsitePageRef";
 			$modelmail = "websitepage_send";
@@ -4870,14 +4870,14 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
 			print '<div class="div-table-responsive-no-min">';
 			print '<table class="noborder centpercent">';
 			print '<tr class="liste_titre">';
-			print getTitleFieldOfList("Type", 0, DOL_PHP_SELF, 'type_container', '', $param, '', $sortfield, $sortorder, '')."\n";
-			print getTitleFieldOfList("Page", 0, DOL_PHP_SELF, 'pageurl', '', $param, '', $sortfield, $sortorder, '')."\n";
-			print getTitleFieldOfList("Categories", 0, DOL_PHP_SELF);
-			print getTitleFieldOfList("Language", 0, DOL_PHP_SELF, 'lang', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
-			print getTitleFieldOfList("", 0, DOL_PHP_SELF);
-			print getTitleFieldOfList("DateLastModification", 0, DOL_PHP_SELF, 'tms', '', $param, '', $sortfield, $sortorder, 'center ')."\n";		// Date last modif
-			print getTitleFieldOfList("", 0, DOL_PHP_SELF);
-			print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+			print getTitleFieldOfList("Type", 0, $_SERVER['PHP_SELF'], 'type_container', '', $param, '', $sortfield, $sortorder, '')."\n";
+			print getTitleFieldOfList("Page", 0, $_SERVER['PHP_SELF'], 'pageurl', '', $param, '', $sortfield, $sortorder, '')."\n";
+			print getTitleFieldOfList("Categories", 0, $_SERVER['PHP_SELF']);
+			print getTitleFieldOfList("Language", 0, $_SERVER['PHP_SELF'], 'lang', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
+			print getTitleFieldOfList("", 0, $_SERVER['PHP_SELF']);
+			print getTitleFieldOfList("DateLastModification", 0, $_SERVER['PHP_SELF'], 'tms', '', $param, '', $sortfield, $sortorder, 'center ')."\n";		// Date last modif
+			print getTitleFieldOfList("", 0, $_SERVER['PHP_SELF']);
+			print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 			print '</tr>';
 
 			require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
@@ -4954,7 +4954,7 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
 					// Edit properties, HTML sources, status
 					print '<td class="tdwebsitesearchresult right nowraponall">';
 					$disabled = '';
-					$urltoedithtmlsource = DOL_PHP_SELF.'?action=editmeta&token='.newToken().'&websiteid='.$website->id.'&pageid='.$answerrecord->id.'&backtopage='.urlencode(DOL_PHP_SELF.$param);
+					$urltoedithtmlsource = $_SERVER['PHP_SELF'].'?action=editmeta&token='.newToken().'&websiteid='.$website->id.'&pageid='.$answerrecord->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].$param);
 					if (!$user->hasRight('website', 'write')) {
 						$disabled = ' disabled';
 						$urltoedithtmlsource = '';
@@ -4962,7 +4962,7 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
 					print '<a class="editfielda marginleftonly marginrightonly '.$disabled.'" href="'.$urltoedithtmlsource.'" title="'.$langs->trans("EditPageMeta").'">'.img_picto($langs->trans("EditPageMeta"), 'pencil-ruler').'</a>';
 
 					$disabled = '';
-					$urltoedithtmlsource = DOL_PHP_SELF.'?action=editsource&token='.newToken().'&websiteid='.$website->id.'&pageid='.$answerrecord->id.'&backtopage='.urlencode(DOL_PHP_SELF.$param);
+					$urltoedithtmlsource = $_SERVER['PHP_SELF'].'?action=editsource&token='.newToken().'&websiteid='.$website->id.'&pageid='.$answerrecord->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].$param);
 					if (!$user->hasRight('website', 'write')) {
 						$disabled = ' disabled';
 						$urltoedithtmlsource = '';
@@ -5021,8 +5021,8 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
 
 					// Container url and label
 					print '<td>';
-					$backtopageurl = DOL_PHP_SELF.$param;
-					print '<a href="'.DOL_PHP_SELF.'?action=editcss&token='.newToken().'&website='.urlencode($website->ref).'&backtopage='.urlencode($backtopageurl).'">'.$langs->trans("EditCss").'</a>';
+					$backtopageurl = $_SERVER['PHP_SELF'].$param;
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=editcss&token='.newToken().'&website='.urlencode($website->ref).'&backtopage='.urlencode($backtopageurl).'">'.$langs->trans("EditCss").'</a>';
 					print '</td>';
 
 					// Language

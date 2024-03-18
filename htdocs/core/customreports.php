@@ -548,7 +548,7 @@ $param = '';
 
 
 if (!defined('MAIN_CUSTOM_REPORT_KEEP_GRAPH_ONLY')) {
-	print '<form method="post" action="'.DOL_PHP_SELF.'" autocomplete="off">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'" autocomplete="off">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="viewgraph">';
 	print '<input type="hidden" name="tabfamily" value="'.$tabfamily.'">';
@@ -567,7 +567,7 @@ if (!defined('MAIN_CUSTOM_REPORT_KEEP_GRAPH_ONLY')) {
 	$newcardbutton = '';
 	$limit = 0;
 
-	print_barre_liste('', $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, -1, 'object_action', 0, $nav.'<span class="marginleftonly"></span>'.$newcardbutton, '', $limit, 1, 0, 1, $viewmode);
+	print_barre_liste('', $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, -1, 'object_action', 0, $nav.'<span class="marginleftonly"></span>'.$newcardbutton, '', $limit, 1, 0, 1, $viewmode);
 
 
 	foreach ($newarrayoftype as $tmpkey => $tmpval) {
@@ -588,7 +588,7 @@ if (!defined('MAIN_CUSTOM_REPORT_KEEP_GRAPH_ONLY')) {
 	        jQuery(document).ready(function() {
 	        	jQuery("#objecttype").change(function() {
 	        		console.log("Reload for "+jQuery("#objecttype").val());
-	                location.href = "'.DOL_PHP_SELF.'?objecttype="+jQuery("#objecttype").val()+"'.($tabfamily ? '&tabfamily='.urlencode($tabfamily) : '').(GETPOSTINT('show_search_component_params_hidden') ? '&show_search_component_params_hidden='.((int) GETPOSTINT('show_search_component_params_hidden')) : '').'";
+	                location.href = "'.$_SERVER['PHP_SELF'].'?objecttype="+jQuery("#objecttype").val()+"'.($tabfamily ? '&tabfamily='.urlencode($tabfamily) : '').(GETPOSTINT('show_search_component_params_hidden') ? '&show_search_component_params_hidden='.((int) GETPOSTINT('show_search_component_params_hidden')) : '').'";
 	        	});
 	        });
 	    </script>';

@@ -138,15 +138,15 @@ if ($resql) {
 	$param = "&type=".$type;
 
 	$title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("ListOfContacts") : $langs->trans("ListOfContactsAddresses"));
-	print_barre_liste($title.($label ? " (".$label.")" : ""), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, "", $num);
+	print_barre_liste($title.($label ? " (".$label.")" : ""), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, "", $num);
 
-	print '<form action="'.DOL_PHP_SELF.'?type='.GETPOST("type", "alpha").'" method="GET">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?type='.GETPOST("type", "alpha").'" method="GET">';
 
 	print '<table class="liste centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Lastname", DOL_PHP_SELF, "p.name", $begin, $param, "", $sortfield, $sortorder);
-	print_liste_field_titre("Firstname", DOL_PHP_SELF, "p.firstname", $begin, $param, "", $sortfield, $sortorder);
-	print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", $begin, $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("Lastname", $_SERVER['PHP_SELF'], "p.name", $begin, $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("Firstname", $_SERVER['PHP_SELF'], "p.firstname", $begin, $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", $begin, $param, "", $sortfield, $sortorder);
 	print_liste_field_titre("Email");
 	print_liste_field_titre("Phone");
 	print "</tr>\n";
@@ -168,7 +168,7 @@ if ($resql) {
 		print '</a>&nbsp;<a href="'.DOL_URL_ROOT.'/contact/card.php?id='.$obj->cidp.'&socid='.$obj->rowid.'">'.$obj->name.'</a></td>';
 		print '<td>'.dol_escape_htmltag($obj->firstname).'</td>';
 
-		print '<td><a href="'.DOL_PHP_SELF.'?type='.$type.'&socid='.$obj->rowid.'">'.img_object($langs->trans("ShowCompany"), "company").'</a>&nbsp;';
+		print '<td><a href="'.$_SERVER['PHP_SELF'].'?type='.$type.'&socid='.$obj->rowid.'">'.img_object($langs->trans("ShowCompany"), "company").'</a>&nbsp;';
 		print '<a href="'.$urlfiche."?socid=".$obj->rowid.'">'.$obj->name."</a></td>\n";
 
 		print '<td>'.dol_print_phone($obj->email, $obj->cidp, $obj->rowid, 'AC_EMAIL').'</td>';

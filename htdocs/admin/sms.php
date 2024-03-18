@@ -57,7 +57,7 @@ if ($action == 'update' && !$cancel) {
 
 	dolibarr_set_const($db, "MAIN_MAIL_SMS_FROM", GETPOST("MAIN_MAIL_SMS_FROM", 'alphanohtml'), 'chaine', 0, '', $conf->entity);
 
-	header("Location: ".DOL_PHP_SELF."?mainmenu=home&leftmenu=setup");
+	header("Location: ".$_SERVER['PHP_SELF']."?mainmenu=home&leftmenu=setup");
 	exit;
 }
 
@@ -165,7 +165,7 @@ if (!count($listofmethods)) {
 }
 
 if ($action == 'edit') {
-	print '<form method="post" action="'.DOL_PHP_SELF.'">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
@@ -254,10 +254,10 @@ if ($action == 'edit') {
 
 	print '<div class="tabsAction">';
 
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit">'.$langs->trans("Modify").'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit">'.$langs->trans("Modify").'</a>';
 
 	if (count($listofmethods) && getDolGlobalString('MAIN_SMS_SENDMODE')) {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=test&amp;mode=init">'.$langs->trans("DoTestSend").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=test&amp;mode=init">'.$langs->trans("DoTestSend").'</a>';
 	} else {
 		print '<a class="butActionRefused classfortooltip" href="#">'.$langs->trans("DoTestSend").'</a>';
 	}
@@ -287,7 +287,7 @@ if ($action == 'edit') {
 		$formsms->param["action"] = "send";
 		$formsms->param["models"] = "body";
 		$formsms->param["smsid"] = 0;
-		$formsms->param["returnurl"] = DOL_PHP_SELF;
+		$formsms->param["returnurl"] = $_SERVER['PHP_SELF'];
 
 		$formsms->show_form();
 

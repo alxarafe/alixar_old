@@ -178,7 +178,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 	// Confirm deleting contact
 	if ($user->hasRight('societe', 'contact', 'supprimer')) {
 		if ($action == 'delete') {
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$id.($backtopage ? '&backtopage='.$backtopage : ''), $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id.($backtopage ? '&backtopage='.$backtopage : ''), $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
 		}
 	}
 
@@ -264,7 +264,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				if (is_object($objthirdparty) && get_class($objthirdparty) == 'Societe') {
 					$out .= '&amp;originid='.$objthirdparty->id.($objthirdparty->id > 0 ? '&amp;socid='.$objthirdparty->id : '');
 				}
-				$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '').'&amp;origin=contact&amp;originid='.$object->id.'&amp;backtopage='.urlencode(DOL_PHP_SELF.($objcon->id > 0 ? '?id='.$objcon->id : ''));
+				$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '').'&amp;origin=contact&amp;originid='.$object->id.'&amp;backtopage='.urlencode($_SERVER['PHP_SELF'].($objcon->id > 0 ? '?id='.$objcon->id : ''));
 				$out .= '&amp;datep='.urlencode(dol_print_date(dol_now(), 'dayhourlog'));
 			}
 
@@ -277,7 +277,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '<br>';
 
 			$param = '&id='.$id;
-			if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+			if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 				$param .= '&contextpage='.$contextpage;
 			}
 			if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -285,7 +285,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 
 			print load_fiche_titre($langs->trans("ActionsOnContact"), $newcardbutton, '');
-			//print_barre_liste($langs->trans("ActionsOnCompany"), 0, DOL_PHP_SELF, '', $sortfield, $sortorder, $morehtmlcenter, 0, -1, '', '', '', '', 0, 1, 1);
+			//print_barre_liste($langs->trans("ActionsOnCompany"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, $morehtmlcenter, 0, -1, '', '', '', '', 0, 1, 1);
 
 			// List of all actions
 			$filters = array();

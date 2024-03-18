@@ -420,7 +420,7 @@ print '<span class="opacitymedium">'.$langs->trans("AccountingAccountGroupsDesc"
 
 // Confirmation of the deletion of the line
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.$rowid.'&code='.$code.'&id='.$id.($search_country_id > 0 ? '&search_country_id='.$search_country_id : ''), $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.$rowid.'&code='.$code.'&id='.$id.($search_country_id > 0 ? '&search_country_id='.$search_country_id : ''), $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
 }
 
 // Complete search query with sorting criteria
@@ -466,7 +466,7 @@ if (GETPOST('from', 'alpha')) {
 if ($listlimit) {
 	$paramwithsearch .= '&listlimit='.urlencode((string) (GETPOSTINT('listlimit')));
 }
-print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="from" value="'.dol_escape_htmltag(GETPOST('from', 'alpha')).'">';
 print '<input type="hidden" name="sortfield" value="'.dol_escape_htmltag($sortfield).'">';
@@ -617,7 +617,7 @@ if ($resql) {
 	// There is several pages
 	if ($num > $listlimit) {
 		print '<tr class="none"><td class="right" colspan="'.(2 + count($fieldlist)).'">';
-		print_fleche_navigation($page, DOL_PHP_SELF, $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
+		print_fleche_navigation($page, $_SERVER['PHP_SELF'], $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
 		print '</td></tr>';
 	}
 
@@ -755,11 +755,11 @@ if ($resql) {
 		}
 		// Affiche nom du champ
 		if ($showfield) {
-			print getTitleFieldOfList($valuetoshow, 0, DOL_PHP_SELF, ($sortable ? $fieldlist[$field] : ''), ($page ? 'page='.$page.'&' : ''), $param, "", $sortfield, $sortorder, $class.' ');
+			print getTitleFieldOfList($valuetoshow, 0, $_SERVER['PHP_SELF'], ($sortable ? $fieldlist[$field] : ''), ($page ? 'page='.$page.'&' : ''), $param, "", $sortfield, $sortorder, $class.' ');
 		}
 	}
-	print getTitleFieldOfList($langs->trans("ListOfAccounts"), 0, DOL_PHP_SELF, "", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
-	print getTitleFieldOfList($langs->trans("Status"), 0, DOL_PHP_SELF, "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
+	print getTitleFieldOfList($langs->trans("ListOfAccounts"), 0, $_SERVER['PHP_SELF'], "", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
+	print getTitleFieldOfList($langs->trans("Status"), 0, $_SERVER['PHP_SELF'], "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 		print getTitleFieldOfList('');
@@ -816,7 +816,7 @@ if ($resql) {
 						$canbedisabled = 0;
 					}
 				}
-				$url = DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
+				$url = $_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
 				if ($param) {
 					$url .= '&'.$param;
 				}

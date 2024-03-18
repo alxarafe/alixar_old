@@ -130,7 +130,7 @@ if (!empty($numref)) {
 	$object->fetch_thirdparty();
 	$upload_dir = $conf->bank->dir_output."/".$id."/statement/".dol_sanitizeFileName($numref);
 }
-$backtopage = DOL_PHP_SELF."?account=".urlencode((string) ($id))."&num=".urlencode((string) ($numref));
+$backtopage = $_SERVER['PHP_SELF']."?account=".urlencode((string) ($id))."&num=".urlencode((string) ($numref));
 include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
 
 
@@ -162,9 +162,9 @@ if ($id > 0 || !empty($ref)) {
 
 		$morehtmlright = '';
 		$morehtmlright .= '<div class="pagination"><ul>';
-		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.DOL_PHP_SELF.'?rel=prev&amp;num='.$numref.'&amp;ve='.$ve.'&amp;account='.$object->id.'"><i class="fa fa-chevron-left" title="'.dol_escape_htmltag($langs->trans("Previous")).'"></i></a></li>';
+		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.$_SERVER['PHP_SELF'].'?rel=prev&amp;num='.$numref.'&amp;ve='.$ve.'&amp;account='.$object->id.'"><i class="fa fa-chevron-left" title="'.dol_escape_htmltag($langs->trans("Previous")).'"></i></a></li>';
 		$morehtmlright .= '<li class="pagination"><span class="active">'.$langs->trans("AccountStatement")." ".$numref.'</span></li>';
-		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.DOL_PHP_SELF.'?rel=next&amp;num='.$numref.'&amp;ve='.$ve.'&amp;account='.$object->id.'"><i class="fa fa-chevron-right" title="'.dol_escape_htmltag($langs->trans("Next")).'"></i></a></li>';
+		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.$_SERVER['PHP_SELF'].'?rel=next&amp;num='.$numref.'&amp;ve='.$ve.'&amp;account='.$object->id.'"><i class="fa fa-chevron-right" title="'.dol_escape_htmltag($langs->trans("Next")).'"></i></a></li>';
 		$morehtmlright .= '</ul></div>';
 
 		$title = $langs->trans("AccountStatement").' '.$numref.' - '.$langs->trans("BankAccount").' '.$object->getNomUrl(1, 'receipts');

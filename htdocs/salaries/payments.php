@@ -337,7 +337,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -396,7 +396,7 @@ if (GETPOSTINT('nomassaction') || in_array($massaction, array('presend', 'predel
 }
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -414,16 +414,16 @@ if (!empty($socid)) {
 	$url .= '&socid='.$socid;
 }
 $newcardbutton  = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 $newcardbutton .= dolGetButtonTitleSeparator();
 $newcardbutton = dolGetButtonTitle($langs->trans('NewSalaryPayment'), '', 'fa fa-plus-circle', $url, '', $user->hasRight('salaries', 'write'));
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_payment', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_payment', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 $moreforfilter = '';
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 //$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 $selectedfields = '';
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
@@ -521,32 +521,32 @@ $totalarray['nbfield'] = 0;
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("RefPayment", DOL_PHP_SELF, "s.rowid", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre("RefPayment", $_SERVER['PHP_SELF'], "s.rowid", "", $param, "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Salary", DOL_PHP_SELF, "sal.rowid", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Salary", $_SERVER['PHP_SELF'], "sal.rowid", "", $param, '', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Label", DOL_PHP_SELF, "s.label", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "s.label", "", $param, '', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("PeriodEndDate", DOL_PHP_SELF, "sal.dateep", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("PeriodEndDate", $_SERVER['PHP_SELF'], "sal.dateep", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
-print_liste_field_titre("DatePayment", DOL_PHP_SELF, "s.datep,s.rowid", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "s.datep,s.rowid", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
-print_liste_field_titre("Employee", DOL_PHP_SELF, "u.rowid", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre("Employee", $_SERVER['PHP_SELF'], "u.rowid", "", $param, "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("PaymentMode", DOL_PHP_SELF, "pst.code", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("PaymentMode", $_SERVER['PHP_SELF'], "pst.code", "", $param, '', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Numero", DOL_PHP_SELF, "s.num_payment", "", $param, '', $sortfield, $sortorder, '', 'ChequeOrTransferNumber');
+print_liste_field_titre("Numero", $_SERVER['PHP_SELF'], "s.num_payment", "", $param, '', $sortfield, $sortorder, '', 'ChequeOrTransferNumber');
 $totalarray['nbfield']++;
 if (isModEnabled("bank")) {
-	print_liste_field_titre("BankTransactionLine", DOL_PHP_SELF, "s.fk_bank", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("BankTransactionLine", $_SERVER['PHP_SELF'], "s.fk_bank", "", $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
-	print_liste_field_titre("BankAccount", DOL_PHP_SELF, "ba.label", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("BankAccount", $_SERVER['PHP_SELF'], "ba.label", "", $param, "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("PayedByThisPayment", DOL_PHP_SELF, "s.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+print_liste_field_titre("PayedByThisPayment", $_SERVER['PHP_SELF'], "s.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 $totalarray['nbfield']++;
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
@@ -556,7 +556,7 @@ $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $objec
 print $hookmanager->resPrint;
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
 print '</tr>'."\n";

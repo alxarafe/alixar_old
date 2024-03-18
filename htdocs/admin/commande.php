@@ -196,7 +196,7 @@ if ($action == 'updateMask') {
 		setEventMessages($langs->trans('Error'), null, 'errors');
 	} else {
 		setEventMessages($langs->trans('SetupSaved'), null, 'mesgs');
-		header("Location: " . DOL_PHP_SELF);
+		header("Location: " . $_SERVER['PHP_SELF']);
 		exit();
 	}
 } elseif (preg_match('/del_(.*)/', $action, $reg)) {
@@ -211,7 +211,7 @@ if ($action == 'updateMask') {
 		setEventMessages($langs->trans('Error'), null, 'errors');
 	} else {
 		setEventMessages($langs->trans('SetupSaved'), null, 'mesgs');
-		header("Location: " . DOL_PHP_SELF);
+		header("Location: " . $_SERVER['PHP_SELF']);
 		exit();
 	}
 }
@@ -324,7 +324,7 @@ foreach ($dirmodels as $reldir) {
 						if ($conf->global->COMMANDE_ADDON == $file) {
 							print img_picto($langs->trans("Activated"), 'switch_on');
 						} else {
-							print '<a href="'.DOL_PHP_SELF.'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
 							print img_picto($langs->trans("Disabled"), 'switch_off');
 							print '</a>';
 						}
@@ -451,13 +451,13 @@ foreach ($dirmodels as $reldir) {
 								// Active
 								if (in_array($name, $def)) {
 									print '<td class="center">'."\n";
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del&token='.newToken().'&value='.urlencode($name).'">';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del&token='.newToken().'&value='.urlencode($name).'">';
 									print img_picto($langs->trans("Enabled"), 'switch_on');
 									print '</a>';
 									print '</td>';
 								} else {
 									print '<td class="center">'."\n";
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 									print "</td>";
 								}
 
@@ -466,7 +466,7 @@ foreach ($dirmodels as $reldir) {
 								if (getDolGlobalString('COMMANDE_ADDON_PDF') == $name) {
 									print img_picto($langs->trans("Default"), 'on');
 								} else {
-									print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+									print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 								}
 								print '</td>';
 
@@ -495,7 +495,7 @@ foreach ($dirmodels as $reldir) {
 								// Preview
 								print '<td class="center">';
 								if ($module->type == 'pdf') {
-									print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 								} else {
 									print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 								}
@@ -522,7 +522,7 @@ print '</div>';
 print '<br>';
 print load_fiche_titre($langs->trans("SuggestedPaymentModesIfNotDefinedInOrder"), '', '');
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'" />';
 
 print '<div class="div-table-responsive-no-min">';
@@ -641,7 +641,7 @@ foreach ($substitutionarray as $key => $val) {
 }
 $htmltext .= '</i>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_ORDER_FREE_TEXT">';
 print '<tr class="oddeven"><td colspan="2">';
@@ -661,7 +661,7 @@ print '</form>';
 
 //Use draft Watermark
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_COMMANDE_DRAFT_WATERMARK">';
 print '<tr class="oddeven"><td>';
@@ -692,9 +692,9 @@ if (isModEnabled("banque")) {
 		print ajax_constantonoff('BANK_ASK_PAYMENT_BANK_DURING_ORDER');
 	} else {
 		if (empty($conf->global->BANK_ASK_PAYMENT_BANK_DURING_ORDER)) {
-			print '<a href="'.DOL_PHP_SELF.'?action=set_BANK_ASK_PAYMENT_BANK_DURING_ORDER&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"),'switch_off').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_BANK_ASK_PAYMENT_BANK_DURING_ORDER&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"),'switch_off').'</a>';
 		} else {
-			print '<a href="'.DOL_PHP_SELF.'?action=set_BANK_ASK_PAYMENT_BANK_DURING_ORDER&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_BANK_ASK_PAYMENT_BANK_DURING_ORDER&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
 		}
 	}
 	print '</td></tr>';
@@ -712,9 +712,9 @@ if (isModEnabled('stock')) {
 		print ajax_constantonoff('WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER');
 	} else {
 		if (empty($conf->global->WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER)) {
-			print '<a href="'.DOL_PHP_SELF.'?action=set_WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"),'switch_off').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"),'switch_off').'</a>';
 		} else {
-			print '<a href="'.DOL_PHP_SELF.'?action=set_WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
 		}
 	}
 	print '</td></tr>';

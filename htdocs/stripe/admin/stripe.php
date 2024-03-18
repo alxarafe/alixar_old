@@ -183,7 +183,7 @@ print load_fiche_titre($langs->trans("ModuleSetup").' Stripe', $linkback);
 
 $head = stripeadmin_prepare_head();
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="setvalue">';
 
@@ -259,10 +259,10 @@ if (empty($conf->stripeconnect->enabled)) {
 					$endpoint->save();
 
 					if ($endpoint->status == 'enabled') {
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=ipn&webhook='.$endpoint->id.'&status=0">';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=0">';
 						print img_picto($langs->trans("Activated"), 'switch_on');
 					} else {
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=ipn&webhook='.$endpoint->id.'&status=1">';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=1">';
 						print img_picto($langs->trans("Disabled"), 'switch_off');
 					}
 				} catch (Exception $e) {
@@ -330,10 +330,10 @@ if (empty($conf->stripeconnect->enabled)) {
 					$endpoint->url = $url;
 					$endpoint->save();
 					if ($endpoint->status == 'enabled') {
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=ipn&webhook='.$endpoint->id.'&status=0">';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=0">';
 						print img_picto($langs->trans("Activated"), 'switch_on');
 					} else {
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=ipn&webhook='.$endpoint->id.'&status=1">';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=1">';
 						print img_picto($langs->trans("Disabled"), 'switch_off');
 					}
 				} catch (Exception $e) {

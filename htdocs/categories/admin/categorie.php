@@ -45,7 +45,7 @@ $reg = array();
 if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_set_const($db, $code, 1, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages($db->lasterror(), null, 'errors');
@@ -55,7 +55,7 @@ if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 if (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages($db->lasterror(), null, 'errors');
@@ -102,9 +102,9 @@ if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('CATEGORIE_RECURSIV_ADD');
 } else {
 	if (!getDolGlobalString('CATEGORIE_RECURSIV_ADD')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_CATEGORIE_RECURSIV_ADD&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_CATEGORIE_RECURSIV_ADD&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=del_CATEGORIE_RECURSIV_ADD&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_CATEGORIE_RECURSIV_ADD&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	}
 }
 print '</td></tr>';

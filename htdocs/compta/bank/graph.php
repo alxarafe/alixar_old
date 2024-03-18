@@ -759,10 +759,10 @@ if ($account) {
 		$moreparam = '&month='.$month.'&year='.$year.($mode == 'showalltime' ? '&mode=showalltime' : '');
 
 		if (GETPOST("option") != 'all') {
-			$morehtml = '<a href="'.DOL_PHP_SELF.'?account='.$account.'&option=all'.$moreparam.'">'.$langs->trans("ShowAllAccounts").'</a>';
+			$morehtml = '<a href="'.$_SERVER['PHP_SELF'].'?account='.$account.'&option=all'.$moreparam.'">'.$langs->trans("ShowAllAccounts").'</a>';
 			dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', '', $moreparam, 0, '', '', 1);
 		} else {
-			$morehtml = '<a href="'.DOL_PHP_SELF.'?account='.$account.$moreparam.'">'.$langs->trans("BackToAccount").'</a>';
+			$morehtml = '<a href="'.$_SERVER['PHP_SELF'].'?account='.$account.$moreparam.'">'.$langs->trans("BackToAccount").'</a>';
 			print $langs->trans("AllAccounts");
 			//print $morehtml;
 		}
@@ -790,11 +790,11 @@ print '<table class="notopnoleftnoright" width="100%">';
 // Navigation links
 print '<tr><td class="right">'.$morehtml.' &nbsp; &nbsp; ';
 if ($mode == 'showalltime') {
-	print '<a href="'.DOL_PHP_SELF.'?account='.$account.(GETPOST("option") != 'all' ? '' : '&option=all').'">';
+	print '<a href="'.$_SERVER['PHP_SELF'].'?account='.$account.(GETPOST("option") != 'all' ? '' : '&option=all').'">';
 	print $langs->trans("GoBack");
 	print '</a>';
 } else {
-	print '<a href="'.DOL_PHP_SELF.'?mode=showalltime&account='.$account.(GETPOST("option") != 'all' ? '' : '&option=all').'">';
+	print '<a href="'.$_SERVER['PHP_SELF'].'?mode=showalltime&account='.$account.(GETPOST("option") != 'all' ? '' : '&option=all').'">';
 	print $langs->trans("ShowAllTimeBalance");
 	print '</a>';
 }
@@ -819,7 +819,7 @@ if ($mode == 'standard') {
 	}
 
 	// For month
-	$link = "<a href='".DOL_PHP_SELF."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".$prevyear."&month=".$prevmonth."'>".img_previous('', 'class="valignbottom"')."</a> ".$langs->trans("Month")." <a href='".DOL_PHP_SELF."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".$nextyear."&month=".$nextmonth."'>".img_next('', 'class="valignbottom"')."</a>";
+	$link = "<a href='".$_SERVER['PHP_SELF']."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".$prevyear."&month=".$prevmonth."'>".img_previous('', 'class="valignbottom"')."</a> ".$langs->trans("Month")." <a href='".$_SERVER['PHP_SELF']."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".$nextyear."&month=".$nextmonth."'>".img_next('', 'class="valignbottom"')."</a>";
 	print '<div class="right clearboth">'.$link.'</div>';
 
 	print '<div class="center clearboth margintoponly">';
@@ -834,7 +834,7 @@ if ($mode == 'standard') {
 	// For year
 	$prevyear = $year - 1;
 	$nextyear = $year + 1;
-	$link = "<a href='".DOL_PHP_SELF."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".($prevyear)."'>".img_previous('', 'class="valignbottom"')."</a> ".$langs->trans("Year")." <a href='".DOL_PHP_SELF."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".($nextyear)."'>".img_next('', 'class="valignbottom"')."</a>";
+	$link = "<a href='".$_SERVER['PHP_SELF']."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".($prevyear)."'>".img_previous('', 'class="valignbottom"')."</a> ".$langs->trans("Year")." <a href='".$_SERVER['PHP_SELF']."?account=".$account.(GETPOST("option") != 'all' ? '' : '&option=all')."&year=".($nextyear)."'>".img_next('', 'class="valignbottom"')."</a>";
 
 	print '<div class="right clearboth margintoponly">'.$link.'</div>';
 

@@ -62,7 +62,7 @@ if (!empty($object_rights->write) && $action != 'selectlines') {
 	print '<td class="linecoledit center width25">';
 	$coldisplay++;
 	if (empty($disableedit)) { ?>
-		<a class="editfielda reposition" href="<?php print DOL_PHP_SELF.'?id='.$this->id.'&amp;action=editline&amp;lineid='.$line->id.'#line_'.$line->id; ?>">
+		<a class="editfielda reposition" href="<?php print $_SERVER['PHP_SELF'].'?id='.$this->id.'&amp;action=editline&amp;lineid='.$line->id.'#line_'.$line->id; ?>">
 		<?php print img_edit().'</a>';
 	}
 	print '</td>';
@@ -70,7 +70,7 @@ if (!empty($object_rights->write) && $action != 'selectlines') {
 	print '<td class="linecoldelete center width25">';
 	$coldisplay++;
 	if (empty($disableremove)) { // For situation invoice, deletion is not possible if there is a parent company.
-		print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$this->id.'&amp;action=ask_deleteline&amp;lineid='.$line->id.'">';
+		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$this->id.'&amp;action=ask_deleteline&amp;lineid='.$line->id.'">';
 		print img_delete();
 		print '</a>';
 	}
@@ -80,12 +80,12 @@ if (!empty($object_rights->write) && $action != 'selectlines') {
 		print '<td class="linecolmove tdlineupdown center width25">';
 		$coldisplay++;
 		if ($i > 0) { ?>
-			<a class="lineupdown reposition" href="<?php print DOL_PHP_SELF.'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id; ?>">
+			<a class="lineupdown reposition" href="<?php print $_SERVER['PHP_SELF'].'?id='.$this->id.'&action=up&token='.newToken().'&rowid='.$line->id; ?>">
 			<?php print img_up('default', 0, 'imgupforline'); ?>
 			</a>
 		<?php }
 		if ($i < $num - 1) { ?>
-			<a class="lineupdown reposition" href="<?php print DOL_PHP_SELF.'?id='.$this->id.'&action=down&token='.newToken().'&rowid='.$line->id; ?>">
+			<a class="lineupdown reposition" href="<?php print $_SERVER['PHP_SELF'].'?id='.$this->id.'&action=down&token='.newToken().'&rowid='.$line->id; ?>">
 			<?php print img_down('default', 0, 'imgdownforline'); ?>
 			</a>
 		<?php }

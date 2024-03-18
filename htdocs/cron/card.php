@@ -240,7 +240,7 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $permissiontoadd) {
 			} else {
 				$newid = $result;
 			}
-			header("Location: ".DOL_PHP_SELF.'?id='.$newid); // Open record of new object
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$newid); // Open record of new object
 			exit;
 		} else {
 			setEventMessages($objectutil->error, $objectutil->errors, 'errors');
@@ -290,13 +290,13 @@ if ($conf->use_javascript_ajax) {
 
 $formconfirm = '';
 if ($action == 'delete') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("CronDelete"), $langs->trans("CronConfirmDelete"), "confirm_delete", '', '', 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("CronDelete"), $langs->trans("CronConfirmDelete"), "confirm_delete", '', '', 1);
 
 	$action = '';
 }
 
 if ($action == 'execute') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id.'&securitykey='.$securitykey, $langs->trans("CronExecute"), $langs->trans("CronConfirmExecute"), "confirm_execute", '', '', 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id.'&securitykey='.$securitykey, $langs->trans("CronExecute"), $langs->trans("CronConfirmExecute"), "confirm_execute", '', '', 1);
 
 	$action = '';
 }
@@ -305,7 +305,7 @@ if ($action == 'execute') {
 if ($action == 'clone') {
 	// Create an array for form
 	$formquestion = array();
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 }
 
 // Print form confirm
@@ -321,7 +321,7 @@ if (empty($object->status) && $action != 'create') {
 }
 
 if (($action == "create") || ($action == "edit")) {
-	print '<form name="cronform" action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form name="cronform" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 	print '<input type="hidden" name="backtopage" value="'.GETPOST('backtopage').'">'."\n";
 	if (!empty($object->id)) {
@@ -793,7 +793,7 @@ if (($action == "create") || ($action == "edit")) {
 	if (!$user->hasRight('cron', 'create')) {
 		print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("Edit").'</a>';
 	} else {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Edit").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Edit").'</a>';
 	}
 
 	if ((!$user->hasRight('cron', 'execute'))) {
@@ -801,25 +801,25 @@ if (($action == "create") || ($action == "edit")) {
 	} elseif (empty($object->status)) {
 		print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("JobDisabled")).'">'.$langs->trans("CronExecute").'</a>';
 	} else {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=execute&token='.newToken().'&id='.$object->id.(!getDolGlobalString('CRON_KEY') ? '' : '&securitykey='.urlencode(getDolGlobalString('CRON_KEY'))).'">'.$langs->trans("CronExecute").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=execute&token='.newToken().'&id='.$object->id.(!getDolGlobalString('CRON_KEY') ? '' : '&securitykey='.urlencode(getDolGlobalString('CRON_KEY'))).'">'.$langs->trans("CronExecute").'</a>';
 	}
 
 	if (!$user->hasRight('cron', 'create')) {
 		print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("CronStatusActiveBtn").'/'.$langs->trans("CronStatusInactiveBtn").'</a>';
 	} else {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=clone&token='.newToken().'&id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=clone&token='.newToken().'&id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
 
 		if (empty($object->status)) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=activate&token='.newToken().'&id='.$object->id.'">'.$langs->trans("CronStatusActiveBtn").'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=activate&token='.newToken().'&id='.$object->id.'">'.$langs->trans("CronStatusActiveBtn").'</a>';
 		} else {
-			print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=inactive&id='.$object->id.'">'.$langs->trans("CronStatusInactiveBtn").'</a>';
+			print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=inactive&id='.$object->id.'">'.$langs->trans("CronStatusInactiveBtn").'</a>';
 		}
 	}
 
 	if (!$user->hasRight('cron', 'delete')) {
 		print '<a class="butActionDeleteRefused" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("Delete").'</a>';
 	} else {
-		print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+		print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 	}
 	print '</div>';
 

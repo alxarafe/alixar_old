@@ -231,7 +231,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -272,7 +272,7 @@ if (GETPOSTINT('nomassaction') || in_array($massaction, array('presend', 'predel
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -288,15 +288,15 @@ print '<input type="hidden" name="mode" value="'.$mode.'">';
 print '<input type="hidden" name="type" value="'.$type.'">';
 
 $newcardbutton = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 if ($user->hasRight('don', 'creer')) {
 	$newcardbutton .= dolGetButtonTitleSeparator();
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewDonation'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/don/card.php?action=create');
 }
 
 // @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-print_barre_liste($langs->trans("Donations"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'object_donation', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($langs->trans("Donations"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'object_donation', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 if ($search_all) {
 	$setupstring = '';
@@ -308,7 +308,7 @@ if ($search_all) {
 	print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $search_all).implode(', ', $fieldstosearchall).'</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -378,27 +378,27 @@ if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 	print_liste_field_titre('');
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Ref", DOL_PHP_SELF, "d.rowid", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "d.rowid", "", $param, "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
 if (getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
-	print_liste_field_titre("ThirdParty", DOL_PHP_SELF, "d.fk_soc", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("ThirdParty", $_SERVER['PHP_SELF'], "d.fk_soc", "", $param, "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 } else {
-	print_liste_field_titre("Company", DOL_PHP_SELF, "d.societe", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "d.societe", "", $param, "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Name", DOL_PHP_SELF, "d.lastname", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre("Name", $_SERVER['PHP_SELF'], "d.lastname", "", $param, "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Date", DOL_PHP_SELF, "d.datedon", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "d.datedon", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
 if (isModEnabled('project')) {
 	$langs->load("projects");
-	print_liste_field_titre("Project", DOL_PHP_SELF, "d.fk_projet", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("Project", $_SERVER['PHP_SELF'], "d.fk_projet", "", $param, "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Amount", DOL_PHP_SELF, "d.amount", "", $param, '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre("Amount", $_SERVER['PHP_SELF'], "d.amount", "", $param, '', $sortfield, $sortorder, 'right ');
 $totalarray['nbfield']++;
-print_liste_field_titre("Status", DOL_PHP_SELF, "d.fk_statut", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "d.fk_statut", "", $param, '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 	print_liste_field_titre('');

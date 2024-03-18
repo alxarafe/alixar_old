@@ -186,7 +186,7 @@ foreach ($dirmodels as $reldir) {
 							if ($conf->global->CHEQUERECEIPTS_ADDON == $file || getDolGlobalString('CHEQUERECEIPTS_ADDON') . '.php' == $file) {
 								print img_picto($langs->trans("Activated"), 'switch_on');
 							} else {
-								print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmod&token='.newToken().'&value='.preg_replace('/\.php$/', '', $file).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+								print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmod&token='.newToken().'&value='.preg_replace('/\.php$/', '', $file).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 							}
 							print '</td>';
 
@@ -241,7 +241,7 @@ print '<br>';
  */
 print load_fiche_titre($langs->trans("OtherOptions"), '', '');
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_BANK_CHEQUERECEIPT_FREE_TEXT">';
 

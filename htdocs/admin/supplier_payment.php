@@ -264,7 +264,7 @@ foreach ($dirmodels as $reldir) {
 							if ($conf->global->SUPPLIER_PAYMENT_ADDON == $file || getDolGlobalString('SUPPLIER_PAYMENT_ADDON') . '.php' == $file) {
 								print img_picto($langs->trans("Activated"), 'switch_on');
 							} else {
-								print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmod&token='.newToken().'&value='.preg_replace('/\.php$/', '', $file).(!empty($module->scandir) ? '&scandir='.$module->scandir : '').'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+								print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmod&token='.newToken().'&value='.preg_replace('/\.php$/', '', $file).(!empty($module->scandir) ? '&scandir='.$module->scandir : '').'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 							}
 							print '</td>';
 
@@ -367,7 +367,7 @@ foreach ($dirmodels as $reldir) {
 						//if ($conf->global->SUPPLIER_PAYMENT_ADDON_PDF != "$name")
 						//{
 						// Even if choice is the default value, we allow to disable it: For supplier invoice, we accept to have no doc generation at all
-						print '<a href="'.DOL_PHP_SELF.'?action=del&amp;value='.$name.'&amp;scandir='.$module->scandir.'&amp;label='.urlencode($module->name).'&amp;type=SUPPLIER_PAYMENT">';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=del&amp;value='.$name.'&amp;scandir='.$module->scandir.'&amp;label='.urlencode($module->name).'&amp;type=SUPPLIER_PAYMENT">';
 						print img_picto($langs->trans("Enabled"), 'switch_on');
 						print '</a>';
 						/*}
@@ -378,7 +378,7 @@ foreach ($dirmodels as $reldir) {
 						print "</td>";
 					} else {
 						print '<td class="center">'."\n";
-						print '<a href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=SUPPLIER_PAYMENT">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=SUPPLIER_PAYMENT">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 						print "</td>";
 					}
 
@@ -387,9 +387,9 @@ foreach ($dirmodels as $reldir) {
 					if (getDolGlobalString("SUPPLIER_PAYMENT_ADDON_PDF") == "$name") {
 						//print img_picto($langs->trans("Default"),'on');
 						// Even if choice is the default value, we allow to disable it: For supplier invoice, we accept to have no doc generation at all
-						print '<a href="'.DOL_PHP_SELF.'?action=unsetdoc&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=SUPPLIER_PAYMENT"" alt="'.$langs->trans("Disable").'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=unsetdoc&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=SUPPLIER_PAYMENT"" alt="'.$langs->trans("Disable").'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 					} else {
-						print '<a href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=SUPPLIER_PAYMENT"" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scandir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=SUPPLIER_PAYMENT"" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 					}
 					print '</td>';
 
@@ -405,7 +405,7 @@ foreach ($dirmodels as $reldir) {
 					print $form->textwithpicto('', $htmltooltip, 1, 0);
 					print '</td>';
 					print '<td class="center">';
-					print '<a href="'.DOL_PHP_SELF.'?action=specimen&amp;module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&amp;module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 					print '</td>';
 
 					print "</tr>\n";
@@ -427,7 +427,7 @@ print "<br>";
 
 print load_fiche_titre($langs->trans("OtherOptions"), '', '');
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'" />';
 print '<input type="hidden" name="action" value="setparams" />';
 

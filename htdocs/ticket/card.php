@@ -539,7 +539,7 @@ if (empty($reshook)) {
 	if ($action == 'set_thirdparty' && $user->hasRight('ticket', 'write')) {
 		if ($object->fetch(GETPOSTINT('id'), '', GETPOSTINT('track_id')) >= 0) {
 			$result = $object->setCustomer(GETPOSTINT('editcustomer'));
-			$url = DOL_PHP_SELF.'?track_id='.GETPOST('track_id', 'alpha');
+			$url = $_SERVER['PHP_SELF'].'?track_id='.GETPOST('track_id', 'alpha');
 			header("Location: ".$url);
 			exit();
 		}
@@ -581,7 +581,7 @@ if (empty($reshook)) {
 
 			if (!$error) {
 				if ($object->update($user) >= 0) {
-					header("Location: ".DOL_PHP_SELF."?track_id=".$object->track_id);
+					header("Location: ".$_SERVER['PHP_SELF']."?track_id=".$object->track_id);
 					exit;
 				} else {
 					$error++;
@@ -770,7 +770,7 @@ if ($action == 'create' || $action == 'presend') {
 
 	$head = ticket_prepare_head($object);
 
-	print '<form method="POST" name="form_ticket" id="form_edit_ticket" action="'.DOL_PHP_SELF.'?track_id='.$object->track_id.'">';
+	print '<form method="POST" name="form_ticket" id="form_edit_ticket" action="'.$_SERVER['PHP_SELF'].'?track_id='.$object->track_id.'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="tack_id" value="'.$object->track_id.'">';
@@ -997,9 +997,9 @@ if ($action == 'create' || $action == 'presend') {
 				$object->fetch_project();
 				$morehtmlref .= img_picto($langs->trans("Project"), 'project'.((is_object($object->project) && $object->project->public) ? 'pub' : ''), 'class="pictofixedwidth"');
 				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 				}
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 			} else {
 				if (!empty($object->fk_project)) {
 					$object->fetch_project();
@@ -1021,9 +1021,9 @@ if ($action == 'create' || $action == 'presend') {
 					$morehtmlref .= img_picto($langs->trans("Contract"), 'contract', 'class="pictofixedwidth"');
 					if ($action == 'edit_contrat') {
 						$formcontract = new FormContract($db);
-						$morehtmlref .= $formcontract->formSelectContract(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_contract, 'contratid', 0, 1, 1, 1);
+						$morehtmlref .= $formcontract->formSelectContract($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_contract, 'contratid', 0, 1, 1, 1);
 					} else {
-						$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=edit_contrat&token='.newToken().'&id='.$object->id.'">';
+						$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit_contrat&token='.newToken().'&id='.$object->id.'">';
 						$morehtmlref .=  img_edit($langs->trans('SetContract'));
 						$morehtmlref .=  '</a>';
 					}
@@ -1458,18 +1458,18 @@ if ($action == 'create' || $action == 'presend') {
 			if (empty($reshook)) {
 				// Email
 				if (isset($object->status) && $object->status < Ticket::STATUS_CLOSED && $action != "presend" && $action != "presend_addmessage") {
-					print dolGetButtonAction('', $langs->trans('SendMail'), 'default', DOL_PHP_SELF.'?action=presend_addmessage&send_email=1&private_message=0&mode=init&token='.newToken().'&track_id='.$object->track_id.'#formmailbeforetitle', '');
+					print dolGetButtonAction('', $langs->trans('SendMail'), 'default', $_SERVER['PHP_SELF'].'?action=presend_addmessage&send_email=1&private_message=0&mode=init&token='.newToken().'&track_id='.$object->track_id.'#formmailbeforetitle', '');
 				}
 
 				// Show link to add a message (if read and not closed)
 				if (isset($object->status) && $object->status < Ticket::STATUS_CLOSED && $action != "presend" && $action != "presend_addmessage") {
-					print dolGetButtonAction('', $langs->trans('TicketAddPrivateMessage'), 'default', DOL_PHP_SELF.'?action=presend_addmessage&mode=init&token='.newToken().'&track_id='.$object->track_id.'#formmailbeforetitle', '');
+					print dolGetButtonAction('', $langs->trans('TicketAddPrivateMessage'), 'default', $_SERVER['PHP_SELF'].'?action=presend_addmessage&mode=init&token='.newToken().'&track_id='.$object->track_id.'#formmailbeforetitle', '');
 				}
 
 				// Link to create an intervention
 				// socid is needed otherwise fichinter ask it and forgot origin after form submit :\
 				if (!$object->fk_soc && $user->hasRight("ficheinter", "creer")) {
-					print dolGetButtonAction($langs->trans('UnableToCreateInterIfNoSocid'), $langs->trans('TicketAddIntervention'), 'default', DOL_PHP_SELF. '#', '', false);
+					print dolGetButtonAction($langs->trans('UnableToCreateInterIfNoSocid'), $langs->trans('TicketAddIntervention'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 				}
 				if ($object->fk_soc > 0 && isset($object->status) && $object->status < Ticket::STATUS_CLOSED && $user->hasRight('ficheinter', 'creer')) {
 					print dolGetButtonAction('', $langs->trans('TicketAddIntervention'), 'default', DOL_URL_ROOT.'/fichinter/card.php?action=create&token='.newToken().'&socid='. $object->fk_soc.'&origin=ticket_ticket&originid='. $object->id, '');
@@ -1477,22 +1477,22 @@ if ($action == 'create' || $action == 'presend') {
 
 				// Close ticket if status is read
 				if (isset($object->status) && $object->status > 0 && $object->status < Ticket::STATUS_CLOSED && $user->hasRight('ticket', 'write')) {
-					print dolGetButtonAction('', $langs->trans('CloseTicket'), 'default', DOL_PHP_SELF.'?action=close&token='.newToken().'&track_id='.$object->track_id, '');
+					print dolGetButtonAction('', $langs->trans('CloseTicket'), 'default', $_SERVER['PHP_SELF'].'?action=close&token='.newToken().'&track_id='.$object->track_id, '');
 				}
 
 				// Abandon ticket if status is read
 				if (isset($object->status) && $object->status > 0 && $object->status < Ticket::STATUS_CLOSED && $user->hasRight('ticket', 'write')) {
-					print dolGetButtonAction('', $langs->trans('AbandonTicket'), 'default', DOL_PHP_SELF.'?action=abandon&token='.newToken().'&track_id='.$object->track_id, '');
+					print dolGetButtonAction('', $langs->trans('AbandonTicket'), 'default', $_SERVER['PHP_SELF'].'?action=abandon&token='.newToken().'&track_id='.$object->track_id, '');
 				}
 
 				// Re-open ticket
 				if (!$user->socid && (isset($object->status) && ($object->status == Ticket::STATUS_CLOSED || $object->status == Ticket::STATUS_CANCELED)) && !$user->socid) {
-					print dolGetButtonAction('', $langs->trans('ReOpen'), 'default', DOL_PHP_SELF.'?action=reopen&token='.newToken().'&track_id='.$object->track_id, '');
+					print dolGetButtonAction('', $langs->trans('ReOpen'), 'default', $_SERVER['PHP_SELF'].'?action=reopen&token='.newToken().'&track_id='.$object->track_id, '');
 				}
 
 				// Delete ticket
 				if ($user->hasRight('ticket', 'delete') && !$user->socid) {
-					print dolGetButtonAction('', $langs->trans('Delete'), 'delete', DOL_PHP_SELF.'?action=delete&token='.newToken().'&track_id='.$object->track_id, '');
+					print dolGetButtonAction('', $langs->trans('Delete'), 'delete', $_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&track_id='.$object->track_id, '');
 				}
 			}
 			print '</div>'."\n";
@@ -1563,7 +1563,7 @@ if ($action == 'create' || $action == 'presend') {
 			$formticket->param['models'] = $modelmail;
 			$formticket->param['models_id'] = GETPOSTINT('modelmailselected');
 			//$formticket->param['socid']=$object->fk_soc;
-			$formticket->param['returnurl'] = DOL_PHP_SELF.'?track_id='.$object->track_id;
+			$formticket->param['returnurl'] = $_SERVER['PHP_SELF'].'?track_id='.$object->track_id;
 
 			$formticket->withsubstit = 1;
 			$formticket->substit = $substitutionarray;
@@ -1576,7 +1576,7 @@ if ($action == 'create' || $action == 'presend') {
 		// Show messages on card (Note: this is a duplicate of the view Events/Agenda but on the main tab)
 		if (getDolGlobalString('TICKET_SHOW_MESSAGES_ON_CARD')) {
 			$param = '&id='.$object->id;
-			if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+			if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 				$param .= '&contextpage='.$contextpage;
 			}
 			if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -1601,10 +1601,10 @@ if ($action == 'create' || $action == 'presend') {
 
 			// Show link to add event (if read and not closed)
 			$btnstatus = $object->status < Ticket::STATUS_CLOSED && $action != "presend" && $action != "presend_addmessage" && $action != "add_message";
-			$url = dol_buildpath('/comm/action/card.php', 1).'?action=create&datep='.date('YmdHi').'&origin=ticket&originid='.$object->id.'&projectid='.$object->fk_project.'&backtopage='.urlencode(DOL_PHP_SELF.'?track_id='.$object->track_id);
+			$url = dol_buildpath('/comm/action/card.php', 1).'?action=create&datep='.date('YmdHi').'&origin=ticket&originid='.$object->id.'&projectid='.$object->fk_project.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?track_id='.$object->track_id);
 			$morehtmlright .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', $url, 'add-new-ticket-even-button', $btnstatus);
 
-			print_barre_liste($langs->trans("ActionsOnTicket"), 0, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
+			print_barre_liste($langs->trans("ActionsOnTicket"), 0, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
 
 			// List of all actions
 			$filters = array();
@@ -1622,7 +1622,7 @@ if ($action == 'create' || $action == 'presend') {
 			 */
 			$filename = dol_sanitizeFileName($object->ref);
 			$filedir = $upload_dir."/".dol_sanitizeFileName($object->ref);
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 			$genallowed = $permissiontoadd;
 			$delallowed = $permissiontodelete;
 			$codelang = '';

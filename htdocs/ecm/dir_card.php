@@ -305,7 +305,7 @@ print dol_get_fiche_head($head, 'card', $langs->trans("ECMSectionManual"), -1, '
 
 
 if ($action == 'edit') {
-	print '<form name="update" action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="section" value="'.$section.'">';
 	print '<input type="hidden" name="module" value="'.$module.'">';
@@ -453,7 +453,7 @@ if ($action != 'edit' && $action != 'delete' && $action != 'deletefile') {
 	print '<div class="tabsAction">';
 
 	if ($permissiontoadd) {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().($module ? '&module='.$module : '').'&section='.$section.'">'.$langs->trans('Edit').'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().($module ? '&module='.$module : '').'&section='.$section.'">'.$langs->trans('Edit').'</a>';
 	}
 
 	if ($permissiontoadd) {
@@ -462,7 +462,7 @@ if ($action != 'edit' && $action != 'delete' && $action != 'deletefile') {
 		print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotAllowed").'">'.$langs->trans('ECMAddSection').'</a>';
 	}
 
-	print dolGetButtonAction($langs->trans('Delete'), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().($module ? '&module='.urlencode($module) : '').'&section='.urlencode($section).($backtopage ? '&backtopage='.urlencode($backtopage) : ''), '', $permissiontoadd);
+	print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().($module ? '&module='.urlencode($module) : '').'&section='.urlencode($section).($backtopage ? '&backtopage='.urlencode($backtopage) : ''), '', $permissiontoadd);
 
 	print '</div>';
 }
@@ -470,7 +470,7 @@ if ($action != 'edit' && $action != 'delete' && $action != 'deletefile') {
 
 // Confirm remove file
 if ($action == 'deletefile') {
-	print $form->formconfirm(DOL_PHP_SELF.'?section='.urlencode(GETPOST("section", 'alpha')).'&urlfile='.urlencode(GETPOST("urlfile")).($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile');
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?section='.urlencode(GETPOST("section", 'alpha')).'&urlfile='.urlencode(GETPOST("urlfile")).($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile');
 }
 
 // Confirm remove dir
@@ -485,7 +485,7 @@ if ($action == 'delete' || $action == 'delete_dir') {
 		);
 	}
 
-	print $form->formconfirm(DOL_PHP_SELF.'?section='.urlencode(GETPOST('section', 'alpha')).($module ? '&module='.$module : '').($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', $relativepathwithoutslash), 'confirm_deletedir', $formquestion, 1, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?section='.urlencode(GETPOST('section', 'alpha')).($module ? '&module='.$module : '').($backtopage ? '&backtopage='.urlencode($backtopage) : ''), $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', $relativepathwithoutslash), 'confirm_deletedir', $formquestion, 1, 1);
 }
 
 

@@ -772,7 +772,7 @@ dol_htmloutput_errors($errmsg, $errors);
 if ((!empty($conference->id) && $conference->status == ConferenceOrBooth::STATUS_CONFIRMED) || (!empty($project->id) && $project->status == Project::STATUS_VALIDATED)) {
 	if (empty($maxattendees) || $currentnbofattendees < $maxattendees) {
 		// Print form
-		print '<form action="' . DOL_PHP_SELF . '" method="POST" name="newmember">' . "\n";
+		print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST" name="newmember">' . "\n";
 		print '<input type="hidden" name="token" value="' . newToken() . '" / >';
 		print '<input type="hidden" name="entity" value="' . $entity . '" />';
 		print '<input type="hidden" name="action" value="add" />';

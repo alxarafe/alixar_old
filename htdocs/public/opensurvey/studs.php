@@ -838,7 +838,7 @@ if ($comments) {
 
 		print '<div class="comment"><span class="usercomment">';
 		if (in_array($obj->usercomment, $listofvoters)) {
-			print '<a href="'.DOL_PHP_SELF.'?deletecomment='.$obj->id_comment.'&sondage='.$numsondage.'"> '.img_picto('', 'delete.png', '', false, 0, 0, '', 'nomarginleft').'</a> ';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?deletecomment='.$obj->id_comment.'&sondage='.$numsondage.'"> '.img_picto('', 'delete.png', '', false, 0, 0, '', 'nomarginleft').'</a> ';
 		}
 		//else print img_picto('', 'ellipsis-h', '', false, 0, 0, '', 'nomarginleft').' ';
 		print img_picto('', 'user', 'class="pictofixedwidth"').dol_htmlentities($obj->usercomment).':</span> <span class="comment">'.dol_nl2br(dol_htmlentities($obj->comment))."</span></div>";

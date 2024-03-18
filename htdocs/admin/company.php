@@ -275,7 +275,7 @@ if (($action == 'update' && !GETPOST("cancel", 'alpha'))
 	}
 
 	if ($action != 'updateedit' && !$error) {
-		header("Location: ".DOL_PHP_SELF.($page_y ? '?page_y='.$page_y : ''));
+		header("Location: ".$_SERVER['PHP_SELF'].($page_y ? '?page_y='.$page_y : ''));
 		exit;
 	}
 }
@@ -314,7 +314,7 @@ if ($action == 'addthumb' || $action == 'addthumbsquarred') {  // Regenerate thu
 				dol_syslog($imgThumbMini);
 			}
 
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		} else {
 			$error++;
@@ -431,7 +431,7 @@ if (!empty($conf->use_javascript_ajax)) {
 	print '</script>'."\n";
 }
 
-print '<form enctype="multipart/form-data" method="POST" action="'.DOL_PHP_SELF.'" name="form_index">';
+print '<form enctype="multipart/form-data" method="POST" action="'.$_SERVER['PHP_SELF'].'" name="form_index">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 print '<input type="hidden" name="page_y" value="">';
@@ -534,7 +534,7 @@ print '<input type="file" class="flat minwidth100 maxwidthinputfileonsmartphone"
 print '</div>';
 if (!empty($mysoc->logo_small)) {
 	print '<div class="inline-block valignmiddle marginrightonly">';
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=removelogo&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a>';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=removelogo&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a>';
 	print '</div>';
 	if (file_exists($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small)) {
 		print '<div class="inline-block valignmiddle">';
@@ -554,7 +554,7 @@ if (!empty($mysoc->logo_small)) {
 		print '<div class="inline-block valignmiddle">';
 		print '<img style="max-height: 80px" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart=mycompany&file='.urlencode('logos/'.$mysoc->logo).'">';
 		print '</div>';
-		print '<div class="inline-block valignmiddle marginrightonly"><a class="reposition" href="'.DOL_PHP_SELF.'?action=removelogo&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a></div>';
+		print '<div class="inline-block valignmiddle marginrightonly"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=removelogo&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a></div>';
 	} else {
 		print '<div class="inline-block valignmiddle">';
 		print '<img height="80" src="'.DOL_URL_ROOT.'/public/theme/common/nophoto.png" title="File has been removed from disk">';
@@ -576,7 +576,7 @@ print '<input type="file" class="flat minwidth100 maxwidthinputfileonsmartphone"
 print '</div>';
 if (!empty($mysoc->logo_squarred_small)) {
 	print '<div class="inline-block valignmiddle marginrightonly">';
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=removelogosquarred&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a>';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=removelogosquarred&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a>';
 	print '</div>';
 	if (file_exists($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_squarred_small)) {
 		print '<div class="inline-block valignmiddle marginrightonly">';
@@ -596,7 +596,7 @@ if (!empty($mysoc->logo_squarred_small)) {
 		print '<div class="inline-block valignmiddle">';
 		print '<img style="max-height: 80px" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart=mycompany&file='.urlencode('logos/'.$mysoc->logo_squarred).'">';
 		print '</div>';
-		print '<div class="inline-block valignmiddle marginrightonly"><a class="reposition" href="'.DOL_PHP_SELF.'?action=removelogosquarred&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a></div>';
+		print '<div class="inline-block valignmiddle marginrightonly"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=removelogosquarred&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a></div>';
 	} else {
 		print '<div class="inline-block valignmiddle">';
 		print '<img height="80" src="'.DOL_URL_ROOT.'/public/theme/common/nophoto.png" title="File has been removed from disk">';

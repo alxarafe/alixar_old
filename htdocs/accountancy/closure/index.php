@@ -111,7 +111,7 @@ if (empty($reshook)) {
 			if ($result > 0) {
 				setEventMessages($langs->trans("AllMovementsWereRecordedAsValidated"), null, 'mesgs');
 
-				header("Location: " . DOL_PHP_SELF . (isset($current_fiscal_period) ? '?fiscal_period_id=' . $current_fiscal_period['id'] : ''));
+				header("Location: " . $_SERVER['PHP_SELF'] . (isset($current_fiscal_period) ? '?fiscal_period_id=' . $current_fiscal_period['id'] : ''));
 				exit;
 			} else {
 				setEventMessages($langs->trans("NotAllMovementsCouldBeRecordedAsValidated"), null, 'errors');
@@ -129,7 +129,7 @@ if (empty($reshook)) {
 			} else {
 				setEventMessages($langs->trans("AccountancyClosureCloseSuccessfully"), null, 'mesgs');
 
-				header("Location: " . DOL_PHP_SELF . (isset($current_fiscal_period) ? '?fiscal_period_id=' . $current_fiscal_period['id'] : ''));
+				header("Location: " . $_SERVER['PHP_SELF'] . (isset($current_fiscal_period) ? '?fiscal_period_id=' . $current_fiscal_period['id'] : ''));
 				exit;
 			}
 		} elseif ($action == 'confirm_step_3' && $confirm == "yes") {
@@ -144,7 +144,7 @@ if (empty($reshook)) {
 			} else {
 				setEventMessages($langs->trans("AccountancyClosureInsertAccountingReversalSuccessfully"), null, 'mesgs');
 
-				header("Location: " . DOL_PHP_SELF . (isset($current_fiscal_period) ? '?fiscal_period_id=' . $current_fiscal_period['id'] : ''));
+				header("Location: " . $_SERVER['PHP_SELF'] . (isset($current_fiscal_period) ? '?fiscal_period_id=' . $current_fiscal_period['id'] : ''));
 				exit;
 			}
 		}
@@ -185,7 +185,7 @@ if (isset($current_fiscal_period)) {
 		);
 
 		$formconfirm = $form->formconfirm(
-			DOL_PHP_SELF . '?fiscal_period_id=' . $current_fiscal_period['id'],
+			$_SERVER['PHP_SELF'] . '?fiscal_period_id=' . $current_fiscal_period['id'],
 			$langs->trans('ValidateMovements'),
 			$langs->trans('DescValidateMovements', $langs->transnoentitiesnoconv("RegistrationInAccounting")),
 			'confirm_step_1',
@@ -222,7 +222,7 @@ if (isset($current_fiscal_period)) {
 		);
 
 		$formconfirm = $form->formconfirm(
-			DOL_PHP_SELF . '?fiscal_period_id=' . $current_fiscal_period['id'],
+			$_SERVER['PHP_SELF'] . '?fiscal_period_id=' . $current_fiscal_period['id'],
 			$langs->trans('AccountancyClosureClose'),
 			$langs->trans('AccountancyClosureConfirmClose'),
 			'confirm_step_2',
@@ -265,7 +265,7 @@ if (isset($current_fiscal_period)) {
 		);
 
 		$formconfirm = $form->formconfirm(
-			DOL_PHP_SELF . '?fiscal_period_id=' . $current_fiscal_period['id'],
+			$_SERVER['PHP_SELF'] . '?fiscal_period_id=' . $current_fiscal_period['id'],
 			$langs->trans('AccountancyClosureAccountingReversal'),
 			$langs->trans('AccountancyClosureConfirmAccountingReversal'),
 			'confirm_step_3',
@@ -291,8 +291,8 @@ print $formconfirm;
 
 $fiscal_period_nav_text = $langs->trans("FiscalPeriod");
 
-$fiscal_period_nav_text .= '&nbsp;<a href="' . (isset($last_fiscal_period) ? DOL_PHP_SELF . '?fiscal_period_id=' . $last_fiscal_period['id'] : '#" class="disabled') . '">' . img_previous() . '</a>';
-$fiscal_period_nav_text .= '&nbsp;<a href="' . (isset($next_fiscal_period) ? DOL_PHP_SELF . '?fiscal_period_id=' . $next_fiscal_period['id'] : '#" class="disabled') . '">' . img_next() . '</a>';
+$fiscal_period_nav_text .= '&nbsp;<a href="' . (isset($last_fiscal_period) ? $_SERVER['PHP_SELF'] . '?fiscal_period_id=' . $last_fiscal_period['id'] : '#" class="disabled') . '">' . img_previous() . '</a>';
+$fiscal_period_nav_text .= '&nbsp;<a href="' . (isset($next_fiscal_period) ? $_SERVER['PHP_SELF'] . '?fiscal_period_id=' . $next_fiscal_period['id'] : '#" class="disabled') . '">' . img_next() . '</a>';
 if (!empty($current_fiscal_period)) {
 	$fiscal_period_nav_text .= $current_fiscal_period['label'].' &nbsp;(' . (isset($current_fiscal_period) ? dol_print_date($current_fiscal_period['date_start'], 'day') . '&nbsp;-&nbsp;' . dol_print_date($current_fiscal_period['date_end'], 'day') . ')' : '');
 }
@@ -321,7 +321,7 @@ if (isset($current_fiscal_period)) {
 	if (empty($count_by_month['total'])) {
 		$buttonvalidate = '<a class="butActionRefused classfortooltip" href="#">' . $langs->trans("ValidateMovements") . '</a>';
 	} else {
-		$buttonvalidate = '<a class="butAction" href="' . DOL_PHP_SELF . '?action=step_1&fiscal_period_id=' . $current_fiscal_period['id'] . '">' . $langs->trans("ValidateMovements") . '</a>';
+		$buttonvalidate = '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=step_1&fiscal_period_id=' . $current_fiscal_period['id'] . '">' . $langs->trans("ValidateMovements") . '</a>';
 	}
 	print_barre_liste($langs->trans("OverviewOfMovementsNotValidated"), '', '', '', '', '', '', -1, '', '', 0, $buttonvalidate, '', 0, 1, 0);
 
@@ -365,7 +365,7 @@ if (isset($current_fiscal_period)) {
 	// print '<span class="opacitymedium">' . $langs->trans("AccountancyClosureStep2Desc") . '</span><br>';
 
 	if (empty($count_by_month['total']) && empty($current_fiscal_period['status'])) {
-		$button = '<a class="butAction" href="' . DOL_PHP_SELF . '?action=step_2&fiscal_period_id=' . $current_fiscal_period['id'] . '">' . $langs->trans("AccountancyClosureClose") . '</a>';
+		$button = '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=step_2&fiscal_period_id=' . $current_fiscal_period['id'] . '">' . $langs->trans("AccountancyClosureClose") . '</a>';
 	} else {
 		$button = '<a class="butActionRefused classfortooltip" href="#">' . $langs->trans("AccountancyClosureClose") . '</a>';
 	}
@@ -383,7 +383,7 @@ if (isset($current_fiscal_period)) {
 	if (empty($current_fiscal_period['status'])) {
 		$button = '<a class="butActionRefused classfortooltip" href="#">' . $langs->trans("AccountancyClosureAccountingReversal") . '</a>';
 	} else {
-		$button = '<a class="butAction" href="' . DOL_PHP_SELF . '?action=step_3&fiscal_period_id=' . $current_fiscal_period['id'] . '">' . $langs->trans("AccountancyClosureAccountingReversal") . '</a>';
+		$button = '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=step_3&fiscal_period_id=' . $current_fiscal_period['id'] . '">' . $langs->trans("AccountancyClosureAccountingReversal") . '</a>';
 	}
 	print_barre_liste('', '', '', '', '', '', '', -1, '', '', 0, $button, '', 0, 1, 0);
 }

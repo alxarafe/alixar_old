@@ -70,7 +70,7 @@ if (in_array($modulepart, array('product', 'produit', 'societe', 'user', 'ticket
 if ($action == 'deletefile' || $action == 'deletelink') {
 	$langs->load("companies"); // Need for string DeleteFile+ConfirmDeleteFiles
 	print $form->formconfirm(
-		DOL_PHP_SELF.'?id='.$object->id.'&urlfile='.urlencode(GETPOST("urlfile")).'&linkid='.GETPOSTINT('linkid').(empty($param) ? '' : $param),
+		$_SERVER['PHP_SELF'].'?id='.$object->id.'&urlfile='.urlencode(GETPOST("urlfile")).'&linkid='.GETPOSTINT('linkid').(empty($param) ? '' : $param),
 		$langs->trans('DeleteFile'),
 		$langs->trans('ConfirmDeleteFile'),
 		'confirm_deletefile',
@@ -122,7 +122,7 @@ if (empty($formfile) || !is_object($formfile)) {
 
 // Show upload form (document and links)
 $formfile->form_attach_new_file(
-	DOL_PHP_SELF.'?id='.$object->id.(empty($withproject) ? '' : '&withproject=1').(empty($moreparam) ? '' : $moreparam),
+	$_SERVER['PHP_SELF'].'?id='.$object->id.(empty($withproject) ? '' : '&withproject=1').(empty($moreparam) ? '' : $moreparam),
 	'',
 	0,
 	0,

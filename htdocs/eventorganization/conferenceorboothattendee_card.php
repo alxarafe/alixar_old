@@ -429,7 +429,7 @@ if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("ConferenceOrBoothAttendee")), '', 'object_'.$object->picto);
 
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.(empty($withproject) ? '' : '?withproject=1').'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].(empty($withproject) ? '' : '?withproject=1').'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -473,7 +473,7 @@ if ($action == 'create') {
 if (($id || $ref) && $action == 'edit') {
 	print load_fiche_titre($langs->trans("ConferenceOrBoothAttendee"), '', 'object_'.$object->picto);
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -531,23 +531,23 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteConferenceOrBoothAttendee'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteConferenceOrBoothAttendee'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
 	}
 	// Confirmation to delete line
 	if ($action == 'deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 	}
 	// Clone confirmation
 	if ($action == 'clone') {
 		// Create an array for form
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}
 
 	// Confirmation of action xxxx
 	if ($action == 'xxx') {
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
 	}
 
 	// Call Hook formConfirm
@@ -606,15 +606,15 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if (empty($reshook)) {
 			// Send
 			if (empty($user->socid)) {
-				print dolGetButtonAction('', $langs->trans('SendMail'), 'default', DOL_PHP_SELF.'?id='.$object->id.(!empty($confOrBooth->id) ? '&conforboothid='.$confOrBooth->id : '').(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : '').'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle');
+				print dolGetButtonAction('', $langs->trans('SendMail'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.(!empty($confOrBooth->id) ? '&conforboothid='.$confOrBooth->id : '').(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : '').'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle');
 			}
-			print dolGetButtonAction('', $langs->trans('Modify'), 'default', DOL_PHP_SELF.'?id='.$object->id.(!empty($confOrBooth->id) ? '&conforboothid='.$confOrBooth->id : '').(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : '').'&action=edit&token='.newToken(), '', $permissiontoadd);
+			print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.(!empty($confOrBooth->id) ? '&conforboothid='.$confOrBooth->id : '').(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : '').'&action=edit&token='.newToken(), '', $permissiontoadd);
 
 			// Clone
-			print dolGetButtonAction('', $langs->trans('ToClone'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=clone&token='.newToken().(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : ''), '', $permissiontoadd);
+			print dolGetButtonAction('', $langs->trans('ToClone'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=clone&token='.newToken().(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : ''), '', $permissiontoadd);
 
 			// Delete (need delete permission, or if draft, just need create/modify permission)
-			print dolGetButtonAction('', $langs->trans('Delete'), 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : ''), '', $permissiontodelete || ($object->status == $object::STATUS_DRAFT && $permissiontoadd));
+			print dolGetButtonAction('', $langs->trans('Delete'), 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().(!empty($projectstatic->id) ? '&fk_project='.$projectstatic->id : ''), '', $permissiontodelete || ($object->status == $object::STATUS_DRAFT && $permissiontoadd));
 		}
 		print '</div>'."\n";
 	}
@@ -636,7 +636,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			$objref = dol_sanitizeFileName($object->ref);
 			$relativepath = $objref.'/'.$objref.'.pdf';
 			$filedir = $conf->eventorganization->dir_output.'/'.$object->element.'/'.$objref;
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 			$genallowed = $user->hasRight('eventorganization', 'conferenceorboothattendee', 'read'); // If you can read, you can build the PDF to read content
 			$delallowed = $user->hasRight('eventorganization', 'conferenceorboothattendee', 'write'); // If you can create/edit, you can remove a file on card
 			print $formfile->showdocuments('eventorganization:ConferenceOrBoothAttendee', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);

@@ -167,9 +167,9 @@ if ($object->id > 0) {
 		if (0) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);
@@ -209,7 +209,7 @@ if ($object->id > 0) {
 		if (get_class($objthirdparty) == 'Societe') {
 			$out .= '&amp;socid='.$objthirdparty->id;
 		}
-		$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '').'&amp;backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id);
+		$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '').'&amp;backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id);
 		//$out.=$langs->trans("AddAnAction").' ';
 		//$out.=img_picto($langs->trans("AddAnAction"),'filenew');
 		//$out.="</a>";
@@ -230,7 +230,7 @@ if ($object->id > 0) {
 
 	if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
 		$param = '&id='.$object->id.'&socid='.$socid;
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage='.urlencode($contextpage);
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {

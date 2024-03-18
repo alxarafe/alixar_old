@@ -448,7 +448,7 @@ llxHeader("", $title, $help_url);
 
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -489,7 +489,7 @@ if (isModEnabled('societe')) {
 	$rowspan++;
 }
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="rowid" value="'.$object->id.'">';
 
@@ -621,13 +621,13 @@ if (isModEnabled('societe')) {
 	print $langs->trans("LinkedToDolibarrThirdParty");
 	print '</td>';
 	if ($action != 'editthirdparty' && $user->hasRight('adherent', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editthirdparty&token='.newToken().'&rowid='.$object->id.'">'.img_edit($langs->trans('SetLinkToThirdParty'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editthirdparty&token='.newToken().'&rowid='.$object->id.'">'.img_edit($langs->trans('SetLinkToThirdParty'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td colspan="2" class="valeur">';
 	if ($action == 'editthirdparty') {
 		$htmlname = 'socid';
-		print '<form method="POST" action="'.DOL_PHP_SELF.'" name="form'.$htmlname.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'" name="form'.$htmlname.'">';
 		print '<input type="hidden" name="rowid" value="'.$object->id.'">';
 		print '<input type="hidden" name="action" value="set'.$htmlname.'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -665,14 +665,14 @@ print '</td>';
 if ($action != 'editlogin' && $user->hasRight('adherent', 'creer')) {
 	print '<td class="right">';
 	if ($user->hasRight("user", "user", "creer")) {
-		print '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=editlogin&token='.newToken().'&rowid='.$object->id.'">'.img_edit($langs->trans('SetLinkToUser'), 1).'</a>';
+		print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editlogin&token='.newToken().'&rowid='.$object->id.'">'.img_edit($langs->trans('SetLinkToUser'), 1).'</a>';
 	}
 	print '</td>';
 }
 print '</tr></table>';
 print '</td><td colspan="2" class="valeur">';
 if ($action == 'editlogin') {
-	$form->form_users(DOL_PHP_SELF.'?rowid='.$object->id, $object->user_id, 'userid', '');
+	$form->form_users($_SERVER['PHP_SELF'].'?rowid='.$object->id, $object->user_id, 'userid', '');
 } else {
 	if ($object->user_id) {
 		$linkeduser = new User($db);
@@ -702,7 +702,7 @@ if ($user->hasRight('adherent', 'cotisation', 'creer')) {
 		print '<div class="tabsAction">';
 
 		if ($object->statut > 0) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?rowid='.$rowid.'&action=addsubscription&token='.newToken().'">'.$langs->trans("AddSubscription")."</a></div>";
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?rowid='.$rowid.'&action=addsubscription&token='.newToken().'">'.$langs->trans("AddSubscription")."</a></div>";
 		} else {
 			print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("ValidateBefore")).'">'.$langs->trans("AddSubscription").'</a></div>';
 		}
@@ -738,14 +738,14 @@ if ($action != 'addsubscription' && $action != 'create_thirdparty') {
 		print '<table class="noborder centpercent">'."\n";
 
 		print '<tr class="liste_titre">';
-		print_liste_field_titre('Ref', DOL_PHP_SELF, 'c.rowid', '', $param, '', $sortfield, $sortorder);
-		print_liste_field_titre('DateCreation', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre('Type', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre('DateStart', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre('DateEnd', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre('Amount', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre('Ref', $_SERVER['PHP_SELF'], 'c.rowid', '', $param, '', $sortfield, $sortorder);
+		print_liste_field_titre('DateCreation', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre('Type', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre('DateStart', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre('DateEnd', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre('Amount', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 		if (isModEnabled('bank')) {
-			print_liste_field_titre('Account', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre('Account', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 		}
 		print "</tr>\n";
 
@@ -952,11 +952,11 @@ if (($action == 'addsubscription' || $action == 'create_thirdparty') && $user->h
 		}
 		// @todo Add other extrafields mandatory for thirdparty creation
 
-		print $form->formconfirm(DOL_PHP_SELF."?rowid=".$object->id, $langs->trans("CreateDolibarrThirdParty"), $langs->trans("ConfirmCreateThirdParty"), "confirm_create_thirdparty", $formquestion, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?rowid=".$object->id, $langs->trans("CreateDolibarrThirdParty"), $langs->trans("ConfirmCreateThirdParty"), "confirm_create_thirdparty", $formquestion, 1);
 	}
 
 
-	print '<form name="subscription" method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form name="subscription" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="subscription">';
 	print '<input type="hidden" name="rowid" value="'.$rowid.'">';
@@ -1060,7 +1060,7 @@ if (($action == 'addsubscription' || $action == 'create_thirdparty') && $user->h
 						print img_warning($langs->trans("NoThirdPartyAssociatedToMember"));
 					}
 					print $langs->trans("NoThirdPartyAssociatedToMember");
-					print ' - <a href="'.DOL_PHP_SELF.'?rowid='.$object->id.'&amp;action=create_thirdparty">';
+					print ' - <a href="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'&amp;action=create_thirdparty">';
 					print $langs->trans("CreateDolibarrThirdParty");
 					print '</a>)';
 				}
@@ -1090,7 +1090,7 @@ if (($action == 'addsubscription' || $action == 'create_thirdparty') && $user->h
 						print img_warning($langs->trans("NoThirdPartyAssociatedToMember"));
 					}
 					print $langs->trans("NoThirdPartyAssociatedToMember");
-					print ' - <a href="'.DOL_PHP_SELF.'?rowid='.$object->id.'&amp;action=create_thirdparty">';
+					print ' - <a href="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'&amp;action=create_thirdparty">';
 					print $langs->trans("CreateDolibarrThirdParty");
 					print '</a>)';
 				}

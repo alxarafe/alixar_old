@@ -296,7 +296,7 @@ if ($id && $bankid && $action == 'edit' && ($user->hasRight('user', 'user', 'cre
 				})';
 		print "</script>\n";
 	}
-	print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" name="formbank" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" name="formbank" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="'.GETPOSTINT("id").'">';
@@ -317,7 +317,7 @@ if ($id && $action == 'create' && $user->hasRight('user', 'user', 'creer')) {
 				})';
 		print "</script>\n";
 	}
-	print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" name="formbank" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" name="formbank" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="bankid" value="'.$bankid.'">';
@@ -519,7 +519,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 		print $form->editfieldkey("DefaultCategoryCar", 'default_c_exp_tax_cat', $object->default_c_exp_tax_cat, $object, $user->hasRight('user', 'user', 'creer'));
 		print '</td><td>';
 		if ($action == 'editdefault_c_exp_tax_cat') {
-			$ret = '<form method="post" action="'.DOL_PHP_SELF.($moreparam ? '?'.$moreparam : '').'">';
+			$ret = '<form method="post" action="'.$_SERVER['PHP_SELF'].($moreparam ? '?'.$moreparam : '').'">';
 			$ret .= '<input type="hidden" name="action" value="setdefault_c_exp_tax_cat">';
 			$ret .= '<input type="hidden" name="token" value="'.newToken().'">';
 			$ret .= '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -541,7 +541,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 		print $form->editfieldkey("DefaultRangeNumber", 'default_range', $object->default_range, $object, $user->hasRight('user', 'user', 'creer'));
 		print '</td><td>';
 		if ($action == 'editdefault_range') {
-			$ret = '<form method="post" action="'.DOL_PHP_SELF.($moreparam ? '?'.$moreparam : '').'">';
+			$ret = '<form method="post" action="'.$_SERVER['PHP_SELF'].($moreparam ? '?'.$moreparam : '').'">';
 			$ret .= '<input type="hidden" name="action" value="setdefault_range">';
 			$ret .= '<input type="hidden" name="token" value="'.newToken().'">';
 			$ret .= '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -786,7 +786,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 	$morehtmlright = '';
 	if ($account->id == 0) {
 		if ($permissiontoaddbankaccount) {
-			$morehtmlright = dolGetButtonTitle($langs->trans('Add'), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?id='.$object->id.'&amp;action=create');
+			$morehtmlright = dolGetButtonTitle($langs->trans('Add'), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=create');
 		} else {
 			$morehtmlright = dolGetButtonTitle($langs->trans('Add'), $langs->trans('NotEnoughPermissions'), 'fa fa-plus-circle', '', '', -2);
 		}
@@ -806,7 +806,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 	print_liste_field_titre("IBAN");
 	print_liste_field_titre("BIC");
 	print_liste_field_titre("Currency");
-	print_liste_field_titre('', DOL_PHP_SELF, "", '', '', '', '', '', 'maxwidthsearch ');
+	print_liste_field_titre('', $_SERVER['PHP_SELF'], "", '', '', '', '', '', 'maxwidthsearch ');
 	print "</tr>\n";
 
 	if ($account->id > 0) {
@@ -864,11 +864,11 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 		// Edit/Delete
 		print '<td class="right nowraponall">';
 		if ($permissiontoaddbankaccount) {
-			print '<a class="editfielda marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&bankid='.$account->id.'&action=edit&token='.newToken().'">';
+			print '<a class="editfielda marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&bankid='.$account->id.'&action=edit&token='.newToken().'">';
 			print img_picto($langs->trans("Modify"), 'edit');
 			print '</a>';
 
-			print '<a class="editfielda marginleftonly marginrightonly reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&bankid='.$account->id.'&action=delete_confirmed&token='.newToken().'">';
+			print '<a class="editfielda marginleftonly marginrightonly reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&bankid='.$account->id.'&action=delete_confirmed&token='.newToken().'">';
 			print img_picto($langs->trans("Delete"), 'delete');
 			print '</a>';
 		}

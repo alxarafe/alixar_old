@@ -94,7 +94,7 @@ if ($id > 0) {
 	$title = $langs->trans("User");
 
 
-	print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
@@ -208,7 +208,7 @@ if ($id > 0) {
 	print '<div class="tabsAction">';
 
 	if (!empty($user->admin) && $action != 'edit') {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 	}
 
 	print "</div>\n";

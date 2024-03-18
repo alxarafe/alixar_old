@@ -419,7 +419,7 @@ if (!$error && $db->connected && $action == "set") {
 			print '</td><td>';
 			print '<span class="error">'.$langs->trans("Error").'</span>';
 			print "</td></tr>";
-			print '<tr><td colspan="2"><br>'.$langs->trans("CorrectProblemAndReloadPage", DOL_PHP_SELF.'?testget=ok').'</td></tr>';
+			print '<tr><td colspan="2"><br>'.$langs->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'].'?testget=ok').'</td></tr>';
 			$error++;
 		} else {
 			// Create .htaccess file in document directory
@@ -479,7 +479,7 @@ if (!$error && $db->connected && $action == "set") {
 				print '</td><td>';
 				print '<span class="error">'.$langs->trans("Error").'</span>';
 				print "</td></tr>";
-				print '<tr><td colspan="2"><br>'.$langs->trans("CorrectProblemAndReloadPage", DOL_PHP_SELF.'?testget=ok').'</td></tr>';
+				print '<tr><td colspan="2"><br>'.$langs->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'].'?testget=ok').'</td></tr>';
 			} else {
 				//ODT templates
 				$srcroot = $main_dir.'/install/doctemplates';

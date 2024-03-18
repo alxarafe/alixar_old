@@ -238,7 +238,7 @@ if ($action == 'add') {
 	$object->fetch($id);
 	$object->delete($user);
 	$id = 0;
-	header('Location: '.DOL_PHP_SELF);
+	header('Location: '.$_SERVER['PHP_SELF']);
 	exit;
 } elseif ($action == 'setfrequency' && $user->hasRight('ficheinter', 'creer')) {
 	// Set frequency and unit frequency
@@ -349,7 +349,7 @@ if ($action == 'create') {
 
 			$numprojet = $formproject->select_projects($object->thirdparty->id, $projectid, 'projectid', 0, 0, 1, 0, 0, 0, 0, '', 0, 0, '');
 			print ' &nbsp; <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.$object->thirdparty->id;
-			print '&action=create&status=1&backtopage='.urlencode(DOL_PHP_SELF).'?action=create';
+			print '&action=create&status=1&backtopage='.urlencode($_SERVER['PHP_SELF']).'?action=create';
 			print '&socid='.$object->thirdparty->id.(!empty($id) ? '&id='.$id : '').'">';
 			print $langs->trans("AddProject").'</a>';
 			print "</td></tr>";
@@ -474,7 +474,7 @@ if ($action == 'create') {
 	print load_fiche_titre($langs->trans("CreateRepeatableIntervention"), '', 'intervention');
 	print dol_get_fiche_head('');
 
-	print '<form name="fichinter" action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form name="fichinter" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<table class="border centpercent">';
 	print '<tr><td class="fieldrequired">'.$langs->trans("ThirdParty").'</td><td>';
 	print $form->select_company('', 'socid', '', 1, 1);
@@ -518,18 +518,18 @@ if ($action == 'create') {
 				$morehtmlref .= '<br>'.$langs->trans('Project').' ';
 				if ($user->hasRight('ficheinter', 'creer')) {
 					if ($action != 'classify') {
-						$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">';
+						$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">';
 						$morehtmlref .= img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
 					}
 					if ($action == 'classify') {
-						$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+						$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 						$morehtmlref .= '<input type="hidden" name="action" value="classin">';
 						$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 						$morehtmlref .= $formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
 						$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 						$morehtmlref .= '</form>';
 					} else {
-						$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+						$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
 					}
 				} else {
 					if (!empty($object->fk_project)) {
@@ -576,7 +576,7 @@ if ($action == 'create') {
 				print $langs->trans('Contract');
 				print '</td>';
 				if ($action != 'contrat') {
-					print '<td class="right"><a href="'.DOL_PHP_SELF.'?action=contrat&amp;id='.$object->id.'">';
+					print '<td class="right"><a href="'.$_SERVER['PHP_SELF'].'?action=contrat&amp;id='.$object->id.'">';
 					print img_edit($langs->trans('SetContract'), 1);
 					print '</a></td>';
 				}
@@ -584,7 +584,7 @@ if ($action == 'create') {
 				print '</td><td>';
 				if ($action == 'contrat') {
 					$formcontract = new FormContract($db);
-					$formcontract->formSelectContract(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_contrat, 'contratid', 0, 1);
+					$formcontract->formSelectContract($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_contrat, 'contratid', 0, 1);
 				} else {
 					if ($object->fk_contrat) {
 						$contratstatic = new Contrat($db);
@@ -614,13 +614,13 @@ if ($action == 'create') {
 			print $langs->trans('Frequency');
 			print '</td>';
 			if ($action != 'editfrequency' && $user->hasRight('ficheinter', 'creer')) {
-				print '<td class="right"><a href="'.DOL_PHP_SELF.'?action=editfrequency&token='.newToken().'&id='.$id.'">';
+				print '<td class="right"><a href="'.$_SERVER['PHP_SELF'].'?action=editfrequency&token='.newToken().'&id='.$id.'">';
 				print img_edit($langs->trans('Edit'), 1).'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td><td>';
 			if ($action == 'editfrequency') {
-				print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				print '<input type="hidden" name="action" value="setfrequency">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<table class="nobordernopadding">';
@@ -761,13 +761,13 @@ if ($action == 'create') {
 
 			if ($user->hasRight('ficheinter', 'creer')) {
 				print '<div class="inline-block divButAction">';
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=createfrommodel&token='.newToken();
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=createfrommodel&token='.newToken();
 				print '&socid='.$object->thirdparty->id.'&id='.$object->id.'">';
 				print $langs->trans("AddIntervention").'</a></div>';
 			}
 
 			// Delete
-			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $user->hasRight('ficheinter', 'supprimer'));
+			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $user->hasRight('ficheinter', 'supprimer'));
 
 			print '</div>';
 		} else {
@@ -817,27 +817,27 @@ if ($action == 'create') {
 		if ($resql) {
 			$num = $db->num_rows($resql);
 
-			print_barre_liste($langs->trans("RepeatableIntervention"), $page, DOL_PHP_SELF, "&socid=$socid", $sortfield, $sortorder, '', $num, '', 'intervention');
+			print_barre_liste($langs->trans("RepeatableIntervention"), $page, $_SERVER['PHP_SELF'], "&socid=$socid", $sortfield, $sortorder, '', $num, '', 'intervention');
 
 			print '<span class="opacitymedium">'.$langs->trans("ToCreateAPredefinedIntervention").'</span><br><br>';
 
 			$i = 0;
 			print '<table class="noborder centpercent">';
 			print '<tr class="liste_titre">';
-			print_liste_field_titre("Ref", DOL_PHP_SELF, "f.titre", "", "", 'width="200px"', $sortfield, $sortorder, 'left ');
-			print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", "", 'width="200px"', $sortfield, $sortorder, 'left ');
+			print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "f.titre", "", "", 'width="200px"', $sortfield, $sortorder, 'left ');
+			print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", "", 'width="200px"', $sortfield, $sortorder, 'left ');
 			if (isModEnabled('contract')) {
-				print_liste_field_titre("Contract", DOL_PHP_SELF, "f.fk_contrat", "", "", 'width="100px"', $sortfield, $sortorder, 'left ');
+				print_liste_field_titre("Contract", $_SERVER['PHP_SELF'], "f.fk_contrat", "", "", 'width="100px"', $sortfield, $sortorder, 'left ');
 			}
 			if (isModEnabled('project')) {
-				print_liste_field_titre("Project", DOL_PHP_SELF, "f.fk_project", "", "", 'width="100px"', $sortfield, $sortorder, 'left ');
+				print_liste_field_titre("Project", $_SERVER['PHP_SELF'], "f.fk_project", "", "", 'width="100px"', $sortfield, $sortorder, 'left ');
 			}
-			print_liste_field_titre("Duration", DOL_PHP_SELF, 'f.duree', '', '', 'width="50px"', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre("Duration", $_SERVER['PHP_SELF'], 'f.duree', '', '', 'width="50px"', $sortfield, $sortorder, 'right ');
 			// Recurring or not
-			print_liste_field_titre("Frequency", DOL_PHP_SELF, "f.frequency", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
-			print_liste_field_titre("NbOfGenerationDoneShort", DOL_PHP_SELF, "f.nb_gen_done", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
-			print_liste_field_titre("DateLastGeneration", DOL_PHP_SELF, "f.date_last_gen", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
-			print_liste_field_titre("NextDateToIntervention", DOL_PHP_SELF, "f.date_when", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("Frequency", $_SERVER['PHP_SELF'], "f.frequency", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("NbOfGenerationDoneShort", $_SERVER['PHP_SELF'], "f.nb_gen_done", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("DateLastGeneration", $_SERVER['PHP_SELF'], "f.date_last_gen", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("NextDateToIntervention", $_SERVER['PHP_SELF'], "f.date_when", "", "", 'width="100px"', $sortfield, $sortorder, 'center ');
 			print '<th width="100px"></th>';
 			print "</tr>\n";
 
@@ -849,7 +849,7 @@ if ($action == 'create') {
 					$objp = $db->fetch_object($resql);
 
 					print '<tr class="oddeven">';
-					print '<td><a href="'.DOL_PHP_SELF.'?id='.$objp->fich_rec.'">';
+					print '<td><a href="'.$_SERVER['PHP_SELF'].'?id='.$objp->fich_rec.'">';
 					print img_object($langs->trans("ShowIntervention"), "intervention").' '.$objp->title;
 					print "</a></td>\n";
 					if ($objp->socid) {
@@ -909,7 +909,7 @@ if ($action == 'create') {
 						print '<td class="center">';
 						if ($user->hasRight('ficheinter', 'creer')) {
 							if (empty($objp->frequency) || $db->jdate($objp->date_when) <= $today) {
-								print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=createfrommodel';
+								print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=createfrommodel';
 								print '&socid='.$objp->socid.'&id='.$objp->fich_rec.'">';
 								print $langs->trans("CreateFichInter").'</a>';
 							} else {

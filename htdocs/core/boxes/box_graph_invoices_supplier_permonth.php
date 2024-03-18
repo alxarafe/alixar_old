@@ -222,7 +222,7 @@ class box_graph_invoices_supplier_permonth extends ModeleBoxes
 					});
 					</script>';
 				$stringtoshow .= '<div class="center hideobject" id="idfilter'.$this->boxcode.'">'; // hideobject is to start hidden
-				$stringtoshow .= '<form class="flat formboxfilter" method="POST" action="'.DOL_PHP_SELF.'">';
+				$stringtoshow .= '<form class="flat formboxfilter" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 				$stringtoshow .= '<input type="hidden" name="token" value="'.newToken().'">';
 				$stringtoshow .= '<input type="hidden" name="action" value="'.$refreshaction.'">';
 				$stringtoshow .= '<input type="hidden" name="page_y" value="">';

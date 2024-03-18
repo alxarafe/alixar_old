@@ -208,12 +208,12 @@ $param = '&mode='.$mode;
 $enabledisablehtml = $langs->trans("EnableDefaultValues").' ';
 if (!getDolGlobalString('MAIN_ENABLE_DEFAULT_VALUES')) {
 	// Button off, click to enable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setMAIN_ENABLE_DEFAULT_VALUES&token='.newToken().'&value=1'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setMAIN_ENABLE_DEFAULT_VALUES&token='.newToken().'&value=1'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Disabled"), 'switch_off');
 	$enabledisablehtml .= '</a>';
 } else {
 	// Button on, click to disable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setMAIN_ENABLE_DEFAULT_VALUES&token='.newToken().'&value=0'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setMAIN_ENABLE_DEFAULT_VALUES&token='.newToken().'&value=0'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Activated"), 'switch_on');
 	$enabledisablehtml .= '</a>';
 }
@@ -223,7 +223,7 @@ print load_fiche_titre($langs->trans("DefaultValues"), $enabledisablehtml, 'titl
 print '<span class="opacitymedium">'.$langs->trans("DefaultValuesDesc")."</span><br>\n";
 print "<br>\n";
 
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -243,7 +243,7 @@ if ($defaultvalue) {
 }
 
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -281,7 +281,7 @@ if ($mode == 'createform') {
 }
 $texthelp .= '<br><br>'.$langs->trans("AlsoDefaultValuesAreEffectiveForActionCreate");
 $texturl = $form->textwithpicto($langs->trans("RelativeURL"), $texthelp);
-print_liste_field_titre($texturl, DOL_PHP_SELF, 'page,param', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre($texturl, $_SERVER['PHP_SELF'], 'page,param', '', $param, '', $sortfield, $sortorder);
 // Field
 $texthelp = $langs->trans("TheKeyIsTheNameOfHtmlField");
 if ($mode != 'sortorder') {
@@ -290,7 +290,7 @@ if ($mode != 'sortorder') {
 	$texthelp = 'field or alias.field';
 	$textkey = $form->textwithpicto($langs->trans("Field"), $texthelp);
 }
-print_liste_field_titre($textkey, DOL_PHP_SELF, 'param', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre($textkey, $_SERVER['PHP_SELF'], 'param', '', $param, '', $sortfield, $sortorder);
 // Value
 if ($mode != 'focus' && $mode != 'mandatory') {
 	if ($mode != 'sortorder') {
@@ -306,16 +306,16 @@ if ($mode != 'focus' && $mode != 'mandatory') {
 		$texthelp = 'ASC or DESC';
 		$textvalue = $form->textwithpicto($langs->trans("SortOrder"), $texthelp);
 	}
-	print_liste_field_titre($textvalue, DOL_PHP_SELF, 'value', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($textvalue, $_SERVER['PHP_SELF'], 'value', '', $param, '', $sortfield, $sortorder);
 }
 // Entity
 if (isModEnabled('multicompany') && !$user->entity) {
-	print_liste_field_titre("Entity", DOL_PHP_SELF, 'entity,page', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Entity", $_SERVER['PHP_SELF'], 'entity,page', '', $param, '', $sortfield, $sortorder);
 } else {
-	print_liste_field_titre("", DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("", $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
 }
 // Actions
-print_liste_field_titre("", DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre("", $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
 print "</tr>\n";
 
 
@@ -403,8 +403,8 @@ if (!is_array($result) && $result < 0) {
 		// Actions
 		print '<td class="center">';
 		if ($action != 'edit' || GETPOST('rowid') != $defaultvalue->id) {
-			print '<a class="editfielda marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?rowid='.$defaultvalue->id.'&entity='.$defaultvalue->entity.'&mode='.$mode.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
-			print '<a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?rowid='.$defaultvalue->id.'&entity='.$defaultvalue->entity.'&mode='.$mode.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+			print '<a class="editfielda marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?rowid='.$defaultvalue->id.'&entity='.$defaultvalue->entity.'&mode='.$mode.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
+			print '<a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?rowid='.$defaultvalue->id.'&entity='.$defaultvalue->entity.'&mode='.$mode.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 		} else {
 			print '<input type="hidden" name="page" value="'.$page.'">';
 			print '<input type="hidden" name="rowid" value="'.$id.'">';

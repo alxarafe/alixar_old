@@ -280,7 +280,7 @@ if ($resql) {
 	$param = "&id=".urlencode((string) ($id));
 
 	// Lines of title fields
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -296,20 +296,20 @@ if ($resql) {
 	$massactionbutton = '';
 	$title = ($salaryBonPl ? $langs->trans("Salaries") : ($object->type == 'bank-transfer' ? $langs->trans("SupplierInvoices") : $langs->trans("Invoices")));
 
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, '', 0, '', '', $limit);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, '', 0, '', '', $limit);
 
 	print"\n<!-- debut table -->\n";
 	print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 	print '<table class="liste centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre(($salaryBonPl ? "Salary" : "Bill"), DOL_PHP_SELF, "p.ref", '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre(($salaryBonPl ? "Salary" : "Bill"), $_SERVER['PHP_SELF'], "p.ref", '', $param, '', $sortfield, $sortorder);
 	if ($object->type == 'bank-transfer' && !$salaryBonPl) {
-		print_liste_field_titre("RefSupplierShort", DOL_PHP_SELF, "f.ref_supplier", '', $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("RefSupplierShort", $_SERVER['PHP_SELF'], "f.ref_supplier", '', $param, '', $sortfield, $sortorder);
 	}
-	print_liste_field_titre(($salaryBonPl ? "Employee" : "ThirdParty"), DOL_PHP_SELF, "s.nom", '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre(($salaryBonPl ? "AmountSalary" : "AmountInvoice"), DOL_PHP_SELF, "f.total_ttc", "", $param, 'class="right"', $sortfield, $sortorder);
-	print_liste_field_titre("AmountRequested", DOL_PHP_SELF, "pl.amount", "", $param, 'class="right"', $sortfield, $sortorder);
-	print_liste_field_titre("Status", DOL_PHP_SELF, "", "", $param, 'align="center"', $sortfield, $sortorder);
+	print_liste_field_titre(($salaryBonPl ? "Employee" : "ThirdParty"), $_SERVER['PHP_SELF'], "s.nom", '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre(($salaryBonPl ? "AmountSalary" : "AmountInvoice"), $_SERVER['PHP_SELF'], "f.total_ttc", "", $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("AmountRequested", $_SERVER['PHP_SELF'], "pl.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "", "", $param, 'align="center"', $sortfield, $sortorder);
 	print "</tr>\n";
 
 	$totalinvoices = 0;

@@ -233,7 +233,7 @@ if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 print '<tr class="oddeven">';
 print '<td>'.$langs->transnoentitiesnoconv("multicurrency_buyPriceInCurrency").'</td>';
 print '<td class="right">';
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_MULTICURRENCY_BUY_PRICE_IN_CURRENCY">';
 print $form->selectyesno("MULTICURRENCY_BUY_PRICE_IN_CURRENCY",$conf->global->MULTICURRENCY_BUY_PRICE_IN_CURRENCY,1);
@@ -247,7 +247,7 @@ print '</td></tr>';
 print '<tr class="oddeven">';
 print '<td>'.$langs->transnoentitiesnoconv("multicurrency_modifyRateApplication").'</td>';
 print '<td class="right">';
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_MULTICURRENCY_MODIFY_RATE_APPLICATION">';
 print $form->selectarray('MULTICURRENCY_MODIFY_RATE_APPLICATION', array('PU_DOLIBARR' => 'PU_DOLIBARR', 'PU_CURRENCY' => 'PU_CURRENCY'), $conf->global->MULTICURRENCY_MODIFY_RATE_APPLICATION);
@@ -269,7 +269,7 @@ print '<td>'.$form->textwithpicto($langs->trans("CurrenciesUsed"), $langs->trans
 print '<td class="right">'.$langs->trans("Rate").' / '.$langs->getCurrencySymbol($conf->currency).'</td>'."\n";
 print '</tr>';
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="add_currency">';
 
@@ -307,7 +307,7 @@ foreach ($TCurrency as &$currency) {
 	}
 	print '</td>';
 	print '<td class="right">';
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update_currency">';
 	print '<input type="hidden" name="fk_multicurrency" value="'.$currency->id.'">';
@@ -336,7 +336,7 @@ print '
 print '<br>';
 
 if (!getDolGlobalString('MULTICURRENCY_DISABLE_SYNC_CURRENCYLAYER')) {
-	print '<form method="POST" action="'.DOL_PHP_SELF.'" id="form_sync">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'" id="form_sync">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="setapilayer">';
 

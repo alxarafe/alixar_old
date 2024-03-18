@@ -79,7 +79,7 @@ function print_actions_filter(
 	$formactions = new FormActions($db);
 
 	// Filters
-	//print '<form name="listactionsfilter" class="listactionsfilter" action="' . DOL_PHP_SELF . '" method="get">';
+	//print '<form name="listactionsfilter" class="listactionsfilter" action="' . $_SERVER['PHP_SELF'] . '" method="get">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="year" value="'.((int) $year).'">';
 	print '<input type="hidden" name="month" value="'.((int) $month).'">';
@@ -153,7 +153,7 @@ function print_actions_filter(
 		print '</div>';
 	}
 
-	if ($canedit && !preg_match('/list/', DOL_PHP_SELF)) {
+	if ($canedit && !preg_match('/list/', $_SERVER['PHP_SELF'])) {
 		// Status
 		print '<div class="divsearchfield">';
 		print img_picto($langs->trans("Status"), 'setup', 'class="pictofixedwidth inline-block"');

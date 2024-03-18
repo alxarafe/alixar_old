@@ -294,12 +294,12 @@ foreach ($demoprofiles as $profilearray) {
 			$langs->load($profilearray['lang']);
 		}
 
-		$url = DOL_PHP_SELF.'?action=gotodemo';
+		$url = $_SERVER['PHP_SELF'].'?action=gotodemo';
 		$urlwithmod = $url.'&amp;demochoice='.$profilearray['key'];
 		// Should work with DOL_URL_ROOT='' or DOL_URL_ROOT='/dolibarr'
-		//print "xx".DOL_PHP_SELF.' '.DOL_URL_ROOT.'<br>';
+		//print "xx".$_SERVER['PHP_SELF'].' '.DOL_URL_ROOT.'<br>';
 
-		$urlfrom = preg_replace('/^'.preg_quote(DOL_URL_ROOT, '/').'/i', '', DOL_PHP_SELF);
+		$urlfrom = preg_replace('/^'.preg_quote(DOL_URL_ROOT, '/').'/i', '', $_SERVER['PHP_SELF']);
 		//print $urlfrom;
 
 		if (!empty($profilearray['url'])) {
@@ -314,7 +314,7 @@ foreach ($demoprofiles as $profilearray) {
 			print '<div class="clearboth"></div>';
 		}
 
-		print '<form method="POST" class="valigntop inline-block" name="form'.$profilearray['key'].'" id="form'.$profilearray['key'].'" action="'.DOL_PHP_SELF.'#a1'.$profilearray['key'].'">'."\n";
+		print '<form method="POST" class="valigntop inline-block" name="form'.$profilearray['key'].'" id="form'.$profilearray['key'].'" action="'.$_SERVER['PHP_SELF'].'#a1'.$profilearray['key'].'">'."\n";
 		print '<input type="hidden" name="action" value="gotodemo">'."\n";
 		print '<input type="hidden" name="urlfrom" value="'.dol_escape_htmltag($urlfrom).'">'."\n";
 		print '<input type="hidden" name="token" value="'.newToken().'">'."\n";

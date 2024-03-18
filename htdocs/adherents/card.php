@@ -629,7 +629,7 @@ if (empty($reshook)) {
 		$result = $object->delete($user);
 		if ($result > 0) {
 			setEventMessages($langs->trans("RecordDeleted"), null, 'errors');
-			if (!empty($backtopage) && !preg_match('/'.preg_quote(DOL_PHP_SELF, '/').'/', $backtopage)) {
+			if (!empty($backtopage) && !preg_match('/'.preg_quote($_SERVER['PHP_SELF'], '/').'/', $backtopage)) {
 				header("Location: ".$backtopage);
 				exit;
 			} else {
@@ -969,7 +969,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</script>'."\n";
 		}
 
-		print '<form name="formsoc" action="'.DOL_PHP_SELF.'" method="post" enctype="multipart/form-data">';
+		print '<form name="formsoc" action="'.$_SERVER['PHP_SELF'].'" method="post" enctype="multipart/form-data">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add">';
 		print '<input type="hidden" name="socid" value="'.$socid.'">';
@@ -1202,7 +1202,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</script>'."\n";
 		}
 
-		print '<form name="formsoc" action="'.DOL_PHP_SELF.'" method="post" enctype="multipart/form-data">';
+		print '<form name="formsoc" action="'.$_SERVER['PHP_SELF'].'" method="post" enctype="multipart/form-data">';
 		print '<input type="hidden" name="token" value="'.newToken().'" />';
 		print '<input type="hidden" name="action" value="update" />';
 		print '<input type="hidden" name="rowid" value="'.$id.'" />';
@@ -1407,7 +1407,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		// Login Dolibarr
 		print '<tr><td>'.$langs->trans("LinkedToDolibarrUser").'</td><td colspan="2" class="valeur">';
 		if ($object->user_id) {
-			$form->form_users(DOL_PHP_SELF.'?rowid='.$object->id, $object->user_id, 'none');
+			$form->form_users($_SERVER['PHP_SELF'].'?rowid='.$object->id, $object->user_id, 'none');
 		} else {
 			print $langs->trans("NoDolibarrAccess");
 		}
@@ -1477,7 +1477,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				$text .= $langs->trans("UserWillBeInternalUser").'<br>';
 			}
 			$text .= $langs->trans("ConfirmCreateLogin");
-			print $form->formconfirm(DOL_PHP_SELF."?rowid=".$object->id, $langs->trans("CreateDolibarrLogin"), $text, "confirm_create_user", $formquestion, 'yes');
+			print $form->formconfirm($_SERVER['PHP_SELF']."?rowid=".$object->id, $langs->trans("CreateDolibarrLogin"), $text, "confirm_create_user", $formquestion, 'yes');
 		}
 
 		// Confirm create third party
@@ -1503,7 +1503,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				array('label' => $langs->trans("AliasNames"), 'type' => 'text', 'name' => 'companyalias', 'value' => $companyalias, 'morecss' => 'minwidth300', 'moreattr' => 'maxlength="128"')
 			);
 
-			print $form->formconfirm(DOL_PHP_SELF."?rowid=".$object->id, $langs->trans("CreateDolibarrThirdParty"), $langs->trans("ConfirmCreateThirdParty"), "confirm_create_thirdparty", $formquestion, 'yes');
+			print $form->formconfirm($_SERVER['PHP_SELF']."?rowid=".$object->id, $langs->trans("CreateDolibarrThirdParty"), $langs->trans("ConfirmCreateThirdParty"), "confirm_create_thirdparty", $formquestion, 'yes');
 		}
 
 		// Confirm validate member
@@ -1847,7 +1847,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			print '</td><td colspan="2" class="valeur">';
 			if ($action == 'editthirdparty') {
 				$htmlname = 'socid';
-				print '<form method="POST" action="'.DOL_PHP_SELF.'" name="form'.$htmlname.'">';
+				print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'" name="form'.$htmlname.'">';
 				print '<input type="hidden" name="rowid" value="'.$object->id.'">';
 				print '<input type="hidden" name="action" value="set'.$htmlname.'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -1883,7 +1883,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 		print $form->editfieldkey('LinkedToDolibarrUser', 'login', '', $object, $editenable);
 		print '</td><td colspan="2" class="valeur">';
 		if ($action == 'editlogin') {
-			$form->form_users(DOL_PHP_SELF.'?rowid='.$object->id, $object->user_id, 'userid', '');
+			$form->form_users($_SERVER['PHP_SELF'].'?rowid='.$object->id, $object->user_id, 'userid', '');
 		} else {
 			if ($object->user_id) {
 				$linkeduser = new User($db);
@@ -1916,7 +1916,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				// Send
 				if (empty($user->socid)) {
 					if (Adherent::STATUS_VALIDATED == $object->statut) {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.((int) $object->id).'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a>'."\n";
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.((int) $object->id).'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a>'."\n";
 					}
 				}
 
@@ -1981,7 +1981,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				if (isModEnabled('societe') && !$object->socid) {
 					if ($user->hasRight('societe', 'creer')) {
 						if (Adherent::STATUS_DRAFT != $object->statut) {
-							print '<a class="butAction" href="'.DOL_PHP_SELF.'?rowid='.((int) $object->id).'&amp;action=create_thirdparty" title="'.dol_escape_htmltag($langs->trans("CreateDolibarrThirdPartyDesc")).'">'.$langs->trans("CreateDolibarrThirdParty").'</a>'."\n";
+							print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?rowid='.((int) $object->id).'&amp;action=create_thirdparty" title="'.dol_escape_htmltag($langs->trans("CreateDolibarrThirdPartyDesc")).'">'.$langs->trans("CreateDolibarrThirdParty").'</a>'."\n";
 						} else {
 							print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("ValidateBefore")).'">'.$langs->trans("CreateDolibarrThirdParty").'</a>'."\n";
 						}
@@ -1994,7 +1994,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 				if (!$user->socid && !$object->user_id) {
 					if ($user->hasRight('user', 'user', 'creer')) {
 						if (Adherent::STATUS_DRAFT != $object->statut) {
-							print '<a class="butAction" href="'.DOL_PHP_SELF.'?rowid='.((int) $object->id).'&amp;action=create_user" title="'.dol_escape_htmltag($langs->trans("CreateDolibarrLoginDesc")).'">'.$langs->trans("CreateDolibarrLogin").'</a>'."\n";
+							print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?rowid='.((int) $object->id).'&amp;action=create_user" title="'.dol_escape_htmltag($langs->trans("CreateDolibarrLoginDesc")).'">'.$langs->trans("CreateDolibarrLogin").'</a>'."\n";
 						} else {
 							print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("ValidateBefore")).'">'.$langs->trans("CreateDolibarrLogin").'</a>'."\n";
 						}
@@ -2042,7 +2042,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Generated documents
 			$filename = dol_sanitizeFileName($object->ref);
 			$filedir = $conf->adherent->dir_output.'/'.get_exdir(0, 0, 0, 1, $object, 'member');
-			$urlsource = DOL_PHP_SELF.'?id='.$object->id;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$object->id;
 			$genallowed = $user->hasRight('adherent', 'lire');
 			$delallowed = $user->hasRight('adherent', 'creer');
 

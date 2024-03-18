@@ -369,7 +369,7 @@ print load_fiche_titre($titre, $linkback, $titlepicto);
 
 // Confirmation de la suppression de la ligne
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.$rowid.'&code='.$code.'&id='.$id, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.$rowid.'&code='.$code.'&id='.$id, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
 }
 
 /*
@@ -389,7 +389,7 @@ if ($id) {
 
 	$fieldlist = explode(',', $tabfield[$id]);
 
-	print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="from" value="'.dol_escape_htmltag(GETPOST('from', 'alpha')).'">';
 
@@ -497,7 +497,7 @@ if ($id) {
 		// There is several pages
 		if ($num > $listlimit) {
 			print '<tr class="none"><td class="right" colspan="'.(3 + count($fieldlist)).'">';
-			print_fleche_navigation($page, DOL_PHP_SELF, $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
+			print_fleche_navigation($page, $_SERVER['PHP_SELF'], $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
 			print '</td></tr>';
 		}
 
@@ -546,10 +546,10 @@ if ($id) {
 
 			// Affiche nom du champ
 			if ($showfield) {
-				print getTitleFieldOfList($valuetoshow, 0, DOL_PHP_SELF, ($sortable ? $fieldlist[$field] : ''), ($page ? 'page='.$page.'&' : ''), $param, "", $sortfield, $sortorder, $class.' ');
+				print getTitleFieldOfList($valuetoshow, 0, $_SERVER['PHP_SELF'], ($sortable ? $fieldlist[$field] : ''), ($page ? 'page='.$page.'&' : ''), $param, "", $sortfield, $sortorder, $class.' ');
 			}
 		}
-		print getTitleFieldOfList($langs->trans("Status"), 0, DOL_PHP_SELF, "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
+		print getTitleFieldOfList($langs->trans("Status"), 0, $_SERVER['PHP_SELF'], "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
 		print getTitleFieldOfList('');
 		print getTitleFieldOfList('');
 		print getTitleFieldOfList('');
@@ -625,7 +625,7 @@ if ($id) {
 
 					$canbemodified = $iserasable;
 
-					$url = DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
+					$url = $_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
 					if ($param) {
 						$url .= '&'.$param;
 					}

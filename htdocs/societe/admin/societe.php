@@ -426,7 +426,7 @@ foreach ($arrayofmodules as $file => $modCodeTiers) {
 		$disabled = (isModEnabled('multicompany') && (is_object($mc) && !empty($mc->sharings['referent']) && $mc->sharings['referent'] != $conf->entity) ? true : false);
 		print '<td class="center">';
 		if (!$disabled) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setcodeclient&token='.newToken().'&value='.urlencode($file).'">';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setcodeclient&token='.newToken().'&value='.urlencode($file).'">';
 		}
 		print img_picto($langs->trans("Disabled"), 'switch_off');
 		if (!$disabled) {
@@ -503,7 +503,7 @@ foreach ($arrayofmodules as $file => $modCodeCompta) {
 		print img_picto($langs->trans("Activated"), 'switch_on');
 		print '</td>';
 	} else {
-		print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setcodecompta&token='.newToken().'&value='.urlencode($file).'">';
+		print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setcodecompta&token='.newToken().'&value='.urlencode($file).'">';
 		print img_picto($langs->trans("Disabled"), 'switch_off');
 		print '</a></td>';
 	}
@@ -595,7 +595,7 @@ foreach ($dirsociete as $dirroot) {
 						print "<td class=\"center\">\n";
 						//if ($conf->global->COMPANY_ADDON_PDF != "$name")
 						//{
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del&token='.newToken().'&value='.urlencode($name).'&token='.newToken().'&scan_dir='.$module->scandir.'&label='.urlencode($module->name).'">';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del&token='.newToken().'&value='.urlencode($name).'&token='.newToken().'&scan_dir='.$module->scandir.'&label='.urlencode($module->name).'">';
 						print img_picto($langs->trans("Enabled"), 'switch_on');
 						print '</a>';
 						//}
@@ -611,7 +611,7 @@ foreach ($dirsociete as $dirroot) {
 							print "</td>";
 						} else {
 							print '<td class="center">'."\n";
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set&value='.urlencode($name).'&token='.newToken().'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set&value='.urlencode($name).'&token='.newToken().'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 							print "</td>";
 						}
 					}
@@ -632,7 +632,7 @@ foreach ($dirsociete as $dirroot) {
 					// Preview
 					print '<td class="center nowrap">';
 					if ($module->type == 'pdf') {
-						$linkspec = '<a class="reposition" href="'.DOL_PHP_SELF.'?action=specimen&token='.newToken().'&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+						$linkspec = '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=specimen&token='.newToken().'&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 					} else {
 						$linkspec = img_object($langs->trans("PreviewNotAvailable"), 'generic');
 					}
@@ -705,31 +705,31 @@ foreach ($profid as $key => $val) {
 		$invoice_mandatory = (empty($conf->global->$idprof_invoice_mandatory) ? false : true);
 
 		if ($verif) {
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setprofid&token='.newToken().'&value='.$key.'&status=0">';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setprofid&token='.newToken().'&value='.$key.'&status=0">';
 			print img_picto($langs->trans("Activated"), 'switch_on');
 			print '</a></td>';
 		} else {
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setprofid&token='.newToken().'&value='.$key.'&status=1">';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setprofid&token='.newToken().'&value='.$key.'&status=1">';
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 			print '</a></td>';
 		}
 
 		if ($mandatory) {
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setprofidmandatory&token='.newToken().'&value='.$key.'&status=0">';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setprofidmandatory&token='.newToken().'&value='.$key.'&status=0">';
 			print img_picto($langs->trans("Activated"), 'switch_on');
 			print '</a></td>';
 		} else {
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setprofidmandatory&token='.newToken().'&value='.$key.'&status=1">';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setprofidmandatory&token='.newToken().'&value='.$key.'&status=1">';
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 			print '</a></td>';
 		}
 
 		if ($invoice_mandatory) {
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setprofidinvoicemandatory&token='.newToken().'&value='.$key.'&status=0">';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setprofidinvoicemandatory&token='.newToken().'&value='.$key.'&status=0">';
 			print img_picto($langs->trans("Activated"), 'switch_on');
 			print '</a></td>';
 		} else {
-			print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setprofidinvoicemandatory&token='.newToken().'&value='.$key.'&status=1">';
+			print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setprofidinvoicemandatory&token='.newToken().'&value='.$key.'&status=1">';
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 			print '</a></td>';
 		}
@@ -743,11 +743,11 @@ print '<tr class="oddeven">';
 print '<td colspan="2">'.$langs->trans('VATIntra')."</td>\n";
 
 if (getDolGlobalString('SOCIETE_VAT_INTRA_UNIQUE')) {
-	print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setvatintraunique&token='.newToken().'&value=0">';
+	print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setvatintraunique&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 	print '</a></td>';
 } else {
-	print '<td class="center"><a class="reposition" href="'.DOL_PHP_SELF.'?action=setvatintraunique&token='.newToken().'&value=1">';
+	print '<td class="center"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setvatintraunique&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 	print '</a></td>';
 }
@@ -764,7 +764,7 @@ print load_fiche_titre($langs->trans("Other"), '', '');
 // Autres options
 $form = new Form($db);
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="page_y" value="">';
 print '<input type="hidden" name="action" value="updateoptions">';
@@ -826,10 +826,10 @@ print '<td width="80%">'.$langs->trans("AddRefInList").'</td>';
 print '<td>&nbsp;</td>';
 print '<td class="center">';
 if (getDolGlobalString('SOCIETE_ADD_REF_IN_LIST')) {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaddrefinlist&token='.newToken().'&value=0">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaddrefinlist&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 } else {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaddrefinlist&token='.newToken().'&value=1">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaddrefinlist&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 }
 print '</a></td>';
@@ -840,10 +840,10 @@ print '<td width="80%">'.$langs->trans("AddVatInList").'</td>';
 print '<td>&nbsp;</td>';
 print '<td class="center">';
 if (getDolGlobalString('SOCIETE_SHOW_VAT_IN_LIST')) {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setvatinlist&token='.newToken().'&value=0">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setvatinlist&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 } else {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setvatinlist&token='.newToken().'&value=1">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setvatinlist&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 }
 print '</a></td>';
@@ -854,10 +854,10 @@ print '<td width="80%">'.$langs->trans("AddAdressInList").'</td>';
 print '<td>&nbsp;</td>';
 print '<td class="center">';
 if (getDolGlobalString('COMPANY_SHOW_ADDRESS_SELECTLIST')) {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaddadressinlist&token='.newToken().'&value=0">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaddadressinlist&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 } else {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaddadressinlist&token='.newToken().'&value=1">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaddadressinlist&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 }
 print '</a></td>';
@@ -868,10 +868,10 @@ print '<td width="80%">'.$langs->trans("AddEmailPhoneTownInContactList").'</td>'
 print '<td>&nbsp;</td>';
 print '<td class="center">';
 if (getDolGlobalString('CONTACT_SHOW_EMAIL_PHONE_TOWN_SELECTLIST')) {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaddemailphonetownincontactlist&token='.newToken().'&value=0">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaddemailphonetownincontactlist&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 } else {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaddemailphonetownincontactlist&token='.newToken().'&value=1">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaddemailphonetownincontactlist&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 }
 print '</a></td>';
@@ -884,10 +884,10 @@ if (isModEnabled("shipping")) {
 		print '<td>&nbsp;</td>';
 		print '<td class="center">';
 		if (getDolGlobalString('SOCIETE_ASK_FOR_SHIPPING_METHOD')) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaskforshippingmet&token='.newToken().'&value=0">';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaskforshippingmet&token='.newToken().'&value=0">';
 			print img_picto($langs->trans("Activated"), 'switch_on');
 		} else {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setaskforshippingmet&token='.newToken().'&value=1">';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setaskforshippingmet&token='.newToken().'&value=1">';
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 		}
 		print '</a></td>';
@@ -901,10 +901,10 @@ print '<td width="80%">'.$langs->trans("DisableProspectCustomerType").'</td>';
 print '<td>&nbsp;</td>';
 print '<td class="center">';
 if (getDolGlobalString('SOCIETE_DISABLE_PROSPECTSCUSTOMERS')) {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setdisableprospectcustomer&token='.newToken().'&value=0">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdisableprospectcustomer&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 } else {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setdisableprospectcustomer&token='.newToken().'&value=1">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdisableprospectcustomer&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 }
 print '</a></td>';

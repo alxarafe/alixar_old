@@ -97,7 +97,7 @@ llxHeader('', $langs->trans("SpecialExpensesArea"));
 $title = $langs->trans("SpecialExpensesArea");
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.$contextpage;
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -113,7 +113,7 @@ if ($sortorder) {
 $totalnboflines = 0;
 $num = 0;
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -125,7 +125,7 @@ print '<input type="hidden" name="page" value="'.$page.'">';
 print '<input type="hidden" name="mode" value="'.$mode.'">';
 
 $nav = ($year ? '<a href="index.php?year='.($year - 1).$param.'">'.img_previous($langs->trans("Previous"), 'class="valignbottom"')."</a> ".$langs->trans("Year").' '.$year.' <a href="index.php?year='.($year + 1).$param.'">'.img_next($langs->trans("Next"), 'class="valignbottom"')."</a>" : "");
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $totalnboflines, 'object_payment', 0, $nav, '', $limit, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $totalnboflines, 'object_payment', 0, $nav, '', $limit, 1);
 
 if ($year) {
 	$param .= '&year='.$year;
@@ -140,17 +140,17 @@ if (isModEnabled('tax') && $user->hasRight('tax', 'charges', 'lire')) {
 
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("PeriodEndDate", DOL_PHP_SELF, "cs.date_ech", "", $param, '', $sortfield, $sortorder, 'nowraponall ');
-	print_liste_field_titre("Label", DOL_PHP_SELF, "c.libelle", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Type", DOL_PHP_SELF, "cs.fk_type", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("ExpectedToPay", DOL_PHP_SELF, "cs.amount", "", $param, 'class="right"', $sortfield, $sortorder);
-	print_liste_field_titre("RefPayment", DOL_PHP_SELF, "pc.rowid", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("DatePayment", DOL_PHP_SELF, "pc.datep", "", $param, 'align="center"', $sortfield, $sortorder);
-	print_liste_field_titre("Type", DOL_PHP_SELF, "pct.code", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("PeriodEndDate", $_SERVER['PHP_SELF'], "cs.date_ech", "", $param, '', $sortfield, $sortorder, 'nowraponall ');
+	print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "c.libelle", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "cs.fk_type", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("ExpectedToPay", $_SERVER['PHP_SELF'], "cs.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("RefPayment", $_SERVER['PHP_SELF'], "pc.rowid", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "pc.datep", "", $param, 'align="center"', $sortfield, $sortorder);
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "pct.code", "", $param, '', $sortfield, $sortorder);
 	if (isModEnabled("bank")) {
-		print_liste_field_titre("BankAccount", DOL_PHP_SELF, "ba.label", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre("BankAccount", $_SERVER['PHP_SELF'], "ba.label", "", $param, "", $sortfield, $sortorder);
 	}
-	print_liste_field_titre("PayedByThisPayment", DOL_PHP_SELF, "pc.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("PayedByThisPayment", $_SERVER['PHP_SELF'], "pc.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 	print "</tr>\n";
 
 	$sql = "SELECT c.id, c.libelle as label,";
@@ -311,16 +311,16 @@ if (isModEnabled('tax') && $user->hasRight('tax', 'charges', 'lire')) {
 
 		print '<table class="noborder centpercent">';
 		print '<tr class="liste_titre">';
-		print_liste_field_titre("PeriodEndDate", DOL_PHP_SELF, "pv.datev", "", $param, '', $sortfield, $sortorder, 'nowraponall ');
-		print_liste_field_titre("Label", DOL_PHP_SELF, "pv.label", "", $param, '', $sortfield, $sortorder);
-		print_liste_field_titre("ExpectedToPay", DOL_PHP_SELF, "pv.amount", "", $param, 'class="right"', $sortfield, $sortorder);
-		print_liste_field_titre("RefPayment", DOL_PHP_SELF, "ptva.rowid", "", $param, '', $sortfield, $sortorder);
-		print_liste_field_titre("DatePayment", DOL_PHP_SELF, "ptva.datep", "", $param, 'align="center"', $sortfield, $sortorder);
-		print_liste_field_titre("Type", DOL_PHP_SELF, "pct.code", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("PeriodEndDate", $_SERVER['PHP_SELF'], "pv.datev", "", $param, '', $sortfield, $sortorder, 'nowraponall ');
+		print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "pv.label", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("ExpectedToPay", $_SERVER['PHP_SELF'], "pv.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre("RefPayment", $_SERVER['PHP_SELF'], "ptva.rowid", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "ptva.datep", "", $param, 'align="center"', $sortfield, $sortorder);
+		print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "pct.code", "", $param, '', $sortfield, $sortorder);
 		if (isModEnabled("bank")) {
-			print_liste_field_titre("BankAccount", DOL_PHP_SELF, "ba.label", "", $param, "", $sortfield, $sortorder);
+			print_liste_field_titre("BankAccount", $_SERVER['PHP_SELF'], "ba.label", "", $param, "", $sortfield, $sortorder);
 		}
-		print_liste_field_titre("PayedByThisPayment", DOL_PHP_SELF, "ptva.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre("PayedByThisPayment", $_SERVER['PHP_SELF'], "ptva.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 		print "</tr>\n";
 
 		while ($i < $num) {
@@ -452,12 +452,12 @@ while ($j < $numlt) {
 		print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 		print '<table class="noborder centpercent">';
 		print '<tr class="liste_titre">';
-		print_liste_field_titre("PeriodEndDate", DOL_PHP_SELF, "pv.datev", "", $param, 'width="120"', $sortfield, $sortorder);
-		print_liste_field_titre("Label", DOL_PHP_SELF, "pv.label", "", $param, '', $sortfield, $sortorder);
-		print_liste_field_titre("ExpectedToPay", DOL_PHP_SELF, "pv.amount", "", $param, 'class="right"', $sortfield, $sortorder);
-		print_liste_field_titre("RefPayment", DOL_PHP_SELF, "pv.rowid", "", $param, '', $sortfield, $sortorder);
-		print_liste_field_titre("DatePayment", DOL_PHP_SELF, "pv.datep", "", $param, 'align="center"', $sortfield, $sortorder);
-		print_liste_field_titre("PayedByThisPayment", DOL_PHP_SELF, "pv.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre("PeriodEndDate", $_SERVER['PHP_SELF'], "pv.datev", "", $param, 'width="120"', $sortfield, $sortorder);
+		print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "pv.label", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("ExpectedToPay", $_SERVER['PHP_SELF'], "pv.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre("RefPayment", $_SERVER['PHP_SELF'], "pv.rowid", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "pv.datep", "", $param, 'align="center"', $sortfield, $sortorder);
+		print_liste_field_titre("PayedByThisPayment", $_SERVER['PHP_SELF'], "pv.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 		print "</tr>\n";
 
 		while ($i < $num) {

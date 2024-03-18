@@ -103,14 +103,14 @@ if ($resql) {
 	$num = $db->num_rows($resql);
 	$i = 0;
 
-	print_barre_liste($langs->trans("ReceivedCustomersPaymentsToValid"), $page, DOL_PHP_SELF, "", $sortfield, $sortorder, '', $num);
+	print_barre_liste($langs->trans("ReceivedCustomersPaymentsToValid"), $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, '', $num);
 
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "p.rowid", "", "", 'width="60"', $sortfield, $sortorder);
-	print_liste_field_titre("Date", DOL_PHP_SELF, "dp", "", "", 'width="80" align="center"', $sortfield, $sortorder);
-	print_liste_field_titre("Type", DOL_PHP_SELF, "c.libelle", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("AmountTTC", DOL_PHP_SELF, "c.libelle", "", "", 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "p.rowid", "", "", 'width="60"', $sortfield, $sortorder);
+	print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "dp", "", "", 'width="80" align="center"', $sortfield, $sortorder);
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "c.libelle", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("AmountTTC", $_SERVER['PHP_SELF'], "c.libelle", "", "", 'class="right"', $sortfield, $sortorder);
 	print_liste_field_titre('');
 	print "</tr>\n";
 

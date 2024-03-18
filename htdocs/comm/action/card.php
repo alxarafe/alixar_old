@@ -286,7 +286,7 @@ if (empty($reshook) && $action == 'confirm_clone' && $confirm == 'yes') {
 			}
 			$result = $object->createFromClone($user, GETPOSTINT('socid'));
 			if ($result > 0) {
-				header("Location: ".DOL_PHP_SELF.'?id='.$result);
+				header("Location: ".$_SERVER['PHP_SELF'].'?id='.$result);
 				exit();
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -1240,7 +1240,7 @@ if ($action == 'create') {
 		print '</script>'."\n";
 	}
 
-	print '<form name="formaction" action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form name="formaction" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="donotclearsession" value="1">';
@@ -1537,7 +1537,7 @@ if ($action == 'create') {
 		print img_picto('', 'project', 'class="pictofixedwidth"');
 		print $formproject->select_projects(($object->socid > 0 ? $object->socid : -1), $projectid, 'projectid', 0, 0, 1, 1, 0, 0, 0, '', 1, 0, 'maxwidth500 widthcentpercentminusxx maxwidth500');
 
-		print '&nbsp;<a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.(empty($societe->id) ? '' : $societe->id).'&action=create&backtopage='.urlencode(DOL_PHP_SELF.'?action=create').'">';
+		print '&nbsp;<a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.(empty($societe->id) ? '' : $societe->id).'&action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create').'">';
 		print '<span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddProject").'"></span></a>';
 		$urloption = '?action=create&donotclearsession=1';
 		$url = dol_buildpath('comm/action/card.php', 2).$urloption;
@@ -1800,7 +1800,7 @@ if ($id > 0) {
 			print '</script>'."\n";
 		}
 
-		print '<form name="formaction" action="'.DOL_PHP_SELF.'" method="POST">';
+		print '<form name="formaction" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update">';
 		print '<input type="hidden" name="id" value="'.$id.'">';
@@ -2029,7 +2029,7 @@ if ($id > 0) {
 			print img_picto('', 'project', 'class="pictofixedwidth"');
 			$numprojet = $formproject->select_projects(($object->socid > 0 ? $object->socid : -1), $object->fk_project, 'projectid', 0, 0, 1, 0, 0, 0, 0, '', 0, 0, 'maxwidth500 widthcentpercentminusxx');
 			if ($numprojet == 0) {
-				print ' &nbsp; <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.$object->socid.'&action=create&token='.newToken().'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id.'&action=edit').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddProject").'"></span></a>';
+				print ' &nbsp; <a href="'.DOL_URL_ROOT.'/projet/card.php?socid='.$object->socid.'&action=create&token='.newToken().'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddProject").'"></span></a>';
 			}
 			print '</td></tr>';
 		}
@@ -2197,7 +2197,7 @@ if ($id > 0) {
 
 		// Clone event
 		if ($action == 'clone') {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.GETPOST('id'), $langs->trans('ToClone'), $langs->trans('ConfirmCloneEvent', $object->label), 'confirm_clone', array(), 'yes', 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.GETPOST('id'), $langs->trans('ToClone'), $langs->trans('ConfirmCloneEvent', $object->label), 'confirm_clone', array(), 'yes', 1);
 		}
 
 		// Call Hook formConfirm
@@ -2264,9 +2264,9 @@ if ($id > 0) {
 			if ($usercancreate) {
 				$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 				}
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 			} else {
 				if (!empty($object->fk_project)) {
 					$proj = new Project($db);
@@ -2584,7 +2584,7 @@ if ($id > 0) {
 			 */
 
 			$filedir = $conf->agenda->multidir_output[$conf->entity].'/'.$object->id;
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 
 			$genallowed = $user->hasRight('agenda', 'myactions', 'read');
 			$delallowed = $user->hasRight('agenda', 'myactions', 'create');

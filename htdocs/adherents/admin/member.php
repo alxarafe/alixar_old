@@ -89,7 +89,7 @@ if ($action == 'set_default') {
 } elseif (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_set_const($db, $code, 1, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -97,7 +97,7 @@ if ($action == 'set_default') {
 } elseif (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -301,7 +301,7 @@ foreach ($arrayofmodules as $file => $modCodeMember) {
 		$disabled = (isModEnabled('multicompany') && (is_object($mc) && !empty($mc->sharings['referent']) && $mc->sharings['referent'] != $conf->entity) ? true : false);
 		print '<td class="center">';
 		if (!$disabled) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setcodemember&token='.newToken().'&value='.urlencode($file).'">';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setcodemember&token='.newToken().'&value='.urlencode($file).'">';
 		}
 		print img_picto($langs->trans("Disabled"), 'switch_off');
 		if (!$disabled) {
@@ -322,7 +322,7 @@ print '</div>';
 
 print "<br>";
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="updatemainoptions">';
 
@@ -532,13 +532,13 @@ foreach ($dirmodels as $reldir) {
 								// Active
 								if (in_array($name, $def)) {
 									print '<td class="center">'."\n";
-									print '<a href="'.DOL_PHP_SELF.'?action=del_default&token='.newToken().'&value='.$name.'">';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_default&token='.newToken().'&value='.$name.'">';
 									print img_picto($langs->trans("Enabled"), 'switch_on');
 									print '</a>';
 									print '</td>';
 								} else {
 									print '<td class="center">'."\n";
-									print '<a href="'.DOL_PHP_SELF.'?action=set_default&token='.newToken().'&value='.$name.'&scandir='.(!empty($module->scandir) ? $module->scandir : '').'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_default&token='.newToken().'&value='.$name.'&scandir='.(!empty($module->scandir) ? $module->scandir : '').'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 									print "</td>";
 								}
 
@@ -547,7 +547,7 @@ foreach ($dirmodels as $reldir) {
 								if (getDolGlobalString('MEMBER_ADDON_PDF_ODT') == $name) {
 									print img_picto($langs->trans("Default"), 'on');
 								} else {
-									print '<a href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.$name.'&scandir='.(!empty($module->scandir) ? $module->scandir : '').'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.$name.'&scandir='.(!empty($module->scandir) ? $module->scandir : '').'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 								}
 								print '</td>';
 
@@ -569,7 +569,7 @@ foreach ($dirmodels as $reldir) {
 								// Preview
 								print '<td class="center">';
 								if ($module->type == 'pdf') {
-									print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'contract').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'contract').'</a>';
 								} else {
 									print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 								}
@@ -593,7 +593,7 @@ print '</div>';
 
 // Generation of cards for members
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="updatememberscards">';
 
@@ -660,7 +660,7 @@ print '<br>';
 
 // Membership address sheet
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="updatememberstickets">';
 

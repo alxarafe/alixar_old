@@ -152,7 +152,7 @@ $builddate = dol_now();
 // Affiche en-tete du rapport
 if ($modecompta == "CREANCES-DETTES") {
 	$name = $langs->trans("Turnover");
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesCADue");
 	if (getDolGlobalString('FACTURE_DEPOSITS_ARE_JUST_PAYMENTS')) {
 		$description .= $langs->trans("DepositsAreNotIncluded");
@@ -162,13 +162,13 @@ if ($modecompta == "CREANCES-DETTES") {
 	//$exportlink=$langs->trans("NotYetAvailable");
 } elseif ($modecompta == "RECETTES-DEPENSES") {
 	$name = $langs->trans("TurnoverCollected");
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesCAIn");
 	$description .= $langs->trans("DepositsAreIncluded");
 	//$exportlink=$langs->trans("NotYetAvailable");
 } elseif ($modecompta == "BOOKKEEPING") {
 	$name = $langs->trans("Turnover");
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesSalesTurnoverOfIncomeAccounts");
 	//$exportlink=$langs->trans("NotYetAvailable");
 }

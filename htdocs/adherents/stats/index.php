@@ -152,7 +152,7 @@ print dol_get_fiche_head($head, 'statssubscription', '', -1, '');
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
 // Show filter box
-/*print '<form name="stats" method="POST" action="'.DOL_PHP_SELF.'">';
+/*print '<form name="stats" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print '<table class="border centpercent">';

@@ -120,7 +120,7 @@ if (empty($reshook)) {
 			$action = 'edit';
 		} else {
 			setEventMessage($langs->trans('RecordSaved'));
-			header("Location: " . DOL_PHP_SELF . '?id=' . $object->id);
+			header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
 			exit;
 		}
 	}
@@ -154,7 +154,7 @@ if ($id > 0 || !empty($ref)) {
 	print '</div>';
 
 	if ($action == 'edit') {
-		print '<form method="POST" action="' . DOL_PHP_SELF . '?id=' . $object->id . '">';
+		print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
 		print '<input type="hidden" name="token" value="' . newToken() . '">';
 		print '<input type="hidden" name="action" value="update">';
 		if ($backtopage) {
@@ -189,7 +189,7 @@ if ($id > 0 || !empty($ref)) {
 
 		if (empty($reshook)) {
 			if ($object->status == $object::STATUS_DRAFT/* && !empty($object->enabled_modes)*/) {
-				print dolGetButtonAction($langs->trans('Modify'), '', 'default', DOL_PHP_SELF . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
+				print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
 			}
 		}
 		print '</div>' . "\n";

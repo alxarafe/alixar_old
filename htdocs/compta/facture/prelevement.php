@@ -132,7 +132,7 @@ if (empty($reshook)) {
 		if ($object->id > 0) {
 			$result = $object->demande_prelevement_delete($user, GETPOSTINT('did'));
 			if ($result == 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id.'&type='.$type);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id.'&type='.$type);
 				exit;
 			}
 		}
@@ -390,9 +390,9 @@ if ($object->id > 0) {
 		if (0) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);
@@ -481,7 +481,7 @@ if ($object->id > 0) {
 		$thirdparty = $object->thirdparty;
 		$discount_type = 0;
 	}
-	$backtopage = urlencode(DOL_PHP_SELF.'?facid='.$object->id);
+	$backtopage = urlencode($_SERVER['PHP_SELF'].'?facid='.$object->id);
 	$cannotApplyDiscount = 1;
 	include DOL_DOCUMENT_ROOT.'/core/tpl/object_discounts.tpl.php';
 
@@ -501,14 +501,14 @@ if ($object->id > 0) {
 	print $langs->trans('DateInvoice');
 	print '</td>';
 	if ($object->type != $object::TYPE_CREDIT_NOTE && $action != 'editinvoicedate' && $object->status == $object::STATUS_DRAFT && $user->hasRight('facture', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editinvoicedate&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetDate'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editinvoicedate&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetDate'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td colspan="3">';
 
 	if ($object->type != $object::TYPE_CREDIT_NOTE) {
 		if ($action == 'editinvoicedate') {
-			print $form->form_date(DOL_PHP_SELF.'?id='.$object->id, $object->date, 'invoicedate', 0, 0, 1, $type);
+			print $form->form_date($_SERVER['PHP_SELF'].'?id='.$object->id, $object->date, 'invoicedate', 0, 0, 1, $type);
 		} else {
 			print dol_print_date($object->date, 'day');
 		}
@@ -524,15 +524,15 @@ if ($object->id > 0) {
 	print $langs->trans('PaymentConditionsShort');
 	print '</td>';
 	if ($object->type != $object::TYPE_CREDIT_NOTE && $action != 'editconditions' && $object->status == $object::STATUS_DRAFT && $user->hasRight('facture', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editconditions&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editconditions&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td colspan="3">';
 	if ($object->type != $object::TYPE_CREDIT_NOTE) {
 		if ($action == 'editconditions') {
-			$form->form_conditions_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->cond_reglement_id, 'cond_reglement_id', 0, $type);
+			$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->cond_reglement_id, 'cond_reglement_id', 0, $type);
 		} else {
-			$form->form_conditions_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->cond_reglement_id, 'none');
+			$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->cond_reglement_id, 'none');
 		}
 	} else {
 		print '&nbsp;';
@@ -545,7 +545,7 @@ if ($object->id > 0) {
 	print $langs->trans('DateMaxPayment');
 	print '</td>';
 	if ($object->type != $object::TYPE_CREDIT_NOTE && $action != 'editpaymentterm' && $object->status == $object::STATUS_DRAFT && $user->hasRight('facture', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editpaymentterm&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetDate'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editpaymentterm&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetDate'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td colspan="3">';
@@ -556,7 +556,7 @@ if ($object->id > 0) {
 		}
 
 		if ($action == 'editpaymentterm') {
-			print $form->form_date(DOL_PHP_SELF.'?id='.$object->id, $duedate, 'paymentterm', 0, 0, 1, $type);
+			print $form->form_date($_SERVER['PHP_SELF'].'?id='.$object->id, $duedate, 'paymentterm', 0, 0, 1, $type);
 		} else {
 			print dol_print_date($duedate, 'day');
 			if ($object->hasDelay()) {
@@ -574,7 +574,7 @@ if ($object->id > 0) {
 	print $langs->trans('PaymentMode');
 	print '</td>';
 	if ($action != 'editmode' && $object->status == $object::STATUS_DRAFT && $user->hasRight('facture', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td colspan="3">';
@@ -583,9 +583,9 @@ if ($object->id > 0) {
 		$filtertype = 'DBIT';
 	}
 	if ($action == 'editmode') {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', $filtertype, 1, 0, $type);
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', $filtertype, 1, 0, $type);
 	} else {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->mode_reglement_id, 'none');
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->mode_reglement_id, 'none');
 	}
 	print '</td></tr>';
 
@@ -595,14 +595,14 @@ if ($object->id > 0) {
 	print $langs->trans('BankAccount');
 	print '<td>';
 	if (($action != 'editbankaccount') && $user->hasRight('commande', 'creer') && $object->status == $object::STATUS_DRAFT) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbankaccount&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbankaccount&token='.newToken().'&id='.$object->id.'&type='.urlencode($type).'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td colspan="3">';
 	if ($action == 'editbankaccount') {
-		$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'fk_account', 1);
+		$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'fk_account', 1);
 	} else {
-		$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'none');
+		$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'none');
 	}
 	print "</td>";
 	print '</tr>';
@@ -681,7 +681,7 @@ if ($object->id > 0) {
 		print $langs->trans('RevenueStamp');
 		print '</td>';
 		if ($action != 'editrevenuestamp' && $object->status == $object::STATUS_DRAFT && $user->hasRight('facture', 'creer')) {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editrevenuestamp&token='.newToken().'&facid='.$object->id.'">'.img_edit($langs->trans('SetRevenuStamp'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editrevenuestamp&token='.newToken().'&facid='.$object->id.'">'.img_edit($langs->trans('SetRevenuStamp'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
@@ -893,7 +893,7 @@ if ($object->id > 0) {
 			// Action column
 			if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 				print '<td class="center">';
-				print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
 				print img_delete();
 				print '</a>';
 				print '</td>';
@@ -936,7 +936,7 @@ if ($object->id > 0) {
 					if ($obj->fk_prelevement_bons > 0) {
 						print ' &nbsp; ';
 					}
-					print '<a href="'.DOL_PHP_SELF.'?action=sepastripedirectdebit&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequestDirectDebitWithStripe").'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=sepastripedirectdebit&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequestDirectDebitWithStripe").'</a>';
 				}
 			} else {
 				if (getDolGlobalString('STRIPE_SEPA_CREDIT_TRANSFER')) {
@@ -944,7 +944,7 @@ if ($object->id > 0) {
 					if ($obj->fk_prelevement_bons > 0) {
 						print ' &nbsp; ';
 					}
-					print '<a href="'.DOL_PHP_SELF.'?action=sepastripecredittransfer&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequestDirectDebitWithStripe").'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=sepastripecredittransfer&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequestDirectDebitWithStripe").'</a>';
 				}
 			}
 			print '</td>';
@@ -955,7 +955,7 @@ if ($object->id > 0) {
 			// Action column
 			if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 				print '<td class="center">';
-				print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
 				print img_delete();
 				print '</a></td>';
 			}

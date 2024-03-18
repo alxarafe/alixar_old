@@ -70,7 +70,7 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
 		} else {
 			echo $objectlink->getLibStatut(3);
 		} ?></td>
-		<td class="right"><a class="reposition" href="<?php echo DOL_PHP_SELF.'?id='.urlencode((string) ($object->id)).'&action=dellink&token='.newToken().'&dellinkid='.urlencode((string) ($key)); ?>"><?php echo img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink'); ?></a></td>
+		<td class="right"><a class="reposition" href="<?php echo $_SERVER['PHP_SELF'].'?id='.urlencode((string) ($object->id)).'&action=dellink&token='.newToken().'&dellinkid='.urlencode((string) ($key)); ?>"><?php echo img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink'); ?></a></td>
 	</tr>
 	<?php
 }

@@ -82,7 +82,7 @@ if ($absolute_discount > 0) {
 	} else {
 		// Discount available of type fixed amount (not credit note)
 		$more = '('.$addabsolutediscount.')';
-		$form->form_remise_dispo(DOL_PHP_SELF.'?facid='.$object->id, GETPOST('discountid'), 'remise_id', $thirdparty->id, $absolute_discount, $filterabsolutediscount, $resteapayer, $more, 0, $discount_type);
+		$form->form_remise_dispo($_SERVER['PHP_SELF'].'?facid='.$object->id, GETPOST('discountid'), 'remise_id', $thirdparty->id, $absolute_discount, $filterabsolutediscount, $resteapayer, $more, 0, $discount_type);
 	}
 }
 
@@ -109,7 +109,7 @@ if ($absolute_creditnote > 0) {
 	} else {  // We can add a credit note on a down payment or standard invoice or situation invoice
 		// There is credit notes discounts available
 		$more = $isInvoice && !$isNewObject ? ' ('.$viewabsolutediscount.')' : '';
-		$form->form_remise_dispo(DOL_PHP_SELF.'?facid='.$object->id, 0, 'remise_id_for_payment', $thirdparty->id, $absolute_creditnote, $filtercreditnote, 0, $more, 0, $discount_type); // We allow credit note even if amount is higher
+		$form->form_remise_dispo($_SERVER['PHP_SELF'].'?facid='.$object->id, 0, 'remise_id_for_payment', $thirdparty->id, $absolute_creditnote, $filtercreditnote, 0, $more, 0, $discount_type); // We allow credit note even if amount is higher
 	}
 }
 

@@ -182,7 +182,7 @@ if (empty($reshook)) {
 			}
 
 			$param = '&search_status='.urlencode($search_status);
-			if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+			if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 				$param .= '&contextpage='.urlencode($contextpage);
 			}
 			if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -339,7 +339,7 @@ $num = $db->num_rows($result);
 $arrayofselected = is_array($toselect) ? $toselect : array();
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -369,11 +369,11 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
 $stringcurrentdate = $langs->trans("CurrentHour").': '.dol_print_date(dol_now(), 'dayhour');
 
 if ($action == 'execute') {
-	print $form->formconfirm(DOL_PHP_SELF."?id=".$id.'&securitykey='.$securitykey.$param, $langs->trans("CronExecute"), $langs->trans("CronConfirmExecute"), "confirm_execute", '', '', 1);
+	print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id.'&securitykey='.$securitykey.$param, $langs->trans("CronExecute"), $langs->trans("CronConfirmExecute"), "confirm_execute", '', '', 1);
 }
 
 if ($action == 'delete' && empty($toselect)) {	// Used when we make a delete on 1 line (not used for mass delete)
-	print $form->formconfirm(DOL_PHP_SELF."?id=".$id.$param, $langs->trans("CronDelete"), $langs->trans("CronConfirmDelete"), "confirm_delete", '', '', 1);
+	print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id.$param, $langs->trans("CronDelete"), $langs->trans("CronConfirmDelete"), "confirm_delete", '', '', 1);
 }
 
 // List of mass actions available
@@ -399,7 +399,7 @@ if ($mode == 'modulesetup') {
 	$head = cronadmin_prepare_head();
 }
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'" name="search_form">'."\n";
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'" name="search_form">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -413,7 +413,7 @@ print '<input type="hidden" name="mode" value="'.$mode.'">';
 
 // Line with explanation and button new
 $newcardbutton = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('New'), $langs->trans('CronCreateJob'), 'fa fa-plus-circle', DOL_URL_ROOT.'/cron/card.php?action=create&backtopage='.urlencode(DOL_PHP_SELF.'?mode=modulesetup'), '', $user->hasRight('cron', 'create'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('New'), $langs->trans('CronCreateJob'), 'fa fa-plus-circle', DOL_URL_ROOT.'/cron/card.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?mode=modulesetup'), '', $user->hasRight('cron', 'create'));
 
 
 if ($mode == 'modulesetup') {
@@ -423,7 +423,7 @@ if ($mode == 'modulesetup') {
 }
 
 
-print_barre_liste($pagetitle, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, ($mode == 'modulesetup' ? '' : 'title_setup'), 0, $newcardbutton, '', $limit);
+print_barre_liste($pagetitle, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, ($mode == 'modulesetup' ? '' : 'title_setup'), 0, $newcardbutton, '', $limit);
 
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "SendCronRef";
@@ -439,7 +439,7 @@ if (getDolGlobalString('CRON_WARNING_DELAY_HOURS')) {
 print info_admin($text);
 //print '<br>';
 
-//$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+//$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = '';
 //$selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
@@ -487,27 +487,27 @@ print '</tr>';
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
-print_liste_field_titre("Ref", DOL_PHP_SELF, "t.rowid", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("CronLabel", DOL_PHP_SELF, "t.label", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("Priority", DOL_PHP_SELF, "t.priority", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("CronModule", DOL_PHP_SELF, "t.module_name", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "t.rowid", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("CronLabel", $_SERVER['PHP_SELF'], "t.label", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Priority", $_SERVER['PHP_SELF'], "t.priority", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("CronModule", $_SERVER['PHP_SELF'], "t.module_name", "", $param, '', $sortfield, $sortorder);
 print_liste_field_titre("CronType", '', '', "", $param, '', $sortfield, $sortorder, 'tdoverflowmax100 ');
 print_liste_field_titre("CronFrequency", '', "", "", $param, '', $sortfield, $sortorder);
-//print_liste_field_titre("CronDtStart", DOL_PHP_SELF, "t.datestart", "", $param, 'align="center"', $sortfield, $sortorder);
-//print_liste_field_titre("CronDtEnd", DOL_PHP_SELF, "t.dateend", "", $param, 'align="center"', $sortfield, $sortorder);
-print_liste_field_titre("CronNbRun", DOL_PHP_SELF, "t.nbrun", "", $param, '', $sortfield, $sortorder, 'right tdoverflowmax50 ');
-print_liste_field_titre("CronDtLastLaunch", DOL_PHP_SELF, "t.datelastrun", "", $param, '', $sortfield, $sortorder, 'center tdoverflowmax100 ');
-print_liste_field_titre("Duration", DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder, 'center ');
-print_liste_field_titre("CronLastResult", DOL_PHP_SELF, "t.lastresult", "", $param, '', $sortfield, $sortorder, 'center ');
-print_liste_field_titre("CronLastOutput", DOL_PHP_SELF, "t.lastoutput", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("CronDtNextLaunch", DOL_PHP_SELF, "t.datenextrun", "", $param, '', $sortfield, $sortorder, 'center ');
-print_liste_field_titre("Status", DOL_PHP_SELF, "t.status,t.priority", "", $param, '', $sortfield, $sortorder, 'center ');
-print_liste_field_titre("", DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder, 'center ');
+//print_liste_field_titre("CronDtStart", $_SERVER['PHP_SELF'], "t.datestart", "", $param, 'align="center"', $sortfield, $sortorder);
+//print_liste_field_titre("CronDtEnd", $_SERVER['PHP_SELF'], "t.dateend", "", $param, 'align="center"', $sortfield, $sortorder);
+print_liste_field_titre("CronNbRun", $_SERVER['PHP_SELF'], "t.nbrun", "", $param, '', $sortfield, $sortorder, 'right tdoverflowmax50 ');
+print_liste_field_titre("CronDtLastLaunch", $_SERVER['PHP_SELF'], "t.datelastrun", "", $param, '', $sortfield, $sortorder, 'center tdoverflowmax100 ');
+print_liste_field_titre("Duration", $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("CronLastResult", $_SERVER['PHP_SELF'], "t.lastresult", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("CronLastOutput", $_SERVER['PHP_SELF'], "t.lastoutput", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("CronDtNextLaunch", $_SERVER['PHP_SELF'], "t.datenextrun", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "t.status,t.priority", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("", $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder, 'center ');
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print "</tr>\n";
 
@@ -712,20 +712,20 @@ if ($num > 0) {
 
 		print '<td class="nowraponall right">';
 
-		$backtopage = urlencode(DOL_PHP_SELF.'?'.$param.($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : ''));
+		$backtopage = urlencode($_SERVER['PHP_SELF'].'?'.$param.($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : ''));
 		if ($user->hasRight('cron', 'create')) {
 			print '<a class="editfielda" href="'.DOL_URL_ROOT."/cron/card.php?id=".$obj->rowid.'&action=edit&token='.newToken().($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : '').$param;
 			print "&backtopage=".$backtopage."\" title=\"".dol_escape_htmltag($langs->trans('Edit'))."\">".img_picto($langs->trans('Edit'), 'edit')."</a> &nbsp;";
 		}
 		if ($user->hasRight('cron', 'delete')) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF."?id=".$obj->rowid.'&action=delete&token='.newToken().($page ? '&page='.$page : '').($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : '').$param;
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF']."?id=".$obj->rowid.'&action=delete&token='.newToken().($page ? '&page='.$page : '').($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : '').$param;
 			print "\" title=\"".dol_escape_htmltag($langs->trans('CronDelete'))."\">".img_picto($langs->trans('CronDelete'), 'delete', '', false, 0, 0, '', 'marginleftonly')."</a> &nbsp; ";
 		} else {
 			print "<a href=\"#\" title=\"".dol_escape_htmltag($langs->trans('NotEnoughPermissions'))."\">".img_picto($langs->trans('NotEnoughPermissions'), 'delete', '', false, 0, 0, '', 'marginleftonly')."</a> &nbsp; ";
 		}
 		if ($user->hasRight('cron', 'execute')) {
 			if (!empty($obj->status)) {
-				print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$obj->rowid.'&action=execute';
+				print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$obj->rowid.'&action=execute';
 				print(!getDolGlobalString('CRON_KEY') ? '' : '&securitykey=' . getDolGlobalString('CRON_KEY'));
 				print($sortfield ? '&sortfield='.$sortfield : '');
 				print($sortorder ? '&sortorder='.$sortorder : '');

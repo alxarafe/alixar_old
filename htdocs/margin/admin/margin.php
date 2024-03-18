@@ -46,7 +46,7 @@ $reg = array();
 if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_set_const($db, $code, 1, 'yesno', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -56,7 +56,7 @@ if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 if (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -112,7 +112,7 @@ print '<td class="left">'.$langs->trans("Description").'</td>'."\n";
 print '</tr>';
 
 // GLOBAL DISCOUNT MANAGEMENT
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print "<input type=\"hidden\" name=\"action\" value=\"typemarges\">";
 print '<tr class="oddeven">';
@@ -155,9 +155,9 @@ if (!empty($conf->use_javascript_ajax)) {
 	print ajax_constantonoff('DISPLAY_MARGIN_RATES');
 } else {
 	if (!getDolGlobalString('DISPLAY_MARGIN_RATES')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_DISPLAY_MARGIN_RATES&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_DISPLAY_MARGIN_RATES&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=del_DISPLAY_MARGIN_RATES&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_DISPLAY_MARGIN_RATES&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	}
 }
 print '</td>';
@@ -172,9 +172,9 @@ if (!empty($conf->use_javascript_ajax)) {
 	print ajax_constantonoff('DISPLAY_MARK_RATES');
 } else {
 	if (!getDolGlobalString('DISPLAY_MARK_RATES')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_DISPLAY_MARK_RATES&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_DISPLAY_MARK_RATES&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=del_DISPLAY_MARK_RATES&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_DISPLAY_MARK_RATES&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	}
 }
 print '</td>';
@@ -189,9 +189,9 @@ if (!empty($conf->use_javascript_ajax)) {
 	print ajax_constantonoff('ForceBuyingPriceIfNull');
 } else {
 	if (!getDolGlobalString('ForceBuyingPriceIfNull')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_ForceBuyingPriceIfNull&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_ForceBuyingPriceIfNull&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=del_ForceBuyingPriceIfNull&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_ForceBuyingPriceIfNull&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	}
 }
 print '</td>';
@@ -206,7 +206,7 @@ $methods = array(
 );
 
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="remises">';
 print '<tr class="oddeven">';
@@ -222,7 +222,7 @@ print '</tr>';
 print '</form>';
 
 // INTERNAL CONTACT TYPE USED AS COMMERCIAL AGENT
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="contact">';
 print '<tr class="oddeven">';

@@ -215,7 +215,7 @@ if (!empty($number)) {
 		}
 	}
 } else {
-	print 'Bad parameters in URL. Must be '.dol_escape_htmltag(DOL_PHP_SELF).'?caller=99999&called=99999&login=xxxxx&password=xxxxx';
+	print 'Bad parameters in URL. Must be '.dol_escape_htmltag($_SERVER['PHP_SELF']).'?caller=99999&called=99999&login=xxxxx&password=xxxxx';
 }
 
 // End of page

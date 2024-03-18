@@ -296,7 +296,7 @@ if ($action == 'set' && $user->admin) {
 			}
 		}
 	}
-	header("Location: ".DOL_PHP_SELF."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
+	header("Location: ".$_SERVER['PHP_SELF']."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
 	exit;
 } elseif ($action == 'reset' && $user->admin && GETPOST('confirm') == 'yes') {
 	$result = unActivateModule($value);
@@ -304,14 +304,14 @@ if ($action == 'set' && $user->admin) {
 	if ($result) {
 		setEventMessages($result, null, 'errors');
 	}
-	header("Location: ".DOL_PHP_SELF."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
+	header("Location: ".$_SERVER['PHP_SELF']."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
 	exit;
 } elseif (getDolGlobalInt("MAIN_FEATURES_LEVEL") > 1 && $action == 'reload' && $user->admin && GETPOST('confirm') == 'yes') {
 	$result = unActivateModule($value, 0);
 	dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", (int) $conf->global->MAIN_IHM_PARAMS_REV + 1, 'chaine', 0, '', $conf->entity);
 	if ($result) {
 		setEventMessages($result, null, 'errors');
-		header("Location: ".DOL_PHP_SELF."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
+		header("Location: ".$_SERVER['PHP_SELF']."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
 	}
 	$resarray = activateModule($value, 0, 1);
 	dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", (int) $conf->global->MAIN_IHM_PARAMS_REV + 1, 'chaine', 0, '', $conf->entity);
@@ -332,7 +332,7 @@ if ($action == 'set' && $user->admin) {
 			}
 		}
 	}
-	header("Location: ".DOL_PHP_SELF."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
+	header("Location: ".$_SERVER['PHP_SELF']."?mode=".$mode.$param.($page_y ? '&page_y='.$page_y : ''));
 	exit;
 }
 
@@ -511,7 +511,7 @@ if ($action == 'reset_confirm' && $user->admin) {
 		}
 
 		$form = new Form($db);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?value='.$value.'&mode='.$mode.$param, $langs->trans('ConfirmUnactivation'), $langs->trans(GETPOST('confirm_message_code')), 'reset', '', 'no', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?value='.$value.'&mode='.$mode.$param, $langs->trans('ConfirmUnactivation'), $langs->trans(GETPOST('confirm_message_code')), 'reset', '', 'no', 1);
 	}
 }
 
@@ -524,7 +524,7 @@ if ($action == 'reload_confirm' && $user->admin) {
 		}
 
 		$form = new Form($db);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?value='.$value.'&mode='.$mode.$param, $langs->trans('ConfirmReload'), $langs->trans(GETPOST('confirm_message_code')), 'reload', '', 'no', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?value='.$value.'&mode='.$mode.$param, $langs->trans('ConfirmReload'), $langs->trans(GETPOST('confirm_message_code')), 'reload', '', 'no', 1);
 	}
 }
 
@@ -583,7 +583,7 @@ $head = modules_prepare_head($nbofactivatedmodules, count($modules), $nbmodulesn
 if ($mode == 'common' || $mode == 'commonkanban') {
 	dol_set_focus('#search_keyword');
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	if (isset($optioncss) && $optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -606,10 +606,10 @@ if ($mode == 'common' || $mode == 'commonkanban') {
 	$moreforfilter = '<div class="valignmiddle">';
 
 	$moreforfilter .= '<div class="floatright right pagination paddingtop --module-list"><ul><li>';
-	$moreforfilter .= dolGetButtonTitle($langs->trans('CheckForModuleUpdate'), $langs->trans('CheckForModuleUpdate').'<br>'.$langs->trans('CheckForModuleUpdateHelp'), 'fa fa-sync', DOL_PHP_SELF.'?action=checklastversion&token='.newToken().'&mode='.$mode.$param, '', 1, array('morecss' => 'reposition'));
+	$moreforfilter .= dolGetButtonTitle($langs->trans('CheckForModuleUpdate'), $langs->trans('CheckForModuleUpdate').'<br>'.$langs->trans('CheckForModuleUpdateHelp'), 'fa fa-sync', $_SERVER['PHP_SELF'].'?action=checklastversion&token='.newToken().'&mode='.$mode.$param, '', 1, array('morecss' => 'reposition'));
 	$moreforfilter .= dolGetButtonTitleSeparator();
-	$moreforfilter .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.$param, '', ($mode == 'common' ? 2 : 1), array('morecss' => 'reposition'));
-	$moreforfilter .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=commonkanban'.$param, '', ($mode == 'commonkanban' ? 2 : 1), array('morecss' => 'reposition'));
+	$moreforfilter .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.$param, '', ($mode == 'common' ? 2 : 1), array('morecss' => 'reposition'));
+	$moreforfilter .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=commonkanban'.$param, '', ($mode == 'commonkanban' ? 2 : 1), array('morecss' => 'reposition'));
 	$moreforfilter .= '</li></ul></div>';
 
 	$moreforfilter .= '<div class="divfilteralone colorbacktimesheet float valignmiddle">';
@@ -875,22 +875,22 @@ if ($mode == 'common' || $mode == 'commonkanban') {
 				}
 			} else {
 				if (!empty($objMod->warnings_unactivation[$mysoc->country_code]) && method_exists($objMod, 'alreadyUsed') && $objMod->alreadyUsed()) {
-					$codeenabledisable .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reset_confirm&amp;confirm_message_code='.urlencode($objMod->warnings_unactivation[$mysoc->country_code]).'&amp;value='.$modName.'&amp;mode='.$mode.$param.'">';
+					$codeenabledisable .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reset_confirm&amp;confirm_message_code='.urlencode($objMod->warnings_unactivation[$mysoc->country_code]).'&amp;value='.$modName.'&amp;mode='.$mode.$param.'">';
 					$codeenabledisable .= img_picto($langs->trans("Activated").($warningstring ? ' '.$warningstring : ''), 'switch_on');
 					$codeenabledisable .= '</a>';
 					if (getDolGlobalInt("MAIN_FEATURES_LEVEL") > 1) {
 						$codeenabledisable .= '&nbsp;';
-						$codeenabledisable .= '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reload_confirm&amp;value='.$modName.'&amp;mode='.$mode.'&amp;confirm=yes'.$param.'">';
+						$codeenabledisable .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reload_confirm&amp;value='.$modName.'&amp;mode='.$mode.'&amp;confirm=yes'.$param.'">';
 						$codeenabledisable .= img_picto($langs->trans("Reload"), 'refresh', 'class="opacitymedium"');
 						$codeenabledisable .= '</a>';
 					}
 				} else {
-					$codeenabledisable .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reset&amp;value='.$modName.'&amp;mode='.$mode.'&amp;confirm=yes'.$param.'">';
+					$codeenabledisable .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reset&amp;value='.$modName.'&amp;mode='.$mode.'&amp;confirm=yes'.$param.'">';
 					$codeenabledisable .= img_picto($langs->trans("Activated").($warningstring ? ' '.$warningstring : ''), 'switch_on');
 					$codeenabledisable .= '</a>';
 					if (getDolGlobalInt("MAIN_FEATURES_LEVEL") > 1) {
 						$codeenabledisable .= '&nbsp;';
-						$codeenabledisable .= '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reload&amp;value='.$modName.'&amp;mode='.$mode.'&amp;confirm=yes'.$param.'">';
+						$codeenabledisable .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$objMod->numero.'&amp;token='.newToken().'&amp;module_position='.$module_position.'&amp;action=reload&amp;value='.$modName.'&amp;mode='.$mode.'&amp;confirm=yes'.$param.'">';
 						$codeenabledisable .= img_picto($langs->trans("Reload"), 'refresh', 'class="opacitymedium"');
 						$codeenabledisable .= '</a>';
 					}
@@ -912,7 +912,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
 				if ($search_status > -1) {
 					$backtourlparam .= ($backtourlparam ? '&' : '?').'search_status='.urlencode($search_status); // No urlencode here, done later
 				}
-				$backtourl = DOL_PHP_SELF.$backtourlparam;
+				$backtourl = $_SERVER['PHP_SELF'].$backtourlparam;
 
 				$regs = array();
 				if (is_array($objMod->config_page_url)) {
@@ -945,7 +945,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
 			if (!empty($objMod->always_enabled)) {
 				// A 'always_enabled' module should not never be disabled. If this happen, we keep a link to re-enable it.
 				$codeenabledisable .= '<!-- Message to show: an always_enabled module has been disabled -->'."\n";
-				$codeenabledisable .= '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$objMod->numero.'&token='.newToken().'&module_position='.$module_position.'&action=set&token='.newToken().'&value='.$modName.'&mode='.$mode.$param.'"';
+				$codeenabledisable .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$objMod->numero.'&token='.newToken().'&module_position='.$module_position.'&action=set&token='.newToken().'&value='.$modName.'&mode='.$mode.$param.'"';
 				$codeenabledisable .= '>';
 				$codeenabledisable .= img_picto($langs->trans("Disabled"), 'switch_off');
 				$codeenabledisable .= "</a>\n";
@@ -983,7 +983,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
 					}
 				}
 				$codeenabledisable .= '<!-- Message to show: '.$warningmessage.' -->'."\n";
-				$codeenabledisable .= '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$objMod->numero.'&token='.newToken().'&module_position='.$module_position.'&action=set&token='.newToken().'&value='.$modName.'&mode='.$mode.$param.'"';
+				$codeenabledisable .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$objMod->numero.'&token='.newToken().'&module_position='.$module_position.'&action=set&token='.newToken().'&value='.$modName.'&mode='.$mode.$param.'"';
 				if ($warningmessage) {
 					$codeenabledisable .= ' onclick="return confirm(\''.dol_escape_js($warningmessage).'\');"';
 				}
@@ -1243,7 +1243,7 @@ if ($mode == 'deploy') {
 		}
 
 		if ($allowfromweb == 1) {
-			print '<form enctype="multipart/form-data" method="POST" class="noborder" action="'.DOL_PHP_SELF.'" name="forminstall">';
+			print '<form enctype="multipart/form-data" method="POST" class="noborder" action="'.$_SERVER['PHP_SELF'].'" name="forminstall">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="install">';
 			print '<input type="hidden" name="mode" value="deploy">';

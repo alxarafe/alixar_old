@@ -234,7 +234,7 @@ if (empty($reshook)) {
 			$db->commit();
 
 			setEventMessage($langs->trans("Close Done"));
-			header('Location: '.DOL_PHP_SELF);
+			header('Location: '.$_SERVER['PHP_SELF']);
 			exit;
 		} else {
 			$db->rollback();
@@ -509,7 +509,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -600,13 +600,13 @@ $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 // if (!empty($socid)) $url .= '&socid='.$socid;
 // $newcardbutton = dolGetButtonTitle($langs->trans('NewSending'), '', 'fa fa-plus-circle', $url, '', $user->rights->expedition->creer);
 $newcardbutton  = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 $newcardbutton .= dolGetButtonTitleSeparator();
 $newcardbutton .= dolGetButtonTitle($langs->trans('NewSending'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/expedition/card.php?action=create2', '', $user->hasRight('expedition', 'creer'));
 
 $i = 0;
-print '<form method="POST" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -618,7 +618,7 @@ print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 print '<input type="hidden" name="mode" value="'.$mode.'">';
 
 // @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-print_barre_liste($langs->trans('ListOfSendings'), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'dolly', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($langs->trans('ListOfSendings'), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'dolly', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 $topicmail = "SendShippingRef";
 $modelmail = "shipping_send";
@@ -686,7 +686,7 @@ if (!empty($moreforfilter)) {
 	print '</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN'));
 if ($massactionbutton) {
 	$selectedfields .= $form->showCheckAddButtons('checkforselect', 1); // This also change content of $arrayfields
@@ -842,63 +842,63 @@ $totalarray['nbfield'] = 0;
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.ref']['checked'])) {
-	print_liste_field_titre($arrayfields['e.ref']['label'], DOL_PHP_SELF, "e.ref", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['e.ref']['label'], $_SERVER['PHP_SELF'], "e.ref", "", $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.ref_customer']['checked'])) {
-	print_liste_field_titre($arrayfields['e.ref_customer']['label'], DOL_PHP_SELF, "e.ref_customer", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['e.ref_customer']['label'], $_SERVER['PHP_SELF'], "e.ref_customer", "", $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.nom']['checked'])) {
-	print_liste_field_titre($arrayfields['s.nom']['label'], DOL_PHP_SELF, "s.nom", "", $param, '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre($arrayfields['s.nom']['label'], $_SERVER['PHP_SELF'], "s.nom", "", $param, '', $sortfield, $sortorder, 'left ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.town']['checked'])) {
-	print_liste_field_titre($arrayfields['s.town']['label'], DOL_PHP_SELF, 's.town', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['s.town']['label'], $_SERVER['PHP_SELF'], 's.town', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.zip']['checked'])) {
-	print_liste_field_titre($arrayfields['s.zip']['label'], DOL_PHP_SELF, 's.zip', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['s.zip']['label'], $_SERVER['PHP_SELF'], 's.zip', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['state.nom']['checked'])) {
-	print_liste_field_titre($arrayfields['state.nom']['label'], DOL_PHP_SELF, "state.nom", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['state.nom']['label'], $_SERVER['PHP_SELF'], "state.nom", "", $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['country.code_iso']['checked'])) {
-	print_liste_field_titre($arrayfields['country.code_iso']['label'], DOL_PHP_SELF, "country.code_iso", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['country.code_iso']['label'], $_SERVER['PHP_SELF'], "country.code_iso", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['typent.code']['checked'])) {
-	print_liste_field_titre($arrayfields['typent.code']['label'], DOL_PHP_SELF, "typent.code", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['typent.code']['label'], $_SERVER['PHP_SELF'], "typent.code", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.weight']['checked'])) {
-	print_liste_field_titre($arrayfields['e.weight']['label'], DOL_PHP_SELF, "e.weight", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['e.weight']['label'], $_SERVER['PHP_SELF'], "e.weight", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.date_delivery']['checked'])) {
-	print_liste_field_titre($arrayfields['e.date_delivery']['label'], DOL_PHP_SELF, "e.date_delivery", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['e.date_delivery']['label'], $_SERVER['PHP_SELF'], "e.date_delivery", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.fk_shipping_method']['checked'])) {
-	print_liste_field_titre($arrayfields['e.fk_shipping_method']['label'], DOL_PHP_SELF, "e.fk_shipping_method", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['e.fk_shipping_method']['label'], $_SERVER['PHP_SELF'], "e.fk_shipping_method", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.tracking_number']['checked'])) {
-	print_liste_field_titre($arrayfields['e.tracking_number']['label'], DOL_PHP_SELF, "e.tracking_number", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['e.tracking_number']['label'], $_SERVER['PHP_SELF'], "e.tracking_number", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['l.ref']['checked'])) {
-	print_liste_field_titre($arrayfields['l.ref']['label'], DOL_PHP_SELF, "l.ref", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['l.ref']['label'], $_SERVER['PHP_SELF'], "l.ref", "", $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['l.date_delivery']['checked'])) {
-	print_liste_field_titre($arrayfields['l.date_delivery']['label'], DOL_PHP_SELF, "l.date_delivery", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['l.date_delivery']['label'], $_SERVER['PHP_SELF'], "l.date_delivery", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 // Extra fields
@@ -908,24 +908,24 @@ $parameters = array('arrayfields' => $arrayfields, 'param' => $param, 'sortfield
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 if (!empty($arrayfields['e.datec']['checked'])) {
-	print_liste_field_titre($arrayfields['e.datec']['label'], DOL_PHP_SELF, "e.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	print_liste_field_titre($arrayfields['e.datec']['label'], $_SERVER['PHP_SELF'], "e.date_creation", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.tms']['checked'])) {
-	print_liste_field_titre($arrayfields['e.tms']['label'], DOL_PHP_SELF, "e.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	print_liste_field_titre($arrayfields['e.tms']['label'], $_SERVER['PHP_SELF'], "e.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.fk_statut']['checked'])) {
-	print_liste_field_titre($arrayfields['e.fk_statut']['label'], DOL_PHP_SELF, "e.fk_statut", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['e.fk_statut']['label'], $_SERVER['PHP_SELF'], "e.fk_statut", "", $param, '', $sortfield, $sortorder, 'right ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['e.billed']['checked'])) {
-	print_liste_field_titre($arrayfields['e.billed']['label'], DOL_PHP_SELF, "e.billed", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['e.billed']['label'], $_SERVER['PHP_SELF'], "e.billed", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	$totalarray['nbfield']++;
 }
 print "</tr>\n";
@@ -1223,7 +1223,7 @@ if ($massaction == 'builddoc' || $action == 'remove_file' || $show_files) {
 }
 
 // Show list of available documents
-$urlsource  = DOL_PHP_SELF.'?sortfield='.$sortfield.'&sortorder='.$sortorder;
+$urlsource  = $_SERVER['PHP_SELF'].'?sortfield='.$sortfield.'&sortorder='.$sortorder;
 $urlsource .= str_replace('&amp;', '&', $param);
 
 $filedir    = $diroutputmassaction;

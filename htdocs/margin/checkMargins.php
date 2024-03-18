@@ -157,7 +157,7 @@ llxHeader('', $title);
 // print load_fiche_titre($text);
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.$contextpage;
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -181,7 +181,7 @@ $head = marges_prepare_head();
 
 $picto = 'margin';
 
-print '<form method="post" name="sel" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" name="sel" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print dol_get_fiche_head($head, $langs->trans('checkMargins'), $title, 0, $picto);
@@ -249,7 +249,7 @@ if ($result) {
 
 	print '<br>';
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("MarginDetails"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, '', 0, '', '', $limit);
+	print_barre_liste($langs->trans("MarginDetails"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, '', 0, '', '', $limit);
 
 	if (getDolGlobalString('MARGIN_TYPE') == "1") {
 		$labelcostprice = 'BuyingPrice';
@@ -259,7 +259,7 @@ if ($result) {
 
 	$moreforfilter = '';
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	//$selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
 	//if ($massactionbutton) $selectedfields.=$form->showCheckAddButtons('checkforselect', 1);
 	$selectedfields = '';
@@ -281,13 +281,13 @@ if ($result) {
 	print "</tr>\n";
 
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "f.ref", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Description", DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("UnitPriceHT", DOL_PHP_SELF, "d.subprice", "", $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre($labelcostprice, DOL_PHP_SELF, "d.buy_price_ht", "", $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("Qty", DOL_PHP_SELF, "d.qty", "", $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("AmountTTC", DOL_PHP_SELF, "d.total_ht", "", $param, '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', $param, '', $sortfield, $sortorder, 'maxwidthsearch center ');
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "f.ref", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Description", $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("UnitPriceHT", $_SERVER['PHP_SELF'], "d.subprice", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($labelcostprice, $_SERVER['PHP_SELF'], "d.buy_price_ht", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Qty", $_SERVER['PHP_SELF'], "d.qty", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("AmountTTC", $_SERVER['PHP_SELF'], "d.total_ht", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', $param, '', $sortfield, $sortorder, 'maxwidthsearch center ');
 	print "</tr>\n";
 
 	$i = 0;

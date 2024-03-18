@@ -133,14 +133,14 @@ $param .= '&dol_openinpopup=1';
 $enabledisablehtml = $langs->trans("EnablePublicVirtualCard").' ';
 if (!getDolUserInt('USER_ENABLE_PUBLIC', 0, $object)) {
 	// Button off, click to enable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setUSER_ENABLE_PUBLIC&token='.newToken().'&value=1'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setUSER_ENABLE_PUBLIC&token='.newToken().'&value=1'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Disabled"), 'switch_off');
 	$enabledisablehtml .= '</a>';
 
 	$enabledisablehtml .= '<br><br><span class="opacitymedium">'.$langs->trans("UserPublicPageDesc").'</span><br><br>';
 } else {
 	// Button on, click to disable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setUSER_ENABLE_PUBLIC&token='.newToken().'&value=0'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setUSER_ENABLE_PUBLIC&token='.newToken().'&value=0'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Activated"), 'switch_on');
 	$enabledisablehtml .= '</a>';
 }
@@ -149,7 +149,7 @@ print '<input type="hidden" id="USER_ENABLE_PUBLIC" name="USER_ENABLE_PUBLIC" va
 
 print '<br><br>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 
 if (getDolUserInt('USER_ENABLE_PUBLIC', 0, $object)) {
 	print '<input type="hidden" name="action" value="update">';

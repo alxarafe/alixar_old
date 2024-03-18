@@ -161,7 +161,7 @@ if (empty($reshook)) {
 		if ($object->paye) {
 			$result = $object->setUnpaid($user);
 			if ($result > 0) {
-				header('Location: '.DOL_PHP_SELF.'?id='.$id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$id);
 				exit();
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -354,7 +354,7 @@ if (empty($reshook)) {
 				$db->commit();
 				$db->close();
 
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit;
 			} else {
 				$id = $originalId;
@@ -422,7 +422,7 @@ if ($action == 'create') {
 		print '</script>'."\n";
 	}
 
-	print '<form name="add" action="'.DOL_PHP_SELF.'" name="formvat" method="post">';
+	print '<form name="add" action="'.$_SERVER['PHP_SELF'].'" name="formvat" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -543,21 +543,21 @@ if ($id > 0) {
 		$formquestion[] = array('type' => 'date', 'name' => 'clone_period', 'label' => $langs->trans("PeriodEndDate"), 'value' => -1);
 		$formquestion[] = array('type' => 'text', 'name' => 'amount', 'label' => $langs->trans("Amount"), 'value' => price($object->amount), 'morecss' => 'width100');
 
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneVAT', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 240);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneVAT', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 240);
 	}
 
 	if ($action == 'paid') {
 		$text = $langs->trans('ConfirmPayVAT');
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans('PayVAT'), $text, "confirm_paid", '', '', 2);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans('PayVAT'), $text, "confirm_paid", '', '', 2);
 	}
 
 	if ($action == 'delete') {
 		$text = $langs->trans('ConfirmDeleteVAT');
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteVAT'), $text, 'confirm_delete', '', '', 2);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteVAT'), $text, 'confirm_delete', '', '', 2);
 	}
 
 	if ($action == 'edit') {
-		print '<form name="charge" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+		print '<form name="charge" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update">';
 	}
@@ -621,14 +621,14 @@ if ($id > 0) {
 	print $langs->trans('PaymentMode');
 	print '</td>';
 	if ($action != 'editmode') {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td>';
 	if ($action == 'editmode') {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->type_payment, 'mode_reglement_id');
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->type_payment, 'mode_reglement_id');
 	} else {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->type_payment, 'none');
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->type_payment, 'none');
 	}
 	print '</td></tr>';
 
@@ -639,14 +639,14 @@ if ($id > 0) {
 		print $langs->trans('BankAccount');
 		print '<td>';
 		if ($action != 'editbankaccount' && $user->hasRight('tax', 'charges', 'creer')) {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editbankaccount') {
-			$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'fk_account', 1);
+			$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'fk_account', 1);
 		} else {
-			$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'none');
+			$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'none');
 		}
 		print '</td>';
 		print '</tr>';
@@ -840,7 +840,7 @@ if ($id > 0) {
 			$objref = dol_sanitizeFileName($object->ref);
 			$relativepath = $objref.'/'.$objref.'.pdf';
 			$filedir = $conf->tax->dir_output.'/vat/'.$objref;
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 			$genallowed = 0;
 			$delallowed = $user->hasRight('tax', 'charges', 'creer'); // If you can create/edit, you can remove a file on card
 			print $formfile->showdocuments('tax-vat', $objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);

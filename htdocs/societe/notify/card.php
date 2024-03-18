@@ -249,7 +249,7 @@ if ($result > 0) {
 	// Add notification form
 	print load_fiche_titre($langs->trans("ListOfActiveNotifications").' <span class="opacitymedium colorblack paddingleft">('.$num.')</span>', '', '');
 
-	print '<form action="'.DOL_PHP_SELF.'?socid='.$socid.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?socid='.$socid.'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -259,9 +259,9 @@ if ($result > 0) {
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="centpercent noborder">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Target", DOL_PHP_SELF, "c.lastname,c.firstname", '', $param, 'width="45%"', $sortfield, $sortorder);
-	print_liste_field_titre("Action", DOL_PHP_SELF, "", '', $param, 'width="35%"', $sortfield, $sortorder);
-	print_liste_field_titre("Type", DOL_PHP_SELF, "n.type", '', $param, 'width="10%"', $sortfield, $sortorder);
+	print_liste_field_titre("Target", $_SERVER['PHP_SELF'], "c.lastname,c.firstname", '', $param, 'width="45%"', $sortfield, $sortorder);
+	print_liste_field_titre("Action", $_SERVER['PHP_SELF'], "", '', $param, 'width="35%"', $sortfield, $sortorder);
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "n.type", '', $param, 'width="10%"', $sortfield, $sortorder);
 	print_liste_field_titre('');
 	print "</tr>\n";
 
@@ -429,14 +429,14 @@ if ($result > 0) {
 	}
 
 	$param = '&socid='.$object->id;
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.$contextpage;
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
 		$param .= '&limit='.$limit;
 	}
 
-	print '<form method="post" action="'.DOL_PHP_SELF.'" name="formfilter">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'" name="formfilter">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -448,17 +448,17 @@ if ($result > 0) {
 	print '<input type="hidden" name="socid" value="'.$object->id.'">';
 
 	// List of active notifications  @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("ListOfNotificationsDone"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, '', 0, '', '', $limit);
+	print_barre_liste($langs->trans("ListOfNotificationsDone"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, '', 0, '', '', $limit);
 
 	// Line with titles
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="centpercent noborder">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Target", DOL_PHP_SELF, "c.lastname,c.firstname", '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Action", DOL_PHP_SELF, "", '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Type", DOL_PHP_SELF, "n.type", '', $param, '', $sortfield, $sortorder);
-	//print_liste_field_titre("Object",DOL_PHP_SELF,"",'',$param,'"',$sortfield,$sortorder);
-	print_liste_field_titre("Date", DOL_PHP_SELF, "n.daten", '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Target", $_SERVER['PHP_SELF'], "c.lastname,c.firstname", '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Action", $_SERVER['PHP_SELF'], "", '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "n.type", '', $param, '', $sortfield, $sortorder);
+	//print_liste_field_titre("Object",$_SERVER['PHP_SELF'],"",'',$param,'"',$sortfield,$sortorder);
+	print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "n.daten", '', $param, '', $sortfield, $sortorder, 'right ');
 	print '</tr>';
 
 	if ($num > 0) {

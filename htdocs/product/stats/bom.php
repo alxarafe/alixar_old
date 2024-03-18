@@ -271,7 +271,7 @@ if ($id > 0 || !empty($ref)) {
 			$option .= '&search_year='.urlencode($search_year);
 		}
 
-		print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$product->id.'" name="search_form">'."\n";
+		print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$product->id.'" name="search_form">'."\n";
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		if (!empty($sortfield)) {
 			print '<input type="hidden" name="sortfield" value="'.$sortfield.'"/>';
@@ -280,7 +280,7 @@ if ($id > 0 || !empty($ref)) {
 			print '<input type="hidden" name="sortorder" value="'.$sortorder.'"/>';
 		}
 
-		print_barre_liste($langs->trans("BOMs"), $page, DOL_PHP_SELF, $option, $sortfield, $sortorder, '', count($bom_data_result), count($bom_data_result), '', 0, '', '', $limit, 0, 0, 1);
+		print_barre_liste($langs->trans("BOMs"), $page, $_SERVER['PHP_SELF'], $option, $sortfield, $sortorder, '', count($bom_data_result), count($bom_data_result), '', 0, '', '', $limit, 0, 0, 1);
 
 		if (!empty($page)) {
 			$option .= '&page='.urlencode((string) ($page));
@@ -290,12 +290,12 @@ if ($id > 0 || !empty($ref)) {
 		print '<table class="tagtable liste listwithfilterbefore centpercent">';
 
 		print '<tr class="liste_titre">';
-		print_liste_field_titre("Ref", DOL_PHP_SELF, "b.rowid", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
-		print_liste_field_titre("Product", DOL_PHP_SELF, "b.fk_product", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
-		print_liste_field_titre("Date", DOL_PHP_SELF, "b.date_valid", "", "&amp;id=".$product->id, 'align="center"', $sortfield, $sortorder);
-		print_liste_field_titre("RowMaterial", DOL_PHP_SELF, "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre("Finished", DOL_PHP_SELF, "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre("Status", DOL_PHP_SELF, "b.status", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "b.rowid", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
+		print_liste_field_titre("Product", $_SERVER['PHP_SELF'], "b.fk_product", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
+		print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "b.date_valid", "", "&amp;id=".$product->id, 'align="center"', $sortfield, $sortorder);
+		print_liste_field_titre("RowMaterial", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("Finished", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "b.status", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'right ');
 		print "</tr>\n";
 
 		if (!empty($bom_data_result)) {

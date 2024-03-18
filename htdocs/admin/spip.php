@@ -118,14 +118,14 @@ $head = mailmanspip_admin_prepare_head();
  * Spip
  */
 if (getDolGlobalString('ADHERENT_USE_SPIP')) {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
 	print dol_get_fiche_head($head, 'spip', $langs->trans("Setup"), -1, 'user');
 
 	//$link=img_picto($langs->trans("Active"),'tick').' ';
-	$link = '<a href="'.DOL_PHP_SELF.'?action=unset&token='.newToken().'&value=0&name=ADHERENT_USE_SPIP">';
+	$link = '<a href="'.$_SERVER['PHP_SELF'].'?action=unset&token='.newToken().'&value=0&name=ADHERENT_USE_SPIP">';
 	//$link.=$langs->trans("Disable");
 	$link .= img_picto($langs->trans("Activated"), 'switch_on');
 	$link .= '</a>';
@@ -150,7 +150,7 @@ if (getDolGlobalString('ADHERENT_USE_SPIP')) {
 } else {
 	print dol_get_fiche_head($head, 'spip', $langs->trans("Setup"), 0, 'user');
 
-	$link = '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value=1&name=ADHERENT_USE_SPIP">';
+	$link = '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value=1&name=ADHERENT_USE_SPIP">';
 	//$link.=$langs->trans("Activate");
 	$link .= img_picto($langs->trans("Disabled"), 'switch_off');
 	$link .= '</a>';

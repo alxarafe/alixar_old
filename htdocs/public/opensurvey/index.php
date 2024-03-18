@@ -119,7 +119,7 @@ llxHeader($head, $langs->trans("Surveys"), '', '', 0, 0, '', '', '', 'onlinepaym
 
 print '<span id="dolpaymentspan"></span>'."\n";
 print '<div class="center">'."\n";
-print '<form id="dolpaymentform" class="center" name="paymentform" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+print '<form id="dolpaymentform" class="center" name="paymentform" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 print '<input type="hidden" name="action" value="dosign">'."\n";
 print '<input type="hidden" name="tag" value="'.GETPOST("tag", 'alpha').'">'."\n";

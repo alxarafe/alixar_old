@@ -163,7 +163,7 @@ if ($reload) {
 	$param .= '&date_endmonth=' . $date_endmonth;
 	$param .= '&date_endyear=' . $date_endyear;
 	$param .= '&in_bookkeeping=' . $in_bookkeeping;
-	header("Location: " . DOL_PHP_SELF . ($param ? '?' . $param : ''));
+	header("Location: " . $_SERVER['PHP_SELF'] . ($param ? '?' . $param : ''));
 	exit;
 }
 

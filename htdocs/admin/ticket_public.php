@@ -204,7 +204,7 @@ if ($action != '') {
 	if (!$error) {
 		$db->commit();
 		setEventMessage($langs->trans('SetupSaved'));
-		header("Location: " . DOL_PHP_SELF);
+		header("Location: " . $_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		$db->rollback();
@@ -242,12 +242,12 @@ print '<br>';
 $enabledisablehtml = $langs->trans("TicketsActivatePublicInterface").' ';
 if (!getDolGlobalInt('TICKET_ENABLE_PUBLIC_INTERFACE')) {
 	// Button off, click to enable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setTICKET_ENABLE_PUBLIC_INTERFACE&token='.newToken().'&value=1'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setTICKET_ENABLE_PUBLIC_INTERFACE&token='.newToken().'&value=1'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Disabled"), 'switch_off');
 	$enabledisablehtml .= '</a>';
 } else {
 	// Button on, click to disable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setTICKET_ENABLE_PUBLIC_INTERFACE&token='.newToken().'&value=0'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setTICKET_ENABLE_PUBLIC_INTERFACE&token='.newToken().'&value=0'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Activated"), 'switch_on');
 	$enabledisablehtml .= '</a>';
 }
@@ -278,7 +278,7 @@ if (getDolGlobalInt('TICKET_ENABLE_PUBLIC_INTERFACE')) {
 	print '<br><br>';
 
 
-	print '<form method="post" action="'.DOL_PHP_SELF.'" enctype="multipart/form-data" >';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'" enctype="multipart/form-data" >';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="setvar">';
 
@@ -300,9 +300,9 @@ if (getDolGlobalInt('TICKET_ENABLE_PUBLIC_INTERFACE')) {
 			print ajax_constantonoff('MAIN_SECURITY_ENABLECAPTCHA_TICKET');
 		} else {
 			if (!getDolGlobalInt('MAIN_SECURITY_ENABLECAPTCHA_TICKET')) {
-				print '<a href="'.DOL_PHP_SELF.'?action=set_MAIN_SECURITY_ENABLECAPTCHA_TICKET&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_MAIN_SECURITY_ENABLECAPTCHA_TICKET&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 			} else {
-				print '<a href="'.DOL_PHP_SELF.'?action=del_MAIN_SECURITY_ENABLECAPTCHA_TICKET&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_MAIN_SECURITY_ENABLECAPTCHA_TICKET&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 			}
 		}
 	} else {
@@ -319,9 +319,9 @@ if (getDolGlobalInt('TICKET_ENABLE_PUBLIC_INTERFACE')) {
 	print '<tr class="oddeven"><td>'.$langs->trans("TicketsEmailMustExist").'</td>';
 	print '<td class="left">';
 	if (!getDolGlobalInt('TICKET_EMAIL_MUST_EXISTS')) {
-		print '<a href="' . DOL_PHP_SELF . '?action=set_TICKET_EMAIL_MUST_EXISTS&token='.newToken().'">' . img_picto($langs->trans('Disabled'), 'switch_off') . '</a>';
+		print '<a href="' . $_SERVER['PHP_SELF'] . '?action=set_TICKET_EMAIL_MUST_EXISTS&token='.newToken().'">' . img_picto($langs->trans('Disabled'), 'switch_off') . '</a>';
 	} else {
-		print '<a href="' . DOL_PHP_SELF . '?action=del_TICKET_EMAIL_MUST_EXISTS&token='.newToken().'">' . img_picto($langs->trans('Enabled'), 'switch_on') . '</a>';
+		print '<a href="' . $_SERVER['PHP_SELF'] . '?action=del_TICKET_EMAIL_MUST_EXISTS&token='.newToken().'">' . img_picto($langs->trans('Enabled'), 'switch_on') . '</a>';
 	}
 	print '</td>';
 	print '<td class="center width75">';
@@ -335,9 +335,9 @@ if (getDolGlobalInt('TICKET_ENABLE_PUBLIC_INTERFACE')) {
 	print '<tr class="oddeven"><td>'.$langs->trans("TicketCreateThirdPartyWithContactIfNotExist").'</td>';
 	print '<td class="left">';
 	if (!getDolGlobalInt('TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST')) {
-		print '<a href="' . DOL_PHP_SELF . '?action=set_TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST&token='.newToken().'">' . img_picto($langs->trans('Disabled'), 'switch_off') . '</a>';
+		print '<a href="' . $_SERVER['PHP_SELF'] . '?action=set_TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST&token='.newToken().'">' . img_picto($langs->trans('Disabled'), 'switch_off') . '</a>';
 	} else {
-		print '<a href="' . DOL_PHP_SELF . '?action=del_TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST&token='.newToken().'">' . img_picto($langs->trans('Enabled'), 'switch_on') . '</a>';
+		print '<a href="' . $_SERVER['PHP_SELF'] . '?action=del_TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST&token='.newToken().'">' . img_picto($langs->trans('Enabled'), 'switch_on') . '</a>';
 	}
 	print '</td>';
 	print '<td class="center width75">';
@@ -401,9 +401,9 @@ if (getDolGlobalInt('TICKET_ENABLE_PUBLIC_INTERFACE')) {
 		print ajax_constantonoff('TICKET_SHOW_PROGRESSION');
 	} else {
 		if (!getDolGlobalInt('TICKET_SHOW_PROGRESSION')) {
-			print '<a href="' . DOL_PHP_SELF . '?action=set_TICKET_SHOW_PROGRESSION&token='.newToken().'">' . img_picto($langs->trans('Disabled'), 'switch_off') . '</a>';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=set_TICKET_SHOW_PROGRESSION&token='.newToken().'">' . img_picto($langs->trans('Disabled'), 'switch_off') . '</a>';
 		} else {
-			print '<a href="' . DOL_PHP_SELF . '?action=del_TICKET_SHOW_PROGRESSION&token='.newToken().'">' . img_picto($langs->trans('Enabled'), 'switch_on') . '</a>';
+			print '<a href="' . $_SERVER['PHP_SELF'] . '?action=del_TICKET_SHOW_PROGRESSION&token='.newToken().'">' . img_picto($langs->trans('Enabled'), 'switch_on') . '</a>';
 		}
 	}
 	print '</td>';

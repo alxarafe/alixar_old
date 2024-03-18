@@ -192,7 +192,7 @@ $title .= ' '.$form->selectarray('mode', $arrayofmode, $mode, 1, 0, 0, '', 1);
 $title .= ' <input type="submit" class="button small" name="refresh" value="'.$langs->trans("Refresh").'">';
 
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="mode" value="'.$mode.'">';
 print '<input type="hidden" name="type" value="'.$type.'">';
@@ -205,15 +205,15 @@ if ($backtopageforcancel) {
 }
 
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, "", $num, $totalnboflines, '', 0, '', '', -1, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, "", $num, $totalnboflines, '', 0, '', '', -1, 0, 0, 1);
 
 print '<table class="noborder centpercent">';
 
 print '<tr class="liste_titre">';
-print_liste_field_titre('Ref', DOL_PHP_SELF, 'p.ref', '', $param, '', $sortfield, $sortorder);
-print_liste_field_titre('Type', DOL_PHP_SELF, 'p.fk_product_type', '', $param, '', $sortfield, $sortorder);
-print_liste_field_titre('Label', DOL_PHP_SELF, 'p.label', '', $param, '', $sortfield, $sortorder);
-print_liste_field_titre($textforqty, DOL_PHP_SELF, 'c', '', $param, '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre('Ref', $_SERVER['PHP_SELF'], 'p.ref', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre('Type', $_SERVER['PHP_SELF'], 'p.fk_product_type', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre('Label', $_SERVER['PHP_SELF'], 'p.label', '', $param, '', $sortfield, $sortorder);
+print_liste_field_titre($textforqty, $_SERVER['PHP_SELF'], 'c', '', $param, '', $sortfield, $sortorder, 'right ');
 print "</tr>\n";
 
 if ($mode && $mode != '-1') {

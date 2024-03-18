@@ -86,7 +86,7 @@ if ($action == "save") {
 
 $form = new Form($db);
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = '';
 $selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
 
@@ -100,7 +100,7 @@ print '<span class="opacitymedium">'.$langs->trans("LogEventDesc", $langs->trans
 print "<br>\n";
 
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="save">';
 
@@ -112,8 +112,8 @@ print '<br>';
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print getTitleFieldOfList("TrackableSecurityEvents", 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, '')."\n";
-print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+print getTitleFieldOfList("TrackableSecurityEvents", 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, '')."\n";
+print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 print '</tr>'."\n";
 // Loop on each event type
 foreach ($eventstolog as $key => $arr) {

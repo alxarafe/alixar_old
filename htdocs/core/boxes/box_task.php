@@ -108,7 +108,7 @@ class box_task extends ModeleBoxes
 		if ($user->hasRight('projet', 'lire')) {
 			$boxcontent .= '<div id="ancor-idfilter'.$this->boxcode.'" style="display: block; position: absolute; margin-top: -100px"></div>'."\n";
 			$boxcontent .= '<div id="idfilter'.$this->boxcode.'" class="center" >'."\n";
-			$boxcontent .= '<form class="flat " method="POST" action="'.DOL_PHP_SELF.'#ancor-idfilter'.$this->boxcode.'">'."\n";
+			$boxcontent .= '<form class="flat " method="POST" action="'.$_SERVER['PHP_SELF'].'#ancor-idfilter'.$this->boxcode.'">'."\n";
 			$boxcontent .= '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 			$selectArray = array('all' => $langs->trans("NoFilter"), 'im_task_contact' => $langs->trans("WhichIamLinkedTo"), 'im_project_contact' => $langs->trans("WhichIamLinkedToProject"));
 			$boxcontent .= $form->selectArray($cookie_name, $selectArray, $filterValue);

@@ -170,21 +170,21 @@ if ($object->id > 0) {
 
 	$newcardbutton = '';
 	if (isModEnabled('agenda')) {
-		$newcardbutton .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create&backtopage='.urlencode(DOL_PHP_SELF).($object->id > 0 ? '?id='.$object->id : '').'&origin=member&originid='.$id);
+		$newcardbutton .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF']).($object->id > 0 ? '?id='.$object->id : '').'&origin=member&originid='.$id);
 	}
 
 	if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
 		print '<br>';
 
 		$param = '&id='.$id;
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage='.$contextpage;
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {
 			$param .= '&limit='.$limit;
 		}
 
-		print_barre_liste($langs->trans("ActionsOnMember"), 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0, -1, '', '', $newcardbutton, '', 0, 1, 1);
+		print_barre_liste($langs->trans("ActionsOnMember"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', '', $newcardbutton, '', 0, 1, 1);
 
 		// List of all actions
 		$filters = array();

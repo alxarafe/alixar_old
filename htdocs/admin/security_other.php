@@ -48,7 +48,7 @@ if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	$value = (GETPOST($code, 'alpha') ? GETPOST($code, 'alpha') : 1);
 	if (dolibarr_set_const($db, $code, $value, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -56,7 +56,7 @@ if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 } elseif (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -105,7 +105,7 @@ print "<br>\n";
 
 
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="updateform">';
 
@@ -131,9 +131,9 @@ if (function_exists("imagecreatefrompng")) {
 		print ajax_constantonoff('MAIN_SECURITY_ENABLECAPTCHA');
 	} else {
 		if (!getDolGlobalString('MAIN_SECURITY_ENABLECAPTCHA')) {
-			print '<a href="'.DOL_PHP_SELF.'?action=set_MAIN_SECURITY_ENABLECAPTCHA&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_MAIN_SECURITY_ENABLECAPTCHA&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 		} else {
-			print '<a href="'.DOL_PHP_SELF.'?action=del_MAIN_SECURITY_ENABLECAPTCHA&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_MAIN_SECURITY_ENABLECAPTCHA&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 		}
 	}
 } else {
@@ -150,9 +150,9 @@ if (!empty($conf->use_javascript_ajax)) {
 	print ajax_constantonoff('MAIN_USE_ADVANCED_PERMS');
 } else {
 	if (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_MAIN_USE_ADVANCED_PERMS&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_MAIN_USE_ADVANCED_PERMS&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=del_MAIN_USE_ADVANCED_PERMS&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_MAIN_USE_ADVANCED_PERMS&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	}
 }
 print "</td></tr>";

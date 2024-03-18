@@ -134,7 +134,7 @@ if (empty($reshook)) {
 				$formquestion[] = array('type'=> 'other', 'name'=>'tasksavailable', 'label'=>'', 'value' => '<input type="hidden" id="tasksavailable" name="tasksavailable" value="'.implode(',', array_keys($task_to_affect)).'">');
 			}
 
-			$formconfirmtoaddtasks = $form->formconfirm(DOL_PHP_SELF . $url_redirect, $text, '', 'addcontact_confirm', $formquestion, '', 1, 300, 590);
+			$formconfirmtoaddtasks = $form->formconfirm($_SERVER['PHP_SELF'] . $url_redirect, $text, '', 'addcontact_confirm', $formquestion, '', 1, 300, 590);
 			$formconfirmtoaddtasks .='
 			 <script>
 			 $(document).ready(function() {
@@ -159,7 +159,7 @@ if (empty($reshook)) {
 	// Add new contact
 	if ($action == 'addcontact_confirm' && $user->hasRight('projet', 'creer')) {
 		if (GETPOST('confirm', 'alpha') == 'no') {
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		}
 
@@ -264,7 +264,7 @@ if (empty($reshook)) {
 		}
 
 		if ($result >= 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		}
 	}

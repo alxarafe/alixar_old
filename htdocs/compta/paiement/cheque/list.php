@@ -217,7 +217,7 @@ if ($resql) {
 	if (!empty($mode)) {
 		$param .= '&mode='.urlencode($mode);
 	}
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.$contextpage;
 	}
 	if ($search_date_startday) {
@@ -253,12 +253,12 @@ if ($resql) {
 		$url .= '&socid='.$socid;
 	}
 	$newcardbutton  = '';
-	$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-	$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+	$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+	$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 	$newcardbutton .= dolGetButtonTitleSeparator();
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewCheckDeposit'), '', 'fa fa-plus-circle', $url, '', $user->hasRight('banque', 'cheque'));
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -272,9 +272,9 @@ if ($resql) {
 
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("MenuChequeDeposits"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'bank_account', 0, $newcardbutton, '', $limit);
+	print_barre_liste($langs->trans("MenuChequeDeposits"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'bank_account', 0, $newcardbutton, '', $limit);
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 	$massactionbutton = '';
 	if ($massactionbutton) {
@@ -368,35 +368,35 @@ if ($resql) {
 	// --------------------------------------------------------------------
 	print '<tr class="liste_titre">';
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['bc.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['bc.ref']['label'], DOL_PHP_SELF, "bc.ref", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['bc.ref']['label'], $_SERVER['PHP_SELF'], "bc.ref", "", $param, "", $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['bc.type']['checked'])) {
-		print_liste_field_titre($arrayfields['bc.type']['label'], DOL_PHP_SELF, "bc.type", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['bc.type']['label'], $_SERVER['PHP_SELF'], "bc.type", "", $param, "", $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['bc.date_bordereau']['checked'])) {
-		print_liste_field_titre($arrayfields['bc.date_bordereau']['label'], DOL_PHP_SELF, "bc.date_bordereau", "", $param, 'align="center"', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['bc.date_bordereau']['label'], $_SERVER['PHP_SELF'], "bc.date_bordereau", "", $param, 'align="center"', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['ba.label']['checked'])) {
-		print_liste_field_titre($arrayfields['ba.label']['label'], DOL_PHP_SELF, "ba.label", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['ba.label']['label'], $_SERVER['PHP_SELF'], "ba.label", "", $param, "", $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['bc.nbcheque']['checked'])) {
-		print_liste_field_titre($arrayfields['bc.nbcheque']['label'], DOL_PHP_SELF, "bc.nbcheque", "", $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['bc.nbcheque']['label'], $_SERVER['PHP_SELF'], "bc.nbcheque", "", $param, 'class="right"', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['bc.amount']['checked'])) {
-		print_liste_field_titre($arrayfields['bc.amount']['label'], DOL_PHP_SELF, "bc.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['bc.amount']['label'], $_SERVER['PHP_SELF'], "bc.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['bc.statut']['checked'])) {
-		print_liste_field_titre($arrayfields['bc.statut']['label'], DOL_PHP_SELF, "bc.statut", "", $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['bc.statut']['label'], $_SERVER['PHP_SELF'], "bc.statut", "", $param, 'class="right"', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 
@@ -406,7 +406,7 @@ if ($resql) {
 	print $hookmanager->resPrint;
 
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 		$totalarray['nbfield']++;
 	}
 

@@ -1721,7 +1721,7 @@ class Website extends CommonObject
 			setEventMessages("Website content written into ".$destdirrel, null, 'mesgs');
 		}
 
-		header("Location: ".DOL_PHP_SELF.'?website='.$website->ref);
+		header("Location: ".$_SERVER['PHP_SELF'].'?website='.$website->ref);
 		exit();
 	}
 

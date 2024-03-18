@@ -46,7 +46,7 @@ $langs->loadLangs(array("other", "help"));
  * View
  */
 
-pHeader($langs->trans("DolibarrHelpCenter"), DOL_PHP_SELF);
+pHeader($langs->trans("DolibarrHelpCenter"), $_SERVER['PHP_SELF']);
 
 print '<br><span class="opacitymedium">'.$langs->trans("HelpCenterDesc1")."<br>\n";
 print $langs->trans("HelpCenterDesc2")."</span><br>\n";

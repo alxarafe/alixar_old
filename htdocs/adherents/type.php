@@ -174,7 +174,7 @@ if ($action == 'add' && $user->hasRight('adherent', 'configurer')) {
 	if (!$error) {
 		$id = $object->create($user);
 		if ($id > 0) {
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -217,7 +217,7 @@ if ($action == 'update' && $user->hasRight('adherent', 'configurer')) {
 		setEventMessages($object->error, $object->errors, 'errors');
 	}
 
-	header("Location: ".DOL_PHP_SELF."?rowid=".$object->id);
+	header("Location: ".$_SERVER['PHP_SELF']."?rowid=".$object->id);
 	exit;
 }
 
@@ -227,7 +227,7 @@ if ($action == 'confirm_delete' && $user->hasRight('adherent', 'configurer')) {
 
 	if ($res > 0) {
 		setEventMessages($langs->trans("MemberTypeDeleted"), null, 'mesgs');
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages($langs->trans("MemberTypeCanNotBeDeleted"), null, 'errors');
@@ -268,7 +268,7 @@ if (!$rowid && $action != 'create' && $action != 'edit') {
 		if (!empty($mode)) {
 			$param .= '&mode'.urlencode($mode);
 		}
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage='.$contextpage;
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -277,15 +277,15 @@ if (!$rowid && $action != 'create' && $action != 'edit') {
 
 		$newcardbutton = '';
 
-		$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-		$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+		$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+		$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 
 		if ($user->hasRight('adherent', 'configurer')) {
 			$newcardbutton .= dolGetButtonTitleSeparator();
 			$newcardbutton .= dolGetButtonTitle($langs->trans('NewMemberType'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/adherents/type.php?action=create');
 		}
 
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		if ($optioncss != '') {
 			print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 		}
@@ -297,7 +297,7 @@ if (!$rowid && $action != 'create' && $action != 'edit') {
 		print '<input type="hidden" name="mode" value="'.$mode.'">';
 
 
-		print_barre_liste($langs->trans("MembersTypes"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'members', 0, $newcardbutton, '', $limit, 0, 0, 1);
+		print_barre_liste($langs->trans("MembersTypes"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'members', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 		$moreforfilter = '';
 
@@ -358,12 +358,12 @@ if (!$rowid && $action != 'create' && $action != 'edit') {
 				print '<tr class="oddeven">';
 				if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 					if ($user->hasRight('adherent', 'configurer')) {
-						print '<td class="center"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=edit&rowid='.$objp->rowid.'">'.img_edit().'</a></td>';
+						print '<td class="center"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit&rowid='.$objp->rowid.'">'.img_edit().'</a></td>';
 					}
 				}
 				print '<td class="nowraponall">';
 				print $membertype->getNomUrl(1);
-				//<a href="'.DOL_PHP_SELF.'?rowid='.$objp->rowid.'">'.img_object($langs->trans("ShowType"),'group').' '.$objp->rowid.'</a>
+				//<a href="'.$_SERVER['PHP_SELF'].'?rowid='.$objp->rowid.'">'.img_object($langs->trans("ShowType"),'group').' '.$objp->rowid.'</a>
 				print '</td>';
 				print '<td>'.dol_escape_htmltag($objp->label).'</td>';
 				print '<td class="center">';
@@ -394,7 +394,7 @@ if (!$rowid && $action != 'create' && $action != 'edit') {
 				print '<td class="center">'.$membertype->getLibStatut(5).'</td>';
 				if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 					if ($user->hasRight('adherent', 'configurer')) {
-						print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=edit&rowid='.$objp->rowid.'">'.img_edit().'</a></td>';
+						print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit&rowid='.$objp->rowid.'">'.img_edit().'</a></td>';
 					}
 				}
 				print "</tr>";
@@ -429,7 +429,7 @@ if ($action == 'create') {
 
 	print load_fiche_titre($langs->trans("NewMemberType"), '', 'members');
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -509,7 +509,7 @@ if ($rowid > 0) {
 		 * Confirmation deletion
 		 */
 		if ($action == 'delete') {
-			print $form->formconfirm(DOL_PHP_SELF."?rowid=".$object->id, $langs->trans("DeleteAMemberType"), $langs->trans("ConfirmDeleteMemberType", $object->label), "confirm_delete", '', 0, 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?rowid=".$object->id, $langs->trans("DeleteAMemberType"), $langs->trans("ConfirmDeleteMemberType", $object->label), "confirm_delete", '', 0, 1);
 		}
 
 		$head = member_type_prepare_head($object);
@@ -580,7 +580,7 @@ if ($rowid > 0) {
 
 		// Edit
 		if ($user->hasRight('adherent', 'configurer')) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&rowid='.$object->id.'">'.$langs->trans("Modify").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&rowid='.$object->id.'">'.$langs->trans("Modify").'</a></div>';
 		}
 
 		// Add
@@ -593,14 +593,14 @@ if ($rowid > 0) {
 		}
 
 		if ($user->hasRight('adherent', 'configurer') && !empty($object->status)) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="card.php?action=create&token='.newToken().'&typeid='.$object->id.($morphy ? '&morphy='.urlencode($morphy) : '').'&backtopage='.urlencode(DOL_PHP_SELF.'?rowid='.$object->id).'">'.$langs->trans("AddMember").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="card.php?action=create&token='.newToken().'&typeid='.$object->id.($morphy ? '&morphy='.urlencode($morphy) : '').'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?rowid='.$object->id).'">'.$langs->trans("AddMember").'</a></div>';
 		} else {
 			print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NoAddMember")).'">'.$langs->trans("AddMember").'</a></div>';
 		}
 
 		// Delete
 		if ($user->hasRight('adherent', 'configurer')) {
-			print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&rowid='.$object->id.'">'.$langs->trans("DeleteType").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&rowid='.$object->id.'">'.$langs->trans("DeleteType").'</a></div>';
 		}
 
 		print "</div>";
@@ -716,7 +716,7 @@ if ($rowid > 0) {
 			if (!empty($mode)) {
 				$param .= '&mode='.urlencode($mode);
 			}
-			if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+			if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 				$param .= '&contextpage='.urlencode($contextpage);
 			}
 			if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -748,11 +748,11 @@ if ($rowid > 0) {
 				print $langs->trans("Filter")." (".$langs->trans("Lastname").", ".$langs->trans("Firstname").", ".$langs->trans("EMail").", ".$langs->trans("Address")." ".$langs->trans("or")." ".$langs->trans("Town")."): ".$sall;
 			}
 
-			print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'" name="formfilter" autocomplete="off">';
+			print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'" name="formfilter" autocomplete="off">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input class="flat" type="hidden" name="rowid" value="'.$object->id.'"></td>';
 
-			print_barre_liste('', $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'generic', 0, '', '', $limit);
+			print_barre_liste('', $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'generic', 0, '', '', $limit);
 
 			$moreforfilter = '';
 
@@ -799,17 +799,17 @@ if ($rowid > 0) {
 
 			print '<tr class="liste_titre">';
 			if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-				print_liste_field_titre("Action", DOL_PHP_SELF, "", $param, "", 'width="60" align="center"', $sortfield, $sortorder);
+				print_liste_field_titre("Action", $_SERVER['PHP_SELF'], "", $param, "", 'width="60" align="center"', $sortfield, $sortorder);
 			}
-			print_liste_field_titre("Ref", DOL_PHP_SELF, "d.ref", $param, "", "", $sortfield, $sortorder);
-			print_liste_field_titre("NameSlashCompany", DOL_PHP_SELF, "d.lastname", $param, "", "", $sortfield, $sortorder);
-			print_liste_field_titre("Login", DOL_PHP_SELF, "d.login", $param, "", "", $sortfield, $sortorder);
-			print_liste_field_titre("MemberNature", DOL_PHP_SELF, "d.morphy", $param, "", "", $sortfield, $sortorder);
-			print_liste_field_titre("EMail", DOL_PHP_SELF, "d.email", $param, "", "", $sortfield, $sortorder);
-			print_liste_field_titre("Status", DOL_PHP_SELF, "d.statut,d.datefin", $param, "", "", $sortfield, $sortorder);
-			print_liste_field_titre("EndSubscription", DOL_PHP_SELF, "d.datefin", $param, "", 'align="center"', $sortfield, $sortorder);
+			print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "d.ref", $param, "", "", $sortfield, $sortorder);
+			print_liste_field_titre("NameSlashCompany", $_SERVER['PHP_SELF'], "d.lastname", $param, "", "", $sortfield, $sortorder);
+			print_liste_field_titre("Login", $_SERVER['PHP_SELF'], "d.login", $param, "", "", $sortfield, $sortorder);
+			print_liste_field_titre("MemberNature", $_SERVER['PHP_SELF'], "d.morphy", $param, "", "", $sortfield, $sortorder);
+			print_liste_field_titre("EMail", $_SERVER['PHP_SELF'], "d.email", $param, "", "", $sortfield, $sortorder);
+			print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "d.statut,d.datefin", $param, "", "", $sortfield, $sortorder);
+			print_liste_field_titre("EndSubscription", $_SERVER['PHP_SELF'], "d.datefin", $param, "", 'align="center"', $sortfield, $sortorder);
 			if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-				print_liste_field_titre("Action", DOL_PHP_SELF, "", $param, "", 'width="60" align="center"', $sortfield, $sortorder);
+				print_liste_field_titre("Action", $_SERVER['PHP_SELF'], "", $param, "", 'width="60" align="center"', $sortfield, $sortorder);
 			}
 			print "</tr>\n";
 
@@ -838,7 +838,7 @@ if ($rowid > 0) {
 				if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 					print '<td class="center">';
 					if ($user->hasRight('adherent', 'creer')) {
-						print '<a class="editfielda marginleftonly" href="card.php?rowid='.$objp->rowid.'&action=edit&token='.newToken().'&backtopage='.urlencode(DOL_PHP_SELF.'?rowid='.$object->id).'">'.img_edit().'</a>';
+						print '<a class="editfielda marginleftonly" href="card.php?rowid='.$objp->rowid.'&action=edit&token='.newToken().'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?rowid='.$object->id).'">'.img_edit().'</a>';
 					}
 					if ($user->hasRight('adherent', 'supprimer')) {
 						print '<a class="marginleftonly" href="card.php?rowid='.$objp->rowid.'&action=resiliate&token='.newToken().'">'.img_picto($langs->trans("Resiliate"), 'disable.png').'</a>';
@@ -906,7 +906,7 @@ if ($rowid > 0) {
 				if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 					print '<td class="center">';
 					if ($user->hasRight('adherent', 'creer')) {
-						print '<a class="editfielda marginleftonly" href="card.php?rowid='.$objp->rowid.'&action=edit&token='.newToken().'&backtopage='.urlencode(DOL_PHP_SELF.'?rowid='.$object->id).'">'.img_edit().'</a>';
+						print '<a class="editfielda marginleftonly" href="card.php?rowid='.$objp->rowid.'&action=edit&token='.newToken().'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?rowid='.$object->id).'">'.img_edit().'</a>';
 					}
 					if ($user->hasRight('adherent', 'supprimer')) {
 						print '<a class="marginleftonly" href="card.php?rowid='.$objp->rowid.'&action=resiliate&token='.newToken().'">'.img_picto($langs->trans("Resiliate"), 'disable.png').'</a>';
@@ -942,7 +942,7 @@ if ($rowid > 0) {
 
 		$head = member_type_prepare_head($object);
 
-		print '<form method="post" action="'.DOL_PHP_SELF.'?rowid='.$object->id.'">';
+		print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="rowid" value="'.$object->id.'">';
 		print '<input type="hidden" name="action" value="update">';

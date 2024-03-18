@@ -1674,7 +1674,7 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
 		dol_syslog("Warning: Function 'form_constantes' was called with parameter strictw3c = 0, this is deprecated. Value must be 2 now.", LOG_DEBUG);
 	}
 	if (!empty($strictw3c) && $strictw3c == 1) {
-		print "\n".'<form action="'.DOL_PHP_SELF.'" method="POST">';
+		print "\n".'<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="updateall">';
 	}
@@ -1730,7 +1730,7 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
 			}
 
 			if (empty($strictw3c)) {
-				print "\n".'<form action="'.DOL_PHP_SELF.'" method="POST">';
+				print "\n".'<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="page_y" value="'.newToken().'">';
 			}

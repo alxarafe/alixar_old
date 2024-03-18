@@ -126,7 +126,7 @@ print '<span class="opacitymedium">'.$langs->trans("SecurityFilesDesc")."</span>
 print "<br>\n";
 
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="updateform">';
 
@@ -220,7 +220,7 @@ print '</form>';
 // Form to test upload
 print '<br>';
 $formfile = new FormFile($db);
-$formfile->form_attach_new_file(DOL_PHP_SELF, $langs->trans("FormToTestFileUploadForm"), 0, 0, 1, 50, '', '', 1, '', 0);
+$formfile->form_attach_new_file($_SERVER['PHP_SELF'], $langs->trans("FormToTestFileUploadForm"), 0, 0, 1, 50, '', '', 1, '', 0);
 
 // List of document
 $filearray = dol_dir_list($upload_dir, "files", 0, '', '', $sortfield, $sortorder == 'desc' ? SORT_DESC : SORT_ASC, 1);

@@ -205,7 +205,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("purging jobs of %s : OPERATION FAILED"),
                                      $this->printer_uri),3);
 
@@ -370,7 +370,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("Creating job on %s : OPERATION FAILED"),
                                      $this->printer_uri),3);
 
@@ -618,7 +618,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("pause printer %s : OPERATION FAILED"),
                                      $this->printer_uri),3);
 
@@ -715,7 +715,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("resume printer %s : OPERATION FAILED"),
                                      $this->printer_uri),3);
 
@@ -817,7 +817,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("hold job %s until %s : OPERATION FAILED"),
                                      $job_uri,$until),3);
 
@@ -901,7 +901,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("release job %s: OPERATION FAILED"),
                                      $job_uri),3);
 
@@ -992,7 +992,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("release job %s: OPERATION FAILED"),
                                      $job_uri),3);
 
@@ -1112,7 +1112,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("set job attributes for job %s: OPERATION FAILED"),
                                      $job_uri),3);
 
@@ -1257,7 +1257,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("set printer attributes for printer %s: OPERATION FAILED"),
                                      $this->printer_uri),1);
 

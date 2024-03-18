@@ -81,7 +81,7 @@ if ($action == 'addcontact' && $permission) {
 	$result = $object->add_contact($contactid, $typeid, GETPOST("source", 'aZ09'));
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	} else {
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -99,7 +99,7 @@ if ($action == 'addcontact' && $permission) {
 	$result = $object->delete_contact($lineid);
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	} else {
 		dol_print_error($db);

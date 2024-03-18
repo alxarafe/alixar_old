@@ -293,7 +293,7 @@ if ($step == 3 && $datatoimport) {
 		} else {
 			setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('urlfile')), null, 'errors');
 		}
-		header('Location: '.DOL_PHP_SELF.'?step='.$step.$param);
+		header('Location: '.$_SERVER['PHP_SELF'].'?step='.$step.$param);
 		exit;
 	}
 }
@@ -474,7 +474,7 @@ if ($step == 2 && $datatoimport) {
 
 	print dol_get_fiche_end();
 
-	print '<form name="userfile" action="'.DOL_PHP_SELF.'" enctype="multipart/form-data" METHOD="POST">';
+	print '<form name="userfile" action="'.$_SERVER['PHP_SELF'].'" enctype="multipart/form-data" METHOD="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	print '<br>';
@@ -553,7 +553,7 @@ if ($step == 3 && $datatoimport) {
 	 * Confirm delete file
 	 */
 	if ($action == 'delete') {
-		print $form->formconfirm(DOL_PHP_SELF.'?urlfile='.urlencode(GETPOST('urlfile')).'&step=3'.$param, $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', 0, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?urlfile='.urlencode(GETPOST('urlfile')).'&step=3'.$param, $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', 0, 1);
 	}
 
 	print '<div class="underbanner clearboth"></div>';
@@ -619,7 +619,7 @@ if ($step == 3 && $datatoimport) {
 
 	print '<br><br>';
 
-	print '<form name="userfile" action="'.DOL_PHP_SELF.'" enctype="multipart/form-data" method="POST">';
+	print '<form name="userfile" action="'.$_SERVER['PHP_SELF'].'" enctype="multipart/form-data" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" value="'.$step.'" name="step">';
 	print '<input type="hidden" value="'.dol_escape_htmltag($format).'" name="format">';
@@ -724,7 +724,7 @@ if ($step == 3 && $datatoimport) {
 			}
 
 			$modulepart = 'import';
-			$urlsource = DOL_PHP_SELF.'?step='.$step.$param.'&filetoimport='.urlencode($filetoimport);
+			$urlsource = $_SERVER['PHP_SELF'].'?step='.$step.$param.'&filetoimport='.urlencode($filetoimport);
 			$relativepath = $file;
 
 			print '<tr class="oddeven">';
@@ -739,11 +739,11 @@ if ($step == 3 && $datatoimport) {
 			// Affiche date fichier
 			print '<td style="text-align:right">'.dol_print_date(dol_filemtime($dir.'/'.$file), 'dayhour').'</td>';
 			// Del button
-			print '<td style="text-align:right"><a href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&step=3'.$param.'&urlfile='.urlencode($relativepath);
+			print '<td style="text-align:right"><a href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&step=3'.$param.'&urlfile='.urlencode($relativepath);
 			print '">'.img_delete().'</a></td>';
 			// Action button
 			print '<td style="text-align:right">';
-			print '<a href="'.DOL_PHP_SELF.'?step=4'.$param.'&filetoimport='.urlencode($relativepath).'">'.img_picto($langs->trans("NewImport"), 'next', 'class="fa-15"').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?step=4'.$param.'&filetoimport='.urlencode($relativepath).'">'.img_picto($langs->trans("NewImport"), 'next', 'class="fa-15"').'</a>';
 			print '</td>';
 			print '</tr>';
 		}
@@ -822,7 +822,7 @@ if ($step == 4 && $datatoimport) {
 			$langs->load("errors");
 			$param = '&datatoimport='.$datatoimport.'&format='.$format;
 			setEventMessages($langs->trans("ErrorFileMustHaveFormat", $model), null, 'errors');
-			header("Location: ".DOL_PHP_SELF.'?step=3'.$param.'&filetoimport='.urlencode($relativepath));
+			header("Location: ".$_SERVER['PHP_SELF'].'?step=3'.$param.'&filetoimport='.urlencode($relativepath));
 			exit;
 		}
 	}
@@ -1040,7 +1040,7 @@ if ($step == 4 && $datatoimport) {
 
 	// List of source fields
 	print '<!-- List of source fields -->'."\n";
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="select_model">';
 	print '<input type="hidden" name="step" value="4">';
@@ -1392,7 +1392,7 @@ if ($step == 4 && $datatoimport) {
 		print "		$.ajax({\n";
 		print "			type: 'POST',\n";
 		print "			dataType: 'json',\n";
-		print "			url: '".dol_escape_js(DOL_PHP_SELF)."?action=saveselectorder&token=".newToken()."',\n";
+		print "			url: '".dol_escape_js($_SERVER['PHP_SELF'])."?action=saveselectorder&token=".newToken()."',\n";
 		print "			data: 'selectorder='+arrayselectedfields.toString(),\n";
 		print "			success: function(){\n";
 		print "				console.log('The selected fields have been saved into '+arrayselectedfields.toString());\n";
@@ -1471,7 +1471,7 @@ if ($step == 4 && $datatoimport) {
 		print '<!-- Area to add new import profile -->'."\n";
 		print '<div class="marginbottomonly"><span class="opacitymedium">'.$langs->trans("SaveImportModel").'</span></div>';
 
-		print '<form class="nocellnopadd" action="'.DOL_PHP_SELF.'" method="post">';
+		print '<form class="nocellnopadd" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add_import_model">';
 		print '<input type="hidden" name="step" value="'.$step.'">';
@@ -1539,7 +1539,7 @@ if ($step == 4 && $datatoimport) {
 				}
 				print '</td>';
 				print '<td class="right">';
-				print '<a class="reposition" href="'.DOL_PHP_SELF.'?step='.$step.$param.'&action=deleteprof&token='.newToken().'&id='.$obj->rowid.'&filetoimport='.urlencode($filetoimport).'">';
+				print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?step='.$step.$param.'&action=deleteprof&token='.newToken().'&id='.$obj->rowid.'&filetoimport='.urlencode($filetoimport).'">';
 				print img_delete();
 				print '</a>';
 				print '</tr>';
@@ -1614,7 +1614,7 @@ if ($step == 5 && $datatoimport) {
 	$head = import_prepare_head($param, 5);
 
 
-	print '<form action="'.DOL_PHP_SELF.'?'.$param2.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?'.$param2.'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="step" value="5">'; // step 5
 	print '<input type="hidden" name="action" value="launchsimu">'; // step 5
@@ -1711,7 +1711,7 @@ if ($step == 5 && $datatoimport) {
 		print $form->textwithpicto("", $langs->trans("KeepEmptyToGoToEndOfFile"));
 	}
 	if ($action == 'launchsimu') {
-		print ' &nbsp; <a href="'.DOL_PHP_SELF.'?step=5'.$param.'">'.$langs->trans("Modify").'</a>';
+		print ' &nbsp; <a href="'.$_SERVER['PHP_SELF'].'?step=5'.$param.'">'.$langs->trans("Modify").'</a>';
 	}
 	if ($excludefirstline == 2) {
 		print $form->textwithpicto("", $langs->trans("WarningFirstImportedLine", $excludefirstline), 1, 'warning', "warningexcludefirstline");
@@ -1742,7 +1742,7 @@ if ($step == 5 && $datatoimport) {
 		foreach ($updatekeys as $val) {
 			print '<input type="hidden" name="updatekeys[]" value="'.$val.'">';
 		}
-		print ' &nbsp; <a href="'.DOL_PHP_SELF.'?step=5'.$param.'">'.$langs->trans("Modify").'</a>';
+		print ' &nbsp; <a href="'.$_SERVER['PHP_SELF'].'?step=5'.$param.'">'.$langs->trans("Modify").'</a>';
 	} else {
 		if (is_array($objimport->array_import_updatekeys[0]) && count($objimport->array_import_updatekeys[0])) {   //TODO dropdown UL is created inside nested SPANS
 			print $form->multiselectarray('updatekeys', $objimport->array_import_updatekeys[0], $updatekeys, 0, 0, '', 1, '80%');

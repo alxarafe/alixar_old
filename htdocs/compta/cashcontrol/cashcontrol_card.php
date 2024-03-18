@@ -384,7 +384,7 @@ if ($action == "create" || $action == "start" || $action == 'close') {
 	if ($action != 'close') {
 		print load_fiche_titre($langs->trans("CashControl")." - ".$langs->trans("New"), '', 'cash-register');
 
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		if ($contextpage == 'takepos') {
 			print '<input type="hidden" name="contextpage" value="takepos">';
@@ -682,11 +682,11 @@ if (empty($action) || $action == "view" || $action == "close") {
 			print '<div class="inline-block divButAction"><a target="_blank" rel="noopener noreferrer" class="butAction" href="report.php?id='.((int) $id).'">'.$langs->trans('PrintTicket').'</a></div>';
 
 			if ($object->status == CashControl::STATUS_DRAFT) {
-				print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.((int) $id).'&action=close&token='.newToken().'&contextpage='.$contextpage.'">'.$langs->trans('Close').'</a></div>';
+				print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.((int) $id).'&action=close&token='.newToken().'&contextpage='.$contextpage.'">'.$langs->trans('Close').'</a></div>';
 
-				print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.DOL_PHP_SELF.'?id='.((int) $id).'&action=confirm_delete&token='.newToken().'">'.$langs->trans('Delete').'</a></div>';
+				print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.((int) $id).'&action=confirm_delete&token='.newToken().'">'.$langs->trans('Delete').'</a></div>';
 			} else {
-				print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.((int) $id).'&action=reopen&token='.newToken().'">'.$langs->trans('ReOpen').'</a></div>';
+				print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.((int) $id).'&action=reopen&token='.newToken().'">'.$langs->trans('ReOpen').'</a></div>';
 			}
 
 			print '</div>';
@@ -695,7 +695,7 @@ if (empty($action) || $action == "view" || $action == "close") {
 				print '<center><iframe src="report.php?id='.$id.'" width="60%" height="800"></iframe></center>';
 			}
 		} else {
-			print '<form method="POST" action="'.DOL_PHP_SELF.'" name="formclose">';
+			print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'" name="formclose">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			if ($contextpage == 'takepos') {
 				print '<input type="hidden" name="contextpage" value="takepos">';

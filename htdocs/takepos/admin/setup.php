@@ -202,7 +202,7 @@ foreach ($dirmodels as $reldir) {
 						if (getDolGlobalString('TAKEPOS_REF_ADDON') == "$file") {
 							print img_picto($langs->trans("Activated"), 'switch_on');
 						} else {
-							print '<a href="'.DOL_PHP_SELF.'?action=setrefmod&token='.newToken().'&value='.urlencode($file).'">';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?action=setrefmod&token='.newToken().'&value='.urlencode($file).'">';
 							print img_picto($langs->trans("Disabled"), 'switch_off');
 							print '</a>';
 						}
@@ -249,7 +249,7 @@ print "\n";
 print '<br>';
 
 // Mode
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set">';
 

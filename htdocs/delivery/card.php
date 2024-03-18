@@ -126,7 +126,7 @@ if ($action == 'add') {
 	$ret = $object->create($user);
 	if ($ret > 0) {
 		$db->commit();
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	} else {
 		setEventMessages($object->error, $object->errors, 'errors');
@@ -281,7 +281,7 @@ if ($action == 'create') {
 
 			$head = delivery_prepare_head($object);
 
-			print '<form action="'.DOL_PHP_SELF.'" method="post">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update_extras_line">';
 			print '<input type="hidden" name="origin" value="'.$object->origin.'">';
@@ -296,14 +296,14 @@ if ($action == 'create') {
 			 */
 			if ($action == 'delete') {
 				$expedition_id = GETPOST("expid");
-				print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&expid='.$expedition_id.'&backtopage='.urlencode($backtopage), $langs->trans("DeleteDeliveryReceipt"), $langs->trans("DeleteDeliveryReceiptConfirm", $object->ref), 'confirm_delete', '', '', 1);
+				print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&expid='.$expedition_id.'&backtopage='.urlencode($backtopage), $langs->trans("DeleteDeliveryReceipt"), $langs->trans("DeleteDeliveryReceiptConfirm", $object->ref), 'confirm_delete', '', '', 1);
 			}
 
 			/*
 			 * Confirmation de la validation
 			 */
 			if ($action == 'valid') {
-				print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans("ValidateDeliveryReceipt"), $langs->trans("ValidateDeliveryReceiptConfirm", $object->ref), 'confirm_valid', '', '', 1);
+				print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans("ValidateDeliveryReceipt"), $langs->trans("ValidateDeliveryReceiptConfirm", $object->ref), 'confirm_valid', '', '', 1);
 			}
 
 
@@ -337,9 +337,9 @@ if ($action == 'create') {
 				if (0) {	// Do not change on shipment
 					$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 					if ($action != 'classify') {
-						$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+						$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 					}
-					$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $objectsrc->socid, $objectsrc->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+					$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $objectsrc->socid, $objectsrc->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 				} else {
 					if (!empty($objectsrc->fk_project)) {
 						$proj = new Project($db);
@@ -422,12 +422,12 @@ if ($action == 'create') {
 			print '</td>';
 
 			if ($action != 'editdate_delivery') {
-				print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editdate_delivery&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDeliveryDate'), 1).'</a></td>';
+				print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editdate_delivery&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDeliveryDate'), 1).'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td><td colspan="2">';
 			if ($action == 'editdate_delivery') {
-				print '<form name="setdate_delivery" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post">';
+				print '<form name="setdate_delivery" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="action" value="setdate_delivery">';
 				print $form->selectDate($object->date_delivery ? $object->date_delivery : -1, 'liv_', 1, 1, 0, "setdate_delivery", 1, 1);
@@ -456,7 +456,7 @@ if ($action == 'create') {
 				if ($action != 'editincoterm') {
 					print $form->textwithpicto($object->display_incoterms(), $object->label_incoterms, 1);
 				} else {
-					print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), DOL_PHP_SELF.'?id='.$object->id);
+					print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), $_SERVER['PHP_SELF'].'?id='.$object->id);
 				}
 				print '</td></tr>';
 			}
@@ -645,15 +645,15 @@ if ($action == 'create') {
 				if ($object->statut == 0 && $num_prod > 0) {
 					if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery', 'creer'))
 						|| (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('expedition', 'delivery_advance', 'validate'))) {
-						print dolGetButtonAction('', $langs->trans('Validate'), 'default', DOL_PHP_SELF.'?action=valid&amp;token='.newToken().'&amp;id='.$object->id, '');
+						print dolGetButtonAction('', $langs->trans('Validate'), 'default', $_SERVER['PHP_SELF'].'?action=valid&amp;token='.newToken().'&amp;id='.$object->id, '');
 					}
 				}
 
 				if ($user->hasRight('expedition', 'delivery', 'supprimer')) {
 					if (getDolGlobalInt('MAIN_SUBMODULE_EXPEDITION')) {
-						print dolGetButtonAction('', $langs->trans('Delete'), 'delete', DOL_PHP_SELF.'?id='.$object->id.'&amp;expid='.$object->origin_id.'&amp;action=delete&amp;token='.newToken().'&amp;backtopage='.urlencode(DOL_URL_ROOT.'/expedition/card.php?id='.$object->origin_id), '');
+						print dolGetButtonAction('', $langs->trans('Delete'), 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;expid='.$object->origin_id.'&amp;action=delete&amp;token='.newToken().'&amp;backtopage='.urlencode(DOL_URL_ROOT.'/expedition/card.php?id='.$object->origin_id), '');
 					} else {
-						print dolGetButtonAction('', $langs->trans('Delete'), 'delete', DOL_PHP_SELF.'?action=delete&amp;token='.newToken().'&amp;id='.$object->id, '');
+						print dolGetButtonAction('', $langs->trans('Delete'), 'delete', $_SERVER['PHP_SELF'].'?action=delete&amp;token='.newToken().'&amp;id='.$object->id, '');
 					}
 				}
 
@@ -669,7 +669,7 @@ if ($action == 'create') {
 
 			$objectref = dol_sanitizeFileName($object->ref);
 			$filedir = $conf->expedition->dir_output."/receipt/".$objectref;
-			$urlsource = DOL_PHP_SELF."?id=".$object->id;
+			$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 
 			$genallowed = $user->hasRight('expedition', 'delivery', 'lire');
 			$delallowed = $user->hasRight('expedition', 'delivery', 'creer');

@@ -37,7 +37,7 @@ print dol_get_fiche_head($head, 'card', $titre, 0, 'product');
 dol_htmloutput_errors($object->error, $object->errors);
 ?>
 
-<form action="<?php echo DOL_PHP_SELF; ?>" method="post">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 <input type="hidden" name="token" value="<?php echo newToken(); ?>">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="id" value="<?php echo $object->id; ?>">

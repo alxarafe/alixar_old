@@ -87,7 +87,7 @@ class mod_codeclient_elephant extends ModeleThirdPartyCode
 		$disabled = ((!empty($mc->sharings['referent']) && $mc->sharings['referent'] != $conf->entity) ? ' disabled' : '');
 
 		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.DOL_PHP_SELF.'" method="POST">';
+		$texte .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="page_y" value="">';
 		$texte .= '<input type="hidden" name="action" value="setModuleOptions">';

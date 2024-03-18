@@ -111,7 +111,7 @@ class ActionsContactCardDefault extends ActionsContactCardCommon
 		} else {
 			// Confirm delete contact
 			if ($action == 'delete' && $user->hasRight('societe', 'contact', 'supprimer')) {
-				$this->tpl['action_delete'] = $form->formconfirm(DOL_PHP_SELF."?id=".$this->object->id, $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
+				$this->tpl['action_delete'] = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$this->object->id, $langs->trans("DeleteContact"), $langs->trans("ConfirmDeleteContact"), "confirm_delete", '', 0, 1);
 			}
 		}
 	}

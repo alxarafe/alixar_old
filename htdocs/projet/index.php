@@ -137,7 +137,7 @@ if ($mine) {
 	}
 }
 
-print_barre_liste($form->textwithpicto($title, $tooltiphelp), 0, DOL_PHP_SELF, '', '', '', '', 0, -1, 'project', 0, $morehtml);
+print_barre_liste($form->textwithpicto($title, $tooltiphelp), 0, $_SERVER['PHP_SELF'], '', '', '', '', 0, -1, 'project', 0, $morehtml);
 
 
 // Get list of ponderated percent and colors for each status
@@ -271,7 +271,7 @@ if ($resql) {
 			print '<td width="16" class="right nobordernopadding hideonsmartphone">';
 			$filename = dol_sanitizeFileName($obj->ref);
 			$filedir = $conf->projet->dir_output.'/'.dol_sanitizeFileName($obj->ref);
-			$urlsource = DOL_PHP_SELF.'?id='.$obj->rowid;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 			print $formfile->getDocumentsLink($projectstatic->element, $filename, $filedir);
 			print '</td></tr></table>';
 
@@ -345,8 +345,8 @@ if ($resql) {
 		print '<div class="div-table-responsive-no-min">';
 		print '<table class="noborder centpercent">';
 		print '<tr class="liste_titre">';
-		print_liste_field_titre("OpenedProjectsByThirdparties", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder);
-		print_liste_field_titre("Number", DOL_PHP_SELF, "nb", "", "", '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre("OpenedProjectsByThirdparties", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder);
+		print_liste_field_titre("Number", $_SERVER['PHP_SELF'], "nb", "", "", '', $sortfield, $sortorder, 'right ');
 		print "</tr>\n";
 	}
 

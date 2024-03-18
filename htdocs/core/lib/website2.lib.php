@@ -241,7 +241,7 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
 		}
 
 		// Add myself
-		$tplcontent .= '<?php if (DOL_PHP_SELF == "'.(($object->fk_default_home == $objectpage->id) ? '/' : (($shortlangcode != substr($object->lang, 0, 2)) ? '/'.$shortlangcode : '')).'/'.$objectpage->pageurl.'.php") { ?>'."\n";
+		$tplcontent .= '<?php if ($_SERVER['PHP_SELF'] == "'.(($object->fk_default_home == $objectpage->id) ? '/' : (($shortlangcode != substr($object->lang, 0, 2)) ? '/'.$shortlangcode : '')).'/'.$objectpage->pageurl.'.php") { ?>'."\n";
 		$tplcontent .= '<link rel="alternate" hreflang="'.$shortlangcode.'" href="<?php echo $website->virtualhost; ?>'.(($object->fk_default_home == $objectpage->id) ? '/' : (($shortlangcode != substr($object->lang, 0, 2)) ? '/'.$shortlangcode : '').'/'.$objectpage->pageurl.'.php').'" />'."\n";
 
 		$tplcontent .= '<?php } ?>'."\n";
@@ -561,7 +561,7 @@ function showWebsiteTemplates(Website $website)
 	print '<tr class="liste_titre"><th class="titlefield">';
 	print $form->textwithpicto($langs->trans("Templates"), $langs->trans("ThemeDir").' : '.implode(", ", $dirthemes));
 	print ' ';
-	print '<a href="'.DOL_PHP_SELF.'?website='.urlencode($website->ref).'&importsite=1" rel="noopener noreferrer external">';
+	print '<a href="'.$_SERVER['PHP_SELF'].'?website='.urlencode($website->ref).'&importsite=1" rel="noopener noreferrer external">';
 	print img_picto('', 'refresh');
 	print '</a>';
 	print '</th>';
@@ -632,9 +632,9 @@ function showWebsiteTemplates(Website $website)
 							print '<br>';
 							print '<span class="opacitymedium">'.dol_print_size(dol_filesize($dirtheme."/".$subdir), 1, 1).' - '.dol_print_date(dol_filemtime($templatedir), 'dayhour', 'tzuserrel').'</span>';
 							if ($user->hasRight('website', 'delete')) {
-								print ' <a href="'.DOL_PHP_SELF.'?action=deletetemplate&token='.newToken().'&website='.urlencode($website->ref).'&templateuserfile='.urlencode($subdir).'">'.img_picto('', 'delete').'</a>';
+								print ' <a href="'.$_SERVER['PHP_SELF'].'?action=deletetemplate&token='.newToken().'&website='.urlencode($website->ref).'&templateuserfile='.urlencode($subdir).'">'.img_picto('', 'delete').'</a>';
 							}
-							print '<br><a href="'.DOL_PHP_SELF.'?action=importsiteconfirm&token='.newToken().'&website='.urlencode($website->ref).'&templateuserfile='.urlencode($subdir).'" class="button">'.$langs->trans("Load").'</a>';
+							print '<br><a href="'.$_SERVER['PHP_SELF'].'?action=importsiteconfirm&token='.newToken().'&website='.urlencode($website->ref).'&templateuserfile='.urlencode($subdir).'" class="button">'.$langs->trans("Load").'</a>';
 							print '</div>';
 
 							$i++;

@@ -105,7 +105,7 @@ if ($action == 'confirm_delete' && $confirm == "yes") {
 			$id = $object->create($user);
 
 			if ($id > 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -141,14 +141,14 @@ if ($action == 'confirm_delete' && $confirm == "yes") {
 			$result = $object->update($user);
 
 			if ($result > 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".GETPOSTINT('id'));
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".GETPOSTINT('id'));
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
 			}
 		}
 	} else {
-		header("Location: ".DOL_PHP_SELF."?id=".GETPOSTINT('id'));
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".GETPOSTINT('id'));
 		exit;
 	}
 }
@@ -168,7 +168,7 @@ $formcompany = new FormCompany($db);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewEstablishment"));
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -268,7 +268,7 @@ if ((!empty($id) || !empty($ref)) && $action == 'edit') {
 		if ($action == 'edit') {
 			print dol_get_fiche_head($head, 'card', $langs->trans("Establishment"), 0, $object->picto);
 
-			print '<form name="update" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+			print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
@@ -349,7 +349,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		print $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("DeleteEstablishment"), $langs->trans("ConfirmDeleteEstablishment"), "confirm_delete");
+		print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("DeleteEstablishment"), $langs->trans("ConfirmDeleteEstablishment"), "confirm_delete");
 	}
 
 
@@ -427,10 +427,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	print '<div class="tabsAction">';
 
 	// Modify
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$id.'">'.$langs->trans('Modify').'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$id.'">'.$langs->trans('Modify').'</a>';
 
 	// Delete
-	print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
+	print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
 
 	print '</div>';
 }

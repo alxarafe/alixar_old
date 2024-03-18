@@ -124,7 +124,7 @@ $titlepicto = 'setup';
 
 print load_fiche_titre($langs->trans('AccountingCategory'), $linkback, $titlepicto);
 
-print '<form name="add" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+print '<form name="add" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="display">';
 
@@ -179,9 +179,9 @@ if ((empty($action) || $action == 'display' || $action == 'delete') && $cat_id >
 	print '<br>';
 	print '<table class="noborder centpercent">'."\n";
 	print '<tr class="liste_titre">';
-	print getTitleFieldOfList('AccountAccounting', 0, DOL_PHP_SELF, 'account_number', '', $param, '', $sortfield, $sortorder, '')."\n";
-	print getTitleFieldOfList('Label', 0, DOL_PHP_SELF, 'label', '', $param, '', $sortfield, $sortorder, '')."\n";
-	print getTitleFieldOfList('', 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, '')."\n";
+	print getTitleFieldOfList('AccountAccounting', 0, $_SERVER['PHP_SELF'], 'account_number', '', $param, '', $sortfield, $sortorder, '')."\n";
+	print getTitleFieldOfList('Label', 0, $_SERVER['PHP_SELF'], 'label', '', $param, '', $sortfield, $sortorder, '')."\n";
+	print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, '')."\n";
 	print '</tr>'."\n";
 
 	if (!empty($cat_id)) {
@@ -198,7 +198,7 @@ if ((empty($action) || $action == 'display' || $action == 'delete') && $cat_id >
 				print '<td>'.length_accountg($cpt->account_number).'</td>';
 				print '<td>'.$cpt->label.'</td>';
 				print '<td class="right">';
-				print '<a href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&account_category='.$cat_id.'&cptid='.$cpt->rowid.'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&account_category='.$cat_id.'&cptid='.$cpt->rowid.'">';
 				print $langs->trans("DeleteFromCat");
 				print img_picto($langs->trans("DeleteFromCat"), 'unlink', 'class="paddingleft"');
 				print "</a>";

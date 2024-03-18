@@ -177,7 +177,7 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_array_fields.tpl.php';
 
 $arrayfields = dol_sort_array($arrayfields, 'position');
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 
 
 /*
@@ -445,7 +445,7 @@ if ($id > 0 || !empty($ref)) {
 	print dol_get_fiche_head($head, $tab, $langs->trans("Project"), -1, ($object->public ? 'projectpub' : 'project'));
 
 	$param = '&id='.$object->id;
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($search_user_id) {
@@ -714,7 +714,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer') && (empty($object-
 		print '</div>';
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="createtask">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -862,9 +862,9 @@ if ($action == 'create' && $user->hasRight('projet', 'creer') && (empty($object-
 		}
 	}
 
-	$linktocreatetask = dolGetButtonTitle($langs->trans('AddTask'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/projet/tasks.php?action=create'.$param.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id), '', $linktocreatetaskUserRight, $linktocreatetaskParam);
+	$linktocreatetask = dolGetButtonTitle($langs->trans('AddTask'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/projet/tasks.php?action=create'.$param.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id), '', $linktocreatetaskUserRight, $linktocreatetaskParam);
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="list">';
@@ -878,7 +878,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer') && (empty($object-
 	$linktotasks = dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/projet/tasks.php?id='.$object->id, '', 1, array('morecss' => 'reposition btnTitleSelected'));
 	$linktotasks .= dolGetButtonTitle($langs->trans('ViewGantt'), '', 'fa fa-stream imgforviewmode', DOL_URL_ROOT.'/projet/ganttview.php?id='.$object->id.'&withproject=1', '', 1, array('morecss' => 'reposition marginleftonly'));
 
-	//print_barre_liste($title, 0, DOL_PHP_SELF, '', $sortfield, $sortorder, $linktotasks, $num, $totalnboflines, 'generic', 0, '', '', 0, 1);
+	//print_barre_liste($title, 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, $linktotasks, $num, $totalnboflines, 'generic', 0, '', '', 0, 1);
 	print load_fiche_titre($title, $linktotasks.' &nbsp; '.$linktocreatetask, 'projecttask', '', '', '', $massactionbutton);
 
 	$objecttmp = new Task($db);
@@ -1056,60 +1056,60 @@ if ($action == 'create' && $user->hasRight('projet', 'creer') && (empty($object-
 	print '<tr class="liste_titre nodrag nodrop">';
 	// Action column
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	}
 	// print '<td>'.$langs->trans("Project").'</td>';
 	if (!empty($arrayfields['t.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['t.ref']['label'], DOL_PHP_SELF, 't.ref', '', $param, '', $sortfield, $sortorder, '');
+		print_liste_field_titre($arrayfields['t.ref']['label'], $_SERVER['PHP_SELF'], 't.ref', '', $param, '', $sortfield, $sortorder, '');
 	}
 	if (!empty($arrayfields['t.label']['checked'])) {
-		print_liste_field_titre($arrayfields['t.label']['label'], DOL_PHP_SELF, "t.label", '', $param, '', $sortfield, $sortorder, '');
+		print_liste_field_titre($arrayfields['t.label']['label'], $_SERVER['PHP_SELF'], "t.label", '', $param, '', $sortfield, $sortorder, '');
 	}
 	if (!empty($arrayfields['t.description']['checked'])) {
-		print_liste_field_titre($arrayfields['t.description']['label'], DOL_PHP_SELF, "", '', $param, '', $sortfield, $sortorder, '');
+		print_liste_field_titre($arrayfields['t.description']['label'], $_SERVER['PHP_SELF'], "", '', $param, '', $sortfield, $sortorder, '');
 	}
 	if (!empty($arrayfields['t.dateo']['checked'])) {
-		print_liste_field_titre($arrayfields['t.dateo']['label'], DOL_PHP_SELF, "t.dateo", '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre($arrayfields['t.dateo']['label'], $_SERVER['PHP_SELF'], "t.dateo", '', $param, '', $sortfield, $sortorder, 'center ');
 	}
 	if (!empty($arrayfields['t.datee']['checked'])) {
-		print_liste_field_titre($arrayfields['t.datee']['label'], DOL_PHP_SELF, "t.datee", '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre($arrayfields['t.datee']['label'], $_SERVER['PHP_SELF'], "t.datee", '', $param, '', $sortfield, $sortorder, 'center ');
 	}
 	if (!empty($arrayfields['t.planned_workload']['checked'])) {
-		print_liste_field_titre($arrayfields['t.planned_workload']['label'], DOL_PHP_SELF, "t.planned_workload", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
+		print_liste_field_titre($arrayfields['t.planned_workload']['label'], $_SERVER['PHP_SELF'], "t.planned_workload", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
 	}
 	if (!empty($arrayfields['t.duration_effective']['checked'])) {
-		print_liste_field_titre($arrayfields['t.duration_effective']['label'], DOL_PHP_SELF, "t.duration_effective", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
+		print_liste_field_titre($arrayfields['t.duration_effective']['label'], $_SERVER['PHP_SELF'], "t.duration_effective", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
 	}
 	if (!empty($arrayfields['t.progress_calculated']['checked'])) {
-		print_liste_field_titre($arrayfields['t.progress_calculated']['label'], DOL_PHP_SELF, "", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
+		print_liste_field_titre($arrayfields['t.progress_calculated']['label'], $_SERVER['PHP_SELF'], "", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
 	}
 	if (!empty($arrayfields['t.progress']['checked'])) {
-		print_liste_field_titre($arrayfields['t.progress']['label'], DOL_PHP_SELF, "t.progress", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
+		print_liste_field_titre($arrayfields['t.progress']['label'], $_SERVER['PHP_SELF'], "t.progress", '', $param, '', $sortfield, $sortorder, 'right ', '', 1);
 	}
 	if (!empty($arrayfields['t.progress_summary']['checked'])) {
-		print_liste_field_titre($arrayfields['t.progress_summary']['label'], DOL_PHP_SELF, "", '', $param, '', $sortfield, $sortorder, 'center ', '', 1);
+		print_liste_field_titre($arrayfields['t.progress_summary']['label'], $_SERVER['PHP_SELF'], "", '', $param, '', $sortfield, $sortorder, 'center ', '', 1);
 	}
 	if ($object->usage_bill_time) {
 		if (!empty($arrayfields['t.tobill']['checked'])) {
-			print_liste_field_titre($arrayfields['t.tobill']['label'], DOL_PHP_SELF, "t.tobill", '', $param, '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre($arrayfields['t.tobill']['label'], $_SERVER['PHP_SELF'], "t.tobill", '', $param, '', $sortfield, $sortorder, 'right ');
 		}
 		if (!empty($arrayfields['t.billed']['checked'])) {
-			print_liste_field_titre($arrayfields['t.billed']['label'], DOL_PHP_SELF, "t.billed", '', $param, '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre($arrayfields['t.billed']['label'], $_SERVER['PHP_SELF'], "t.billed", '', $param, '', $sortfield, $sortorder, 'right ');
 		}
 	}
 	// Contacts of task, disabled because available by default just after
 	/*
 	if (!empty($conf->global->PROJECT_SHOW_CONTACTS_IN_LIST)) {
-		print_liste_field_titre("TaskRessourceLinks", DOL_PHP_SELF, '', '', $param, $sortfield, $sortorder);
+		print_liste_field_titre("TaskRessourceLinks", $_SERVER['PHP_SELF'], '', '', $param, $sortfield, $sortorder);
 	}
 	*/
 
 	if (!empty($arrayfields['t.budget_amount']['checked'])) {
-		print_liste_field_titre($arrayfields['t.budget_amount']['label'], DOL_PHP_SELF, "t.budget_amount", "", $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre($arrayfields['t.budget_amount']['label'], $_SERVER['PHP_SELF'], "t.budget_amount", "", $param, '', $sortfield, $sortorder, 'center ');
 	}
 
 	if (!empty($arrayfields['c.assigned']['checked'])) {
-		print_liste_field_titre($arrayfields['c.assigned']['label'], DOL_PHP_SELF, "", '', $param, '', $sortfield, $sortorder, 'center ', '');
+		print_liste_field_titre($arrayfields['c.assigned']['label'], $_SERVER['PHP_SELF'], "", '', $param, '', $sortfield, $sortorder, 'center ', '');
 	}
 	// Extra fields
 	$disablesortlink = 1;
@@ -1121,7 +1121,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer') && (empty($object-
 	print '<td></td>';
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	}
 	print "</tr>\n";
 

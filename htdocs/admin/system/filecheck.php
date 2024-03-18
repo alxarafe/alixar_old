@@ -116,7 +116,7 @@ if (preg_match('/beta|alpha|rc/i', DOL_VERSION) || getDolGlobalString('MAIN_ALLO
 }
 $enableremotecheck = true;
 
-print '<form name="check" action="'.DOL_PHP_SELF.'">';
+print '<form name="check" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print $langs->trans("MakeIntegrityAnalysisFrom").':<br>';
 print '<!-- for a local check target=local&xmlshortfile=... -->'."\n";

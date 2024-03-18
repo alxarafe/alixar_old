@@ -445,7 +445,7 @@ class PrintIPP extends BasicIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-            .basename(DOL_PHP_SELF)
+            .basename($_SERVER['PHP_SELF'])
             .sprintf(_("getting printer's attributes of %s : OPERATION FAILED"),
                 $this->printer_uri),3);
 
@@ -621,7 +621,7 @@ class PrintIPP extends BasicIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("getting jobs of %s : OPERATION FAILED"),
                                      $this->printer_uri),3);
 
@@ -780,7 +780,7 @@ class PrintIPP extends BasicIPP
 
         $this->status = array_merge($this->status,array("OPERATION FAILED"));
         self::_errorLog(date("Y-m-d H:i:s : ")
-                        .basename(DOL_PHP_SELF)
+                        .basename($_SERVER['PHP_SELF'])
                         .sprintf(_("getting jobs attributes of %s : OPERATION FAILED"),
                                      $job_uri),3);
 

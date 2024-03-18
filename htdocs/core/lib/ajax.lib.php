@@ -653,9 +653,9 @@ function ajax_constantonoff($code, $input = array(), $entity = null, $revertonof
 
 	if (empty($conf->use_javascript_ajax) || $forcenoajax) {
 		if (empty($conf->global->$code)) {
-			$out = '<a '.($morecss ? 'class="'.$morecss.'" ' : '').'href="'.DOL_PHP_SELF.'?action=set_'.$code.'&token='.newToken().'&entity='.$entity.($mode ? '&mode='.$mode : '').($forcereload ? '&dol_resetcache=1' : '').'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+			$out = '<a '.($morecss ? 'class="'.$morecss.'" ' : '').'href="'.$_SERVER['PHP_SELF'].'?action=set_'.$code.'&token='.newToken().'&entity='.$entity.($mode ? '&mode='.$mode : '').($forcereload ? '&dol_resetcache=1' : '').'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 		} else {
-			$out = '<a '.($morecss ? 'class="'.$morecss.'" ' : '').' href="'.DOL_PHP_SELF.'?action=del_'.$code.'&token='.newToken().'&entity='.$entity.($mode ? '&mode='.$mode : '').($forcereload ? '&dol_resetcache=1' : '').'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+			$out = '<a '.($morecss ? 'class="'.$morecss.'" ' : '').' href="'.$_SERVER['PHP_SELF'].'?action=del_'.$code.'&token='.newToken().'&entity='.$entity.($mode ? '&mode='.$mode : '').($forcereload ? '&dol_resetcache=1' : '').'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 		}
 	} else {
 		$out = "\n<!-- Ajax code to switch constant ".$code." -->".'
@@ -828,8 +828,8 @@ function ajax_object_onoff($object, $code, $field, $text_on, $text_off, $input =
 	}
 
 	if (empty($conf->use_javascript_ajax) || $forcenojs) {
-		$out .= '<a id="set_'.$htmlname.'_'.$object->id.'" class="linkobject '.($object->$code == 1 ? 'hideobject' : '').($morecss ? ' '.$morecss : '').'" href="'.DOL_URL_ROOT.'/core/ajax/objectonoff.php?action=set&token='.newToken().'&id='.((int) $object->id).'&element='.urlencode($object->element).'&field='.urlencode($field).'&value=1&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'">'.img_picto($langs->trans($text_off), $switchoff, '', false, 0, 0, '', $cssswitchoff).'</a>';
-		$out .= '<a id="del_'.$htmlname.'_'.$object->id.'" class="linkobject '.($object->$code == 1 ? '' : 'hideobject').($morecss ? ' '.$morecss : '').'" href="'.DOL_URL_ROOT.'/core/ajax/objectonoff.php?action=set&token='.newToken().'&id='.((int) $object->id).'&element='.urlencode($object->element).'&field='.urlencode($field).'&value=0&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'">'.img_picto($langs->trans($text_on), $switchon, '', false, 0, 0, '', $cssswitchon).'</a>';
+		$out .= '<a id="set_'.$htmlname.'_'.$object->id.'" class="linkobject '.($object->$code == 1 ? 'hideobject' : '').($morecss ? ' '.$morecss : '').'" href="'.DOL_URL_ROOT.'/core/ajax/objectonoff.php?action=set&token='.newToken().'&id='.((int) $object->id).'&element='.urlencode($object->element).'&field='.urlencode($field).'&value=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'">'.img_picto($langs->trans($text_off), $switchoff, '', false, 0, 0, '', $cssswitchoff).'</a>';
+		$out .= '<a id="del_'.$htmlname.'_'.$object->id.'" class="linkobject '.($object->$code == 1 ? '' : 'hideobject').($morecss ? ' '.$morecss : '').'" href="'.DOL_URL_ROOT.'/core/ajax/objectonoff.php?action=set&token='.newToken().'&id='.((int) $object->id).'&element='.urlencode($object->element).'&field='.urlencode($field).'&value=0&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'">'.img_picto($langs->trans($text_on), $switchon, '', false, 0, 0, '', $cssswitchon).'</a>';
 	} else {
 		$out .= '<span id="set_'.$htmlname.'_'.$object->id.'" class="linkobject '.($object->$code == 1 ? 'hideobject' : '').($morecss ? ' '.$morecss : '').'">'.img_picto($langs->trans($text_off), $switchoff, '', false, 0, 0, '', $cssswitchoff).'</span>';
 		$out .= '<span id="del_'.$htmlname.'_'.$object->id.'" class="linkobject '.($object->$code == 1 ? '' : 'hideobject').($morecss ? ' '.$morecss : '').'">'.img_picto($langs->trans($text_on), $switchon, '', false, 0, 0, '', $cssswitchon).'</span>';

@@ -146,7 +146,7 @@ print load_fiche_titre($langs->trans("ModuleSetup").' PayPal', $linkback);
 
 $head = paypaladmin_prepare_head();
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="setvalue">';
 
@@ -177,10 +177,10 @@ print '<tr class="oddeven">';
 print '<td>';
 print $langs->trans("PaypalLiveEnabled").'</td><td>';
 if (!(getDolGlobalInt('PAYPAL_API_SANDBOX'))) {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setlive&token='.newToken().'&value=0">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setlive&token='.newToken().'&value=0">';
 	print img_picto($langs->trans("Activated"), 'switch_on');
 } else {
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setlive&token='.newToken().'&value=1">';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setlive&token='.newToken().'&value=1">';
 	print img_picto($langs->trans("Disabled"), 'switch_off');
 }
 print '</td></tr>';

@@ -26,7 +26,7 @@ if (!getDolGlobalString('MAIN_DISABLE_SUGGEST_REF_AS_PREFIX')) {
 
 // Show upload form (document and links)
 $formfile->form_attach_new_file(
-	DOL_PHP_SELF.'?id='.$object->id,
+	$_SERVER['PHP_SELF'].'?id='.$object->id,
 	'none',
 	0,
 	0,

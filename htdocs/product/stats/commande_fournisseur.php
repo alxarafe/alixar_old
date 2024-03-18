@@ -214,7 +214,7 @@ if ($id > 0 || !empty($ref)) {
 					$param .= '&search_status='.urlencode($search_status);
 				}
 
-				print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$product->id.'" name="search_form">'."\n";
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$product->id.'" name="search_form">'."\n";
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				if (!empty($sortfield)) {
 					print '<input type="hidden" name="sortfield" value="'.$sortfield.'"/>';
@@ -224,7 +224,7 @@ if ($id > 0 || !empty($ref)) {
 				}
 
 				// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-				print_barre_liste($langs->trans("SuppliersOrders"), $page, DOL_PHP_SELF, $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
+				print_barre_liste($langs->trans("SuppliersOrders"), $page, $_SERVER['PHP_SELF'], $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
 
 				if (!empty($page)) {
 					$option .= '&page='.urlencode((string) ($page));
@@ -248,14 +248,14 @@ if ($id > 0 || !empty($ref)) {
 				print '<div class="div-table-responsive">';
 				print '<table class="tagtable liste listwithfilterbefore centpercent">';
 				print '<tr class="liste_titre">';
-				print_liste_field_titre("Ref", DOL_PHP_SELF, "c.rowid", "", $option, '', $sortfield, $sortorder);
-				print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", $option, '', $sortfield, $sortorder);
-				print_liste_field_titre("SupplierCode", DOL_PHP_SELF, "s.code_client", "", $option, '', $sortfield, $sortorder);
-				print_liste_field_titre("OrderDate", DOL_PHP_SELF, "c.date_commande", "", $option, 'align="center"', $sortfield, $sortorder);
-				print_liste_field_titre('DateDeliveryPlanned', DOL_PHP_SELF, 'c.date_livraison', '', $option, 'align="center"', $sortfield, $sortorder);
-				print_liste_field_titre("Qty", DOL_PHP_SELF, "d.qty", "", $option, 'align="center"', $sortfield, $sortorder);
-				print_liste_field_titre("AmountHT", DOL_PHP_SELF, "c.total_ht", "", $option, 'align="right"', $sortfield, $sortorder);
-				print_liste_field_titre("Status", DOL_PHP_SELF, "c.fk_statut", "", $option, 'align="right"', $sortfield, $sortorder);
+				print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "c.rowid", "", $option, '', $sortfield, $sortorder);
+				print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", $option, '', $sortfield, $sortorder);
+				print_liste_field_titre("SupplierCode", $_SERVER['PHP_SELF'], "s.code_client", "", $option, '', $sortfield, $sortorder);
+				print_liste_field_titre("OrderDate", $_SERVER['PHP_SELF'], "c.date_commande", "", $option, 'align="center"', $sortfield, $sortorder);
+				print_liste_field_titre('DateDeliveryPlanned', $_SERVER['PHP_SELF'], 'c.date_livraison', '', $option, 'align="center"', $sortfield, $sortorder);
+				print_liste_field_titre("Qty", $_SERVER['PHP_SELF'], "d.qty", "", $option, 'align="center"', $sortfield, $sortorder);
+				print_liste_field_titre("AmountHT", $_SERVER['PHP_SELF'], "c.total_ht", "", $option, 'align="right"', $sortfield, $sortorder);
+				print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "c.fk_statut", "", $option, 'align="right"', $sortfield, $sortorder);
 				print "</tr>\n";
 
 				if ($num > 0) {

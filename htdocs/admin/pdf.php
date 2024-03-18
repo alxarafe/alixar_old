@@ -191,7 +191,7 @@ if ($action == 'update') {
 
 	setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
 
-	header("Location: ".DOL_PHP_SELF."?mainmenu=home&leftmenu=setup");
+	header("Location: ".$_SERVER['PHP_SELF']."?mainmenu=home&leftmenu=setup");
 	exit;
 }
 
@@ -268,7 +268,7 @@ print "<br>\n";
 
 $noCountryCode = (empty($mysoc->country_code) ? true : false);
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 

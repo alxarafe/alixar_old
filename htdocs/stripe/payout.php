@@ -88,7 +88,7 @@ $moreforfilter = '';
 $totalnboflines = -1;
 
 if (!$rowid) {
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -102,18 +102,18 @@ if (!$rowid) {
 	$title = $langs->trans("StripePayoutList");
 	$title .= ($stripeacc ? ' (Stripe connection with Stripe OAuth Connect account '.$stripeacc.')' : ' (Stripe connection with keys from Stripe module setup)');
 
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $totalnboflines, 'title_accountancy.png', 0, '', '', $limit);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $totalnboflines, 'title_accountancy.png', 0, '', '', $limit);
 
 	print '<div class="div-table-responsive">';
 	print '<table class="tagtable liste'.(!empty($moreforfilter) ? " listwithfilterbefore" : "").'">'."\n";
 
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("DatePayment", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre("DateOperation", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre("Description", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre("Paid", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("Status", DOL_PHP_SELF, "", "", "", '', '', '', 'right ');
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("DateOperation", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("Description", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre("Paid", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "", "", "", '', '', '', 'right ');
 	print "</tr>\n";
 
 	print "</tr>\n";

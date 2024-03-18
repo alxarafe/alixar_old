@@ -56,7 +56,7 @@ print load_fiche_titre($langs->trans("Security"), '', 'title_setup');
 
 print '<span class="opacitymedium">'.$langs->trans("YouMayFindSecurityAdviceHere", 'hhttps://wiki.dolibarr.org/index.php/Security_information').'</span>';
 print ' &nbsp; &nbsp; ';
-print '<a href="'.DOL_PHP_SELF.'">';
+print '<a href="'.$_SERVER['PHP_SELF'].'">';
 print img_picto($langs->trans("Reload"), 'refresh').' ';
 print $langs->trans("Reload");
 print '</a>';

@@ -246,7 +246,7 @@ if (empty($reshook) && $action == 'add') {
 					$urlback = getDolGlobalString('MEMBER_URL_REDIRECT_SUBSCRIPTION');
 					// TODO Make replacement of __AMOUNT__, etc...
 				} else {
-					$urlback = DOL_PHP_SELF . "?action=added&token=" . newToken();
+					$urlback = $_SERVER['PHP_SELF'] . "?action=added&token=" . newToken();
 				}
 			} else {
 				$error++;
@@ -317,7 +317,7 @@ dol_htmloutput_errors($errmsg);
 dol_htmloutput_events();
 
 // Print form
-print '<form action="' . DOL_PHP_SELF . '" method="POST" name="newprospect">' . "\n";
+print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST" name="newprospect">' . "\n";
 print '<input type="hidden" name="token" value="' . newToken() . '" / >';
 print '<input type="hidden" name="entity" value="' . $entity . '" />';
 print '<input type="hidden" name="action" value="add" />';

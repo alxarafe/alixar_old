@@ -448,29 +448,29 @@ $formconfirm = '';
 
 // Confirmation to delete
 if ($action == 'delete') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteInventory'), $langs->trans('ConfirmDeleteOrder'), 'confirm_delete', '', 0, 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteInventory'), $langs->trans('ConfirmDeleteOrder'), 'confirm_delete', '', 0, 1);
 }
 // Confirmation to delete line
 if ($action == 'deleteline') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid.'&page='.$page.$paramwithsearch, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid.'&page='.$page.$paramwithsearch, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 }
 
 // Clone confirmation
 if ($action == 'clone') {
 	// Create an array for form
 	$formquestion = array();
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneMyObject', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneMyObject', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 }
 
 // Confirmation to close
 if ($action == 'record') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&page='.$page.$paramwithsearch, $langs->trans('Close'), $langs->trans('ConfirmFinish'), 'update', '', 0, 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&page='.$page.$paramwithsearch, $langs->trans('Close'), $langs->trans('ConfirmFinish'), 'update', '', 0, 1);
 	$action = 'view';
 }
 
 // Confirmation to close
 if ($action == 'confirm_cancel') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('Cancel'), $langs->trans('ConfirmCancel'), 'cancel_record', '', 0, 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('Cancel'), $langs->trans('ConfirmCancel'), 'cancel_record', '', 0, 1);
 	$action = 'view';
 }
 
@@ -481,7 +481,7 @@ if ($action == 'validate') {
 		$formquestion = array(
 			array('type' => 'checkbox', 'name' => 'include_sub_warehouse', 'label' => $langs->trans("IncludeSubWarehouse"), 'value' => 1, 'size' => '10'),
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ValidateInventory'), $langs->trans('IncludeSubWarehouseExplanation'), 'confirm_validate', $formquestion, '', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ValidateInventory'), $langs->trans('IncludeSubWarehouseExplanation'), 'confirm_validate', $formquestion, '', 1);
 	}
 }
 
@@ -518,17 +518,17 @@ if (isModEnabled('project'))
 	{
 		if ($action != 'classify')
 		{
-			$morehtmlref.='<a class="editfielda" href="' . DOL_PHP_SELF . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
+			$morehtmlref.='<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
 			if ($action == 'classify') {
-				//$morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-				$morehtmlref.='<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+				$morehtmlref.='<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				$morehtmlref.='<input type="hidden" name="action" value="classin">';
 				$morehtmlref.='<input type="hidden" name="token" value="'.newToken().'">';
 				$morehtmlref.=$formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
 				$morehtmlref.='<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 				$morehtmlref.='</form>';
 			} else {
-				$morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1);
+				$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1);
 			}
 		}
 	} else {
@@ -569,7 +569,7 @@ print '<div class="clearboth"></div>';
 
 print dol_get_fiche_end();
 
-print '<form id="formrecord" name="formrecord" method="POST" action="'.DOL_PHP_SELF.'?page='.$page.'&id='.$object->id.'">';
+print '<form id="formrecord" name="formrecord" method="POST" action="'.$_SERVER['PHP_SELF'].'?page='.$page.'&id='.$object->id.'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="updateinventorylines">';
 print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -591,9 +591,9 @@ if ($action != 'record') {
 		if ($object->status == Inventory::STATUS_DRAFT) {
 			if ($permissiontoadd) {
 				if (getDolGlobalInt('INVENTORY_INCLUDE_SUB_WAREHOUSE') && !empty($object->fk_warehouse)) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=validate&token='.newToken().'">'.$langs->trans("Validate").' ('.$langs->trans("Start").')</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=validate&token='.newToken().'">'.$langs->trans("Validate").' ('.$langs->trans("Start").')</a>';
 				} else {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken().'">'.$langs->trans("Validate").' ('.$langs->trans("Start").')</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken().'">'.$langs->trans("Validate").' ('.$langs->trans("Start").')</a>';
 				}
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">'.$langs->trans('Validate').' ('.$langs->trans("Start").')</a>'."\n";
@@ -603,13 +603,13 @@ if ($action != 'record') {
 		// Save
 		if ($object->status == $object::STATUS_VALIDATED) {
 			if ($permissiontoadd) {
-				print '<a class="butAction classfortooltip" id="idbuttonmakemovementandclose" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=record&page='.$page.$paramwithsearch.'&token='.newToken().'" title="'.dol_escape_htmltag($langs->trans("MakeMovementsAndClose")).'">'.$langs->trans("MakeMovementsAndClose").'</a>'."\n";
+				print '<a class="butAction classfortooltip" id="idbuttonmakemovementandclose" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=record&page='.$page.$paramwithsearch.'&token='.newToken().'" title="'.dol_escape_htmltag($langs->trans("MakeMovementsAndClose")).'">'.$langs->trans("MakeMovementsAndClose").'</a>'."\n";
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">'.$langs->trans('MakeMovementsAndClose').'</a>'."\n";
 			}
 
 			if ($permissiontoadd) {
-				print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_cancel&page='.$page.$paramwithsearch.'&token='.newToken().'">'.$langs->trans("Cancel").'</a>'."\n";
+				print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_cancel&page='.$page.$paramwithsearch.'&token='.newToken().'">'.$langs->trans("Cancel").'</a>'."\n";
 			}
 		}
 	}
@@ -628,7 +628,7 @@ if ($object->status == Inventory::STATUS_VALIDATED) {
 		if ($permissiontoadd) {
 			// Link to launch scan tool
 			if (isModEnabled('barcode') || isModEnabled('productbatch')) {
-				print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=updatebyscaning&token='.currentToken().'" class="marginrightonly paddingright marginleftonly paddingleft">'.img_picto('', 'barcode', 'class="paddingrightonly"').$langs->trans("UpdateByScaning").'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=updatebyscaning&token='.currentToken().'" class="marginrightonly paddingright marginleftonly paddingleft">'.img_picto('', 'barcode', 'class="paddingrightonly"').$langs->trans("UpdateByScaning").'</a>';
 			}
 
 			// Link to autofill
@@ -1016,7 +1016,7 @@ if ($resql) {
 	$num = $db->num_rows($resql);
 
 	if (!empty($limit != 0) || $num > $limit || $page) {
-		print_fleche_navigation($page, DOL_PHP_SELF, '&id='.$object->id.$paramwithsearch, ($num >= $limit), '<li class="pagination"><span>' . $langs->trans("Page") . ' ' . ($page + 1) . '</span></li>', '', $limit);
+		print_fleche_navigation($page, $_SERVER['PHP_SELF'], '&id='.$object->id.$paramwithsearch, ($num >= $limit), '<li class="pagination"><span>' . $langs->trans("Page") . ' ' . ($page + 1) . '</span></li>', '', $limit);
 	}
 
 	$i = 0;
@@ -1246,38 +1246,38 @@ print '<script type="text/javascript">
 
                         $(".paginationnext:last").click(function(e){
                             var form = $("#formrecord");
-   							var actionURL = "'.DOL_PHP_SELF.'?id='.$object->id.'&page='.($page).$paramwithsearch.'";
+   							var actionURL = "'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&page='.($page).$paramwithsearch.'";
    							$.ajax({
       					 	url: actionURL,
         					data: form.serialize(),
         					cache: false,
         					success: function(result){
-           				 	window.location.href = "'.DOL_PHP_SELF.'?id='.$object->id.'&page='.($page + 1).$paramwithsearch.'";
+           				 	window.location.href = "'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&page='.($page + 1).$paramwithsearch.'";
     						}});
     					});
 
 
                          $(".paginationprevious:last").click(function(e){
                             var form = $("#formrecord");
-   							var actionURL = "'.DOL_PHP_SELF.'?id='.$object->id.'&page='.($page).$paramwithsearch.'";
+   							var actionURL = "'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&page='.($page).$paramwithsearch.'";
    							$.ajax({
       					 	url: actionURL,
         					data: form.serialize(),
         					cache: false,
         					success: function(result){
-           				 	window.location.href = "'.DOL_PHP_SELF.'?id='.$object->id.'&page='.($page - 1).$paramwithsearch.'";
+           				 	window.location.href = "'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&page='.($page - 1).$paramwithsearch.'";
        					 	}});
 						 });
 
                           $("#idbuttonmakemovementandclose").click(function(e){
                             var form = $("#formrecord");
-   							var actionURL = "'.DOL_PHP_SELF.'?id='.$object->id.'&page='.($page).$paramwithsearch.'";
+   							var actionURL = "'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&page='.($page).$paramwithsearch.'";
    							$.ajax({
       					 	url: actionURL,
         					data: form.serialize(),
         					cache: false,
         					success: function(result){
-           				 	window.location.href = "'.DOL_PHP_SELF.'?id='.$object->id.'&page='.($page - 1).$paramwithsearch.'&action=record";
+           				 	window.location.href = "'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&page='.($page - 1).$paramwithsearch.'&action=record";
        					 	}});
 						 });
 					});

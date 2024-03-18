@@ -174,7 +174,7 @@ if (empty($reshook)) {
 
 			$result = dol_set_user_param($db, $conf, $object, $tabparam);
 
-			header('Location: '.DOL_PHP_SELF.'?id='.$id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$id);
 			exit;
 		}
 	}
@@ -273,7 +273,7 @@ $head = user_prepare_head($object);
 $title = $langs->trans("User");
 
 if ($action == 'edit') {
-	print '<form method="post" action="'.DOL_PHP_SELF.'">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="'.$id.'">';
@@ -523,7 +523,7 @@ if ($action == 'edit') {
 		print '<a class="butActionRefused classfortooltip" title="'.$langs->trans("FeatureDisabledInDemo").'" href="#">'.$langs->trans("Modify").'</a>';
 	} else {
 		if ($caneditfield || !empty($user->admin)) {       // Si utilisateur edite = utilisateur courant (pas besoin de droits particulier car il s'agit d'une page de modif d'output et non de données) ou si admin
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Modify").'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 		} else {
 			print '<a class="butActionRefused classfortooltip" title="'.$langs->trans("NotEnoughPermissions").'" href="#">'.$langs->trans("Modify").'</a>';
 		}

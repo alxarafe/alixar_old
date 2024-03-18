@@ -389,14 +389,14 @@ if ($resql) {
 
 	llxHeader("", $texte, $helpurl);
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post" name="formulaire">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post" name="formulaire">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
 	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 	print '<input type="hidden" name="page" value="'.$page.'">';
 	print '<input type="hidden" name="type" value="'.$type.'">';
 
-	print_barre_liste($texte, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'product', 0, '', '', $limit);
+	print_barre_liste($texte, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'product', 0, '', '', $limit);
 
 	if ($search_categ > 0) {
 		print "<div id='ways'>";
@@ -492,14 +492,14 @@ if ($resql) {
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 		print_liste_field_titre('');
 	}
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "p.ref", '', $param, "", $sortfield, $sortorder);
-	print_liste_field_titre("Label", DOL_PHP_SELF, "p.label", '', $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "p.ref", '', $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "p.label", '', $param, "", $sortfield, $sortorder);
 	if (isModEnabled("service") && $type == 1) {
-		print_liste_field_titre("Duration", DOL_PHP_SELF, "p.duration", '', $param, "", $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("Duration", $_SERVER['PHP_SELF'], "p.duration", '', $param, "", $sortfield, $sortorder, 'center ');
 	}
-	print_liste_field_titre("StockLimit", DOL_PHP_SELF, "p.seuil_stock_alerte", '', $param, "", $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("DesiredStock", DOL_PHP_SELF, "p.desiredstock", '', $param, "", $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("PhysicalStock", DOL_PHP_SELF, "stock_physique", '', $param, "", $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("StockLimit", $_SERVER['PHP_SELF'], "p.seuil_stock_alerte", '', $param, "", $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("DesiredStock", $_SERVER['PHP_SELF'], "p.desiredstock", '', $param, "", $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("PhysicalStock", $_SERVER['PHP_SELF'], "stock_physique", '', $param, "", $sortfield, $sortorder, 'right ');
 	// Details per warehouse
 	if (getDolGlobalString('STOCK_DETAIL_ON_WAREHOUSE')) {	// TODO This should be moved into the selection of fields on page product/list (page product/stock will be removed and replaced with product/list with its own context)
 		if ($nb_warehouse > 1) {
@@ -509,15 +509,15 @@ if ($resql) {
 		}
 	}
 	if ($virtualdiffersfromphysical) {
-		print_liste_field_titre("VirtualStock", DOL_PHP_SELF, "", '', $param, "", $sortfield, $sortorder, 'right ', 'VirtualStockDesc');
+		print_liste_field_titre("VirtualStock", $_SERVER['PHP_SELF'], "", '', $param, "", $sortfield, $sortorder, 'right ', 'VirtualStockDesc');
 	}
 	// Units
 	if (getDolGlobalString('PRODUCT_USE_UNITS')) {
-		print_liste_field_titre("Unit", DOL_PHP_SELF, "unit_short", '', $param, 'align="right"', $sortfield, $sortorder);
+		print_liste_field_titre("Unit", $_SERVER['PHP_SELF'], "unit_short", '', $param, 'align="right"', $sortfield, $sortorder);
 	}
 	print_liste_field_titre('');
-	print_liste_field_titre("ProductStatusOnSell", DOL_PHP_SELF, "p.tosell", '', $param, "", $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("ProductStatusOnBuy", DOL_PHP_SELF, "p.tobuy", '', $param, "", $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("ProductStatusOnSell", $_SERVER['PHP_SELF'], "p.tosell", '', $param, "", $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("ProductStatusOnBuy", $_SERVER['PHP_SELF'], "p.tobuy", '', $param, "", $sortfield, $sortorder, 'right ');
 	// Hook fields
 	$parameters = array('param' => $param, 'sortfield' => $sortfield, 'sortorder' => $sortorder);
 	$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook

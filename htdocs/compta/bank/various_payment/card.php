@@ -301,7 +301,7 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && $permissiontoadd) {
 				$db->commit();
 				$db->close();
 
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit;
 			} else {
 				$id = $originalId;
@@ -400,7 +400,7 @@ if ($action == 'create') {
 		print '	</script>'."\n";
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 	print '<input type="hidden" name="action" value="add">';
@@ -567,13 +567,13 @@ if ($id) {
 			array('type' => 'select', 'name' => 'clone_sens', 'label' => $langs->trans("Sens").' '.$set_value_help, 'values' => $sensarray, 'default' => $object->sens),
 		);
 
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneVariousPayment', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 350);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneVariousPayment', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 350);
 	}
 
 	// Confirmation of the removal of the Various Payment
 	if ($action == 'delete') {
 		$text = $langs->trans('ConfirmDeleteVariousPayment');
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteVariousPayment'), $text, 'confirm_delete', '', '', 2);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteVariousPayment'), $text, 'confirm_delete', '', '', 2);
 	}
 
 	print dol_get_fiche_head($head, 'card', $langs->trans("VariousPayment"), -1, $object->picto);
@@ -586,18 +586,18 @@ if ($id) {
 		if ($permissiontoadd) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
 			if ($action == 'classify') {
-				//$morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-				$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+				$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				$morehtmlref .= '<input type="hidden" name="action" value="classin">';
 				$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 				$morehtmlref .= $formproject->select_projects(-1, $object->fk_project, 'projectid', 0, 0, 1, 1, 0, 0, 0, '', 1, 0, 'maxwidth500 widthcentpercentminusxx');
 				$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 				$morehtmlref .= '</form>';
 			} else {
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, (property_exists($object, 'socid') ? $object->socid : 0), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, (property_exists($object, 'socid') ? $object->socid : 0), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 			}
 		} else {
 			if (!empty($object->fk_project)) {
@@ -655,7 +655,7 @@ if ($id) {
 		print '</td><td>';
 		if ($action == 'editaccountancy_code' && (!$alreadyaccounted && $permissiontoadd)) {
 			//print $form->editfieldval('AccountAccounting', 'accountancy_code', $object->accountancy_code, $object, (!$alreadyaccounted && $user->hasRight('banque', 'modifier')), 'string', '', 0);
-			print $formaccounting->formAccountingAccount(DOL_PHP_SELF.'?id='.$object->id, $object->accountancy_code, 'accountancy_code', 0, 1, '', 1);
+			print $formaccounting->formAccountingAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->accountancy_code, 'accountancy_code', 0, 1, '', 1);
 		} else {
 			$accountingaccount = new AccountingAccount($db);
 			$accountingaccount->fetch('', $object->accountancy_code, 1);
@@ -677,7 +677,7 @@ if ($id) {
 	print '</td><td>';
 	if ($action == 'editsubledger_account' && (!$alreadyaccounted && $permissiontoadd)) {
 		if (getDolGlobalString('ACCOUNTANCY_COMBO_FOR_AUX')) {
-			print $formaccounting->formAccountingAccount(DOL_PHP_SELF . '?id=' . $object->id, $object->subledger_account, 'subledger_account', 1, 1, '', 1);
+			print $formaccounting->formAccountingAccount($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->subledger_account, 'subledger_account', 1, 1, '', 1);
 		} else {
 			print $form->editfieldval('SubledgerAccount', 'subledger_account', $object->subledger_account, $object, (!$alreadyaccounted && $permissiontoadd), 'string', '', null, null, '', 1, 'lengthAccounta');
 		}

@@ -153,7 +153,7 @@ if ($action == 'add' && $permissiontoadd) {
 	if (!$error) {
 		$id = $object->create($user);
 		if ($id > 0) {
-			header("Location: ".DOL_PHP_SELF.'?id='.$id);
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -176,7 +176,7 @@ llxHeader("", $title);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("IntracommReportTitle"));
 
-	print '<form name="charge" method="post" action="'.DOL_PHP_SELF.'">';
+	print '<form name="charge" method="post" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add" />';
 

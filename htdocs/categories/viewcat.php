@@ -277,9 +277,9 @@ dol_banner_tab($object, 'label', $linkback, ($user->socid ? 0 : 1), 'label', 'la
 
 if ($action == 'delete') {
 	if ($backtopage) {
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&type='.$type.'&backtopage='.urlencode($backtopage), $langs->trans('DeleteCategory'), $langs->trans('ConfirmDeleteCategory'), 'confirm_delete', '', '', 2);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&type='.$type.'&backtopage='.urlencode($backtopage), $langs->trans('DeleteCategory'), $langs->trans('ConfirmDeleteCategory'), 'confirm_delete', '', '', 2);
 	} else {
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&type='.$type, $langs->trans('DeleteCategory'), $langs->trans('ConfirmDeleteCategory'), 'confirm_delete', '', '', 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&type='.$type, $langs->trans('DeleteCategory'), $langs->trans('ConfirmDeleteCategory'), 'confirm_delete', '', '', 1);
 	}
 }
 
@@ -332,7 +332,7 @@ if (empty($reshook)) {
 	}
 
 	if ($user->hasRight('categorie', 'supprimer')) {
-		print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.'&type='.$type.'&backtolist='.urlencode($backtolist).'">'.$langs->trans("Delete").'</a>';
+		print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.'&type='.$type.'&backtolist='.urlencode($backtolist).'">'.$langs->trans("Delete").'</a>';
 	}
 }
 
@@ -344,7 +344,7 @@ if ($user->hasRight('categorie', 'creer')) {
 	$link .= '?action=create';
 	$link .= '&type='.$type;
 	$link .= '&catorigin='.$object->id;
-	$link .= '&backtopage='.urlencode(DOL_PHP_SELF.'?type='.$type.'&id='.$id);
+	$link .= '&backtopage='.urlencode($_SERVER['PHP_SELF'].'?type='.$type.'&id='.$id);
 
 	$newcardbutton = '<div class="right">';
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewCategory'), '', 'fa fa-plus-circle', $link);
@@ -426,7 +426,7 @@ if ($cats < 0) {
 		}
 
 		$color = $categstatic->color ? ' style="background: #'.sprintf("%06s", $categstatic->color).';"' : ' style="background: #bbb"';
-		$li = $categstatic->getNomUrl(1, '', 60, '&backtolist='.urlencode(DOL_PHP_SELF.'?id='.$id.'&type='.$type));
+		$li = $categstatic->getNomUrl(1, '', 60, '&backtolist='.urlencode($_SERVER['PHP_SELF'].'?id='.$id.'&type='.$type));
 
 		$entry = '<table class="nobordernopadding centpercent">';
 		$entry .= '<tr>';
@@ -438,13 +438,13 @@ if ($cats < 0) {
 		$entry .= $counter;
 
 		$entry .= '<td class="right" width="20px;">';
-		$entry .= '<a href="'.DOL_URL_ROOT.'/categories/viewcat.php?id='.$val['id'].'&type='.$type.'&backtolist='.urlencode(DOL_PHP_SELF.'?id='.$id.'&type='.$type).'">'.img_view().'</a>';
+		$entry .= '<a href="'.DOL_URL_ROOT.'/categories/viewcat.php?id='.$val['id'].'&type='.$type.'&backtolist='.urlencode($_SERVER['PHP_SELF'].'?id='.$id.'&type='.$type).'">'.img_view().'</a>';
 		$entry .= '</td>';
 		$entry .= '<td class="right" width="20px;">';
-		$entry .= '<a class="editfielda" href="'.DOL_URL_ROOT.'/categories/edit.php?id='.$val['id'].'&type='.$type.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id.'&type='.$type).'">'.img_edit().'</a>';
+		$entry .= '<a class="editfielda" href="'.DOL_URL_ROOT.'/categories/edit.php?id='.$val['id'].'&type='.$type.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id.'&type='.$type).'">'.img_edit().'</a>';
 		$entry .= '</td>';
 		$entry .= '<td class="right" width="20px;">';
-		$entry .= '<a class="deletefilelink" href="'.DOL_URL_ROOT.'/categories/viewcat.php?action=delete&token='.newToken().'&id='.$val['id'].'&type='.$type.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$id.'&type='.$type).'&backtolist='.urlencode(DOL_PHP_SELF.'?id='.$id.'&type='.$type).'">'.img_delete().'</a>';
+		$entry .= '<a class="deletefilelink" href="'.DOL_URL_ROOT.'/categories/viewcat.php?action=delete&token='.newToken().'&id='.$val['id'].'&type='.$type.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$id.'&type='.$type).'&backtolist='.urlencode($_SERVER['PHP_SELF'].'?id='.$id.'&type='.$type).'">'.img_delete().'</a>';
 		$entry .= '</td>';
 
 		$entry .= '</tr>';
@@ -510,7 +510,7 @@ if ($type == Categorie::TYPE_PRODUCT) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -526,7 +526,7 @@ if ($type == Categorie::TYPE_PRODUCT) {
 				print '</form>';
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -537,10 +537,10 @@ if ($type == Categorie::TYPE_PRODUCT) {
 			$param = '&limit='.$limit.'&id='.$id.'&type='.$type;
 			$num = count($prods);
 			$nbtotalofrecords = '';
-			$newcardbutton = dolGetButtonTitle($langs->trans("AddProduct"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/product/card.php?action=create&categories[]='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id), '', $user->rights->societe->creer);
+			$newcardbutton = dolGetButtonTitle($langs->trans("AddProduct"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/product/card.php?action=create&categories[]='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id), '', $user->rights->societe->creer);
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("ProductsAndServices"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'products', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("ProductsAndServices"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'products', 0, $newcardbutton, '', $limit);
 
 
 			print '<table class="noborder centpercent">'."\n";
@@ -562,7 +562,7 @@ if ($type == Categorie::TYPE_PRODUCT) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$prod->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$prod->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -578,7 +578,7 @@ if ($type == Categorie::TYPE_PRODUCT) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("ProductsAndServices"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'products');
+		print_barre_liste($langs->trans("ProductsAndServices"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'products');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -597,7 +597,7 @@ if ($type == Categorie::TYPE_CUSTOMER) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -614,7 +614,7 @@ if ($type == Categorie::TYPE_CUSTOMER) {
 				print '</form>';
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -625,10 +625,10 @@ if ($type == Categorie::TYPE_CUSTOMER) {
 			$param = '&limit='.$limit.'&id='.$id.'&type='.$type;
 			$num = count($socs);
 			$nbtotalofrecords = '';
-			$newcardbutton = dolGetButtonTitle($langs->trans("AddThirdParty"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/societe/card.php?action=create&client=3&custcats[]='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id), '', $user->rights->societe->creer);
+			$newcardbutton = dolGetButtonTitle($langs->trans("AddThirdParty"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/societe/card.php?action=create&client=3&custcats[]='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id), '', $user->rights->societe->creer);
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Customers"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'companies', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Customers"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'companies', 0, $newcardbutton, '', $limit);
 
 			print '<table class="noborder centpercent">'."\n";
 			print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("Name").'</td></tr>'."\n";
@@ -648,7 +648,7 @@ if ($type == Categorie::TYPE_CUSTOMER) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$soc->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$soc->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -664,7 +664,7 @@ if ($type == Categorie::TYPE_CUSTOMER) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Customers"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'companies');
+		print_barre_liste($langs->trans("Customers"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'companies');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -683,7 +683,7 @@ if ($type == Categorie::TYPE_SUPPLIER) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -700,7 +700,7 @@ if ($type == Categorie::TYPE_SUPPLIER) {
 				print '</form>';
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -711,10 +711,10 @@ if ($type == Categorie::TYPE_SUPPLIER) {
 			$param = '&limit='.$limit.'&id='.$id.'&type='.$type;
 			$num = count($socs);
 			$nbtotalofrecords = '';
-			$newcardbutton = dolGetButtonTitle($langs->trans("AddSupplier"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/societe/card.php?action=create&fournisseur=1&suppcats[]='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id), '', $user->rights->societe->creer);
+			$newcardbutton = dolGetButtonTitle($langs->trans("AddSupplier"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/societe/card.php?action=create&fournisseur=1&suppcats[]='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id), '', $user->rights->societe->creer);
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Suppliers"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'companies', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Suppliers"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'companies', 0, $newcardbutton, '', $limit);
 
 			print '<table class="noborder centpercent">'."\n";
 			print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("Name")."</td></tr>\n";
@@ -734,7 +734,7 @@ if ($type == Categorie::TYPE_SUPPLIER) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$soc->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$soc->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -751,7 +751,7 @@ if ($type == Categorie::TYPE_SUPPLIER) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Suppliers"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'companies');
+		print_barre_liste($langs->trans("Suppliers"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'companies');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -772,7 +772,7 @@ if ($type == Categorie::TYPE_MEMBER) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -788,7 +788,7 @@ if ($type == Categorie::TYPE_MEMBER) {
 				print '</form>';
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -799,10 +799,10 @@ if ($type == Categorie::TYPE_MEMBER) {
 			$param = '&limit='.$limit.'&id='.$id.'&type='.$type;
 			$num = count($members);
 			$nbtotalofrecords = '';
-			$newcardbutton = dolGetButtonTitle($langs->trans("AddMember"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/adherents/card.php?action=create&memcats[]='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id), '', $user->hasRight('adherent', 'creer'));
+			$newcardbutton = dolGetButtonTitle($langs->trans("AddMember"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/adherents/card.php?action=create&memcats[]='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id), '', $user->hasRight('adherent', 'creer'));
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Member"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'members', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Member"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'members', 0, $newcardbutton, '', $limit);
 
 			print '<table class="noborder centpecent">'."\n";
 			print '<tr class="liste_titre"><td colspan="4">'.$langs->trans("Name").'</td></tr>'."\n";
@@ -825,7 +825,7 @@ if ($type == Categorie::TYPE_MEMBER) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$member->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$member->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -841,7 +841,7 @@ if ($type == Categorie::TYPE_MEMBER) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Member"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'members');
+		print_barre_liste($langs->trans("Member"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'members');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -860,7 +860,7 @@ if ($type == Categorie::TYPE_CONTACT) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -875,7 +875,7 @@ if ($type == Categorie::TYPE_CONTACT) {
 				print '</table>';
 				print '</form>';
 			}
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -886,10 +886,10 @@ if ($type == Categorie::TYPE_CONTACT) {
 			$param = '&limit='.$limit.'&id='.$id.'&type='.$type;
 			$num = count($contacts);
 			$nbtotalofrecords = '';
-			$newcardbutton = dolGetButtonTitle($langs->trans("AddContact"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/contact/card.php?action=create&contcats[]='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id), '', $user->rights->societe->creer);
+			$newcardbutton = dolGetButtonTitle($langs->trans("AddContact"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/contact/card.php?action=create&contcats[]='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id), '', $user->rights->societe->creer);
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Contact"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'contact', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Contact"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'contact', 0, $newcardbutton, '', $limit);
 
 			$objsoc = new Societe($db);
 
@@ -916,7 +916,7 @@ if ($type == Categorie::TYPE_CONTACT) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$contact->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$contact->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -932,7 +932,7 @@ if ($type == Categorie::TYPE_CONTACT) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Contact"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'contact');
+		print_barre_liste($langs->trans("Contact"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'contact');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -953,7 +953,7 @@ if ($type == Categorie::TYPE_ACCOUNT) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -969,7 +969,7 @@ if ($type == Categorie::TYPE_ACCOUNT) {
 				print '</form>';
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -983,7 +983,7 @@ if ($type == Categorie::TYPE_ACCOUNT) {
 			$newcardbutton = '';
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Account"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'bank_account', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Account"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'bank_account', 0, $newcardbutton, '', $limit);
 
 			print '<table class="noborder centpecent">'."\n";
 			print '<tr class="liste_titre"><td colspan="4">'.$langs->trans("Ref").'</td></tr>'."\n";
@@ -1005,7 +1005,7 @@ if ($type == Categorie::TYPE_ACCOUNT) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$account->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$account->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -1021,7 +1021,7 @@ if ($type == Categorie::TYPE_ACCOUNT) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Banque"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'bank');
+		print_barre_liste($langs->trans("Banque"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'bank');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -1042,7 +1042,7 @@ if ($type == Categorie::TYPE_PROJECT) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -1058,7 +1058,7 @@ if ($type == Categorie::TYPE_PROJECT) {
 				print '</form>';
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -1072,7 +1072,7 @@ if ($type == Categorie::TYPE_PROJECT) {
 			$newcardbutton = '';
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Project"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'project', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Project"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'project', 0, $newcardbutton, '', $limit);
 
 			print '<table class="noborder centpecent">'."\n";
 			print '<tr class="liste_titre"><td colspan="4">'.$langs->trans("Ref").'</td></tr>'."\n";
@@ -1094,7 +1094,7 @@ if ($type == Categorie::TYPE_PROJECT) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$project->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$project->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -1110,7 +1110,7 @@ if ($type == Categorie::TYPE_PROJECT) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Project"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'project');
+		print_barre_liste($langs->trans("Project"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'project');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -1129,7 +1129,7 @@ if ($type == Categorie::TYPE_USER) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -1145,7 +1145,7 @@ if ($type == Categorie::TYPE_USER) {
 				print '</table>';
 				print '</form>';
 			}
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -1160,7 +1160,7 @@ if ($type == Categorie::TYPE_USER) {
 			$newcardbutton = '';
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Users"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user', 0, '', '', $limit);
+			print_barre_liste($langs->trans("Users"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user', 0, '', '', $limit);
 
 			print '<table class="noborder centpecent">'."\n";
 			print '<tr class="liste_titre"><td colspan="3">'.$langs->trans("Users").' <span class="badge">'.$num.'</span></td></tr>'."\n";
@@ -1177,7 +1177,7 @@ if ($type == Categorie::TYPE_USER) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($user->hasRight('user', 'user', 'creer')) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$userentry->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$userentry->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -1193,7 +1193,7 @@ if ($type == Categorie::TYPE_USER) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Users"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'user');
+		print_barre_liste($langs->trans("Users"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'user');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -1211,7 +1211,7 @@ if ($type == Categorie::TYPE_WAREHOUSE) {
 			dol_print_error($db, $object->error, $object->errors);
 		} else {
 			/** @var Entrepot[] $objects */
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -1225,7 +1225,7 @@ if ($type == Categorie::TYPE_WAREHOUSE) {
 			$newcardbutton = '';
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Warehouses"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'stock', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Warehouses"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'stock', 0, $newcardbutton, '', $limit);
 
 			print '<table class="noborder centpecent">'."\n";
 			print '<tr class="liste_titre"><td colspan="4">'.$langs->trans("Ref").'</td></tr>'."\n";
@@ -1247,7 +1247,7 @@ if ($type == Categorie::TYPE_WAREHOUSE) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$warehouse->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$warehouse->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -1263,7 +1263,7 @@ if ($type == Categorie::TYPE_WAREHOUSE) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Warehouse"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'stock');
+		print_barre_liste($langs->trans("Warehouse"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'stock');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }
@@ -1282,7 +1282,7 @@ if ($type == Categorie::TYPE_TICKET) {
 			$showclassifyform = 1;
 			if ($showclassifyform) {
 				print '<br>';
-				print '<form method="post" action="'.DOL_PHP_SELF.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 				print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -1298,7 +1298,7 @@ if ($type == Categorie::TYPE_TICKET) {
 				print '</form>';
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'">';
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="typeid" value="'.$typeid.'">';
 			print '<input type="hidden" name="type" value="'.$typeid.'">';
@@ -1312,7 +1312,7 @@ if ($type == Categorie::TYPE_TICKET) {
 			$newcardbutton = '';
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("Ticket"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'ticket', 0, $newcardbutton, '', $limit);
+			print_barre_liste($langs->trans("Ticket"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'ticket', 0, $newcardbutton, '', $limit);
 
 
 			print '<table class="noborder centpercent">'."\n";
@@ -1334,7 +1334,7 @@ if ($type == Categorie::TYPE_TICKET) {
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
-						print "<a href= '".DOL_PHP_SELF."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$ticket->id."'>";
+						print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&type=".$typeid."&action=unlink&token=".newToken()."&removeelem=".$ticket->id."'>";
 						print $langs->trans("DeleteFromCat");
 						print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
 						print "</a>";
@@ -1350,7 +1350,7 @@ if ($type == Categorie::TYPE_TICKET) {
 			print '</form>'."\n";
 		}
 	} else {
-		print_barre_liste($langs->trans("Ticket"), null, DOL_PHP_SELF, '', '', '', '', '', '', 'ticket');
+		print_barre_liste($langs->trans("Ticket"), null, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'ticket');
 		accessforbidden("NotEnoughPermissions", 0, 0);
 	}
 }

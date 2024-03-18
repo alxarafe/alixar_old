@@ -99,7 +99,7 @@ $head = project_admin_prepare_head();
 
 $param = '';
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="action" value="update">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
@@ -113,12 +113,12 @@ $param = '';
 $enabledisablehtml = $langs->trans("EnablePublicLeadForm").' ';
 if (!getDolGlobalString('PROJECT_ENABLE_PUBLIC')) {
 	// Button off, click to enable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setPROJECT_ENABLE_PUBLIC&token='.newToken().'&value=1'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setPROJECT_ENABLE_PUBLIC&token='.newToken().'&value=1'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Disabled"), 'switch_off');
 	$enabledisablehtml .= '</a>';
 } else {
 	// Button on, click to disable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setPROJECT_ENABLE_PUBLIC&token='.newToken().'&value=0'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setPROJECT_ENABLE_PUBLIC&token='.newToken().'&value=0'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Activated"), 'switch_on');
 	$enabledisablehtml .= '</a>';
 }

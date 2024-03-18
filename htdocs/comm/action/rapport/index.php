@@ -120,7 +120,7 @@ if ($resql) {
 		$param .= '&limit='.$limit;
 	}
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -131,7 +131,7 @@ if ($resql) {
 	print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("EventReports"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'title_agenda', 0, '', '', $limit, 0, 0, 1);
+	print_barre_liste($langs->trans("EventReports"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'title_agenda', 0, '', '', $limit, 0, 0, 1);
 
 	$moreforfilter = '';
 
@@ -162,7 +162,7 @@ if ($resql) {
 
 			// Button to build doc
 			print '<td class="center">';
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=builddoc&token='.newToken().'&page='.((int) $page).'&month='.((int) $obj->month).'&year='.((int) $obj->year).'">'.img_picto($langs->trans('BuildDoc'), 'filenew').'</a>';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=builddoc&token='.newToken().'&page='.((int) $page).'&month='.((int) $obj->month).'&year='.((int) $obj->year).'">'.img_picto($langs->trans('BuildDoc'), 'filenew').'</a>';
 			print '</td>';
 
 			$name = "actions-".$obj->month."-".$obj->year.".pdf";

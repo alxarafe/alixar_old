@@ -599,7 +599,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 
 	print load_fiche_titre($titlenew, '', 'project');
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -778,7 +778,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 			print $text;
 		}
 		if (!GETPOSTISSET('backtopage')) {
-			$url = '/societe/card.php?action=create&client=3&fournisseur=0&backtopage='.urlencode(DOL_PHP_SELF.'?action=create');
+			$url = '/societe/card.php?action=create&client=3&fournisseur=0&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create');
 			$newbutton = '<span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span>';
 			// TODO @LDR Implement this
 			if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
@@ -952,15 +952,15 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 
 	// Confirmation validation
 	if ($action == 'validate') {
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ValidateProject'), $langs->trans('ConfirmValidateProject'), 'confirm_validate', '', 0, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ValidateProject'), $langs->trans('ConfirmValidateProject'), 'confirm_validate', '', 0, 1);
 	}
 	// Confirmation close
 	if ($action == 'close') {
-		print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("CloseAProject"), $langs->trans("ConfirmCloseAProject"), "confirm_close", '', '', 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("CloseAProject"), $langs->trans("ConfirmCloseAProject"), "confirm_close", '', '', 1);
 	}
 	// Confirmation reopen
 	if ($action == 'reopen') {
-		print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("ReOpenAProject"), $langs->trans("ConfirmReOpenAProject"), "confirm_reopen", '', '', 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("ReOpenAProject"), $langs->trans("ConfirmReOpenAProject"), "confirm_reopen", '', '', 1);
 	}
 	// Confirmation delete
 	if ($action == 'delete') {
@@ -971,7 +971,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 		if ($nboftask) {
 			$text .= '<br>'.img_warning().' '.$langs->trans("ThisWillAlsoRemoveTasks", $nboftask);
 		}
-		print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("DeleteAProject"), $text, "confirm_delete", '', '', 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("DeleteAProject"), $text, "confirm_delete", '', '', 1);
 	}
 
 	// Clone confirmation
@@ -987,11 +987,11 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 			6 => array('type' => 'checkbox', 'name' => 'clone_task_files', 'label' => $langs->trans("CloneTaskFiles"), 'value' => false)
 		);
 
-		print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("ToClone"), $langs->trans("ConfirmCloneProject"), "confirm_clone", $formquestion, '', 1, 400, 590);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("ToClone"), $langs->trans("ConfirmCloneProject"), "confirm_clone", $formquestion, '', 1, 400, 590);
 	}
 
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -1386,13 +1386,13 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 			// Opportunity status
 			print '<tr><td>'.$langs->trans("OpportunityStatus");
 			if ($action != 'edit_opp_status' && $user->hasRight('projet', 'creer')) {
-				print '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=edit_opp_status&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a>';
+				print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit_opp_status&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a>';
 			}
 			print '</td><td>';
 			$html_name_status 	= ($action == 'edit_opp_status') ? 'opp_status' : 'none';
 			$html_name_percent 	= ($action == 'edit_opp_status') ? 'opp_percent' : 'none';
 			$percent_value = (GETPOSTISSET('opp_percent') ? GETPOST('opp_percent') : (strcmp($object->opp_percent, '') ? vatrate($object->opp_percent) : ''));
-			$formproject->formOpportunityStatus(DOL_PHP_SELF.'?socid='.$object->id, $object->opp_status, $percent_value, $html_name_status, $html_name_percent);
+			$formproject->formOpportunityStatus($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->opp_status, $percent_value, $html_name_status, $html_name_percent);
 			print '</td></tr>';
 
 			// Opportunity Amount
@@ -1578,7 +1578,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 			// Send
 			if (empty($user->socid)) {
 				if ($object->statut != Project::STATUS_CLOSED) {
-					print dolGetButtonAction('', $langs->trans('SendMail'), 'default', DOL_PHP_SELF.'?action=presend&token='.newToken().'&id='.$object->id.'&mode=init#formmailbeforetitle', '');
+					print dolGetButtonAction('', $langs->trans('SendMail'), 'default', $_SERVER['PHP_SELF'].'?action=presend&token='.newToken().'&id='.$object->id.'&mode=init#formmailbeforetitle', '');
 				}
 			}
 
@@ -1599,9 +1599,9 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 			if (!getDolGlobalString('MAIN_DISABLEDRAFTSTATUS') && !getDolGlobalString('MAIN_DISABLEDRAFTSTATUS_PROJECT')) {
 				if ($object->statut != Project::STATUS_DRAFT && $user->hasRight('projet', 'creer')) {
 					if ($userWrite > 0) {
-						print dolGetButtonAction('', $langs->trans('SetToDraft'), 'default', DOL_PHP_SELF.'?action=confirm_setdraft&amp;confirm=yes&amp;token='.newToken().'&amp;id='.$object->id, '');
+						print dolGetButtonAction('', $langs->trans('SetToDraft'), 'default', $_SERVER['PHP_SELF'].'?action=confirm_setdraft&amp;confirm=yes&amp;token='.newToken().'&amp;id='.$object->id, '');
 					} else {
-						print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('SetToDraft'), 'default', DOL_PHP_SELF. '#', '', false);
+						print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('SetToDraft'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 					}
 				}
 			}
@@ -1609,36 +1609,36 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 			// Modify
 			if ($object->statut != Project::STATUS_CLOSED && $user->hasRight('projet', 'creer')) {
 				if ($userWrite > 0) {
-					print dolGetButtonAction('', $langs->trans('Modify'), 'default', DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id, '');
+					print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id, '');
 				} else {
-					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Modify'), 'default', DOL_PHP_SELF. '#', '', false);
+					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Modify'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 				}
 			}
 
 			// Validate
 			if ($object->statut == Project::STATUS_DRAFT && $user->hasRight('projet', 'creer')) {
 				if ($userWrite > 0) {
-					print dolGetButtonAction('', $langs->trans('Validate'), 'default', DOL_PHP_SELF.'?action=validate&amp;token='.newToken().'&amp;id='.$object->id, '');
+					print dolGetButtonAction('', $langs->trans('Validate'), 'default', $_SERVER['PHP_SELF'].'?action=validate&amp;token='.newToken().'&amp;id='.$object->id, '');
 				} else {
-					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Validate'), 'default', DOL_PHP_SELF. '#', '', false);
+					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Validate'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 				}
 			}
 
 			// Close
 			if ($object->statut == Project::STATUS_VALIDATED && $user->hasRight('projet', 'creer')) {
 				if ($userWrite > 0) {
-					print dolGetButtonAction('', $langs->trans('Close'), 'default', DOL_PHP_SELF.'?action=close&amp;token='.newToken().'&amp;id='.$object->id, '');
+					print dolGetButtonAction('', $langs->trans('Close'), 'default', $_SERVER['PHP_SELF'].'?action=close&amp;token='.newToken().'&amp;id='.$object->id, '');
 				} else {
-					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Close'), 'default', DOL_PHP_SELF. '#', '', false);
+					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Close'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 				}
 			}
 
 			// Reopen
 			if ($object->statut == Project::STATUS_CLOSED && $user->hasRight('projet', 'creer')) {
 				if ($userWrite > 0) {
-					print dolGetButtonAction('', $langs->trans('ReOpen'), 'default', DOL_PHP_SELF.'?action=reopen&amp;token='.newToken().'&amp;id='.$object->id, '');
+					print dolGetButtonAction('', $langs->trans('ReOpen'), 'default', $_SERVER['PHP_SELF'].'?action=reopen&amp;token='.newToken().'&amp;id='.$object->id, '');
 				} else {
-					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('ReOpen'), 'default', DOL_PHP_SELF. '#', '', false);
+					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('ReOpen'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 				}
 			}
 
@@ -1657,7 +1657,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 				   100 => array('lang' => 'donations', 'enabled' => isModEnabled("don"), 'perm' => $user->hasRight('don', 'creer'), 'label' => 'AddDonation', 'url' => '/don/card.php?action=create&amp;projectid='.$object->id.'&amp;socid='.$object->socid),
 				);
 
-				$params = array('backtopage' => DOL_PHP_SELF.'?id='.$object->id);
+				$params = array('backtopage' => $_SERVER['PHP_SELF'].'?id='.$object->id);
 
 				print dolGetButtonAction('', $langs->trans("Create"), 'default', $arrayforbutaction, '', 1, $params);
 			}
@@ -1665,18 +1665,18 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 			// Clone
 			if ($user->hasRight('projet', 'creer')) {
 				if ($userWrite > 0) {
-					print dolGetButtonAction('', $langs->trans('ToClone'), 'default', DOL_PHP_SELF.'?action=clone&amp;token='.newToken().'&amp;id='.$object->id, '');
+					print dolGetButtonAction('', $langs->trans('ToClone'), 'default', $_SERVER['PHP_SELF'].'?action=clone&amp;token='.newToken().'&amp;id='.$object->id, '');
 				} else {
-					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('ToClone'), 'default', DOL_PHP_SELF. '#', '', false);
+					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('ToClone'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 				}
 			}
 
 			// Delete
 			if ($user->hasRight('projet', 'supprimer') || ($object->statut == Project::STATUS_DRAFT && $user->hasRight('projet', 'creer'))) {
 				if ($userDelete > 0 || ($object->statut == Project::STATUS_DRAFT && $user->hasRight('projet', 'creer'))) {
-					print dolGetButtonAction('', $langs->trans('Delete'), 'delete', DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id, '');
+					print dolGetButtonAction('', $langs->trans('Delete'), 'delete', $_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id, '');
 				} else {
-					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Delete'), 'default', DOL_PHP_SELF. '#', '', false);
+					print dolGetButtonAction($langs->trans('NotOwnerOfProject'), $langs->trans('Delete'), 'default', $_SERVER['PHP_SELF']. '#', '', false);
 				}
 			}
 		}
@@ -1706,9 +1706,9 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 				print '<div class="div-table-responsive-no-min">';
 				print '<table class="centpercent noborder'.($morecss ? ' '.$morecss : '').'">';
 				print '<tr class="liste_titre">';
-				print getTitleFieldOfList('Ref', 0, DOL_PHP_SELF, '', '', '', '', '', '', '', 1);
-				print getTitleFieldOfList('Title', 0, DOL_PHP_SELF, '', '', '', '', '', '', '', 1);
-				print getTitleFieldOfList('Status', 0, DOL_PHP_SELF, '', '', '', '', '', '', '', 1);
+				print getTitleFieldOfList('Ref', 0, $_SERVER['PHP_SELF'], '', '', '', '', '', '', '', 1);
+				print getTitleFieldOfList('Title', 0, $_SERVER['PHP_SELF'], '', '', '', '', '', '', '', 1);
+				print getTitleFieldOfList('Status', 0, $_SERVER['PHP_SELF'], '', '', '', '', '', '', '', 1);
 				print '</tr>';
 				print "\n";
 
@@ -1732,7 +1732,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
 		 */
 		$filename = dol_sanitizeFileName($object->ref);
 		$filedir = $conf->project->multidir_output[$object->entity]."/".dol_sanitizeFileName($object->ref);
-		$urlsource = DOL_PHP_SELF."?id=".$object->id;
+		$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 		$genallowed = ($user->hasRight('projet', 'lire') && $userAccess > 0);
 		$delallowed = ($user->hasRight('projet', 'creer') && $userWrite > 0);
 

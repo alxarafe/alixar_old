@@ -251,7 +251,7 @@ if ($action == 'edit') {
 	//WYSIWYG Editor
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="vedit">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -262,7 +262,7 @@ if ($action == 'edit') {
 			$i++;
 
 			$s = picto_from_langcode($key);
-			print($i > 1 ? "<br>" : "").($s ? $s.' ' : '').' <div class="inline-block margintop marginbottomonly"><b>'.$langs->trans('Language_'.$key).'</b></div><div class="inline-block floatright"><a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom marginrightonly"').'</a></div>';
+			print($i > 1 ? "<br>" : "").($s ? $s.' ' : '').' <div class="inline-block margintop marginbottomonly"><b>'.$langs->trans('Language_'.$key).'</b></div><div class="inline-block floatright"><a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom marginrightonly"').'</a></div>';
 
 			print '<div class="underbanner clearboth"></div>';
 			print '<table class="border centpercent">';
@@ -296,7 +296,7 @@ if ($action == 'edit') {
 			$i++;
 
 			$s = picto_from_langcode($key);
-			print($i > 1 ? "<br>" : "").($s ? $s.' ' : '').' <div class="inline-block marginbottomonly"><b>'.$langs->trans('Language_'.$key).'</b></div><div class="inline-block floatright"><a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom marginrightonly"').'</a></div>';
+			print($i > 1 ? "<br>" : "").($s ? $s.' ' : '').' <div class="inline-block marginbottomonly"><b>'.$langs->trans('Language_'.$key).'</b></div><div class="inline-block floatright"><a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom marginrightonly"').'</a></div>';
 
 			print '<div class="fichecenter">';
 			print '<div class="underbanner clearboth"></div>';
@@ -326,7 +326,7 @@ if ($action == 'add' && ($user->hasRight('produit', 'creer') || $user->hasRight(
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
 	print '<br>';
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="vadd">';
 	print '<input type="hidden" name="id" value="'.GETPOSTINT("id").'">';

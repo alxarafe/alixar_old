@@ -176,11 +176,11 @@ if ($socid) {
 
 	print '<br>';
 	$params = '';
-	$backtopage = DOL_PHP_SELF.'?socid='.$object->id;
+	$backtopage = $_SERVER['PHP_SELF'].'?socid='.$object->id;
 	$newcardbutton = dolGetButtonTitle($langs->trans("NewProject"), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/projet/card.php?action=create&socid='.$object->id.'&backtopageforcancel='.urlencode($backtopage), '', 1, $params);
 
 	if (empty($conf->dol_optimize_smallscreen)) {
-		print '<form method="POST" action="'.DOL_PHP_SELF.'?socid='.$object->id.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<div class="nobordernopadding center valignmiddle col-center">'.$massactionbutton.'</div>';
 	}
@@ -189,7 +189,7 @@ if ($socid) {
 	// Projects list
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 	$arrayofselected = is_array($toselect) ? $toselect : array();
-	$result = show_projects($conf, $langs, $db, $object, DOL_PHP_SELF.'?socid='.$object->id, 1, $newcardbutton);
+	$result = show_projects($conf, $langs, $db, $object, $_SERVER['PHP_SELF'].'?socid='.$object->id, 1, $newcardbutton);
 
 	if (empty($conf->dol_optimize_smallscreen)) {
 		print '</form>';

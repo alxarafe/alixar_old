@@ -352,10 +352,10 @@ if ($result) {
 
 		// Confirmations
 		if ($action == 'delete_categ') {
-			print $form->formconfirm(DOL_PHP_SELF."?rowid=".urlencode((string) ($rowid))."&cat1=".urlencode((string) (GETPOSTINT("fk_categ")))."&orig_account=".urlencode((string) ($orig_account)), $langs->trans("RemoveFromRubrique"), $langs->trans("RemoveFromRubriqueConfirm"), "confirm_delete_categ", '', 'yes', 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?rowid=".urlencode((string) ($rowid))."&cat1=".urlencode((string) (GETPOSTINT("fk_categ")))."&orig_account=".urlencode((string) ($orig_account)), $langs->trans("RemoveFromRubrique"), $langs->trans("RemoveFromRubriqueConfirm"), "confirm_delete_categ", '', 'yes', 1);
 		}
 
-		print '<form name="update" method="POST" action="'.DOL_PHP_SELF.'?rowid='.$rowid.'">';
+		print '<form name="update" method="POST" action="'.$_SERVER['PHP_SELF'].'?rowid='.$rowid.'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update">';
 		print '<input type="hidden" name="orig_account" value="'.$orig_account.'">';
@@ -549,9 +549,9 @@ if ($result) {
 			print $form->selectDate($db->jdate($objp->do), 'dateo', 0, 0, 0, 'update', 1, 0, $objp->rappro);
 			if (!$objp->rappro) {
 				print ' &nbsp; ';
-				print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=doprev&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
+				print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=doprev&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
 				print img_edit_remove()."</a> ";
-				print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=donext&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
+				print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=donext&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
 				print img_edit_add()."</a>";
 			}
 			print '</td>';
@@ -569,9 +569,9 @@ if ($result) {
 			print $form->selectDate($db->jdate($objp->dv), 'datev', 0, 0, 0, 'update', 1, 0, $objp->rappro);
 			if (!$objp->rappro) {
 				print ' &nbsp; ';
-				print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=dvprev&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
+				print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=dvprev&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
 				print img_edit_remove()."</a> ";
-				print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=dvnext&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
+				print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=dvnext&id='.$objp->fk_account.'&rowid='.$objp->rowid.'&token='.newToken().'">';
 				print img_edit_add()."</a>";
 			}
 			print '</td>';
@@ -691,7 +691,7 @@ if ($result) {
 			print load_fiche_titre($langs->trans("Reconciliation"), '', 'bank_account');
 			print '<hr>'."\n";
 
-			print '<form method="POST" action="'.DOL_PHP_SELF.'?rowid='.$objp->rowid.'">';
+			print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'?rowid='.$objp->rowid.'">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="setreconcile">';
 			print '<input type="hidden" name="orig_account" value="'.$orig_account.'">';

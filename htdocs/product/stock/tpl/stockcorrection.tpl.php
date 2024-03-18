@@ -129,7 +129,7 @@ print '</script>';
 
 print load_fiche_titre($langs->trans("StockCorrection"), '', 'generic');
 
-print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="post">'."\n";
+print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="post">'."\n";
 
 print dol_get_fiche_head();
 

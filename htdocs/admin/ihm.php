@@ -318,7 +318,7 @@ if ($action == 'update') {
 		dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", getDolGlobalInt('MAIN_IHM_PARAMS_REV') + 1, 'chaine', 0, '', $conf->entity);
 	}
 
-	header("Location: ".DOL_PHP_SELF."?mainmenu=home&leftmenu=setup&mode=".$mode.(GETPOSTISSET('page_y') ? '&page_y='.GETPOSTINT('page_y') : ''));
+	header("Location: ".$_SERVER['PHP_SELF']."?mainmenu=home&leftmenu=setup&mode=".$mode.(GETPOSTISSET('page_y') ? '&page_y='.GETPOSTINT('page_y') : ''));
 	exit;
 }
 
@@ -356,7 +356,7 @@ print "<br>\n";
 //WYSIWYG Editor
 require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
-print '<form enctype="multipart/form-data" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form enctype="multipart/form-data" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 print '<input type="hidden" name="page_y" value="">';
@@ -699,7 +699,7 @@ if ($mode == 'login') {
 		print '(' . $langs->trans("DisabledByOptionADD_UNSPLASH_LOGIN_BACKGROUND") . ') ';
 	}
 	if (getDolGlobalString('MAIN_LOGIN_BACKGROUND')) {
-		print '<a class="reposition" href="' . DOL_PHP_SELF . '?action=removebackgroundlogin&token='.newToken().'&mode=login">' . img_delete($langs->trans("Delete")) . '</a>';
+		print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=removebackgroundlogin&token='.newToken().'&mode=login">' . img_delete($langs->trans("Delete")) . '</a>';
 		if (file_exists($conf->mycompany->dir_output . '/logos/' . getDolGlobalString('MAIN_LOGIN_BACKGROUND'))) {
 			print ' &nbsp; ';
 			print '<img class="paddingleft valignmiddle" width="100" src="' . DOL_URL_ROOT . '/viewimage.php?modulepart=mycompany&amp;file=' . urlencode('logos/' . getDolGlobalString('MAIN_LOGIN_BACKGROUND')) . '">';

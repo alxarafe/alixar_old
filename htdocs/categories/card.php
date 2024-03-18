@@ -223,7 +223,7 @@ if ($user->hasRight('categorie', 'creer')) {
 	if ($action == 'create' || GETPOST("addcat") == 'addcat') {
 		dol_set_focus('#label');
 
-		print '<form action="'.DOL_PHP_SELF.'?type='.$type.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?type='.$type.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="urlfrom" value="'.$urlfrom.'">';
 		print '<input type="hidden" name="action" value="add">';

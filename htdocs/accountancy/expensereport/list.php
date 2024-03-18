@@ -314,7 +314,7 @@ if ($result) {
 	$arrayofselected = is_array($toselect) ? $toselect : array();
 
 	$param = '';
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -365,7 +365,7 @@ if ($result) {
 	);
 	$massactionbutton = $form->selectMassAction('ventil', $arrayofmassactions, 1);
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post">'."\n";
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">'."\n";
 	print '<input type="hidden" name="action" value="ventil">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -377,7 +377,7 @@ if ($result) {
 	print '<input type="hidden" name="page" value="'.$page.'">';
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("ExpenseReportLines"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num_lines, $nbtotalofrecords, 'title_accountancy', 0, '', '', $limit);
+	print_barre_liste($langs->trans("ExpenseReportLines"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num_lines, $nbtotalofrecords, 'title_accountancy', 0, '', '', $limit);
 
 	print '<span class="opacitymedium">'.$langs->trans("DescVentilTodoExpenseReport").'</span></br><br>';
 
@@ -419,17 +419,17 @@ if ($result) {
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Employee", DOL_PHP_SELF, "u.login", $param, "", "", $sortfield, $sortorder);
-	print_liste_field_titre("LineId", DOL_PHP_SELF, "erd.rowid", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("ExpenseReport", DOL_PHP_SELF, "er.ref", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Employee", $_SERVER['PHP_SELF'], "u.login", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("LineId", $_SERVER['PHP_SELF'], "erd.rowid", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("ExpenseReport", $_SERVER['PHP_SELF'], "er.ref", "", $param, '', $sortfield, $sortorder);
 	if (getDolGlobalString('ACCOUNTANCY_USE_EXPENSE_REPORT_VALIDATION_DATE')) {
-		print_liste_field_titre("DateValidation", DOL_PHP_SELF, "er.date_valid", "", $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("DateValidation", $_SERVER['PHP_SELF'], "er.date_valid", "", $param, '', $sortfield, $sortorder, 'center ');
 	}
-	print_liste_field_titre("DateOfLine", DOL_PHP_SELF, "erd.date, erd.rowid", "", $param, '', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre("TypeFees", DOL_PHP_SELF, "f.label", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Description", DOL_PHP_SELF, "erd.comments", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Amount", DOL_PHP_SELF, "erd.total_ht", "", $param, '', $sortfield, $sortorder, 'right maxwidth50 ');
-	print_liste_field_titre("VATRate", DOL_PHP_SELF, "erd.tva_tx", "", $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("DateOfLine", $_SERVER['PHP_SELF'], "erd.date, erd.rowid", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("TypeFees", $_SERVER['PHP_SELF'], "f.label", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Description", $_SERVER['PHP_SELF'], "erd.comments", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Amount", $_SERVER['PHP_SELF'], "erd.total_ht", "", $param, '', $sortfield, $sortorder, 'right maxwidth50 ');
+	print_liste_field_titre("VATRate", $_SERVER['PHP_SELF'], "erd.tva_tx", "", $param, '', $sortfield, $sortorder, 'right ');
 	print_liste_field_titre("DataUsedToSuggestAccount", '', '', '', '', '', '', '', 'nowraponall ');
 	print_liste_field_titre("AccountAccountingSuggest", '', '', '', '', '', '', '', '');
 	$checkpicto = '';

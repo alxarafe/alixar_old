@@ -119,7 +119,7 @@ if (empty($reshook)) {
 		if ($object->paye) {
 			$result = $object->setUnpaid($user);
 			if ($result > 0) {
-				header('Location: '.DOL_PHP_SELF.'?id='.$id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$id);
 				exit();
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -305,7 +305,7 @@ if (empty($reshook)) {
 					$db->commit();
 					$db->close();
 
-					header("Location: ".DOL_PHP_SELF."?id=".$id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 					exit;
 				} else {
 					$id = $originalId;
@@ -348,7 +348,7 @@ llxHeader("", $title, $help_url);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewSocialContribution"));
 
-	print '<form name="charge" method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form name="charge" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -469,23 +469,23 @@ if ($id > 0) {
 				$formquestion[] = array('type' => 'text', 'name' => 'amount', 'label' => $langs->trans("Amount"), 'value' => price($object->amount), 'morecss' => 'width100');
 			}
 
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneTax', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 280);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneTax', $object->ref), 'confirm_clone', $formquestion, 'yes', 1, 280);
 		}
 
 
 		if ($action == 'paid') {
 			$text = $langs->trans('ConfirmPaySocialContribution');
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans('PaySocialContribution'), $text, "confirm_paid", '', '', 2);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans('PaySocialContribution'), $text, "confirm_paid", '', '', 2);
 		}
 
 		// Confirmation of the removal of the Social Contribution
 		if ($action == 'delete') {
 			$text = $langs->trans('ConfirmDeleteSocialContribution');
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteSocialContribution'), $text, 'confirm_delete', '', '', 2);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteSocialContribution'), $text, 'confirm_delete', '', '', 2);
 		}
 
 		if ($action == 'edit') {
-			print '<form name="charge" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+			print '<form name="charge" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update">';
 		}
@@ -538,7 +538,7 @@ if ($id > 0) {
 			}
 		} else {
 			$morehtmlref .= '<br>'.$langs->trans('Employee').' :&nbsp;';
-			$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+			$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 			$morehtmlref .= '<input type="hidden" name="action" value="setfk_user">';
 			$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 			$morehtmlref .= $form->select_dolusers($object->fk_user, 'userid', 1);
@@ -553,9 +553,9 @@ if ($id > 0) {
 			if ($permissiontoadd) {
 				$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.((int) $object->id).'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.((int) $object->id).'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 				}
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'fk_project' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'fk_project' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 			} else {
 				if (!empty($object->fk_project)) {
 					$proj = new Project($db);
@@ -620,14 +620,14 @@ if ($id > 0) {
 		print $langs->trans('DefaultPaymentMode');
 		print '</td>';
 		if ($action != 'editmode') {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editmode') {
-			$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', '', 1, 1);
+			$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', '', 1, 1);
 		} else {
-			$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->mode_reglement_id, 'none');
+			$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->mode_reglement_id, 'none');
 		}
 		print '</td></tr>';
 
@@ -638,14 +638,14 @@ if ($id > 0) {
 			print $langs->trans('DefaultBankAccount');
 			print '<td>';
 			if ($action != 'editbankaccount' && $user->hasRight('tax', 'charges', 'creer')) {
-				print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+				print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td><td>';
 			if ($action == 'editbankaccount') {
-				$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'fk_account', 1);
+				$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'fk_account', 1);
 			} else {
-				$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'none');
+				$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'none');
 			}
 			print '</td>';
 			print '</tr>';
@@ -843,7 +843,7 @@ if ($id > 0) {
 				$objref = dol_sanitizeFileName($object->ref);
 				$relativepath = $objref.'/'.$objref.'.pdf';
 				$filedir = $conf->tax->dir_output.'/'.$objref;
-				$urlsource = DOL_PHP_SELF."?id=".$object->id;
+				$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 				$genallowed = 0;
 				$delallowed = $user->hasRight('tax', 'charges', 'creer'); // If you can create/edit, you can remove a file on card
 				print $formfile->showdocuments('tax', $objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);

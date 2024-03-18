@@ -104,7 +104,7 @@ include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
 if ($action == 'set_thirdparty' && $user->hasRight('ticket', 'write')) {
 	if ($object->fetch(GETPOSTINT('id'), '', GETPOSTINT('track_id')) >= 0) {
 		$result = $object->setCustomer(GETPOSTINT('editcustomer'));
-		$url = DOL_PHP_SELF.'?track_id='.GETPOST('track_id', 'alpha');
+		$url = $_SERVER['PHP_SELF'].'?track_id='.GETPOST('track_id', 'alpha');
 		header("Location: ".$url);
 		exit();
 	}
@@ -178,9 +178,9 @@ if ($object->id) {
 			$morehtmlref .= '<br>';
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$morehtmlref .= '<br>';

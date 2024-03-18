@@ -76,7 +76,7 @@ if (in_array($object->element, array('propal', 'commande', 'facture', 'supplier_
 	global $mysoc;
 
 	if (empty($disableedit) && GETPOST('mode', 'aZ09') != 'vatforalllines') {
-		print '<a class="reposition" href="'.DOL_PHP_SELF.'?mode=vatforalllines&id='.$object->id.'">'.img_edit($langs->trans("UpdateForAllLines"), 0, 'class="clickvatforalllines opacitymedium paddingleft cursorpointer"').'</a>';
+		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?mode=vatforalllines&id='.$object->id.'">'.img_edit($langs->trans("UpdateForAllLines"), 0, 'class="clickvatforalllines opacitymedium paddingleft cursorpointer"').'</a>';
 	}
 	//print '<script>$(document).ready(function() { $(".clickvatforalllines").click(function() { jQuery(".classvatforalllines").toggle(); }); });</script>';
 	if (GETPOST('mode', 'aZ09') == 'vatforalllines') {
@@ -117,7 +117,7 @@ if (in_array($object->element, array('propal', 'commande', 'facture')) && $objec
 	global $mysoc;
 
 	if (empty($disableedit) && GETPOST('mode', 'aZ09') != 'remiseforalllines') {
-		print '<a class="reposition" href="'.DOL_PHP_SELF.'?mode=remiseforalllines&id='.$object->id.'">'.img_edit($langs->trans("UpdateForAllLines"), 0, 'class="clickvatforalllines opacitymedium paddingleft cursorpointer"').'</a>';
+		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?mode=remiseforalllines&id='.$object->id.'">'.img_edit($langs->trans("UpdateForAllLines"), 0, 'class="clickvatforalllines opacitymedium paddingleft cursorpointer"').'</a>';
 	}
 	//print '<script>$(document).ready(function() { $(".clickremiseforalllines").click(function() { jQuery(".classremiseforalllines").toggle(); }); });</script>';
 	if (GETPOST('mode', 'aZ09') == 'remiseforalllines') {
@@ -148,7 +148,7 @@ if ($usemargins && isModEnabled('margin') && empty($user->socid)) {
 	if (getDolGlobalString('DISPLAY_MARGIN_RATES') && $user->hasRight('margins', 'liretous')) {
 		print '<th class="linecolmargin2 margininfos right width75">'.$langs->trans('MarginRate');
 		if ($user->hasRight("propal", "creer")) {
-			print '<a class="reposition" href="'.DOL_PHP_SELF.'?mode=marginforalllines&id='.$object->id.'">'.img_edit($langs->trans("UpdateForAllLines"), 0, 'class="clickmarginforalllines opacitymedium paddingleft cursorpointer"').'</a>';
+			print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?mode=marginforalllines&id='.$object->id.'">'.img_edit($langs->trans("UpdateForAllLines"), 0, 'class="clickmarginforalllines opacitymedium paddingleft cursorpointer"').'</a>';
 			if (GETPOST('mode', 'aZ09') == 'marginforalllines') {
 				print '<div class="classmarginforalllines inline-block nowraponall">';
 				print '<input type="number" name="marginforalllines" min="0" max="999.9" value="20.0" step="0.1" class="width50"><label>%</label>';

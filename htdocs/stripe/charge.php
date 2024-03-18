@@ -94,7 +94,7 @@ if (!$rowid) {
 	if (GETPOSTISSET('starting_after_'.$page)) {
 		$option['starting_after'] = GETPOST('starting_after_'.$page, 'alphanohtml');
 	}
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -109,20 +109,20 @@ if (!$rowid) {
 	$title = $langs->trans("StripeChargeList");
 	$title .= ($stripeacc ? ' (Stripe connection with Stripe OAuth Connect account '.$stripeacc.')' : ' (Stripe connection with keys from Stripe module setup)');
 
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $totalnboflines, 'title_accountancy.png', 0, '', 'hidepaginationprevious', $limit);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $totalnboflines, 'title_accountancy.png', 0, '', 'hidepaginationprevious', $limit);
 
 	print '<div class="div-table-responsive">';
 	print '<table class="tagtable liste'.($moreforfilter ? " listwithfilterbefore" : "").'">'."\n";
 
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("StripePaymentId", DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("StripeCustomerId", DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Customer", DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Origin", DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("DatePayment", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder, 'center ');
-	print_liste_field_titre("Type", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre("Paid", DOL_PHP_SELF, "", "", "", '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("Status", DOL_PHP_SELF, "", "", "", '', '', '', 'right ');
+	print_liste_field_titre("StripePaymentId", $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("StripeCustomerId", $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Customer", $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Origin", $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre("Paid", $_SERVER['PHP_SELF'], "", "", "", '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "", "", "", '', '', '', 'right ');
 	print "</tr>\n";
 
 	try {
@@ -135,7 +135,7 @@ if (!$rowid) {
 		$num = count($list->data);
 
 
-		//if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) $param .= '&contextpage='.urlencode($contextpage);
+		//if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) $param .= '&contextpage='.urlencode($contextpage);
 		if ($limit > 0 && $limit != $conf->liste_limit) {
 			$param .= '&limit='.((int) $limit);
 		}

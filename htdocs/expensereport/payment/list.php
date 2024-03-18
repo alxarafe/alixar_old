@@ -261,7 +261,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -312,7 +312,7 @@ if ($search_bank_account) {
 // Add $param from extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -325,11 +325,11 @@ print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 print '<input type="hidden" name="mode" value="'.$mode.'">';
 
 $newcardbutton = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 
 // @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-print_barre_liste($langs->trans('ExpenseReportPayments'), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'expensereport', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($langs->trans('ExpenseReportPayments'), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'expensereport', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 if ($search_all) {
 	foreach ($fieldstosearchall as $key => $val) {
@@ -356,7 +356,7 @@ if ($moreforfilter) {
 
 $arrayofmassactions = array();
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -446,39 +446,39 @@ $totalarray['nbfield'] = 0;
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 	$totalarray['nbfield']++;
 }
 if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER_IN_LIST')) {
-	print_liste_field_titre('#', DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre('#', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['pndf.rowid']['checked'])) {
-	print_liste_field_titre($arrayfields['pndf.rowid']['label'], DOL_PHP_SELF, 'pndf.rowid', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['pndf.rowid']['label'], $_SERVER['PHP_SELF'], 'pndf.rowid', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['pndf.datep']['checked'])) {
-	print_liste_field_titre($arrayfields['pndf.datep']['label'], DOL_PHP_SELF, 'pndf.datep', '', $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['pndf.datep']['label'], $_SERVER['PHP_SELF'], 'pndf.datep', '', $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['u.login']['checked'])) {
-	print_liste_field_titre($arrayfields['u.login']['label'], DOL_PHP_SELF, 'u.lastname', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['u.login']['label'], $_SERVER['PHP_SELF'], 'u.lastname', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['c.libelle']['checked'])) {
-	print_liste_field_titre($arrayfields['c.libelle']['label'], DOL_PHP_SELF, 'c.libelle', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['c.libelle']['label'], $_SERVER['PHP_SELF'], 'c.libelle', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['pndf.num_payment']['checked'])) {
-	print_liste_field_titre($arrayfields['pndf.num_payment']['label'], DOL_PHP_SELF, "pndf.num_payment", '', $param, '', $sortfield, $sortorder, '', $arrayfields['pndf.num_payment']['tooltip']);
+	print_liste_field_titre($arrayfields['pndf.num_payment']['label'], $_SERVER['PHP_SELF'], "pndf.num_payment", '', $param, '', $sortfield, $sortorder, '', $arrayfields['pndf.num_payment']['tooltip']);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['ba.label']['checked'])) {
-	print_liste_field_titre($arrayfields['ba.label']['label'], DOL_PHP_SELF, 'ba.label', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['ba.label']['label'], $_SERVER['PHP_SELF'], 'ba.label', '', $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['pndf.amount']['checked'])) {
-	print_liste_field_titre($arrayfields['pndf.amount']['label'], DOL_PHP_SELF, 'pndf.amount', '', $param, '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['pndf.amount']['label'], $_SERVER['PHP_SELF'], 'pndf.amount', '', $param, '', $sortfield, $sortorder, 'right ');
 	$totalarray['nbfield']++;
 }
 
@@ -488,7 +488,7 @@ $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // No
 print $hookmanager->resPrint;
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ');
 	$totalarray['nbfield']++;
 }
 print '</tr>';

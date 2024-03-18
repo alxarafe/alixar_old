@@ -292,7 +292,7 @@ if (empty($reshook)) {
 			if (!$error) {
 				$db->commit();
 
-				header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 				exit;
 			} else {
 				$db->rollback();
@@ -315,7 +315,7 @@ if (empty($reshook)) {
 				setEventMessages($object->error, $object->errors, 'warnings');
 				$action = 'editvalidator';
 			} else {
-				header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 				exit;
 			}
 		}
@@ -344,12 +344,12 @@ if (empty($reshook)) {
 			if ($cancreate) {
 				if (!in_array($fuserid, $childids)) {
 					setEventMessages($langs->trans("UserNotInHierachy"), null, 'errors');
-					header('Location: '.DOL_PHP_SELF.'?action=create');
+					header('Location: '.$_SERVER['PHP_SELF'].'?action=create');
 					exit;
 				}
 			} else {
 				setEventMessages($langs->trans("NotEnoughPermissions"), null, 'errors');
-				header('Location: '.DOL_PHP_SELF.'?action=create');
+				header('Location: '.$_SERVER['PHP_SELF'].'?action=create');
 				exit;
 			}
 		}
@@ -416,7 +416,7 @@ if (empty($reshook)) {
 				if (!$error) {
 					$db->commit();
 
-					header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+					header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 					exit;
 				} else {
 					$db->rollback();
@@ -478,7 +478,7 @@ if (empty($reshook)) {
 
 				if (!$emailTo) {
 					dol_syslog("Expected validator has no email, so we redirect directly to finished page without sending email");
-					header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+					header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 					exit;
 				}
 
@@ -563,7 +563,7 @@ if (empty($reshook)) {
 					setEventMessages($mail->error, $mail->errors, 'warnings');
 					$action = '';
 				} else {
-					header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+					header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 					exit;
 				}
 			} else {
@@ -692,7 +692,7 @@ if (empty($reshook)) {
 			if (!$error) {
 				$db->commit();
 
-				header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+				header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 				exit;
 			} else {
 				$db->rollback();
@@ -777,7 +777,7 @@ if (empty($reshook)) {
 				if (!$error) {
 					$db->commit();
 
-					header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+					header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 					exit;
 				} else {
 					$db->rollback();
@@ -810,7 +810,7 @@ if (empty($reshook)) {
 		if (!$error) {
 			$db->commit();
 
-			header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+			header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			$db->rollback();
@@ -875,7 +875,7 @@ if (empty($reshook)) {
 				$emailTo = $destinataire->email;
 
 				if (!$emailTo) {
-					header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+					header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 					exit;
 				}
 
@@ -916,7 +916,7 @@ if (empty($reshook)) {
 					setEventMessages($mail->error, $mail->errors, 'warnings');
 					$action = '';
 				} else {
-					header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+					header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 					exit;
 				}
 			}
@@ -1032,7 +1032,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 
 
 		// Formulaire de demande
-		print '<form method="POST" action="'.DOL_PHP_SELF.'" name="demandeCP">'."\n";
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'" name="demandeCP">'."\n";
 		print '<input type="hidden" name="token" value="'.newToken().'" />'."\n";
 		print '<input type="hidden" name="action" value="add" />'."\n";
 
@@ -1261,7 +1261,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 						$edit = true;
 					}
 
-					print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">'."\n";
+					print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">'."\n";
 					print '<input type="hidden" name="token" value="'.newToken().'" />'."\n";
 					print '<input type="hidden" name="action" value="update"/>'."\n";
 					print '<input type="hidden" name="id" value="'.$object->id.'" />'."\n";
@@ -1439,7 +1439,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 					}
 					$include_users = $object->fetch_users_approver_holiday();
 					if (is_array($include_users) && in_array($user->id, $include_users) && $object->status == Holiday::STATUS_VALIDATED) {
-						print '<a class="editfielda paddingleft" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=editvalidator">'.img_edit($langs->trans("Edit")).'</a>';
+						print '<a class="editfielda paddingleft" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=editvalidator">'.img_edit($langs->trans("Edit")).'</a>';
 					}
 					print '</td>';
 					print '</tr>';
@@ -1502,34 +1502,34 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 				// Confirmation messages
 				if ($action == 'delete') {
 					if ($candelete) {
-						print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("TitleDeleteCP"), $langs->trans("ConfirmDeleteCP"), "confirm_delete", '', 0, 1);
+						print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("TitleDeleteCP"), $langs->trans("ConfirmDeleteCP"), "confirm_delete", '', 0, 1);
 					}
 				}
 
 				// Si envoi en validation
 				if ($action == 'sendToValidate' && $object->status == Holiday::STATUS_DRAFT) {
-					print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("TitleToValidCP"), $langs->trans("ConfirmToValidCP"), "confirm_send", '', 1, 1);
+					print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("TitleToValidCP"), $langs->trans("ConfirmToValidCP"), "confirm_send", '', 1, 1);
 				}
 
 				// Si validation de la demande
 				if ($action == 'valid') {
-					print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("TitleValidCP"), $langs->trans("ConfirmValidCP"), "confirm_valid", '', 1, 1);
+					print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("TitleValidCP"), $langs->trans("ConfirmValidCP"), "confirm_valid", '', 1, 1);
 				}
 
 				// Si refus de la demande
 				if ($action == 'refuse') {
 					$array_input = array(array('type'=>"text", 'label'=> $langs->trans('DetailRefusCP'), 'name'=>"detail_refuse", 'size'=>"50", 'value'=>""));
-					print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id."&action=confirm_refuse", $langs->trans("TitleRefuseCP"), $langs->trans('ConfirmRefuseCP'), "confirm_refuse", $array_input, 1, 0);
+					print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id."&action=confirm_refuse", $langs->trans("TitleRefuseCP"), $langs->trans('ConfirmRefuseCP'), "confirm_refuse", $array_input, 1, 0);
 				}
 
 				// Si annulation de la demande
 				if ($action == 'cancel') {
-					print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("TitleCancelCP"), $langs->trans("ConfirmCancelCP"), "confirm_cancel", '', 1, 1);
+					print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("TitleCancelCP"), $langs->trans("ConfirmCancelCP"), "confirm_cancel", '', 1, 1);
 				}
 
 				// Si back to draft
 				if ($action == 'backtodraft') {
-					print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("TitleSetToDraft"), $langs->trans("ConfirmSetToDraft"), "confirm_draft", '', 1, 1);
+					print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("TitleSetToDraft"), $langs->trans("ConfirmSetToDraft"), "confirm_draft", '', 1, 1);
 				}
 
 				if (($action == 'edit' && $object->status == Holiday::STATUS_DRAFT) || ($action == 'editvalidator')) {
@@ -1548,18 +1548,18 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 					print '<div class="tabsAction">';
 
 					if ($cancreate && $object->status == Holiday::STATUS_DRAFT) {
-						print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'" class="butAction">'.$langs->trans("EditCP").'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'" class="butAction">'.$langs->trans("EditCP").'</a>';
 					}
 
 					if ($cancreate && $object->status == Holiday::STATUS_DRAFT) {		// If draft
-						print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=sendToValidate&token='.newToken().'" class="butAction">'.$langs->trans("Validate").'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=sendToValidate&token='.newToken().'" class="butAction">'.$langs->trans("Validate").'</a>';
 					}
 
 					if ($object->status == Holiday::STATUS_VALIDATED) {	// If validated
 						// Button Approve / Refuse
 						if ($user->id == $object->fk_validator) {
-							print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=valid&token='.newToken().'" class="butAction">'.$langs->trans("Approve").'</a>';
-							print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=refuse&token='.newToken().'" class="butAction">'.$langs->trans("ActionRefuseCP").'</a>';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=valid&token='.newToken().'" class="butAction">'.$langs->trans("Approve").'</a>';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=refuse&token='.newToken().'" class="butAction">'.$langs->trans("ActionRefuseCP").'</a>';
 						} else {
 							print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("NotTheAssignedApprover").'">'.$langs->trans("Approve").'</a>';
 							print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("NotTheAssignedApprover").'">'.$langs->trans("ActionRefuseCP").'</a>';
@@ -1567,7 +1567,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 							// Button Cancel (because we can't approve)
 							if ($cancreate || $cancreateall) {
 								if (($object->date_fin > dol_now()) || !empty($user->admin)) {
-									print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
 								} else {
 									print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("HolidayStarted").'-'.$langs->trans("NotAllowed").'">'.$langs->trans("ActionCancelCP").'</a>';
 								}
@@ -1577,13 +1577,13 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 					if ($object->status == Holiday::STATUS_APPROVED) { // If validated and approved
 						if ($user->id == $object->fk_validator || $user->id == $object->fk_user_approve || $cancreate || $cancreateall) {
 							if (($object->date_fin > dol_now()) || !empty($user->admin) || $user->id == $object->fk_user_approve) {
-								print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
+								print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
 							} else {
 								print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("HolidayStarted").'-'.$langs->trans("NotAllowed").'">'.$langs->trans("ActionCancelCP").'</a>';
 							}
 						} else { // I have no rights on the user of the holiday.
 							if (!empty($user->admin)) {	// If current approver can't cancel an approved leave, we allow admin user
-								print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
+								print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
 							} else {
 								print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("NotAllowed").'">'.$langs->trans("ActionCancelCP").'</a>';
 							}
@@ -1591,10 +1591,10 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 					}
 
 					if (($cancreate || $cancreateall) && $object->status == Holiday::STATUS_CANCELED) {
-						print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=backtodraft" class="butAction">'.$langs->trans("SetToDraft").'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=backtodraft" class="butAction">'.$langs->trans("SetToDraft").'</a>';
 					}
 					if ($candelete && ($object->status == Holiday::STATUS_DRAFT || $object->status == Holiday::STATUS_CANCELED || $object->status == Holiday::STATUS_REFUSED)) {	// If draft or canceled or refused
-						print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'" class="butActionDelete">'.$langs->trans("DeleteCP").'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'" class="butActionDelete">'.$langs->trans("DeleteCP").'</a>';
 					}
 
 					print '</div>';
@@ -1629,7 +1629,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 				$objref = dol_sanitizeFileName($object->ref);
 				$relativepath = $objref.'/'.$objref.'.pdf';
 				$filedir = $conf->holiday->dir_output.'/'.$object->element.'/'.$objref;
-				$urlsource = DOL_PHP_SELF."?id=".$object->id;
+				$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 				$genallowed = ($user->hasRight('holiday', 'read') && $object->fk_user == $user->id) || $user->hasRight('holiday', 'readall'); // If you can read, you can build the PDF to read content
 				$delallowed = ($user->hasRight('holiday', 'write') && $object->fk_user == $user->id) || $user->hasRight('holiday', 'writeall_advance'); // If you can create/edit, you can remove a file on card
 				print $formfile->showdocuments('holiday:Holiday', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);

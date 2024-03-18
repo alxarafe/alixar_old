@@ -586,18 +586,18 @@ print '<br><br>';
 if ($usevirtualstock == 1) {
 	print $langs->trans("CurentSelectionMode").': ';
 	print '<span class="a-mesure">'.$langs->trans("UseVirtualStock").'</span>';
-	print ' <a class="a-mesure-disabled" href="'.DOL_PHP_SELF.'?mode=physical'.($fk_supplier > 0 ? '&fk_supplier='.$fk_supplier : '').($fk_entrepot > 0 ? '&fk_entrepot='.$fk_entrepot : '').'">'.$langs->trans("UsePhysicalStock").'</a>';
+	print ' <a class="a-mesure-disabled" href="'.$_SERVER['PHP_SELF'].'?mode=physical'.($fk_supplier > 0 ? '&fk_supplier='.$fk_supplier : '').($fk_entrepot > 0 ? '&fk_entrepot='.$fk_entrepot : '').'">'.$langs->trans("UsePhysicalStock").'</a>';
 	print '<br>';
 }
 if ($usevirtualstock == 0) {
 	print $langs->trans("CurentSelectionMode").': ';
-	print '<a class="a-mesure-disabled" href="'.DOL_PHP_SELF.'?mode=virtual'.($fk_supplier > 0 ? '&fk_supplier='.$fk_supplier : '').($fk_entrepot > 0 ? '&fk_entrepot='.$fk_entrepot : '').'">'.$langs->trans("UseVirtualStock").'</a>';
+	print '<a class="a-mesure-disabled" href="'.$_SERVER['PHP_SELF'].'?mode=virtual'.($fk_supplier > 0 ? '&fk_supplier='.$fk_supplier : '').($fk_entrepot > 0 ? '&fk_entrepot='.$fk_entrepot : '').'">'.$langs->trans("UseVirtualStock").'</a>';
 	print ' <span class="a-mesure">'.$langs->trans("UsePhysicalStock").'</span>';
 	print '<br>';
 }
 print '<br>'."\n";
 
-print '<form name="formFilterWarehouse" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form name="formFilterWarehouse" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="filter">';
 print '<input type="hidden" name="search_ref" value="'.$search_ref.'">';
@@ -631,7 +631,7 @@ print '</div>';
 
 print '</form>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST" name="formulaire">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" name="formulaire">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="fk_supplier" value="'.$fk_supplier.'">';
 print '<input type="hidden" name="fk_entrepot" value="'.$fk_entrepot.'">';
@@ -780,21 +780,21 @@ print '</tr>';
 
 // Lines of title
 print '<tr class="liste_titre">';
-print_liste_field_titre('<input type="checkbox" onClick="toggle(this)" />', DOL_PHP_SELF, '');
-print_liste_field_titre('ProductRef', DOL_PHP_SELF, 'p.ref', $param, '', '', $sortfield, $sortorder);
-print_liste_field_titre('Label', DOL_PHP_SELF, 'p.label', $param, '', '', $sortfield, $sortorder);
+print_liste_field_titre('<input type="checkbox" onClick="toggle(this)" />', $_SERVER['PHP_SELF'], '');
+print_liste_field_titre('ProductRef', $_SERVER['PHP_SELF'], 'p.ref', $param, '', '', $sortfield, $sortorder);
+print_liste_field_titre('Label', $_SERVER['PHP_SELF'], 'p.label', $param, '', '', $sortfield, $sortorder);
 if (isModEnabled("service") && $type == 1) {
-	print_liste_field_titre('Duration', DOL_PHP_SELF, 'p.duration', $param, '', '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre('Duration', $_SERVER['PHP_SELF'], 'p.duration', $param, '', '', $sortfield, $sortorder, 'center ');
 }
-print_liste_field_titre('DesiredStock', DOL_PHP_SELF, 'p.desiredstock', $param, '', '', $sortfield, $sortorder, 'right ');
-print_liste_field_titre('StockLimitShort', DOL_PHP_SELF, 'p.seuil_stock_alerte', $param, '', '', $sortfield, $sortorder, 'right ');
-print_liste_field_titre($stocklabel, DOL_PHP_SELF, 'stock_physique', $param, '', '', $sortfield, $sortorder, 'right ', $stocktooltip);
+print_liste_field_titre('DesiredStock', $_SERVER['PHP_SELF'], 'p.desiredstock', $param, '', '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre('StockLimitShort', $_SERVER['PHP_SELF'], 'p.seuil_stock_alerte', $param, '', '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre($stocklabel, $_SERVER['PHP_SELF'], 'stock_physique', $param, '', '', $sortfield, $sortorder, 'right ', $stocktooltip);
 if (getDolGlobalString('STOCK_ALLOW_ADD_LIMIT_STOCK_BY_WAREHOUSE') && $fk_entrepot > 0) {
-	print_liste_field_titre($stocklabelbis, DOL_PHP_SELF, 'stock_real_warehouse', $param, '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($stocklabelbis, $_SERVER['PHP_SELF'], 'stock_real_warehouse', $param, '', '', $sortfield, $sortorder, 'right ');
 }
-print_liste_field_titre('Ordered', DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right ');
-print_liste_field_titre('StockToBuy', DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right ');
-print_liste_field_titre('SupplierRef', DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre('Ordered', $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre('StockToBuy', $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre('SupplierRef', $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right ');
 
 // Hook fields
 $parameters = array('param' => $param, 'sortfield' => $sortfield, 'sortorder' => $sortorder);

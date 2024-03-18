@@ -174,7 +174,7 @@ if ($action == 'create') {
 		print '	</script>'."\n";
 	}
 
-	print '<form name="add_payment" action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form name="add_payment" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="rowid" value="'.$chid.'">';
 	print '<input type="hidden" name="chid" value="'.$chid.'">';

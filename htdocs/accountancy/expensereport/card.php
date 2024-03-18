@@ -122,7 +122,7 @@ if (!empty($id)) {
 		if ($num_lines) {
 			$objp = $db->fetch_object($result);
 
-			print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="post">'."\n";
+			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="post">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="ventil">';
 			print '<input type="hidden" name="backtopage" value="'.dol_escape_htmltag($backtopage).'">';

@@ -71,7 +71,7 @@ llxHeader('', $langs->trans('SkillComparison'), '', '', 0, 0, '', $css);
 $head = array();
 
 $h = 0;
-$head[$h][0] = DOL_PHP_SELF;
+$head[$h][0] = $_SERVER['PHP_SELF'];
 $head[$h][1] = $langs->trans("SkillComparison");
 $head[$h][2] = 'compare';
 
@@ -128,7 +128,7 @@ $fk_usergroup1 = GETPOST('fk_usergroup1');
 
 
 	<div class="fichecenter">
-		<form action="<?php echo DOL_PHP_SELF ?>">
+		<form action="<?php echo $_SERVER['PHP_SELF'] ?>">
 
 			<div class="tabBar tabBarWithBottom">
 				<div class="fichehalfleft">

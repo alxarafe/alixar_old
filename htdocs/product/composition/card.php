@@ -127,7 +127,7 @@ if (empty($reshook)) {
 		}
 
 		if (!$error) {
-			header("Location: " . DOL_PHP_SELF . '?id=' . $object->id);
+			header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
 			exit;
 		}
 	} elseif ($action === 'save_composed_product') {
@@ -143,7 +143,7 @@ if (empty($reshook)) {
 			setEventMessages('RecordSaved', null);
 		}
 		$action = '';
-		header("Location: " . DOL_PHP_SELF . '?id=' . $object->id);
+		header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
 		exit;
 	}
 }
@@ -367,7 +367,7 @@ if ($id > 0 || !empty($ref)) {
 		$atleastonenotdefined = 0;
 		print load_fiche_titre($langs->trans("ProductAssociationList"), '', '');
 
-		print '<form name="formComposedProduct" action="'.DOL_PHP_SELF.'" method="post">';
+		print '<form name="formComposedProduct" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 		print '<input type="hidden" name="token" value="'.newToken().'" />';
 		print '<input type="hidden" name="action" value="save_composed_product" />';
 		print '<input type="hidden" name="id" value="'.$id.'" />';

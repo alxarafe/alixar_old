@@ -270,9 +270,9 @@ print '<div class="tabsAction">';
 if ($action == '') {
 	if ($user->hasRight('salaries', 'delete')) {
 		if (!$disable_delete) {
-			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 1);
+			print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 1);
 		} else {
-			print dolGetButtonAction($langs->trans("CantRemovePaymentSalaryPaid"), $langs->trans("Delete"), 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 0);
+			print dolGetButtonAction($langs->trans("CantRemovePaymentSalaryPaid"), $langs->trans("Delete"), 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 0);
 		}
 	}
 }

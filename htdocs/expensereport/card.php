@@ -230,7 +230,7 @@ if (empty($reshook)) {
 
 				$result = $object->createFromClone($user, GETPOSTINT('fk_user_author'));
 				if ($result > 0) {
-					header("Location: ".DOL_PHP_SELF.'?id='.$result);
+					header("Location: ".$_SERVER['PHP_SELF'].'?id='.$result);
 					exit;
 				} else {
 					setEventMessages($object->error, $object->errors, 'errors');
@@ -302,7 +302,7 @@ if (empty($reshook)) {
 
 			if ($overlappingExpenseReportID > 0) {
 				$error++;
-				setEventMessages($langs->trans("ErrorDoubleDeclaration").' <a href="'.DOL_PHP_SELF.'?id='.$overlappingExpenseReportID.'">'. $langs->trans('ShowTrip').'</a>', null, 'errors');
+				setEventMessages($langs->trans("ErrorDoubleDeclaration").' <a href="'.$_SERVER['PHP_SELF'].'?id='.$overlappingExpenseReportID.'">'. $langs->trans('ShowTrip').'</a>', null, 'errors');
 				$action = 'create';
 			}
 		}
@@ -317,7 +317,7 @@ if (empty($reshook)) {
 
 			if (!$error) {
 				$db->commit();
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -345,7 +345,7 @@ if (empty($reshook)) {
 
 		$result = $object->update($user);
 		if ($result > 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".GETPOSTINT('id'));
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".GETPOSTINT('id'));
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -485,7 +485,7 @@ if (empty($reshook)) {
 
 		if (!$error) {
 			$db->commit();
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit;
 		} else {
 			$db->rollback();
@@ -576,7 +576,7 @@ if (empty($reshook)) {
 					if ($result) {
 						$mesg = $langs->trans('MailSuccessfulySent', $mailfile->getValidAddress($emailFrom, 2), $mailfile->getValidAddress($emailTo, 2));
 						setEventMessages($mesg, null, 'mesgs');
-						header("Location: ".DOL_PHP_SELF."?id=".$id);
+						header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 						exit;
 					} else {
 						$langs->load("other");
@@ -691,7 +691,7 @@ if (empty($reshook)) {
 					if ($result) {
 						$mesg = $langs->trans('MailSuccessfulySent', $mailfile->getValidAddress($emailFrom, 2), $mailfile->getValidAddress($emailTo, 2));
 						setEventMessages($mesg, null, 'mesgs');
-						header("Location: ".DOL_PHP_SELF."?id=".$id);
+						header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 						exit;
 					} else {
 						$langs->load("other");
@@ -802,7 +802,7 @@ if (empty($reshook)) {
 					if ($result) {
 						$mesg = $langs->trans('MailSuccessfulySent', $mailfile->getValidAddress($emailFrom, 2), $mailfile->getValidAddress($emailTo, 2));
 						setEventMessages($mesg, null, 'mesgs');
-						header("Location: ".DOL_PHP_SELF."?id=".$id);
+						header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 						exit;
 					} else {
 						$langs->load("other");
@@ -918,7 +918,7 @@ if (empty($reshook)) {
 							if ($result) {
 								$mesg = $langs->trans('MailSuccessfulySent', $mailfile->getValidAddress($emailFrom, 2), $mailfile->getValidAddress($emailTo, 2));
 								setEventMessages($mesg, null, 'mesgs');
-								header("Location: ".DOL_PHP_SELF."?id=".$id);
+								header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 								exit;
 							} else {
 								$langs->load("other");
@@ -978,7 +978,7 @@ if (empty($reshook)) {
 			}
 
 			if ($result > 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -1089,7 +1089,7 @@ if (empty($reshook)) {
 					if ($result) {
 						$mesg = $langs->trans('MailSuccessfulySent', $mailfile->getValidAddress($emailFrom, 2), $mailfile->getValidAddress($emailTo, 2));
 						setEventMessages($mesg, null, 'mesgs');
-						header("Location: ".DOL_PHP_SELF."?id=".$id);
+						header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 						exit;
 					} else {
 						$langs->load("other");
@@ -1233,7 +1233,7 @@ if (empty($reshook)) {
 		}
 
 		if (!$error) {
-			header("Location: ".DOL_PHP_SELF."?id=".GETPOSTINT('id'));
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".GETPOSTINT('id'));
 			exit;
 		} else {
 			$action = '';
@@ -1273,7 +1273,7 @@ if (empty($reshook)) {
 				}
 			}
 
-			header("Location: ".DOL_PHP_SELF."?id=".GETPOSTINT('id'));
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".GETPOSTINT('id'));
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -1374,7 +1374,7 @@ if (empty($reshook)) {
 					unset($date);
 				}
 
-				//header("Location: ".DOL_PHP_SELF."?id=".$id);
+				//header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				//exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -1419,7 +1419,7 @@ $formexpensereport = new FormExpenseReport($db);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewTrip"), '', 'trip');
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post" name="create">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post" name="create">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -1558,7 +1558,7 @@ if ($action == 'create') {
 		$head = expensereport_prepare_head($object);
 
 		if ($action == 'edit' && ($object->status < 3 || $object->status == 99)) {
-			print "<form name='update' action=\"".DOL_PHP_SELF."\" method=\"post\">\n";
+			print "<form name='update' action=\"".$_SERVER['PHP_SELF']."\" method=\"post\">\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
 			print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -1671,45 +1671,45 @@ if ($action == 'create') {
 					0 => array('type' => 'other', 'name' => 'fk_user_author', 'label' => $langs->trans("SelectTargetUser"), 'value' => $form->select_dolusers((GETPOSTINT('fk_user_author') > 0 ? GETPOSTINT('fk_user_author') : $user->id), 'fk_user_author', 0, null, 0, $criteriaforfilter, '', '0', 0, 0, '', 0, '', 'maxwidth150'))
 				);
 				// Paiement incomplet. On demande si motif = escompte ou autre
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneExpenseReport', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneExpenseReport', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 			}
 
 			if ($action == 'save') {
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("SaveTrip"), $langs->trans("ConfirmSaveTrip"), "confirm_validate", "", "", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("SaveTrip"), $langs->trans("ConfirmSaveTrip"), "confirm_validate", "", "", 1);
 			}
 
 			if ($action == 'save_from_refuse') {
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("SaveTrip"), $langs->trans("ConfirmSaveTrip"), "confirm_save_from_refuse", "", "", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("SaveTrip"), $langs->trans("ConfirmSaveTrip"), "confirm_save_from_refuse", "", "", 1);
 			}
 
 			if ($action == 'delete') {
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("DeleteTrip"), $langs->trans("ConfirmDeleteTrip"), "confirm_delete", "", "", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("DeleteTrip"), $langs->trans("ConfirmDeleteTrip"), "confirm_delete", "", "", 1);
 			}
 
 			if ($action == 'validate') {
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("ValideTrip"), $langs->trans("ConfirmValideTrip"), "confirm_approve", "", "", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("ValideTrip"), $langs->trans("ConfirmValideTrip"), "confirm_approve", "", "", 1);
 			}
 
 			if ($action == 'paid') {
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("PaidTrip"), $langs->trans("ConfirmPaidTrip"), "confirm_paid", "", "", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("PaidTrip"), $langs->trans("ConfirmPaidTrip"), "confirm_paid", "", "", 1);
 			}
 
 			if ($action == 'cancel') {
 				$array_input = array('text' => $langs->trans("ConfirmCancelTrip"), 0 => array('type' => "text", 'label' => '<strong>'.$langs->trans("Comment").'</strong>', 'name' => "detail_cancel", 'value' => ""));
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("Cancel"), "", "confirm_cancel", $array_input, "", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("Cancel"), "", "confirm_cancel", $array_input, "", 1);
 			}
 
 			if ($action == 'setdraft') {
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("BrouillonnerTrip"), $langs->trans("ConfirmBrouillonnerTrip"), "confirm_setdraft", "", "", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("BrouillonnerTrip"), $langs->trans("ConfirmBrouillonnerTrip"), "confirm_setdraft", "", "", 1);
 			}
 
 			if ($action == 'refuse') {		// Deny
 				$array_input = array('text' => $langs->trans("ConfirmRefuseTrip"), 0 => array('type' => "text", 'label' => $langs->trans("Comment"), 'name' => "detail_refuse", 'value' => ""));
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id, $langs->trans("Deny"), '', "confirm_refuse", $array_input, "yes", 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id, $langs->trans("Deny"), '', "confirm_refuse", $array_input, "yes", 1);
 			}
 
 			if ($action == 'delete_line') {
-				$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$id."&rowid=".GETPOSTINT('rowid'), $langs->trans("DeleteLine"), $langs->trans("ConfirmDeleteLine"), "confirm_delete_line", '', 'yes', 1);
+				$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$id."&rowid=".GETPOSTINT('rowid'), $langs->trans("DeleteLine"), $langs->trans("ConfirmDeleteLine"), "confirm_delete_line", '', 'yes', 1);
 			}
 
 			// Print form confirm
@@ -2038,7 +2038,7 @@ if ($action == 'create') {
 				$actiontouse = 'addline';
 			}
 
-			print '<form name="expensereport" action="'.DOL_PHP_SELF.'" enctype="multipart/form-data" method="post" >';
+			print '<form name="expensereport" action="'.$_SERVER['PHP_SELF'].'" enctype="multipart/form-data" method="post" >';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="'.$actiontouse.'">';
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -2247,10 +2247,10 @@ if ($action == 'create') {
 						if (($object->status < ExpenseReport::STATUS_VALIDATED || $object->status == ExpenseReport::STATUS_REFUSED) && $user->hasRight('expensereport', 'creer')) {
 							print '<td class="nowrap right linecolaction">';
 
-							print '<a class="editfielda reposition paddingrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=editline&token='.newToken().'&rowid='.$line->rowid.'">';
+							print '<a class="editfielda reposition paddingrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=editline&token='.newToken().'&rowid='.$line->rowid.'">';
 							print img_edit();
 							print '</a> &nbsp; ';
-							print '<a class="paddingrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete_line&token='.newToken().'&rowid='.$line->rowid.'">';
+							print '<a class="paddingrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete_line&token='.newToken().'&rowid='.$line->rowid.'">';
 							print img_delete();
 							print '</a>';
 
@@ -2699,7 +2699,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
 	if (empty($user->socid)) {
 		if ($object->status > ExpenseReport::STATUS_DRAFT) {
 			//if ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) || $user->rights->expensereport->expensereport_advance->send)) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a></div>';
 			//} else
 			//	print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#">' . $langs->trans('SendMail') . '</a></div>';
 		}
@@ -2713,11 +2713,11 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
 	if ($user->hasRight('expensereport', 'creer') && $object->status == ExpenseReport::STATUS_DRAFT) {
 		if (in_array($object->fk_user_author, $childids) || $user->hasRight('expensereport', 'writeall_advance')) {
 			// Modify
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Modify').'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Modify').'</a></div>';
 
 			// Validate
 			if (count($object->lines) > 0) {
-				print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=save&token='.newToken().'&id='.$object->id.'">'.$langs->trans('ValidateAndSubmit').'</a></div>';
+				print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=save&token='.newToken().'&id='.$object->id.'">'.$langs->trans('ValidateAndSubmit').'</a></div>';
 			}
 		}
 	}
@@ -2730,19 +2730,19 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
 	if ($user->hasRight('expensereport', 'creer') && $object->status == ExpenseReport::STATUS_REFUSED) {
 		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid) {
 			// Modify
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Modify').'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Modify').'</a></div>';
 
 			// setdraft (le statut refusée est identique à brouillon)
-			//print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=brouillonner&id='.$id.'">'.$langs->trans('ReOpen').'</a>';
+			//print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=brouillonner&id='.$id.'">'.$langs->trans('ReOpen').'</a>';
 			// Enregistrer depuis le statut "Refusée"
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=save_from_refuse&token='.newToken().'&id='.$object->id.'">'.$langs->trans('ValidateAndSubmit').'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=save_from_refuse&token='.newToken().'&id='.$object->id.'">'.$langs->trans('ValidateAndSubmit').'</a></div>';
 		}
 	}
 
 	if ($user->hasRight('expensereport', 'to_paid') && $object->status == ExpenseReport::STATUS_APPROVED) {
 		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid) {
 			// setdraft
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=setdraft&token='.newToken().'&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=setdraft&token='.newToken().'&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a></div>';
 		}
 	}
 
@@ -2754,7 +2754,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
 	if ($object->status == ExpenseReport::STATUS_VALIDATED) {
 		if (in_array($object->fk_user_author, $childids)) {
 			// set draft
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=setdraft&token='.newToken().'&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=setdraft&token='.newToken().'&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a></div>';
 		}
 	}
 
@@ -2762,14 +2762,14 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
 		//if($object->fk_user_validator==$user->id)
 		//{
 		// Validate
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=validate&id='.$object->id.'">'.$langs->trans('Approve').'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=validate&id='.$object->id.'">'.$langs->trans('Approve').'</a></div>';
 		// Deny
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=refuse&id='.$object->id.'">'.$langs->trans('Deny').'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=refuse&id='.$object->id.'">'.$langs->trans('Deny').'</a></div>';
 		//}
 
 		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid) {
 			// Cancel
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=cancel&id='.$object->id.'">'.$langs->trans("Cancel").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=cancel&id='.$object->id.'">'.$langs->trans("Cancel").'</a></div>';
 		}
 	}
 
@@ -2778,7 +2778,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
 	// ---------------------
 
 	if ($user->hasRight('expensereport', 'approve') && $object->status == ExpenseReport::STATUS_APPROVED) {
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=refuse&id='.$object->id.'">'.$langs->trans('Deny').'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=refuse&id='.$object->id.'">'.$langs->trans('Deny').'</a></div>';
 	}
 
 	// If bank module is used
@@ -2795,38 +2795,38 @@ if ($action != 'create' && $action != 'edit' && $action != 'editline') {
 	if (($user->hasRight('expensereport', 'to_paid') || empty(isModEnabled("bank"))) && $object->status == ExpenseReport::STATUS_APPROVED) {
 		//if ((round($remaintopay) == 0 || !isModEnabled("banque")) && $object->paid == 0)
 		if ($object->paid == 0) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=set_paid&token='.newToken().'">'.$langs->trans("ClassifyPaid")."</a></div>";
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=set_paid&token='.newToken().'">'.$langs->trans("ClassifyPaid")."</a></div>";
 		}
 	}
 
 	if ($user->hasRight('expensereport', 'creer') && ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid) && $object->status == ExpenseReport::STATUS_APPROVED) {
 		// Cancel
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=cancel&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Cancel").'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=cancel&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Cancel").'</a></div>';
 	}
 
 	// TODO Replace this. It should be SetUnpaid and should go back to status unpaid not canceled.
 	if (($user->hasRight('expensereport', 'approve') || $user->hasRight('expensereport', 'to_paid')) && $object->status == ExpenseReport::STATUS_CLOSED) {
 		// Cancel
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=cancel&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Cancel").'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=cancel&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Cancel").'</a></div>';
 	}
 
 	if ($user->hasRight('expensereport', 'to_paid') && $object->paid && $object->status == ExpenseReport::STATUS_CLOSED) {
 		// Set unpaid
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=set_unpaid&token='.newToken().'&id='.$object->id.'">'.$langs->trans('ClassifyUnPaid').'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=set_unpaid&token='.newToken().'&id='.$object->id.'">'.$langs->trans('ClassifyUnPaid').'</a></div>';
 	}
 
 	// Clone
 	if ($user->hasRight('expensereport', 'creer')) {
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=clone&token='.newToken().'">'.$langs->trans("ToClone").'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=clone&token='.newToken().'">'.$langs->trans("ToClone").'</a></div>';
 	}
 
 	/* If draft, validated, cancel, and user can create, he can always delete its card before it is approved */
 	if ($user->hasRight('expensereport', 'creer') && $user->id == $object->fk_user_author && $object->status < ExpenseReport::STATUS_APPROVED) {
 		// Delete
-		print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Delete').'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Delete').'</a></div>';
 	} elseif ($candelete && $object->status != ExpenseReport::STATUS_CLOSED) {
 		// Delete
-		print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Delete').'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans('Delete').'</a></div>';
 	}
 
 	$parameters = array();
@@ -2852,7 +2852,7 @@ if ($action != 'presend') {
 	if ($user->hasRight('expensereport', 'creer') && $action != 'create' && $action != 'edit') {
 		$filename = dol_sanitizeFileName($object->ref);
 		$filedir = $conf->expensereport->dir_output."/".dol_sanitizeFileName($object->ref);
-		$urlsource = DOL_PHP_SELF."?id=".$object->id;
+		$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 		$genallowed	= $user->hasRight('expensereport', 'creer');
 		$delallowed	= $user->hasRight('expensereport', 'creer');
 		$var = true;

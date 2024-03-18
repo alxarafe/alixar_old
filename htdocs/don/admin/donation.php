@@ -147,7 +147,7 @@ $reg = array();
 if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_set_const($db, $code, 1, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -157,7 +157,7 @@ if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 if (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -254,12 +254,12 @@ if (is_resource($handle)) {
 						print '</td>';
 					} else {
 						print "<td class=\"center\">\n";
-						print '<a href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Enabled"), 'switch_on').'</a>';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Enabled"), 'switch_on').'</a>';
 						print '</td>';
 					}
 				} else {
 					print "<td class=\"center\">\n";
-					print '<a href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 					print "</td>";
 				}
 
@@ -270,7 +270,7 @@ if (is_resource($handle)) {
 					print '</td>';
 				} else {
 					print "<td class=\"center\">";
-					print '<a href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 					print '</td>';
 				}
 
@@ -289,7 +289,7 @@ if (is_resource($handle)) {
 
 				// Preview
 				print '<td class="center">';
-				print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'" target="specimen">'.img_object($langs->trans("Preview"), 'generic').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'" target="specimen">'.img_object($langs->trans("Preview"), 'generic').'</a>';
 				print '</td>';
 
 				print "</tr>\n";
@@ -329,7 +329,7 @@ if (isModEnabled("societe")) {
 	print "</tr>\n";
 }
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'" />';
 print '<input type="hidden" name="action" value="set_DONATION_ACCOUNTINGACCOUNT" />';
 
@@ -348,7 +348,7 @@ print '<input type="submit" class="button button-edit" value="'.$langs->trans("M
 print "</td></tr>\n";
 print '</form>';
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'" />';
 print '<input type="hidden" name="action" value="set_DONATION_MESSAGE" />';
 

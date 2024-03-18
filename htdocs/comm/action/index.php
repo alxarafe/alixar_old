@@ -482,7 +482,7 @@ $paramnoactionodate = preg_replace('/mode=[a-z_]+/', '', preg_replace('/action=[
 
 $head = calendars_prepare_head($paramnoaction);
 
-print '<form method="POST" id="searchFormList" class="listactionsfilter" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" id="searchFormList" class="listactionsfilter" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -552,7 +552,7 @@ if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda'
 
 	$urltocreateaction = DOL_URL_ROOT.'/comm/action/card.php?action=create';
 	$urltocreateaction .= '&apyear='.$tmpforcreatebutton['year'].'&apmonth='.$tmpforcreatebutton['mon'].'&apday='.$tmpforcreatebutton['mday'].'&aphour='.$tmpforcreatebutton['hours'].'&apmin='.$tmpforcreatebutton['minutes'];
-	$urltocreateaction .= '&backtopage='.urlencode(DOL_PHP_SELF.($newparam ? '?'.$newparam : ''));
+	$urltocreateaction .= '&backtopage='.urlencode($_SERVER['PHP_SELF'].($newparam ? '?'.$newparam : ''));
 
 	$newcardbutton .= dolGetButtonTitle($langs->trans("AddAction"), '', 'fa fa-plus-circle', $urltocreateaction);
 }
@@ -695,7 +695,7 @@ if (!empty($conf->use_javascript_ajax)) {	// If javascript on
 	if (!preg_match('/showbirthday=/i', $newparam)) {
 		$newparam .= '&showbirthday=1';
 	}
-	$link = '<a href="'.DOL_PHP_SELF.'?'.dol_escape_htmltag($newparam);
+	$link = '<a href="'.$_SERVER['PHP_SELF'].'?'.dol_escape_htmltag($newparam);
 	$link .= '">';
 	if (empty($showbirthday)) {
 		$link .= $langs->trans("AgendaShowBirthdayEvents");
@@ -1498,7 +1498,7 @@ if (!is_array($theme_datacolor)) {
 
 $massactionbutton = '';
 
-print_barre_liste($langs->trans("Agenda"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, -1, 'object_action', 0, $nav.'<span class="marginleftonly"></span>'.$newcardbutton, '', $limit, 1, 0, 1, $viewmode);
+print_barre_liste($langs->trans("Agenda"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, -1, 'object_action', 0, $nav.'<span class="marginleftonly"></span>'.$newcardbutton, '', $limit, 1, 0, 1, $viewmode);
 
 // Show div with list of calendars
 print $s;
@@ -1612,7 +1612,7 @@ if (empty($mode) || $mode == 'show_month') {      // View by month
 	print '</div>';
 
 	print '<input type="hidden" name="actionmove" value="mupdate">';
-	print '<input type="hidden" name="backtopage" value="'.dol_escape_htmltag(DOL_PHP_SELF).'?mode=show_month&'.dol_escape_htmltag($_SERVER['QUERY_STRING']).'">';
+	print '<input type="hidden" name="backtopage" value="'.dol_escape_htmltag($_SERVER['PHP_SELF']).'?mode=show_month&'.dol_escape_htmltag($_SERVER['QUERY_STRING']).'">';
 	print '<input type="hidden" name="newdate" id="newdate">';
 } elseif ($mode == 'show_week') {
 	// View by week
@@ -1675,7 +1675,7 @@ if (empty($mode) || $mode == 'show_month') {      // View by month
 	print '</div>';
 
 	echo '<input type="hidden" name="actionmove" value="mupdate">';
-	echo '<input type="hidden" name="backtopage" value="'.dol_escape_htmltag(DOL_PHP_SELF).'?mode=show_week&'.dol_escape_htmltag($_SERVER['QUERY_STRING']).'">';
+	echo '<input type="hidden" name="backtopage" value="'.dol_escape_htmltag($_SERVER['PHP_SELF']).'?mode=show_week&'.dol_escape_htmltag($_SERVER['QUERY_STRING']).'">';
 	echo '<input type="hidden" name="newdate" id="newdate">';
 } else { // View by day
 	$newparam = $param; // newparam is for birthday links
@@ -1820,7 +1820,7 @@ function show_day_events($db, $day, $month, $year, $monthshown, $style, &$eventa
 	if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create')) {
 		$newparam .= '&month='.str_pad($month, 2, "0", STR_PAD_LEFT).'&year='.$year;
 		$hourminsec = '100000';
-		$urltocreate = DOL_URL_ROOT.'/comm/action/card.php?action=create&datep='.sprintf("%04d%02d%02d", $year, $month, $day).$hourminsec.'&backtopage='.urlencode(DOL_PHP_SELF.($newparam ? '?'.$newparam : ''));
+		$urltocreate = DOL_URL_ROOT.'/comm/action/card.php?action=create&datep='.sprintf("%04d%02d%02d", $year, $month, $day).$hourminsec.'&backtopage='.urlencode($_SERVER['PHP_SELF'].($newparam ? '?'.$newparam : ''));
 	}
 
 	// Line with title of day

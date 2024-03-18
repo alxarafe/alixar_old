@@ -37,7 +37,7 @@ $contact = $GLOBALS['objcanvas']->control->object;
 	echo $this->control->tpl['js_checkVatPopup'];
 } ?>
 
-<form action="<?php echo DOL_PHP_SELF.'?socid='.$this->control->tpl['id']; ?>" method="POST" name="formsoc">
+<form action="<?php echo $_SERVER['PHP_SELF'].'?socid='.$this->control->tpl['id']; ?>" method="POST" name="formsoc">
 <input type="hidden" name="canvas" value="<?php echo $canvas ?>">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="token" value="<?php echo newToken(); ?>">

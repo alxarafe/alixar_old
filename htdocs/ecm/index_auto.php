@@ -112,7 +112,7 @@ if ($action == 'add' && $user->hasRight('ecm', 'setup')) {
 
 	$id = $ecmdir->create($user);
 	if ($id > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages('Error '.$langs->trans($ecmdir->error), null, 'errors');
@@ -417,7 +417,7 @@ print dol_get_fiche_head($head, 'index_auto', '', -1, '');
 
 // Confirm remove file (for non javascript users)
 if ($action == 'deletefile' && empty($conf->use_javascript_ajax)) {
-	print $form->formconfirm(DOL_PHP_SELF.'?section='.$section.'&urlfile='.urlencode($_GET["urlfile"]), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', '', 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?section='.$section.'&urlfile='.urlencode($_GET["urlfile"]), $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', '', 1);
 }
 
 // Start container of all panels
@@ -431,7 +431,7 @@ if ($action == 'deletefile' && empty($conf->use_javascript_ajax)) {
 print '<div class="inline-block toolbarbutton centpercent">';
 
 // Toolbar
-$url = ((!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_ECM_DISABLE_JS')) ? '#' : (DOL_PHP_SELF.'?action=refreshmanual'.($module ? '&amp;module='.$module : '').($section ? '&amp;section='.$section : '')));
+$url = ((!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_ECM_DISABLE_JS')) ? '#' : ($_SERVER['PHP_SELF'].'?action=refreshmanual'.($module ? '&amp;module='.$module : '').($section ? '&amp;section='.$section : '')));
 print '<a href="'.$url.'" class="inline-block valignmiddle toolbarbutton paddingtop" title="'.dol_escape_htmltag($langs->trans('Refresh')).'">';
 print img_picto('', 'refresh', 'id="refreshbutton"', false, 0, 0, '', 'size15x marginrightonly');
 print '</a>';
@@ -448,7 +448,7 @@ print '</div>';
 
 // Confirmation de la suppression d'une ligne categorie
 if ($action == 'delete_section') {
-	print $form->formconfirm(DOL_PHP_SELF.'?section='.$section, $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', $ecmdir->label), 'confirm_deletesection', '', '', 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?section='.$section, $langs->trans('DeleteSection'), $langs->trans('ConfirmDeleteSection', $ecmdir->label), 'confirm_deletesection', '', '', 1);
 }
 // End confirm
 
@@ -482,7 +482,7 @@ if (empty($action) || $action == 'file_manager' || preg_match('/refresh/i', $act
 			}
 
 			print '<li class="directory collapsed">';
-			print '<a class="fmdirlia jqft ecmjqft" href="'.DOL_PHP_SELF.'?module='.urlencode($val['module']).'">';
+			print '<a class="fmdirlia jqft ecmjqft" href="'.$_SERVER['PHP_SELF'].'?module='.urlencode($val['module']).'">';
 			print $val['label'];
 			print '</a>';
 

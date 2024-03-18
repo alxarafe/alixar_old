@@ -279,7 +279,7 @@ print load_fiche_titre($langs->trans("MenuBankInternalTransfer"), '', 'bank_acco
 print '<span class="opacitymedium">'.$langs->trans("TransferDesc").'</span>';
 print '<br><br>';
 
-print '<form name="add" method="post" action="'.DOL_PHP_SELF.'">';
+print '<form name="add" method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="add">';
 

@@ -65,7 +65,7 @@ class mod_asset_advanced extends ModeleNumRefAsset
 		$form = new Form($db);
 
 		$text = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$text .= '<form action="'.DOL_PHP_SELF.'" method="POST">';
+		$text .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$text .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$text .= '<input type="hidden" name="action" value="updateMask">';
 		$text .= '<input type="hidden" name="maskconst" value="ASSET_ADVANCED_MASK">';

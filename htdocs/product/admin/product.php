@@ -86,7 +86,7 @@ include DOL_DOCUMENT_ROOT.'/core/actions_setmoduleoptions.inc.php';
 
 if ($action == 'setcodeproduct') {
 	if (dolibarr_set_const($db, "PRODUCT_CODEPRODUCT_ADDON", $value, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -347,7 +347,7 @@ foreach ($dirproduct as $dirroot) {
 					}
 					print '<td class="center">';
 					if (!$disabled) {
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setcodeproduct&token='.newToken().'&value='.urlencode($file).'">';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setcodeproduct&token='.newToken().'&value='.urlencode($file).'">';
 					}
 					print img_picto($langs->trans("Disabled"), 'switch_off');
 					if (!$disabled) {
@@ -450,13 +450,13 @@ foreach ($dirmodels as $reldir) {
 								// Active
 								if (in_array($name, $def)) {
 									print '<td class="center">'."\n";
-									print '<a href="'.DOL_PHP_SELF.'?action=del&token='.newToken().'&value='.urlencode($name).'">';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=del&token='.newToken().'&value='.urlencode($name).'">';
 									print img_picto($langs->trans("Enabled"), 'switch_on');
 									print '</a>';
 									print '</td>';
 								} else {
 									print '<td class="center">'."\n";
-									print '<a href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 									print "</td>";
 								}
 
@@ -465,7 +465,7 @@ foreach ($dirmodels as $reldir) {
 								if (getDolGlobalString('PRODUCT_ADDON_PDF') == $name) {
 									print img_picto($langs->trans("Default"), 'on');
 								} else {
-									print '<a href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 								}
 								print '</td>';
 
@@ -487,7 +487,7 @@ foreach ($dirmodels as $reldir) {
 								// Preview
 								print '<td class="center">';
 								if ($module->type == 'pdf') {
-									print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'contract').'</a>';
+									print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'contract').'</a>';
 								} else {
 									print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 								}
@@ -515,7 +515,7 @@ print "<br>";
 print "<br>";
 
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="other">';
 print '<input type="hidden" name="page_y" value="">';
@@ -768,10 +768,10 @@ if (getDolGlobalString('PRODUCT_CANVAS_ABILITY')) {
 						if (getDolGlobalString($const)) {
 							print img_picto($langs->trans("Active"), 'tick');
 							print '</td><td class="right">';
-							print '<a href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&spe='.urlencode($file).'&value=0">'.$langs->trans("Disable").'</a>';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&spe='.urlencode($file).'&value=0">'.$langs->trans("Disable").'</a>';
 						} else {
 							print '&nbsp;</td><td class="right">';
-							print '<a href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&spe='.urlencode($file).'&value=1">'.$langs->trans("Activate").'</a>';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&spe='.urlencode($file).'&value=1">'.$langs->trans("Activate").'</a>';
 						}
 
 						print '</td></tr>';

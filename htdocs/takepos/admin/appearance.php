@@ -80,7 +80,7 @@ print load_fiche_titre($langs->trans("CashDeskSetup").' (TakePOS)', $linkback, '
 $head = takepos_admin_prepare_head();
 print dol_get_fiche_head($head, 'appearance', 'TakePOS', -1, 'cash-register');
 
-print '<form action="'.DOL_PHP_SELF.'?terminal='.(empty($terminal) ? 1 : $terminal).'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'?terminal='.(empty($terminal) ? 1 : $terminal).'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set">';
 

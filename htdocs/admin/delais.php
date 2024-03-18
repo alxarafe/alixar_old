@@ -213,7 +213,7 @@ print " ".$langs->trans("OnlyActiveElementsAreShown", DOL_URL_ROOT.'/admin/modul
 print "<br>\n";
 
 if ($action == 'edit') {
-	print '<form method="post" action="'.DOL_PHP_SELF.'" name="form_index">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'" name="form_index">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 

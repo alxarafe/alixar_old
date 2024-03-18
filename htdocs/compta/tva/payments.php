@@ -89,7 +89,7 @@ llxHeader('', $langs->trans("VATExpensesArea"));
 $title = $langs->trans("VATPayments");
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage=' . $contextpage;
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -147,10 +147,10 @@ if ($resql) {
 }
 
 // @phan-suppress-next-line PhanPluginSuspiciousParamPosition, PhanPluginSuspiciousParamOrder
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $center, $num, $num, 'title_accountancy', 0, '', '', $limit);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $center, $num, $num, 'title_accountancy', 0, '', '', $limit);
 
 if (isModEnabled('tax') && $user->hasRight('tax', 'charges', 'lire')) {
-	print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+	print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="' . $optioncss . '">';
 	}
@@ -164,20 +164,20 @@ if (isModEnabled('tax') && $user->hasRight('tax', 'charges', 'lire')) {
 	print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("RefPayment", DOL_PHP_SELF, "ptva.rowid", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("VATDeclaration", DOL_PHP_SELF, "tva.rowid", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Label", DOL_PHP_SELF, "tva.label", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("PeriodEndDate", DOL_PHP_SELF, "tva.datev", "", $param, '', $sortfield, $sortorder, 'nowraponall');
-	print_liste_field_titre("DatePayment", DOL_PHP_SELF, "ptva.datep", "", $param, 'align="center"', $sortfield, $sortorder);
-	print_liste_field_titre("PaymentMode", DOL_PHP_SELF, "pct.code", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Numero", DOL_PHP_SELF, "ptva.num_paiement", "", $param, '', $sortfield, $sortorder, '', 'ChequeOrTransferNumber');
+	print_liste_field_titre("RefPayment", $_SERVER['PHP_SELF'], "ptva.rowid", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("VATDeclaration", $_SERVER['PHP_SELF'], "tva.rowid", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "tva.label", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("PeriodEndDate", $_SERVER['PHP_SELF'], "tva.datev", "", $param, '', $sortfield, $sortorder, 'nowraponall');
+	print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "ptva.datep", "", $param, 'align="center"', $sortfield, $sortorder);
+	print_liste_field_titre("PaymentMode", $_SERVER['PHP_SELF'], "pct.code", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Numero", $_SERVER['PHP_SELF'], "ptva.num_paiement", "", $param, '', $sortfield, $sortorder, '', 'ChequeOrTransferNumber');
 	if (isModEnabled("bank")) {
-		print_liste_field_titre("BankTransactionLine", DOL_PHP_SELF, "ptva.fk_bank", "", $param, '', $sortfield, $sortorder);
-		print_liste_field_titre("BankAccount", DOL_PHP_SELF, "bank.ref", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("BankTransactionLine", $_SERVER['PHP_SELF'], "ptva.fk_bank", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("BankAccount", $_SERVER['PHP_SELF'], "bank.ref", "", $param, '', $sortfield, $sortorder);
 	}
-	//print_liste_field_titre("TypeContrib", DOL_PHP_SELF, "tva.fk_type", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("ExpectedToPay", DOL_PHP_SELF, "tva.amount", "", $param, 'class="right"', $sortfield, $sortorder);
-	print_liste_field_titre("PayedByThisPayment", DOL_PHP_SELF, "ptva.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+	//print_liste_field_titre("TypeContrib", $_SERVER['PHP_SELF'], "tva.fk_type", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("ExpectedToPay", $_SERVER['PHP_SELF'], "tva.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("PayedByThisPayment", $_SERVER['PHP_SELF'], "ptva.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 	print "</tr>\n";
 
 	$sql = "SELECT tva.rowid, tva.label as label, b.fk_account, ptva.fk_bank";

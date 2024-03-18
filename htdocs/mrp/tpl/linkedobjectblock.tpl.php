@@ -81,7 +81,7 @@ if ($object->element == 'mo') {
 					$k = $obj->rowid;
 				}
 			}
-			echo '<a class="reposition" href="' . DOL_PHP_SELF . '?id=' . $object->id . '&action=dellink&token=' . newToken() . '&dellinkid=' . $k . '">' . img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink') . '</a>';
+			echo '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=dellink&token=' . newToken() . '&dellinkid=' . $k . '">' . img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink') . '</a>';
 			echo '</td>';
 			echo "</tr>\n";
 		}
@@ -111,7 +111,7 @@ if ($object->element == 'mo') {
 		print '<td class="linkedcol-date center">'.dol_print_date($objectlink->date_start_planned, 'day').'</td>';
 		print '<td class="linkedcol-amount right">-</td>';
 		print '<td class="linkedcol-statut right">'.$objectlink->getLibStatut(3).'</td>';
-		print '<td class="linkedcol-action right"><a class="reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=dellink&token='.newToken().'&dellinkid='.$key.'">'.img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink').'</a></td>';
+		print '<td class="linkedcol-action right"><a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=dellink&token='.newToken().'&dellinkid='.$key.'">'.img_picto($langs->transnoentitiesnoconv("RemoveLink"), 'unlink').'</a></td>';
 		print "</tr>\n";
 	}
 }

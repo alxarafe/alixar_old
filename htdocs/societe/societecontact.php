@@ -88,7 +88,7 @@ if ($action == 'addcontact' && $user->hasRight('societe', 'creer')) {
 	}
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	} else {
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -111,7 +111,7 @@ if ($action == 'addcontact' && $user->hasRight('societe', 'creer')) {
 	$result = $object->delete_contact(GETPOSTINT("lineid"));
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -141,7 +141,7 @@ if ($id > 0 || !empty($ref)) {
 		$head = societe_prepare_head($object);
 		print dol_get_fiche_head($head, 'contact', $langs->trans("ThirdParty"), -1, 'company');
 
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
 		$linkback = '<a href="'.DOL_URL_ROOT.'/societe/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
@@ -233,18 +233,18 @@ if ($id > 0 || !empty($ref)) {
 					$titre = $langs->trans("MembersListOfTiers");
 					print '<br>';
 
-					print_barre_liste($titre, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, 0, '');
+					print_barre_liste($titre, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, 0, '');
 
 					print "<table class=\"noborder\" width=\"100%\">";
 					print '<tr class="liste_titre">';
-					print_liste_field_titre("Ref", DOL_PHP_SELF, "d.rowid", $param, "", "", $sortfield, $sortorder);
-					print_liste_field_titre("NameSlashCompany", DOL_PHP_SELF, "d.lastname", $param, "", "", $sortfield, $sortorder);
-					print_liste_field_titre("Login", DOL_PHP_SELF, "d.login", $param, "", "", $sortfield, $sortorder);
-					print_liste_field_titre("Type", DOL_PHP_SELF, "t.libelle", $param, "", "", $sortfield, $sortorder);
-					print_liste_field_titre("Person", DOL_PHP_SELF, "d.morphy", $param, "", "", $sortfield, $sortorder);
-					print_liste_field_titre("EMail", DOL_PHP_SELF, "d.email", $param, "", "", $sortfield, $sortorder);
-					print_liste_field_titre("Status", DOL_PHP_SELF, "d.statut,d.datefin", $param, "", "", $sortfield, $sortorder);
-					print_liste_field_titre("EndSubscription", DOL_PHP_SELF, "d.datefin", $param, "", '', $sortfield, $sortorder, 'center ');
+					print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "d.rowid", $param, "", "", $sortfield, $sortorder);
+					print_liste_field_titre("NameSlashCompany", $_SERVER['PHP_SELF'], "d.lastname", $param, "", "", $sortfield, $sortorder);
+					print_liste_field_titre("Login", $_SERVER['PHP_SELF'], "d.login", $param, "", "", $sortfield, $sortorder);
+					print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "t.libelle", $param, "", "", $sortfield, $sortorder);
+					print_liste_field_titre("Person", $_SERVER['PHP_SELF'], "d.morphy", $param, "", "", $sortfield, $sortorder);
+					print_liste_field_titre("EMail", $_SERVER['PHP_SELF'], "d.email", $param, "", "", $sortfield, $sortorder);
+					print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "d.statut,d.datefin", $param, "", "", $sortfield, $sortorder);
+					print_liste_field_titre("EndSubscription", $_SERVER['PHP_SELF'], "d.datefin", $param, "", '', $sortfield, $sortorder, 'center ');
 					print "</tr>\n";
 
 					$i = 0;

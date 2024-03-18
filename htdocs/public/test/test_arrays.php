@@ -101,8 +101,8 @@ This page is a sample of page using tables. It is designed to make test with<br>
 </h2>
 <div class="wordbreak">
 - css (add parameter &amp;theme=newtheme to test another theme or edit css of current theme)<br>
-- jmobile (add parameter <a href="<?php echo DOL_PHP_SELF.'?dol_use_jmobile=1&dol_optimize_smallscreen=1'; ?>">dol_use_jmobile=1&amp;dol_optimize_smallscreen=1</a> and switch to small screen < 570 to enable with emulated jmobile)<br>
-- no javascript / usage for bind people (add parameter <a href="<?php echo DOL_PHP_SELF.'?nojs=1'; ?>">nojs=1</a> to force disable javascript)<br>
+- jmobile (add parameter <a href="<?php echo $_SERVER['PHP_SELF'].'?dol_use_jmobile=1&dol_optimize_smallscreen=1'; ?>">dol_use_jmobile=1&amp;dol_optimize_smallscreen=1</a> and switch to small screen < 570 to enable with emulated jmobile)<br>
+- no javascript / usage for bind people (add parameter <a href="<?php echo $_SERVER['PHP_SELF'].'?nojs=1'; ?>">nojs=1</a> to force disable javascript)<br>
 - tablednd<br>
 </div>
 
@@ -185,7 +185,7 @@ if (!empty($conf->use_javascript_ajax)) {
 }
 
 $nav = '';
-$nav .= '<form name="dateselect" action="'.DOL_PHP_SELF.'?mode=show_peruser'.$param.'">';
+$nav .= '<form name="dateselect" action="'.$_SERVER['PHP_SELF'].'?mode=show_peruser'.$param.'">';
 if ($actioncode || GETPOSTISSET('actioncode')) {
 	$nav .= '<input type="hidden" name="actioncode" value="'.$actioncode.'">';
 }
@@ -218,7 +218,7 @@ $nav .= ' <input type="submit" name="submitdateselect" class="button" value="'.$
 $nav .= '</form>';
 
 $limit = 10;
-print_barre_liste('Title of my list', 12, DOL_PHP_SELF, '', '', '', 'Text in middle', 20, 500, '', 0, $nav, '', $limit, 0, 0, 1);
+print_barre_liste('Title of my list', 12, $_SERVER['PHP_SELF'], '', '', '', 'Text in middle', 20, 500, '', 0, $nav, '', $limit, 0, 0, 1);
 
 $moreforfilter .= '<div class="divsearchfield">';
 $moreforfilter .= $langs->trans('This is a select list for a filter A (no combo forced)').': ';
@@ -258,9 +258,9 @@ if (!empty($moreforfilter)) {
 <table class="stripe row-border order-column centpercent tagtable liste<?php echo $moreforfilter ? " listwithfilterbefore" : ""; ?>" id="tablelines3">
 <thead>
 <tr class="liste_titre">
-<?php print getTitleFieldOfList($langs->trans('title1'), 0, DOL_PHP_SELF, 'aaa', '', '', 'align="left"', $sortfield, $sortorder); ?>
-<?php print getTitleFieldOfList($langs->trans('title2'), 0, DOL_PHP_SELF, 'bbb', '', '', 'align="center"', $sortfield, $sortorder); ?>
-<?php print getTitleFieldOfList($langs->trans('title3'), 0, DOL_PHP_SELF, 'ccc', '', '', 'align="right"', $sortfield, $sortorder); ?>
+<?php print getTitleFieldOfList($langs->trans('title1'), 0, $_SERVER['PHP_SELF'], 'aaa', '', '', 'align="left"', $sortfield, $sortorder); ?>
+<?php print getTitleFieldOfList($langs->trans('title2'), 0, $_SERVER['PHP_SELF'], 'bbb', '', '', 'align="center"', $sortfield, $sortorder); ?>
+<?php print getTitleFieldOfList($langs->trans('title3'), 0, $_SERVER['PHP_SELF'], 'ccc', '', '', 'align="right"', $sortfield, $sortorder); ?>
 </tr>
 </thead>
 <tbody>

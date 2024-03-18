@@ -82,7 +82,7 @@ if ($action == 'addcontact' && $user->hasRight('stocktransfer', 'stocktransfer',
 	}
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	} else {
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -100,7 +100,7 @@ if ($action == 'addcontact' && $user->hasRight('stocktransfer', 'stocktransfer',
 	$result = $object->delete_contact($lineid);
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	} else {
 		dol_print_error($db);

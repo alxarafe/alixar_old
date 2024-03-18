@@ -167,9 +167,9 @@ if (in_array($type, array('mysql', 'mysqli'))) {
 		print ajax_autoselect('restorecommand');
 
 	if (empty($_GET["showpass"]) && $dolibarr_main_db_pass) {
-		print '<br><a href="'.DOL_PHP_SELF.'?showpass=1&amp;radio_dump=mysql_options">'.$langs->trans("UnHidePassword").'</a>';
+		print '<br><a href="'.$_SERVER['PHP_SELF'].'?showpass=1&amp;radio_dump=mysql_options">'.$langs->trans("UnHidePassword").'</a>';
 	}
-		//else print '<br><a href="'.DOL_PHP_SELF.'?showpass=0&amp;radio_dump=mysql_options">'.$langs->trans("HidePassword").'</a>';
+		//else print '<br><a href="'.$_SERVER['PHP_SELF'].'?showpass=0&amp;radio_dump=mysql_options">'.$langs->trans("HidePassword").'</a>';
 		print '</div>';
 		print '</fieldset>';
 } elseif (in_array($type, array('pgsql'))) {
@@ -205,8 +205,8 @@ if (in_array($type, array('mysql', 'mysqli'))) {
 	print '<br>';
 	print '<textarea rows="1" id="restorecommand" class="centpercent">'.$langs->trans("ImportPostgreSqlCommand", $command, ($showpass ? $paramclear : $paramcrypted)).'</textarea><br>';
 	print ajax_autoselect('restorecommand');
-	//if (empty($_GET["showpass"]) && $dolibarr_main_db_pass) print '<br><a href="'.DOL_PHP_SELF.'?showpass=1&amp;radio_dump=postgresql_options">'.$langs->trans("UnHidePassword").'</a>';
-	//else print '<br><a href="'.DOL_PHP_SELF.'?showpass=0&amp;radio_dump=mysql_options">'.$langs->trans("HidePassword").'</a>';
+	//if (empty($_GET["showpass"]) && $dolibarr_main_db_pass) print '<br><a href="'.$_SERVER['PHP_SELF'].'?showpass=1&amp;radio_dump=postgresql_options">'.$langs->trans("UnHidePassword").'</a>';
+	//else print '<br><a href="'.$_SERVER['PHP_SELF'].'?showpass=0&amp;radio_dump=mysql_options">'.$langs->trans("HidePassword").'</a>';
 	print '</div>';
 
 	print '<br>';

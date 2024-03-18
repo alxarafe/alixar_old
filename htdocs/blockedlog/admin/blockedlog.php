@@ -56,7 +56,7 @@ if (preg_match('/set_(.*)/', $action, $reg)) {
 	}
 
 	if (dolibarr_set_const($db, $code, $values, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF.($withtab ? '?withtab='.$withtab : ''));
+		header("Location: ".$_SERVER['PHP_SELF'].($withtab ? '?withtab='.$withtab : ''));
 		exit;
 	} else {
 		dol_print_error($db);
@@ -66,7 +66,7 @@ if (preg_match('/set_(.*)/', $action, $reg)) {
 if (preg_match('/del_(.*)/', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, 0) > 0) {
-		header("Location: ".DOL_PHP_SELF.($withtab ? '?withtab='.$withtab : ''));
+		header("Location: ".$_SERVER['PHP_SELF'].($withtab ? '?withtab='.$withtab : ''));
 		exit;
 	} else {
 		dol_print_error($db);
@@ -123,7 +123,7 @@ if (getDolGlobalString('BLOCKEDLOG_USE_REMOTE_AUTHORITY')) {
 	print '<td>'.$langs->trans("BlockedLogAuthorityUrl").img_info($langs->trans('BlockedLogAuthorityNeededToStoreYouFingerprintsInNonAlterableRemote')).'</td>';
 	print '<td class="right" width="300">';
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="set_BLOCKEDLOG_AUTHORITY_URL">';
 	print '<input type="hidden" name="withtab" value="'.$withtab.'">';
@@ -138,7 +138,7 @@ print '<tr class="oddeven">';
 print '<td>'.$langs->trans("BlockedLogDisableNotAllowedForCountry").'</td>';
 print '<td>';
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_BLOCKEDLOG_DISABLE_NOT_ALLOWED_FOR_COUNTRY">';
 print '<input type="hidden" name="withtab" value="'.$withtab.'">';

@@ -94,7 +94,7 @@ $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_valu
 print load_fiche_titre($langs->trans("AgendaSetup"), $linkback, 'title_setup');
 
 
-print '<form name="agendasetupform" action="'.DOL_PHP_SELF.'" method="post">';
+print '<form name="agendasetupform" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 $head = agenda_prepare_head();

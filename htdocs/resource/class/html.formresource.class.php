@@ -97,7 +97,7 @@ class FormResource
 		}
 
 		if ($outputmode != 2) {
-			$out = '<form action="'.DOL_PHP_SELF.'" method="POST">';
+			$out = '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 			$out .= '<input type="hidden" name="token" value="'.newToken().'">';
 		}
 

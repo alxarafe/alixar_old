@@ -152,7 +152,7 @@ if ($action == 'confirm_delete' && $user->hasRight('societe', 'contact', 'delete
 		} else {
 			$db->commit();
 			setEventMessages('ContactDeleted', null, 'mesgs');
-			header("Location: ".DOL_PHP_SELF."?id=".$socid);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$socid);
 			exit();
 		}
 	}
@@ -205,12 +205,12 @@ print '<br>';
 if ($action != 'presend') {
 	// Contacts list
 	if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-		$result = show_contacts($conf, $langs, $db, $object, DOL_PHP_SELF.'?socid='.$object->id, 1);
+		$result = show_contacts($conf, $langs, $db, $object, $_SERVER['PHP_SELF'].'?socid='.$object->id, 1);
 	}
 }
 if ($action == 'delete') {
 	$formconfirm = $form->formconfirm(
-		DOL_PHP_SELF.'?id='.GETPOST('id').'&socid='.$object->id,
+		$_SERVER['PHP_SELF'].'?id='.GETPOST('id').'&socid='.$object->id,
 		$langs->trans('Delete'),
 		$langs->trans('ConfirmDeleteContact', GETPOST('id', 'alpha')),
 		'confirm_delete',

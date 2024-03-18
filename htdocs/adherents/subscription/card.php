@@ -183,7 +183,7 @@ if ($user->hasRight('adherent', 'cotisation', 'creer') && $action == 'edit') {
 
 	$head = subscription_prepare_head($object);
 
-	print '<form name="update" action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print "<input type=\"hidden\" name=\"action\" value=\"update\">";
 	print "<input type=\"hidden\" name=\"rowid\" value=\"$rowid\">";
@@ -285,10 +285,10 @@ if ($rowid && $action != 'edit') {
 		if (isModEnabled("bank") && getDolGlobalString('ADHERENT_BANK_USE')) {
 			$text .= '<br>'.img_warning().' '.$langs->trans("ThisWillAlsoDeleteBankRecord");
 		}
-		print $form->formconfirm(DOL_PHP_SELF."?rowid=".$object->id, $langs->trans("DeleteSubscription"), $text, "confirm_delete", $formquestion, 0, 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?rowid=".$object->id, $langs->trans("DeleteSubscription"), $text, "confirm_delete", $formquestion, 0, 1);
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	$linkback = '<a href="'.DOL_URL_ROOT.'/adherents/subscription/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
@@ -363,7 +363,7 @@ if ($rowid && $action != 'edit') {
 
 	if ($user->hasRight('adherent', 'cotisation', 'creer')) {
 		if (empty($bankline->rappro) || empty($bankline)) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF."?rowid=".((int) $object->id).'&action=edit&token='.newToken().'">'.$langs->trans("Modify")."</a></div>";
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF']."?rowid=".((int) $object->id).'&action=edit&token='.newToken().'">'.$langs->trans("Modify")."</a></div>";
 		} else {
 			print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" title="'.$langs->trans("BankLineConciliated").'" href="#">'.$langs->trans("Modify")."</a></div>";
 		}
@@ -371,7 +371,7 @@ if ($rowid && $action != 'edit') {
 
 	// Delete
 	if ($user->hasRight('adherent', 'cotisation', 'creer')) {
-		print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.DOL_PHP_SELF."?rowid=".((int) $object->id).'&action=delete&token='.newToken().'">'.$langs->trans("Delete")."</a></div>\n";
+		print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER['PHP_SELF']."?rowid=".((int) $object->id).'&action=delete&token='.newToken().'">'.$langs->trans("Delete")."</a></div>\n";
 	}
 
 	print '</div>';
@@ -384,7 +384,7 @@ if ($rowid && $action != 'edit') {
 	/*
 	$filename = dol_sanitizeFileName($object->ref);
 	$filedir = $conf->facture->dir_output . '/' . dol_sanitizeFileName($object->ref);
-	$urlsource = DOL_PHP_SELF . '?facid=' . $object->id;
+	$urlsource = $_SERVER['PHP_SELF'] . '?facid=' . $object->id;
 	$genallowed = $user->hasRight('facture', 'lire');
 	$delallowed = $user->hasRight('facture', 'creer');
 

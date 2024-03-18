@@ -37,7 +37,7 @@ function printDropdownBookmarksList()
 	$langs->load("bookmarks");
 
 	$authorized_var=array('limit','optioncss','contextpage');
-	$url = DOL_PHP_SELF;
+	$url = $_SERVER['PHP_SELF'];
 	$url_param = array();
 	if (!empty($_SERVER["QUERY_STRING"])) {
 		if (is_array($_GET)) {
@@ -89,7 +89,7 @@ function printDropdownBookmarksList()
 	// Url to go on create new bookmark page
 	$newbtn = '';
 	if ($user->hasRight('bookmark', 'creer')) {
-		if (!preg_match('/bookmarks\/card.php/', DOL_PHP_SELF)) {
+		if (!preg_match('/bookmarks\/card.php/', $_SERVER['PHP_SELF'])) {
 			//$urltoadd=DOL_URL_ROOT.'/bookmarks/card.php?action=create&amp;urlsource='.urlencode($url).'&amp;url='.urlencode($url);
 			$urltoadd = DOL_URL_ROOT.'/bookmarks/card.php?action=create&amp;url='.urlencode($url);
 			$newbtn .= '<a class="top-menu-dropdown-link" title="'.$langs->trans('AddThisPageToBookmarks').'" href="'.dol_escape_htmltag($urltoadd).'" >';
@@ -131,7 +131,7 @@ function printDropdownBookmarksList()
 			$searchForm .= dol_escape_htmltag($user->hasRight('bookmark', 'creer') ? $langs->trans('EditBookmarks') : $langs->trans('ListOfBookmarks')).'...</option>';
 			// Url to go on create new bookmark page
 			if ($user->hasRight('bookmark', 'creer')) {
-				if (!preg_match('/bookmarks\/card.php/', DOL_PHP_SELF)) {
+				if (!preg_match('/bookmarks\/card.php/', $_SERVER['PHP_SELF'])) {
 					$urltoadd = DOL_URL_ROOT.'/bookmarks/card.php?action=create&amp;url='.urlencode($url);
 					$searchForm .= '<option value="newbookmark" class="optionblue" rel="'.dol_escape_htmltag($urltoadd).'"';
 					$searchForm .= ' data-html="'.dol_escape_htmltag(img_picto('', 'bookmark').' '.$langs->trans('AddThisPageToBookmarks').'...').'">'.dol_escape_htmltag($langs->trans('AddThisPageToBookmarks').'...').'</option>';

@@ -57,7 +57,7 @@ print '<script>
 print load_fiche_titre($langs->trans("AdvTgtTitle"));
 
 print '<div class="tabBar">'."\n";
-print '<form name="find_customer" id="find_customer" action="'.DOL_PHP_SELF.'?id='.$id.'"  method="POST">'."\n";
+print '<form name="find_customer" id="find_customer" action="'.$_SERVER['PHP_SELF'].'?id='.$id.'"  method="POST">'."\n";
 print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 print '<input type="hidden" name="action" value="">'."\n";
 print '<table class="border centpercent">'."\n";
@@ -538,7 +538,7 @@ print '</tr>'."\n";
 print '</table>'."\n";
 print '</form>'."\n";
 print '</div>'."\n";
-print '<form action="'.DOL_PHP_SELF.'?action=clear&id='.$object->id.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'?action=clear&id='.$object->id.'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print load_fiche_titre($langs->trans("ToClearAllRecipientsClickHere"));
 print '<table class="noborder centpercent">';

@@ -96,7 +96,7 @@ llxHeader('', $title, $help_url);
 
 print load_fiche_titre($langs->trans("RubriquesTransactions"), '', 'object_category');
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -155,8 +155,8 @@ if ($result) {
 			//print '<a href="'.DOL_URL_ROOT.'/compta/bank/budget.php?bid='.$objp->rowid.'">'.$langs->trans("List").'</a>';
 			print '</td>';
 			print '<td class="center">';
-			print '<a class="editfielda reposition marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?categid='.$objp->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
-			print '<a class="marginleftonly" href="'.DOL_PHP_SELF.'?categid='.$objp->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+			print '<a class="editfielda reposition marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?categid='.$objp->rowid.'&action=edit&token='.newToken().'">'.img_edit().'</a>';
+			print '<a class="marginleftonly" href="'.$_SERVER['PHP_SELF'].'?categid='.$objp->rowid.'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 			print '</td>';
 		}
 		print "</tr>";

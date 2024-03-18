@@ -216,17 +216,17 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Confirmation to delete
 	/*if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteSkill'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteSkill'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
 	}*/
 	// Confirmation to delete line
 	if ($action == 'ask_deleteskill') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id . '&objecttype=' . $objecttype . '&lineid=' . $lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteskill', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id . '&objecttype=' . $objecttype . '&lineid=' . $lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteskill', '', 0, 1);
 	}
 	// Clone confirmation
 	/*if ($action == 'clone') {
 		// Create an array for form
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}*/
 
 	// Call Hook formConfirm
@@ -349,10 +349,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		print '</tr>'."\n";
 
 		// National Registration Number
-		print '<tr><td class="titlefield">'.$langs->trans("NationalRegistrationNumber").'  <a class="editfielda" href="'.DOL_PHP_SELF.'?id='.$object->id.'&objecttype=user&action=editnational_registration_number&token='.newToken().'">'.img_picto($langs->trans("Edit"), 'edit').'</a></td>';
+		print '<tr><td class="titlefield">'.$langs->trans("NationalRegistrationNumber").'  <a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&objecttype=user&action=editnational_registration_number&token='.newToken().'">'.img_picto($langs->trans("Edit"), 'edit').'</a></td>';
 		print '<td>';
 		if ($action == 'editnational_registration_number') {
-			$ret = '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'&objecttype=user">';
+			$ret = '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&objecttype=user">';
 			$ret .= '<input type="hidden" name="action" value="setnational_registration_number">';
 			$ret .= '<input type="hidden" name="token" value="'.newToken().'">';
 			$ret .= '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -379,7 +379,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	if ($objecttype != 'user' && $permissiontoadd) {
 		// form to add new skills
 		print '<br>';
-		print '<form name="addSkill" method="post" action="' . DOL_PHP_SELF . '">';
+		print '<form name="addSkill" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 		print '<input type="hidden" name="objecttype" value="' . $objecttype . '">';
 		print '<input type="hidden" name="id" value="' . $id . '">';
 		print '<input type="hidden" name="action" value="addSkill">';
@@ -402,7 +402,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	print '<div class="clearboth"></div>';
 
 	if ($objecttype != 'user' && $permissiontoadd) {
-		print '<form name="saveSkill" method="post" action="' . DOL_PHP_SELF . '">';
+		print '<form name="saveSkill" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 		print '<input type="hidden" name="objecttype" value="' . $objecttype . '">';
 		print '<input type="hidden" name="id" value="' . $id . '">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -441,7 +441,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				if ($objecttype != 'user' && $permissiontoadd) {
 					print '<td class="linecoledit"></td>';
 					print '<td class="linecoldelete">';
-					print '<a class="reposition" href="' . DOL_PHP_SELF . '?id=' . $skillElement->fk_object . '&amp;objecttype=' . $objecttype . '&amp;action=ask_deleteskill&amp;lineid=' . $skillElement->id . '">';
+					print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?id=' . $skillElement->fk_object . '&amp;objecttype=' . $objecttype . '&amp;action=ask_deleteskill&amp;lineid=' . $skillElement->id . '">';
 					print img_delete();
 					print '</a>';
 				}
@@ -483,7 +483,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		$numEval = $db->num_rows($sqlEval);
 
 		$page = 0;
-		print_barre_liste($langs->trans("Evaluations"), $page, DOL_PHP_SELF, '', '', '', '', $numEval, $numEval, $evaltmp->picto, 0);
+		print_barre_liste($langs->trans("Evaluations"), $page, $_SERVER['PHP_SELF'], '', '', '', '', $numEval, $numEval, $evaltmp->picto, 0);
 
 		print '<div class="div-table-responsive-no-min">';
 		print '<table id="tablelines" class="noborder centpercent" width="100%">';

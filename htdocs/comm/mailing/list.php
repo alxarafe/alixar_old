@@ -275,7 +275,7 @@ $param = "&search_all=".urlencode($search_all);
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -319,7 +319,7 @@ if (GETPOSTINT('nomassaction') || in_array($massaction, array('presend', 'predel
 }
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -338,7 +338,7 @@ if ($user->hasRight('mailing', 'creer')) {
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewMailing'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/mailing/card.php?action=create');
 }
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_email', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_email', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "SendMailingRef";
@@ -376,7 +376,7 @@ if (!empty($moreforfilter)) {
 	print '</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -434,33 +434,33 @@ $totalarray['nbfield'] = 0;
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Ref", DOL_PHP_SELF, "m.rowid", $param, "", "", $sortfield, $sortorder);
+print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "m.rowid", $param, "", "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
 // Message type
 if (getDolGlobalInt('EMAILINGS_SUPPORT_ALSO_SMS')) {
-	print_liste_field_titre("Type", DOL_PHP_SELF, "m.messtype", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "m.messtype", $param, "", "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Title", DOL_PHP_SELF, "m.titre", $param, "", "", $sortfield, $sortorder);
+print_liste_field_titre("Title", $_SERVER['PHP_SELF'], "m.titre", $param, "", "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("DateCreation", DOL_PHP_SELF, "m.date_creat", $param, "", '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("DateCreation", $_SERVER['PHP_SELF'], "m.date_creat", $param, "", '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
 if (!$filteremail) {
 	$title = $langs->trans("NbOfEMails");
 	if (getDolGlobalInt('EMAILINGS_SUPPORT_ALSO_SMS')) {
 		$title .= ' | '.$langs->trans("SMS");
 	}
-	print_liste_field_titre($title, DOL_PHP_SELF, "m.nbemail", $param, "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($title, $_SERVER['PHP_SELF'], "m.nbemail", $param, "", '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!$filteremail) {
-	print_liste_field_titre("DateLastSend", DOL_PHP_SELF, "m.date_envoi", $param, "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("DateLastSend", $_SERVER['PHP_SELF'], "m.date_envoi", $param, "", '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 } else {
-	print_liste_field_titre("DateSending", DOL_PHP_SELF, "mc.date_envoi", $param, "", '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("DateSending", $_SERVER['PHP_SELF'], "mc.date_envoi", $param, "", '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 // Extra fields
@@ -469,11 +469,11 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
 $parameters = array('arrayfields'=>$arrayfields, 'param'=>$param, 'sortfield'=>$sortfield, 'sortorder'=>$sortorder, 'totalarray'=>&$totalarray);
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
-print_liste_field_titre("Status", DOL_PHP_SELF, ($filteremail ? "mc.statut" : "m.statut"), $param, "", '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Status", $_SERVER['PHP_SELF'], ($filteremail ? "mc.statut" : "m.statut"), $param, "", '', $sortfield, $sortorder, 'center ');
 $totalarray['nbfield']++;
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
 print '</tr>'."\n";

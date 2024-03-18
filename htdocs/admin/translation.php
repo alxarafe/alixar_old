@@ -211,12 +211,12 @@ $enabledisablehtml = '';
 $enabledisablehtml .= $langs->trans("EnableOverwriteTranslation").' ';
 if (!getDolGlobalString('MAIN_ENABLE_OVERWRITE_TRANSLATION')) {
 	// Button off, click to enable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setMAIN_ENABLE_OVERWRITE_TRANSLATION&token='.newToken().'&value=1'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setMAIN_ENABLE_OVERWRITE_TRANSLATION&token='.newToken().'&value=1'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Disabled"), 'switch_off');
 	$enabledisablehtml .= '</a>';
 } else {
 	// Button on, click to disable
-	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.DOL_PHP_SELF.'?action=setMAIN_ENABLE_OVERWRITE_TRANSLATION&token='.newToken().'&value=0'.$param.'">';
+	$enabledisablehtml .= '<a class="reposition valignmiddle" href="'.$_SERVER['PHP_SELF'].'?action=setMAIN_ENABLE_OVERWRITE_TRANSLATION&token='.newToken().'&value=0'.$param.'">';
 	$enabledisablehtml .= img_picto($langs->trans("Activated"), 'switch_on');
 	$enabledisablehtml .= '</a>';
 }
@@ -229,7 +229,7 @@ print $form->textwithpicto('<span class="opacitymedium">'.$langs->trans("Current
 
 print '<br>';
 
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -249,7 +249,7 @@ if ($transvalue) {
 }
 
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 if (isset($optioncss) && $optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -355,10 +355,10 @@ if ($mode == 'overwrite') {
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Language_en_US_es_MX_etc", DOL_PHP_SELF, 'lang,transkey', '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Key", DOL_PHP_SELF, 'transkey', '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("NewTranslationStringToShow", DOL_PHP_SELF, 'transvalue', '', $param, '', $sortfield, $sortorder);
-	//if (isModEnabled('multicompany') && !$user->entity) print_liste_field_titre("Entity", DOL_PHP_SELF, 'entity,transkey', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Language_en_US_es_MX_etc", $_SERVER['PHP_SELF'], 'lang,transkey', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Key", $_SERVER['PHP_SELF'], 'transkey', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("NewTranslationStringToShow", $_SERVER['PHP_SELF'], 'transvalue', '', $param, '', $sortfield, $sortorder);
+	//if (isModEnabled('multicompany') && !$user->entity) print_liste_field_titre("Entity", $_SERVER['PHP_SELF'], 'entity,transkey', '', $param, '', $sortfield, $sortorder);
 	print '<td align="center"></td>';
 	print "</tr>\n";
 
@@ -438,9 +438,9 @@ if ($mode == 'overwrite') {
 				print ' &nbsp; ';
 				print '<input type="submit" class="button buttongen button-cancel" name="cancel" value="'.dol_escape_htmltag($langs->trans("Cancel")).'">';
 			} else {
-				print '<a class="reposition editfielda paddingrightonly" href="'.DOL_PHP_SELF.'?rowid='.$obj->rowid.'&entity='.$obj->entity.'&mode='.urlencode($mode).'&action=edit&token='.newToken().'">'.img_edit().'</a>';
+				print '<a class="reposition editfielda paddingrightonly" href="'.$_SERVER['PHP_SELF'].'?rowid='.$obj->rowid.'&entity='.$obj->entity.'&mode='.urlencode($mode).'&action=edit&token='.newToken().'">'.img_edit().'</a>';
 				print ' &nbsp; ';
-				print '<a class="reposition" href="'.DOL_PHP_SELF.'?rowid='.$obj->rowid.'&entity='.$obj->entity.'&mode='.urlencode($mode).'&action=delete&token='.newToken().'">'.img_delete().'</a>';
+				print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?rowid='.$obj->rowid.'&entity='.$obj->entity.'&mode='.urlencode($mode).'&action=delete&token='.newToken().'">'.img_delete().'</a>';
 			}
 			print '</td>';
 
@@ -496,12 +496,12 @@ if ($mode == 'searchkey') {
 		$num = $limit;
 	}
 
-	//print 'param='.$param.' DOL_PHP_SELF='.DOL_PHP_SELF.' num='.$num.' page='.$page.' nbtotalofrecords='.$nbtotalofrecords." sortfield=".$sortfield." sortorder=".$sortorder;
+	//print 'param='.$param.' $_SERVER['PHP_SELF']='.$_SERVER['PHP_SELF'].' num='.$num.' page='.$page.' nbtotalofrecords='.$nbtotalofrecords." sortfield=".$sortfield." sortorder=".$sortorder;
 	$title = $langs->trans("Translation");
 	if ($nbtotalofrecords > 0) {
 		$title .= ' <span class="opacitymedium colorblack paddingleft">('.$nbtotalofrecords.' / '.$nbtotalofrecordswithoutfilters.' - <span title="'.dol_escape_htmltag(($nbtotaloffiles - $nbtotaloffilesexternal).' core - '.($nbtotaloffilesexternal).' external').'">'.$nbtotaloffiles.' '.$langs->trans("Files").'</span>)</span>';
 	}
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, -1 * $nbtotalofrecords, '', 0, '', '', $limit, 0, 0, 1);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, -1 * $nbtotalofrecords, '', 0, '', '', $limit, 0, 0, 1);
 
 	$massactionbutton = '';
 
@@ -538,10 +538,10 @@ if ($mode == 'searchkey') {
 	print '</tr>';
 
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Language_en_US_es_MX_etc", DOL_PHP_SELF, 'lang,transkey', '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("Key", DOL_PHP_SELF, 'transkey', '', $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("CurrentTranslationString", DOL_PHP_SELF, 'transvalue', '', $param, '', $sortfield, $sortorder);
-	//if (isModEnabled('multicompany') && !$user->entity) print_liste_field_titre("Entity", DOL_PHP_SELF, 'entity,transkey', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Language_en_US_es_MX_etc", $_SERVER['PHP_SELF'], 'lang,transkey', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("Key", $_SERVER['PHP_SELF'], 'transkey', '', $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("CurrentTranslationString", $_SERVER['PHP_SELF'], 'transvalue', '', $param, '', $sortfield, $sortorder);
+	//if (isModEnabled('multicompany') && !$user->entity) print_liste_field_titre("Entity", $_SERVER['PHP_SELF'], 'entity,transkey', '', $param, '', $sortfield, $sortorder);
 	print '<td align="center"></td>';
 	print "</tr>\n";
 
@@ -588,15 +588,15 @@ if ($mode == 'searchkey') {
 				if ($result) {
 					$obj = $db->fetch_object($result);
 				}
-				print '<a class="editfielda reposition marginrightonly" href="'.DOL_PHP_SELF.'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode=overwrite&action=edit&token='.newToken().'">'.img_edit().'</a>';
+				print '<a class="editfielda reposition marginrightonly" href="'.$_SERVER['PHP_SELF'].'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode=overwrite&action=edit&token='.newToken().'">'.img_edit().'</a>';
 				print ' ';
-				print '<a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode='.urlencode($mode).'&action=delete&token='.newToken().'&mode='.urlencode($mode).'">'.img_delete().'</a>';
+				print '<a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode='.urlencode($mode).'&action=delete&token='.newToken().'&mode='.urlencode($mode).'">'.img_delete().'</a>';
 				print '&nbsp;&nbsp;';
 				$htmltext = $langs->trans("OriginalValueWas", '<i>'.$newlangfileonly->tab_translate[$key].'</i>');
 				print $form->textwithpicto('', $htmltext, 1, 'info');
 			} elseif (getDolGlobalString('MAIN_ENABLE_OVERWRITE_TRANSLATION')) {
 				//print $key.'-'.$val;
-				print '<a class="reposition paddingrightonly" href="'.DOL_PHP_SELF.'?mode=overwrite&langcode='.urlencode($langcode).'&transkey='.urlencode($key).'">'.img_edit_add($langs->trans("TranslationOverwriteKey")).'</a>';
+				print '<a class="reposition paddingrightonly" href="'.$_SERVER['PHP_SELF'].'?mode=overwrite&langcode='.urlencode($langcode).'&transkey='.urlencode($key).'">'.img_edit_add($langs->trans("TranslationOverwriteKey")).'</a>';
 			}
 
 			if (getDolGlobalInt('MAIN_FEATURES_LEVEL')) {
@@ -617,9 +617,9 @@ if ($mode == 'searchkey') {
 			if ($result) {
 				$obj = $db->fetch_object($result);
 			}
-			print '<a class="editfielda reposition marginrightonly" href="'.DOL_PHP_SELF.'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode=overwrite&action=edit&token='.newToken().'">'.img_edit().'</a>';
+			print '<a class="editfielda reposition marginrightonly" href="'.$_SERVER['PHP_SELF'].'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode=overwrite&action=edit&token='.newToken().'">'.img_edit().'</a>';
 			print ' ';
-			print '<a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode='.urlencode($mode).'&action=delete&token='.newToken().'&mode='.urlencode($mode).'">'.img_delete().'</a>';
+			print '<a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?rowid='.$obj->rowid.'&entity='.$conf->entity.'&mode='.urlencode($mode).'&action=delete&token='.newToken().'&mode='.urlencode($mode).'">'.img_delete().'</a>';
 			print '&nbsp;&nbsp;';
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamPosition

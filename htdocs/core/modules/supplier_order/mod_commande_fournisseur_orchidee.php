@@ -74,7 +74,7 @@ class mod_commande_fournisseur_orchidee extends ModeleNumRefSuppliersOrders
 		$form = new Form($db);
 
 		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.DOL_PHP_SELF.'" method="POST">';
+		$texte .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="action" value="updateMask">';
 		$texte .= '<input type="hidden" name="maskconstorder" value="COMMANDE_FOURNISSEUR_ORCHIDEE_MASK">';

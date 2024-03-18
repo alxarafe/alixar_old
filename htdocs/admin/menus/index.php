@@ -240,10 +240,10 @@ if ($action == 'delete') {
 
 $newcardbutton = '';
 if ($user->admin) {
-	$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/admin/menus/edit.php?menuId=0&action=create&menu_handler='.urlencode($menu_handler).'&backtopage='.urlencode(DOL_PHP_SELF));
+	$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/admin/menus/edit.php?menuId=0&action=create&menu_handler='.urlencode($menu_handler).'&backtopage='.urlencode($_SERVER['PHP_SELF']));
 }
 
-print '<form name="newmenu" class="nocellnopadd" action="'.DOL_PHP_SELF.'">';
+print '<form name="newmenu" class="nocellnopadd" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" action="change_menu_handler">';
 print $langs->trans("MenuHandler").': ';
 $formadmin->select_menu_families($menu_handler.(preg_match('/_menu/', $menu_handler) ? '' : '_menu'), 'menu_handler', array_merge($dirstandard, $dirsmartphone));

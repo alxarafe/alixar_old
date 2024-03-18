@@ -104,7 +104,7 @@ if ($mine) {
 	}
 }
 
-print_barre_liste($form->textwithpicto($title, $tooltiphelp), 0, DOL_PHP_SELF, '', '', '', '', 0, -1, 'projecttask', 0, $morehtml);
+print_barre_liste($form->textwithpicto($title, $tooltiphelp), 0, $_SERVER['PHP_SELF'], '', '', '', '', 0, -1, 'projecttask', 0, $morehtml);
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 

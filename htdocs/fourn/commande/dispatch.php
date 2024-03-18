@@ -538,7 +538,7 @@ if ($id > 0 || !empty($ref)) {
 
 	// Confirmation to delete line
 	if ($action == 'ask_deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 	}
 
 	// Call Hook formConfirm
@@ -571,9 +571,9 @@ if ($id > 0 || !empty($ref)) {
 		if (0) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify' && $caneditproject) {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);
@@ -1094,7 +1094,7 @@ if ($id > 0 || !empty($ref)) {
 				$dispatchBt = empty($conf->reception->enabled) ? $langs->trans("Receive") : $langs->trans("CreateReception");
 
 				print '<br>';
-				print '<input type="hidden" name="backtopageforcancel" value="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				print '<input type="hidden" name="backtopageforcancel" value="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				print '<input type="submit" class="button" name="dispatch" value="'.dol_escape_htmltag($dispatchBt).'"';
 				$disabled = 0;
 				if (!$permissiontoreceive) {
@@ -1232,7 +1232,7 @@ if ($id > 0 || !empty($ref)) {
 				$objp = $db->fetch_object($resql);
 
 				if ($action == 'editline' && $lineid == $objp->dispatchlineid) {
-					print '<form name="editdispatchedlines" id="editdispatchedlines" action="'.DOL_PHP_SELF.'?id='.$object->id.'#line_'.GETPOSTINT('lineid').'" method="POST">
+					print '<form name="editdispatchedlines" id="editdispatchedlines" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'#line_'.GETPOSTINT('lineid').'" method="POST">
 					<input type="hidden" name="token" value="'.newToken().'">
 					<input type="hidden" name="action" value="updateline">
 					<input type="hidden" name="mode" value="">
@@ -1351,16 +1351,16 @@ if ($id > 0 || !empty($ref)) {
 							$disabled = 1;
 						}
 						if (empty($objp->status)) {
-							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.DOL_PHP_SELF."?id=".$id."&action=checkdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Approve").'</a>';
-							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.DOL_PHP_SELF."?id=".$id."&action=denydispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Deny").'</a>';
+							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.$_SERVER['PHP_SELF']."?id=".$id."&action=checkdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Approve").'</a>';
+							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.$_SERVER['PHP_SELF']."?id=".$id."&action=denydispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Deny").'</a>';
 						}
 						if ($objp->status == 1) {
-							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.DOL_PHP_SELF."?id=".$id."&action=uncheckdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Reinit").'</a>';
-							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.DOL_PHP_SELF."?id=".$id."&action=denydispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Deny").'</a>';
+							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.$_SERVER['PHP_SELF']."?id=".$id."&action=uncheckdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Reinit").'</a>';
+							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.$_SERVER['PHP_SELF']."?id=".$id."&action=denydispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Deny").'</a>';
 						}
 						if ($objp->status == 2) {
-							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.DOL_PHP_SELF."?id=".$id."&action=uncheckdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Reinit").'</a>';
-							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.DOL_PHP_SELF."?id=".$id."&action=checkdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Approve").'</a>';
+							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.$_SERVER['PHP_SELF']."?id=".$id."&action=uncheckdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Reinit").'</a>';
+							print '<a class="button'.($disabled ? ' buttonRefused' : '').'" href="'.$_SERVER['PHP_SELF']."?id=".$id."&action=checkdispatchline&lineid=".$objp->dispatchlineid.'">'.$langs->trans("Approve").'</a>';
 						}
 					}
 					print '</td>';
@@ -1376,13 +1376,13 @@ if ($id > 0 || !empty($ref)) {
 				if ($action != 'editline' || $lineid != $objp->dispatchlineid) {
 					if (empty($reception->id) || ($reception->statut == Reception::STATUS_DRAFT)) { // only allow edit on draft reception
 						print '<td class="linecoledit center">';
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=editline&token='.newToken().'&lineid='.$objp->dispatchlineid.'#line_'.$objp->dispatchlineid.'">';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=editline&token='.newToken().'&lineid='.$objp->dispatchlineid.'#line_'.$objp->dispatchlineid.'">';
 						print img_edit();
 						print '</a>';
 						print '</td>';
 
 						print '<td class="linecoldelete center">';
-						print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=ask_deleteline&token='.newToken().'&lineid='.$objp->dispatchlineid.'#dispatch_received_products">';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=ask_deleteline&token='.newToken().'&lineid='.$objp->dispatchlineid.'#dispatch_received_products">';
 						print img_delete();
 						print '</a>';
 						print '</td>';

@@ -240,7 +240,7 @@ if (!getDolGlobalInt('MAIN_DISABLE_FULL_SCANLIST')) {
 $num = is_array($object->logs) ? count($object->logs) : 0;
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -274,7 +274,7 @@ if (!empty($search_new_solde)) {
 	$param .= '&search_new_solde='.urlencode($search_new_solde);
 }
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -288,7 +288,7 @@ print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
 $newcardbutton = dolGetButtonTitle($langs->trans('MenuAddCP'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/holiday/card.php?action=create', '', $user->rights->holiday->write);
 // @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-print_barre_liste($langs->trans('LogCP'), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'title_hrm', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($langs->trans('LogCP'), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'title_hrm', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 print '<div class="info">'.$langs->trans('LastUpdateCP').': ';
 
@@ -310,7 +310,7 @@ $morefilter = '';
 $disabled = 0;
 $include = '';
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -413,38 +413,38 @@ print '</tr>';
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 if (!empty($arrayfields['cpl.rowid']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.rowid']['label'], DOL_PHP_SELF, 'cpl.rowid', '', '', '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['cpl.rowid']['label'], $_SERVER['PHP_SELF'], 'cpl.rowid', '', '', '', $sortfield, $sortorder);
 }
 if (!empty($arrayfields['cpl.date_action']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.date_action']['label'], DOL_PHP_SELF, 'date_action', '', '', '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['cpl.date_action']['label'], $_SERVER['PHP_SELF'], 'date_action', '', '', '', $sortfield, $sortorder, 'center ');
 }
 if (!empty($arrayfields['cpl.fk_user_action']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.fk_user_action']['label'], DOL_PHP_SELF, 'fk_user_action', '', '', '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['cpl.fk_user_action']['label'], $_SERVER['PHP_SELF'], 'fk_user_action', '', '', '', $sortfield, $sortorder);
 }
 if (!empty($arrayfields['cpl.fk_user_update']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.fk_user_update']['label'], DOL_PHP_SELF, 'fk_user_update', '', '', '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['cpl.fk_user_update']['label'], $_SERVER['PHP_SELF'], 'fk_user_update', '', '', '', $sortfield, $sortorder);
 }
 if (!empty($arrayfields['cpl.type_action']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.type_action']['label'], DOL_PHP_SELF, 'type_action', '', '', '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['cpl.type_action']['label'], $_SERVER['PHP_SELF'], 'type_action', '', '', '', $sortfield, $sortorder);
 }
 if (!empty($arrayfields['cpl.fk_type']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.fk_type']['label'], DOL_PHP_SELF, 'fk_type', '', '', '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['cpl.fk_type']['label'], $_SERVER['PHP_SELF'], 'fk_type', '', '', '', $sortfield, $sortorder);
 }
 if (!empty($arrayfields['cpl.prev_solde']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.prev_solde']['label'], DOL_PHP_SELF, 'prev_solde', '', '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['cpl.prev_solde']['label'], $_SERVER['PHP_SELF'], 'prev_solde', '', '', '', $sortfield, $sortorder, 'right ');
 }
 if (!empty($arrayfields['variation']['checked'])) {
-	print_liste_field_titre($arrayfields['variation']['label'], DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['variation']['label'], $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'right ');
 }
 if (!empty($arrayfields['cpl.new_solde']['checked'])) {
-	print_liste_field_titre($arrayfields['cpl.new_solde']['label'], DOL_PHP_SELF, 'new_solde', '', '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($arrayfields['cpl.new_solde']['label'], $_SERVER['PHP_SELF'], 'new_solde', '', '', '', $sortfield, $sortorder, 'right ');
 }
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print '</tr>';
 

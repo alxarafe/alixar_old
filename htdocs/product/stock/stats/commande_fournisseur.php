@@ -284,7 +284,7 @@ if ($id > 0 || !empty($ref)) {
 				}
 
 				// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-				print_barre_liste($langs->trans("SuppliersOrders"), $page, DOL_PHP_SELF, $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
+				print_barre_liste($langs->trans("SuppliersOrders"), $page, $_SERVER['PHP_SELF'], $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
 
 				if (!empty($page)) {
 					$option .= '&page='.urlencode((string) ($page));
@@ -306,14 +306,14 @@ if ($id > 0 || !empty($ref)) {
 				print '<div class="div-table-responsive">';
 				print '<table class="tagtable liste listwithfilterbefore" width="100%">';
 				print '<tr class="liste_titre">';
-				print_liste_field_titre("Ref", DOL_PHP_SELF, "s.rowid", "", $option, '', $sortfield, $sortorder);
-				print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", $option, '', $sortfield, $sortorder);
-				print_liste_field_titre("SupplierCode", DOL_PHP_SELF, "s.code_fournisseur", "", $option, '', $sortfield, $sortorder);
-				print_liste_field_titre("OrderDate", DOL_PHP_SELF, "cf.date_commande", "", $option, 'align="center"', $sortfield, $sortorder);
-				print_liste_field_titre("DateDeliveryPlanned", DOL_PHP_SELF, "cf.date_livraison", "", $option, 'align="center"', $sortfield, $sortorder);
-				print_liste_field_titre("Qty", DOL_PHP_SELF, "cfdi.qty", "", $option, 'align="center"', $sortfield, $sortorder);
-				//              print_liste_field_titre("AmountHT", DOL_PHP_SELF, "total_ht_pondere", "", $option, 'align="right"', $sortfield, $sortorder);
-				print_liste_field_titre("Status", DOL_PHP_SELF, "cf.fk_statut", "", $option, 'align="right"', $sortfield, $sortorder);
+				print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "s.rowid", "", $option, '', $sortfield, $sortorder);
+				print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", $option, '', $sortfield, $sortorder);
+				print_liste_field_titre("SupplierCode", $_SERVER['PHP_SELF'], "s.code_fournisseur", "", $option, '', $sortfield, $sortorder);
+				print_liste_field_titre("OrderDate", $_SERVER['PHP_SELF'], "cf.date_commande", "", $option, 'align="center"', $sortfield, $sortorder);
+				print_liste_field_titre("DateDeliveryPlanned", $_SERVER['PHP_SELF'], "cf.date_livraison", "", $option, 'align="center"', $sortfield, $sortorder);
+				print_liste_field_titre("Qty", $_SERVER['PHP_SELF'], "cfdi.qty", "", $option, 'align="center"', $sortfield, $sortorder);
+				//              print_liste_field_titre("AmountHT", $_SERVER['PHP_SELF'], "total_ht_pondere", "", $option, 'align="right"', $sortfield, $sortorder);
+				print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "cf.fk_statut", "", $option, 'align="right"', $sortfield, $sortorder);
 				print "</tr>\n";
 
 				if ($num > 0) {

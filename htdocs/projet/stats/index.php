@@ -226,7 +226,7 @@ print dol_get_fiche_head($head, 'byyear', $langs->trans("Statistics"), -1, '');
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
-print '<form name="stats" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form name="stats" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print '<table class="noborder centpercent">';
@@ -284,7 +284,7 @@ foreach ($data_all_year as $val) {
 		$oldyear--;
 
 		print '<tr class="oddeven" height="24">';
-		print '<td class="center"><a href="'.DOL_PHP_SELF.'?year='.$oldyear.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$oldyear.'</a></td>';
+		print '<td class="center"><a href="'.$_SERVER['PHP_SELF'].'?year='.$oldyear.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$oldyear.'</a></td>';
 		print '<td class="right">0</td>';
 		if (getDolGlobalString('PROJECT_USE_OPPORTUNITIES')) {
 			print '<td class="right amount nowraponall">0</td>';
@@ -295,7 +295,7 @@ foreach ($data_all_year as $val) {
 	}
 
 	print '<tr class="oddeven" height="24">';
-	print '<td class="center"><a href="'.DOL_PHP_SELF.'?year='.$year.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$year.'</a></td>';
+	print '<td class="center"><a href="'.$_SERVER['PHP_SELF'].'?year='.$year.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$year.'</a></td>';
 	print '<td class="right">'.$val['nb'].'</td>';
 	if (getDolGlobalString('PROJECT_USE_OPPORTUNITIES')) {
 		print '<td class="right amount nowraponall">'.($val['total'] ? price(price2num($val['total'], 'MT'), 1) : '0').'</td>';

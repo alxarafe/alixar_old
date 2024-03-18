@@ -129,7 +129,7 @@ if ($action == 'confirm_delete' && $confirm == "yes") {
 			if ($id > 0) {
 				$db->commit();
 
-				header("Location: ".DOL_PHP_SELF."?id=".$id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 				exit();
 			} else {
 				$db->rollback();
@@ -157,13 +157,13 @@ if ($action == 'confirm_delete' && $confirm == "yes") {
 		$result = $object->update($user);
 
 		if ($result > 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit();
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	} else {
-		header("Location: ".DOL_PHP_SELF."?id=".$id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 		exit();
 	}
 }
@@ -188,7 +188,7 @@ llxHeader('', $title, $help_url);
 if ($action == 'create') {
 	print load_fiche_titre($title, '', 'object_'.$object->picto);
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -232,7 +232,7 @@ if ($action == 'create') {
 if (($id || $ref) && $action == 'edit') {
 	print load_fiche_titre($langs->trans("Fiscalyear"), '', 'object_'.$object->picto);
 
-	print '<form method="POST" name="update" action="'.DOL_PHP_SELF.'">'."\n";
+	print '<form method="POST" name="update" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -292,7 +292,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("DeleteFiscalYear"), $langs->trans("ConfirmDeleteFiscalYear"), "confirm_delete", '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("DeleteFiscalYear"), $langs->trans("ConfirmDeleteFiscalYear"), "confirm_delete", '', 0, 1);
 	}
 
 	// Print form confirm
@@ -345,9 +345,9 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	if ($user->hasRight('accounting', 'fiscalyear', 'write')) {
 		print '<div class="tabsAction">';
 
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$id.'">'.$langs->trans('Modify').'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$id.'">'.$langs->trans('Modify').'</a>';
 
-		//print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
+		//print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', $permissiontodelete);
 
 		print '</div>';
 	}

@@ -63,7 +63,7 @@ $hookmanager->initHooks(array('rowinterface'));
 
 top_httphead();
 
-print '<!-- Ajax page called with url '.dol_escape_htmltag(DOL_PHP_SELF).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
+print '<!-- Ajax page called with url '.dol_escape_htmltag($_SERVER['PHP_SELF']).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
 
 // Registering the location of boxes
 if (GETPOST('roworder', 'alpha', 3) && GETPOST('table_element_line', 'aZ09', 3)

@@ -192,7 +192,7 @@ class FormActions
 		if ($num || $forceshowtitle) {
 			$title = $langs->trans("LatestLinkedEvents", $max ? $max : '');
 
-			$urlbacktopage = DOL_PHP_SELF.'?id='.$object->id.($moreparambacktopage ? '&'.$moreparambacktopage : '');
+			$urlbacktopage = $_SERVER['PHP_SELF'].'?id='.$object->id.($moreparambacktopage ? '&'.$moreparambacktopage : '');
 
 			$projectid = $object->fk_project;
 			if ($typeelement == 'project') {
@@ -230,12 +230,12 @@ class FormActions
 			print '<div class="div-table-responsive-no-min">';
 			print '<table class="centpercent noborder'.($morecss ? ' '.$morecss : '').'">';
 			print '<tr class="liste_titre">';
-			print getTitleFieldOfList('Ref', 0, DOL_PHP_SELF, '', $page, $param, '', $sortfield, $sortorder, '', 1);
-			print getTitleFieldOfList('By', 0, DOL_PHP_SELF, '', $page, $param, '', $sortfield, $sortorder, '', 1);
-			print getTitleFieldOfList('Type', 0, DOL_PHP_SELF, '', $page, $param, '', $sortfield, $sortorder, '', 1);
-			print getTitleFieldOfList('Title', 0, DOL_PHP_SELF, '', $page, $param, '', $sortfield, $sortorder, '', 1);
-			print getTitleFieldOfList('Date', 0, DOL_PHP_SELF, 'a.datep', $page, $param, '', $sortfield, $sortorder, 'center ', 1);
-			print getTitleFieldOfList('', 0, DOL_PHP_SELF, '', $page, $param, '', $sortfield, $sortorder, 'right ', 1);
+			print getTitleFieldOfList('Ref', 0, $_SERVER['PHP_SELF'], '', $page, $param, '', $sortfield, $sortorder, '', 1);
+			print getTitleFieldOfList('By', 0, $_SERVER['PHP_SELF'], '', $page, $param, '', $sortfield, $sortorder, '', 1);
+			print getTitleFieldOfList('Type', 0, $_SERVER['PHP_SELF'], '', $page, $param, '', $sortfield, $sortorder, '', 1);
+			print getTitleFieldOfList('Title', 0, $_SERVER['PHP_SELF'], '', $page, $param, '', $sortfield, $sortorder, '', 1);
+			print getTitleFieldOfList('Date', 0, $_SERVER['PHP_SELF'], 'a.datep', $page, $param, '', $sortfield, $sortorder, 'center ', 1);
+			print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], '', $page, $param, '', $sortfield, $sortorder, 'right ', 1);
 			print '</tr>';
 			print "\n";
 

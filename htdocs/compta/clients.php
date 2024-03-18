@@ -133,18 +133,18 @@ if ($resql) {
 
 	$langs->load('commercial');
 
-	print_barre_liste($langs->trans("Customers"), $page, DOL_PHP_SELF, "", $sortfield, $sortorder, '', $num);
+	print_barre_liste($langs->trans("Customers"), $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, '', $num);
 
-	print '<form method="GET" action="'.DOL_PHP_SELF.'">';
+	print '<form method="GET" action="'.$_SERVER['PHP_SELF'].'">';
 
 	print '<table class="liste centpercent">';
 	print '<tr class="liste_titre">';
 
-	print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", "", 'valign="center"', $sortfield, $sortorder);
-	print_liste_field_titre("Town", DOL_PHP_SELF, "s.town", "", "", 'valign="center"', $sortfield, $sortorder);
-	print_liste_field_titre("CustomerCode", DOL_PHP_SELF, "s.code_client", "", "", '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre("AccountancyCode", DOL_PHP_SELF, "s.code_compta", "", "", '', $sortfield, $sortorder, 'left ');
-	print_liste_field_titre("DateCreation", DOL_PHP_SELF, "datec", $addu, "", '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", "", 'valign="center"', $sortfield, $sortorder);
+	print_liste_field_titre("Town", $_SERVER['PHP_SELF'], "s.town", "", "", 'valign="center"', $sortfield, $sortorder);
+	print_liste_field_titre("CustomerCode", $_SERVER['PHP_SELF'], "s.code_client", "", "", '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre("AccountancyCode", $_SERVER['PHP_SELF'], "s.code_compta", "", "", '', $sortfield, $sortorder, 'left ');
+	print_liste_field_titre("DateCreation", $_SERVER['PHP_SELF'], "datec", $addu, "", '', $sortfield, $sortorder, 'right ');
 	print "</tr>\n";
 
 	// Fields title search

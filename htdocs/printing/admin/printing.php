@@ -61,7 +61,7 @@ if (!$user->admin) {
 
 if (($mode == 'test' || $mode == 'setup') && empty($driver)) {
 	setEventMessages($langs->trans('PleaseSelectaDriverfromList'), null);
-	header("Location: ".DOL_PHP_SELF.'?mode=config');
+	header("Location: ".$_SERVER['PHP_SELF'].'?mode=config');
 	exit;
 }
 
@@ -119,7 +119,7 @@ print load_fiche_titre($langs->trans("PrintingSetup"), $linkback, 'title_setup')
 $head = printingAdminPrepareHead($mode);
 
 if ($mode == 'setup' && $user->admin) {
-	print '<form method="post" action="'.DOL_PHP_SELF.'?mode=setup&amp;driver='.$driver.'" autocomplete="off">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?mode=setup&amp;driver='.$driver.'" autocomplete="off">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="setconst">';
 
@@ -288,13 +288,13 @@ if ($mode == 'config' && $user->admin) {
 			print ajax_constantonoff($printer->active);
 		} else {
 			if (!getDolGlobalString($printer->conf)) {
-				print '<a href="'.DOL_PHP_SELF.'?action=setvalue&token='.newToken().'&varname='.urlencode($printer->active).'&value=1">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=setvalue&token='.newToken().'&varname='.urlencode($printer->active).'&value=1">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 			} else {
-				print '<a href="'.DOL_PHP_SELF.'?action=setvalue&token='.newToken().'&varname='.urlencode($printer->active).'&value=0">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=setvalue&token='.newToken().'&varname='.urlencode($printer->active).'&value=0">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 			}
 		}
-		print '<td class="center"><a href="'.DOL_PHP_SELF.'?mode=setup&token='.newToken().'&driver='.urlencode($printer->name).'">'.img_picto('', 'setup').'</a></td>';
-		print '<td class="center"><a href="'.DOL_PHP_SELF.'?mode=test&token='.newToken().'&driver='.urlencode($printer->name).'">'.img_picto('', 'setup').'</a></td>';
+		print '<td class="center"><a href="'.$_SERVER['PHP_SELF'].'?mode=setup&token='.newToken().'&driver='.urlencode($printer->name).'">'.img_picto('', 'setup').'</a></td>';
+		print '<td class="center"><a href="'.$_SERVER['PHP_SELF'].'?mode=test&token='.newToken().'&driver='.urlencode($printer->name).'">'.img_picto('', 'setup').'</a></td>';
 		print '</tr>'."\n";
 	}
 

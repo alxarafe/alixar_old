@@ -407,7 +407,7 @@ if ($object->id > 0 || !empty($object->ref)) {
 
 	// Confirmation to delete line
 	if ($action == 'ask_deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 	}
 
 	// Call Hook formConfirm
@@ -449,9 +449,9 @@ if ($object->id > 0 || !empty($object->ref)) {
 		if (0) {    // Do not change on reception
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify' && $permissiontoadd) {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, (!getDolGlobalString('PROJECT_CAN_ALWAYS_LINK_TO_ALL_SUPPLIERS') ? $object->socid : -1), $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($objectsrc) && !empty($objectsrc->fk_project)) {
 				$proj = new Project($db);
@@ -502,12 +502,12 @@ if ($object->id > 0 || !empty($object->ref)) {
 	print $langs->trans('DateDeliveryPlanned');
 	print '</td>';
 	if ($action != 'editdate_livraison') {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editdate_livraison&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDeliveryDate'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editdate_livraison&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDeliveryDate'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td colspan="2">';
 	if ($action == 'editdate_livraison') {
-		print '<form name="setdate_livraison" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post">';
+		print '<form name="setdate_livraison" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="setdate_livraison">';
 		print $form->selectDate($object->date_delivery ? $object->date_delivery : -1, 'liv_', 1, 1, 0, "setdate_livraison", 1, 0);
@@ -521,7 +521,7 @@ if ($object->id > 0 || !empty($object->ref)) {
 
 	print '<br><center>';
 	if (isModEnabled('barcode') || isModEnabled('productbatch')) {
-		print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=updatebyscaning&token='.currentToken().'" class="marginrightonly paddingright marginleftonly paddingleft">'.img_picto('', 'barcode', 'class="paddingrightonly"').$langs->trans("UpdateByScaning").'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=updatebyscaning&token='.currentToken().'" class="marginrightonly paddingright marginleftonly paddingleft">'.img_picto('', 'barcode', 'class="paddingrightonly"').$langs->trans("UpdateByScaning").'</a>';
 	}
 	print '<a href="#" id="resetalltoexpected" class="marginrightonly paddingright marginleftonly paddingleft">'.img_picto("", 'autofill', 'class="pictofixedwidth"').$langs->trans("RestoreWithCurrentQtySaved").'</a></td>';
 	// Link to clear qty
@@ -539,7 +539,7 @@ if ($object->id > 0 || !empty($object->ref)) {
 		$listwarehouses = $entrepot->list_array(1);
 
 
-		print '<form method="post" action="'.DOL_PHP_SELF.'">';
+		print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="updatelines">';

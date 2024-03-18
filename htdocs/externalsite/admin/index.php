@@ -88,7 +88,7 @@ print '<br>';
 print '<span class="opacitymedium">'.$langs->trans("Module100Desc")."</span><br>\n";
 print '<br>';
 
-print '<form name="externalsiteconfig" action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form name="externalsiteconfig" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 print "<table class=\"noborder\" width=\"100%\">";

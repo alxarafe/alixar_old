@@ -144,22 +144,22 @@ if ($modecompta == "BOOKKEEPINGCOLLECTED") {
 // Affiche en-tete du rapport
 if ($modecompta == "CREANCES-DETTES") {
 	$name = $langs->trans("PurchaseTurnover");
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesPurchaseTurnoverDue");
 	//$exportlink=$langs->trans("NotYetAvailable");
 } elseif ($modecompta == "RECETTES-DEPENSES") {
 	$name = $langs->trans("PurchaseTurnoverCollected");
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesPurchaseTurnoverIn");
 	//$exportlink=$langs->trans("NotYetAvailable");
 } elseif ($modecompta == "BOOKKEEPING") {
 	$name = $langs->trans("PurchaseTurnover");
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesPurchaseTurnoverOfExpenseAccounts");
 	//$exportlink=$langs->trans("NotYetAvailable");
 } elseif ($modecompta == "BOOKKEEPINGCOLLECTED") {
 	$name = $langs->trans("PurchaseTurnoverCollected");
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear - 2)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($year_start + $nbofyear)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesPurchaseTurnoverCollectedOfExpenseAccounts");
 	//$exportlink=$langs->trans("NotYetAvailable");
 }

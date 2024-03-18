@@ -121,7 +121,7 @@ print '<span class="opacitymedium">'.$langs->trans("LDAPDescGroups").'</span><br
 print '<br>';
 
 
-print '<form method="post" action="'.DOL_PHP_SELF.'?action=setvalue&token='.newToken().'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?action=setvalue&token='.newToken().'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print '<table class="noborder centpercent">';

@@ -138,7 +138,7 @@ $listofexamplesforlink = 'Societe:societe/class/societe.class.php<br>Contact:con
 </script>
 
 <!-- Form to edit an extra field -->
-<form action="<?php echo DOL_PHP_SELF; ?>?attrname=<?php echo $attrname; ?>" id="formeditextrafield" method="post">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>?attrname=<?php echo $attrname; ?>" id="formeditextrafield" method="post">
 <input type="hidden" name="token" value="<?php echo newToken(); ?>">
 <input type="hidden" name="attrname" value="<?php echo $attrname; ?>">
 <input type="hidden" name="action" value="update">

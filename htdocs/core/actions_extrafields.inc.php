@@ -221,7 +221,7 @@ if ($action == 'add') {
 				);
 				if ($result > 0) {
 					setEventMessages($langs->trans('SetupSaved'), null, 'mesgs');
-					header("Location: ".DOL_PHP_SELF);
+					header("Location: ".$_SERVER['PHP_SELF']);
 					exit;
 				} else {
 					$error++;
@@ -392,7 +392,7 @@ if ($action == 'update') {
 				);
 				if ($result > 0) {
 					setEventMessages($langs->trans('SetupSaved'), null, 'mesgs');
-					header("Location: ".DOL_PHP_SELF);
+					header("Location: ".$_SERVER['PHP_SELF']);
 					exit;
 				} else {
 					$error++;
@@ -420,7 +420,7 @@ if ($action == 'confirm_delete' && $confirm == "yes") {
 		if ($result >= 0) {
 			setEventMessages($langs->trans("ExtrafieldsDeleted", $attributekey), null, 'mesgs');
 
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		} else {
 			$mesg = $extrafields->error;

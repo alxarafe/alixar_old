@@ -212,7 +212,7 @@ $form = new Form($db);
 // Confirmation of action process
 if ($action == 'delete') {
 	$formquestion = array();
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?provider='.GETPOST('provider').'&label='.GETPOST('label'), $langs->trans('OAuthServiceConfirmDeleteTitle'), $langs->trans('OAuthServiceConfirmDeleteMessage'), 'confirm_delete', $formquestion, 0, 1, 220);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?provider='.GETPOST('provider').'&label='.GETPOST('label'), $langs->trans('OAuthServiceConfirmDeleteTitle'), $langs->trans('OAuthServiceConfirmDeleteMessage'), 'confirm_delete', $formquestion, 0, 1, 220);
 	print $formconfirm;
 }
 
@@ -220,7 +220,7 @@ if ($action == 'delete') {
 $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
 print load_fiche_titre($langs->trans('ConfigOAuth'), $linkback, 'title_setup');
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="add">';
 
@@ -278,7 +278,7 @@ foreach ($conf->global as $key => $val) {
 
 
 if (count($listinsetup) > 0) {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
@@ -331,7 +331,7 @@ if (count($listinsetup) > 0) {
 			print ' (<b>'.$langs->trans("NoName").'</b>)';
 		}
 		if (!($servicetoeditname == $key[0])) {
-			print '<a class="editfielda reposition" href="'.DOL_PHP_SELF.'?token='.newToken().'&servicetoeditname='.urlencode($key[0]).'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a>';
+			print '<a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?token='.newToken().'&servicetoeditname='.urlencode($key[0]).'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a>';
 		}
 		print '</td>';
 		print '<td>';
@@ -343,7 +343,7 @@ if (count($listinsetup) > 0) {
 		// Delete
 		print '<td>';
 		$label = preg_replace('/_NAME$/', '', $keyforsupportedoauth2array);
-		print '<a href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&provider='.urlencode($keyforprovider).'&label='.urlencode($label).'">';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&provider='.urlencode($keyforprovider).'&label='.urlencode($label).'">';
 		print img_picto('', 'delete');
 		print '</a>';
 

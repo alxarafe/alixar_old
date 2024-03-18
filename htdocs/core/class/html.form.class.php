@@ -171,7 +171,7 @@ class Form
 				$ret .= '<td class="right">';
 			}
 			if ($htmlname && GETPOST('action', 'aZ09') != 'edit' . $htmlname && $perm) {
-				$ret .= '<a class="editfielda reposition" href="' . DOL_PHP_SELF . '?action=edit' . $htmlname . '&token=' . newToken() . '&' . $paramid . '=' . $object->id . $moreparam . '">' . img_edit($langs->trans('Edit'), ($notabletag ? 0 : 1)) . '</a>';
+				$ret .= '<a class="editfielda reposition" href="' . $_SERVER['PHP_SELF'] . '?action=edit' . $htmlname . '&token=' . newToken() . '&' . $paramid . '=' . $object->id . $moreparam . '">' . img_edit($langs->trans('Edit'), ($notabletag ? 0 : 1)) . '</a>';
 			}
 			if (!empty($notabletag) && $notabletag == 1) {
 				if ($text) {
@@ -252,7 +252,7 @@ class Form
 			$editmode = ($editaction == 'edit' . $htmlname);
 			if ($editmode) {	// edit mode
 				$ret .= "\n";
-				$ret .= '<form method="post" action="' . DOL_PHP_SELF . ($moreparam ? '?' . $moreparam : '') . '">';
+				$ret .= '<form method="post" action="' . $_SERVER['PHP_SELF'] . ($moreparam ? '?' . $moreparam : '') . '">';
 				$ret .= '<input type="hidden" name="action" value="set' . $htmlname . '">';
 				$ret .= '<input type="hidden" name="token" value="' . newToken() . '">';
 				$ret .= '<input type="hidden" name="' . $paramid . '" value="' . $object->id . '">';
@@ -828,7 +828,7 @@ class Form
 		$ret = '<div class="centpercent center">';
 		$ret .= '<select class="flat' . (empty($conf->use_javascript_ajax) ? '' : ' hideobject') . ' ' . $name . ' ' . $name . 'select valignmiddle alignstart" id="' . $name . '" name="' . $name . '"' . ($disabled ? ' disabled="disabled"' : '') . '>';
 
-		// Complete list with data from external modules. THe module can use DOL_PHP_SELF to know on which page we are, or use the $parameters['currentcontext'] completed by executeHooks.
+		// Complete list with data from external modules. THe module can use $_SERVER['PHP_SELF'] to know on which page we are, or use the $parameters['currentcontext'] completed by executeHooks.
 		$parameters = array();
 		$reshook = $hookmanager->executeHooks('addMoreMassActions', $parameters); // Note that $action and $object may have been modified by hook
 		// check if there is a mass action
@@ -8939,7 +8939,7 @@ class Form
 	 *
 	 * @param string 	$htmlname 	Name of HTML field
 	 * @param array 	$array 		Array with array of fields we could show. This array may be modified according to setup of user.
-	 * @param string 	$varpage 	Id of context for page. Can be set by caller with $varpage=(empty($contextpage)?DOL_PHP_SELF:$contextpage);
+	 * @param string 	$varpage 	Id of context for page. Can be set by caller with $varpage=(empty($contextpage)?$_SERVER['PHP_SELF']:$contextpage);
 	 * @param string 	$pos 		Position colon on liste value 'left' or '' (meaning 'right').
 	 * @return string            	HTML multiselect string
 	 * @see selectarray()
@@ -9391,7 +9391,7 @@ class Form
 				if (getDolGlobalString('MAIN_LINK_BY_REF_IN_LINKTO')) {
 					print '<br>'."\n";
 					print '<!-- form to add a link from anywhere -->'."\n";
-					print '<form action="' . DOL_PHP_SELF . '" method="POST" name="formlinkedbyref' . $key . '">';
+					print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST" name="formlinkedbyref' . $key . '">';
 					print '<input type="hidden" name="id" value="' . $object->id . '">';
 					print '<input type="hidden" name="action" value="addlinkbyref">';
 					print '<input type="hidden" name="token" value="' . newToken() . '">';
@@ -9416,7 +9416,7 @@ class Form
 
 					print '<br>';
 					print '<!-- form to add a link from object to same thirdparty -->'."\n";
-					print '<form action="' . DOL_PHP_SELF . '" method="POST" name="formlinked' . $key . '">';
+					print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST" name="formlinked' . $key . '">';
 					print '<input type="hidden" name="action" value="addlink">';
 					print '<input type="hidden" name="token" value="' . newToken() . '">';
 					print '<input type="hidden" name="id" value="' . $object->id . '">';
@@ -9660,7 +9660,7 @@ class Form
 			//print "paramid=$paramid,morehtml=$morehtml,shownav=$shownav,$fieldid,$fieldref,$morehtmlref,$moreparam";
 			$object->load_previous_next_ref((isset($object->next_prev_filter) ? $object->next_prev_filter : ''), $fieldid, $nodbprefix);
 
-			$navurl = DOL_PHP_SELF;
+			$navurl = $_SERVER['PHP_SELF'];
 			// Special case for project/task page
 			if ($paramid == 'project_ref') {
 				if (preg_match('/\/tasks\/(task|contact|note|document)\.php/', $navurl)) {     // TODO Remove this when nav with project_ref on task pages are ok

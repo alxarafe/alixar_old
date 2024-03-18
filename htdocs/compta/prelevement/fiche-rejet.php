@@ -241,7 +241,7 @@ if ($resql) {
 	$num = $db->num_rows($resql);
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("Rejects"), $page, DOL_PHP_SELF, '', $sortfield, $sortorder, '', $num, $nbtotalofrecords, '');
+	print_barre_liste($langs->trans("Rejects"), $page, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', $num, $nbtotalofrecords, '');
 
 	print"\n<!-- debut table -->\n";
 	print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table

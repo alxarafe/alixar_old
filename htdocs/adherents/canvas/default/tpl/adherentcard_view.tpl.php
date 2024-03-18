@@ -125,15 +125,15 @@ if (empty($user->socid)) {
 	echo '<div class="tabsAction">';
 
 	if ($user->hasRight('adherent', 'creer')) {
-		echo '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$this->control->tpl['id'].'&action=edit&token='.newToken().'&canvas='.$canvas.'">'.$langs->trans('Modify').'</a>';
+		echo '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$this->control->tpl['id'].'&action=edit&token='.newToken().'&canvas='.$canvas.'">'.$langs->trans('Modify').'</a>';
 	}
 
 	if (!$this->control->tpl['user_id'] && $user->hasRight('user', 'user', 'creer')) {
-		echo '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$this->control->tpl['id'].'&action=create_user&token='.newToken().'&canvas='.$canvas.'">'.$langs->trans("CreateDolibarrLogin").'</a>';
+		echo '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$this->control->tpl['id'].'&action=create_user&token='.newToken().'&canvas='.$canvas.'">'.$langs->trans("CreateDolibarrLogin").'</a>';
 	}
 
 	if ($user->hasRight('adherent', 'supprimer')) {
-		print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$this->control->tpl['id'].'&action=delete&token='.newToken().'&canvas='.$canvas, 'delete', $user->hasRight('adherent', 'supprimer'));
+		print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$this->control->tpl['id'].'&action=delete&token='.newToken().'&canvas='.$canvas, 'delete', $user->hasRight('adherent', 'supprimer'));
 	}
 
 	echo '</div><br>';

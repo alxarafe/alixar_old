@@ -418,7 +418,7 @@ if (empty($reshook)) {
 	// Type
 	if ($action == 'setfk_product_type' && $usercancreate) {
 		$result = $object->setValueFrom('fk_product_type', GETPOST('fk_product_type'), '', null, 'text', '', $user, 'PRODUCT_MODIFY');
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	}
 
@@ -432,7 +432,7 @@ if (empty($reshook)) {
 	// Barcode type
 	if ($action == 'setfk_barcode_type' && $createbarcode) {
 		$result = $object->setValueFrom('fk_barcode_type', GETPOST('fk_barcode_type'), '', null, 'text', '', $user, 'PRODUCT_MODIFY');
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
 	}
 
@@ -442,7 +442,7 @@ if (empty($reshook)) {
 
 		if ($result >= 0) {
 			$result = $object->setValueFrom('barcode', GETPOST('barcode'), '', null, 'text', '', $user, 'PRODUCT_MODIFY');
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		} else {
 			$langs->load("errors");
@@ -712,7 +712,7 @@ if (empty($reshook)) {
 					header("Location: ".$backtopage);
 					exit;
 				} else {
-					header("Location: ".DOL_PHP_SELF."?id=".$id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 					exit;
 				}
 			} else {
@@ -969,7 +969,7 @@ if (empty($reshook)) {
 							$action = "";
 
 							$mesg = $langs->trans("ErrorProductAlreadyExists", $clone->ref);
-							$mesg .= ' <a href="' . DOL_PHP_SELF . '?ref=' . $clone->ref . '">' . $langs->trans("ShowCardHere") . '</a>.';
+							$mesg .= ' <a href="' . $_SERVER['PHP_SELF'] . '?ref=' . $clone->ref . '">' . $langs->trans("ShowCardHere") . '</a>.';
 							setEventMessages($mesg, null, 'errors');
 						} else {
 							setEventMessages(empty($clone->error) ? '' : $langs->trans($clone->error), $clone->errors, 'errors');
@@ -984,7 +984,7 @@ if (empty($reshook)) {
 					} else {
 						$db->commit();
 						$db->close();
-						header("Location: " . DOL_PHP_SELF . "?id=" . $id);
+						header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $id);
 						exit;
 					}
 				} else {
@@ -1334,7 +1334,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 		dol_set_focus('input[name="ref"]');
 
-		print '<form action="'.DOL_PHP_SELF.'" method="POST" name="formprod">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" name="formprod">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add">';
 		print '<input type="hidden" name="type" value="'.$type.'">'."\n";
@@ -1514,7 +1514,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '<tr><td>'.$langs->trans("DefaultWarehouse").'</td><td>';
 				print img_picto($langs->trans("DefaultWarehouse"), 'stock', 'class="pictofixedwidth"');
 				print $formproduct->selectWarehouses(GETPOSTINT('fk_default_warehouse'), 'fk_default_warehouse', 'warehouseopen', 1, 0, 0, '', 0, 0, array(), 'minwidth300 widthcentpercentminusxx maxwidth500');
-				print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&token='.newToken().'&backtopage='.urlencode(DOL_PHP_SELF.'?&action=create&type='.GETPOSTINT('type')).'">';
+				print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&token='.newToken().'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?&action=create&type='.GETPOSTINT('type')).'">';
 				print '<span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddWarehouse").'"></span>';
 				print '</a>';
 
@@ -1908,7 +1908,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			// print load_fiche_titre($langs->trans('Modify').' '.$type.' : '.(is_object($object->oldcopy)?$object->oldcopy->ref:$object->ref), "");
 
 			// Main official, simple, and not duplicated code
-			print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST" name="formprod">'."\n";
+			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST" name="formprod">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update">';
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -2139,7 +2139,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '<tr><td>'.$langs->trans("DefaultWarehouse").'</td><td>';
 					print img_picto($langs->trans("DefaultWarehouse"), 'stock', 'class="pictofixedwidth"');
 					print $formproduct->selectWarehouses((GETPOSTISSET('fk_default_warehouse') ? GETPOST('fk_default_warehouse') : $object->fk_default_warehouse), 'fk_default_warehouse', 'warehouseopen', 1, 0, 0, '', 0, 0, array(), 'maxwidth500 widthcentpercentminusxx');
-					print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&amp;backtopage='.urlencode(DOL_PHP_SELF.'?action=edit&id='.((int) $object->id)).'">';
+					print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&amp;backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=edit&id='.((int) $object->id)).'">';
 					print '<span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddWarehouse").'"></span></a>';
 					print '</td></tr>';
 					/*
@@ -2466,7 +2466,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print $langs->trans("BarcodeType");
 					print '</td>';
 					if (($action != 'editbarcodetype') && $usercancreate && $createbarcode) {
-						print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbarcodetype&id='.$object->id.'&token='.newToken().'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
+						print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbarcodetype&id='.$object->id.'&token='.newToken().'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
 					}
 					print '</tr></table>';
 					print '</td><td>';
@@ -2477,7 +2477,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 					$fk_barcode_type = '';
 					if ($action == 'editbarcodetype') {
-						print $formbarcode->formBarcodeType(DOL_PHP_SELF.'?id='.$object->id, $object->barcode_type, 'fk_barcode_type');
+						print $formbarcode->formBarcodeType($_SERVER['PHP_SELF'].'?id='.$object->id, $object->barcode_type, 'fk_barcode_type');
 						$fk_barcode_type = $object->barcode_type;
 					} else {
 						$object->fetch_barcode();
@@ -2492,7 +2492,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print $langs->trans("BarcodeValue");
 					print '</td>';
 					if (($action != 'editbarcode') && $usercancreate && $createbarcode) {
-						print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbarcode&id='.$object->id.'&token='.newToken().'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
+						print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbarcode&id='.$object->id.'&token='.newToken().'">'.img_edit($langs->trans('Edit'), 1).'</a></td>';
 					}
 					print '</tr></table>';
 					print '</td><td>';
@@ -2502,7 +2502,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 							$tmpcode = $modBarCodeProduct->getNextValue($object, $fk_barcode_type);
 						}
 
-						print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
 						print '<input type="hidden" name="action" value="setbarcode">';
 						print '<input type="hidden" name="barcode_type_code" value="'.$object->barcode_type_code.'">';
@@ -2870,7 +2870,7 @@ if ($action == 'merge') {
 			'value' => $form->select_produits('', 'product_origin', '', 0, 0, 1, 2, '', 1, array(), 0, 1, 0, 'minwidth200', 0, '', null, 1),
 		)
 	);
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("MergeProducts"), $langs->trans("ConfirmMergeProducts"), "confirm_merge", $formquestion, 'no', 1, 250);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("MergeProducts"), $langs->trans("ConfirmMergeProducts"), "confirm_merge", $formquestion, 'no', 1, 250);
 }
 
 // Clone confirmation
@@ -2890,7 +2890,7 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || !empty($conf->d
 		$formquestionclone[] = array('type' => 'checkbox', 'name' => 'clone_composition', 'label' => $langs->trans('CloneCompositionProduct'), 'value' => 1);
 	}
 
-	$formconfirm .= $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneProduct', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
+	$formconfirm .= $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneProduct', $object->ref), 'confirm_clone', $formquestionclone, 'yes', 'action-clone', 350, 600);
 }
 
 // Call Hook formConfirm
@@ -2909,7 +2909,7 @@ print $formconfirm;
  * Action bar
  */
 if ($action != 'create' && $action != 'edit') {
-	$cloneProductUrl = DOL_PHP_SELF.'?action=clone&token='.newToken();
+	$cloneProductUrl = $_SERVER['PHP_SELF'].'?action=clone&token='.newToken();
 	$cloneButtonId = 'action-clone-no-ajax';
 
 	print "\n".'<div class="tabsAction">'."\n";
@@ -2919,7 +2919,7 @@ if ($action != 'create' && $action != 'edit') {
 	if (empty($reshook)) {
 		if ($usercancreate) {
 			if (!isset($object->no_button_edit) || $object->no_button_edit != 1) {
-				print dolGetButtonAction('', $langs->trans('Modify'), 'default', DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id, '', $usercancreate);
+				print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id, '', $usercancreate);
 			}
 
 			if (!isset($object->no_button_copy) || $object->no_button_copy != 1) {
@@ -2937,7 +2937,7 @@ if ($action != 'create' && $action != 'edit') {
 				if (!empty($conf->use_javascript_ajax) && empty($conf->dol_use_jmobile)) {
 					print dolGetButtonAction($langs->trans('Delete'), '', 'delete', '#', 'action-delete', true);
 				} else {
-					print dolGetButtonAction('', $langs->trans('Delete'), 'delete', DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id, '');
+					print dolGetButtonAction('', $langs->trans('Delete'), 'delete', $_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id, '');
 				}
 			} else {
 				print dolGetButtonAction($langs->trans("ProductIsUsed"), $langs->trans('Delete'), 'delete', '#', '', false);
@@ -3026,7 +3026,7 @@ if (getDolGlobalString('PRODUCT_ADD_FORM_ADD_TO') && $object->id && ($action == 
 
 	//If any text is going to be printed, then we show the table
 	if (!empty($html)) {
-		print '<form method="POST" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="addin">';
 
@@ -3070,7 +3070,7 @@ if ($action != 'create' && $action != 'edit' && $action != 'delete') {
 	} else {
 		$filedir = $conf->product->dir_output.'/'.$objectref;
 	}
-	$urlsource = DOL_PHP_SELF."?id=".$object->id;
+	$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 	$genallowed = $usercanread;
 	$delallowed = $usercancreate;
 

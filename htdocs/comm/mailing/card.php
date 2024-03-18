@@ -141,7 +141,7 @@ if (empty($reshook)) {
 		} else {
 			$result = $object->createFromClone($user, $object->id, GETPOST("clone_content", 'alpha'), GETPOST("clone_receivers", 'alpha'));
 			if ($result > 0) {
-				header("Location: ".DOL_PHP_SELF.'?id='.$result);
+				header("Location: ".$_SERVER['PHP_SELF'].'?id='.$result);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -568,7 +568,7 @@ if (empty($reshook)) {
 
 		if (!count($mesgs)) {
 			if ($object->create($user) >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			}
 			$mesgs[] = $object->error;
@@ -602,7 +602,7 @@ if (empty($reshook)) {
 		if (!$mesg) {
 			$result = $object->update($user);
 			if ($result >= 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			}
 			$mesg = $object->error;
@@ -661,7 +661,7 @@ if (empty($reshook)) {
 
 			if (!count($mesgs)) {
 				if ($object->update($user) >= 0) {
-					header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				}
 				$mesgs[] = $object->error;
@@ -680,7 +680,7 @@ if (empty($reshook)) {
 		if ($object->id > 0) {
 			$object->valid($user);
 			setEventMessages($langs->trans("MailingSuccessfullyValidated"), null, 'mesgs');
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		} else {
 			dol_print_error($db);
@@ -693,7 +693,7 @@ if (empty($reshook)) {
 			$result = $object->setStatut(0);
 			if ($result > 0) {
 				//setEventMessages($langs->trans("MailingSuccessfullyValidated"), null, 'mesgs');
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -715,7 +715,7 @@ if (empty($reshook)) {
 
 			if ($result > 0) {
 				$db->commit();
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -768,7 +768,7 @@ llxHeader(
 
 if ($action == 'create') {
 	// EMailing in creation mode
-	print '<form name="new_mailing" action="'.DOL_PHP_SELF.'" method="POST">'."\n";
+	print '<form name="new_mailing" action="'.$_SERVER['PHP_SELF'].'" method="POST">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -924,16 +924,16 @@ if ($action == 'create') {
 
 		if ($action == 'settodraft') {
 			// Confirmation back to draft
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("SetToDraft"), $langs->trans("ConfirmUnvalidateEmailing"), "confirm_settodraft", '', '', 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("SetToDraft"), $langs->trans("ConfirmUnvalidateEmailing"), "confirm_settodraft", '', '', 1);
 		} elseif ($action == 'valid') {
 			// Confirmation of mailing validation
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("ValidMailing"), $langs->trans("ConfirmValidMailing"), "confirm_valid", '', '', 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("ValidMailing"), $langs->trans("ConfirmValidMailing"), "confirm_valid", '', '', 1);
 		} elseif ($action == 'reset') {
 			// Confirm reset
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("ResetMailing"), $langs->trans("ConfirmResetMailing", $object->ref), "confirm_reset", '', '', 2);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("ResetMailing"), $langs->trans("ConfirmResetMailing", $object->ref), "confirm_reset", '', '', 2);
 		} elseif ($action == 'delete') {
 			// Confirm delete
-			print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id.(!empty($urlfrom) ? '&urlfrom='.urlencode($urlfrom) : ''), $langs->trans("DeleteMailing"), $langs->trans("ConfirmDeleteMailing"), "confirm_delete", '', '', 1);
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id.(!empty($urlfrom) ? '&urlfrom='.urlencode($urlfrom) : ''), $langs->trans("DeleteMailing"), $langs->trans("ConfirmDeleteMailing"), "confirm_delete", '', '', 1);
 		}
 
 		if ($action != 'edit' && $action != 'edittxt' && $action != 'edithtml') {
@@ -1011,7 +1011,7 @@ if ($action == 'create') {
 						$text .= '<br><textarea class="quatrevingtpercent" rows="'.ROWS_2.'" wrap="soft" disabled>php ./scripts/emailings/mailing-send.php '.$object->id.' '.$user->login.'</textarea>';
 					}
 
-					print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('SendMailing'), $text, 'sendallconfirmed', '', '', 1, 380, 660, 0, $langs->trans("Confirm"), $langs->trans("Cancel"));
+					print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('SendMailing'), $text, 'sendallconfirmed', '', '', 1, 380, 660, 0, $langs->trans("Confirm"), $langs->trans("Cancel"));
 				}
 			}
 
@@ -1155,7 +1155,7 @@ if ($action == 'create') {
 				1 => array('type' => 'checkbox', 'name' => 'clone_receivers', 'label' => $langs->trans("CloneReceivers"), 'value' => 0)
 				);
 				// Incomplete payment. On demande si motif = escompte ou autre
-				print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneEMailing', $object->ref), 'confirm_clone', $formquestion, 'yes', 2, 240);
+				print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneEMailing', $object->ref), 'confirm_clone', $formquestion, 'yes', 2, 240);
 			}
 
 			// Actions Buttons
@@ -1163,19 +1163,19 @@ if ($action == 'create') {
 				print "\n\n<div class=\"tabsAction\">\n";
 
 				if (($object->status == 1) && ($user->hasRight('mailing', 'valider') || $object->user_validation_id == $user->id)) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=settodraft&token='.newToken().'&id='.$object->id.'">'.$langs->trans("SetToDraft").'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=settodraft&token='.newToken().'&id='.$object->id.'">'.$langs->trans("SetToDraft").'</a>';
 				}
 
 				if (($object->status == 0 || $object->status == 1 || $object->status == 2) && $user->hasRight('mailing', 'creer')) {
 					if (isModEnabled('fckeditor') && getDolGlobalString('FCKEDITOR_ENABLE_MAILING') && $object->messtype != 'sms') {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("EditHTML").'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("EditHTML").'</a>';
 					} else {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edittxt&token='.newToken().'&id='.$object->id.'">'.$langs->trans("EditWithTextEditor").'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edittxt&token='.newToken().'&id='.$object->id.'">'.$langs->trans("EditWithTextEditor").'</a>';
 					}
 
 					if (!getDolGlobalInt('EMAILINGS_SUPPORT_ALSO_SMS')) {
 						if (!empty($conf->use_javascript_ajax)) {
-							print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edithtml&token='.newToken().'&id='.$object->id.'">'.$langs->trans("EditHTMLSource").'</a>';
+							print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edithtml&token='.newToken().'&id='.$object->id.'">'.$langs->trans("EditHTMLSource").'</a>';
 						}
 					}
 				}
@@ -1185,7 +1185,7 @@ if ($action == 'create') {
 				if (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('mailing', 'mailing_advance', 'send')) {
 					print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("TestMailing").'</a>';
 				} else {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=test&token='.newToken().'&id='.$object->id.'">'.$langs->trans("TestMailing").'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=test&token='.newToken().'&id='.$object->id.'">'.$langs->trans("TestMailing").'</a>';
 				}
 
 				if ($object->status == 0) {
@@ -1194,7 +1194,7 @@ if ($action == 'create') {
 					} elseif (!$user->hasRight('mailing', 'valider')) {
 						print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("Validate").'</a>';
 					} else {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=valid&amp;id='.$object->id.'">'.$langs->trans("Validate").'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=valid&amp;id='.$object->id.'">'.$langs->trans("Validate").'</a>';
 					}
 				}
 
@@ -1204,19 +1204,19 @@ if ($action == 'create') {
 					} elseif (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('mailing', 'mailing_advance', 'send')) {
 						print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("SendMailing").'</a>';
 					} else {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=sendall&amp;id='.$object->id.'">'.$langs->trans("SendMailing").'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=sendall&amp;id='.$object->id.'">'.$langs->trans("SendMailing").'</a>';
 					}
 				}
 
 				if ($user->hasRight('mailing', 'creer')) {
-					print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=clone&amp;object=emailing&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
+					print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=clone&amp;object=emailing&amp;id='.$object->id.'">'.$langs->trans("ToClone").'</a>';
 				}
 
 				if (($object->status == 2 || $object->status == 3) && $user->hasRight('mailing', 'valider')) {
 					if (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('mailing', 'mailing_advance', 'send')) {
 						print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("ResetMailing").'</a>';
 					} else {
-						print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=reset&amp;id='.$object->id.'">'.$langs->trans("ResetMailing").'</a>';
+						print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=reset&amp;id='.$object->id.'">'.$langs->trans("ResetMailing").'</a>';
 					}
 				}
 
@@ -1224,7 +1224,7 @@ if ($action == 'create') {
 					if ($object->status > 0 && (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && !$user->hasRight('mailing', 'mailing_advance', 'delete'))) {
 						print '<a class="butActionRefused classfortooltip" href="#" title="'.dol_escape_htmltag($langs->transnoentitiesnoconv("NotEnoughPermissions")).'">'.$langs->trans("Delete").'</a>';
 					} else {
-						print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.(!empty($urlfrom) ? '&urlfrom='.$urlfrom : '').'">'.$langs->trans("Delete").'</a>';
+						print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.(!empty($urlfrom) ? '&urlfrom='.$urlfrom : '').'">'.$langs->trans("Delete").'</a>';
 					}
 				}
 
@@ -1263,7 +1263,7 @@ if ($action == 'create') {
 				$formmail->param["action"] = "send";
 				$formmail->param["models"] = 'none';
 				$formmail->param["mailid"] = $object->id;
-				$formmail->param["returnurl"] = DOL_PHP_SELF."?id=".$object->id;
+				$formmail->param["returnurl"] = $_SERVER['PHP_SELF']."?id=".$object->id;
 
 				print $formmail->get_form();
 

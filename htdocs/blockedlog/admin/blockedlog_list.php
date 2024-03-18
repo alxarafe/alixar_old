@@ -331,7 +331,7 @@ print '<span class="opacitymedium hideonsmartphone">'.$langs->trans("Fingerprint
 print '<br>';
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -374,7 +374,7 @@ if (GETPOST('withtab', 'alpha')) {
 // Add $param from extra fields
 //include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print '<div class="right">';
@@ -401,7 +401,7 @@ print ' </div><br>';
 
 print '</form>';
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
@@ -486,22 +486,22 @@ print '</tr>';
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList('<span id="blockchainstatus"></span>', 0, DOL_PHP_SELF, '', '', $param, 'class="center"', $sortfield, $sortorder, '')."\n";
+	print getTitleFieldOfList('<span id="blockchainstatus"></span>', 0, $_SERVER['PHP_SELF'], '', '', $param, 'class="center"', $sortfield, $sortorder, '')."\n";
 }
-print getTitleFieldOfList($langs->trans('#'), 0, DOL_PHP_SELF, 'rowid', '', $param, '', $sortfield, $sortorder, 'minwidth50 ')."\n";
-print getTitleFieldOfList($langs->trans('Date'), 0, DOL_PHP_SELF, 'date_creation', '', $param, '', $sortfield, $sortorder, '')."\n";
-print getTitleFieldOfList($langs->trans('Author'), 0, DOL_PHP_SELF, 'user_fullname', '', $param, '', $sortfield, $sortorder, '')."\n";
-print getTitleFieldOfList($langs->trans('Action'), 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, '')."\n";
-print getTitleFieldOfList($langs->trans('Ref'), 0, DOL_PHP_SELF, 'ref_object', '', $param, '', $sortfield, $sortorder, '')."\n";
-print getTitleFieldOfList('', 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, '')."\n";
-print getTitleFieldOfList($langs->trans('Amount'), 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ')."\n";
-print getTitleFieldOfList($langs->trans('DataOfArchivedEvent'), 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
-print getTitleFieldOfList($langs->trans('Fingerprint'), 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, '')."\n";
-print getTitleFieldOfList($langs->trans('Status'), 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
-print getTitleFieldOfList('', 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
+print getTitleFieldOfList($langs->trans('#'), 0, $_SERVER['PHP_SELF'], 'rowid', '', $param, '', $sortfield, $sortorder, 'minwidth50 ')."\n";
+print getTitleFieldOfList($langs->trans('Date'), 0, $_SERVER['PHP_SELF'], 'date_creation', '', $param, '', $sortfield, $sortorder, '')."\n";
+print getTitleFieldOfList($langs->trans('Author'), 0, $_SERVER['PHP_SELF'], 'user_fullname', '', $param, '', $sortfield, $sortorder, '')."\n";
+print getTitleFieldOfList($langs->trans('Action'), 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, '')."\n";
+print getTitleFieldOfList($langs->trans('Ref'), 0, $_SERVER['PHP_SELF'], 'ref_object', '', $param, '', $sortfield, $sortorder, '')."\n";
+print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, '')."\n";
+print getTitleFieldOfList($langs->trans('Amount'), 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ')."\n";
+print getTitleFieldOfList($langs->trans('DataOfArchivedEvent'), 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
+print getTitleFieldOfList($langs->trans('Fingerprint'), 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, '')."\n";
+print getTitleFieldOfList($langs->trans('Status'), 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
+print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ')."\n";
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList('<span id="blockchainstatus"></span>', 0, DOL_PHP_SELF, '', '', $param, 'class="center"', $sortfield, $sortorder, '')."\n";
+	print getTitleFieldOfList('<span id="blockchainstatus"></span>', 0, $_SERVER['PHP_SELF'], '', '', $param, 'class="center"', $sortfield, $sortorder, '')."\n";
 }
 print '</tr>';
 

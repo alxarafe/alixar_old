@@ -143,7 +143,7 @@ if ($action == 'delete') {
 			$db->commit();
 			setEventMessages($langs->trans("PageDeleted", $objectpage->pageurl, $website), null, 'mesgs');
 
-			header("Location: ".DOL_PHP_SELF.'?website='.$website);
+			header("Location: ".$_SERVER['PHP_SELF'].'?website='.$website);
 			exit;
 		} else {
 			$db->rollback();
@@ -165,7 +165,7 @@ $help_url = '';
 
 llxHeader('', $langs->trans("WebsiteSetup"), $help_url, '', 0, '', '', '', '', '', '<!-- Begin div class="fiche" -->'."\n".'<div class="fichebutwithotherclass">');
 
-print "\n".'<form action="'.DOL_PHP_SELF.'" method="POST"><div>';
+print "\n".'<form action="'.$_SERVER['PHP_SELF'].'" method="POST"><div>';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 if ($action == 'create') {
 	print '<input type="hidden" name="action" value="add">';

@@ -358,7 +358,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -418,7 +418,7 @@ if (GETPOSTINT('nomassaction') || in_array($massaction, array('presend', 'predel
 }
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">'."\n";
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -439,12 +439,12 @@ if (!empty($socid)) {
 }
 
 $newcardbutton  = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 $newcardbutton .= dolGetButtonTitleSeparator();
 $newcardbutton .= dolGetButtonTitle($langs->trans('NewSalary'), '', 'fa fa-plus-circle', $url, '', $permissiontoadd);
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $object->picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $object->picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "SendSalaryRef";
@@ -472,7 +472,7 @@ if (!empty($moreforfilter)) {
 	print '</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -567,28 +567,28 @@ $totalarray['nbfield'] = 0;
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Ref", DOL_PHP_SELF, "s.rowid", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "s.rowid", "", $param, "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Label", DOL_PHP_SELF, "s.label", "", $param, 'class="left"', $sortfield, $sortorder);
+print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "s.label", "", $param, 'class="left"', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("DateStart", DOL_PHP_SELF, "s.datesp,s.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
+print_liste_field_titre("DateStart", $_SERVER['PHP_SELF'], "s.datesp,s.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("DateEnd", DOL_PHP_SELF, "s.dateep,s.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
+print_liste_field_titre("DateEnd", $_SERVER['PHP_SELF'], "s.dateep,s.rowid", "", $param, 'align="center"', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("Employee", DOL_PHP_SELF, "u.lastname", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre("Employee", $_SERVER['PHP_SELF'], "u.lastname", "", $param, "", $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre("DefaultPaymentMode", DOL_PHP_SELF, "type", "", $param, 'class="left"', $sortfield, $sortorder);
+print_liste_field_titre("DefaultPaymentMode", $_SERVER['PHP_SELF'], "type", "", $param, 'class="left"', $sortfield, $sortorder);
 $totalarray['nbfield']++;
 if (isModEnabled("bank")) {
-	print_liste_field_titre("DefaultBankAccount", DOL_PHP_SELF, "ba.label", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("DefaultBankAccount", $_SERVER['PHP_SELF'], "ba.label", "", $param, "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
-print_liste_field_titre("Amount", DOL_PHP_SELF, "s.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+print_liste_field_titre("Amount", $_SERVER['PHP_SELF'], "s.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 $totalarray['nbfield']++;
-print_liste_field_titre('Status', DOL_PHP_SELF, "s.paye", '', $param, 'class="right"', $sortfield, $sortorder);
+print_liste_field_titre('Status', $_SERVER['PHP_SELF'], "s.paye", '', $param, 'class="right"', $sortfield, $sortorder);
 $totalarray['nbfield']++;
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
@@ -598,7 +598,7 @@ $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $objec
 print $hookmanager->resPrint;
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
 print '</tr>'."\n";

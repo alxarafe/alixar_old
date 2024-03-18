@@ -188,7 +188,7 @@ if ($action == "deleteRate") {
 		$current_currency->fetch($current_rate->fk_multicurrency);
 		if ($current_currency) {
 			$delayedhtmlcontent = $form->formconfirm(
-				DOL_PHP_SELF.'?id_rate='.$id_rate_selected,
+				$_SERVER['PHP_SELF'].'?id_rate='.$id_rate_selected,
 				$langs->trans('DeleteLineRate'),
 				$langs->trans('ConfirmDeleteLineRate', $current_rate->rate, $current_currency->name, $current_rate->date_sync),
 				'confirm_delete',
@@ -279,7 +279,7 @@ print dol_get_fiche_head($head, 'ratelist', $langs->trans("ModuleSetup"), -1, "m
 // ACTION
 
 if (!in_array($action, array("updateRate", "deleteRate"))) {
-	print '<form action="'.DOL_PHP_SELF.'" method="post" name="formulaire">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post" name="formulaire">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	print '<div class="div-table-responsive-no-min">';
@@ -389,7 +389,7 @@ if ($resql) {
 	$arrayofselected = is_array($toselect) ? $toselect : array();
 
 	$param = '';
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -423,7 +423,7 @@ if ($resql) {
 	}
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST" name="formulaire">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" name="formulaire">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -435,7 +435,7 @@ if ($resql) {
 	print '<input type="hidden" name="page" value="'.$page.'">';
 	print '<input type="hidden" name="type" value="'.$type.'">';
 
-	print_barre_liste($texte, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'title_currency.png', 0, $newcardbutton, '', $limit);
+	print_barre_liste($texte, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'title_currency.png', 0, $newcardbutton, '', $limit);
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
@@ -464,7 +464,7 @@ if ($resql) {
 		print '</div>';
 	}
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 	if ($massactionbutton) {
 		$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
@@ -520,16 +520,16 @@ if ($resql) {
 	print '<tr class="liste_titre">';
 	// Action column
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ');
 	}
 	if (!empty($arrayfields['cr.date_sync']['checked'])) {
-		print_liste_field_titre($arrayfields['cr.date_sync']['label'], DOL_PHP_SELF, "cr.date_sync", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['cr.date_sync']['label'], $_SERVER['PHP_SELF'], "cr.date_sync", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['m.code']['checked'])) {
-		print_liste_field_titre($arrayfields['m.code']['label'], DOL_PHP_SELF, "m.code", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['m.code']['label'], $_SERVER['PHP_SELF'], "m.code", "", $param, "", $sortfield, $sortorder);
 	}
 	if (!empty($arrayfields['cr.rate']['checked'])) {
-		print_liste_field_titre($arrayfields['cr.rate']['label'], DOL_PHP_SELF, "cr.rate", "", $param, "", $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['cr.rate']['label'], $_SERVER['PHP_SELF'], "cr.rate", "", $param, "", $sortfield, $sortorder);
 	}
 
 	// Hook fields
@@ -538,7 +538,7 @@ if ($resql) {
 	print $hookmanager->resPrint;
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch center ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch center ');
 	}
 	print "</tr>\n";
 
@@ -577,8 +577,8 @@ if ($resql) {
 					if (in_array($obj->rowid, $arrayofselected)) {
 						$selected = 1;
 					}
-					print '<a class="editfielda marginleftonly marginrightonly reposition" href="'.DOL_PHP_SELF.'?action=updateRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('edit', 'edit').'</a>';
-					print '<a class="marginleftonly marginrightonly reposition" href="'.DOL_PHP_SELF.'?action=deleteRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('delete', 'delete').'</a>';
+					print '<a class="editfielda marginleftonly marginrightonly reposition" href="'.$_SERVER['PHP_SELF'].'?action=updateRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('edit', 'edit').'</a>';
+					print '<a class="marginleftonly marginrightonly reposition" href="'.$_SERVER['PHP_SELF'].'?action=deleteRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('delete', 'delete').'</a>';
 					print '<input id="cb'.$obj->rowid.'" class="flat checkforselect marginleftonly" type="checkbox" name="toselect[]" value="'.$obj->rowid.'"'.($selected ? ' checked="checked"' : '').'>';
 				}
 				print '</td>';
@@ -643,8 +643,8 @@ if ($resql) {
 					if (in_array($obj->rowid, $arrayofselected)) {
 						$selected = 1;
 					}
-					print '<a class="editfielda marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?action=updateRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('edit', 'edit').'</a>';
-					print '<a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?action=deleteRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('delete', 'delete').'</a>';
+					print '<a class="editfielda marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?action=updateRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('edit', 'edit').'</a>';
+					print '<a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?action=deleteRate&token='.newToken().'&id_rate='.$obj->rowid.'">'.img_picto('delete', 'delete').'</a>';
 					print '<input id="cb'.$obj->rowid.'" class="flat checkforselect marginleftonly" type="checkbox" name="toselect[]" value="'.$obj->rowid.'"'.($selected ? ' checked="checked"' : '').'>';
 				}
 				print '</td>';

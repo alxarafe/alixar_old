@@ -36,7 +36,7 @@ if (isModEnabled('order')) {
 	print '<strong class="wordbreak">'.getOnlinePaymentUrl(1, 'order')."</strong><br>\n";
 	if (getDolGlobalString('PAYMENT_SECURITY_TOKEN') && getDolGlobalString('PAYMENT_SECURITY_TOKEN_UNIQUE')) {
 		$langs->load("orders");
-		print '<form action="'.DOL_PHP_SELF.'#order" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'#order" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
 		print $langs->trans("EnterRefToBuildUrl", $langs->transnoentitiesnoconv("Order")).': ';
@@ -58,7 +58,7 @@ if (isModEnabled('invoice')) {
 	print '<strong class="wordbreak">'.getOnlinePaymentUrl(1, 'invoice')."</strong><br>\n";
 	if (getDolGlobalString('PAYMENT_SECURITY_TOKEN') && getDolGlobalString('PAYMENT_SECURITY_TOKEN_UNIQUE')) {
 		$langs->load("bills");
-		print '<form action="'.DOL_PHP_SELF.'#invoice" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'#invoice" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
 		print $langs->trans("EnterRefToBuildUrl", $langs->transnoentitiesnoconv("Invoice")).': ';
@@ -80,7 +80,7 @@ if (isModEnabled('contract')) {
 	print '<strong class="wordbreak">'.getOnlinePaymentUrl(1, 'contractline')."</strong><br>\n";
 	if (getDolGlobalString('PAYMENT_SECURITY_TOKEN') && getDolGlobalString('PAYMENT_SECURITY_TOKEN_UNIQUE')) {
 		$langs->load("contracts");
-		print '<form action="'.DOL_PHP_SELF.'#contractline" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'#contractline" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
 		print $langs->trans("EnterRefToBuildUrl", $langs->transnoentitiesnoconv("ContractLine")).': ';
@@ -102,7 +102,7 @@ if (isModEnabled('member')) {
 	print '<strong class="wordbreak">'.getOnlinePaymentUrl(1, 'membersubscription')."</strong><br>\n";
 	if (getDolGlobalString('PAYMENT_SECURITY_TOKEN') && getDolGlobalString('PAYMENT_SECURITY_TOKEN_UNIQUE')) {
 		$langs->load("members");
-		print '<form action="'.DOL_PHP_SELF.'#membersubscription" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'#membersubscription" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
 		print $langs->trans("EnterRefToBuildUrl", $langs->transnoentitiesnoconv("Member")).': ';
@@ -124,7 +124,7 @@ if (isModEnabled('don')) {
 	print '<strong class="wordbreak">'.getOnlinePaymentUrl(1, 'donation')."</strong><br>\n";
 	if (getDolGlobalString('PAYMENT_SECURITY_TOKEN') && getDolGlobalString('PAYMENT_SECURITY_TOKEN_UNIQUE')) {
 		$langs->load("members");
-		print '<form action="'.DOL_PHP_SELF.'#donation" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'#donation" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 
 		print $langs->trans("EnterRefToBuildUrl", $langs->transnoentitiesnoconv("Don")).': ';

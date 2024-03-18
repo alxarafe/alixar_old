@@ -459,7 +459,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -532,7 +532,7 @@ if ($sellby)	$param.="&sellby=".$sellby;*/
 
 llxHeader("", $title, $helpurl, $texte);
 
-print '<form id="searchFormList" action="'.DOL_PHP_SELF.'" method="POST" name="formulaire">'."\n";
+print '<form id="searchFormList" action="'.$_SERVER['PHP_SELF'].'" method="POST" name="formulaire">'."\n";
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -545,7 +545,7 @@ print '<input type="hidden" name="page" value="'.$page.'">';
 print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 print '<input type="hidden" name="mode" value="'.$mode.'">';
 
-print_barre_liste($texte, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'product', 0, '', '', $limit, 0, 0, 1);
+print_barre_liste($texte, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'product', 0, '', '', $limit, 0, 0, 1);
 
 /*
 if ($search_categ > 0) {
@@ -665,26 +665,26 @@ print '<tr class="liste_titre">';
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 	print_liste_field_titre('');
 }
-print_liste_field_titre("Ref", DOL_PHP_SELF, "p.ref", '', $param, "", $sortfield, $sortorder);
-print_liste_field_titre("Label", DOL_PHP_SELF, "p.label", '', $param, "", $sortfield, $sortorder);
+print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "p.ref", '', $param, "", $sortfield, $sortorder);
+print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "p.label", '', $param, "", $sortfield, $sortorder);
 if (isModEnabled("service") && $type == 1) {
-	print_liste_field_titre("Duration", DOL_PHP_SELF, "p.duration", '', $param, "", $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("Duration", $_SERVER['PHP_SELF'], "p.duration", '', $param, "", $sortfield, $sortorder, 'center ');
 }
-print_liste_field_titre("Warehouse", DOL_PHP_SELF, "e.ref", '', $param, "", $sortfield, $sortorder);
-//print_liste_field_titre("DesiredStock", DOL_PHP_SELF, "p.desiredstock",$param,"",'',$sortfield,$sortorder, 'right );
-print_liste_field_titre("Batch", DOL_PHP_SELF, "pb.batch", '', $param, "", $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Warehouse", $_SERVER['PHP_SELF'], "e.ref", '', $param, "", $sortfield, $sortorder);
+//print_liste_field_titre("DesiredStock", $_SERVER['PHP_SELF'], "p.desiredstock",$param,"",'',$sortfield,$sortorder, 'right );
+print_liste_field_titre("Batch", $_SERVER['PHP_SELF'], "pb.batch", '', $param, "", $sortfield, $sortorder, 'center ');
 if (!getDolGlobalString('PRODUCT_DISABLE_SELLBY')) {
-	print_liste_field_titre("SellByDate", DOL_PHP_SELF, "pl.sellby", '', $param, "", $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("SellByDate", $_SERVER['PHP_SELF'], "pl.sellby", '', $param, "", $sortfield, $sortorder, 'center ');
 }
 if (!getDolGlobalString('PRODUCT_DISABLE_EATBY')) {
-	print_liste_field_titre("EatByDate", DOL_PHP_SELF, "pl.eatby", '', $param, "", $sortfield, $sortorder, 'center ');
+	print_liste_field_titre("EatByDate", $_SERVER['PHP_SELF'], "pl.eatby", '', $param, "", $sortfield, $sortorder, 'center ');
 }
-print_liste_field_titre("PhysicalStock", DOL_PHP_SELF, "stock_physique", '', $param, "", $sortfield, $sortorder, 'right ');
+print_liste_field_titre("PhysicalStock", $_SERVER['PHP_SELF'], "stock_physique", '', $param, "", $sortfield, $sortorder, 'right ');
 // TODO Add info of running suppliers/customers orders
-//print_liste_field_titre("TheoreticalStock",DOL_PHP_SELF, "stock_theorique",$param,"",'',$sortfield,$sortorder, 'right ');
+//print_liste_field_titre("TheoreticalStock",$_SERVER['PHP_SELF'], "stock_theorique",$param,"",'',$sortfield,$sortorder, 'right ');
 print_liste_field_titre('');
-print_liste_field_titre("ProductStatusOnSell", DOL_PHP_SELF, "p.tosell", "", $param, '', $sortfield, $sortorder, 'right ');
-print_liste_field_titre("ProductStatusOnBuy", DOL_PHP_SELF, "p.tobuy", "", $param, '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre("ProductStatusOnSell", $_SERVER['PHP_SELF'], "p.tosell", "", $param, '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre("ProductStatusOnBuy", $_SERVER['PHP_SELF'], "p.tobuy", "", $param, '', $sortfield, $sortorder, 'right ');
 // Hook fields
 $parameters = array('param' => $param, 'sortfield' => $sortfield, 'sortorder' => $sortorder);
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook

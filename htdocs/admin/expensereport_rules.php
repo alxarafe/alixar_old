@@ -144,7 +144,7 @@ if (empty($reshook)) {
 			}
 
 			if (!$error) {
-				header('Location: ' . DOL_PHP_SELF);
+				header('Location: ' . $_SERVER['PHP_SELF']);
 				exit;
 			} else {
 				$action = '';
@@ -158,7 +158,7 @@ if (empty($reshook)) {
 			dol_print_error($object->db);
 		}
 
-		header('Location: ' . DOL_PHP_SELF);
+		header('Location: ' . $_SERVER['PHP_SELF']);
 		exit;
 	}
 
@@ -196,7 +196,7 @@ echo '<span class="opacitymedium">' . $langs->trans('ExpenseReportRulesDesc') . 
 print '<br><br>';
 
 if ($action != 'edit') {
-	echo '<form action="' . DOL_PHP_SELF . '" method="post">';
+	echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post">';
 	echo '<input type="hidden" name="token" value="' . newToken() . '" />';
 	echo '<input type="hidden" name="action" value="save" />';
 
@@ -234,7 +234,7 @@ if ($action != 'edit') {
 }
 
 
-echo '<form action="' . DOL_PHP_SELF . '" method="post">';
+echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post">';
 echo '<input type="hidden" name="token" value="' . newToken() . '" />';
 
 if ($action == 'edit') {
@@ -344,11 +344,11 @@ foreach ($rules as $rule) {
 
 	echo '<td class="center">';
 	if ($object->id != $rule->id) {
-		echo '<a class="editfielda paddingright paddingleft" href="' . DOL_PHP_SELF . '?action=edit&token=' . newToken() . '&id=' . $rule->id . '">' . img_edit() . '</a>&nbsp;';
-		echo '<a class="paddingright paddingleft" href="' . DOL_PHP_SELF . '?action=delete&token=' . newToken() . '&id=' . $rule->id . '">' . img_delete() . '</a>';
+		echo '<a class="editfielda paddingright paddingleft" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '&id=' . $rule->id . '">' . img_edit() . '</a>&nbsp;';
+		echo '<a class="paddingright paddingleft" href="' . $_SERVER['PHP_SELF'] . '?action=delete&token=' . newToken() . '&id=' . $rule->id . '">' . img_delete() . '</a>';
 	} else {
 		echo '<input type="submit" class="button button-edit" value="' . $langs->trans('Update') . '" />&nbsp;';
-		echo '<a href="' . DOL_PHP_SELF . '" class="button button-cancel">' . $langs->trans("Cancel") . '</a>';
+		echo '<a href="' . $_SERVER['PHP_SELF'] . '" class="button button-cancel">' . $langs->trans("Cancel") . '</a>';
 	}
 	echo '</td>';
 

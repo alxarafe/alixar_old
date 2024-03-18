@@ -526,7 +526,7 @@ if ($action == 'confirm_deletefile' && $confirm == 'yes') {
 	} else {
 		setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('urlfile')), null, 'errors');
 	}
-	header('Location: '.DOL_PHP_SELF);
+	header('Location: '.$_SERVER['PHP_SELF']);
 	exit;
 }
 
@@ -562,7 +562,7 @@ print '<br>';
 //print '<br>';
 
 // Form to upload a file
-print '<form name="userfile" action="'.DOL_PHP_SELF.'" enctype="multipart/form-data" METHOD="POST">';
+print '<form name="userfile" action="'.$_SERVER['PHP_SELF'].'" enctype="multipart/form-data" METHOD="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="importCSV">';
 if (!empty($conf->dol_optimize_smallscreen)) {
@@ -649,7 +649,7 @@ print '</form>';
 print '<br><br>';
 
 // Form to add a line
-print '<form action="'.DOL_PHP_SELF.'" method="POST" name="formulaire">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" name="formulaire">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="addline">';
 
@@ -660,13 +660,13 @@ print '<table class="liste centpercent">';
 $param = '';
 
 print '<tr class="liste_titre">';
-print getTitleFieldOfList($langs->trans('WarehouseSource'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
-print getTitleFieldOfList($langs->trans('WarehouseTarget'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
-print getTitleFieldOfList($langs->trans('Product'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+print getTitleFieldOfList($langs->trans('WarehouseSource'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+print getTitleFieldOfList($langs->trans('WarehouseTarget'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+print getTitleFieldOfList($langs->trans('Product'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
 if (isModEnabled('productbatch')) {
-	print getTitleFieldOfList($langs->trans('Batch'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+	print getTitleFieldOfList($langs->trans('Batch'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
 }
-print getTitleFieldOfList($langs->trans('Qty'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right tagtd maxwidthonsmartphone ');
+print getTitleFieldOfList($langs->trans('Qty'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right tagtd maxwidthonsmartphone ');
 print getTitleFieldOfList('', 0);
 print '</tr>';
 
@@ -757,7 +757,7 @@ foreach ($listofdata as $key => $val) {
 			print '</td>';
 		}
 		print '<td class="right">'.price2num((float) $val['qty'], 'MS').'</td>';
-		print '<td class="right"><a href="'.DOL_PHP_SELF.'?action=delline&token='.newToken().'&idline='.$val['id'].'">'.img_delete($langs->trans("Remove")).'</a></td>';
+		print '<td class="right"><a href="'.$_SERVER['PHP_SELF'].'?action=delline&token='.newToken().'&idline='.$val['id'].'">'.img_delete($langs->trans("Remove")).'</a></td>';
 		print '</tr>';
 	}
 }
@@ -771,7 +771,7 @@ print '<br>';
 
 // Form to validate all movements
 if (count($listofdata)) {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST" name="formulaire2" class="formconsumeproduce">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" name="formulaire2" class="formconsumeproduce">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="createmovements">';
 
@@ -796,7 +796,7 @@ if (count($listofdata)) {
 }
 
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?urlfile='.urlencode(GETPOST('urlfile')).'&step=3'.$param, $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', 0, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?urlfile='.urlencode(GETPOST('urlfile')).'&step=3'.$param, $langs->trans('DeleteFile'), $langs->trans('ConfirmDeleteFile'), 'confirm_deletefile', '', 0, 1);
 }
 
 // End of page

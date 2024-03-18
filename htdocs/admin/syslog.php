@@ -187,7 +187,7 @@ if (isModEnabled('multicompany') && $user->entity) {
 
 // Output mode
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 
 print load_fiche_titre($langs->trans("SyslogOutput"), '', '');
 
@@ -279,7 +279,7 @@ print '<br>'."\n\n";
 
 // Level
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 
 print load_fiche_titre($langs->trans("SyslogLevel"), '', '');
 

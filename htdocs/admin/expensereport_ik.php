@@ -76,7 +76,7 @@ if ($action == 'updateik') {
 	if ($result > 0) {
 		setEventMessages('SetupSaved', null, 'mesgs');
 
-		header('Location: '.DOL_PHP_SELF);
+		header('Location: '.$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages($expIk->error, $expIk->errors, 'errors');
@@ -91,7 +91,7 @@ if ($action == 'updateik') {
 		$expIk->delete($user);
 	}
 
-	header('Location: '.DOL_PHP_SELF);
+	header('Location: '.$_SERVER['PHP_SELF']);
 	exit;
 }
 
@@ -115,7 +115,7 @@ print dol_get_fiche_head($head, 'expenseik', $langs->trans("ExpenseReportsIk"), 
 echo '<span class="opacitymedium">'.$langs->trans('ExpenseReportIkDesc').'</span>';
 print '<br><br>';
 
-echo '<form action="'.DOL_PHP_SELF.'" method="POST">';
+echo '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 echo '<input type="hidden" name="token" value="'.newToken().'" />';
 
 if ($action == 'edit') {
@@ -187,9 +187,9 @@ foreach ($rangesbycateg as $fk_c_exp_tax_cat => $Tab) {
 				echo '<input id="" class="button button-save" name="save" value="'.$langs->trans("Save").'" type="submit" />';
 				echo '<input class="button button-cancel" value="'.$langs->trans("Cancel").'" onclick="history.go(-1)" type="button" />';
 			} else {
-				echo '<a class="editfielda marginrightonly paddingleft paddingright" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$range->ik->id.'&fk_c_exp_tax_cat='.$range->fk_c_exp_tax_cat.'&fk_range='.$range->rowid.'">'.img_edit().'</a>';
+				echo '<a class="editfielda marginrightonly paddingleft paddingright" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$range->ik->id.'&fk_c_exp_tax_cat='.$range->fk_c_exp_tax_cat.'&fk_range='.$range->rowid.'">'.img_edit().'</a>';
 				if (!empty($range->ik->id)) {
-					echo '<a class="paddingleft paddingright" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$range->ik->id.'">'.img_delete().'</a>';
+					echo '<a class="paddingleft paddingright" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$range->ik->id.'">'.img_delete().'</a>';
 				}
 				// TODO add delete link
 			}

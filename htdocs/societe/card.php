@@ -607,7 +607,7 @@ if (empty($reshook)) {
 						header("Location: ".$backtopage);
 						exit;
 					} else {
-						$url = DOL_PHP_SELF."?socid=".$object->id; // Old method
+						$url = $_SERVER['PHP_SELF']."?socid=".$object->id; // Old method
 						if (($object->client == 1 || $object->client == 3) && !getDolGlobalString('SOCIETE_DISABLE_CUSTOMERS')) {
 							$url = DOL_URL_ROOT."/comm/card.php?socid=".$object->id;
 						} elseif ($object->fournisseur == 1) {
@@ -631,7 +631,7 @@ if (empty($reshook)) {
 						header("Location: ".$backtopage);
 						exit;
 					} else {
-						header("Location: ".DOL_PHP_SELF."?socid=".$socid);
+						header("Location: ".$_SERVER['PHP_SELF']."?socid=".$socid);
 						exit;
 					}
 				}
@@ -769,7 +769,7 @@ if (empty($reshook)) {
 						header("Location: ".$backtopage);
 						exit;
 					} else {
-						header("Location: ".DOL_PHP_SELF."?socid=".$socid);
+						header("Location: ".$_SERVER['PHP_SELF']."?socid=".$socid);
 						exit;
 					}
 				} else {
@@ -1200,7 +1200,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 		dol_htmloutput_mesg(is_numeric($error) ? '' : $error, $errors, 'error');
 
-		print '<form enctype="multipart/form-data" action="'.DOL_PHP_SELF.'" method="post" name="formsoc" autocomplete="off">'; // Chrome ignor autocomplete
+		print '<form enctype="multipart/form-data" action="'.$_SERVER['PHP_SELF'].'" method="post" name="formsoc" autocomplete="off">'; // Chrome ignor autocomplete
 
 		print '<input type="hidden" name="action" value="add">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -2035,7 +2035,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '</script>'."\n";
 			}
 
-			print '<form enctype="multipart/form-data" action="'.DOL_PHP_SELF.'?socid='.$object->id.'" method="post" name="formsoc">';
+			print '<form enctype="multipart/form-data" action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'" method="post" name="formsoc">';
 			print '<input type="hidden" name="action" value="update">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="socid" value="'.$object->id.'">';
@@ -2612,7 +2612,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 		// Confirm delete third party
 		if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?socid=".$object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "action-delete");
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?socid=".$object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "action-delete");
 		}
 
 		if ($action == 'merge') {
@@ -2625,7 +2625,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				)
 			);
 
-			$formconfirm .= $form->formconfirm(DOL_PHP_SELF."?socid=".$object->id, $langs->trans("MergeThirdparties"), $langs->trans("ConfirmMergeThirdparties"), "confirm_merge", $formquestion, 'no', 1, 250);
+			$formconfirm .= $form->formconfirm($_SERVER['PHP_SELF']."?socid=".$object->id, $langs->trans("MergeThirdparties"), $langs->trans("ConfirmMergeThirdparties"), "confirm_merge", $formquestion, 'no', 1, 250);
 		}
 
 		// Call Hook formConfirm
@@ -2768,10 +2768,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '</td></tr>';
 
 					if ($object->localtax1_assuj == "1" && (!isOnlyOneLocalTax(1))) {
-						print '<form method="post" action="'.DOL_PHP_SELF.'?socid='.$object->id.'">';
+						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'">';
 						print '<input type="hidden" name="action" value="set_localtax1">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
-						print '<tr><td>'.$langs->transcountry("Localtax1", $mysoc->country_code).' <a class="editfielda" href="'.DOL_PHP_SELF.'?action=editRE&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
+						print '<tr><td>'.$langs->transcountry("Localtax1", $mysoc->country_code).' <a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editRE&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
 						if ($action == 'editRE') {
 							print '<td class="left">';
 							$formcompany->select_localtax(1, $object->localtax1_value, "lt1");
@@ -2782,10 +2782,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 						print '</tr></form>';
 					}
 					if ($object->localtax2_assuj == "1" && (!isOnlyOneLocalTax(2))) {
-						print '<form method="post" action="'.DOL_PHP_SELF.'?socid='.$object->id.'">';
+						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'">';
 						print '<input type="hidden" name="action" value="set_localtax2">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
-						print '<tr><td>'.$langs->transcountry("Localtax2", $mysoc->country_code).'<a class="editfielda" href="'.DOL_PHP_SELF.'?action=editIRPF&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
+						print '<tr><td>'.$langs->transcountry("Localtax2", $mysoc->country_code).'<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editIRPF&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
 						if ($action == 'editIRPF') {
 							print '<td class="left">';
 							$formcompany->select_localtax(2, $object->localtax2_value, "lt2");
@@ -2800,10 +2800,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print yn($object->localtax1_assuj);
 					print '</td></tr>';
 					if ($object->localtax1_assuj == "1" && (!isOnlyOneLocalTax(1))) {
-						print '<form method="post" action="'.DOL_PHP_SELF.'?socid='.$object->id.'">';
+						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'">';
 						print '<input type="hidden" name="action" value="set_localtax1">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
-						print '<tr><td> '.$langs->transcountry("Localtax1", $mysoc->country_code).'<a class="editfielda" href="'.DOL_PHP_SELF.'?action=editRE&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
+						print '<tr><td> '.$langs->transcountry("Localtax1", $mysoc->country_code).'<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editRE&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
 						if ($action == 'editRE') {
 							print '<td class="left">';
 							$formcompany->select_localtax(1, $object->localtax1_value, "lt1");
@@ -2818,10 +2818,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print yn($object->localtax2_assuj);
 					print '</td></tr>';
 					if ($object->localtax2_assuj == "1" && (!isOnlyOneLocalTax(2))) {
-						print '<form method="post" action="'.DOL_PHP_SELF.'?socid='.$object->id.'">';
+						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'">';
 						print '<input type="hidden" name="action" value="set_localtax2">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
-						print '<tr><td> '.$langs->transcountry("Localtax2", $mysoc->country_code).' <a class="editfielda" href="'.DOL_PHP_SELF.'?action=editIRPF&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
+						print '<tr><td> '.$langs->transcountry("Localtax2", $mysoc->country_code).' <a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editIRPF&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</td>';
 						if ($action == 'editIRPF') {
 							print '<td class="left">';
 							$formcompany->select_localtax(2, $object->localtax2_value, "lt2");
@@ -2884,12 +2884,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print $form->editfieldkey("Warehouse", 'warehouse', '', $object, $user->hasRight('societe', 'creer'));
 				print '</td><td>';
 				if ($action == 'editwarehouse') {
-					$formproduct->formSelectWarehouses(DOL_PHP_SELF.'?id='.$object->id, $object->fk_warehouse, 'fk_warehouse', 1);
+					$formproduct->formSelectWarehouses($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_warehouse, 'fk_warehouse', 1);
 				} else {
 					if ($object->fk_warehouse > 0) {
 						print img_picto('', 'stock', 'class="paddingrightonly"');
 					}
-					$formproduct->formSelectWarehouses(DOL_PHP_SELF.'?id='.$object->id, $object->fk_warehouse, 'none');
+					$formproduct->formSelectWarehouses($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_warehouse, 'none');
 				}
 				print '</td>';
 				print '</tr>';
@@ -2927,12 +2927,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			print '<tr><td>';
 			print '<table class="nobordernopadding" width="100%"><tr><td>'.$langs->trans('ThirdPartyType').'</td>';
 			if ($action != 'editthirdpartytype' && $user->hasRight('societe', 'creer')) {
-				print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editthirdpartytype&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
+				print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editthirdpartytype&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td><td>';
 			$html_name = ($action == 'editthirdpartytype') ? 'typent_id' : 'none';
-			$formcompany->formThirdpartyType(DOL_PHP_SELF.'?socid='.$object->id, $object->typent_id, $html_name, '');
+			$formcompany->formThirdpartyType($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->typent_id, $html_name, '');
 			print '</td></tr>';
 
 			// Workforce/Staff
@@ -2994,14 +2994,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '<tr><td>';
 				print '<table width="100%" class="nobordernopadding"><tr><td>'.$langs->trans('IncotermLabel').'</td>';
 				if ($action != 'editincoterm' && $user->hasRight('societe', 'creer')) {
-					print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?socid='.$object->id.'&action=editincoterm&token='.newToken().'">'.img_edit('', 1).'</a></td>';
+					print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&action=editincoterm&token='.newToken().'">'.img_edit('', 1).'</a></td>';
 				}
 				print '</tr></table>';
 				print '</td><td colspan="3">';
 				if ($action != 'editincoterm') {
 					print $form->textwithpicto($object->display_incoterms(), $object->label_incoterms, 1);
 				} else {
-					print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), DOL_PHP_SELF.'?socid='.$object->id);
+					print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), $_SERVER['PHP_SELF'].'?socid='.$object->id);
 				}
 				print '</td></tr>';
 			}
@@ -3058,12 +3058,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '<tr><td>';
 				print '<table class="nobordernopadding" width="100%"><tr><td>'.$langs->trans('ParentCompany').'</td>';
 				if ($action != 'editparentcompany' && $user->hasRight('societe', 'creer')) {
-					print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editparentcompany&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
+					print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editparentcompany&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
 				}
 				print '</tr></table>';
 				print '</td><td>';
 				$html_name = ($action == 'editparentcompany') ? 'parent_id' : 'none';
-				$form->form_thirdparty(DOL_PHP_SELF.'?socid='.$object->id, $object->parent, $html_name, '', 1, 0, 0, null, 0, array($object->id));
+				$form->form_thirdparty($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->parent, $html_name, '', 1, 0, 0, null, 0, array($object->id));
 				print '</td></tr>';
 			}
 
@@ -3096,7 +3096,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			} else {
 				//print '<span class="opacitymedium">'.$langs->trans("NoDolibarrAccess").'</span>';
 				if (!$object->user_id && $user->hasRight('user', 'user', 'creer')) {
-					print '<a class="aaa" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=create_user&token='.newToken().'">'.img_picto($langs->trans("CreateDolibarrLogin"), 'add').' '.$langs->trans("CreateDolibarrLogin").'</a>';
+					print '<a class="aaa" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=create_user&token='.newToken().'">'.img_picto($langs->trans("CreateDolibarrLogin"), 'add').' '.$langs->trans("CreateDolibarrLogin").'</a>';
 				}
 			}
 			print '</td></tr>';
@@ -3142,10 +3142,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					if (empty($object->email) && !$at_least_one_email_contact) {
 						$title = $langs->trans('NoEMail');
 					}
-					print dolGetButtonAction($title, $langs->trans('SendMail'), 'default', DOL_PHP_SELF.'?socid='.$object->id.'&action=presend&mode=init#formmailbeforetitle', 'btn-send-mail', !empty($object->email) || $at_least_one_email_contact);
+					print dolGetButtonAction($title, $langs->trans('SendMail'), 'default', $_SERVER['PHP_SELF'].'?socid='.$object->id.'&action=presend&mode=init#formmailbeforetitle', 'btn-send-mail', !empty($object->email) || $at_least_one_email_contact);
 				}
 
-				print dolGetButtonAction('', $langs->trans('Modify'), 'default', DOL_PHP_SELF.'?socid='.$object->id.'&action=edit&token='.newToken(), '', $permissiontoadd);
+				print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER['PHP_SELF'].'?socid='.$object->id.'&action=edit&token='.newToken(), '', $permissiontoadd);
 
 				if (isModEnabled('member')) {
 					$adh = new Adherent($db);
@@ -3155,10 +3155,10 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					}
 				}
 
-				print dolGetButtonAction($langs->trans('MergeThirdparties'), $langs->trans('Merge'), 'danger', DOL_PHP_SELF.'?socid='.$object->id.'&action=merge&token='.newToken(), '', $permissiontodelete);
+				print dolGetButtonAction($langs->trans('MergeThirdparties'), $langs->trans('Merge'), 'danger', $_SERVER['PHP_SELF'].'?socid='.$object->id.'&action=merge&token='.newToken(), '', $permissiontodelete);
 
 				if ($user->hasRight('societe', 'supprimer')) {
-					$deleteUrl = DOL_PHP_SELF.'?socid='.$object->id.'&action=delete&token='.newToken();
+					$deleteUrl = $_SERVER['PHP_SELF'].'?socid='.$object->id.'&action=delete&token='.newToken();
 					$buttonId = 'action-delete-no-ajax';
 					if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile)) {	// We can't use preloaded confirm form with jmobile
 						$deleteUrl = '';
@@ -3186,7 +3186,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				 * Generated documents
 				 */
 				$filedir = $conf->societe->multidir_output[$object->entity].'/'.$object->id;
-				$urlsource = DOL_PHP_SELF."?socid=".$object->id;
+				$urlsource = $_SERVER['PHP_SELF']."?socid=".$object->id;
 				$genallowed = $user->hasRight('societe', 'lire');
 				$delallowed = $user->hasRight('societe', 'creer');
 
@@ -3218,7 +3218,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			if (getDolGlobalString('MAIN_DUPLICATE_CONTACTS_TAB_ON_MAIN_CARD')) {
 				// Contacts list
 				if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-					$result = show_contacts($conf, $langs, $db, $object, DOL_PHP_SELF.'?socid='.$object->id);
+					$result = show_contacts($conf, $langs, $db, $object, $_SERVER['PHP_SELF'].'?socid='.$object->id);
 				}
 			}
 		}

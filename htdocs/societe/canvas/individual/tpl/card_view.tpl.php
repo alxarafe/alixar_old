@@ -189,14 +189,14 @@ if ($this->control->tpl['action_delete']) {
 
 <div class="tabsAction">
 <?php if ($user->hasRight('societe', 'creer')) { ?>
-<a class="butAction" href="<?php echo DOL_PHP_SELF.'?socid='.$this->control->tpl['id'].'&action=edit&token='.newToken().'&canvas='.urlencode($canvas); ?>"><?php echo $langs->trans("Modify"); ?></a>
+<a class="butAction" href="<?php echo $_SERVER['PHP_SELF'].'?socid='.$this->control->tpl['id'].'&action=edit&token='.newToken().'&canvas='.urlencode($canvas); ?>"><?php echo $langs->trans("Modify"); ?></a>
 <?php } ?>
 
 <?php if ($user->hasRight('societe', 'supprimer')) { ?>
 	<?php if ($conf->use_javascript_ajax) { ?>
 		<span id="action-delete" class="butActionDelete"><?php echo $langs->trans('Delete'); ?></span>
 	<?php } else { ?>
-		<a class="butActionDelete" href="<?php echo DOL_PHP_SELF.'?socid='.$this->control->tpl['id'].'&action=delete&token='.newToken().'&canvas='.urlencode($canvas); ?>"><?php echo $langs->trans('Delete'); ?></a>
+		<a class="butActionDelete" href="<?php echo $_SERVER['PHP_SELF'].'?socid='.$this->control->tpl['id'].'&action=delete&token='.newToken().'&canvas='.urlencode($canvas); ?>"><?php echo $langs->trans('Delete'); ?></a>
 	<?php } ?>
 <?php } ?>
 </div>
@@ -210,7 +210,7 @@ if ($this->control->tpl['action_delete']) {
  * Generated documents
  */
 $filedir = $conf->societe->multidir_output[$this->control->tpl['entity']].'/'.$socid;
-$urlsource = DOL_PHP_SELF."?socid=".$socid;
+$urlsource = $_SERVER['PHP_SELF']."?socid=".$socid;
 $genallowed = $user->hasRight('societe', 'lire');
 $delallowed = $user->hasRight('societe', 'creer');
 

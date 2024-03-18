@@ -141,13 +141,13 @@ if ($result) {
 
 	$param = '';
 
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num);
 	print"\n<!-- debut table -->\n";
 	print '<table class="noborder tagtable liste" width="100%" cellpadding="4">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Line", DOL_PHP_SELF, "p.ref", '', $param);
-	print_liste_field_titre("ThirdParty", DOL_PHP_SELF, "s.nom", '', $param);
-	print_liste_field_titre("Reason", DOL_PHP_SELF, "pr.motif", "", $param);
+	print_liste_field_titre("Line", $_SERVER['PHP_SELF'], "p.ref", '', $param);
+	print_liste_field_titre("ThirdParty", $_SERVER['PHP_SELF'], "s.nom", '', $param);
+	print_liste_field_titre("Reason", $_SERVER['PHP_SELF'], "pr.motif", "", $param);
 	print "</tr>\n";
 
 	$bon = new BonPrelevement($db);

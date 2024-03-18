@@ -281,7 +281,7 @@ foreach ($dirmodels as $reldir) {
 						if ($conf->global->COMMANDE_SUPPLIER_ADDON_NUMBER == "$file") {
 							print img_picto($langs->trans("Activated"), 'switch_on');
 						} else {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmod&token='.newToken().'&value='.urlencode($file).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmod&token='.newToken().'&value='.urlencode($file).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 						}
 						print '</td>';
 
@@ -394,7 +394,7 @@ foreach ($dirmodels as $reldir) {
 					if (in_array($name, $def)) {
 						print '<td class="center">'."\n";
 						if ($conf->global->COMMANDE_SUPPLIER_ADDON_PDF != "$name") {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier">';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier">';
 							print img_picto($langs->trans("Enabled"), 'switch_on');
 							print '</a>';
 						} else {
@@ -403,16 +403,16 @@ foreach ($dirmodels as $reldir) {
 						print "</td>";
 					} else {
 						print '<td class="center">'."\n";
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 						print "</td>";
 					}
 
 					// Default
 					print '<td class="center">';
 					if ($conf->global->COMMANDE_SUPPLIER_ADDON_PDF == "$name") {
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=unsetdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier" alt="'.$langs->trans("Disable").'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=unsetdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier" alt="'.$langs->trans("Disable").'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 					} else {
-						print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'&type=order_supplier" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 					}
 					print '</td>';
 
@@ -430,7 +430,7 @@ foreach ($dirmodels as $reldir) {
 					print $form->textwithpicto('', $htmltooltip, 1, 0);
 					print '</td>';
 					print '<td class="center">';
-					print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.urlencode($name).'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.urlencode($name).'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 					print '</td>';
 
 					print "</tr>\n";
@@ -448,7 +448,7 @@ print '</table></div><br>';
  * Other options
  */
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_SUPPLIER_ORDER_OTHER">';
 
@@ -486,11 +486,11 @@ else
 {
 if (empty($conf->global->BANK_ASK_PAYMENT_BANK_DURING_ORDER))
 {
-print '<a href="'.DOL_PHP_SELF.'?action=set_BANK_ASK_PAYMENT_BANK_DURING_SUPPLIER_ORDER&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"),'switch_off').'</a>';
+print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_BANK_ASK_PAYMENT_BANK_DURING_SUPPLIER_ORDER&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"),'switch_off').'</a>';
 }
 else
 {
-print '<a href="'.DOL_PHP_SELF.'?action=set_BANK_ASK_PAYMENT_BANK_DURING_SUPPLIER_ORDER&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
+print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_BANK_ASK_PAYMENT_BANK_DURING_SUPPLIER_ORDER&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"),'switch_on').'</a>';
 }
 }
 print '</td></tr>';

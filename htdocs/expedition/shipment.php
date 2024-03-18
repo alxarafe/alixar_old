@@ -214,7 +214,7 @@ if (empty($reshook)) {
 		$object->fetch($id);
 		$object->setValueFrom('fk_soc', $socid, '', '', 'date', '', $user, 'ORDER_MODIFY');
 
-		header('Location: '.DOL_PHP_SELF.'?id='.$id);
+		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$id);
 		exit();
 	}
 
@@ -260,7 +260,7 @@ if ($id > 0 || !empty($ref)) {
 
 		// Confirm validation
 		if ($action == 'cloture') {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".urlencode((string) ($id)), $langs->trans("CloseShipment"), $langs->trans("ConfirmCloseShipment"), "confirm_cloture");
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".urlencode((string) ($id)), $langs->trans("CloseShipment"), $langs->trans("ConfirmCloseShipment"), "confirm_cloture");
 		}
 
 		// Call Hook formConfirm
@@ -294,9 +294,9 @@ if ($id > 0 || !empty($ref)) {
 			if (0) {	// Do not change on shipment
 				$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 				}
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $objectsrc->socid, $objectsrc->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $objectsrc->socid, $objectsrc->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 			} else {
 				if (!empty($objectsrc) && !empty($objectsrc->fk_project)) {
 					$proj = new Project($db);
@@ -338,7 +338,7 @@ if ($id > 0 || !empty($ref)) {
 
 		$thirdparty = $soc;
 		$discount_type = 0;
-		$backtopage = urlencode(DOL_PHP_SELF.'?id='.$object->id);
+		$backtopage = urlencode($_SERVER['PHP_SELF'].'?id='.$object->id);
 		$cannotApplyDiscount = 1;
 		include DOL_DOCUMENT_ROOT.'/core/tpl/object_discounts.tpl.php';
 		print '</td></tr>';
@@ -360,12 +360,12 @@ if ($id > 0 || !empty($ref)) {
 		print '</td>';
 
 		if ($action != 'editdate_livraison') {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editdate_livraison&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDeliveryDate'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editdate_livraison&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDeliveryDate'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td colspan="2">';
 		if ($action == 'editdate_livraison') {
-			print '<form name="setdate_livraison" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post">';
+			print '<form name="setdate_livraison" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="setdatedelivery">';
 			print $form->selectDate($object->delivery_date ? $object->delivery_date : -1, 'liv_', 1, 1, 0, "setdate_livraison", 1, 0);
@@ -386,14 +386,14 @@ if ($id > 0 || !empty($ref)) {
 		print $langs->trans('AvailabilityPeriod');
 		print '</td>';
 		if ($action != 'editavailability') {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editavailability&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetAvailability'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editavailability&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetAvailability'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td colspan="2">';
 		if ($action == 'editavailability') {
-			$form->form_availability(DOL_PHP_SELF.'?id='.$object->id, $object->availability_id, 'availability_id', 1);
+			$form->form_availability($_SERVER['PHP_SELF'].'?id='.$object->id, $object->availability_id, 'availability_id', 1);
 		} else {
-			$form->form_availability(DOL_PHP_SELF.'?id='.$object->id, $object->availability_id, 'none', 1);
+			$form->form_availability($_SERVER['PHP_SELF'].'?id='.$object->id, $object->availability_id, 'none', 1);
 		}
 		print '</td></tr>';
 
@@ -403,14 +403,14 @@ if ($id > 0 || !empty($ref)) {
 		print $langs->trans('SendingMethod');
 		print '</td>';
 		if ($action != 'editshippingmethod' && $user->hasRight('expedition', 'creer')) {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editshippingmethod&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetShippingMode'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editshippingmethod&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetShippingMode'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td colspan="2">';
 		if ($action == 'editshippingmethod') {
-			$form->formSelectShippingMethod(DOL_PHP_SELF.'?id='.$object->id, $object->shipping_method_id, 'shipping_method_id', 1);
+			$form->formSelectShippingMethod($_SERVER['PHP_SELF'].'?id='.$object->id, $object->shipping_method_id, 'shipping_method_id', 1);
 		} else {
-			$form->formSelectShippingMethod(DOL_PHP_SELF.'?id='.$object->id, $object->shipping_method_id, 'none');
+			$form->formSelectShippingMethod($_SERVER['PHP_SELF'].'?id='.$object->id, $object->shipping_method_id, 'none');
 		}
 		print '</td>';
 		print '</tr>';
@@ -424,14 +424,14 @@ if ($id > 0 || !empty($ref)) {
 			print $langs->trans('Warehouse');
 			print '</td>';
 			if ($action != 'editwarehouse' && $user->hasRight('commande', 'creer')) {
-				print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editwarehouse&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetWarehouse'), 1).'</a></td>';
+				print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editwarehouse&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetWarehouse'), 1).'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td><td colspan="2">';
 			if ($action == 'editwarehouse') {
-				$formproduct->formSelectWarehouses(DOL_PHP_SELF.'?id='.$object->id, $object->warehouse_id, 'warehouse_id', 1);
+				$formproduct->formSelectWarehouses($_SERVER['PHP_SELF'].'?id='.$object->id, $object->warehouse_id, 'warehouse_id', 1);
 			} else {
-				$formproduct->formSelectWarehouses(DOL_PHP_SELF.'?id='.$object->id, $object->warehouse_id, 'none');
+				$formproduct->formSelectWarehouses($_SERVER['PHP_SELF'].'?id='.$object->id, $object->warehouse_id, 'none');
 			}
 			print '</td>';
 			print '</tr>';
@@ -443,14 +443,14 @@ if ($id > 0 || !empty($ref)) {
 		print $langs->trans('Source');
 		print '</td>';
 		if ($action != 'editdemandreason') {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editdemandreason&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDemandReason'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editdemandreason&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetDemandReason'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td colspan="2">';
 		if ($action == 'editdemandreason') {
-			$form->formInputReason(DOL_PHP_SELF.'?id='.$object->id, $object->demand_reason_id, 'demand_reason_id', 1);
+			$form->formInputReason($_SERVER['PHP_SELF'].'?id='.$object->id, $object->demand_reason_id, 'demand_reason_id', 1);
 		} else {
-			$form->formInputReason(DOL_PHP_SELF.'?id='.$object->id, $object->demand_reason_id, 'none');
+			$form->formInputReason($_SERVER['PHP_SELF'].'?id='.$object->id, $object->demand_reason_id, 'none');
 		}
 
 		// Terms of payment
@@ -460,16 +460,16 @@ if ($id > 0 || !empty($ref)) {
 		print $langs->trans('PaymentConditionsShort');
 		print '</td>';
 
-		if ($action != 'editconditions' && $object->statut == Expedition::STATUS_VALIDATED) print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editconditions&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetConditions'),1).'</a></td>';
+		if ($action != 'editconditions' && $object->statut == Expedition::STATUS_VALIDATED) print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editconditions&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetConditions'),1).'</a></td>';
 		print '</tr></table>';
 		print '</td><td colspan="2">';
 		if ($action == 'editconditions')
 		{
-			$form->form_conditions_reglement(DOL_PHP_SELF.'?id='.$object->id,$object->cond_reglement_id,'cond_reglement_id');
+			$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?id='.$object->id,$object->cond_reglement_id,'cond_reglement_id');
 		}
 		else
 		{
-			$form->form_conditions_reglement(DOL_PHP_SELF.'?id='.$object->id,$object->cond_reglement_id,'none');
+			$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?id='.$object->id,$object->cond_reglement_id,'none');
 		}
 		print '</td></tr>';
 
@@ -478,16 +478,16 @@ if ($id > 0 || !empty($ref)) {
 		print '<table class="nobordernopadding" width="100%"><tr><td>';
 		print $langs->trans('PaymentMode');
 		print '</td>';
-		if ($action != 'editmode' && $object->statut == Expedition::STATUS_VALIDATED) print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'),1).'</a></td>';
+		if ($action != 'editmode' && $object->statut == Expedition::STATUS_VALIDATED) print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'),1).'</a></td>';
 		print '</tr></table>';
 		print '</td><td colspan="2">';
 		if ($action == 'editmode')
 		{
-			$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id,$object->mode_reglement_id,'mode_reglement_id');
+			$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id,$object->mode_reglement_id,'mode_reglement_id');
 		}
 		else
 		{
-			$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id,$object->mode_reglement_id,'none');
+			$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id,$object->mode_reglement_id,'none');
 		}
 		print '</td></tr>';*/
 
@@ -514,7 +514,7 @@ if ($id > 0 || !empty($ref)) {
 			print $langs->trans('IncotermLabel');
 			print '<td><td class="right">';
 			if ($user->hasRight('commande', 'creer')) {
-				print '<a class="editfielda" href="'.DOL_PHP_SELF.'/expedition/shipment.php?id='.$object->id.'&action=editincoterm&token='.newToken().'">'.img_edit().'</a>';
+				print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'/expedition/shipment.php?id='.$object->id.'&action=editincoterm&token='.newToken().'">'.img_edit().'</a>';
 			} else {
 				print '&nbsp;';
 			}
@@ -524,7 +524,7 @@ if ($id > 0 || !empty($ref)) {
 			if ($action != 'editincoterm') {
 				print $form->textwithpicto($object->display_incoterms(), $object->label_incoterms, 1);
 			} else {
-				print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), DOL_PHP_SELF.'?id='.$object->id);
+				print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), $_SERVER['PHP_SELF'].'?id='.$object->id);
 			}
 			print '</td></tr>';
 		}
@@ -794,7 +794,7 @@ if ($id > 0 || !empty($ref)) {
 							print ' '.img_warning($langs->trans("StockTooLow"));
 							if (getDolGlobalString('STOCK_CORRECT_STOCK_IN_SHIPMENT')) {
 								$nbPiece = $toBeShipped[$objp->fk_product] - $product->stock_reel;
-								print ' &nbsp; '.$langs->trans("GoTo").' <a href="'.DOL_URL_ROOT.'/product/stock/product.php?id='.((int) $product->id).'&action=correction&nbpiece='.urlencode((string) ($nbPiece)).'&backtopage='.urlencode((string) (DOL_PHP_SELF.'?id='.((int) $object->id))).'">'.$langs->trans("CorrectStock").'</a>';
+								print ' &nbsp; '.$langs->trans("GoTo").' <a href="'.DOL_URL_ROOT.'/product/stock/product.php?id='.((int) $product->id).'&action=correction&nbpiece='.urlencode((string) ($nbPiece)).'&backtopage='.urlencode((string) ($_SERVER['PHP_SELF'].'?id='.((int) $object->id))).'">'.$langs->trans("CorrectStock").'</a>';
 							}
 						}
 						print '</td>';

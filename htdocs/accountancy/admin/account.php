@@ -233,7 +233,7 @@ $help_url = 'EN:Module_Double_Entry_Accounting#Setup|FR:Module_Comptabilit&eacut
 llxHeader('', $langs->trans("ListAccounts"), $help_url);
 
 if ($action == 'delete') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$id, $langs->trans('DeleteAccount'), $langs->trans('ConfirmDeleteAccount'), 'confirm_delete', '', 0, 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$id, $langs->trans('DeleteAccount'), $langs->trans('ConfirmDeleteAccount'), 'confirm_delete', '', 0, 1);
 	print $formconfirm;
 }
 
@@ -340,7 +340,7 @@ if ($resql) {
 	$arrayofselected = is_array($toselect) ? $toselect : array();
 
 	$param = '';
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -380,7 +380,7 @@ if ($resql) {
 		    	$("#change_chart").on("click", function (e) {
 					console.log("chartofaccounts selected = "+$("#chartofaccounts").val());
 					// reload page
-					window.location.href = "'.DOL_PHP_SELF.'?valid_change_chart=1&chartofaccounts="+$("#chartofaccounts").val();
+					window.location.href = "'.$_SERVER['PHP_SELF'].'?valid_change_chart=1&chartofaccounts="+$("#chartofaccounts").val();
 			    });
 			});
 	    	</script>';
@@ -401,7 +401,7 @@ if ($resql) {
 	$newcardbutton = dolGetButtonTitle($langs->trans('Addanaccount'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/accountancy/admin/card.php?action=create', '', $permissiontoadd);
 
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -413,7 +413,7 @@ if ($resql) {
 	print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans('ListAccounts'), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'accounting_account', 0, $newcardbutton, '', $limit, 0, 0, 1);
+	print_barre_liste($langs->trans('ListAccounts'), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'accounting_account', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
@@ -455,7 +455,7 @@ if ($resql) {
 
 	print '<br>';
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	$selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 	$selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -542,31 +542,31 @@ if ($resql) {
 	print '<tr class="liste_titre">';
 	// Action column
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch actioncolumn ');
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['aa.account_number']['checked'])) {
-		print_liste_field_titre($arrayfields['aa.account_number']['label'], DOL_PHP_SELF, "aa.account_number", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['aa.account_number']['label'], $_SERVER['PHP_SELF'], "aa.account_number", "", $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['aa.label']['checked'])) {
-		print_liste_field_titre($arrayfields['aa.label']['label'], DOL_PHP_SELF, "aa.label", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['aa.label']['label'], $_SERVER['PHP_SELF'], "aa.label", "", $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['aa.labelshort']['checked'])) {
-		print_liste_field_titre($arrayfields['aa.labelshort']['label'], DOL_PHP_SELF, "aa.labelshort", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['aa.labelshort']['label'], $_SERVER['PHP_SELF'], "aa.labelshort", "", $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['aa.account_parent']['checked'])) {
-		print_liste_field_titre($arrayfields['aa.account_parent']['label'], DOL_PHP_SELF, "aa.account_parent", "", $param, '', $sortfield, $sortorder, 'left ');
+		print_liste_field_titre($arrayfields['aa.account_parent']['label'], $_SERVER['PHP_SELF'], "aa.account_parent", "", $param, '', $sortfield, $sortorder, 'left ');
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['aa.pcg_type']['checked'])) {
-		print_liste_field_titre($arrayfields['aa.pcg_type']['label'], DOL_PHP_SELF, 'aa.pcg_type,aa.account_number', '', $param, '', $sortfield, $sortorder, '', $arrayfields['aa.pcg_type']['help'], 1);
+		print_liste_field_titre($arrayfields['aa.pcg_type']['label'], $_SERVER['PHP_SELF'], 'aa.pcg_type,aa.account_number', '', $param, '', $sortfield, $sortorder, '', $arrayfields['aa.pcg_type']['help'], 1);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['categories']['checked'])) {
-		print_liste_field_titre($arrayfields['categories']['label'], DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, '', $arrayfields['categories']['help'], 1);
+		print_liste_field_titre($arrayfields['categories']['label'], $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, '', $arrayfields['categories']['help'], 1);
 		$totalarray['nbfield']++;
 	}
 
@@ -576,22 +576,22 @@ if ($resql) {
 	print $hookmanager->resPrint;
 
 	if (!empty($arrayfields['aa.import_key']['checked'])) {
-		print_liste_field_titre($arrayfields['aa.import_key']['label'], DOL_PHP_SELF, 'aa.import_key', '', $param, '', $sortfield, $sortorder, '', $arrayfields['aa.import_key']['help'], 1);
+		print_liste_field_titre($arrayfields['aa.import_key']['label'], $_SERVER['PHP_SELF'], 'aa.import_key', '', $param, '', $sortfield, $sortorder, '', $arrayfields['aa.import_key']['help'], 1);
 		$totalarray['nbfield']++;
 	}
 	if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 		if (!empty($arrayfields['aa.reconcilable']['checked'])) {
-			print_liste_field_titre($arrayfields['aa.reconcilable']['label'], DOL_PHP_SELF, 'aa.reconcilable', '', $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['aa.reconcilable']['label'], $_SERVER['PHP_SELF'], 'aa.reconcilable', '', $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 	}
 	if (!empty($arrayfields['aa.active']['checked'])) {
-		print_liste_field_titre($arrayfields['aa.active']['label'], DOL_PHP_SELF, 'aa.active', '', $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['aa.active']['label'], $_SERVER['PHP_SELF'], 'aa.active', '', $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 		$totalarray['nbfield']++;
 	}
 	print "</tr>\n";
@@ -612,11 +612,11 @@ if ($resql) {
 		if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 			print '<td class="center nowraponall">';
 			if ($user->hasRight('accounting', 'chartofaccount')) {
-				print '<a class="editfielda" href="./card.php?action=update&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode(DOL_PHP_SELF.'?'.$param).'">';
+				print '<a class="editfielda" href="./card.php?action=update&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?'.$param).'">';
 				print img_edit();
 				print '</a>';
 				print '&nbsp;';
-				print '<a class="marginleftonly" href="./card.php?action=delete&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode(DOL_PHP_SELF.'?'.$param).'">';
+				print '<a class="marginleftonly" href="./card.php?action=delete&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?'.$param).'">';
 				print img_delete();
 				print '</a>';
 				print '&nbsp;';
@@ -731,11 +731,11 @@ if ($resql) {
 			if (!empty($arrayfields['aa.reconcilable']['checked'])) {
 				print '<td class="center">';
 				if (empty($obj->reconcilable)) {
-					print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$obj->rowid.'&action=enable&mode=1&token='.newToken().'">';
+					print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$obj->rowid.'&action=enable&mode=1&token='.newToken().'">';
 					print img_picto($langs->trans("Disabled"), 'switch_off');
 					print '</a>';
 				} else {
-					print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$obj->rowid.'&action=disable&mode=1&token='.newToken().'">';
+					print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$obj->rowid.'&action=disable&mode=1&token='.newToken().'">';
 					print img_picto($langs->trans("Activated"), 'switch_on');
 					print '</a>';
 				}
@@ -750,11 +750,11 @@ if ($resql) {
 		if (!empty($arrayfields['aa.active']['checked'])) {
 			print '<td class="center">';
 			if (empty($obj->active)) {
-				print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$obj->rowid.'&action=enable&mode=0&token='.newToken().'">';
+				print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$obj->rowid.'&action=enable&mode=0&token='.newToken().'">';
 				print img_picto($langs->trans("Disabled"), 'switch_off');
 				print '</a>';
 			} else {
-				print '<a class="reposition" href="'.DOL_PHP_SELF.'?id='.$obj->rowid.'&action=disable&mode=0&token='.newToken().'">';
+				print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?id='.$obj->rowid.'&action=disable&mode=0&token='.newToken().'">';
 				print img_picto($langs->trans("Activated"), 'switch_on');
 				print '</a>';
 			}
@@ -768,11 +768,11 @@ if ($resql) {
 		if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 			print '<td class="center nowraponall">';
 			if ($user->hasRight('accounting', 'chartofaccount')) {
-				print '<a class="editfielda" href="./card.php?action=update&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode(DOL_PHP_SELF.'?'.$param).'">';
+				print '<a class="editfielda" href="./card.php?action=update&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?'.$param).'">';
 				print img_edit();
 				print '</a>';
 				print '&nbsp;';
-				print '<a class="marginleftonly" href="./card.php?action=delete&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode(DOL_PHP_SELF.'?'.$param).'">';
+				print '<a class="marginleftonly" href="./card.php?action=delete&token='.newToken().'&id='.$obj->rowid.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?'.$param).'">';
 				print img_delete();
 				print '</a>';
 				print '&nbsp;';

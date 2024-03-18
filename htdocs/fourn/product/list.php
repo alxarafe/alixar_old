@@ -252,9 +252,9 @@ if ($resql) {
 	}
 
 	$newcardbutton = '';
-	$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/product/list.php?action=create&backtopage='.urlencode(DOL_PHP_SELF), '', $permissiontoadd);
+	$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/product/list.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF']), '', $permissiontoadd);
 
-	print_barre_liste($texte, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'generic', 0, $newcardbutton);
+	print_barre_liste($texte, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'generic', 0, $newcardbutton);
 
 	if (!empty($catid)) {
 		print "<div id='ways'>";
@@ -264,7 +264,7 @@ if ($resql) {
 		print "</div><br>";
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -316,13 +316,13 @@ if ($resql) {
 
 	// Line for title
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "p.ref", $param, "", "", $sortfield, $sortorder);
-	print_liste_field_titre("RefSupplierShort", DOL_PHP_SELF, "ppf.ref_fourn", $param, "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Label", DOL_PHP_SELF, "p.label", $param, "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Supplier", DOL_PHP_SELF, "ppf.fk_soc", $param, "", "", $sortfield, $sortorder);
-	print_liste_field_titre("BuyingPrice", DOL_PHP_SELF, "ppf.price", $param, "", '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("QtyMin", DOL_PHP_SELF, "ppf.quantity", $param, "", '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("UnitPrice", DOL_PHP_SELF, "ppf.unitprice", $param, "", '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "p.ref", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("RefSupplierShort", $_SERVER['PHP_SELF'], "ppf.ref_fourn", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "p.label", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Supplier", $_SERVER['PHP_SELF'], "ppf.fk_soc", $param, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("BuyingPrice", $_SERVER['PHP_SELF'], "ppf.price", $param, "", '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("QtyMin", $_SERVER['PHP_SELF'], "ppf.quantity", $param, "", '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("UnitPrice", $_SERVER['PHP_SELF'], "ppf.unitprice", $param, "", '', $sortfield, $sortorder, 'right ');
 	// add header cells from hooks
 	$parameters = array();
 	$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object, $action);
@@ -330,7 +330,7 @@ if ($resql) {
 		setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 	}
 	print $hookmanager->resPrint;
-	print_liste_field_titre('', DOL_PHP_SELF);
+	print_liste_field_titre('', $_SERVER['PHP_SELF']);
 	print "</tr>\n";
 
 	while ($i < min($num, $limit)) {

@@ -244,7 +244,7 @@ if ($action == 'add') {
 			$query_temlate_id = '&template_id='.$template_id;
 		}
 		setEventMessages($langs->trans("XTargetsAdded", $result), null, 'mesgs');
-		header("Location: ".DOL_PHP_SELF."?id=".$id.$query_temlate_id);
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$id.$query_temlate_id);
 		exit();
 	}
 	if ($result == 0) {
@@ -261,7 +261,7 @@ if ($action == 'clear') {
 	$obj = new $classname($db);
 	$obj->clear_target($id);
 
-	header("Location: ".DOL_PHP_SELF."?id=".$id);
+	header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 	exit();
 }
 
@@ -374,7 +374,7 @@ if ($action == 'deletefilter') {
 	if ($result < 0) {
 		setEventMessages($advTarget->error, $advTarget->errors, 'errors');
 	}
-	header("Location: ".DOL_PHP_SELF."?id=".$id);
+	header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 	exit();
 }
 
@@ -388,7 +388,7 @@ if ($action == 'delete') {
 			$obj = new $classname($db);
 			$obj->update_nb($id);
 
-			header("Location: ".DOL_PHP_SELF."?id=".$id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$id);
 			exit();
 		} else {
 			header("Location: liste.php");

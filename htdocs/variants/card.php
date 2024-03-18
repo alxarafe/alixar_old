@@ -111,12 +111,12 @@ if (empty($reshook)) {
 	if ($action == 'up' && $permissiontoedit) {
 		$object->line_up(GETPOST('rowid'), false);
 
-		header('Location: '.DOL_PHP_SELF.'?id='.$object->id.'#'.GETPOST('rowid'));
+		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.GETPOST('rowid'));
 		exit();
 	} elseif ($action == 'down' && $permissiontoedit) {
 		$object->line_down(GETPOST('rowid'), false);
 
-		header('Location: '.DOL_PHP_SELF.'?id='.$object->id.'#'.GETPOST('rowid'));
+		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.GETPOST('rowid'));
 		exit();
 	}
 
@@ -127,7 +127,7 @@ if (empty($reshook)) {
 		$result = $object->addLine($line_ref, $line_value);
 		if ($result > 0) {
 			setEventMessages($langs->trans('RecordSaved'), null, 'mesgs');
-			header("Location: " . DOL_PHP_SELF . '?id=' . $object->id);
+			header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
 			exit();
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -140,7 +140,7 @@ if (empty($reshook)) {
 		$result = $object->updateLine($lineid, $line_ref, $line_value);
 		if ($result > 0) {
 			setEventMessages($langs->trans('RecordSaved'), null, 'mesgs');
-			header("Location: " . DOL_PHP_SELF . '?id=' . $object->id);
+			header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
 			exit();
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -162,7 +162,7 @@ llxHeader('', $title, $help_url);
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("ProductAttribute")), '', 'object_' . $object->picto);
 
-	print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+	print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="add">';
 	if ($backtopage) {
@@ -196,7 +196,7 @@ if ($action == 'create') {
 	// Part to edit record
 	print load_fiche_titre($langs->trans("ProductAttribute"), '', 'object_' . $object->picto);
 
-	print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+	print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
@@ -237,12 +237,12 @@ if ($action == 'create') {
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id, $langs->trans('DeleteMyObject'), $langs->trans('ProductAttributeDeleteDialog'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('DeleteMyObject'), $langs->trans('ProductAttributeDeleteDialog'), 'confirm_delete', '', 0, 1);
 	} elseif ($action == 'ask_deleteline') {
 		// Confirmation to delete line
 		$object_value = new ProductAttributeValue($db);
 		if ($object_value->fetch($lineid) > 0) {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF . '?id=' . $object->id . '&lineid=' . $lineid, $langs->trans('DeleteLine'), $langs->trans('ProductAttributeValueDeleteDialog', dol_htmlentities($object_value->value), dol_htmlentities($object_value->ref)), 'confirm_deleteline', '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id . '&lineid=' . $lineid, $langs->trans('DeleteLine'), $langs->trans('ProductAttributeValueDeleteDialog', dol_htmlentities($object_value->value), dol_htmlentities($object_value->ref)), 'confirm_deleteline', '', 0, 1);
 		}
 	}
 
@@ -292,10 +292,10 @@ if ($action == 'create') {
 
 		if (empty($reshook)) {
 			// Modify
-			print dolGetButtonAction($langs->trans('Modify'), '', 'default', DOL_PHP_SELF . '?id=' . $object->id . '&action=edit', '', $permissiontoedit);
+			print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=edit', '', $permissiontoedit);
 
 			// Delete (need delete permission, or if draft, just need create/modify permission)
-			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', DOL_PHP_SELF . '?id=' . $object->id . '&action=delete', '', $permissiontodelete);
+			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=delete', '', $permissiontodelete);
 		}
 		print '</div>' . "\n";
 	}
@@ -309,7 +309,7 @@ if ($action == 'create') {
 
 		print load_fiche_titre($langs->trans("PossibleValues") . (!empty($object->lines) ? '<span class="opacitymedium colorblack paddingleft">(' . count($object->lines) . ')</span>' : ''));
 
-		print '	<form name="addproduct" id="addproduct" action="' . DOL_PHP_SELF . '?id=' . $object->id . (($action != 'editline') ? '' : '#line_' . GETPOSTINT('lineid')) . '" method="POST">
+		print '	<form name="addproduct" id="addproduct" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . (($action != 'editline') ? '' : '#line_' . GETPOSTINT('lineid')) . '" method="POST">
 		<input type="hidden" name="token" value="' . newToken() . '">
 		<input type="hidden" name="action" value="' . (($action != 'editline') ? 'addline' : 'updateline') . '">
 		<input type="hidden" name="mode" value="">

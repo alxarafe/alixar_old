@@ -447,7 +447,7 @@ if (getDolGlobalString('THIRDPARTY_ENABLE_PROSPECTION_ON_ALTERNATIVE_ADRESSES'))
 	$contactstatic->loadCacheOfProspStatus();
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 
 // Select every potentials, and note each potentials which fit in search parameters
@@ -823,7 +823,7 @@ $param = '';
 if (!empty($mode)) {
 	$param .= '&mode='.urlencode($mode);
 }
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -945,7 +945,7 @@ if ($contextpage != 'poslist') {
 	$massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 }
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'" name="formfilter">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'" name="formfilter">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -962,18 +962,18 @@ print '<input type="hidden" name="mode" value="'.$mode.'">';
 
 
 $newcardbutton  = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 $newcardbutton .= dolGetButtonTitleSeparator();
 if ($contextpage != 'poslist') {
 	$newcardbutton .= dolGetButtonTitle($langs->trans('NewContactAddress'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/contact/card.php?action=create', '', $permissiontoadd);
 } elseif ($user->hasRight('societe', 'contact', 'creer')) {
-	$url = DOL_URL_ROOT . '/contact/card.php?action=create&type=t&contextpage=poslist&optioncss=print&backtopage=' . urlencode(DOL_PHP_SELF . '?token=' . newToken() . 'type=t&contextpage=poslist&nomassaction=1&optioncss=print&place='.$place);
+	$url = DOL_URL_ROOT . '/contact/card.php?action=create&type=t&contextpage=poslist&optioncss=print&backtopage=' . urlencode($_SERVER['PHP_SELF'] . '?token=' . newToken() . 'type=t&contextpage=poslist&nomassaction=1&optioncss=print&place='.$place);
 	$label = 'MenuNewCustomer';
 	$newcardbutton .= dolGetButtonTitle($langs->trans($label), '', 'fa fa-plus-circle', $url);
 }
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'address', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'address', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 $topicmail = "Information";
 $modelmail = "contact";
@@ -1048,7 +1048,7 @@ $reshook = $hookmanager->executeHooks('printFieldPreListTitle', $parameters, $ob
 print $hookmanager->resPrint;
 print '</div>';
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')); // This also change content of $arrayfields
 $selectedfields .= ((count($arrayofmassactions) && $contextpage != 'poslist') ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -1254,101 +1254,101 @@ $totalarray['nbfield'] = 0;
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+	print getTitleFieldOfList(($mode != 'kanban' ? $selectedfields : ''), 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.rowid']['checked'])) {
-	print_liste_field_titre($arrayfields['p.rowid']['label'], DOL_PHP_SELF, "p.rowid", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.rowid']['label'], $_SERVER['PHP_SELF'], "p.rowid", "", $param, "", $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.lastname']['checked'])) {
-	print_liste_field_titre($arrayfields['p.lastname']['label'], DOL_PHP_SELF, "p.lastname", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.lastname']['label'], $_SERVER['PHP_SELF'], "p.lastname", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.firstname']['checked'])) {
-	print_liste_field_titre($arrayfields['p.firstname']['label'], DOL_PHP_SELF, "p.firstname", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.firstname']['label'], $_SERVER['PHP_SELF'], "p.firstname", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.poste']['checked'])) {
-	print_liste_field_titre($arrayfields['p.poste']['label'], DOL_PHP_SELF, "p.poste", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.poste']['label'], $_SERVER['PHP_SELF'], "p.poste", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.address']['checked'])) {
-	print_liste_field_titre($arrayfields['p.address']['label'], DOL_PHP_SELF, "p.address", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.address']['label'], $_SERVER['PHP_SELF'], "p.address", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.zip']['checked'])) {
-	print_liste_field_titre($arrayfields['p.zip']['label'], DOL_PHP_SELF, "p.zip", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.zip']['label'], $_SERVER['PHP_SELF'], "p.zip", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.town']['checked'])) {
-	print_liste_field_titre($arrayfields['p.town']['label'], DOL_PHP_SELF, "p.town", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.town']['label'], $_SERVER['PHP_SELF'], "p.town", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
-//if (!empty($arrayfields['state.nom']['checked']))           print_liste_field_titre($arrayfields['state.nom']['label'],DOL_PHP_SELF,"state.nom","",$param,'',$sortfield,$sortorder);
-//if (!empty($arrayfields['region.nom']['checked']))          print_liste_field_titre($arrayfields['region.nom']['label'],DOL_PHP_SELF,"region.nom","",$param,'',$sortfield,$sortorder);
+//if (!empty($arrayfields['state.nom']['checked']))           print_liste_field_titre($arrayfields['state.nom']['label'],$_SERVER['PHP_SELF'],"state.nom","",$param,'',$sortfield,$sortorder);
+//if (!empty($arrayfields['region.nom']['checked']))          print_liste_field_titre($arrayfields['region.nom']['label'],$_SERVER['PHP_SELF'],"region.nom","",$param,'',$sortfield,$sortorder);
 if (!empty($arrayfields['country.code_iso']['checked'])) {
-	print_liste_field_titre($arrayfields['country.code_iso']['label'], DOL_PHP_SELF, "co.code_iso", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['country.code_iso']['label'], $_SERVER['PHP_SELF'], "co.code_iso", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.phone']['checked'])) {
-	print_liste_field_titre($arrayfields['p.phone']['label'], DOL_PHP_SELF, "p.phone", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.phone']['label'], $_SERVER['PHP_SELF'], "p.phone", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.phone_perso']['checked'])) {
-	print_liste_field_titre($arrayfields['p.phone_perso']['label'], DOL_PHP_SELF, "p.phone_perso", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.phone_perso']['label'], $_SERVER['PHP_SELF'], "p.phone_perso", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.phone_mobile']['checked'])) {
-	print_liste_field_titre($arrayfields['p.phone_mobile']['label'], DOL_PHP_SELF, "p.phone_mobile", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.phone_mobile']['label'], $_SERVER['PHP_SELF'], "p.phone_mobile", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.fax']['checked'])) {
-	print_liste_field_titre($arrayfields['p.fax']['label'], DOL_PHP_SELF, "p.fax", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.fax']['label'], $_SERVER['PHP_SELF'], "p.fax", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.email']['checked'])) {
-	print_liste_field_titre($arrayfields['p.email']['label'], DOL_PHP_SELF, "p.email", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.email']['label'], $_SERVER['PHP_SELF'], "p.email", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['unsubscribed']['checked'])) {
-	print_liste_field_titre($arrayfields['unsubscribed']['label'], DOL_PHP_SELF, "unsubscribed", $begin, $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['unsubscribed']['label'], $_SERVER['PHP_SELF'], "unsubscribed", $begin, $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (isModEnabled('socialnetworks')) {
 	foreach ($socialnetworks as $key => $value) {
 		if ($value['active'] && !empty($arrayfields['p.'.$key]['checked'])) {
-			print_liste_field_titre($arrayfields['p.'.$key]['label'], DOL_PHP_SELF, "p.".$key, $begin, $param, '', $sortfield, $sortorder);
+			print_liste_field_titre($arrayfields['p.'.$key]['label'], $_SERVER['PHP_SELF'], "p.".$key, $begin, $param, '', $sortfield, $sortorder);
 			$totalarray['nbfield']++;
 		}
 	}
 }
 if (!empty($arrayfields['p.fk_soc']['checked'])) {
-	print_liste_field_titre($arrayfields['p.fk_soc']['label'], DOL_PHP_SELF, "p.fk_soc", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['p.fk_soc']['label'], $_SERVER['PHP_SELF'], "p.fk_soc", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.nom']['checked'])) {
-	print_liste_field_titre($arrayfields['s.nom']['label'], DOL_PHP_SELF, "s.nom", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['s.nom']['label'], $_SERVER['PHP_SELF'], "s.nom", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.name_alias']['checked'])) {
-	print_liste_field_titre($arrayfields['s.name_alias']['label'], DOL_PHP_SELF, "s.name_alias", $begin, $param, '', $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['s.name_alias']['label'], $_SERVER['PHP_SELF'], "s.name_alias", $begin, $param, '', $sortfield, $sortorder);
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.priv']['checked'])) {
-	print_liste_field_titre($arrayfields['p.priv']['label'], DOL_PHP_SELF, "p.priv", $begin, $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['p.priv']['label'], $_SERVER['PHP_SELF'], "p.priv", $begin, $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.fk_prospectlevel']['checked'])) {
-	print_liste_field_titre($arrayfields['p.fk_prospectlevel']['label'], DOL_PHP_SELF, "p.fk_prospectlevel", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['p.fk_prospectlevel']['label'], $_SERVER['PHP_SELF'], "p.fk_prospectlevel", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.fk_stcommcontact']['checked'])) {
-	print_liste_field_titre($arrayfields['p.fk_stcommcontact']['label'], DOL_PHP_SELF, "p.fk_stcommcontact", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['p.fk_stcommcontact']['label'], $_SERVER['PHP_SELF'], "p.fk_stcommcontact", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.birthday']['checked'])) {
-	print_liste_field_titre($arrayfields['p.birthday']['label'], DOL_PHP_SELF, "p.birthday", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['p.birthday']['label'], $_SERVER['PHP_SELF'], "p.birthday", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 // Extra fields
@@ -1358,23 +1358,23 @@ $parameters = array('arrayfields' => $arrayfields, 'param' => $param, 'sortfield
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 if (!empty($arrayfields['p.datec']['checked'])) {
-	print_liste_field_titre($arrayfields['p.datec']['label'], DOL_PHP_SELF, "p.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	print_liste_field_titre($arrayfields['p.datec']['label'], $_SERVER['PHP_SELF'], "p.datec", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.tms']['checked'])) {
-	print_liste_field_titre($arrayfields['p.tms']['label'], DOL_PHP_SELF, "p.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	print_liste_field_titre($arrayfields['p.tms']['label'], $_SERVER['PHP_SELF'], "p.tms", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.statut']['checked'])) {
-	print_liste_field_titre($arrayfields['p.statut']['label'], DOL_PHP_SELF, "p.statut", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['p.statut']['label'], $_SERVER['PHP_SELF'], "p.statut", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['p.import_key']['checked'])) {
-	print_liste_field_titre($arrayfields['p.import_key']['label'], DOL_PHP_SELF, "p.import_key", "", $param, '', $sortfield, $sortorder, 'center ');
+	print_liste_field_titre($arrayfields['p.import_key']['label'], $_SERVER['PHP_SELF'], "p.import_key", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 	$totalarray['nbfield']++;
 }
 print "</tr>\n";
@@ -1688,7 +1688,7 @@ while ($i < $imaxinloop) {
 					$titlealt = $val['label'];
 				}
 				if ($obj->stcomm_id != $val['id']) {
-					print '<a class="pictosubstatus" href="'.DOL_PHP_SELF.'?stcommcontactid='.$obj->rowid.'&stcomm='.urlencode((string) ($val['code'])).'&action=setstcomm&token='.newToken().$param.($page ? '&page='.urlencode((string) ($page)) : '').'">'.img_action($titlealt, $val['code'], $val['picto']).'</a>';
+					print '<a class="pictosubstatus" href="'.$_SERVER['PHP_SELF'].'?stcommcontactid='.$obj->rowid.'&stcomm='.urlencode((string) ($val['code'])).'&action=setstcomm&token='.newToken().$param.($page ? '&page='.urlencode((string) ($page)) : '').'">'.img_action($titlealt, $val['code'], $val['picto']).'</a>';
 				}
 			}
 			print '</div></div></td>';

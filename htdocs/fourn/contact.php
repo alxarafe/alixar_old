@@ -106,13 +106,13 @@ if ($result) {
 	$num = $db->num_rows($result);
 
 	$title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("ListOfContacts") : $langs->trans("ListOfContactsAddresses"));
-	print_barre_liste($title." (".$langs->trans("Suppliers").")", $page, DOL_PHP_SELF, "", $sortfield, $sortorder, "", $num);
+	print_barre_liste($title." (".$langs->trans("Suppliers").")", $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, "", $num);
 
 	print '<table class="liste centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Lastname", DOL_PHP_SELF, "p.name", $begin, "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Firstname", DOL_PHP_SELF, "p.firstname", $begin, "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", $begin, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Lastname", $_SERVER['PHP_SELF'], "p.name", $begin, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Firstname", $_SERVER['PHP_SELF'], "p.firstname", $begin, "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", $begin, "", "", $sortfield, $sortorder);
 	print_liste_field_titre("Email");
 	print_liste_field_titre("Phone");
 	print "</tr>\n";

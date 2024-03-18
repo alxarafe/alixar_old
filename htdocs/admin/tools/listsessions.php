@@ -104,7 +104,7 @@ $usefilter = 0;
 $listofsessions = listOfSessions();
 $num = count($listofsessions);
 
-print_barre_liste($langs->trans("Sessions"), $page, DOL_PHP_SELF, "", $sortfield, $sortorder, '', $num, ($num ? $num : ''), 'setup'); // Do not show number (0) if no session found (it means we can't know)
+print_barre_liste($langs->trans("Sessions"), $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, '', $num, ($num ? $num : ''), 'setup'); // Do not show number (0) if no session found (it means we can't know)
 
 $savehandler = ini_get("session.save_handler");
 $savepath = ini_get("session.save_path");
@@ -124,21 +124,21 @@ print '<br>';
 
 if ($action == 'purge') {
 	$formquestion = array();
-	print $form->formconfirm(DOL_PHP_SELF.'?noparam=noparam', $langs->trans('PurgeSessions'), $langs->trans('ConfirmPurgeSessions'), 'confirm_purge', $formquestion, 'no', 2);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?noparam=noparam', $langs->trans('PurgeSessions'), $langs->trans('ConfirmPurgeSessions'), 'confirm_purge', $formquestion, 'no', 2);
 } elseif ($action == 'lock') {
 	$formquestion = array();
-	print $form->formconfirm(DOL_PHP_SELF.'?noparam=noparam', $langs->trans('LockNewSessions'), $langs->trans('ConfirmLockNewSessions', $user->login), 'confirm_lock', $formquestion, 'no', 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?noparam=noparam', $langs->trans('LockNewSessions'), $langs->trans('ConfirmLockNewSessions', $user->login), 'confirm_lock', $formquestion, 'no', 1);
 }
 
 if ($savehandler == 'files') {
 	print '<table class="liste centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Login", DOL_PHP_SELF, "login", "", "", 'align="left"', $sortfield, $sortorder);
-	print_liste_field_titre("SessionId", DOL_PHP_SELF, "id", "", "", 'align="left"', $sortfield, $sortorder);
-	print_liste_field_titre("DateCreation", DOL_PHP_SELF, "datec", "", "", 'align="left"', $sortfield, $sortorder);
-	print_liste_field_titre("DateModification", DOL_PHP_SELF, "datem", "", "", 'align="left"', $sortfield, $sortorder);
-	print_liste_field_titre("Age", DOL_PHP_SELF, "age", "", "", 'align="left"', $sortfield, $sortorder);
-	print_liste_field_titre("Raw", DOL_PHP_SELF, "raw", "", "", 'align="left"', $sortfield, $sortorder);
+	print_liste_field_titre("Login", $_SERVER['PHP_SELF'], "login", "", "", 'align="left"', $sortfield, $sortorder);
+	print_liste_field_titre("SessionId", $_SERVER['PHP_SELF'], "id", "", "", 'align="left"', $sortfield, $sortorder);
+	print_liste_field_titre("DateCreation", $_SERVER['PHP_SELF'], "datec", "", "", 'align="left"', $sortfield, $sortorder);
+	print_liste_field_titre("DateModification", $_SERVER['PHP_SELF'], "datem", "", "", 'align="left"', $sortfield, $sortorder);
+	print_liste_field_titre("Age", $_SERVER['PHP_SELF'], "age", "", "", 'align="left"', $sortfield, $sortorder);
+	print_liste_field_titre("Raw", $_SERVER['PHP_SELF'], "raw", "", "", 'align="left"', $sortfield, $sortorder);
 	print_liste_field_titre('');
 	print "</tr>\n";
 
@@ -191,14 +191,14 @@ print '<div class="tabsAction">';
 
 
 if (!getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=lock&token='.newToken().'">'.$langs->trans("LockNewSessions").'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=lock&token='.newToken().'">'.$langs->trans("LockNewSessions").'</a>';
 } else {
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=confirm_unlock&token='.newToken().'">'.$langs->trans("UnlockNewSessions").'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=confirm_unlock&token='.newToken().'">'.$langs->trans("UnlockNewSessions").'</a>';
 }
 
 if ($savehandler == 'files') {
 	if (count($listofsessions)) {
-		print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=purge&token='.newToken().'">'.$langs->trans("PurgeSessions").'</a>';
+		print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=purge&token='.newToken().'">'.$langs->trans("PurgeSessions").'</a>';
 	}
 }
 

@@ -391,7 +391,7 @@ if ($action == 'create') {
 		print '</script>'."\n";
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" name="formsoc" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" name="formsoc" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="clos" value="0">';
@@ -672,7 +672,7 @@ if ($action == 'create') {
 
 		// Confirmation to delete
 		if ($action == 'delete') {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans("DeleteAccount"), $langs->trans("ConfirmDeleteAccount"), "confirm_delete");
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans("DeleteAccount"), $langs->trans("ConfirmDeleteAccount"), "confirm_delete");
 		}
 
 		// Print form confirm
@@ -888,12 +888,12 @@ if ($action == 'create') {
 		print '<div class="tabsAction">';
 
 		if ($user->hasRight('banque', 'configurer')) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Modify").'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Modify").'</a>';
 		}
 
 		$canbedeleted = $object->can_be_deleted(); // Return true if account without movements
 		if ($user->hasRight('banque', 'configurer') && $canbedeleted) {
-			print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Delete").'</a>';
+			print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.'">'.$langs->trans("Delete").'</a>';
 		}
 
 		print '</div>';
@@ -926,7 +926,7 @@ if ($action == 'create') {
 			print '</script>'."\n";
 		}
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post" name="formsoc">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post" name="formsoc">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update">';
 		print '<input type="hidden" name="id" value="'.GETPOSTINT("id").'">'."\n\n";

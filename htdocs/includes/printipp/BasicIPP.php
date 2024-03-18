@@ -1969,7 +1969,7 @@ class BasicIPP
             return;
         }
 
-        $string = sprintf('%s : %s:%s user %s : %s', basename(DOL_PHP_SELF) , $this->host, $this->port, $this->requesting_user, $string_to_log);
+        $string = sprintf('%s : %s:%s user %s : %s', basename($_SERVER['PHP_SELF']) , $this->host, $this->port, $this->requesting_user, $string_to_log);
 
         if ($this->log_type == 0)
         {
@@ -1977,7 +1977,7 @@ class BasicIPP
             return;
         }
 
-        $string = sprintf("%s %s Host %s:%s user %s : %s\n", date('M d H:i:s') , basename(DOL_PHP_SELF) , $this->host, $this->port, $this->requesting_user, $string_to_log);
+        $string = sprintf("%s %s Host %s:%s user %s : %s\n", date('M d H:i:s') , basename($_SERVER['PHP_SELF']) , $this->host, $this->port, $this->requesting_user, $string_to_log);
         error_log($string, $this->log_type, $this->log_destination);
         return;
     }

@@ -138,7 +138,7 @@ if ($action == 'edit') {
 	 * Card in edit mode
 	 */
 
-	print '<form name="perso" method="POST" enctype="multipart/form-data" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+	print '<form name="perso" method="POST" enctype="multipart/form-data" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -333,7 +333,7 @@ if ($action != 'edit') {
 		print '<div class="tabsAction">';
 
 		if ($user->hasRight('societe', 'contact', 'creer')) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans('Modify').'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans('Modify').'</a>';
 		}
 
 		print "</div>";

@@ -71,7 +71,7 @@ class mod_sn_advanced extends ModeleNumRefBatch
 		$mask = getDolGlobalString('SN_ADVANCED_MASK');
 
 		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.DOL_PHP_SELF.'" method="POST">';
+		$texte .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="action" value="updateMaskSN">';
 		$texte .= '<input type="hidden" name="maskconstSN" value="SN_ADVANCED_MASK">';
@@ -92,9 +92,9 @@ class mod_sn_advanced extends ModeleNumRefBatch
 		// Option to enable custom masks per product
 		$texte .= '<td class="right">';
 		if (getDolGlobalString('PRODUCTBATCH_SN_USE_PRODUCT_MASKS')) {
-			$texte .= '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmaskssn&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+			$texte .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmaskssn&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 		} else {
-			$texte .= '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmaskssn&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+			$texte .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmaskssn&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 		}
 		$texte .= ' '.$langs->trans('CustomMasks')."\n";
 		$texte .= '</td>';

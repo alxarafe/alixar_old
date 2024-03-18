@@ -187,7 +187,7 @@ if ($object->id > 0) {
 	$objcon = new stdClass();
 
 	$out = '&origin='.urlencode((string) ($object->element.'@'.$object->module)).'&originid='.urlencode((string) ($object->id));
-	$urlbacktopage = DOL_PHP_SELF.'?id='.$object->id;
+	$urlbacktopage = $_SERVER['PHP_SELF'].'?id='.$object->id;
 	$out .= '&backtopage='.urlencode($urlbacktopage);
 	$permok = $user->hasRight('agenda', 'myactions', 'create');
 	if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
@@ -220,7 +220,7 @@ if ($object->id > 0) {
 		print '<br>';
 
 		$param = '&id='.$object->id.(!empty($socid) ? '&socid='.$socid : '');
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage='.urlencode($contextpage);
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -228,7 +228,7 @@ if ($object->id > 0) {
 		}
 
 		//print load_fiche_titre($langs->trans("ActionsOnMyObject"), '', '');
-		print_barre_liste($langs->trans("Actions"), 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
+		print_barre_liste($langs->trans("Actions"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 1);
 
 		// List of all actions
 		$filters = array();

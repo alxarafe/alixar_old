@@ -353,7 +353,7 @@ print load_fiche_titre($titre, $linkback, 'title_accountancy');
 
 // Confirmation de la suppression de la ligne
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?'.($page ? 'page='.urlencode((string) ($page)).'&' : '').'sortfield='.urlencode((string) ($sortfield)).'&sortorder='.urlencode((string) ($sortorder)).'&rowid='.urlencode((string) ($rowid)).'&code='.urlencode((string) ($code)).'&id='.urlencode((string) ($id)), $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?'.($page ? 'page='.urlencode((string) ($page)).'&' : '').'sortfield='.urlencode((string) ($sortfield)).'&sortorder='.urlencode((string) ($sortorder)).'&rowid='.urlencode((string) ($rowid)).'&code='.urlencode((string) ($code)).'&id='.urlencode((string) ($id)), $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
 }
 //var_dump($elementList);
 
@@ -383,7 +383,7 @@ if ($id) {
 
 	$fieldlist = explode(',', $tabfield[$id]);
 
-	print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 
 	print '<div class="div-table-responsive">';
@@ -501,7 +501,7 @@ if ($id) {
 		// There is several pages
 		if ($num > $listlimit) {
 			print '<tr class="none"><td class="right" colspan="'.(3 + count($fieldlist)).'">';
-			print_fleche_navigation($page, DOL_PHP_SELF, $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
+			print_fleche_navigation($page, $_SERVER['PHP_SELF'], $paramwithsearch, ($num > $listlimit), '<li class="pagination"><span>'.$langs->trans("Page").' '.($page + 1).'</span></li>');
 			print '</td></tr>';
 		}
 
@@ -533,10 +533,10 @@ if ($id) {
 
 		// Title of lines
 		print '<tr class="liste_titre">';
-		print getTitleFieldOfList($langs->trans("Pcg_version"), 0, DOL_PHP_SELF, "pcg_version", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
-		print getTitleFieldOfList($langs->trans("Label"), 0, DOL_PHP_SELF, "label", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
-		print getTitleFieldOfList($langs->trans("Country"), 0, DOL_PHP_SELF, "country_code", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
-		print getTitleFieldOfList($langs->trans("Status"), 0, DOL_PHP_SELF, "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
+		print getTitleFieldOfList($langs->trans("Pcg_version"), 0, $_SERVER['PHP_SELF'], "pcg_version", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
+		print getTitleFieldOfList($langs->trans("Label"), 0, $_SERVER['PHP_SELF'], "label", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
+		print getTitleFieldOfList($langs->trans("Country"), 0, $_SERVER['PHP_SELF'], "country_code", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, '');
+		print getTitleFieldOfList($langs->trans("Status"), 0, $_SERVER['PHP_SELF'], "active", ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, 'center ');
 		print getTitleFieldOfList('');
 		print getTitleFieldOfList('');
 		print '</tr>';
@@ -550,7 +550,7 @@ if ($id) {
 
 				print '<tr class="oddeven" id="rowid-'.$obj->rowid.'">';
 				if ($action == 'edit' && ($rowid == (!empty($obj->rowid) ? $obj->rowid : $obj->code))) {
-					print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+					print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 					print '<input type="hidden" name="token" value="'.newToken().'">';
 					print '<input type="hidden" name="page" value="'.$page.'">';
 					print '<input type="hidden" name="rowid" value="'.$rowid.'">';
@@ -619,7 +619,7 @@ if ($id) {
 					$canbedisabled = 1;
 					$canbemodified = 1; // true by default
 
-					$url = DOL_PHP_SELF.'?token='.newToken().($page ? '&page='.$page : '').'&sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
+					$url = $_SERVER['PHP_SELF'].'?token='.newToken().($page ? '&page='.$page : '').'&sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
 					if ($param) {
 						$url .= '&'.$param;
 					}

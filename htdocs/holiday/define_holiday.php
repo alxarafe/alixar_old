@@ -239,7 +239,7 @@ if ($user->hasRight("holiday", "approve")) {
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -252,7 +252,7 @@ print '<input type="hidden" name="page" value="'.$page.'">';
 print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 
 $title = $langs->trans("MenuConfCP");
-print_barre_liste($title, $page, DOL_PHP_SELF, '', $sortfield, $sortorder, $massactionbutton, '', '', 'title_hrm', 0, '', '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, $massactionbutton, '', '', 'title_hrm', 0, '', '', $limit, 0, 0, 1);
 
 include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
@@ -276,7 +276,7 @@ if ($massaction == 'preincreaseholiday') {
 		'label' => $langs->trans("NumberDayAddMass"),
 		'value' => '<input name="nbdaysholidays" class="maxwidth75" id="nbdaysholidays" value="'.GETPOSTINT('nbdaysholidays').'">'
 	);
-	print $form->formconfirm(DOL_PHP_SELF, $langs->trans("ConfirmMassIncreaseHoliday"), $langs->trans("ConfirmMassIncreaseHolidayQuestion", count($toselect)), "increaseholiday", $formquestion, 1, 0, 200, 500, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'], $langs->trans("ConfirmMassIncreaseHoliday"), $langs->trans("ConfirmMassIncreaseHolidayQuestion", count($toselect)), "increaseholiday", $formquestion, 1, 0, 200, 500, 1);
 }
 
 print '<div class="info">'.$langs->trans('LastUpdateCP').': '."\n";
@@ -330,7 +330,7 @@ if (count($typeleaves) == 0) {
 
 	$selectedfields = '';
 	if ($massactionbutton) {
-		$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+		$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 		$selectedfields .= ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 		$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
 	}
@@ -388,31 +388,31 @@ if (count($typeleaves) == 0) {
 	print '<tr class="liste_titre">';
 	// Action column
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+		print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	}
 	if (!empty($arrayfields['cp.rowid']['checked'])) {
-		print_liste_field_titre('Employee', DOL_PHP_SELF);
+		print_liste_field_titre('Employee', $_SERVER['PHP_SELF']);
 	}
 	if (!empty($arrayfields['cp.fk_user']['checked'])) {
-		print_liste_field_titre('Supervisor', DOL_PHP_SELF);
+		print_liste_field_titre('Supervisor', $_SERVER['PHP_SELF']);
 	}
 	if (!empty($arrayfields['cp.nbHoliday']['checked'])) {
 		if (count($typeleaves)) {
 			foreach ($typeleaves as $key => $val) {
 				$labeltype = ($langs->trans($val['code']) != $val['code']) ? $langs->trans($val['code']) : $langs->trans($val['label']);
-				print_liste_field_titre($labeltype, DOL_PHP_SELF, '', '', '', '', '', '', 'center ');
+				print_liste_field_titre($labeltype, $_SERVER['PHP_SELF'], '', '', '', '', '', '', 'center ');
 			}
 		} else {
-			print_liste_field_titre('NoLeaveWithCounterDefined', DOL_PHP_SELF, '', '', '', '');
+			print_liste_field_titre('NoLeaveWithCounterDefined', $_SERVER['PHP_SELF'], '', '', '', '');
 		}
 	}
 	if (!empty($arrayfields['cp.note_public']['checked'])) {
-		print_liste_field_titre((!$user->hasRight('holiday', 'define_holiday') ? '' : 'Note'), DOL_PHP_SELF);
+		print_liste_field_titre((!$user->hasRight('holiday', 'define_holiday') ? '' : 'Note'), $_SERVER['PHP_SELF']);
 	}
 	print_liste_field_titre('');
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+		print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	}
 	print '</tr>';
 	$usersupervisor = new User($db);

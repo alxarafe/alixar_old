@@ -208,7 +208,7 @@ if (empty($reshook) && !empty($object->table_element) && isset($extrafields->att
 					$fieldid = 'socid';
 				}
 
-				print '<td class="right"><a class="reposition editfielda" href="'.DOL_PHP_SELF.'?'.$fieldid.'='.$valueid.'&action=edit_extras&token='.newToken().'&attribute='.$tmpkeyextra.'&ignorecollapsesetup=1">'.img_edit().'</a></td>';
+				print '<td class="right"><a class="reposition editfielda" href="'.$_SERVER['PHP_SELF'].'?'.$fieldid.'='.$valueid.'&action=edit_extras&token='.newToken().'&attribute='.$tmpkeyextra.'&ignorecollapsesetup=1">'.img_edit().'</a></td>';
 			}
 			print '</tr></table>';
 			print '</td>';
@@ -243,7 +243,7 @@ if (empty($reshook) && !empty($object->table_element) && isset($extrafields->att
 				if ($object->table_element == 'societe') {
 					$fieldid = 'socid';
 				}
-				print '<form enctype="multipart/form-data" action="'.DOL_PHP_SELF . '?' . $fieldid . '=' . $object->id . '" method="post" name="formextra">';
+				print '<form enctype="multipart/form-data" action="'.$_SERVER['PHP_SELF'] . '?' . $fieldid . '=' . $object->id . '" method="post" name="formextra">';
 				print '<input type="hidden" name="action" value="update_extras">';
 				print '<input type="hidden" name="attribute" value="'.$tmpkeyextra.'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';

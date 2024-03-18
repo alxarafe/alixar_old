@@ -386,7 +386,7 @@ if ($action == 'presend') {
 	$formmail->param['models'] = $modelmail;
 	$formmail->param['models_id'] = GETPOSTINT('modelmailselected');
 	$formmail->param['id'] = $object->id;
-	$formmail->param['returnurl'] = DOL_PHP_SELF.'?id='.$object->id;
+	$formmail->param['returnurl'] = $_SERVER['PHP_SELF'].'?id='.$object->id;
 	$formmail->param['fileinit'] = array($file);
 	// Show form
 	print $formmail->get_form();

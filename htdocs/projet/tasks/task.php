@@ -395,7 +395,7 @@ if ($id > 0 || !empty($ref)) {
 	{
 	if ($projectstatic->public || $userWrite > 0)
 	{
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=create'.$param.'">'.$langs->trans('AddTask').'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=create'.$param.'">'.$langs->trans('AddTask').'</a>';
 	}
 	else
 	{
@@ -426,14 +426,14 @@ if ($id > 0 || !empty($ref)) {
 
 		);
 
-		print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("ToClone"), $langs->trans("ConfirmCloneTask"), "confirm_clone", $formquestion, '', 1, 300, 590);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("ToClone"), $langs->trans("ConfirmCloneTask"), "confirm_clone", $formquestion, '', 1, 300, 590);
 	}
 
 
 	$head = task_prepare_head($object);
 
 	if ($action == 'edit' && $user->hasRight('projet', 'creer')) {
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update">';
 		print '<input type="hidden" name="withproject" value="'.$withproject.'">';
@@ -533,7 +533,7 @@ if ($id > 0 || !empty($ref)) {
 		print dol_get_fiche_head($head, 'task_task', $langs->trans("Task"), -1, 'projecttask', 0, '', 'reposition');
 
 		if ($action == 'delete') {
-			print $form->formconfirm(DOL_PHP_SELF."?id=".GETPOSTINT("id").'&withproject='.$withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".GETPOSTINT("id").'&withproject='.$withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
 		}
 
 		if (!GETPOST('withproject') || empty($projectstatic->id)) {
@@ -666,8 +666,8 @@ if ($id > 0 || !empty($ref)) {
 		if (empty($reshook)) {
 			// Modify
 			if ($user->hasRight('projet', 'creer')) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'&withproject='.((int) $withproject).'">'.$langs->trans('Modify').'</a>';
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=clone&token='.newToken().'&withproject='.((int) $withproject).'">'.$langs->trans('Clone').'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'&withproject='.((int) $withproject).'">'.$langs->trans('Modify').'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=clone&token='.newToken().'&withproject='.((int) $withproject).'">'.$langs->trans('Clone').'</a>';
 			} else {
 				print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("NotAllowed").'">'.$langs->trans('Modify').'</a>';
 			}
@@ -676,12 +676,12 @@ if ($id > 0 || !empty($ref)) {
 			$permissiontodelete = $user->hasRight('projet', 'supprimer');
 			if ($permissiontodelete) {
 				if (!$object->hasChildren() && !$object->hasTimeSpent()) {
-					print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&withproject='.((int) $withproject), 'delete', $permissiontodelete);
+					print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&withproject='.((int) $withproject), 'delete', $permissiontodelete);
 				} else {
-					print dolGetButtonAction($langs->trans("TaskHasChild"), $langs->trans("Delete"), 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&withproject='.((int) $withproject), 'delete', 0);
+					print dolGetButtonAction($langs->trans("TaskHasChild"), $langs->trans("Delete"), 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&withproject='.((int) $withproject), 'delete', 0);
 				}
 			} else {
-				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&withproject='.((int) $withproject), 'delete', $permissiontodelete);
+				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&withproject='.((int) $withproject), 'delete', $permissiontodelete);
 			}
 
 			print '</div>';
@@ -695,7 +695,7 @@ if ($id > 0 || !empty($ref)) {
 		 */
 		$filename = dol_sanitizeFileName($projectstatic->ref)."/".dol_sanitizeFileName($object->ref);
 		$filedir = $conf->project->dir_output."/".dol_sanitizeFileName($projectstatic->ref)."/".dol_sanitizeFileName($object->ref);
-		$urlsource = DOL_PHP_SELF."?id=".$object->id;
+		$urlsource = $_SERVER['PHP_SELF']."?id=".$object->id;
 		$genallowed = ($user->hasRight('projet', 'lire'));
 		$delallowed = ($user->hasRight('projet', 'creer'));
 

@@ -339,7 +339,7 @@ llxHeader('', $title, $help_url);
 
 // Confirmation to delete the command
 if ($action == 'delete') {
-	$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$id.'&mode='.$mode, $langs->trans('DeleteMvt'), $langs->trans('ConfirmDeleteMvt', $langs->transnoentitiesnoconv("RegistrationInAccounting")), 'confirm_delete', '', 0, 1);
+	$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$id.'&mode='.$mode, $langs->trans('DeleteMvt'), $langs->trans('ConfirmDeleteMvt', $langs->transnoentitiesnoconv("RegistrationInAccounting")), 'confirm_delete', '', 0, 1);
 	print $formconfirm;
 }
 
@@ -353,7 +353,7 @@ if ($action == 'create') {
 		dol_print_error(null, 'Failed to get next piece number');
 	}
 
-	print '<form action="'.DOL_PHP_SELF.'" name="create_mvt" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" name="create_mvt" method="POST">';
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -420,7 +420,7 @@ if ($action == 'create') {
 
 		$head = array();
 		$h = 0;
-		$head[$h][0] = DOL_PHP_SELF.'?piece_num='.$object->piece_num.($mode ? '&mode='.$mode : '');
+		$head[$h][0] = $_SERVER['PHP_SELF'].'?piece_num='.$object->piece_num.($mode ? '&mode='.$mode : '');
 		$head[$h][1] = $langs->trans("Transaction");
 		$head[$h][2] = 'transaction';
 		$h++;
@@ -447,12 +447,12 @@ if ($action == 'create') {
 		print $langs->trans('Docdate');
 		print '</td>';
 		if ($action != 'editdate') {
-			print '<td class="right"><a class="editfielda reposition" href="'.DOL_PHP_SELF.'?action=editdate&token='.newToken().'&piece_num='.urlencode((string) ($object->piece_num)).'&mode='.urlencode((string) ($mode)).'">'.img_edit($langs->transnoentitiesnoconv('SetDate'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?action=editdate&token='.newToken().'&piece_num='.urlencode((string) ($object->piece_num)).'&mode='.urlencode((string) ($mode)).'">'.img_edit($langs->transnoentitiesnoconv('SetDate'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td colspan="3">';
 		if ($action == 'editdate') {
-			print '<form name="setdate" action="'.DOL_PHP_SELF.'?piece_num='.$object->piece_num.'" method="post">';
+			print '<form name="setdate" action="'.$_SERVER['PHP_SELF'].'?piece_num='.$object->piece_num.'" method="post">';
 			if ($optioncss != '') {
 				print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 			}
@@ -474,12 +474,12 @@ if ($action == 'create') {
 		print $langs->trans('Codejournal');
 		print '</td>';
 		if ($action != 'editjournal') {
-			print '<td class="right"><a class="editfielda reposition" href="'.DOL_PHP_SELF.'?action=editjournal&token='.newToken().'&piece_num='.urlencode((string) ($object->piece_num)).'&mode='.urlencode((string) ($mode)).'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?action=editjournal&token='.newToken().'&piece_num='.urlencode((string) ($object->piece_num)).'&mode='.urlencode((string) ($mode)).'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editjournal') {
-			print '<form name="setjournal" action="'.DOL_PHP_SELF.'?piece_num='.$object->piece_num.'" method="post">';
+			print '<form name="setjournal" action="'.$_SERVER['PHP_SELF'].'?piece_num='.$object->piece_num.'" method="post">';
 			if ($optioncss != '') {
 				print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 			}
@@ -501,12 +501,12 @@ if ($action == 'create') {
 		print $langs->trans('Piece');
 		print '</td>';
 		if ($action != 'editdocref') {
-			print '<td class="right"><a class="editfielda reposition" href="'.DOL_PHP_SELF.'?action=editdocref&token='.newToken().'&piece_num='.urlencode((string) ($object->piece_num)).'&mode='.urlencode((string) ($mode)).'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?action=editdocref&token='.newToken().'&piece_num='.urlencode((string) ($object->piece_num)).'&mode='.urlencode((string) ($mode)).'">'.img_edit($langs->transnoentitiesnoconv('Edit'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editdocref') {
-			print '<form name="setdocref" action="'.DOL_PHP_SELF.'?piece_num='.$object->piece_num.'" method="post">';
+			print '<form name="setdocref" action="'.$_SERVER['PHP_SELF'].'?piece_num='.$object->piece_num.'" method="post">';
 			if ($optioncss != '') {
 				print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 			}
@@ -572,11 +572,11 @@ if ($action == 'create') {
 		print '<td class="titlefield">' . $langs->trans("Status") . '</td>';
 		print '<td>';
 			if (empty($object->validated)) {
-				print '<a class="reposition" href="' . DOL_PHP_SELF . '?piece_num=' . $line->id . '&action=enable&token='.newToken().'">';
+				print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?piece_num=' . $line->id . '&action=enable&token='.newToken().'">';
 				print img_picto($langs->trans("Disabled"), 'switch_off');
 				print '</a>';
 			} else {
-				print '<a class="reposition" href="' . DOL_PHP_SELF . '?piece_num=' . $line->id . '&action=disable&token='.newToken().'">';
+				print '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?piece_num=' . $line->id . '&action=disable&token='.newToken().'">';
 				print img_picto($langs->trans("Activated"), 'switch_on');
 				print '</a>';
 			}
@@ -624,7 +624,7 @@ if ($action == 'create') {
 			// List of movements
 			print load_fiche_titre($langs->trans("ListeMvts"), '', '');
 
-			print '<form action="'.DOL_PHP_SELF.'?piece_num='.$object->piece_num.'" method="post">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'?piece_num='.$object->piece_num.'" method="post">';
 			if ($optioncss != '') {
 				print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 			}
@@ -742,7 +742,7 @@ if ($action == 'create') {
 
 						print '<td class="center nowraponall">';
 						if (empty($line->date_export) && empty($line->date_validation)) {
-							print '<a class="editfielda reposition" href="' . DOL_PHP_SELF . '?action=update&id=' . $line->id . '&piece_num=' . urlencode($line->piece_num) . '&mode=' . urlencode($mode) . '&token=' . urlencode(newToken()) . '">';
+							print '<a class="editfielda reposition" href="' . $_SERVER['PHP_SELF'] . '?action=update&id=' . $line->id . '&piece_num=' . urlencode($line->piece_num) . '&mode=' . urlencode($mode) . '&token=' . urlencode(newToken()) . '">';
 							print img_edit('', 0, 'class="marginrightonly"');
 							print '</a> &nbsp;';
 						} else {
@@ -757,7 +757,7 @@ if ($action == 'create') {
 								$actiontodelete = 'confirm_delete';
 							}
 
-							print '<a href="' . DOL_PHP_SELF . '?action=' . $actiontodelete . '&id=' . $line->id . '&piece_num=' . urlencode($line->piece_num) . '&mode=' . urlencode($mode) . '&token=' . urlencode(newToken()) . '">';
+							print '<a href="' . $_SERVER['PHP_SELF'] . '?action=' . $actiontodelete . '&id=' . $line->id . '&piece_num=' . urlencode($line->piece_num) . '&mode=' . urlencode($mode) . '&token=' . urlencode(newToken()) . '">';
 							print img_delete();
 							print '</a>';
 						} else {
@@ -785,7 +785,7 @@ if ($action == 'create') {
 					print '<br>';
 					print '<div class="center">';
 					if ($total_debit == $total_credit) {
-						print '<a class="button" href="'.DOL_PHP_SELF.'?piece_num='.$object->piece_num.'&action=valid">'.$langs->trans("ValidTransaction").'</a>';
+						print '<a class="button" href="'.$_SERVER['PHP_SELF'].'?piece_num='.$object->piece_num.'&action=valid">'.$langs->trans("ValidTransaction").'</a>';
 					} else {
 						print '<input type="submit" class="button" disabled="disabled" href="#" title="'.dol_escape_htmltag($langs->trans("MvtNotCorrectlyBalanced", $debit, $credit)).'" value="'.dol_escape_htmltag($langs->trans("ValidTransaction")).'">';
 					}

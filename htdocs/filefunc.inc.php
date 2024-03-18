@@ -163,7 +163,7 @@ if (!$result && !empty($_SERVER["GATEWAY_INTERFACE"])) {    // If install not do
 		if (!preg_match('/\/$/', $path)) {
 			$path .= '/';
 		}
-	} elseif (preg_match('/index\.php/', DOL_PHP_SELF)) {
+	} elseif (preg_match('/index\.php/', $_SERVER['PHP_SELF'])) {
 		// When we ask index.php, we MUST BE SURE that $path is '' at the end. This is required to make install process
 		// when using apache alias like '/dolibarr/' that point to htdocs.
 		// Note: If calling page was an index.php not into htdocs (ie comm/index.php, ...), then this redirect will fails,
@@ -173,7 +173,7 @@ if (!$result && !empty($_SERVER["GATEWAY_INTERFACE"])) {    // If install not do
 		// If what we look is not index.php, we can try to guess location of root. May not work all the time.
 		// There is no real solution, because the only way to know the apache url relative path is to have it into conf file.
 		// If it fails to find correct $path, then only solution is to ask user to enter the correct URL to index.php or install/index.php
-		$TDir = explode('/', DOL_PHP_SELF);
+		$TDir = explode('/', $_SERVER['PHP_SELF']);
 		$path = '';
 		$i = count($TDir);
 		while ($i--) {
@@ -296,7 +296,7 @@ if (!defined('NOCSRFCHECK') && isset($dolibarr_nocsrfcheck) && $dolibarr_nocsrfc
 		if ($csrfattack) {
 			//print 'NOCSRFCHECK='.defined('NOCSRFCHECK').' REQUEST_METHOD='.$_SERVER['REQUEST_METHOD'].' HTTP_HOST='.$_SERVER['HTTP_HOST'].' HTTP_REFERER='.$_SERVER['HTTP_REFERER'];
 			// Note: We can't use dol_escape_htmltag here to escape output because lib functions.lib.ph is not yet loaded.
-			dol_syslog("--- Access to ".(empty($_SERVER["REQUEST_METHOD"]) ? '' : $_SERVER["REQUEST_METHOD"].' ').DOL_PHP_SELF." refused by CSRF protection (Bad referrer).", LOG_WARNING);
+			dol_syslog("--- Access to ".(empty($_SERVER["REQUEST_METHOD"]) ? '' : $_SERVER["REQUEST_METHOD"].' ').$_SERVER['PHP_SELF']." refused by CSRF protection (Bad referrer).", LOG_WARNING);
 			print "Access refused by CSRF protection in main.inc.php. Referrer of form (".htmlentities($_SERVER['HTTP_REFERER'], ENT_COMPAT, 'UTF-8').") is outside the server that serve this page (with method = ".htmlentities($_SERVER['REQUEST_METHOD'], ENT_COMPAT, 'UTF-8').").\n";
 			print "If you access your server behind a proxy using url rewriting, you might check that all HTTP headers are propagated (or add the line \$dolibarr_nocsrfcheck=1 into your conf.php file to remove this security check).\n";
 			die;

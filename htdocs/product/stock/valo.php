@@ -88,15 +88,15 @@ if ($result) {
 	$help_url = 'EN:Module_Stocks_En|FR:Module_Stock|ES:M&oacute;dulo_Stocks';
 	llxHeader("", $langs->trans("EnhancedValueOfWarehouses"), $help_url);
 
-	print_barre_liste($langs->trans("EnhancedValueOfWarehouses"), $page, DOL_PHP_SELF, "", $sortfield, $sortorder, '', $num);
+	print_barre_liste($langs->trans("EnhancedValueOfWarehouses"), $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, '', $num);
 
 	print '<table class="noborder centpercent">';
 	print "<tr class=\"liste_titre\">";
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "e.ref", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("LocationSummary", DOL_PHP_SELF, "e.lieu", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("EstimatedStockValue", DOL_PHP_SELF, "e.valo_pmp", '', '', '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("EstimatedStockValueSell", DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("Status", DOL_PHP_SELF, "e.statut", '', '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "e.ref", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("LocationSummary", $_SERVER['PHP_SELF'], "e.lieu", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("EstimatedStockValue", $_SERVER['PHP_SELF'], "e.valo_pmp", '', '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("EstimatedStockValueSell", $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "e.statut", '', '', '', $sortfield, $sortorder, 'right ');
 	print "</tr>\n";
 
 	if ($num) {

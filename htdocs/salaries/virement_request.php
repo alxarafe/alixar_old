@@ -179,7 +179,7 @@ if ($action == "delete" && $permissiontodelete) {
 	if ($object->id > 0) {
 		$result = $object->demande_prelevement_delete($user, GETPOSTINT('did'));
 		if ($result == 0) {
-			header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 			exit;
 		}
 	}
@@ -221,7 +221,7 @@ if ($action != 'editlabel') {
 	$morehtmlref .= $object->label;
 } else {
 	$morehtmlref .= $langs->trans('Label').' :&nbsp;';
-	$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+	$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 	$morehtmlref .= '<input type="hidden" name="action" value="setlabel">';
 	$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 	$morehtmlref .= '<input type="text" name="label" value="'.$object->label.'"/>';
@@ -240,9 +240,9 @@ if (isModEnabled('project')) {
 	if ($usercancreate) {
 		$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 		if ($action != 'classify') {
-			$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+			$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 		}
-		$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+		$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 	} else {
 		if (!empty($object->fk_project)) {
 			$proj = new Project($db);
@@ -300,15 +300,15 @@ print '<table class="nobordernopadding" width="100%"><tr><td>';
 print $langs->trans('DefaultPaymentMode');
 print '</td>';
 if ($action != 'editmode') {
-	print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+	print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 }
 print '</tr></table>';
 print '</td><td>';
 
 if ($action == 'editmode') {
-	$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->type_payment, 'mode_reglement_id');
+	$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->type_payment, 'mode_reglement_id');
 } else {
-	$form->form_modes_reglement(DOL_PHP_SELF.'?id='.$object->id, $object->type_payment, 'none');
+	$form->form_modes_reglement($_SERVER['PHP_SELF'].'?id='.$object->id, $object->type_payment, 'none');
 }
 print '</td></tr>';
 
@@ -319,14 +319,14 @@ if (isModEnabled("bank")) {
 	print $langs->trans('DefaultBankAccount');
 	print '<td>';
 	if ($action != 'editbankaccount' && $user->hasRight('salaries', 'write')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td>';
 	if ($action == 'editbankaccount') {
-		$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'fk_account', 1);
+		$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'fk_account', 1);
 	} else {
-		$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $object->fk_account, 'none');
+		$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_account, 'none');
 	}
 	print '</td>';
 	print '</tr>';
@@ -470,7 +470,7 @@ if ($type == 'salaire') {
 if ($object->paye == 0 && $hadRequest == 0) {
 	if ($resteapayer > 0) {
 		if ($user_perms) {
-			print '<form method="POST" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+			print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 			print '<input type="hidden" name="token" value="'.newToken().'" />';
 			print '<input type="hidden" name="id" value="'.$object->id.'" />';
 			print '<input type="hidden" name="type" value="'.$type.'" />';
@@ -485,7 +485,7 @@ if ($object->paye == 0 && $hadRequest == 0) {
 				print "<br>";
 				//add stripe sepa button
 				$buttonlabel = $langs->trans("MakeWithdrawRequestStripe");
-				print '<form method="POST" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				print '<input type="hidden" name="token" value="'.newToken().'" />';
 				print '<input type="hidden" name="id" value="'.$object->id.'" />';
 				print '<input type="hidden" name="type" value="'.$type.'" />';
@@ -577,7 +577,7 @@ if ($resql) {
 			// Action column
 			if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 				print '<td class="right">';
-				print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
 				print img_delete();
 				print '</a></td>';
 			}
@@ -619,7 +619,7 @@ if ($resql) {
 					if ($obj->fk_prelevement_bons > 0) {
 						print ' &nbsp; ';
 					}
-					print '<a href="'.DOL_PHP_SELF.'?action=sepastripedirectdebit&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequestDirectDebitWithStripe").'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=sepastripedirectdebit&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequestDirectDebitWithStripe").'</a>';
 				}
 			} else {
 				if (getDolGlobalString('STRIPE_SEPA_CREDIT_TRANSFER')) {
@@ -627,7 +627,7 @@ if ($resql) {
 					if ($obj->fk_prelevement_bons > 0) {
 						print ' &nbsp; ';
 					}
-					print '<a href="'.DOL_PHP_SELF.'?action=sepastripecredittransfer&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequesCreditTransferWithStripe").'</a>';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=sepastripecredittransfer&paymentservice=stripesepa&token='.newToken().'&did='.$obj->rowid.'&id='.$object->id.'&type='.urlencode($type).'">'.img_picto('', 'stripe', 'class="pictofixedwidth"').$langs->trans("RequesCreditTransferWithStripe").'</a>';
 				}
 			}
 			print '</td>';
@@ -638,7 +638,7 @@ if ($resql) {
 			// Action column
 			if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 				print '<td class="right">';
-				print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&did='.$obj->rowid.'&type='.urlencode($type).'">';
 				print img_delete();
 				print '</a></td>';
 			}

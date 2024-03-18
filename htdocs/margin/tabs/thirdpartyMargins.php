@@ -200,25 +200,25 @@ if ($socid > 0) {
 		$num = $db->num_rows($result);
 
 		// @phan-suppress-next-line PhanPluginSuspiciousParamPosition, PhanPluginSuspiciousParamOrder
-		print_barre_liste($langs->trans("MarginDetails"), $page, DOL_PHP_SELF, "&amp;socid=".$object->id, $sortfield, $sortorder, '', $num, $num, '');
+		print_barre_liste($langs->trans("MarginDetails"), $page, $_SERVER['PHP_SELF'], "&amp;socid=".$object->id, $sortfield, $sortorder, '', $num, $num, '');
 
 		$i = 0;
 		print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 		print "<table class=\"noborder\" width=\"100%\">";
 
 		print '<tr class="liste_titre">';
-		print_liste_field_titre("Invoice", DOL_PHP_SELF, "f.ref", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder);
-		print_liste_field_titre("DateInvoice", DOL_PHP_SELF, "f.datef", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'center ');
-		print_liste_field_titre("SoldAmount", DOL_PHP_SELF, "selling_price", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
-		print_liste_field_titre("PurchasedAmount", DOL_PHP_SELF, "buying_price", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
-		print_liste_field_titre("Margin", DOL_PHP_SELF, "marge", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre("Invoice", $_SERVER['PHP_SELF'], "f.ref", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder);
+		print_liste_field_titre("DateInvoice", $_SERVER['PHP_SELF'], "f.datef", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre("SoldAmount", $_SERVER['PHP_SELF'], "selling_price", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre("PurchasedAmount", $_SERVER['PHP_SELF'], "buying_price", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre("Margin", $_SERVER['PHP_SELF'], "marge", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
 		if (getDolGlobalString('DISPLAY_MARGIN_RATES')) {
-			print_liste_field_titre("MarginRate", DOL_PHP_SELF, "", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre("MarginRate", $_SERVER['PHP_SELF'], "", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
 		}
 		if (getDolGlobalString('DISPLAY_MARK_RATES')) {
-			print_liste_field_titre("MarkRate", DOL_PHP_SELF, "", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre("MarkRate", $_SERVER['PHP_SELF'], "", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
 		}
-		print_liste_field_titre("Status", DOL_PHP_SELF, "f.paye,f.fk_statut", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
+		print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "f.paye,f.fk_statut", "", "&amp;socid=".$_REQUEST["socid"], '', $sortfield, $sortorder, 'right ');
 		print "</tr>\n";
 
 		$cumul_achat = 0;

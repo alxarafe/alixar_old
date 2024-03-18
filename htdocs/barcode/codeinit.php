@@ -309,7 +309,7 @@ function confirm_erase() {
 
 // For thirdparty
 if (isModEnabled('societe')) {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="mode" value="label">';
 	print '<input type="hidden" name="action" value="initbarcodethirdparties">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -370,7 +370,7 @@ if (isModEnabled('societe')) {
 
 // For products
 if (isModEnabled('product') || isModEnabled('service')) {
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="mode" value="label">';
 	print '<input type="hidden" name="action" value="initbarcodeproducts">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';

@@ -77,7 +77,7 @@ if ($action) {
 	} else {
 		setEventMessages($langs->trans("SetupNotError"), null, 'errors');
 	}
-	header("Location: ".DOL_PHP_SELF);
+	header("Location: ".$_SERVER['PHP_SELF']);
 	exit;
 }
 
@@ -106,7 +106,7 @@ $dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
  * Other conf
  */
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="setting">';
 print '<input type="hidden" name="page_y" value="">';

@@ -234,7 +234,7 @@ foreach ($dirmodels as $reldir) {
 						if ($conf->global->HOLIDAY_ADDON == "$file") {
 							print img_picto($langs->trans("Activated"), 'switch_on');
 						} else {
-							print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
+							print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmod&token='.newToken().'&value='.urlencode($file).'">';
 							print img_picto($langs->trans("Disabled"), 'switch_off');
 							print '</a>';
 						}
@@ -364,13 +364,13 @@ if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 									// Active
 									if (in_array($name, $def)) {
 										print '<td class="center">'."\n";
-										print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=del&token='.newToken().'&value='.urlencode($name).'">';
+										print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=del&token='.newToken().'&value='.urlencode($name).'">';
 										print img_picto($langs->trans("Enabled"), 'switch_on');
 										print '</a>';
 										print '</td>';
 									} else {
 										print '<td class="center">'."\n";
-										print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
+										print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=set&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 										print "</td>";
 									}
 
@@ -379,7 +379,7 @@ if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 									if ($conf->global->HOLIDAY_ADDON_PDF == $name) {
 										print img_picto($langs->trans("Default"), 'on');
 									} else {
-										print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+										print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setdoc&token='.newToken().'&value='.urlencode($name).'&scan_dir='.urlencode($module->scandir).'&label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 									}
 									print '</td>';
 
@@ -406,7 +406,7 @@ if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
 									// Preview
 									print '<td class="center">';
 									if ($module->type == 'pdf') {
-										print '<a href="'.DOL_PHP_SELF.'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
+										print '<a href="'.$_SERVER['PHP_SELF'].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 									} else {
 										print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 									}
@@ -432,7 +432,7 @@ if (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
  * Other options
  */
 
-print '<form action="'.DOL_PHP_SELF.'" method="post">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_other">';
 
@@ -471,9 +471,9 @@ if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('MAIN_NON_WORKING_DAYS_INCLUDE_MONDAY', array(), null, 0);
 } else {
 	if (getDolGlobalString('MAIN_NON_WORKING_DAYS_INCLUDE_MONDAY')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_MONDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_MONDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_MONDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_MONDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	}
 }
 print "</td>";
@@ -487,9 +487,9 @@ if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('MAIN_NON_WORKING_DAYS_INCLUDE_FRIDAY', array(), null, 0);
 } else {
 	if (getDolGlobalString('MAIN_NON_WORKING_DAYS_INCLUDE_FRIDAY')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_FRIDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_FRIDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_FRIDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_FRIDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	}
 }
 print "</td>";
@@ -503,9 +503,9 @@ if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('MAIN_NON_WORKING_DAYS_INCLUDE_SATURDAY', array(), null, 0, 0, 0, 2, 0, 1);
 } else {
 	if (getDolGlobalString('MAIN_NON_WORKING_DAYS_INCLUDE_SATURDAY')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SATURDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SATURDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SATURDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SATURDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	}
 }
 print "</td>";
@@ -519,9 +519,9 @@ if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('MAIN_NON_WORKING_DAYS_INCLUDE_SUNDAY', array(), null, 0, 0, 0, 2, 0, 1);
 } else {
 	if (getDolGlobalString('MAIN_NON_WORKING_DAYS_INCLUDE_SUNDAY')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SUNDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SUNDAY=1">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SUNDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_other&token='.newToken().'&MAIN_NON_WORKING_DAYS_INCLUDE_SUNDAY=0">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	}
 }
 print "</td>";

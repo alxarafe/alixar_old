@@ -235,9 +235,9 @@ print "\n<div class=\"tabsAction\">\n";
 
 if ($action == '') {
 	if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=add&token='.newToken().'&id='.$object->id.'&type='.$type.'">'.$langs->trans('Add').'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=add&token='.newToken().'&id='.$object->id.'&type='.$type.'">'.$langs->trans('Add').'</a>';
 		if ($cnt_trans > 0) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&id='.$object->id.'&type='.$type.'">'.$langs->trans('Update').'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&id='.$object->id.'&type='.$type.'">'.$langs->trans('Update').'</a>';
 		}
 	}
 }
@@ -250,7 +250,7 @@ if ($action == 'edit') {
 	// WYSIWYG Editor
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="vedit">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -291,7 +291,7 @@ if ($action == 'edit') {
 		foreach ($object->multilangs as $key => $value) {
 			$s = picto_from_langcode($key);
 			print '<table class="border centpercent">';
-			print '<tr class="liste_titre"><td colspan="2">'.($s ? $s.' ' : '')." <b>".$langs->trans('Language_'.$key).":</b> ".'<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'&type='.$type.'">'.img_delete('', '').'</a></td></tr>';
+			print '<tr class="liste_titre"><td colspan="2">'.($s ? $s.' ' : '')." <b>".$langs->trans('Language_'.$key).":</b> ".'<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'&type='.$type.'">'.img_delete('', '').'</a></td></tr>';
 			print '<tr><td class="titlefield">'.$langs->trans('Label').'</td><td>'.$object->multilangs[$key]["label"].'</td></tr>';
 			print '<tr><td>'.$langs->trans('Description').'</td><td>'.$object->multilangs[$key]["description"].'</td></tr>';
 			if (getDolGlobalString('CATEGORY_USE_OTHER_FIELD_IN_TRANSLATION')) {
@@ -315,7 +315,7 @@ if ($action == 'add' && ($user->hasRight('produit', 'creer') || $user->hasRight(
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
 	print '<br>';
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="vadd">';
 	print '<input type="hidden" name="id" value="'.$id.'">';

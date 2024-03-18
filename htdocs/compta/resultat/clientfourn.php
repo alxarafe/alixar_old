@@ -178,7 +178,7 @@ $total_ttc = 0;
 if ($modecompta == "CREANCES-DETTES") {
 	$name = $langs->trans("ReportInOut").', '.$langs->trans("ByPredefinedAccountGroups");
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($tmps['year'] - 1)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($tmps['year'] + 1)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($tmps['year'] - 1)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($tmps['year'] + 1)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesResultDue");
 	if (getDolGlobalString('FACTURE_DEPOSITS_ARE_JUST_PAYMENTS')) {
 		$description .= $langs->trans("DepositsAreNotIncluded");
@@ -193,7 +193,7 @@ if ($modecompta == "CREANCES-DETTES") {
 } elseif ($modecompta == "RECETTES-DEPENSES") {
 	$name = $langs->trans("ReportInOut").', '.$langs->trans("ByPredefinedAccountGroups");
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($tmps['year'] - 1)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($tmps['year'] + 1)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($tmps['year'] - 1)."&modecompta=".$modecompta."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($tmps['year'] + 1)."&modecompta=".$modecompta."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesResultInOut");
 	$builddate = dol_now();
 	//$exportlink=$langs->trans("NotYetAvailable");
@@ -202,7 +202,7 @@ if ($modecompta == "CREANCES-DETTES") {
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
 	$arraylist = array('no'=>$langs->trans("CustomerCode"), 'yes'=>$langs->trans("AccountWithNonZeroValues"), 'all'=>$langs->trans("All"));
 	$period .= ' &nbsp; &nbsp; <span class="opacitymedium">'.$langs->trans("DetailBy").'</span> '.$form->selectarray('showaccountdetail', $arraylist, $showaccountdetail, 0);
-	$periodlink = ($year_start ? "<a href='".DOL_PHP_SELF."?year=".($tmps['year'] - 1)."&modecompta=".$modecompta."&showaccountdetail=".$showaccountdetail."'>".img_previous()."</a> <a href='".DOL_PHP_SELF."?year=".($tmps['year'] + 1)."&modecompta=".$modecompta."&showaccountdetail=".$showaccountdetail."'>".img_next()."</a>" : "");
+	$periodlink = ($year_start ? "<a href='".$_SERVER['PHP_SELF']."?year=".($tmps['year'] - 1)."&modecompta=".$modecompta."&showaccountdetail=".$showaccountdetail."'>".img_previous()."</a> <a href='".$_SERVER['PHP_SELF']."?year=".($tmps['year'] + 1)."&modecompta=".$modecompta."&showaccountdetail=".$showaccountdetail."'>".img_next()."</a>" : "");
 	$description = $langs->trans("RulesResultBookkeepingPredefined");
 	$description .= ' ('.$langs->trans("SeePageForSetup", DOL_URL_ROOT.'/accountancy/admin/account.php?mainmenu=accountancy&leftmenu=accountancy_admin', $langs->transnoentitiesnoconv("Accountancy").' / '.$langs->transnoentitiesnoconv("Setup").' / '.$langs->transnoentitiesnoconv("Chartofaccounts")).')';
 	$builddate = dol_now();
@@ -258,20 +258,20 @@ print '<table class="liste noborder centpercent">';
 print '<tr class="liste_titre">';
 
 if ($modecompta == 'BOOKKEEPING') {
-	print_liste_field_titre("PredefinedGroups", DOL_PHP_SELF, 'f.thirdparty_code,f.rowid', '', $param, '', $sortfield, $sortorder, 'width200 ');
+	print_liste_field_titre("PredefinedGroups", $_SERVER['PHP_SELF'], 'f.thirdparty_code,f.rowid', '', $param, '', $sortfield, $sortorder, 'width200 ');
 } else {
-	print_liste_field_titre("", DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'width200 ');
+	print_liste_field_titre("", $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'width200 ');
 }
 print_liste_field_titre('');
 if ($modecompta == 'BOOKKEEPING') {
-	print_liste_field_titre("Amount", DOL_PHP_SELF, 'amount', '', $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("Amount", $_SERVER['PHP_SELF'], 'amount', '', $param, 'class="right"', $sortfield, $sortorder);
 } else {
 	if ($modecompta == 'CREANCES-DETTES') {
-		print_liste_field_titre("AmountHT", DOL_PHP_SELF, 'amount_ht', '', $param, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre("AmountHT", $_SERVER['PHP_SELF'], 'amount_ht', '', $param, 'class="right"', $sortfield, $sortorder);
 	} else {
 		print_liste_field_titre('');  // Make 4 columns in total whatever $modecompta is
 	}
-	print_liste_field_titre("AmountTTC", DOL_PHP_SELF, 'amount_ttc', '', $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("AmountTTC", $_SERVER['PHP_SELF'], 'amount_ttc', '', $param, 'class="right"', $sortfield, $sortorder);
 }
 print "</tr>\n";
 

@@ -102,7 +102,7 @@ if ($action == 'add' || GETPOST('modify', 'alpha')) {
 
 		if ($result1 && $result2 && $result3 && $result4 && $result5 && $result6) {
 			$db->commit();
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		} else {
 			$db->rollback();
@@ -134,7 +134,7 @@ if (GETPOST('delete', 'alpha')) {
 
 		if ($result1 && $result2 && $result3 && $result4 && $result5 && $result6) {
 			$db->commit();
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		} else {
 			$db->rollback();
@@ -244,7 +244,7 @@ if (!function_exists('ftp_connect')) {
 			//print "x".join(',',$reg)."=".$obj->name."=".$idrss;
 
 			print '<br>';
-			print '<form name="externalrssconfig" action="'.DOL_PHP_SELF.'" method="post">';
+			print '<form name="externalrssconfig" action="'.$_SERVER['PHP_SELF'].'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="numero_entry" value="'.$idrss.'">';
 

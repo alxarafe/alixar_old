@@ -300,14 +300,14 @@ if ($object->id > 0) {
 	print $langs->trans('PaymentConditions');
 	print '<td>';
 	if (($action != 'editconditions') && $user->hasRight('societe', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editconditions&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editconditions&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td>';
 	if ($action == 'editconditions') {
-		$form->form_conditions_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->cond_reglement_supplier_id, 'cond_reglement_supplier_id', 1);
+		$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->cond_reglement_supplier_id, 'cond_reglement_supplier_id', 1);
 	} else {
-		$form->form_conditions_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->cond_reglement_supplier_id, 'none');
+		$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->cond_reglement_supplier_id, 'none');
 	}
 	print "</td>";
 	print '</tr>';
@@ -318,14 +318,14 @@ if ($object->id > 0) {
 	print $langs->trans('PaymentMode');
 	print '<td>';
 	if (($action != 'editmode') && $user->hasRight('societe', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td>';
 	if ($action == 'editmode') {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->mode_reglement_supplier_id, 'mode_reglement_supplier_id', 'DBIT', 1, 1);
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->mode_reglement_supplier_id, 'mode_reglement_supplier_id', 'DBIT', 1, 1);
 	} else {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->mode_reglement_supplier_id, 'none');
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->mode_reglement_supplier_id, 'none');
 	}
 	print "</td>";
 	print '</tr>';
@@ -337,14 +337,14 @@ if ($object->id > 0) {
 		print $langs->trans('PaymentBankAccount');
 		print '<td>';
 		if (($action != 'editbankaccount') && $user->hasRight('societe', 'creer')) {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbankaccount&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbankaccount&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editbankaccount') {
-			$form->formSelectAccount(DOL_PHP_SELF.'?socid='.$object->id, $object->fk_account, 'fk_account', 1);
+			$form->formSelectAccount($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->fk_account, 'fk_account', 1);
 		} else {
-			$form->formSelectAccount(DOL_PHP_SELF.'?socid='.$object->id, $object->fk_account, 'none');
+			$form->formSelectAccount($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->fk_account, 'none');
 		}
 		print "</td>";
 		print '</tr>';
@@ -356,7 +356,7 @@ if ($object->id > 0) {
 	print $langs->trans("CustomerRelativeDiscountShort");
 	print '<td><td class="right">';
 	if ($user->hasRight('societe', 'creer') && !$user->socid > 0) {
-		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
+		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
 	}
 	print '</td></tr></table>';
 	print '</td><td>'.($object->remise_supplier_percent ? '<a href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'">'.$object->remise_supplier_percent.'%</a>' : '').'</td>';
@@ -369,7 +369,7 @@ if ($object->id > 0) {
 	print $langs->trans("CustomerAbsoluteDiscountShort");
 	print '<td><td class="right">';
 	if ($user->hasRight('societe', 'creer') && !$user->socid > 0) {
-		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
+		print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
 	}
 	print '</td></tr></table>';
 	print '</td>';
@@ -379,7 +379,7 @@ if ($object->id > 0) {
 		dol_print_error($db, $object->error);
 	}
 	if ($amount_discount > 0) {
-		print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?socid='.$object->id).'&action=create&token='.newToken().'">'.price($amount_discount, 1, $langs, 1, -1, -1, $conf->currency).'</a>';
+		print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?socid='.$object->id).'&action=create&token='.newToken().'">'.price($amount_discount, 1, $langs, 1, -1, -1, $conf->currency).'</a>';
 	}
 	//else print $langs->trans("DiscountNone");
 	print '</td>';
@@ -896,7 +896,7 @@ if ($object->id > 0) {
 	// modified by hook
 	if (empty($reshook)) {
 		if ($object->status != 1) {
-			print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('ThirdPartyIsClosed'), 'default', DOL_PHP_SELF.'#', '', false);
+			print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('ThirdPartyIsClosed'), 'default', $_SERVER['PHP_SELF'].'#', '', false);
 		}
 
 		if (isModEnabled('supplier_proposal') && $user->hasRight("supplier_proposal", "creer")) {
@@ -904,7 +904,7 @@ if ($object->id > 0) {
 			if ($object->status == 1) {
 				print dolGetButtonAction('', $langs->trans('AddSupplierProposal'), 'default', DOL_URL_ROOT.'/supplier_proposal/card.php?action=create&amp;socid='.$object->id, '');
 			} else {
-				print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('AddSupplierProposal'), 'default', DOL_PHP_SELF.'#', '', false);
+				print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('AddSupplierProposal'), 'default', $_SERVER['PHP_SELF'].'#', '', false);
 			}
 		}
 
@@ -913,7 +913,7 @@ if ($object->id > 0) {
 			if ($object->status == 1) {
 				print dolGetButtonAction('', $langs->trans('AddSupplierOrderShort'), 'default', DOL_URL_ROOT.'/fourn/commande/card.php?action=create&amp;token='.newToken().'&amp;socid='.$object->id, '');
 			} else {
-				print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('AddSupplierOrderShort'), 'default', DOL_PHP_SELF.'#', '', false);
+				print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('AddSupplierOrderShort'), 'default', $_SERVER['PHP_SELF'].'#', '', false);
 			}
 		}
 
@@ -923,10 +923,10 @@ if ($object->id > 0) {
 					// Company is open
 					print dolGetButtonAction('', $langs->trans('CreateInvoiceForThisSupplier'), 'default', DOL_URL_ROOT.'/fourn/commande/list.php?socid='.$object->id.'&amp;search_billed=0&amp;autoselectall=1', '');
 				} else {
-					print dolGetButtonAction('', $langs->trans('CreateInvoiceForThisCustomer'), 'default', DOL_PHP_SELF.'#', '', false);
+					print dolGetButtonAction('', $langs->trans('CreateInvoiceForThisCustomer'), 'default', $_SERVER['PHP_SELF'].'#', '', false);
 				}
 			} else {
-				print dolGetButtonAction($langs->trans("NoOrdersToInvoice").' ('.$langs->trans("WithReceptionFinished").')', $langs->trans('CreateInvoiceForThisCustomer'), 'default', DOL_PHP_SELF.'#', '', false);
+				print dolGetButtonAction($langs->trans("NoOrdersToInvoice").' ('.$langs->trans("WithReceptionFinished").')', $langs->trans('CreateInvoiceForThisCustomer'), 'default', $_SERVER['PHP_SELF'].'#', '', false);
 			}
 		}
 
@@ -935,7 +935,7 @@ if ($object->id > 0) {
 			if ($object->status == 1) {
 				print dolGetButtonAction('', $langs->trans('AddBill'), 'default', DOL_URL_ROOT.'/fourn/facture/card.php?action=create&amp;socid='.$object->id, '');
 			} else {
-				print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('AddBill'), 'default', DOL_PHP_SELF.'#', '', false);
+				print dolGetButtonAction($langs->trans('ThirdPartyIsClosed'), $langs->trans('AddBill'), 'default', $_SERVER['PHP_SELF'].'#', '', false);
 			}
 		}
 
@@ -944,7 +944,7 @@ if ($object->id > 0) {
 			if ($user->hasRight("agenda", "myactions", "create")) {
 				print dolGetButtonAction('', $langs->trans('AddAction'), 'default', DOL_URL_ROOT.'/comm/action/card.php?action=create&amp;socid='.$object->id, '');
 			} else {
-				print dolGetButtonAction($langs->trans('NotAllowed'), $langs->trans('AddAction'), 'default', DOL_PHP_SELF.'#', '', false);
+				print dolGetButtonAction($langs->trans('NotAllowed'), $langs->trans('AddAction'), 'default', $_SERVER['PHP_SELF'].'#', '', false);
 			}
 		}
 	}
@@ -955,7 +955,7 @@ if ($object->id > 0) {
 	if (getDolGlobalString('MAIN_DUPLICATE_CONTACTS_TAB_ON_MAIN_CARD')) {
 		print '<br>';
 		// List of contacts
-		show_contacts($conf, $langs, $db, $object, DOL_PHP_SELF.'?socid='.$object->id);
+		show_contacts($conf, $langs, $db, $object, $_SERVER['PHP_SELF'].'?socid='.$object->id);
 	}
 
 	if (getDolGlobalString('MAIN_REPEATTASKONEACHTAB')) {

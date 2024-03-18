@@ -169,7 +169,7 @@ $searchform .= '<br>';
 // Add search on URL
 if ($conf->dol_use_jmobile) {
 	$ret = '';
-	$ret .= '<form action="'.DOL_PHP_SELF.'" method="POST" class="searchform nowraponall tagtr">';
+	$ret .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" class="searchform nowraponall tagtr">';
 	$ret .= '<input type="hidden" name="token" value="'.newToken().'">';
 	$ret .= '<input type="hidden" name="savelogin" value="'.dol_escape_htmltag($user->login).'">';
 	$ret .= '<input type="hidden" name="action" value="redirect">';

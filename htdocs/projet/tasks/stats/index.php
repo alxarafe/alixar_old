@@ -147,7 +147,7 @@ print dol_get_fiche_head($head, 'byyear', $langs->trans("Statistics"), -1, '');
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
-print '<form name="stats" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form name="stats" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print '<table class="noborder centpercent">';
@@ -194,13 +194,13 @@ foreach ($data_all_year as $val) {
 		$oldyear--;
 
 		print '<tr class="oddeven">';
-		print '<td><a href="'.DOL_PHP_SELF.'?year='.$oldyear.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$oldyear.'</a></td>';
+		print '<td><a href="'.$_SERVER['PHP_SELF'].'?year='.$oldyear.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$oldyear.'</a></td>';
 		print '<td class="right">0</td>';
 		print '</tr>';
 	}
 
 	print '<tr class="oddeven">';
-	print '<td><a href="'.DOL_PHP_SELF.'?year='.$year.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$year.'</a></td>';
+	print '<td><a href="'.$_SERVER['PHP_SELF'].'?year='.$year.($socid > 0 ? '&socid='.$socid : '').($userid > 0 ? '&userid='.$userid : '').'">'.$year.'</a></td>';
 	print '<td class="right">'.$val['nb'].'</td>';
 	print '</tr>';
 	$oldyear = $year;

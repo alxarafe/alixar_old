@@ -49,7 +49,7 @@ if ($action == 'up' && $permissiontoedit) {
 		$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
 	}
 
-	header('Location: '.DOL_PHP_SELF.'?id='.$object->id.'#'.GETPOST('rowid'));
+	header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.GETPOST('rowid'));
 	exit();
 }
 
@@ -73,6 +73,6 @@ if ($action == 'down' && $permissiontoedit) {
 		$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
 	}
 
-	header('Location: '.DOL_PHP_SELF.'?id='.$object->id.'#'.GETPOST('rowid'));
+	header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.GETPOST('rowid'));
 	exit();
 }

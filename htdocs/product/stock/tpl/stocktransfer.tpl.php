@@ -55,7 +55,7 @@ if ($pdluoid > 0) {
 
 print load_fiche_titre($langs->trans("StockTransfer"), '', 'generic');
 
-print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="post">'."\n";
+print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="post">'."\n";
 
 print dol_get_fiche_head();
 

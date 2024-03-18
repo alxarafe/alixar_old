@@ -47,7 +47,7 @@ $reg = array();
 if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_set_const($db, $code, 1, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -58,7 +58,7 @@ if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
 if (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
 	$code = $reg[1];
 	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		dol_print_error($db);
@@ -98,9 +98,9 @@ if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('ECM_AUTO_TREE_HIDEN', null, null, 1);
 } else {
 	if (!getDolGlobalString('ECM_AUTO_TREE_HIDEN')) {
-		print '<a href="'.DOL_PHP_SELF.'?action=set_ECM_AUTO_TREE_HIDEN&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_ECM_AUTO_TREE_HIDEN&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
 	} else {
-		print '<a href="'.DOL_PHP_SELF.'?action=del_ECM_AUTO_TREE_HIDEN&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_ECM_AUTO_TREE_HIDEN&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	}
 }
 print '</td></tr>';

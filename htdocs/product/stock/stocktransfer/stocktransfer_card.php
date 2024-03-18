@@ -427,7 +427,7 @@ if ($action == 'create') {
 
 	print load_fiche_titre($title, '', 'object_'.$object->picto);
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	if ($backtopage) {
@@ -482,7 +482,7 @@ if ($action == 'create') {
 if (($id || $ref) && $action == 'edit') {
 	print load_fiche_titre($langs->trans("StockTransfer"), '', 'object_' . $object->picto);
 
-	print '<form method="POST" action="' . DOL_PHP_SELF . '">';
+	print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
 	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="id" value="' . $object->id . '">';
@@ -524,45 +524,45 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Confirmation to delete (using preloaded confirm popup)
 	if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DeleteMyObject'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 'action-delete');
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteMyObject'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 'action-delete');
 	}
 	// Confirmation to delete line
 	if ($action == 'deleteline') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
 	}
 	// Clone confirmation
 	if ($action == 'clone') {
 		// Create an array for form
 		$formquestion = array();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	} elseif ($action == 'destock') { // Destock confirmation
 		// Create an array for form
 		$formquestion = array(	'text' => '',
 			0 => array('type' => 'text', 'name' => 'label', 'label' => $langs->trans("Label"), 'value' => $langs->trans('ConfirmDestock', $object->ref), 'size' => 40),
 			1 => array('type' => 'text', 'name' => 'inventorycode', 'label' => $langs->trans("InventoryCode"), 'value' => dol_print_date(dol_now(), '%y%m%d%H%M%S'), 'size' => 25)
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DestockAllProduct'), '', 'confirm_destock', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DestockAllProduct'), '', 'confirm_destock', $formquestion, 'yes', 1);
 	} elseif ($action == 'destockcancel') { // Destock confirmation cancel
 		// Create an array for form
 		$formquestion = array(	'text' => '',
 			0 => array('type' => 'text', 'name' => 'label', 'label' => $langs->trans("Label"), 'value' => $langs->trans('ConfirmDestockCancel', $object->ref), 'size' => 40),
 			1 => array('type' => 'text', 'name' => 'inventorycode', 'label' => $langs->trans("InventoryCode"), 'value' => dol_print_date(dol_now(), '%y%m%d%H%M%S'), 'size' => 25)
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('DestockAllProductCancel'), '', 'confirm_destockcancel', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DestockAllProductCancel'), '', 'confirm_destockcancel', $formquestion, 'yes', 1);
 	} elseif ($action == 'addstock') { // Addstock confirmation
 		// Create an array for form
 		$formquestion = array(	'text' => '',
 			0 => array('type' => 'text', 'name' => 'label', 'label' => $langs->trans("Label").'&nbsp;:', 'value' => $langs->trans('ConfirmAddStock', $object->ref), 'size' => 40),
 			1 => array('type' => 'text', 'name' => 'inventorycode', 'label' => $langs->trans("InventoryCode"), 'value' => dol_print_date(dol_now(), '%y%m%d%H%M%S'), 'size' => 25)
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('AddStockAllProduct'), '', 'confirm_addstock', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('AddStockAllProduct'), '', 'confirm_addstock', $formquestion, 'yes', 1);
 	} elseif ($action == 'addstockcancel') { // Addstock confirmation cancel
 		// Create an array for form
 		$formquestion = array(	'text' => '',
 			0 => array('type' => 'text', 'name' => 'label', 'label' => $langs->trans("Label").'&nbsp;:', 'value' => $langs->trans('ConfirmAddStockCancel', $object->ref), 'size' => 40),
 			1 => array('type' => 'text', 'name' => 'inventorycode', 'label' => $langs->trans("InventoryCode"), 'value' => dol_print_date(dol_now(), '%y%m%d%H%M%S'), 'size' => 25)
 		);
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('AddStockAllProductCancel'), '', 'confirm_addstockcancel', $formquestion, 'yes', 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('AddStockAllProductCancel'), '', 'confirm_addstockcancel', $formquestion, 'yes', 1);
 	}
 
 	// Confirmation of action xxxx (You can use it for xxx = 'close', xxx = 'reopen', ...)
@@ -578,13 +578,13 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			// array('type' => 'other',    'name' => 'idwarehouse',   'label' => $langs->trans("SelectWarehouseForStockDecrease"), 'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1, 0, 0, '', 0, $forcecombo))
 		);
 		*/
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
 	}
 
 
 	if ($action == 'valid' && $permissiontoadd) {
 		$nextref = $object->getNextNumRef();
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('Validate'), $langs->transnoentities('ConfirmValidateStockTransfer', $nextref), 'confirm_validate', $formquestion, 0, 2);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('Validate'), $langs->transnoentities('ConfirmValidateStockTransfer', $nextref), 'confirm_validate', $formquestion, 0, 2);
 	}
 
 	// Call Hook formConfirm
@@ -617,9 +617,9 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if ($permissiontoadd) {
 			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
 			}
-			$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
 		} else {
 			if (!empty($object->fk_project)) {
 				$proj = new Project($db);
@@ -658,7 +658,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		print $langs->trans('IncotermLabel');
 		print '<td><td class="right">';
 		if ($permissiontoadd && $action != 'editincoterm') {
-			print '<a class="editfielda" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=editincoterm">'.img_edit().'</a>';
+			print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=editincoterm">'.img_edit().'</a>';
 		} else {
 			print '&nbsp;';
 		}
@@ -668,7 +668,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if ($action != 'editincoterm') {
 			print $form->textwithpicto($object->display_incoterms(), $object->label_incoterms, 1);
 		} else {
-			print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), DOL_PHP_SELF.'?id='.$object->id);
+			print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), $_SERVER['PHP_SELF'].'?id='.$object->id);
 		}
 		print '</td></tr>';
 	}
@@ -699,7 +699,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		/*
 		$result = $object->getLinesArray();
 
-		print '	<form name="addproduct" id="addproduct" action="'.DOL_PHP_SELF.'?id='.$object->id.(($action != 'editline') ? '' : '#line_'.GETPOST('lineid', 'int')).'" method="POST">
+		print '	<form name="addproduct" id="addproduct" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.(($action != 'editline') ? '' : '#line_'.GETPOST('lineid', 'int')).'" method="POST">
 		<input type="hidden" name="token" value="' . newToken().'">
 		<input type="hidden" name="action" value="' . (($action != 'editline') ? 'addline' : 'updateline').'">
 		<input type="hidden" name="mode" value="">
@@ -750,7 +750,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	$formproduct = new FormProduct($db);
 	print '<div class="div-table-responsive-no-min">';
-	print '	<form name="addproduct" id="addproduct" action="'.DOL_PHP_SELF.'?id='.$object->id.(($action != 'editline') ? '#addline' : '#line_'.GETPOSTINT('lineid')).'" method="POST">
+	print '	<form name="addproduct" id="addproduct" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.(($action != 'editline') ? '#addline' : '#line_'.GETPOSTINT('lineid')).'" method="POST">
 		<input type="hidden" name="token" value="' . newToken().'">
 		<input type="hidden" name="action" value="' . (($action != 'editline') ? 'addline' : 'updateline').'">
 		<input type="hidden" name="mode" value="">
@@ -767,18 +767,18 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	$conf->global->MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE = true; // Full display needed to see all column title details
 
 	print '<tr class="liste_titre">';
-	print getTitleFieldOfList($langs->trans('ProductRef'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+	print getTitleFieldOfList($langs->trans('ProductRef'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
 	if (isModEnabled('productbatch')) {
-		print getTitleFieldOfList($langs->trans('Batch'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+		print getTitleFieldOfList($langs->trans('Batch'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
 	}
-	print getTitleFieldOfList($langs->trans('WarehouseSource'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
-	print getTitleFieldOfList($langs->trans('WarehouseTarget'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
-	print getTitleFieldOfList($langs->trans('Qty'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'center tagtd maxwidthonsmartphone ');
+	print getTitleFieldOfList($langs->trans('WarehouseSource'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+	print getTitleFieldOfList($langs->trans('WarehouseTarget'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+	print getTitleFieldOfList($langs->trans('Qty'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'center tagtd maxwidthonsmartphone ');
 	if (getDolGlobalInt('PRODUCT_USE_UNITS')) {
-		print getTitleFieldOfList($langs->trans('Unit'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
+		print getTitleFieldOfList($langs->trans('Unit'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'tagtd maxwidthonsmartphone ');
 	}
-	print getTitleFieldOfList($langs->trans('AverageUnitPricePMPShort'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'center tagtd maxwidthonsmartphone ');
-	print getTitleFieldOfList($langs->trans('EstimatedStockValueShort'), 0, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'center tagtd maxwidthonsmartphone ');
+	print getTitleFieldOfList($langs->trans('AverageUnitPricePMPShort'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'center tagtd maxwidthonsmartphone ');
+	print getTitleFieldOfList($langs->trans('EstimatedStockValueShort'), 0, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'center tagtd maxwidthonsmartphone ');
 	if (empty($object->status) && $permissiontoadd) {
 		print getTitleFieldOfList('', 0);
 		print getTitleFieldOfList('', 0);
@@ -869,11 +869,11 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				print '<input type="submit" class="button buttongen marginbottomonly" id="cancellinebutton" name="cancel" value="'.$langs->trans("Cancel").'"></td>';
 			} else {
 				print '<td class="right">';
-				print '<a class="editfielda reposition" href="' . DOL_PHP_SELF . '?id=' . $object->id . '&amp;action=editline&amp;lineid=' . $line->id . '#line_' . $line->id . '">';
+				print '<a class="editfielda reposition" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=editline&amp;lineid=' . $line->id . '#line_' . $line->id . '">';
 				print img_edit() . '</a>';
 				print '</td>';
 				print '<td class="right">';
-				print '<a href="' . DOL_PHP_SELF . '?id=' . $id . '&action=deleteline&lineid=' . $line->id . '">' . img_delete($langs->trans("Remove")) . '</a>';
+				print '<a href="' . $_SERVER['PHP_SELF'] . '?id=' . $id . '&action=deleteline&lineid=' . $line->id . '">' . img_delete($langs->trans("Remove")) . '</a>';
 				print '</td>';
 			}
 
@@ -883,12 +883,12 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				print '<td class="linecolmove tdlineupdown center">';
 				$coldisplay++;
 				if ($i > 0) { ?>
-					<a class="lineupdown" href="<?php print DOL_PHP_SELF.'?id='.$id.'&amp;action=up&amp;rowid='.$line->id; ?>">
+					<a class="lineupdown" href="<?php print $_SERVER['PHP_SELF'].'?id='.$id.'&amp;action=up&amp;rowid='.$line->id; ?>">
 						<?php print img_up('default', 0, 'imgupforline'); ?>
 					</a>
 				<?php }
 				if ($i < $num - 1) { ?>
-					<a class="lineupdown" href="<?php print DOL_PHP_SELF.'?id='.$id.'&amp;action=down&amp;rowid='.$line->id; ?>">
+					<a class="lineupdown" href="<?php print $_SERVER['PHP_SELF'].'?id='.$id.'&amp;action=down&amp;rowid='.$line->id; ?>">
 						<?php print img_down('default', 0, 'imgdownforline'); ?>
 					</a>
 				<?php }
@@ -999,59 +999,59 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if (empty($reshook)) {
 			// Send
 			if (empty($user->socid)) {
-				print dolGetButtonAction('', $langs->trans('SendMail'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle');
+				print dolGetButtonAction('', $langs->trans('SendMail'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&token='.newToken().'&mode=init#formmailbeforetitle');
 			}
 
 			// Back to draft
 			if ($object->status == $object::STATUS_VALIDATED) {
-				print dolGetButtonAction('', $langs->trans('SetToDraft'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_setdraft&confirm=yes&token='.newToken(), '', $permissiontoadd);
+				print dolGetButtonAction('', $langs->trans('SetToDraft'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_setdraft&confirm=yes&token='.newToken(), '', $permissiontoadd);
 			}
 
 			// Modify
-			print dolGetButtonAction('', $langs->trans('Modify'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken(), '', $permissiontoadd);
+			print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken(), '', $permissiontoadd);
 
 			// Validate
 			if ($object->status == $object::STATUS_DRAFT) {
 				if (empty($object->table_element_line) || (is_array($object->lines) && count($object->lines) > 0)) {
-					print dolGetButtonAction('', $langs->trans('Validate'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken(), '', $permissiontoadd);
+					print dolGetButtonAction('', $langs->trans('Validate'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken(), '', $permissiontoadd);
 				} else {
 					$langs->load("errors");
 					print dolGetButtonAction($langs->trans("ErrorAddAtLeastOneLineFirst"), $langs->trans("Validate"), 'default', '#', '', 0);
 				}
 			} elseif ($object->status == $object::STATUS_VALIDATED && $permissiontoadd) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=destock&token='.newToken().'">'.$langs->trans("StockTransferDecrementation").'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=destock&token='.newToken().'">'.$langs->trans("StockTransferDecrementation").'</a>';
 			} elseif ($object->status == $object::STATUS_TRANSFERED && $permissiontoadd) {
-				print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=destockcancel&token='.newToken().'">'.$langs->trans("StockTransferDecrementationCancel").'</a>';
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=addstock&token='.newToken().'">'.$langs->trans("StockTransferIncrementation").'</a>';
+				print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=destockcancel&token='.newToken().'">'.$langs->trans("StockTransferDecrementationCancel").'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=addstock&token='.newToken().'">'.$langs->trans("StockTransferIncrementation").'</a>';
 			} elseif ($object->status == $object::STATUS_CLOSED && $permissiontoadd) {
-				print '<a class="butActionDelete" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=addstockcancel&token='.newToken().'">'.$langs->trans("StockTransferIncrementationCancel").'</a>';
+				print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=addstockcancel&token='.newToken().'">'.$langs->trans("StockTransferIncrementationCancel").'</a>';
 			}
 
 			// Clone
 			if ($permissiontoadd) {
-				print dolGetButtonAction('', $langs->trans('ToClone'), 'default', DOL_PHP_SELF.'?id='.$object->id.(!empty($object->socid) ? '&socid='.$object->socid : '').'&action=clone&token='.newToken(), '', $permissiontoadd);
+				print dolGetButtonAction('', $langs->trans('ToClone'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.(!empty($object->socid) ? '&socid='.$object->socid : '').'&action=clone&token='.newToken(), '', $permissiontoadd);
 			}
 
 			/*
 			if ($permissiontoadd) {
 				if ($object->status == $object::STATUS_ENABLED) {
-					print dolGetButtonAction('', $langs->trans('Disable'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=disable&token='.newToken(), '', $permissiontoadd);
+					print dolGetButtonAction('', $langs->trans('Disable'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=disable&token='.newToken(), '', $permissiontoadd);
 				} else {
-					print dolGetButtonAction('', $langs->trans('Enable'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=enable&token='.newToken(), '', $permissiontoadd);
+					print dolGetButtonAction('', $langs->trans('Enable'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=enable&token='.newToken(), '', $permissiontoadd);
 				}
 			}
 			if ($permissiontoadd) {
 				if ($object->status == $object::STATUS_VALIDATED) {
-					print dolGetButtonAction('', $langs->trans('Cancel'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontoadd);
+					print dolGetButtonAction('', $langs->trans('Cancel'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontoadd);
 				} else {
-					print dolGetButtonAction('', $langs->trans('Re-Open'), 'default', DOL_PHP_SELF.'?id='.$object->id.'&action=reopen&token='.newToken(), '', $permissiontoadd);
+					print dolGetButtonAction('', $langs->trans('Re-Open'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken(), '', $permissiontoadd);
 				}
 			}
 
 			*/
 
 			// Delete (with preloaded confirm popup)
-			$deleteUrl = DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken();
+			$deleteUrl = $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken();
 			$buttonId = 'action-delete-no-ajax';
 			if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile)) {	// We can use preloaded confirm if not jmobile
 				$deleteUrl = '';
@@ -1080,7 +1080,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			$objref = dol_sanitizeFileName($object->ref);
 			$relativepath = $objref . '/' . $objref . '.pdf';
 			$filedir = $conf->stocktransfer->dir_output.'/'.$object->element.'/'.$objref;
-			$urlsource = DOL_PHP_SELF . "?id=" . $object->id;
+			$urlsource = $_SERVER['PHP_SELF'] . "?id=" . $object->id;
 			$genallowed = $permissiontoread; // If you can read, you can build the PDF to read content
 			$delallowed = $permissiontoadd; // If you can create/edit, you can remove a file on card
 			print $formfile->showdocuments('stocktransfer:StockTransfer', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);

@@ -1215,7 +1215,7 @@ llxHeader('', $title);
 $linkback = '';
 if ($id) {
 	$title .= ' - '.$langs->trans($tablib[$id]);
-	$linkback = '<a href="'.DOL_PHP_SELF.'">'.$langs->trans("BackToDictionaryList").'</a>';
+	$linkback = '<a href="'.$_SERVER['PHP_SELF'].'">'.$langs->trans("BackToDictionaryList").'</a>';
 }
 $titlepicto = 'title_setup';
 if ($id == 10 && GETPOST('from') == 'accountancy') {
@@ -1254,7 +1254,7 @@ if (GETPOST('from')) {
 
 // Confirmation of the deletion of the line
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'rowid='.urlencode($rowid).'&code='.urlencode($code).$paramwithsearch, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'rowid='.urlencode($rowid).'&code='.urlencode($code).$paramwithsearch, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_delete', '', 0, 1);
 }
 
 // Show a dictionary
@@ -1344,7 +1344,7 @@ if ($id > 0) {
 	}
 	$fieldlist = explode(',', $tabfield[$id]);
 
-	print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="from" value="'.dol_escape_htmltag(GETPOST('from', 'alpha')).'">';
 
@@ -1365,13 +1365,13 @@ if ($id > 0) {
 		$massactionbutton = $linkback;
 
 		$newcardbutton = '';
-		/*$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_PHP_SELF.'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss'=>'reposition'));
-		 $newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', DOL_PHP_SELF.'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss'=>'reposition'));
+		/*$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss'=>'reposition'));
+		 $newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss'=>'reposition'));
 		 $newcardbutton .= dolGetButtonTitleSeparator();
 		 */
-		$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/admin/dict.php?action=create'.$param.'&backtopage='.urlencode(DOL_PHP_SELF), '', $permissiontoadd);
+		$newcardbutton .= dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/admin/dict.php?action=create'.$param.'&backtopage='.urlencode($_SERVER['PHP_SELF']), '', $permissiontoadd);
 
-		print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'tools', 0, $newcardbutton, '', $listlimit, 1, 0, 1);
+		print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'tools', 0, $newcardbutton, '', $listlimit, 1, 0, 1);
 
 
 		if ($action == 'create') {
@@ -1703,7 +1703,7 @@ if ($id > 0) {
 
 			print '</form>';
 
-			print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="from" value="'.dol_escape_htmltag(GETPOST('from', 'alpha')).'">';
 		}
@@ -2058,17 +2058,17 @@ if ($id > 0) {
 					$newvaluetoshow = $valuetoshow;
 				}
 
-				print getTitleFieldOfList($newvaluetoshow, 0, DOL_PHP_SELF, ($sortable ? $value : ''), ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, $cssprefix);
+				print getTitleFieldOfList($newvaluetoshow, 0, $_SERVER['PHP_SELF'], ($sortable ? $value : ''), ($page ? 'page='.$page.'&' : ''), $param, '', $sortfield, $sortorder, $cssprefix);
 			}
 		}
 		// Favorite & EEC - Only activated on country dictionary
 		if ($id == 4) {
-			print getTitleFieldOfList($langs->trans("InEEC"), 0, DOL_PHP_SELF, "eec", ($page ? 'page='.$page.'&' : ''), $param, 'align="center"', $sortfield, $sortorder, '', 0, $langs->trans("CountryIsInEEC"));
-			print getTitleFieldOfList($langs->trans("Favorite"), 0, DOL_PHP_SELF, "favorite", ($page ? 'page='.$page.'&' : ''), $param, 'align="center"', $sortfield, $sortorder);
+			print getTitleFieldOfList($langs->trans("InEEC"), 0, $_SERVER['PHP_SELF'], "eec", ($page ? 'page='.$page.'&' : ''), $param, 'align="center"', $sortfield, $sortorder, '', 0, $langs->trans("CountryIsInEEC"));
+			print getTitleFieldOfList($langs->trans("Favorite"), 0, $_SERVER['PHP_SELF'], "favorite", ($page ? 'page='.$page.'&' : ''), $param, 'align="center"', $sortfield, $sortorder);
 		}
 
 		// Status
-		print getTitleFieldOfList($langs->trans("Status"), 0, DOL_PHP_SELF, "active", ($page ? 'page='.$page.'&' : ''), $param, 'align="center"', $sortfield, $sortorder);
+		print getTitleFieldOfList($langs->trans("Status"), 0, $_SERVER['PHP_SELF'], "active", ($page ? 'page='.$page.'&' : ''), $param, 'align="center"', $sortfield, $sortorder);
 
 		// Action button
 		if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
@@ -2136,7 +2136,7 @@ if ($id > 0) {
 				if (empty($rowidcol) || in_array($id, array(6, 7, 8, 13, 17, 19, 27, 32))) {
 					$rowidcol = 'rowid';
 				}
-				$url = DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder;
+				$url = $_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder;
 				$url .= '&rowid='.(isset($obj->$rowidcol) ? $obj->$rowidcol : (!empty($obj->code) ? urlencode($obj->code) : ''));
 				$url .= '&code='.(!empty($obj->code) ? urlencode($obj->code) : '');
 				if (!empty($param)) {
@@ -2516,7 +2516,7 @@ if ($id > 0) {
 			print '<tr class="oddeven"><td class="minwidth200">';
 			if (!empty($tabcond[$i])) {
 				$tabnamenoprefix = preg_replace('/'.MAIN_DB_PREFIX.'/', '', $tabname[$i]);
-				print '<a href="'.DOL_PHP_SELF.'?id='.$i.'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$i.'">';
 				if (!empty($tabcomplete[$tabnamenoprefix]['picto'])) {
 					print img_picto('', $tabcomplete[$tabnamenoprefix]['picto'], 'class="pictofixedwidth paddingrightonly"');
 				}
@@ -2527,7 +2527,7 @@ if ($id > 0) {
 			}
 			print '</td>';
 			print '<td>';
-			print '<a class="editfielda" href="'.DOL_PHP_SELF.'?id='.$i.'">';
+			print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?id='.$i.'">';
 			print img_picto('Edit', 'edit', '');
 			print '</a>';
 			print '</td>';

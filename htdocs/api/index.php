@@ -68,13 +68,13 @@ if (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS
 }
 
 // When we request url to get the json file, we accept Cross site so we can include the descriptor into an external tool.
-if (preg_match('/\/explorer\/swagger\.json/', DOL_PHP_SELF)) {
+if (preg_match('/\/explorer\/swagger\.json/', $_SERVER['PHP_SELF'])) {
 	header('Access-Control-Allow-Origin: *');
 	header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	header('Access-Control-Allow-Headers: Content-Type, Authorization, api_key, DOLAPIKEY');
 }
 // When we request url to get an API, we accept Cross site so we can make js API call inside another website
-if (preg_match('/\/api\/index\.php/', DOL_PHP_SELF)) {
+if (preg_match('/\/api\/index\.php/', $_SERVER['PHP_SELF'])) {
 	header('Access-Control-Allow-Origin: *');
 	header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	header('Access-Control-Allow-Headers: Content-Type, Authorization, api_key, DOLAPIKEY');
@@ -108,13 +108,13 @@ require_once DOL_DOCUMENT_ROOT.'/api/class/api_access.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
 
-$url = DOL_PHP_SELF;
-if (preg_match('/api\/index\.php$/', $url)) {	// sometimes DOL_PHP_SELF is 'api\/index\.php' instead of 'api\/index\.php/explorer.php' or 'api\/index\.php/method'
-	$url = DOL_PHP_SELF.(empty($_SERVER['PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']);
+$url = $_SERVER['PHP_SELF'];
+if (preg_match('/api\/index\.php$/', $url)) {	// sometimes $_SERVER['PHP_SELF'] is 'api\/index\.php' instead of 'api\/index\.php/explorer.php' or 'api\/index\.php/method'
+	$url = $_SERVER['PHP_SELF'].(empty($_SERVER['PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']);
 }
 // Fix for some NGINX setups (this should not be required even with NGINX, however setup of NGINX are often mysterious and this may help is such cases)
 if (getDolGlobalString('MAIN_NGINX_FIX')) {
-	$url = (isset($_SERVER['SCRIPT_URI']) && $_SERVER["SCRIPT_URI"] !== null) ? $_SERVER["SCRIPT_URI"] : DOL_PHP_SELF;
+	$url = (isset($_SERVER['SCRIPT_URI']) && $_SERVER["SCRIPT_URI"] !== null) ? $_SERVER["SCRIPT_URI"] : $_SERVER['PHP_SELF'];
 }
 
 // Enable and test if module Api is enabled

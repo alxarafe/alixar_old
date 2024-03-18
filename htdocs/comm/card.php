@@ -411,14 +411,14 @@ if ($object->id > 0) {
 	print $langs->trans('PaymentConditions');
 	print '<td>';
 	if (($action != 'editconditions') && $user->hasRight('societe', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editconditions&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editconditions&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetConditions'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td>';
 	if ($action == 'editconditions') {
-		$form->form_conditions_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->cond_reglement_id, 'cond_reglement_id', 1, '', 1, $object->deposit_percent);
+		$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->cond_reglement_id, 'cond_reglement_id', 1, '', 1, $object->deposit_percent);
 	} else {
-		$form->form_conditions_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->cond_reglement_id, 'none', 0, '', 1, $object->deposit_percent);
+		$form->form_conditions_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->cond_reglement_id, 'none', 0, '', 1, $object->deposit_percent);
 	}
 	print "</td>";
 	print '</tr>';
@@ -429,14 +429,14 @@ if ($object->id > 0) {
 	print $langs->trans('PaymentMode');
 	print '<td>';
 	if (($action != 'editmode') && $user->hasRight('societe', 'creer')) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editmode&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editmode&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td>';
 	if ($action == 'editmode') {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', 'CRDT', 1, 1);
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->mode_reglement_id, 'mode_reglement_id', 'CRDT', 1, 1);
 	} else {
-		$form->form_modes_reglement(DOL_PHP_SELF.'?socid='.$object->id, $object->mode_reglement_id, 'none');
+		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->mode_reglement_id, 'none');
 	}
 	print "</td>";
 	print '</tr>';
@@ -448,14 +448,14 @@ if ($object->id > 0) {
 		print $langs->trans('PaymentBankAccount');
 		print '<td>';
 		if (($action != 'editbankaccount') && $user->hasRight('societe', 'creer')) {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editbankaccount&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editbankaccount&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editbankaccount') {
-			$form->formSelectAccount(DOL_PHP_SELF.'?socid='.$object->id, $object->fk_account, 'fk_account', 1);
+			$form->formSelectAccount($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->fk_account, 'fk_account', 1);
 		} else {
-			$form->formSelectAccount(DOL_PHP_SELF.'?socid='.$object->id, $object->fk_account, 'none');
+			$form->formSelectAccount($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->fk_account, 'none');
 		}
 		print "</td>";
 		print '</tr>';
@@ -470,7 +470,7 @@ if ($object->id > 0) {
 		print $langs->trans("CustomerRelativeDiscountShort");
 		print '<td><td class="right">';
 		if ($user->hasRight('societe', 'creer') && !$user->socid > 0) {
-			print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
+			print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
 		}
 		print '</td></tr></table>';
 		print '</td><td>'.($object->remise_percent ? '<a href="'.DOL_URL_ROOT.'/comm/remise.php?id='.$object->id.'">'.$object->remise_percent.'%</a>' : '').'</td>';
@@ -483,7 +483,7 @@ if ($object->id > 0) {
 		print $langs->trans("CustomerAbsoluteDiscountShort");
 		print '<td><td class="right">';
 		if ($user->hasRight('societe', 'creer') && !$user->socid > 0) {
-			print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
+			print '<a class="editfielda" href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?socid='.$object->id).'&action=create&token='.newToken().'">'.img_edit($langs->trans("Modify")).'</a>';
 		}
 		print '</td></tr></table>';
 		print '</td>';
@@ -493,7 +493,7 @@ if ($object->id > 0) {
 			dol_print_error($db, $object->error);
 		}
 		if ($amount_discount > 0) {
-			print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?socid='.$object->id).'&action=create&token='.newToken().'">'.price($amount_discount, 1, $langs, 1, -1, -1, $conf->currency).'</a>';
+			print '<a href="'.DOL_URL_ROOT.'/comm/remx.php?id='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?socid='.$object->id).'&action=create&token='.newToken().'">'.price($amount_discount, 1, $langs, 1, -1, -1, $conf->currency).'</a>';
 		}
 		//else print $langs->trans("DiscountNone");
 		print '</td>';
@@ -556,12 +556,12 @@ if ($object->id > 0) {
 		print $form->editfieldkey("Warehouse", 'warehouse', '', $object, $user->hasRight('societe', 'creer'));
 		print '</td><td>';
 		if ($action == 'editwarehouse') {
-			$formproduct->formSelectWarehouses(DOL_PHP_SELF.'?id='.$object->id, $object->fk_warehouse, 'fk_warehouse', 1);
+			$formproduct->formSelectWarehouses($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_warehouse, 'fk_warehouse', 1);
 		} else {
 			if ($object->fk_warehouse > 0) {
 				print img_picto('', 'stock', 'class="paddingrightonly"');
 			}
-			$formproduct->formSelectWarehouses(DOL_PHP_SELF.'?id='.$object->id, $object->fk_warehouse, 'none');
+			$formproduct->formSelectWarehouses($_SERVER['PHP_SELF'].'?id='.$object->id, $object->fk_warehouse, 'none');
 		}
 		print '</td>';
 		print '</tr>';
@@ -574,14 +574,14 @@ if ($object->id > 0) {
 		print $langs->trans('SendingMethod');
 		print '<td>';
 		if (($action != 'editshipping') && $user->hasRight('societe', 'creer')) {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editshipping&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editshipping&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editshipping') {
-			$form->formSelectShippingMethod(DOL_PHP_SELF.'?socid='.$object->id, $object->shipping_method_id, 'shipping_method_id', 1);
+			$form->formSelectShippingMethod($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->shipping_method_id, 'shipping_method_id', 1);
 		} else {
-			$form->formSelectShippingMethod(DOL_PHP_SELF.'?socid='.$object->id, $object->shipping_method_id, 'none');
+			$form->formSelectShippingMethod($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->shipping_method_id, 'none');
 		}
 		print "</td>";
 		print '</tr>';
@@ -594,14 +594,14 @@ if ($object->id > 0) {
 		print $langs->trans('IntracommReportTransportMode');
 		print '<td>';
 		if (($action != 'edittransportmode') && $user->hasRight('societe', 'creer')) {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=edittransportmode&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edittransportmode&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('SetMode'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'edittransportmode') {
-			$form->formSelectTransportMode(DOL_PHP_SELF.'?socid='.$object->id, (!empty($object->transport_mode_id) ? $object->transport_mode_id : ''), 'transport_mode_id', 1);
+			$form->formSelectTransportMode($_SERVER['PHP_SELF'].'?socid='.$object->id, (!empty($object->transport_mode_id) ? $object->transport_mode_id : ''), 'transport_mode_id', 1);
 		} else {
-			$form->formSelectTransportMode(DOL_PHP_SELF.'?socid='.$object->id, (!empty($object->transport_mode_id) ? $object->transport_mode_id : ''), 'none');
+			$form->formSelectTransportMode($_SERVER['PHP_SELF'].'?socid='.$object->id, (!empty($object->transport_mode_id) ? $object->transport_mode_id : ''), 'none');
 		}
 		print "</td>";
 		print '</tr>';
@@ -657,12 +657,12 @@ if ($object->id > 0) {
 		print $langs->trans('ProspectLevel');
 		print '<td>';
 		if ($action != 'editlevel' && $user->hasRight('societe', 'creer')) {
-			print '<td class="right"><a class="editfielda reposition" href="'.DOL_PHP_SELF.'?action=editlevel&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('Modify'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda reposition" href="'.$_SERVER['PHP_SELF'].'?action=editlevel&token='.newToken().'&socid='.$object->id.'">'.img_edit($langs->trans('Modify'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editlevel') {
-			$formcompany->form_prospect_level(DOL_PHP_SELF.'?socid='.$object->id, $object->fk_prospectlevel, 'prospect_level_id', 1);
+			$formcompany->form_prospect_level($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->fk_prospectlevel, 'prospect_level_id', 1);
 		} else {
 			print $object->getLibProspLevel();
 		}
@@ -680,7 +680,7 @@ if ($object->id > 0) {
 				$titlealt = $val['label'];
 			}
 			if ($object->stcomm_id != $val['id']) {
-				print '<a class="pictosubstatus reposition" href="'.DOL_PHP_SELF.'?socid='.$object->id.'&stcomm='.$val['code'].'&action=setstcomm&token='.newToken().'">'.img_action($titlealt, $val['code'], $val['picto']).'</a>';
+				print '<a class="pictosubstatus reposition" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'&stcomm='.$val['code'].'&action=setstcomm&token='.newToken().'">'.img_action($titlealt, $val['code'], $val['picto']).'</a>';
 			}
 		}
 		print '</div></td></tr>';
@@ -1644,7 +1644,7 @@ if ($object->id > 0) {
 
 	if (getDolGlobalString('MAIN_DUPLICATE_CONTACTS_TAB_ON_CUSTOMER_CARD')) {
 		// List of contacts
-		show_contacts($conf, $langs, $db, $object, DOL_PHP_SELF.'?socid='.$object->id);
+		show_contacts($conf, $langs, $db, $object, $_SERVER['PHP_SELF'].'?socid='.$object->id);
 	}
 
 	if (getDolGlobalString('MAIN_REPEATTASKONEACHTAB')) {

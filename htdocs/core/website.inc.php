@@ -211,7 +211,7 @@ if (GETPOST('l', 'aZ09')) {
 	$weblangs->setDefaultLang(GETPOST('l', 'aZ09'));
 }
 // A lang was forced, so we check to find if we must make a redirect on translation page
-if (DOL_PHP_SELF != DOL_URL_ROOT.'/website/index.php') {	// If we browsing page using Dolibarr server or a Native web server
+if ($_SERVER['PHP_SELF'] != DOL_URL_ROOT.'/website/index.php') {	// If we browsing page using Dolibarr server or a Native web server
 	//print_r(get_defined_constants(true));exit;
 	if (GETPOST('l', 'aZ09')) {
 		$sql = "SELECT wp.rowid, wp.lang, wp.pageurl, wp.fk_page";

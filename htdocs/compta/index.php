@@ -225,7 +225,7 @@ if (isModEnabled('invoice') && $user->hasRight('facture', 'lire')) {
 				print '<td width="16" class="nobordernopadding hideonsmartphone right">';
 				$filename = dol_sanitizeFileName($obj->ref);
 				$filedir = $conf->facture->dir_output.'/'.dol_sanitizeFileName($obj->ref);
-				$urlsource = DOL_PHP_SELF.'?facid='.$obj->rowid;
+				$urlsource = $_SERVER['PHP_SELF'].'?facid='.$obj->rowid;
 				print $formfile->getDocumentsLink($tmpinvoice->element, $filename, $filedir);
 				print '</td></tr></table>';
 
@@ -682,7 +682,7 @@ if (isModEnabled('invoice') && isModEnabled('order') && $user->hasRight("command
 				print '<td width="16" class="nobordernopadding hideonsmartphone right">';
 				$filename = dol_sanitizeFileName($obj->ref);
 				$filedir = $conf->commande->dir_output.'/'.dol_sanitizeFileName($obj->ref);
-				$urlsource = DOL_PHP_SELF.'?id='.$obj->rowid;
+				$urlsource = $_SERVER['PHP_SELF'].'?id='.$obj->rowid;
 				print $formfile->getDocumentsLink($commandestatic->element, $filename, $filedir);
 				print '</td></tr></table>';
 

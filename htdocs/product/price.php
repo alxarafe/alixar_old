@@ -1061,7 +1061,7 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 		print '<tr class="liste_titre"><td>';
 		print $langs->trans("PriceLevel");
 		if ($user->admin) {
-			print ' <a class="editfielda" href="'.DOL_PHP_SELF.'?action=editlabelsellingprice&token='.newToken().'&pricelevel='.$i.'&id='.$object->id.'">'.img_edit($langs->trans('EditSellingPriceLabel'), 0).'</a>';
+			print ' <a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editlabelsellingprice&token='.newToken().'&pricelevel='.$i.'&id='.$object->id.'">'.img_edit($langs->trans('EditSellingPriceLabel'), 0).'</a>';
 		}
 		print '</td>';
 		print '<td style="text-align: right">'.$langs->trans("SellingPrice").'</td>';
@@ -1075,7 +1075,7 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 			print '<td>';
 			$keyforlabel = 'PRODUIT_MULTIPRICES_LABEL'.$i;
 			if (preg_match('/editlabelsellingprice/', $action)) {
-				print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="action" value="setlabelsellingprice">';
 				print '<input type="hidden" name="pricelevel" value="'.$i.'">';
@@ -1135,7 +1135,7 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 					print '</tr>';
 					foreach ($object->prices_by_qty_list[$i] as $ii => $prices) {
 						if ($action == 'edit_price_by_qty' && $rowid == $prices['rowid'] && ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
-							print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+							print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 							print '<input type="hidden" name="token" value="'.newToken().'">';
 							print '<input type="hidden" name="action" value="update_price_by_qty">';
 							print '<input type="hidden" name="priceid" value="'.$object->prices_by_qty_id[$i].'">';
@@ -1155,9 +1155,9 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 							print '<td class="right">'.price($prices['remise_percent']).' %</td>';
 							print '<td class="center">';
 							if (($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
-								print '<a class="editfielda marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
+								print '<a class="editfielda marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
 								print img_edit().'</a>';
-								print '<a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
+								print '<a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
 								print img_delete().'</a>';
 							} else {
 								print '&nbsp;';
@@ -1167,7 +1167,7 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 						}
 					}
 					if ($action != 'edit_price_by_qty' && ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
-						print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+						print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
 						print '<input type="hidden" name="action" value="update_price_by_qty">';
 						print '<input type="hidden" name="priceid" value="'.$object->prices_by_qty_id[$i].'">'; // id in product_price
@@ -1183,10 +1183,10 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 					}
 
 					print '</table>';
-					print '<a class="editfielda marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=disable_price_by_qty&level='.$i.'&token='.newToken().'">('.$langs->trans("DisablePriceByQty").')</a>';
+					print '<a class="editfielda marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=disable_price_by_qty&level='.$i.'&token='.newToken().'">('.$langs->trans("DisablePriceByQty").')</a>';
 				} else {
 					print $langs->trans("No");
-					print '&nbsp; <a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=activate_price_by_qty&level='.$i.'&token='.newToken().'">('.$langs->trans("Activate").')</a>';
+					print '&nbsp; <a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=activate_price_by_qty&level='.$i.'&token='.newToken().'">('.$langs->trans("Activate").')</a>';
 				}
 				print '</td></tr>';
 			}
@@ -1252,9 +1252,9 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 	if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY_MULTIPRICES')) {    // TODO Fix the form inside tr instead of td
 		print '<tr><td>'.$langs->trans("PriceByQuantity");
 		if ($object->prices_by_qty[0] == 0) {
-			print '&nbsp; <a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=activate_price_by_qty&level=1&token='.newToken().'">('.$langs->trans("Activate").')';
+			print '&nbsp; <a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=activate_price_by_qty&level=1&token='.newToken().'">('.$langs->trans("Activate").')';
 		} else {
-			print '&nbsp; <a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=disable_price_by_qty&level=1&token='.newToken().'">('.$langs->trans("DisablePriceByQty").')';
+			print '&nbsp; <a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=disable_price_by_qty&level=1&token='.newToken().'">('.$langs->trans("DisablePriceByQty").')';
 		}
 		print '</td><td>';
 
@@ -1270,7 +1270,7 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 			print '<td>&nbsp;</td>';
 			print '</tr>';
 			if ($action != 'edit_price_by_qty') {
-				print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">'; // FIXME a form into a table is not allowed
+				print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">'; // FIXME a form into a table is not allowed
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="action" value="update_price_by_qty">';
 				print '<input type="hidden" name="priceid" value="'.$object->prices_by_qty_id[0].'">'; // id in product_price
@@ -1291,7 +1291,7 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 			}
 			foreach ($object->prices_by_qty_list[0] as $ii => $prices) {
 				if ($action == 'edit_price_by_qty' && $rowid == $prices['rowid'] && ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
-					print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+					print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 					print '<input type="hidden" name="token" value="'.newToken().'">';
 					print '<input type="hidden" name="action" value="update_price_by_qty">';
 					print '<input type="hidden" name="priceid" value="'.$object->prices_by_qty_id[0].'">'; // id in product_price
@@ -1320,9 +1320,9 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 					print '<td class="right">'.price($prices['remise_percent']).' %</td>';
 					print '<td class="center">';
 					if (($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
-						print '<a class="editfielda marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
+						print '<a class="editfielda marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
 						print img_edit().'</a>';
-						print '<a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=delete_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
+						print '<a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete_price_by_qty&token='.newToken().'&rowid='.$prices["rowid"].'">';
 						print img_delete().'</a>';
 					} else {
 						print '&nbsp;';
@@ -1369,7 +1369,7 @@ if (!$action || $action == 'delete' || $action == 'showlog_customer_price' || $a
 		} else {
 			if (!getDolGlobalString('PRODUIT_MULTIPRICES') && !getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY_MULTIPRICES')) {
 				if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
-					print '<div class="inline-block divButAction"><a class="butAction" href="' . DOL_PHP_SELF . '?action=edit_price&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("UpdateDefaultPrice") . '</a></div>';
+					print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit_price&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("UpdateDefaultPrice") . '</a></div>';
 				} else {
 					print '<div class="inline-block divButAction"><span class="butActionRefused" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">' . $langs->trans("UpdateDefaultPrice") . '</span></div>';
 				}
@@ -1377,7 +1377,7 @@ if (!$action || $action == 'delete' || $action == 'showlog_customer_price' || $a
 
 			if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 				if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
-					print '<div class="inline-block divButAction"><a class="butAction" href="' . DOL_PHP_SELF . '?action=add_customer_price&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("AddCustomerPrice") . '</a></div>';
+					print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=add_customer_price&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("AddCustomerPrice") . '</a></div>';
 				} else {
 					print '<div class="inline-block divButAction"><span class="butActionRefused" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">' . $langs->trans("AddCustomerPrice") . '</span></div>';
 				}
@@ -1385,13 +1385,13 @@ if (!$action || $action == 'delete' || $action == 'showlog_customer_price' || $a
 
 			if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY_MULTIPRICES')) {
 				if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
-					print '<div class="inline-block divButAction"><a class="butAction" href="' . DOL_PHP_SELF . '?action=edit_vat&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("UpdateVAT") . '</a></div>';
+					print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit_vat&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("UpdateVAT") . '</a></div>';
 				} else {
 					print '<div class="inline-block divButAction"><span class="butActionRefused" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">' . $langs->trans("UpdateVAT") . '</span></div>';
 				}
 
 				if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
-					print '<div class="inline-block divButAction"><a class="butAction" href="' . DOL_PHP_SELF . '?action=edit_price&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("UpdateLevelPrices") . '</a></div>';
+					print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit_price&token='.newToken().'&id=' . $object->id . '">' . $langs->trans("UpdateLevelPrices") . '</a></div>';
 				} else {
 					print '<div class="inline-block divButAction"><span class="butActionRefused" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">' . $langs->trans("UpdateLevelPrices") . '</span></div>';
 				}
@@ -1411,7 +1411,7 @@ if (!$action || $action == 'delete' || $action == 'showlog_customer_price' || $a
 if ($action == 'edit_vat' && ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
 	print load_fiche_titre($langs->trans("UpdateVAT"), '');
 
-	print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update_vat">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -1440,7 +1440,7 @@ if ($action == 'edit_price' && $object->getRights()->creer) {
 
 	if (!getDolGlobalString('PRODUIT_MULTIPRICES') && !getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY_MULTIPRICES')) {
 		print '<!-- Edit price -->'."\n";
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update_price">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -1576,7 +1576,7 @@ if ($action == 'edit_price' && $object->getRights()->creer) {
 		</script>
 		<?php
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update_price">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -1722,14 +1722,14 @@ if ((!getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || $action == 'showlog_defau
 		if ($num > 0) {
 			// Default prices or
 			// Log of previous customer prices
-			$backbutton = '<a class="justalink" href="'.DOL_PHP_SELF.'?id='.$object->id.'">'.$langs->trans("Back").'</a>';
+			$backbutton = '<a class="justalink" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">'.$langs->trans("Back").'</a>';
 
 			if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 				// @phan-suppress-next-line PhanPluginSuspiciousParamPosition, PhanPluginSuspiciousParamOrder
-				print_barre_liste($langs->trans("DefaultPriceLog"), 0, DOL_PHP_SELF, '', '', '', $backbutton, 0, $num, 'title_accountancy.png');
+				print_barre_liste($langs->trans("DefaultPriceLog"), 0, $_SERVER['PHP_SELF'], '', '', '', $backbutton, 0, $num, 'title_accountancy.png');
 			} else {
 				// @phan-suppress-next-line PhanPluginSuspiciousParamPosition, PhanPluginSuspiciousParamOrder
-				print_barre_liste($langs->trans("PriceByCustomerLog"), 0, DOL_PHP_SELF, '', '', '', '', 0, $num, 'title_accountancy.png');
+				print_barre_liste($langs->trans("PriceByCustomerLog"), 0, $_SERVER['PHP_SELF'], '', '', '', '', 0, $num, 'title_accountancy.png');
 			}
 
 			print '<!-- List of log prices -->'."\n";
@@ -1920,7 +1920,7 @@ if ((!getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || $action == 'showlog_defau
 
 					print '<td class="right">';
 					if ($candelete || ($db->jdate($objp->dp) >= dol_now())) {		// Test on date is to be able to delete a corrupted record with a date in future
-						print '<a href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&id='.$object->id.'&lineid='.$objp->rowid.'">';
+						print '<a href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&id='.$object->id.'&lineid='.$objp->rowid.'">';
 						print img_delete();
 						print '</a>';
 					} else {
@@ -1981,7 +1981,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		print '<!-- add_customer_price -->';
 		print load_fiche_titre($langs->trans('AddCustomerPrice'));
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add_customer_price_confirm">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -2077,7 +2077,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 			setEventMessages($prodcustprice->error, $prodcustprice->errors, 'errors');
 		}
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update_customer_price_confirm">';
 		print '<input type="hidden" name="lineid" value="'.$prodcustprice->id.'">';
@@ -2183,13 +2183,13 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		$title = $langs->trans('PriceByCustomerLog');
 		$title .= ' - '.$staticsoc->getNomUrl(1);
 
-		$backbutton = '<a class="justalink" href="'.DOL_PHP_SELF.'?id='.$object->id.'">'.$langs->trans("Back").'</a>';
+		$backbutton = '<a class="justalink" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">'.$langs->trans("Back").'</a>';
 
 		// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-		print_barre_liste($title, $page, DOL_PHP_SELF, $option, $sortfield, $sortorder, $backbutton, count($prodcustprice->lines), $nbtotalofrecords, 'title_accountancy.png');
+		print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $option, $sortfield, $sortorder, $backbutton, count($prodcustprice->lines), $nbtotalofrecords, 'title_accountancy.png');
 
 		if (count($prodcustprice->lines) > 0) {
-			print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
 
@@ -2310,7 +2310,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
 		print_barre_liste($langs->trans('PriceByCustomer'), $page, $_SERVER ['PHP_SELF'], $option, $sortfield, $sortorder, '', count($prodcustprice->lines), $nbtotalofrecords, 'title_accountancy.png');
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
 
@@ -2413,11 +2413,11 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		print '</td>';
 		if ($user->hasRight('produit', 'supprimer') || $user->hasRight('service', 'supprimer')) {
 			print '<td class="nowraponall">';
-			print '<a class="marginleftonly marginrightonly" href="'.DOL_PHP_SELF.'?action=showlog_default_price&token='.newToken().'&id='.$object->id.'">';
+			print '<a class="marginleftonly marginrightonly" href="'.$_SERVER['PHP_SELF'].'?action=showlog_default_price&token='.newToken().'&id='.$object->id.'">';
 			print img_info($langs->trans('PriceByCustomerLog'));
 			print '</a>';
 			print ' ';
-			print '<a class="marginleftonly marginrightonly editfielda" href="'.DOL_PHP_SELF.'?action=edit_price&token='.newToken().'&id='.$object->id.'">';
+			print '<a class="marginleftonly marginrightonly editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit_price&token='.newToken().'&id='.$object->id.'">';
 			print img_edit('default', 0, 'style="vertical-align: middle;"');
 			print '</a>';
 			print '</td>';
@@ -2501,15 +2501,15 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 				// Action
 				if ($user->hasRight('produit', 'supprimer') || $user->hasRight('service', 'supprimer')) {
 					print '<td class="right nowraponall">';
-					print '<a href="'.DOL_PHP_SELF.'?action=showlog_customer_price&token='.newToken().'&id='.$object->id.'&socid='.$line->fk_soc.'">';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?action=showlog_customer_price&token='.newToken().'&id='.$object->id.'&socid='.$line->fk_soc.'">';
 					print img_info($langs->trans('PriceByCustomerLog'));
 					print '</a>';
 					print ' ';
-					print '<a class="marginleftonly editfielda" href="'.DOL_PHP_SELF.'?action=edit_customer_price&token='.newToken().'&id='.$object->id.'&lineid='.$line->id.'">';
+					print '<a class="marginleftonly editfielda" href="'.$_SERVER['PHP_SELF'].'?action=edit_customer_price&token='.newToken().'&id='.$object->id.'&lineid='.$line->id.'">';
 					print img_edit('default', 0, 'style="vertical-align: middle;"');
 					print '</a>';
 					print ' ';
-					print '<a class="marginleftonly" href="'.DOL_PHP_SELF.'?action=delete_customer_price&token='.newToken().'&id='.$object->id.'&lineid='.$line->id.'">';
+					print '<a class="marginleftonly" href="'.$_SERVER['PHP_SELF'].'?action=delete_customer_price&token='.newToken().'&id='.$object->id.'&lineid='.$line->id.'">';
 					print img_delete('default', 'style="vertical-align: middle;"');
 					print '</a>';
 					print '</td>';

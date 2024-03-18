@@ -305,7 +305,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 
 		print load_fiche_titre($langs->trans('PriceByCustomer'));
 
-		print '<form action="'.DOL_PHP_SELF.'?socid='.$object->id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="add_customer_price_confirm">';
 		print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
@@ -376,7 +376,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		if ($result <= 0) {
 			setEventMessages($prodcustprice->error, $prodcustprice->errors, 'errors');
 		} else {
-			print '<form action="'.DOL_PHP_SELF.'?socid='.$object->id.'" method="POST">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="update_customer_price_confirm">';
 			print '<input type="hidden" name="lineid" value="'.$prodcustprice->id.'">';
@@ -471,7 +471,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		print_barre_liste($langs->trans('PriceByCustomerLog'), $page, $_SERVER ['PHP_SELF'], $option, $sortfield, $sortorder, '', count($prodcustprice->lines), $nbtotalofrecords);
 
 		if (count($prodcustprice->lines) > 0) {
-			print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="id" value="'.$object->id.'">';
 
@@ -523,7 +523,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		}
 
 		print "\n".'<div class="tabsAction">'."\n";
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?socid='.$object->id.'">'.$langs->trans("Ok").'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?socid='.$object->id.'">'.$langs->trans("Ok").'</a></div>';
 		print "\n</div><br>\n";
 	} else {
 		// View mode
@@ -534,7 +534,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		print "\n".'<div class="tabsAction">'."\n";
 
 		if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=add_customer_price&token='.newToken().'&socid='.$object->id.'">'.$langs->trans("AddCustomerPrice").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=add_customer_price&token='.newToken().'&socid='.$object->id.'">'.$langs->trans("AddCustomerPrice").'</a></div>';
 		}
 		print "\n</div>\n";
 
@@ -571,9 +571,9 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		print '<!-- view specific price for each product -->'."\n";
 
 		// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-		print_barre_liste($langs->trans('PriceForEachProduct'), $page, DOL_PHP_SELF, $option, $sortfield, $sortorder, '', count($prodcustprice->lines), $nbtotalofrecords, '');
+		print_barre_liste($langs->trans('PriceForEachProduct'), $page, $_SERVER['PHP_SELF'], $option, $sortfield, $sortorder, '', count($prodcustprice->lines), $nbtotalofrecords, '');
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
 		if (!empty($sortfield)) {
@@ -605,7 +605,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 		print '<tr class="liste_titre">';
 		foreach ($prodcustprice->fields as $key => $val) {
 			if (!empty($arrayfields['t.'.$key]['checked'])) {
-				print getTitleFieldOfList($arrayfields['t.'.$key]['label'], 0, DOL_PHP_SELF, $key, '', $param, '', $sortfield, $sortorder)."\n";
+				print getTitleFieldOfList($arrayfields['t.'.$key]['label'], 0, $_SERVER['PHP_SELF'], $key, '', $param, '', $sortfield, $sortorder)."\n";
 			}
 		}
 		print '<td></td>';
@@ -659,15 +659,15 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 				// Action
 				if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
 					print '<td class="right nowraponall">';
-					print '<a class="paddingleftonly paddingrightonly" href="'.DOL_PHP_SELF.'?action=showlog_customer_price&token='.newToken().'&socid='.$object->id.'&prodid='.$line->fk_product.'">';
+					print '<a class="paddingleftonly paddingrightonly" href="'.$_SERVER['PHP_SELF'].'?action=showlog_customer_price&token='.newToken().'&socid='.$object->id.'&prodid='.$line->fk_product.'">';
 					print img_info();
 					print '</a>';
 					print ' ';
-					print '<a class="editfielda paddingleftonly paddingrightonly" href="'.DOL_PHP_SELF.'?action=edit_customer_price&token='.newToken().'&socid='.$object->id.'&lineid='.$line->id.'">';
+					print '<a class="editfielda paddingleftonly paddingrightonly" href="'.$_SERVER['PHP_SELF'].'?action=edit_customer_price&token='.newToken().'&socid='.$object->id.'&lineid='.$line->id.'">';
 					print img_edit('default', 0, 'style="vertical-align: middle;"');
 					print '</a>';
 					print ' ';
-					print '<a class="paddingleftonly paddingrightonly" href="'.DOL_PHP_SELF.'?action=delete_customer_price&token='.newToken().'&socid='.$object->id.'&lineid='.$line->id.'">';
+					print '<a class="paddingleftonly paddingrightonly" href="'.$_SERVER['PHP_SELF'].'?action=delete_customer_price&token='.newToken().'&socid='.$object->id.'&lineid='.$line->id.'">';
 					print img_delete('default', 'style="vertical-align: middle;"');
 					print '</a>';
 					print '</td>';

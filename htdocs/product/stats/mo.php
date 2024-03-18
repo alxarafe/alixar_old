@@ -192,7 +192,7 @@ if ($id > 0 || !empty($ref)) {
 				$option .= '&search_year='.urlencode((string) ($search_year));
 			}
 
-			print '<form method="post" action="'.DOL_PHP_SELF.'?id='.$product->id.'" name="search_form">'."\n";
+			print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$product->id.'" name="search_form">'."\n";
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			if (!empty($sortfield)) {
 				print '<input type="hidden" name="sortfield" value="'.$sortfield.'"/>';
@@ -202,7 +202,7 @@ if ($id > 0 || !empty($ref)) {
 			}
 
 			// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-			print_barre_liste($langs->trans("MOs"), $page, DOL_PHP_SELF, $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
+			print_barre_liste($langs->trans("MOs"), $page, $_SERVER['PHP_SELF'], $option, $sortfield, $sortorder, '', $num, $totalofrecords, '', 0, '', '', $limit, 0, 0, 1);
 
 			if (!empty($page)) {
 				$option .= '&page='.urlencode((string) ($page));
@@ -225,15 +225,15 @@ if ($id > 0 || !empty($ref)) {
 			print '<table class="tagtable liste listwithfilterbefore" width="100%">';
 
 			print '<tr class="liste_titre">';
-			print_liste_field_titre("Ref", DOL_PHP_SELF, "c.rowid", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
-			//print_liste_field_titre("Company", DOL_PHP_SELF, "s.nom", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
-			print_liste_field_titre("Date", DOL_PHP_SELF, "c.date_valid", "", "&amp;id=".$product->id, 'align="center"', $sortfield, $sortorder);
-			//print_liste_field_titre("AmountHT"),DOL_PHP_SELF,"c.amount","","&amp;id=".$product->id,'align="right"',$sortfield,$sortorder);
-			print_liste_field_titre("ToConsume", DOL_PHP_SELF, "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
-			print_liste_field_titre("QtyAlreadyConsumed", DOL_PHP_SELF, "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
-			print_liste_field_titre("QtyToProduce", DOL_PHP_SELF, "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
-			print_liste_field_titre("QtyAlreadyProduced", DOL_PHP_SELF, "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
-			print_liste_field_titre("Status", DOL_PHP_SELF, "b.status", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'right ');
+			print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "c.rowid", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
+			//print_liste_field_titre("Company", $_SERVER['PHP_SELF'], "s.nom", "", "&amp;id=".$product->id, '', $sortfield, $sortorder);
+			print_liste_field_titre("Date", $_SERVER['PHP_SELF'], "c.date_valid", "", "&amp;id=".$product->id, 'align="center"', $sortfield, $sortorder);
+			//print_liste_field_titre("AmountHT"),$_SERVER['PHP_SELF'],"c.amount","","&amp;id=".$product->id,'align="right"',$sortfield,$sortorder);
+			print_liste_field_titre("ToConsume", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("QtyAlreadyConsumed", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("QtyToProduce", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("QtyAlreadyProduced", $_SERVER['PHP_SELF'], "", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'center ');
+			print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "b.status", "", "&amp;id=".$product->id, '', $sortfield, $sortorder, 'right ');
 			print "</tr>\n";
 
 			$motmp = new Mo($db);

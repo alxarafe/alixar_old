@@ -160,7 +160,7 @@ $out = '';
 $permok = $user->hasRight('agenda', 'myactions', 'create');
 if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
 	if (is_object($objthirdparty) && get_class($objthirdparty) == 'Societe') {
-		$out .= '&amp;originid='.$objthirdparty->id.($objthirdparty->id > 0 ? '&amp;socid='.$objthirdparty->id : '').'&amp;backtopage='.urlencode(DOL_PHP_SELF.($objthirdparty->id > 0 ? '?socid='.$objthirdparty->id : ''));
+		$out .= '&amp;originid='.$objthirdparty->id.($objthirdparty->id > 0 ? '&amp;socid='.$objthirdparty->id : '').'&amp;backtopage='.urlencode($_SERVER['PHP_SELF'].($objthirdparty->id > 0 ? '?socid='.$objthirdparty->id : ''));
 	}
 	$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '');
 	$out .= '&amp;datep='.dol_print_date(dol_now(), 'dayhourlog', 'tzuserrel');
@@ -175,12 +175,12 @@ $morehtmlright .= dolGetButtonTitle($langs->trans('MessageListViewType'), '', 'f
 
 // // Show link to send an email (if read and not closed)
 // $btnstatus = $object->status < Ticket::STATUS_CLOSED && $action != "presend" && $action != "presend_addmessage";
-// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&private_message=0&send_email=1&backtopage='.urlencode(DOL_PHP_SELF.'?track_id='.$object->track_id).'#formmailbeforetitle';
+// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&private_message=0&send_email=1&backtopage='.urlencode($_SERVER['PHP_SELF'].'?track_id='.$object->track_id).'#formmailbeforetitle';
 // $morehtmlright .= dolGetButtonTitle($langs->trans('SendMail'), '', 'fa fa-paper-plane', $url, 'email-title-button', $btnstatus);
 
 // // Show link to add a private message (if read and not closed)
 // $btnstatus = $object->status < Ticket::STATUS_CLOSED && $action != "presend" && $action != "presend_addmessage";
-// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&backtopage='.urlencode(DOL_PHP_SELF.'?track_id='.$object->track_id).'#formmailbeforetitle';
+// $url = 'card.php?track_id='.$object->track_id.'&action=presend_addmessage&mode=init&backtopage='.urlencode($_SERVER['PHP_SELF'].'?track_id='.$object->track_id).'#formmailbeforetitle';
 // $morehtmlright .= dolGetButtonTitle($langs->trans('TicketAddMessage'), '', 'fa fa-comment-dots', $url, 'add-new-ticket-title-button', $btnstatus);
 
 if (isModEnabled('agenda')) {
@@ -193,7 +193,7 @@ if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') ||
 	print '<br>';
 
 	$param = '&socid='.urlencode((string) ($socid));
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -210,7 +210,7 @@ if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') ||
 		$titlelist = $langs->trans("Actions").(is_numeric($nbEvent) ? '<span class="opacitymedium colorblack paddingleft">('.$nbEvent.')</span>' : '');
 	}
 
-	print_barre_liste($titlelist, 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 0);
+	print_barre_liste($titlelist, 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlright, '', 0, 1, 0);
 
 	// List of all actions
 	$filters = array();

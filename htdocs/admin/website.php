@@ -419,7 +419,7 @@ print "<br>\n";
 
 // Confirmation de la suppression de la ligne
 if ($action == 'delete') {
-	print $form->formconfirm(DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.$rowid, $langs->trans('DeleteWebsite'), $langs->trans('ConfirmDeleteWebsite'), 'confirm_delete', '', 0, 1, 220);
+	print $form->formconfirm($_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.$rowid, $langs->trans('DeleteWebsite'), $langs->trans('ConfirmDeleteWebsite'), 'confirm_delete', '', 0, 1, 220);
 }
 //var_dump($elementList);
 
@@ -435,7 +435,7 @@ if ($id) {
 
 	$fieldlist = explode(',', $tabfield[$id]);
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<table class="noborder centpercent">';
 
@@ -515,7 +515,7 @@ if ($id) {
 		if ($num) {
 			print '<br>';
 
-			print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+			print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="page" value="'.$page.'">';
 			print '<input type="hidden" name="rowid" value="'.$rowid.'">';
@@ -569,12 +569,12 @@ if ($id) {
 
 				// Affiche nom du champ
 				if ($showfield) {
-					print getTitleFieldOfList($valuetoshow, 0, DOL_PHP_SELF, ($sortable ? $fieldlist[$field] : ''), ($page ? 'page='.$page.'&' : ''), "", '', $sortfield, $sortorder, $align.' ');
+					print getTitleFieldOfList($valuetoshow, 0, $_SERVER['PHP_SELF'], ($sortable ? $fieldlist[$field] : ''), ($page ? 'page='.$page.'&' : ''), "", '', $sortfield, $sortorder, $align.' ');
 				}
 			}
 
 			// Status
-			print getTitleFieldOfList($langs->trans("Status"), 0, DOL_PHP_SELF, "status", ($page ? 'page='.$page.'&' : ''), "", '', $sortfield, $sortorder, 'center ');
+			print getTitleFieldOfList($langs->trans("Status"), 0, $_SERVER['PHP_SELF'], "status", ($page ? 'page='.$page.'&' : ''), "", '', $sortfield, $sortorder, 'center ');
 			print getTitleFieldOfList('');
 			print getTitleFieldOfList('');
 			print '</tr>';
@@ -632,7 +632,7 @@ if ($id) {
 						$iserasable = 0; // We can't delete a website on. Disable it first.
 					}
 
-					$url = DOL_PHP_SELF.'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&amp;code='.(!empty($obj->code) ? urlencode($obj->code) : '').'&amp;';
+					$url = $_SERVER['PHP_SELF'].'?'.($page ? 'page='.$page.'&' : '').'sortfield='.$sortfield.'&sortorder='.$sortorder.'&rowid='.(!empty($obj->rowid) ? $obj->rowid : (!empty($obj->code) ? $obj->code : '')).'&amp;code='.(!empty($obj->code) ? urlencode($obj->code) : '').'&amp;';
 
 
 					// Active

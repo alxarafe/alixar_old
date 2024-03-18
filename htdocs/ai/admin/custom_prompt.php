@@ -116,7 +116,7 @@ if ($action == 'update' && !GETPOST('cancel')) {
 	$result = dolibarr_set_const($db, 'AI_CONFIGURATIONS_PROMPT', $newConfigurationsJson, 'chaine', 0, '', $conf->entity);
 	if (!$error) {
 		if ($result) {
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
 			exit;
 		} else {
@@ -140,7 +140,7 @@ if ($action == 'updatePrompts') {
 	if (!$error) {
 		$action = '';
 		if ($result) {
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
 			exit;
 		} else {
@@ -158,7 +158,7 @@ if ($action == 'confirm_deleteproperty' && GETPOST('confirm') == 'yes') {
 		$newConfigurationsJson = json_encode($currentConfigurations, JSON_UNESCAPED_UNICODE);
 		$res = dolibarr_set_const($db, 'AI_CONFIGURATIONS_PROMPT', $newConfigurationsJson, 'chaine', 0, '', $conf->entity);
 		if ($res) {
-			header("Location: ".DOL_PHP_SELF);
+			header("Location: ".$_SERVER['PHP_SELF']);
 			setEventMessages($langs->trans("RecordDeleted"), null, 'mesgs');
 			exit;
 		} else {
@@ -188,14 +188,14 @@ print load_fiche_titre($langs->trans($title), $linkback, 'title_setup');
 $head = aiAdminPrepareHead();
 print dol_get_fiche_head($head, 'custom', $langs->trans($title), -1, "fa-microchip");
 
-//$newbutton = '<a href="'.DOL_PHP_SELF.'?action=create">'.$langs->trans("New").'</a>';
+//$newbutton = '<a href="'.$_SERVER['PHP_SELF'].'?action=create">'.$langs->trans("New").'</a>';
 $newbutton = '';
 
 print load_fiche_titre($langs->trans("AIPromptForFeatures"), $newbutton, '');
 
 if ($action == 'deleteproperty') {
 	$formconfirm = $form->formconfirm(
-		DOL_PHP_SELF.'?key='.urlencode(GETPOST('key', 'alpha')),
+		$_SERVER['PHP_SELF'].'?key='.urlencode(GETPOST('key', 'alpha')),
 		$langs->trans('Delete'),
 		$langs->trans('ConfirmDeleteSetup', GETPOST('key', 'alpha')),
 		'confirm_deleteproperty',
@@ -207,7 +207,7 @@ if ($action == 'deleteproperty') {
 }
 
 if ($action == 'edit') {
-	$out = '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	$out = '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	$out .= '<input type="hidden" name="token" value="'.newToken().'">';
 	$out .= '<input type="hidden" name="action" value="update">';
 
@@ -292,14 +292,14 @@ if ($action == 'edit' || $action == 'create') {
 			$out .= '<tr class="liste_titre">';
 			$out .= '<td>'.$arrayofaifeatures[$key]['picto'].' '.$langs->trans($arrayofaifeatures[$key]['label']);
 			$out .= '<a class="viewfielda reposition marginleftonly marginrighttonly showInputBtn" href="#" data-index="'.$key.'" data-state="edit" data-icon-edit="'.dol_escape_htmltag(img_edit()).'" data-icon-cancel="'.dol_escape_htmltag(img_view()).'">'.img_edit().'</a>';
-			$out .= '<a class="deletefielda  marginleftonly right" href="'.DOL_PHP_SELF.'?action=deleteproperty&token='.newToken().'&key='.urlencode($key).'">'.img_delete().'</a>';
+			$out .= '<a class="deletefielda  marginleftonly right" href="'.$_SERVER['PHP_SELF'].'?action=deleteproperty&token='.newToken().'&key='.urlencode($key).'">'.img_delete().'</a>';
 			$out .= '</td>';
 			$out .= '<td></td>';
 			$out .= '</tr>';
 			$out .= '</thead>';
 			$out .= '<tbody>';
 
-			$out .= '<form action="'.DOL_PHP_SELF.'" method="POST">';
+			$out .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 			$out .= '<input type="hidden" name="token" value="'.newToken().'">';
 			$out .= '<input type="hidden" name="key" value="'.$key.'" />';
 			$out .= '<input type="hidden" name="action" value="updatePrompts">';

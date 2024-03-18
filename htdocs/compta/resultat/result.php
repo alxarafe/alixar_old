@@ -188,8 +188,8 @@ llxHeader('', $langs->trans('ReportInOut'));
 $formaccounting = new FormAccounting($db);
 $form = new Form($db);
 
-$textprevyear = '<a href="'.DOL_PHP_SELF.'?year='.($start_year - 1).'&showaccountdetail='.urlencode($showaccountdetail).'">'.img_previous().'</a>';
-$textnextyear = ' &nbsp; <a href="'.DOL_PHP_SELF.'?year='.($start_year + 1).'&showaccountdetail='.urlencode($showaccountdetail).'">'.img_next().'</a>';
+$textprevyear = '<a href="'.$_SERVER['PHP_SELF'].'?year='.($start_year - 1).'&showaccountdetail='.urlencode($showaccountdetail).'">'.img_previous().'</a>';
+$textnextyear = ' &nbsp; <a href="'.$_SERVER['PHP_SELF'].'?year='.($start_year + 1).'&showaccountdetail='.urlencode($showaccountdetail).'">'.img_next().'</a>';
 
 
 
@@ -197,12 +197,12 @@ $textnextyear = ' &nbsp; <a href="'.DOL_PHP_SELF.'?year='.($start_year + 1).'&sh
 if ($modecompta == "CREANCES-DETTES") {
 	$name = $langs->trans("AnnualByAccountDueDebtMode");
 	$calcmode = $langs->trans("CalcModeDebt");
-	$calcmode .= '<br>('.$langs->trans("SeeReportInInputOutputMode", '<a href="'.DOL_PHP_SELF.'?year='.$start_year.(GETPOST("month") > 0 ? '&month='.GETPOST("month") : '').'&modecompta=RECETTES-DEPENSES">', '</a>').')';
+	$calcmode .= '<br>('.$langs->trans("SeeReportInInputOutputMode", '<a href="'.$_SERVER['PHP_SELF'].'?year='.$start_year.(GETPOST("month") > 0 ? '&month='.GETPOST("month") : '').'&modecompta=RECETTES-DEPENSES">', '</a>').')';
 	if (isModEnabled('accounting')) {
-		$calcmode .= '<br>('.$langs->trans("SeeReportInBookkeepingMode", '<a href="'.DOL_PHP_SELF.'?year='.$start_year.'&modecompta=BOOKKEEPING">', '</a>').')';
+		$calcmode .= '<br>('.$langs->trans("SeeReportInBookkeepingMode", '<a href="'.$_SERVER['PHP_SELF'].'?year='.$start_year.'&modecompta=BOOKKEEPING">', '</a>').')';
 	}
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
-	//$periodlink='<a href="'.DOL_PHP_SELF.'?year='.($year-1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.DOL_PHP_SELF.'?year='.($year+1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
+	//$periodlink='<a href="'.$_SERVER['PHP_SELF'].'?year='.($year-1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.$_SERVER['PHP_SELF'].'?year='.($year+1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
 	$description = $langs->trans("RulesResultDue");
 	if (getDolGlobalString('FACTURE_DEPOSITS_ARE_JUST_PAYMENTS')) {
 		$description .= $langs->trans("DepositsAreNotIncluded");
@@ -217,20 +217,20 @@ if ($modecompta == "CREANCES-DETTES") {
 } elseif ($modecompta == "RECETTES-DEPENSES") {
 	$name = $langs->trans("AnnualByAccountInputOutputMode");
 	$calcmode = $langs->trans("CalcModePayment");
-	$calcmode .= '<br>('.$langs->trans("SeeReportInDueDebtMode", '<a href="'.DOL_PHP_SELF.'?year='.$year.(GETPOST("month") > 0 ? '&month='.GETPOST("month") : '').'&modecompta=CREANCES-DETTES">', '</a>').')';
+	$calcmode .= '<br>('.$langs->trans("SeeReportInDueDebtMode", '<a href="'.$_SERVER['PHP_SELF'].'?year='.$year.(GETPOST("month") > 0 ? '&month='.GETPOST("month") : '').'&modecompta=CREANCES-DETTES">', '</a>').')';
 	if (isModEnabled('accounting')) {
-		$calcmode .= '<br>('.$langs->trans("SeeReportInBookkeepingMode", '<a href="'.DOL_PHP_SELF.'?year='.$year.'&modecompta=BOOKKEEPING">', '</a>').')';
+		$calcmode .= '<br>('.$langs->trans("SeeReportInBookkeepingMode", '<a href="'.$_SERVER['PHP_SELF'].'?year='.$year.'&modecompta=BOOKKEEPING">', '</a>').')';
 	}
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
-	//$periodlink='<a href="'.DOL_PHP_SELF.'?year='.($year-1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.DOL_PHP_SELF.'?year='.($year+1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
+	//$periodlink='<a href="'.$_SERVER['PHP_SELF'].'?year='.($year-1).'&modecompta='.$modecompta.'">'.img_previous().'</a> <a href="'.$_SERVER['PHP_SELF'].'?year='.($year+1).'&modecompta='.$modecompta.'">'.img_next().'</a>';
 	$description = $langs->trans("RulesResultInOut");
 	$builddate = dol_now();
 	//$exportlink=$langs->trans("NotYetAvailable");
 } elseif ($modecompta == "BOOKKEEPING") {
 	$name = $langs->trans("ReportInOut").', '.$langs->trans("ByPersonalizedAccountGroups");
 	$calcmode = $langs->trans("CalcModeBookkeeping");
-	//$calcmode.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.DOL_PHP_SELF.'?year_start='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
-	//$calcmode.='<br>('.$langs->trans("SeeReportInInputOutputMode",'<a href="'.DOL_PHP_SELF.'?year_start='.$year_start.'&modecompta=RECETTES-DEPENSES">','</a>').')';
+	//$calcmode.='<br>('.$langs->trans("SeeReportInDueDebtMode",'<a href="'.$_SERVER['PHP_SELF'].'?year_start='.$year_start.'&modecompta=CREANCES-DETTES">','</a>').')';
+	//$calcmode.='<br>('.$langs->trans("SeeReportInInputOutputMode",'<a href="'.$_SERVER['PHP_SELF'].'?year_start='.$year_start.'&modecompta=RECETTES-DEPENSES">','</a>').')';
 	$period = $form->selectDate($date_start, 'date_start', 0, 0, 0, '', 1, 0).' - '.$form->selectDate($date_end, 'date_end', 0, 0, 0, '', 1, 0);
 	$arraylist = array('no' => $langs->trans("None"), 'yes' => $langs->trans("AccountWithNonZeroValues"), 'all' => $langs->trans("All"));
 	$period .= ' &nbsp; &nbsp; <span class="opacitymedium">'.$langs->trans("DetailBy").'</span> '.$form->selectarray('showaccountdetail', $arraylist, $showaccountdetail, 0);

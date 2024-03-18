@@ -212,7 +212,7 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
 // Show filter box
-print '<form name="stats" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form name="stats" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print '<table class="noborder centpercent">';
@@ -259,7 +259,7 @@ foreach ($data as $val) {
 
 
 		print '<tr class="oddeven" height="24">';
-		print '<td class="center"><a href="'.DOL_PHP_SELF.'?year='.$oldyear.'">'.$oldyear.'</a></td>';
+		print '<td class="center"><a href="'.$_SERVER['PHP_SELF'].'?year='.$oldyear.'">'.$oldyear.'</a></td>';
 
 		print '<td class="right">0</td>';
 		/*print '<td class="right">0</td>';
@@ -270,7 +270,7 @@ foreach ($data as $val) {
 	print '<tr class="oddeven" height="24">';
 	print '<td class="center">';
 	if ($year) {
-		print '<a href="'.DOL_PHP_SELF.'?year='.$year.'">'.$year.'</a>';
+		print '<a href="'.$_SERVER['PHP_SELF'].'?year='.$year.'">'.$year.'</a>';
 	} else {
 		print $langs->trans("ValidationDateNotDefinedEvenIfReceptionValidated");
 	}

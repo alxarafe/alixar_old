@@ -380,7 +380,7 @@ if ($id > 0 || $ref) {
 	if ($result) {
 		if ($action == 'ask_remove_pf') {
 			$form = new Form($db);
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$id.'&rowid='.$rowid, $langs->trans('DeleteProductBuyPrice'), $langs->trans('ConfirmDeleteProductBuyPrice'), 'confirm_remove_pf', '', 0, 1);
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$id.'&rowid='.$rowid, $langs->trans('DeleteProductBuyPrice'), $langs->trans('ConfirmDeleteProductBuyPrice'), 'confirm_remove_pf', '', 0, 1);
 			echo $formconfirm;
 		}
 
@@ -484,7 +484,7 @@ if ($id > 0 || $ref) {
 					print load_fiche_titre($langs->trans("AddSupplierPrice"));
 				}
 
-				print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="POST">';
+				print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="POST">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="action" value="save_price">';
 
@@ -512,7 +512,7 @@ if ($id > 0 || $ref) {
 					$reshook = $hookmanager->executeHooks('formCreateThirdpartyOptions', $parameters, $object, $action);
 					if (empty($reshook)) {
 						if (empty($form->result)) {
-							print '<a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&type=f&backtopage='.urlencode(DOL_PHP_SELF.'?id='.((int) $object->id).'&action='.urlencode($action).($action == 'create_price' ? '&token='.newToken() : '')).'">';
+							print '<a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&type=f&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.((int) $object->id).'&action='.urlencode($action).($action == 'create_price' ? '&token='.newToken() : '')).'">';
 							print img_picto($langs->trans("CreateDolibarrThirdPartySupplier"), 'add', 'class="marginleftonly"');
 							print '</a>';
 						}
@@ -921,7 +921,7 @@ if ($id > 0 || $ref) {
 
 			if ($user->hasRight("fournisseur", "read")) { // Duplicate ? this check is already in the head of this file
 				$param = '';
-				if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+				if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 					$param .= '&contextpage='.urlencode($contextpage);
 				}
 				if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -938,7 +938,7 @@ if ($id > 0 || $ref) {
 					$num++;
 				}
 
-				print_barre_liste($langs->trans('SupplierPrices'), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'title_accountancy.png', 0, '', '', $limit, 1);
+				print_barre_liste($langs->trans('SupplierPrices'), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'title_accountancy.png', 0, '', '', $limit, 1);
 
 				// Definition of fields for lists
 				// Some fields are missing because they are not included in the database query
@@ -981,10 +981,10 @@ if ($id > 0 || $ref) {
 				// Selection of new fields
 				include DOL_DOCUMENT_ROOT.'/core/actions_changeselectedfields.inc.php';
 
-				$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+				$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 				$selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage); // This also change content of $arrayfields
 
-				print '<form action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post" name="formulaire">';
+				print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post" name="formulaire">';
 				print '<input type="hidden" name="token" value="'.newToken().'">';
 				print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 				print '<input type="hidden" name="action" value="list">';
@@ -1001,75 +1001,75 @@ if ($id > 0 || $ref) {
 
 				print '<tr class="liste_titre">';
 				if (!empty($arrayfields['pfp.datec']['checked'])) {
-					print_liste_field_titre("AppliedPricesFrom", DOL_PHP_SELF, "pfp.datec", "", $param, "", $sortfield, $sortorder, '', '', 1);
+					print_liste_field_titre("AppliedPricesFrom", $_SERVER['PHP_SELF'], "pfp.datec", "", $param, "", $sortfield, $sortorder, '', '', 1);
 					$nbfields++;
 				}
 				if (!empty($arrayfields['s.nom']['checked'])) {
-					print_liste_field_titre("Suppliers", DOL_PHP_SELF, "s.nom", "", $param, "", $sortfield, $sortorder, '', '', 1);
+					print_liste_field_titre("Suppliers", $_SERVER['PHP_SELF'], "s.nom", "", $param, "", $sortfield, $sortorder, '', '', 1);
 					$nbfields++;
 				}
-				print_liste_field_titre("SupplierRef", DOL_PHP_SELF, "", "", $param, "", $sortfield, $sortorder, '', '', 1);
+				print_liste_field_titre("SupplierRef", $_SERVER['PHP_SELF'], "", "", $param, "", $sortfield, $sortorder, '', '', 1);
 				$nbfields++;
 				if (!empty($arrayfields['pfp.fk_availability']['checked'])) {
-					print_liste_field_titre("Availability", DOL_PHP_SELF, "pfp.fk_availability", "", $param, "", $sortfield, $sortorder);
+					print_liste_field_titre("Availability", $_SERVER['PHP_SELF'], "pfp.fk_availability", "", $param, "", $sortfield, $sortorder);
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.quantity']['checked'])) {
-					print_liste_field_titre("QtyMin", DOL_PHP_SELF, "pfp.quantity", "", $param, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("QtyMin", $_SERVER['PHP_SELF'], "pfp.quantity", "", $param, '', $sortfield, $sortorder, 'right ');
 					$nbfields++;
 				}
-				print_liste_field_titre("VATRate", DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("VATRate", $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 				$nbfields++;
-				print_liste_field_titre("PriceQtyMinHT", DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("PriceQtyMinHT", $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 				$nbfields++;
 				if (isModEnabled("multicurrency")) {
-					print_liste_field_titre("PriceQtyMinHTCurrency", DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("PriceQtyMinHTCurrency", $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.unitprice']['checked'])) {
-					print_liste_field_titre("UnitPriceHT", DOL_PHP_SELF, "pfp.unitprice", "", $param, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("UnitPriceHT", $_SERVER['PHP_SELF'], "pfp.unitprice", "", $param, '', $sortfield, $sortorder, 'right ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.multicurrency_unitprice']['checked'])) {
-					print_liste_field_titre("UnitPriceHTCurrency", DOL_PHP_SELF, "pfp.multicurrency_unitprice", "", $param, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("UnitPriceHTCurrency", $_SERVER['PHP_SELF'], "pfp.multicurrency_unitprice", "", $param, '', $sortfield, $sortorder, 'right ');
 					$nbfields++;
 				}
 				if (isModEnabled("multicurrency")) {
-					print_liste_field_titre("Currency", DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("Currency", $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder, 'right ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.charges']['checked'])) {	// possible only when $conf->global->PRODUCT_CHARGES is set
-					print_liste_field_titre("Charges", DOL_PHP_SELF, "pfp.charges", "", $param, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("Charges", $_SERVER['PHP_SELF'], "pfp.charges", "", $param, '', $sortfield, $sortorder, 'right ');
 					$nbfields++;
 				}
-				print_liste_field_titre("DiscountQtyMin", DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'right ');
+				print_liste_field_titre("DiscountQtyMin", $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
 				$nbfields++;
 				if (!empty($arrayfields['pfp.delivery_time_days']['checked'])) {
-					print_liste_field_titre("NbDaysToDelivery", DOL_PHP_SELF, "pfp.delivery_time_days", "", $param, '', $sortfield, $sortorder, 'right ');
+					print_liste_field_titre("NbDaysToDelivery", $_SERVER['PHP_SELF'], "pfp.delivery_time_days", "", $param, '', $sortfield, $sortorder, 'right ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.supplier_reputation']['checked'])) {
-					print_liste_field_titre("ReputationForThisProduct", DOL_PHP_SELF, "pfp.supplier_reputation", "", $param, '', $sortfield, $sortorder, 'center ');
+					print_liste_field_titre("ReputationForThisProduct", $_SERVER['PHP_SELF'], "pfp.supplier_reputation", "", $param, '', $sortfield, $sortorder, 'center ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.fk_barcode_type']['checked'])) {
-					print_liste_field_titre("BarcodeType", DOL_PHP_SELF, "pfp.fk_barcode_type", "", $param, '', $sortfield, $sortorder, 'center ');
+					print_liste_field_titre("BarcodeType", $_SERVER['PHP_SELF'], "pfp.fk_barcode_type", "", $param, '', $sortfield, $sortorder, 'center ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.barcode']['checked'])) {
-					print_liste_field_titre("BarcodeValue", DOL_PHP_SELF, "pfp.barcode", "", $param, '', $sortfield, $sortorder, 'center ');
+					print_liste_field_titre("BarcodeValue", $_SERVER['PHP_SELF'], "pfp.barcode", "", $param, '', $sortfield, $sortorder, 'center ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.packaging']['checked'])) {
-					print_liste_field_titre("PackagingForThisProduct", DOL_PHP_SELF, "pfp.packaging", "", $param, '', $sortfield, $sortorder, 'center ');
+					print_liste_field_titre("PackagingForThisProduct", $_SERVER['PHP_SELF'], "pfp.packaging", "", $param, '', $sortfield, $sortorder, 'center ');
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.status']['checked'])) {
-					print_liste_field_titre("Status", DOL_PHP_SELF, "pfp.status", "", $param, '', $sortfield, $sortorder, 'center ', '', 1);
+					print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "pfp.status", "", $param, '', $sortfield, $sortorder, 'center ', '', 1);
 					$nbfields++;
 				}
 				if (!empty($arrayfields['pfp.tms']['checked'])) {
-					print_liste_field_titre("DateModification", DOL_PHP_SELF, "pfp.tms", "", $param, '', $sortfield, $sortorder, 'right ', '', 1);
+					print_liste_field_titre("DateModification", $_SERVER['PHP_SELF'], "pfp.tms", "", $param, '', $sortfield, $sortorder, 'right ', '', 1);
 					$nbfields++;
 				}
 
@@ -1091,7 +1091,7 @@ if ($id > 0 || $ref) {
 									$extratitle = $langs->trans($value);
 								}
 								if (!empty($arrayfields['ef.' . $key]['checked'])) {
-									print_liste_field_titre($extratitle, DOL_PHP_SELF, 'ef.' . $key, '', $param, '', $sortfield, $sortorder, 'right ');
+									print_liste_field_titre($extratitle, $_SERVER['PHP_SELF'], 'ef.' . $key, '', $param, '', $sortfield, $sortorder, 'right ');
 									$nbfields++;
 								}
 							}
@@ -1103,7 +1103,7 @@ if ($id > 0 || $ref) {
 					$parameters = array('id_fourn'=>(!empty($id_fourn) ? $id_fourn : ''), 'prod_id'=>$object->id, 'nbfields'=>$nbfields);
 					$reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $object, $action);
 				}
-				print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
+				print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ');
 				$nbfields++;
 				print "</tr>\n";
 
@@ -1291,9 +1291,9 @@ if ($id > 0 || $ref) {
 						print '<td class="center nowraponall">';
 
 						if ($usercancreate) {
-							print '<a class="editfielda" href="'.DOL_PHP_SELF.'?id='.((int) $object->id).'&socid='.((int) $productfourn->fourn_id).'&action=edit_price&token='.newToken().'&rowid='.((int) $productfourn->product_fourn_price_id).'">'.img_edit()."</a>";
+							print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?id='.((int) $object->id).'&socid='.((int) $productfourn->fourn_id).'&action=edit_price&token='.newToken().'&rowid='.((int) $productfourn->product_fourn_price_id).'">'.img_edit()."</a>";
 							print ' &nbsp; ';
-							print '<a href="'.DOL_PHP_SELF.'?id='.((int) $object->id).'&socid='.((int) $productfourn->fourn_id).'&action=ask_remove_pf&token='.newToken().'&rowid='.((int) $productfourn->product_fourn_price_id).'">'.img_picto($langs->trans("Remove"), 'delete').'</a>';
+							print '<a href="'.$_SERVER['PHP_SELF'].'?id='.((int) $object->id).'&socid='.((int) $productfourn->fourn_id).'&action=ask_remove_pf&token='.newToken().'&rowid='.((int) $productfourn->product_fourn_price_id).'">'.img_picto($langs->trans("Remove"), 'delete').'</a>';
 						}
 
 						print '</td>';

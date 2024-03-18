@@ -279,7 +279,7 @@ if ($action != 'export_csv') {
 		setEventMessages($object->error, $object->errors, 'errors');
 	}
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" id="action" value="list">';
 	if ($optioncss != '') {
@@ -327,14 +327,14 @@ if ($action != 'export_csv') {
 		$newcardbutton .= dolGetButtonTitleSeparator();
 		$newcardbutton .= dolGetButtonTitle($langs->trans('NewAccountingMvt'), '', 'fa fa-plus-circle paddingleft', DOL_URL_ROOT.'/accountancy/bookkeeping/card.php?action=create');
 	}
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
 		$param .= '&limit='.((int) $limit);
 	}
 
-	print_barre_liste($title_page, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $result, $nbtotalofrecords, 'title_accountancy', 0, $newcardbutton, '', $limit, 0, 0, 1);
+	print_barre_liste($title_page, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $result, $nbtotalofrecords, 'title_accountancy', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 	$selectedfields = '';
 
@@ -428,19 +428,19 @@ if ($action != 'export_csv') {
 
 	print '<tr class="liste_titre">';
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+		print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	}
-	print_liste_field_titre("AccountAccounting", DOL_PHP_SELF, "t.numero_compte", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("AccountAccounting", $_SERVER['PHP_SELF'], "t.numero_compte", "", $param, "", $sortfield, $sortorder);
 	// TODO : Retrieve the type of third party: Customer / Supplier / Employee
 	//if ($type == 'sub') {
-	//	print_liste_field_titre("Type", DOL_PHP_SELF, "t.type", "", $param, "", $sortfield, $sortorder);
+	//	print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "t.type", "", $param, "", $sortfield, $sortorder);
 	//}
 	if (getDolGlobalString('ACCOUNTANCY_SHOW_OPENING_BALANCE')) {
-		print_liste_field_titre("OpeningBalance", DOL_PHP_SELF, "", $param, "", 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre("OpeningBalance", $_SERVER['PHP_SELF'], "", $param, "", 'class="right"', $sortfield, $sortorder);
 	}
-	print_liste_field_titre("AccountingDebit", DOL_PHP_SELF, "t.debit", "", $param, 'class="right"', $sortfield, $sortorder);
-	print_liste_field_titre("AccountingCredit", DOL_PHP_SELF, "t.credit", "", $param, 'class="right"', $sortfield, $sortorder);
-	print_liste_field_titre("Balance", DOL_PHP_SELF, "", $param, "", 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("AccountingDebit", $_SERVER['PHP_SELF'], "t.debit", "", $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("AccountingCredit", $_SERVER['PHP_SELF'], "t.credit", "", $param, 'class="right"', $sortfield, $sortorder);
+	print_liste_field_titre("Balance", $_SERVER['PHP_SELF'], "", $param, "", 'class="right"', $sortfield, $sortorder);
 
 	// Hook fields
 	$parameters = array('param'=>$param, 'sortfield'=>$sortfield, 'sortorder'=>$sortorder);
@@ -448,7 +448,7 @@ if ($action != 'export_csv') {
 	print $hookmanager->resPrint;
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+		print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 	}
 	print '</tr>'."\n";
 

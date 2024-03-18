@@ -79,7 +79,7 @@ print dol_get_fiche_head($head, 'settings', '', -1, "zapier");
 
 
 if ($action == 'edit') {
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
@@ -113,7 +113,7 @@ if ($action == 'edit') {
 		print '</table>';
 
 		print '<div class="tabsAction">';
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 		print '</div>';
 	} else {
 		// Setup page goes here

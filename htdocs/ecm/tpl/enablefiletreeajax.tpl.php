@@ -89,7 +89,7 @@ $(document).ready(function() {
 		},
 		function(response) {
 			$.unblockUI();
-			location.href='<?php echo DOL_PHP_SELF; ?>';
+			location.href='<?php echo $_SERVER['PHP_SELF']; ?>';
 		});
 	});
 });

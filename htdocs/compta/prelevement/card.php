@@ -228,12 +228,12 @@ if ($id > 0 || $ref) {
 		print $langs->trans('TransData');
 		print '</td>';
 		if ($action != 'editdate_trans') {
-			print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editdate_trans&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetTransDate'), 1).'</a></td>';
+			print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editdate_trans&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetTransDate'), 1).'</a></td>';
 		}
 		print '</tr></table>';
 		print '</td><td>';
 		if ($action == 'editdate_trans') {
-			print '<form name="setdate_trans" action="'.DOL_PHP_SELF.'?id='.$object->id.'" method="post">';
+			print '<form name="setdate_trans" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'" method="post">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="setdate_trans">';
 			print $form->selectDate($object->date_trans ? $object->date_trans : -1, 'date_trans', 0, 0, "setdate_trans");
@@ -300,14 +300,14 @@ if ($id > 0 || $ref) {
 	print $form->textwithpicto($langs->trans("BankAccount"), $langs->trans($labelofbankfield));
 	print '<td>';
 	if (($action != 'editbankaccount') && $caneditbank) {
-		print '<td class="right"><a class="editfielda" href="'.DOL_PHP_SELF.'?action=editfkbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
+		print '<td class="right"><a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=editfkbankaccount&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->trans('SetBankAccount'), 1).'</a></td>';
 	}
 	print '</tr></table>';
 	print '</td><td>';
 	if ($action == 'editfkbankaccount') {
-		$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $fk_bank_account, 'fk_bank_account', 0);
+		$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $fk_bank_account, 'fk_bank_account', 0);
 	} else {
-		$form->formSelectAccount(DOL_PHP_SELF.'?id='.$object->id, $fk_bank_account, 'none');
+		$form->formSelectAccount($_SERVER['PHP_SELF'].'?id='.$object->id, $fk_bank_account, 'none');
 	}
 	print "</td>";
 	print '</tr>';
@@ -362,7 +362,7 @@ if ($id > 0 || $ref) {
 
 	// Confirmation to delete
 	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans('Delete'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('Delete'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
 	}
 
 	// Call Hook formConfirm
@@ -528,14 +528,14 @@ if ($id > 0 || $ref) {
 			print '<input type="hidden" name="sortorder" value="'.$sortorder.'"/>';
 		}
 		// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-		print_barre_liste($langs->trans("Lines"), $page, DOL_PHP_SELF, $urladd, $sortfield, $sortorder, '', $num, $nbtotalofrecords, '', 0, '', '', $limit);
+		print_barre_liste($langs->trans("Lines"), $page, $_SERVER['PHP_SELF'], $urladd, $sortfield, $sortorder, '', $num, $nbtotalofrecords, '', 0, '', '', $limit);
 
 		print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 		print '<table class="noborder liste centpercent">';
 		print '<tr class="liste_titre">';
-		print_liste_field_titre("Lines", DOL_PHP_SELF, "pl.rowid", '', $urladd, '', $sortfield, $sortorder);
-		print_liste_field_titre((!$salaryBonPl ? "ThirdParty" : "Employee"), DOL_PHP_SELF, "s.nom", '', $urladd, '', $sortfield, $sortorder);
-		print_liste_field_titre("Amount", DOL_PHP_SELF, "pl.amount", "", $urladd, 'class="right"', $sortfield, $sortorder);
+		print_liste_field_titre("Lines", $_SERVER['PHP_SELF'], "pl.rowid", '', $urladd, '', $sortfield, $sortorder);
+		print_liste_field_titre((!$salaryBonPl ? "ThirdParty" : "Employee"), $_SERVER['PHP_SELF'], "s.nom", '', $urladd, '', $sortfield, $sortorder);
+		print_liste_field_titre("Amount", $_SERVER['PHP_SELF'], "pl.amount", "", $urladd, 'class="right"', $sortfield, $sortorder);
 		print_liste_field_titre('');
 		print "</tr>\n";
 

@@ -330,7 +330,7 @@ if ((GETPOST('confirm_savestatement', 'alpha') || GETPOST('confirm_reconcile', '
 			$param .= '&search_credit='.urlencode($search_credit);
 		}
 		$param .= '&sortfield='.urlencode($sortfield).'&sortorder='.urlencode($sortorder);
-		header('Location: '.DOL_PHP_SELF.'?'.$param); // To avoid to submit twice and allow the back button
+		header('Location: '.$_SERVER['PHP_SELF'].'?'.$param); // To avoid to submit twice and allow the back button
 		exit;
 	}
 }
@@ -386,7 +386,7 @@ if (GETPOST('save') && !$cancel && $user->hasRight('banque', 'modifier')) {
 		$insertid = $objecttmp->addline($dateop, $operation, $label, $amount, $num_chq, ($cat1 > 0 ? $cat1 : 0), $user, '', '', $search_accountancy_code);
 		if ($insertid > 0) {
 			setEventMessages($langs->trans("RecordSaved"), null, 'mesgs');
-			header("Location: ".DOL_PHP_SELF.($id ? "?id=".$id : ''));
+			header("Location: ".$_SERVER['PHP_SELF'].($id ? "?id=".$id : ''));
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -442,7 +442,7 @@ $now = dol_now();
 
 // Must be before button action
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -796,11 +796,11 @@ if ($resql) {
 	// Confirmation delete
 	if ($action == 'delete') {
 		$text = $langs->trans('ConfirmDeleteTransaction');
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id.'&rowid='.GETPOSTINT("rowid"), $langs->trans('DeleteTransaction'), $text, 'confirm_delete', null, '', 1);
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&rowid='.GETPOSTINT("rowid"), $langs->trans('DeleteTransaction'), $text, 'confirm_delete', null, '', 1);
 	}
 
 	// Lines of title fields
-	print '<form method="post" action="'.DOL_PHP_SELF.'" name="search_form">'."\n";
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'" name="search_form">'."\n";
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -989,12 +989,12 @@ if ($resql) {
 	if ($action != 'addline' && $action != 'reconcile') {
 		if (!getDolGlobalString('BANK_DISABLE_DIRECT_INPUT')) {
 			if (!getDolGlobalString('BANK_USE_OLD_VARIOUS_PAYMENT')) {	// Default is to record miscellaneous direct entries using miscellaneous payments
-				$newcardbutton = dolGetButtonTitle($langs->trans('AddBankRecord'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/compta/bank/various_payment/card.php?action=create&accountid='.urlencode($search_account).'&backtopage='.urlencode(DOL_PHP_SELF.'?id='.urlencode($search_account)), '', $user->rights->banque->modifier);
+				$newcardbutton = dolGetButtonTitle($langs->trans('AddBankRecord'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/compta/bank/various_payment/card.php?action=create&accountid='.urlencode($search_account).'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.urlencode($search_account)), '', $user->rights->banque->modifier);
 			} else { // If direct entries is not done using miscellaneous payments
-				$newcardbutton = dolGetButtonTitle($langs->trans('AddBankRecord'), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?action=addline&token='.newToken().'&page='.$page.$param, '', $user->rights->banque->modifier);
+				$newcardbutton = dolGetButtonTitle($langs->trans('AddBankRecord'), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?action=addline&token='.newToken().'&page='.$page.$param, '', $user->rights->banque->modifier);
 			}
 		} else {
-			$newcardbutton = dolGetButtonTitle($langs->trans('AddBankRecord'), '', 'fa fa-plus-circle', DOL_PHP_SELF.'?action=addline&token='.newToken().'&page='.$page.$param, '', -1);
+			$newcardbutton = dolGetButtonTitle($langs->trans('AddBankRecord'), '', 'fa fa-plus-circle', $_SERVER['PHP_SELF'].'?action=addline&token='.newToken().'&page='.$page.$param, '', -1);
 		}
 	}
 
@@ -1018,7 +1018,7 @@ if ($resql) {
 	}
 
 	// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("BankTransactions"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $picto, 0, $morehtml, '', $limit, 0, 0, 1);
+	print_barre_liste($langs->trans("BankTransactions"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, $picto, 0, $morehtml, '', $limit, 0, 0, 1);
 
 	// We can add page now to param
 	if ($page != '') {
@@ -1079,7 +1079,7 @@ if ($resql) {
 		print '</div>'."\n";
 	}
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	$selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 	// When action is 'reconcile', we force to have the column num_releve always enabled (otherwise we can't make reconciliation).
 	if ($action == 'reconcile') {
@@ -1197,67 +1197,67 @@ if ($resql) {
 	print '<tr class="liste_titre">';
 	// Actions and select
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+		print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.rowid']['checked'])) {
-		print_liste_field_titre($arrayfields['b.rowid']['label'], DOL_PHP_SELF, 'b.rowid', '', $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['b.rowid']['label'], $_SERVER['PHP_SELF'], 'b.rowid', '', $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.label']['checked'])) {
-		print_liste_field_titre($arrayfields['b.label']['label'], DOL_PHP_SELF, 'b.label', '', $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['b.label']['label'], $_SERVER['PHP_SELF'], 'b.label', '', $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.dateo']['checked'])) {
-		print_liste_field_titre($arrayfields['b.dateo']['label'], DOL_PHP_SELF, 'b.dateo', '', $param, '', $sortfield, $sortorder, "center ");
+		print_liste_field_titre($arrayfields['b.dateo']['label'], $_SERVER['PHP_SELF'], 'b.dateo', '', $param, '', $sortfield, $sortorder, "center ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.datev']['checked'])) {
-		print_liste_field_titre($arrayfields['b.datev']['label'], DOL_PHP_SELF, 'b.datev,b.dateo,b.rowid', '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre($arrayfields['b.datev']['label'], $_SERVER['PHP_SELF'], 'b.datev,b.dateo,b.rowid', '', $param, '', $sortfield, $sortorder, 'center ');
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['type']['checked'])) {
-		print_liste_field_titre($arrayfields['type']['label'], DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'center ');
+		print_liste_field_titre($arrayfields['type']['label'], $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.num_chq']['checked'])) {
-		print_liste_field_titre($arrayfields['b.num_chq']['label'], DOL_PHP_SELF, 'b.num_chq', '', $param, '', $sortfield, $sortorder, "center ");
+		print_liste_field_titre($arrayfields['b.num_chq']['label'], $_SERVER['PHP_SELF'], 'b.num_chq', '', $param, '', $sortfield, $sortorder, "center ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['bu.label']['checked'])) {
-		print_liste_field_titre($arrayfields['bu.label']['label'], DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['bu.label']['label'], $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['ba.ref']['checked'])) {
-		print_liste_field_titre($arrayfields['ba.ref']['label'], DOL_PHP_SELF, 'ba.ref', '', $param, '', $sortfield, $sortorder);
+		print_liste_field_titre($arrayfields['ba.ref']['label'], $_SERVER['PHP_SELF'], 'ba.ref', '', $param, '', $sortfield, $sortorder);
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.debit']['checked'])) {
-		print_liste_field_titre($arrayfields['b.debit']['label'], DOL_PHP_SELF, 'b.amount', '', $param, '', $sortfield, $sortorder, "right ");
+		print_liste_field_titre($arrayfields['b.debit']['label'], $_SERVER['PHP_SELF'], 'b.amount', '', $param, '', $sortfield, $sortorder, "right ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.credit']['checked'])) {
-		print_liste_field_titre($arrayfields['b.credit']['label'], DOL_PHP_SELF, 'b.amount', '', $param, '', $sortfield, $sortorder, "right ");
+		print_liste_field_titre($arrayfields['b.credit']['label'], $_SERVER['PHP_SELF'], 'b.amount', '', $param, '', $sortfield, $sortorder, "right ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['balancebefore']['checked'])) {
-		print_liste_field_titre($arrayfields['balancebefore']['label'], DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, "right ");
+		print_liste_field_titre($arrayfields['balancebefore']['label'], $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, "right ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['balance']['checked'])) {
-		print_liste_field_titre($arrayfields['balance']['label'], DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, "right ");
+		print_liste_field_titre($arrayfields['balance']['label'], $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, "right ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.num_releve']['checked'])) {
-		print_liste_field_titre($arrayfields['b.num_releve']['label'], DOL_PHP_SELF, 'b.num_releve', '', $param, '', $sortfield, $sortorder, "center ");
+		print_liste_field_titre($arrayfields['b.num_releve']['label'], $_SERVER['PHP_SELF'], 'b.num_releve', '', $param, '', $sortfield, $sortorder, "center ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.conciliated']['checked'])) {
-		print_liste_field_titre($arrayfields['b.conciliated']['label'], DOL_PHP_SELF, 'b.rappro', '', $param, '', $sortfield, $sortorder, "center ");
+		print_liste_field_titre($arrayfields['b.conciliated']['label'], $_SERVER['PHP_SELF'], 'b.rappro', '', $param, '', $sortfield, $sortorder, "center ");
 		$totalarray['nbfield']++;
 	}
 	if (!empty($arrayfields['b.fk_bordereau']['checked'])) {
-		print_liste_field_titre($arrayfields['b.fk_bordereau']['label'], DOL_PHP_SELF, 'b.fk_bordereau', '', $param, '', $sortfield, $sortorder, "center ");
+		print_liste_field_titre($arrayfields['b.fk_bordereau']['label'], $_SERVER['PHP_SELF'], 'b.fk_bordereau', '', $param, '', $sortfield, $sortorder, "center ");
 		$totalarray['nbfield']++;
 	}
 
@@ -1272,8 +1272,8 @@ if ($resql) {
 	$totalarray['nbfield']++;
 	// Actions and select
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		//print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
-		print_liste_field_titre($selectedfields, DOL_PHP_SELF, "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ');
+		//print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
+		print_liste_field_titre($selectedfields, $_SERVER['PHP_SELF'], "", '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ');
 		$totalarray['nbfield']++;
 	}
 	print "</tr>\n";
@@ -1611,9 +1611,9 @@ if ($resql) {
 			print '<span class="spanforajaxedit" id="dateoperation_'.$objp->rowid.'">'.dol_print_date($db->jdate($objp->do), "day")."</span>";
 			print '&nbsp;';
 			print '<span class="inline-block">';
-			print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=doprev&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
+			print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=doprev&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
 			print img_edit_remove()."</a> ";
-			print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=donext&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
+			print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=donext&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
 			print img_edit_add()."</a>";
 			print '</span>';
 			print "</td>\n";
@@ -1628,9 +1628,9 @@ if ($resql) {
 			print '<span class="spanforajaxedit" id="datevalue_'.$objp->rowid.'">'.dol_print_date($db->jdate($objp->dv), "day")."</span>";
 			print '&nbsp;';
 			print '<span class="inline-block">';
-			print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=dvprev&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
+			print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=dvprev&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
 			print img_edit_remove()."</a> ";
-			print '<a class="ajaxforbankoperationchange" href="'.DOL_PHP_SELF.'?action=dvnext&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
+			print '<a class="ajaxforbankoperationchange" href="'.$_SERVER['PHP_SELF'].'?action=dvnext&amp;account='.$objp->bankid.'&amp;rowid='.$objp->rowid.'">';
 			print img_edit_add()."</a>";
 			print '</span>';
 			print "</td>\n";
@@ -1855,7 +1855,7 @@ if ($resql) {
 				}
 			}
 			if ($user->hasRight('banque', 'modifier')) {
-				print '<a href="'.DOL_PHP_SELF.'?action=delete&token='.newToken().'&rowid='.$objp->rowid.'&page='.$page.$param.($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : '').'">';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=delete&token='.newToken().'&rowid='.$objp->rowid.'&page='.$page.$param.($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : '').'">';
 				print img_delete('', 'class="marginleftonly"');
 				print '</a>';
 			}

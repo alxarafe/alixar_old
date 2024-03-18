@@ -68,7 +68,7 @@ print load_fiche_titre($langs->trans("WebServicesSetup"), $linkback, 'title_setu
 print '<span class="opacitymedium">'.$langs->trans("WebServicesDesc")."</span><br>\n";
 print "<br>\n";
 
-print '<form name="agendasetupform" action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form name="agendasetupform" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="save">';
 

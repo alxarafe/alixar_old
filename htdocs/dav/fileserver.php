@@ -217,7 +217,7 @@ if (isset($baseUri)) {
 
 // Add authentication function
 if ((!getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')
-	|| !preg_match('/'.preg_quote(DOL_URL_ROOT.'/dav/fileserver.php/public', '/').'/', DOL_PHP_SELF))
+	|| !preg_match('/'.preg_quote(DOL_URL_ROOT.'/dav/fileserver.php/public', '/').'/', $_SERVER['PHP_SELF']))
 	&& !preg_match('/^sabreAction=asset&assetName=[a-zA-Z0-9%\-\/]+\.(png|css|woff|ico|ttf)$/', $_SERVER["QUERY_STRING"])	// URL for Sabre browser resources
 ) {
 	//var_dump($_SERVER["QUERY_STRING"]);exit;

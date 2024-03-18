@@ -240,7 +240,7 @@ llxHeader('', $title, $help_url);
 $arrayofselected = is_array($toselect) ? $toselect : array();
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -270,7 +270,7 @@ $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 // List of surveys into database
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -284,7 +284,7 @@ print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
 $newcardbutton = '';
 $newcardbutton .= dolGetButtonTitle($langs->trans('NewSurvey'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/opensurvey/wizard/index.php', '', $user->hasRight('opensurvey', 'write'));
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'poll', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'poll', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "SendOpenSurveyRef";
@@ -324,7 +324,7 @@ if (!empty($moreforfilter)) {
 	print '</div>';
 }
 
-$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 //$selectedfields=$form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
 $selectedfields = '';
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
@@ -373,16 +373,16 @@ print '</tr>'."\n";
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ')."\n";
 }
-print_liste_field_titre("Ref", DOL_PHP_SELF, "p.id_sondage", $param, "", "", $sortfield, $sortorder);
-print_liste_field_titre("Title", DOL_PHP_SELF, "p.titre", $param, "", "", $sortfield, $sortorder);
-print_liste_field_titre("Type", DOL_PHP_SELF, "p.format", $param, "", "", $sortfield, $sortorder);
-print_liste_field_titre("Author", DOL_PHP_SELF, "u.".$fieldtosortuser, $param, "", "", $sortfield, $sortorder);
-print_liste_field_titre("NbOfVoters", DOL_PHP_SELF, "", $param, "", 'align="right"', $sortfield, $sortorder);
-print_liste_field_titre("ExpireDate", DOL_PHP_SELF, "p.date_fin", $param, "", 'align="center"', $sortfield, $sortorder);
-print_liste_field_titre("DateLastModification", DOL_PHP_SELF, "p.tms", $param, "", 'align="center"', $sortfield, $sortorder);
-print_liste_field_titre("Status", DOL_PHP_SELF, "p.status", $param, "", 'align="center"', $sortfield, $sortorder);
+print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "p.id_sondage", $param, "", "", $sortfield, $sortorder);
+print_liste_field_titre("Title", $_SERVER['PHP_SELF'], "p.titre", $param, "", "", $sortfield, $sortorder);
+print_liste_field_titre("Type", $_SERVER['PHP_SELF'], "p.format", $param, "", "", $sortfield, $sortorder);
+print_liste_field_titre("Author", $_SERVER['PHP_SELF'], "u.".$fieldtosortuser, $param, "", "", $sortfield, $sortorder);
+print_liste_field_titre("NbOfVoters", $_SERVER['PHP_SELF'], "", $param, "", 'align="right"', $sortfield, $sortorder);
+print_liste_field_titre("ExpireDate", $_SERVER['PHP_SELF'], "p.date_fin", $param, "", 'align="center"', $sortfield, $sortorder);
+print_liste_field_titre("DateLastModification", $_SERVER['PHP_SELF'], "p.tms", $param, "", 'align="center"', $sortfield, $sortorder);
+print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "p.status", $param, "", 'align="center"', $sortfield, $sortorder);
 // Extra fields
 include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_title.tpl.php';
 // Hook fields
@@ -391,7 +391,7 @@ $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters, $objec
 print $hookmanager->resPrint;
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ')."\n";
+	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', 'align="center"', $sortfield, $sortorder, 'maxwidthsearch ')."\n";
 }
 print '</tr>'."\n";
 
@@ -568,7 +568,7 @@ if (in_array('builddoc', array_keys($arrayofmassactions)) && ($nbtotalofrecords 
 	$formfile = new FormFile($db);
 
 	// Show list of available documents
-	$urlsource = DOL_PHP_SELF.'?sortfield='.$sortfield.'&sortorder='.$sortorder;
+	$urlsource = $_SERVER['PHP_SELF'].'?sortfield='.$sortfield.'&sortorder='.$sortorder;
 	$urlsource .= str_replace('&amp;', '&', $param);
 
 	$filedir = $diroutputmassaction;

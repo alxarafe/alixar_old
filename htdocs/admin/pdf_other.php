@@ -99,7 +99,7 @@ if ($action == 'update') {
 
 	setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
 
-	header("Location: ".DOL_PHP_SELF."?mainmenu=home&leftmenu=setup");
+	header("Location: ".$_SERVER['PHP_SELF']."?mainmenu=home&leftmenu=setup");
 	exit;
 }
 
@@ -126,7 +126,7 @@ $tooltiptext = '';
 print '<span class="opacitymedium">'.$form->textwithpicto($langs->trans("PDFOtherDesc"), $tooltiptext)."</span><br>\n";
 print "<br>\n";
 
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 

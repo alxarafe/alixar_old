@@ -242,7 +242,7 @@ $stringtoshow = '<script type="text/javascript">
     });
     </script>';
 $stringtoshow .= '<div class="center hideobject" id="idfilterDOLUSERCOOKIE_ticket_by_status">'; // hideobject is to start hidden
-$stringtoshow .= '<form class="flat formboxfilter" method="POST" action="'.DOL_PHP_SELF.'">';
+$stringtoshow .= '<form class="flat formboxfilter" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 $stringtoshow .= '<input type="hidden" name="token" value="'.newToken().'">';
 $stringtoshow .= '<input type="hidden" name="action" value="refresh">';
 $stringtoshow .= '<input type="hidden" name="DOL_AUTOSET_COOKIE" value="DOLUSERCOOKIE_ticket_by_status:year,shownb,showtot">';

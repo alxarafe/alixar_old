@@ -49,7 +49,7 @@ $result = restrictedArea($user, 'societe', $id, '&societe', '', 'fk_soc', 'rowid
 
 top_httphead('application/json');
 
-//print '<!-- Ajax page called with url '.dol_escape_htmltag(DOL_PHP_SELF).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
+//print '<!-- Ajax page called with url '.dol_escape_htmltag($_SERVER['PHP_SELF']).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
 
 // Load original field value
 if (!empty($id) && !empty($action) && !empty($htmlname)) {

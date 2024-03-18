@@ -110,7 +110,7 @@ if (versioncompare(versionphparray(), $arrayphpmaxversionwarning) > 0 && version
 // Check PHP support for $_GET and $_POST
 if (!isset($_GET["testget"]) && !isset($_POST["testpost"])) {	// We must keep $_GET and $_POST here
 	print '<img src="../theme/eldy/img/warning.png" alt="Warning" class="valignmiddle"> '.$langs->trans("PHPSupportPOSTGETKo");
-	print ' (<a href="'.dol_escape_htmltag(DOL_PHP_SELF).'?testget=ok">'.$langs->trans("Recheck").'</a>)';
+	print ' (<a href="'.dol_escape_htmltag($_SERVER['PHP_SELF']).'?testget=ok">'.$langs->trans("Recheck").'</a>)';
 	print "<br>\n";
 	$checksok = 0;
 } else {
@@ -295,7 +295,7 @@ if (!file_exists($conffile)) {
 	print $langs->trans("YouMustCreateWithPermission", $conffiletoshow);
 	print '</div><br><br>'."\n";
 
-	print '<span class="opacitymedium">'.$langs->trans("CorrectProblemAndReloadPage", DOL_PHP_SELF.'?testget=ok').'</span>';
+	print '<span class="opacitymedium">'.$langs->trans("CorrectProblemAndReloadPage", $_SERVER['PHP_SELF'].'?testget=ok').'</span>';
 	$err++;
 } else {
 	if (dol_is_dir($conffile)) {

@@ -117,9 +117,9 @@ $sql .= $db->order($sortfield, $sortorder);
 $sql .= $db->plimit($limit + 1, $offset);
 
 $newcardbutton = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('NewEstablishment'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/hrm/establishment/card.php?action=create&backtopage='.urlencode(DOL_PHP_SELF), '', $permissiontoadd);
+$newcardbutton .= dolGetButtonTitle($langs->trans('NewEstablishment'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/hrm/establishment/card.php?action=create&backtopage='.urlencode($_SERVER['PHP_SELF']), '', $permissiontoadd);
 
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', 0, $nbtotalofrecords, '', 0, $newcardbutton, '', $limit, 0, 0, 1);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', 0, $nbtotalofrecords, '', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 
 $result = $db->query($sql);
@@ -130,12 +130,12 @@ if ($result) {
 	print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre("Ref", DOL_PHP_SELF, "e.ref", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Label", DOL_PHP_SELF, "e.label", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Address", DOL_PHP_SELF, "e.address", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Zip", DOL_PHP_SELF, "e.zip", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Town", DOL_PHP_SELF, "e.town", "", "", "", $sortfield, $sortorder);
-	print_liste_field_titre("Status", DOL_PHP_SELF, "e.status", "", "", '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("Ref", $_SERVER['PHP_SELF'], "e.ref", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Label", $_SERVER['PHP_SELF'], "e.label", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Address", $_SERVER['PHP_SELF'], "e.address", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Zip", $_SERVER['PHP_SELF'], "e.zip", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Town", $_SERVER['PHP_SELF'], "e.town", "", "", "", $sortfield, $sortorder);
+	print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "e.status", "", "", '', $sortfield, $sortorder, 'right ');
 	print "</tr>\n";
 
 	if ($num > 0) {

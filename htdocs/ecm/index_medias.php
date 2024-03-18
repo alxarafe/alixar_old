@@ -111,7 +111,7 @@ $hookmanager->initHooks(array('ecmmediascard', 'globalcard'));
  */
 
 $savbacktopage = $backtopage;
-$backtopage = DOL_PHP_SELF.'?file_manager=1&website='.urlencode((string) ($websitekey)).'&pageid='.urlencode((string) ($pageid)).(GETPOST('section_dir', 'alpha') ? '&section_dir='.urlencode((string) (GETPOST('section_dir', 'alpha'))) : ''); // used after a confirm_deletefile into actions_linkedfiles.inc.php
+$backtopage = $_SERVER['PHP_SELF'].'?file_manager=1&website='.urlencode((string) ($websitekey)).'&pageid='.urlencode((string) ($pageid)).(GETPOST('section_dir', 'alpha') ? '&section_dir='.urlencode((string) (GETPOST('section_dir', 'alpha'))) : ''); // used after a confirm_deletefile into actions_linkedfiles.inc.php
 if ($sortfield) {
 	$backtopage .= '&sortfield='.urlencode($sortfield);
 }
@@ -135,7 +135,7 @@ if ($action == 'add' && $permissiontouploadfile) {
 
 	$id = $ecmdir->create($user);
 	if ($id > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages('Error '.$langs->trans($ecmdir->error), null, 'errors');

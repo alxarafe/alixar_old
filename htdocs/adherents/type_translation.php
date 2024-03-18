@@ -65,7 +65,7 @@ if ($action == 'delete' && GETPOST('langtodelete', 'alpha')) {
 	$result = $object->delMultiLangs(GETPOST('langtodelete', 'alpha'), $user);
 	if ($result > 0) {
 		setEventMessages($langs->trans("RecordDeleted"), null, 'mesgs');
-		header("Location: ".DOL_PHP_SELF.'?id='.$id);
+		header("Location: ".$_SERVER['PHP_SELF'].'?id='.$id);
 		exit;
 	}
 }
@@ -206,7 +206,7 @@ if ($action == 'edit') {
 	//WYSIWYG Editor
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="vedit">';
 	print '<input type="hidden" name="rowid" value="'.$object->id.'">';
@@ -219,7 +219,7 @@ if ($action == 'edit') {
 			print($s ? $s.' ' : '').'<b>'.$langs->trans('Language_'.$key).':</b>';
 			print '</div>';
 			print '<div class="inline-block marginbottomonly floatright">';
-			print '<a href="'.DOL_PHP_SELF.'?rowid='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom"')."</a><br>";
+			print '<a href="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom"')."</a><br>";
 			print '</div>';
 
 			print '<div class="underbanner clearboth"></div>';
@@ -245,7 +245,7 @@ if ($action == 'edit') {
 			print($s ? $s.' ' : '').'<b>'.$langs->trans('Language_'.$key).':</b>';
 			print '</div>';
 			print '<div class="inline-block marginbottomonly floatright">';
-			print '<a href="'.DOL_PHP_SELF.'?rowid='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom"').'</a>';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'&action=delete&token='.newToken().'&langtodelete='.$key.'">'.img_delete('', 'class="valigntextbottom"').'</a>';
 			print '</div>';
 
 
@@ -276,7 +276,7 @@ if ($action == 'create' && $user->hasRight('adherent', 'configurer')) {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
 	print '<br>';
-	print '<form action="'.DOL_PHP_SELF.'" method="post">';
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="vadd">';
 	print '<input type="hidden" name="rowid" value="'.GETPOSTINT("rowid").'">';

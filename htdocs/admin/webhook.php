@@ -166,7 +166,7 @@ if ($action == 'edit') {
 	if ($useFormSetup && (float) DOL_VERSION >= 15) {
 		print $formSetup->generateOutput(true);
 	} else {
-		print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+		print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update">';
 
@@ -332,7 +332,7 @@ if ($action == 'edit') {
 
 	if ($setupnotempty) {
 		print '<div class="tabsAction">';
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 		print '</div>';
 	} else {
 		//print '<br>'.$langs->trans("NothingToSetup");

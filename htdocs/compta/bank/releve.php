@@ -243,7 +243,7 @@ $paymentvariousstatic = new PaymentVarious($db);
 
 // Must be before button action
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.$contextpage;
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -338,9 +338,9 @@ if (empty($numref)) {
 		print '</div>';
 
 
-		print_barre_liste('', $page, DOL_PHP_SELF, "&account=".$object->id, $sortfield, $sortorder, '', $numrows, $totalnboflines, '');
+		print_barre_liste('', $page, $_SERVER['PHP_SELF'], "&account=".$object->id, $sortfield, $sortorder, '', $numrows, $totalnboflines, '');
 
-		print '<form name="aaa" action="'.DOL_PHP_SELF.'" method="POST">';
+		print '<form name="aaa" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="confirm_editbankreceipt">';
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -404,7 +404,7 @@ if (empty($numref)) {
 
 				print '<td class="center">';
 				if ($user->hasRight('banque', 'consolidate') && $action != 'editbankreceipt') {
-					print '<a class="editfielda" href="'.DOL_PHP_SELF.'?account='.$object->id.($page > 0 ? '&page='.$page : '').'&action=editbankreceipt&token='.newToken().'&brref='.urlencode($objp->numr).'">'.img_edit().'</a>';
+					print '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?account='.$object->id.($page > 0 ? '&page='.$page : '').'&action=editbankreceipt&token='.newToken().'&brref='.urlencode($objp->numr).'">'.img_edit().'</a>';
 				}
 				print '</td>';
 
@@ -432,18 +432,18 @@ if (empty($numref)) {
 	$morehtmlright = '';
 	$morehtmlright .= '<div class="pagination"><ul>';
 	if ($foundprevious) {
-		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.DOL_PHP_SELF.'?num='.urlencode($foundprevious).'&amp;ve='.urlencode($ve).'&amp;account='.((int) $object->id).'"><i class="fa fa-chevron-left" title="'.dol_escape_htmltag($langs->trans("Previous")).'"></i></a></li>';
+		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.$_SERVER['PHP_SELF'].'?num='.urlencode($foundprevious).'&amp;ve='.urlencode($ve).'&amp;account='.((int) $object->id).'"><i class="fa fa-chevron-left" title="'.dol_escape_htmltag($langs->trans("Previous")).'"></i></a></li>';
 	}
 	$morehtmlright .= '<li class="pagination"><span class="active">'.$langs->trans("AccountStatement")." ".$numref.'</span></li>';
 	if ($foundnext) {
-		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.DOL_PHP_SELF.'?num='.urlencode($foundnext).'&amp;ve='.urlencode($ve).'&amp;account='.((int) $object->id).'"><i class="fa fa-chevron-right" title="'.dol_escape_htmltag($langs->trans("Next")).'"></i></a></li>';
+		$morehtmlright .= '<li class="pagination"><a class="paginationnext" href="'.$_SERVER['PHP_SELF'].'?num='.urlencode($foundnext).'&amp;ve='.urlencode($ve).'&amp;account='.((int) $object->id).'"><i class="fa fa-chevron-right" title="'.dol_escape_htmltag($langs->trans("Next")).'"></i></a></li>';
 	}
 	$morehtmlright .= '</ul></div>';
 
 	$title = $langs->trans("AccountStatement").' '.$numref.' - '.$langs->trans("BankAccount").' '.$object->getNomUrl(1, 'receipts');
 	print load_fiche_titre($title, $morehtmlright, '');
 
-	print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 
@@ -503,9 +503,9 @@ if (empty($numref)) {
 			print '<span class="spanforajaxedit">'.dol_print_date($db->jdate($objp->dv), "day").'</span>';
 			print '&nbsp;';
 			print '<span class="inline-block">';
-			print '<a class="ajaxforbankoperationchange reposition" href="'.DOL_PHP_SELF.'?action=dvprev&amp;num='.$numref.'&amp;account='.$object->id.'&amp;rowid='.$objp->rowid.'&amp;dvid='.$objp->rowid.'">';
+			print '<a class="ajaxforbankoperationchange reposition" href="'.$_SERVER['PHP_SELF'].'?action=dvprev&amp;num='.$numref.'&amp;account='.$object->id.'&amp;rowid='.$objp->rowid.'&amp;dvid='.$objp->rowid.'">';
 			print img_edit_remove()."</a> ";
-			print '<a class="ajaxforbankoperationchange reposition" href="'.DOL_PHP_SELF.'?action=dvnext&amp;num='.$numref.'&amp;account='.$object->id.'&amp;rowid='.$objp->rowid.'&amp;dvid='.$objp->rowid.'">';
+			print '<a class="ajaxforbankoperationchange reposition" href="'.$_SERVER['PHP_SELF'].'?action=dvnext&amp;num='.$numref.'&amp;account='.$object->id.'&amp;rowid='.$objp->rowid.'&amp;dvid='.$objp->rowid.'">';
 			print img_edit_add()."</a>";
 			print '</span>';
 			print "</td>\n";
@@ -683,7 +683,7 @@ if (empty($numref)) {
 			print '<td class="nowrap right">'.price(price2num($total, 'MT'))."</td>\n";
 
 			if ($user->hasRight('banque', 'modifier') || $user->hasRight('banque', 'consolidate')) {
-				print '<td class="center"><a class="editfielda reposition" href="'.DOL_URL_ROOT.'/compta/bank/line.php?rowid='.$objp->rowid.'&account='.$object->id.'&backtopage='.urlencode(DOL_PHP_SELF.'?account='.$object->id.'&num='.$numref).'">';
+				print '<td class="center"><a class="editfielda reposition" href="'.DOL_URL_ROOT.'/compta/bank/line.php?rowid='.$objp->rowid.'&account='.$object->id.'&backtopage='.urlencode($_SERVER['PHP_SELF'].'?account='.$object->id.'&num='.$numref).'">';
 				print img_edit();
 				print "</a></td>";
 			} else {

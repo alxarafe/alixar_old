@@ -95,7 +95,7 @@ $titre = $langs->trans("Margins");
 $picto = 'margin';
 
 
-print '<form method="post" name="sel" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" name="sel" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 
 print dol_get_fiche_head($head, 'customerMargins', $titre, 0, $picto);
@@ -304,7 +304,7 @@ if ($result) {
 
 	print '<br>';
 	// @phan-suppress-next-line PhanPluginSuspiciousParamPosition, PhanPluginSuspiciousParamOrder
-	print_barre_liste($langs->trans("MarginDetails"), $page, DOL_PHP_SELF, "", $sortfield, $sortorder, '', $num, $num, '', 0, '', '', 0, 1);
+	print_barre_liste($langs->trans("MarginDetails"), $page, $_SERVER['PHP_SELF'], "", $sortfield, $sortorder, '', $num, $num, '', 0, '', '', 0, 1);
 
 	if (getDolGlobalString('MARGIN_TYPE') == "1") {
 		$labelcostprice = 'BuyingPrice';
@@ -320,19 +320,19 @@ if ($result) {
 
 	print '<tr class="liste_titre">';
 	if (!empty($client)) {
-		print_liste_field_titre("Invoice", DOL_PHP_SELF, "f.ref", "", $param, '', $sortfield, $sortorder);
-		print_liste_field_titre("DateInvoice", DOL_PHP_SELF, "f.datef", "", $param, 'align="center"', $sortfield, $sortorder);
+		print_liste_field_titre("Invoice", $_SERVER['PHP_SELF'], "f.ref", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("DateInvoice", $_SERVER['PHP_SELF'], "f.datef", "", $param, 'align="center"', $sortfield, $sortorder);
 	} else {
-		print_liste_field_titre("Customer", DOL_PHP_SELF, "s.nom", "", $param, '', $sortfield, $sortorder);
+		print_liste_field_titre("Customer", $_SERVER['PHP_SELF'], "s.nom", "", $param, '', $sortfield, $sortorder);
 	}
-	print_liste_field_titre("SellingPrice", DOL_PHP_SELF, "selling_price", "", $param, 'align="right"', $sortfield, $sortorder);
-	print_liste_field_titre($labelcostprice, DOL_PHP_SELF, "buying_price", "", $param, 'align="right"', $sortfield, $sortorder);
-	print_liste_field_titre("Margin", DOL_PHP_SELF, "marge", "", $param, 'align="right"', $sortfield, $sortorder);
+	print_liste_field_titre("SellingPrice", $_SERVER['PHP_SELF'], "selling_price", "", $param, 'align="right"', $sortfield, $sortorder);
+	print_liste_field_titre($labelcostprice, $_SERVER['PHP_SELF'], "buying_price", "", $param, 'align="right"', $sortfield, $sortorder);
+	print_liste_field_titre("Margin", $_SERVER['PHP_SELF'], "marge", "", $param, 'align="right"', $sortfield, $sortorder);
 	if (getDolGlobalString('DISPLAY_MARGIN_RATES')) {
-		print_liste_field_titre("MarginRate", DOL_PHP_SELF, "", "", $param, 'align="right"', $sortfield, $sortorder);
+		print_liste_field_titre("MarginRate", $_SERVER['PHP_SELF'], "", "", $param, 'align="right"', $sortfield, $sortorder);
 	}
 	if (getDolGlobalString('DISPLAY_MARK_RATES')) {
-		print_liste_field_titre("MarkRate", DOL_PHP_SELF, "", "", $param, 'align="right"', $sortfield, $sortorder);
+		print_liste_field_titre("MarkRate", $_SERVER['PHP_SELF'], "", "", $param, 'align="right"', $sortfield, $sortorder);
 	}
 	print "</tr>\n";
 

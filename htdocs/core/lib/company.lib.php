@@ -906,7 +906,7 @@ function show_projects($conf, $langs, $db, $object, $backtopage = '', $nocreatel
 						}
 						// Ref
 						print '<td class="nowraponall">';
-						print $projecttmp->getNomUrl(1, '', 0, '', '-', 0, 1, '', 'project:'.DOL_PHP_SELF.'?socid=__SOCID__');
+						print $projecttmp->getNomUrl(1, '', 0, '', '-', 0, 1, '', 'project:'.$_SERVER['PHP_SELF'].'?socid=__SOCID__');
 						print '</td>';
 
 						// Label
@@ -1015,7 +1015,7 @@ function show_projects($conf, $langs, $db, $object, $backtopage = '', $nocreatel
 
 							// Ref
 							print '<td class="nowraponall">';
-							print $projecttmp->getNomUrl(1, '', 0, '', '-', 0, 1, '', 'project:'.DOL_PHP_SELF.'?socid=__SOCID__');
+							print $projecttmp->getNomUrl(1, '', 0, '', '-', 0, 1, '', 'project:'.$_SERVER['PHP_SELF'].'?socid=__SOCID__');
 							print '</td>';
 
 							// Label
@@ -1236,7 +1236,7 @@ function show_contacts($conf, $langs, $db, $object, $backtopage = '', $showuserl
 	$title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("ContactsForCompany") : $langs->trans("ContactsAddressesForCompany"));
 	print load_fiche_titre($title, $newcardbutton, '');
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'" name="formfilter">';
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'" name="formfilter">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 	print '<input type="hidden" name="socid" value="'.$object->id.'">';
@@ -1247,7 +1247,7 @@ function show_contacts($conf, $langs, $db, $object, $backtopage = '', $showuserl
 	$arrayofmassactions = array();
 	$mode = 'view';
 
-	$varpage = empty($contextpage) ? DOL_PHP_SELF : $contextpage;
+	$varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
 	$selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage, getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) : ''); // This also change content of $arrayfields
 	$selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
@@ -1411,7 +1411,7 @@ function show_contacts($conf, $langs, $db, $object, $backtopage = '', $showuserl
 	print '<tr class="liste_titre">';
 	// Action column
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ')."\n";
+		print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ')."\n";
 	}
 	foreach ($contactstatic->fields as $key => $val) {
 		$align = '';
@@ -1425,13 +1425,13 @@ function show_contacts($conf, $langs, $db, $object, $backtopage = '', $showuserl
 			$align .= ($align ? ' ' : '').'center';
 		}
 		if (!empty($arrayfields['t.'.$key]['checked'])) {
-			print getTitleFieldOfList($val['label'], 0, DOL_PHP_SELF, 't.'.$key, '', $param, ($align ? 'class="'.$align.'"' : ''), $sortfield, $sortorder, $align.' ')."\n";
+			print getTitleFieldOfList($val['label'], 0, $_SERVER['PHP_SELF'], 't.'.$key, '', $param, ($align ? 'class="'.$align.'"' : ''), $sortfield, $sortorder, $align.' ')."\n";
 		}
 		if ($key == 'role') {
 			$align .= ($align ? ' ' : '').'left';
 		}
 		if (!empty($arrayfields['sc.'.$key]['checked'])) {
-			print getTitleFieldOfList($arrayfields['sc.'.$key]['label'], 0, DOL_PHP_SELF, '', '', $param, ($align ? 'class="'.$align.'"' : ''), $sortfield, $sortorder, $align.' ')."\n";
+			print getTitleFieldOfList($arrayfields['sc.'.$key]['label'], 0, $_SERVER['PHP_SELF'], '', '', $param, ($align ? 'class="'.$align.'"' : ''), $sortfield, $sortorder, $align.' ')."\n";
 		}
 	}
 	if ($showuserlogin) {
@@ -1446,7 +1446,7 @@ function show_contacts($conf, $langs, $db, $object, $backtopage = '', $showuserl
 	print $hookmanager->resPrint;
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print getTitleFieldOfList($selectedfields, 0, DOL_PHP_SELF, '', '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ')."\n";
+		print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'maxwidthsearch center ')."\n";
 	}
 	print '</tr>'."\n";
 
@@ -2075,7 +2075,7 @@ function show_actions_done($conf, $langs, $db, $filterobj, $objcon = null, $nopr
 		$contactstatic = new Contact($db);
 		$elementlinkcache = array();
 
-		$out .= '<form name="listactionsfilter" class="listactionsfilter" action="'.DOL_PHP_SELF.'" method="POST">';
+		$out .= '<form name="listactionsfilter" class="listactionsfilter" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 		$out .= '<input type="hidden" name="token" value="'.newToken().'">';
 		if ($objcon && get_class($objcon) == 'Contact' &&
 			(is_null($filterobj) || get_class($filterobj) == 'Societe')) {
@@ -2132,7 +2132,7 @@ function show_actions_done($conf, $langs, $db, $filterobj, $objcon = null, $nopr
 		$out .= '<tr class="liste_titre">';
 		// Action column
 		if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			$out .= getTitleFieldOfList('', 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'maxwidthsearch ');
+			$out .= getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'maxwidthsearch ');
 		}
 		if ($donetodo) {
 			$tmp = '';
@@ -2154,17 +2154,17 @@ function show_actions_done($conf, $langs, $db, $filterobj, $objcon = null, $nopr
 			}
 			$out .= getTitleFieldOfList($tmp);
 		}
-		$out .= getTitleFieldOfList("Ref", 0, DOL_PHP_SELF, 'a.id', '', $param, '', $sortfield, $sortorder);
+		$out .= getTitleFieldOfList("Ref", 0, $_SERVER['PHP_SELF'], 'a.id', '', $param, '', $sortfield, $sortorder);
 		$out .= getTitleFieldOfList("Owner");
 		$out .= getTitleFieldOfList("Type");
-		$out .= getTitleFieldOfList("Label", 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
-		$out .= getTitleFieldOfList("Date", 0, DOL_PHP_SELF, 'a.datep,a.id', '', $param, '', $sortfield, $sortorder, 'center ');
-		$out .= getTitleFieldOfList("RelatedObjects", 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder);
-		$out .= getTitleFieldOfList("ActionOnContact", 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'tdoverflowmax125 ', 0, '', 0);
-		$out .= getTitleFieldOfList("Status", 0, DOL_PHP_SELF, 'a.percent', '', $param, '', $sortfield, $sortorder, 'center ');
+		$out .= getTitleFieldOfList("Label", 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
+		$out .= getTitleFieldOfList("Date", 0, $_SERVER['PHP_SELF'], 'a.datep,a.id', '', $param, '', $sortfield, $sortorder, 'center ');
+		$out .= getTitleFieldOfList("RelatedObjects", 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder);
+		$out .= getTitleFieldOfList("ActionOnContact", 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'tdoverflowmax125 ', 0, '', 0);
+		$out .= getTitleFieldOfList("Status", 0, $_SERVER['PHP_SELF'], 'a.percent', '', $param, '', $sortfield, $sortorder, 'center ');
 		// Action column
 		if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			$out .= getTitleFieldOfList('', 0, DOL_PHP_SELF, '', '', $param, '', $sortfield, $sortorder, 'maxwidthsearch ');
+			$out .= getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'maxwidthsearch ');
 		}
 		$out .= '</tr>';
 

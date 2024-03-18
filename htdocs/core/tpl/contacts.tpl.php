@@ -102,7 +102,7 @@ if ($permission) {
 
 	if (empty($hideaddcontactforuser)) {
 		?>
-	<form class="tagtr impair nohover" action="<?php echo DOL_PHP_SELF.'?id='.$object->id; ?>" method="POST">
+	<form class="tagtr impair nohover" action="<?php echo $_SERVER['PHP_SELF'].'?id='.$object->id; ?>" method="POST">
 		<input type="hidden" name="token" value="<?php echo newToken(); ?>" />
 		<input type="hidden" name="id" value="<?php echo $object->id; ?>" />
 		<input type="hidden" name="action" value="addcontact" />
@@ -151,7 +151,7 @@ if ($permission) {
 	if (empty($hideaddcontactforthirdparty)) {
 		?>
 
-	<form class="tagtr pair nohover" action="<?php echo DOL_PHP_SELF.'?id='.$object->id; ?>" method="POST">
+	<form class="tagtr pair nohover" action="<?php echo $_SERVER['PHP_SELF'].'?id='.$object->id; ?>" method="POST">
 		<input type="hidden" name="token" value="<?php echo newToken(); ?>" />
 		<input type="hidden" name="id" value="<?php echo $object->id; ?>" />
 		<input type="hidden" name="action" value="addcontact" />
@@ -173,7 +173,7 @@ if ($permission) {
 
 			$newcardbutton = '';
 			if (!empty($object->socid) && $object->socid > 1 && $user->hasRight('societe', 'creer')) {
-				$newcardbutton .= '<a href="'.DOL_URL_ROOT.'/contact/card.php?socid='.$selectedCompany.'&action=create&backtopage='.urlencode(DOL_PHP_SELF.'?id='.$object->id).'" title="'.$langs->trans('NewContact').'"><span class="fa fa-plus-circle valignmiddle paddingleft"></span></a>';
+				$newcardbutton .= '<a href="'.DOL_URL_ROOT.'/contact/card.php?socid='.$selectedCompany.'&action=create&backtopage='.urlencode($_SERVER['PHP_SELF'].'?id='.$object->id).'" title="'.$langs->trans('NewContact').'"><span class="fa fa-plus-circle valignmiddle paddingleft"></span></a>';
 			}
 			print $newcardbutton; ?>
 		</div>
@@ -300,7 +300,7 @@ $param = 'id='.$object->id.'&mainmenu=home';
 
 // Show list of contact links
 
-print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 print '<input type="hidden" name="action" value="list">';
@@ -311,13 +311,13 @@ print '<div class="div-table-responsive-no-min">'."\n";
 print '<table class="tagtable nobottomiftotal liste">';
 
 print '<tr class="liste_titre">';
-print_liste_field_titre($arrayfields['thirdparty']['label'], DOL_PHP_SELF, "thirdparty_name", "", $param, "", $sortfield, $sortorder);
-print_liste_field_titre($arrayfields['contact']['label'], DOL_PHP_SELF, "contact_name", "", $param, "", $sortfield, $sortorder);
-print_liste_field_titre($arrayfields['nature']['label'], DOL_PHP_SELF, "nature", "", $param, "", $sortfield, $sortorder);
-print_liste_field_titre($arrayfields['type']['label'], DOL_PHP_SELF, "type", "", $param, "", $sortfield, $sortorder);
-print_liste_field_titre($arrayfields['status']['label'], DOL_PHP_SELF, "statut", "", $param, "", $sortfield, $sortorder, 'center ');
+print_liste_field_titre($arrayfields['thirdparty']['label'], $_SERVER['PHP_SELF'], "thirdparty_name", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre($arrayfields['contact']['label'], $_SERVER['PHP_SELF'], "contact_name", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre($arrayfields['nature']['label'], $_SERVER['PHP_SELF'], "nature", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre($arrayfields['type']['label'], $_SERVER['PHP_SELF'], "type", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre($arrayfields['status']['label'], $_SERVER['PHP_SELF'], "statut", "", $param, "", $sortfield, $sortorder, 'center ');
 if ($permission) {
-	print_liste_field_titre('', DOL_PHP_SELF, "", "", "", "", $sortfield, $sortorder, 'center maxwidthsearch ');
+	print_liste_field_titre('', $_SERVER['PHP_SELF'], "", "", "", "", $sortfield, $sortorder, 'center maxwidthsearch ');
 }
 print "</tr>";
 
@@ -331,7 +331,7 @@ foreach ($list as $entry) {
 	print '<td class="tdoverflowmax200 center" data-status_id="' . ((int) $entry->status) . '">'.$entry->status_html.'</td>';
 
 	if ($permission) {
-		$href = DOL_PHP_SELF;
+		$href = $_SERVER['PHP_SELF'];
 		$href .= '?id='.((int) $object->id);
 		$href .= '&action=deletecontact&token='.newToken();
 		$href .= '&lineid='.((int) $entry->id);

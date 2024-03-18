@@ -478,7 +478,7 @@ if ($action == 'confirm_deleteline' && $confirm == 'yes' && !empty($permissionto
 		setEventMessages($langs->trans('RecordDeleted'), null, 'mesgs');
 
 		if (empty($noback)) {
-			header('Location: '.((empty($backtopage)) ? DOL_PHP_SELF.'?id='.$object->id : $backtopage));
+			header('Location: '.((empty($backtopage)) ? $_SERVER['PHP_SELF'].'?id='.$object->id : $backtopage));
 			exit;
 		}
 	} else {
@@ -627,7 +627,7 @@ if ($action == 'confirm_clone' && $confirm == 'yes' && !empty($permissiontoadd))
 			}
 
 			if (empty($noback)) {
-				header("Location: " . DOL_PHP_SELF . '?id=' . $newid); // Open record of new object
+				header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $newid); // Open record of new object
 				exit;
 			}
 		} else {

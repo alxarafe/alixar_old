@@ -527,7 +527,7 @@ if ($action != "infos_success") {
 	$formticket->action = 'create_ticket';
 	$formticket->withcancel = 1;
 
-	$formticket->param = array('returnurl' => DOL_PHP_SELF.($conf->entity > 1 ? '?entity='.$conf->entity : ''));
+	$formticket->param = array('returnurl' => $_SERVER['PHP_SELF'].($conf->entity > 1 ? '?entity='.$conf->entity : ''));
 
 	print load_fiche_titre($langs->trans('NewTicket'), '', '', 0, 0, 'marginleftonly');
 

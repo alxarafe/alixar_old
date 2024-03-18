@@ -287,7 +287,7 @@ if ($id > 0 || !empty($ref)) {
 		print dol_get_fiche_head($head, 'task_comment', $langs->trans("Task"), -1, 'projecttask');
 
 		if ($action == 'delete') {
-			print $form->formconfirm(DOL_PHP_SELF."?id=".GETPOSTINT("id").'&withproject='.$withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
+			print $form->formconfirm($_SERVER['PHP_SELF']."?id=".GETPOSTINT("id").'&withproject='.$withproject, $langs->trans("DeleteATask"), $langs->trans("ConfirmDeleteATask"), "confirm_delete");
 		}
 
 		if (!GETPOST('withproject') || empty($projectstatic->id)) {

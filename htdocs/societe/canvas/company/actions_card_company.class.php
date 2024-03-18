@@ -144,7 +144,7 @@ class ActionsCardCompany extends ActionsCardCommon
 		} else {
 			// Confirm delete third party
 			if ($action == 'delete') {
-				$this->tpl['action_delete'] = $form->formconfirm(DOL_PHP_SELF."?socid=".$this->object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "1,action-delete");
+				$this->tpl['action_delete'] = $form->formconfirm($_SERVER['PHP_SELF']."?socid=".$this->object->id, $langs->trans("DeleteACompany"), $langs->trans("ConfirmDeleteCompany"), "confirm_delete", '', 0, "1,action-delete");
 			}
 
 			for ($i = 1; $i <= 4; $i++) {

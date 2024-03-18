@@ -187,7 +187,7 @@ print dol_get_fiche_head($head, 'passwords', '', -1);
 print '<br>';
 
 // Select manager to generate passwords
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 print '<input type="hidden" name="constname" value="USER_PASSWORD_GENERATED">';
@@ -261,7 +261,7 @@ foreach ($arrayhandler as $key => $module) {
 			//print img_picto('', 'tick');
 			print img_picto($langs->trans("Enabled"), 'switch_on');
 		} else {
-			print '<a href="'.DOL_PHP_SELF.'?action=setgeneraterule&token='.newToken().'&value='.$key.'">';
+			print '<a href="'.$_SERVER['PHP_SELF'].'?action=setgeneraterule&token='.newToken().'&value='.$key.'">';
 			//print $langs->trans("Activate");
 			print img_picto($langs->trans("Disabled"), 'switch_off');
 			print '</a>';
@@ -387,7 +387,7 @@ if (getDolGlobalString('USER_PASSWORD_GENERATED') == "Perso") {
 // Crypt passwords in database
 
 print '<br>';
-print '<form method="post" action="'.DOL_PHP_SELF.'">';
+print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="encrypt">';
 
@@ -408,7 +408,7 @@ if (getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
 print '</td>';
 if (!getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
 	print '<td class="center" width="100">';
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=activate_encrypt&token='.newToken().'">'.$langs->trans("Activate").'</a>';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=activate_encrypt&token='.newToken().'">'.$langs->trans("Activate").'</a>';
 	print "</td>";
 }
 
@@ -418,7 +418,7 @@ if (getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
 	if ($allow_disable_encryption) {
 		//On n'autorise pas l'annulation de l'encryption car les mots de passe ne peuvent pas etre decodes
 		//Do not allow "disable encryption" as passwords cannot be decrypted
-		print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=disable_encrypt&token='.newToken().'">'.$langs->trans("Disable").'</a>';
+		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=disable_encrypt&token='.newToken().'">'.$langs->trans("Disable").'</a>';
 	} else {
 		print '-';
 	}
@@ -445,10 +445,10 @@ if (empty($dolibarr_main_db_pass) && empty($dolibarr_main_db_encrypted_pass)) {
 	print img_warning($langs->trans("WarningPassIsEmpty"));
 } else {
 	if (empty($dolibarr_main_db_encrypted_pass)) {
-		print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=activate_encryptdbpassconf&token='.newToken().'">'.$langs->trans("Activate").'</a>';
+		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=activate_encryptdbpassconf&token='.newToken().'">'.$langs->trans("Activate").'</a>';
 	}
 	if (!empty($dolibarr_main_db_encrypted_pass)) {
-		print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=disable_encryptdbpassconf&token='.newToken().'">'.$langs->trans("Disable").'</a>';
+		print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=disable_encryptdbpassconf&token='.newToken().'">'.$langs->trans("Disable").'</a>';
 	}
 }
 print "</td>";
@@ -468,12 +468,12 @@ if (getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
 print '</td>';
 if (!getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
 	print '<td class="center" width="100">';
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=activate_MAIN_SECURITY_DISABLEFORGETPASSLINK&token='.newToken().'">'.$langs->trans("Activate").'</a>';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=activate_MAIN_SECURITY_DISABLEFORGETPASSLINK&token='.newToken().'">'.$langs->trans("Activate").'</a>';
 	print "</td>";
 }
 if (getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
 	print '<td center="center" width="100">';
-	print '<a class="reposition" href="'.DOL_PHP_SELF.'?action=disable_MAIN_SECURITY_DISABLEFORGETPASSLINK&token='.newToken().'">'.$langs->trans("Disable").'</a>';
+	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=disable_MAIN_SECURITY_DISABLEFORGETPASSLINK&token='.newToken().'">'.$langs->trans("Disable").'</a>';
 	print "</td>";
 }
 print "</td>";

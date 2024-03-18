@@ -129,7 +129,7 @@ if (empty($reshook)) {
 				if ($result > 0) {
 					// Creation OK
 					setEventMessages($langs->trans('ResourceCreatedWithSuccess'), null);
-					header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				} else {
 					// Creation KO
@@ -175,7 +175,7 @@ if (empty($reshook)) {
 
 				$result = $object->update($user);
 				if ($result > 0) {
-					header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				} else {
 					setEventMessages($object->error, $object->errors, 'errors');
@@ -237,7 +237,7 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 
 		// Create/Edit object
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="'.($action == "create" ? "add" : "update").'">';
 
@@ -357,7 +357,7 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 
 		// Confirm deleting resource line
 		if ($action == 'delete' || ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile))) {
-			$formconfirm = $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("DeleteResource"), $langs->trans("ConfirmDeleteResource"), "confirm_delete_resource", '', 0, "action-delete");
+			$formconfirm = $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("DeleteResource"), $langs->trans("ConfirmDeleteResource"), "confirm_delete_resource", '', 0, "action-delete");
 		}
 
 		// Print form confirm
@@ -428,12 +428,12 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 			// Edit resource
 			if ($user->hasRight('resource', 'write')) {
 				print '<div class="inline-block divButAction">';
-				print '<a href="'.DOL_PHP_SELF.'?id='.$id.'&action=edit&token='.newToken().'" class="butAction">'.$langs->trans('Modify').'</a>';
+				print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&action=edit&token='.newToken().'" class="butAction">'.$langs->trans('Modify').'</a>';
 				print '</div>';
 			}
 		}
 		if ($action != "create" && $action != "edit") {
-			$deleteUrl = DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken();
+			$deleteUrl = $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken();
 			$buttonId = 'action-delete-no-ajax';
 			if ($conf->use_javascript_ajax && empty($conf->dol_use_jmobile)) {	// We can't use preloaded confirm form with jmobile
 				$deleteUrl = '';

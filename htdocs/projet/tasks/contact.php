@@ -90,7 +90,7 @@ if ($action == 'addcontact' && $user->hasRight('projet', 'creer')) {
 	}
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id.($withproject ? '&withproject=1' : ''));
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id.($withproject ? '&withproject=1' : ''));
 		exit;
 	} else {
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -117,7 +117,7 @@ if ($action == 'deleteline' && $user->hasRight('projet', 'creer')) {
 	$result = $object->delete_contact(GETPOSTINT("lineid"));
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".$object->id.($withproject ? '&withproject=1' : ''));
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id.($withproject ? '&withproject=1' : ''));
 		exit;
 	} else {
 		dol_print_error($db);
@@ -371,7 +371,7 @@ if ($id > 0 || !empty($ref)) {
 		/*
 		 * Add a new contact line
 		 */
-		print '<form action="'.DOL_PHP_SELF.'?id='.$id.'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.$id.'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="addcontact">';
 		print '<input type="hidden" name="id" value="'.$id.'">';
@@ -522,7 +522,7 @@ if ($id > 0 || !empty($ref)) {
 				print '<td class="center">';
 				// Activation desativation du contact
 				if ($object->statut >= 0) {
-					print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=swapstatut&ligne='.$tab[$i]['rowid'].($withproject ? '&withproject=1' : '').'">';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=swapstatut&ligne='.$tab[$i]['rowid'].($withproject ? '&withproject=1' : '').'">';
 				}
 				print $contactstatic->LibStatut($tab[$i]['status'], 3);
 				if ($object->statut >= 0) {
@@ -534,7 +534,7 @@ if ($id > 0 || !empty($ref)) {
 				print '<td class="center nowrap">';
 				if ($user->hasRight('projet', 'creer')) {
 					print '&nbsp;';
-					print '<a href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=deleteline&token='.newToken().'&lineid='.$tab[$i]['rowid'].($withproject ? '&withproject=1' : '').'">';
+					print '<a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=deleteline&token='.newToken().'&lineid='.$tab[$i]['rowid'].($withproject ? '&withproject=1' : '').'">';
 					print img_picto($langs->trans('Unlink'), 'unlink');
 					print '</a>';
 				}

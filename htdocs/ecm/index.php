@@ -97,7 +97,7 @@ $hookmanager->initHooks(array('ecmindexcard', 'globalcard'));
  */
 
 // TODO Replace sendit and confirm_deletefile with
-//$backtopage=DOL_PHP_SELF.'?file_manager=1&website='.$websitekey.'&pageid='.$pageid;	// used after a confirm_deletefile into actions_linkedfiles.inc.php
+//$backtopage=$_SERVER['PHP_SELF'].'?file_manager=1&website='.$websitekey.'&pageid='.$pageid;	// used after a confirm_deletefile into actions_linkedfiles.inc.php
 //include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
 
 // Upload file (code similar but different than actions_linkedfiles.inc.php)
@@ -170,7 +170,7 @@ if ($action == 'add' && $permissiontocreatedir) {
 
 	$id = $ecmdir->create($user);
 	if ($id > 0) {
-		header("Location: ".DOL_PHP_SELF);
+		header("Location: ".$_SERVER['PHP_SELF']);
 		exit;
 	} else {
 		setEventMessages('Error '.$langs->trans($ecmdir->error), null, 'errors');

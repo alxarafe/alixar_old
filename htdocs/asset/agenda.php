@@ -168,7 +168,7 @@ if ($object->id > 0) {
 	$objcon = new stdClass();
 
 	$out = '&origin=' . urlencode((string) ($object->element . '@' . $object->module)) . '&originid=' . urlencode((string) ($object->id));
-	$urlbacktopage = DOL_PHP_SELF . '?id=' . $object->id;
+	$urlbacktopage = $_SERVER['PHP_SELF'] . '?id=' . $object->id;
 	$out .= '&backtopage=' . urlencode($urlbacktopage);
 	$permok = $user->hasRight('agenda', 'myactions', 'create');
 	if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
@@ -197,7 +197,7 @@ if ($object->id > 0) {
 
 	if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
 		$param = '&id=' . $object->id . '&socid=' . $socid;
-		if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 			$param .= '&contextpage=' . urlencode($contextpage);
 		}
 		if ($limit > 0 && $limit != $conf->liste_limit) {

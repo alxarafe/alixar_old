@@ -180,7 +180,7 @@ $out = '';
 $permok = $user->hasRight('agenda', 'myactions', 'create');
 if ((!empty($objUser->id) || !empty($objcon->id)) && $permok) {
 	if (is_object($objUser) && get_class($objUser) == 'User') {
-		$out .= '&amp;originid='.$objUser->id.($objUser->id > 0 ? '&amp;userid='.$objUser->id : '').'&amp;backtopage='.urlencode(DOL_PHP_SELF.($objUser->id > 0 ? '?userid='.$objUser->id : ''));
+		$out .= '&amp;originid='.$objUser->id.($objUser->id > 0 ? '&amp;userid='.$objUser->id : '').'&amp;backtopage='.urlencode($_SERVER['PHP_SELF'].($objUser->id > 0 ? '?userid='.$objUser->id : ''));
 	}
 	$out .= (!empty($objcon->id) ? '&amp;contactid='.$objcon->id : '');
 	$out .= '&amp;datep='.dol_print_date(dol_now(), 'dayhourlog', 'tzuserrel');
@@ -202,7 +202,7 @@ if (isModEnabled('agenda')) {
 if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allaactions', 'read'))) {
 	print '<br>';
 	$param = '&userid='.urlencode((string) ($id));
-	if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+	if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 		$param .= '&contextpage='.urlencode($contextpage);
 	}
 	if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -220,7 +220,7 @@ if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') ||
 		$titlelist = $langs->trans("Actions").(is_numeric($nbEvent) ? '<span class="opacitymedium colorblack paddingleft">('.$nbEvent.')</span>' : '');
 	}
 
-	print_barre_liste($titlelist, 0, DOL_PHP_SELF, '', $sortfield, $sortorder, '', -1, '', '', 0, $morehtmlright, '', 0, 1, 0);
+	print_barre_liste($titlelist, 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', -1, '', '', 0, $morehtmlright, '', 0, 1, 0);
 
 	// List of all actions
 	$filters = array();

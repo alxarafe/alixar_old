@@ -502,7 +502,7 @@ print '<br>'."\n";
  */
 
 print '<!-- Form to resize -->'."\n";
-print '<form name="redim_file" action="'.DOL_PHP_SELF.'?id='.((int) $id).($num ? '&num='.urlencode($num) : '').'" method="POST">';
+print '<form name="redim_file" action="'.$_SERVER['PHP_SELF'].'?id='.((int) $id).($num ? '&num='.urlencode($num) : '').'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="backtourl" value="'.$backtourl.'">';
 
@@ -564,7 +564,7 @@ if (!empty($conf->use_javascript_ajax)) {
 		print '</div>';
 		print '</div><br>';
 
-		print '<form action="'.DOL_PHP_SELF.'?id='.((int) $id).($num ? '&num='.urlencode($num) : '').'" method="POST">';
+		print '<form action="'.$_SERVER['PHP_SELF'].'?id='.((int) $id).($num ? '&num='.urlencode($num) : '').'" method="POST">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="backtourl" value="'.$backtourl.'">';
 		print '

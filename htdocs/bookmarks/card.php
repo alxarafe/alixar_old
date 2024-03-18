@@ -146,7 +146,7 @@ $form = new Form($db);
 $head = array();
 $h = 1;
 
-$head[$h][0] = DOL_PHP_SELF.($object->id ? '?id='.$object->id : '');
+$head[$h][0] = $_SERVER['PHP_SELF'].($object->id ? '?id='.$object->id : '');
 $head[$h][1] = $langs->trans("Bookmark");
 $head[$h][2] = 'card';
 $h++;
@@ -159,7 +159,7 @@ if ($action == 'create') {
 	 * Fact bookmark creation mode
 	 */
 
-	print '<form action="'.DOL_PHP_SELF.'" method="POST" enctype="multipart/form-data">'."\n";
+	print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST" enctype="multipart/form-data">'."\n";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -209,7 +209,7 @@ if ($action == 'create') {
 
 if ($id > 0 && !preg_match('/^add/i', $action)) {
 	if ($action == 'edit') {
-		print '<form name="edit" method="POST" action="'.DOL_PHP_SELF.'" enctype="multipart/form-data">';
+		print '<form name="edit" method="POST" action="'.$_SERVER['PHP_SELF'].'" enctype="multipart/form-data">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="action" value="update">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
@@ -329,7 +329,7 @@ if ($id > 0 && !preg_match('/^add/i', $action)) {
 
 	// Edit
 	if ($permissiontoadd && $action != 'edit') {
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Edit").'</a>'."\n";
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=edit&token='.newToken().'">'.$langs->trans("Edit").'</a>'."\n";
 	}
 
 	// Remove

@@ -110,7 +110,7 @@ llxHeader('', $title, $help_url);
 
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -133,7 +133,7 @@ if ($optioncss != '') {
 }
 $num = 0;
 
-print '<form method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 if ($optioncss != '') {
 	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 }
@@ -210,7 +210,7 @@ if (is_numeric($nbtotalofrecords) && ($limit > $nbtotalofrecords || empty($limit
 //print $sql;
 
 $nav = '';
-print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'object_payment', 0, $nav, '', $limit, 0);
+print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'object_payment', 0, $nav, '', $limit, 0);
 
 print '<table class="noborder centpercent">';
 
@@ -238,20 +238,20 @@ print '</td>';
 print "</tr>\n";
 
 print '<tr class="liste_titre">';
-print_liste_field_titre("RefPayment", DOL_PHP_SELF, "pc.rowid", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("SocialContribution", DOL_PHP_SELF, "c.libelle", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("TypeContrib", DOL_PHP_SELF, "cs.fk_type", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("PeriodEndDate", DOL_PHP_SELF, "cs.periode", "", $param, '', $sortfield, $sortorder, 'center ');
-print_liste_field_titre("DatePayment", DOL_PHP_SELF, "pc.datep", "", $param, '', $sortfield, $sortorder, 'center ');
-print_liste_field_titre("Employee", DOL_PHP_SELF, "u.rowid", "", $param, "", $sortfield, $sortorder);
-print_liste_field_titre("PaymentMode", DOL_PHP_SELF, "pct.code", "", $param, '', $sortfield, $sortorder);
-print_liste_field_titre("Numero", DOL_PHP_SELF, "pc.num_paiement", "", $param, '', $sortfield, $sortorder, '', 'ChequeOrTransferNumber');
+print_liste_field_titre("RefPayment", $_SERVER['PHP_SELF'], "pc.rowid", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("SocialContribution", $_SERVER['PHP_SELF'], "c.libelle", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("TypeContrib", $_SERVER['PHP_SELF'], "cs.fk_type", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("PeriodEndDate", $_SERVER['PHP_SELF'], "cs.periode", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("DatePayment", $_SERVER['PHP_SELF'], "pc.datep", "", $param, '', $sortfield, $sortorder, 'center ');
+print_liste_field_titre("Employee", $_SERVER['PHP_SELF'], "u.rowid", "", $param, "", $sortfield, $sortorder);
+print_liste_field_titre("PaymentMode", $_SERVER['PHP_SELF'], "pct.code", "", $param, '', $sortfield, $sortorder);
+print_liste_field_titre("Numero", $_SERVER['PHP_SELF'], "pc.num_paiement", "", $param, '', $sortfield, $sortorder, '', 'ChequeOrTransferNumber');
 if (isModEnabled("bank")) {
-	print_liste_field_titre("BankTransactionLine", DOL_PHP_SELF, "pc.fk_bank", "", $param, '', $sortfield, $sortorder);
-	print_liste_field_titre("BankAccount", DOL_PHP_SELF, "ba.label", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre("BankTransactionLine", $_SERVER['PHP_SELF'], "pc.fk_bank", "", $param, '', $sortfield, $sortorder);
+	print_liste_field_titre("BankAccount", $_SERVER['PHP_SELF'], "ba.label", "", $param, "", $sortfield, $sortorder);
 }
-print_liste_field_titre("ExpectedToPay", DOL_PHP_SELF, "cs.amount", "", $param, 'class="right"', $sortfield, $sortorder);
-print_liste_field_titre("PayedByThisPayment", DOL_PHP_SELF, "pc.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+print_liste_field_titre("ExpectedToPay", $_SERVER['PHP_SELF'], "cs.amount", "", $param, 'class="right"', $sortfield, $sortorder);
+print_liste_field_titre("PayedByThisPayment", $_SERVER['PHP_SELF'], "pc.amount", "", $param, 'class="right"', $sortfield, $sortorder);
 print_liste_field_titre('');
 print "</tr>\n";
 

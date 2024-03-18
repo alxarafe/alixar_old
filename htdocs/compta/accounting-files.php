@@ -608,7 +608,7 @@ llxHeader('', $title, $help_url);
 
 $h = 0;
 $head = array();
-$head[$h][0] = DOL_PHP_SELF;
+$head[$h][0] = $_SERVER['PHP_SELF'];
 $head[$h][1] = $langs->trans("AccountantFiles");
 $head[$h][2] = 'AccountancyFiles';
 
@@ -701,7 +701,7 @@ if (!empty($date_start) && !empty($date_stop)) {
 
 	echo dol_print_date($date_start, 'day', 'tzuserrel')." - ".dol_print_date($date_stop, 'day', 'tzuserrel');
 
-	print '<a class="marginleftonly small'.(empty($TData) ? ' butActionRefused' : ' butAction').'" href="'.DOL_PHP_SELF.'?action=dl&token='.currentToken().'&projectid='.$projectid.'&output=file&file='.urlencode($filename).$param.'"';
+	print '<a class="marginleftonly small'.(empty($TData) ? ' butActionRefused' : ' butAction').'" href="'.$_SERVER['PHP_SELF'].'?action=dl&token='.currentToken().'&projectid='.$projectid.'&output=file&file='.urlencode($filename).$param.'"';
 	if (empty($TData)) {
 		print " disabled";
 	}
@@ -736,10 +736,10 @@ if (!empty($date_start) && !empty($date_stop)) {
 	print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print_liste_field_titre($arrayfields['type']['label'], DOL_PHP_SELF, "item", "", $param, '', $sortfield, $sortorder, 'nowrap ');
-	print_liste_field_titre($arrayfields['date']['label'], DOL_PHP_SELF, "date", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
-	print_liste_field_titre($arrayfields['date_due']['label'], DOL_PHP_SELF, "date_due", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
-	print_liste_field_titre($arrayfields['ref']['label'], DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder, 'nowraponall ');
+	print_liste_field_titre($arrayfields['type']['label'], $_SERVER['PHP_SELF'], "item", "", $param, '', $sortfield, $sortorder, 'nowrap ');
+	print_liste_field_titre($arrayfields['date']['label'], $_SERVER['PHP_SELF'], "date", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	print_liste_field_titre($arrayfields['date_due']['label'], $_SERVER['PHP_SELF'], "date_due", "", $param, '', $sortfield, $sortorder, 'center nowrap ');
+	print_liste_field_titre($arrayfields['ref']['label'], $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder, 'nowraponall ');
 	print '<th>'.$langs->trans("Document").'</th>';
 	print '<th>'.$langs->trans("Paid").'</th>';
 	print '<th class="right">'.$langs->trans("TotalHT").(isModEnabled('multicurrency') ? ' ('.$langs->getCurrencySymbol($conf->currency).')' : '').'</th>';

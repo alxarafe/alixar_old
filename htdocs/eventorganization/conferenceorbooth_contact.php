@@ -112,7 +112,7 @@ if ($action == 'addcontact' && $permission) {	// Add a new contact
 	$result = $object->add_contact($contactid, $typeid, GETPOST("source", 'aZ09'));
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".((int) $object->id).(!empty($withproject) ? '&withproject=1' : ''));
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".((int) $object->id).(!empty($withproject) ? '&withproject=1' : ''));
 		exit;
 	} else {
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
@@ -130,7 +130,7 @@ if ($action == 'addcontact' && $permission) {	// Add a new contact
 	$result = $object->delete_contact($lineid);
 
 	if ($result >= 0) {
-		header("Location: ".DOL_PHP_SELF."?id=".((int) $object->id).(!empty($withproject) ? '&withproject=1' : ''));
+		header("Location: ".$_SERVER['PHP_SELF']."?id=".((int) $object->id).(!empty($withproject) ? '&withproject=1' : ''));
 		exit;
 	} else {
 		dol_print_error($db);
@@ -404,18 +404,18 @@ if ($object->id) {
 	 if ($permissiontoadd)
 	 {
 	 if ($action != 'classify')
-	 //$morehtmlref.='<a class="editfielda" href="' . DOL_PHP_SELF . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
+	 //$morehtmlref.='<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
 	 $morehtmlref.=' : ';
 	 if ($action == 'classify') {
-	 //$morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-	 $morehtmlref.='<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+	 //$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+	 $morehtmlref.='<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 	 $morehtmlref.='<input type="hidden" name="action" value="classin">';
 	 $morehtmlref.='<input type="hidden" name="token" value="'.newToken().'">';
 	 $morehtmlref.=$formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
 	 $morehtmlref.='<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 	 $morehtmlref.='</form>';
 	 } else {
-	 $morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1);
+	 $morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1);
 	 }
 	 } else {
 	 if (!empty($object->fk_project)) {

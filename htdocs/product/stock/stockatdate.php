@@ -377,7 +377,7 @@ if ($mode == 'future') {
 print '<span class="opacitymedium">'.$desc.'</span><br>'."\n";
 print '<br>'."\n";
 
-print '<form name="formFilterWarehouse" method="POST" action="'.DOL_PHP_SELF.'">';
+print '<form name="formFilterWarehouse" method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="filter">';
 print '<input type="hidden" name="mode" value="'.$mode.'">';
@@ -414,7 +414,7 @@ print '</div>';
 //print '</form>';
 
 $param = '';
-if (!empty($contextpage) && $contextpage != DOL_PHP_SELF) {
+if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
 	$param .= '&contextpage='.urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
@@ -440,7 +440,7 @@ if (GETPOSTINT('dateyear') > 0) {
 }
 
 // TODO Move this into the title line ?
-print_barre_liste('', $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'stock', 0, '', '', $limit, 0, 0, 1);
+print_barre_liste('', $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, $nbtotalofrecords, 'stock', 0, '', '', $limit, 0, 0, 1);
 
 print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 print '<table class="liste centpercent">';
@@ -487,20 +487,20 @@ if (!empty($search_fk_warehouse)) {
 
 // Lines of title
 print '<tr class="liste_titre">';
-print_liste_field_titre('ProductRef', DOL_PHP_SELF, 'p.ref', $param, '', '', $sortfield, $sortorder);
-print_liste_field_titre('Label', DOL_PHP_SELF, 'p.label', $param, '', '', $sortfield, $sortorder);
+print_liste_field_titre('ProductRef', $_SERVER['PHP_SELF'], 'p.ref', $param, '', '', $sortfield, $sortorder);
+print_liste_field_titre('Label', $_SERVER['PHP_SELF'], 'p.label', $param, '', '', $sortfield, $sortorder);
 
 if ($mode == 'future') {
-	print_liste_field_titre('CurrentStock', DOL_PHP_SELF, $fieldtosortcurrentstock, $param, '', '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre('', DOL_PHP_SELF);
-	print_liste_field_titre($stocklabel, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right ', 'VirtualStockAtDateDesc');
-	print_liste_field_titre('VirtualStock', DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right ', 'VirtualStockDesc');
+	print_liste_field_titre('CurrentStock', $_SERVER['PHP_SELF'], $fieldtosortcurrentstock, $param, '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre('', $_SERVER['PHP_SELF']);
+	print_liste_field_titre($stocklabel, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right ', 'VirtualStockAtDateDesc');
+	print_liste_field_titre('VirtualStock', $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right ', 'VirtualStockDesc');
 } else {
-	print_liste_field_titre($stocklabel, DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right ');
-	print_liste_field_titre("EstimatedStockValue", DOL_PHP_SELF, "estimatedvalue", '', $param, '', $sortfield, $sortorder, 'right ', $langs->trans("AtDate"), 1);
-	print_liste_field_titre("EstimatedStockValueSell", DOL_PHP_SELF, "", '', $param, '', $sortfield, $sortorder, 'right ', $langs->trans("AtDate"), 1);
-	print_liste_field_titre('', DOL_PHP_SELF);
-	print_liste_field_titre('CurrentStock', DOL_PHP_SELF, $fieldtosortcurrentstock, $param, '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre($stocklabel, $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right ');
+	print_liste_field_titre("EstimatedStockValue", $_SERVER['PHP_SELF'], "estimatedvalue", '', $param, '', $sortfield, $sortorder, 'right ', $langs->trans("AtDate"), 1);
+	print_liste_field_titre("EstimatedStockValueSell", $_SERVER['PHP_SELF'], "", '', $param, '', $sortfield, $sortorder, 'right ', $langs->trans("AtDate"), 1);
+	print_liste_field_titre('', $_SERVER['PHP_SELF']);
+	print_liste_field_titre('CurrentStock', $_SERVER['PHP_SELF'], $fieldtosortcurrentstock, $param, '', '', $sortfield, $sortorder, 'right ');
 }
 
 // Hook fields
@@ -508,7 +508,7 @@ $parameters = array('param'=>$param, 'sortfield'=>$sortfield, 'sortorder'=>$sort
 $reshook = $hookmanager->executeHooks('printFieldListTitle', $parameters); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 
-print_liste_field_titre('', DOL_PHP_SELF, '', $param, '', '', $sortfield, $sortorder, 'right ');
+print_liste_field_titre('', $_SERVER['PHP_SELF'], '', $param, '', '', $sortfield, $sortorder, 'right ');
 
 print "</tr>\n";
 

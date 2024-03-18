@@ -110,7 +110,7 @@ if ($action == 'confirm_validate' && $confirm == 'yes' &&
 	$object->fetch($id);
 	if ($object->validate() >= 0) {
 		$db->commit();
-		header('Location: '.DOL_PHP_SELF.'?id='.$object->id);
+		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 		exit;
 	} else {
 		setEventMessages($object->error, $object->errors, 'errors');
@@ -173,14 +173,14 @@ if ($result > 0) {
 	 * Confirmation of payment's delete
 	 */
 	if ($action == 'delete') {
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans("DeletePayment"), $langs->trans("ConfirmDeletePayment"), 'confirm_delete');
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans("DeletePayment"), $langs->trans("ConfirmDeletePayment"), 'confirm_delete');
 	}
 
 	/*
 	 * Confirmation of payment's validation
 	 */
 	if ($action == 'validate') {
-		print $form->formconfirm(DOL_PHP_SELF.'?id='.$object->id, $langs->trans("ValidatePayment"), $langs->trans("ConfirmValidatePayment"), 'confirm_validate');
+		print $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans("ValidatePayment"), $langs->trans("ConfirmValidatePayment"), 'confirm_validate');
 	}
 
 	$linkback = '<a href="'.DOL_URL_ROOT.'/fourn/paiement/list.php'.(!empty($socid) ? '?socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
@@ -357,7 +357,7 @@ if ($result > 0) {
 	if ($user->socid == 0 && $action != 'presend') {
 		$usercansend = (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight("fournisseur", "supplier_invoice_advance", "send")));
 		if ($usercansend) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=presend&mode=init#formmailbeforetitle">'.$langs->trans('SendMail').'</a>';
 		} else {
 			print '<span class="butActionRefused classfortooltip">'.$langs->trans('SendMail').'</span>';
 		}
@@ -368,7 +368,7 @@ if ($result > 0) {
 		if ($user->socid == 0 && $object->statut == 0 && $action == '') {
 			if ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && ($user->hasRight("fournisseur", "facture", "creer") || $user->hasRight("supplier_invoice", "creer")))
 			|| (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight("fournisseur", "supplier_invoice_advance", "validate"))) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&amp;action=validate">'.$langs->trans('Valid').'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=validate">'.$langs->trans('Valid').'</a>';
 			}
 		}
 	}
@@ -377,9 +377,9 @@ if ($result > 0) {
 	if ($user->socid == 0 && $action != 'presend') {
 		if ($user->hasRight('fournisseur', 'facture', 'supprimer')) {
 			if ($allow_delete) {
-				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 1);
+				print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 1);
 			} else {
-				print dolGetButtonAction($title_button, $langs->trans("Delete"), 'delete', DOL_PHP_SELF.'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 0);
+				print dolGetButtonAction($title_button, $langs->trans("Delete"), 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), 'delete', 0);
 			}
 		}
 	}
@@ -394,7 +394,7 @@ if ($result > 0) {
 		if (is_array($modellist)) {
 			$ref = dol_sanitizeFileName($object->ref);
 			$filedir = $conf->fournisseur->payment->dir_output.'/'.dol_sanitizeFileName($object->ref);
-			$urlsource = DOL_PHP_SELF.'?id='.$object->id;
+			$urlsource = $_SERVER['PHP_SELF'].'?id='.$object->id;
 			$genallowed = ($user->hasRight("fournisseur", "facture", "lire") || $user->hasRight("supplier_invoice", "lire"));
 			$delallowed = ($user->hasRight("fournisseur", "facture", "creer") || $user->hasRight("supplier_invoice", "creer"));
 			$modelpdf = (!empty($object->model_pdf) ? $object->model_pdf : (!getDolGlobalString('SUPPLIER_PAYMENT_ADDON_PDF') ? '' : $conf->global->SUPPLIER_PAYMENT_ADDON_PDF));

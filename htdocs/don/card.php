@@ -152,7 +152,7 @@ if (empty($reshook)) {
 				}
 			}
 
-			header("Location: ".DOL_PHP_SELF.'?id='.$object->id);
+			header("Location: ".$_SERVER['PHP_SELF'].'?id='.$object->id);
 			exit;
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
@@ -164,7 +164,7 @@ if (empty($reshook)) {
 	// Action update object
 	if ($action == 'update') {
 		if (!empty($cancel)) {
-			header("Location: ".DOL_PHP_SELF."?id=".urlencode((string) ($id)));
+			header("Location: ".$_SERVER['PHP_SELF']."?id=".urlencode((string) ($id)));
 			exit;
 		}
 
@@ -206,7 +206,7 @@ if (empty($reshook)) {
 			}
 
 			if ($object->update($user) > 0) {
-				header("Location: ".DOL_PHP_SELF."?id=".$object->id);
+				header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -268,7 +268,7 @@ if (empty($reshook)) {
 
 			$res = $object->create($user);
 			if ($res > 0) {
-				header("Location: ".DOL_PHP_SELF.'?id='.$res);
+				header("Location: ".$_SERVER['PHP_SELF'].'?id='.$res);
 				exit;
 			} else {
 				setEventMessages($object->error, $object->errors, 'errors');
@@ -428,7 +428,7 @@ if (isModEnabled('project')) {
 if ($action == 'create') {
 	print load_fiche_titre($langs->trans("AddDonation"), '', 'object_donation');
 
-	print '<form name="add" action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form name="add" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
 	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -482,7 +482,7 @@ if ($action == 'create') {
 				});
 				</script>';
 			}
-			print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&client=3&fournisseur=0&backtopage='.urlencode(DOL_PHP_SELF.'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
+			print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&client=3&fournisseur=0&backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
 			print '</td>';
 		}
 		print '</tr>'."\n";
@@ -604,7 +604,7 @@ if (!empty($id) && $action == 'edit') {
 	$hselected = 'card';
 	$head = donation_prepare_head($object);
 
-	print '<form name="update" action="'.DOL_PHP_SELF.'" method="POST">';
+	print '<form name="update" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 	print '<input type="hidden" name="rowid" value="'.$object->id.'">';
@@ -726,7 +726,7 @@ if (!empty($id) && $action != 'edit') {
 	// Confirmation delete
 	if ($action == 'delete') {
 		$text = $langs->trans("ConfirmDeleteADonation");
-		print $form->formconfirm(DOL_PHP_SELF."?id=".$object->id, $langs->trans("DeleteADonation"), $text, "confirm_delete", '', '', 1);
+		print $form->formconfirm($_SERVER['PHP_SELF']."?id=".$object->id, $langs->trans("DeleteADonation"), $text, "confirm_delete", '', '', 1);
 	}
 
 	$result = $object->fetch($id);
@@ -757,11 +757,11 @@ if (!empty($id) && $action != 'edit') {
 		$morehtmlref .= $langs->trans('Project').' ';
 		if ($user->hasRight('don', 'creer')) {
 			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.DOL_PHP_SELF.'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
+				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> : ';
 			}
 			if ($action == 'classify') {
-				//$morehtmlref.=$form->form_project(DOL_PHP_SELF . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-				$morehtmlref .= '<form method="post" action="'.DOL_PHP_SELF.'?id='.$object->id.'">';
+				//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+				$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
 				$morehtmlref .= '<input type="hidden" name="action" value="classin">';
 				$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
 				$morehtmlref .= '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
@@ -769,7 +769,7 @@ if (!empty($id) && $action != 'edit') {
 				$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
 				$morehtmlref .= '</form>';
 			} else {
-				$morehtmlref .= $form->form_project(DOL_PHP_SELF.'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
 			}
 		} else {
 			if (!empty($object->fk_project)) {
@@ -913,17 +913,17 @@ if (!empty($id) && $action != 'edit') {
 	if (empty($reshook)) {
 		// Re-open
 		if ($permissiontoadd && $object->statut == $object::STATUS_CANCELED) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?id='.$object->id.'&action=confirm_reopen&confirm=yes&token='.newToken().'">'.$langs->trans("ReOpen").'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_reopen&confirm=yes&token='.newToken().'">'.$langs->trans("ReOpen").'</a>';
 		}
 
-		print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'&rowid='.$object->id.'">'.$langs->trans('Modify').'</a></div>';
+		print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'&rowid='.$object->id.'">'.$langs->trans('Modify').'</a></div>';
 
 		if ($object->statut == $object::STATUS_DRAFT) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?rowid='.$object->id.'&action=valid_promesse&token='.newToken().'">'.$langs->trans("ValidPromess").'</a></div>';
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'&action=valid_promesse&token='.newToken().'">'.$langs->trans("ValidPromess").'</a></div>';
 		}
 
 		if (($object->statut == $object::STATUS_DRAFT || $object->statut == $object::STATUS_VALIDATED) && $totalpaid == 0 && $object->paid == 0) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?rowid='.$object->id.'&action=set_cancel&token='.newToken().'">'.$langs->trans("ClassifyCanceled")."</a></div>";
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'&action=set_cancel&token='.newToken().'">'.$langs->trans("ClassifyCanceled")."</a></div>";
 		}
 
 		// Create payment
@@ -937,7 +937,7 @@ if (!empty($id) && $action != 'edit') {
 
 		// Classify 'paid'
 		if ($object->statut == $object::STATUS_VALIDATED && round($remaintopay) == 0 && $object->paid == 0 && $user->hasRight('don', 'creer')) {
-			print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_PHP_SELF.'?rowid='.$object->id.'&action=set_paid&token='.newToken().'">'.$langs->trans("ClassifyPaid")."</a></div>";
+			print '<div class="inline-block divButAction"><a class="butAction" href="'.$_SERVER['PHP_SELF'].'?rowid='.$object->id.'&action=set_paid&token='.newToken().'">'.$langs->trans("ClassifyPaid")."</a></div>";
 		}
 
 		// Delete
@@ -962,7 +962,7 @@ if (!empty($id) && $action != 'edit') {
 	 */
 	$filename = dol_sanitizeFileName($object->id);
 	$filedir = $conf->don->dir_output."/".dol_sanitizeFileName($object->id);
-	$urlsource = DOL_PHP_SELF.'?rowid='.$object->id;
+	$urlsource = $_SERVER['PHP_SELF'].'?rowid='.$object->id;
 	$genallowed	= (($object->paid == 0 || $user->admin) && $user->hasRight('don', 'lire'));
 	$delallowed	= $user->hasRight('don', 'creer');
 

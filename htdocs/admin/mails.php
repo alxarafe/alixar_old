@@ -119,7 +119,7 @@ if ($action == 'update' && !$cancel) {
 		dolibarr_set_const($db, 'MAIN_MAIL_DEFAULT_FROMTYPE', GETPOST('MAIN_MAIL_DEFAULT_FROMTYPE', 'alphanohtml'), 'chaine', 0, '', $conf->entity);
 
 
-		header("Location: ".DOL_PHP_SELF."?mainmenu=home&leftmenu=setup");
+		header("Location: ".$_SERVER['PHP_SELF']."?mainmenu=home&leftmenu=setup");
 		exit;
 	}
 }
@@ -348,7 +348,7 @@ if ($action == 'edit') {
 		print '</script>'."\n";
 	}
 
-	print '<form method="post" action="'.DOL_PHP_SELF.'">';
+	print '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="update">';
 
@@ -808,7 +808,7 @@ if ($action == 'edit') {
 		if (getDolGlobalString('MAIN_MAIL_SENDMODE', 'mail') == 'mail' && !getDolGlobalString('MAIN_HIDE_WARNING_TO_ENCOURAGE_SMTP_SETUP')) {
 			$messagetoshow = $langs->trans("WarningPHPMail").'<br>'.$langs->trans("WarningPHPMailA").'<br>'.$langs->trans("WarningPHPMailB").'<br>'.$langs->trans("WarningPHPMailC").'<br><br>'.$langs->trans("WarningPHPMailD");
 			$messagetoshow .= ' '.$langs->trans("WarningPHPMailDbis", '{s1}', '{s2}');
-			$linktosetvar1 = '<a class="reposition" href="'.DOL_PHP_SELF.'?action=disablephpmailwarning&token='.newToken().'">';
+			$linktosetvar1 = '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=disablephpmailwarning&token='.newToken().'">';
 			$linktosetvar2 = '</a>';
 			$messagetoshow = str_replace('{s1}', $linktosetvar1, $messagetoshow);
 			$messagetoshow = str_replace('{s2}', $linktosetvar2, $messagetoshow);
@@ -953,21 +953,21 @@ if ($action == 'edit') {
 	// Actions button
 	print '<div class="tabsAction">';
 
-	print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
+	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
 
 	if (!getDolGlobalString('MAIN_DISABLE_ALL_MAILS')) {
 		if (getDolGlobalString('MAIN_MAIL_SENDMODE', 'mail') != 'mail' || !$linuxlike) {
 			if (function_exists('fsockopen') && $port && $server) {
-				print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=testconnect&date='.dol_now().'#formmailaftertstconnect">'.$langs->trans("DoTestServerAvailability").'</a>';
+				print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=testconnect&date='.dol_now().'#formmailaftertstconnect">'.$langs->trans("DoTestServerAvailability").'</a>';
 			}
 		} else {
 			//print '<a class="butActionRefused classfortooltip" href="#" title="'.$langs->trans("FeatureNotAvailableOnLinux").'">'.$langs->trans("DoTestServerAvailability").'</a>';
 		}
 
-		print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=test&mode=init#formmailbeforetitle">'.$langs->trans("DoTestSend").'</a>';
+		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=test&mode=init#formmailbeforetitle">'.$langs->trans("DoTestSend").'</a>';
 
 		if (isModEnabled('fckeditor')) {
-			print '<a class="butAction" href="'.DOL_PHP_SELF.'?action=testhtml&mode=init#formmailbeforetitle">'.$langs->trans("DoTestSendHTML").'</a>';
+			print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=testhtml&mode=init#formmailbeforetitle">'.$langs->trans("DoTestSendHTML").'</a>';
 		}
 	}
 
@@ -1122,7 +1122,7 @@ if ($action == 'edit') {
 		$formmail->param["action"] = "send";
 		$formmail->param["models"] = "body";
 		$formmail->param["mailid"] = 0;
-		$formmail->param["returnurl"] = DOL_PHP_SELF;
+		$formmail->param["returnurl"] = $_SERVER['PHP_SELF'];
 
 		// Init list of files
 		if (GETPOST("mode", "aZ09") == 'init') {

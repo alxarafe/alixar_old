@@ -143,17 +143,17 @@ if ($result) {
 	$i = 0;
 
 	$param = "&statut=$statut&sortorder=$sortorder&sortfield=$sortfield";
-	print_barre_liste($langs->trans("ListOfValidatedPublicMembers"), $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, '', $num, 0, '');
+	print_barre_liste($langs->trans("ListOfValidatedPublicMembers"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, '', $num, 0, '');
 	print '<table class="public_border centpercent">';
 
 	print '<tr class="public_liste_titre">';
-	print '<th class="left"><a href="'.DOL_PHP_SELF.'?page='.$page.'&sortorder=ASC&sortfield=firstname">'.dolGetFirstLastname($langs->trans("Firstname"), $langs->trans("Lastname")).'</a></th>';
-	print '<th class="left"><a href="'.DOL_PHP_SELF.'?page='.$page.'&sortorder=ASC&sortfield=societe">'.$langs->trans("Company").'</a></th>'."\n";
-	//print_liste_field_titre("DateOfBirth", DOL_PHP_SELF,"birth",'',$param,$sortfield,$sortorder); // est-ce nécessaire ??
-	print_liste_field_titre("EMail", DOL_PHP_SELF, "email", '', $param, '', $sortfield, $sortorder, 'left public_');
-	print_liste_field_titre("Zip", DOL_PHP_SELF, "zip", "", $param, '', $sortfield, $sortorder, 'left public_');
-	print_liste_field_titre("Town", DOL_PHP_SELF, "town", "", $param, '', $sortfield, $sortorder, 'left public_');
-	print_liste_field_titre("Photo", DOL_PHP_SELF, "", "", $param, '', $sortfield, $sortorder, 'center public_');
+	print '<th class="left"><a href="'.$_SERVER['PHP_SELF'].'?page='.$page.'&sortorder=ASC&sortfield=firstname">'.dolGetFirstLastname($langs->trans("Firstname"), $langs->trans("Lastname")).'</a></th>';
+	print '<th class="left"><a href="'.$_SERVER['PHP_SELF'].'?page='.$page.'&sortorder=ASC&sortfield=societe">'.$langs->trans("Company").'</a></th>'."\n";
+	//print_liste_field_titre("DateOfBirth", $_SERVER['PHP_SELF'],"birth",'',$param,$sortfield,$sortorder); // est-ce nécessaire ??
+	print_liste_field_titre("EMail", $_SERVER['PHP_SELF'], "email", '', $param, '', $sortfield, $sortorder, 'left public_');
+	print_liste_field_titre("Zip", $_SERVER['PHP_SELF'], "zip", "", $param, '', $sortfield, $sortorder, 'left public_');
+	print_liste_field_titre("Town", $_SERVER['PHP_SELF'], "town", "", $param, '', $sortfield, $sortorder, 'left public_');
+	print_liste_field_titre("Photo", $_SERVER['PHP_SELF'], "", "", $param, '', $sortfield, $sortorder, 'center public_');
 	print "</tr>\n";
 
 	while ($i < $num && $i < $conf->liste_limit) {

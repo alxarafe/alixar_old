@@ -122,7 +122,7 @@ llxHeader('', $langs->trans("AgendaSetup"), $help_url);
 $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
 print load_fiche_titre($langs->trans("AgendaSetup"), $linkback, 'title_setup');
 
-print '<form action="'.DOL_PHP_SELF.'" method="POST">';
+print '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="save">';
 
@@ -151,7 +151,7 @@ print '</tr>'."\n";
 
 print '<tr class="liste_titre">';
 print '<th class="liste_titre" colspan="2">'.$langs->trans("ActionsEvents").'</th>';
-print '<th class="liste_titre"><a href="'.DOL_PHP_SELF.'?action=selectall'.($param ? $param : '').'">'.$langs->trans("All").'</a>/<a href="'.DOL_PHP_SELF.'?action=selectnone'.($param ? $param : '').'">'.$langs->trans("None").'</a></th>';
+print '<th class="liste_titre"><a href="'.$_SERVER['PHP_SELF'].'?action=selectall'.($param ? $param : '').'">'.$langs->trans("All").'</a>/<a href="'.$_SERVER['PHP_SELF'].'?action=selectnone'.($param ? $param : '').'">'.$langs->trans("None").'</a></th>';
 print '</tr>'."\n";
 // Show each trigger (list is in c_action_trigger)
 if (!empty($triggers)) {

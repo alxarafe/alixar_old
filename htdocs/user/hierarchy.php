@@ -183,9 +183,9 @@ if (!is_array($user_arbo) && $user_arbo < 0) {
 	$num = 0;
 	$limit = 0;
 
-	print_barre_liste($title, $page, DOL_PHP_SELF, $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user', 0, $newcardbutton, '', $limit, 0, 0, 1);
+	print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'user', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
-	print '<form method="POST" id="searchFormList" action="'.DOL_PHP_SELF.'">'."\n";
+	print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">'."\n";
 	if ($optioncss != '') {
 		print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
 	}
@@ -226,14 +226,14 @@ if (!is_array($user_arbo) && $user_arbo < 0) {
 	print '<tr class="liste_titre">';
 	// Action column
 	if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre('', DOL_PHP_SELF, "", '', '', '', '', '', 'maxwidthsearch ');
+		print_liste_field_titre('', $_SERVER['PHP_SELF'], "", '', '', '', '', '', 'maxwidthsearch ');
 	}
 	print_liste_field_titre("HierarchicView");
-	print_liste_field_titre('<div id="iddivjstreecontrol"><a href="#">'.img_picto('', 'folder', 'class="paddingright"').'<span class="hideonsmartphone">'.$langs->trans("UndoExpandAll").'</span></a> | <a href="#">'.img_picto('', 'folder-open', 'class="paddingright"').'<span class="hideonsmartphone">'.$langs->trans("ExpandAll").'</span></a></div>', DOL_PHP_SELF, "", '', "", 'align="center"');
-	print_liste_field_titre("Status", DOL_PHP_SELF, "", '', "", '', '', '', 'right ');
+	print_liste_field_titre('<div id="iddivjstreecontrol"><a href="#">'.img_picto('', 'folder', 'class="paddingright"').'<span class="hideonsmartphone">'.$langs->trans("UndoExpandAll").'</span></a> | <a href="#">'.img_picto('', 'folder-open', 'class="paddingright"').'<span class="hideonsmartphone">'.$langs->trans("ExpandAll").'</span></a></div>', $_SERVER['PHP_SELF'], "", '', "", 'align="center"');
+	print_liste_field_titre("Status", $_SERVER['PHP_SELF'], "", '', "", '', '', '', 'right ');
 	// Action column
 	if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-		print_liste_field_titre('', DOL_PHP_SELF, "", '', '', '', '', '', 'maxwidthsearch ');
+		print_liste_field_titre('', $_SERVER['PHP_SELF'], "", '', '', '', '', '', 'maxwidthsearch ');
 	}
 	print '</tr>';
 
