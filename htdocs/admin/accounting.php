@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018-2021	Alexandre Spangaro      <aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2018-2021  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,18 +17,18 @@
  */
 
 /**
- *	\file       htdocs/admin/accounting.php
- *	\ingroup    accounting
- *	\brief      Setup page to configure accounting module
+ *  \file       htdocs/admin/accounting.php
+ *  \ingroup    accounting
+ *  \brief      Setup page to configure accounting module
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 
 $action = GETPOST('action', 'aZ09');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'adminaccoutant'; // To manage different context of search
@@ -36,7 +37,7 @@ $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'ad
 $langs->loadLangs(array('admin', 'companies', 'accountancy'));
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $error = 0;
@@ -58,12 +59,12 @@ $help_url = '';
 
 llxHeader('', $title, $help_url);
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 
 print load_fiche_titre($title, $linkback, 'title_setup');
 
 print "<br>\n";
-print '<span class="opacitymedium">'.$langs->trans("AccountancySetupDoneFromAccountancyMenu", $langs->transnoentitiesnoconv("Accounting").' - '.$langs->transnoentitiesnoconv("Setup"))."</span><br>\n";
+print '<span class="opacitymedium">' . $langs->trans("AccountancySetupDoneFromAccountancyMenu", $langs->transnoentitiesnoconv("Accounting") . ' - ' . $langs->transnoentitiesnoconv("Setup")) . "</span><br>\n";
 print "<br>\n";
 
 llxFooter();

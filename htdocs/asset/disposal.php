@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2018      Alexandre Spangaro   <aspangaro@open-dsi.fr>
  *
@@ -24,8 +25,8 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/asset.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/asset/class/asset.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/asset.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/asset/class/asset.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("assets", "companies"));
@@ -40,15 +41,15 @@ $backtopage = GETPOST('backtopage', 'alpha');
 // Initialize technical objects
 $object = new Asset($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->asset->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->asset->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('assetdisposal', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->asset->multidir_output[$object->entity]."/".$object->id;
+    $upload_dir = $conf->asset->multidir_output[$object->entity] . "/" . $object->id;
 }
 
 $permissionnote = $user->hasRight('asset', 'write'); // Used by the include of actions_setnotes.inc.php
@@ -56,15 +57,15 @@ $permissiontoadd = $user->hasRight('asset', 'write'); // Used by the include of 
 
 // Security check (enable the most restrictive one)
 if ($user->socid > 0) {
-	accessforbidden();
+    accessforbidden();
 }
 $isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
 if (!isModEnabled('asset')) {
-	accessforbidden();
+    accessforbidden();
 }
 if (!isset($object->disposal_date) || $object->disposal_date === "") {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -75,7 +76,7 @@ if (!isset($object->disposal_date) || $object->disposal_date === "") {
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
 }
@@ -91,36 +92,36 @@ $help_url = '';
 llxHeader('', $langs->trans('Asset'), $help_url, '', 0, 0, '', '', '', 'mod-asset page-card_disposal');
 
 if ($id > 0 || !empty($ref)) {
-	$object->fetch_thirdparty();
+    $object->fetch_thirdparty();
 
-	$head = assetPrepareHead($object);
+    $head = assetPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'disposal', $langs->trans("Asset"), -1, $object->picto);
+    print dol_get_fiche_head($head, 'disposal', $langs->trans("Asset"), -1, $object->picto);
 
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="' . DOL_URL_ROOT . '/asset/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . DOL_URL_ROOT . '/asset/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	$morehtmlref .= '</div>';
+    $morehtmlref = '<div class="refidno">';
+    $morehtmlref .= '</div>';
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
-	print '<table class="border centpercent tableforfield">'."\n";
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border centpercent tableforfield">' . "\n";
 
-	// Common attributes
-	$show_fields = array('disposal_date', 'disposal_amount_ht', 'fk_disposal_type', 'disposal_depreciated', 'disposal_subject_to_vat');
-	foreach ($object->fields as $field_key => $field_info) {
-		$object->fields[$field_key]['visible'] = in_array($field_key, $show_fields) ? 1 : 0;
-	}
-	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_view.tpl.php';
+    // Common attributes
+    $show_fields = array('disposal_date', 'disposal_amount_ht', 'fk_disposal_type', 'disposal_depreciated', 'disposal_subject_to_vat');
+    foreach ($object->fields as $field_key => $field_info) {
+        $object->fields[$field_key]['visible'] = in_array($field_key, $show_fields) ? 1 : 0;
+    }
+    include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
-	print '</table>';
-	print '</div>';
+    print '</table>';
+    print '</div>';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 }
 
 // End of page

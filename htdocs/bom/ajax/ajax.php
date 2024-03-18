@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (C) 2020 Laurent Destailleur <eldy@users.sourceforge.net>
  *
@@ -17,32 +18,32 @@
  */
 
 /**
- *	\file       htdocs/bom/ajax/ajax.php
- *	\brief      Ajax component for BOM.
+ *  \file       htdocs/bom/ajax/ajax.php
+ *  \brief      Ajax component for BOM.
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOBROWSERNOTIF')) {
-	define('NOBROWSERNOTIF', '1');
+    define('NOBROWSERNOTIF', '1');
 }
 
 include_once '../../main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/cunits.class.php';
+require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/cunits.class.php';
 
 
 $action = GETPOST('action', 'aZ09');
@@ -56,33 +57,33 @@ $idproduct = GETPOSTINT('idproduct');
 top_httphead('application/json');
 
 if ($action == 'getDurationUnitByProduct' && $user->hasRight('product', 'lire')) {
-	$product = new Product($db);
-	$res = $product->fetch($idproduct);
+    $product = new Product($db);
+    $res = $product->fetch($idproduct);
 
-	$cUnit = new CUnits($db);
-	$fk_unit = $cUnit->getUnitFromCode($product->duration_unit, 'short_label', 'time');
+    $cUnit = new CUnits($db);
+    $fk_unit = $cUnit->getUnitFromCode($product->duration_unit, 'short_label', 'time');
 
-	echo json_encode($fk_unit);
-	exit();
+    echo json_encode($fk_unit);
+    exit();
 }
 
 if ($action == 'getWorkstationByProduct' && $user->hasRight('product', 'lire')) {
-	$product = new Product($db);
-	$res = $product->fetch($idproduct);
+    $product = new Product($db);
+    $res = $product->fetch($idproduct);
 
-	$result = array();
+    $result = array();
 
-	if ($res < 0) {
-		$error = 'SQL ERROR';
-	} elseif ($res == 0) {
-		$error = 'NOT FOUND';
-	} else {
-		$error = null;
-		$result['defaultWk']=$product->fk_default_workstation;
-	}
+    if ($res < 0) {
+        $error = 'SQL ERROR';
+    } elseif ($res == 0) {
+        $error = 'NOT FOUND';
+    } else {
+        $error = null;
+        $result['defaultWk'] = $product->fk_default_workstation;
+    }
 
-	$result['error']=$error;
+    $result['error'] = $error;
 
-	echo json_encode($result);
-	exit();
+    echo json_encode($result);
+    exit();
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2006-2014  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2011       Juanjo Menent       <jmenent@2byte.es>
  * Copyright (C) 2015       Raphaël Doursenaud  <rdoursenaud@gpcsolutions.fr>
@@ -19,20 +20,20 @@
  */
 
 /**
- *		\file 		htdocs/admin/tools/export_files.php
- *		\brief      Page to export documents into a compressed file
+ *      \file       htdocs/admin/tools/export_files.php
+ *      \brief      Page to export documents into a compressed file
  */
 
 if (! defined('CSRFCHECK_WITH_TOKEN')) {
-	define('CSRFCHECK_WITH_TOKEN', '1');		// Force use of CSRF protection with tokens even for GET
+    define('CSRFCHECK_WITH_TOKEN', '1');        // Force use of CSRF protection with tokens even for GET
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/utils.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/utils.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 
 $langs->load("admin");
 
@@ -49,21 +50,21 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
 if (!$sortorder) {
-	$sortorder = "DESC";
+    $sortorder = "DESC";
 }
 if (!$sortfield) {
-	$sortfield = "date";
+    $sortfield = "date";
 }
 if ($page < 0) {
-	$page = 0;
+    $page = 0;
 } elseif (empty($page)) {
-	$page = 0;
+    $page = 0;
 }
 $limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
 $offset = $limit * $page;
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $errormsg = '';
@@ -74,15 +75,15 @@ $errormsg = '';
  */
 
 if ($action == 'delete') {
-	$filerelative = dol_sanitizeFileName(GETPOST('urlfile', 'alpha'));
-	$filepath = $conf->admin->dir_output.'/'.$filerelative;
-	$ret = dol_delete_file($filepath, 1);
-	if ($ret) {
-		setEventMessages($langs->trans("FileWasRemoved", $filerelative), null, 'mesgs');
-	} else {
-		setEventMessages($langs->trans("ErrorFailToDeleteFile", $filerelative), null, 'errors');
-	}
-	$action = '';
+    $filerelative = dol_sanitizeFileName(GETPOST('urlfile', 'alpha'));
+    $filepath = $conf->admin->dir_output . '/' . $filerelative;
+    $ret = dol_delete_file($filepath, 1);
+    if ($ret) {
+        setEventMessages($langs->trans("FileWasRemoved", $filerelative), null, 'mesgs');
+    } else {
+        setEventMessages($langs->trans("ErrorFailToDeleteFile", $filerelative), null, 'errors');
+    }
+    $action = '';
 }
 
 
@@ -93,17 +94,17 @@ if ($action == 'delete') {
 // Increase limit of time. Works only if we are not in safe mode
 $ExecTimeLimit = 1800; // 30mn
 if (!empty($ExecTimeLimit)) {
-	$err = error_reporting();
-	error_reporting(0); // Disable all errors
-	//error_reporting(E_ALL);
-	@set_time_limit($ExecTimeLimit); // Need more than 240 on Windows 7/64
-	error_reporting($err);
+    $err = error_reporting();
+    error_reporting(0); // Disable all errors
+    //error_reporting(E_ALL);
+    @set_time_limit($ExecTimeLimit); // Need more than 240 on Windows 7/64
+    error_reporting($err);
 }
 
 /* If value has been forced with a php_admin_value, this has no effect. Example of value: '512M' */
 $MemoryLimit = getDolGlobalString('MAIN_MEMORY_LIMIT_ARCHIVE_DATAROOT');
 if (!empty($MemoryLimit)) {
-	@ini_set('memory_limit', $MemoryLimit);
+    @ini_set('memory_limit', $MemoryLimit);
 }
 
 $form = new Form($db);
@@ -123,123 +124,123 @@ $dump_buffer_len = 0;
 $time_start = time();
 
 
-$outputdir  = $conf->admin->dir_output.'/documents';
+$outputdir  = $conf->admin->dir_output . '/documents';
 $result = dol_mkdir($outputdir);
 
 $utils = new Utils($db);
 
 if ($export_type == 'externalmodule' && !empty($what)) {
-	$fulldirtocompress = DOL_DOCUMENT_ROOT.'/custom/'.dol_sanitizeFileName($what);
+    $fulldirtocompress = DOL_DOCUMENT_ROOT . '/custom/' . dol_sanitizeFileName($what);
 } else {
-	$fulldirtocompress = DOL_DATA_ROOT;
+    $fulldirtocompress = DOL_DATA_ROOT;
 }
 $dirtoswitch = dirname($fulldirtocompress);
 $dirtocompress = basename($fulldirtocompress);
 
 if ($compression == 'zip') {
-	$file .= '.zip';
+    $file .= '.zip';
 
-	$excludefiles = '/(\.back|\.old|\.log|\.pdf_preview-.*\.png|[\/\\\]temp[\/\\\]|[\/\\\]admin[\/\\\]documents[\/\\\])/i';
+    $excludefiles = '/(\.back|\.old|\.log|\.pdf_preview-.*\.png|[\/\\\]temp[\/\\\]|[\/\\\]admin[\/\\\]documents[\/\\\])/i';
 
-	//var_dump($fulldirtocompress);
-	//var_dump($outputdir."/".$file);exit;
+    //var_dump($fulldirtocompress);
+    //var_dump($outputdir."/".$file);exit;
 
-	$rootdirinzip = '';
-	if ($export_type == 'externalmodule' && !empty($what)) {
-		$rootdirinzip = $what;
+    $rootdirinzip = '';
+    if ($export_type == 'externalmodule' && !empty($what)) {
+        $rootdirinzip = $what;
 
-		global $dolibarr_allow_download_external_modules;
-		if (empty($dolibarr_allow_download_external_modules)) {
-			print 'Download of external modules is not allowed by $dolibarr_allow_download_external_modules in conf.php file';
-			$db->close();
-			exit();
-		}
-	}
+        global $dolibarr_allow_download_external_modules;
+        if (empty($dolibarr_allow_download_external_modules)) {
+            print 'Download of external modules is not allowed by $dolibarr_allow_download_external_modules in conf.php file';
+            $db->close();
+            exit();
+        }
+    }
 
-	$ret = dol_compress_dir($fulldirtocompress, $outputdir."/".$file, $compression, $excludefiles, $rootdirinzip);
-	if ($ret < 0) {
-		if ($ret == -2) {
-			$langs->load("errors");
-			$errormsg = $langs->trans("ErrNoZipEngine");
-		} else {
-			$langs->load("errors");
-			$errormsg = $langs->trans("ErrorFailedToWriteInDir", $outputdir);
-		}
-	}
+    $ret = dol_compress_dir($fulldirtocompress, $outputdir . "/" . $file, $compression, $excludefiles, $rootdirinzip);
+    if ($ret < 0) {
+        if ($ret == -2) {
+            $langs->load("errors");
+            $errormsg = $langs->trans("ErrNoZipEngine");
+        } else {
+            $langs->load("errors");
+            $errormsg = $langs->trans("ErrorFailedToWriteInDir", $outputdir);
+        }
+    }
 } elseif (in_array($compression, array('gz', 'bz', 'zstd'))) {
-	$userlogin = ($user->login ? $user->login : 'unknown');
+    $userlogin = ($user->login ? $user->login : 'unknown');
 
-	$outputfile = $conf->admin->dir_temp.'/export_files.'.$userlogin.'.out'; // File used with popen method
+    $outputfile = $conf->admin->dir_temp . '/export_files.' . $userlogin . '.out'; // File used with popen method
 
-	$file .= '.tar';
+    $file .= '.tar';
 
-	// We also exclude '/temp/' dir and 'documents/admin/documents'
-	// We make escapement here and call executeCLI without escapement because we don't want to have the '*.log' escaped.
-	$cmd = "tar -cf '".escapeshellcmd($outputdir."/".$file)."' --exclude-vcs --exclude-caches-all --exclude='temp' --exclude='*.log' --exclude='*.pdf_preview-*.png' --exclude='documents/admin/documents' -C '".escapeshellcmd(dol_sanitizePathName($dirtoswitch))."' '".escapeshellcmd(dol_sanitizeFileName($dirtocompress))."'";
+    // We also exclude '/temp/' dir and 'documents/admin/documents'
+    // We make escapement here and call executeCLI without escapement because we don't want to have the '*.log' escaped.
+    $cmd = "tar -cf '" . escapeshellcmd($outputdir . "/" . $file) . "' --exclude-vcs --exclude-caches-all --exclude='temp' --exclude='*.log' --exclude='*.pdf_preview-*.png' --exclude='documents/admin/documents' -C '" . escapeshellcmd(dol_sanitizePathName($dirtoswitch)) . "' '" . escapeshellcmd(dol_sanitizeFileName($dirtocompress)) . "'";
 
-	$result = $utils->executeCLI($cmd, $outputfile, 0, null, 1);
+    $result = $utils->executeCLI($cmd, $outputfile, 0, null, 1);
 
-	$retval = $result['error'];
-	if ($result['result'] || !empty($retval)) {
-		$langs->load("errors");
-		dol_syslog("Documents tar retval after exec=".$retval, LOG_ERR);
-		$errormsg = 'Error tar generation return '.$retval;
-	} else {
-		if ($compression == 'gz') {
-			$cmd = "gzip -f ".$outputdir."/".$file;
-		} elseif ($compression == 'bz') {
-			$cmd = "bzip2 -f ".$outputdir."/".$file;
-		} elseif ($compression == 'zstd') {
-			$cmd = "zstd -z -9 -q --rm ".$outputdir."/".$file;
-		}
+    $retval = $result['error'];
+    if ($result['result'] || !empty($retval)) {
+        $langs->load("errors");
+        dol_syslog("Documents tar retval after exec=" . $retval, LOG_ERR);
+        $errormsg = 'Error tar generation return ' . $retval;
+    } else {
+        if ($compression == 'gz') {
+            $cmd = "gzip -f " . $outputdir . "/" . $file;
+        } elseif ($compression == 'bz') {
+            $cmd = "bzip2 -f " . $outputdir . "/" . $file;
+        } elseif ($compression == 'zstd') {
+            $cmd = "zstd -z -9 -q --rm " . $outputdir . "/" . $file;
+        }
 
-		$result = $utils->executeCLI($cmd, $outputfile);
+        $result = $utils->executeCLI($cmd, $outputfile);
 
-		$retval = $result['error'];
-		if ($result['result'] || !empty($retval)) {
-			$errormsg = 'Error '.$compression.' generation return '.$retval;
-			unlink($outputdir."/".$file);
-		}
-	}
+        $retval = $result['error'];
+        if ($result['result'] || !empty($retval)) {
+            $errormsg = 'Error ' . $compression . ' generation return ' . $retval;
+            unlink($outputdir . "/" . $file);
+        }
+    }
 } else {
-	$errormsg = 'Bad value for compression method';
-	print $errormsg;
+    $errormsg = 'Bad value for compression method';
+    print $errormsg;
 }
 
 
 // Output export
 
 if ($export_type != 'externalmodule' || empty($what)) {
-	top_httphead();
+    top_httphead();
 
-	if ($errormsg) {
-		setEventMessages($langs->trans("Error")." : ".$errormsg, null, 'errors');
-	} else {
-		setEventMessages($langs->trans("BackupFileSuccessfullyCreated").'.<br>'.$langs->trans("YouCanDownloadBackupFile"), null, 'mesgs');
-	}
+    if ($errormsg) {
+        setEventMessages($langs->trans("Error") . " : " . $errormsg, null, 'errors');
+    } else {
+        setEventMessages($langs->trans("BackupFileSuccessfullyCreated") . '.<br>' . $langs->trans("YouCanDownloadBackupFile"), null, 'mesgs');
+    }
 
-	$db->close();
+    $db->close();
 
-	// Redirect to calling page
-	$returnto = 'dolibarr_export.php';
+    // Redirect to calling page
+    $returnto = 'dolibarr_export.php';
 
-	header("Location: ".$returnto);
+    header("Location: " . $returnto);
 
-	exit();
+    exit();
 } else {
-	top_httphead('application/zip');
+    top_httphead('application/zip');
 
-	$zipname = $outputdir."/".$file;
+    $zipname = $outputdir . "/" . $file;
 
-	// Then download the zipped file.
+    // Then download the zipped file.
 
-	header('Content-disposition: attachment; filename='.basename($zipname));
-	header('Content-Length: '.filesize($zipname));
-	readfile($zipname);
+    header('Content-disposition: attachment; filename=' . basename($zipname));
+    header('Content-Length: ' . filesize($zipname));
+    readfile($zipname);
 
-	dol_delete_file($zipname);
+    dol_delete_file($zipname);
 
-	$db->close();
+    $db->close();
 
-	exit();
+    exit();
 }

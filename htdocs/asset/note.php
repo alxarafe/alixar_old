@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2018      Alexandre Spangaro   <aspangaro@open-dsi.fr>
  *
@@ -24,8 +25,8 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/asset.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/asset/class/asset.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/asset.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/asset/class/asset.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("assets", "companies"));
@@ -40,15 +41,15 @@ $backtopage = GETPOST('backtopage', 'alpha');
 // Initialize technical objects
 $object = new Asset($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->asset->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->asset->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('assetnote', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->asset->multidir_output[$object->entity]."/".$object->id;
+    $upload_dir = $conf->asset->multidir_output[$object->entity] . "/" . $object->id;
 }
 
 $permissionnote = $user->hasRight('asset', 'write'); // Used by the include of actions_setnotes.inc.php
@@ -56,12 +57,12 @@ $permissiontoadd = $user->hasRight('asset', 'write'); // Used by the include of 
 
 // Security check (enable the most restrictive one)
 if ($user->socid > 0) {
-	accessforbidden();
+    accessforbidden();
 }
 $isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
 if (!isModEnabled('asset')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -72,10 +73,10 @@ if (!isModEnabled('asset')) {
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -89,33 +90,33 @@ $help_url = '';
 llxHeader('', $langs->trans('Asset'), $help_url, '', 0, 0, '', '', '', 'mod-asset page-card_notes');
 
 if ($id > 0 || !empty($ref)) {
-	$object->fetch_thirdparty();
+    $object->fetch_thirdparty();
 
-	$head = assetPrepareHead($object);
+    $head = assetPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'note', $langs->trans("Asset"), -1, $object->picto);
+    print dol_get_fiche_head($head, 'note', $langs->trans("Asset"), -1, $object->picto);
 
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="' . DOL_URL_ROOT . '/asset/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . DOL_URL_ROOT . '/asset/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	$morehtmlref .= '</div>';
-
-
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    $morehtmlref = '<div class="refidno">';
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '</div>';
 
-	print dol_get_fiche_end();
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 }
 
 // End of page

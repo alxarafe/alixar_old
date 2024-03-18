@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2022 Alice Adminson <aadminson@example.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
@@ -29,36 +30,36 @@
  */
 function bookcalAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$langs->load("agenda");
+    $langs->load("agenda");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . '/bookcal/admin/setup.php';
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/bookcal/admin/setup.php';
+    $head[$h][1] = $langs->trans("Settings");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	/*
-	$head[$h][0] = DOL_URL_ROOT.'/bookcal/admin/myobject_extrafields.php';
-	$head[$h][1] = $langs->trans("ExtraFields");
-	$head[$h][2] = 'myobject_extrafields';
-	$h++;
-	*/
+    /*
+    $head[$h][0] = DOL_URL_ROOT.'/bookcal/admin/myobject_extrafields.php';
+    $head[$h][1] = $langs->trans("ExtraFields");
+    $head[$h][2] = 'myobject_extrafields';
+    $h++;
+    */
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@bookcal:/bookcal/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@bookcal:/bookcal/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'bookcal@bookcal');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@bookcal:/bookcal/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@bookcal:/bookcal/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'bookcal@bookcal');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'bookcal@bookcal', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'bookcal@bookcal', 'remove');
 
-	return $head;
+    return $head;
 }

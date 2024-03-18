@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2006-2012	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2006-2012  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2006-2021	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2024		William Mead			<william.mead@manchenumerique.fr>
  *
@@ -25,9 +26,9 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/ldap.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/ldap.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/ldap.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/ldap.lib.php';
 
 // Load translation files required by page
 $langs->loadLangs(array('users', 'admin', 'companies', 'ldap'));
@@ -39,7 +40,7 @@ $contextpage = GETPOST('contextpage', 'aZ') ?: 'userldap'; // To manage differen
 // Security check
 $socid = 0;
 if ($user->socid > 0) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $feature2 = (($socid && $user->hasRight('user', 'self', 'creer')) ? '' : 'user');
 
@@ -58,31 +59,31 @@ $hookmanager->initHooks(array('usercard', 'userldap', 'globalcard'));
  */
 
 
-$parameters = array('id'=>$socid);
+$parameters = array('id' => $socid);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	if ($action == 'dolibarr2ldap') {
-		$ldap = new Ldap();
-		$result = $ldap->connectBind();
+    if ($action == 'dolibarr2ldap') {
+        $ldap = new Ldap();
+        $result = $ldap->connectBind();
 
-		if ($result > 0) {
-			$info = $object->_load_ldap_info();
-			$dn = $object->_load_ldap_dn($info);
-			$olddn = $dn; // We can say that old dn = dn as we force synchro
+        if ($result > 0) {
+            $info = $object->_load_ldap_info();
+            $dn = $object->_load_ldap_dn($info);
+            $olddn = $dn; // We can say that old dn = dn as we force synchro
 
-			$result = $ldap->update($dn, $info, $user, $olddn);
-		}
+            $result = $ldap->update($dn, $info, $user, $olddn);
+        }
 
-		if ($result >= 0) {
-			setEventMessages($langs->trans("UserSynchronized"), null, 'mesgs');
-		} else {
-			setEventMessages($ldap->error, $ldap->errors, 'errors');
-		}
-	}
+        if ($result >= 0) {
+            setEventMessages($langs->trans("UserSynchronized"), null, 'mesgs');
+        } else {
+            setEventMessages($ldap->error, $ldap->errors, 'errors');
+        }
+    }
 }
 
 /*
@@ -91,8 +92,8 @@ if (empty($reshook)) {
 
 $form = new Form($db);
 
-$person_name = !empty($object->firstname) ? $object->lastname.", ".$object->firstname : $object->lastname;
-$title = $person_name." - ".$langs->trans('LDAP');
+$person_name = !empty($object->firstname) ? $object->lastname . ", " . $object->firstname : $object->lastname;
+$title = $person_name . " - " . $langs->trans('LDAP');
 $help_url = '';
 llxHeader('', $title, $help_url);
 
@@ -104,7 +105,7 @@ print dol_get_fiche_head($head, 'ldap', $title, -1, 'user');
 $linkback = '';
 
 if ($user->hasRight('user', 'user', 'lire') || !empty($user->admin)) {
-	$linkback = '<a href="'.DOL_URL_ROOT.'/user/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/user/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 }
 
 dol_banner_tab($object, 'id', $linkback, $user->hasRight('user', 'user', 'lire') || $user->admin);
@@ -115,38 +116,38 @@ print '<div class="underbanner clearboth"></div>';
 print '<table class="border centpercent tableforfield">';
 
 // Login
-print '<tr><td class="titlefield">'.$langs->trans("Login").'</td>';
+print '<tr><td class="titlefield">' . $langs->trans("Login") . '</td>';
 if ($object->ldap_sid) {
-	print '<td class="warning">'.$langs->trans("LoginAccountDisableInDolibarr").'</td>';
+    print '<td class="warning">' . $langs->trans("LoginAccountDisableInDolibarr") . '</td>';
 } else {
-	print '<td>'.$object->login.'</td>';
+    print '<td>' . $object->login . '</td>';
 }
 print '</tr>';
 
 if (getDolGlobalString('LDAP_SERVER_TYPE') == "activedirectory") {
-	$ldap = new Ldap();
-	$result = $ldap->connectBind();
-	$userSID = '';
-	if ($result > 0) {
-		$userSID = $ldap->getObjectSid($object->login);
-	}
-	print '<tr><td class="valigntop">'.$langs->trans("SID").'</td>';
-	print '<td>'.$userSID.'</td>';
-	print "</tr>\n";
+    $ldap = new Ldap();
+    $result = $ldap->connectBind();
+    $userSID = '';
+    if ($result > 0) {
+        $userSID = $ldap->getObjectSid($object->login);
+    }
+    print '<tr><td class="valigntop">' . $langs->trans("SID") . '</td>';
+    print '<td>' . $userSID . '</td>';
+    print "</tr>\n";
 }
 
 // LDAP DN
-print '<tr><td>LDAP '.$langs->trans("LDAPUserDn").'</td><td class="valeur">'.getDolGlobalString('LDAP_USER_DN')."</td></tr>\n";
+print '<tr><td>LDAP ' . $langs->trans("LDAPUserDn") . '</td><td class="valeur">' . getDolGlobalString('LDAP_USER_DN') . "</td></tr>\n";
 
 // LDAP Cle
-print '<tr><td>LDAP '.$langs->trans("LDAPNamingAttribute").'</td><td class="valeur">'.getDolGlobalString('LDAP_KEY_USERS')."</td></tr>\n";
+print '<tr><td>LDAP ' . $langs->trans("LDAPNamingAttribute") . '</td><td class="valeur">' . getDolGlobalString('LDAP_KEY_USERS') . "</td></tr>\n";
 
 // LDAP Server
-print '<tr><td>LDAP '.$langs->trans("Type").'</td><td class="valeur">'.getDolGlobalString('LDAP_SERVER_TYPE')."</td></tr>\n";
-print '<tr><td>LDAP '.$langs->trans("Version").'</td><td class="valeur">'.getDolGlobalString('LDAP_SERVER_PROTOCOLVERSION')."</td></tr>\n";
-print '<tr><td>LDAP '.$langs->trans("LDAPPrimaryServer").'</td><td class="valeur">'.getDolGlobalString('LDAP_SERVER_HOST')."</td></tr>\n";
-print '<tr><td>LDAP '.$langs->trans("LDAPSecondaryServer").'</td><td class="valeur">'.getDolGlobalString('LDAP_SERVER_HOST_SLAVE')."</td></tr>\n";
-print '<tr><td>LDAP '.$langs->trans("LDAPServerPort").'</td><td class="valeur">'.getDolGlobalString('LDAP_SERVER_PORT')."</td></tr>\n";
+print '<tr><td>LDAP ' . $langs->trans("Type") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_TYPE') . "</td></tr>\n";
+print '<tr><td>LDAP ' . $langs->trans("Version") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_PROTOCOLVERSION') . "</td></tr>\n";
+print '<tr><td>LDAP ' . $langs->trans("LDAPPrimaryServer") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_HOST') . "</td></tr>\n";
+print '<tr><td>LDAP ' . $langs->trans("LDAPSecondaryServer") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_HOST_SLAVE') . "</td></tr>\n";
+print '<tr><td>LDAP ' . $langs->trans("LDAPServerPort") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_PORT') . "</td></tr>\n";
 
 print '</table>';
 
@@ -160,13 +161,13 @@ print dol_get_fiche_end();
 print '<div class="tabsAction">';
 
 if (getDolGlobalInt('LDAP_SYNCHRO_ACTIVE') === Ldap::SYNCHRO_DOLIBARR_TO_LDAP) {
-	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=dolibarr2ldap">'.$langs->trans("ForceSynchronize").'</a>';
+    print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=dolibarr2ldap">' . $langs->trans("ForceSynchronize") . '</a>';
 }
 
 print "</div>\n";
 
 if (getDolGlobalInt('LDAP_SYNCHRO_ACTIVE') === Ldap::SYNCHRO_DOLIBARR_TO_LDAP) {
-	print "<br>\n";
+    print "<br>\n";
 }
 
 
@@ -177,37 +178,37 @@ print load_fiche_titre($langs->trans("LDAPInformationsForThisUser"));
 print '<table class="noborder centpercent">';
 
 print '<tr class="liste_titre">';
-print '<td>'.$langs->trans("LDAPAttributes").'</td>';
-print '<td>'.$langs->trans("Value").'</td>';
+print '<td>' . $langs->trans("LDAPAttributes") . '</td>';
+print '<td>' . $langs->trans("Value") . '</td>';
 print '</tr>';
 
 // Lecture LDAP
 $ldap = new Ldap();
 $result = $ldap->connectBind();
 if ($result > 0) {
-	$info = $object->_load_ldap_info();
-	$dn = $object->_load_ldap_dn($info, 1);
-	$search = "(".$object->_load_ldap_dn($info, 2).")";
+    $info = $object->_load_ldap_info();
+    $dn = $object->_load_ldap_dn($info, 1);
+    $search = "(" . $object->_load_ldap_dn($info, 2) . ")";
 
-	$records = $ldap->getAttribute($dn, $search);
+    $records = $ldap->getAttribute($dn, $search);
 
-	//print_r($records);
+    //print_r($records);
 
-	// Affichage arbre
-	if (((!is_numeric($records)) || $records != 0) && (!isset($records['count']) || $records['count'] > 0)) {
-		if (!is_array($records)) {
-			print '<tr class="oddeven"><td colspan="2"><span class="error">'.$langs->trans("ErrorFailedToReadLDAP").'</span></td></tr>';
-		} else {
-			$result = show_ldap_content($records, 0, $records['count'], true);
-		}
-	} else {
-		print '<tr class="oddeven"><td colspan="2">'.$langs->trans("LDAPRecordNotFound").' (dn='.dol_escape_htmltag($dn).' - search='.dol_escape_htmltag($search).')</td></tr>';
-	}
+    // Affichage arbre
+    if (((!is_numeric($records)) || $records != 0) && (!isset($records['count']) || $records['count'] > 0)) {
+        if (!is_array($records)) {
+            print '<tr class="oddeven"><td colspan="2"><span class="error">' . $langs->trans("ErrorFailedToReadLDAP") . '</span></td></tr>';
+        } else {
+            $result = show_ldap_content($records, 0, $records['count'], true);
+        }
+    } else {
+        print '<tr class="oddeven"><td colspan="2">' . $langs->trans("LDAPRecordNotFound") . ' (dn=' . dol_escape_htmltag($dn) . ' - search=' . dol_escape_htmltag($search) . ')</td></tr>';
+    }
 
-	$ldap->unbind();
+    $ldap->unbind();
 } else {
-	print '<tr class="oddeven"><td colspan="2"><span class="error">'.$langs->trans("ErrorFailedToReadLDAP").'</span></td></tr>';
-	setEventMessages($ldap->error, $ldap->errors, 'errors');
+    print '<tr class="oddeven"><td colspan="2"><span class="error">' . $langs->trans("ErrorFailedToReadLDAP") . '</span></td></tr>';
+    setEventMessages($ldap->error, $ldap->errors, 'errors');
 }
 
 print '</table>';

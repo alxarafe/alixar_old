@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  * Copyright (C) 2023-2024	John Botella			<john.botella@atm-consulting.fr>
  *
@@ -31,66 +32,66 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php'; // used for col
  */
 class WebPortalTheme
 {
-	public $primaryColorHex = '#263c5c';
-	public $primaryColorHsl = array(
-		'h' => 216, // Hue
-		'l' => 42,  // lightness
-		's' => 25,  // Saturation
-		'a' =>  1   // Alfa
-	);
+    public $primaryColorHex = '#263c5c';
+    public $primaryColorHsl = array(
+        'h' => 216, // Hue
+        'l' => 42,  // lightness
+        's' => 25,  // Saturation
+        'a' =>  1   // Alfa
+    );
 
 
-	public $loginLogoUrl;
-	public $menuLogoUrl;
-	public $loginBackground;
+    public $loginLogoUrl;
+    public $menuLogoUrl;
+    public $loginBackground;
 
-	/**
-	 * @var string Background of banner
-	 */
-	public $bannerBackground;
+    /**
+     * @var string Background of banner
+     */
+    public $bannerBackground;
 
-	/**
-	 * @var int Use dark theme on banner
-	 */
-	public $bannerUseDarkTheme;
+    /**
+     * @var int Use dark theme on banner
+     */
+    public $bannerUseDarkTheme;
 
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->loadPrimaryColor();
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->loadPrimaryColor();
 
-		$this->loginLogoUrl = getDolGlobalString('WEBPORTAL_LOGIN_LOGO_URL');
-		$this->menuLogoUrl = getDolGlobalString('WEBPORTAL_MENU_LOGO_URL', $this->loginLogoUrl);
-		$this->loginBackground = getDolGlobalString('WEBPORTAL_LOGIN_BACKGROUND');
-		$this->bannerBackground = getDolGlobalString('WEBPORTAL_BANNER_BACKGROUND');
-		$this->bannerUseDarkTheme = getDolGlobalInt('WEBPORTAL_BANNER_BACKGROUND_IS_DARK');
-	}
+        $this->loginLogoUrl = getDolGlobalString('WEBPORTAL_LOGIN_LOGO_URL');
+        $this->menuLogoUrl = getDolGlobalString('WEBPORTAL_MENU_LOGO_URL', $this->loginLogoUrl);
+        $this->loginBackground = getDolGlobalString('WEBPORTAL_LOGIN_BACKGROUND');
+        $this->bannerBackground = getDolGlobalString('WEBPORTAL_BANNER_BACKGROUND');
+        $this->bannerUseDarkTheme = getDolGlobalInt('WEBPORTAL_BANNER_BACKGROUND_IS_DARK');
+    }
 
-	/**
-	 * Load hex of primary theme color
-	 *
-	 * @return void
-	 */
-	public function loadPrimaryColor()
-	{
-		global $conf;
+    /**
+     * Load hex of primary theme color
+     *
+     * @return void
+     */
+    public function loadPrimaryColor()
+    {
+        global $conf;
 
-		$outColor = '';
+        $outColor = '';
 
-		if (getDolGlobalString('WEBPORTAL_PRIMARY_COLOR')) {
-			$outColor = getDolGlobalString('WEBPORTAL_PRIMARY_COLOR');
-		} elseif (getDolGlobalString('THEME_ELDY_TOPMENU_BACK1')) {
-			$outColor = '#' . colorArrayToHex(colorStringToArray($conf->global->THEME_ELDY_TOPMENU_BACK1));
-		}
+        if (getDolGlobalString('WEBPORTAL_PRIMARY_COLOR')) {
+            $outColor = getDolGlobalString('WEBPORTAL_PRIMARY_COLOR');
+        } elseif (getDolGlobalString('THEME_ELDY_TOPMENU_BACK1')) {
+            $outColor = '#' . colorArrayToHex(colorStringToArray($conf->global->THEME_ELDY_TOPMENU_BACK1));
+        }
 
-		if (empty($outColor) || !colorValidateHex($outColor)) {
-			$outColor = '#263c5c';
-		}
+        if (empty($outColor) || !colorValidateHex($outColor)) {
+            $outColor = '#263c5c';
+        }
 
-		$this->primaryColorHex = $outColor;
-		$this->primaryColorHsl = colorHexToHsl($outColor, true, true);
-	}
+        $this->primaryColorHex = $outColor;
+        $this->primaryColorHsl = colorHexToHsl($outColor, true, true);
+    }
 }

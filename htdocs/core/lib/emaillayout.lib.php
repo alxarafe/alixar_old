@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2018 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2024      Alexandre Janniaux   <alexandre.janniaux@gmail.com>
@@ -18,20 +19,20 @@
  */
 
 /**
- *		\file       htdocs/core/lib/emaillayout.lib.php
- *		\brief      File for getting email html models
+ *      \file       htdocs/core/lib/emaillayout.lib.php
+ *      \brief      File for getting email html models
  */
 
 /**
  * Get empty html
  *
- * @param	string	$name	Name of template
- * @return 	string  $out  	Html content
+ * @param   string  $name   Name of template
+ * @return  string  $out    Html content
  */
 function getHtmlOfLayout($name)
 {
-	if ($name == 'basic') {
-		$out = '
+    if ($name == 'basic') {
+        $out = '
             <div >
             <div >
             <img alt="Gray rectangle" width="800px" height="100px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC" />
@@ -52,8 +53,8 @@ function getHtmlOfLayout($name)
             <img alt="Gray rectangle" width="15%" height="50px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC" />
 
         </div>';
-	} elseif ($name == 'news') {
-		$out = '
+    } elseif ($name == 'news') {
+        $out = '
         <h1 style="margin-left:120px;">Lorem, ipsum dolor sit amet consectetur adipisicing elit sit amet consectetur</h1>
         <h2 style="margin-left:120px;">Lorem, ipsum dolor sit amet consectetur adipisicing elitsit amet consectetur adipisicing </h2>
 
@@ -86,8 +87,8 @@ function getHtmlOfLayout($name)
                 <img alt="Gray rectangle" style="" width="130px" height="130px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC" />
             </div>
         </div>';
-	} elseif ($name == 'commerce') {
-		$out = '
+    } elseif ($name == 'commerce') {
+        $out = '
 		    <h1 style="margin-left:120px;">Lorem, ipsum dolor sit amet consectetur adipisicing elit sit amet consectetur</h1>
 		    <h2 style="margin-left:120px;">Lorem, ipsum dolor sit amet consectetur adipisicing elitsit amet consectetur adipisicing </h2>
 
@@ -134,8 +135,8 @@ function getHtmlOfLayout($name)
 		    </div>
 		  </div>
 		  ';
-	} elseif ($name == 'text') {
-		$out = '
+    } elseif ($name == 'text') {
+        $out = '
         <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit sit amet consectetur adipisicing elit.</h1>
         <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit sit amet consectetur adipisicing elit.</h2>
         <p style="text-align: justify">
@@ -147,9 +148,9 @@ function getHtmlOfLayout($name)
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi impedit molestias voluptatibus. Natus nulla sint totam illo? Hic name consequuntur id harum pariatur, quo illo quaerat minima tempore.
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi impedit molestias voluptatibus. Natus nulla sint totam illo? Hic name consequuntur id harum pariatur, quo illo quaerat minima tempore.
         </p>';
-	} else {
-		$out = '';
-	}
+    } else {
+        $out = '';
+    }
 
-	return $out;
+    return $out;
 }

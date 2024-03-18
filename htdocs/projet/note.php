@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -17,15 +18,15 @@
  */
 
 /**
- *	\file       htdocs/projet/note.php
- *	\ingroup    project
- *	\brief      Fiche d'information sur un projet
+ *  \file       htdocs/projet/note.php
+ *  \ingroup    project
+ *  \brief      Fiche d'information sur un projet
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/project.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 
 // Load translation files required by the page
 $langs->load('projects');
@@ -35,13 +36,13 @@ $id = GETPOSTINT('id');
 $ref = GETPOST('ref', 'alpha');
 
 $mine = (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'mine') ? 1 : 0;
-//if (! $user->rights->projet->all->lire) $mine=1;	// Special for projects
+//if (! $user->rights->projet->all->lire) $mine=1;  // Special for projects
 
 $object = new Project($db);
 
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once
 if (getDolGlobalString('PROJECT_ALLOW_COMMENT_ON_PROJECT') && method_exists($object, 'fetchComments') && empty($object->comments)) {
-	$object->fetchComments();
+    $object->fetchComments();
 }
 
 // Security check
@@ -60,10 +61,10 @@ $permissionnote = $user->hasRight('projet', 'creer'); // Used by the include of 
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -71,9 +72,9 @@ if (empty($reshook)) {
  * View
  */
 
-$title = $langs->trans("Notes").' - '.$object->ref.' '.$object->name;
+$title = $langs->trans("Notes") . ' - ' . $object->ref . ' ' . $object->name;
 if (getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/projectnameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) {
-	$title = $object->ref.' '.$object->name.' - '.$langs->trans("Note");
+    $title = $object->ref . ' ' . $object->name . ' - ' . $langs->trans("Note");
 }
 $help_url = "EN:Module_Projects|FR:Module_Projets|ES:M&oacute;dulo_Proyectos";
 llxHeader("", $title, $help_url);
@@ -84,55 +85,55 @@ $userstatic = new User($db);
 $now = dol_now();
 
 if ($id > 0 || !empty($ref)) {
-	// To verify role of users
-	//$userAccess = $object->restrictedProjectArea($user,'read');
-	$userWrite = $object->restrictedProjectArea($user, 'write');
-	//$userDelete = $object->restrictedProjectArea($user,'delete');
-	//print "userAccess=".$userAccess." userWrite=".$userWrite." userDelete=".$userDelete;
+    // To verify role of users
+    //$userAccess = $object->restrictedProjectArea($user,'read');
+    $userWrite = $object->restrictedProjectArea($user, 'write');
+    //$userDelete = $object->restrictedProjectArea($user,'delete');
+    //print "userAccess=".$userAccess." userWrite=".$userWrite." userDelete=".$userDelete;
 
-	$head = project_prepare_head($object);
-	print dol_get_fiche_head($head, 'notes', $langs->trans('Project'), -1, ($object->public ? 'projectpub' : 'project'));
-
-
-	// Project card
-
-	if (!empty($_SESSION['pageforbacktolist']) && !empty($_SESSION['pageforbacktolist']['project'])) {
-		$tmpurl = $_SESSION['pageforbacktolist']['project'];
-		$tmpurl = preg_replace('/__SOCID__/', $object->socid, $tmpurl);
-		$linkback = '<a href="'.$tmpurl.(preg_match('/\?/', $tmpurl) ? '&' : '?'). 'restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
-	} else {
-		$linkback = '<a href="'.DOL_URL_ROOT.'/projet/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
-	}
-
-	$morehtmlref = '<div class="refidno">';
-	// Title
-	$morehtmlref .= $object->title;
-	// Thirdparty
-	if (!empty($object->thirdparty->id) && $object->thirdparty->id > 0) {
-		$morehtmlref .= '<br>'.$object->thirdparty->getNomUrl(1, 'project');
-	}
-	$morehtmlref .= '</div>';
-
-	// Define a complementary filter for search of next/prev ref.
-	if (!$user->hasRight('projet', 'all', 'lire')) {
-		$objectsListId = $object->getProjectsAuthorizedForUser($user, 0, 0);
-		$object->next_prev_filter = "rowid IN (".$db->sanitize(count($objectsListId) ? implode(',', array_keys($objectsListId)) : '0').")";
-	}
-
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    $head = project_prepare_head($object);
+    print dol_get_fiche_head($head, 'notes', $langs->trans('Project'), -1, ($object->public ? 'projectpub' : 'project'));
 
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    // Project card
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    if (!empty($_SESSION['pageforbacktolist']) && !empty($_SESSION['pageforbacktolist']['project'])) {
+        $tmpurl = $_SESSION['pageforbacktolist']['project'];
+        $tmpurl = preg_replace('/__SOCID__/', $object->socid, $tmpurl);
+        $linkback = '<a href="' . $tmpurl . (preg_match('/\?/', $tmpurl) ? '&' : '?') . 'restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+    } else {
+        $linkback = '<a href="' . DOL_URL_ROOT . '/projet/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+    }
 
-	print '</div>';
+    $morehtmlref = '<div class="refidno">';
+    // Title
+    $morehtmlref .= $object->title;
+    // Thirdparty
+    if (!empty($object->thirdparty->id) && $object->thirdparty->id > 0) {
+        $morehtmlref .= '<br>' . $object->thirdparty->getNomUrl(1, 'project');
+    }
+    $morehtmlref .= '</div>';
 
-	print '<div class="clearboth"></div>';
+    // Define a complementary filter for search of next/prev ref.
+    if (!$user->hasRight('projet', 'all', 'lire')) {
+        $objectsListId = $object->getProjectsAuthorizedForUser($user, 0, 0);
+        $object->next_prev_filter = "rowid IN (" . $db->sanitize(count($objectsListId) ? implode(',', array_keys($objectsListId)) : '0') . ")";
+    }
 
-	print dol_get_fiche_end();
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+
+
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
+
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print '</div>';
+
+    print '<div class="clearboth"></div>';
+
+    print dol_get_fiche_end();
 }
 
 // End of page

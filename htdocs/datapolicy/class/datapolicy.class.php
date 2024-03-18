@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018 Nicolas ZABOURI <info@inovea-conseil.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
@@ -21,10 +22,11 @@
  * \ingroup datapolicy
  * \brief   Class to manage feature of Data Policy module.
  */
-include_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
-include_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
-include_once DOL_DOCUMENT_ROOT.'/core/lib/security.lib.php';
+
+include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
+include_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
+include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
 
 
 /**
@@ -32,362 +34,362 @@ include_once DOL_DOCUMENT_ROOT.'/core/lib/security.lib.php';
  */
 class DataPolicy
 {
-	/**
-	 * @var DoliDB Database handler.
-	 */
-	public $db;
+    /**
+     * @var DoliDB Database handler.
+     */
+    public $db;
 
-	public $error;
-
-
-	/**
-	 *	Constructor
-	 *
-	 *  @param		DoliDB		$db      Database handler
-	 */
-	public function __construct($db)
-	{
-		$this->db = $db;
-	}
-
-	/**
-	 * getAllContactNotInformed
-	 *
-	 * @return integer
-	 */
-	public function getAllContactNotInformed()
-	{
-		global $langs, $conf, $db, $user;
-
-		$langs->load("companies");
-
-		$sql = "SELECT c.rowid";
-		$sql .= " FROM ".MAIN_DB_PREFIX."socpeople as c";
-		$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe as s ON c.fk_soc = s.rowid";
-		$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."socpeople_extrafields as spe ON spe.fk_object = c.rowid";
-		$sql .= " WHERE (c.statut=1 AND c.no_email=0 AND (spe.datapolicy_consentement=0 OR spe.datapolicy_consentement IS NULL) AND (spe.datapolicy_opposition_traitement=0 OR spe.datapolicy_opposition_traitement IS NULL) AND (spe.datapolicy_opposition_prospection=0 OR spe.datapolicy_opposition_prospection IS NULL))";
-		$sql .= " AND spe.datapolicy_send IS NULL";
-		$sql .= " AND c.entity=".$conf->entity;
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			$num = $this->db->num_rows($resql);
-			$i = 0;
-			while ($i < $num) {
-				$obj = $this->db->fetch_object($resql);
-				$contact = new Contact($db);
-				$contact->fetch($obj->rowid);
-
-				DataPolicy::sendMailDataPolicyContact($contact);
-				$i++;
-			}
-		} else {
-			$this->error = $this->db->error();
-			return -1;
-		}
-
-		return 1;
-	}
-
-	/**
-	 * getAllCompaniesNotInformed
-	 *
-	 * @return integer
-	 */
-	public function getAllCompaniesNotInformed()
-	{
-		global $langs, $conf, $db, $user;
-
-		$langs->load("companies");
-
-		$sql = "SELECT s.rowid";
-		$sql .= " FROM ".MAIN_DB_PREFIX."societe as s";
-		$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe_extrafields as se ON se.fk_object = s.rowid";
-		$sql .= " WHERE s.statut=0 AND (se.datapolicy_consentement=0 OR se.datapolicy_consentement IS NULL) AND (se.datapolicy_opposition_traitement=0 OR se.datapolicy_opposition_traitement IS NULL) AND (se.datapolicy_opposition_prospection=0 OR se.datapolicy_opposition_prospection IS NULL)";
-		$sql .= " AND se.datapolicy_send IS NULL";
-		$sql .= " AND s.entity=".$conf->entity;
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			$num = $this->db->num_rows($resql);
-			$i = 0;
-			while ($i < $num) {
-				$obj = $this->db->fetch_object($resql);
-				$societe = new Societe($db);
-				$societe->fetch($obj->rowid);
-
-				DataPolicy::sendMailDataPolicyCompany($societe);
-				$i++;
-			}
-		} else {
-			$this->error = $this->db->error();
-			return -1;
-		}
-
-		return 1;
-	}
-
-	/**
-	 * getAllAdherentsNotInformed
-	 *
-	 * @return integer
-	 */
-	public function getAllAdherentsNotInformed()
-	{
-		global $langs, $conf, $db, $user;
-
-		$langs->load("adherent");
-
-		$sql = "SELECT a.rowid";
-		$sql .= " FROM ".MAIN_DB_PREFIX."adherent as a";
-		$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."adherent_extrafields as ae ON ae.fk_object = a.rowid";
-		$sql .= " WHERE a.statut=0 AND (ae.datapolicy_consentement=0 OR ae.datapolicy_consentement IS NULL) AND (ae.datapolicy_opposition_traitement=0 OR ae.datapolicy_opposition_traitement IS NULL) AND (ae.datapolicy_opposition_prospection=0 OR ae.datapolicy_opposition_prospection IS NULL)";
-		$sql .= " AND ae.datapolicy_send IS NULL";
-		$sql .= " AND a.entity=".$conf->entity;
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			$num = $this->db->num_rows($resql);
-			$i = 0;
-			while ($i < $num) {
-				$obj = $this->db->fetch_object($resql);
-				$adherent = new Adherent($db);
-				$adherent->fetch($obj->rowid);
-
-				DataPolicy::sendMailDataPolicyAdherent($adherent);
-				$i++;
-			}
-		} else {
-			$this->error = $this->db->error();
-			return -1;
-		}
-
-		return 1;
-	}
-
-	/**
-	 * sendMailDataPolicyContact
-	 *
-	 * @param 	mixed		$contact		Contact
-	 * @return	void
-	 */
-	public static function sendMailDataPolicyContact($contact)
-	{
-		global $langs, $conf, $db, $user;
-
-		$error = 0;
-
-		$from = $user->getFullName($langs).' <'.$user->email.'>';
-
-		$sendto = $contact->email;
-		$code = dol_hash($contact->email, 'md5');
-		if (!empty($contact->default_lang)) {
-			$l = $contact->default_lang;
-		} else {
-			$l = $langs->defaultlang;
-		}
-		// TODO Use a dolibarr email template
-		$s = "DATAPOLICYSUBJECT_".$l;
-		$ma = "DATAPOLICYCONTENT_".$l;
-		$la = 'TXTLINKDATAPOLICYACCEPT_'.$l;
-		$lr = 'TXTLINKDATAPOLICYREFUSE_'.$l;
-
-		$subject = getDolGlobalString($s);
-		$message = getDolGlobalString($ma);
-		$linka = getDolGlobalString($la);
-		$linkr = getDolGlobalString($lr);
-		$sendtocc = $sendtobcc = '';
-		$filepath = $mimetype = $filename = array();
-		$deliveryreceipt = 0;
-
-		$substitutionarray = array(
-			'__LINKACCEPT__' => '<a href="'.dol_buildpath('/public/datapolicy/index.php?action=1&c='.$contact->id.'&l='.$l.'&key='.$code, 3).'" target="_blank" rel="noopener noreferrer">'.$linka.'</a>',
-			'__LINKREFUSED__' => '<a href="'.dol_buildpath('/public/datapolicy/index.php?action=2&c='.$contact->id.'&l='.$l.'&key='.$code, 3).'" target="_blank" rel="noopener noreferrer">'.$linkr.'</a>',
-			'__FIRSTNAME__' => $contact->firstname,
-			'__NAME__' => $contact->lastname,
-			'__CIVILITY__' => $contact->civility,
-		);
-		$subject = make_substitutions($subject, $substitutionarray);
-		$message = make_substitutions($message, $substitutionarray);
-
-		$actiontypecode = 'AC_EMAIL';
-		$actionmsg = $langs->transnoentities('MailSentBy').' '.$from.' '.$langs->transnoentities('To').' '.$sendto;
-		if ($message) {
-			if ($sendtocc) {
-				$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('Bcc').": ".$sendtocc);
-			}
-			$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('MailTopic').": ".$subject);
-			$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('TextUsedInTheMessageBody').":");
-			$actionmsg = dol_concatdesc($actionmsg, $message);
-		}
+    public $error;
 
 
-		// Send mail
-		require_once DOL_DOCUMENT_ROOT.'/core/class/CMailFile.class.php';
-		$mailfile = new CMailFile($subject, $sendto, $from, $message, $filepath, $mimetype, $filename, $sendtocc, $sendtobcc, $deliveryreceipt, -1);
+    /**
+     *  Constructor
+     *
+     *  @param      DoliDB      $db      Database handler
+     */
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
 
-		$resultmasssend = '';
-		if ($mailfile->error) {
-			$resultmasssend .= '<div class="error">'.$mailfile->error.'</div>';
-		} else {
-			$resultmail = $mailfile->sendfile();
+    /**
+     * getAllContactNotInformed
+     *
+     * @return integer
+     */
+    public function getAllContactNotInformed()
+    {
+        global $langs, $conf, $db, $user;
 
-			if ($resultmail) {
-				$resultmasssend .= $langs->trans("MailSent").': '.$sendto."<br>";
-				$contact->array_options['options_datapolicy_send'] = date('Y-m-d', time());
-				$contact->update($contact->id);
-			} else {
-				dol_print_error($db);
-			}
-		}
-		setEventMessage($resultmasssend);
-	}
+        $langs->load("companies");
 
-	/**
-	 * sendMailDataPolicyCompany
-	 *
-	 * @param Societe	$societe	Object societe
-	 * @return	void
-	 */
-	public static function sendMailDataPolicyCompany($societe)
-	{
-		global $langs, $conf, $db, $user;
+        $sql = "SELECT c.rowid";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "socpeople as c";
+        $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "societe as s ON c.fk_soc = s.rowid";
+        $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "socpeople_extrafields as spe ON spe.fk_object = c.rowid";
+        $sql .= " WHERE (c.statut=1 AND c.no_email=0 AND (spe.datapolicy_consentement=0 OR spe.datapolicy_consentement IS NULL) AND (spe.datapolicy_opposition_traitement=0 OR spe.datapolicy_opposition_traitement IS NULL) AND (spe.datapolicy_opposition_prospection=0 OR spe.datapolicy_opposition_prospection IS NULL))";
+        $sql .= " AND spe.datapolicy_send IS NULL";
+        $sql .= " AND c.entity=" . $conf->entity;
+        $resql = $this->db->query($sql);
+        if ($resql) {
+            $num = $this->db->num_rows($resql);
+            $i = 0;
+            while ($i < $num) {
+                $obj = $this->db->fetch_object($resql);
+                $contact = new Contact($db);
+                $contact->fetch($obj->rowid);
 
-		$error = 0;
+                DataPolicy::sendMailDataPolicyContact($contact);
+                $i++;
+            }
+        } else {
+            $this->error = $this->db->error();
+            return -1;
+        }
 
-		$from = $user->getFullName($langs).' <'.$user->email.'>';
+        return 1;
+    }
 
-		$sendto = $societe->email;
+    /**
+     * getAllCompaniesNotInformed
+     *
+     * @return integer
+     */
+    public function getAllCompaniesNotInformed()
+    {
+        global $langs, $conf, $db, $user;
 
-		$code = dol_hash($societe->email, 'md5');
-		if (!empty($societe->default_lang)) {
-			$l = $societe->default_lang;
-		} else {
-			$l = $langs->defaultlang;
-		}
-		// TODO Use a dolibarr email template
-		$s = "DATAPOLICYSUBJECT_".$l;
-		$ma = "DATAPOLICYCONTENT_".$l;
-		$la = 'TXTLINKDATAPOLICYACCEPT_'.$l;
-		$lr = 'TXTLINKDATAPOLICYREFUSE_'.$l;
+        $langs->load("companies");
 
-		$subject = getDolGlobalString($s);
-		$message = getDolGlobalString($ma);
-		$linka = getDolGlobalString($la);
-		$linkr = getDolGlobalString($lr);
-		$sendtocc = $sendtobcc = '';
-		$filepath = $mimetype = $filename = array();
-		$deliveryreceipt = 0;
+        $sql = "SELECT s.rowid";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "societe as s";
+        $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "societe_extrafields as se ON se.fk_object = s.rowid";
+        $sql .= " WHERE s.statut=0 AND (se.datapolicy_consentement=0 OR se.datapolicy_consentement IS NULL) AND (se.datapolicy_opposition_traitement=0 OR se.datapolicy_opposition_traitement IS NULL) AND (se.datapolicy_opposition_prospection=0 OR se.datapolicy_opposition_prospection IS NULL)";
+        $sql .= " AND se.datapolicy_send IS NULL";
+        $sql .= " AND s.entity=" . $conf->entity;
+        $resql = $this->db->query($sql);
+        if ($resql) {
+            $num = $this->db->num_rows($resql);
+            $i = 0;
+            while ($i < $num) {
+                $obj = $this->db->fetch_object($resql);
+                $societe = new Societe($db);
+                $societe->fetch($obj->rowid);
 
-		$substitutionarray = array(
-			'__LINKACCEPT__' => '<a href="'.dol_buildpath('/public/datapolicy/index.php?action=1&s='.$societe->id.'&l='.$l.'&key='.$code, 3).'" target="_blank" rel="noopener noreferrer">'.$linka.'</a>',
-			'__LINKREFUSED__' => '<a href="'.dol_buildpath('/public/datapolicy/index.php?action=2&s='.$societe->id.'&l='.$l.'&key='.$code, 3).'" target="_blank" rel="noopener noreferrer">'.$linkr.'</a>',
-		);
-		$subject = make_substitutions($subject, $substitutionarray);
-		$message = make_substitutions($message, $substitutionarray);
+                DataPolicy::sendMailDataPolicyCompany($societe);
+                $i++;
+            }
+        } else {
+            $this->error = $this->db->error();
+            return -1;
+        }
 
-		$actiontypecode = 'AC_EMAIL';
-		$actionmsg = $langs->transnoentities('MailSentBy').' '.$from.' '.$langs->transnoentities('To').' '.$sendto;
-		if ($message) {
-			if ($sendtocc) {
-				$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('Bcc').": ".$sendtocc);
-			}
-			$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('MailTopic').": ".$subject);
-			$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('TextUsedInTheMessageBody').":");
-			$actionmsg = dol_concatdesc($actionmsg, $message);
-		}
+        return 1;
+    }
 
-		// Send mail
-		require_once DOL_DOCUMENT_ROOT.'/core/class/CMailFile.class.php';
-		$mailfile = new CMailFile($subject, $sendto, $from, $message, $filepath, $mimetype, $filename, $sendtocc, $sendtobcc, $deliveryreceipt, -1);
+    /**
+     * getAllAdherentsNotInformed
+     *
+     * @return integer
+     */
+    public function getAllAdherentsNotInformed()
+    {
+        global $langs, $conf, $db, $user;
 
-		$resultmasssend = '';
-		if ($mailfile->error) {
-			$resultmasssend .= '<div class="error">'.$mailfile->error.'</div>';
-		} else {
-			$resultmail = $mailfile->sendfile();
+        $langs->load("adherent");
 
-			if ($resultmail) {
-				$resultmasssend .= $langs->trans("MailSent").': '.$sendto."<br>";
-				$societe->array_options['options_datapolicy_send'] = date('Y-m-d', time());
-				$societe->update($societe->id, $user);
-			} else {
-				dol_print_error($db);
-			}
-		}
-		setEventMessage($resultmasssend);
-	}
+        $sql = "SELECT a.rowid";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "adherent as a";
+        $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "adherent_extrafields as ae ON ae.fk_object = a.rowid";
+        $sql .= " WHERE a.statut=0 AND (ae.datapolicy_consentement=0 OR ae.datapolicy_consentement IS NULL) AND (ae.datapolicy_opposition_traitement=0 OR ae.datapolicy_opposition_traitement IS NULL) AND (ae.datapolicy_opposition_prospection=0 OR ae.datapolicy_opposition_prospection IS NULL)";
+        $sql .= " AND ae.datapolicy_send IS NULL";
+        $sql .= " AND a.entity=" . $conf->entity;
+        $resql = $this->db->query($sql);
+        if ($resql) {
+            $num = $this->db->num_rows($resql);
+            $i = 0;
+            while ($i < $num) {
+                $obj = $this->db->fetch_object($resql);
+                $adherent = new Adherent($db);
+                $adherent->fetch($obj->rowid);
 
-	/**
-	 * sendMailDataPolicyAdherent
-	 *
-	 * @param Adherent	$adherent		Member
-	 * @return void
-	 */
-	public static function sendMailDataPolicyAdherent($adherent)
-	{
-		global $langs, $conf, $db, $user;
+                DataPolicy::sendMailDataPolicyAdherent($adherent);
+                $i++;
+            }
+        } else {
+            $this->error = $this->db->error();
+            return -1;
+        }
 
-		$error = 0;
+        return 1;
+    }
 
-		$from = $user->getFullName($langs).' <'.$user->email.'>';
+    /**
+     * sendMailDataPolicyContact
+     *
+     * @param   mixed       $contact        Contact
+     * @return  void
+     */
+    public static function sendMailDataPolicyContact($contact)
+    {
+        global $langs, $conf, $db, $user;
 
-		$sendto = $adherent->email;
+        $error = 0;
 
-		$code = dol_hash($adherent->email, 'md5');
-		if (!empty($adherent->default_lang)) {
-			$l = $adherent->default_lang;
-		} else {
-			$l = $langs->defaultlang;
-		}
-		// TODO Use a dolibarr email template
-		$s = 'TXTLINKDATAPOLICYSUBJECT_'.$l;
-		$ma = 'TXTLINKDATAPOLICYMESSAGE_'.$l;
-		$la = 'TXTLINKDATAPOLICYACCEPT_'.$l;
-		$lr = 'TXTLINKDATAPOLICYREFUSE_'.$l;
+        $from = $user->getFullName($langs) . ' <' . $user->email . '>';
 
-		$subject = getDolGlobalString($s);
-		$message = getDolGlobalString($ma);
-		$linka = getDolGlobalString($la);
-		$linkr = getDolGlobalString($lr);
-		$sendtocc = $sendtobcc = '';
-		$filepath = $mimetype = $filename = array();
-		$deliveryreceipt = 0;
+        $sendto = $contact->email;
+        $code = dol_hash($contact->email, 'md5');
+        if (!empty($contact->default_lang)) {
+            $l = $contact->default_lang;
+        } else {
+            $l = $langs->defaultlang;
+        }
+        // TODO Use a dolibarr email template
+        $s = "DATAPOLICYSUBJECT_" . $l;
+        $ma = "DATAPOLICYCONTENT_" . $l;
+        $la = 'TXTLINKDATAPOLICYACCEPT_' . $l;
+        $lr = 'TXTLINKDATAPOLICYREFUSE_' . $l;
 
-		$substitutionarray = array(
-			'__LINKACCEPT__' => '<a href="'.dol_buildpath('/public/datapolicy/index.php?action=1&a='.$adherent->id.'&l='.$l.'&key='.$code, 3).'" target="_blank" rel="noopener noreferrer">'.$linka.'</a>',
-			'__LINKREFUSED__' => '<a href="'.dol_buildpath('/public/datapolicy/index.php?action=2&a='.$adherent->id.'&l='.$l.'&key='.$code, 3).'" target="_blank" rel="noopener noreferrer">'.$linkr.'</a>',
-		);
-		$subject = make_substitutions($subject, $substitutionarray);
-		$message = make_substitutions($message, $substitutionarray);
+        $subject = getDolGlobalString($s);
+        $message = getDolGlobalString($ma);
+        $linka = getDolGlobalString($la);
+        $linkr = getDolGlobalString($lr);
+        $sendtocc = $sendtobcc = '';
+        $filepath = $mimetype = $filename = array();
+        $deliveryreceipt = 0;
 
-		$actiontypecode = 'AC_EMAIL';
-		$actionmsg = $langs->transnoentities('MailSentBy').' '.$from.' '.$langs->transnoentities('To').' '.$sendto;
-		if ($message) {
-			if ($sendtocc) {
-				$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('Bcc').": ".$sendtocc);
-			}
-			$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('MailTopic').": ".$subject);
-			$actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('TextUsedInTheMessageBody').":");
-			$actionmsg = dol_concatdesc($actionmsg, $message);
-		}
+        $substitutionarray = array(
+            '__LINKACCEPT__' => '<a href="' . dol_buildpath('/public/datapolicy/index.php?action=1&c=' . $contact->id . '&l=' . $l . '&key=' . $code, 3) . '" target="_blank" rel="noopener noreferrer">' . $linka . '</a>',
+            '__LINKREFUSED__' => '<a href="' . dol_buildpath('/public/datapolicy/index.php?action=2&c=' . $contact->id . '&l=' . $l . '&key=' . $code, 3) . '" target="_blank" rel="noopener noreferrer">' . $linkr . '</a>',
+            '__FIRSTNAME__' => $contact->firstname,
+            '__NAME__' => $contact->lastname,
+            '__CIVILITY__' => $contact->civility,
+        );
+        $subject = make_substitutions($subject, $substitutionarray);
+        $message = make_substitutions($message, $substitutionarray);
+
+        $actiontypecode = 'AC_EMAIL';
+        $actionmsg = $langs->transnoentities('MailSentBy') . ' ' . $from . ' ' . $langs->transnoentities('To') . ' ' . $sendto;
+        if ($message) {
+            if ($sendtocc) {
+                $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('Bcc') . ": " . $sendtocc);
+            }
+            $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('MailTopic') . ": " . $subject);
+            $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('TextUsedInTheMessageBody') . ":");
+            $actionmsg = dol_concatdesc($actionmsg, $message);
+        }
 
 
-		// Send mail
-		require_once DOL_DOCUMENT_ROOT.'/core/class/CMailFile.class.php';
-		$mailfile = new CMailFile($subject, $sendto, $from, $message, $filepath, $mimetype, $filename, $sendtocc, $sendtobcc, $deliveryreceipt, -1);
+        // Send mail
+        require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
+        $mailfile = new CMailFile($subject, $sendto, $from, $message, $filepath, $mimetype, $filename, $sendtocc, $sendtobcc, $deliveryreceipt, -1);
 
-		$resultmasssend = '';
-		if ($mailfile->error) {
-			$resultmasssend .= '<div class="error">'.$mailfile->error.'</div>';
-		} else {
-			$resultmail = $mailfile->sendfile();
+        $resultmasssend = '';
+        if ($mailfile->error) {
+            $resultmasssend .= '<div class="error">' . $mailfile->error . '</div>';
+        } else {
+            $resultmail = $mailfile->sendfile();
 
-			if ($resultmail) {
-				$resultmasssend .= $langs->trans("MailSent").': '.$sendto."<br>";
-				$adherent->array_options['options_datapolicy_send'] = date('Y-m-d', time());
-				$adherent->update($user);
-			} else {
-				dol_print_error($db);
-			}
-		}
-		setEventMessage($resultmasssend);
-	}
+            if ($resultmail) {
+                $resultmasssend .= $langs->trans("MailSent") . ': ' . $sendto . "<br>";
+                $contact->array_options['options_datapolicy_send'] = date('Y-m-d', time());
+                $contact->update($contact->id);
+            } else {
+                dol_print_error($db);
+            }
+        }
+        setEventMessage($resultmasssend);
+    }
+
+    /**
+     * sendMailDataPolicyCompany
+     *
+     * @param Societe   $societe    Object societe
+     * @return  void
+     */
+    public static function sendMailDataPolicyCompany($societe)
+    {
+        global $langs, $conf, $db, $user;
+
+        $error = 0;
+
+        $from = $user->getFullName($langs) . ' <' . $user->email . '>';
+
+        $sendto = $societe->email;
+
+        $code = dol_hash($societe->email, 'md5');
+        if (!empty($societe->default_lang)) {
+            $l = $societe->default_lang;
+        } else {
+            $l = $langs->defaultlang;
+        }
+        // TODO Use a dolibarr email template
+        $s = "DATAPOLICYSUBJECT_" . $l;
+        $ma = "DATAPOLICYCONTENT_" . $l;
+        $la = 'TXTLINKDATAPOLICYACCEPT_' . $l;
+        $lr = 'TXTLINKDATAPOLICYREFUSE_' . $l;
+
+        $subject = getDolGlobalString($s);
+        $message = getDolGlobalString($ma);
+        $linka = getDolGlobalString($la);
+        $linkr = getDolGlobalString($lr);
+        $sendtocc = $sendtobcc = '';
+        $filepath = $mimetype = $filename = array();
+        $deliveryreceipt = 0;
+
+        $substitutionarray = array(
+            '__LINKACCEPT__' => '<a href="' . dol_buildpath('/public/datapolicy/index.php?action=1&s=' . $societe->id . '&l=' . $l . '&key=' . $code, 3) . '" target="_blank" rel="noopener noreferrer">' . $linka . '</a>',
+            '__LINKREFUSED__' => '<a href="' . dol_buildpath('/public/datapolicy/index.php?action=2&s=' . $societe->id . '&l=' . $l . '&key=' . $code, 3) . '" target="_blank" rel="noopener noreferrer">' . $linkr . '</a>',
+        );
+        $subject = make_substitutions($subject, $substitutionarray);
+        $message = make_substitutions($message, $substitutionarray);
+
+        $actiontypecode = 'AC_EMAIL';
+        $actionmsg = $langs->transnoentities('MailSentBy') . ' ' . $from . ' ' . $langs->transnoentities('To') . ' ' . $sendto;
+        if ($message) {
+            if ($sendtocc) {
+                $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('Bcc') . ": " . $sendtocc);
+            }
+            $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('MailTopic') . ": " . $subject);
+            $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('TextUsedInTheMessageBody') . ":");
+            $actionmsg = dol_concatdesc($actionmsg, $message);
+        }
+
+        // Send mail
+        require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
+        $mailfile = new CMailFile($subject, $sendto, $from, $message, $filepath, $mimetype, $filename, $sendtocc, $sendtobcc, $deliveryreceipt, -1);
+
+        $resultmasssend = '';
+        if ($mailfile->error) {
+            $resultmasssend .= '<div class="error">' . $mailfile->error . '</div>';
+        } else {
+            $resultmail = $mailfile->sendfile();
+
+            if ($resultmail) {
+                $resultmasssend .= $langs->trans("MailSent") . ': ' . $sendto . "<br>";
+                $societe->array_options['options_datapolicy_send'] = date('Y-m-d', time());
+                $societe->update($societe->id, $user);
+            } else {
+                dol_print_error($db);
+            }
+        }
+        setEventMessage($resultmasssend);
+    }
+
+    /**
+     * sendMailDataPolicyAdherent
+     *
+     * @param Adherent  $adherent       Member
+     * @return void
+     */
+    public static function sendMailDataPolicyAdherent($adherent)
+    {
+        global $langs, $conf, $db, $user;
+
+        $error = 0;
+
+        $from = $user->getFullName($langs) . ' <' . $user->email . '>';
+
+        $sendto = $adherent->email;
+
+        $code = dol_hash($adherent->email, 'md5');
+        if (!empty($adherent->default_lang)) {
+            $l = $adherent->default_lang;
+        } else {
+            $l = $langs->defaultlang;
+        }
+        // TODO Use a dolibarr email template
+        $s = 'TXTLINKDATAPOLICYSUBJECT_' . $l;
+        $ma = 'TXTLINKDATAPOLICYMESSAGE_' . $l;
+        $la = 'TXTLINKDATAPOLICYACCEPT_' . $l;
+        $lr = 'TXTLINKDATAPOLICYREFUSE_' . $l;
+
+        $subject = getDolGlobalString($s);
+        $message = getDolGlobalString($ma);
+        $linka = getDolGlobalString($la);
+        $linkr = getDolGlobalString($lr);
+        $sendtocc = $sendtobcc = '';
+        $filepath = $mimetype = $filename = array();
+        $deliveryreceipt = 0;
+
+        $substitutionarray = array(
+            '__LINKACCEPT__' => '<a href="' . dol_buildpath('/public/datapolicy/index.php?action=1&a=' . $adherent->id . '&l=' . $l . '&key=' . $code, 3) . '" target="_blank" rel="noopener noreferrer">' . $linka . '</a>',
+            '__LINKREFUSED__' => '<a href="' . dol_buildpath('/public/datapolicy/index.php?action=2&a=' . $adherent->id . '&l=' . $l . '&key=' . $code, 3) . '" target="_blank" rel="noopener noreferrer">' . $linkr . '</a>',
+        );
+        $subject = make_substitutions($subject, $substitutionarray);
+        $message = make_substitutions($message, $substitutionarray);
+
+        $actiontypecode = 'AC_EMAIL';
+        $actionmsg = $langs->transnoentities('MailSentBy') . ' ' . $from . ' ' . $langs->transnoentities('To') . ' ' . $sendto;
+        if ($message) {
+            if ($sendtocc) {
+                $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('Bcc') . ": " . $sendtocc);
+            }
+            $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('MailTopic') . ": " . $subject);
+            $actionmsg = dol_concatdesc($actionmsg, $langs->transnoentities('TextUsedInTheMessageBody') . ":");
+            $actionmsg = dol_concatdesc($actionmsg, $message);
+        }
+
+
+        // Send mail
+        require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
+        $mailfile = new CMailFile($subject, $sendto, $from, $message, $filepath, $mimetype, $filename, $sendtocc, $sendtobcc, $deliveryreceipt, -1);
+
+        $resultmasssend = '';
+        if ($mailfile->error) {
+            $resultmasssend .= '<div class="error">' . $mailfile->error . '</div>';
+        } else {
+            $resultmail = $mailfile->sendfile();
+
+            if ($resultmail) {
+                $resultmasssend .= $langs->trans("MailSent") . ': ' . $sendto . "<br>";
+                $adherent->array_options['options_datapolicy_send'] = date('Y-m-d', time());
+                $adherent->update($user);
+            } else {
+                dol_print_error($db);
+            }
+        }
+        setEventMessage($resultmasssend);
+    }
 }

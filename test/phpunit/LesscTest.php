@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
  *
@@ -19,54 +20,54 @@
 
 /**
  *      \file       test/phpunit/LessTest.php
- *		\ingroup    test
+ *      \ingroup    test
  *      \brief      PHPUnit test
- *		\remarks	To run this script as CLI:  phpunit filename.php
+ *      \remarks    To run this script as CLI:  phpunit filename.php
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
-require_once dirname(__FILE__).'/../../htdocs/core/lib/security.lib.php';
-require_once dirname(__FILE__).'/../../htdocs/core/lib/security2.lib.php';
-require_once dirname(__FILE__).'/CommonClassTest.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
+require_once dirname(__FILE__) . '/../../htdocs/core/lib/security.lib.php';
+require_once dirname(__FILE__) . '/../../htdocs/core/lib/security2.lib.php';
+require_once dirname(__FILE__) . '/CommonClassTest.class.php';
 
 if (! defined('NOREQUIREUSER')) {
-	define('NOREQUIREUSER', '1');
+    define('NOREQUIREUSER', '1');
 }
 if (! defined('NOREQUIREDB')) {
-	define('NOREQUIREDB', '1');
+    define('NOREQUIREDB', '1');
 }
 if (! defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 if (! defined('NOREQUIRETRAN')) {
-	define('NOREQUIRETRAN', '1');
+    define('NOREQUIRETRAN', '1');
 }
 if (! defined('NOCSRFCHECK')) {
-	define('NOCSRFCHECK', '1');
+    define('NOCSRFCHECK', '1');
 }
 if (! defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1');
+    define('NOTOKENRENEWAL', '1');
 }
 if (! defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1'); // If there is no menu to show
+    define('NOREQUIREMENU', '1'); // If there is no menu to show
 }
 if (! defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1'); // If we don't need to load the html.form.class.php
+    define('NOREQUIREHTML', '1'); // If we don't need to load the html.form.class.php
 }
 if (! defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (! defined("NOLOGIN")) {
-	define("NOLOGIN", '1');       // If this page is public (can be called outside logged session)
+    define("NOLOGIN", '1');       // If this page is public (can be called outside logged session)
 }
 
 if (empty($user->id)) {
-	print "Load permissions for admin user nb 1\n";
-	$user->fetch(1);
-	$user->getrights();
+    print "Load permissions for admin user nb 1\n";
+    $user->fetch(1);
+    $user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -76,46 +77,46 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class LesscTest extends CommonClassTest
 {
-	/**
-	 * testLess
-	 *
-	 * @return string
-	 */
-	public function testLessc()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testLess
+     *
+     * @return string
+     */
+    public function testLessc()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		include_once DOL_DOCUMENT_ROOT.'/core/class/lessc.class.php';
+        include_once DOL_DOCUMENT_ROOT . '/core/class/lessc.class.php';
 
-		$lesscobj = new Lessc();
+        $lesscobj = new Lessc();
 
-		$cssfile = "
+        $cssfile = "
         a { font-size: 10px; }
         b .test {
         	font-size: 10px;
         }
         ";
 
-		try {
-			$contentforlessc = ".bodywebsite {\n".$cssfile."\n}\n";
-			//print '<pre>'.$contentforlessc.'</pre>';
-			$result = $lesscobj->compile($contentforlessc);
-			//var_dump($contentforlessc); exit;
-		} catch (exception $e) {
-			//echo "failed to compile lessc";
-			$result = 'Error';
-			dol_syslog("Failed to compile the CSS with lessc: ".$e->getMessage(), LOG_WARNING);
-		}
+        try {
+            $contentforlessc = ".bodywebsite {\n" . $cssfile . "\n}\n";
+            //print '<pre>'.$contentforlessc.'</pre>';
+            $result = $lesscobj->compile($contentforlessc);
+            //var_dump($contentforlessc); exit;
+        } catch (exception $e) {
+            //echo "failed to compile lessc";
+            $result = 'Error';
+            dol_syslog("Failed to compile the CSS with lessc: " . $e->getMessage(), LOG_WARNING);
+        }
 
-		$cssexpected = "
+        $cssexpected = "
 .bodywebsite a {
   font-size: 10px;
 }
@@ -124,9 +125,9 @@ class LesscTest extends CommonClassTest
 }
 ";
 
-		print __METHOD__." Result=".$result."\n";
-		$this->assertEquals(trim($result), trim($cssexpected));
+        print __METHOD__ . " Result=" . $result . "\n";
+        $this->assertEquals(trim($result), trim($cssexpected));
 
-		return;
-	}
+        return;
+    }
 }

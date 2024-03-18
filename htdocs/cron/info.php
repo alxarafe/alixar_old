@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2013	Florian Henry	<florian.henry@open-concept.pro>
+
+/* Copyright (C) 2013   Florian Henry   <florian.henry@open-concept.pro>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +17,23 @@
  */
 
 /**
- *  \file       	htdocs/cron/info.php
- *  \brief      	Page of info of a cron job
+ *  \file           htdocs/cron/info.php
+ *  \brief          Page of info of a cron job
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT."/cron/class/cronjob.class.php";
-require_once DOL_DOCUMENT_ROOT.'/core/lib/cron.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . "/cron/class/cronjob.class.php";
+require_once DOL_DOCUMENT_ROOT . '/core/lib/cron.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('admin', 'cron'));
 
 // Security check
 if (!$user->hasRight('cron', 'read')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $id = GETPOSTINT('id');
@@ -44,7 +45,7 @@ $object = new Cronjob($db);
  * View
  */
 
-$form = new Form($db);	// $form is required as global value into dol_banner_tab
+$form = new Form($db);  // $form is required as global value into dol_banner_tab
 
 llxHeader('', $langs->trans("CronInfo"));
 
@@ -55,7 +56,7 @@ $head = cron_prepare_head($object);
 
 print dol_get_fiche_head($head, 'info', $langs->trans("CronTask"), -1, 'cron');
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/cron/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/cron/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
 $morehtmlref = '<div class="refidno">';
 $morehtmlref .= $langs->trans($object->label);

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2006 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2017      Ferran Marcet       	 <fmarcet@2byte.es>
@@ -25,12 +26,12 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/categories.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/categories.lib.php';
 
 if (!$user->hasRight('categorie', 'lire')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Load translation files required by the page
@@ -42,20 +43,20 @@ $label = GETPOST('label', 'alpha');
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'categorie', $id, '&category');
 
 $object = new Categorie($db);
 $result = $object->fetch($id, $label);
 if ($result <= 0) {
-	dol_print_error($db, $object->error);
-	exit;
+    dol_print_error($db, $object->error);
+    exit;
 }
 
 $type = $object->type;
 if (is_numeric($type)) {
-	$type = Categorie::$MAP_ID_TO_CODE[$type]; // For backward compatibility
+    $type = Categorie::$MAP_ID_TO_CODE[$type]; // For backward compatibility
 }
 
 /*
@@ -73,18 +74,18 @@ $title = Categorie::$MAP_TYPE_TITLE_AREA[$type];
 $head = categories_prepare_head($object, $type);
 print dol_get_fiche_head($head, 'info', $langs->trans($title), -1, 'category');
 
-$backtolist = (GETPOST('backtolist') ? GETPOST('backtolist') : DOL_URL_ROOT.'/categories/index.php?leftmenu=cat&type='.urlencode($type));
-$linkback = '<a href="'.dol_sanitizeUrl($backtolist).'">'.$langs->trans("BackToList").'</a>';
-$object->next_prev_filter = 'type = '.((int) $object->type);
+$backtolist = (GETPOST('backtolist') ? GETPOST('backtolist') : DOL_URL_ROOT . '/categories/index.php?leftmenu=cat&type=' . urlencode($type));
+$linkback = '<a href="' . dol_sanitizeUrl($backtolist) . '">' . $langs->trans("BackToList") . '</a>';
+$object->next_prev_filter = 'type = ' . ((int) $object->type);
 $object->ref = $object->label;
-$morehtmlref = '<br><div class="refidno"><a href="'.DOL_URL_ROOT.'/categories/index.php?leftmenu=cat&type='.urlencode($type).'">'.$langs->trans("Root").'</a> >> ';
+$morehtmlref = '<br><div class="refidno"><a href="' . DOL_URL_ROOT . '/categories/index.php?leftmenu=cat&type=' . urlencode($type) . '">' . $langs->trans("Root") . '</a> >> ';
 $ways = $object->print_all_ways(" &gt;&gt; ", '', 1);
 foreach ($ways as $way) {
-	$morehtmlref .= $way."<br>\n";
+    $morehtmlref .= $way . "<br>\n";
 }
 $morehtmlref .= '</div>';
 
-dol_banner_tab($object, 'label', $linkback, ($user->socid ? 0 : 1), 'label', 'label', $morehtmlref, '&type='.$type, 0, '', '', 1);
+dol_banner_tab($object, 'label', $linkback, ($user->socid ? 0 : 1), 'label', 'label', $morehtmlref, '&type=' . $type, 0, '', '', 1);
 
 print '<br>';
 

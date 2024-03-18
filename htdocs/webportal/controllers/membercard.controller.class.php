@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,92 +30,92 @@ dol_include_once('/webportal/class/html.formcardwebportal.class.php');
  */
 class MemberCardController extends Controller
 {
-	/**
-	 * @var FormCardWebPortal Form for card
-	 */
-	protected $formCard;
+    /**
+     * @var FormCardWebPortal Form for card
+     */
+    protected $formCard;
 
-	/**
-	 * Check current access to controller
-	 *
-	 * @return  bool
-	 */
-	public function checkAccess()
-	{
-		$context = Context::getInstance();
-		$cardAccess = getDolGlobalString('WEBPORTAL_MEMBER_CARD_ACCESS');
-		$this->accessRight = isModEnabled('member') && in_array($cardAccess, array('visible', 'edit')) && $context->logged_member && $context->logged_member->id > 0;
+    /**
+     * Check current access to controller
+     *
+     * @return  bool
+     */
+    public function checkAccess()
+    {
+        $context = Context::getInstance();
+        $cardAccess = getDolGlobalString('WEBPORTAL_MEMBER_CARD_ACCESS');
+        $this->accessRight = isModEnabled('member') && in_array($cardAccess, array('visible', 'edit')) && $context->logged_member && $context->logged_member->id > 0;
 
-		return parent::checkAccess();
-	}
+        return parent::checkAccess();
+    }
 
-	/**
-	 * Action method is called before html output
-	 * can be used to manage security and change context
-	 *
-	 * @return  int     Return integer < 0 on error, > 0 on success
-	 */
-	public function action()
-	{
-		global $langs;
+    /**
+     * Action method is called before html output
+     * can be used to manage security and change context
+     *
+     * @return  int     Return integer < 0 on error, > 0 on success
+     */
+    public function action()
+    {
+        global $langs;
 
-		$context = Context::getInstance();
-		if (!$context->controllerInstance->checkAccess()) {
-			return -1;
-		}
+        $context = Context::getInstance();
+        if (!$context->controllerInstance->checkAccess()) {
+            return -1;
+        }
 
-		// Load translation files required by the page
-		$langs->loadLangs(array('companies', 'bills', 'members', 'users', 'other', 'paypal'));
+        // Load translation files required by the page
+        $langs->loadLangs(array('companies', 'bills', 'members', 'users', 'other', 'paypal'));
 
-		$context->title = $langs->trans('WebPortalMemberCardTitle');
-		$context->desc = $langs->trans('WebPortalMemberCardDesc');
-		$context->menu_active[] = 'member_card';
+        $context->title = $langs->trans('WebPortalMemberCardTitle');
+        $context->desc = $langs->trans('WebPortalMemberCardDesc');
+        $context->menu_active[] = 'member_card';
 
-		// set form card
-		$cardAccess = getDolGlobalString('WEBPORTAL_MEMBER_CARD_ACCESS');
-		$permissiontoread = (int) isModEnabled('member') && in_array($cardAccess, array('visible', 'edit'));
-		$permissiontoadd = (int) isModEnabled('member') && in_array($cardAccess, array('edit'));
-		$permissiontodelete = 0;
-		$permissionnote = 0;
-		$permissiondellink = 0;
-		$formCardWebPortal = new FormCardWebPortal($this->db);
-		$formCardWebPortal->init('member', $context->logged_member->id, $permissiontoread, $permissiontoadd, $permissiontodelete, $permissionnote, $permissiondellink);
+        // set form card
+        $cardAccess = getDolGlobalString('WEBPORTAL_MEMBER_CARD_ACCESS');
+        $permissiontoread = (int) isModEnabled('member') && in_array($cardAccess, array('visible', 'edit'));
+        $permissiontoadd = (int) isModEnabled('member') && in_array($cardAccess, array('edit'));
+        $permissiontodelete = 0;
+        $permissionnote = 0;
+        $permissiondellink = 0;
+        $formCardWebPortal = new FormCardWebPortal($this->db);
+        $formCardWebPortal->init('member', $context->logged_member->id, $permissiontoread, $permissiontoadd, $permissiontodelete, $permissionnote, $permissiondellink);
 
-		// hook for action
-		$hookRes = $this->hookDoAction();
-		if (empty($hookRes)) {
-			$formCardWebPortal->doActions();
-		}
+        // hook for action
+        $hookRes = $this->hookDoAction();
+        if (empty($hookRes)) {
+            $formCardWebPortal->doActions();
+        }
 
-		$this->formCard = $formCardWebPortal;
+        $this->formCard = $formCardWebPortal;
 
-		return 1;
-	}
+        return 1;
+    }
 
-	/**
-	 * Display
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		$context = Context::getInstance();
-		if (!$context->controllerInstance->checkAccess()) {
-			$this->display404();
-			return;
-		}
+    /**
+     * Display
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        $context = Context::getInstance();
+        if (!$context->controllerInstance->checkAccess()) {
+            $this->display404();
+            return;
+        }
 
-		$this->loadTemplate('header');
-		$this->loadTemplate('menu');
-		$this->loadTemplate('hero-header-banner');
+        $this->loadTemplate('header');
+        $this->loadTemplate('menu');
+        $this->loadTemplate('hero-header-banner');
 
-		$hookRes = $this->hookPrintPageView();
-		if (empty($hookRes)) {
-			print '<main class="container">';
-			print $this->formCard->elementCard($context);
-			print '</main>';
-		}
+        $hookRes = $this->hookPrintPageView();
+        if (empty($hookRes)) {
+            print '<main class="container">';
+            print $this->formCard->elementCard($context);
+            print '</main>';
+        }
 
-		$this->loadTemplate('footer');
-	}
+        $this->loadTemplate('footer');
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2012-2014 Charles-François BENKE <charles.fr@benke.fr>
  * Copyright (C) 2014      Marcos García          <marcosgdf@gmail.com>
  * Copyright (C) 2015      Frederic France        <frederic.france@free.fr>
@@ -24,7 +25,8 @@
  *  \ingroup    projet
  *  \brief      Module to show the funnel of prospection
  */
-include_once DOL_DOCUMENT_ROOT."/core/boxes/modules_boxes.php";
+
+include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
 
 
 /**
@@ -32,292 +34,292 @@ include_once DOL_DOCUMENT_ROOT."/core/boxes/modules_boxes.php";
  */
 class box_funnel_of_prospection extends ModeleBoxes
 {
-	public $boxcode  = "FunnelOfProspection";
-	public $boximg   = "object_projectpub";
-	public $boxlabel = "BoxTitleFunnelOfProspection";
-	public $depends  = array("projet");
+    public $boxcode  = "FunnelOfProspection";
+    public $boximg   = "object_projectpub";
+    public $boxlabel = "BoxTitleFunnelOfProspection";
+    public $depends  = array("projet");
 
-	public $version = 'development';
+    public $version = 'development';
 
-	/**
-	 *  Constructor
-	 *
-	 *  @param  DoliDB  $db         Database handler
-	 *  @param  string  $param      More parameters
-	 */
-	public function __construct($db, $param = '')
-	{
-		global $user, $langs;
+    /**
+     *  Constructor
+     *
+     *  @param  DoliDB  $db         Database handler
+     *  @param  string  $param      More parameters
+     */
+    public function __construct($db, $param = '')
+    {
+        global $user, $langs;
 
-		// Load translation files required by the page
-		$langs->loadLangs(array('boxes', 'projects'));
+        // Load translation files required by the page
+        $langs->loadLangs(array('boxes', 'projects'));
 
-		$this->db = $db;
+        $this->db = $db;
 
-		$this->enabled = (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 ? 1 : 0); // Not enabled by default, still need some work
-		//$this->enabled = 1;
+        $this->enabled = (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 ? 1 : 0); // Not enabled by default, still need some work
+        //$this->enabled = 1;
 
-		$this->hidden = !$user->hasRight('projet', 'lire');
-	}
+        $this->hidden = !$user->hasRight('projet', 'lire');
+    }
 
-	/**
-	 *  Load data for box to show them later
-	 *
-	 *  @param   int		$max        Maximum number of records to load
-	 *  @return  void
-	 */
-	public function loadBox($max = 5)
-	{
-		global $conf;
+    /**
+     *  Load data for box to show them later
+     *
+     *  @param   int        $max        Maximum number of records to load
+     *  @return  void
+     */
+    public function loadBox($max = 5)
+    {
+        global $conf;
 
-		// default values
-		$badgeStatus0 = '#cbd3d3'; // draft
-		$badgeStatus1 = '#bc9526'; // validated
-		$badgeStatus1b = '#bc9526'; // validated
-		$badgeStatus2 = '#9c9c26'; // approved
-		$badgeStatus3 = '#bca52b';
-		$badgeStatus4 = '#25a580'; // Color ok
-		$badgeStatus4b = '#25a580'; // Color ok
-		$badgeStatus5 = '#cad2d2';
-		$badgeStatus6 = '#cad2d2';
-		$badgeStatus7 = '#baa32b';
-		$badgeStatus8 = '#993013';
-		$badgeStatus9 = '#e7f0f0';
-		if (file_exists(DOL_DOCUMENT_ROOT.'/theme/'.$conf->theme.'/theme_vars.inc.php')) {
-			include DOL_DOCUMENT_ROOT.'/theme/'.$conf->theme.'/theme_vars.inc.php';
-		}
-		$listofoppstatus = array();
-		$listofopplabel = array();
-		$listofoppcode = array();
-		$colorseriesstat = array();
-		$sql = "SELECT cls.rowid, cls.code, cls.percent, cls.label";
-		$sql .= " FROM ".MAIN_DB_PREFIX."c_lead_status as cls";
-		$sql .= " WHERE active=1";
-		$sql .= " AND cls.code <> 'LOST'";
-		$sql .= " AND cls.code <> 'WON'";
-		$sql .= $this->db->order('cls.rowid', 'ASC');
-		$resql = $this->db->query($sql);
-		if ($resql) {
-			$num = $this->db->num_rows($resql);
-			$i = 0;
+        // default values
+        $badgeStatus0 = '#cbd3d3'; // draft
+        $badgeStatus1 = '#bc9526'; // validated
+        $badgeStatus1b = '#bc9526'; // validated
+        $badgeStatus2 = '#9c9c26'; // approved
+        $badgeStatus3 = '#bca52b';
+        $badgeStatus4 = '#25a580'; // Color ok
+        $badgeStatus4b = '#25a580'; // Color ok
+        $badgeStatus5 = '#cad2d2';
+        $badgeStatus6 = '#cad2d2';
+        $badgeStatus7 = '#baa32b';
+        $badgeStatus8 = '#993013';
+        $badgeStatus9 = '#e7f0f0';
+        if (file_exists(DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/theme_vars.inc.php')) {
+            include DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/theme_vars.inc.php';
+        }
+        $listofoppstatus = array();
+        $listofopplabel = array();
+        $listofoppcode = array();
+        $colorseriesstat = array();
+        $sql = "SELECT cls.rowid, cls.code, cls.percent, cls.label";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "c_lead_status as cls";
+        $sql .= " WHERE active=1";
+        $sql .= " AND cls.code <> 'LOST'";
+        $sql .= " AND cls.code <> 'WON'";
+        $sql .= $this->db->order('cls.rowid', 'ASC');
+        $resql = $this->db->query($sql);
+        if ($resql) {
+            $num = $this->db->num_rows($resql);
+            $i = 0;
 
-			while ($i < $num) {
-				$objp = $this->db->fetch_object($resql);
-				$listofoppstatus[$objp->rowid] = $objp->percent;
-				$listofopplabel[$objp->rowid] = $objp->label;
-				$listofoppcode[$objp->rowid] = $objp->code;
-				switch ($objp->code) {
-					case 'PROSP':
-						$colorseriesstat[$objp->rowid] = '-'.$badgeStatus0;
-						break;
-					case 'QUAL':
-						$colorseriesstat[$objp->rowid] = '-'.$badgeStatus1;
-						break;
-					case 'PROPO':
-						$colorseriesstat[$objp->rowid] = $badgeStatus1;
-						break;
-					case 'NEGO':
-						$colorseriesstat[$objp->rowid] = $badgeStatus4;
-						break;
-					default:
-						break;
-				}
-				$i++;
-			}
-		} else {
-			dol_print_error($this->db);
-		}
+            while ($i < $num) {
+                $objp = $this->db->fetch_object($resql);
+                $listofoppstatus[$objp->rowid] = $objp->percent;
+                $listofopplabel[$objp->rowid] = $objp->label;
+                $listofoppcode[$objp->rowid] = $objp->code;
+                switch ($objp->code) {
+                    case 'PROSP':
+                        $colorseriesstat[$objp->rowid] = '-' . $badgeStatus0;
+                        break;
+                    case 'QUAL':
+                        $colorseriesstat[$objp->rowid] = '-' . $badgeStatus1;
+                        break;
+                    case 'PROPO':
+                        $colorseriesstat[$objp->rowid] = $badgeStatus1;
+                        break;
+                    case 'NEGO':
+                        $colorseriesstat[$objp->rowid] = $badgeStatus4;
+                        break;
+                    default:
+                        break;
+                }
+                $i++;
+            }
+        } else {
+            dol_print_error($this->db);
+        }
 
-		global $conf, $user, $langs;
-		$this->max = $max;
+        global $conf, $user, $langs;
+        $this->max = $max;
 
-		$this->info_box_head = array(
-			'text' => $langs->trans("Statistics").' - '.$langs->trans("BoxTitleFunnelOfProspection"),
-			'nbcol' => '2',
-			'graph' => '1'
-		);
+        $this->info_box_head = array(
+            'text' => $langs->trans("Statistics") . ' - ' . $langs->trans("BoxTitleFunnelOfProspection"),
+            'nbcol' => '2',
+            'graph' => '1'
+        );
 
-		if ($user->hasRight('projet', 'lire') || getDolGlobalString('PROJECT_USE_OPPORTUNITIES')) {
-			$sql = "SELECT p.fk_opp_status as opp_status, cls.code, COUNT(p.rowid) as nb, SUM(p.opp_amount) as opp_amount, SUM(p.opp_amount * p.opp_percent) as ponderated_opp_amount";
-			$sql .= " FROM ".MAIN_DB_PREFIX."projet as p, ".MAIN_DB_PREFIX."c_lead_status as cls";
-			$sql .= " WHERE p.entity IN (".getEntity('project').")";
-			$sql .= " AND p.fk_opp_status = cls.rowid";
-			$sql .= " AND p.fk_statut = 1"; // Opend projects only
-			$sql .= " AND cls.code NOT IN ('LOST', 'WON')";
-			$sql .= " GROUP BY p.fk_opp_status, cls.code";
-			$resql = $this->db->query($sql);
+        if ($user->hasRight('projet', 'lire') || getDolGlobalString('PROJECT_USE_OPPORTUNITIES')) {
+            $sql = "SELECT p.fk_opp_status as opp_status, cls.code, COUNT(p.rowid) as nb, SUM(p.opp_amount) as opp_amount, SUM(p.opp_amount * p.opp_percent) as ponderated_opp_amount";
+            $sql .= " FROM " . MAIN_DB_PREFIX . "projet as p, " . MAIN_DB_PREFIX . "c_lead_status as cls";
+            $sql .= " WHERE p.entity IN (" . getEntity('project') . ")";
+            $sql .= " AND p.fk_opp_status = cls.rowid";
+            $sql .= " AND p.fk_statut = 1"; // Opend projects only
+            $sql .= " AND cls.code NOT IN ('LOST', 'WON')";
+            $sql .= " GROUP BY p.fk_opp_status, cls.code";
+            $resql = $this->db->query($sql);
 
-			$form = new Form($this->db);
-			if ($resql) {
-				$num = $this->db->num_rows($resql);
-				$i = 0;
+            $form = new Form($this->db);
+            if ($resql) {
+                $num = $this->db->num_rows($resql);
+                $i = 0;
 
-				$totalnb = 0;
-				$totaloppnb = 0;
-				$totalamount = 0;
-				$ponderated_opp_amount = 0;
-				$valsnb = array();
-				$valsamount = array();
-				$dataseries = array();
+                $totalnb = 0;
+                $totaloppnb = 0;
+                $totalamount = 0;
+                $ponderated_opp_amount = 0;
+                $valsnb = array();
+                $valsamount = array();
+                $dataseries = array();
 
-				while ($i < $num) {
-					$obj = $this->db->fetch_object($resql);
-					if ($obj) {
-						$valsnb[$obj->opp_status] = $obj->nb;
-						$valsamount[$obj->opp_status] = $obj->opp_amount;
-						$totalnb += $obj->nb;
-						if ($obj->opp_status) {
-							$totaloppnb += $obj->nb;
-						}
-						if (!in_array($obj->code, array('WON', 'LOST'))) {
-							$totalamount += $obj->opp_amount;
-							$ponderated_opp_amount += $obj->ponderated_opp_amount;
-						}
-					}
-					$i++;
-				}
-				$this->db->free($resql);
-				$ponderated_opp_amount = $ponderated_opp_amount / 100;
+                while ($i < $num) {
+                    $obj = $this->db->fetch_object($resql);
+                    if ($obj) {
+                        $valsnb[$obj->opp_status] = $obj->nb;
+                        $valsamount[$obj->opp_status] = $obj->opp_amount;
+                        $totalnb += $obj->nb;
+                        if ($obj->opp_status) {
+                            $totaloppnb += $obj->nb;
+                        }
+                        if (!in_array($obj->code, array('WON', 'LOST'))) {
+                            $totalamount += $obj->opp_amount;
+                            $ponderated_opp_amount += $obj->ponderated_opp_amount;
+                        }
+                    }
+                    $i++;
+                }
+                $this->db->free($resql);
+                $ponderated_opp_amount = $ponderated_opp_amount / 100;
 
-				$stringtoprint = '';
-				$stringtoprint .= '<div class="div-table-responsive-no-min ">';
-				$listofstatus = array_keys($listofoppstatus);
-				$liststatus = array();
-				$data = array('');
-				$customlabels = array();
-				$total = 0;
-				$maxamount = 0;
-				foreach ($listofstatus as $status) {
-					$customlabel = '';
-					$labelStatus = '';
-					if ($status != 7) {
-						$code = dol_getIdFromCode($this->db, $status, 'c_lead_status', 'rowid', 'code');
-						if ($code) {
-							$labelStatus = $langs->transnoentitiesnoconv("OppStatus".$code);
-						}
-						if (empty($labelStatus)) {
-							$labelStatus = $listofopplabel[$status];
-						}
-						$amount = (isset($valsamount[$status]) ? (float) $valsamount[$status] : 0);
-						$customlabel = $amount."€";
+                $stringtoprint = '';
+                $stringtoprint .= '<div class="div-table-responsive-no-min ">';
+                $listofstatus = array_keys($listofoppstatus);
+                $liststatus = array();
+                $data = array('');
+                $customlabels = array();
+                $total = 0;
+                $maxamount = 0;
+                foreach ($listofstatus as $status) {
+                    $customlabel = '';
+                    $labelStatus = '';
+                    if ($status != 7) {
+                        $code = dol_getIdFromCode($this->db, $status, 'c_lead_status', 'rowid', 'code');
+                        if ($code) {
+                            $labelStatus = $langs->transnoentitiesnoconv("OppStatus" . $code);
+                        }
+                        if (empty($labelStatus)) {
+                            $labelStatus = $listofopplabel[$status];
+                        }
+                        $amount = (isset($valsamount[$status]) ? (float) $valsamount[$status] : 0);
+                        $customlabel = $amount . "€";
 
-						$data[] = $amount;
-						$liststatus[] = $labelStatus;
-						if (!$conf->use_javascript_ajax) {
-							$stringtoprint .= '<tr class="oddeven">';
-							$stringtoprint .= '<td>'.$labelStatus.'</td>';
-							$stringtoprint .= '<td class="nowraponall right amount"><a href="list.php?statut='.$status.'">'.price((isset($valsamount[$status]) ? (float) $valsamount[$status] : 0), 0, '', 1, -1, -1, $conf->currency).'</a></td>';
-							$stringtoprint .= "</tr>\n";
-						}
-						$customlabels[] = $customlabel;
-						if ($maxamount < $amount) {
-							$maxamount = $amount;
-						}
-					}
-				}
+                        $data[] = $amount;
+                        $liststatus[] = $labelStatus;
+                        if (!$conf->use_javascript_ajax) {
+                            $stringtoprint .= '<tr class="oddeven">';
+                            $stringtoprint .= '<td>' . $labelStatus . '</td>';
+                            $stringtoprint .= '<td class="nowraponall right amount"><a href="list.php?statut=' . $status . '">' . price((isset($valsamount[$status]) ? (float) $valsamount[$status] : 0), 0, '', 1, -1, -1, $conf->currency) . '</a></td>';
+                            $stringtoprint .= "</tr>\n";
+                        }
+                        $customlabels[] = $customlabel;
+                        if ($maxamount < $amount) {
+                            $maxamount = $amount;
+                        }
+                    }
+                }
 
-				// Permit to have a bar if value inferior to a certain value
-				$valuetoaddtomindata = $maxamount / 100;
-				foreach ($data as $key => $value) {
-					if ($value != "") {
-						$data[$key] = $valuetoaddtomindata + $value;
-					}
-				}
+                // Permit to have a bar if value inferior to a certain value
+                $valuetoaddtomindata = $maxamount / 100;
+                foreach ($data as $key => $value) {
+                    if ($value != "") {
+                        $data[$key] = $valuetoaddtomindata + $value;
+                    }
+                }
 
-				$dataseries[] = $data;
-				if ($conf->use_javascript_ajax) {
-					include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
-					$dolgraph = new DolGraph();
-					$dolgraph->SetMinValue(0);
-					$dolgraph->SetData($dataseries);
-					$dolgraph->SetLegend($liststatus);
-					$dolgraph->setHideXValues(true);
-					$dolgraph->SetDataColor(array_values($colorseriesstat));
-					//$dolgraph->setBorderColor(array_values($bordercolorseries));
-					$dolgraph->setShowLegend(2);
-					if (!empty($conf->dol_optimize_smallscreen)) {
-						$dolgraph->SetWidth(320);
-					}
-					$dolgraph->setShowPercent(1);
-					$dolgraph->setMirrorGraphValues(true);
-					$dolgraph->setBorderWidth(2);
-					$dolgraph->setBorderSkip('false');
-					$dolgraph->SetType(array('horizontalbars'));
-					$dolgraph->SetHeight('200');
-					$dolgraph->SetWidth('600');
-					$dolgraph->setTooltipsTitles($liststatus);
-					$dolgraph->setTooltipsLabels($customlabels);
-					$dolgraph->mode = 'depth';
-					$dolgraph->draw('idgraphleadfunnel');
-					$stringtoprint .= $dolgraph->show($totaloppnb ? 0 : 1);
-				}
-				$stringtoprint .= '</div>';
+                $dataseries[] = $data;
+                if ($conf->use_javascript_ajax) {
+                    include_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
+                    $dolgraph = new DolGraph();
+                    $dolgraph->SetMinValue(0);
+                    $dolgraph->SetData($dataseries);
+                    $dolgraph->SetLegend($liststatus);
+                    $dolgraph->setHideXValues(true);
+                    $dolgraph->SetDataColor(array_values($colorseriesstat));
+                    //$dolgraph->setBorderColor(array_values($bordercolorseries));
+                    $dolgraph->setShowLegend(2);
+                    if (!empty($conf->dol_optimize_smallscreen)) {
+                        $dolgraph->SetWidth(320);
+                    }
+                    $dolgraph->setShowPercent(1);
+                    $dolgraph->setMirrorGraphValues(true);
+                    $dolgraph->setBorderWidth(2);
+                    $dolgraph->setBorderSkip('false');
+                    $dolgraph->SetType(array('horizontalbars'));
+                    $dolgraph->SetHeight('200');
+                    $dolgraph->SetWidth('600');
+                    $dolgraph->setTooltipsTitles($liststatus);
+                    $dolgraph->setTooltipsLabels($customlabels);
+                    $dolgraph->mode = 'depth';
+                    $dolgraph->draw('idgraphleadfunnel');
+                    $stringtoprint .= $dolgraph->show($totaloppnb ? 0 : 1);
+                }
+                $stringtoprint .= '</div>';
 
-				$line = 0;
-				/*$this->info_box_contents[$line][] = array(
-					'tr' => 'class="nohover left "',
-					'text' => ''
-				);
-				$this->info_box_contents[$line][] = array(
-					'tr' => 'class="nohover left "',
-					'text' => ''
-				);
-				$line++;*/
-				$this->info_box_contents[$line][] = array(
-					'tr' => '',
-					'td' => 'class="center nopaddingleftimp nopaddingrightimp" colspan="2"',
-					'text' => $stringtoprint
-				);
-				$line++;
-				$this->info_box_contents[$line][] = array(
-					'tr' => 'class="oddeven"',
-					'td' => 'class="left "',
-					'maxlength' => 500,
-					'text' => $langs->trans("OpportunityTotalAmount").' ('.$langs->trans("WonLostExcluded").')'
-				);
-				$this->info_box_contents[$line][] = array(
-					'tr' => 'class="oddeven"',
-					'td' => 'class="nowraponall right amount"',
-					'maxlength' => 500,
-					'text' => price($totalamount, 0, '', 1, -1, -1, $conf->currency)
-				);
-				$line++;
-				$this->info_box_contents[$line][] = array(
-					'tr' => 'class="oddeven"',
-					'td' => 'class="left "',
-					'maxlength' => 500,
-					'text' => $form->textwithpicto($langs->trans("OpportunityPonderatedAmount").' ('.$langs->trans("WonLostExcluded").')', $langs->trans("OpportunityPonderatedAmountDesc"), 1)
+                $line = 0;
+                /*$this->info_box_contents[$line][] = array(
+                    'tr' => 'class="nohover left "',
+                    'text' => ''
+                );
+                $this->info_box_contents[$line][] = array(
+                    'tr' => 'class="nohover left "',
+                    'text' => ''
+                );
+                $line++;*/
+                $this->info_box_contents[$line][] = array(
+                    'tr' => '',
+                    'td' => 'class="center nopaddingleftimp nopaddingrightimp" colspan="2"',
+                    'text' => $stringtoprint
+                );
+                $line++;
+                $this->info_box_contents[$line][] = array(
+                    'tr' => 'class="oddeven"',
+                    'td' => 'class="left "',
+                    'maxlength' => 500,
+                    'text' => $langs->trans("OpportunityTotalAmount") . ' (' . $langs->trans("WonLostExcluded") . ')'
+                );
+                $this->info_box_contents[$line][] = array(
+                    'tr' => 'class="oddeven"',
+                    'td' => 'class="nowraponall right amount"',
+                    'maxlength' => 500,
+                    'text' => price($totalamount, 0, '', 1, -1, -1, $conf->currency)
+                );
+                $line++;
+                $this->info_box_contents[$line][] = array(
+                    'tr' => 'class="oddeven"',
+                    'td' => 'class="left "',
+                    'maxlength' => 500,
+                    'text' => $form->textwithpicto($langs->trans("OpportunityPonderatedAmount") . ' (' . $langs->trans("WonLostExcluded") . ')', $langs->trans("OpportunityPonderatedAmountDesc"), 1)
 
-				);
-				$this->info_box_contents[$line][] = array(
-					'td' => 'class="nowraponall right amount"',
-					'maxlength' => 500,
-					'text' => price(price2num($ponderated_opp_amount, 'MT'), 0, '', 1, -1, -1, $conf->currency)
-				);
-			} else {
-				$this->info_box_contents[0][0] = array(
-					'td' => 'class="center"',
-					'text' => '<span class="opacitymedium">'.$langs->trans("NoRecordedCustomers").'</span>'
-				);
-			}
-		} else {
-			$this->info_box_contents[0][0] = array(
-				'td' => '',
-				'text' => $langs->trans("ReadPermissionNotAllowed")
-			);
-		}
-	}
+                );
+                $this->info_box_contents[$line][] = array(
+                    'td' => 'class="nowraponall right amount"',
+                    'maxlength' => 500,
+                    'text' => price(price2num($ponderated_opp_amount, 'MT'), 0, '', 1, -1, -1, $conf->currency)
+                );
+            } else {
+                $this->info_box_contents[0][0] = array(
+                    'td' => 'class="center"',
+                    'text' => '<span class="opacitymedium">' . $langs->trans("NoRecordedCustomers") . '</span>'
+                );
+            }
+        } else {
+            $this->info_box_contents[0][0] = array(
+                'td' => '',
+                'text' => $langs->trans("ReadPermissionNotAllowed")
+            );
+        }
+    }
 
-	/**
-	 *	Method to show box
-	 *
-	 *	@param	array	$head       Array with properties of box title
-	 *	@param  array	$contents   Array with properties of box lines
-	 *  @param	int		$nooutput	No $stringtoprint .=, only return string
-	 *	@return	string
-	 */
-	public function showBox($head = null, $contents = null, $nooutput = 0)
-	{
-		return parent::showBox($this->info_box_head, $this->info_box_contents, $nooutput);
-	}
+    /**
+     *  Method to show box
+     *
+     *  @param  array   $head       Array with properties of box title
+     *  @param  array   $contents   Array with properties of box lines
+     *  @param  int     $nooutput   No $stringtoprint .=, only return string
+     *  @return string
+     */
+    public function showBox($head = null, $contents = null, $nooutput = 0)
+    {
+        return parent::showBox($this->info_box_head, $this->info_box_contents, $nooutput);
+    }
 }

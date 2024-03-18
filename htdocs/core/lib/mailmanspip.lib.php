@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2006-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,8 +18,8 @@
  */
 
 /**
- *	    \file       htdocs/core/lib/member.lib.php
- *		\brief      Ensemble de functions de base pour les adherents
+ *      \file       htdocs/core/lib/member.lib.php
+ *      \brief      Ensemble de functions de base pour les adherents
  */
 
 /**
@@ -28,18 +29,18 @@
  */
 function mailmanspip_admin_prepare_head()
 {
-	global $langs;
+    global $langs;
 
-	return array(
-		array(
-			DOL_URL_ROOT.'/admin/mailman.php',
-			$langs->trans('Mailman'),
-			'mailman'
-		),
-		array(
-			DOL_URL_ROOT.'/admin/spip.php',
-			$langs->trans('SPIP'),
-			'spip'
-		)
-	);
+    return array(
+        array(
+            DOL_URL_ROOT . '/admin/mailman.php',
+            $langs->trans('Mailman'),
+            'mailman'
+        ),
+        array(
+            DOL_URL_ROOT . '/admin/spip.php',
+            $langs->trans('SPIP'),
+            'spip'
+        )
+    );
 }

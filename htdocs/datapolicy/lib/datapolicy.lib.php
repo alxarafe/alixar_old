@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2018 Nicolas ZABOURI   <info@inovea-conseil.com>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -29,21 +30,21 @@
  */
 function datapolicyAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$langs->load("datapolicy");
+    $langs->load("datapolicy");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT."/datapolicy/admin/setup.php";
-	$head[$h][1] = $langs->trans("Deletion");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . "/datapolicy/admin/setup.php";
+    $head[$h][1] = $langs->trans("Deletion");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'datapolicy');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'datapolicy');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'datapolicy', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'datapolicy', 'remove');
 
-	return $head;
+    return $head;
 }

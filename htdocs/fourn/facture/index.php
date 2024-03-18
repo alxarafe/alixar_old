@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2020	Tobias Sekan	<tobias.sekan@startmail.com>
+
+/* Copyright (C) 2020   Tobias Sekan    <tobias.sekan@startmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +17,17 @@
  */
 
 /**
- *	\file		htdocs/fourn/facture/index.php
-*	\ingroup	facture
- *	\brief		Home page of customer invoices area
+ *  \file       htdocs/fourn/facture/index.php
+*   \ingroup    facture
+ *  \brief      Home page of customer invoices area
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.facture.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/invoice.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(['bills', 'boxes']);
@@ -34,8 +35,8 @@ $langs->loadLangs(['bills', 'boxes']);
 // Filter to show only result of one supplier
 $socid = GETPOSTINT('socid');
 if (isset($user->socid) && $user->socid > 0) {
-	$action = '';
-	$socid = $user->socid;
+    $action = '';
+    $socid = $user->socid;
 }
 
 $max = getDolGlobalInt('MAIN_SIZE_SHORTLIST_LIMIT');
@@ -70,14 +71,14 @@ print '<div class="fichecenter">';
 print '<div class="fichethirdleft">';
 $tmp = getNumberInvoicesPieChart('suppliers');
 if ($tmp) {
-	print $tmp;
-	print '<br>';
+    print $tmp;
+    print '<br>';
 }
 
 $tmp = getDraftSupplierTable($max, $socid);
 if ($tmp) {
-	print $tmp;
-	print '<br>';
+    print $tmp;
+    print '<br>';
 }
 
 print '</div>';
@@ -86,14 +87,14 @@ print '<div class="fichetwothirdright">';
 
 $tmp = getPurchaseInvoiceLatestEditTable($maxLatestEditCount, $socid);
 if ($tmp) {
-	print $tmp;
-	print '<br>';
+    print $tmp;
+    print '<br>';
 }
 
 $tmp = getPurchaseInvoiceUnpaidOpenTable($max, $socid);
 if ($tmp) {
-	print $tmp;
-	print '<br>';
+    print $tmp;
+    print '<br>';
 }
 
 print '</div>';

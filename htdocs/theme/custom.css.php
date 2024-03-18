@@ -1,4 +1,5 @@
 <?php
+
 /**
  * custom.css.php
  *
@@ -19,39 +20,39 @@
  */
 
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
-//if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');	// Not disabled because need to do translations
+//if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');  // Not disabled because need to do translations
 if (!defined('NOCSRFCHECK')) {
-	define('NOCSRFCHECK', 1);
+    define('NOCSRFCHECK', 1);
 }
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1);
+    define('NOTOKENRENEWAL', 1);
 }
 if (!defined('NOLOGIN')) {
-	define('NOLOGIN', 1); // File must be accessed by logon page so without login.
+    define('NOLOGIN', 1); // File must be accessed by logon page so without login.
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', 1);
+    define('NOREQUIREHTML', 1);
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 session_cache_limiter('public');
 
-require_once __DIR__.'/../main.inc.php'; // __DIR__ allow this script to be included in custom themes
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once __DIR__ . '/../main.inc.php'; // __DIR__ allow this script to be included in custom themes
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Define css type
 top_httphead('text/css');
 // Important: Following code is to avoid page request by browser and PHP CPU at each Dolibarr page access.
 if (empty($dolibarr_nocache)) {
-	header('Cache-Control: max-age=10800, public, must-revalidate');
+    header('Cache-Control: max-age=10800, public, must-revalidate');
 } else {
-	header('Cache-Control: no-cache');
+    header('Cache-Control: no-cache');
 }
 
 
-print '/* Here, the content of the common custom CSS defined into Home - Setup - Display - CSS'."*/\n";
+print '/* Here, the content of the common custom CSS defined into Home - Setup - Display - CSS' . "*/\n";
 print getDolGlobalString('MAIN_IHM_CUSTOM_CSS');

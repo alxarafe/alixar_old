@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2018	Destailleur Laurent	<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2018   Destailleur Laurent <eldy@users.sourceforge.net>
  * Copyright (C) 2019	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
@@ -27,38 +28,38 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1');
+    define('NOTOKENRENEWAL', '1');
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1'); // If there is no menu to show
+    define('NOREQUIREMENU', '1'); // If there is no menu to show
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1'); // If we don't need to load the html.form.class.php
+    define('NOREQUIREHTML', '1'); // If we don't need to load the html.form.class.php
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOLOGIN')) {
-	define("NOLOGIN", 1); // This means this output page does not require to be logged.
+    define("NOLOGIN", 1); // This means this output page does not require to be logged.
 }
 if (!defined('NOCSRFCHECK')) {
-	define("NOCSRFCHECK", 1); // We accept to go on this page from external web site.
+    define("NOCSRFCHECK", 1); // We accept to go on this page from external web site.
 }
 
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT.'/core/lib/security2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/dav/dav.class.php';
-require_once DOL_DOCUMENT_ROOT.'/dav/dav.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
+require_once DOL_DOCUMENT_ROOT . '/dav/dav.class.php';
+require_once DOL_DOCUMENT_ROOT . '/dav/dav.lib.php';
 
-require_once DOL_DOCUMENT_ROOT.'/includes/sabre/autoload.php';
+require_once DOL_DOCUMENT_ROOT . '/includes/sabre/autoload.php';
 //require_once DOL_DOCUMENT_ROOT.'/includes/autoload.php';
 
 
 $user = new User($db);
 if (isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] != '') {
-	$user->fetch('', $_SERVER['PHP_AUTH_USER']);
-	$user->getrights();
+    $user->fetch('', $_SERVER['PHP_AUTH_USER']);
+    $user->getrights();
 }
 
 // Load translation files required by the page
@@ -66,27 +67,27 @@ $langs->loadLangs(array("main", "other"));
 
 
 if (empty($conf->dav->enabled)) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Restrict API to some IPs
 if (getDolGlobalString('DAV_RESTRICT_ON_IP')) {
-	$allowedip = explode(' ', getDolGlobalString('DAV_RESTRICT_ON_IP'));
-	$ipremote = getUserRemoteIP();
-	if (!in_array($ipremote, $allowedip)) {
-		dol_syslog('Remote ip is '.$ipremote.', not into list ' . getDolGlobalString('DAV_RESTRICT_ON_IP'));
-		print 'DAV not allowed from the IP '.$ipremote;
-		header('HTTP/1.1 503 DAV not allowed from your IP '.$ipremote);
-		exit(0);
-	}
+    $allowedip = explode(' ', getDolGlobalString('DAV_RESTRICT_ON_IP'));
+    $ipremote = getUserRemoteIP();
+    if (!in_array($ipremote, $allowedip)) {
+        dol_syslog('Remote ip is ' . $ipremote . ', not into list ' . getDolGlobalString('DAV_RESTRICT_ON_IP'));
+        print 'DAV not allowed from the IP ' . $ipremote;
+        header('HTTP/1.1 503 DAV not allowed from your IP ' . $ipremote);
+        exit(0);
+    }
 }
 
 
 $entity = (GETPOSTINT('entity') ? GETPOSTINT('entity') : (!empty($conf->entity) ? $conf->entity : 1));
 
 // settings
-$publicDir = $conf->dav->multidir_output[$entity].'/public';
-$privateDir = $conf->dav->multidir_output[$entity].'/private';
+$publicDir = $conf->dav->multidir_output[$entity] . '/public';
+$privateDir = $conf->dav->multidir_output[$entity] . '/private';
 $ecmDir = $conf->ecm->multidir_output[$entity];
 $tmpDir = $conf->dav->multidir_output[$entity]; // We need root dir, not a dir that can be deleted
 //var_dump($tmpDir);mkdir($tmpDir);exit;
@@ -94,77 +95,77 @@ $tmpDir = $conf->dav->multidir_output[$entity]; // We need root dir, not a dir t
 
 // Authentication callback function
 $authBackend = new \Sabre\DAV\Auth\Backend\BasicCallBack(
-	/**
-	 * @param string	$username	Username to validate as a login
-	 * @param string	$password	Password to validate for $username
-	 * @return bool					True if login ok, false if not
-	 */
-	static function ($username, $password) {
-		global $user, $conf;
-		global $dolibarr_main_authentication, $dolibarr_auto_user;
+    /**
+     * @param string    $username   Username to validate as a login
+     * @param string    $password   Password to validate for $username
+     * @return bool                 True if login ok, false if not
+     */
+    static function ($username, $password) {
+        global $user, $conf;
+        global $dolibarr_main_authentication, $dolibarr_auto_user;
 
-		if (empty($user->login)) {
-			dol_syslog("Failed to authenticate to DAV, login is not provided", LOG_WARNING);
-			return false;
-		}
-		if ($user->socid > 0) {
-			dol_syslog("Failed to authenticate to DAV, user is an external user", LOG_WARNING);
-			return false;
-		}
-		if ($user->login != $username) {
-			dol_syslog("Failed to authenticate to DAV, login does not match the login of loaded user", LOG_WARNING);
-			return false;
-		}
+        if (empty($user->login)) {
+            dol_syslog("Failed to authenticate to DAV, login is not provided", LOG_WARNING);
+            return false;
+        }
+        if ($user->socid > 0) {
+            dol_syslog("Failed to authenticate to DAV, user is an external user", LOG_WARNING);
+            return false;
+        }
+        if ($user->login != $username) {
+            dol_syslog("Failed to authenticate to DAV, login does not match the login of loaded user", LOG_WARNING);
+            return false;
+        }
 
-		// Authentication mode
-		if (empty($dolibarr_main_authentication)) {
-			$dolibarr_main_authentication = 'dolibarr';
-		}
+        // Authentication mode
+        if (empty($dolibarr_main_authentication)) {
+            $dolibarr_main_authentication = 'dolibarr';
+        }
 
-		// Authentication mode: forceuser
-		if ($dolibarr_main_authentication == 'forceuser') {
-			if (empty($dolibarr_auto_user)) {
-				$dolibarr_auto_user = 'auto';
-			}
-			if ($dolibarr_auto_user != $username) {
-				dol_syslog("Warning: your instance is set to use the automatic forced login '".$dolibarr_auto_user."' that is not the requested login. DAV usage is forbidden in this mode.");
-				return false;
-			}
-		}
+        // Authentication mode: forceuser
+        if ($dolibarr_main_authentication == 'forceuser') {
+            if (empty($dolibarr_auto_user)) {
+                $dolibarr_auto_user = 'auto';
+            }
+            if ($dolibarr_auto_user != $username) {
+                dol_syslog("Warning: your instance is set to use the automatic forced login '" . $dolibarr_auto_user . "' that is not the requested login. DAV usage is forbidden in this mode.");
+                return false;
+            }
+        }
 
-		$authmode = explode(',', $dolibarr_main_authentication);
-		$entity = (GETPOSTINT('entity') ? GETPOSTINT('entity') : (!empty($conf->entity) ? $conf->entity : 1));
+        $authmode = explode(',', $dolibarr_main_authentication);
+        $entity = (GETPOSTINT('entity') ? GETPOSTINT('entity') : (!empty($conf->entity) ? $conf->entity : 1));
 
-		if (checkLoginPassEntity($username, $password, $entity, $authmode, 'dav') != $username) {
-			return false;
-		}
+        if (checkLoginPassEntity($username, $password, $entity, $authmode, 'dav') != $username) {
+            return false;
+        }
 
-		// Check if user status is enabled
-		if ($user->statut != $user::STATUS_ENABLED) {
-			// Status is disabled
-			dol_syslog("The user has been disabled.");
-			return false;
-		}
+        // Check if user status is enabled
+        if ($user->statut != $user::STATUS_ENABLED) {
+            // Status is disabled
+            dol_syslog("The user has been disabled.");
+            return false;
+        }
 
-		// Check if session was unvalidated by a password change
-		if (($user->flagdelsessionsbefore && !empty($_SESSION["dol_logindate"]) && $user->flagdelsessionsbefore > $_SESSION["dol_logindate"])) {
-			// Session is no more valid
-			dol_syslog("The user has a date for session invalidation = ".$user->flagdelsessionsbefore." and a session date = ".$_SESSION["dol_logindate"].". We must invalidate its sessions.");
-			return false;
-		}
+        // Check if session was unvalidated by a password change
+        if (($user->flagdelsessionsbefore && !empty($_SESSION["dol_logindate"]) && $user->flagdelsessionsbefore > $_SESSION["dol_logindate"])) {
+            // Session is no more valid
+            dol_syslog("The user has a date for session invalidation = " . $user->flagdelsessionsbefore . " and a session date = " . $_SESSION["dol_logindate"] . ". We must invalidate its sessions.");
+            return false;
+        }
 
-		// Check date validity
-		if ($user->isNotIntoValidityDateRange()) {
-			// User validity dates are no more valid
-			dol_syslog("The user login has a validity between [".$user->datestartvalidity." and ".$user->dateendvalidity."], current date is ".dol_now());
-			return false;
-		}
+        // Check date validity
+        if ($user->isNotIntoValidityDateRange()) {
+            // User validity dates are no more valid
+            dol_syslog("The user login has a validity between [" . $user->datestartvalidity . " and " . $user->dateendvalidity . "], current date is " . dol_now());
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 );
 
-$authBackend->setRealm(constant('DOL_APPLICATION_TITLE').' - WebDAV');
+$authBackend->setRealm(constant('DOL_APPLICATION_TITLE') . ' - WebDAV');
 
 
 
@@ -181,13 +182,13 @@ $nodes = array();
 // Enable directories and features according to DAV setup
 // Public dir
 if (getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')) {
-	$nodes[] = new \Sabre\DAV\FS\Directory($publicDir);
+    $nodes[] = new \Sabre\DAV\FS\Directory($publicDir);
 }
 // Private dir
 $nodes[] = new \Sabre\DAV\FS\Directory($privateDir);
 // ECM dir
 if (isModEnabled('ecm') && getDolGlobalString('DAV_ALLOW_ECM_DIR')) {
-	$nodes[] = new \Sabre\DAV\FS\Directory($ecmDir);
+    $nodes[] = new \Sabre\DAV\FS\Directory($ecmDir);
 }
 
 
@@ -210,28 +211,29 @@ $server = new \Sabre\DAV\Server($nodes);
 
 // If you want to run the SabreDAV server in a custom location (using mod_rewrite for instance)
 // You can override the baseUri here.
-$baseUri = DOL_URL_ROOT.'/dav/fileserver.php/';
+$baseUri = DOL_URL_ROOT . '/dav/fileserver.php/';
 if (isset($baseUri)) {
-	$server->setBaseUri($baseUri);
+    $server->setBaseUri($baseUri);
 }
 
 // Add authentication function
-if ((!getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')
-	|| !preg_match('/'.preg_quote(DOL_URL_ROOT.'/dav/fileserver.php/public', '/').'/', $_SERVER['PHP_SELF']))
-	&& !preg_match('/^sabreAction=asset&assetName=[a-zA-Z0-9%\-\/]+\.(png|css|woff|ico|ttf)$/', $_SERVER["QUERY_STRING"])	// URL for Sabre browser resources
+if (
+    (!getDolGlobalString('DAV_ALLOW_PUBLIC_DIR')
+    || !preg_match('/' . preg_quote(DOL_URL_ROOT . '/dav/fileserver.php/public', '/') . '/', $_SERVER['PHP_SELF']))
+    && !preg_match('/^sabreAction=asset&assetName=[a-zA-Z0-9%\-\/]+\.(png|css|woff|ico|ttf)$/', $_SERVER["QUERY_STRING"])   // URL for Sabre browser resources
 ) {
-	//var_dump($_SERVER["QUERY_STRING"]);exit;
-	$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend));
+    //var_dump($_SERVER["QUERY_STRING"]);exit;
+    $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend));
 }
 // Support for LOCK and UNLOCK
-$lockBackend = new \Sabre\DAV\Locks\Backend\File($tmpDir.'/.locksdb');
+$lockBackend = new \Sabre\DAV\Locks\Backend\File($tmpDir . '/.locksdb');
 $lockPlugin = new \Sabre\DAV\Locks\Plugin($lockBackend);
 $server->addPlugin($lockPlugin);
 
 // Support for the html browser
 if (!getDolGlobalString('DAV_DISABLE_BROWSER')) {
-	$browser = new \Sabre\DAV\Browser\Plugin();
-	$server->addPlugin($browser);
+    $browser = new \Sabre\DAV\Browser\Plugin();
+    $server->addPlugin($browser);
 }
 
 // Automatically guess (some) contenttypes, based on extension
@@ -250,5 +252,5 @@ $server->addPlugin($tempFF);
 $server->start();
 
 if (is_object($db)) {
-	$db->close();
+    $db->close();
 }

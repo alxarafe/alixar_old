@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2010 Regis Houssin        <regis.houssin@inodbox.com>
  *
@@ -19,14 +20,14 @@
 /**
  *      \file       htdocs/comm/mailing/info.php
  *      \ingroup    mailing
- *		\brief      Page with log information for emailing
+ *      \brief      Page with log information for emailing
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/comm/mailing/class/mailing.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/emailing.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/mailing.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/emailing.lib.php';
 
 $id = GETPOSTINT('id');
 
@@ -35,7 +36,7 @@ $langs->load("mails");
 
 // Security check
 if (!$user->hasRight('mailing', 'lire') || (!getDolGlobalString('EXTERNAL_USERS_ARE_AUTHORIZED') && $user->socid > 0)) {
-	accessforbidden();
+    accessforbidden();
 }
 //$result = restrictedArea($user, 'mailing');
 
@@ -52,40 +53,40 @@ $form = new Form($db);
 $object = new Mailing($db);
 
 if ($object->fetch($id) >= 0) {
-	$head = emailing_prepare_head($object);
+    $head = emailing_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'info', $langs->trans("Mailing"), -1, 'email');
+    print dol_get_fiche_head($head, 'info', $langs->trans("Mailing"), -1, 'email');
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/comm/mailing/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/comm/mailing/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	// Ref customer
-	$morehtmlref .= $form->editfieldkey("", 'title', $object->title, $object, 0, 'string', '', 0, 1);
-	$morehtmlref .= $form->editfieldval("", 'title', $object->title, $object, 0, 'string', '', null, null, '', 1);
-	$morehtmlref .= '</div>';
+    $morehtmlref = '<div class="refidno">';
+    // Ref customer
+    $morehtmlref .= $form->editfieldkey("", 'title', $object->title, $object, 0, 'string', '', 0, 1);
+    $morehtmlref .= $form->editfieldval("", 'title', $object->title, $object, 0, 'string', '', null, null, '', 1);
+    $morehtmlref .= '</div>';
 
-	$morehtmlstatus = '';
-	$nbtry = $nbok = 0;
-	if ($object->status == 2 || $object->status == 3) {
-		$nbtry = $object->countNbOfTargets('alreadysent');
-		$nbko  = $object->countNbOfTargets('alreadysentko');
+    $morehtmlstatus = '';
+    $nbtry = $nbok = 0;
+    if ($object->status == 2 || $object->status == 3) {
+        $nbtry = $object->countNbOfTargets('alreadysent');
+        $nbko  = $object->countNbOfTargets('alreadysentko');
 
-		$morehtmlstatus .= ' ('.$nbtry.'/'.$object->nbemail;
-		if ($nbko) {
-			$morehtmlstatus .= ' - '.$nbko.' '.$langs->trans("Error");
-		}
-		$morehtmlstatus .= ') &nbsp; ';
-	}
+        $morehtmlstatus .= ' (' . $nbtry . '/' . $object->nbemail;
+        if ($nbko) {
+            $morehtmlstatus .= ' - ' . $nbko . ' ' . $langs->trans("Error");
+        }
+        $morehtmlstatus .= ') &nbsp; ';
+    }
 
-	dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref, '', 0, '', $morehtmlstatus);
+    dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref, '', 0, '', $morehtmlstatus);
 
-	print '<div class="underbanner clearboth"></div><br>';
+    print '<div class="underbanner clearboth"></div><br>';
 
-	//print '<table width="100%"><tr><td>';
-	dol_print_object_info($object, 0);
-	//print '</td></tr></table>';
+    //print '<table width="100%"><tr><td>';
+    dol_print_object_info($object, 0);
+    //print '</td></tr></table>';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 }
 
 // End of page

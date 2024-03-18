@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
@@ -24,11 +25,11 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
+require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 
-require_once DOL_DOCUMENT_ROOT.'/mrp/class/mo.class.php';
-require_once DOL_DOCUMENT_ROOT.'/mrp/lib/mrp_mo.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
+require_once DOL_DOCUMENT_ROOT . '/mrp/lib/mrp_mo.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("mrp", "companies"));
@@ -43,16 +44,16 @@ $backtopage = GETPOST('backtopage', 'alpha');
 // Initialize technical objects
 $object = new Mo($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->mrp->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->mrp->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('monote', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->mrp->multidir_output[empty($object->entity) ? $conf->entity : $object->entity]."/".$object->id;
+    $upload_dir = $conf->mrp->multidir_output[empty($object->entity) ? $conf->entity : $object->entity] . "/" . $object->id;
 }
 
 // Security check - Protection if external user
@@ -72,10 +73,10 @@ $permissionnote = $user->hasRight('mrp', 'write'); // Used by the include of act
 
 $reshook = $hookmanager->executeHooks('doActions', array(), $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -91,65 +92,65 @@ $help_url = '';
 llxHeader('', $langs->trans('Mo'), $help_url);
 
 if ($id > 0 || !empty($ref)) {
-	$object->fetch_thirdparty();
+    $object->fetch_thirdparty();
 
-	$head = moPrepareHead($object);
+    $head = moPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'note', $langs->trans("ManufacturingOrder"), -1, $object->picto);
+    print dol_get_fiche_head($head, 'note', $langs->trans("ManufacturingOrder"), -1, $object->picto);
 
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/mrp/mo_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . dol_buildpath('/mrp/mo_list.php', 1) . '?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	// Ref customer
-	//$morehtmlref.=$form->editfieldkey("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', 0, 1);
-	//$morehtmlref.=$form->editfieldval("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', null, null, '', 1);
-	// Thirdparty
-	if (is_object($object->thirdparty)) {
-		$morehtmlref .= $object->thirdparty->getNomUrl(1, 'customer');
-		if (!getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
-			$morehtmlref .= ' (<a href="'.DOL_URL_ROOT.'/commande/list.php?socid='.$object->thirdparty->id.'&search_societe='.urlencode($object->thirdparty->name).'">'.$langs->trans("OtherOrders").'</a>)';
-		}
-	}
-	// Project
-	if (isModEnabled('project')) {
-		$langs->load("projects");
-		if (is_object($object->thirdparty)) {
-			$morehtmlref .= '<br>';
-		}
-		if (0) {
-			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
-			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
-			}
-			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
-		} else {
-			if (!empty($object->fk_project)) {
-				$proj = new Project($db);
-				$proj->fetch($object->fk_project);
-				$morehtmlref .= $proj->getNomUrl(1);
-				if ($proj->title) {
-					$morehtmlref .= '<span class="opacitymedium"> - '.dol_escape_htmltag($proj->title).'</span>';
-				}
-			}
-		}
-	}
-	$morehtmlref .= '</div>';
+    $morehtmlref = '<div class="refidno">';
+    // Ref customer
+    //$morehtmlref.=$form->editfieldkey("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', 0, 1);
+    //$morehtmlref.=$form->editfieldval("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', null, null, '', 1);
+    // Thirdparty
+    if (is_object($object->thirdparty)) {
+        $morehtmlref .= $object->thirdparty->getNomUrl(1, 'customer');
+        if (!getDolGlobalString('MAIN_DISABLE_OTHER_LINK') && $object->thirdparty->id > 0) {
+            $morehtmlref .= ' (<a href="' . DOL_URL_ROOT . '/commande/list.php?socid=' . $object->thirdparty->id . '&search_societe=' . urlencode($object->thirdparty->name) . '">' . $langs->trans("OtherOrders") . '</a>)';
+        }
+    }
+    // Project
+    if (isModEnabled('project')) {
+        $langs->load("projects");
+        if (is_object($object->thirdparty)) {
+            $morehtmlref .= '<br>';
+        }
+        if (0) {
+            $morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
+            if ($action != 'classify') {
+                $morehtmlref .= '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token=' . newToken() . '&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> ';
+            }
+            $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+        } else {
+            if (!empty($object->fk_project)) {
+                $proj = new Project($db);
+                $proj->fetch($object->fk_project);
+                $morehtmlref .= $proj->getNomUrl(1);
+                if ($proj->title) {
+                    $morehtmlref .= '<span class="opacitymedium"> - ' . dol_escape_htmltag($proj->title) . '</span>';
+                }
+            }
+        }
+    }
+    $morehtmlref .= '</div>';
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
-
-
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '</div>';
 
-	print dol_get_fiche_end();
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 }
 
 // End of page

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2005 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -17,16 +18,16 @@
  */
 
 /**
- * 	\file       htdocs/compta/deplacement/info.php
- * 	\ingroup    trip
- * 	\brief      Page to show a trip information
+ *  \file       htdocs/compta/deplacement/info.php
+ *  \ingroup    trip
+ *  \brief      Page to show a trip information
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/trip.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/deplacement/class/deplacement.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/trip.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/deplacement/class/deplacement.class.php';
 
 // Load translation files required by the page
 $langs->load("trips");
@@ -34,7 +35,7 @@ $langs->load("trips");
 // Security check
 $id = GETPOSTINT('id');
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'deplacement', $id, '');
 
@@ -46,19 +47,19 @@ $result = restrictedArea($user, 'deplacement', $id, '');
 llxHeader();
 
 if ($id) {
-	$object = new Deplacement($db);
-	$object->fetch($id);
-	$object->info($id);
+    $object = new Deplacement($db);
+    $object->fetch($id);
+    $object->info($id);
 
-	$head = trip_prepare_head($object);
+    $head = trip_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'info', $langs->trans("TripCard"), 0, 'trip');
+    print dol_get_fiche_head($head, 'info', $langs->trans("TripCard"), 0, 'trip');
 
-	print '<table width="100%"><tr><td>';
-	dol_print_object_info($object);
-	print '</td></tr></table>';
+    print '<table width="100%"><tr><td>';
+    dol_print_object_info($object);
+    print '</td></tr></table>';
 
-	print '</div>';
+    print '</div>';
 }
 
 // End of page

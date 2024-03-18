@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
+/* Copyright (C) 2022   Open-Dsi        <support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@
 
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
-	print "Error: this template page cannot be called directly as an URL";
-	exit;
+    print "Error: this template page cannot be called directly as an URL";
+    exit;
 }
 
 '@phan-var-force CommonObject $this
@@ -45,38 +45,38 @@ print "<!-- BEGIN PHP TEMPLATE productattributevalueline_create.tpl.php -->\n";
 $nolinesbefore = (count($this->lines) == 0 || $forcetoshowtitlelines);
 ?>
 <tr class="pair nodrag nodrop nohoverpair<?php echo $nolinesbefore ? '' : ' liste_titre_create'; ?>">
-	<?php
-	$coldisplay = 0;
-	// Adds a line numbering column
-	if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
-		$coldisplay++;
-		echo '<td class="nobottom linecolnum center"></td>';
-	}
-	$coldisplay++;
-	?>
-	<td class="nobottom linecolref">
-		<?php $coldisplay++; if ($nolinesbefore) {
-			echo $langs->trans('Ref') . ': ';
-		} ?>
-		<input type="text" name="line_ref" id="line_ref" class="flat" value="<?php echo(GETPOSTISSET("line_ref") ? GETPOST("line_ref", 'alpha', 2) : ''); ?>" autofocus>
-		<?php
-		if (is_object($hookmanager)) {
-			$parameters = array();
-			$reshook = $hookmanager->executeHooks('formCreateValueOptions', $parameters, $object, $action);
-			if (!empty($hookmanager->resPrint)) {
-				print $hookmanager->resPrint;
-			}
-		}
-		?>
-	</td>
+    <?php
+    $coldisplay = 0;
+    // Adds a line numbering column
+    if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) {
+        $coldisplay++;
+        echo '<td class="nobottom linecolnum center"></td>';
+    }
+    $coldisplay++;
+    ?>
+    <td class="nobottom linecolref">
+        <?php $coldisplay++; if ($nolinesbefore) {
+            echo $langs->trans('Ref') . ': ';
+        } ?>
+        <input type="text" name="line_ref" id="line_ref" class="flat" value="<?php echo(GETPOSTISSET("line_ref") ? GETPOST("line_ref", 'alpha', 2) : ''); ?>" autofocus>
+        <?php
+        if (is_object($hookmanager)) {
+            $parameters = array();
+            $reshook = $hookmanager->executeHooks('formCreateValueOptions', $parameters, $object, $action);
+            if (!empty($hookmanager->resPrint)) {
+                print $hookmanager->resPrint;
+            }
+        }
+        ?>
+    </td>
 
-	<td class="nobottom linecolvalue"><?php $coldisplay++; ?>
-		<input type="text" name="line_value" id="line_value" class="flat" value="<?php echo(GETPOSTISSET("line_value") ? GETPOST("line_value", 'alpha', 2) : ''); ?>">
-	</td>
+    <td class="nobottom linecolvalue"><?php $coldisplay++; ?>
+        <input type="text" name="line_value" id="line_value" class="flat" value="<?php echo(GETPOSTISSET("line_value") ? GETPOST("line_value", 'alpha', 2) : ''); ?>">
+    </td>
 
-	<td class="nobottom linecoledit center valignmiddle" colspan="<?php echo $colspan; ?>"><?php $coldisplay += $colspan; ?>
-		<input type="submit" class="button reposition small" value="<?php echo $langs->trans('Add'); ?>" name="addline" id="addline">
-	</td>
+    <td class="nobottom linecoledit center valignmiddle" colspan="<?php echo $colspan; ?>"><?php $coldisplay += $colspan; ?>
+        <input type="submit" class="button reposition small" value="<?php echo $langs->trans('Add'); ?>" name="addline" id="addline">
+    </td>
 </tr>
 
 <!-- END PHP TEMPLATE productattributevalueline_create.tpl.php -->

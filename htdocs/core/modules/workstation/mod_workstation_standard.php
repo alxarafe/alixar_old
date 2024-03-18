@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2020 	   Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
@@ -25,6 +26,7 @@
  *  \ingroup    workstation
  *  \brief      File of class to manage Workstation numbering rules standard
  */
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/workstation/modules_workstation.php';
 
 /**
@@ -32,125 +34,125 @@ require_once DOL_DOCUMENT_ROOT . '/core/modules/workstation/modules_workstation.
  */
 class mod_workstation_standard extends ModeleNumRefWorkstation
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	public $prefix = 'WKSTATION';
+    public $prefix = 'WKSTATION';
 
-	/**
-	 * @var string Error code (or message)
-	 */
-	public $error = '';
+    /**
+     * @var string Error code (or message)
+     */
+    public $error = '';
 
-	/**
-	 * @var string name
-	 */
-	public $name = 'standard';
-
-
-	/**
-	 *  Return description of numbering module
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $langs;
-		return $langs->trans("SimpleNumRefNoDateModelDesc", $this->prefix);
-	}
+    /**
+     * @var string name
+     */
+    public $name = 'standard';
 
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		return $this->prefix."-0001";
-	}
+    /**
+     *  Return description of numbering module
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $langs;
+        return $langs->trans("SimpleNumRefNoDateModelDesc", $this->prefix);
+    }
 
 
-	/**
-	 *  Checks if the numbers already in the database do not
-	 *  cause conflicts that would prevent this numbering working.
-	 *
-	 *  @param  CommonObject	$object		Object we need next value for
-	 *  @return boolean     				false if conflict, true if ok
-	 */
-	public function canBeActivated($object)
-	{
-		global $conf, $langs, $db;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        return $this->prefix . "-0001";
+    }
 
-		$max = '';
 
-		$posindice = strlen($this->prefix) + 2;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."workstation_workstation";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."-%'";
-		if ($object->ismultientitymanaged == 1) {
-			$sql .= " AND entity = ".$conf->entity;
-		} elseif ($object->ismultientitymanaged == 2) {
-			// TODO
-		}
+    /**
+     *  Checks if the numbers already in the database do not
+     *  cause conflicts that would prevent this numbering working.
+     *
+     *  @param  CommonObject    $object     Object we need next value for
+     *  @return boolean                     false if conflict, true if ok
+     */
+    public function canBeActivated($object)
+    {
+        global $conf, $langs, $db;
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$row = $db->fetch_row($resql);
-			if ($row) {
-				$max = $row[0];
-			}
-		}
-		/*if ($coyymm && !preg_match('/'.$this->prefix.'[0-9][0-9][0-9][0-9]/i', $coyymm)) {
-			$langs->load("errors");
-			$this->error = $langs->trans('ErrorNumRefModel', $max);
-			return false;
-		}*/
+        $max = '';
 
-		return true;
-	}
+        $posindice = strlen($this->prefix) + 2;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "workstation_workstation";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "-%'";
+        if ($object->ismultientitymanaged == 1) {
+            $sql .= " AND entity = " . $conf->entity;
+        } elseif ($object->ismultientitymanaged == 2) {
+            // TODO
+        }
 
-	/**
-	 * 	Return next free value
-	 *
-	 *  @param  Workstation	$object		Object we need next value for
-	 *  @return string|-1      	        Next value if OK, -1 if KO
-	 */
-	public function getNextValue($object)
-	{
-		global $db, $conf;
+        $resql = $db->query($sql);
+        if ($resql) {
+            $row = $db->fetch_row($resql);
+            if ($row) {
+                $max = $row[0];
+            }
+        }
+        /*if ($coyymm && !preg_match('/'.$this->prefix.'[0-9][0-9][0-9][0-9]/i', $coyymm)) {
+            $langs->load("errors");
+            $this->error = $langs->trans('ErrorNumRefModel', $max);
+            return false;
+        }*/
 
-		// First we get the max value
-		$posindice = strlen($this->prefix) + 2;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."workstation_workstation";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."-%'";
-		//$sql .= " AND entity = ".$conf->entity;
+        return true;
+    }
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$obj = $db->fetch_object($resql);
-			if ($obj) {
-				$max = intval($obj->max);
-			} else {
-				$max = 0;
-			}
-		} else {
-			dol_syslog("mod_workstation_standard::getNextValue", LOG_DEBUG);
-			return -1;
-		}
+    /**
+     *  Return next free value
+     *
+     *  @param  Workstation $object     Object we need next value for
+     *  @return string|-1               Next value if OK, -1 if KO
+     */
+    public function getNextValue($object)
+    {
+        global $db, $conf;
 
-		if ($max >= (pow(10, 4) - 1)) {
-			$num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
-		} else {
-			$num = sprintf("%04d", $max + 1);
-		}
+        // First we get the max value
+        $posindice = strlen($this->prefix) + 2;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "workstation_workstation";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "-%'";
+        //$sql .= " AND entity = ".$conf->entity;
 
-		dol_syslog("mod_workstation_standard::getNextValue return ".$this->prefix."-".$num);
-		return $this->prefix."-".$num;
-	}
+        $resql = $db->query($sql);
+        if ($resql) {
+            $obj = $db->fetch_object($resql);
+            if ($obj) {
+                $max = intval($obj->max);
+            } else {
+                $max = 0;
+            }
+        } else {
+            dol_syslog("mod_workstation_standard::getNextValue", LOG_DEBUG);
+            return -1;
+        }
+
+        if ($max >= (pow(10, 4) - 1)) {
+            $num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
+        } else {
+            $num = sprintf("%04d", $max + 1);
+        }
+
+        dol_syslog("mod_workstation_standard::getNextValue return " . $this->prefix . "-" . $num);
+        return $this->prefix . "-" . $num;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
@@ -19,21 +20,21 @@
  */
 
 /**
- *	    \file       htdocs/compta/bank/budget.php
+ *      \file       htdocs/compta/bank/budget.php
  *      \ingroup    banque
- *		\brief      Page de budget
+ *      \brief      Page de budget
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'categories'));
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'banque');
 
@@ -54,17 +55,17 @@ print load_fiche_titre($langs->trans("BankTransactionByCategories"), '', 'bank_a
 
 print '<table class="noborder centpercent">';
 print "<tr class=\"liste_titre\">";
-print '<td>'.$langs->trans("Rubrique").'</td>';
-print '<td class="right">'.$langs->trans("Nb").'</td>';
-print '<td class="right">'.$langs->trans("Total").'</td>';
-print '<td class="right">'.$langs->trans("Average").'</td>';
+print '<td>' . $langs->trans("Rubrique") . '</td>';
+print '<td class="right">' . $langs->trans("Nb") . '</td>';
+print '<td class="right">' . $langs->trans("Total") . '</td>';
+print '<td class="right">' . $langs->trans("Average") . '</td>';
 print "</tr>\n";
 
 $sql = "SELECT sum(d.amount) as somme, count(*) as nombre, c.label, c.rowid ";
-$sql .= " FROM ".MAIN_DB_PREFIX."bank_categ as c";
-$sql .= ", ".MAIN_DB_PREFIX."bank_class as l";
-$sql .= ", ".MAIN_DB_PREFIX."bank as d";
-$sql .= " WHERE c.entity = ".$conf->entity;
+$sql .= " FROM " . MAIN_DB_PREFIX . "bank_categ as c";
+$sql .= ", " . MAIN_DB_PREFIX . "bank_class as l";
+$sql .= ", " . MAIN_DB_PREFIX . "bank as d";
+$sql .= " WHERE c.entity = " . $conf->entity;
 $sql .= " AND c.rowid = l.fk_categ";
 $sql .= " AND d.rowid = l.lineid";
 $sql .= " GROUP BY c.label, c.rowid";
@@ -72,31 +73,31 @@ $sql .= " ORDER BY c.label";
 
 $result = $db->query($sql);
 if ($result) {
-	$num = $db->num_rows($result);
-	$i = 0;
-	$total = 0;
-	$totalnb = 0;
+    $num = $db->num_rows($result);
+    $i = 0;
+    $total = 0;
+    $totalnb = 0;
 
-	while ($i < $num) {
-		$objp = $db->fetch_object($result);
+    while ($i < $num) {
+        $objp = $db->fetch_object($result);
 
-		print '<tr class="oddeven">';
-		print "<td><a href=\"".DOL_URL_ROOT."/compta/bank/bankentries_list.php?bid=$objp->rowid\">$objp->label</a></td>";
-		print '<td class="right">'.$objp->nombre.'</td>';
-		print '<td class="right"><span class="amount">'.price(abs($objp->somme))."</span></td>";
-		print '<td class="right"><span class="amount">'.price(abs(price2num($objp->somme / $objp->nombre, 'MT')))."</span></td>";
-		print "</tr>";
-		$i++;
-		$total += abs($objp->somme);
-		$totalnb += $objp->nombre;
-	}
-	$db->free($result);
+        print '<tr class="oddeven">';
+        print "<td><a href=\"" . DOL_URL_ROOT . "/compta/bank/bankentries_list.php?bid=$objp->rowid\">$objp->label</a></td>";
+        print '<td class="right">' . $objp->nombre . '</td>';
+        print '<td class="right"><span class="amount">' . price(abs($objp->somme)) . "</span></td>";
+        print '<td class="right"><span class="amount">' . price(abs(price2num($objp->somme / $objp->nombre, 'MT'))) . "</span></td>";
+        print "</tr>";
+        $i++;
+        $total += abs($objp->somme);
+        $totalnb += $objp->nombre;
+    }
+    $db->free($result);
 
-	print '<tr class="liste_total"><td colspan="2">'.$langs->trans("Total").'</td>';
-	print '<td class="liste_total right">'.price($total).'</td>';
-	print '<td colspan="2" class="liste_total right">'.price($totalnb ? price2num($total / $totalnb, 'MT') : 0).'</td></tr>';
+    print '<tr class="liste_total"><td colspan="2">' . $langs->trans("Total") . '</td>';
+    print '<td class="liste_total right">' . price($total) . '</td>';
+    print '<td colspan="2" class="liste_total right">' . price($totalnb ? price2num($total / $totalnb, 'MT') : 0) . '</td></tr>';
 } else {
-	dol_print_error($db);
+    dol_print_error($db);
 }
 print "</table>";
 

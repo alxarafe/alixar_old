@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Xavier Dutoit         <doli@sydesy.com>
  * Copyright (C) 2004-2009 Laurent Destailleur   <eldy@users.sourceforge.net>
@@ -25,32 +26,32 @@
 
 //if (! defined('NOTOKENRENEWAL')) define('NOTOKENRENEWAL','1'); // Uncomment creates pb to relogon after a disconnect
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 /* We do now force CSRF check so we can logout using logout.php page (required for DoliDroid for example)
 if (!defined('CSRFCHECK_WITH_TOKEN')) {
-	define('CSRFCHECK_WITH_TOKEN', '1');
+    define('CSRFCHECK_WITH_TOKEN', '1');
 }
 */
-//if (! defined('NOREQUIRESOC'))   define('NOREQUIRESOC','1');	// We need company to get correct logo onto home page
+//if (! defined('NOREQUIRESOC'))   define('NOREQUIRESOC','1');  // We need company to get correct logo onto home page
 if (!defined('EVEN_IF_ONLY_LOGIN_ALLOWED')) {
-	define('EVEN_IF_ONLY_LOGIN_ALLOWED', '1');
+    define('EVEN_IF_ONLY_LOGIN_ALLOWED', '1');
 }
 
 require_once '../main.inc.php';
 
 // This can happen only with a bookmark or a forged url call.
 if (!empty($_SESSION["dol_authmode"]) && ($_SESSION["dol_authmode"] == 'forceuser' || $_SESSION["dol_authmode"] == 'http')) {
-	unset($_SESSION["dol_login"]);
-	unset($_SESSION['dol_entity']);
-	unset($_SESSION['urlfrom']);
-	die("Applicative disconnection should be useless when connection was made in mode ".$_SESSION["dol_authmode"]);	// TODO Really ? It at least delete the session file ?!
+    unset($_SESSION["dol_login"]);
+    unset($_SESSION['dol_entity']);
+    unset($_SESSION['urlfrom']);
+    die("Applicative disconnection should be useless when connection was made in mode " . $_SESSION["dol_authmode"]); // TODO Really ? It at least delete the session file ?!
 }
 
 //global $conf, $langs, $user;
@@ -58,7 +59,7 @@ if (!empty($_SESSION["dol_authmode"]) && ($_SESSION["dol_authmode"] == 'forceuse
 // Call trigger
 $result = $user->call_trigger('USER_LOGOUT', $user);
 if ($result < 0) {
-	$error++;
+    $error++;
 }
 // End call triggers
 
@@ -68,41 +69,41 @@ $hookmanager->initHooks(array('logout'));
 $parameters = array();
 $reshook = $hookmanager->executeHooks('afterLogout', $parameters, $user, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	$error++;
+    $error++;
 }
 
 // Define url to go after disconnect
 $urlfrom = empty($_SESSION["urlfrom"]) ? '' : $_SESSION["urlfrom"];
 
 // Define url to go
-$url = DOL_URL_ROOT."/index.php"; // By default go to login page
+$url = DOL_URL_ROOT . "/index.php"; // By default go to login page
 if ($urlfrom) {
-	$url = DOL_URL_ROOT.$urlfrom;
+    $url = DOL_URL_ROOT . $urlfrom;
 }
 if (getDolGlobalString('MAIN_LOGOUT_GOTO_URL')) {
-	$url = getDolGlobalString('MAIN_LOGOUT_GOTO_URL');
+    $url = getDolGlobalString('MAIN_LOGOUT_GOTO_URL');
 }
 
 if (GETPOST('dol_hide_topmenu')) {
-	$url .= (preg_match('/\?/', $url) ? '&' : '?').'dol_hide_topmenu=1';
+    $url .= (preg_match('/\?/', $url) ? '&' : '?') . 'dol_hide_topmenu=1';
 }
 if (GETPOST('dol_hide_leftmenu')) {
-	$url .= (preg_match('/\?/', $url) ? '&' : '?').'dol_hide_leftmenu=1';
+    $url .= (preg_match('/\?/', $url) ? '&' : '?') . 'dol_hide_leftmenu=1';
 }
 if (GETPOST('dol_optimize_smallscreen')) {
-	$url .= (preg_match('/\?/', $url) ? '&' : '?').'dol_optimize_smallscreen=1';
+    $url .= (preg_match('/\?/', $url) ? '&' : '?') . 'dol_optimize_smallscreen=1';
 }
 if (GETPOST('dol_no_mouse_hover')) {
-	$url .= (preg_match('/\?/', $url) ? '&' : '?').'dol_no_mouse_hover=1';
+    $url .= (preg_match('/\?/', $url) ? '&' : '?') . 'dol_no_mouse_hover=1';
 }
 if (GETPOST('dol_use_jmobile')) {
-	$url .= (preg_match('/\?/', $url) ? '&' : '?').'dol_use_jmobile=1';
+    $url .= (preg_match('/\?/', $url) ? '&' : '?') . 'dol_use_jmobile=1';
 }
 
 // Destroy session
-dol_syslog("End of session ".session_id());
+dol_syslog("End of session " . session_id());
 if (session_status() === PHP_SESSION_ACTIVE) {
-	session_destroy();
+    session_destroy();
 }
 
 
@@ -112,6 +113,6 @@ unset($_SESSION['dol_entity']);
 unset($_SESSION['urlfrom']);
 
 if (GETPOST('noredirect')) {
-	return;
+    return;
 }
-header("Location: ".$url); // Default behaviour is redirect to index.php page
+header("Location: " . $url); // Default behaviour is redirect to index.php page

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2007-2012  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2014       Juanjo Menent       <jmenent@2byte.es>
@@ -27,9 +28,9 @@
  */
 
 /**
- * \file		htdocs/accountancy/class/accountancyimport.class.php
- * \ingroup		Accountancy (Double entries)
- * \brief 		Class with methods for accountancy import
+ * \file        htdocs/accountancy/class/accountancyimport.class.php
+ * \ingroup     Accountancy (Double entries)
+ * \brief       Class with methods for accountancy import
  */
 
 
@@ -39,104 +40,104 @@
  */
 class AccountancyImport
 {
-	/**
-	 * @var DoliDB	Database handler
-	 */
-	public $db;
+    /**
+     * @var DoliDB  Database handler
+     */
+    public $db;
 
 
-	/**
-	 * Constructor
-	 *
-	 * @param DoliDB $db Database handler
-	 */
-	public function __construct(DoliDB $db)
-	{
-		$this->db = $db;
-	}
+    /**
+     * Constructor
+     *
+     * @param DoliDB $db Database handler
+     */
+    public function __construct(DoliDB $db)
+    {
+        $this->db = $db;
+    }
 
-	/**
-	 *  Clean amount
-	 *
-	 * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
-	 * @param   array       $listfields         Fields list to add
-	 * @param 	int			$record_key         Record key
-	 * @return  mixed							Value
-	 */
-	public function cleanAmount(&$arrayrecord, $listfields, $record_key)
-	{
-		$value_trim = trim($arrayrecord[$record_key]['val']);
-		return (float) $value_trim;
-	}
+    /**
+     *  Clean amount
+     *
+     * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
+     * @param   array       $listfields         Fields list to add
+     * @param   int         $record_key         Record key
+     * @return  mixed                           Value
+     */
+    public function cleanAmount(&$arrayrecord, $listfields, $record_key)
+    {
+        $value_trim = trim($arrayrecord[$record_key]['val']);
+        return (float) $value_trim;
+    }
 
-	/**
-	 *  Clean value with trim
-	 *
-	 * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
-	 * @param   array       $listfields         Fields list to add
-	 * @param 	int			$record_key         Record key
-	 * @return  mixed							Value
-	 */
-	public function cleanValue(&$arrayrecord, $listfields, $record_key)
-	{
-		return trim($arrayrecord[$record_key]['val']);
-	}
+    /**
+     *  Clean value with trim
+     *
+     * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
+     * @param   array       $listfields         Fields list to add
+     * @param   int         $record_key         Record key
+     * @return  mixed                           Value
+     */
+    public function cleanValue(&$arrayrecord, $listfields, $record_key)
+    {
+        return trim($arrayrecord[$record_key]['val']);
+    }
 
-	/**
-	 *  Compute amount
-	 *
-	 * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
-	 * @param   array       $listfields         Fields list to add
-	 * @param 	int			$record_key         Record key
-	 * @return  mixed							Value
-	 */
-	public function computeAmount(&$arrayrecord, $listfields, $record_key)
-	{
-		// get fields indexes
-		$field_index_list = array_flip($listfields);
-		if (isset($field_index_list['debit']) && isset($field_index_list['credit'])) {
-			$debit_index = $field_index_list['debit'];
-			$credit_index = $field_index_list['credit'];
+    /**
+     *  Compute amount
+     *
+     * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
+     * @param   array       $listfields         Fields list to add
+     * @param   int         $record_key         Record key
+     * @return  mixed                           Value
+     */
+    public function computeAmount(&$arrayrecord, $listfields, $record_key)
+    {
+        // get fields indexes
+        $field_index_list = array_flip($listfields);
+        if (isset($field_index_list['debit']) && isset($field_index_list['credit'])) {
+            $debit_index = $field_index_list['debit'];
+            $credit_index = $field_index_list['credit'];
 
-			$debit  = (float) $arrayrecord[$debit_index]['val'];
-			$credit = (float) $arrayrecord[$credit_index]['val'];
-			if (!empty($debit)) {
-				$amount = $debit;
-			} else {
-				$amount = $credit;
-			}
+            $debit  = (float) $arrayrecord[$debit_index]['val'];
+            $credit = (float) $arrayrecord[$credit_index]['val'];
+            if (!empty($debit)) {
+                $amount = $debit;
+            } else {
+                $amount = $credit;
+            }
 
-			return "'" . $this->db->escape(abs($amount)) . "'";
-		}
+            return "'" . $this->db->escape(abs($amount)) . "'";
+        }
 
-		return "''";
-	}
+        return "''";
+    }
 
 
-	/**
-	 *  Compute direction
-	 *
-	 * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
-	 * @param   array       $listfields         Fields list to add
-	 * @param 	int			$record_key         Record key
-	 * @return  mixed							Value
-	 */
-	public function computeDirection(&$arrayrecord, $listfields, $record_key)
-	{
-		$field_index_list = array_flip($listfields);
-		if (isset($field_index_list['debit'])) {
-			$debit_index = $field_index_list['debit'];
+    /**
+     *  Compute direction
+     *
+     * @param   array       $arrayrecord        Array of read values: [fieldpos] => (['val']=>val, ['type']=>-1=null,0=blank,1=string), [fieldpos+1]...
+     * @param   array       $listfields         Fields list to add
+     * @param   int         $record_key         Record key
+     * @return  mixed                           Value
+     */
+    public function computeDirection(&$arrayrecord, $listfields, $record_key)
+    {
+        $field_index_list = array_flip($listfields);
+        if (isset($field_index_list['debit'])) {
+            $debit_index = $field_index_list['debit'];
 
-			$debit = (float) $arrayrecord[$debit_index]['val'];
-			if (!empty($debit)) {
-				$sens = 'D';
-			} else {
-				$sens = 'C';
-			}
+            $debit = (float) $arrayrecord[$debit_index]['val'];
+            if (!empty($debit)) {
+                $sens = 'D';
+            } else {
+                $sens = 'C';
+            }
 
-			return "'" . $this->db->escape($sens) . "'";
-		}
+            return "'" . $this->db->escape($sens) . "'";
+        }
 
-		return "''";
-	}
+        return "''";
+    }
 }

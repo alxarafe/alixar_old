@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,19 +17,19 @@
  */
 
 /**
- *   	\file       recruitmentjobposition_applications.php
- *		\ingroup    recruitment
- *		\brief      Page to see/add applications of a job position
+ *      \file       recruitmentjobposition_applications.php
+ *      \ingroup    recruitment
+ *      \brief      Page to see/add applications of a job position
  */
 
 // Load Dolibarr environment
 require_once '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
-require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT.'/recruitment/class/recruitmentjobposition.class.php';
-require_once DOL_DOCUMENT_ROOT.'/recruitment/lib/recruitment_recruitmentjobposition.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
+require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentjobposition.class.php';
+require_once DOL_DOCUMENT_ROOT . '/recruitment/lib/recruitment_recruitmentjobposition.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("recruitment", "other"));
@@ -47,7 +48,7 @@ $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
 // Initialize technical objects
 $object = new RecruitmentJobPosition($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->recruitment->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->recruitment->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('recruitmentjobpositioncard', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Fetch optionals attributes and labels
@@ -59,17 +60,17 @@ $search_array_options = $extrafields->getOptionalsFromPost($object->table_elemen
 $search_all = GETPOST("search_all", 'alpha');
 $search = array();
 foreach ($object->fields as $key => $val) {
-	if (GETPOST('search_'.$key, 'alpha')) {
-		$search[$key] = GETPOST('search_'.$key, 'alpha');
-	}
+    if (GETPOST('search_' . $key, 'alpha')) {
+        $search[$key] = GETPOST('search_' . $key, 'alpha');
+    }
 }
 
 if (empty($action) && empty($id) && empty($ref)) {
-	$action = 'view';
+    $action = 'view';
 }
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
 
 
 $permissiontoread = $user->hasRight('recruitment', 'recruitmentjobposition', 'read');
@@ -93,52 +94,52 @@ $result = restrictedArea($user, 'recruitment', $object->id, 'recruitment_recruit
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	$error = 0;
+    $error = 0;
 
-	$backurlforlist = '/recruitment/recruitmentjobposition_list.php';
+    $backurlforlist = '/recruitment/recruitmentjobposition_list.php';
 
-	if (empty($backtopage) || ($cancel && empty($id))) {
-		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
-			if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
-				$backtopage = $backurlforlist;
-			} else {
-				$backtopage = '/recruitment/recruitmentjobposition_card.php?id='.($id > 0 ? $id : '__ID__');
-			}
-		}
-	}
-	$triggermodname = 'RECRUITMENT_RECRUITMENTJOBPOSITION_MODIFY'; // Name of trigger action code to execute when we modify record
+    if (empty($backtopage) || ($cancel && empty($id))) {
+        if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
+            if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
+                $backtopage = $backurlforlist;
+            } else {
+                $backtopage = '/recruitment/recruitmentjobposition_card.php?id=' . ($id > 0 ? $id : '__ID__');
+            }
+        }
+    }
+    $triggermodname = 'RECRUITMENT_RECRUITMENTJOBPOSITION_MODIFY'; // Name of trigger action code to execute when we modify record
 
-	// Actions cancel, add, update, update_extras, confirm_validate, confirm_delete, confirm_deleteline, confirm_clone, confirm_close, confirm_setdraft, confirm_reopen
-	include DOL_DOCUMENT_ROOT.'/core/actions_addupdatedelete.inc.php';
+    // Actions cancel, add, update, update_extras, confirm_validate, confirm_delete, confirm_deleteline, confirm_clone, confirm_close, confirm_setdraft, confirm_reopen
+    include DOL_DOCUMENT_ROOT . '/core/actions_addupdatedelete.inc.php';
 
-	// Actions when linking object each other
-	include DOL_DOCUMENT_ROOT.'/core/actions_dellink.inc.php';
+    // Actions when linking object each other
+    include DOL_DOCUMENT_ROOT . '/core/actions_dellink.inc.php';
 
-	// Actions when printing a doc from card
-	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
+    // Actions when printing a doc from card
+    include DOL_DOCUMENT_ROOT . '/core/actions_printing.inc.php';
 
-	// Action to move up and down lines of object
-	//include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
+    // Action to move up and down lines of object
+    //include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
 
-	// Action to build doc
-	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
+    // Action to build doc
+    include DOL_DOCUMENT_ROOT . '/core/actions_builddoc.inc.php';
 
-	if ($action == 'set_thirdparty' && $permissiontoadd) {
-		$object->setValueFrom('fk_soc', GETPOSTINT('fk_soc'), '', '', 'date', '', $user, 'RECRUITMENTJOBPOSITION_MODIFY');
-	}
-	if ($action == 'classin' && $permissiontoadd) {
-		$object->setProject(GETPOSTINT('projectid'));
-	}
+    if ($action == 'set_thirdparty' && $permissiontoadd) {
+        $object->setValueFrom('fk_soc', GETPOSTINT('fk_soc'), '', '', 'date', '', $user, 'RECRUITMENTJOBPOSITION_MODIFY');
+    }
+    if ($action == 'classin' && $permissiontoadd) {
+        $object->setProject(GETPOSTINT('projectid'));
+    }
 
-	// Actions to send emails
-	$triggersendname = 'RECRUITMENTJOBPOSITION_SENTBYMAIL';
-	$autocopy = 'MAIN_MAIL_AUTOCOPY_RECRUITMENTJOBPOSITION_TO';
-	$trackid = 'recruitmentjobposition'.$object->id;
-	include DOL_DOCUMENT_ROOT.'/core/actions_sendmails.inc.php';
+    // Actions to send emails
+    $triggersendname = 'RECRUITMENTJOBPOSITION_SENTBYMAIL';
+    $autocopy = 'MAIN_MAIL_AUTOCOPY_RECRUITMENTJOBPOSITION_TO';
+    $trackid = 'recruitmentjobposition' . $object->id;
+    include DOL_DOCUMENT_ROOT . '/core/actions_sendmails.inc.php';
 }
 
 
@@ -158,128 +159,128 @@ llxHeader('', $title, $help_url);
 
 // Part to show record
 if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'))) {
-	$res = $object->fetch_optionals();
+    $res = $object->fetch_optionals();
 
-	$head = recruitmentjobpositionPrepareHead($object);
-	print dol_get_fiche_head($head, 'candidatures', $langs->trans("RecruitmentCandidatures"), -1, $object->picto);
+    $head = recruitmentjobpositionPrepareHead($object);
+    print dol_get_fiche_head($head, 'candidatures', $langs->trans("RecruitmentCandidatures"), -1, $object->picto);
 
-	$formconfirm = '';
+    $formconfirm = '';
 
-	// Confirmation to delete
-	if ($action == 'delete') {
-		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('DeleteRecruitmentJobPosition'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
-	}
-	// Confirmation to delete line
-	if ($action == 'deleteline') {
-		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id.'&lineid='.$lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
-	}
-	// Clone confirmation
-	if ($action == 'clone') {
-		// Create an array for form
-		$formquestion = array();
-		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
-	}
+    // Confirmation to delete
+    if ($action == 'delete') {
+        $formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('DeleteRecruitmentJobPosition'), $langs->trans('ConfirmDeleteObject'), 'confirm_delete', '', 0, 1);
+    }
+    // Confirmation to delete line
+    if ($action == 'deleteline') {
+        $formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id . '&lineid=' . $lineid, $langs->trans('DeleteLine'), $langs->trans('ConfirmDeleteLine'), 'confirm_deleteline', '', 0, 1);
+    }
+    // Clone confirmation
+    if ($action == 'clone') {
+        // Create an array for form
+        $formquestion = array();
+        $formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
+    }
 
-	// Confirmation of action xxxx
-	if ($action == 'xxx') {
-		$formquestion = array();
-		/*
-		$forcecombo=0;
-		if ($conf->browser->name == 'ie') $forcecombo = 1;	// There is a bug in IE10 that make combo inside popup crazy
-		$formquestion = array(
-			// 'text' => $langs->trans("ConfirmClone"),
-			// array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneMainAttributes"), 'value' => 1),
-			// array('type' => 'checkbox', 'name' => 'update_prices', 'label' => $langs->trans("PuttingPricesUpToDate"), 'value' => 1),
-			// array('type' => 'other',    'name' => 'idwarehouse',   'label' => $langs->trans("SelectWarehouseForStockDecrease"), 'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1, 0, 0, '', 0, $forcecombo))
-		);
-		*/
-		$formconfirm = $form->formconfirm($_SERVER['PHP_SELF'].'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
-	}
+    // Confirmation of action xxxx
+    if ($action == 'xxx') {
+        $formquestion = array();
+        /*
+        $forcecombo=0;
+        if ($conf->browser->name == 'ie') $forcecombo = 1;  // There is a bug in IE10 that make combo inside popup crazy
+        $formquestion = array(
+            // 'text' => $langs->trans("ConfirmClone"),
+            // array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneMainAttributes"), 'value' => 1),
+            // array('type' => 'checkbox', 'name' => 'update_prices', 'label' => $langs->trans("PuttingPricesUpToDate"), 'value' => 1),
+            // array('type' => 'other',    'name' => 'idwarehouse',   'label' => $langs->trans("SelectWarehouseForStockDecrease"), 'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1, 0, 0, '', 0, $forcecombo))
+        );
+        */
+        $formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
+    }
 
-	// Call Hook formConfirm
-	$parameters = array('formConfirm' => $formconfirm, 'lineid' => $lineid);
-	$reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-	if (empty($reshook)) {
-		$formconfirm .= $hookmanager->resPrint;
-	} elseif ($reshook > 0) {
-		$formconfirm = $hookmanager->resPrint;
-	}
+    // Call Hook formConfirm
+    $parameters = array('formConfirm' => $formconfirm, 'lineid' => $lineid);
+    $reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+    if (empty($reshook)) {
+        $formconfirm .= $hookmanager->resPrint;
+    } elseif ($reshook > 0) {
+        $formconfirm = $hookmanager->resPrint;
+    }
 
-	// Print form confirm
-	print $formconfirm;
-
-
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/recruitment/recruitmentjobposition_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
-
-	$morehtmlref = '<div class="refidno">';
-	/*
-	// Ref customer
-	$morehtmlref.=$form->editfieldkey("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', 0, 1);
-	$morehtmlref.=$form->editfieldval("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', null, null, '', 1);
-	// Thirdparty
-	$morehtmlref.='<br>'.$langs->trans('ThirdParty') . ' : ' . (is_object($object->thirdparty) ? $object->thirdparty->getNomUrl(1) : '');
-	*/
-	// Project
-	if (isModEnabled('project')) {
-		$langs->load("projects");
-		$morehtmlref .= $langs->trans('Project').' ';
-		if ($permissiontoadd) {
-			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a>';
-			}
-			$morehtmlref .= ' : ';
-			if ($action == 'classify') {
-				//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-				$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
-				$morehtmlref .= '<input type="hidden" name="action" value="classin">';
-				$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
-				$morehtmlref .= $formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
-				$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
-				$morehtmlref .= '</form>';
-			} else {
-				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
-			}
-		} else {
-			if (!empty($object->fk_project)) {
-				$proj = new Project($db);
-				$proj->fetch($object->fk_project);
-				$morehtmlref .= ': '.$proj->getNomUrl();
-			} else {
-				$morehtmlref .= '';
-			}
-		}
-	}
-	$morehtmlref .= '</div>';
+    // Print form confirm
+    print $formconfirm;
 
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . dol_buildpath('/recruitment/recruitmentjobposition_list.php', 1) . '?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
+
+    $morehtmlref = '<div class="refidno">';
+    /*
+    // Ref customer
+    $morehtmlref.=$form->editfieldkey("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', 0, 1);
+    $morehtmlref.=$form->editfieldval("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', null, null, '', 1);
+    // Thirdparty
+    $morehtmlref.='<br>'.$langs->trans('ThirdParty') . ' : ' . (is_object($object->thirdparty) ? $object->thirdparty->getNomUrl(1) : '');
+    */
+    // Project
+    if (isModEnabled('project')) {
+        $langs->load("projects");
+        $morehtmlref .= $langs->trans('Project') . ' ';
+        if ($permissiontoadd) {
+            if ($action != 'classify') {
+                $morehtmlref .= '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token=' . newToken() . '&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a>';
+            }
+            $morehtmlref .= ' : ';
+            if ($action == 'classify') {
+                //$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+                $morehtmlref .= '<form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
+                $morehtmlref .= '<input type="hidden" name="action" value="classin">';
+                $morehtmlref .= '<input type="hidden" name="token" value="' . newToken() . '">';
+                $morehtmlref .= $formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
+                $morehtmlref .= '<input type="submit" class="button valignmiddle" value="' . $langs->trans("Modify") . '">';
+                $morehtmlref .= '</form>';
+            } else {
+                $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+            }
+        } else {
+            if (!empty($object->fk_project)) {
+                $proj = new Project($db);
+                $proj->fetch($object->fk_project);
+                $morehtmlref .= ': ' . $proj->getNomUrl();
+            } else {
+                $morehtmlref .= '';
+            }
+        }
+    }
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="fichehalfleft">';
-	print '<div class="underbanner clearboth"></div>';
-	print '<table class="border centpercent tableforfield">'."\n";
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
-	// Common attributes
-	$keyforbreak = 'description'; // We change column just after this field
-	unset($object->fields['fk_project']); // Hide field already shown in banner
-	//unset($object->fields['fk_soc']);					// Hide field already shown in banner
-	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_view.tpl.php';
 
-	// Other attributes. Fields from hook formObjectOptions and Extrafields.
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
+    print '<div class="fichecenter">';
+    print '<div class="fichehalfleft">';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border centpercent tableforfield">' . "\n";
 
-	print '</table>';
-	print '</div>';
-	print '</div>';
+    // Common attributes
+    $keyforbreak = 'description'; // We change column just after this field
+    unset($object->fields['fk_project']); // Hide field already shown in banner
+    //unset($object->fields['fk_soc']);                 // Hide field already shown in banner
+    include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
-	print '<div class="clearboth"></div>';
+    // Other attributes. Fields from hook formObjectOptions and Extrafields.
+    include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';
 
-	print dol_get_fiche_end();
+    print '</table>';
+    print '</div>';
+    print '</div>';
 
-	print '<br>'.$langs->trans("FeatureNotYetAvailable");
+    print '<div class="clearboth"></div>';
+
+    print dol_get_fiche_end();
+
+    print '<br>' . $langs->trans("FeatureNotYetAvailable");
 }
 
 // End of page

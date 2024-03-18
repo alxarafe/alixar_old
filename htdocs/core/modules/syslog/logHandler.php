@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,86 +16,86 @@
  * or see https://www.gnu.org/
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/syslog/logHandlerInterface.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/syslog/logHandlerInterface.php';
 
 /**
  * Parent class for log handlers
  */
 class LogHandler
 {
-	protected $ident = 0;
+    protected $ident = 0;
 
 
-	/**
-	 * Content of the info tooltip.
-	 *
-	 * @return string
-	 */
-	public function getInfo()
-	{
-		return '';
-	}
+    /**
+     * Content of the info tooltip.
+     *
+     * @return string
+     */
+    public function getInfo()
+    {
+        return '';
+    }
 
-	/**
-	 * Return warning if something is wrong with logger
-	 *
-	 * @return string
-	 */
-	public function getWarning()
-	{
-		return '';
-	}
+    /**
+     * Return warning if something is wrong with logger
+     *
+     * @return string
+     */
+    public function getWarning()
+    {
+        return '';
+    }
 
-	/**
-	 * Version of the module ('x.y.z' or 'dolibarr' or 'experimental' or 'development')
-	 *
-	 * @return string
-	 */
-	public function getVersion()
-	{
-		return 'development';
-	}
+    /**
+     * Version of the module ('x.y.z' or 'dolibarr' or 'experimental' or 'development')
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return 'development';
+    }
 
-	/**
-	 * Is the logger active ?
-	 *
-	 * @return int		1 if logger enabled
-	 */
-	public function isActive()
-	{
-		return 0;
-	}
+    /**
+     * Is the logger active ?
+     *
+     * @return int      1 if logger enabled
+     */
+    public function isActive()
+    {
+        return 0;
+    }
 
-	/**
-	 * Configuration variables of the module
-	 *
-	 * @return array
-	 */
-	public function configure()
-	{
-		return array();
-	}
+    /**
+     * Configuration variables of the module
+     *
+     * @return array
+     */
+    public function configure()
+    {
+        return array();
+    }
 
-	/**
-	 * Function that checks if the configuration is valid.
-	 * It will be called after setting the configuration.
-	 * The function returns an array with error messages
-	 *
-	 * @return array
-	 */
-	public function checkConfiguration()
-	{
-		return array();
-	}
+    /**
+     * Function that checks if the configuration is valid.
+     * It will be called after setting the configuration.
+     * The function returns an array with error messages
+     *
+     * @return array
+     */
+    public function checkConfiguration()
+    {
+        return array();
+    }
 
-	/**
-	 * Set current ident.
-	 *
-	 * @param	int		$ident		1=Increase ident of 1, -1=Decrease ident of 1
-	 * @return 	void
-	 */
-	public function setIdent($ident)
-	{
-		$this->ident += $ident;
-	}
+    /**
+     * Set current ident.
+     *
+     * @param   int     $ident      1=Increase ident of 1, -1=Decrease ident of 1
+     * @return  void
+     */
+    public function setIdent($ident)
+    {
+        $this->ident += $ident;
+    }
 }

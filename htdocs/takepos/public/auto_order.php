@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) - 2020	Andreu Bisquerra Gaya <jove@bisquerra.com>
+
+/* Copyright (C) - 2020 Andreu Bisquerra Gaya <jove@bisquerra.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,30 +23,30 @@
  */
 
 if (!defined("NOLOGIN")) {
-	define("NOLOGIN", '1'); // If this page is public (can be called outside logged session)
+    define("NOLOGIN", '1'); // If this page is public (can be called outside logged session)
 }
 if (!defined('NOIPCHECK')) {
-	define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
+    define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
 }
 if (!defined('NOBROWSERNOTIF')) {
-	define('NOBROWSERNOTIF', '1');
+    define('NOBROWSERNOTIF', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
 
 if (!getDolGlobalString('TAKEPOS_AUTO_ORDER')) {
-	accessforbidden('Auto order is not allwed'); // If Auto Order is disabled never allow access to this page (that is a NO LOGIN access)
+    accessforbidden('Auto order is not allwed'); // If Auto Order is disabled never allow access to this page (that is a NO LOGIN access)
 }
 
-$_SESSION["basiclayout"] = 1;	// For the simple layout for public submission
-$_SESSION["takeposterminal"] = getDolGlobalInt('TAKEPOS_TERMINAL_NB_FOR_PUBLIC', 1);	// Default terminal for public submission is 1
+$_SESSION["basiclayout"] = 1;   // For the simple layout for public submission
+$_SESSION["takeposterminal"] = getDolGlobalInt('TAKEPOS_TERMINAL_NB_FOR_PUBLIC', 1);    // Default terminal for public submission is 1
 
 define('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE', 1);
 if (GETPOSTISSET("mobilepage")) {
-	require '../invoice.php';
+    require '../invoice.php';
 } elseif (GETPOSTISSET("genimg")) {
-	require DOL_DOCUMENT_ROOT.'/takepos/genimg/index.php';
+    require DOL_DOCUMENT_ROOT . '/takepos/genimg/index.php';
 } else {
-	require '../phone.php';
+    require '../phone.php';
 }

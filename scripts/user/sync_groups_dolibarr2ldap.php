@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 /**
  * Copyright (C) 2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2006 Laurent Destailleur <eldy@users.sourceforge.net>
@@ -25,28 +26,28 @@
  */
 
 if (!defined('NOSESSION')) {
-	define('NOSESSION', '1');
+    define('NOSESSION', '1');
 }
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);
-$path = __DIR__.'/';
+$path = __DIR__ . '/';
 
 // Test if batch mode
 if (substr($sapi_type, 0, 3) == 'cgi') {
-	echo "Error: You are using PHP for CGI. To execute ".$script_file." from command line, you must use PHP for CLI mode.\n";
-	exit(1);
+    echo "Error: You are using PHP for CGI. To execute " . $script_file . " from command line, you must use PHP for CLI mode.\n";
+    exit(1);
 }
 
 if (!isset($argv[1]) || !$argv[1]) {
-	print "Usage: ".$script_file." now\n";
-	exit(1);
+    print "Usage: " . $script_file . " now\n";
+    exit(1);
 }
 $now = $argv[1];
 
-require_once $path."../../htdocs/master.inc.php";
-require_once DOL_DOCUMENT_ROOT."/core/class/ldap.class.php";
-require_once DOL_DOCUMENT_ROOT."/user/class/usergroup.class.php";
+require_once $path . "../../htdocs/master.inc.php";
+require_once DOL_DOCUMENT_ROOT . "/core/class/ldap.class.php";
+require_once DOL_DOCUMENT_ROOT . "/user/class/usergroup.class.php";
 
 // Global variables
 $version = DOL_VERSION;
@@ -60,8 +61,8 @@ $hookmanager->initHooks(array('cli'));
  */
 
 @set_time_limit(0);
-print "***** ".$script_file." (".$version.") pid=".dol_getmypid()." *****\n";
-dol_syslog($script_file." launched with arg ".join(',', $argv));
+print "***** " . $script_file . " (" . $version . ") pid=" . dol_getmypid() . " *****\n";
+dol_syslog($script_file . " launched with arg " . join(',', $argv));
 
 /*
  * if (getDolGlobalString('LDAP_SYNCHRO_ACTIVE')) {
@@ -71,51 +72,51 @@ dol_syslog($script_file." launched with arg ".join(',', $argv));
  */
 
 $sql = "SELECT rowid";
-$sql .= " FROM ".MAIN_DB_PREFIX."usergroup";
+$sql .= " FROM " . MAIN_DB_PREFIX . "usergroup";
 
 $resql = $db->query($sql);
 if ($resql) {
-	$num = $db->num_rows($resql);
-	$i = 0;
+    $num = $db->num_rows($resql);
+    $i = 0;
 
-	$ldap = new Ldap();
-	$ldap->connectBind();
+    $ldap = new Ldap();
+    $ldap->connectBind();
 
-	while ($i < $num) {
-		$ldap->error = "";
+    while ($i < $num) {
+        $ldap->error = "";
 
-		$obj = $db->fetch_object($resql);
+        $obj = $db->fetch_object($resql);
 
-		$fgroup = new UserGroup($db);
-		$fgroup->id = $obj->rowid;
-		$fgroup->fetch($fgroup->id);
+        $fgroup = new UserGroup($db);
+        $fgroup->id = $obj->rowid;
+        $fgroup->fetch($fgroup->id);
 
-		print $langs->trans("UpdateGroup")." rowid=".$fgroup->id." ".$fgroup->name;
+        print $langs->trans("UpdateGroup") . " rowid=" . $fgroup->id . " " . $fgroup->name;
 
-		$oldobject = $fgroup;
+        $oldobject = $fgroup;
 
-		$oldinfo = $oldobject->_load_ldap_info();
-		$olddn = $oldobject->_load_ldap_dn($oldinfo);
+        $oldinfo = $oldobject->_load_ldap_info();
+        $olddn = $oldobject->_load_ldap_dn($oldinfo);
 
-		$info = $fgroup->_load_ldap_info();
-		$dn = $fgroup->_load_ldap_dn($info);
+        $info = $fgroup->_load_ldap_info();
+        $dn = $fgroup->_load_ldap_dn($info);
 
-		$result = $ldap->add($dn, $info, $user); // Will fail if already exists
-		$result = $ldap->update($dn, $info, $user, $olddn);
-		if ($result > 0) {
-			print " - ".$langs->trans("OK");
-		} else {
-			$error++;
-			print " - ".$langs->trans("KO").' - '.$ldap->error;
-		}
-		print "\n";
+        $result = $ldap->add($dn, $info, $user); // Will fail if already exists
+        $result = $ldap->update($dn, $info, $user, $olddn);
+        if ($result > 0) {
+            print " - " . $langs->trans("OK");
+        } else {
+            $error++;
+            print " - " . $langs->trans("KO") . ' - ' . $ldap->error;
+        }
+        print "\n";
 
-		$i++;
-	}
+        $i++;
+    }
 
-	$ldap->unbind();
+    $ldap->unbind();
 } else {
-	dol_print_error($db);
+    dol_print_error($db);
 }
 
 exit($error);

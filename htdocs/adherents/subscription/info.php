@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2006 Regis Houssin        <regis.houssin@inodbox.com>
  *
@@ -24,16 +25,16 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/member.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/subscription.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/member.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "members", "bills", "users"));
 
 if (!$user->hasRight('adherent', 'lire')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $rowid = GETPOSTINT("rowid");
@@ -55,7 +56,7 @@ $head = subscription_prepare_head($object);
 
 print dol_get_fiche_head($head, 'info', $langs->trans("Subscription"), -1, 'payment');
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/adherents/subscription/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/adherents/subscription/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
 dol_banner_tab($object, 'rowid', $linkback, 1);
 

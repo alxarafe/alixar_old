@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2004      Eric Seigne          <eric.seigne@ryxeo.com>
@@ -21,17 +22,17 @@
  */
 
 /**
- *	\file       htdocs/supplier_proposal/note.php
- *	\ingroup    propal
- *	\brief      Page to show notes of a supplier proposal request
+ *  \file       htdocs/supplier_proposal/note.php
+ *  \ingroup    propal
+ *  \brief      Page to show notes of a supplier proposal request
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/supplier_proposal/class/supplier_proposal.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/supplier_proposal.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/supplier_proposal.lib.php';
 if (isModEnabled('project')) {
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 // Load translation files required by the page
 $langs->loadLangs(array('supplier_proposal', 'compta', 'bills'));
@@ -42,7 +43,7 @@ $action = GETPOST('action', 'aZ09');
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 
 
@@ -66,10 +67,10 @@ $permissionnote = $user->hasRight('supplier_proposal', 'creer'); // Used by the 
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -79,73 +80,73 @@ if (empty($reshook)) {
 $form = new Form($db);
 
 if ($id > 0 || !empty($ref)) {
-	if ($mesg) {
-		print $mesg;
-	}
+    if ($mesg) {
+        print $mesg;
+    }
 
-	$now = dol_now();
+    $now = dol_now();
 
-	if ($object->fetch($id, $ref)) {
-		$object->fetch_thirdparty();
+    if ($object->fetch($id, $ref)) {
+        $object->fetch_thirdparty();
 
-		$title = $object->ref." - ".$langs->trans('Notes');
-		$help_url = 'EN:Ask_Price_Supplier|FR:Demande_de_prix_fournisseur';
-		llxHeader('', $title, $help_url);
+        $title = $object->ref . " - " . $langs->trans('Notes');
+        $help_url = 'EN:Ask_Price_Supplier|FR:Demande_de_prix_fournisseur';
+        llxHeader('', $title, $help_url);
 
-		$societe = new Societe($db);
-		if ($societe->fetch($object->socid)) {
-			$head = supplier_proposal_prepare_head($object);
-			print dol_get_fiche_head($head, 'note', $langs->trans('CommRequest'), -1, 'supplier_proposal');
-
-
-			// Supplier proposal card
-			$linkback = '<a href="'.DOL_URL_ROOT.'/supplier_proposal/list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+        $societe = new Societe($db);
+        if ($societe->fetch($object->socid)) {
+            $head = supplier_proposal_prepare_head($object);
+            print dol_get_fiche_head($head, 'note', $langs->trans('CommRequest'), -1, 'supplier_proposal');
 
 
-			$morehtmlref = '<div class="refidno">';
-			// Ref supplier
-			//$morehtmlref.=$form->editfieldkey("RefSupplier", 'ref_supplier', $object->ref_supplier, $object, $user->rights->fournisseur->commande->creer, 'string', '', 0, 1);
-			//$morehtmlref.=$form->editfieldval("RefSupplier", 'ref_supplier', $object->ref_supplier, $object, $user->rights->fournisseur->commande->creer, 'string', '', null, null, '', 1);
-			// Thirdparty
-			$morehtmlref .= $object->thirdparty->getNomUrl(1);
-			// Project
-			if (isModEnabled('project')) {
-				$langs->load("projects");
-				$morehtmlref .= '<br>';
-				if ($usercancreate) {
-					$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
-					if ($action != 'classify') {
-						$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
-					}
-					$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
-				} else {
-					if (!empty($object->fk_project)) {
-						$proj = new Project($db);
-						$proj->fetch($object->fk_project);
-						$morehtmlref .= $proj->getNomUrl(1);
-						if ($proj->title) {
-							$morehtmlref .= ' - '.$proj->title;
-						}
-					}
-				}
-			}
-			$morehtmlref .= '</div>';
+            // Supplier proposal card
+            $linkback = '<a href="' . DOL_URL_ROOT . '/supplier_proposal/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
 
-			dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+            $morehtmlref = '<div class="refidno">';
+            // Ref supplier
+            //$morehtmlref.=$form->editfieldkey("RefSupplier", 'ref_supplier', $object->ref_supplier, $object, $user->rights->fournisseur->commande->creer, 'string', '', 0, 1);
+            //$morehtmlref.=$form->editfieldval("RefSupplier", 'ref_supplier', $object->ref_supplier, $object, $user->rights->fournisseur->commande->creer, 'string', '', null, null, '', 1);
+            // Thirdparty
+            $morehtmlref .= $object->thirdparty->getNomUrl(1);
+            // Project
+            if (isModEnabled('project')) {
+                $langs->load("projects");
+                $morehtmlref .= '<br>';
+                if ($usercancreate) {
+                    $morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
+                    if ($action != 'classify') {
+                        $morehtmlref .= '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token=' . newToken() . '&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> ';
+                    }
+                    $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+                } else {
+                    if (!empty($object->fk_project)) {
+                        $proj = new Project($db);
+                        $proj->fetch($object->fk_project);
+                        $morehtmlref .= $proj->getNomUrl(1);
+                        if ($proj->title) {
+                            $morehtmlref .= ' - ' . $proj->title;
+                        }
+                    }
+                }
+            }
+            $morehtmlref .= '</div>';
 
 
-			print '<div class="fichecenter">';
-			print '<div class="underbanner clearboth"></div>';
+            dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
-			$cssclass = "titlefield";
-			include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
 
-			print '</div>';
+            print '<div class="fichecenter">';
+            print '<div class="underbanner clearboth"></div>';
 
-			print dol_get_fiche_end();
-		}
-	}
+            $cssclass = "titlefield";
+            include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+            print '</div>';
+
+            print dol_get_fiche_end();
+        }
+    }
 }
 
 // End of page

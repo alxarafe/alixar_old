@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2022 Alice Adminson <aadminson@example.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
@@ -29,7 +30,7 @@ require '../../main.inc.php';
 global $langs, $user;
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
+require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once '../lib/bookcal.lib.php';
 //require_once "../class/myclass.class.php";
 
@@ -41,13 +42,13 @@ $hookmanager->initHooks(array('bookcalsetup', 'globalsetup'));
 
 // Access control
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Parameters
 $action = GETPOST('action', 'aZ09');
 $backtopage = GETPOST('backtopage', 'alpha');
-$modulepart = GETPOST('modulepart', 'aZ09');	// Used by actions_setmoduleoptions.inc.php
+$modulepart = GETPOST('modulepart', 'aZ09');    // Used by actions_setmoduleoptions.inc.php
 
 $value = GETPOST('value', 'alpha');
 $label = GETPOST('label', 'alpha');
@@ -62,7 +63,7 @@ $setupnotempty = 0;
 $useFormSetup = 1;
 
 if (!class_exists('FormSetup')) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formsetup.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
 }
 
 $formSetup = new FormSetup($db);
@@ -74,12 +75,12 @@ $item->defaultFieldValue = 'MyBigCompany public interface for Bookcal';
 /*// Setup conf BOOKCAL_MYPARAM8
 $item = $formSetup->newItem('BOOKCAL_MYPARAM8');
 $TField = array(
-	'test01' => $langs->trans('test01'),
-	'test02' => $langs->trans('test02'),
-	'test03' => $langs->trans('test03'),
-	'test04' => $langs->trans('test04'),
-	'test05' => $langs->trans('test05'),
-	'test06' => $langs->trans('test06'),
+    'test01' => $langs->trans('test01'),
+    'test02' => $langs->trans('test02'),
+    'test03' => $langs->trans('test03'),
+    'test04' => $langs->trans('test04'),
+    'test05' => $langs->trans('test05'),
+    'test06' => $langs->trans('test06'),
 );
 $item->setAsMultiSelect($TField);
 $item->helpText = $langs->transnoentities('BOOKCAL_MYPARAM8');
@@ -115,71 +116,71 @@ $dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 
 // For retrocompatibility Dolibarr < 15.0
 if (versioncompare(explode('.', DOL_VERSION), array(15)) < 0 && $action == 'update' && !empty($user->admin)) {
-	$formSetup->saveConfFromPost();
+    $formSetup->saveConfFromPost();
 }
 
-include DOL_DOCUMENT_ROOT.'/core/actions_setmoduleoptions.inc.php';
+include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
 
 if ($action == 'updateMask') {
-	$maskconst = GETPOST('maskconst', 'aZ09');
-	$maskvalue = GETPOST('maskvalue', 'alpha');
+    $maskconst = GETPOST('maskconst', 'aZ09');
+    $maskvalue = GETPOST('maskvalue', 'alpha');
 
-	if ($maskconst && preg_match('/_MASK$/', $maskconst)) {
-		$res = dolibarr_set_const($db, $maskconst, $maskvalue, 'chaine', 0, '', $conf->entity);
-		if (!($res > 0)) {
-			$error++;
-		}
-	}
+    if ($maskconst && preg_match('/_MASK$/', $maskconst)) {
+        $res = dolibarr_set_const($db, $maskconst, $maskvalue, 'chaine', 0, '', $conf->entity);
+        if (!($res > 0)) {
+            $error++;
+        }
+    }
 
-	if (!$error) {
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		setEventMessages($langs->trans("Error"), null, 'errors');
-	}
+    if (!$error) {
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    } else {
+        setEventMessages($langs->trans("Error"), null, 'errors');
+    }
 } elseif ($action == 'setmod') {
-	// TODO Check if numbering module chosen can be activated by calling method canBeActivated
-	$tmpobjectkey = GETPOST('object', 'aZ09');
-	if (!empty($tmpobjectkey)) {
-		$constforval = 'BOOKCAL_'.strtoupper($tmpobjectkey)."_ADDON";
-		dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity);
-	}
+    // TODO Check if numbering module chosen can be activated by calling method canBeActivated
+    $tmpobjectkey = GETPOST('object', 'aZ09');
+    if (!empty($tmpobjectkey)) {
+        $constforval = 'BOOKCAL_' . strtoupper($tmpobjectkey) . "_ADDON";
+        dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity);
+    }
 } elseif ($action == 'set') {
-	// Activate a model
-	$ret = addDocumentModel($value, $type, $label, $scandir);
+    // Activate a model
+    $ret = addDocumentModel($value, $type, $label, $scandir);
 } elseif ($action == 'del') {
-	$ret = delDocumentModel($value, $type);
-	if ($ret > 0) {
-		$tmpobjectkey = GETPOST('object', 'aZ09');
-		if (!empty($tmpobjectkey)) {
-			$constforval = 'BOOKCAL_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
-			if (getDolGlobalString($constforval) == "$value") {
-				dolibarr_del_const($db, $constforval, $conf->entity);
-			}
-		}
-	}
+    $ret = delDocumentModel($value, $type);
+    if ($ret > 0) {
+        $tmpobjectkey = GETPOST('object', 'aZ09');
+        if (!empty($tmpobjectkey)) {
+            $constforval = 'BOOKCAL_' . strtoupper($tmpobjectkey) . '_ADDON_PDF';
+            if (getDolGlobalString($constforval) == "$value") {
+                dolibarr_del_const($db, $constforval, $conf->entity);
+            }
+        }
+    }
 } elseif ($action == 'setdoc') {
-	// Set or unset default model
-	$tmpobjectkey = GETPOST('object', 'aZ09');
-	if (!empty($tmpobjectkey)) {
-		$constforval = 'BOOKCAL_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
-		if (dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity)) {
-			// The constant that was read before the new set
-			// We therefore requires a variable to have a coherent view
-			$conf->global->$constforval = $value;
-		}
+    // Set or unset default model
+    $tmpobjectkey = GETPOST('object', 'aZ09');
+    if (!empty($tmpobjectkey)) {
+        $constforval = 'BOOKCAL_' . strtoupper($tmpobjectkey) . '_ADDON_PDF';
+        if (dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity)) {
+            // The constant that was read before the new set
+            // We therefore requires a variable to have a coherent view
+            $conf->global->$constforval = $value;
+        }
 
-		// We disable/enable the document template (into llx_document_model table)
-		$ret = delDocumentModel($value, $type);
-		if ($ret > 0) {
-			$ret = addDocumentModel($value, $type, $label, $scandir);
-		}
-	}
+        // We disable/enable the document template (into llx_document_model table)
+        $ret = delDocumentModel($value, $type);
+        if ($ret > 0) {
+            $ret = addDocumentModel($value, $type, $label, $scandir);
+        }
+    }
 } elseif ($action == 'unsetdoc') {
-	$tmpobjectkey = GETPOST('object', 'aZ09');
-	if (!empty($tmpobjectkey)) {
-		$constforval = 'BOOKCAL_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
-		dolibarr_del_const($db, $constforval, $conf->entity);
-	}
+    $tmpobjectkey = GETPOST('object', 'aZ09');
+    if (!empty($tmpobjectkey)) {
+        $constforval = 'BOOKCAL_' . strtoupper($tmpobjectkey) . '_ADDON_PDF';
+        dolibarr_del_const($db, $constforval, $conf->entity);
+    }
 }
 
 
@@ -196,7 +197,7 @@ $page_name = "BookCalSetup";
 llxHeader('', $langs->trans($page_name), $help_url);
 
 // Subheader
-$linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . ($backtopage ? $backtopage : DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1') . '">' . $langs->trans("BackToModuleList") . '</a>';
 
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
@@ -208,20 +209,20 @@ print dol_get_fiche_head($head, 'settings', $langs->trans($page_name), -1, "fa-c
 //echo '<span class="opacitymedium">'.$langs->trans("BookCalSetupPage").'</span><br><br>';
 
 if ($action == 'edit') {
-	print $formSetup->generateOutput(true);
-	print '<br>';
+    print $formSetup->generateOutput(true);
+    print '<br>';
 } elseif (!empty($formSetup->items)) {
-	print $formSetup->generateOutput();
-	print '<div class="tabsAction">';
-	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
-	print '</div>';
+    print $formSetup->generateOutput();
+    print '<div class="tabsAction">';
+    print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
+    print '</div>';
 } else {
-	print '<br>'.$langs->trans("NothingToSetup");
+    print '<br>' . $langs->trans("NothingToSetup");
 }
 
 
 if (empty($setupnotempty)) {
-	print '<br>'.$langs->trans("NothingToSetup");
+    print '<br>' . $langs->trans("NothingToSetup");
 }
 
 // Page end

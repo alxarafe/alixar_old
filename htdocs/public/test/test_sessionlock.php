@@ -1,31 +1,31 @@
 <?php
 
 if (!defined('NOREQUIREUSER')) {
-	define('NOREQUIREUSER', '1');
+    define('NOREQUIREUSER', '1');
 }
 if (!defined('NOREQUIREDB')) {
-	define('NOREQUIREDB', '1');
+    define('NOREQUIREDB', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 if (!defined('NOREQUIRETRAN')) {
-	define('NOREQUIRETRAN', '1');
+    define('NOREQUIRETRAN', '1');
 }
 if (!defined('NOSTYLECHECK')) {
-	define('NOSTYLECHECK', '1'); // Do not check style html tag into posted data
+    define('NOSTYLECHECK', '1'); // Do not check style html tag into posted data
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu
+    define('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1'); // If we don't need to load the html.form.class.php
+    define('NOREQUIREHTML', '1'); // If we don't need to load the html.form.class.php
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1'); // Do not load ajax.lib.php library
+    define('NOREQUIREAJAX', '1'); // Do not load ajax.lib.php library
 }
 if (!defined("NOLOGIN")) {
-	define("NOLOGIN", '1'); // If this page is public (can be called outside logged session)
+    define("NOLOGIN", '1'); // If this page is public (can be called outside logged session)
 }
 // If you don't need session management (can't be logged if no session used). You must also set
 // NOCSRFCHECK, NOTOKENRENEWAL, NOLOGIN
@@ -33,7 +33,7 @@ if (!defined("NOLOGIN")) {
 // $_SESSION are then simple vars if sessions are not active.
 // TODO We can close session with session_write_close() as soon as we just need read access everywhere in code.
 if (!defined("NOSESSION")) {
-	define("NOSESSION", '1');
+    define("NOSESSION", '1');
 }
 
 
@@ -48,12 +48,12 @@ header("X-Frame-Options: SAMEORIGIN"); // Frames allowed only if on same domain 
 
 
 print "Legend:<br>\n";
-print 'PHP_SESSION_DISABLED='.PHP_SESSION_DISABLED."<br>\n";
-print 'PHP_SESSION_NONE='.PHP_SESSION_NONE."<br>\n";
-print 'PHP_SESSION_ACTIVE='.PHP_SESSION_ACTIVE."<br>\n";
+print 'PHP_SESSION_DISABLED=' . PHP_SESSION_DISABLED . "<br>\n";
+print 'PHP_SESSION_NONE=' . PHP_SESSION_NONE . "<br>\n";
+print 'PHP_SESSION_ACTIVE=' . PHP_SESSION_ACTIVE . "<br>\n";
 print '<br>';
 
-print 'session_status='.session_status().' (before main.inc.php)';
+print 'session_status=' . session_status() . ' (before main.inc.php)';
 print '<br>';
 
 // Load Dolibarr environment
@@ -61,7 +61,7 @@ require '../../main.inc.php';
 
 // Security
 if ($dolibarr_main_prod) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -69,7 +69,7 @@ if ($dolibarr_main_prod) {
  * View
  */
 
-print 'session_status='.session_status().' (after main.inc.php)';
+print 'session_status=' . session_status() . ' (after main.inc.php)';
 print '<br>';
 
 //print 'a'.$_SESSION['disablemodules'].'b';

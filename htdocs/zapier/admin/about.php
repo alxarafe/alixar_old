@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2019 Frédéric FRANCE <frederic.france@free.fr>
  *
@@ -30,8 +31,8 @@
 require '../../main.inc.php';
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once '../lib/zapier.lib.php';
 
 // Translations
@@ -39,14 +40,14 @@ $langs->loadLangs(array('admin', 'errors', 'zapier'));
 
 // Access control
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 if (!isModEnabled('zapier')) {
-	accessforbidden();
+    accessforbidden();
 }
 if (empty($user->admin)) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -74,7 +75,7 @@ $help_url = 'EN:Module_Zapier';
 llxHeader('', $langs->trans($page_name), $help_url);
 
 // Subheader
-$linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . ($backtopage ? $backtopage : DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1') . '">' . $langs->trans("BackToModuleList") . '</a>';
 
 print load_fiche_titre($langs->trans($page_name), $linkback, 'object_zapier');
 

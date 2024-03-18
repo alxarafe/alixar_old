@@ -17,8 +17,8 @@
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 
@@ -31,7 +31,7 @@ $statutarray = array('1' => $langs->trans("OnSell"), '0' => $langs->trans("NotOn
 
 <?php
 $head = product_prepare_head($object);
-$titre = $langs->trans("CardProduct".$object->type);
+$titre = $langs->trans("CardProduct" . $object->type);
 print dol_get_fiche_head($head, 'card', $titre, 0, 'service');
 
 dol_htmloutput_errors($object->error, $object->errors);
@@ -57,12 +57,12 @@ dol_htmloutput_errors($object->error, $object->errors);
 </tr>
 
 <tr>
-<td class="fieldrequired"><?php echo $langs->trans("Status").' ('.$langs->trans("Sell").')'; ?></td>
+<td class="fieldrequired"><?php echo $langs->trans("Status") . ' (' . $langs->trans("Sell") . ')'; ?></td>
 <td><?php echo $form->selectarray('statut', $statutarray, $object->status); ?></td>
 </tr>
 
 <tr>
-<td class="fieldrequired"><?php echo $langs->trans("Status").' ('.$langs->trans("Buy").')'; ?></td>
+<td class="fieldrequired"><?php echo $langs->trans("Status") . ' (' . $langs->trans("Buy") . ')'; ?></td>
 <td><?php echo $form->selectarray('statut_buy', $statutarray, $object->status_buy); ?></td>
 </tr>
 

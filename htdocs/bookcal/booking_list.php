@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2002-2005	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2002-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004       Eric Seigne				<eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2016  Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012  Regis Houssin			<regis.houssin@inodbox.com>
@@ -22,22 +23,22 @@
  */
 
 /**
- *	\file       htdocs/bookcal/booking_list.php
- *	\ingroup    bookcal
- *	\brief      Management of direct debit order or credit transfer of invoices
+ *  \file       htdocs/bookcal/booking_list.php
+ *  \ingroup    bookcal
+ *  \brief      Management of direct debit order or credit transfer of invoices
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/bookcal/lib/bookcal_calendar.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/bookcal/lib/bookcal_calendar.lib.php';
 
 // load module libraries
-require_once __DIR__.'/class/calendar.class.php';
+require_once __DIR__ . '/class/calendar.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("agenda", "other"));
@@ -50,7 +51,7 @@ $type = GETPOST('type', 'aZ09');
 
 $fieldid = (!empty($ref) ? 'ref' : 'rowid');
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 
 $moreparam = '';
@@ -59,35 +60,35 @@ $object = new Calendar($db);
 
 // Load object
 if ($id > 0 || !empty($ref)) {
-	$ret = $object->fetch($id, $ref);
-	$isdraft = (($object->status == Calendar::STATUS_DRAFT) ? 1 : 0);
-	if ($ret > 0) {
-		$object->fetch_thirdparty();
-	}
+    $ret = $object->fetch($id, $ref);
+    $isdraft = (($object->status == Calendar::STATUS_DRAFT) ? 1 : 0);
+    if ($ret > 0) {
+        $object->fetch_thirdparty();
+    }
 }
 
 // There is several ways to check permission.
 // Set $enablepermissioncheck to 1 to enable a minimum low level of checks
 $enablepermissioncheck = 0;
 if ($enablepermissioncheck) {
-	$permissiontoread = $user->hasRight('bookcal', 'calendar', 'read');
-	$permissiontoadd = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
-	$permissiontodelete = $user->hasRight('bookcal', 'calendar', 'delete') || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
-	$permissionnote = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_setnotes.inc.php
-	$permissiondellink = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_dellink.inc.php
+    $permissiontoread = $user->hasRight('bookcal', 'calendar', 'read');
+    $permissiontoadd = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+    $permissiontodelete = $user->hasRight('bookcal', 'calendar', 'delete') || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
+    $permissionnote = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_setnotes.inc.php
+    $permissiondellink = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_dellink.inc.php
 } else {
-	$permissiontoread = 1;
-	$permissiontoadd = 1; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
-	$permissiontodelete = 1;
-	$permissionnote = 1;
-	$permissiondellink = 1;
+    $permissiontoread = 1;
+    $permissiontoadd = 1; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+    $permissiontodelete = 1;
+    $permissionnote = 1;
+    $permissiondellink = 1;
 }
 
 if (!isModEnabled("bookcal")) {
-	accessforbidden();
+    accessforbidden();
 }
 if (!$permissiontoread) {
-	accessforbidden();
+    accessforbidden();
 }
 
 /*
@@ -97,7 +98,7 @@ if (!$permissiontoread) {
 $parameters = '';
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 
@@ -108,138 +109,138 @@ if ($reshook < 0) {
 $form = new Form($db);
 
 $now = dol_now();
-$title = $langs->trans('Calendar')." - ".$langs->trans('Bookings');
+$title = $langs->trans('Calendar') . " - " . $langs->trans('Bookings');
 
 llxHeader('', $title, $helpurl);
 
 
 if ($object->id > 0) {
-	$head = calendarPrepareHead($object);
+    $head = calendarPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'booking', $langs->trans("Calendar"), -1, $object->picto, 0, '', '', 0, '', 1);
+    print dol_get_fiche_head($head, 'booking', $langs->trans("Calendar"), -1, $object->picto, 0, '', '', 0, '', 1);
 
-	$formconfirm = '';
+    $formconfirm = '';
 
-	// Call Hook formConfirm
-	$parameters = array('formConfirm' => $formconfirm, 'lineid' => $lineid);
-	$reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-	if (empty($reshook)) {
-		$formconfirm .= $hookmanager->resPrint;
-	} elseif ($reshook > 0) {
-		$formconfirm = $hookmanager->resPrint;
-	}
+    // Call Hook formConfirm
+    $parameters = array('formConfirm' => $formconfirm, 'lineid' => $lineid);
+    $reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+    if (empty($reshook)) {
+        $formconfirm .= $hookmanager->resPrint;
+    } elseif ($reshook > 0) {
+        $formconfirm = $hookmanager->resPrint;
+    }
 
-	// Print form confirm
-	print $formconfirm;
-
-
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/bookcal/calendar_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
-
-	$morehtmlref = '<div class="refidno">';
-	$morehtmlref .= '</div>';
+    // Print form confirm
+    print $formconfirm;
 
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . dol_buildpath('/bookcal/calendar_list.php', 1) . '?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
+
+    $morehtmlref = '<div class="refidno">';
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="fichehalfleft">';
-	print '<div class="underbanner clearboth"></div>';
-	print '<table class="border centpercent tableforfield">'."\n";
-
-	// Common attributes
-	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_view.tpl.php';
-
-	// Other attributes. Fields from hook formObjectOptions and Extrafields.
-	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
-
-	// Link to public page
-	print '<tr><td>Link</td>';
-	print '<td><a href="'. DOL_URL_ROOT.'/public/bookcal/index.php?id='.$object->id.'" target="_blank">Public page</a>';
-	print '</td></tr>';
-
-	print '</table>';
-	print '</div>';
-	print '</div>';
-
-	print '<div class="clearboth"></div>';
-
-	print dol_get_fiche_end();
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
 
-	/*
-	 * Bookings
-	 */
+    print '<div class="fichecenter">';
+    print '<div class="fichehalfleft">';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border centpercent tableforfield">' . "\n";
 
-	print '<div class="div-table-responsive-no-min">';
-	print '<table class="noborder centpercent">';
+    // Common attributes
+    include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
-	print '<tr class="liste_titre">';
+    // Other attributes. Fields from hook formObjectOptions and Extrafields.
+    include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';
 
-	print '<td class="left">'.$langs->trans("Ref").'</td>';
-	print '<td>'.$langs->trans("Title").'</td>';
-	print '<td class="center">'.$langs->trans("DateStart").'</td>';
-	print '<td class="center">'.$langs->trans("DateEnd").'</td>';
-	print '<td class="left">'.$langs->trans("Contact").'</td>';
-	print '</tr>';
+    // Link to public page
+    print '<tr><td>Link</td>';
+    print '<td><a href="' . DOL_URL_ROOT . '/public/bookcal/index.php?id=' . $object->id . '" target="_blank">Public page</a>';
+    print '</td></tr>';
 
+    print '</table>';
+    print '</div>';
+    print '</div>';
 
-	$sql = "SELECT ac.id, ac.ref, ac.datep as date_start, ac.datep2 as date_end, ac.label, acr.fk_element";
-	$sql .= " FROM ".MAIN_DB_PREFIX."actioncomm as ac";
-	$sql .= " JOIN ".MAIN_DB_PREFIX."actioncomm_resources as acr on acr.fk_actioncomm = ac.id";
-	$sql .= " WHERE ac.fk_bookcal_calendar = ".((int) $object->id);
-	$sql .= " AND ac.code = 'AC_RDV'";
-	$sql .= " AND acr.element_type = 'socpeople'";
-	$resql = $db->query($sql);
+    print '<div class="clearboth"></div>';
 
-	$num = 0;
-	if ($resql) {
-		$i = 0;
-
-		$tmpcontact = new Contact($db);
-		$tmpactioncomm = new ActionComm($db);
-
-		$num = $db->num_rows($result);
-		while ($i < $num) {
-			$obj = $db->fetch_object($resql);
-			$tmpcontact->fetch($obj->fk_element);
-			$tmpactioncomm->fetch($obj->id);
-
-			print '<tr class="oddeven">';
-
-			// Ref
-			print '<td class="nowraponall">'.$tmpactioncomm->getNomUrl(1, -1)."</td>\n";
-
-			// Title
-			print '<td class="tdoverflowmax125">';
-			print $obj->label;
-			print '</td>';
-
-			// Amount
-			print '<td class="center">'.dol_print_date($db->jdate($obj->date_start), "dayhour").'</td>';
-
-			// Date process
-			print '<td class="center">'.dol_print_date($db->jdate($obj->date_end), "dayhour").'</td>';
-
-			// Link to make payment now
-			print '<td class="minwidth75">';
-			print $tmpcontact->getNomUrl(1, -1);
-			print '</td>';
+    print dol_get_fiche_end();
 
 
-			print "</tr>\n";
-			$i++;
-		}
+    /*
+     * Bookings
+     */
 
-		$db->free($resql);
-	} else {
-		dol_print_error($db);
-	}
+    print '<div class="div-table-responsive-no-min">';
+    print '<table class="noborder centpercent">';
 
-	print "</table>";
-	print '</div>';
+    print '<tr class="liste_titre">';
+
+    print '<td class="left">' . $langs->trans("Ref") . '</td>';
+    print '<td>' . $langs->trans("Title") . '</td>';
+    print '<td class="center">' . $langs->trans("DateStart") . '</td>';
+    print '<td class="center">' . $langs->trans("DateEnd") . '</td>';
+    print '<td class="left">' . $langs->trans("Contact") . '</td>';
+    print '</tr>';
+
+
+    $sql = "SELECT ac.id, ac.ref, ac.datep as date_start, ac.datep2 as date_end, ac.label, acr.fk_element";
+    $sql .= " FROM " . MAIN_DB_PREFIX . "actioncomm as ac";
+    $sql .= " JOIN " . MAIN_DB_PREFIX . "actioncomm_resources as acr on acr.fk_actioncomm = ac.id";
+    $sql .= " WHERE ac.fk_bookcal_calendar = " . ((int) $object->id);
+    $sql .= " AND ac.code = 'AC_RDV'";
+    $sql .= " AND acr.element_type = 'socpeople'";
+    $resql = $db->query($sql);
+
+    $num = 0;
+    if ($resql) {
+        $i = 0;
+
+        $tmpcontact = new Contact($db);
+        $tmpactioncomm = new ActionComm($db);
+
+        $num = $db->num_rows($result);
+        while ($i < $num) {
+            $obj = $db->fetch_object($resql);
+            $tmpcontact->fetch($obj->fk_element);
+            $tmpactioncomm->fetch($obj->id);
+
+            print '<tr class="oddeven">';
+
+            // Ref
+            print '<td class="nowraponall">' . $tmpactioncomm->getNomUrl(1, -1) . "</td>\n";
+
+            // Title
+            print '<td class="tdoverflowmax125">';
+            print $obj->label;
+            print '</td>';
+
+            // Amount
+            print '<td class="center">' . dol_print_date($db->jdate($obj->date_start), "dayhour") . '</td>';
+
+            // Date process
+            print '<td class="center">' . dol_print_date($db->jdate($obj->date_end), "dayhour") . '</td>';
+
+            // Link to make payment now
+            print '<td class="minwidth75">';
+            print $tmpcontact->getNomUrl(1, -1);
+            print '</td>';
+
+
+            print "</tr>\n";
+            $i++;
+        }
+
+        $db->free($resql);
+    } else {
+        dol_print_error($db);
+    }
+
+    print "</table>";
+    print '</div>';
 }
 
 // End of page

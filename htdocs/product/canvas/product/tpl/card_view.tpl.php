@@ -17,8 +17,8 @@
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 
@@ -28,16 +28,16 @@ $object = $GLOBALS['object'];
 <!-- BEGIN PHP TEMPLATE product/canvas/product/tpl/card_view.tpl.php -->
 <?php
 $head = product_prepare_head($object);
-$titre = $langs->trans("CardProduct".$object->type);
+$titre = $langs->trans("CardProduct" . $object->type);
 
 print dol_get_fiche_head($head, 'card', $titre, -1, 'product');
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/product/list.php?restore_lastsearch_values=1&type='.$object->type.'">'.$langs->trans("BackToList").'</a>';
-$object->next_prev_filter = "fk_product_type = ".((int) $object->type);
+$linkback = '<a href="' . DOL_URL_ROOT . '/product/list.php?restore_lastsearch_values=1&type=' . $object->type . '">' . $langs->trans("BackToList") . '</a>';
+$object->next_prev_filter = "fk_product_type = " . ((int) $object->type);
 
 $shownav = 1;
 if ($user->socid && !in_array('product', explode(',', getDolGlobalString('MAIN_MODULES_FOR_EXTERNAL')))) {
-	$shownav = 0;
+    $shownav = 0;
 }
 
 dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
@@ -58,7 +58,7 @@ dol_banner_tab($object, 'ref', $linkback, $shownav, 'ref');
 
 <?php if ($object->photos) { ?>
 <td valign="middle" align="center" width="30%" rowspan="<?php echo $object->nblines; ?>">
-	<?php echo $object->photos; ?>
+    <?php echo $object->photos; ?>
 </td>
 <?php } ?>
 

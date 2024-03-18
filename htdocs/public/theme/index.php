@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015 Raphaël Doursenaud   <rdoursenaud@gpcsolutions.fr>
  *
@@ -17,12 +18,12 @@
  */
 
 /**
- *     	\file       htdocs/public/theme/index.php
- *		\ingroup    core
- *		\brief      A redirect page to an error
+ *      \file       htdocs/public/theme/index.php
+ *      \ingroup    core
+ *      \brief      A redirect page to an error
  */
 
 require '../../master.inc.php';
 
-header("Location: ".DOL_URL_ROOT.'/public/error-404.php');
+header("Location: " . DOL_URL_ROOT . '/public/error-404.php');
 exit;

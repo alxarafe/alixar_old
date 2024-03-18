@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
+
+/* Copyright (C) 2022   Open-Dsi        <support@open-dsi.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,29 +26,29 @@
 /**
  * Prepare array with list of tabs
  *
- * @param   Product	$object		Object related to tabs
- * @return  array				Array of tabs to show
+ * @param   Product $object     Object related to tabs
+ * @return  array               Array of tabs to show
  */
 function productAttributePrepareHead($object)
 {
-	global $langs, $conf;
-	$langs->load("products");
+    global $langs, $conf;
+    $langs->load("products");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT.'/variants/card.php?id='.$object->id;
-	$head[$h][1] = $langs->trans("ProductAttribute");
-	$head[$h][2] = 'card';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/variants/card.php?id=' . $object->id;
+    $head[$h][1] = $langs->trans("ProductAttribute");
+    $head[$h][2] = 'card';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-	// $this->tabs = array('entity:-tabname);   												to remove a tab
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'product_attribute');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
+    // $this->tabs = array('entity:-tabname);                                                   to remove a tab
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'product_attribute');
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'product_attribute', 'remove');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'product_attribute', 'remove');
 
-	return $head;
+    return $head;
 }

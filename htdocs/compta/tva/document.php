@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007 Rodolphe Quiedeville  <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2014 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2005      Marc Barilley / Ocebo <marc@ocebo.com>
@@ -30,14 +31,14 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/tva/class/tva.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/vat.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/vat.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 if (isModEnabled('project')) {
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
-	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 
 // Load translation files required by the page
@@ -53,48 +54,48 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
 if (empty($page) || $page == -1) {
-	$page = 0;
+    $page = 0;
 }
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) {
-	$sortorder = "ASC";
+    $sortorder = "ASC";
 }
 if (!$sortfield) {
-	$sortfield = "name";
+    $sortfield = "name";
 }
 
 $object = new Tva($db);
 
 if ($id > 0) {
-	$object->fetch($id);
+    $object->fetch($id);
 }
 
-$upload_dir = $conf->tax->dir_output.'/vat/'.dol_sanitizeFileName($object->ref);
+$upload_dir = $conf->tax->dir_output . '/vat/' . dol_sanitizeFileName($object->ref);
 $modulepart = 'tax-vat';
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'tax', '', 'tva', 'charges');
 
-$permissiontoadd = $user->hasRight('tax', 'charges', 'creer');	// Used by the include of actions_dellink.inc.php
+$permissiontoadd = $user->hasRight('tax', 'charges', 'creer');  // Used by the include of actions_dellink.inc.php
 
 
 /*
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
+include DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
 
 if ($action == 'setlib' && $permissiontoadd) {
-	$object->fetch($id);
-	$result = $object->setValueFrom('label', GETPOST('lib', 'alpha'), '', '', 'text', '', $user, 'TAX_MODIFY');
-	if ($result < 0) {
-		setEventMessages($object->error, $object->errors, 'errors');
-	}
+    $object->fetch($id);
+    $result = $object->setValueFrom('label', GETPOST('lib', 'alpha'), '', '', 'text', '', $user, 'TAX_MODIFY');
+    if ($result < 0) {
+        setEventMessages($object->error, $object->errors, 'errors');
+    }
 }
 
 
@@ -104,60 +105,60 @@ if ($action == 'setlib' && $permissiontoadd) {
 
 $form = new Form($db);
 if (isModEnabled('project')) {
-	$formproject = new FormProjets($db);
+    $formproject = new FormProjets($db);
 }
 
-$title = $langs->trans("VATPayment").' - '.$langs->trans("Documents");
+$title = $langs->trans("VATPayment") . ' - ' . $langs->trans("Documents");
 $help_url = 'EN:Module_Taxes_and_social_contributions|FR:Module Taxes et dividendes|ES:M&oacute;dulo Impuestos y cargas sociales (IVA, impuestos)';
 llxHeader("", $title, $help_url);
 
 if ($object->id) {
-	$alreadypayed = $object->getSommePaiement();
+    $alreadypayed = $object->getSommePaiement();
 
-	$head = vat_prepare_head($object);
+    $head = vat_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'documents', $langs->trans("VATPayment"), -1, 'payment');
+    print dol_get_fiche_head($head, 'documents', $langs->trans("VATPayment"), -1, 'payment');
 
-	$morehtmlref = '<div class="refidno">';
-	// Label of social contribution
-	$morehtmlref .= $form->editfieldkey("Label", 'lib', $object->label, $object, $user->hasRight('tax', 'charges', 'creer'), 'string', '', 0, 1);
-	$morehtmlref .= $form->editfieldval("Label", 'lib', $object->label, $object, $user->hasRight('tax', 'charges', 'creer'), 'string', '', null, null, '', 1);
-	$morehtmlref .= '</div>';
+    $morehtmlref = '<div class="refidno">';
+    // Label of social contribution
+    $morehtmlref .= $form->editfieldkey("Label", 'lib', $object->label, $object, $user->hasRight('tax', 'charges', 'creer'), 'string', '', 0, 1);
+    $morehtmlref .= $form->editfieldval("Label", 'lib', $object->label, $object, $user->hasRight('tax', 'charges', 'creer'), 'string', '', null, null, '', 1);
+    $morehtmlref .= '</div>';
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/compta/tva/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/compta/tva/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlstatus = '';
-	dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref, '', 0, '', $morehtmlstatus);
+    $morehtmlstatus = '';
+    dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref, '', 0, '', $morehtmlstatus);
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	// Build file list
-	$filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
-	$totalsize = 0;
-	foreach ($filearray as $key => $file) {
-		$totalsize += $file['size'];
-	}
+    // Build file list
+    $filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
+    $totalsize = 0;
+    foreach ($filearray as $key => $file) {
+        $totalsize += $file['size'];
+    }
 
 
-	print '<table class="border tableforfield centpercent">';
+    print '<table class="border tableforfield centpercent">';
 
-	print '<tr><td class="titlefield">'.$langs->trans("NbOfAttachedFiles").'</td><td colspan="3">'.count($filearray).'</td></tr>';
-	print '<tr><td>'.$langs->trans("TotalSizeOfAttachedFiles").'</td><td colspan="3">'.dol_print_size($totalsize, 1, 1).'</td></tr>';
-	print '</table>';
+    print '<tr><td class="titlefield">' . $langs->trans("NbOfAttachedFiles") . '</td><td colspan="3">' . count($filearray) . '</td></tr>';
+    print '<tr><td>' . $langs->trans("TotalSizeOfAttachedFiles") . '</td><td colspan="3">' . dol_print_size($totalsize, 1, 1) . '</td></tr>';
+    print '</table>';
 
-	print '</div>';
+    print '</div>';
 
-	print '<div class="clearboth"></div>';
+    print '<div class="clearboth"></div>';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 
-	$permissiontoadd = $user->hasRight('tax', 'charges', 'creer');
-	$permtoedit = $user->hasRight('tax', 'charges', 'creer');
-	$param = '&id='.$object->id;
-	include DOL_DOCUMENT_ROOT.'/core/tpl/document_actions_post_headers.tpl.php';
+    $permissiontoadd = $user->hasRight('tax', 'charges', 'creer');
+    $permtoedit = $user->hasRight('tax', 'charges', 'creer');
+    $param = '&id=' . $object->id;
+    include DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_post_headers.tpl.php';
 } else {
-	print $langs->trans("ErrorUnknown");
+    print $langs->trans("ErrorUnknown");
 }
 
 

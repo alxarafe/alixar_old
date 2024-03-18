@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2014-2018  Frederic France         <frederic.france@netlogic.fr>
  * Copyright (C) 2016       Laurent Destailleur     <eldy@users.sourceforge.net>
  *
@@ -24,13 +25,13 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-include_once DOL_DOCUMENT_ROOT.'/core/modules/printing/modules_printing.php';
+include_once DOL_DOCUMENT_ROOT . '/core/modules/printing/modules_printing.php';
 
 // Load translation files required by the page
 $langs->load("printing");
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -47,28 +48,28 @@ if (!$user->admin) {
 
 llxHeader("", $langs->trans("Printing"));
 
-print_barre_liste($langs->trans("Printing"), 0, $_SERVER['PHP_SELF'], '', '', '', '<a class="button" href="'.$_SERVER['PHP_SELF'].'">'.$langs->trans("Refresh").'</a>', 0, 0, 'title_setup.png');
+print_barre_liste($langs->trans("Printing"), 0, $_SERVER['PHP_SELF'], '', '', '', '<a class="button" href="' . $_SERVER['PHP_SELF'] . '">' . $langs->trans("Refresh") . '</a>', 0, 0, 'title_setup.png');
 
-print $langs->trans("DirectPrintingJobsDesc").'<br><br>';
+print $langs->trans("DirectPrintingJobsDesc") . '<br><br>';
 
 // List Jobs from printing modules
 $object = new PrintingDriver($db);
 $result = $object->listDrivers($db, 10);
 foreach ($result as $driver) {
-	require_once DOL_DOCUMENT_ROOT.'/core/modules/printing/'.$driver.'.modules.php';
-	$classname = 'printing_'.$driver;
-	$langs->load($driver);
-	$printer = new $classname($db);
-	$keyforprinteractive = $printer->active;
-	if ($keyforprinteractive && getDolGlobalString($keyforprinteractive)) {
-		//$printer->listJobs('commande');
-		$result = $printer->listJobs();
-		print $printer->resprint;
+    require_once DOL_DOCUMENT_ROOT . '/core/modules/printing/' . $driver . '.modules.php';
+    $classname = 'printing_' . $driver;
+    $langs->load($driver);
+    $printer = new $classname($db);
+    $keyforprinteractive = $printer->active;
+    if ($keyforprinteractive && getDolGlobalString($keyforprinteractive)) {
+        //$printer->listJobs('commande');
+        $result = $printer->listJobs();
+        print $printer->resprint;
 
-		if ($result > 0) {
-			setEventMessages($printer->error, $printer->errors, 'errors');
-		}
-	}
+        if ($result > 0) {
+            setEventMessages($printer->error, $printer->errors, 'errors');
+        }
+    }
 }
 
 // End of page

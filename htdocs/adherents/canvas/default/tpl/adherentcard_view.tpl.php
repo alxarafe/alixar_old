@@ -18,8 +18,8 @@
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 
@@ -30,91 +30,91 @@ echo $this->control->tpl['showhead'];
 
 dol_htmloutput_errors($this->control->tpl['error'], $this->control->tpl['errors']);
 if (!empty($this->control->tpl['action_create_user'])) {
-	echo $this->control->tpl['action_create_user'];
+    echo $this->control->tpl['action_create_user'];
 }
 if (!empty($this->control->tpl['action_delete'])) {
-	echo $this->control->tpl['action_delete'];
+    echo $this->control->tpl['action_delete'];
 } ?>
 
 <table class="border allwidth">
 
 <tr>
-	<td width="20%"><?php echo $langs->trans("Ref"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['showrefnav']; ?></td>
+    <td width="20%"><?php echo $langs->trans("Ref"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['showrefnav']; ?></td>
 </tr>
 
 <tr>
-	<td width="20%"><?php echo $langs->trans("Lastname"); ?></td>
-	<td width="30%"><?php echo $this->control->tpl['name']; ?></td>
-	<td width="25%"><?php echo $langs->trans("Firstname"); ?></td>
-	<td width="25%"><?php echo $this->control->tpl['firstname']; ?></td>
+    <td width="20%"><?php echo $langs->trans("Lastname"); ?></td>
+    <td width="30%"><?php echo $this->control->tpl['name']; ?></td>
+    <td width="25%"><?php echo $langs->trans("Firstname"); ?></td>
+    <td width="25%"><?php echo $this->control->tpl['firstname']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("Company"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['company']; ?></td>
+    <td><?php echo $langs->trans("Company"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['company']; ?></td>
 </tr>
 
 <tr>
-	<td width="15%"><?php echo $langs->trans("UserTitle"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['civility']; ?></td>
+    <td width="15%"><?php echo $langs->trans("UserTitle"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['civility']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("Morphy"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['select_morphy']; ?></td>
+    <td><?php echo $langs->trans("Morphy"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['select_morphy']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("Address"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['address']; ?></td>
+    <td><?php echo $langs->trans("Address"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['address']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("Zip").' / '.$langs->trans("Town"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['zip'].$this->control->tpl['town']; ?></td>
+    <td><?php echo $langs->trans("Zip") . ' / ' . $langs->trans("Town"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['zip'] . $this->control->tpl['town']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("Country"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['country']; ?></td>
+    <td><?php echo $langs->trans("Country"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['country']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans('State'); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['state']; ?></td>
+    <td><?php echo $langs->trans('State'); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['state']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("PhonePro"); ?></td>
-	<td><?php echo $this->control->tpl['phone_pro']; ?></td>
-	<td><?php echo $langs->trans("PhonePerso"); ?></td>
-	<td><?php echo $this->control->tpl['phone_perso']; ?></td>
+    <td><?php echo $langs->trans("PhonePro"); ?></td>
+    <td><?php echo $this->control->tpl['phone_pro']; ?></td>
+    <td><?php echo $langs->trans("PhonePerso"); ?></td>
+    <td><?php echo $this->control->tpl['phone_perso']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("PhoneMobile"); ?></td>
-	<td><?php echo $this->control->tpl['phone_mobile']; ?></td>
+    <td><?php echo $langs->trans("PhoneMobile"); ?></td>
+    <td><?php echo $this->control->tpl['phone_mobile']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("EMail"); ?></td>
-	<td><?php echo $this->control->tpl['email']; ?></td>
+    <td><?php echo $langs->trans("EMail"); ?></td>
+    <td><?php echo $this->control->tpl['email']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("ContactVisibility"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['visibility']; ?></td>
+    <td><?php echo $langs->trans("ContactVisibility"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['visibility']; ?></td>
 </tr>
 
 <tr>
-	<td class="tdtop"><?php echo $langs->trans("Note"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['note']; ?></td>
+    <td class="tdtop"><?php echo $langs->trans("Note"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['note']; ?></td>
 </tr>
 
 <tr>
-	<td><?php echo $langs->trans("DolibarrLogin"); ?></td>
-	<td colspan="3"><?php echo $this->control->tpl['dolibarr_user']; ?></td>
+    <td><?php echo $langs->trans("DolibarrLogin"); ?></td>
+    <td colspan="3"><?php echo $this->control->tpl['dolibarr_user']; ?></td>
 </tr>
 
 </table>
@@ -122,21 +122,21 @@ if (!empty($this->control->tpl['action_delete'])) {
 <?php echo $this->control->tpl['showend'];
 
 if (empty($user->socid)) {
-	echo '<div class="tabsAction">';
+    echo '<div class="tabsAction">';
 
-	if ($user->hasRight('adherent', 'creer')) {
-		echo '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$this->control->tpl['id'].'&action=edit&token='.newToken().'&canvas='.$canvas.'">'.$langs->trans('Modify').'</a>';
-	}
+    if ($user->hasRight('adherent', 'creer')) {
+        echo '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->control->tpl['id'] . '&action=edit&token=' . newToken() . '&canvas=' . $canvas . '">' . $langs->trans('Modify') . '</a>';
+    }
 
-	if (!$this->control->tpl['user_id'] && $user->hasRight('user', 'user', 'creer')) {
-		echo '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?id='.$this->control->tpl['id'].'&action=create_user&token='.newToken().'&canvas='.$canvas.'">'.$langs->trans("CreateDolibarrLogin").'</a>';
-	}
+    if (!$this->control->tpl['user_id'] && $user->hasRight('user', 'user', 'creer')) {
+        echo '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $this->control->tpl['id'] . '&action=create_user&token=' . newToken() . '&canvas=' . $canvas . '">' . $langs->trans("CreateDolibarrLogin") . '</a>';
+    }
 
-	if ($user->hasRight('adherent', 'supprimer')) {
-		print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$this->control->tpl['id'].'&action=delete&token='.newToken().'&canvas='.$canvas, 'delete', $user->hasRight('adherent', 'supprimer'));
-	}
+    if ($user->hasRight('adherent', 'supprimer')) {
+        print dolGetButtonAction($langs->trans("Delete"), '', 'delete', $_SERVER['PHP_SELF'] . '?id=' . $this->control->tpl['id'] . '&action=delete&token=' . newToken() . '&canvas=' . $canvas, 'delete', $user->hasRight('adherent', 'supprimer'));
+    }
 
-	echo '</div><br>';
+    echo '</div><br>';
 }
 
 echo $this->control->tpl['actionstodo'];

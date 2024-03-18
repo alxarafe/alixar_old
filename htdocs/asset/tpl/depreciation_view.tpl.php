@@ -26,12 +26,12 @@
 
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 if (!is_object($form)) {
-	$form = new Form($db);
+    $form = new Form($db);
 }
 
 
@@ -40,114 +40,114 @@ if (!is_object($form)) {
 <?php
 
 if (!is_array($parameters)) {
-	$parameters = array();
+    $parameters = array();
 }
 if (empty($parameters['assetdepreciationoptions'])) {
-	$parameters['assetdepreciationoptions'] = &$assetdepreciationoptions;
+    $parameters['assetdepreciationoptions'] = &$assetdepreciationoptions;
 }
 $reshook = $hookmanager->executeHooks('formAssetDeprecationOptions', $parameters, $object, $action);
 print $hookmanager->resPrint;
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	$class_type = get_class($object) == 'Asset' ? 0 : 1;
-	foreach ($assetdepreciationoptions->deprecation_options_fields as $mode_key => $mode_info) {
-		if (!empty($mode_info['enabled_field'])) {
-			$info = explode(':', $mode_info['enabled_field']);
-			if ($assetdepreciationoptions->deprecation_options[$info[0]][$info[1]] != $info[2]) {
-				continue;
-			}
-		}
+    $class_type = get_class($object) == 'Asset' ? 0 : 1;
+    foreach ($assetdepreciationoptions->deprecation_options_fields as $mode_key => $mode_info) {
+        if (!empty($mode_info['enabled_field'])) {
+            $info = explode(':', $mode_info['enabled_field']);
+            if ($assetdepreciationoptions->deprecation_options[$info[0]][$info[1]] != $info[2]) {
+                continue;
+            }
+        }
 
-		$assetdepreciationoptions->setInfosForMode($mode_key, $class_type, true);
+        $assetdepreciationoptions->setInfosForMode($mode_key, $class_type, true);
 
-		print load_fiche_titre($langs->trans($mode_info['label']), '', '');
-		print '<div class="fichecenter">';
-		print '<div class="fichehalfleft">';
-		print '<div class="underbanner clearboth"></div>';
-		print '<table class="border centpercent tableforfield">' . "\n";
-		$mode_info['fields'] = dol_sort_array($mode_info['fields'], 'position');
-		foreach ($mode_info['fields'] as $field_key => $field_info) {
-			if (!empty($field_info['enabled_field'])) {
-				$info = explode(':', $field_info['enabled_field']);
-				if ($assetdepreciationoptions->deprecation_options[$info[0]][$info[1]] != $info[2]) {
-					continue;
-				}
-			}
-			// Discard if extrafield is a hidden field on form
-			if (abs($field_info['visible']) != 1 && abs($field_info['visible']) != 3 && abs($field_info['visible']) != 4 && abs($field_info['visible']) != 5) {
-				continue;
-			}
-			if (array_key_exists('enabled', $field_info) && isset($field_info['enabled']) && !verifCond($field_info['enabled'])) {
-				continue; // We don't want this field
-			}
-			if (!empty($field_info['column_break'])) {
-				print '</table>';
+        print load_fiche_titre($langs->trans($mode_info['label']), '', '');
+        print '<div class="fichecenter">';
+        print '<div class="fichehalfleft">';
+        print '<div class="underbanner clearboth"></div>';
+        print '<table class="border centpercent tableforfield">' . "\n";
+        $mode_info['fields'] = dol_sort_array($mode_info['fields'], 'position');
+        foreach ($mode_info['fields'] as $field_key => $field_info) {
+            if (!empty($field_info['enabled_field'])) {
+                $info = explode(':', $field_info['enabled_field']);
+                if ($assetdepreciationoptions->deprecation_options[$info[0]][$info[1]] != $info[2]) {
+                    continue;
+                }
+            }
+            // Discard if extrafield is a hidden field on form
+            if (abs($field_info['visible']) != 1 && abs($field_info['visible']) != 3 && abs($field_info['visible']) != 4 && abs($field_info['visible']) != 5) {
+                continue;
+            }
+            if (array_key_exists('enabled', $field_info) && isset($field_info['enabled']) && !verifCond($field_info['enabled'])) {
+                continue; // We don't want this field
+            }
+            if (!empty($field_info['column_break'])) {
+                print '</table>';
 
-				// We close div and reopen for second column
-				print '</div>';
-				print '<div class="fichehalfright">';
+                // We close div and reopen for second column
+                print '</div>';
+                print '<div class="fichehalfright">';
 
-				print '<div class="underbanner clearboth"></div>';
-				print '<table class="border centpercent tableforfield">';
-			}
+                print '<div class="underbanner clearboth"></div>';
+                print '<table class="border centpercent tableforfield">';
+            }
 
-			$key = $mode_key . '_' . $field_key;
-			$value = $assetdepreciationoptions->deprecation_options[$mode_key][$field_key];
+            $key = $mode_key . '_' . $field_key;
+            $value = $assetdepreciationoptions->deprecation_options[$mode_key][$field_key];
 
-			print '<tr class="field_' . $key . '"><td';
-			print ' class="' . (empty($field_info['tdcss']) ? 'titlefield' : $field_info['tdcss']) . ' fieldname_' . $key;
-			if ($field_info['type'] == 'text' || $field_info['type'] == 'html') {
-				print ' tdtop';
-			}
-			print '">';
-			if (!empty($field_info['help'])) {
-				print $form->textwithpicto($langs->trans($field_info['label']), $langs->trans($field_info['help']));
-			} else {
-				if (isset($field_info['copytoclipboard']) && $field_info['copytoclipboard'] == 1) {
-					print showValueWithClipboardCPButton($value, 0, $langs->transnoentitiesnoconv($field_info['label']));
-				} else {
-					print $langs->trans($field_info['label']);
-				}
-			}
-			print '</td>';
-			print '<td class="valuefield fieldname_' . $key;
-			if ($field_info['type'] == 'text') {
-				print ' wordbreak';
-			}
-			if (!empty($field_info['cssview'])) {
-				print ' ' . $field_info['cssview'];
-			}
-			print '">';
-			if (in_array($field_info['type'], array('text', 'html'))) {
-				print '<div class="longmessagecut">';
-			}
-			if ($field_key == 'lang') {
-				$langs->load("languages");
-				$labellang = ($value ? $langs->trans('Language_' . $value) : '');
-				print picto_from_langcode($value, 'class="paddingrightonly saturatemedium opacitylow"');
-				print $labellang;
-			} else {
-				if (isset($field_info['copytoclipboard']) && $field_info['copytoclipboard'] == 2) {
-					$out = $assetdepreciationoptions->showOutputField($field_info, $field_key, $value, '', '', $mode_key . '_', 0);
-					print showValueWithClipboardCPButton($out, 0, $out);
-				} else {
-					print $assetdepreciationoptions->showOutputField($field_info, $field_key, $value, '', '', $mode_key . '_', 0);
-				}
-			}
-			if (in_array($field_info['type'], array('text', 'html'))) {
-				print '</div>';
-			}
-			print '</td>';
-			print '</tr>';
-		}
-		print '</table>';
-		print '</div>';
-		print '</div>';
-		print '<div class="clearboth"></div>';
-	}
+            print '<tr class="field_' . $key . '"><td';
+            print ' class="' . (empty($field_info['tdcss']) ? 'titlefield' : $field_info['tdcss']) . ' fieldname_' . $key;
+            if ($field_info['type'] == 'text' || $field_info['type'] == 'html') {
+                print ' tdtop';
+            }
+            print '">';
+            if (!empty($field_info['help'])) {
+                print $form->textwithpicto($langs->trans($field_info['label']), $langs->trans($field_info['help']));
+            } else {
+                if (isset($field_info['copytoclipboard']) && $field_info['copytoclipboard'] == 1) {
+                    print showValueWithClipboardCPButton($value, 0, $langs->transnoentitiesnoconv($field_info['label']));
+                } else {
+                    print $langs->trans($field_info['label']);
+                }
+            }
+            print '</td>';
+            print '<td class="valuefield fieldname_' . $key;
+            if ($field_info['type'] == 'text') {
+                print ' wordbreak';
+            }
+            if (!empty($field_info['cssview'])) {
+                print ' ' . $field_info['cssview'];
+            }
+            print '">';
+            if (in_array($field_info['type'], array('text', 'html'))) {
+                print '<div class="longmessagecut">';
+            }
+            if ($field_key == 'lang') {
+                $langs->load("languages");
+                $labellang = ($value ? $langs->trans('Language_' . $value) : '');
+                print picto_from_langcode($value, 'class="paddingrightonly saturatemedium opacitylow"');
+                print $labellang;
+            } else {
+                if (isset($field_info['copytoclipboard']) && $field_info['copytoclipboard'] == 2) {
+                    $out = $assetdepreciationoptions->showOutputField($field_info, $field_key, $value, '', '', $mode_key . '_', 0);
+                    print showValueWithClipboardCPButton($out, 0, $out);
+                } else {
+                    print $assetdepreciationoptions->showOutputField($field_info, $field_key, $value, '', '', $mode_key . '_', 0);
+                }
+            }
+            if (in_array($field_info['type'], array('text', 'html'))) {
+                print '</div>';
+            }
+            print '</td>';
+            print '</tr>';
+        }
+        print '</table>';
+        print '</div>';
+        print '</div>';
+        print '<div class="clearboth"></div>';
+    }
 }
 
 ?>

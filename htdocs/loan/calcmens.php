@@ -1,4 +1,5 @@
 <?php
+
 /* TVI
  * Copyright (C) 2015	Florian HENRY 		<florian.henry@open-concept.pro>
  * Copyright (C) 2020   Maxime DEMAREST     <maxime@indelog.fr>
@@ -24,18 +25,18 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require DOL_DOCUMENT_ROOT.'/core/lib/loan.lib.php';
+require DOL_DOCUMENT_ROOT . '/core/lib/loan.lib.php';
 
 $mens = price2num(GETPOST('mens'));
 $capital = price2num(GETPOST('capital'));

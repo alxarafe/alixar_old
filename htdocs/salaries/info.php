@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2015  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015       Charlie BENKE        <charlie@patas-monkey.com>
  * Copyright (C) 2017-2023  Alexandre Spangaro   <aspangaro@easya.solutions>
@@ -19,19 +20,19 @@
  */
 
 /**
- *	\file       htdocs/salaries/info.php
- *	\ingroup    salaries
- *	\brief      Page with info about salaries contribution
+ *  \file       htdocs/salaries/info.php
+ *  \ingroup    salaries
+ *  \brief      Page with info about salaries contribution
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/salaries/class/salary.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/salaries.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/salaries.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 if (isModEnabled('project')) {
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
-	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 
 // Load translation files required by the page
@@ -47,7 +48,7 @@ $projectid = (GETPOSTINT('projectid') ? GETPOSTINT('projectid') : GETPOSTINT('fk
 // Security check
 $socid = GETPOSTINT('socid');
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 
 $object = new Salary($db);
@@ -63,19 +64,19 @@ $hookmanager->initHooks(array('salaryinfo', 'globalcard'));
 
 $object = new Salary($db);
 if ($id > 0 || !empty($ref)) {
-	$object->fetch($id, $ref);
+    $object->fetch($id, $ref);
 
-	// Check current user can read this salary
-	$canread = 0;
-	if ($user->hasRight('salaries', 'readall')) {
-		$canread = 1;
-	}
-	if ($user->hasRight('salaries', 'read') && $object->fk_user > 0 && in_array($object->fk_user, $childids)) {
-		$canread = 1;
-	}
-	if (!$canread) {
-		accessforbidden();
-	}
+    // Check current user can read this salary
+    $canread = 0;
+    if ($user->hasRight('salaries', 'readall')) {
+        $canread = 1;
+    }
+    if ($user->hasRight('salaries', 'read') && $object->fk_user > 0 && in_array($object->fk_user, $childids)) {
+        $canread = 1;
+    }
+    if (!$canread) {
+        accessforbidden();
+    }
 }
 
 restrictedArea($user, 'salaries', $object->id, 'salary', '');
@@ -91,15 +92,15 @@ $permissiontodelete = $user->hasRight('salaries', 'delete') || ($permissiontoadd
 
 // Link to a project
 if ($action == 'classin' && $permissiontoadd) {
-	$object->fetch($id);
-	$object->setProject($projectid);
+    $object->fetch($id);
+    $object->setProject($projectid);
 }
 
 // set label
 if ($action == 'setlabel' && $permissiontoadd) {
-	$object->fetch($id);
-	$object->label = $label;
-	$object->update($user);
+    $object->fetch($id);
+    $object->label = $label;
+    $object->update($user);
 }
 
 
@@ -110,10 +111,10 @@ if ($action == 'setlabel' && $permissiontoadd) {
 
 $form = new Form($db);
 if (isModEnabled('project')) {
-	$formproject = new FormProjets($db);
+    $formproject = new FormProjets($db);
 }
 
-$title = $langs->trans('Salary')." - ".$langs->trans('Info');
+$title = $langs->trans('Salary') . " - " . $langs->trans('Info');
 $help_url = "";
 llxHeader("", $title, $help_url);
 
@@ -124,7 +125,7 @@ $head = salaries_prepare_head($object);
 
 print dol_get_fiche_head($head, 'info', $langs->trans("SalaryPayment"), -1, 'salary');
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/salaries/list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/salaries/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
 $morehtmlref = '<div class="refidno">';
 
@@ -134,42 +135,42 @@ $userstatic->fetch($object->fk_user);
 
 // Label
 if ($action != 'editlabel') {
-	$morehtmlref .= $form->editfieldkey("Label", 'label', $object->label, $object, $permissiontoadd, 'string', '', 0, 1);
-	$morehtmlref .= $object->label;
+    $morehtmlref .= $form->editfieldkey("Label", 'label', $object->label, $object, $permissiontoadd, 'string', '', 0, 1);
+    $morehtmlref .= $object->label;
 } else {
-	$morehtmlref .= $langs->trans('Label').' :&nbsp;';
-	$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
-	$morehtmlref .= '<input type="hidden" name="action" value="setlabel">';
-	$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
-	$morehtmlref .= '<input type="text" name="label" value="'.$object->label.'"/>';
-	$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
-	$morehtmlref .= '</form>';
+    $morehtmlref .= $langs->trans('Label') . ' :&nbsp;';
+    $morehtmlref .= '<form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
+    $morehtmlref .= '<input type="hidden" name="action" value="setlabel">';
+    $morehtmlref .= '<input type="hidden" name="token" value="' . newToken() . '">';
+    $morehtmlref .= '<input type="text" name="label" value="' . $object->label . '"/>';
+    $morehtmlref .= '<input type="submit" class="button valignmiddle" value="' . $langs->trans("Modify") . '">';
+    $morehtmlref .= '</form>';
 }
 
-$morehtmlref .= '<br>'.$langs->trans('Employee').' : '.$userstatic->getNomUrl(-1);
+$morehtmlref .= '<br>' . $langs->trans('Employee') . ' : ' . $userstatic->getNomUrl(-1);
 
 $usercancreate = $permissiontoadd;
 
 // Project
 if (isModEnabled('project')) {
-	$langs->load("projects");
-	$morehtmlref .= '<br>';
-	if ($usercancreate) {
-		$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
-		if ($action != 'classify') {
-			$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
-		}
-		$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, -1, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
-	} else {
-		if (!empty($object->fk_project)) {
-			$proj = new Project($db);
-			$proj->fetch($object->fk_project);
-			$morehtmlref .= $proj->getNomUrl(1);
-			if ($proj->title) {
-				$morehtmlref .= '<span class="opacitymedium"> - '.dol_escape_htmltag($proj->title).'</span>';
-			}
-		}
-	}
+    $langs->load("projects");
+    $morehtmlref .= '<br>';
+    if ($usercancreate) {
+        $morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
+        if ($action != 'classify') {
+            $morehtmlref .= '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token=' . newToken() . '&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> ';
+        }
+        $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, -1, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+    } else {
+        if (!empty($object->fk_project)) {
+            $proj = new Project($db);
+            $proj->fetch($object->fk_project);
+            $morehtmlref .= $proj->getNomUrl(1);
+            if ($proj->title) {
+                $morehtmlref .= '<span class="opacitymedium"> - ' . dol_escape_htmltag($proj->title) . '</span>';
+            }
+        }
+    }
 }
 
 $morehtmlref .= '</div>';

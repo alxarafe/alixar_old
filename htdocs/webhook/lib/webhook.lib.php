@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
@@ -29,41 +30,41 @@
  */
 function webhookAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$h = 0;
-	$head = array();
-	$head[$h][0] = DOL_URL_ROOT . '/admin/webhook.php';
-	$head[$h][1] = $langs->trans("Miscellaneous");
-	$head[$h][2] = 'settings';
-	$h++;
+    $h = 0;
+    $head = array();
+    $head[$h][0] = DOL_URL_ROOT . '/admin/webhook.php';
+    $head[$h][1] = $langs->trans("Miscellaneous");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/webhook/target_list.php?mode=modulesetup';
-	$head[$h][1] = $langs->trans("Targets");
-	$head[$h][2] = 'targets';
-	$h++;
-
-
-	/*
-	$head[$h][0] = dol_buildpath("/webhook/admin/myobject_extrafields.php", 1);
-	$head[$h][1] = $langs->trans("ExtraFields");
-	$head[$h][2] = 'myobject_extrafields';
-	$h++;
-	*/
+    $head[$h][0] = DOL_URL_ROOT . '/webhook/target_list.php?mode=modulesetup';
+    $head[$h][1] = $langs->trans("Targets");
+    $head[$h][2] = 'targets';
+    $h++;
 
 
+    /*
+    $head[$h][0] = dol_buildpath("/webhook/admin/myobject_extrafields.php", 1);
+    $head[$h][1] = $langs->trans("ExtraFields");
+    $head[$h][2] = 'myobject_extrafields';
+    $h++;
+    */
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@webhook:/webhook/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@webhook:/webhook/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'webhook');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'webhook', 'remove');
 
-	return $head;
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@webhook:/webhook/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@webhook:/webhook/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'webhook');
+
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'webhook', 'remove');
+
+    return $head;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,7 +23,7 @@
  */
 
 require_once '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/exports/class/export.class.php';
+require_once DOL_DOCUMENT_ROOT . '/exports/class/export.class.php';
 
 // Load translation files required by the page
 $langs->load("exports");
@@ -47,13 +48,13 @@ llxHeader('', $langs->trans("ExportsArea"), $help_url);
 
 print load_fiche_titre($langs->trans("ExportsArea"));
 
-print $langs->trans("FormatedExportDesc1").'<br>';
+print $langs->trans("FormatedExportDesc1") . '<br>';
 print '<br>';
 
 
 print '<div class="center">';
 if (count($export->array_export_code)) {
-	print dolGetButtonTitle($langs->trans('NewExport'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/exports/export.php?leftmenu=export', '', $user->hasRight('export', 'creer'));
+    print dolGetButtonTitle($langs->trans('NewExport'), '', 'fa fa-plus-circle', DOL_URL_ROOT . '/exports/export.php?leftmenu=export', '', $user->hasRight('export', 'creer'));
 }
 print '</div>';
 print '<br>';
@@ -65,29 +66,29 @@ print '<br>';
 print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td colspan="2">'.$langs->trans("AvailableFormats").'</td>';
-print '<td>'.$langs->trans("LibraryShort").'</td>';
-print '<td class="right">'.$langs->trans("LibraryVersion").'</td>';
+print '<td colspan="2">' . $langs->trans("AvailableFormats") . '</td>';
+print '<td>' . $langs->trans("LibraryShort") . '</td>';
+print '<td class="right">' . $langs->trans("LibraryVersion") . '</td>';
 print '</tr>';
 
-include_once DOL_DOCUMENT_ROOT.'/core/modules/export/modules_export.php';
+include_once DOL_DOCUMENT_ROOT . '/core/modules/export/modules_export.php';
 $model = new ModeleExports($db);
 $liste = $model->listOfAvailableExportFormat($db); // This is not a static method for exports because method load non static properties
 
 foreach ($liste as $key => $val) {
-	if (preg_match('/__\(Disabled\)__/', $liste[$key])) {
-		$liste[$key] = preg_replace('/__\(Disabled\)__/', '('.$langs->transnoentitiesnoconv("Disabled").')', $liste[$key]);
-	}
+    if (preg_match('/__\(Disabled\)__/', $liste[$key])) {
+        $liste[$key] = preg_replace('/__\(Disabled\)__/', '(' . $langs->transnoentitiesnoconv("Disabled") . ')', $liste[$key]);
+    }
 
-	print '<tr class="oddeven">';
-	print '<td width="16">'.img_picto_common($model->getDriverLabelForKey($key), $model->getPictoForKey($key)).'</td>';
-	$text = $model->getDriverDescForKey($key);
-	$label = $liste[$key];
-	// @phan-suppress-next-line PhanPluginSuspiciousParamPosition
-	print '<td>'.$form->textwithpicto($label, $text).'</td>';
-	print '<td>'.$model->getLibLabelForKey($key).'</td>';
-	print '<td class="nowrap right">'.$model->getLibVersionForKey($key).'</td>';
-	print '</tr>';
+    print '<tr class="oddeven">';
+    print '<td width="16">' . img_picto_common($model->getDriverLabelForKey($key), $model->getPictoForKey($key)) . '</td>';
+    $text = $model->getDriverDescForKey($key);
+    $label = $liste[$key];
+    // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
+    print '<td>' . $form->textwithpicto($label, $text) . '</td>';
+    print '<td>' . $model->getLibLabelForKey($key) . '</td>';
+    print '<td class="nowrap right">' . $model->getLibVersionForKey($key) . '</td>';
+    print '</tr>';
 }
 
 print '</table>';

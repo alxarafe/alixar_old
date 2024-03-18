@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2003-2004	Rodolphe Quiedeville		<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2003-2004  Rodolphe Quiedeville        <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2011	Laurent Destailleur			<eldy@users.sourceforge.net>
  * Copyright (C) 2005		Eric Seigne					<eric.seigne@ryxeo.com>
  * Copyright (C) 2005-2012	Regis Houssin				<regis.houssin@capnetworks.com>
@@ -23,18 +24,18 @@
 
 /**
  *      \file       htdocs/admin/invoice_situation.php
- *		\ingroup    facture
- *		\brief      Page to setup invoice module
+ *      \ingroup    facture
+ *      \brief      Page to setup invoice module
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/invoice.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formsetup.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('admin', 'errors', 'other', 'bills'));
@@ -44,7 +45,7 @@ $hookmanager->initHooks(array('situationinvoicesetup', 'globalsetup'));
 
 // Access control
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $action = GETPOST('action', 'aZ09');
@@ -52,7 +53,7 @@ $backtopage = GETPOST('backtopage', 'alpha');
 
 $value = GETPOST('value', 'alpha');
 $label = GETPOST('label', 'alpha');
-$modulepart = GETPOST('modulepart', 'aZ09');	// Used by actions_setmoduleoptions.inc.php
+$modulepart = GETPOST('modulepart', 'aZ09');    // Used by actions_setmoduleoptions.inc.php
 
 $scandir = GETPOST('scan_dir', 'alpha');
 $type = 'invoice';
@@ -63,47 +64,47 @@ $formSetup = new FormSetup($db);
 
 // Setup conf MYMODULE_MYPARAM4 : example of quick define write style
 $formSetup->newItem('INVOICE_USE_SITUATION')
-	->setAsYesNo()
-	->nameText = $langs->trans('UseSituationInvoices');
+    ->setAsYesNo()
+    ->nameText = $langs->trans('UseSituationInvoices');
 
 $item = $formSetup->newItem('INVOICE_USE_SITUATION_CREDIT_NOTE')
-	->setAsYesNo()
-	->nameText = $langs->trans('UseSituationInvoicesCreditNote');
+    ->setAsYesNo()
+    ->nameText = $langs->trans('UseSituationInvoicesCreditNote');
 
 //$item = $formSetup->newItem('INVOICE_USE_RETAINED_WARRANTY')
-//	->setAsYesNo()
-//	->nameText = $langs->trans('Retainedwarranty');
+//  ->setAsYesNo()
+//  ->nameText = $langs->trans('Retainedwarranty');
 
 
 $item = $formSetup->newItem('INVOICE_USE_RETAINED_WARRANTY');
 $item->nameText = $langs->trans('AllowedInvoiceForRetainedWarranty');
 
 $arrayAvailableType = array(
-	Facture::TYPE_SITUATION => $langs->trans("InvoiceSituation"),
-	Facture::TYPE_STANDARD.'+'.Facture::TYPE_SITUATION => $langs->trans("InvoiceSituation").' + '.$langs->trans("InvoiceStandard"),
+    Facture::TYPE_SITUATION => $langs->trans("InvoiceSituation"),
+    Facture::TYPE_STANDARD . '+' . Facture::TYPE_SITUATION => $langs->trans("InvoiceSituation") . ' + ' . $langs->trans("InvoiceStandard"),
 );
 
 if ($action == 'edit') {
-	$item->fieldInputOverride = $form->selectarray('INVOICE_USE_RETAINED_WARRANTY', $arrayAvailableType, $conf->global->INVOICE_USE_RETAINED_WARRANTY, 1);
+    $item->fieldInputOverride = $form->selectarray('INVOICE_USE_RETAINED_WARRANTY', $arrayAvailableType, $conf->global->INVOICE_USE_RETAINED_WARRANTY, 1);
 } else {
-	$item->fieldOutputOverride= isset($arrayAvailableType[getDolGlobalString('INVOICE_USE_RETAINED_WARRANTY')]) ? $arrayAvailableType[getDolGlobalString('INVOICE_USE_RETAINED_WARRANTY')] : '';
+    $item->fieldOutputOverride = isset($arrayAvailableType[getDolGlobalString('INVOICE_USE_RETAINED_WARRANTY')]) ? $arrayAvailableType[getDolGlobalString('INVOICE_USE_RETAINED_WARRANTY')] : '';
 }
 
 //$item = $formSetup->newItem('INVOICE_RETAINED_WARRANTY_LIMITED_TO_SITUATION')->setAsYesNo();
 //$item->nameText = $langs->trans('RetainedwarrantyOnlyForSituation');
 
 $formSetup->newItem('INVOICE_RETAINED_WARRANTY_LIMITED_TO_FINAL_SITUATION')
-	->setAsYesNo()
-	->nameText = $langs->trans('RetainedwarrantyOnlyForSituationFinal');
+    ->setAsYesNo()
+    ->nameText = $langs->trans('RetainedwarrantyOnlyForSituationFinal');
 
 
 $item = $formSetup->newItem('INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_PERCENT');
 $item->nameText = $langs->trans('RetainedwarrantyDefaultPercent');
 $item->fieldAttr = array(
-	'type' => 'number',
-	'step' => '0.01',
-	'min' => 0,
-	'max' => 100
+    'type' => 'number',
+    'step' => '0.01',
+    'min' => 0,
+    'max' => 100
 );
 
 
@@ -112,7 +113,7 @@ $item = $formSetup->newItem('INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_COND_ID
 $item->nameText = $langs->trans('PaymentConditionsShortRetainedWarranty');
 $form->load_cache_conditions_paiements();
 if (getDolGlobalString('INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_COND_ID') && isset($form->cache_conditions_paiements[getDolGlobalString('INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_COND_ID')]['label'])) {
-	$item->fieldOutputOverride = $form->cache_conditions_paiements[getDolGlobalString('INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_COND_ID')]['label'];
+    $item->fieldOutputOverride = $form->cache_conditions_paiements[getDolGlobalString('INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_COND_ID')]['label'];
 }
 $item->fieldInputOverride = $form->getSelectConditionsPaiements($conf->global->INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_COND_ID, 'INVOICE_SITUATION_DEFAULT_RETAINED_WARRANTY_COND_ID', -1, 1);
 
@@ -121,7 +122,7 @@ $item->fieldInputOverride = $form->getSelectConditionsPaiements($conf->global->I
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT.'/core/actions_setmoduleoptions.inc.php';
+include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
 
 
 
@@ -136,14 +137,14 @@ $help_yrl = 'EN:Invoice_Configuration|FR:Configuration_module_facture|ES:Configu
 llxHeader("", $langs->trans("BillsSetup"), $help_url);
 
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("BillsSetup"), $linkback, 'title_setup');
 
 $head = invoice_admin_prepare_head();
 print dol_get_fiche_head($head, 'situation', $langs->trans("InvoiceSituation"), -1, 'invoice');
 
 
-print '<span class="opacitymedium">'.$langs->trans("InvoiceFirstSituationDesc").'</span><br><br>';
+print '<span class="opacitymedium">' . $langs->trans("InvoiceFirstSituationDesc") . '</span><br><br>';
 
 
 /*
@@ -151,19 +152,19 @@ print '<span class="opacitymedium">'.$langs->trans("InvoiceFirstSituationDesc").
  */
 
 if ($action == 'edit') {
-	print $formSetup->generateOutput(true);
+    print $formSetup->generateOutput(true);
 } else {
-	print $formSetup->generateOutput();
+    print $formSetup->generateOutput();
 }
 
 if (count($formSetup->items) > 0) {
-	if ($action != 'edit') {
-		print '<div class="tabsAction">';
-		print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
-		print '</div>';
-	}
+    if ($action != 'edit') {
+        print '<div class="tabsAction">';
+        print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
+        print '</div>';
+    }
 } else {
-	print '<br>'.$langs->trans("NothingToSetup");
+    print '<br>' . $langs->trans("NothingToSetup");
 }
 
 

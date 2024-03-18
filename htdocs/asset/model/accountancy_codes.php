@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2018      Alexandre Spangaro   <aspangaro@open-dsi.fr>
  *
@@ -50,7 +51,7 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 // Load object
 include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->asset->multidir_output[isset($object->entity) ? $object->entity : 1] . "/" . $object->id;
+    $upload_dir = $conf->asset->multidir_output[isset($object->entity) ? $object->entity : 1] . "/" . $object->id;
 }
 
 $permissiontoread = ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('asset', 'read')) || (getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('asset', 'model_advance', 'read')));
@@ -58,20 +59,20 @@ $permissiontoadd = ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->ha
 
 // Security check (enable the most restrictive one)
 if ($user->socid > 0) {
-	accessforbidden();
+    accessforbidden();
 }
 $isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 restrictedArea($user, 'asset', $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
 if (!isModEnabled('asset')) {
-	accessforbidden();
+    accessforbidden();
 }
 if (!$permissiontoread) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $result = $assetaccountancycodes->fetchAccountancyCodes(0, $object->id);
 if ($result < 0) {
-	setEventMessages($assetaccountancycodes->error, $assetaccountancycodes->errors, 'errors');
+    setEventMessages($assetaccountancycodes->error, $assetaccountancycodes->errors, 'errors');
 }
 
 
@@ -81,46 +82,46 @@ if ($result < 0) {
 
 $reshook = $hookmanager->executeHooks('doActions', array(), $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	$backurlforlist = '/asset/list.php';
+    $backurlforlist = '/asset/list.php';
 
-	if (empty($backtopage) || ($cancel && empty($id))) {
-		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
-			if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
-				$backtopage = $backurlforlist;
-			} else {
-				$backtopage = '/asset/model/accountancy_codes.php?id='.((!empty($id) && $id > 0) ? $id : '__ID__');
-			}
-		}
-	}
+    if (empty($backtopage) || ($cancel && empty($id))) {
+        if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
+            if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
+                $backtopage = $backurlforlist;
+            } else {
+                $backtopage = '/asset/model/accountancy_codes.php?id=' . ((!empty($id) && $id > 0) ? $id : '__ID__');
+            }
+        }
+    }
 
-	if ($cancel) {
-		/*var_dump($cancel);var_dump($backtopage);var_dump($backtopageforcancel);exit;*/
-		if (!empty($backtopageforcancel)) {
-			header("Location: ".$backtopageforcancel);
-			exit;
-		} elseif (!empty($backtopage)) {
-			header("Location: ".$backtopage);
-			exit;
-		}
-		$action = '';
-	}
+    if ($cancel) {
+        /*var_dump($cancel);var_dump($backtopage);var_dump($backtopageforcancel);exit;*/
+        if (!empty($backtopageforcancel)) {
+            header("Location: " . $backtopageforcancel);
+            exit;
+        } elseif (!empty($backtopage)) {
+            header("Location: " . $backtopage);
+            exit;
+        }
+        $action = '';
+    }
 
-	if ($action == "update") {
-		$assetaccountancycodes->setAccountancyCodesFromPost();
+    if ($action == "update") {
+        $assetaccountancycodes->setAccountancyCodesFromPost();
 
-		$result = $assetaccountancycodes->updateAccountancyCodes($user, 0, $object->id);
-		if ($result < 0) {
-			setEventMessages($assetaccountancycodes->error, $assetaccountancycodes->errors, 'errors');
-			$action = 'edit';
-		} else {
-			setEventMessage($langs->trans('RecordSaved'));
-			header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
-			exit;
-		}
-	}
+        $result = $assetaccountancycodes->updateAccountancyCodes($user, 0, $object->id);
+        if ($result < 0) {
+            setEventMessages($assetaccountancycodes->error, $assetaccountancycodes->errors, 'errors');
+            $action = 'edit';
+        } else {
+            setEventMessage($langs->trans('RecordSaved'));
+            header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $object->id);
+            exit;
+        }
+    }
 }
 
 
@@ -134,63 +135,63 @@ $help_url = '';
 llxHeader('', $langs->trans('AssetModel'), $help_url, '', 0, 0, '', '', '', 'mod-asset page-model-card_accountancy');
 
 if ($id > 0 || !empty($ref)) {
-	$head = assetModelPrepareHead($object);
-	print dol_get_fiche_head($head, 'accountancy_codes', $langs->trans("AssetModel"), -1, $object->picto);
+    $head = assetModelPrepareHead($object);
+    print dol_get_fiche_head($head, 'accountancy_codes', $langs->trans("AssetModel"), -1, $object->picto);
 
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="' . DOL_URL_ROOT . '/asset/model/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . DOL_URL_ROOT . '/asset/model/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	$morehtmlref .= '</div>';
+    $morehtmlref = '<div class="refidno">';
+    $morehtmlref .= '</div>';
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
-	print '</div>';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
+    print '</div>';
 
-	if ($action == 'edit') {
-		print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
-		print '<input type="hidden" name="token" value="' . newToken() . '">';
-		print '<input type="hidden" name="action" value="update">';
-		if ($backtopage) {
-			print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
-		}
-		if ($backtopageforcancel) {
-			print '<input type="hidden" name="backtopageforcancel" value="' . $backtopageforcancel . '">';
-		}
+    if ($action == 'edit') {
+        print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
+        print '<input type="hidden" name="token" value="' . newToken() . '">';
+        print '<input type="hidden" name="action" value="update">';
+        if ($backtopage) {
+            print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
+        }
+        if ($backtopageforcancel) {
+            print '<input type="hidden" name="backtopageforcancel" value="' . $backtopageforcancel . '">';
+        }
 
-		print dol_get_fiche_head(array(), '');
+        print dol_get_fiche_head(array(), '');
 
-		include DOL_DOCUMENT_ROOT . '/asset/tpl/accountancy_codes_edit.tpl.php';
+        include DOL_DOCUMENT_ROOT . '/asset/tpl/accountancy_codes_edit.tpl.php';
 
-		print dol_get_fiche_end();
+        print dol_get_fiche_end();
 
-		print $form->buttonsSaveCancel();
+        print $form->buttonsSaveCancel();
 
-		print '</form>';
-	} else {
-		include DOL_DOCUMENT_ROOT . '/asset/tpl/accountancy_codes_view.tpl.php';
-	}
+        print '</form>';
+    } else {
+        include DOL_DOCUMENT_ROOT . '/asset/tpl/accountancy_codes_view.tpl.php';
+    }
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 
-	if ($action != 'edit') {
-		print '<div class="tabsAction">' . "\n";
-		$parameters = array();
-		$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-		if ($reshook < 0) {
-			setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
-		}
+    if ($action != 'edit') {
+        print '<div class="tabsAction">' . "\n";
+        $parameters = array();
+        $reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
 
-		if (empty($reshook)) {
-			if ($object->status == $object::STATUS_DRAFT/* && !empty($object->enabled_modes)*/) {
-				print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
-			}
-		}
-		print '</div>' . "\n";
-	}
+        if (empty($reshook)) {
+            if ($object->status == $object::STATUS_DRAFT/* && !empty($object->enabled_modes)*/) {
+                print dolGetButtonAction($langs->trans('Modify'), '', 'default', $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&action=edit&token=' . newToken(), '', $permissiontoadd);
+            }
+        }
+        print '</div>' . "\n";
+    }
 }
 
 // End of page

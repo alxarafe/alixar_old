@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023   Laurent Destailleur     <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,9 @@
  */
 
 /**
- *	\file       htdocs/debugbar/class/DataCollector/DolMessagesCollector.php
- *	\brief      Class for debugbar collection
- *	\ingroup    debugbar
+ *  \file       htdocs/debugbar/class/DataCollector/DolMessagesCollector.php
+ *  \brief      Class for debugbar collection
+ *  \ingroup    debugbar
  */
 
 use DebugBar\DataCollector\MessagesCollector;
@@ -29,29 +30,29 @@ use DebugBar\DataCollector\MessagesCollector;
 
 class DolMessagesCollector extends MessagesCollector
 {
-	/**
-	 *	Return widget settings
-	 *
-	 *  @return array  Array
-	 */
-	public function getWidgets()
-	{
-		global $langs;
+    /**
+     *  Return widget settings
+     *
+     *  @return array  Array
+     */
+    public function getWidgets()
+    {
+        global $langs;
 
-		$title = $langs->transnoentities('Messages');
-		$name = $this->getName();
+        $title = $langs->transnoentities('Messages');
+        $name = $this->getName();
 
-		return array(
-			"$title" => array(
-				"icon" => "list-alt",
-				"widget" => "PhpDebugBar.Widgets.MessagesWidget",
-				"map" => "$name.messages",
-				"default" => "[]"
-			),
-			"$title:badge" => array(
-				"map" => "$name.count",
-				"default" => "null"
-			)
-		);
-	}
+        return array(
+            "$title" => array(
+                "icon" => "list-alt",
+                "widget" => "PhpDebugBar.Widgets.MessagesWidget",
+                "map" => "$name.messages",
+                "default" => "[]"
+            ),
+            "$title:badge" => array(
+                "map" => "$name.count",
+                "default" => "null"
+            )
+        );
+    }
 }

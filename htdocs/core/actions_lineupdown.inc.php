@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,10 +18,9 @@
  */
 
 /**
- *	\file			htdocs/core/actions_lineupdown.inc.php
- *  \brief			Code for actions on moving lines up or down onto object page
+ *  \file           htdocs/core/actions_lineupdown.inc.php
+ *  \brief          Code for actions on moving lines up or down onto object page
  */
-
 
 // $action must be defined
 // $permissiontoedit must be defined to permission to edit object
@@ -29,50 +29,50 @@
 // $hidedetails, $hidedesc, $hideref must de defined
 
 if ($action == 'up' && $permissiontoedit) {
-	$object->line_up(GETPOST('rowid'));
+    $object->line_up(GETPOST('rowid'));
 
-	// Define output language
-	$outputlangs = $langs;
-	$newlang = '';
-	if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang) && GETPOST('lang_id', 'aZ09')) {
-		$newlang = GETPOST('lang_id', 'aZ09');
-	}
-	if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
-		$newlang = $object->thirdparty->default_lang;
-	}
-	if (!empty($newlang)) {
-		$outputlangs = new Translate("", $conf);
-		$outputlangs->setDefaultLang($newlang);
-	}
+    // Define output language
+    $outputlangs = $langs;
+    $newlang = '';
+    if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang) && GETPOST('lang_id', 'aZ09')) {
+        $newlang = GETPOST('lang_id', 'aZ09');
+    }
+    if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
+        $newlang = $object->thirdparty->default_lang;
+    }
+    if (!empty($newlang)) {
+        $outputlangs = new Translate("", $conf);
+        $outputlangs->setDefaultLang($newlang);
+    }
 
-	if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
-		$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
-	}
+    if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+        $object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+    }
 
-	header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.GETPOST('rowid'));
-	exit();
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '#' . GETPOST('rowid'));
+    exit();
 }
 
 if ($action == 'down' && $permissiontoedit) {
-	$object->line_down(GETPOST('rowid'));
+    $object->line_down(GETPOST('rowid'));
 
-	// Define output language
-	$outputlangs = $langs;
-	$newlang = '';
-	if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang) && GETPOST('lang_id', 'aZ09')) {
-		$newlang = GETPOST('lang_id', 'aZ09');
-	}
-	if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
-		$newlang = $object->thirdparty->default_lang;
-	}
-	if (!empty($newlang)) {
-		$outputlangs = new Translate("", $conf);
-		$outputlangs->setDefaultLang($newlang);
-	}
-	if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
-		$object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
-	}
+    // Define output language
+    $outputlangs = $langs;
+    $newlang = '';
+    if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang) && GETPOST('lang_id', 'aZ09')) {
+        $newlang = GETPOST('lang_id', 'aZ09');
+    }
+    if (getDolGlobalInt('MAIN_MULTILANGS') && empty($newlang)) {
+        $newlang = $object->thirdparty->default_lang;
+    }
+    if (!empty($newlang)) {
+        $outputlangs = new Translate("", $conf);
+        $outputlangs->setDefaultLang($newlang);
+    }
+    if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
+        $object->generateDocument($object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+    }
 
-	header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id.'#'.GETPOST('rowid'));
-	exit();
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '#' . GETPOST('rowid'));
+    exit();
 }

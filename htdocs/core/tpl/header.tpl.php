@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Regis Houssin <regis.houssin@inodbox.com>
  *
  * This program is free software; you can redistribute it and/or modify

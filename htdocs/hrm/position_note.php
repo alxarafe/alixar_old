@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
@@ -25,7 +26,6 @@
  *    \brief      Tab for notes on Position
  */
 
-
 // Load Dolibarr environment
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/job.class.php';
@@ -45,15 +45,15 @@ $backtopage = GETPOST('backtopage', 'alpha');
 // Initialize technical objects
 $object = new Position($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->hrm->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->hrm->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('positionnote', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->hrm->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity]."/".$object->id;
+    $upload_dir = $conf->hrm->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity] . "/" . $object->id;
 }
 
 // Permissions
@@ -66,10 +66,10 @@ $permissiontoread = $user->hasRight('hrm', 'all', 'read'); // Used by the includ
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
 if (empty($conf->hrm->enabled)) {
-	accessforbidden();
+    accessforbidden();
 }
 if (!$permissiontoread) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -79,10 +79,10 @@ if (!$permissiontoread) {
 
 $reshook = $hookmanager->executeHooks('doActions', array(), $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -97,40 +97,40 @@ $help_url = '';
 llxHeader('', $langs->trans('Position'), $help_url);
 
 if ($id > 0 || !empty($ref)) {
-	$object->fetch_thirdparty();
+    $object->fetch_thirdparty();
 
-	$head = positionCardPrepareHead($object);
+    $head = positionCardPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'note', $langs->trans("Notes"), -1, $object->picto);
+    print dol_get_fiche_head($head, 'note', $langs->trans("Notes"), -1, $object->picto);
 
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/hrm/position_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . dol_buildpath('/hrm/position_list.php', 1) . '?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	$u_position = new User(($db));
-	$u_position->fetch($object->fk_user);
-	$morehtmlref .= ($u_position->id > 0 ? $u_position->getNomUrl(1) : $langs->trans('Employee').' : ');
-	$job = new Job($db);
-	$job->fetch($object->fk_job);
-	$morehtmlref .= '<br>'.$langs->trans('JobProfile').' : '.$job->getNomUrl(1);
-	$morehtmlref .= '</div>';
-
-
-	dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'rowid', $morehtmlref);
+    $morehtmlref = '<div class="refidno">';
+    $u_position = new User(($db));
+    $u_position->fetch($object->fk_user);
+    $morehtmlref .= ($u_position->id > 0 ? $u_position->getNomUrl(1) : $langs->trans('Employee') . ' : ');
+    $job = new Job($db);
+    $job->fetch($object->fk_job);
+    $morehtmlref .= '<br>' . $langs->trans('JobProfile') . ' : ' . $job->getNomUrl(1);
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'rowid', $morehtmlref);
 
 
-	$cssclass = "titlefield";
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
 
-	print '</div>';
+    $cssclass = "titlefield";
 
-	print dol_get_fiche_end();
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 }
 
 // End of page

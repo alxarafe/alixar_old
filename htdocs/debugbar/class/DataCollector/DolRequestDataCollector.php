@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023   Laurent Destailleur     <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,9 @@
  */
 
 /**
- *	\file       htdocs/debugbar/class/DataCollector/DolRequestDataCollector.php
- *	\brief      Class for debugbar collection
- *	\ingroup    debugbar
+ *  \file       htdocs/debugbar/class/DataCollector/DolRequestDataCollector.php
+ *  \brief      Class for debugbar collection
+ *  \ingroup    debugbar
  */
 
 use DebugBar\DataCollector\RequestDataCollector;
@@ -29,60 +30,60 @@ use DebugBar\DataCollector\RequestDataCollector;
 
 class DolRequestDataCollector extends RequestDataCollector
 {
-	/**
-	 * Collects the data from the collectors
-	 *
-	 * @return array
-	 */
-	public function collect()
-	{
-		$vars = array('_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER');
-		$data = array();
+    /**
+     * Collects the data from the collectors
+     *
+     * @return array
+     */
+    public function collect()
+    {
+        $vars = array('_GET', '_POST', '_SESSION', '_COOKIE', '_SERVER');
+        $data = array();
 
-		foreach ($vars as $var) {
-			if (isset($GLOBALS[$var])) {
-				$arrayofvalues = $GLOBALS[$var];
+        foreach ($vars as $var) {
+            if (isset($GLOBALS[$var])) {
+                $arrayofvalues = $GLOBALS[$var];
 
-				if ($var == '_COOKIE') {
-					foreach ($arrayofvalues as $key => $val) {
-						if (preg_match('/^DOLSESSID_/', $key)) {
-							$arrayofvalues[$key] = '*****hidden*****';
-						}
-					}
-					//var_dump($arrayofvalues);
-				}
-				if ($var == '_SERVER') {
-					foreach ($arrayofvalues as $key => $val) {
-						if (preg_match('/^PHP_AUTH_PW/', $key)) {
-							$arrayofvalues[$key] = '*****hidden*****';
-						}
-					}
-				}
-				$data["$".$var] = $this->getDataFormatter()->formatVar($arrayofvalues);
-			}
-		}
+                if ($var == '_COOKIE') {
+                    foreach ($arrayofvalues as $key => $val) {
+                        if (preg_match('/^DOLSESSID_/', $key)) {
+                            $arrayofvalues[$key] = '*****hidden*****';
+                        }
+                    }
+                    //var_dump($arrayofvalues);
+                }
+                if ($var == '_SERVER') {
+                    foreach ($arrayofvalues as $key => $val) {
+                        if (preg_match('/^PHP_AUTH_PW/', $key)) {
+                            $arrayofvalues[$key] = '*****hidden*****';
+                        }
+                    }
+                }
+                $data["$" . $var] = $this->getDataFormatter()->formatVar($arrayofvalues);
+            }
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 *	Return widget settings
-	 *
-	 *  @return array
-	 */
-	public function getWidgets()
-	{
-		global $langs;
+    /**
+     *  Return widget settings
+     *
+     *  @return array
+     */
+    public function getWidgets()
+    {
+        global $langs;
 
-		$langs->load("other");
+        $langs->load("other");
 
-		return array(
-			$langs->transnoentities('Variables') => array(
-				"icon" => "tags",
-				"widget" => "PhpDebugBar.Widgets.VariableListWidget",
-				"map" => "request",
-				"default" => "{}"
-			)
-		);
-	}
+        return array(
+            $langs->transnoentities('Variables') => array(
+                "icon" => "tags",
+                "widget" => "PhpDebugBar.Widgets.VariableListWidget",
+                "map" => "request",
+                "default" => "{}"
+            )
+        );
+    }
 }

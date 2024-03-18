@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -27,10 +28,10 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/order.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/commande/class/commande.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/order.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 if (isModEnabled('project')) {
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 // Load translation files required by the page
@@ -44,7 +45,7 @@ $action = GETPOST('action', 'aZ09');
 // Security check
 $socid = 0;
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
@@ -59,8 +60,8 @@ $permissionnote = $user->hasRight('commande', 'creer'); // Used by the include o
 
 $object = new Commande($db);
 if (!$object->fetch($id, $ref) > 0) {
-	dol_print_error($db);
-	exit;
+    dol_print_error($db);
+    exit;
 }
 
 
@@ -71,77 +72,77 @@ if (!$object->fetch($id, $ref) > 0) {
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
 /*
  * View
  */
-$title = $object->ref." - ".$langs->trans('Notes');
+$title = $object->ref . " - " . $langs->trans('Notes');
 $help_url = 'EN:Customers_Orders|FR:Commandes_Clients|ES:Pedidos de clientes|DE:Modul_Kundenaufträge';
 llxHeader('', $title, $help_url, '', 0, 0, '', '', '', 'mod-order page-card_notes');
 
 $form = new Form($db);
 
 if ($id > 0 || !empty($ref)) {
-	$object->fetch_thirdparty();
+    $object->fetch_thirdparty();
 
-	$head = commande_prepare_head($object);
+    $head = commande_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'note', $langs->trans("CustomerOrder"), -1, 'order');
+    print dol_get_fiche_head($head, 'note', $langs->trans("CustomerOrder"), -1, 'order');
 
-	// Order card
+    // Order card
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/commande/list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
-
-
-	$morehtmlref = '<div class="refidno">';
-	// Ref customer
-	$morehtmlref .= $form->editfieldkey("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', 0, 1);
-	$morehtmlref .= $form->editfieldval("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', null, null, '', 1);
-	// Thirdparty
-	$morehtmlref .= '<br>'.$object->thirdparty->getNomUrl(1);
-	// Project
-	if (isModEnabled('project')) {
-		$langs->load("projects");
-		$morehtmlref .= '<br>';
-		if (0) {
-			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
-			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
-			}
-			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
-		} else {
-			if (!empty($object->fk_project)) {
-				$proj = new Project($db);
-				$proj->fetch($object->fk_project);
-				$morehtmlref .= $proj->getNomUrl(1);
-				if ($proj->title) {
-					$morehtmlref .= '<span class="opacitymedium"> - '.dol_escape_htmltag($proj->title).'</span>';
-				}
-			}
-		}
-	}
-	$morehtmlref .= '</div>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/commande/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    $morehtmlref = '<div class="refidno">';
+    // Ref customer
+    $morehtmlref .= $form->editfieldkey("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', 0, 1);
+    $morehtmlref .= $form->editfieldval("RefCustomer", 'ref_client', $object->ref_client, $object, 0, 'string', '', null, null, '', 1);
+    // Thirdparty
+    $morehtmlref .= '<br>' . $object->thirdparty->getNomUrl(1);
+    // Project
+    if (isModEnabled('project')) {
+        $langs->load("projects");
+        $morehtmlref .= '<br>';
+        if (0) {
+            $morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
+            if ($action != 'classify') {
+                $morehtmlref .= '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token=' . newToken() . '&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> ';
+            }
+            $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+        } else {
+            if (!empty($object->fk_project)) {
+                $proj = new Project($db);
+                $proj->fetch($object->fk_project);
+                $morehtmlref .= $proj->getNomUrl(1);
+                if ($proj->title) {
+                    $morehtmlref .= '<span class="opacitymedium"> - ' . dol_escape_htmltag($proj->title) . '</span>';
+                }
+            }
+        }
+    }
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '</div>';
 
-	print dol_get_fiche_end();
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 }
 
 

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2017		 Oscss-Shop              <support@oscss-shop.fr>.
+
+/* Copyright (C) 2017        Oscss-Shop              <support@oscss-shop.fr>.
  * Copyright (C) 2008-2011   Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2020        Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -18,7 +19,7 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1);
+    define('NOTOKENRENEWAL', 1);
 }
 
 
@@ -29,7 +30,7 @@ if (!defined('NOTOKENRENEWAL')) {
  */
 
 require "../../../main.inc.php";
-require_once DOL_DOCUMENT_ROOT.'/admin/dolistore/class/dolistore.class.php';
+require_once DOL_DOCUMENT_ROOT . '/admin/dolistore/class/dolistore.class.php';
 
 
 /*
@@ -46,24 +47,24 @@ $id_image   = GETPOSTINT('id_image');
 $quality    = GETPOST('quality', 'alpha');
 
 try {
-	$url = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV') . '/api/images/products/'.$id_product.'/'.$id_image.'/'.$quality;
-	$api = new PrestaShopWebservice(
-		getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV'),
-		getDolGlobalString('MAIN_MODULE_DOLISTORE_API_KEY'),
-		$dolistore->debug_api
-	);
-	//echo $url;
-	$request = $api->executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'GET'));
+    $url = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV') . '/api/images/products/' . $id_product . '/' . $id_image . '/' . $quality;
+    $api = new PrestaShopWebservice(
+        getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV'),
+        getDolGlobalString('MAIN_MODULE_DOLISTORE_API_KEY'),
+        $dolistore->debug_api
+    );
+    //echo $url;
+    $request = $api->executeRequest($url, array(CURLOPT_CUSTOMREQUEST => 'GET'));
 
-	print $request['response'];
+    print $request['response'];
 } catch (PrestaShopWebserviceException $e) {
-	// Here we are dealing with errors
-	$trace = $e->getTrace();
-	if ($trace[0]['args'][0] == 404) {
-		die('Bad ID');
-	} elseif ($trace[0]['args'][0] == 401) {
-		die('Bad auth key');
-	} else {
-		die('Can not access to ' . getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV'));
-	}
+    // Here we are dealing with errors
+    $trace = $e->getTrace();
+    if ($trace[0]['args'][0] == 404) {
+        die('Bad ID');
+    } elseif ($trace[0]['args'][0] == 401) {
+        die('Bad auth key');
+    } else {
+        die('Can not access to ' . getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV'));
+    }
 }

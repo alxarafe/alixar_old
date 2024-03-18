@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2019      Nicolas ZABOURI      <info@inovea-conseil.com>
  * Copyright (C) 2019      Frédéric France      <frederic.france@netlogic.fr>
@@ -18,22 +19,22 @@
  */
 
 /**
- *	\file       htdocs/opensurvey/index.php
- *	\ingroup    opensurvey
- *	\brief      Home page of opensurvey area
+ *  \file       htdocs/opensurvey/index.php
+ *  \ingroup    opensurvey
+ *  \brief      Home page of opensurvey area
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
-require_once DOL_DOCUMENT_ROOT."/core/lib/files.lib.php";
+require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
+require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
 
 // Load translation files required by the page
 $langs->load("opensurvey");
 
 // Security check
 if (!$user->hasRight('opensurvey', 'read')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $hookmanager = new HookManager($db);
@@ -48,14 +49,14 @@ $hookmanager->initHooks(array('opensurveyindex'));
 
 $nbsondages = 0;
 $sql = 'SELECT COUNT(*) as nb';
-$sql .= ' FROM '.MAIN_DB_PREFIX.'opensurvey_sondage';
-$sql .= ' WHERE entity IN ('.getEntity('survey').')';
+$sql .= ' FROM ' . MAIN_DB_PREFIX . 'opensurvey_sondage';
+$sql .= ' WHERE entity IN (' . getEntity('survey') . ')';
 $resql = $db->query($sql);
 if ($resql) {
-	$obj = $db->fetch_object($resql);
-	$nbsondages = $obj->nb;
+    $obj = $db->fetch_object($resql);
+    $nbsondages = $obj->nb;
 } else {
-	dol_print_error($db, '');
+    dol_print_error($db, '');
 }
 
 
@@ -69,9 +70,9 @@ print '<div class="fichecenter"><div class="fichethirdleft">';
 
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder centpercent">';
-print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("OpenSurveyArea").'</td></tr>';
+print '<tr class="liste_titre"><td colspan="2">' . $langs->trans("OpenSurveyArea") . '</td></tr>';
 print '<tr class="oddeven">';
-print '<td>'.$langs->trans("NbOfSurveys").'</td><td class="right"><a href="list.php">'.$nbsondages.'</a></td>';
+print '<td>' . $langs->trans("NbOfSurveys") . '</td><td class="right"><a href="list.php">' . $nbsondages . '</a></td>';
 print "</tr>";
 //print '<tr class="liste_total"><td>'.$langs->trans("Total").'</td><td class="right">';
 //print $total;

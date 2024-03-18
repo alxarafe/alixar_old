@@ -1,4 +1,5 @@
 <?php
+
 /* <one line to give the program's name and a brief idea of what it does.>
  * Copyright (C) 2015 ATM Consulting <support@atm-consulting.fr>
  *
@@ -17,9 +18,9 @@
  */
 
 /**
- *	\file		lib/inventory.lib.php
- *	\ingroup	inventory
- *	\brief		This file is an example module library
+ *  \file       lib/inventory.lib.php
+ *  \ingroup    inventory
+ *  \brief      This file is an example module library
  */
 
 /**
@@ -29,32 +30,32 @@
  */
 function inventoryAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$langs->load("inventory");
+    $langs->load("inventory");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT."/admin/inventory.php";
-	$head[$h][1] = $langs->trans("Parameters");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . "/admin/inventory.php";
+    $head[$h][1] = $langs->trans("Parameters");
+    $head[$h][2] = 'settings';
+    $h++;
 
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@inventory:/inventory/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@inventory:/inventory/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'inventory');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@inventory:/inventory/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@inventory:/inventory/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'inventory');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'inventory', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'inventory', 'remove');
 
-	return $head;
+    return $head;
 }
 
 /**
@@ -68,17 +69,17 @@ function inventoryAdminPrepareHead()
  */
 function inventoryPrepareHead(&$inventory, $title = 'Inventory', $get = '')
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$head = array(
-		array(dol_buildpath('/product/inventory/card.php?id='.$inventory->id.$get, 1), $langs->trans('Card'), 'card'),
-		array(dol_buildpath('/product/inventory/inventory.php?id='.$inventory->id.$get, 1), $langs->trans('Inventory'), 'inventory')
-	);
+    $head = array(
+        array(dol_buildpath('/product/inventory/card.php?id=' . $inventory->id . $get, 1), $langs->trans('Card'), 'card'),
+        array(dol_buildpath('/product/inventory/inventory.php?id=' . $inventory->id . $get, 1), $langs->trans('Inventory'), 'inventory')
+    );
 
-	$h=2;
+    $h = 2;
 
-	complete_head_from_modules($conf, $langs, $inventory, $head, $h, 'inventory');
-	complete_head_from_modules($conf, $langs, $inventory, $head, $h, 'inventory', 'remove');
+    complete_head_from_modules($conf, $langs, $inventory, $head, $h, 'inventory');
+    complete_head_from_modules($conf, $langs, $inventory, $head, $h, 'inventory', 'remove');
 
-	return $head;
+    return $head;
 }

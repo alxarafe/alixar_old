@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) ---Put here your own copyright and developer email---
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,49 +29,49 @@
  */
 function mymoduleAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	// global $db;
-	// $extrafields = new ExtraFields($db);
-	// $extrafields->fetch_name_optionals_label('myobject');
+    // global $db;
+    // $extrafields = new ExtraFields($db);
+    // $extrafields->fetch_name_optionals_label('myobject');
 
-	$langs->load("mymodule@mymodule");
+    $langs->load("mymodule@mymodule");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = dol_buildpath("/mymodule/admin/setup.php", 1);
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = dol_buildpath("/mymodule/admin/setup.php", 1);
+    $head[$h][1] = $langs->trans("Settings");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	/*
-	$head[$h][0] = dol_buildpath("/mymodule/admin/myobject_extrafields.php", 1);
-	$head[$h][1] = $langs->trans("ExtraFields");
-	$nbExtrafields = is_countable($extrafields->attributes['myobject']['label']) ? count($extrafields->attributes['myobject']['label']) : 0;
-	if ($nbExtrafields > 0) {
-		$head[$h][1] .= ' <span class="badge">' . $nbExtrafields . '</span>';
-	}
-	$head[$h][2] = 'myobject_extrafields';
-	$h++;
-	*/
+    /*
+    $head[$h][0] = dol_buildpath("/mymodule/admin/myobject_extrafields.php", 1);
+    $head[$h][1] = $langs->trans("ExtraFields");
+    $nbExtrafields = is_countable($extrafields->attributes['myobject']['label']) ? count($extrafields->attributes['myobject']['label']) : 0;
+    if ($nbExtrafields > 0) {
+        $head[$h][1] .= ' <span class="badge">' . $nbExtrafields . '</span>';
+    }
+    $head[$h][2] = 'myobject_extrafields';
+    $h++;
+    */
 
-	$head[$h][0] = dol_buildpath("/mymodule/admin/about.php", 1);
-	$head[$h][1] = $langs->trans("About");
-	$head[$h][2] = 'about';
-	$h++;
+    $head[$h][0] = dol_buildpath("/mymodule/admin/about.php", 1);
+    $head[$h][1] = $langs->trans("About");
+    $head[$h][2] = 'about';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'mymodule@mymodule');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'mymodule@mymodule');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'mymodule@mymodule', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'mymodule@mymodule', 'remove');
 
-	return $head;
+    return $head;
 }

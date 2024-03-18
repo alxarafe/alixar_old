@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007  Rodolphe Quiedeville        <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2007  Laurent Destailleur         <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009  Regis Houssin               <regis.houssin@inodbox.com>
@@ -28,143 +29,143 @@
  * \brief      File containing class for numbering model of SN advanced
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/product_batch/modules_product_batch.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/product_batch/modules_product_batch.class.php';
 
 
 /**
- *	Class to manage Batch numbering rules advanced
+ *  Class to manage Batch numbering rules advanced
  */
 class mod_sn_advanced extends ModeleNumRefBatch
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	/**
-	 * @var string Error message
-	 */
-	public $error = '';
+    /**
+     * @var string Error message
+     */
+    public $error = '';
 
-	/**
-	 * @var string name
-	 */
-	public $name = 'sn_advanced';
+    /**
+     * @var string name
+     */
+    public $name = 'sn_advanced';
 
 
-	/**
-	 *  Returns the description of the numbering model
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $conf, $langs, $db;
+    /**
+     *  Returns the description of the numbering model
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $conf, $langs, $db;
 
-		$langs->load("bills");
+        $langs->load("bills");
 
-		$form = new Form($db);
+        $form = new Form($db);
 
-		// We get cursor rule
-		$mask = getDolGlobalString('SN_ADVANCED_MASK');
+        // We get cursor rule
+        $mask = getDolGlobalString('SN_ADVANCED_MASK');
 
-		$texte = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$texte .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
-		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
-		$texte .= '<input type="hidden" name="action" value="updateMaskSN">';
-		$texte .= '<input type="hidden" name="maskconstSN" value="SN_ADVANCED_MASK">';
-		$texte .= '<table class="nobordernopadding" width="100%">';
+        $texte = $langs->trans('GenericNumRefModelDesc') . "<br>\n";
+        $texte .= '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST">';
+        $texte .= '<input type="hidden" name="token" value="' . newToken() . '">';
+        $texte .= '<input type="hidden" name="action" value="updateMaskSN">';
+        $texte .= '<input type="hidden" name="maskconstSN" value="SN_ADVANCED_MASK">';
+        $texte .= '<table class="nobordernopadding" width="100%">';
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Batch"), $langs->transnoentities("Batch"));
-		$tooltip .= $langs->trans("GenericMaskCodes2");
-		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Batch"), $langs->transnoentities("Batch"));
-		$tooltip .= $langs->trans("GenericMaskCodes5");
+        $tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Batch"), $langs->transnoentities("Batch"));
+        $tooltip .= $langs->trans("GenericMaskCodes2");
+        $tooltip .= $langs->trans("GenericMaskCodes3");
+        $tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Batch"), $langs->transnoentities("Batch"));
+        $tooltip .= $langs->trans("GenericMaskCodes5");
 
-		// Parametrage du prefix
-		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskSN" value="'.$mask.'">', $tooltip, 1, 1).'</td>';
+        // Parametrage du prefix
+        $texte .= '<tr><td>' . $langs->trans("Mask") . ':</td>';
+        $texte .= '<td class="right">' . $form->textwithpicto('<input type="text" class="flat minwidth175" name="maskSN" value="' . $mask . '">', $tooltip, 1, 1) . '</td>';
 
-		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button" value="'.$langs->trans("Modify").'"></td>';
+        $texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit reposition smallpaddingimp" name="Button" value="' . $langs->trans("Modify") . '"></td>';
 
-		// Option to enable custom masks per product
-		$texte .= '<td class="right">';
-		if (getDolGlobalString('PRODUCTBATCH_SN_USE_PRODUCT_MASKS')) {
-			$texte .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmaskssn&token='.newToken().'&value=0">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
-		} else {
-			$texte .= '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setmaskssn&token='.newToken().'&value=1">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
-		}
-		$texte .= ' '.$langs->trans('CustomMasks')."\n";
-		$texte .= '</td>';
+        // Option to enable custom masks per product
+        $texte .= '<td class="right">';
+        if (getDolGlobalString('PRODUCTBATCH_SN_USE_PRODUCT_MASKS')) {
+            $texte .= '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=setmaskssn&token=' . newToken() . '&value=0">' . img_picto($langs->trans("Enabled"), 'on') . '</a>';
+        } else {
+            $texte .= '<a class="reposition" href="' . $_SERVER['PHP_SELF'] . '?action=setmaskssn&token=' . newToken() . '&value=1">' . img_picto($langs->trans("Disabled"), 'off') . '</a>';
+        }
+        $texte .= ' ' . $langs->trans('CustomMasks') . "\n";
+        $texte .= '</td>';
 
-		$texte .= '</tr>';
+        $texte .= '</tr>';
 
-		$texte .= '</table>';
-		$texte .= '</form>';
+        $texte .= '</table>';
+        $texte .= '</form>';
 
-		return $texte;
-	}
+        return $texte;
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		global $conf, $langs, $mysoc;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        global $conf, $langs, $mysoc;
 
-		$old_code_client = $mysoc->code_client;
-		$old_code_type = $mysoc->typent_code;
-		$mysoc->code_client = 'CCCCCCCCCC';
-		$mysoc->typent_code = 'TTTTTTTTTT';
-		$numExample = $this->getNextValue($mysoc, '');
-		$mysoc->code_client = $old_code_client;
-		$mysoc->typent_code = $old_code_type;
+        $old_code_client = $mysoc->code_client;
+        $old_code_type = $mysoc->typent_code;
+        $mysoc->code_client = 'CCCCCCCCCC';
+        $mysoc->typent_code = 'TTTTTTTTTT';
+        $numExample = $this->getNextValue($mysoc, '');
+        $mysoc->code_client = $old_code_client;
+        $mysoc->typent_code = $old_code_type;
 
-		if (!$numExample) {
-			$numExample = $langs->trans('NotConfigured');
-		}
-		return $numExample;
-	}
+        if (!$numExample) {
+            $numExample = $langs->trans('NotConfigured');
+        }
+        return $numExample;
+    }
 
-	/**
-	 * 	Return next free value
-	 *
-	 *  @param	Societe		$objsoc	    Object thirdparty
-	 *  @param  Productlot	$object		Object we need next value for
-	 *  @return string|0      			Value if OK, 0 if KO
-	 */
-	public function getNextValue($objsoc, $object)
-	{
-		global $db, $conf;
+    /**
+     *  Return next free value
+     *
+     *  @param  Societe     $objsoc     Object thirdparty
+     *  @param  Productlot  $object     Object we need next value for
+     *  @return string|0                Value if OK, 0 if KO
+     */
+    public function getNextValue($objsoc, $object)
+    {
+        global $db, $conf;
 
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-		// We get cursor rule
-		$mask = getDolGlobalString('SN_ADVANCED_MASK');
+        // We get cursor rule
+        $mask = getDolGlobalString('SN_ADVANCED_MASK');
 
-		$filter = '';
-		if (getDolGlobalString('PRODUCTBATCH_SN_USE_PRODUCT_MASKS') && !empty($object->fk_product)) {
-			$product = new Product($db);
-			$res = $product->fetch($object->fk_product);
-			if ($res > 0 && !empty($product->batch_mask)) {
-				$mask = $product->batch_mask;
-				$filter = '';  // @phan-suppress-current-line PhanPluginRedundantAssignment
-			}
-		}
+        $filter = '';
+        if (getDolGlobalString('PRODUCTBATCH_SN_USE_PRODUCT_MASKS') && !empty($object->fk_product)) {
+            $product = new Product($db);
+            $res = $product->fetch($object->fk_product);
+            if ($res > 0 && !empty($product->batch_mask)) {
+                $mask = $product->batch_mask;
+                $filter = '';  // @phan-suppress-current-line PhanPluginRedundantAssignment
+            }
+        }
 
-		if (!$mask) {
-			$this->error = 'NotConfigured';
-			return 0;
-		}
+        if (!$mask) {
+            $this->error = 'NotConfigured';
+            return 0;
+        }
 
-		$date = dol_now();
+        $date = dol_now();
 
-		$numFinal = get_next_value($db, $mask, 'product_lot', 'batch', $filter, null, $date);
+        $numFinal = get_next_value($db, $mask, 'product_lot', 'batch', $filter, null, $date);
 
-		return  $numFinal;
-	}
+        return  $numFinal;
+    }
 }

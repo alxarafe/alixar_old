@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023   Laurent Destailleur     <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,9 @@
  */
 
 /**
- *	\file       htdocs/debugbar/class/DataCollector/DolMemoryCollector.php
- *	\brief      Class for debugbar collection
- *	\ingroup    debugbar
+ *  \file       htdocs/debugbar/class/DataCollector/DolMemoryCollector.php
+ *  \brief      Class for debugbar collection
+ *  \ingroup    debugbar
  */
 
 use DebugBar\DataCollector\MemoryCollector;
@@ -28,41 +29,41 @@ use DebugBar\DataCollector\MemoryCollector;
  */
 class DolMemoryCollector extends MemoryCollector
 {
-	/**
-	 *	Return value of indicator
-	 *
-	 *  @return array
-	 */
-	public function collect()
-	{
-		global $conf, $langs;
+    /**
+     *  Return value of indicator
+     *
+     *  @return array
+     */
+    public function collect()
+    {
+        global $conf, $langs;
 
-		$this->updatePeakUsage();
-		return array(
-			'peak_usage' => $this->peakUsage,
-			//'peak_usage_str' => $this->getDataFormatter()->formatBytes($this->peakUsage, 2)
-			'peak_usage_str' => (empty($conf->dol_optimize_smallscreen) ? dol_print_size($this->peakUsage, 0) : dol_print_size($this->peakUsage, 1))
-		);
-	}
+        $this->updatePeakUsage();
+        return array(
+            'peak_usage' => $this->peakUsage,
+            //'peak_usage_str' => $this->getDataFormatter()->formatBytes($this->peakUsage, 2)
+            'peak_usage_str' => (empty($conf->dol_optimize_smallscreen) ? dol_print_size($this->peakUsage, 0) : dol_print_size($this->peakUsage, 1))
+        );
+    }
 
-	/**
-	 *	Return widget settings
-	 *
-	 *  @return array
-	 */
-	public function getWidgets()
-	{
-		global $langs;
+    /**
+     *  Return widget settings
+     *
+     *  @return array
+     */
+    public function getWidgets()
+    {
+        global $langs;
 
-		$langs->load("other");
+        $langs->load("other");
 
-		return array(
-			"memory" => array(
-				"icon" => "cogs",
-				"tooltip" => $langs->transnoentities('MemoryUsage'),
-				"map" => "memory.peak_usage_str",
-				"default" => "'0B'"
-			)
-		);
-	}
+        return array(
+            "memory" => array(
+                "icon" => "cogs",
+                "tooltip" => $langs->transnoentities('MemoryUsage'),
+                "map" => "memory.peak_usage_str",
+                "default" => "'0B'"
+            )
+        );
+    }
 }

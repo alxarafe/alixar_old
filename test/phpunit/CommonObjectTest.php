@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
  *
@@ -25,17 +26,17 @@
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
-require_once dirname(__FILE__).'/../../htdocs/commande/class/commande.class.php';
-require_once dirname(__FILE__).'/../../htdocs/projet/class/project.class.php';
-require_once dirname(__FILE__).'/CommonClassTest.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
+require_once dirname(__FILE__) . '/../../htdocs/commande/class/commande.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/projet/class/project.class.php';
+require_once dirname(__FILE__) . '/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-	print "Load permissions for admin user nb 1\n";
-	$user->fetch(1);
-	$user->getrights();
+    print "Load permissions for admin user nb 1\n";
+    $user->fetch(1);
+    $user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -45,75 +46,75 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class CommonObjectTest extends CommonClassTest
 {
-	/**
-	 *  testFetchUser
-	 *
-	 *  @return void
-	 */
-	public function testFetchUser()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     *  testFetchUser
+     *
+     *  @return void
+     */
+    public function testFetchUser()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new Commande($db);
-		$localobject->fetch(1);
+        $localobject = new Commande($db);
+        $localobject->fetch(1);
 
-		$result = $localobject->fetch_user(1);
+        $result = $localobject->fetch_user(1);
 
-		print __METHOD__." result=".$result."\n";
-		$this->assertLessThan($localobject->user->id, 0);
-		return $result;
-	}
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertLessThan($localobject->user->id, 0);
+        return $result;
+    }
 
-	/**
-	 *  testFetchProject
-	 *
-	 *  @return void
-	 */
-	public function testFetchProject()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     *  testFetchProject
+     *
+     *  @return void
+     */
+    public function testFetchProject()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new Commande($db);
-		$localobject->fetch(1);
-		$result = $localobject->fetch_projet();
+        $localobject = new Commande($db);
+        $localobject->fetch(1);
+        $result = $localobject->fetch_projet();
 
-		print __METHOD__." result=".$result."\n";
-		$this->assertLessThanOrEqual($result, 0);
-		return $result;
-	}
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertLessThanOrEqual($result, 0);
+        return $result;
+    }
 
-	/**
-	 *  testFetchThirdParty
-	 *
-	 *  @return void
-	 */
-	public function testFetchThirdParty()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     *  testFetchThirdParty
+     *
+     *  @return void
+     */
+    public function testFetchThirdParty()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new Commande($db);
-		$localobject->fetch(1);
+        $localobject = new Commande($db);
+        $localobject->fetch(1);
 
-		$result = $localobject->fetch_thirdparty();
+        $result = $localobject->fetch_thirdparty();
 
-		print __METHOD__." result=".$result."\n";
-		$this->assertLessThanOrEqual($result, 0);
-		return $result;
-	}
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertLessThanOrEqual($result, 0);
+        return $result;
+    }
 }

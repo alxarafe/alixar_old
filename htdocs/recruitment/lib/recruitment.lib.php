@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019   Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2022-2024  Frédéric France         <frederic.france@free.fr>
  *
@@ -29,61 +30,61 @@
  */
 function recruitmentAdminPrepareHead()
 {
-	global $langs, $conf, $db;
+    global $langs, $conf, $db;
 
-	$extrafields = new ExtraFields($db);
-	$extrafields->fetch_name_optionals_label('recruitment_recruitmentjobposition');
-	$extrafields->fetch_name_optionals_label('recruitment_recruitmentcandidature');
+    $extrafields = new ExtraFields($db);
+    $extrafields->fetch_name_optionals_label('recruitment_recruitmentjobposition');
+    $extrafields->fetch_name_optionals_label('recruitment_recruitmentcandidature');
 
-	$langs->load("recruitment");
+    $langs->load("recruitment");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/setup.php';
-	$head[$h][1] = $langs->trans("JobPositions");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/setup.php';
+    $head[$h][1] = $langs->trans("JobPositions");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/setup_candidatures.php';
-	$head[$h][1] = $langs->trans("RecruitmentCandidatures");
-	$head[$h][2] = 'settings_candidatures';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/setup_candidatures.php';
+    $head[$h][1] = $langs->trans("RecruitmentCandidatures");
+    $head[$h][2] = 'settings_candidatures';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/public_interface.php';
-	$head[$h][1] = $langs->trans("PublicUrl");
-	$head[$h][2] = 'publicurl';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/public_interface.php';
+    $head[$h][1] = $langs->trans("PublicUrl");
+    $head[$h][2] = 'publicurl';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/jobposition_extrafields.php';
-	$head[$h][1] = $langs->trans("ExtrafieldsJobPosition");
-	$nbExtrafields = $extrafields->attributes['recruitment_recruitmentjobposition']['count'];
-	if ($nbExtrafields > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
-	}
-	$head[$h][2] = 'jobposition_extrafields';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/jobposition_extrafields.php';
+    $head[$h][1] = $langs->trans("ExtrafieldsJobPosition");
+    $nbExtrafields = $extrafields->attributes['recruitment_recruitmentjobposition']['count'];
+    if ($nbExtrafields > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
+    }
+    $head[$h][2] = 'jobposition_extrafields';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/candidature_extrafields.php';
-	$head[$h][1] = $langs->trans("ExtrafieldsApplication");
-	$nbExtrafields = $extrafields->attributes['recruitment_recruitmentcandidature']['count'];
-	if ($nbExtrafields > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
-	}
-	$head[$h][2] = 'candidature_extrafields';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/recruitment/admin/candidature_extrafields.php';
+    $head[$h][1] = $langs->trans("ExtrafieldsApplication");
+    $nbExtrafields = $extrafields->attributes['recruitment_recruitmentcandidature']['count'];
+    if ($nbExtrafields > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
+    }
+    $head[$h][2] = 'candidature_extrafields';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'recruitment');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@recruitment:/recruitment/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'recruitment');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'recruitment', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'recruitment', 'remove');
 
-	return $head;
+    return $head;
 }

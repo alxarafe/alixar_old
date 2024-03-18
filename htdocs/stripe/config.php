@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2017		Alexandre Spangaro		<aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2017       Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2017		Saasprov				<saasprov@gmail.com>
  * Copyright (C) 2017		Ferran Marcet			<fmarcet@2byte.es.com>
  *
@@ -25,29 +26,29 @@
 *  \brief      Page to move config in api
 */
 
-require_once DOL_DOCUMENT_ROOT.'/includes/stripe/stripe-php/init.php';
-require_once DOL_DOCUMENT_ROOT.'/includes/stripe/stripe-php/lib/Stripe.php';
+require_once DOL_DOCUMENT_ROOT . '/includes/stripe/stripe-php/init.php';
+require_once DOL_DOCUMENT_ROOT . '/includes/stripe/stripe-php/lib/Stripe.php';
 
 //global $stripe;
 global $conf;
 global $stripearrayofkeysbyenv;
 
 $stripearrayofkeysbyenv = array(
-	array(
-		"secret_key"      => getDolGlobalString('STRIPE_TEST_SECRET_KEY'),
-		"publishable_key" => getDolGlobalString('STRIPE_TEST_PUBLISHABLE_KEY')
-	),
-	array(
-		"secret_key"      => getDolGlobalString('STRIPE_LIVE_SECRET_KEY'),
-		"publishable_key" => getDolGlobalString('STRIPE_LIVE_PUBLISHABLE_KEY')
-	)
+    array(
+        "secret_key"      => getDolGlobalString('STRIPE_TEST_SECRET_KEY'),
+        "publishable_key" => getDolGlobalString('STRIPE_TEST_PUBLISHABLE_KEY')
+    ),
+    array(
+        "secret_key"      => getDolGlobalString('STRIPE_LIVE_SECRET_KEY'),
+        "publishable_key" => getDolGlobalString('STRIPE_LIVE_PUBLISHABLE_KEY')
+    )
 );
 
 $stripearrayofkeys = array();
 if (!getDolGlobalString('STRIPE_LIVE') || GETPOST('forcesandbox', 'alpha')) {
-	$stripearrayofkeys = $stripearrayofkeysbyenv[0]; // Test
+    $stripearrayofkeys = $stripearrayofkeysbyenv[0]; // Test
 } else {
-	$stripearrayofkeys = $stripearrayofkeysbyenv[1]; // Live
+    $stripearrayofkeys = $stripearrayofkeysbyenv[1]; // Live
 }
 
 \Stripe\Stripe::setApiKey($stripearrayofkeys['secret_key']);

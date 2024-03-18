@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016   Xebax Christy           <xebax@wanadoo.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,7 +18,7 @@
 
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/subscription.class.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
 
 /**
  * API class for subscriptions
@@ -27,250 +28,250 @@ require_once DOL_DOCUMENT_ROOT.'/adherents/class/subscription.class.php';
  */
 class Subscriptions extends DolibarrApi
 {
-	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
-	 */
-	public static $FIELDS = array(
-		'fk_adherent',
-		'dateh',
-		'datef',
-		'amount',
-	);
+    /**
+     * @var array   $FIELDS     Mandatory fields, checked when create and update object
+     */
+    public static $FIELDS = array(
+        'fk_adherent',
+        'dateh',
+        'datef',
+        'amount',
+    );
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		global $db, $conf;
-		$this->db = $db;
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        global $db, $conf;
+        $this->db = $db;
+    }
 
-	/**
-	 * Get properties of a subscription object
-	 *
-	 * Return an array with subscription information
-	 *
-	 * @param   int     $id				ID of subscription
-	 * @return  Object					Object with cleaned properties
-	 *
-	 * @throws	RestException	403		Access denied
-	 * @throws	RestException	404		No Subscription found
-	 */
-	public function get($id)
-	{
-		if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'lire')) {
-			throw new RestException(403);
-		}
+    /**
+     * Get properties of a subscription object
+     *
+     * Return an array with subscription information
+     *
+     * @param   int     $id             ID of subscription
+     * @return  Object                  Object with cleaned properties
+     *
+     * @throws  RestException   403     Access denied
+     * @throws  RestException   404     No Subscription found
+     */
+    public function get($id)
+    {
+        if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'lire')) {
+            throw new RestException(403);
+        }
 
-		$subscription = new Subscription($this->db);
-		$result = $subscription->fetch($id);
-		if (!$result) {
-			throw new RestException(404, 'Subscription not found');
-		}
+        $subscription = new Subscription($this->db);
+        $result = $subscription->fetch($id);
+        if (!$result) {
+            throw new RestException(404, 'Subscription not found');
+        }
 
-		return $this->_cleanObjectDatas($subscription);
-	}
+        return $this->_cleanObjectDatas($subscription);
+    }
 
-	/**
-	 * List subscriptions
-	 *
-	 * Get a list of subscriptions
-	 *
-	 * @param string    $sortfield  Sort field
-	 * @param string    $sortorder  Sort order
-	 * @param int       $limit      Limit for list
-	 * @param int       $page       Page number
-	 * @param string    $sqlfilters Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.import_key:<:'20160101')"
-	 * @param string    $properties	Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
-	 * @return array Array of subscription objects
-	 *
-	 * @throws	RestException	403		Access denied
-	 * @throws	RestException	404		No Subscription found
-	 * @throws	RestException	503		Error when retrieving Subscription list
-	 */
-	public function index($sortfield = "dateadh", $sortorder = 'ASC', $limit = 100, $page = 0, $sqlfilters = '', $properties = '')
-	{
-		global $conf;
+    /**
+     * List subscriptions
+     *
+     * Get a list of subscriptions
+     *
+     * @param string    $sortfield  Sort field
+     * @param string    $sortorder  Sort order
+     * @param int       $limit      Limit for list
+     * @param int       $page       Page number
+     * @param string    $sqlfilters Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.import_key:<:'20160101')"
+     * @param string    $properties Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
+     * @return array Array of subscription objects
+     *
+     * @throws  RestException   403     Access denied
+     * @throws  RestException   404     No Subscription found
+     * @throws  RestException   503     Error when retrieving Subscription list
+     */
+    public function index($sortfield = "dateadh", $sortorder = 'ASC', $limit = 100, $page = 0, $sqlfilters = '', $properties = '')
+    {
+        global $conf;
 
-		$obj_ret = array();
+        $obj_ret = array();
 
-		if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'lire')) {
-			throw new RestException(403);
-		}
+        if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'lire')) {
+            throw new RestException(403);
+        }
 
-		$sql = "SELECT rowid";
-		$sql .= " FROM ".MAIN_DB_PREFIX."subscription as t";
-		$sql .= ' WHERE 1 = 1';
-		// Add sql filters
-		if ($sqlfilters) {
-			$errormessage = '';
-			$sql .= forgeSQLFromUniversalSearchCriteria($sqlfilters, $errormessage);
-			if ($errormessage) {
-				throw new RestException(503, 'Error when validating parameter sqlfilters -> '.$errormessage);
-			}
-		}
+        $sql = "SELECT rowid";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "subscription as t";
+        $sql .= ' WHERE 1 = 1';
+        // Add sql filters
+        if ($sqlfilters) {
+            $errormessage = '';
+            $sql .= forgeSQLFromUniversalSearchCriteria($sqlfilters, $errormessage);
+            if ($errormessage) {
+                throw new RestException(503, 'Error when validating parameter sqlfilters -> ' . $errormessage);
+            }
+        }
 
-		$sql .= $this->db->order($sortfield, $sortorder);
-		if ($limit) {
-			if ($page < 0) {
-				$page = 0;
-			}
-			$offset = $limit * $page;
+        $sql .= $this->db->order($sortfield, $sortorder);
+        if ($limit) {
+            if ($page < 0) {
+                $page = 0;
+            }
+            $offset = $limit * $page;
 
-			$sql .= $this->db->plimit($limit + 1, $offset);
-		}
+            $sql .= $this->db->plimit($limit + 1, $offset);
+        }
 
-		$result = $this->db->query($sql);
-		if ($result) {
-			$i = 0;
-			$num = $this->db->num_rows($result);
-			while ($i < min($limit, $num)) {
-				$obj = $this->db->fetch_object($result);
-				$subscription = new Subscription($this->db);
-				if ($subscription->fetch($obj->rowid)) {
-					$obj_ret[] = $this->_filterObjectProperties($this->_cleanObjectDatas($subscription), $properties);
-				}
-				$i++;
-			}
-		} else {
-			throw new RestException(503, 'Error when retrieve subscription list : '.$this->db->lasterror());
-		}
+        $result = $this->db->query($sql);
+        if ($result) {
+            $i = 0;
+            $num = $this->db->num_rows($result);
+            while ($i < min($limit, $num)) {
+                $obj = $this->db->fetch_object($result);
+                $subscription = new Subscription($this->db);
+                if ($subscription->fetch($obj->rowid)) {
+                    $obj_ret[] = $this->_filterObjectProperties($this->_cleanObjectDatas($subscription), $properties);
+                }
+                $i++;
+            }
+        } else {
+            throw new RestException(503, 'Error when retrieve subscription list : ' . $this->db->lasterror());
+        }
 
-		return $obj_ret;
-	}
+        return $obj_ret;
+    }
 
-	/**
-	 * Create subscription object
-	 *
-	 * @param array $request_data   Request data
-	 * @return int  ID of subscription
-	 *
-	 * @throws	RestException	403		Access denied
-	 * @throws	RestException	500		Error when creating Subscription
-	 */
-	public function post($request_data = null)
-	{
-		if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'creer')) {
-			throw new RestException(403);
-		}
-		// Check mandatory fields
-		$result = $this->_validate($request_data);
+    /**
+     * Create subscription object
+     *
+     * @param array $request_data   Request data
+     * @return int  ID of subscription
+     *
+     * @throws  RestException   403     Access denied
+     * @throws  RestException   500     Error when creating Subscription
+     */
+    public function post($request_data = null)
+    {
+        if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'creer')) {
+            throw new RestException(403);
+        }
+        // Check mandatory fields
+        $result = $this->_validate($request_data);
 
-		$subscription = new Subscription($this->db);
-		foreach ($request_data as $field => $value) {
-			if ($field === 'caller') {
-				// Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
-				$subscription->context['caller'] = $request_data['caller'];
-				continue;
-			}
+        $subscription = new Subscription($this->db);
+        foreach ($request_data as $field => $value) {
+            if ($field === 'caller') {
+                // Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
+                $subscription->context['caller'] = $request_data['caller'];
+                continue;
+            }
 
-			$subscription->$field = $value;
-		}
-		if ($subscription->create(DolibarrApiAccess::$user) < 0) {
-			throw new RestException(500, 'Error when creating subscription', array_merge(array($subscription->error), $subscription->errors));
-		}
-		return $subscription->id;
-	}
+            $subscription->$field = $value;
+        }
+        if ($subscription->create(DolibarrApiAccess::$user) < 0) {
+            throw new RestException(500, 'Error when creating subscription', array_merge(array($subscription->error), $subscription->errors));
+        }
+        return $subscription->id;
+    }
 
-	/**
-	 * Update subscription
-	 *
-	 * @param 	int   		$id             ID of subscription to update
-	 * @param 	array 		$request_data   Datas
-	 * @return 	Object						Updated object
-	 *
-	 * @throws	RestException	403		Access denied
-	 * @throws	RestException	404		No Subscription found
-	 * @throws	RestException	500		Error when updating Subscription
-	 */
-	public function put($id, $request_data = null)
-	{
-		if (!DolibarrApiAccess::$user->hasRight('adherent', 'creer')) {
-			throw new RestException(403);
-		}
+    /**
+     * Update subscription
+     *
+     * @param   int         $id             ID of subscription to update
+     * @param   array       $request_data   Datas
+     * @return  Object                      Updated object
+     *
+     * @throws  RestException   403     Access denied
+     * @throws  RestException   404     No Subscription found
+     * @throws  RestException   500     Error when updating Subscription
+     */
+    public function put($id, $request_data = null)
+    {
+        if (!DolibarrApiAccess::$user->hasRight('adherent', 'creer')) {
+            throw new RestException(403);
+        }
 
-		$subscription = new Subscription($this->db);
-		$result = $subscription->fetch($id);
-		if (!$result) {
-			throw new RestException(404, 'Subscription not found');
-		}
+        $subscription = new Subscription($this->db);
+        $result = $subscription->fetch($id);
+        if (!$result) {
+            throw new RestException(404, 'Subscription not found');
+        }
 
-		foreach ($request_data as $field => $value) {
-			if ($field == 'id') {
-				continue;
-			}
-			if ($field === 'caller') {
-				// Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
-				$subscription->context['caller'] = $request_data['caller'];
-				continue;
-			}
+        foreach ($request_data as $field => $value) {
+            if ($field == 'id') {
+                continue;
+            }
+            if ($field === 'caller') {
+                // Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
+                $subscription->context['caller'] = $request_data['caller'];
+                continue;
+            }
 
-			$subscription->$field = $value;
-		}
+            $subscription->$field = $value;
+        }
 
-		if ($subscription->update(DolibarrApiAccess::$user) > 0) {
-			return $this->get($id);
-		} else {
-			throw new RestException(500, 'Error when updating contribution: '.$subscription->error);
-		}
-	}
+        if ($subscription->update(DolibarrApiAccess::$user) > 0) {
+            return $this->get($id);
+        } else {
+            throw new RestException(500, 'Error when updating contribution: ' . $subscription->error);
+        }
+    }
 
-	/**
-	 * Delete subscription
-	 *
-	 * @param int $id   ID of subscription to delete
-	 * @return array
-	 *
-	 * @throws	RestException	403		Access denied
-	 * @throws	RestException	404		No Subscription found
-	 * @throws	RestException	409		No Subscription deleted
-	 * @throws	RestException	500		Error when deleting Subscription
-	 */
-	public function delete($id)
-	{
-		// The right to delete a subscription comes with the right to create one.
-		if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'creer')) {
-			throw new RestException(403);
-		}
-		$subscription = new Subscription($this->db);
-		$result = $subscription->fetch($id);
-		if (!$result) {
-			throw new RestException(404, 'Subscription not found');
-		}
+    /**
+     * Delete subscription
+     *
+     * @param int $id   ID of subscription to delete
+     * @return array
+     *
+     * @throws  RestException   403     Access denied
+     * @throws  RestException   404     No Subscription found
+     * @throws  RestException   409     No Subscription deleted
+     * @throws  RestException   500     Error when deleting Subscription
+     */
+    public function delete($id)
+    {
+        // The right to delete a subscription comes with the right to create one.
+        if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'creer')) {
+            throw new RestException(403);
+        }
+        $subscription = new Subscription($this->db);
+        $result = $subscription->fetch($id);
+        if (!$result) {
+            throw new RestException(404, 'Subscription not found');
+        }
 
-		$res = $subscription->delete(DolibarrApiAccess::$user);
-		if ($res < 0) {
-			throw new RestException(500, "Can't delete, error occurs");
-		} elseif ($res == 0) {
-			throw new RestException(409, "No subscription whas deleted");
-		}
+        $res = $subscription->delete(DolibarrApiAccess::$user);
+        if ($res < 0) {
+            throw new RestException(500, "Can't delete, error occurs");
+        } elseif ($res == 0) {
+            throw new RestException(409, "No subscription whas deleted");
+        }
 
-		return array(
-			'success' => array(
-				'code' => 200,
-				'message' => 'Subscription deleted'
-			)
-		);
-	}
+        return array(
+            'success' => array(
+                'code' => 200,
+                'message' => 'Subscription deleted'
+            )
+        );
+    }
 
-	/**
-	 * Validate fields before creating an object
-	 *
-	 * @param array|null    $data   Data to validate
-	 * @return array
-	 *
-	 * @throws RestException
-	 */
-	private function _validate($data)
-	{
-		$subscription = array();
-		foreach (Subscriptions::$FIELDS as $field) {
-			if (!isset($data[$field])) {
-				throw new RestException(400, "$field field missing");
-			}
-			$subscription[$field] = $data[$field];
-		}
-		return $subscription;
-	}
+    /**
+     * Validate fields before creating an object
+     *
+     * @param array|null    $data   Data to validate
+     * @return array
+     *
+     * @throws RestException
+     */
+    private function _validate($data)
+    {
+        $subscription = array();
+        foreach (Subscriptions::$FIELDS as $field) {
+            if (!isset($data[$field])) {
+                throw new RestException(400, "$field field missing");
+            }
+            $subscription[$field] = $data[$field];
+        }
+        return $subscription;
+    }
 }

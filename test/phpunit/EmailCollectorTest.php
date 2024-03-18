@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
  *
@@ -25,16 +26,16 @@
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
-require_once dirname(__FILE__).'/../../htdocs/emailcollector/class/emailcollector.class.php';
-require_once dirname(__FILE__).'/CommonClassTest.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
+require_once dirname(__FILE__) . '/../../htdocs/emailcollector/class/emailcollector.class.php';
+require_once dirname(__FILE__) . '/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-	print "Load permissions for admin user nb 1\n";
-	$user->fetch(1);
-	$user->getrights();
+    print "Load permissions for admin user nb 1\n";
+    $user->fetch(1);
+    $user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -46,113 +47,113 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class EmailCollectorTest extends CommonClassTest
 {
-	/**
-	 * testEmailCollectorCreate
-	 *
-	 * @return	void
-	 */
-	public function testEmailCollectorCreate()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testEmailCollectorCreate
+     *
+     * @return  void
+     */
+    public function testEmailCollectorCreate()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$langs->load("main");
+        $langs->load("main");
 
-		// Create supplier order with a too low quantity
-		$localobject = new EmailCollector($db);
-		$localobject->initAsSpecimen();         // Init a specimen with lines
+        // Create supplier order with a too low quantity
+        $localobject = new EmailCollector($db);
+        $localobject->initAsSpecimen();         // Init a specimen with lines
 
-		$this->filters = array();
+        $this->filters = array();
 
-		$this->actions = array();
+        $this->actions = array();
 
-		$result = $localobject->create($user);
-		print __METHOD__." result=".$result."\n";
-		$this->assertGreaterThan(0, $result, "Error on test EmailCollector create: ".$localobject->error.' '.join(',', $localobject->errors));
+        $result = $localobject->create($user);
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertGreaterThan(0, $result, "Error on test EmailCollector create: " . $localobject->error . ' ' . join(',', $localobject->errors));
 
-		return $result;
-	}
+        return $result;
+    }
 
 
-	/**
-	 * testEmailCollectorFetch
-	 *
-	 * @param   int $id     Id of supplier order
-	 * @return  void
-	 *
-	 * @depends testEmailCollectorCreate
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testEmailCollectorFetch($id)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testEmailCollectorFetch
+     *
+     * @param   int $id     Id of supplier order
+     * @return  void
+     *
+     * @depends testEmailCollectorCreate
+     * The depends says test is run only if previous is ok
+     */
+    public function testEmailCollectorFetch($id)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new EmailCollector($db);
-		$result = $localobject->fetch($id);
+        $localobject = new EmailCollector($db);
+        $result = $localobject->fetch($id);
 
-		print __METHOD__." id=".$id." result=".$result."\n";
-		$this->assertLessThan($result, 0);
-		return $localobject;
-	}
+        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
+        $this->assertLessThan($result, 0);
+        return $localobject;
+    }
 
-	/**
-	 * testEmailCollectorOther
-	 *
-	 * @param   EmailCollector $localobject     EmailCollector
-	 * @return  void
-	 *
-	 * @depends testEmailCollectorFetch
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testEmailCollectorCollect($localobject)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testEmailCollectorOther
+     *
+     * @param   EmailCollector $localobject     EmailCollector
+     * @return  void
+     *
+     * @depends testEmailCollectorFetch
+     * The depends says test is run only if previous is ok
+     */
+    public function testEmailCollectorCollect($localobject)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$result = $localobject->getConnectStringIMAP();
-		print __METHOD__." id=".$localobject->id." result=".$result."\n";
-		$this->assertEquals('{localhost:993/service=imap/ssl/novalidate-cert}', $result, 'Error in getConnectStringIMAP '.$localobject->error);
+        $result = $localobject->getConnectStringIMAP();
+        print __METHOD__ . " id=" . $localobject->id . " result=" . $result . "\n";
+        $this->assertEquals('{localhost:993/service=imap/ssl/novalidate-cert}', $result, 'Error in getConnectStringIMAP ' . $localobject->error);
 
-		return $localobject->id;
-	}
+        return $localobject->id;
+    }
 
-	/**
-	 * testEmailCollectorDelete
-	 *
-	 * @param   int $id     Id of order
-	 * @return  void
-	 *
-	 * @depends testEmailCollectorCollect
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testEmailCollectorDelete($id)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testEmailCollectorDelete
+     *
+     * @param   int $id     Id of order
+     * @return  void
+     *
+     * @depends testEmailCollectorCollect
+     * The depends says test is run only if previous is ok
+     */
+    public function testEmailCollectorDelete($id)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new EmailCollector($db);
-		$result = $localobject->fetch($id);
-		$result = $localobject->delete($user);
+        $localobject = new EmailCollector($db);
+        $result = $localobject->fetch($id);
+        $result = $localobject->delete($user);
 
-		print __METHOD__." id=".$id." result=".$result."\n";
-		$this->assertGreaterThan(0, $result);
-		return $result;
-	}
+        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
+        $this->assertGreaterThan(0, $result);
+        return $result;
+    }
 }

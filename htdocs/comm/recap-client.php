@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -17,27 +18,27 @@
  */
 
 /**
- *   	\file       htdocs/comm/recap-client.php
- *		\ingroup    societe
- *		\brief      Page de fiche recap client
+ *      \file       htdocs/comm/recap-client.php
+ *      \ingroup    societe
+ *      \brief      Page de fiche recap client
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 
 // Load translation files required by the page
 $langs->load("companies");
 if (isModEnabled('invoice')) {
-	$langs->load("bills");
+    $langs->load("bills");
 }
 
 // Security check
 $socid = GETPOSTINT("socid");
 if ($user->socid > 0) {
-	$action = '';
-	$id = $user->socid;
+    $action = '';
+    $id = $user->socid;
 }
 $result = restrictedArea($user, 'societe', $id, '&societe', '', 'fk_soc', 'rowid', 0);
 
@@ -49,42 +50,42 @@ $result = restrictedArea($user, 'societe', $id, '&societe', '', 'fk_soc', 'rowid
 llxHeader();
 
 if ($socid > 0) {
-	$societe = new Societe($db);
-	$societe->fetch($socid);
+    $societe = new Societe($db);
+    $societe->fetch($socid);
 
-	/*
-	 * Affichage onglets
-	 */
-	$head = societe_prepare_head($societe);
+    /*
+     * Affichage onglets
+     */
+    $head = societe_prepare_head($societe);
 
-	print dol_get_fiche_head($head, 'customer', $langs->trans("ThirdParty"), 0, 'company');
-
-
-	print "<table width=\"100%\">\n";
-	print '<tr><td valign="top" width="50%">';
-
-	print '<table class="border centpercent">';
-
-	// Name
-	print '<tr><td width="20%">'.$langs->trans("ThirdParty").'</td><td width="80%" colspan="3">'.$societe->getNomUrl(1).'</td></tr>';
-
-	// Prefix
-	if (getDolGlobalString('SOCIETE_USEPREFIX')) {  // Old not used prefix field
-		print '<tr><td>'.$langs->trans("Prefix").'</td><td colspan="3">';
-		print($societe->prefix_comm ? $societe->prefix_comm : '&nbsp;');
-		print '</td></tr>';
-	}
-
-	print "</table>";
-
-	print "</td></tr></table>\n";
-
-	print '</div>';
+    print dol_get_fiche_head($head, 'customer', $langs->trans("ThirdParty"), 0, 'company');
 
 
-	print $langs->trans("FeatureNotYetAvailable");
+    print "<table width=\"100%\">\n";
+    print '<tr><td valign="top" width="50%">';
+
+    print '<table class="border centpercent">';
+
+    // Name
+    print '<tr><td width="20%">' . $langs->trans("ThirdParty") . '</td><td width="80%" colspan="3">' . $societe->getNomUrl(1) . '</td></tr>';
+
+    // Prefix
+    if (getDolGlobalString('SOCIETE_USEPREFIX')) {  // Old not used prefix field
+        print '<tr><td>' . $langs->trans("Prefix") . '</td><td colspan="3">';
+        print($societe->prefix_comm ? $societe->prefix_comm : '&nbsp;');
+        print '</td></tr>';
+    }
+
+    print "</table>";
+
+    print "</td></tr></table>\n";
+
+    print '</div>';
+
+
+    print $langs->trans("FeatureNotYetAvailable");
 } else {
-	dol_print_error($db);
+    dol_print_error($db);
 }
 
 // End of page

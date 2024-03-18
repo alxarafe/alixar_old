@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2020	Andreu Bisquerra Gaya <jove@bisquerra.com>
+
+/* Copyright (C) 2020   Andreu Bisquerra Gaya <jove@bisquerra.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,33 +17,33 @@
  */
 
 /**
- *	\file       htdocs/takepos/smpcb.php
- *	\ingroup	takepos
- *	\brief      Page with the content for smpcb payment
+ *  \file       htdocs/takepos/smpcb.php
+ *  \ingroup    takepos
+ *  \brief      Page with the content for smpcb payment
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1');
+    define('NOTOKENRENEWAL', '1');
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 // Load Dolibarr environment
 require '../main.inc.php';
 
 if (!$user->hasRight('takepos', 'run')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 if (GETPOSTISSET('status')) {
-	die(strtoupper($_SESSION['SMP_CURRENT_PAYMENT']));
+    die(strtoupper($_SESSION['SMP_CURRENT_PAYMENT']));
 }
 
 
@@ -53,9 +54,9 @@ if (GETPOSTISSET('status')) {
 top_httphead('text/html', 1);
 
 if (GETPOST('smp-status')) {
-	print '<html lang="en">';
-	print '<head>';
-	print '<meta charset="utf-8">
+    print '<html lang="en">';
+    print '<head>';
+    print '<meta charset="utf-8">
 
     <title>The HTML5 Herald</title>
     <meta name="description" content="The HTML5 Herald">
@@ -63,21 +64,21 @@ if (GETPOST('smp-status')) {
 
     <link rel="stylesheet" href="css/styles.css?v=1.0">';
 
-	print '</head>';
+    print '</head>';
 
-	print '<body>';
-	$_SESSION['SMP_CURRENT_PAYMENT'] = GETPOST('smp-status');
+    print '<body>';
+    $_SESSION['SMP_CURRENT_PAYMENT'] = GETPOST('smp-status');
 
-	print '<script type="application/javascript">
+    print '<script type="application/javascript">
                 window.onload = function() {
                     window.close();
                 }
             </script>';
 
-	print "Transaction status registered, you can close this";
+    print "Transaction status registered, you can close this";
 
-	print '</body></html>';
-	exit();
+    print '</body></html>';
+    exit();
 }
 
 print 'NOOP';

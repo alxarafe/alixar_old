@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2013-2014  Olivier Geffroy		<jeff@jeffinfo.com>
+
+/* Copyright (C) 2013-2014  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2024  Alexandre Spangaro	<aspangaro@easya.solutions>
  * Copyright (C) 2014	    Florian Henry		<florian.henry@open-concept.pro>
  * Copyright (C) 2014       Marcos García        <marcosgdf@gmail.com>
@@ -22,29 +23,30 @@
  */
 
 /**
- * \file 		htdocs/accountancy/admin/export.php
- * \ingroup 	Accountancy (Double entries)
- * \brief 		Setup page to configure accounting export module
+ * \file        htdocs/accountancy/admin/export.php
+ * \ingroup     Accountancy (Double entries)
+ * \brief       Setup page to configure accounting export module
  */
+
 require '../../main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/accountancy/class/accountancyexport.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancyexport.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("compta", "bills", "admin", "accountancy"));
 
 // Security access
 if (!$user->hasRight('accounting', 'chartofaccount')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $action = GETPOST('action', 'aZ09');
 
 // Parameters ACCOUNTING_EXPORT_*
 $main_option = array(
-	'ACCOUNTING_EXPORT_PREFIX_SPEC',
+    'ACCOUNTING_EXPORT_PREFIX_SPEC',
 );
 
 $accountancyexport = new AccountancyExport($db);
@@ -58,22 +60,22 @@ $listcr = $configuration['cr'];
 
 
 $model_option = array(
-	'1' => array(
-		'label' => 'ACCOUNTING_EXPORT_FORMAT',
-		'param' => $listformat,
-	),
-	'2' => array(
-		'label' => 'ACCOUNTING_EXPORT_SEPARATORCSV',
-		'param' => '',
-	),
-	'3' => array(
-		'label' => 'ACCOUNTING_EXPORT_ENDLINE',
-		'param' => $listcr,
-	),
-	'4' => array(
-		'label' => 'ACCOUNTING_EXPORT_DATE',
-		'param' => '',
-	),
+    '1' => array(
+        'label' => 'ACCOUNTING_EXPORT_FORMAT',
+        'param' => $listformat,
+    ),
+    '2' => array(
+        'label' => 'ACCOUNTING_EXPORT_SEPARATORCSV',
+        'param' => '',
+    ),
+    '3' => array(
+        'label' => 'ACCOUNTING_EXPORT_ENDLINE',
+        'param' => $listcr,
+    ),
+    '4' => array(
+        'label' => 'ACCOUNTING_EXPORT_DATE',
+        'param' => '',
+    ),
 );
 
 
@@ -82,48 +84,48 @@ $model_option = array(
  */
 
 if ($action == 'update') {
-	$error = 0;
+    $error = 0;
 
-	$modelcsv = GETPOSTINT('ACCOUNTING_EXPORT_MODELCSV');
+    $modelcsv = GETPOSTINT('ACCOUNTING_EXPORT_MODELCSV');
 
-	if (!empty($modelcsv)) {
-		if (!dolibarr_set_const($db, 'ACCOUNTING_EXPORT_MODELCSV', $modelcsv, 'chaine', 0, '', $conf->entity)) {
-			$error++;
-		}
-		//if ($modelcsv==AccountancyExport::$EXPORT_TYPE_QUADRATUS || $modelcsv==AccountancyExport::$EXPORT_TYPE_CIEL) {
-		//	dolibarr_set_const($db, 'ACCOUNTING_EXPORT_FORMAT', 'txt', 'chaine', 0, '', $conf->entity);
-		//}
-	} else {
-		$error++;
-	}
+    if (!empty($modelcsv)) {
+        if (!dolibarr_set_const($db, 'ACCOUNTING_EXPORT_MODELCSV', $modelcsv, 'chaine', 0, '', $conf->entity)) {
+            $error++;
+        }
+        //if ($modelcsv==AccountancyExport::$EXPORT_TYPE_QUADRATUS || $modelcsv==AccountancyExport::$EXPORT_TYPE_CIEL) {
+        //  dolibarr_set_const($db, 'ACCOUNTING_EXPORT_FORMAT', 'txt', 'chaine', 0, '', $conf->entity);
+        //}
+    } else {
+        $error++;
+    }
 
-	foreach ($main_option as $constname) {
-		$constvalue = GETPOST($constname, 'alpha');
+    foreach ($main_option as $constname) {
+        $constvalue = GETPOST($constname, 'alpha');
 
-		if (!dolibarr_set_const($db, $constname, $constvalue, 'chaine', 0, '', $conf->entity)) {
-			$error++;
-		}
-	}
+        if (!dolibarr_set_const($db, $constname, $constvalue, 'chaine', 0, '', $conf->entity)) {
+            $error++;
+        }
+    }
 
-	foreach ($listparam[$modelcsv] as $key => $value) {
-		$constante = $key;
+    foreach ($listparam[$modelcsv] as $key => $value) {
+        $constante = $key;
 
-		if (strpos($constante, 'ACCOUNTING') !== false) {
-			$constvalue = GETPOST($key, 'alpha');
-			if (!dolibarr_set_const($db, $constante, $constvalue, 'chaine', 0, '', $conf->entity)) {
-				$error++;
-			}
-		}
-	}
+        if (strpos($constante, 'ACCOUNTING') !== false) {
+            $constvalue = GETPOST($key, 'alpha');
+            if (!dolibarr_set_const($db, $constante, $constvalue, 'chaine', 0, '', $conf->entity)) {
+                $error++;
+            }
+        }
+    }
 
-	if (!$error) {
-		// reload
-		$configuration = $accountancyexport->getTypeConfig();
-		$listparam = $configuration['param'];
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		setEventMessages($langs->trans("Error"), null, 'errors');
-	}
+    if (!$error) {
+        // reload
+        $configuration = $accountancyexport->getTypeConfig();
+        $listparam = $configuration['param'];
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    } else {
+        setEventMessages($langs->trans("Error"), null, 'errors');
+    }
 }
 
 
@@ -143,52 +145,52 @@ $linkback = '';
 print load_fiche_titre($langs->trans('ExportOptions'), $linkback, 'accountancy');
 
 
-print "\n".'<script type="text/javascript">'."\n";
-print 'jQuery(document).ready(function () {'."\n";
-print '    function initfields()'."\n";
-print '    {'."\n";
+print "\n" . '<script type="text/javascript">' . "\n";
+print 'jQuery(document).ready(function () {' . "\n";
+print '    function initfields()' . "\n";
+print '    {' . "\n";
 foreach ($listparam as $key => $param) {
-	print '        if (jQuery("#ACCOUNTING_EXPORT_MODELCSV").val()=="'.$key.'")'."\n";
-	print '        {'."\n";
-	print '            //console.log("'.$param['label'].'");'."\n";
-	if (empty($param['ACCOUNTING_EXPORT_FORMAT'])) {
-		print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").val("'.getDolGlobalString('ACCOUNTING_EXPORT_FORMAT').'");'."\n";
-		print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").prop("disabled", true);'."\n";
-	} else {
-		print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").val("'.$param['ACCOUNTING_EXPORT_FORMAT'].'");'."\n";
-		print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").removeAttr("disabled");'."\n";
-	}
-	if (empty($param['ACCOUNTING_EXPORT_SEPARATORCSV'])) {
-		print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").val("");'."\n";
-		print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").prop("disabled", true);'."\n";
-	} else {
-		print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").val("'.getDolGlobalString('ACCOUNTING_EXPORT_SEPARATORCSV').'");'."\n";
-		print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").removeAttr("disabled");'."\n";
-	}
-	if (empty($param['ACCOUNTING_EXPORT_ENDLINE'])) {
-		print '            jQuery("#ACCOUNTING_EXPORT_ENDLINE").prop("disabled", true);'."\n";
-	} else {
-		print '            jQuery("#ACCOUNTING_EXPORT_ENDLINE").removeAttr("disabled");'."\n";
-	}
-	if (empty($param['ACCOUNTING_EXPORT_DATE'])) {
-		print '            jQuery("#ACCOUNTING_EXPORT_DATE").val("");'."\n";
-		print '            jQuery("#ACCOUNTING_EXPORT_DATE").prop("disabled", true);'."\n";
-	} else {
-		print '            jQuery("#ACCOUNTING_EXPORT_DATE").val("'.getDolGlobalString('ACCOUNTING_EXPORT_DATE').'");'."\n";
-		print '            jQuery("#ACCOUNTING_EXPORT_DATE").removeAttr("disabled");'."\n";
-	}
-	print '        }'."\n";
+    print '        if (jQuery("#ACCOUNTING_EXPORT_MODELCSV").val()=="' . $key . '")' . "\n";
+    print '        {' . "\n";
+    print '            //console.log("' . $param['label'] . '");' . "\n";
+    if (empty($param['ACCOUNTING_EXPORT_FORMAT'])) {
+        print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").val("' . getDolGlobalString('ACCOUNTING_EXPORT_FORMAT') . '");' . "\n";
+        print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").prop("disabled", true);' . "\n";
+    } else {
+        print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").val("' . $param['ACCOUNTING_EXPORT_FORMAT'] . '");' . "\n";
+        print '            jQuery("#ACCOUNTING_EXPORT_FORMAT").removeAttr("disabled");' . "\n";
+    }
+    if (empty($param['ACCOUNTING_EXPORT_SEPARATORCSV'])) {
+        print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").val("");' . "\n";
+        print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").prop("disabled", true);' . "\n";
+    } else {
+        print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").val("' . getDolGlobalString('ACCOUNTING_EXPORT_SEPARATORCSV') . '");' . "\n";
+        print '            jQuery("#ACCOUNTING_EXPORT_SEPARATORCSV").removeAttr("disabled");' . "\n";
+    }
+    if (empty($param['ACCOUNTING_EXPORT_ENDLINE'])) {
+        print '            jQuery("#ACCOUNTING_EXPORT_ENDLINE").prop("disabled", true);' . "\n";
+    } else {
+        print '            jQuery("#ACCOUNTING_EXPORT_ENDLINE").removeAttr("disabled");' . "\n";
+    }
+    if (empty($param['ACCOUNTING_EXPORT_DATE'])) {
+        print '            jQuery("#ACCOUNTING_EXPORT_DATE").val("");' . "\n";
+        print '            jQuery("#ACCOUNTING_EXPORT_DATE").prop("disabled", true);' . "\n";
+    } else {
+        print '            jQuery("#ACCOUNTING_EXPORT_DATE").val("' . getDolGlobalString('ACCOUNTING_EXPORT_DATE') . '");' . "\n";
+        print '            jQuery("#ACCOUNTING_EXPORT_DATE").removeAttr("disabled");' . "\n";
+    }
+    print '        }' . "\n";
 }
-print '    }'."\n";
-print '    initfields();'."\n";
-print '    jQuery("#ACCOUNTING_EXPORT_MODELCSV").change(function() {'."\n";
-print '        initfields();'."\n";
-print '    });'."\n";
-print '})'."\n";
-print '</script>'."\n";
+print '    }' . "\n";
+print '    initfields();' . "\n";
+print '    jQuery("#ACCOUNTING_EXPORT_MODELCSV").change(function() {' . "\n";
+print '        initfields();' . "\n";
+print '    });' . "\n";
+print '})' . "\n";
+print '</script>' . "\n";
 
-print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form action="' . $_SERVER['PHP_SELF'] . '" method="post">';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 print '<input type="hidden" name="action" value="update">';
 
 /*
@@ -197,23 +199,23 @@ print '<input type="hidden" name="action" value="update">';
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td colspan="3">'.$langs->trans('Options').'</td>';
+print '<td colspan="3">' . $langs->trans('Options') . '</td>';
 print "</tr>\n";
 
 $num = count($main_option);
 if ($num) {
-	foreach ($main_option as $key) {
-		print '<tr class="oddeven value">';
+    foreach ($main_option as $key) {
+        print '<tr class="oddeven value">';
 
-		// Param
-		$label = $langs->trans($key);
-		print '<td width="50%">'.$label.'</td>';
+        // Param
+        $label = $langs->trans($key);
+        print '<td width="50%">' . $label . '</td>';
 
-		// Value
-		print '<td>';
-		print '<input type="text" size="20" id="'.$key.'" name="'.$key.'" value="'.getDolGlobalString($key).'">';
-		print '</td></tr>';
-	}
+        // Value
+        print '<td>';
+        print '<input type="text" size="20" id="' . $key . '" name="' . $key . '" value="' . getDolGlobalString($key) . '">';
+        print '</td></tr>';
+    }
 }
 
 print "</table>\n";
@@ -226,22 +228,22 @@ print "<br>\n";
 print '<table class="noborder centpercent">';
 
 print '<tr class="liste_titre">';
-print '<td colspan="2">'.$langs->trans("Modelcsv").'</td>';
+print '<td colspan="2">' . $langs->trans("Modelcsv") . '</td>';
 print '</tr>';
 
 
 print '<tr class="oddeven">';
-print '<td width="50%">'.$langs->trans("Selectmodelcsv").'</td>';
+print '<td width="50%">' . $langs->trans("Selectmodelcsv") . '</td>';
 if (!$conf->use_javascript_ajax) {
-	print '<td class="nowrap">';
-	print $langs->trans("NotAvailableWhenAjaxDisabled");
-	print "</td>";
+    print '<td class="nowrap">';
+    print $langs->trans("NotAvailableWhenAjaxDisabled");
+    print "</td>";
 } else {
-	print '<td>';
-	$listmodelcsv = $accountancyexport->getType();
-	print $form->selectarray("ACCOUNTING_EXPORT_MODELCSV", $listmodelcsv, getDolGlobalString('ACCOUNTING_EXPORT_MODELCSV'), 0, 0, 0, '', 0, 0, 0, '', '', 1);
+    print '<td>';
+    $listmodelcsv = $accountancyexport->getType();
+    print $form->selectarray("ACCOUNTING_EXPORT_MODELCSV", $listmodelcsv, getDolGlobalString('ACCOUNTING_EXPORT_MODELCSV'), 0, 0, 0, '', 0, 0, 0, '', '', 1);
 
-	print '</td>';
+    print '</td>';
 }
 print "</td></tr>";
 print "</table>";
@@ -254,33 +256,33 @@ print "<br>\n";
 
 $num2 = count($model_option);
 if ($num2) {
-	print '<table class="noborder centpercent">';
-	print '<tr class="liste_titre">';
-	print '<td colspan="3">'.$langs->trans('OtherOptions').'</td>';
-	print "</tr>\n";
+    print '<table class="noborder centpercent">';
+    print '<tr class="liste_titre">';
+    print '<td colspan="3">' . $langs->trans('OtherOptions') . '</td>';
+    print "</tr>\n";
 
-	foreach ($model_option as $key) {
-		print '<tr class="oddeven value">';
+    foreach ($model_option as $key) {
+        print '<tr class="oddeven value">';
 
-		// Param
-		$label = $key['label'];
-		print '<td width="50%">'.$langs->trans($label).'</td>';
+        // Param
+        $label = $key['label'];
+        print '<td width="50%">' . $langs->trans($label) . '</td>';
 
-		// Value
-		print '<td>';
-		if (is_array($key['param'])) {
-			print $form->selectarray($label, $key['param'], getDolGlobalString($label), 0);
-		} else {
-			print '<input type="text" size="20" id="'.$label.'" name="'.$key['label'].'" value="'.getDolGlobalString($label).'">';
-		}
+        // Value
+        print '<td>';
+        if (is_array($key['param'])) {
+            print $form->selectarray($label, $key['param'], getDolGlobalString($label), 0);
+        } else {
+            print '<input type="text" size="20" id="' . $label . '" name="' . $key['label'] . '" value="' . getDolGlobalString($label) . '">';
+        }
 
-		print '</td></tr>';
-	}
+        print '</td></tr>';
+    }
 
-	print "</table>\n";
+    print "</table>\n";
 }
 
-print '<div class="center"><input type="submit" class="button" value="'.dol_escape_htmltag($langs->trans('Modify')).'" name="button"></div>';
+print '<div class="center"><input type="submit" class="button" value="' . dol_escape_htmltag($langs->trans('Modify')) . '" name="button"></div>';
 
 print '</form>';
 

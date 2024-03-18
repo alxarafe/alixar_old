@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C)    2013      Cédric Salvador     <csalvador@gpcsolutions.fr>
  * Copyright (C)    2013-2014 Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C)	2015	  Marcos García		  <marcosgdf@gmail.com>
@@ -31,25 +32,25 @@
 
 // Protection to avoid direct call of template
 if (empty($langs) || !is_object($langs)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 
 $langs->load("link");
 if (empty($relativepathwithnofile)) {
-	$relativepathwithnofile = '';
+    $relativepathwithnofile = '';
 }
 
 // Set $permission from the $permissiontoadd var defined on calling page
 if (!isset($permission)) {
-	$permission = $permissiontoadd;
+    $permission = $permissiontoadd;
 }
 if (!isset($permtoedit)) {
-	$permtoedit = $permissiontoadd;
+    $permtoedit = $permissiontoadd;
 }
 if (!isset($param)) {
-	$param = '';
+    $param = '';
 }
 
 // Drag and drop for up and down allowed on product, thirdparty, ...
@@ -58,7 +59,7 @@ if (!isset($param)) {
 // Also the object->fk_element must be defined.
 $disablemove = 1;
 if (in_array($modulepart, array('product', 'produit', 'societe', 'user', 'ticket', 'holiday', 'expensereport'))) {
-	$disablemove = 0;
+    $disablemove = 0;
 }
 
 
@@ -68,92 +69,94 @@ if (in_array($modulepart, array('product', 'produit', 'societe', 'user', 'ticket
  */
 
 if ($action == 'deletefile' || $action == 'deletelink') {
-	$langs->load("companies"); // Need for string DeleteFile+ConfirmDeleteFiles
-	print $form->formconfirm(
-		$_SERVER['PHP_SELF'].'?id='.$object->id.'&urlfile='.urlencode(GETPOST("urlfile")).'&linkid='.GETPOSTINT('linkid').(empty($param) ? '' : $param),
-		$langs->trans('DeleteFile'),
-		$langs->trans('ConfirmDeleteFile'),
-		'confirm_deletefile',
-		'',
-		'',
-		1
-	);
+    $langs->load("companies"); // Need for string DeleteFile+ConfirmDeleteFiles
+    print $form->formconfirm(
+        $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&urlfile=' . urlencode(GETPOST("urlfile")) . '&linkid=' . GETPOSTINT('linkid') . (empty($param) ? '' : $param),
+        $langs->trans('DeleteFile'),
+        $langs->trans('ConfirmDeleteFile'),
+        'confirm_deletefile',
+        '',
+        '',
+        1
+    );
 }
 
 // We define var to enable the feature to add prefix of uploaded files.
 // Caller of this include can make
 // $savingdocmask=dol_sanitizeFileName($object->ref).'-__file__';
 if (!isset($savingdocmask) || getDolGlobalString('MAIN_DISABLE_SUGGEST_REF_AS_PREFIX')) {
-	$savingdocmask = '';
-	if (!getDolGlobalString('MAIN_DISABLE_SUGGEST_REF_AS_PREFIX')) {
-		//var_dump($modulepart);
-		if (in_array($modulepart, array(
-			'facture_fournisseur',
-			'commande_fournisseur',
-			'facture',
-			'commande',
-			'propal',
-			'supplier_proposal',
-			'ficheinter',
-			'contract',
-			'expedition',
-			'project',
-			'project_task',
-			'expensereport',
-			'tax',
-			'tax-vat',
-			'produit',
-			'product_batch',
-			'bom',
-			'mrp'
-		))) {
-			$savingdocmask = dol_sanitizeFileName($object->ref).'-__file__';
-		}
-		/*if (in_array($modulepart,array('member')))
-		{
-			$savingdocmask=$object->login.'___file__';
-		}*/
-	}
+    $savingdocmask = '';
+    if (!getDolGlobalString('MAIN_DISABLE_SUGGEST_REF_AS_PREFIX')) {
+        //var_dump($modulepart);
+        if (
+            in_array($modulepart, array(
+            'facture_fournisseur',
+            'commande_fournisseur',
+            'facture',
+            'commande',
+            'propal',
+            'supplier_proposal',
+            'ficheinter',
+            'contract',
+            'expedition',
+            'project',
+            'project_task',
+            'expensereport',
+            'tax',
+            'tax-vat',
+            'produit',
+            'product_batch',
+            'bom',
+            'mrp'
+            ))
+        ) {
+            $savingdocmask = dol_sanitizeFileName($object->ref) . '-__file__';
+        }
+        /*if (in_array($modulepart,array('member')))
+        {
+            $savingdocmask=$object->login.'___file__';
+        }*/
+    }
 }
 
 if (empty($formfile) || !is_object($formfile)) {
-	$formfile = new FormFile($db);
+    $formfile = new FormFile($db);
 }
 
 // Show upload form (document and links)
 $formfile->form_attach_new_file(
-	$_SERVER['PHP_SELF'].'?id='.$object->id.(empty($withproject) ? '' : '&withproject=1').(empty($moreparam) ? '' : $moreparam),
-	'',
-	0,
-	0,
-	$permission,
-	$conf->browser->layout == 'phone' ? 40 : 60,
-	$object,
-	'',
-	1,
-	$savingdocmask
+    $_SERVER['PHP_SELF'] . '?id=' . $object->id . (empty($withproject) ? '' : '&withproject=1') . (empty($moreparam) ? '' : $moreparam),
+    '',
+    0,
+    0,
+    $permission,
+    $conf->browser->layout == 'phone' ? 40 : 60,
+    $object,
+    '',
+    1,
+    $savingdocmask
 );
 
 // List of document
 $formfile->list_of_documents(
-	$filearray,
-	$object,
-	$modulepart,
-	$param,
-	0,
-	$relativepathwithnofile, // relative path with no file. For example "0/1"
-	$permission,
-	0,
-	'',
-	0,
-	'',
-	'',
-	0,
-	$permtoedit,
-	$upload_dir,
-	$sortfield,
-	$sortorder,
-	$disablemove
+    $filearray,
+    $object,
+    $modulepart,
+    $param,
+    0,
+    $relativepathwithnofile, // relative path with no file. For example "0/1"
+    $permission,
+    0,
+    '',
+    0,
+    '',
+    '',
+    0,
+    $permtoedit,
+    $upload_dir,
+    $sortfield,
+    $sortorder,
+    $disablemove
 );
 
 print "<br>";

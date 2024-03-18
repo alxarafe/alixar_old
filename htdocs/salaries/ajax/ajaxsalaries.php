@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2006      Andre Cianfarani     <acianfa@free.fr>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2007-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -24,24 +25,24 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1); // Disables token renewal
+    define('NOTOKENRENEWAL', 1); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/salaries/class/salary.class.php';
+require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 
 restrictedArea($user, 'salaries');
 
@@ -56,25 +57,25 @@ $fk_user = GETPOSTINT('fk_user');
 $return_arr = array();
 
 if (!empty(GETPOSTINT('fk_user'))) {
-	$sql = "SELECT s.amount, s.rowid FROM ".MAIN_DB_PREFIX."salary as s";
-	$sql .= " WHERE s.fk_user = ".((int) $fk_user);
-	$sql .= " AND s.paye = 1";
-	$sql .= $db->order("s.dateep", "DESC");
+    $sql = "SELECT s.amount, s.rowid FROM " . MAIN_DB_PREFIX . "salary as s";
+    $sql .= " WHERE s.fk_user = " . ((int) $fk_user);
+    $sql .= " AND s.paye = 1";
+    $sql .= $db->order("s.dateep", "DESC");
 
-	$resql = $db->query($sql);
-	if ($resql) {
-		$obj = $db->fetch_object($resql);
-		$label = "Salary amount";
-		$row_array = array();
-		$row_array['label'] = $label;
-		$row_array['value'] = price2num($obj->amount, 'MT');
-		$row_array['key'] = "Amount";
+    $resql = $db->query($sql);
+    if ($resql) {
+        $obj = $db->fetch_object($resql);
+        $label = "Salary amount";
+        $row_array = array();
+        $row_array['label'] = $label;
+        $row_array['value'] = price2num($obj->amount, 'MT');
+        $row_array['key'] = "Amount";
 
-		array_push($return_arr, $row_array);
-		echo json_encode($return_arr);
-	} else {
-		echo json_encode(array('nom' => 'Error', 'label' => 'Error', 'key' => 'Error', 'value' => 'Error'));
-	}
+        array_push($return_arr, $row_array);
+        echo json_encode($return_arr);
+    } else {
+        echo json_encode(array('nom' => 'Error', 'label' => 'Error', 'key' => 'Error', 'value' => 'Error'));
+    }
 } else {
-	echo json_encode(array('nom' => 'ErrorBadParameter', 'label' => 'ErrorBadParameter', 'key' => 'ErrorBadParameter', 'value' => 'ErrorBadParameter'));
+    echo json_encode(array('nom' => 'ErrorBadParameter', 'label' => 'ErrorBadParameter', 'key' => 'ErrorBadParameter', 'value' => 'ErrorBadParameter'));
 }

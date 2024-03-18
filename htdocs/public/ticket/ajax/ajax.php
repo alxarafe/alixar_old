@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (C) 2020 Laurent Destailleur <eldy@users.sourceforge.net>
  *
@@ -17,37 +18,37 @@
  */
 
 /**
- *	\file       htdocs/public/ticket/ajax/ajax.php
- *	\brief      Ajax component for Ticket.
+ *  \file       htdocs/public/ticket/ajax/ajax.php
+ *  \brief      Ajax component for Ticket.
  *
  *  This ajax component is called only by the create ticket public page. And only if TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST is set.
  *  This option TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST has been removed because it is a security hole.
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 // You can get information if module "Agenda" has been enabled by reading the
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined("NOLOGIN")) {
-	define("NOLOGIN", '1');
+    define("NOLOGIN", '1');
 }
 if (!defined('NOIPCHECK')) {
-	define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
+    define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
 }
 if (!defined('NOBROWSERNOTIF')) {
-	define('NOBROWSERNOTIF', '1');
+    define('NOBROWSERNOTIF', '1');
 }
 
 include_once '../../../main.inc.php'; // Load $user and permissions
@@ -58,11 +59,11 @@ $email = GETPOST('email', 'custom', 0, FILTER_VALIDATE_EMAIL);
 
 
 if (!isModEnabled('ticket')) {
-	httponly_accessforbidden('Module Ticket not enabled');
+    httponly_accessforbidden('Module Ticket not enabled');
 }
 
 if (!getDolGlobalString('TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST')) {
-	httponly_accessforbidden('Option TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST of module ticket is not enabled');
+    httponly_accessforbidden('Option TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST of module ticket is not enabled');
 }
 
 
@@ -73,32 +74,32 @@ if (!getDolGlobalString('TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST')) 
 top_httphead();
 
 if ($action == 'getContacts') {
-	$return = array(
-		'contacts' => array(),
-		'error' => '',
-	);
+    $return = array(
+        'contacts' => array(),
+        'error' => '',
+    );
 
-	if (!empty($email)) {
-		require_once DOL_DOCUMENT_ROOT.'/ticket/class/ticket.class.php';
+    if (!empty($email)) {
+        require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
 
-		$ticket = new Ticket($db);
-		$arrayofcontacts = $ticket->searchContactByEmail($email);
-		if (is_array($arrayofcontacts)) {
-			$arrayofminimalcontacts = array();
-			foreach ($arrayofcontacts as $tmpval) {
-				$tmpresult = new stdClass();
-				$tmpresult->id = $tmpval->id;
-				$tmpresult->firstname = $tmpval->firstname;
-				$tmpresult->lastname = $tmpval->lastname;
-				$arrayofminimalcontacts[] = $tmpresult;
-			}
+        $ticket = new Ticket($db);
+        $arrayofcontacts = $ticket->searchContactByEmail($email);
+        if (is_array($arrayofcontacts)) {
+            $arrayofminimalcontacts = array();
+            foreach ($arrayofcontacts as $tmpval) {
+                $tmpresult = new stdClass();
+                $tmpresult->id = $tmpval->id;
+                $tmpresult->firstname = $tmpval->firstname;
+                $tmpresult->lastname = $tmpval->lastname;
+                $arrayofminimalcontacts[] = $tmpresult;
+            }
 
-			$return['contacts'] = $arrayofminimalcontacts;
-		} else {
-			$return['error'] = $ticket->errorsToString();
-		}
-	}
+            $return['contacts'] = $arrayofminimalcontacts;
+        } else {
+            $return['error'] = $ticket->errorsToString();
+        }
+    }
 
-	echo json_encode($return);
-	exit();
+    echo json_encode($return);
+    exit();
 }

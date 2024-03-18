@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2017 ATM Consulting       <contact@atm-consulting.fr>
  *
@@ -22,30 +23,29 @@
  *      \brief      This page is not used yet.
  */
 
-
 // This script is called with a POST method.
 // Directory to scan (full path) is inside POST['dir'].
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1); // Disables token renewal
+    define('NOTOKENRENEWAL', 1); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/geturl.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/blockedlog/class/blockedlog.class.php';
-require_once DOL_DOCUMENT_ROOT.'/blockedlog/class/authority.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/blockedlog.class.php';
+require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/authority.class.php';
 
 
 if (!getDolGlobalString('BLOCKEDLOG_AUTHORITY_URL')) {
-	exit('BLOCKEDLOG_AUTHORITY_URL not set');
+    exit('BLOCKEDLOG_AUTHORITY_URL not set');
 }
 
 
@@ -65,15 +65,15 @@ $blocks = $block_static->getLog('just_certified', 0, 0, 'rowid', 'ASC');
 $auth->signature = $block_static->getSignature();
 
 if (is_array($bocks)) {
-	foreach ($blocks as &$b) {
-		$auth->blockchain .= $b->signature;
-	}
+    foreach ($blocks as &$b) {
+        $auth->blockchain .= $b->signature;
+    }
 }
 
 $hash = $auth->getBlockchainHash();
 
 // Call external authority
-$url = getDolGlobalString('BLOCKEDLOG_AUTHORITY_URL') . '/blockedlog/ajax/authority.php?s='.urlencode($auth->signature).'&h='.urlencode($hash);
+$url = getDolGlobalString('BLOCKEDLOG_AUTHORITY_URL') . '/blockedlog/ajax/authority.php?s=' . urlencode($auth->signature) . '&h=' . urlencode($hash);
 
 $resarray = getURLContent($url, 'GET', '', 1, array(), array(), 2);
 $res = $resarray['content'];

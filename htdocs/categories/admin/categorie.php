@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2008-2011	Laurent Destailleur  <eldy@users.sourceforge.net>
+
+/* Copyright (C) 2008-2011  Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2013 		Florian Henry  		<florian.henry@open-concept.pro>
  * Copyright (C) 2015 		Juanjo Menent		<jmenent@2byte.es>
  *
@@ -18,18 +19,18 @@
  */
 
 /**
- *	    \file       htdocs/categories/admin/categorie.php
+ *      \file       htdocs/categories/admin/categorie.php
  *      \ingroup    categories
  *      \brief      Categorie admin pages
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/categories.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/categories.lib.php';
 
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Load translation files required by the page
@@ -43,23 +44,23 @@ $action = GETPOST('action', 'aZ09');
 
 $reg = array();
 if (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {
-	$code = $reg[1];
-	if (dolibarr_set_const($db, $code, 1, 'chaine', 0, '', $conf->entity) > 0) {
-		header("Location: ".$_SERVER['PHP_SELF']);
-		exit;
-	} else {
-		setEventMessages($db->lasterror(), null, 'errors');
-	}
+    $code = $reg[1];
+    if (dolibarr_set_const($db, $code, 1, 'chaine', 0, '', $conf->entity) > 0) {
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } else {
+        setEventMessages($db->lasterror(), null, 'errors');
+    }
 }
 
 if (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
-	$code = $reg[1];
-	if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
-		header("Location: ".$_SERVER['PHP_SELF']);
-		exit;
-	} else {
-		setEventMessages($db->lasterror(), null, 'errors');
-	}
+    $code = $reg[1];
+    if (dolibarr_del_const($db, $code, $conf->entity) > 0) {
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } else {
+        setEventMessages($db->lasterror(), null, 'errors');
+    }
 }
 
 
@@ -69,11 +70,11 @@ if (preg_match('/del_([a-z0-9_\-]+)/i', $action, $reg)) {
  */
 
 $help_url = 'EN:Module Categories|FR:Module Catégories|ES:Módulo Categorías|DE:Modul_Kategorien';
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 
 llxHeader('', $langs->trans("Categories"), $help_url);
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("CategoriesSetup"), $linkback, 'title_setup');
 
 
@@ -84,9 +85,9 @@ print dol_get_fiche_head($head, 'setup', $langs->trans("Categories"), -1, 'categ
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td>'.$langs->trans("Description").'</td>';
+print '<td>' . $langs->trans("Description") . '</td>';
 print '<td align="center" width="20">&nbsp;</td>';
-print '<td align="center" width="100">'.$langs->trans("Value").'</td>'."\n";
+print '<td align="center" width="100">' . $langs->trans("Value") . '</td>' . "\n";
 print '</tr>';
 
 $form = new Form($db);
@@ -94,18 +95,18 @@ $form = new Form($db);
 // Mail required for members
 
 print '<tr class="oddeven">';
-print '<td>'.$langs->trans("CategorieRecursiv").'</td>';
-print '<td align="center" width="20">'.$form->textwithpicto('', $langs->trans("CategorieRecursivHelp"), 1, 'help').'</td>';
+print '<td>' . $langs->trans("CategorieRecursiv") . '</td>';
+print '<td align="center" width="20">' . $form->textwithpicto('', $langs->trans("CategorieRecursivHelp"), 1, 'help') . '</td>';
 
 print '<td align="center" width="100">';
 if ($conf->use_javascript_ajax) {
-	print ajax_constantonoff('CATEGORIE_RECURSIV_ADD');
+    print ajax_constantonoff('CATEGORIE_RECURSIV_ADD');
 } else {
-	if (!getDolGlobalString('CATEGORIE_RECURSIV_ADD')) {
-		print '<a href="'.$_SERVER['PHP_SELF'].'?action=set_CATEGORIE_RECURSIV_ADD&token='.newToken().'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
-	} else {
-		print '<a href="'.$_SERVER['PHP_SELF'].'?action=del_CATEGORIE_RECURSIV_ADD&token='.newToken().'">'.img_picto($langs->trans("Enabled"), 'on').'</a>';
-	}
+    if (!getDolGlobalString('CATEGORIE_RECURSIV_ADD')) {
+        print '<a href="' . $_SERVER['PHP_SELF'] . '?action=set_CATEGORIE_RECURSIV_ADD&token=' . newToken() . '">' . img_picto($langs->trans("Disabled"), 'off') . '</a>';
+    } else {
+        print '<a href="' . $_SERVER['PHP_SELF'] . '?action=del_CATEGORIE_RECURSIV_ADD&token=' . newToken() . '">' . img_picto($langs->trans("Enabled"), 'on') . '</a>';
+    }
 }
 print '</td></tr>';
 

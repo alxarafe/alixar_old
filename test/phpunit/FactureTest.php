@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Laurent Destailleur   <eldy@users.sourceforge.net>
  * Copyright (C) 2018 Frédéric France       <frederic.france@netlogic.fr>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
@@ -26,16 +27,16 @@
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
-require_once dirname(__FILE__).'/../../htdocs/compta/facture/class/facture.class.php';
-require_once dirname(__FILE__).'/CommonClassTest.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
+require_once dirname(__FILE__) . '/../../htdocs/compta/facture/class/facture.class.php';
+require_once dirname(__FILE__) . '/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-	print "Load permissions for admin user nb 1\n";
-	$user->fetch(1);
-	$user->getrights();
+    print "Load permissions for admin user nb 1\n";
+    $user->fetch(1);
+    $user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -45,274 +46,274 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class FactureTest extends CommonClassTest
 {
-	/**
-	 * setUpBeforeClass
-	 *
-	 * @return void
-	 */
-	public static function setUpBeforeClass(): void
-	{
-		self::assertTrue(isModEnabled('facture'), " module customer invoice must be enabled");
-		self::assertFalse(isModEnabled('ecotaxdeee'), " module ecotaxdeee must not be enabled");
-		parent::setUpBeforeClass();
-	}
+    /**
+     * setUpBeforeClass
+     *
+     * @return void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        self::assertTrue(isModEnabled('facture'), " module customer invoice must be enabled");
+        self::assertFalse(isModEnabled('ecotaxdeee'), " module ecotaxdeee must not be enabled");
+        parent::setUpBeforeClass();
+    }
 
 
-	/**
-	 * testFactureCreate
-	 *
-	 * @return int
-	 */
-	public function testFactureCreate()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testFactureCreate
+     *
+     * @return int
+     */
+    public function testFactureCreate()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new Facture($db);
-		$localobject->initAsSpecimen();
-		$result = $localobject->create($user);
-		$this->assertLessThan($result, 0);
-		print __METHOD__." result=".$result."\n";
-		return $result;
-	}
+        $localobject = new Facture($db);
+        $localobject->initAsSpecimen();
+        $result = $localobject->create($user);
+        $this->assertLessThan($result, 0);
+        print __METHOD__ . " result=" . $result . "\n";
+        return $result;
+    }
 
-	/**
-	 * testFactureFetch
-	 *
-	 * @param   int $id     Id invoice
-	 * @return  int
-	 *
-	 * @depends testFactureCreate
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testFactureFetch($id)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testFactureFetch
+     *
+     * @param   int $id     Id invoice
+     * @return  int
+     *
+     * @depends testFactureCreate
+     * The depends says test is run only if previous is ok
+     */
+    public function testFactureFetch($id)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$localobject = new Facture($db);
-		$result = $localobject->fetch($id);
+        $localobject = new Facture($db);
+        $result = $localobject->fetch($id);
 
-		$this->assertLessThan($result, 0);
-		print __METHOD__." id=".$id." result=".$result."\n";
-		return $localobject;
-	}
+        $this->assertLessThan($result, 0);
+        print __METHOD__ . " id=" . $id . " result=" . $result . "\n";
+        return $localobject;
+    }
 
-	/**
-	 * testFactureFetch
-	 *
-	 * @param   Facture $localobject Invoice
-	 * @return  int
-	 *
-	 * @depends testFactureFetch
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testFactureUpdate($localobject)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testFactureFetch
+     *
+     * @param   Facture $localobject Invoice
+     * @return  int
+     *
+     * @depends testFactureFetch
+     * The depends says test is run only if previous is ok
+     */
+    public function testFactureUpdate($localobject)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$this->changeProperties($localobject);
-		$result = $localobject->update($user);
+        $this->changeProperties($localobject);
+        $result = $localobject->update($user);
 
-		print __METHOD__." id=".$localobject->id." result=".$result."\n";
-		$this->assertLessThan($result, 0);
-		return $localobject;
-	}
+        print __METHOD__ . " id=" . $localobject->id . " result=" . $result . "\n";
+        $this->assertLessThan($result, 0);
+        return $localobject;
+    }
 
-	/**
-	 * testFactureValid
-	 *
-	 * @param   Facture $localobject Invoice
-	 * @return  void
-	 *
-	 * @depends testFactureUpdate
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testFactureValid($localobject)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testFactureValid
+     *
+     * @param   Facture $localobject Invoice
+     * @return  void
+     *
+     * @depends testFactureUpdate
+     * The depends says test is run only if previous is ok
+     */
+    public function testFactureValid($localobject)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		$result = $localobject->validate($user);
-		print __METHOD__." id=".$localobject->id." result=".$result."\n";
+        $result = $localobject->validate($user);
+        print __METHOD__ . " id=" . $localobject->id . " result=" . $result . "\n";
 
-		$this->assertLessThan($result, 0);
+        $this->assertLessThan($result, 0);
 
-		// Test everything are still same than specimen
-		$newlocalobject = new Facture($db);
-		$newlocalobject->initAsSpecimen();
-		$this->changeProperties($newlocalobject);
+        // Test everything are still same than specimen
+        $newlocalobject = new Facture($db);
+        $newlocalobject->initAsSpecimen();
+        $this->changeProperties($newlocalobject);
 
-		// Hack to avoid test to be wrong when module sellyoursaas is on
-		unset($localobject->array_options['options_commission']);
-		unset($localobject->array_options['options_reseller']);
+        // Hack to avoid test to be wrong when module sellyoursaas is on
+        unset($localobject->array_options['options_commission']);
+        unset($localobject->array_options['options_reseller']);
 
-		$arraywithdiff = $this->objCompare(
-			$localobject,
-			$newlocalobject,
-			true,
-			array(
-				'newref','oldref','id','lines','client','thirdparty','brouillon','user_creation_id','date_creation','date_validation','datem','date_modification',
-				'ref','statut','status','paye','specimen','ref','actiontypecode','actionmsg2','actionmsg','mode_reglement','cond_reglement',
-				'cond_reglement_doc', 'modelpdf',
-				'multicurrency_total_ht','multicurrency_total_tva',	'multicurrency_total_ttc','fk_multicurrency','multicurrency_code','multicurrency_tx',
-				'retained_warranty' ,'retained_warranty_date_limit', 'retained_warranty_fk_cond_reglement', 'specimen', 'situation_cycle_ref', 'situation_counter', 'situation_final',
-				'trackid','user_creat','user_valid'
-			)
-		);
-		$this->assertEquals($arraywithdiff, array());    // Actual, Expected
+        $arraywithdiff = $this->objCompare(
+            $localobject,
+            $newlocalobject,
+            true,
+            array(
+                'newref','oldref','id','lines','client','thirdparty','brouillon','user_creation_id','date_creation','date_validation','datem','date_modification',
+                'ref','statut','status','paye','specimen','ref','actiontypecode','actionmsg2','actionmsg','mode_reglement','cond_reglement',
+                'cond_reglement_doc', 'modelpdf',
+                'multicurrency_total_ht','multicurrency_total_tva', 'multicurrency_total_ttc','fk_multicurrency','multicurrency_code','multicurrency_tx',
+                'retained_warranty' ,'retained_warranty_date_limit', 'retained_warranty_fk_cond_reglement', 'specimen', 'situation_cycle_ref', 'situation_counter', 'situation_final',
+                'trackid','user_creat','user_valid'
+            )
+        );
+        $this->assertEquals($arraywithdiff, array());    // Actual, Expected
 
-		return $localobject;
-	}
+        return $localobject;
+    }
 
-	/**
-	 * testFactureOther
-	 *
-	 * @param   Facture $localobject Invoice
-	 * @return  int
-	 *
-	 * @depends testFactureValid
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testFactureOther($localobject)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testFactureOther
+     *
+     * @param   Facture $localobject Invoice
+     * @return  int
+     *
+     * @depends testFactureValid
+     * The depends says test is run only if previous is ok
+     */
+    public function testFactureOther($localobject)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		/*$result=$localobject->setstatus(0);
-		print __METHOD__." id=".$localobject->id." result=".$result."\n";
-		$this->assertLessThan($result, 0);
-		*/
+        /*$result=$localobject->setstatus(0);
+        print __METHOD__." id=".$localobject->id." result=".$result."\n";
+        $this->assertLessThan($result, 0);
+        */
 
-		$localobject->info($localobject->id);
-		print __METHOD__." localobject->date_creation=".$localobject->date_creation."\n";
-		$this->assertNotEquals($localobject->date_creation, '');
+        $localobject->info($localobject->id);
+        print __METHOD__ . " localobject->date_creation=" . $localobject->date_creation . "\n";
+        $this->assertNotEquals($localobject->date_creation, '');
 
-		$result = $localobject->demande_prelevement($user);
-		print __METHOD__." result=".$result."\n";
-		$this->assertLessThan($result, 0);
+        $result = $localobject->demande_prelevement($user);
+        print __METHOD__ . " result=" . $result . "\n";
+        $this->assertLessThan($result, 0);
 
-		return $localobject->id;
-	}
+        return $localobject->id;
+    }
 
-	/**
-	 * testFactureDelete
-	 *
-	 * @param   int $id     Id of invoice
-	 * @return  int
-	 *
-	 * @depends testFactureOther
-	 * The depends says test is run only if previous is ok
-	 */
-	public function testFactureDelete($id)
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testFactureDelete
+     *
+     * @param   int $id     Id of invoice
+     * @return  int
+     *
+     * @depends testFactureOther
+     * The depends says test is run only if previous is ok
+     */
+    public function testFactureDelete($id)
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		// Force default setup
-		unset($conf->global->INVOICE_CAN_ALWAYS_BE_REMOVED);
-		unset($conf->global->INVOICE_CAN_NEVER_BE_REMOVED);
+        // Force default setup
+        unset($conf->global->INVOICE_CAN_ALWAYS_BE_REMOVED);
+        unset($conf->global->INVOICE_CAN_NEVER_BE_REMOVED);
 
-		$localobject = new Facture($db);
-		$result = $localobject->fetch($id);
+        $localobject = new Facture($db);
+        $result = $localobject->fetch($id);
 
-		// Create another invoice and validate it after $localobject
-		$localobject2 = new Facture($db);
-		$result = $localobject2->initAsSpecimen();
-		$result = $localobject2->create($user);
-		$result = $localobject2->validate($user);
-		print 'Invoice $localobject ref = '.$localobject->ref."\n";
-		print 'Invoice $localobject2 created with ref = '.$localobject2->ref."\n";
+        // Create another invoice and validate it after $localobject
+        $localobject2 = new Facture($db);
+        $result = $localobject2->initAsSpecimen();
+        $result = $localobject2->create($user);
+        $result = $localobject2->validate($user);
+        print 'Invoice $localobject ref = ' . $localobject->ref . "\n";
+        print 'Invoice $localobject2 created with ref = ' . $localobject2->ref . "\n";
 
-		$conf->global->INVOICE_CAN_NEVER_BE_REMOVED = 1;
+        $conf->global->INVOICE_CAN_NEVER_BE_REMOVED = 1;
 
-		$result = $localobject2->delete($user);					// Deletion is KO, option INVOICE_CAN_NEVER_BE_REMOVED is on
-		print __METHOD__." id=".$localobject2->id." ref=".$localobject2->ref." result=".$result."\n";
-		$this->assertEquals(0, $result, 'Deletion should fail, option INVOICE_CAN_NEVER_BE_REMOVED is on');
+        $result = $localobject2->delete($user);                 // Deletion is KO, option INVOICE_CAN_NEVER_BE_REMOVED is on
+        print __METHOD__ . " id=" . $localobject2->id . " ref=" . $localobject2->ref . " result=" . $result . "\n";
+        $this->assertEquals(0, $result, 'Deletion should fail, option INVOICE_CAN_NEVER_BE_REMOVED is on');
 
-		unset($conf->global->INVOICE_CAN_NEVER_BE_REMOVED);
+        unset($conf->global->INVOICE_CAN_NEVER_BE_REMOVED);
 
-		$result = $localobject->delete($user);					// Deletion is KO, it is not last invoice
-		print __METHOD__." id=".$localobject->id." ref=".$localobject->ref." result=".$result."\n";
-		$this->assertEquals(0, $result, 'Deletion should fail, it is not last invoice');
+        $result = $localobject->delete($user);                  // Deletion is KO, it is not last invoice
+        print __METHOD__ . " id=" . $localobject->id . " ref=" . $localobject->ref . " result=" . $result . "\n";
+        $this->assertEquals(0, $result, 'Deletion should fail, it is not last invoice');
 
-		$result = $localobject2->delete($user);					// Deletion is OK, it is last invoice
-		print __METHOD__." id=".$localobject2->id." ref=".$localobject2->ref." result=".$result."\n";
-		$this->assertGreaterThan(0, $result, 'Deletion should work, it is last invoice');
+        $result = $localobject2->delete($user);                 // Deletion is OK, it is last invoice
+        print __METHOD__ . " id=" . $localobject2->id . " ref=" . $localobject2->ref . " result=" . $result . "\n";
+        $this->assertGreaterThan(0, $result, 'Deletion should work, it is last invoice');
 
-		$result = $localobject->delete($user);					// Deletion is KO, it is not last invoice
-		print __METHOD__." id=".$localobject->id." ref=".$localobject->ref." result=".$result."\n";
-		$this->assertGreaterThan(0, $result, 'Deletion should work, it is again last invoice');
+        $result = $localobject->delete($user);                  // Deletion is KO, it is not last invoice
+        print __METHOD__ . " id=" . $localobject->id . " ref=" . $localobject->ref . " result=" . $result . "\n";
+        $this->assertGreaterThan(0, $result, 'Deletion should work, it is again last invoice');
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * Edit an object to test updates
-	 *
-	 * @param   Facture $localobject        Object Facture
-	 * @return  void
-	 */
-	public function changeProperties(&$localobject)
-	{
-		$localobject->note_private = 'New note';
-		//$localobject->note='New note after update';
-	}
+    /**
+     * Edit an object to test updates
+     *
+     * @param   Facture $localobject        Object Facture
+     * @return  void
+     */
+    public function changeProperties(&$localobject)
+    {
+        $localobject->note_private = 'New note';
+        //$localobject->note='New note after update';
+    }
 
-	/**
-	 * Compare all public properties values of 2 objects
-	 *
-	 * @param   Object $oA                      Object operand 1
-	 * @param   Object $oB                      Object operand 2
-	 * @param   boolean $ignoretype             False will not report diff if type of value differs
-	 * @param   array $fieldstoignorearray      Array of fields to ignore in diff
-	 * @return  array                           Array with differences
-	 */
-	public function objCompare($oA, $oB, $ignoretype = true, $fieldstoignorearray = array('id'))
-	{
-		$retAr = array();
+    /**
+     * Compare all public properties values of 2 objects
+     *
+     * @param   Object $oA                      Object operand 1
+     * @param   Object $oB                      Object operand 2
+     * @param   boolean $ignoretype             False will not report diff if type of value differs
+     * @param   array $fieldstoignorearray      Array of fields to ignore in diff
+     * @return  array                           Array with differences
+     */
+    public function objCompare($oA, $oB, $ignoretype = true, $fieldstoignorearray = array('id'))
+    {
+        $retAr = array();
 
-		if (get_class($oA) !== get_class($oB)) {
-			$retAr[] = "Supplied objects are not of same class.";
-		} else {
-			$oVarsA = get_object_vars($oA);
-			$oVarsB = get_object_vars($oB);
-			$aKeys = array_keys($oVarsA);
-			foreach ($aKeys as $sKey) {
-				if (in_array($sKey, $fieldstoignorearray)) {
-					continue;
-				}
-				if (! $ignoretype && ($oVarsA[$sKey] !== $oVarsB[$sKey])) {
-					$retAr[] = $sKey.' : '.(is_object($oVarsA[$sKey]) ? get_class($oVarsA[$sKey]) : $oVarsA[$sKey]).' <> '.(is_object($oVarsB[$sKey]) ? get_class($oVarsB[$sKey]) : $oVarsB[$sKey]);
-				}
-				if ($ignoretype && ($oVarsA[$sKey] != $oVarsB[$sKey])) {
-					$retAr[] = $sKey.' : '.(is_object($oVarsA[$sKey]) ? get_class($oVarsA[$sKey]) : $oVarsA[$sKey]).' <> '.(is_object($oVarsB[$sKey]) ? get_class($oVarsB[$sKey]) : $oVarsB[$sKey]);
-				}
-			}
-		}
-		return $retAr;
-	}
+        if (get_class($oA) !== get_class($oB)) {
+            $retAr[] = "Supplied objects are not of same class.";
+        } else {
+            $oVarsA = get_object_vars($oA);
+            $oVarsB = get_object_vars($oB);
+            $aKeys = array_keys($oVarsA);
+            foreach ($aKeys as $sKey) {
+                if (in_array($sKey, $fieldstoignorearray)) {
+                    continue;
+                }
+                if (! $ignoretype && ($oVarsA[$sKey] !== $oVarsB[$sKey])) {
+                    $retAr[] = $sKey . ' : ' . (is_object($oVarsA[$sKey]) ? get_class($oVarsA[$sKey]) : $oVarsA[$sKey]) . ' <> ' . (is_object($oVarsB[$sKey]) ? get_class($oVarsB[$sKey]) : $oVarsB[$sKey]);
+                }
+                if ($ignoretype && ($oVarsA[$sKey] != $oVarsB[$sKey])) {
+                    $retAr[] = $sKey . ' : ' . (is_object($oVarsA[$sKey]) ? get_class($oVarsA[$sKey]) : $oVarsA[$sKey]) . ' <> ' . (is_object($oVarsB[$sKey]) ? get_class($oVarsB[$sKey]) : $oVarsB[$sKey]);
+                }
+            }
+        }
+        return $retAr;
+    }
 }

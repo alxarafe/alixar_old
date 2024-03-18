@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -27,12 +28,12 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/don/class/don.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/donation.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 if (isModEnabled('project')) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 // Load translation files required by the page
@@ -47,13 +48,13 @@ $hookmanager->initHooks(array('donnote'));
 
 $object = new Don($db);
 if ($id > 0 || $ref) {
-	$object->fetch($id, $ref);
+    $object->fetch($id, $ref);
 }
 
 // Security check
 $socid = 0;
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'don', $object->id, '');
 
@@ -66,15 +67,15 @@ $permissionnote = $user->hasRight('don', 'creer'); // Used by the include of act
 
 $reshook = $hookmanager->executeHooks('doActions', array(), $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 if ($action == 'classin' && $user->hasRight('don', 'creer')) {
-	$object->fetch($id);
-	$object->setProject($projectid);
+    $object->fetch($id);
+    $object->setProject($projectid);
 }
 
 
@@ -82,7 +83,7 @@ if ($action == 'classin' && $user->hasRight('don', 'creer')) {
  * View
  */
 
-$title = $langs->trans('Donation')." - ".$langs->trans('Notes');
+$title = $langs->trans('Donation') . " - " . $langs->trans('Notes');
 
 $help_url = 'EN:Module_Donations|FR:Module_Dons|ES:M&oacute;dulo_Donaciones|DE:Modul_Spenden';
 
@@ -90,63 +91,63 @@ llxHeader('', $title, $help_url, '', 0, 0, '', '', '', 'mod-donation page-card_n
 
 $form = new Form($db);
 if (isModEnabled('project')) {
-	$formproject = new FormProjets($db);
+    $formproject = new FormProjets($db);
 }
 
 if ($id > 0 || !empty($ref)) {
-	$object = new Don($db);
-	$object->fetch($id, $ref);
+    $object = new Don($db);
+    $object->fetch($id, $ref);
 
-	$head = donation_prepare_head($object);
+    $head = donation_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'note', $langs->trans("Donation"), -1, 'donation');
+    print dol_get_fiche_head($head, 'note', $langs->trans("Donation"), -1, 'donation');
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/don/list.php'.(!empty($socid) ? '?socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/don/list.php' . (!empty($socid) ? '?socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	// Project
-	if (isModEnabled('project')) {
-		$langs->load("projects");
-		$morehtmlref .= $langs->trans('Project').' ';
-		if ($user->hasRight('don', 'creer')) {
-			if ($action != 'classify') {
-				// $morehtmlref.='<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
-			}
-			if ($action == 'classify') {
-				//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-				$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
-				$morehtmlref .= '<input type="hidden" name="action" value="classin">';
-				$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
-				$morehtmlref .= $formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
-				$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
-				$morehtmlref .= '</form>';
-			} else {
-				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
-			}
-		} else {
-			if (!empty($object->fk_project)) {
-				$proj = new Project($db);
-				$proj->fetch($object->fk_project);
-				$morehtmlref .= ' : '.$proj->getNomUrl(1);
-				if ($proj->title) {
-					$morehtmlref .= ' - '.$proj->title;
-				}
-			} else {
-				$morehtmlref .= '';
-			}
-		}
-	}
-	$morehtmlref .= '</div>';
+    $morehtmlref = '<div class="refidno">';
+    // Project
+    if (isModEnabled('project')) {
+        $langs->load("projects");
+        $morehtmlref .= $langs->trans('Project') . ' ';
+        if ($user->hasRight('don', 'creer')) {
+            if ($action != 'classify') {
+                // $morehtmlref.='<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
+            }
+            if ($action == 'classify') {
+                //$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+                $morehtmlref .= '<form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
+                $morehtmlref .= '<input type="hidden" name="action" value="classin">';
+                $morehtmlref .= '<input type="hidden" name="token" value="' . newToken() . '">';
+                $morehtmlref .= $formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
+                $morehtmlref .= '<input type="submit" class="button valignmiddle" value="' . $langs->trans("Modify") . '">';
+                $morehtmlref .= '</form>';
+            } else {
+                $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+            }
+        } else {
+            if (!empty($object->fk_project)) {
+                $proj = new Project($db);
+                $proj->fetch($object->fk_project);
+                $morehtmlref .= ' : ' . $proj->getNomUrl(1);
+                if ($proj->title) {
+                    $morehtmlref .= ' - ' . $proj->title;
+                }
+            } else {
+                $morehtmlref .= '';
+            }
+        }
+    }
+    $morehtmlref .= '</div>';
 
-	dol_banner_tab($object, 'rowid', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+    dol_banner_tab($object, 'rowid', $linkback, 1, 'rowid', 'ref', $morehtmlref);
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 }
 
 llxFooter();

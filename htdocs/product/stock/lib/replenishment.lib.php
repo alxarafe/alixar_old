@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2013   Cédric Salvador    <csalvador@gpcsolutions.fr>
  *
@@ -22,148 +23,148 @@
  *  \brief      Contains functions used in replenish.php and replenishorders.php
  */
 
-require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.commande.class.php';
+require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 
 /**
  * Check if there is still some dispatching of stock to do.
  *
- * @param 	int		$order_id		Id of order to check
- * @return	boolean					True = There is some dispatching to do, False = All dispatching is done (may be we receive more) or is not required
+ * @param   int     $order_id       Id of order to check
+ * @return  boolean                 True = There is some dispatching to do, False = All dispatching is done (may be we receive more) or is not required
  */
 function dolDispatchToDo($order_id)
 {
-	global $db, $conf;
+    global $db, $conf;
 
-	$dispatched = array();
-	$ordered = array();
+    $dispatched = array();
+    $ordered = array();
 
-	// Count nb of quantity dispatched per product
-	$sql = 'SELECT fk_product, SUM(qty) as qtydispatched FROM '.MAIN_DB_PREFIX.'commande_fournisseur_dispatch';
-	$sql .= ' WHERE fk_commande = '.((int) $order_id);
-	$sql .= ' GROUP BY fk_product';
-	$sql .= ' ORDER by fk_product';
-	$resql = $db->query($sql);
-	if ($resql && $db->num_rows($resql)) {
-		while ($obj = $db->fetch_object($resql)) {
-			$dispatched[$obj->fk_product] = $obj->qtydispatched;
-		}
-	}
+    // Count nb of quantity dispatched per product
+    $sql = 'SELECT fk_product, SUM(qty) as qtydispatched FROM ' . MAIN_DB_PREFIX . 'commande_fournisseur_dispatch';
+    $sql .= ' WHERE fk_commande = ' . ((int) $order_id);
+    $sql .= ' GROUP BY fk_product';
+    $sql .= ' ORDER by fk_product';
+    $resql = $db->query($sql);
+    if ($resql && $db->num_rows($resql)) {
+        while ($obj = $db->fetch_object($resql)) {
+            $dispatched[$obj->fk_product] = $obj->qtydispatched;
+        }
+    }
 
-	// Count nb of quantity to dispatch per product
-	$sql = 'SELECT fk_product, SUM(qty) as qtyordered FROM '.MAIN_DB_PREFIX.'commande_fournisseurdet';
-	$sql .= ' WHERE fk_commande = '.((int) $order_id);
-	$sql .= ' AND fk_product > 0';
-	if (!getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
-		$sql .= ' AND product_type = 0';
-	}
-	$sql .= ' GROUP BY fk_product';
-	$sql .= ' ORDER by fk_product';
-	$resql = $db->query($sql);
-	if ($resql && $db->num_rows($resql)) {
-		while ($obj = $db->fetch_object($resql)) {
-			$ordered[$obj->fk_product] = $obj->qtyordered;
-		}
-	}
+    // Count nb of quantity to dispatch per product
+    $sql = 'SELECT fk_product, SUM(qty) as qtyordered FROM ' . MAIN_DB_PREFIX . 'commande_fournisseurdet';
+    $sql .= ' WHERE fk_commande = ' . ((int) $order_id);
+    $sql .= ' AND fk_product > 0';
+    if (!getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
+        $sql .= ' AND product_type = 0';
+    }
+    $sql .= ' GROUP BY fk_product';
+    $sql .= ' ORDER by fk_product';
+    $resql = $db->query($sql);
+    if ($resql && $db->num_rows($resql)) {
+        while ($obj = $db->fetch_object($resql)) {
+            $ordered[$obj->fk_product] = $obj->qtyordered;
+        }
+    }
 
-	$todispatch = 0;
-	foreach ($ordered as $key => $val) {
-		if ((empty($ordered[$key]) ? 0 : $ordered[$key]) > (empty($dispatched[$key]) ? 0 : $dispatched[$key])) {
-			$todispatch++;
-		}
-	}
+    $todispatch = 0;
+    foreach ($ordered as $key => $val) {
+        if ((empty($ordered[$key]) ? 0 : $ordered[$key]) > (empty($dispatched[$key]) ? 0 : $dispatched[$key])) {
+            $todispatch++;
+        }
+    }
 
-	return ($todispatch ? true : false);
-	//return true;
+    return ($todispatch ? true : false);
+    //return true;
 }
 
 /**
  * dispatchedOrders
  *
- * @return string		Array of id of orders with all dispatching already done or not required
+ * @return string       Array of id of orders with all dispatching already done or not required
  */
 function dispatchedOrders()
 {
-	global $db;
+    global $db;
 
-	$sql = 'SELECT rowid FROM '.MAIN_DB_PREFIX.'commande_fournisseur';
-	$resql = $db->query($sql);
-	$resarray = array();
-	if ($resql && $db->num_rows($resql) > 0) {
-		while ($obj = $db->fetch_object($resql)) {
-			if (!dolDispatchToDo($obj->rowid)) {
-				$resarray[] = $obj->rowid;
-			}
-		}
-	}
+    $sql = 'SELECT rowid FROM ' . MAIN_DB_PREFIX . 'commande_fournisseur';
+    $resql = $db->query($sql);
+    $resarray = array();
+    if ($resql && $db->num_rows($resql) > 0) {
+        while ($obj = $db->fetch_object($resql)) {
+            if (!dolDispatchToDo($obj->rowid)) {
+                $resarray[] = $obj->rowid;
+            }
+        }
+    }
 
-	if (count($resarray)) {
-		$res = '('.implode(',', $resarray).')';
-	} else {
-		//hack to make sure ordered SQL request won't syntax error
-		$res = '(0)';
-	}
-	return $res;
+    if (count($resarray)) {
+        $res = '(' . implode(',', $resarray) . ')';
+    } else {
+        //hack to make sure ordered SQL request won't syntax error
+        $res = '(0)';
+    }
+    return $res;
 }
 
 /**
  * ordered
  *
- * @param 	int		$product_id		Product id
- * @return	string|null
+ * @param   int     $product_id     Product id
+ * @return  string|null
  */
 function ordered($product_id)
 {
-	global $db, $conf;
+    global $db, $conf;
 
-	$sql = 'SELECT DISTINCT cfd.fk_product, SUM(cfd.qty) as qty FROM';
-	$sql .= ' '.MAIN_DB_PREFIX.'commande_fournisseurdet as cfd ';
-	$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'commande_fournisseur as cf';
-	$sql .= ' ON cfd.fk_commande = cf.rowid WHERE';
-	if ($conf->global->STOCK_CALCULATE_ON_SUPPLIER_VALIDATE_ORDER) {
-		$sql .= ' cf.fk_statut < 3';
-	} elseif ($conf->global->STOCK_CALCULATE_ON_SUPPLIER_DISPATCH_ORDER) {
-		$sql .= ' cf.fk_statut < 6 AND cf.rowid NOT IN '.dispatchedOrders();
-	} else {
-		$sql .= ' cf.fk_statut < 5';
-	}
-	$sql .= ' AND cfd.fk_product = '.((int) $product_id);
-	$sql .= ' GROUP BY cfd.fk_product';
+    $sql = 'SELECT DISTINCT cfd.fk_product, SUM(cfd.qty) as qty FROM';
+    $sql .= ' ' . MAIN_DB_PREFIX . 'commande_fournisseurdet as cfd ';
+    $sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'commande_fournisseur as cf';
+    $sql .= ' ON cfd.fk_commande = cf.rowid WHERE';
+    if ($conf->global->STOCK_CALCULATE_ON_SUPPLIER_VALIDATE_ORDER) {
+        $sql .= ' cf.fk_statut < 3';
+    } elseif ($conf->global->STOCK_CALCULATE_ON_SUPPLIER_DISPATCH_ORDER) {
+        $sql .= ' cf.fk_statut < 6 AND cf.rowid NOT IN ' . dispatchedOrders();
+    } else {
+        $sql .= ' cf.fk_statut < 5';
+    }
+    $sql .= ' AND cfd.fk_product = ' . ((int) $product_id);
+    $sql .= ' GROUP BY cfd.fk_product';
 
-	$resql = $db->query($sql);
-	if ($resql) {
-		$exists = $db->num_rows($resql);
-		if ($exists) {
-			$obj = $db->fetch_array($resql);
-			return $obj['qty']; //. ' ' . img_picto('','tick');
-		} else {
-			return null; //img_picto('', 'stcomm-1');
-		}
-	} else {
-		dol_print_error($db);
+    $resql = $db->query($sql);
+    if ($resql) {
+        $exists = $db->num_rows($resql);
+        if ($exists) {
+            $obj = $db->fetch_array($resql);
+            return $obj['qty']; //. ' ' . img_picto('','tick');
+        } else {
+            return null; //img_picto('', 'stcomm-1');
+        }
+    } else {
+        dol_print_error($db);
 
-		return 'Error '.$db->lasterror();
-	}
+        return 'Error ' . $db->lasterror();
+    }
 }
 
 /**
  * getProducts
  *
- * @param 	int		$order_id		Order id
- * @return	array|integer[]
+ * @param   int     $order_id       Order id
+ * @return  array|integer[]
  */
 function getProducts($order_id)
 {
-	global $db;
+    global $db;
 
-	$order = new CommandeFournisseur($db);
-	$f = $order->fetch($order_id);
-	$products = array();
-	if ($f) {
-		foreach ($order->lines as $line) {
-			if (!in_array($line->fk_product, $products)) {
-				$products[] = $line->fk_product;
-			}
-		}
-	}
-	return $products;
+    $order = new CommandeFournisseur($db);
+    $f = $order->fetch($order_id);
+    $products = array();
+    if ($f) {
+        foreach ($order->lines as $line) {
+            if (!in_array($line->fk_product, $products)) {
+                $products[] = $line->fk_product;
+            }
+        }
+    }
+    return $products;
 }

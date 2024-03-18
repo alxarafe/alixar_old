@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2017 ATM Consulting       <contact@atm-consulting.fr>
  *
@@ -22,24 +23,23 @@
  *      \brief      authority
  */
 
-
 // This script is called with a POST method.
 // Directory to scan (full path) is inside POST['dir'].
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1); // Disables token renewal
+    define('NOTOKENRENEWAL', 1); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 
 $res = require '../../master.inc.php';
 
-require_once DOL_DOCUMENT_ROOT.'/blockedlog/class/blockedlog.class.php';
-require_once DOL_DOCUMENT_ROOT.'/blockedlog/class/authority.class.php';
+require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/blockedlog.class.php';
+require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/authority.class.php';
 
 $user = new User($db);
 $user->fetch(1); //TODO conf user authority
@@ -58,22 +58,22 @@ $newblock = GETPOST('b');
 $hash = GETPOST('h');
 
 if ($auth->fetch(0, $signature) <= 0) {
-	$auth->signature = $signature;
-	$auth->create($user);
+    $auth->signature = $signature;
+    $auth->create($user);
 }
 
 
 if (!empty($hash)) {
-	echo $auth->checkBlockchain($hash) ? 'hashisok' : 'hashisjunk';
+    echo $auth->checkBlockchain($hash) ? 'hashisok' : 'hashisjunk';
 } elseif (!empty($newblock)) {
-	if ($auth->checkBlock($newblock)) {
-		$auth->addBlock($newblock);
-		$auth->update($user);
+    if ($auth->checkBlock($newblock)) {
+        $auth->addBlock($newblock);
+        $auth->update($user);
 
-		echo 'blockadded';
-	} else {
-		echo 'blockalreadyadded';
-	}
+        echo 'blockadded';
+    } else {
+        echo 'blockalreadyadded';
+    }
 } else {
-	echo 'idontunderstandwhatihavetodo';
+    echo 'idontunderstandwhatihavetodo';
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2012 Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2020 Laurent Destailleur <eldy@users.sourceforge.net>
  *
@@ -22,13 +23,13 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 // Load Dolibarr environment
@@ -53,16 +54,16 @@ top_httphead();
 
 // Load original field value
 if (!empty($id) && !empty($action) && !empty($htmlname)) {
-	$form = new Form($db);
+    $form = new Form($db);
 
-	$return = array();
-	if (empty($showempty)) {
-		$showempty = 0;
-	}
+    $return = array();
+    if (empty($showempty)) {
+        $showempty = 0;
+    }
 
-	$return['value']	= $form->selectcontacts($id, '', $htmlname, $showempty, '', '', 0, '', true);
-	$return['num'] = $form->num;
-	$return['error']	= $form->error;
+    $return['value']    = $form->selectcontacts($id, '', $htmlname, $showempty, '', '', 0, '', true);
+    $return['num'] = $form->num;
+    $return['error']    = $form->error;
 
-	echo json_encode($return);
+    echo json_encode($return);
 }

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015 		Alexandre Spangaro <aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2015       Alexandre Spangaro <aspangaro@open-dsi.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +24,8 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/hrm.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/hrm.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('admin', 'hrm'));
@@ -34,7 +35,7 @@ $action = GETPOST('action', 'aZ09');
 
 // Other parameters HRM_*
 $list = array(
-//		'HRM_EMAIL_EXTERNAL_SERVICE'   // To prevent your public accountant for example
+//      'HRM_EMAIL_EXTERNAL_SERVICE'   // To prevent your public accountant for example
 );
 
 // Permissions
@@ -47,10 +48,10 @@ $permissiontoadd  = $user->admin;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, '', '', 'fk_soc', 'rowid', 0);
 if (!isModEnabled('hrm')) {
-	accessforbidden();
+    accessforbidden();
 }
 if (empty($permissiontoread)) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -59,21 +60,21 @@ if (empty($permissiontoread)) {
  */
 
 if ($action == 'update') {
-	$error = 0;
+    $error = 0;
 
-	foreach ($list as $constname) {
-		$constvalue = GETPOST($constname, 'alpha');
+    foreach ($list as $constname) {
+        $constvalue = GETPOST($constname, 'alpha');
 
-		if (!dolibarr_set_const($db, $constname, $constvalue, 'chaine', 0, '', $conf->entity)) {
-			$error++;
-		}
-	}
+        if (!dolibarr_set_const($db, $constname, $constvalue, 'chaine', 0, '', $conf->entity)) {
+            $error++;
+        }
+    }
 
-	if (!$error) {
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		setEventMessages($langs->trans("Error"), null, 'errors');
-	}
+    if (!$error) {
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    } else {
+        setEventMessages($langs->trans("Error"), null, 'errors');
+    }
 }
 
 
@@ -91,41 +92,41 @@ $form = new Form($db);
 dol_htmloutput_mesg($mesg);
 
 // Subheader
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("HRMSetup"), $linkback);
 
 // Configuration header
 $head = hrm_admin_prepare_head();
 
-print '<form action="'.$_SERVER['PHP_SELF'].'" method="post">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form action="' . $_SERVER['PHP_SELF'] . '" method="post">';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 print '<input type="hidden" name="action" value="update">';
 
 print dol_get_fiche_head($head, 'parameters', $langs->trans("HRM"), -1, "user");
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td colspan="3">'.$langs->trans('Parameters').'</td>';
+print '<td colspan="3">' . $langs->trans('Parameters') . '</td>';
 print "</tr>\n";
 
 foreach ($list as $key) {
-	print '<tr class="oddeven value">';
+    print '<tr class="oddeven value">';
 
-	// Param
-	$label = $langs->trans($key);
-	print '<td width="50%"><label for="'.$key.'">'.$label.'</label></td>';
+    // Param
+    $label = $langs->trans($key);
+    print '<td width="50%"><label for="' . $key . '">' . $label . '</label></td>';
 
-	// Value
-	print '<td>';
-	print '<input type="text" size="20" id="'.$key.'" name="'.$key.'" value="'.getDolGlobalString($key).'">';
-	print '</td></tr>';
+    // Value
+    print '<td>';
+    print '<input type="text" size="20" id="' . $key . '" name="' . $key . '" value="' . getDolGlobalString($key) . '">';
+    print '</td></tr>';
 }
 
 print "</table>\n";
 
 print dol_get_fiche_end();
 
-print '<div class="center"><input type="submit" class="button button-edit" name="button" value="'.$langs->trans('Modify').'"></div>';
+print '<div class="center"><input type="submit" class="button button-edit" name="button" value="' . $langs->trans('Modify') . '"></div>';
 
 print '</form>';
 

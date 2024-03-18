@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
@@ -47,16 +48,16 @@ $backtopage = GETPOST('backtopage', 'alpha');
 // Initialize technical objects
 $object = new Evaluation($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->hrm->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->hrm->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('evaluationnote', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->hrm->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity]."/".$object->id;
+    $upload_dir = $conf->hrm->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity] . "/" . $object->id;
 }
 
 // Permissions
@@ -78,10 +79,10 @@ $permissiontoread = $user->hasRight('hrm', 'evaluation', 'read');  // Used by th
 
 $reshook = $hookmanager->executeHooks('doActions', array(), $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -96,40 +97,40 @@ $help_url = '';
 llxHeader('', $langs->trans('Evaluation'), $help_url);
 
 if ($id > 0 || !empty($ref)) {
-	$object->fetch_thirdparty();
+    $object->fetch_thirdparty();
 
-	$head = evaluationPrepareHead($object);
+    $head = evaluationPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'note', $langs->trans('Notes'), -1, $object->picto);
+    print dol_get_fiche_head($head, 'note', $langs->trans('Notes'), -1, $object->picto);
 
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/hrm/evaluation_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . dol_buildpath('/hrm/evaluation_list.php', 1) . '?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	$morehtmlref .= $langs->trans('Label').' : '.$object->label;
-	$u_position = new User(($db));
-	$u_position->fetch($object->fk_user);
-	$morehtmlref .= '<br>'.$u_position->getNomUrl(1);
-	$job = new Job($db);
-	$job->fetch($object->fk_job);
-	$morehtmlref .= '<br>'.$langs->trans('JobProfile').' : '.$job->getNomUrl(1);
-	$morehtmlref .= '</div>';
-
-
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    $morehtmlref = '<div class="refidno">';
+    $morehtmlref .= $langs->trans('Label') . ' : ' . $object->label;
+    $u_position = new User(($db));
+    $u_position->fetch($object->fk_user);
+    $morehtmlref .= '<br>' . $u_position->getNomUrl(1);
+    $job = new Job($db);
+    $job->fetch($object->fk_job);
+    $morehtmlref .= '<br>' . $langs->trans('JobProfile') . ' : ' . $job->getNomUrl(1);
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '</div>';
 
-	print dol_get_fiche_end();
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 }
 
 // End of page

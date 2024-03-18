@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2015 Regis Houssin        <regis.houssin@inodbox.com>
@@ -25,8 +26,8 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/user/class/user.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
 // Get parameters
 $id = GETPOSTINT('id');
@@ -34,7 +35,7 @@ $action = GETPOST('action', 'aZ09');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'usernote'; // To manage different context of search
 
 if (!isset($id) || empty($id)) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Load translation files required by page
@@ -46,7 +47,7 @@ $object->getrights();
 
 // If user is not user read and no permission to read other users, we stop
 if (($object->id != $user->id) && (!$user->hasRight("user", "user", "read"))) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Permissions
@@ -55,7 +56,7 @@ $permissionnote = $user->hasRight("user", "self", "write"); // Used by the inclu
 // Security check
 $socid = 0;
 if ($user->socid > 0) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $feature2 = (($socid && $user->hasRight("user", "self", "write")) ? '' : 'user');
 
@@ -68,13 +69,13 @@ $hookmanager->initHooks(array('usercard', 'usernote', 'globalcard'));
 /*
  * Actions
  */
-$parameters = array('id'=>$socid);
+$parameters = array('id' => $socid);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -87,69 +88,69 @@ llxHeader();
 $form = new Form($db);
 
 if ($id) {
-	$head = user_prepare_head($object);
+    $head = user_prepare_head($object);
 
-	$title = $langs->trans("User");
-	print dol_get_fiche_head($head, 'note', $title, -1, 'user');
+    $title = $langs->trans("User");
+    print dol_get_fiche_head($head, 'note', $title, -1, 'user');
 
-	$linkback = '';
+    $linkback = '';
 
-	if ($user->hasRight("user", "user", "read") || $user->admin) {
-		$linkback = '<a href="'.DOL_URL_ROOT.'/user/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
-	}
+    if ($user->hasRight("user", "user", "read") || $user->admin) {
+        $linkback = '<a href="' . DOL_URL_ROOT . '/user/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+    }
 
-	$morehtmlref = '<a href="'.DOL_URL_ROOT.'/user/vcard.php?id='.$object->id.'&output=file&file='.urlencode(dol_sanitizeFileName($object->getFullName($langs).'.vcf')).'" class="refid" rel="noopener">';
-	$morehtmlref .= img_picto($langs->trans("Download").' '.$langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
-	$morehtmlref .= '</a>';
+    $morehtmlref = '<a href="' . DOL_URL_ROOT . '/user/vcard.php?id=' . $object->id . '&output=file&file=' . urlencode(dol_sanitizeFileName($object->getFullName($langs) . '.vcf')) . '" class="refid" rel="noopener">';
+    $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+    $morehtmlref .= '</a>';
 
-	$urltovirtualcard = '/user/virtualcard.php?id='.((int) $object->id);
-	$morehtmlref .= dolButtonToOpenUrlInDialogPopup('publicvirtualcard', $langs->transnoentitiesnoconv("PublicVirtualCardUrl").' - '.$object->getFullName($langs), img_picto($langs->trans("PublicVirtualCardUrl"), 'card', 'class="valignmiddle marginleftonly paddingrightonly"'), $urltovirtualcard, '', 'nohover');
+    $urltovirtualcard = '/user/virtualcard.php?id=' . ((int) $object->id);
+    $morehtmlref .= dolButtonToOpenUrlInDialogPopup('publicvirtualcard', $langs->transnoentitiesnoconv("PublicVirtualCardUrl") . ' - ' . $object->getFullName($langs), img_picto($langs->trans("PublicVirtualCardUrl"), 'card', 'class="valignmiddle marginleftonly paddingrightonly"'), $urltovirtualcard, '', 'nohover');
 
-	dol_banner_tab($object, 'id', $linkback, $user->hasRight("user", "user", "read") || $user->admin, 'rowid', 'ref', $morehtmlref);
+    dol_banner_tab($object, 'id', $linkback, $user->hasRight("user", "user", "read") || $user->admin, 'rowid', 'ref', $morehtmlref);
 
-	print '<div class="underbanner clearboth"></div>';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
-	print '<input type="hidden" name="token" value="'.newToken().'">';
+    print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
+    print '<input type="hidden" name="token" value="' . newToken() . '">';
 
-	print '<div class="fichecenter">';
-	print '<table class="border centpercent tableforfield">';
+    print '<div class="fichecenter">';
+    print '<table class="border centpercent tableforfield">';
 
-	// Login
-	print '<tr><td class="titlefield">'.$langs->trans("Login").'</td>';
-	if (!empty($object->ldap_sid) && $object->statut == 0) {
-		print '<td class="error">';
-		print $langs->trans("LoginAccountDisableInDolibarr");
-		print '</td>';
-	} else {
-		print '<td>';
-		$addadmin = '';
-		if (property_exists($object, 'admin')) {
-			if (isModEnabled('multicompany') && !empty($object->admin) && empty($object->entity)) {
-				$addadmin .= img_picto($langs->trans("SuperAdministratorDesc"), "redstar", 'class="paddingleft"');
-			} elseif (!empty($object->admin)) {
-				$addadmin .= img_picto($langs->trans("AdministratorDesc"), "star", 'class="paddingleft"');
-			}
-		}
-		print showValueWithClipboardCPButton($object->login).$addadmin;
-		print '</td>';
-	}
-	print '</tr>';
+    // Login
+    print '<tr><td class="titlefield">' . $langs->trans("Login") . '</td>';
+    if (!empty($object->ldap_sid) && $object->statut == 0) {
+        print '<td class="error">';
+        print $langs->trans("LoginAccountDisableInDolibarr");
+        print '</td>';
+    } else {
+        print '<td>';
+        $addadmin = '';
+        if (property_exists($object, 'admin')) {
+            if (isModEnabled('multicompany') && !empty($object->admin) && empty($object->entity)) {
+                $addadmin .= img_picto($langs->trans("SuperAdministratorDesc"), "redstar", 'class="paddingleft"');
+            } elseif (!empty($object->admin)) {
+                $addadmin .= img_picto($langs->trans("AdministratorDesc"), "star", 'class="paddingleft"');
+            }
+        }
+        print showValueWithClipboardCPButton($object->login) . $addadmin;
+        print '</td>';
+    }
+    print '</tr>';
 
-	print "</table>";
+    print "</table>";
 
-	print '</div>';
+    print '</div>';
 
 
-	//print '<br>';
+    //print '<br>';
 
-	//print '<div class="underbanner clearboth"></div>';
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    //print '<div class="underbanner clearboth"></div>';
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 } else {
-	$langs->load("errors");
-	print $langs->trans("ErrorRecordNotFound");
+    $langs->load("errors");
+    print $langs->trans("ErrorRecordNotFound");
 }
 
 // End of page

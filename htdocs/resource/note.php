@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2005-2012	Regis Houssin	  <regis.houssin@inodbox.com>
+
+/* Copyright (C) 2005-2012  Regis Houssin     <regis.houssin@inodbox.com>
  * Copyright (C) 2011-2012	Juanjo Menent	  <jmenent@2byte.es>
  * Copyright (C) 2016       Laurent Destailleur <aldy@users.sourceforge.net>
  * Copyright (C) 2013       Florian Henry   <florian.henry@open-concept.pro>
@@ -20,15 +21,15 @@
  */
 
 /**
- *	\file       htdocs/resource/note.php
- *	\ingroup    fichinter
- *	\brief      Fiche d'information sur une resource
+ *  \file       htdocs/resource/note.php
+ *  \ingroup    fichinter
+ *  \brief      Fiche d'information sur une resource
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/resource/class/dolresource.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/resource.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/resource/class/dolresource.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/resource.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'interventions'));
@@ -39,7 +40,7 @@ $action = GETPOST('action', 'aZ09');
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
 $hookmanager->initHooks(array('resourcenote'));
@@ -47,7 +48,7 @@ $hookmanager->initHooks(array('resourcenote'));
 $object = new Dolresource($db);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
 
 $result = restrictedArea($user, 'resource', $object->id, 'resource');
 
@@ -61,10 +62,10 @@ $permissionnote = $user->hasRight('resource', 'write'); // Used by the include o
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -77,41 +78,41 @@ llxHeader();
 $form = new Form($db);
 
 if ($id > 0 || !empty($ref)) {
-	$head = resource_prepare_head($object);
-	print dol_get_fiche_head($head, 'note', $langs->trans('ResourceSingular'), -1, 'resource');
+    $head = resource_prepare_head($object);
+    print dol_get_fiche_head($head, 'note', $langs->trans('ResourceSingular'), -1, 'resource');
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/resource/list.php'.(!empty($socid) ? '?id='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
-
-
-	$morehtmlref = '<div class="refidno">';
-	$morehtmlref .= '</div>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/resource/list.php' . (!empty($socid) ? '?id=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    $morehtmlref = '<div class="refidno">';
+    $morehtmlref .= '</div>';
 
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
-	print '<table class="border tableforfield centpercent">';
 
-	// Resource type
-	print '<tr>';
-	print '<td class="titlefield">'.$langs->trans("ResourceType").'</td>';
-	print '<td>';
-	print $object->type_label;
-	print '</td>';
-	print '</tr>';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print "</table>";
+    print '<table class="border tableforfield centpercent">';
 
-	print '</div>';
+    // Resource type
+    print '<tr>';
+    print '<td class="titlefield">' . $langs->trans("ResourceType") . '</td>';
+    print '<td>';
+    print $object->type_label;
+    print '</td>';
+    print '</tr>';
 
-	$permission = $user->hasRight('resource', 'write');
-	$cssclass = 'titlefield';
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    print "</table>";
 
-	print dol_get_fiche_end();
+    print '</div>';
+
+    $permission = $user->hasRight('resource', 'write');
+    $cssclass = 'titlefield';
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+    print dol_get_fiche_end();
 }
 
 // End of page

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2006-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Frédéric France      <frederic.france@free.fr>
@@ -24,70 +25,70 @@
  *       \brief      File containing class for numbering model of Lot free
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/modules/product_batch/modules_product_batch.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/modules/product_batch/modules_product_batch.class.php';
 
 /**
- *	\class mod_lot_free
- *	\brief Class allowing lot_free management of batch numbers
+ *  \class mod_lot_free
+ *  \brief Class allowing lot_free management of batch numbers
  */
 class mod_lot_free extends ModeleNumRefBatch
 {
-	/*
-	 * Please note this module is used by default if no module has been defined in the configuration
-	 *
-	 * Its operation must therefore remain as open as possible
-	 */
+    /*
+     * Please note this module is used by default if no module has been defined in the configuration
+     *
+     * Its operation must therefore remain as open as possible
+     */
 
 
-	// variables inherited from ModeleNumRefBatch class
-	public $name = 'lot_free';
-	public $version = 'dolibarr';
+    // variables inherited from ModeleNumRefBatch class
+    public $name = 'lot_free';
+    public $version = 'dolibarr';
 
-	/**
-	 *	Constructor
-	 */
-	public function __construct()
-	{
-		$this->code_null = 1;
-		$this->code_modifiable = 1;
-		$this->code_modifiable_invalide = 1;
-		$this->code_modifiable_null = 1;
-		$this->code_auto = 0;
-	}
+    /**
+     *  Constructor
+     */
+    public function __construct()
+    {
+        $this->code_null = 1;
+        $this->code_modifiable = 1;
+        $this->code_modifiable_invalide = 1;
+        $this->code_modifiable_null = 1;
+        $this->code_auto = 0;
+    }
 
 
-	/**
-	 *  Return description of module
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $langs;
-		$langs->load("companies");
-		return $langs->trans("LeopardNumRefModelDesc");
-	}
+    /**
+     *  Return description of module
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $langs;
+        $langs->load("companies");
+        return $langs->trans("LeopardNumRefModelDesc");
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		return $this->getNextValue(null, null);
-	}
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        return $this->getNextValue(null, null);
+    }
 
-	/**
-	 * Return an example of result returned by getNextValue
-	 *
-	 * @param	Societe		$objsoc	    Object thirdparty
-	 * @param   Productlot	$object		Object we need next value for
-	 * @return	string					Return next value
-	 */
-	public function getNextValue($objsoc, $object)
-	{
-		return '';
-	}
+    /**
+     * Return an example of result returned by getNextValue
+     *
+     * @param   Societe     $objsoc     Object thirdparty
+     * @param   Productlot  $object     Object we need next value for
+     * @return  string                  Return next value
+     */
+    public function getNextValue($objsoc, $object)
+    {
+        return '';
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019-2024       Frédéric France             <frederic.france@free.fr>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,35 +25,35 @@
 /**
  * Prepare admin pages header
  *
- * @return array		Returns an array with list of tab entries
+ * @return array        Returns an array with list of tab entries
  */
 function zapierAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . '/zapier/admin/setup.php';
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
-	$h++;
-	$head[$h][0] = DOL_URL_ROOT . '/zapier/admin/about.php';
-	$head[$h][1] = $langs->trans("About");
-	$head[$h][2] = 'about';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/zapier/admin/setup.php';
+    $head[$h][1] = $langs->trans("Settings");
+    $head[$h][2] = 'settings';
+    $h++;
+    $head[$h][0] = DOL_URL_ROOT . '/zapier/admin/about.php';
+    $head[$h][1] = $langs->trans("About");
+    $head[$h][2] = 'about';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'zapier');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@zapier:/zapier/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'zapier');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'zapier', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'zapier', 'remove');
 
-	return $head;
+    return $head;
 }

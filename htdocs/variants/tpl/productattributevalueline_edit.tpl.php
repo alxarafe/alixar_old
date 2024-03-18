@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
+/* Copyright (C) 2022   Open-Dsi        <support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,8 @@
 
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 // Define colspan for the button 'Add'
@@ -41,37 +41,37 @@ $coldisplay = 0;
 ?>
 <tr class="oddeven tredited">
 <?php if (getDolGlobalString('MAIN_VIEW_LINE_NUMBER')) { ?>
-		<td class="linecolnum center"><?php $coldisplay++; ?><?php echo($i + 1); ?></td>
+        <td class="linecolnum center"><?php $coldisplay++; ?><?php echo($i + 1); ?></td>
 <?php }
 
 $coldisplay++;
 ?>
-	<td class="nobottom linecolref">
-		<div id="line_<?php echo $line->id; ?>"></div>
-		<input type="hidden" name="lineid" value="<?php echo $line->id; ?>">
+    <td class="nobottom linecolref">
+        <div id="line_<?php echo $line->id; ?>"></div>
+        <input type="hidden" name="lineid" value="<?php echo $line->id; ?>">
 
-		<?php $coldisplay++; ?>
-		<input type="text" name="line_ref" id="line_ref" class="flat" value="<?php echo(GETPOSTISSET("line_ref") ? GETPOST("line_ref", 'alpha', 2) : $line->ref); ?>">
-		<?php
-		if (is_object($hookmanager)) {
-			$parameters = array('line' => $line);
-			$reshook = $hookmanager->executeHooks('formEditProductOptions', $parameters, $object, $action);
-			if (!empty($hookmanager->resPrint)) {
-				print $hookmanager->resPrint;
-			}
-		}
-		?>
-	</td>
+        <?php $coldisplay++; ?>
+        <input type="text" name="line_ref" id="line_ref" class="flat" value="<?php echo(GETPOSTISSET("line_ref") ? GETPOST("line_ref", 'alpha', 2) : $line->ref); ?>">
+        <?php
+        if (is_object($hookmanager)) {
+            $parameters = array('line' => $line);
+            $reshook = $hookmanager->executeHooks('formEditProductOptions', $parameters, $object, $action);
+            if (!empty($hookmanager->resPrint)) {
+                print $hookmanager->resPrint;
+            }
+        }
+        ?>
+    </td>
 
-	<td class="nobottom linecolvalue"><?php $coldisplay++; ?>
-		<input type="text" name="line_value" id="line_value" class="flat" value="<?php echo(GETPOSTISSET("line_value") ? GETPOST("line_value", 'alpha', 2) : $line->value); ?>">
-	</td>
+    <td class="nobottom linecolvalue"><?php $coldisplay++; ?>
+        <input type="text" name="line_value" id="line_value" class="flat" value="<?php echo(GETPOSTISSET("line_value") ? GETPOST("line_value", 'alpha', 2) : $line->value); ?>">
+    </td>
 
-	<!-- colspan for this td because it replace td for buttons+... -->
-	<td class="center valignmiddle" colspan="<?php echo $colspan; ?>"><?php $coldisplay += $colspan; ?>
-		<input type="submit" class="button buttongen marginbottomonly button-save" id="savelinebutton marginbottomonly" name="save" value="<?php echo $langs->trans("Save"); ?>"><br>
-		<input type="submit" class="button buttongen marginbottomonly button-cancel" id="cancellinebutton" name="cancel" value="<?php echo $langs->trans("Cancel"); ?>">
-	</td>
+    <!-- colspan for this td because it replace td for buttons+... -->
+    <td class="center valignmiddle" colspan="<?php echo $colspan; ?>"><?php $coldisplay += $colspan; ?>
+        <input type="submit" class="button buttongen marginbottomonly button-save" id="savelinebutton marginbottomonly" name="save" value="<?php echo $langs->trans("Save"); ?>"><br>
+        <input type="submit" class="button buttongen marginbottomonly button-cancel" id="cancellinebutton" name="cancel" value="<?php echo $langs->trans("Cancel"); ?>">
+    </td>
 </tr>
 
 <!-- END PHP TEMPLATE productattributevalueline_edit.tpl.php -->

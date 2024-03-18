@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023   Laurent Destailleur     <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,9 @@
  */
 
 /**
- *	\file       htdocs/debugbar/class/DataCollector/DolexceptionsCollector.php
- *	\brief      Class for debugbar collection
- *	\ingroup    debugbar
+ *  \file       htdocs/debugbar/class/DataCollector/DolexceptionsCollector.php
+ *  \brief      Class for debugbar collection
+ *  \ingroup    debugbar
  */
 
 use DebugBar\DataCollector\ExceptionsCollector;
@@ -29,28 +30,28 @@ use DebugBar\DataCollector\ExceptionsCollector;
 
 class DolExceptionsCollector extends ExceptionsCollector
 {
-	/**
-	 *	Return widget settings
-	 *
-	 *  @return    array       Array
-	 */
-	public function getWidgets()
-	{
-		global $langs;
+    /**
+     *  Return widget settings
+     *
+     *  @return    array       Array
+     */
+    public function getWidgets()
+    {
+        global $langs;
 
-		$title = $langs->transnoentities('Exceptions');
+        $title = $langs->transnoentities('Exceptions');
 
-		return array(
-			"$title" => array(
-				'icon' => 'bug',
-				'widget' => 'PhpDebugBar.Widgets.ExceptionsWidget',
-				'map' => 'exceptions.exceptions',
-				'default' => '[]'
-			),
-			"$title:badge" => array(
-				'map' => 'exceptions.count',
-				'default' => 'null'
-			)
-		);
-	}
+        return array(
+            "$title" => array(
+                'icon' => 'bug',
+                'widget' => 'PhpDebugBar.Widgets.ExceptionsWidget',
+                'map' => 'exceptions.exceptions',
+                'default' => '[]'
+            ),
+            "$title:badge" => array(
+                'map' => 'exceptions.count',
+                'default' => 'null'
+            )
+        );
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
@@ -24,147 +25,148 @@
  *  \ingroup    commande
  *  \brief      File of class to manage Sales Order numbering rules Marbre
  */
-require_once DOL_DOCUMENT_ROOT.'/core/modules/commande/modules_commande.php';
+
+require_once DOL_DOCUMENT_ROOT . '/core/modules/commande/modules_commande.php';
 
 /**
- *	Class to manage Sales Order numbering rules Marbre
+ *  Class to manage Sales Order numbering rules Marbre
  */
 class mod_commande_marbre extends ModeleNumRefCommandes
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	public $prefix = 'CO';
+    public $prefix = 'CO';
 
-	/**
-	 * @var string Error code (or message)
-	 */
-	public $error = '';
+    /**
+     * @var string Error code (or message)
+     */
+    public $error = '';
 
-	/**
-	 * @var string name
-	 */
-	public $name = 'Marbre';
-
-
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		global $conf, $mysoc;
-
-		if ((float) $conf->global->MAIN_VERSION_LAST_INSTALL >= 16.0 && $mysoc->country_code != 'FR') {
-			$this->prefix = 'SO'; // We use correct standard code "SO = Sale Order"
-		}
-	}
-
-	/**
-	 *  Return description of numbering module
-	 *
-	 *	@param	Translate	$langs      Lang object to use for output
-	 *  @return string      			Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $langs;
-		return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
-	}
+    /**
+     * @var string name
+     */
+    public $name = 'Marbre';
 
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		return $this->prefix."0501-0001";
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        global $conf, $mysoc;
+
+        if ((float) $conf->global->MAIN_VERSION_LAST_INSTALL >= 16.0 && $mysoc->country_code != 'FR') {
+            $this->prefix = 'SO'; // We use correct standard code "SO = Sale Order"
+        }
+    }
+
+    /**
+     *  Return description of numbering module
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return string                  Descriptive text
+     */
+    public function info($langs)
+    {
+        global $langs;
+        return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
+    }
 
 
-	/**
-	 *  Checks if the numbers already in the database do not
-	 *  cause conflicts that would prevent this numbering working.
-	 *
-	 *  @param  CommonObject	$object		Object we need next value for
-	 *  @return boolean     				false if conflict, true if ok
-	 */
-	public function canBeActivated($object)
-	{
-		global $conf, $langs, $db;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        return $this->prefix . "0501-0001";
+    }
 
-		$coyymm = '';
-		$max = '';
 
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."commande";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity = ".$conf->entity;
+    /**
+     *  Checks if the numbers already in the database do not
+     *  cause conflicts that would prevent this numbering working.
+     *
+     *  @param  CommonObject    $object     Object we need next value for
+     *  @return boolean                     false if conflict, true if ok
+     */
+    public function canBeActivated($object)
+    {
+        global $conf, $langs, $db;
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$row = $db->fetch_row($resql);
-			if ($row) {
-				$coyymm = substr($row[0], 0, 6);
-				$max = $row[0];
-			}
-		}
-		if ($coyymm && !preg_match('/'.$this->prefix.'[0-9][0-9][0-9][0-9]/i', $coyymm)) {
-			$langs->load("errors");
-			$this->error = $langs->trans('ErrorNumRefModel', $max);
-			return false;
-		}
+        $coyymm = '';
+        $max = '';
 
-		return true;
-	}
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "commande";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity = " . $conf->entity;
 
-	/**
-	 * 	Return next free value
-	 *
-	 *  @param	Societe		$objsoc     Object thirdparty
-	 *  @param  Commande	$object		Object we need next value for
-	 *  @return string|-1      			Value if OK, -1 if KO
-	 */
-	public function getNextValue($objsoc, $object)
-	{
-		global $db, $conf;
+        $resql = $db->query($sql);
+        if ($resql) {
+            $row = $db->fetch_row($resql);
+            if ($row) {
+                $coyymm = substr($row[0], 0, 6);
+                $max = $row[0];
+            }
+        }
+        if ($coyymm && !preg_match('/' . $this->prefix . '[0-9][0-9][0-9][0-9]/i', $coyymm)) {
+            $langs->load("errors");
+            $this->error = $langs->trans('ErrorNumRefModel', $max);
+            return false;
+        }
 
-		// First, we get the max value
-		$posindice = strlen($this->prefix) + 6;
-		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."commande";
-		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		$sql .= " AND entity IN (".getEntity('ordernumber', 1, $object).")";
+        return true;
+    }
 
-		$resql = $db->query($sql);
-		if ($resql) {
-			$obj = $db->fetch_object($resql);
-			if ($obj) {
-				$max = intval($obj->max);
-			} else {
-				$max = 0;
-			}
-		} else {
-			dol_syslog("mod_commande_marbre::getNextValue", LOG_DEBUG);
-			return -1;
-		}
+    /**
+     *  Return next free value
+     *
+     *  @param  Societe     $objsoc     Object thirdparty
+     *  @param  Commande    $object     Object we need next value for
+     *  @return string|-1               Value if OK, -1 if KO
+     */
+    public function getNextValue($objsoc, $object)
+    {
+        global $db, $conf;
 
-		//$date=time();
-		$date = $object->date;
-		$yymm = dol_print_date($date, "%y%m");
+        // First, we get the max value
+        $posindice = strlen($this->prefix) + 6;
+        $sql = "SELECT MAX(CAST(SUBSTRING(ref FROM " . $posindice . ") AS SIGNED)) as max";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "commande";
+        $sql .= " WHERE ref LIKE '" . $db->escape($this->prefix) . "____-%'";
+        $sql .= " AND entity IN (" . getEntity('ordernumber', 1, $object) . ")";
 
-		if ($max >= (pow(10, 4) - 1)) {
-			$num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
-		} else {
-			$num = sprintf("%04d", $max + 1);
-		}
+        $resql = $db->query($sql);
+        if ($resql) {
+            $obj = $db->fetch_object($resql);
+            if ($obj) {
+                $max = intval($obj->max);
+            } else {
+                $max = 0;
+            }
+        } else {
+            dol_syslog("mod_commande_marbre::getNextValue", LOG_DEBUG);
+            return -1;
+        }
 
-		dol_syslog("mod_commande_marbre::getNextValue return ".$this->prefix.$yymm."-".$num);
-		return $this->prefix.$yymm."-".$num;
-	}
+        //$date=time();
+        $date = $object->date;
+        $yymm = dol_print_date($date, "%y%m");
+
+        if ($max >= (pow(10, 4) - 1)) {
+            $num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
+        } else {
+            $num = sprintf("%04d", $max + 1);
+        }
+
+        dol_syslog("mod_commande_marbre::getNextValue return " . $this->prefix . $yymm . "-" . $num);
+        return $this->prefix . $yymm . "-" . $num;
+    }
 }

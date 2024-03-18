@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2023 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,55 +17,55 @@
  */
 
 /**
- *	\file       htdocs/core/class/commondict.class.php
- *	\ingroup    core
- *	\brief      File of parent class of all other dictionary classes
+ *  \file       htdocs/core/class/commondict.class.php
+ *  \ingroup    core
+ *  \brief      File of parent class of all other dictionary classes
  */
 
 
 /**
- *	Parent class of all other dictionary classes
+ *  Parent class of all other dictionary classes
  */
 abstract class CommonDict
 {
-	/**
-	 * @var DoliDB		Database handler (result of a new DoliDB)
-	 */
-	public $db;
+    /**
+     * @var DoliDB      Database handler (result of a new DoliDB)
+     */
+    public $db;
 
-	/**
-	 * @var string 		Error string
-	 * @see             $errors
-	 */
-	public $error;
+    /**
+     * @var string      Error string
+     * @see             $errors
+     */
+    public $error;
 
-	/**
-	 * @var string[]	Array of error strings
-	 */
-	public $errors = array();
+    /**
+     * @var string[]    Array of error strings
+     */
+    public $errors = array();
 
-	/**
-	 * @var int 		The object identifier
-	 */
-	public $id;
+    /**
+     * @var int         The object identifier
+     */
+    public $id;
 
-	/**
-	 * @var int 		The environment ID when using a multicompany module
-	 */
-	public $entity;
+    /**
+     * @var int         The environment ID when using a multicompany module
+     */
+    public $entity;
 
-	/**
-	 * @var string 		The code
-	 */
-	public $code;
+    /**
+     * @var string      The code
+     */
+    public $code;
 
-	/**
-	 * @var string 		The label
-	 */
-	public $label;
+    /**
+     * @var string      The label
+     */
+    public $label;
 
-	/**
-	 * @var int<0,1>	1 if the entry is active, 0 if not
-	 */
-	public $active;
+    /**
+     * @var int<0,1>    1 if the entry is active, 0 if not
+     */
+    public $active;
 }

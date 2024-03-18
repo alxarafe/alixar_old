@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2009       Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2022       Alexandre Spangaro  <aspangaro@open-dsi.fr>
  *
@@ -18,58 +19,58 @@
  */
 
 /**
- *	    \file       htdocs/core/lib/takepos.lib.php
- *		\brief      Library file with function for TakePOS module
+ *      \file       htdocs/core/lib/takepos.lib.php
+ *      \brief      Library file with function for TakePOS module
  */
 
 /**
  * Prepare array with list of tabs
  *
- * @return 	array				Array of tabs
+ * @return  array               Array of tabs
  */
 function takepos_admin_prepare_head()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/setup.php';
-	$head[$h][1] = $langs->trans("Parameters");
-	$head[$h][2] = 'setup';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/takepos/admin/setup.php';
+    $head[$h][1] = $langs->trans("Parameters");
+    $head[$h][2] = 'setup';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/appearance.php';
-	$head[$h][1] = $langs->trans("Appearance");
-	$head[$h][2] = 'appearance';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/takepos/admin/appearance.php';
+    $head[$h][1] = $langs->trans("Appearance");
+    $head[$h][2] = 'appearance';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/receipt.php';
-	$head[$h][1] = $langs->trans("Printers").' / '.$langs->trans("Receipt");
-	$head[$h][2] = 'receipt';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/takepos/admin/receipt.php';
+    $head[$h][1] = $langs->trans("Printers") . ' / ' . $langs->trans("Receipt");
+    $head[$h][2] = 'receipt';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/bar.php';
-	$head[$h][1] = $langs->trans("BarRestaurant");
-	$head[$h][2] = 'bar';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/takepos/admin/bar.php';
+    $head[$h][1] = $langs->trans("BarRestaurant");
+    $head[$h][2] = 'bar';
+    $h++;
 
-	$numterminals = max(1, getDolGlobalInt('TAKEPOS_NUM_TERMINALS', 1));
-	for ($i = 1; $i <= $numterminals; $i++) {
-		$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/terminal.php?terminal='.$i;
-		$head[$h][1] = getDolGlobalString('TAKEPOS_TERMINAL_NAME_'.$i, $langs->trans("TerminalName", $i));
-		$head[$h][2] = 'terminal'.$i;
-		$h++;
-	}
+    $numterminals = max(1, getDolGlobalInt('TAKEPOS_NUM_TERMINALS', 1));
+    for ($i = 1; $i <= $numterminals; $i++) {
+        $head[$h][0] = DOL_URL_ROOT . '/takepos/admin/terminal.php?terminal=' . $i;
+        $head[$h][1] = getDolGlobalString('TAKEPOS_TERMINAL_NAME_' . $i, $langs->trans("TerminalName", $i));
+        $head[$h][2] = 'terminal' . $i;
+        $h++;
+    }
 
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/other.php';
-	$head[$h][1] = $langs->trans("About");
-	$head[$h][2] = 'other';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/takepos/admin/other.php';
+    $head[$h][1] = $langs->trans("About");
+    $head[$h][2] = 'other';
+    $h++;
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'takepos_admin');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'takepos_admin');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'takepos_admin', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'takepos_admin', 'remove');
 
-	return $head;
+    return $head;
 }

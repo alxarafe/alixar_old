@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2023  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2018-2023  Frédéric France         <frederic.france@netlogic.fr>
  *
@@ -23,48 +24,48 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1); // Disables token renewal
+    define('NOTOKENRENEWAL', 1); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOHEADERNOFOOTER')) {
-	define('NOHEADERNOFOOTER', '1');
+    define('NOHEADERNOFOOTER', '1');
 }
 
 include '../../main.inc.php';
-include_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
+include_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 
 
 $id = GETPOST('id', 'aZ09');
-$objecttype = GETPOST('objecttype', 'aZ09arobase');	// 'module' or 'myobject@mymodule', 'mymodule_myobject'
+$objecttype = GETPOST('objecttype', 'aZ09arobase'); // 'module' or 'myobject@mymodule', 'mymodule_myobject'
 
 $params = array('fromajaxtooltip' => 1);
 if (GETPOSTISSET('infologin')) {
-	$params['infologin'] = GETPOSTINT('infologin');
+    $params['infologin'] = GETPOSTINT('infologin');
 }
 if (GETPOSTISSET('option')) {
-	$params['option'] = GETPOST('option', 'restricthtml');
+    $params['option'] = GETPOST('option', 'restricthtml');
 }
 
 // Load object according to $element
 $object = fetchObjectByElement($id, $objecttype);
 if (empty($object->element)) {
-	httponly_accessforbidden('Failed to get object with fetchObjectByElement(id='.$id.', objecttype='.$objecttype.')');
+    httponly_accessforbidden('Failed to get object with fetchObjectByElement(id=' . $id . ', objecttype=' . $objecttype . ')');
 }
 
 $module = $object->module;
 $element = $object->element;
 
 $usesublevelpermission = ($module != $element ? $element : '');
-if ($usesublevelpermission && !$user->hasRight($module, $element)) {	// There is no permission on object defined, we will check permission on module directly
-	$usesublevelpermission = '';
+if ($usesublevelpermission && !$user->hasRight($module, $element)) {    // There is no permission on object defined, we will check permission on module directly
+    $usesublevelpermission = '';
 }
 
 //print $object->id.' - '.$object->module.' - '.$object->element.' - '.$object->table_element.' - '.$usesublevelpermission."\n";
@@ -82,13 +83,13 @@ top_httphead();
 $html = '';
 
 if (is_object($object)) {
-	if ($object->id > 0 || !empty($object->ref)) {
-		/** @var CommonObject $object */
-		$html = $object->getTooltipContent($params);
-	} elseif ($res == 0) {
-		$html = $langs->trans('Deleted');
-	}
-	unset($object);
+    if ($object->id > 0 || !empty($object->ref)) {
+        /** @var CommonObject $object */
+        $html = $object->getTooltipContent($params);
+    } elseif ($res == 0) {
+        $html = $langs->trans('Deleted');
+    }
+    unset($object);
 }
 
 print $html;

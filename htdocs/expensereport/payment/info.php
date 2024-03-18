@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2013      Marcos García        <marcosgdf@gmail.com>
@@ -19,16 +20,16 @@
  */
 
 /**
- *		\file       htdocs/expensereport/payment/info.php
- *		\ingroup    Expense report
- *		\brief      Tab payment info
+ *      \file       htdocs/expensereport/payment/info.php
+ *      \ingroup    Expense report
+ *      \brief      Tab payment info
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/expensereport/class/paymentexpensereport.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/expensereport.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bills', 'trips'));

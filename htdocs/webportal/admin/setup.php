@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
@@ -49,14 +50,14 @@ $setupnotempty = 0;
 
 // Access control
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Set this to 1 to use the factory to manage constants. Warning, the generated module will be compatible with version v15+ only
 $useFormSetup = 1;
 
 if (!class_exists('FormSetup')) {
-	require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
 }
 $formSetup = new FormSetup($db);
 
@@ -75,9 +76,9 @@ $formSetup->newItem('WEBPORTAL_TITLE')->defaultFieldValue = getDolGlobalString('
 
 // Enable access for the membership record
 $access_list = array(
-	'hidden' => $langs->trans('WebPortalAccessHidden'),
-	'visible' => $langs->trans('WebPortalAccessVisible'),
-	'edit' => $langs->trans('WebPortalAccessEdit'),
+    'hidden' => $langs->trans('WebPortalAccessHidden'),
+    'visible' => $langs->trans('WebPortalAccessVisible'),
+    'edit' => $langs->trans('WebPortalAccessEdit'),
 );
 $item = $formSetup->newItem('WEBPORTAL_MEMBER_CARD_ACCESS');
 $item->setAsSelect($access_list);
@@ -85,8 +86,8 @@ $item->helpText = $langs->transnoentities('WebPortalMemberCardAccessHelp');
 
 // Enable access for the partnership record
 $access_list = array(
-	'hidden' => $langs->trans('WebPortalAccessHidden'),
-	'visible' => $langs->trans('WebPortalAccessVisible'),
+    'hidden' => $langs->trans('WebPortalAccessHidden'),
+    'visible' => $langs->trans('WebPortalAccessVisible'),
 );
 $item = $formSetup->newItem('WEBPORTAL_PARTNERSHIP_CARD_ACCESS');
 $item->setAsSelect($access_list);
@@ -119,7 +120,7 @@ $myTmpObjects['webportal'] = array('label' => 'WebPortal', 'includerefgeneration
 
 $tmpobjectkey = GETPOST('object', 'aZ09');
 if ($tmpobjectkey && !array_key_exists($tmpobjectkey, $myTmpObjects)) {
-	accessforbidden('Bad value for object. Hack attempt ?');
+    accessforbidden('Bad value for object. Hack attempt ?');
 }
 
 
@@ -131,7 +132,7 @@ include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
 
 // Force always edit mode
 if (empty($action) || $action == 'update') {
-	$action = 'edit';
+    $action = 'edit';
 }
 
 
@@ -158,21 +159,21 @@ print dol_get_fiche_head($head, 'settings', $langs->trans($title), -1, "webporta
 print '<br>';
 
 // URL For webportal
-print img_picto('', 'globe').' <span class="opacitymedium">'.$langs->trans('WebPortalURL').'</span><br>';
+print img_picto('', 'globe') . ' <span class="opacitymedium">' . $langs->trans('WebPortalURL') . '</span><br>';
 if (isModEnabled('multicompany')) {
-	$entity_qr = '?entity='.((int) $conf->entity);
+    $entity_qr = '?entity=' . ((int) $conf->entity);
 } else {
-	$entity_qr = '';
+    $entity_qr = '';
 }
 
 // Define $urlwithroot
-$urlwithouturlroot = preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
-$urlwithroot = $urlwithouturlroot.DOL_URL_ROOT; // This is to use external domain name found into config file
-//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+$urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
+$urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
+//$urlwithroot=DOL_MAIN_URL_ROOT;                   // This is to use same domain name than current
 
 print '<div class="urllink">';
-print '<input type="text" id="publicurlmember" class="quatrevingtpercentminusx" value="'.$urlwithroot.'/public/webportal/index.php'.$entity_qr.'">';
-print '<a target="_blank" rel="noopener noreferrer" href="'.$urlwithroot.'/public/webportal/index.php'.$entity_qr.'">'.img_picto('', 'globe', 'class="paddingleft"').'</a>';
+print '<input type="text" id="publicurlmember" class="quatrevingtpercentminusx" value="' . $urlwithroot . '/public/webportal/index.php' . $entity_qr . '">';
+print '<a target="_blank" rel="noopener noreferrer" href="' . $urlwithroot . '/public/webportal/index.php' . $entity_qr . '">' . img_picto('', 'globe', 'class="paddingleft"') . '</a>';
 print '</div>';
 print ajax_autoselect('publicurlmember');
 //print '<a target="_blank" href="'.Context::getRootConfigUrl().'" >'.img_picto('', 'globe', 'class="pictofixedwidth"').Context::getRootConfigUrl().'</a>';
@@ -183,15 +184,15 @@ print info_admin($langs->trans("UserAccountForWebPortalAreInThirdPartyTabHelp"))
 print '<br><br>';
 
 if ($action == 'edit') {
-	print $formSetup->generateOutput(true);
-	print '<br>';
+    print $formSetup->generateOutput(true);
+    print '<br>';
 } elseif (!empty($formSetup->items)) {
-	print $formSetup->generateOutput();
-	print '<div class="tabsAction">';
-	print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
-	print '</div>';
+    print $formSetup->generateOutput();
+    print '<div class="tabsAction">';
+    print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
+    print '</div>';
 } else {
-	print '<br>' . $langs->trans("NothingToSetup");
+    print '<br>' . $langs->trans("NothingToSetup");
 }
 
 // Page end

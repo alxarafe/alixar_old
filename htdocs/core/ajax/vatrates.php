@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2012 Regis Houssin  <regis.houssin@inodbox.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,22 +22,22 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
 
 $id = GETPOSTINT('id');
-$action = GETPOST('action', 'aZ09');	// 'getSellerVATRates' or 'getBuyerVATRates'
-$htmlname	= GETPOST('htmlname', 'alpha');
-$selected	= (GETPOST('selected') ? GETPOST('selected') : '-1');
+$action = GETPOST('action', 'aZ09');    // 'getSellerVATRates' or 'getBuyerVATRates'
+$htmlname   = GETPOST('htmlname', 'alpha');
+$selected   = (GETPOST('selected') ? GETPOST('selected') : '-1');
 $productid = (GETPOSTINT('productid') ? GETPOSTINT('productid') : 0);
 
 // Security check
@@ -53,23 +54,23 @@ top_httphead('application/json');
 
 // Load original field value
 if (!empty($id) && !empty($action) && !empty($htmlname)) {
-	$form = new Form($db);
-	$soc = new Societe($db);
+    $form = new Form($db);
+    $soc = new Societe($db);
 
-	$soc->fetch($id);
+    $soc->fetch($id);
 
-	if ($action == 'getSellerVATRates') {
-		$seller = $mysoc;
-		$buyer = $soc;
-	} else {
-		$buyer = $mysoc;
-		$seller = $soc;
-	}
+    if ($action == 'getSellerVATRates') {
+        $seller = $mysoc;
+        $buyer = $soc;
+    } else {
+        $buyer = $mysoc;
+        $seller = $soc;
+    }
 
-	$return = array();
-	$return['value']	= $form->load_tva('tva_tx', $selected, $seller, $buyer, $productid, 0, '', true);
-	$return['num'] = $form->num;
-	$return['error']	= $form->error;
+    $return = array();
+    $return['value']    = $form->load_tva('tva_tx', $selected, $seller, $buyer, $productid, 0, '', true);
+    $return['num'] = $form->num;
+    $return['error']    = $form->error;
 
-	echo json_encode($return);
+    echo json_encode($return);
 }

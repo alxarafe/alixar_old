@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2022 Alice Adminson <aadminson@example.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
@@ -25,7 +26,7 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
+require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once '../lib/ai.lib.php';
 
 $langs->loadLangs(array("admin"));
@@ -33,10 +34,10 @@ $langs->loadLangs(array("admin"));
 // Parameters
 $action = GETPOST('action', 'aZ09');
 $backtopage = GETPOST('backtopage', 'alpha');
-$modulepart = GETPOST('modulepart', 'aZ09');	// Used by actions_setmoduleoptions.inc.php
+$modulepart = GETPOST('modulepart', 'aZ09');    // Used by actions_setmoduleoptions.inc.php
 
 if (empty($action)) {
-	$action = 'edit';
+    $action = 'edit';
 }
 
 $value = GETPOST('value', 'alpha');
@@ -49,7 +50,7 @@ $setupnotempty = 0;
 
 // Access control
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -57,7 +58,7 @@ if (!$user->admin) {
 $useFormSetup = 1;
 
 if (!class_exists('FormSetup')) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formsetup.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
 }
 
 $formSetup = new FormSetup($db);
@@ -66,14 +67,14 @@ $formSetup = new FormSetup($db);
 $arrayofia = array('chatgpt');
 
 foreach ($arrayofia as $ia) {
-	// Setup conf AI_PUBLIC_INTERFACE_TOPIC
-	/*$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_ENDPOINT');	// Name of constant must end with _KEY so it is encrypted when saved into database.
-	$item->defaultFieldValue = '';
-	$item->cssClass = 'minwidth500';*/
+    // Setup conf AI_PUBLIC_INTERFACE_TOPIC
+    /*$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_ENDPOINT');   // Name of constant must end with _KEY so it is encrypted when saved into database.
+    $item->defaultFieldValue = '';
+    $item->cssClass = 'minwidth500';*/
 
-	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_KEY');	// Name of constant must end with _KEY so it is encrypted when saved into database.
-	$item->defaultFieldValue = '';
-	$item->cssClass = 'minwidth500';
+    $item = $formSetup->newItem('AI_API_' . strtoupper($ia) . '_KEY');  // Name of constant must end with _KEY so it is encrypted when saved into database.
+    $item->defaultFieldValue = '';
+    $item->cssClass = 'minwidth500';
 }
 
 $setupnotempty = + count($formSetup->items);
@@ -86,7 +87,7 @@ $dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT.'/core/actions_setmoduleoptions.inc.php';
+include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
 
 $action = 'edit';
 
@@ -103,7 +104,7 @@ $title = "AiSetup";
 llxHeader('', $langs->trans($title), $help_url);
 
 // Subheader
-$linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . ($backtopage ? $backtopage : DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1') . '">' . $langs->trans("BackToModuleList") . '</a>';
 
 print load_fiche_titre($langs->trans($title), $linkback, 'title_setup');
 
@@ -113,20 +114,20 @@ print dol_get_fiche_head($head, 'settings', $langs->trans($title), -1, "fa-micro
 
 
 if ($action == 'edit') {
-	print $formSetup->generateOutput(true);
-	print '<br>';
+    print $formSetup->generateOutput(true);
+    print '<br>';
 } elseif (!empty($formSetup->items)) {
-	print $formSetup->generateOutput();
-	print '<div class="tabsAction">';
-	print '<a class="butAction" href="'.$_SERVER['PHP_SELF'].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
-	print '</div>';
+    print $formSetup->generateOutput();
+    print '<div class="tabsAction">';
+    print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
+    print '</div>';
 } else {
-	print '<br>'.$langs->trans("NothingToSetup");
+    print '<br>' . $langs->trans("NothingToSetup");
 }
 
 
 if (empty($setupnotempty)) {
-	print '<br>'.$langs->trans("NothingToSetup");
+    print '<br>' . $langs->trans("NothingToSetup");
 }
 
 // Page end

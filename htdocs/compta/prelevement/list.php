@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
@@ -27,9 +28,9 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/prelevement/class/bonprelevement.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/prelevement/class/ligneprelevement.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/ligneprelevement.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'withdrawals', 'companies', 'categories'));
@@ -53,17 +54,17 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
 if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
-	// If $page is not defined, or '' or -1 or if we click on clear filters
-	$page = 0;
+    // If $page is not defined, or '' or -1 or if we click on clear filters
+    $page = 0;
 }
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) {
-	$sortorder = "DESC";
+    $sortorder = "DESC";
 }
 if (!$sortfield) {
-	$sortfield = ($type == 'bank-transfer' ? "datec" : "p.datec");
+    $sortfield = ($type == 'bank-transfer' ? "datec" : "p.datec");
 }
 
 $search_line = GETPOST('search_line', 'alpha');
@@ -82,12 +83,12 @@ $hookmanager->initHooks(array('withdrawalsreceiptslineslist'));
 // Security check
 $socid = GETPOSTINT('socid');
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 if ($type == 'bank-transfer') {
-	$result = restrictedArea($user, 'paymentbybanktransfer', '', '', '');
+    $result = restrictedArea($user, 'paymentbybanktransfer', '', '', '');
 } else {
-	$result = restrictedArea($user, 'prelevement', '', '', 'bons');
+    $result = restrictedArea($user, 'prelevement', '', '', 'bons');
 }
 
 
@@ -96,11 +97,11 @@ if ($type == 'bank-transfer') {
  */
 
 if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All tests are required to be compatible with all browsers
-	$search_line = "";
-	$search_bon = "";
-	$search_code = "";
-	$search_company = "";
-	$statut = "";
+    $search_line = "";
+    $search_bon = "";
+    $search_code = "";
+    $search_company = "";
+    $statut = "";
 }
 
 
@@ -112,7 +113,7 @@ $form = new Form($db);
 
 $title = $langs->trans("WithdrawalsLines");
 if ($type == 'bank-transfer') {
-	$title = $langs->trans("CreditTransferLines");
+    $title = $langs->trans("CreditTransferLines");
 }
 $help_url = '';
 
@@ -123,123 +124,123 @@ $sql .= " , pl.amount, pl.statut as statut_ligne, pl.rowid as rowid_ligne";
 
 $sqlfields = $sql; // $sql fields to remove for count total
 
-$sql .= " FROM ".MAIN_DB_PREFIX."prelevement_bons as p";
-$sql .= " , ".MAIN_DB_PREFIX."prelevement_lignes as pl";
-$sql .= " , ".MAIN_DB_PREFIX."prelevement as pf";
+$sql .= " FROM " . MAIN_DB_PREFIX . "prelevement_bons as p";
+$sql .= " , " . MAIN_DB_PREFIX . "prelevement_lignes as pl";
+$sql .= " , " . MAIN_DB_PREFIX . "prelevement as pf";
 if ($type == 'bank-transfer') {
-	$sql .= " , ".MAIN_DB_PREFIX."facture_fourn as f";
+    $sql .= " , " . MAIN_DB_PREFIX . "facture_fourn as f";
 } else {
-	$sql .= " , ".MAIN_DB_PREFIX."facture as f";
+    $sql .= " , " . MAIN_DB_PREFIX . "facture as f";
 }
-$sql .= " , ".MAIN_DB_PREFIX."societe as s";
+$sql .= " , " . MAIN_DB_PREFIX . "societe as s";
 $sql .= " WHERE pl.fk_prelevement_bons = p.rowid";
 $sql .= " AND pf.fk_prelevement_lignes = pl.rowid";
 if ($type == 'bank-transfer') {
-	$sql .= " AND pf.fk_facture_fourn = f.rowid";
+    $sql .= " AND pf.fk_facture_fourn = f.rowid";
 } else {
-	$sql .= " AND pf.fk_facture = f.rowid";
+    $sql .= " AND pf.fk_facture = f.rowid";
 }
 $sql .= " AND f.fk_soc = s.rowid";
-$sql .= " AND f.entity IN (".getEntity('invoice').")";
+$sql .= " AND f.entity IN (" . getEntity('invoice') . ")";
 if ($socid) {
-	$sql .= " AND s.rowid = ".((int) $socid);
+    $sql .= " AND s.rowid = " . ((int) $socid);
 }
 if ($search_bon) {
-	$sql .= " AND pl.rowid = '".$db->escape($search_bon)."'";
+    $sql .= " AND pl.rowid = '" . $db->escape($search_bon) . "'";
 }
 if ($search_line) {
-	$sql .= natural_search("p.ref", $search_line);
+    $sql .= natural_search("p.ref", $search_line);
 }
 if ($type == 'bank-transfer') {
-	if ($search_code) {
-		$sql .= natural_search("s.code_fournisseur", $search_code);
-	}
+    if ($search_code) {
+        $sql .= natural_search("s.code_fournisseur", $search_code);
+    }
 } else {
-	if ($search_code) {
-		$sql .= natural_search("s.code_client", $search_code);
-	}
+    if ($search_code) {
+        $sql .= natural_search("s.code_client", $search_code);
+    }
 }
 if ($search_company) {
-	$sql .= natural_search("s.nom", $search_company);
+    $sql .= natural_search("s.nom", $search_company);
 }
 //get salary invoices
 if ($type == 'bank-transfer') {
-	$sql .= " UNION";
+    $sql .= " UNION";
 
-	$sql .= " SELECT p.rowid, p.ref, p.statut as status, p.datec";
-	$sql .= ", sl.rowid as facid, sl.ref as invoiceref, sl.amount";
-	$sql .= ", u.rowid as socid, CONCAT(u.firstname, ' ', u.lastname) as name, u.ref_employee as code_client, NULL as code_fournisseur, u.email";
-	$sql .= ", pl.amount, pl.statut as statut_ligne, pl.rowid as rowid_ligne";
+    $sql .= " SELECT p.rowid, p.ref, p.statut as status, p.datec";
+    $sql .= ", sl.rowid as facid, sl.ref as invoiceref, sl.amount";
+    $sql .= ", u.rowid as socid, CONCAT(u.firstname, ' ', u.lastname) as name, u.ref_employee as code_client, NULL as code_fournisseur, u.email";
+    $sql .= ", pl.amount, pl.statut as statut_ligne, pl.rowid as rowid_ligne";
 
-	$sql .= " FROM ".MAIN_DB_PREFIX."prelevement_bons as p";
-	$sql .= " , ".MAIN_DB_PREFIX."prelevement_lignes as pl";
-	$sql .= " , ".MAIN_DB_PREFIX."prelevement as pf";
-	$sql .= " , ".MAIN_DB_PREFIX."salary as sl";
-	$sql .= " , ".MAIN_DB_PREFIX."user as u";
+    $sql .= " FROM " . MAIN_DB_PREFIX . "prelevement_bons as p";
+    $sql .= " , " . MAIN_DB_PREFIX . "prelevement_lignes as pl";
+    $sql .= " , " . MAIN_DB_PREFIX . "prelevement as pf";
+    $sql .= " , " . MAIN_DB_PREFIX . "salary as sl";
+    $sql .= " , " . MAIN_DB_PREFIX . "user as u";
 
-	$sql .= " WHERE pl.fk_prelevement_bons = p.rowid";
-	$sql .= " AND pf.fk_prelevement_lignes = pl.rowid";
-	$sql .= " AND pf.fk_salary = sl.rowid";
-	$sql .= " AND sl.fk_user = u.rowid";
-	$sql .= " AND sl.entity IN (".getEntity('invoice').")";
-	if ($socid) {
-		$sql .= " AND s.rowid = ".((int) $socid);
-	}
-	if ($search_bon) {
-		$sql .= " AND pl.rowid = '".$db->escape($search_bon)."'";
-	}
-	if ($search_line) {
-		$sql .= natural_search("p.ref", $search_line);
-	}
-	if ($type == 'bank-transfer') {
-		if ($search_code) {
-			$sql .= natural_search("NULL", $search_code);
-		}
-	} else {
-		if ($search_code) {
-			$sql .= natural_search("s.code_client", $search_code);
-		}
-	}
-	if ($search_company) {
-		$sql .= natural_search(array("u.firstname","u.lastname"), $search_company);
-	}
+    $sql .= " WHERE pl.fk_prelevement_bons = p.rowid";
+    $sql .= " AND pf.fk_prelevement_lignes = pl.rowid";
+    $sql .= " AND pf.fk_salary = sl.rowid";
+    $sql .= " AND sl.fk_user = u.rowid";
+    $sql .= " AND sl.entity IN (" . getEntity('invoice') . ")";
+    if ($socid) {
+        $sql .= " AND s.rowid = " . ((int) $socid);
+    }
+    if ($search_bon) {
+        $sql .= " AND pl.rowid = '" . $db->escape($search_bon) . "'";
+    }
+    if ($search_line) {
+        $sql .= natural_search("p.ref", $search_line);
+    }
+    if ($type == 'bank-transfer') {
+        if ($search_code) {
+            $sql .= natural_search("NULL", $search_code);
+        }
+    } else {
+        if ($search_code) {
+            $sql .= natural_search("s.code_client", $search_code);
+        }
+    }
+    if ($search_company) {
+        $sql .= natural_search(array("u.firstname","u.lastname"), $search_company);
+    }
 }
 // Count total nb of records
 $nbtotalofrecords = '';
 if (!getDolGlobalInt('MAIN_DISABLE_FULL_SCANLIST')) {
-	/* The fast and low memory method to get and count full list converts the sql into a sql count */
-	if ($type == 'bank-transfer') {
-		$sqlforcount = "SELECT COUNT(*) as nbtotalofrecords FROM (" . $sql . ") AS combined_results";
-	} else {
-		$sqlforcount = preg_replace('/^'.preg_quote($sqlfields, '/').'/', 'SELECT COUNT(*) as nbtotalofrecords', $sql);
-		$sqlforcount = preg_replace('/GROUP BY .*$/', '', $sqlforcount);
-	}
+    /* The fast and low memory method to get and count full list converts the sql into a sql count */
+    if ($type == 'bank-transfer') {
+        $sqlforcount = "SELECT COUNT(*) as nbtotalofrecords FROM (" . $sql . ") AS combined_results";
+    } else {
+        $sqlforcount = preg_replace('/^' . preg_quote($sqlfields, '/') . '/', 'SELECT COUNT(*) as nbtotalofrecords', $sql);
+        $sqlforcount = preg_replace('/GROUP BY .*$/', '', $sqlforcount);
+    }
 
-	$resql = $db->query($sqlforcount);
-	if ($resql) {
-		$objforcount = $db->fetch_object($resql);
-		$nbtotalofrecords = $objforcount->nbtotalofrecords;
-	} else {
-		dol_print_error($db);
-	}
+    $resql = $db->query($sqlforcount);
+    if ($resql) {
+        $objforcount = $db->fetch_object($resql);
+        $nbtotalofrecords = $objforcount->nbtotalofrecords;
+    } else {
+        dol_print_error($db);
+    }
 
-	if (($page * $limit) > $nbtotalofrecords) {	// if total resultset is smaller than the paging size (filtering), goto and load page 0
-		$page = 0;
-		$offset = 0;
-	}
-	$db->free($resql);
+    if (($page * $limit) > $nbtotalofrecords) { // if total resultset is smaller than the paging size (filtering), goto and load page 0
+        $page = 0;
+        $offset = 0;
+    }
+    $db->free($resql);
 }
 
 // Complete request and execute it with limit
 $sql .= $db->order($sortfield, $sortorder);
 if ($limit) {
-	$sql .= $db->plimit($limit + 1, $offset);
+    $sql .= $db->plimit($limit + 1, $offset);
 }
 
 $resql = $db->query($sql);
 if (!$resql) {
-	dol_print_error($db);
-	exit;
+    dol_print_error($db);
+    exit;
 }
 
 $num = $db->num_rows($resql);
@@ -252,51 +253,51 @@ llxHeader('', $title, $help_url);
 $arrayofselected = is_array($toselect) ? $toselect : array();
 
 $param = '';
-$param .= "&statut=".urlencode($statut);
-$param .= "&search_bon=".urlencode($search_bon);
+$param .= "&statut=" . urlencode($statut);
+$param .= "&search_bon=" . urlencode($search_bon);
 if ($type == 'bank-transfer') {
-	$param .= '&type=bank-transfer';
+    $param .= '&type=bank-transfer';
 }
 if (!empty($mode)) {
-	$param .= '&mode='.urlencode($mode);
+    $param .= '&mode=' . urlencode($mode);
 }
 if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
-	$param .= '&contextpage='.urlencode($contextpage);
+    $param .= '&contextpage=' . urlencode($contextpage);
 }
 if ($limit > 0 && $limit != $conf->liste_limit) {
-	$param .= '&limit='.((int) $limit);
+    $param .= '&limit=' . ((int) $limit);
 }
 if ($optioncss != '') {
-	$param .= '&optioncss='.urlencode($optioncss);
+    $param .= '&optioncss=' . urlencode($optioncss);
 }
 
 $arrayofmassactions = array(
-	//'presend'=>img_picto('', 'email', 'class="pictofixedwidth"').$langs->trans("SendByMail"),
-	//'builddoc'=>img_picto('', 'pdf', 'class="pictofixedwidth"').$langs->trans("PDFMerge"),
+    //'presend'=>img_picto('', 'email', 'class="pictofixedwidth"').$langs->trans("SendByMail"),
+    //'builddoc'=>img_picto('', 'pdf', 'class="pictofixedwidth"').$langs->trans("PDFMerge"),
 );
 $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
-print '<form method="POST" id="searchFormList" action="'.$_SERVER['PHP_SELF'].'">'."\n";
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form method="POST" id="searchFormList" action="' . $_SERVER['PHP_SELF'] . '">' . "\n";
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 if ($optioncss != '') {
-	print '<input type="hidden" name="optioncss" value="'.$optioncss.'">';
+    print '<input type="hidden" name="optioncss" value="' . $optioncss . '">';
 }
 print '<input type="hidden" name="formfilteraction" id="formfilteraction" value="list">';
 print '<input type="hidden" name="action" value="list">';
-print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
-print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
-print '<input type="hidden" name="page" value="'.$page.'">';
-print '<input type="hidden" name="contextpage" value="'.$contextpage.'">';
+print '<input type="hidden" name="sortfield" value="' . $sortfield . '">';
+print '<input type="hidden" name="sortorder" value="' . $sortorder . '">';
+print '<input type="hidden" name="page" value="' . $page . '">';
+print '<input type="hidden" name="contextpage" value="' . $contextpage . '">';
 print '<input type="hidden" name="page_y" value="">';
-print '<input type="hidden" name="mode" value="'.$mode.'">';
+print '<input type="hidden" name="mode" value="' . $mode . '">';
 
 if ($type != '') {
-	print '<input type="hidden" name="type" value="'.$type.'">';
+    print '<input type="hidden" name="type" value="' . $type . '">';
 }
 
 $newcardbutton = '';
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'].'?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss'=>'reposition'));
-$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss'=>'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'] . '?mode=common' . preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'] . '?mode=kanban' . preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
 
 print_barre_liste($title, $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'generic', 0, $newcardbutton, '', $limit, 0, 0, 1);
 
@@ -308,18 +309,18 @@ $moreforfilter = '';
 $parameters = array();
 $reshook = $hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 if (empty($reshook)) {
-	$moreforfilter .= $hookmanager->resPrint;
+    $moreforfilter .= $hookmanager->resPrint;
 } else {
-	$moreforfilter = $hookmanager->resPrint;
+    $moreforfilter = $hookmanager->resPrint;
 }
 
 if (!empty($moreforfilter)) {
-	print '<div class="liste_titre liste_titre_bydiv centpercent">';
-	print $moreforfilter;
-	$parameters = array();
-	$reshook = $hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
-	print $hookmanager->resPrint;
-	print '</div>';
+    print '<div class="liste_titre liste_titre_bydiv centpercent">';
+    print $moreforfilter;
+    $parameters = array();
+    $reshook = $hookmanager->executeHooks('printFieldPreListTitle', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+    print $hookmanager->resPrint;
+    print '</div>';
 }
 
 $varpage = empty($contextpage) ? $_SERVER['PHP_SELF'] : $contextpage;
@@ -327,33 +328,33 @@ $selectedfields = ($mode != 'kanban' ? $form->multiSelectArrayWithCheckbox('sele
 $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('checkforselect', 1) : '');
 
 print '<div class="div-table-responsive">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
-print '<table class="tagtable nobottomiftotal liste'.($moreforfilter ? " listwithfilterbefore" : "").'">'."\n";
+print '<table class="tagtable nobottomiftotal liste' . ($moreforfilter ? " listwithfilterbefore" : "") . '">' . "\n";
 
 // Fields title search
 // --------------------------------------------------------------------
 print '<tr class="liste_titre_filter">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print '<td class="liste_titre center maxwidthsearch">';
-	$searchpicto = $form->showFilterButtons('left');
-	print $searchpicto;
-	print '</td>';
+    print '<td class="liste_titre center maxwidthsearch">';
+    $searchpicto = $form->showFilterButtons('left');
+    print $searchpicto;
+    print '</td>';
 }
-print '<td class="liste_titre"><input type="text" class="flat" name="search_line" value="'.dol_escape_htmltag($search_line).'" size="6"></td>';
-print '<td class="liste_titre"><input type="text" class="flat" name="search_bon" value="'.dol_escape_htmltag($search_bon).'" size="6"></td>';
+print '<td class="liste_titre"><input type="text" class="flat" name="search_line" value="' . dol_escape_htmltag($search_line) . '" size="6"></td>';
+print '<td class="liste_titre"><input type="text" class="flat" name="search_bon" value="' . dol_escape_htmltag($search_bon) . '" size="6"></td>';
 print '<td class="liste_titre">&nbsp;</td>';
-print '<td class="liste_titre"><input type="text" class="flat" name="search_company" value="'.dol_escape_htmltag($search_company).'" size="6"></td>';
-print '<td class="liste_titre center"><input type="text" class="flat" name="search_code" value="'.dol_escape_htmltag($search_code).'" size="6"></td>';
+print '<td class="liste_titre"><input type="text" class="flat" name="search_company" value="' . dol_escape_htmltag($search_company) . '" size="6"></td>';
+print '<td class="liste_titre center"><input type="text" class="flat" name="search_code" value="' . dol_escape_htmltag($search_code) . '" size="6"></td>';
 print '<td class="liste_titre">&nbsp;</td>';
 print '<td class="liste_titre">&nbsp;</td>';
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print '<td class="liste_titre center maxwidthsearch">';
-	$searchpicto = $form->showFilterButtons();
-	print $searchpicto;
-	print '</td>';
+    print '<td class="liste_titre center maxwidthsearch">';
+    $searchpicto = $form->showFilterButtons();
+    print $searchpicto;
+    print '</td>';
 }
-print '</tr>'."\n";
+print '</tr>' . "\n";
 
 $totalarray = array();
 $totalarray['nbfield'] = 0;
@@ -362,9 +363,9 @@ $columntitle = "WithdrawalsReceipts";
 $columntitlethirdparty = "CustomerCode";
 $columncodethirdparty = "s.code_client";
 if ($type == 'bank-transfer') {
-	$columntitle = "BankTransferReceipts";
-	$columntitlethirdparty = "SupplierCode";
-	$columncodethirdparty = "s.code_fournisseur";
+    $columntitle = "BankTransferReceipts";
+    $columntitlethirdparty = "SupplierCode";
+    $columncodethirdparty = "s.code_fournisseur";
 }
 
 // Fields title label
@@ -372,8 +373,8 @@ if ($type == 'bank-transfer') {
 print '<tr class="liste_titre">';
 // Action column
 if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
-	$totalarray['nbfield']++;
+    print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
+    $totalarray['nbfield']++;
 }
 print_liste_field_titre($columntitle, $_SERVER['PHP_SELF'], "p.ref", '', $param, '', $sortfield, $sortorder);
 $totalarray['nbfield']++;
@@ -391,10 +392,10 @@ print_liste_field_titre("Amount", $_SERVER['PHP_SELF'], "pl.amount", "", $param,
 $totalarray['nbfield']++;
 // Action column
 if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-	print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ')."\n";
-	$totalarray['nbfield']++;
+    print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
+    $totalarray['nbfield']++;
 }
-print '</tr>'."\n";
+print '</tr>' . "\n";
 
 // Loop on record
 // --------------------------------------------------------------------
@@ -405,146 +406,146 @@ $totalarray['nbfield'] = 0;
 
 $imaxinloop = ($limit ? min($num, $limit) : $num);
 while ($i < $imaxinloop) {
-	$obj = $db->fetch_object($resql);
+    $obj = $db->fetch_object($resql);
 
-	$bon->id = $obj->rowid;
-	$bon->ref = $obj->ref;
-	$bon->statut = $obj->status;
-	$bon->date_echeance = $obj->datec;
-	$bon->total = $obj->amount;
+    $bon->id = $obj->rowid;
+    $bon->ref = $obj->ref;
+    $bon->statut = $obj->status;
+    $bon->date_echeance = $obj->datec;
+    $bon->total = $obj->amount;
 
-	$object = $bon;
-	if ($object->checkIfSalaryBonPrelevement()) {
-		$fullname = explode(' ', $obj->name);
+    $object = $bon;
+    if ($object->checkIfSalaryBonPrelevement()) {
+        $fullname = explode(' ', $obj->name);
 
-		$userstatic->id = $obj->socid;
-		$userstatic->email = $obj->email;
-		$userstatic->firstname = $fullname[0];
-		$userstatic->lastname = isset($fullname[1]) ? $fullname[1] : '';
-	}
+        $userstatic->id = $obj->socid;
+        $userstatic->email = $obj->email;
+        $userstatic->firstname = $fullname[0];
+        $userstatic->lastname = isset($fullname[1]) ? $fullname[1] : '';
+    }
 
-	$company->id = $obj->socid;
-	$company->name = $obj->name;
-	$company->email = $obj->email;
-	$company->code_client = $obj->code_client;
+    $company->id = $obj->socid;
+    $company->name = $obj->name;
+    $company->email = $obj->email;
+    $company->code_client = $obj->code_client;
 
-	if ($mode == 'kanban') {
-		if ($i == 0) {
-			print '<tr class="trkanban"><td colspan="'.$savnbfield.'">';
-			print '<div class="box-flex-container kanban">';
-		}
-		// Output Kanban
-		$selected = -1;
-		if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
-			$selected = 0;
-			if (in_array($object->id, $arrayofselected)) {
-				$selected = 1;
-			}
-		}
-		print $object->getKanbanView('', array('selected' => $selected));
-		if ($i == ($imaxinloop - 1)) {
-			print '</div>';
-			print '</td></tr>';
-		}
-	} else {
-		// Show line of result
-		$j = 0;
-		print '<tr data-rowid="'.$object->id.'" class="oddeven">';
+    if ($mode == 'kanban') {
+        if ($i == 0) {
+            print '<tr class="trkanban"><td colspan="' . $savnbfield . '">';
+            print '<div class="box-flex-container kanban">';
+        }
+        // Output Kanban
+        $selected = -1;
+        if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
+            $selected = 0;
+            if (in_array($object->id, $arrayofselected)) {
+                $selected = 1;
+            }
+        }
+        print $object->getKanbanView('', array('selected' => $selected));
+        if ($i == ($imaxinloop - 1)) {
+            print '</div>';
+            print '</td></tr>';
+        }
+    } else {
+        // Show line of result
+        $j = 0;
+        print '<tr data-rowid="' . $object->id . '" class="oddeven">';
 
-		// Action column
-		if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			print '<td class="nowrap center">';
-			if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
-				$selected = 0;
-				if (in_array($object->id, $arrayofselected)) {
-					$selected = 1;
-				}
-				print '<input id="cb'.$object->id.'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$object->id.'"'.($selected ? ' checked="checked"' : '').'>';
-			}
-			print '</td>';
-			if (!$i) {
-				$totalarray['nbfield']++;
-			}
-		}
-		print '<td>';
-		print $bon->getNomUrl(1);
-		print "</td>\n";
+        // Action column
+        if (getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+            print '<td class="nowrap center">';
+            if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
+                $selected = 0;
+                if (in_array($object->id, $arrayofselected)) {
+                    $selected = 1;
+                }
+                print '<input id="cb' . $object->id . '" class="flat checkforselect" type="checkbox" name="toselect[]" value="' . $object->id . '"' . ($selected ? ' checked="checked"' : '') . '>';
+            }
+            print '</td>';
+            if (!$i) {
+                $totalarray['nbfield']++;
+            }
+        }
+        print '<td>';
+        print $bon->getNomUrl(1);
+        print "</td>\n";
 
-		print '<td>';
-		print $line->LibStatut($obj->statut_ligne, 2);
-		print "&nbsp;";
-		print '<a href="'.DOL_URL_ROOT.'/compta/prelevement/line.php?id='.$obj->rowid_ligne.'">';
-		print substr('000000'.$obj->rowid_ligne, -6);
-		print '</a></td>';
+        print '<td>';
+        print $line->LibStatut($obj->statut_ligne, 2);
+        print "&nbsp;";
+        print '<a href="' . DOL_URL_ROOT . '/compta/prelevement/line.php?id=' . $obj->rowid_ligne . '">';
+        print substr('000000' . $obj->rowid_ligne, -6);
+        print '</a></td>';
 
-		// Ref invoice or salary
-		print '<td class="nowraponall">';
-		$link_to_bill = '/compta/facture/card.php?facid=';
-		$link_title = 'Invoice';
-		$link_picto = 'bill';
-		if ($type == 'bank-transfer') {
-			if ($bon->checkIfSalaryBonPrelevement()) {
-				$link_to_bill = '/salaries/card.php?id=';
-				$link_title = 'SalaryInvoice';
-				$link_picto = 'salary';
-			} else {
-				$link_to_bill = '/fourn/facture/card.php?facid=';
-				$link_title = 'SupplierInvoice';
-				$link_picto = 'supplier_invoice';
-			}
-		}
-		print '<a href="'.DOL_URL_ROOT.$link_to_bill.$obj->facid.'">';
-		print img_object($langs->trans($link_title), $link_picto);
-		if (!$bon->checkIfSalaryBonPrelevement()) {
-			print '&nbsp;'.$obj->invoiceref."</td>\n";
-		} else {
-			print '&nbsp;'.(!empty($obj->invoiceref) ? $obj->invoiceref : $obj->facid)."</td>\n";
-		}
-		print '</a>';
-		print '</td>';
+        // Ref invoice or salary
+        print '<td class="nowraponall">';
+        $link_to_bill = '/compta/facture/card.php?facid=';
+        $link_title = 'Invoice';
+        $link_picto = 'bill';
+        if ($type == 'bank-transfer') {
+            if ($bon->checkIfSalaryBonPrelevement()) {
+                $link_to_bill = '/salaries/card.php?id=';
+                $link_title = 'SalaryInvoice';
+                $link_picto = 'salary';
+            } else {
+                $link_to_bill = '/fourn/facture/card.php?facid=';
+                $link_title = 'SupplierInvoice';
+                $link_picto = 'supplier_invoice';
+            }
+        }
+        print '<a href="' . DOL_URL_ROOT . $link_to_bill . $obj->facid . '">';
+        print img_object($langs->trans($link_title), $link_picto);
+        if (!$bon->checkIfSalaryBonPrelevement()) {
+            print '&nbsp;' . $obj->invoiceref . "</td>\n";
+        } else {
+            print '&nbsp;' . (!empty($obj->invoiceref) ? $obj->invoiceref : $obj->facid) . "</td>\n";
+        }
+        print '</a>';
+        print '</td>';
 
-		// Thirdparty (company or user)
-		print '<td class="tdoverflowmax150">';
-		print(!$bon->checkIfSalaryBonPrelevement() ? $company->getNomUrl(1) : $userstatic->getNomUrl(-1));
-		print "</td>\n";
+        // Thirdparty (company or user)
+        print '<td class="tdoverflowmax150">';
+        print(!$bon->checkIfSalaryBonPrelevement() ? $company->getNomUrl(1) : $userstatic->getNomUrl(-1));
+        print "</td>\n";
 
-		print '<td class="center">';
-		$link_to_tab = '/comm/card.php?socid=';
-		$link_code = $obj->code_client;
-		if ($type == 'bank-transfer') {
-			$link_to_tab = '/fourn/card.php?socid=';
-			$link_code = $obj->code_fournisseur;
-		}
-		print '<a href="'.DOL_URL_ROOT.$link_to_tab.$company->id.'">'.$link_code."</a>";
-		print "</td>\n";
+        print '<td class="center">';
+        $link_to_tab = '/comm/card.php?socid=';
+        $link_code = $obj->code_client;
+        if ($type == 'bank-transfer') {
+            $link_to_tab = '/fourn/card.php?socid=';
+            $link_code = $obj->code_fournisseur;
+        }
+        print '<a href="' . DOL_URL_ROOT . $link_to_tab . $company->id . '">' . $link_code . "</a>";
+        print "</td>\n";
 
-		print '<td class="center">'.dol_print_date($db->jdate($obj->datec), 'day')."</td>\n";
+        print '<td class="center">' . dol_print_date($db->jdate($obj->datec), 'day') . "</td>\n";
 
-		print '<td class="nowraponall right"><span class="amount">'.price($obj->amount)."</span></td>\n";
+        print '<td class="nowraponall right"><span class="amount">' . price($obj->amount) . "</span></td>\n";
 
-		// Action column
-		if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
-			print '<td class="nowrap center">';
-			if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
-				$selected = 0;
-				if (in_array($object->id, $arrayofselected)) {
-					$selected = 1;
-				}
-				print '<input id="cb'.$object->id.'" class="flat checkforselect" type="checkbox" name="toselect[]" value="'.$object->id.'"'.($selected ? ' checked="checked"' : '').'>';
-			}
-			print '</td>';
-			if (!$i) {
-				$totalarray['nbfield']++;
-			}
-		}
+        // Action column
+        if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
+            print '<td class="nowrap center">';
+            if ($massactionbutton || $massaction) { // If we are in select mode (massactionbutton defined) or if we have already selected and sent an action ($massaction) defined
+                $selected = 0;
+                if (in_array($object->id, $arrayofselected)) {
+                    $selected = 1;
+                }
+                print '<input id="cb' . $object->id . '" class="flat checkforselect" type="checkbox" name="toselect[]" value="' . $object->id . '"' . ($selected ? ' checked="checked"' : '') . '>';
+            }
+            print '</td>';
+            if (!$i) {
+                $totalarray['nbfield']++;
+            }
+        }
 
-		print '</tr>'."\n";
-	}
-	$i++;
+        print '</tr>' . "\n";
+    }
+    $i++;
 }
 
 if ($num == 0) {
-	print '<tr><td colspan="8"><span class="opacitymedium">'.$langs->trans("None").'</span></td></tr>';
+    print '<tr><td colspan="8"><span class="opacitymedium">' . $langs->trans("None") . '</span></td></tr>';
 }
 
 $db->free($result);
@@ -553,10 +554,10 @@ $parameters = array('arrayfields' => $arrayfields, 'sql' => $sql);
 $reshook = $hookmanager->executeHooks('printFieldListFooter', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 
-print '</table>'."\n";
-print '</div>'."\n";
+print '</table>' . "\n";
+print '</div>' . "\n";
 
-print '</form>'."\n";
+print '</form>' . "\n";
 
 
 // End of page

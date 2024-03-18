@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2015-2016	Alexandre Spangaro		<aspangaro@open-dsi.fr>
+
+/* Copyright (C) 2015-2016  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +17,19 @@
  */
 
 /**
- * 	\file       htdocs/don/info.php
- * 	\ingroup    donations
- * 	\brief      Page to show a donation information
+ *  \file       htdocs/don/info.php
+ *  \ingroup    donations
+ *  \brief      Page to show a donation information
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/donation.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/don/class/don.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 if (isModEnabled('project')) {
-	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 $langs->load('donations');
@@ -40,12 +41,12 @@ $projectid = (GETPOST('projectid') ? GETPOSTINT('projectid') : 0);
 
 $object = new Don($db);
 if ($id > 0 || $ref) {
-	$object->fetch($id, $ref);
+    $object->fetch($id, $ref);
 }
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'don', $object->id);
 
@@ -56,8 +57,8 @@ $result = restrictedArea($user, 'don', $object->id);
  */
 
 if ($action == 'classin' && $user->hasRight('don', 'creer')) {
-	$object->fetch($id);
-	$object->setProject($projectid);
+    $object->fetch($id);
+    $object->setProject($projectid);
 }
 
 
@@ -65,7 +66,7 @@ if ($action == 'classin' && $user->hasRight('don', 'creer')) {
  * View
  */
 
-$title = $langs->trans('Donation')." - ".$langs->trans('Info');
+$title = $langs->trans('Donation') . " - " . $langs->trans('Info');
 
 $help_url = 'EN:Module_Donations|FR:Module_Dons|ES:M&oacute;dulo_Donaciones|DE:Modul_Spenden';
 
@@ -73,7 +74,7 @@ llxHeader('', $title, $help_url, '', 0, 0, '', '', '', 'mod-donation page-card_i
 
 $form = new Form($db);
 if (isModEnabled('project')) {
-	$formproject = new FormProjets($db);
+    $formproject = new FormProjets($db);
 }
 
 $object->info($id);
@@ -82,40 +83,40 @@ $head = donation_prepare_head($object);
 
 print dol_get_fiche_head($head, 'info', $langs->trans("Donation"), -1, 'donation');
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/don/list.php'.(!empty($socid) ? '?socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/don/list.php' . (!empty($socid) ? '?socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
 $morehtmlref = '<div class="refidno">';
 // Project
 if (isModEnabled('project')) {
-	$langs->load("projects");
-	$morehtmlref .= $langs->trans('Project').' ';
-	if ($user->hasRight('don', 'creer')) {
-		if ($action != 'classify') {
-			// $morehtmlref.='<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
-		}
-		if ($action == 'classify') {
-			//$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
-			$morehtmlref .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'">';
-			$morehtmlref .= '<input type="hidden" name="action" value="classin">';
-			$morehtmlref .= '<input type="hidden" name="token" value="'.newToken().'">';
-			$morehtmlref .= $formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
-			$morehtmlref .= '<input type="submit" class="button valignmiddle" value="'.$langs->trans("Modify").'">';
-			$morehtmlref .= '</form>';
-		} else {
-			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
-		}
-	} else {
-		if (!empty($object->fk_project)) {
-			$proj = new Project($db);
-			$proj->fetch($object->fk_project);
-			$morehtmlref .= ' : '.$proj->getNomUrl(1);
-			if ($proj->title) {
-				$morehtmlref .= ' - '.$proj->title;
-			}
-		} else {
-			$morehtmlref .= '';
-		}
-	}
+    $langs->load("projects");
+    $morehtmlref .= $langs->trans('Project') . ' ';
+    if ($user->hasRight('don', 'creer')) {
+        if ($action != 'classify') {
+            // $morehtmlref.='<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token='.newToken().'&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> : ';
+        }
+        if ($action == 'classify') {
+            //$morehtmlref.=$form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1, 1);
+            $morehtmlref .= '<form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '">';
+            $morehtmlref .= '<input type="hidden" name="action" value="classin">';
+            $morehtmlref .= '<input type="hidden" name="token" value="' . newToken() . '">';
+            $morehtmlref .= $formproject->select_projects($object->socid, $object->fk_project, 'projectid', $maxlength, 0, 1, 0, 1, 0, 0, '', 1);
+            $morehtmlref .= '<input type="submit" class="button valignmiddle" value="' . $langs->trans("Modify") . '">';
+            $morehtmlref .= '</form>';
+        } else {
+            $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0, 0, 1, '', 'maxwidth300');
+        }
+    } else {
+        if (!empty($object->fk_project)) {
+            $proj = new Project($db);
+            $proj->fetch($object->fk_project);
+            $morehtmlref .= ' : ' . $proj->getNomUrl(1);
+            if ($proj->title) {
+                $morehtmlref .= ' - ' . $proj->title;
+            }
+        } else {
+            $morehtmlref .= '';
+        }
+    }
 }
 $morehtmlref .= '</div>';
 

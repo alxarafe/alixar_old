@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,7 +22,7 @@ require '../../main.inc.php';
 
 // Security check
 if (!$user->admin && $user->socid > 0) {
-	accessforbidden();
+    accessforbidden();
 }
 
 

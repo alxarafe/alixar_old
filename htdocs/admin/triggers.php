@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,13 +23,13 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/interfaces.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/interfaces.class.php';
 
 // Load translation files required by the page
 $langs->load("admin");
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $sortfield = 'file';
@@ -52,7 +53,7 @@ $form = new Form($db);
 
 print load_fiche_titre($langs->trans("TriggersAvailable"), '', 'title_setup');
 
-print '<span class="opacitymedium">'.$langs->trans("TriggersDesc")."</span><br>";
+print '<span class="opacitymedium">' . $langs->trans("TriggersDesc") . "</span><br>";
 print "<br>\n";
 
 
@@ -64,25 +65,25 @@ $align = '';
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder">';
 print '<tr class="liste_titre">';
-print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], 'none', "", $param, '', $sortfield, $sortorder, '', 1)."\n";
-print getTitleFieldOfList($langs->trans("File"), 0, $_SERVER['PHP_SELF'], 'file', "", $param, ($align ? 'align="'.$align.'"' : ''), $sortfield, $sortorder, '', 1)."\n";
-print getTitleFieldOfList($langs->trans("Active"), 0, $_SERVER['PHP_SELF'], 'active', "", $param, 'align="center"', $sortfield, $sortorder, '', 1)."\n";
-print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], 'none', "", $param, ($align ? 'align="'.$align.'"' : ''), $sortfield, $sortorder, '', 1)."\n";
+print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], 'none', "", $param, '', $sortfield, $sortorder, '', 1) . "\n";
+print getTitleFieldOfList($langs->trans("File"), 0, $_SERVER['PHP_SELF'], 'file', "", $param, ($align ? 'align="' . $align . '"' : ''), $sortfield, $sortorder, '', 1) . "\n";
+print getTitleFieldOfList($langs->trans("Active"), 0, $_SERVER['PHP_SELF'], 'active', "", $param, 'align="center"', $sortfield, $sortorder, '', 1) . "\n";
+print getTitleFieldOfList('', 0, $_SERVER['PHP_SELF'], 'none', "", $param, ($align ? 'align="' . $align . '"' : ''), $sortfield, $sortorder, '', 1) . "\n";
 print '</tr>';
 
 foreach ($triggers as $trigger) {
-	print '<tr class="oddeven">';
-	print '<td class=" width="32">'.$trigger['picto'].'</td>';
-	print '<td>'.$trigger['file'].'</td>';
-	print '<td class="center">'.$trigger['status'].'</td>';
-	print '<td>';
-	$text = $trigger['info'];
-	$text .= "<br>\n<strong>".$langs->trans("File")."</strong>:<br>\n".$trigger['relpath'];
-	//$text.="\n".$langs->trans("ExternalModule",$trigger['isocreorexternal']);
-	// @phan-suppress-next-line PhanPluginSuspiciousParamPosition
-	print $form->textwithpicto('', $text);
-	print '</td>';
-	print '</tr>';
+    print '<tr class="oddeven">';
+    print '<td class=" width="32">' . $trigger['picto'] . '</td>';
+    print '<td>' . $trigger['file'] . '</td>';
+    print '<td class="center">' . $trigger['status'] . '</td>';
+    print '<td>';
+    $text = $trigger['info'];
+    $text .= "<br>\n<strong>" . $langs->trans("File") . "</strong>:<br>\n" . $trigger['relpath'];
+    //$text.="\n".$langs->trans("ExternalModule",$trigger['isocreorexternal']);
+    // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
+    print $form->textwithpicto('', $text);
+    print '</td>';
+    print '</tr>';
 }
 
 print '</table>';

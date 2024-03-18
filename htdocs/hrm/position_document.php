@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
@@ -28,10 +29,10 @@
 // Load Dolibarr environment
 require '../main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/position.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_position.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/job.class.php';
@@ -51,32 +52,32 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
 if (empty($page) || $page == -1) {
-	$page = 0;
+    $page = 0;
 }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) {
-	$sortorder = "ASC";
+    $sortorder = "ASC";
 }
 if (!$sortfield) {
-	$sortfield = "name";
+    $sortfield = "name";
 }
 //if (! $sortfield) $sortfield="position_name";
 
 // Initialize technical objects
 $object = new Position($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->hrm->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->hrm->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('positiondocument', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->hrm->multidir_output[$object->entity ? $object->entity : $conf->entity]."/position/".get_exdir(0, 0, 0, 1, $object);
+    $upload_dir = $conf->hrm->multidir_output[$object->entity ? $object->entity : $conf->entity] . "/position/" . get_exdir(0, 0, 0, 1, $object);
 }
 
 // Permissions
@@ -89,10 +90,10 @@ $permissiontoadd  = $user->hasRight('hrm', 'all', 'write'); // Used by the inclu
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
 if (empty($conf->hrm->enabled)) {
-	accessforbidden();
+    accessforbidden();
 }
 if (!$permissiontoread) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -100,7 +101,7 @@ if (!$permissiontoread) {
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
+include DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
 
 
 /*
@@ -109,69 +110,69 @@ include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
 
 $form = new Form($db);
 
-$title = $langs->trans("Position").' - '.$langs->trans("Files");
+$title = $langs->trans("Position") . ' - ' . $langs->trans("Files");
 $help_url = '';
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
 
 if ($object->id) {
-	/*
-	 * Show tabs
-	 */
-	$head = positionCardPrepareHead($object);
+    /*
+     * Show tabs
+     */
+    $head = positionCardPrepareHead($object);
 
-	print dol_get_fiche_head($head, 'document', $langs->trans("Document"), -1, $object->picto);
-
-
-	// Build file list
-	$filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
-	$totalsize = 0;
-	foreach ($filearray as $key => $file) {
-		$totalsize += $file['size'];
-	}
-
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/hrm/position_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
-
-	$morehtmlref = '<div class="refidno">';
-	$u_position = new User(($db));
-	$u_position->fetch($object->fk_user);
-	$morehtmlref .= ($u_position->id > 0 ? $u_position->getNomUrl(1) : $langs->trans('Employee').' : ');
-	$job = new Job($db);
-	$job->fetch($object->fk_job);
-	$morehtmlref .= '<br>'.$langs->trans('JobProfile').' : '.$job->getNomUrl(1);
-	$morehtmlref .= '</div>';
+    print dol_get_fiche_head($head, 'document', $langs->trans("Document"), -1, $object->picto);
 
 
-	dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'rowid', $morehtmlref);
-	print '<div class="fichecenter">';
+    // Build file list
+    $filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
+    $totalsize = 0;
+    foreach ($filearray as $key => $file) {
+        $totalsize += $file['size'];
+    }
 
-	print '<div class="underbanner clearboth"></div>';
-	print '<table class="border centpercent tableforfield">';
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . dol_buildpath('/hrm/position_list.php', 1) . '?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	// Number of files
-	print '<tr><td class="titlefield">'.$langs->trans("NbOfAttachedFiles").'</td><td colspan="3">'.count($filearray).'</td></tr>';
+    $morehtmlref = '<div class="refidno">';
+    $u_position = new User(($db));
+    $u_position->fetch($object->fk_user);
+    $morehtmlref .= ($u_position->id > 0 ? $u_position->getNomUrl(1) : $langs->trans('Employee') . ' : ');
+    $job = new Job($db);
+    $job->fetch($object->fk_job);
+    $morehtmlref .= '<br>' . $langs->trans('JobProfile') . ' : ' . $job->getNomUrl(1);
+    $morehtmlref .= '</div>';
 
-	// Total size
-	print '<tr><td>'.$langs->trans("TotalSizeOfAttachedFiles").'</td><td colspan="3">'.$totalsize.' '.$langs->trans("bytes").'</td></tr>';
 
-	print '</table>';
+    dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'rowid', $morehtmlref);
+    print '<div class="fichecenter">';
 
-	print '</div>';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border centpercent tableforfield">';
 
-	print dol_get_fiche_end();
+    // Number of files
+    print '<tr><td class="titlefield">' . $langs->trans("NbOfAttachedFiles") . '</td><td colspan="3">' . count($filearray) . '</td></tr>';
 
-	$modulepart = 'hrm';
-	$permtoedit = $permissiontoadd;
-	$param = '&id='.$object->id;
+    // Total size
+    print '<tr><td>' . $langs->trans("TotalSizeOfAttachedFiles") . '</td><td colspan="3">' . $totalsize . ' ' . $langs->trans("bytes") . '</td></tr>';
 
-	//$relativepathwithnofile='position/' . dol_sanitizeFileName($object->id).'/';
-	$relativepathwithnofile = 'position/'.dol_sanitizeFileName($object->ref).'/';
+    print '</table>';
 
-	include DOL_DOCUMENT_ROOT.'/core/tpl/document_actions_post_headers.tpl.php';
+    print '</div>';
+
+    print dol_get_fiche_end();
+
+    $modulepart = 'hrm';
+    $permtoedit = $permissiontoadd;
+    $param = '&id=' . $object->id;
+
+    //$relativepathwithnofile='position/' . dol_sanitizeFileName($object->id).'/';
+    $relativepathwithnofile = 'position/' . dol_sanitizeFileName($object->ref) . '/';
+
+    include DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_post_headers.tpl.php';
 } else {
-	accessforbidden('', 0, 1);
+    accessforbidden('', 0, 1);
 }
 
 // End of page

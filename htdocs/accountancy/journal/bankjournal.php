@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2010  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2007-2010  Jean Heimburger         <jean@tiaris.info>
  * Copyright (C) 2011       Juanjo Menent           <jmenent@2byte.es>
@@ -33,35 +34,36 @@
  *  \ingroup    Accountancy (Double entries)
  *  \brief      Page with bank journal
  */
+
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/report.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/bank.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/accountancy/class/accountingaccount.class.php';
-require_once DOL_DOCUMENT_ROOT.'/accountancy/class/accountingjournal.class.php';
-require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
-require_once DOL_DOCUMENT_ROOT.'/user/class/user.class.php';
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/sociales/class/chargesociales.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT.'/don/class/don.class.php';
-require_once DOL_DOCUMENT_ROOT.'/don/class/paymentdonation.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/tva/class/tva.class.php';
-require_once DOL_DOCUMENT_ROOT.'/salaries/class/paymentsalary.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
-require_once DOL_DOCUMENT_ROOT.'/fourn/class/paiementfourn.class.php';
-require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.facture.class.php';
-require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.class.php';
-require_once DOL_DOCUMENT_ROOT.'/accountancy/class/bookkeeping.class.php';
-require_once DOL_DOCUMENT_ROOT.'/societe/class/client.class.php';
-require_once DOL_DOCUMENT_ROOT.'/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT.'/expensereport/class/paymentexpensereport.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/paymentvarious.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';
-require_once DOL_DOCUMENT_ROOT.'/loan/class/loan.class.php';
-require_once DOL_DOCUMENT_ROOT.'/loan/class/paymentloan.class.php';
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/subscription.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
+require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
+require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
+require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
+require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
+require_once DOL_DOCUMENT_ROOT . '/don/class/paymentdonation.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
+require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
+require_once DOL_DOCUMENT_ROOT . '/fourn/class/paiementfourn.class.php';
+require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
+require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
+require_once DOL_DOCUMENT_ROOT . '/accountancy/class/bookkeeping.class.php';
+require_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
+require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
+require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
+require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
+require_once DOL_DOCUMENT_ROOT . '/loan/class/paymentloan.class.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "other", "compta", "banks", "bills", "donations", "loan", "accountancy", "trips", "salaries", "hrm", "members"));
@@ -77,7 +79,7 @@ $date_endday = GETPOSTINT('date_endday');
 $date_endyear = GETPOSTINT('date_endyear');
 $in_bookkeeping = GETPOST('in_bookkeeping', 'aZ09');
 if ($in_bookkeeping == '') {
-	$in_bookkeeping = 'notyet';
+    $in_bookkeeping = 'notyet';
 }
 
 $now = dol_now();
@@ -86,13 +88,13 @@ $action = GETPOST('action', 'aZ09');
 
 // Security check
 if (!isModEnabled('accounting')) {
-	accessforbidden();
+    accessforbidden();
 }
 if ($user->socid > 0) {
-	accessforbidden();
+    accessforbidden();
 }
 if (!$user->hasRight('accounting', 'mouvements', 'lire')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -106,64 +108,64 @@ $date_start = dol_mktime(0, 0, 0, $date_startmonth, $date_startday, $date_starty
 $date_end = dol_mktime(23, 59, 59, $date_endmonth, $date_endday, $date_endyear);
 
 if (empty($date_startmonth)) {
-	// Period by default on transfer
-	$dates = getDefaultDatesForTransfer();
-	$date_start = $dates['date_start'];
-	$pastmonthyear = $dates['pastmonthyear'];
-	$pastmonth = $dates['pastmonth'];
+    // Period by default on transfer
+    $dates = getDefaultDatesForTransfer();
+    $date_start = $dates['date_start'];
+    $pastmonthyear = $dates['pastmonthyear'];
+    $pastmonth = $dates['pastmonth'];
 }
 if (empty($date_endmonth)) {
-	// Period by default on transfer
-	$dates = getDefaultDatesForTransfer();
-	$date_end = $dates['date_end'];
-	$pastmonthyear = $dates['pastmonthyear'];
-	$pastmonth = $dates['pastmonth'];
+    // Period by default on transfer
+    $dates = getDefaultDatesForTransfer();
+    $date_end = $dates['date_end'];
+    $pastmonthyear = $dates['pastmonthyear'];
+    $pastmonth = $dates['pastmonth'];
 }
 
 if (!GETPOSTISSET('date_startmonth') && (empty($date_start) || empty($date_end))) { // We define date_start and date_end, only if we did not submit the form
-	$date_start = dol_get_first_day($pastmonthyear, $pastmonth, false);
-	$date_end = dol_get_last_day($pastmonthyear, $pastmonth, false);
+    $date_start = dol_get_first_day($pastmonthyear, $pastmonth, false);
+    $date_end = dol_get_last_day($pastmonthyear, $pastmonth, false);
 }
 
 $sql  = "SELECT b.rowid, b.dateo as do, b.datev as dv, b.amount, b.amount_main_currency, b.label, b.rappro, b.num_releve, b.num_chq, b.fk_type, b.fk_account,";
 $sql .= " ba.courant, ba.ref as baref, ba.account_number, ba.fk_accountancy_journal,";
 $sql .= " soc.rowid as socid, soc.nom as name, soc.email as email, bu1.type as typeop_company,";
 if (getDolGlobalString('MAIN_COMPANY_PERENTITY_SHARED')) {
-	$sql .= " spe.accountancy_code_customer as code_compta,";
-	$sql .= " spe.accountancy_code_supplier as code_compta_fournisseur,";
+    $sql .= " spe.accountancy_code_customer as code_compta,";
+    $sql .= " spe.accountancy_code_supplier as code_compta_fournisseur,";
 } else {
-	$sql .= " soc.code_compta,";
-	$sql .= " soc.code_compta_fournisseur,";
+    $sql .= " soc.code_compta,";
+    $sql .= " soc.code_compta_fournisseur,";
 }
 $sql .= " u.accountancy_code, u.rowid as userid, u.lastname as lastname, u.firstname as firstname, u.email as useremail, u.statut as userstatus,";
 $sql .= " bu2.type as typeop_user,";
 $sql .= " bu3.type as typeop_payment, bu4.type as typeop_payment_supplier";
-$sql .= " FROM ".MAIN_DB_PREFIX."bank as b";
-$sql .= " JOIN ".MAIN_DB_PREFIX."bank_account as ba on b.fk_account=ba.rowid";
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_url as bu1 ON bu1.fk_bank = b.rowid AND bu1.type='company'";
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_url as bu2 ON bu2.fk_bank = b.rowid AND bu2.type='user'";
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_url as bu3 ON bu3.fk_bank = b.rowid AND bu3.type='payment'";
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."bank_url as bu4 ON bu4.fk_bank = b.rowid AND bu4.type='payment_supplier'";
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe as soc on bu1.url_id=soc.rowid";
+$sql .= " FROM " . MAIN_DB_PREFIX . "bank as b";
+$sql .= " JOIN " . MAIN_DB_PREFIX . "bank_account as ba on b.fk_account=ba.rowid";
+$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "bank_url as bu1 ON bu1.fk_bank = b.rowid AND bu1.type='company'";
+$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "bank_url as bu2 ON bu2.fk_bank = b.rowid AND bu2.type='user'";
+$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "bank_url as bu3 ON bu3.fk_bank = b.rowid AND bu3.type='payment'";
+$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "bank_url as bu4 ON bu4.fk_bank = b.rowid AND bu4.type='payment_supplier'";
+$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "societe as soc on bu1.url_id=soc.rowid";
 if (getDolGlobalString('MAIN_COMPANY_PERENTITY_SHARED')) {
-	$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "societe_perentity as spe ON spe.fk_soc = soc.rowid AND spe.entity = " . ((int) $conf->entity);
+    $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "societe_perentity as spe ON spe.fk_soc = soc.rowid AND spe.entity = " . ((int) $conf->entity);
 }
-$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."user as u on bu2.url_id=u.rowid";
-$sql .= " WHERE ba.fk_accountancy_journal=".((int) $id_journal);
-$sql .= ' AND b.amount <> 0 AND ba.entity IN ('.getEntity('bank_account', 0).')'; // We don't share object for accountancy
+$sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "user as u on bu2.url_id=u.rowid";
+$sql .= " WHERE ba.fk_accountancy_journal=" . ((int) $id_journal);
+$sql .= ' AND b.amount <> 0 AND ba.entity IN (' . getEntity('bank_account', 0) . ')'; // We don't share object for accountancy
 if ($date_start && $date_end) {
-	$sql .= " AND b.dateo >= '".$db->idate($date_start)."' AND b.dateo <= '".$db->idate($date_end)."'";
+    $sql .= " AND b.dateo >= '" . $db->idate($date_start) . "' AND b.dateo <= '" . $db->idate($date_end) . "'";
 }
 // Define begin binding date
 if (getDolGlobalInt('ACCOUNTING_DATE_START_BINDING')) {
-	$sql .= " AND b.dateo >= '".$db->idate(getDolGlobalInt('ACCOUNTING_DATE_START_BINDING'))."'";
+    $sql .= " AND b.dateo >= '" . $db->idate(getDolGlobalInt('ACCOUNTING_DATE_START_BINDING')) . "'";
 }
 // Already in bookkeeping or not
 if ($in_bookkeeping == 'already') {
-	$sql .= " AND (b.rowid IN (SELECT fk_doc FROM ".MAIN_DB_PREFIX."accounting_bookkeeping as ab  WHERE ab.doc_type='bank') )";
+    $sql .= " AND (b.rowid IN (SELECT fk_doc FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab  WHERE ab.doc_type='bank') )";
 }
 if ($in_bookkeeping == 'notyet') {
-	$sql .= " AND (b.rowid NOT IN (SELECT fk_doc FROM ".MAIN_DB_PREFIX."accounting_bookkeeping as ab  WHERE ab.doc_type='bank') )";
+    $sql .= " AND (b.rowid NOT IN (SELECT fk_doc FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping as ab  WHERE ab.doc_type='bank') )";
 }
 $sql .= " ORDER BY b.datev";
 //print $sql;
@@ -214,142 +216,142 @@ $tabmoreinfo = array();
 dol_syslog("accountancy/journal/bankjournal.php", LOG_DEBUG);
 $result = $db->query($sql);
 if ($result) {
-	$num = $db->num_rows($result);
-	//print $sql;
+    $num = $db->num_rows($result);
+    //print $sql;
 
-	// Variables
-	$account_supplier = getDolGlobalString('ACCOUNTING_ACCOUNT_SUPPLIER', 'NotDefined'); // NotDefined is a reserved word
-	$account_customer = getDolGlobalString('ACCOUNTING_ACCOUNT_CUSTOMER', 'NotDefined'); // NotDefined is a reserved word
-	$account_employee = getDolGlobalString('SALARIES_ACCOUNTING_ACCOUNT_PAYMENT', 'NotDefined'); // NotDefined is a reserved word
-	$account_pay_vat = getDolGlobalString('ACCOUNTING_VAT_PAY_ACCOUNT', 'NotDefined'); // NotDefined is a reserved word
-	$account_pay_donation = getDolGlobalString('DONATION_ACCOUNTINGACCOUNT', 'NotDefined'); // NotDefined is a reserved word
-	$account_pay_subscription = getDolGlobalString('ADHERENT_SUBSCRIPTION_ACCOUNTINGACCOUNT', 'NotDefined'); // NotDefined is a reserved word
-	$account_transfer = getDolGlobalString('ACCOUNTING_ACCOUNT_TRANSFER_CASH', 'NotDefined'); // NotDefined is a reserved word
+    // Variables
+    $account_supplier = getDolGlobalString('ACCOUNTING_ACCOUNT_SUPPLIER', 'NotDefined'); // NotDefined is a reserved word
+    $account_customer = getDolGlobalString('ACCOUNTING_ACCOUNT_CUSTOMER', 'NotDefined'); // NotDefined is a reserved word
+    $account_employee = getDolGlobalString('SALARIES_ACCOUNTING_ACCOUNT_PAYMENT', 'NotDefined'); // NotDefined is a reserved word
+    $account_pay_vat = getDolGlobalString('ACCOUNTING_VAT_PAY_ACCOUNT', 'NotDefined'); // NotDefined is a reserved word
+    $account_pay_donation = getDolGlobalString('DONATION_ACCOUNTINGACCOUNT', 'NotDefined'); // NotDefined is a reserved word
+    $account_pay_subscription = getDolGlobalString('ADHERENT_SUBSCRIPTION_ACCOUNTINGACCOUNT', 'NotDefined'); // NotDefined is a reserved word
+    $account_transfer = getDolGlobalString('ACCOUNTING_ACCOUNT_TRANSFER_CASH', 'NotDefined'); // NotDefined is a reserved word
 
-	// Loop on each line into llx_bank table. For each line, we should get:
-	// one line tabpay = line into bank
-	// one line for bank record = tabbq
-	// one line for thirdparty record = tabtp
-	$i = 0;
-	while ($i < $num) {
-		$obj = $db->fetch_object($result);
+    // Loop on each line into llx_bank table. For each line, we should get:
+    // one line tabpay = line into bank
+    // one line for bank record = tabbq
+    // one line for thirdparty record = tabtp
+    $i = 0;
+    while ($i < $num) {
+        $obj = $db->fetch_object($result);
 
-		$lineisapurchase = -1;
-		$lineisasale = -1;
-		// Old method to detect if it's a sale or purchase
-		if ($obj->label == '(SupplierInvoicePayment)' || $obj->label == '(SupplierInvoicePaymentBack)') {
-			$lineisapurchase = 1;
-		}
-		if ($obj->label == '(CustomerInvoicePayment)' || $obj->label == '(CustomerInvoicePaymentBack)') {
-			$lineisasale = 1;
-		}
-		// Try a more reliable method to detect if record is a supplier payment or a customer payment
-		if ($lineisapurchase < 0) {
-			if ($obj->typeop_payment_supplier == 'payment_supplier') {
-				$lineisapurchase = 1;
-			}
-		}
-		if ($lineisasale < 0) {
-			if ($obj->typeop_payment == 'payment') {
-				$lineisasale = 1;
-			}
-		}
-		//var_dump($obj->type_payment); //var_dump($obj->type_payment_supplier);
-		//var_dump($lineisapurchase); //var_dump($lineisasale);
+        $lineisapurchase = -1;
+        $lineisasale = -1;
+        // Old method to detect if it's a sale or purchase
+        if ($obj->label == '(SupplierInvoicePayment)' || $obj->label == '(SupplierInvoicePaymentBack)') {
+            $lineisapurchase = 1;
+        }
+        if ($obj->label == '(CustomerInvoicePayment)' || $obj->label == '(CustomerInvoicePaymentBack)') {
+            $lineisasale = 1;
+        }
+        // Try a more reliable method to detect if record is a supplier payment or a customer payment
+        if ($lineisapurchase < 0) {
+            if ($obj->typeop_payment_supplier == 'payment_supplier') {
+                $lineisapurchase = 1;
+            }
+        }
+        if ($lineisasale < 0) {
+            if ($obj->typeop_payment == 'payment') {
+                $lineisasale = 1;
+            }
+        }
+        //var_dump($obj->type_payment); //var_dump($obj->type_payment_supplier);
+        //var_dump($lineisapurchase); //var_dump($lineisasale);
 
-		// Set accountancy code for bank
-		$compta_bank = $obj->account_number;
+        // Set accountancy code for bank
+        $compta_bank = $obj->account_number;
 
-		// Set accountancy code for thirdparty (example: '411CU...' or '411' if no subledger account defined on customer)
-		$compta_soc = 'NotDefined';
-		if ($lineisapurchase > 0) {
-			$compta_soc = (($obj->code_compta_fournisseur != "") ? $obj->code_compta_fournisseur : $account_supplier);
-		}
-		if ($lineisasale > 0) {
-			$compta_soc = (!empty($obj->code_compta) ? $obj->code_compta : $account_customer);
-		}
+        // Set accountancy code for thirdparty (example: '411CU...' or '411' if no subledger account defined on customer)
+        $compta_soc = 'NotDefined';
+        if ($lineisapurchase > 0) {
+            $compta_soc = (($obj->code_compta_fournisseur != "") ? $obj->code_compta_fournisseur : $account_supplier);
+        }
+        if ($lineisasale > 0) {
+            $compta_soc = (!empty($obj->code_compta) ? $obj->code_compta : $account_customer);
+        }
 
-		$tabcompany[$obj->rowid] = array(
-			'id' => $obj->socid,
-			'name' => $obj->name,
-			'code_compta' => $compta_soc,
-			'email' => $obj->email
-		);
+        $tabcompany[$obj->rowid] = array(
+            'id' => $obj->socid,
+            'name' => $obj->name,
+            'code_compta' => $compta_soc,
+            'email' => $obj->email
+        );
 
-		// Set accountancy code for user
-		// $obj->accountancy_code is the accountancy_code of table u=user but it is defined only if a link with type 'user' exists)
-		$compta_user = (!empty($obj->accountancy_code) ? $obj->accountancy_code : '');
+        // Set accountancy code for user
+        // $obj->accountancy_code is the accountancy_code of table u=user but it is defined only if a link with type 'user' exists)
+        $compta_user = (!empty($obj->accountancy_code) ? $obj->accountancy_code : '');
 
-		$tabuser[$obj->rowid] = array(
-			'id' => $obj->userid,
-			'name' => dolGetFirstLastname($obj->firstname, $obj->lastname),
-			'lastname' => $obj->lastname,
-			'firstname' => $obj->firstname,
-			'email' => $obj->useremail,
-			'accountancy_code' => $compta_user,
-			'status' => $obj->userstatus
-		);
+        $tabuser[$obj->rowid] = array(
+            'id' => $obj->userid,
+            'name' => dolGetFirstLastname($obj->firstname, $obj->lastname),
+            'lastname' => $obj->lastname,
+            'firstname' => $obj->firstname,
+            'email' => $obj->useremail,
+            'accountancy_code' => $compta_user,
+            'status' => $obj->userstatus
+        );
 
-		// Variable bookkeeping ($obj->rowid is Bank Id)
-		$tabpay[$obj->rowid]["date"] = $db->jdate($obj->do);
-		$tabpay[$obj->rowid]["type_payment"] = $obj->fk_type; // CHQ, VIR, LIQ, CB, ...
-		$tabpay[$obj->rowid]["ref"] = $obj->label; // By default. Not unique. May be changed later
-		$tabpay[$obj->rowid]["fk_bank"] = $obj->rowid;
-		$tabpay[$obj->rowid]["bank_account_ref"] = $obj->baref;
-		$tabpay[$obj->rowid]["fk_bank_account"] = $obj->fk_account;
-		$reg = array();
-		if (preg_match('/^\((.*)\)$/i', $obj->label, $reg)) {
-			$tabpay[$obj->rowid]["lib"] = $langs->trans($reg[1]);
-		} else {
-			$tabpay[$obj->rowid]["lib"] = dol_trunc($obj->label, 60);
-		}
+        // Variable bookkeeping ($obj->rowid is Bank Id)
+        $tabpay[$obj->rowid]["date"] = $db->jdate($obj->do);
+        $tabpay[$obj->rowid]["type_payment"] = $obj->fk_type; // CHQ, VIR, LIQ, CB, ...
+        $tabpay[$obj->rowid]["ref"] = $obj->label; // By default. Not unique. May be changed later
+        $tabpay[$obj->rowid]["fk_bank"] = $obj->rowid;
+        $tabpay[$obj->rowid]["bank_account_ref"] = $obj->baref;
+        $tabpay[$obj->rowid]["fk_bank_account"] = $obj->fk_account;
+        $reg = array();
+        if (preg_match('/^\((.*)\)$/i', $obj->label, $reg)) {
+            $tabpay[$obj->rowid]["lib"] = $langs->trans($reg[1]);
+        } else {
+            $tabpay[$obj->rowid]["lib"] = dol_trunc($obj->label, 60);
+        }
 
-		// Load of url links to the line into llx_bank (so load llx_bank_url)
-		$links = $object->get_url($obj->rowid); // Get an array('url'=>, 'url_id'=>, 'label'=>, 'type'=> 'fk_bank'=> )
+        // Load of url links to the line into llx_bank (so load llx_bank_url)
+        $links = $object->get_url($obj->rowid); // Get an array('url'=>, 'url_id'=>, 'label'=>, 'type'=> 'fk_bank'=> )
 
-		// By default
-		$tabpay[$obj->rowid]['type'] = 'unknown'; // Can be SOLD, miscellaneous entry, payment of patient, or any old record with no links in bank_url.
-		$tabtype[$obj->rowid] = 'unknown';
-		$tabmoreinfo[$obj->rowid] = array();
+        // By default
+        $tabpay[$obj->rowid]['type'] = 'unknown'; // Can be SOLD, miscellaneous entry, payment of patient, or any old record with no links in bank_url.
+        $tabtype[$obj->rowid] = 'unknown';
+        $tabmoreinfo[$obj->rowid] = array();
 
-		$amounttouse = $obj->amount;
-		if (!empty($obj->amount_main_currency)) {
-			// If $obj->amount_main_currency is set, it means that $obj->amount is not in same currency, we must use $obj->amount_main_currency
-			$amounttouse = $obj->amount_main_currency;
-		}
+        $amounttouse = $obj->amount;
+        if (!empty($obj->amount_main_currency)) {
+            // If $obj->amount_main_currency is set, it means that $obj->amount is not in same currency, we must use $obj->amount_main_currency
+            $amounttouse = $obj->amount_main_currency;
+        }
 
-		// get_url may return -1 which is not traversable
-		if (is_array($links) && count($links) > 0) {
-			// Test if entry is for a social contribution, salary or expense report.
-			// In such a case, we will ignore the bank url line for user
-			$is_sc = false;
-			$is_salary = false;
-			$is_expensereport = false;
-			foreach ($links as $v) {
-				if ($v['type'] == 'sc') {
-					$is_sc = true;
-					break;
-				}
-				if ($v['type'] == 'payment_salary') {
-					$is_salary = true;
-					break;
-				}
-				if ($v['type'] == 'payment_expensereport') {
-					$is_expensereport = true;
-					break;
-				}
-			}
-			// Now loop on each link of record in bank (code similar to bankentries_list.php)
-			foreach ($links as $key => $val) {
-				if ($links[$key]['type'] == 'user' && !$is_sc && !$is_salary && !$is_expensereport) {
-					continue;
-				}
-				if (in_array($links[$key]['type'], array('sc', 'payment_sc', 'payment', 'payment_supplier', 'payment_vat', 'payment_expensereport', 'banktransfert', 'payment_donation', 'member', 'payment_loan', 'payment_salary', 'payment_various'))) {
-					// So we excluded 'company' and 'user' here. We want only payment lines
+        // get_url may return -1 which is not traversable
+        if (is_array($links) && count($links) > 0) {
+            // Test if entry is for a social contribution, salary or expense report.
+            // In such a case, we will ignore the bank url line for user
+            $is_sc = false;
+            $is_salary = false;
+            $is_expensereport = false;
+            foreach ($links as $v) {
+                if ($v['type'] == 'sc') {
+                    $is_sc = true;
+                    break;
+                }
+                if ($v['type'] == 'payment_salary') {
+                    $is_salary = true;
+                    break;
+                }
+                if ($v['type'] == 'payment_expensereport') {
+                    $is_expensereport = true;
+                    break;
+                }
+            }
+            // Now loop on each link of record in bank (code similar to bankentries_list.php)
+            foreach ($links as $key => $val) {
+                if ($links[$key]['type'] == 'user' && !$is_sc && !$is_salary && !$is_expensereport) {
+                    continue;
+                }
+                if (in_array($links[$key]['type'], array('sc', 'payment_sc', 'payment', 'payment_supplier', 'payment_vat', 'payment_expensereport', 'banktransfert', 'payment_donation', 'member', 'payment_loan', 'payment_salary', 'payment_various'))) {
+                    // So we excluded 'company' and 'user' here. We want only payment lines
 
-					// We save tabtype for a future use, to remember what kind of payment it is
-					$tabpay[$obj->rowid]['type'] = $links[$key]['type'];
-					$tabtype[$obj->rowid] = $links[$key]['type'];
+                    // We save tabtype for a future use, to remember what kind of payment it is
+                    $tabpay[$obj->rowid]['type'] = $links[$key]['type'];
+                    $tabtype[$obj->rowid] = $links[$key]['type'];
 					/* phpcs:disable -- Code does nothing at this moment -> commented
 					} elseif (in_array($links[$key]['type'], array('company', 'user'))) {
 						if ($tabpay[$obj->rowid]['type'] == 'unknown') {

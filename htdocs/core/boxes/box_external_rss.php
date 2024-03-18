@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Eric Seigne          <erics@rycks.com>
  * Copyright (C) 2004-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -20,13 +21,13 @@
  */
 
 /**
- * 	    \file       htdocs/core/boxes/box_external_rss.php
+ *      \file       htdocs/core/boxes/box_external_rss.php
  *      \ingroup    external_rss
  *      \brief      Fichier de gestion d'une box pour le module external_rss
  */
 
-include_once DOL_DOCUMENT_ROOT.'/core/class/rssparser.class.php';
-include_once DOL_DOCUMENT_ROOT.'/core/boxes/modules_boxes.php';
+include_once DOL_DOCUMENT_ROOT . '/core/class/rssparser.class.php';
+include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
 
 
 /**
@@ -34,180 +35,180 @@ include_once DOL_DOCUMENT_ROOT.'/core/boxes/modules_boxes.php';
  */
 class box_external_rss extends ModeleBoxes
 {
-	public $boxcode = "lastrssinfos";
-	public $boximg = "object_rss";
-	public $boxlabel = "BoxLastRssInfos";
-	public $depends = array("externalrss");
+    public $boxcode = "lastrssinfos";
+    public $boximg = "object_rss";
+    public $boxlabel = "BoxLastRssInfos";
+    public $depends = array("externalrss");
 
-	public $paramdef; // Params of box definition (not user params)
+    public $paramdef; // Params of box definition (not user params)
 
-	/**
-	 *  Constructor
-	 *
-	 * 	@param	DoliDB	$db			Database handler
-	 *  @param	string	$param		More parameters
-	 */
-	public function __construct($db, $param)
-	{
-		$this->db = $db;
-		$this->paramdef = $param;
-	}
+    /**
+     *  Constructor
+     *
+     *  @param  DoliDB  $db         Database handler
+     *  @param  string  $param      More parameters
+     */
+    public function __construct($db, $param)
+    {
+        $this->db = $db;
+        $this->paramdef = $param;
+    }
 
-	/**
-	 *  Load data into info_box_contents array to show array later.
-	 *
-	 *  @param	int		$max        	Maximum number of records to load
-	 *  @param	int		$cachedelay		Delay we accept for cache file
-	 *  @return	void
-	 */
-	public function loadBox($max = 5, $cachedelay = 3600)
-	{
-		global $user, $langs, $conf;
-		$langs->load("boxes");
+    /**
+     *  Load data into info_box_contents array to show array later.
+     *
+     *  @param  int     $max            Maximum number of records to load
+     *  @param  int     $cachedelay     Delay we accept for cache file
+     *  @return void
+     */
+    public function loadBox($max = 5, $cachedelay = 3600)
+    {
+        global $user, $langs, $conf;
+        $langs->load("boxes");
 
-		$this->max = $max;
+        $this->max = $max;
 
-		// On recupere numero de param de la boite
-		$reg = array();
-		preg_match('/^([0-9]+) /', $this->paramdef, $reg);
-		$site = $reg[1];
+        // On recupere numero de param de la boite
+        $reg = array();
+        preg_match('/^([0-9]+) /', $this->paramdef, $reg);
+        $site = $reg[1];
 
-		// Create dir nor required
-		// documents/externalrss is created by module activation
-		// documents/externalrss/tmp is created by rssparser
+        // Create dir nor required
+        // documents/externalrss is created by module activation
+        // documents/externalrss/tmp is created by rssparser
 
-		$keyforparamurl = "EXTERNAL_RSS_URLRSS_".$site;
-		$keyforparamtitle = "EXTERNAL_RSS_TITLE_".$site;
+        $keyforparamurl = "EXTERNAL_RSS_URLRSS_" . $site;
+        $keyforparamtitle = "EXTERNAL_RSS_TITLE_" . $site;
 
-		// Get RSS feed
-		$url = getDolGlobalString($keyforparamurl);
+        // Get RSS feed
+        $url = getDolGlobalString($keyforparamurl);
 
-		$rssparser = new RssParser($this->db);
-		$result = $rssparser->parser($url, $this->max, $cachedelay, $conf->externalrss->dir_temp);
+        $rssparser = new RssParser($this->db);
+        $result = $rssparser->parser($url, $this->max, $cachedelay, $conf->externalrss->dir_temp);
 
-		// INFO on channel
-		$description = $rssparser->getDescription();
-		$link = $rssparser->getLink();
+        // INFO on channel
+        $description = $rssparser->getDescription();
+        $link = $rssparser->getLink();
 
-		$title = $langs->trans("BoxTitleLastRssInfos", $max, getDolGlobalString($keyforparamtitle));
-		if ($result < 0 || !empty($rssparser->error)) {
-			// Show warning
-			$errormessage = $langs->trans("FailedToRefreshDataInfoNotUpToDate", ($rssparser->getLastFetchDate() ? dol_print_date($rssparser->getLastFetchDate(), "dayhourtext") : $langs->trans("Unknown")));
-			if ($rssparser->error) {
-				$errormessage .= " - ".$rssparser->error;
-			}
-			$title .= " ".img_error($errormessage);
-			$this->info_box_head = array('text' => $title, 'limit' => 0);
-		} else {
-			$this->info_box_head = array(
-				'text' => $title,
-				'sublink' => $link,
-				'subtext'=>$langs->trans("LastRefreshDate").': '.($rssparser->getLastFetchDate() ? dol_print_date($rssparser->getLastFetchDate(), "dayhourtext") : $langs->trans("Unknown")),
-				'subpicto'=>'globe',
-				'target'=>'_blank',
-			);
-		}
+        $title = $langs->trans("BoxTitleLastRssInfos", $max, getDolGlobalString($keyforparamtitle));
+        if ($result < 0 || !empty($rssparser->error)) {
+            // Show warning
+            $errormessage = $langs->trans("FailedToRefreshDataInfoNotUpToDate", ($rssparser->getLastFetchDate() ? dol_print_date($rssparser->getLastFetchDate(), "dayhourtext") : $langs->trans("Unknown")));
+            if ($rssparser->error) {
+                $errormessage .= " - " . $rssparser->error;
+            }
+            $title .= " " . img_error($errormessage);
+            $this->info_box_head = array('text' => $title, 'limit' => 0);
+        } else {
+            $this->info_box_head = array(
+                'text' => $title,
+                'sublink' => $link,
+                'subtext' => $langs->trans("LastRefreshDate") . ': ' . ($rssparser->getLastFetchDate() ? dol_print_date($rssparser->getLastFetchDate(), "dayhourtext") : $langs->trans("Unknown")),
+                'subpicto' => 'globe',
+                'target' => '_blank',
+            );
+        }
 
-		// INFO on items
-		$items = $rssparser->getItems();
-		//print '<pre>'.print_r($items,true).'</pre>';
+        // INFO on items
+        $items = $rssparser->getItems();
+        //print '<pre>'.print_r($items,true).'</pre>';
 
-		// Loop on last items
-		$nbitems = count($items);
-		for ($line = 0; $line < $max && $line < $nbitems; $line++) {
-			$item = $items[$line];
+        // Loop on last items
+        $nbitems = count($items);
+        for ($line = 0; $line < $max && $line < $nbitems; $line++) {
+            $item = $items[$line];
 
-			// Feed common fields
-			$href = $item['link'];
-			$title = urldecode($item['title']);
-			$date = empty($item['date_timestamp']) ? null : $item['date_timestamp']; // date will be empty if conversion into timestamp failed
-			if ($rssparser->getFormat() == 'rss') {   // If RSS
-				if (!$date && isset($item['pubdate'])) {
-					$date = $item['pubdate'];
-				}
-				if (!$date && isset($item['pubDate'])) {
-					$date = $item['pubDate'];
-				}
-				if (!$date && isset($item['dc']['date'])) {
-					$date = $item['dc']['date'];
-				}
-				//$item['dc']['language']
-				//$item['dc']['publisher']
-			}
-			if ($rssparser->getFormat() == 'atom') {	// If Atom
-				if (!$date && isset($item['issued'])) {
-					$date = $item['issued'];
-				}
-				if (!$date && isset($item['modified'])) {
-					$date = $item['modified'];
-				}
-				//$item['issued']
-				//$item['modified']
-				//$item['atom_content']
-			}
-			if (is_numeric($date)) {
-				$date = dol_print_date($date, "dayhour", 'tzuserrel');
-			}
+            // Feed common fields
+            $href = $item['link'];
+            $title = urldecode($item['title']);
+            $date = empty($item['date_timestamp']) ? null : $item['date_timestamp']; // date will be empty if conversion into timestamp failed
+            if ($rssparser->getFormat() == 'rss') {   // If RSS
+                if (!$date && isset($item['pubdate'])) {
+                    $date = $item['pubdate'];
+                }
+                if (!$date && isset($item['pubDate'])) {
+                    $date = $item['pubDate'];
+                }
+                if (!$date && isset($item['dc']['date'])) {
+                    $date = $item['dc']['date'];
+                }
+                //$item['dc']['language']
+                //$item['dc']['publisher']
+            }
+            if ($rssparser->getFormat() == 'atom') {    // If Atom
+                if (!$date && isset($item['issued'])) {
+                    $date = $item['issued'];
+                }
+                if (!$date && isset($item['modified'])) {
+                    $date = $item['modified'];
+                }
+                //$item['issued']
+                //$item['modified']
+                //$item['atom_content']
+            }
+            if (is_numeric($date)) {
+                $date = dol_print_date($date, "dayhour", 'tzuserrel');
+            }
 
-			$isutf8 = utf8_check($title);
-			if (!$isutf8 && $conf->file->character_set_client == 'UTF-8') {
-				$title = mb_convert_encoding($title, 'UTF-8', 'ISO-8859-1');
-			} elseif ($isutf8 && $conf->file->character_set_client == 'ISO-8859-1') {
-				$title = mb_convert_encoding($title, 'ISO-8859-1');
-			}
+            $isutf8 = utf8_check($title);
+            if (!$isutf8 && $conf->file->character_set_client == 'UTF-8') {
+                $title = mb_convert_encoding($title, 'UTF-8', 'ISO-8859-1');
+            } elseif ($isutf8 && $conf->file->character_set_client == 'ISO-8859-1') {
+                $title = mb_convert_encoding($title, 'ISO-8859-1');
+            }
 
-			$title = preg_replace("/([[:alnum:]])\?([[:alnum:]])/", "\\1'\\2", $title); // Manage issue of quotes improperly (de)coded in utf-8
-			$title = preg_replace("/^\s+/", "", $title); // Remove leading whitespace
-			$this->info_box_contents["$href"] = "$title";
+            $title = preg_replace("/([[:alnum:]])\?([[:alnum:]])/", "\\1'\\2", $title); // Manage issue of quotes improperly (de)coded in utf-8
+            $title = preg_replace("/^\s+/", "", $title); // Remove leading whitespace
+            $this->info_box_contents["$href"] = "$title";
 
-			$tooltip = $title;
-			$description = !empty($item['description']) ? $item['description'] : '';
-			$isutf8 = utf8_check($description);
-			if (!$isutf8 && $conf->file->character_set_client == 'UTF-8') {
-				$description = mb_convert_encoding($description, 'UTF-8', 'ISO-8859-1');
-			} elseif ($isutf8 && $conf->file->character_set_client == 'ISO-8859-1') {
-				$description = mb_convert_encoding($description, 'ISO-8859-1');
-			}
-			$description = preg_replace("/([[:alnum:]])\?([[:alnum:]])/", "\\1'\\2", $description);
-			$description = preg_replace("/^\s+/", "", $description);
-			$description = str_replace("\r\n", "", $description);
-			$tooltip .= '<br>'.$description;
+            $tooltip = $title;
+            $description = !empty($item['description']) ? $item['description'] : '';
+            $isutf8 = utf8_check($description);
+            if (!$isutf8 && $conf->file->character_set_client == 'UTF-8') {
+                $description = mb_convert_encoding($description, 'UTF-8', 'ISO-8859-1');
+            } elseif ($isutf8 && $conf->file->character_set_client == 'ISO-8859-1') {
+                $description = mb_convert_encoding($description, 'ISO-8859-1');
+            }
+            $description = preg_replace("/([[:alnum:]])\?([[:alnum:]])/", "\\1'\\2", $description);
+            $description = preg_replace("/^\s+/", "", $description);
+            $description = str_replace("\r\n", "", $description);
+            $tooltip .= '<br>' . $description;
 
-			$this->info_box_contents[$line][0] = array(
-				'td' => 'class="left" width="16"',
-				'text' => img_picto('', 'rss'),
-				'url' => $href,
-				'tooltip' => dol_escape_htmltag($tooltip),
-				'target' => 'newrss',
-			);
+            $this->info_box_contents[$line][0] = array(
+                'td' => 'class="left" width="16"',
+                'text' => img_picto('', 'rss'),
+                'url' => $href,
+                'tooltip' => dol_escape_htmltag($tooltip),
+                'target' => 'newrss',
+            );
 
-			$this->info_box_contents[$line][1] = array(
-				'td' => 'class="tdoverflowmax300"',
-				'text' => dol_escape_htmltag($title),
-				'url' => $href,
-				'tooltip' => dol_escape_htmltag($tooltip),
-				'maxlength' => 0,
-				'target' => 'newrss',
-			);
+            $this->info_box_contents[$line][1] = array(
+                'td' => 'class="tdoverflowmax300"',
+                'text' => dol_escape_htmltag($title),
+                'url' => $href,
+                'tooltip' => dol_escape_htmltag($tooltip),
+                'maxlength' => 0,
+                'target' => 'newrss',
+            );
 
-			$this->info_box_contents[$line][2] = array(
-				'td' => 'class="right nowraponall"',
-				'text' => dol_escape_htmltag($date),
-			);
-		}
-	}
+            $this->info_box_contents[$line][2] = array(
+                'td' => 'class="right nowraponall"',
+                'text' => dol_escape_htmltag($date),
+            );
+        }
+    }
 
 
-	/**
-	 *	Method to show box
-	 *
-	 *	@param	array	$head       Array with properties of box title
-	 *	@param  array	$contents   Array with properties of box lines
-	 *  @param	int		$nooutput	No print, only return string
-	 *	@return	string
-	 */
-	public function showBox($head = null, $contents = null, $nooutput = 0)
-	{
-		return parent::showBox($this->info_box_head, $this->info_box_contents, $nooutput);
-	}
+    /**
+     *  Method to show box
+     *
+     *  @param  array   $head       Array with properties of box title
+     *  @param  array   $contents   Array with properties of box lines
+     *  @param  int     $nooutput   No print, only return string
+     *  @return string
+     */
+    public function showBox($head = null, $contents = null, $nooutput = 0)
+    {
+        return parent::showBox($this->info_box_head, $this->info_box_contents, $nooutput);
+    }
 }

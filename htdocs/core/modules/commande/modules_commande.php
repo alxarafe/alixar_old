@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2004      Eric Seigne          <eric.seigne@ryxeo.com>
@@ -23,60 +24,60 @@
  */
 
 /**
- *  \file			htdocs/core/modules/commande/modules_commande.php
- *  \ingroup		commande
- *  \brief			File that contains parent class for orders models
+ *  \file           htdocs/core/modules/commande/modules_commande.php
+ *  \ingroup        commande
+ *  \brief          File that contains parent class for orders models
  *                  and parent class for orders numbering models
  */
 
-require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonnumrefgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // required for use by classes that inherit
-require_once DOL_DOCUMENT_ROOT.'/core/class/discount.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php'; // required for use by classes that inherit
+require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 
 
 /**
- *	Parent class for orders models
+ *  Parent class for orders models
  */
 abstract class ModelePDFCommandes extends CommonDocGenerator
 {
-	public $posxpicture;
-	public $posxtva;
-	public $posxup;
-	public $posxqty;
-	public $posxunit;
-	public $posxdesc;
-	public $posxdiscount;
-	public $postotalht;
+    public $posxpicture;
+    public $posxtva;
+    public $posxup;
+    public $posxqty;
+    public $posxunit;
+    public $posxdesc;
+    public $posxdiscount;
+    public $postotalht;
 
-	public $tva;
-	public $tva_array;
-	public $localtax1;
-	public $localtax2;
+    public $tva;
+    public $tva_array;
+    public $localtax1;
+    public $localtax2;
 
-	public $atleastoneratenotnull = 0;
-	public $atleastonediscount = 0;
+    public $atleastoneratenotnull = 0;
+    public $atleastonediscount = 0;
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return list of active generation modules
-	 *
-	 *  @param	DoliDB	$db     			Database handler
-	 *  @param  integer	$maxfilenamelength  Max length of value to show
-	 *  @return	array						List of templates
-	 */
-	public static function liste_modeles($db, $maxfilenamelength = 0)
-	{
+    /**
+     *  Return list of active generation modules
+     *
+     *  @param  DoliDB  $db                 Database handler
+     *  @param  integer $maxfilenamelength  Max length of value to show
+     *  @return array                       List of templates
+     */
+    public static function liste_modeles($db, $maxfilenamelength = 0)
+    {
 		// phpcs:enable
-		$type = 'order';
-		$list = array();
+        $type = 'order';
+        $list = array();
 
-		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-		$list = getListOfModels($db, $type, $maxfilenamelength);
+        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        $list = getListOfModels($db, $type, $maxfilenamelength);
 
-		return $list;
-	}
+        return $list;
+    }
 }
 
 
@@ -86,5 +87,5 @@ abstract class ModelePDFCommandes extends CommonDocGenerator
  */
 abstract class ModeleNumRefCommandes extends CommonNumRefGenerator
 {
-	// No overload code
+    // No overload code
 }

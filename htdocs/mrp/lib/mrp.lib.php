@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019 Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
@@ -29,45 +30,45 @@
  */
 function mrpAdminPrepareHead()
 {
-	global $langs, $conf, $db;
+    global $langs, $conf, $db;
 
-	$extrafields = new ExtraFields($db);
-	$extrafields->fetch_name_optionals_label('mrp_mo');
+    $extrafields = new ExtraFields($db);
+    $extrafields->fetch_name_optionals_label('mrp_mo');
 
-	$langs->load("mrp");
+    $langs->load("mrp");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . '/admin/mrp.php';
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/admin/mrp.php';
+    $head[$h][1] = $langs->trans("Settings");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/admin/mrp_extrafields.php';
-	$head[$h][1] = $langs->trans("ExtraFields");
-	$nbExtrafields = $extrafields->attributes['mrp_mo']['count'];
-	if ($nbExtrafields > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
-	}
-	$head[$h][2] = 'mrp_extrafields';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/admin/mrp_extrafields.php';
+    $head[$h][1] = $langs->trans("ExtraFields");
+    $nbExtrafields = $extrafields->attributes['mrp_mo']['count'];
+    if ($nbExtrafields > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbExtrafields . '</span>';
+    }
+    $head[$h][2] = 'mrp_extrafields';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/admin/mrp_production_extrafields.php';
-	$head[$h][1] = $langs->trans("ExtraFieldsLines");
-	$head[$h][2] = 'mrp_production_extrafields';
-	$h++;
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@mrp:/mrp/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@mrp:/mrp/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'mrp');
+    $head[$h][0] = DOL_URL_ROOT . '/admin/mrp_production_extrafields.php';
+    $head[$h][1] = $langs->trans("ExtraFieldsLines");
+    $head[$h][2] = 'mrp_production_extrafields';
+    $h++;
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@mrp:/mrp/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@mrp:/mrp/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'mrp');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'mrp', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'mrp', 'remove');
 
-	return $head;
+    return $head;
 }

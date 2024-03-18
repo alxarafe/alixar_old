@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2020	Andreu Bisquerra	<jove@bisquerra.com>
+
+/* Copyright (C) 2020   Andreu Bisquerra    <jove@bisquerra.com>
  * Copyright (C) 2024	Laurent Destailleur <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,36 +21,36 @@
 // Note: Generating a QR code from a string, like done by this script, can be done with any online tool.
 
 if (!defined("NOLOGIN")) {
-	define("NOLOGIN", '1'); // If this page is public (can be called outside logged session)
+    define("NOLOGIN", '1'); // If this page is public (can be called outside logged session)
 }
 if (!defined('NOIPCHECK')) {
-	define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
+    define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1');
+    define('NOTOKENRENEWAL', '1');
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php'; // Load $user and permissions
 require '../../core/modules/barcode/doc/tcpdfbarcode.modules.php';
 
-$urlwithouturlroot = preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
-$urlwithroot = $urlwithouturlroot.DOL_URL_ROOT; // This is to use external domain name found into config file
+$urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
+$urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
 
 if (!isModEnabled('takepos')) {
-	accessforbidden('Module not enabled');
+    accessforbidden('Module not enabled');
 }
 
 
@@ -60,10 +61,10 @@ if (!isModEnabled('takepos')) {
 // The buildBarCode does not include the http headers but this is a page that just return an image.
 
 if (GETPOSTISSET("key")) {
-	$key = GETPOST('key');
-	$module = new modTcpdfbarcode();
-	$result = $module->buildBarCode($urlwithroot."/takepos/public/auto_order.php?key=".urlencode($key), 'QRCODE', 'Y');
+    $key = GETPOST('key');
+    $module = new modTcpdfbarcode();
+    $result = $module->buildBarCode($urlwithroot . "/takepos/public/auto_order.php?key=" . urlencode($key), 'QRCODE', 'Y');
 } else {
-	$module = new modTcpdfbarcode();
-	$result = $module->buildBarCode($urlwithroot."/takepos/public/menu.php", 'QRCODE', 'Y');
+    $module = new modTcpdfbarcode();
+    $result = $module->buildBarCode($urlwithroot . "/takepos/public/menu.php", 'QRCODE', 'Y');
 }

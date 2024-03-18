@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010-2011 Laurent Destailleur  <eldy@users.sourceforge.org>
  * Copyright (C) 2011      Regis Houssin  		<regis.houssin@inodbox.com>
  *
@@ -23,14 +24,14 @@
  */
 
 if (session_id() == "") {
-	session_start();
-	if (ini_get('register_globals')) {    // To solve bug in using $_SESSION
-		foreach ($_SESSION as $key => $value) {
-			if (isset($GLOBALS[$key])) {
-				unset($GLOBALS[$key]);
-			}
-		}
-	}
+    session_start();
+    if (ini_get('register_globals')) {    // To solve bug in using $_SESSION
+        foreach ($_SESSION as $key => $value) {
+            if (isset($GLOBALS[$key])) {
+                unset($GLOBALS[$key]);
+            }
+        }
+    }
 }
 
 // ==================================
@@ -47,30 +48,30 @@ $API_version = "56";
  ' For the sandbox, the URL is       https://www.sandbox.paypal.com/webscr&cmd=_express-checkout&token=
  ' For the live site, the URL is        https://www.paypal.com/webscr&cmd=_express-checkout&token=
  */
-if (getDolGlobalString('PAYPAL_API_SANDBOX') || GETPOST('forcesandbox', 'alpha')) {		// We can force sand box with param 'forcesandbox'
-	$API_Endpoint = "https://api-3t.sandbox.paypal.com/nvp";
-	$API_Url = "https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=";
+if (getDolGlobalString('PAYPAL_API_SANDBOX') || GETPOST('forcesandbox', 'alpha')) {     // We can force sand box with param 'forcesandbox'
+    $API_Endpoint = "https://api-3t.sandbox.paypal.com/nvp";
+    $API_Url = "https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=";
 } else {
-	$API_Endpoint = "https://api-3t.paypal.com/nvp";
-	$API_Url = "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=";
+    $API_Endpoint = "https://api-3t.paypal.com/nvp";
+    $API_Url = "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=";
 }
 
 // Clean parameters
 $PAYPAL_API_USER = "";
 if (getDolGlobalString('PAYPAL_API_USER')) {
-	$PAYPAL_API_USER = getDolGlobalString('PAYPAL_API_USER');
+    $PAYPAL_API_USER = getDolGlobalString('PAYPAL_API_USER');
 }
 $PAYPAL_API_PASSWORD = "";
 if (getDolGlobalString('PAYPAL_API_PASSWORD')) {
-	$PAYPAL_API_PASSWORD = getDolGlobalString('PAYPAL_API_PASSWORD');
+    $PAYPAL_API_PASSWORD = getDolGlobalString('PAYPAL_API_PASSWORD');
 }
 $PAYPAL_API_SIGNATURE = "";
 if (getDolGlobalString('PAYPAL_API_SIGNATURE')) {
-	$PAYPAL_API_SIGNATURE = getDolGlobalString('PAYPAL_API_SIGNATURE');
+    $PAYPAL_API_SIGNATURE = getDolGlobalString('PAYPAL_API_SIGNATURE');
 }
 $PAYPAL_API_SANDBOX = "";
 if (getDolGlobalString('PAYPAL_API_SANDBOX')) {
-	$PAYPAL_API_SANDBOX = getDolGlobalString('PAYPAL_API_SANDBOX');
+    $PAYPAL_API_SANDBOX = getDolGlobalString('PAYPAL_API_SANDBOX');
 }
 
 // Proxy

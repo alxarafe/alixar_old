@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013      Laurent Destailleur        <eldy@users.sourceforge.net>
  * Copyright (C) 2014      Marcos García              <marcosgdf@gmail.com>
  *
@@ -22,30 +23,29 @@
  *    \brief      Page to list surveys
  */
 
-
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
-require_once DOL_DOCUMENT_ROOT."/core/lib/files.lib.php";
-require_once DOL_DOCUMENT_ROOT."/opensurvey/class/opensurveysondage.class.php";
+require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
+require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
+require_once DOL_DOCUMENT_ROOT . "/opensurvey/class/opensurveysondage.class.php";
 
 
 $action = GETPOST('action', 'aZ09');
 $numsondage = '';
 if (GETPOST('id')) {
-	$numsondage = GETPOST("id", 'alpha');
+    $numsondage = GETPOST("id", 'alpha');
 }
 
 // Initialize Objects
 $object = new Opensurveysondage($db);
 $result = $object->fetch(0, $numsondage);
 if ($result <= 0) {
-	dol_print_error(null, 'Failed to get survey id '.$numsondage);
+    dol_print_error(null, 'Failed to get survey id ' . $numsondage);
 }
 
 // Security check
 if (!$user->hasRight('opensurvey', 'read')) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -65,77 +65,77 @@ $nbcolonnes = substr_count($object->sujet, ',') + 1;
 $toutsujet = explode(",", $object->sujet);
 $somme = array();
 // affichage des sujets du sondage
-$input = $langs->trans("Name").";";
+$input = $langs->trans("Name") . ";";
 for ($i = 0; $toutsujet[$i]; $i++) {
-	if ($object->format == "D") {
-		$input .= dol_print_date($toutsujet[$i], 'dayhour').';';
-	} else {
-		$input .= $toutsujet[$i].';';
-	}
+    if ($object->format == "D") {
+        $input .= dol_print_date($toutsujet[$i], 'dayhour') . ';';
+    } else {
+        $input .= $toutsujet[$i] . ';';
+    }
 }
 
 $input .= "\r\n";
 
 if (strpos($object->sujet, '@') !== false) {
-	$input .= ";";
-	for ($i = 0; $toutsujet[$i]; $i++) {
-		$heures = explode("@", $toutsujet[$i]);
-		$input .= $heures[1].';';
-	}
+    $input .= ";";
+    for ($i = 0; $toutsujet[$i]; $i++) {
+        $heures = explode("@", $toutsujet[$i]);
+        $input .= $heures[1] . ';';
+    }
 
-	$input .= "\r\n";
+    $input .= "\r\n";
 }
 
 
 $sql = 'SELECT nom as name, reponses';
-$sql .= ' FROM '.MAIN_DB_PREFIX."opensurvey_user_studs";
-$sql .= " WHERE id_sondage='".$db->escape($numsondage)."'";
+$sql .= ' FROM ' . MAIN_DB_PREFIX . "opensurvey_user_studs";
+$sql .= " WHERE id_sondage='" . $db->escape($numsondage) . "'";
 $sql .= " ORDER BY id_users";
 $resql = $db->query($sql);
 if ($resql) {
-	$num = $db->num_rows($resql);
-	$i = 0;
-	while ($i < $num) {
-		$obj = $db->fetch_object($resql);
+    $num = $db->num_rows($resql);
+    $i = 0;
+    while ($i < $num) {
+        $obj = $db->fetch_object($resql);
 
-		// Le name de l'utilisateur
-		$nombase = str_replace("°", "'", $obj->name);
-		$input .= $nombase.';';
+        // Le name de l'utilisateur
+        $nombase = str_replace("°", "'", $obj->name);
+        $input .= $nombase . ';';
 
-		//affichage des resultats
-		$ensemblereponses = $obj->reponses;
-		for ($k = 0; $k < $nbcolonnes; $k++) {
-			if (empty($somme[$k])) {
-				$somme[$k] = 0;
-			}
-			$car = substr($ensemblereponses, $k, 1);
-			if ($car == "1") {
-				$input .= 'OK;';
-				$somme[$k]++;
-			} elseif ($car == "2") {
-				$input .= ';';
-				$somme[$k]++;
-			} else {
-				$input .= 'KO;';
-			}
-		}
+        //affichage des resultats
+        $ensemblereponses = $obj->reponses;
+        for ($k = 0; $k < $nbcolonnes; $k++) {
+            if (empty($somme[$k])) {
+                $somme[$k] = 0;
+            }
+            $car = substr($ensemblereponses, $k, 1);
+            if ($car == "1") {
+                $input .= 'OK;';
+                $somme[$k]++;
+            } elseif ($car == "2") {
+                $input .= ';';
+                $somme[$k]++;
+            } else {
+                $input .= 'KO;';
+            }
+        }
 
-		$input .= "\r\n";
-		$i++;
-	}
+        $input .= "\r\n";
+        $i++;
+    }
 } else {
-	dol_print_error($db);
+    dol_print_error($db);
 }
 
 
 $filesize = strlen($input);
-$filename = $numsondage."_".dol_print_date($now, '%Y%m%d%H%M').".csv";
+$filename = $numsondage . "_" . dol_print_date($now, '%Y%m%d%H%M') . ".csv";
 
 
 
 header('Content-Type: text/csv; charset=utf-8');
-header('Content-Length: '.$filesize);
-header('Content-Disposition: attachment; filename="'.$filename.'"');
+header('Content-Length: ' . $filesize);
+header('Content-Disposition: attachment; filename="' . $filename . '"');
 header('Cache-Control: max-age=10');
 echo $input;
 

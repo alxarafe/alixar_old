@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2011  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2016  Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2012       J. Fernando Lagrange    <fernando@demo-tic.org>
@@ -21,29 +22,29 @@
  */
 
 /**
- *	\file			htdocs/ai/lib/generate_content.lib.php
+ *  \file           htdocs/ai/lib/generate_content.lib.php
  *  \brief          Library of ai script
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 
 require '../../main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT.'/ai/class/ai.class.php';
+require_once DOL_DOCUMENT_ROOT . '/ai/class/ai.class.php';
 
 
 /*
@@ -57,7 +58,7 @@ $rawData = file_get_contents('php://input');
 $jsonData = json_decode($rawData, true);
 
 if (is_null($jsonData)) {
-	dol_print_error('data with format JSON valide.');
+    dol_print_error('data with format JSON valide.');
 }
 $ai = new Ai($db);
 
@@ -68,15 +69,15 @@ $format = empty($jsonData['instructions']) ? '' : $jsonData['instructions'];
 $generatedContent = $ai->generateContent($instructions, 'auto', $function, $format);
 
 if (is_array($generatedContent) && $generatedContent['error']) {
-	// Output error
-	if (!empty($generatedContent['code']) && $generatedContent['code'] == 429) {
-		print "Quota or allowed period exceeded. Retry Later !";
-	} elseif ($generatedContent['code'] >= 400) {
-		print "Error : " . $generatedContent['message'];
-		print '<br><a href="'.DOL_MAIN_URL_ROOT.'/ai/admin/setup.php">'.$langs->trans('ErrorGoToModuleSetup').'</a>';
-	} else {
-		print "Error returned by API call: " . $generatedContent['message'];
-	}
+    // Output error
+    if (!empty($generatedContent['code']) && $generatedContent['code'] == 429) {
+        print "Quota or allowed period exceeded. Retry Later !";
+    } elseif ($generatedContent['code'] >= 400) {
+        print "Error : " . $generatedContent['message'];
+        print '<br><a href="' . DOL_MAIN_URL_ROOT . '/ai/admin/setup.php">' . $langs->trans('ErrorGoToModuleSetup') . '</a>';
+    } else {
+        print "Error returned by API call: " . $generatedContent['message'];
+    }
 } else {
-	print $generatedContent;
+    print $generatedContent;
 }

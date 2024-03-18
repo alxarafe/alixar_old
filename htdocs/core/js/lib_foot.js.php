@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,25 +23,25 @@
  */
 
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 if (!defined('NOCSRFCHECK')) {
-	define('NOCSRFCHECK', 1);
+    define('NOCSRFCHECK', 1);
 }
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1);
+    define('NOTOKENRENEWAL', 1);
 }
 if (!defined('NOLOGIN')) {
-	define('NOLOGIN', 1);
+    define('NOLOGIN', 1);
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', 1);
+    define('NOREQUIREMENU', 1);
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', 1);
+    define('NOREQUIREHTML', 1);
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 
 session_cache_limiter('public');
@@ -56,9 +57,9 @@ require_once '../../main.inc.php';
 top_httphead('text/javascript; charset=UTF-8');
 // Important: Following code is to avoid page request by browser and PHP CPU at each Dolibarr page access.
 if (empty($dolibarr_nocache)) {
-	header('Cache-Control: max-age=10800, public, must-revalidate');
+    header('Cache-Control: max-age=10800, public, must-revalidate');
 } else {
-	header('Cache-Control: no-cache');
+    header('Cache-Control: no-cache');
 }
 
 //var_dump($conf);
@@ -69,7 +70,7 @@ print "\n/* JS CODE TO ENABLE Tooltips on all object with class classfortooltip 
 jQuery(document).ready(function () {\n";
 
 if (empty($conf->dol_no_mouse_hover)) {
-	print '
+    print '
     /* for standard tooltip */
 	jQuery(".classfortooltip").tooltip({
 		tooltipClass: "mytooltip",
@@ -106,7 +107,7 @@ if (empty($conf->dol_no_mouse_hover)) {
 	    elemtostoretooltiptimer.data("openTimeoutId", setTimeout(function() {
 			target.tooltip("close");
 			$.ajax({
-					url:"'. DOL_URL_ROOT.'/core/ajax/ajaxtooltip.php",
+					url:"' . DOL_URL_ROOT . '/core/ajax/ajaxtooltip.php",
 					type: "post",
 					async: true,
 					data: params,
@@ -131,7 +132,7 @@ if (empty($conf->dol_no_mouse_hover)) {
 print '
 	jQuery(".classfortooltiponclicktext").dialog({
 		closeOnEscape: true, classes: { "ui-dialog": "highlight" },
-		maxHeight: window.innerHeight-60, width: '.($conf->browser->layout == 'phone' ? max((empty($_SESSION['dol_screenwidth']) ? 0 : $_SESSION['dol_screenwidth']) - 20, 320) : 700).',
+		maxHeight: window.innerHeight-60, width: ' . ($conf->browser->layout == 'phone' ? max((empty($_SESSION['dol_screenwidth']) ? 0 : $_SESSION['dol_screenwidth']) - 20, 320) : 700) . ',
 		modal: true,
 		autoOpen: false
 	}).css("z-index: 5000");
@@ -149,8 +150,8 @@ print '
 
 // Wrapper to manage dropdown
 if (!defined('JS_JQUERY_DISABLE_DROPDOWN')) {
-	print "\n/* JS CODE TO ENABLE dropdown (hamburger, linkto, ...) */\n";
-	print '		jQuery(document).ready(function () {
+    print "\n/* JS CODE TO ENABLE dropdown (hamburger, linkto, ...) */\n";
+    print '		jQuery(document).ready(function () {
 				  var lastopendropdown = null;
 
                   // Click onto the link "link to" or "hamburger", toggle dropdown
@@ -219,14 +220,14 @@ if (!defined('JS_JQUERY_DISABLE_DROPDOWN')) {
 
 // Wrapper to manage document_preview
 if ($conf->browser->layout != 'phone') {
-	print "\n/* JS CODE TO ENABLE document_preview */\n"; // Function document_preview is into header
-	print '		jQuery(document).ready(function () {
+    print "\n/* JS CODE TO ENABLE document_preview */\n"; // Function document_preview is into header
+    print '		jQuery(document).ready(function () {
 			        jQuery(".documentpreview").click(function () {
             		    console.log("We click on preview for element with href="+$(this).attr(\'href\')+" mime="+$(this).attr(\'mime\'));
-            		    document_preview($(this).attr(\'href\'), $(this).attr(\'mime\'), \''.dol_escape_js($langs->transnoentities("Preview")).'\');
+            		    document_preview($(this).attr(\'href\'), $(this).attr(\'mime\'), \'' . dol_escape_js($langs->transnoentities("Preview")) . '\');
                 		return false;
         			});
-		});'."\n";
+		});' . "\n";
 }
 
 // Code to manage reposition
@@ -263,7 +264,7 @@ print '
 						}
 					}
 				});
-	});'."\n";
+	});' . "\n";
 
 // Code to manage Copy To Clipboard click
 print "\n/* JS CODE TO ENABLE ClipBoard copy paste */\n";
@@ -319,13 +320,13 @@ print '
 					var lastchild = this.parentNode.lastChild;		/* .parentNode is clipboardCP and last child is clipboardCPText */
 					var tmp = lastchild.innerHTML
 					if (succeed) {
-						lastchild.innerHTML = \'<div class="clipboardCPTextDivInside opacitymedium">'.dol_escape_js($langs->trans('CopiedToClipboard')).'</div>\';
+						lastchild.innerHTML = \'<div class="clipboardCPTextDivInside opacitymedium">' . dol_escape_js($langs->trans('CopiedToClipboard')) . '</div>\';
 					} else {
-						lastchild.innerHTML = \'<div class="clipboardCPTextDivInside opacitymedium">'.dol_escape_js($langs->trans('Error')).'</div>\';
+						lastchild.innerHTML = \'<div class="clipboardCPTextDivInside opacitymedium">' . dol_escape_js($langs->trans('Error')) . '</div>\';
 					}
 					setTimeout(() => { lastchild.innerHTML = tmp; }, 1000);
 				});
-	});'."\n";
+	});' . "\n";
 
 // Code to manage clicktodial
 print "\n/* JS CODE TO ENABLE clicktodial call of an URL */\n";
@@ -346,7 +347,7 @@ print '
 			});
 			return false;
 		});
-	});'."\n";
+	});' . "\n";
 
 
 // Code to manage the confirm dialog box
@@ -407,4 +408,4 @@ print '
 			});
 		});
 	});
-'."\n";
+' . "\n";

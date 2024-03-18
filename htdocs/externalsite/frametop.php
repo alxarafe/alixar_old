@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2010      Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -17,9 +18,9 @@
  */
 
 /**
- *		\file 		htdocs/externalsite/frametop.php
+ *      \file       htdocs/externalsite/frametop.php
  *      \ingroup    externalsite
- *		\brief      Top frame to show external web application
+ *      \brief      Top frame to show external web application
  */
 
 require "../main.inc.php";
@@ -29,7 +30,7 @@ $langs->load("other");
 
 top_htmlhead("", "");
 
-print '<body id="mainbody">'."\n";
+print '<body id="mainbody">' . "\n";
 
 top_menu("", "", "_top");
 

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +45,7 @@ $scandir = GETPOST('scan_dir', 'alpha');
 
 // Access control
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $error = 0;
@@ -54,7 +55,7 @@ $setupnotempty = 0;
 $useFormSetup = 1;
 
 if (!class_exists('FormSetup')) {
-	require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
 }
 
 $formSetup = new FormSetup($db);
@@ -70,19 +71,19 @@ $item->defaultFieldValue = $webPortalTheme->primaryColorHex;
 
 // Logo URL
 $item = $formSetup->newItem('WEBPORTAL_LOGIN_LOGO_URL');
-$item->fieldAttr = array('type'=>'url', 'size'=> 50, 'placeholder'=>'http://');
+$item->fieldAttr = array('type' => 'url', 'size' => 50, 'placeholder' => 'http://');
 
 $item = $formSetup->newItem('WEBPORTAL_MENU_LOGO_URL');
-$item->fieldAttr = array('type'=>'url', 'size'=> 50, 'placeholder'=>'http://');
+$item->fieldAttr = array('type' => 'url', 'size' => 50, 'placeholder' => 'http://');
 
 
 
 // Background URL
 $item = $formSetup->newItem('WEBPORTAL_LOGIN_BACKGROUND');
-$item->fieldAttr = array('type'=>'url', 'size'=> 50, 'placeholder'=>'http://');
+$item->fieldAttr = array('type' => 'url', 'size' => 50, 'placeholder' => 'http://');
 
 $item = $formSetup->newItem('WEBPORTAL_BANNER_BACKGROUND');
-$item->fieldAttr = array('type'=>'url', 'size'=> 50, 'placeholder'=>'http://');
+$item->fieldAttr = array('type' => 'url', 'size' => 50, 'placeholder' => 'http://');
 
 
 $item = $formSetup->newItem('WEBPORTAL_BANNER_BACKGROUND_IS_DARK')->setAsYesNo();
@@ -99,7 +100,7 @@ include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
 
 // Force always edit mode
 if (empty($action) || $action == 'update') {
-	$action = 'edit';
+    $action = 'edit';
 }
 
 
@@ -127,15 +128,15 @@ print dol_get_fiche_head($head, 'themesettings', $langs->trans($title), -1, "web
 //print info_admin($langs->trans("UserAccountForWebPortalAreInThirdPartyTabHelp"));
 
 if ($action == 'edit') {
-	print $formSetup->generateOutput(true);
-	print '<br>';
+    print $formSetup->generateOutput(true);
+    print '<br>';
 } elseif (!empty($formSetup->items)) {
-	print $formSetup->generateOutput();
-	print '<div class="tabsAction">';
-	print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
-	print '</div>';
+    print $formSetup->generateOutput();
+    print '<div class="tabsAction">';
+    print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
+    print '</div>';
 } else {
-	print '<br>' . $langs->trans("NothingToSetup");
+    print '<br>' . $langs->trans("NothingToSetup");
 }
 
 

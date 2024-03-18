@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2023 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,14 +21,15 @@
  *  \ingroup    facture
  *  \brief      Tab of events on Invoices
  */
+
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture-rec.class.php';
-require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/invoice.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
+require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("bills", "other"));
@@ -37,16 +39,16 @@ $id = GETPOSTINT('id');
 $ref = GETPOST('ref', 'alpha');
 $action = GETPOST('action', 'aZ09');
 $cancel = GETPOST('cancel', 'aZ09');
-$contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : str_replace('_', '', basename(dirname(__FILE__)).basename(__FILE__, '.php')); // To manage different context of search
+$contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : str_replace('_', '', basename(dirname(__FILE__)) . basename(__FILE__, '.php')); // To manage different context of search
 $backtopage = GETPOST('backtopage', 'alpha');
 
 if (GETPOST('actioncode', 'array')) {
-	$actioncode = GETPOST('actioncode', 'array', 3);
-	if (!count($actioncode)) {
-		$actioncode = '0';
-	}
+    $actioncode = GETPOST('actioncode', 'array', 3);
+    if (!count($actioncode)) {
+        $actioncode = '0';
+    }
 } else {
-	$actioncode = GETPOST("actioncode", "alpha", 3) ? GETPOST("actioncode", "alpha", 3) : (GETPOST("actioncode") == '0' ? '0' : getDolGlobalString('AGENDA_DEFAULT_FILTER_TYPE_FOR_OBJECT'));
+    $actioncode = GETPOST("actioncode", "alpha", 3) ? GETPOST("actioncode", "alpha", 3) : (GETPOST("actioncode") == '0' ? '0' : getDolGlobalString('AGENDA_DEFAULT_FILTER_TYPE_FOR_OBJECT'));
 }
 $search_rowid = GETPOST('search_rowid');
 $search_agenda_label = GETPOST('search_agenda_label');
@@ -56,16 +58,16 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
 if (empty($page) || $page == -1) {
-	$page = 0;
+    $page = 0;
 }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortfield) {
-	$sortfield = 'a.datep,a.id';
+    $sortfield = 'a.datep,a.id';
 }
 if (!$sortorder) {
-	$sortorder = 'DESC,DESC';
+    $sortorder = 'DESC,DESC';
 }
 
 // Initialize technical objects
@@ -76,9 +78,9 @@ $hookmanager->initHooks(array('invoicerecagenda', 'globalcard')); // Note that c
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->facture->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity]."/".$object->id;
+    $upload_dir = $conf->facture->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity] . "/" . $object->id;
 }
 
 $permissiontoread = $user->hasRight("facture", "lire");
@@ -86,7 +88,7 @@ $permissiontoadd = $user->hasRight("facture", "creer");
 
 // Security check
 if (!empty($user->socid)) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 restrictedArea($user, 'facture', $object->id, 'facture_rec', '', 'fk_soc', 'rowid', $isdraft);
@@ -99,21 +101,21 @@ restrictedArea($user, 'facture', $object->id, 'facture_rec', '', 'fk_soc', 'rowi
 $parameters = array('id' => $id);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	// Cancel
-	if (GETPOST('cancel', 'alpha') && !empty($backtopage)) {
-		header("Location: ".$backtopage);
-		exit;
-	}
+    // Cancel
+    if (GETPOST('cancel', 'alpha') && !empty($backtopage)) {
+        header("Location: " . $backtopage);
+        exit;
+    }
 
-	// Purge search criteria
-	if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All tests are required to be compatible with all browsers
-		$actioncode = '';
-		$search_agenda_label = '';
-	}
+    // Purge search criteria
+    if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All tests are required to be compatible with all browsers
+        $actioncode = '';
+        $search_agenda_label = '';
+    }
 }
 
 
@@ -125,137 +127,137 @@ if (empty($reshook)) {
 $form = new Form($db);
 
 if ($object->id > 0) {
-	$title = $object->ref." - ".$langs->trans('Agenda');
-	$help_url = 'EN:Module_Agenda_En|DE:Modul_Terminplanung';
+    $title = $object->ref . " - " . $langs->trans('Agenda');
+    $help_url = 'EN:Module_Agenda_En|DE:Modul_Terminplanung';
 
-	llxHeader('', $title, $help_url);
+    llxHeader('', $title, $help_url);
 
-	if (isModEnabled('notification')) {
-		$langs->load("mails");
-	}
-	$head = invoice_rec_prepare_head($object);
-
-
-	print dol_get_fiche_head($head, 'agenda', $langs->trans("RepeatableInvoice"), -1, $object->picto);
-
-	// Object card
-	// ------------------------------------------------------------
-	$linkback = '<a href="'.DOL_URL_ROOT.'/compta/facture/list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
-
-	$morehtmlref = '';
-	if ($action != 'editref') {
-		$morehtmlref .= $form->editfieldkey($object->ref, 'ref', $object->ref, $object, 0, '', '', 0, 2);
-	} else {
-		$morehtmlref .= $form->editfieldval('', 'ref', $object->ref, $object, 0, 'string');
-	}
-
-	$morehtmlref .= '<div class="refidno">';
-	// Thirdparty
-	$morehtmlref .= $object->thirdparty->getNomUrl(1);
-	// Project
-	if (isModEnabled('project')) {
-		$langs->load("projects");
-		$morehtmlref .= '<br>';
-		if (0) {
-			$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
-			if ($action != 'classify') {
-				$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
-			}
-			$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
-		} else {
-			if (!empty($object->fk_project)) {
-				$proj = new Project($db);
-				$proj->fetch($object->fk_project);
-				$morehtmlref .= $proj->getNomUrl(1);
-				if ($proj->title) {
-					$morehtmlref .= '<span class="opacitymedium"> - '.dol_escape_htmltag($proj->title).'</span>';
-				}
-			}
-		}
-	}
-	$morehtmlref .= '</div>';
-
-	$morehtmlstatus = '';
-
-	dol_banner_tab($object, 'ref', $linkback, 1, 'title', 'none', $morehtmlref, '', 0, '', $morehtmlstatus);
-
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
-
-	$object->info($object->id);
-	dol_print_object_info($object, 1);
-
-	print '</div>';
-
-	print dol_get_fiche_end();
+    if (isModEnabled('notification')) {
+        $langs->load("mails");
+    }
+    $head = invoice_rec_prepare_head($object);
 
 
+    print dol_get_fiche_head($head, 'agenda', $langs->trans("RepeatableInvoice"), -1, $object->picto);
 
-	// Actions buttons
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' . DOL_URL_ROOT . '/compta/facture/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$objthirdparty = $object;
-	$objcon = new stdClass();
+    $morehtmlref = '';
+    if ($action != 'editref') {
+        $morehtmlref .= $form->editfieldkey($object->ref, 'ref', $object->ref, $object, 0, '', '', 0, 2);
+    } else {
+        $morehtmlref .= $form->editfieldval('', 'ref', $object->ref, $object, 0, 'string');
+    }
 
-	$out = '&origin='.urlencode((string) ($object->element.(property_exists($object, 'module') ? '@'.$object->module : ''))).'&originid='.urlencode((string) ($object->id));
-	$urlbacktopage = $_SERVER['PHP_SELF'].'?id='.$object->id;
-	$out .= '&backtopage='.urlencode($urlbacktopage);
-	$permok = $user->hasRight('paymentbagendaybanktransfer', 'myactions', 'create');
-	if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
-		//$out.='<a href="'.DOL_URL_ROOT.'/comm/action/card.php?action=create';
-		if (get_class($objthirdparty) == 'Societe') {
-			$out .= '&socid='.urlencode((string) ($objthirdparty->id));
-		}
-		$out .= (!empty($objcon->id) ? '&contactid='.urlencode($objcon->id) : '');
-		//$out.=$langs->trans("AddAnAction").' ';
-		//$out.=img_picto($langs->trans("AddAnAction"),'filenew');
-		//$out.="</a>";
-	}
+    $morehtmlref .= '<div class="refidno">';
+    // Thirdparty
+    $morehtmlref .= $object->thirdparty->getNomUrl(1);
+    // Project
+    if (isModEnabled('project')) {
+        $langs->load("projects");
+        $morehtmlref .= '<br>';
+        if (0) {
+            $morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
+            if ($action != 'classify') {
+                $morehtmlref .= '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token=' . newToken() . '&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> ';
+            }
+            $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+        } else {
+            if (!empty($object->fk_project)) {
+                $proj = new Project($db);
+                $proj->fetch($object->fk_project);
+                $morehtmlref .= $proj->getNomUrl(1);
+                if ($proj->title) {
+                    $morehtmlref .= '<span class="opacitymedium"> - ' . dol_escape_htmltag($proj->title) . '</span>';
+                }
+            }
+        }
+    }
+    $morehtmlref .= '</div>';
 
-	$morehtmlstatus = '';
+    $morehtmlstatus = '';
 
-	//$messagingUrl = DOL_URL_ROOT.'/societe/messaging.php?socid='.$object->id;
-	//$morehtmlstatus .= dolGetButtonTitle($langs->trans('ShowAsConversation'), '', 'fa fa-comments imgforviewmode', $messagingUrl, '', 1);
-	//$messagingUrl = DOL_URL_ROOT.'/societe/agenda.php?socid='.$object->id;
-	//$morehtmlstatus .= dolGetButtonTitle($langs->trans('MessageListViewType'), '', 'fa fa-bars imgforviewmode', $messagingUrl, '', 2);
+    dol_banner_tab($object, 'ref', $linkback, 1, 'title', 'none', $morehtmlref, '', 0, '', $morehtmlstatus);
 
-	if (isModEnabled('agenda')) {
-		/*
-		if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create')) {
-			$morehtmlstatus .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create'.$out);
-		} else {
-			$morehtmlstatus .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create'.$out, '', 0);
-		}
-		*/
-	}
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
+
+    $object->info($object->id);
+    dol_print_object_info($object, 1);
+
+    print '</div>';
+
+    print dol_get_fiche_end();
 
 
-	if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
-		print '<br>';
 
-		$param = '&id='.$object->id.(!empty($socid) ? '&socid='.$socid : '');
-		if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
-			$param .= '&contextpage='.urlencode($contextpage);
-		}
-		if ($limit > 0 && $limit != $conf->liste_limit) {
-			$param .= '&limit='.((int) $limit);
-		}
+    // Actions buttons
 
-		// Try to know count of actioncomm from cache
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/memory.lib.php';
-		$cachekey = 'count_events_facture_'.$object->id;
-		$nbEvent = dol_getcache($cachekey);
+    $objthirdparty = $object;
+    $objcon = new stdClass();
 
-		print_barre_liste($langs->trans("ActionsOnBillRec").(is_numeric($nbEvent) ? '<span class="opacitymedium colorblack paddingleft">('.$nbEvent.')</span>' : ''), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlstatus, '', 0, 1, 1);
-		//print_barre_liste($langs->trans("ActionsOnBill"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlstatus, '', 0, 1, 1);
+    $out = '&origin=' . urlencode((string) ($object->element . (property_exists($object, 'module') ? '@' . $object->module : ''))) . '&originid=' . urlencode((string) ($object->id));
+    $urlbacktopage = $_SERVER['PHP_SELF'] . '?id=' . $object->id;
+    $out .= '&backtopage=' . urlencode($urlbacktopage);
+    $permok = $user->hasRight('paymentbagendaybanktransfer', 'myactions', 'create');
+    if ((!empty($objthirdparty->id) || !empty($objcon->id)) && $permok) {
+        //$out.='<a href="'.DOL_URL_ROOT.'/comm/action/card.php?action=create';
+        if (get_class($objthirdparty) == 'Societe') {
+            $out .= '&socid=' . urlencode((string) ($objthirdparty->id));
+        }
+        $out .= (!empty($objcon->id) ? '&contactid=' . urlencode($objcon->id) : '');
+        //$out.=$langs->trans("AddAnAction").' ';
+        //$out.=img_picto($langs->trans("AddAnAction"),'filenew');
+        //$out.="</a>";
+    }
 
-		// List of all actions
-		$filters = array();
-		$filters['search_agenda_label'] = $search_agenda_label;
-		$filters['search_rowid'] = $search_rowid;
+    $morehtmlstatus = '';
 
-		// TODO Replace this with same code than into list.php
-		show_actions_done($conf, $langs, $db, $object, null, 0, $actioncode, '', $filters, $sortfield, $sortorder, property_exists($object, 'module') ? $object->module : '');
-	}
+    //$messagingUrl = DOL_URL_ROOT.'/societe/messaging.php?socid='.$object->id;
+    //$morehtmlstatus .= dolGetButtonTitle($langs->trans('ShowAsConversation'), '', 'fa fa-comments imgforviewmode', $messagingUrl, '', 1);
+    //$messagingUrl = DOL_URL_ROOT.'/societe/agenda.php?socid='.$object->id;
+    //$morehtmlstatus .= dolGetButtonTitle($langs->trans('MessageListViewType'), '', 'fa fa-bars imgforviewmode', $messagingUrl, '', 2);
+
+    if (isModEnabled('agenda')) {
+        /*
+        if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create')) {
+            $morehtmlstatus .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create'.$out);
+        } else {
+            $morehtmlstatus .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/comm/action/card.php?action=create'.$out, '', 0);
+        }
+        */
+    }
+
+
+    if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
+        print '<br>';
+
+        $param = '&id=' . $object->id . (!empty($socid) ? '&socid=' . $socid : '');
+        if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
+            $param .= '&contextpage=' . urlencode($contextpage);
+        }
+        if ($limit > 0 && $limit != $conf->liste_limit) {
+            $param .= '&limit=' . ((int) $limit);
+        }
+
+        // Try to know count of actioncomm from cache
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+        $cachekey = 'count_events_facture_' . $object->id;
+        $nbEvent = dol_getcache($cachekey);
+
+        print_barre_liste($langs->trans("ActionsOnBillRec") . (is_numeric($nbEvent) ? '<span class="opacitymedium colorblack paddingleft">(' . $nbEvent . ')</span>' : ''), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlstatus, '', 0, 1, 1);
+        //print_barre_liste($langs->trans("ActionsOnBill"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', 0, $morehtmlstatus, '', 0, 1, 1);
+
+        // List of all actions
+        $filters = array();
+        $filters['search_agenda_label'] = $search_agenda_label;
+        $filters['search_rowid'] = $search_rowid;
+
+        // TODO Replace this with same code than into list.php
+        show_actions_done($conf, $langs, $db, $object, null, 0, $actioncode, '', $filters, $sortfield, $sortorder, property_exists($object, 'module') ? $object->module : '');
+    }
 }
 
 // End of page

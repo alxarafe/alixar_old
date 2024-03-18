@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2021		VIAL--GOUTEYRON Quentin		<quentin.vial-gouteyron@atm-consulting.fr>
  *
@@ -24,7 +25,7 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
+require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
 $langs->loadLangs(array("contacts", "companies", "projects"));
 
@@ -42,7 +43,7 @@ $hookmanager->initHooks(array('projectcontact'));
 $parameters = array('id' => $id);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 /*
@@ -52,69 +53,69 @@ if ($reshook < 0) {
 $form = new Form($db);
 
 if ($id) {
-	require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-	require_once DOL_DOCUMENT_ROOT.'/core/lib/contact.lib.php';
+    require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
 
-	$object = new Contact($db);
+    $object = new Contact($db);
 
-	$result = $object->fetch($id);
-	if (empty($object->thirdparty)) {
-		$object->fetch_thirdparty();
-	}
-	$socid = !empty($object->thirdparty->id) ? $object->thirdparty->id : null;
-	$title = $langs->trans("Projects");
-	if (getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/thirdpartynameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) {
-		$title = $object->name." - ".$title;
-	}
-	llxHeader('', $title);
+    $result = $object->fetch($id);
+    if (empty($object->thirdparty)) {
+        $object->fetch_thirdparty();
+    }
+    $socid = !empty($object->thirdparty->id) ? $object->thirdparty->id : null;
+    $title = $langs->trans("Projects");
+    if (getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/thirdpartynameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) {
+        $title = $object->name . " - " . $title;
+    }
+    llxHeader('', $title);
 
-	if (isModEnabled('notification')) {
-		$langs->load("mails");
-	}
-	$head = contact_prepare_head($object);
+    if (isModEnabled('notification')) {
+        $langs->load("mails");
+    }
+    $head = contact_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'project', $langs->trans("Contact"), -1, 'contact');
+    print dol_get_fiche_head($head, 'project', $langs->trans("Contact"), -1, 'contact');
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/contact/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/contact/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<a href="'.DOL_URL_ROOT.'/contact/vcard.php?id='.$object->id.'" class="refid">';
-	$morehtmlref .= img_picto($langs->trans("Download").' '.$langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
-	$morehtmlref .= '</a>';
+    $morehtmlref = '<a href="' . DOL_URL_ROOT . '/contact/vcard.php?id=' . $object->id . '" class="refid">';
+    $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+    $morehtmlref .= '</a>';
 
-	$morehtmlref .= '<div class="refidno">';
-	if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-		$objsoc = new Societe($db);
-		$objsoc->fetch($object->socid);
-		// Thirdparty
-		if ($objsoc->id > 0) {
-			$morehtmlref .= $objsoc->getNomUrl(1, 'contact');
-		} else {
-			$morehtmlref .= '<span class="opacitymedium">'.$langs->trans("ContactNotLinkedToCompany").'</span>';
-		}
-	}
-	$morehtmlref .= '</div>';
+    $morehtmlref .= '<div class="refidno">';
+    if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
+        $objsoc = new Societe($db);
+        $objsoc->fetch($object->socid);
+        // Thirdparty
+        if ($objsoc->id > 0) {
+            $morehtmlref .= $objsoc->getNomUrl(1, 'contact');
+        } else {
+            $morehtmlref .= '<span class="opacitymedium">' . $langs->trans("ContactNotLinkedToCompany") . '</span>';
+        }
+    }
+    $morehtmlref .= '</div>';
 
-	dol_banner_tab($object, 'id', $linkback, ($user->socid ? 0 : 1), 'rowid', 'nom', $morehtmlref);
+    dol_banner_tab($object, 'id', $linkback, ($user->socid ? 0 : 1), 'rowid', 'nom', $morehtmlref);
 
-	print '<div class="fichecenter">';
+    print '<div class="fichecenter">';
 
-	print '<div class="underbanner clearboth"></div>';
-	print '<table class="border centpercent tableforfield">';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border centpercent tableforfield">';
 
-	// Civility
-	print '<tr><td class="titlefield">'.$langs->trans("UserTitle").'</td><td>';
-	print $object->getCivilityLabel();
-	print '</td></tr>';
+    // Civility
+    print '<tr><td class="titlefield">' . $langs->trans("UserTitle") . '</td><td>';
+    print $object->getCivilityLabel();
+    print '</td></tr>';
 
-	print '</table>';
+    print '</table>';
 
-	print '</div>';
+    print '</div>';
 
-	print dol_get_fiche_end();
-	print '<br>';
+    print dol_get_fiche_end();
+    print '<br>';
 
-	// Projects list
-	$result = show_contacts_projects($conf, $langs, $db, $object, $_SERVER['PHP_SELF'].'?id='.$object->id, 1);
+    // Projects list
+    $result = show_contacts_projects($conf, $langs, $db, $object, $_SERVER['PHP_SELF'] . '?id=' . $object->id, 1);
 }
 
 // End of page

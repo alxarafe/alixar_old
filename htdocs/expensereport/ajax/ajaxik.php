@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017 ATM Consulting      <contact@atm-consulting.fr>
  * Copyright (C) 2017 Pierre-Henry Favre  <phf@atm-consulting.fr>
  *
@@ -23,25 +24,25 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1); // Disables token renewal
+    define('NOTOKENRENEWAL', 1); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 
 $res = 0;
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT.'/expensereport/class/expensereport_ik.class.php';
+require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
+require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport_ik.class.php';
 
 // Load translation files required by the page
 $langs->loadlangs(array('errors', 'trips'));
@@ -68,36 +69,36 @@ $rep->errorMessage = '';
 
 
 if (empty($fk_expense) || $fk_expense < 0) {
-	$rep->errorMessage =   $langs->transnoentitiesnoconv('ErrorBadValueForParameter', $fk_expense, 'fk_expense');
+    $rep->errorMessage =   $langs->transnoentitiesnoconv('ErrorBadValueForParameter', $fk_expense, 'fk_expense');
 } elseif (empty($fk_c_exp_tax_cat) || $fk_c_exp_tax_cat < 0) {
-	$rep->errorMessage =  $langs->transnoentitiesnoconv('ErrorBadValueForParameter', $fk_c_exp_tax_cat, 'fk_c_exp_tax_cat');
+    $rep->errorMessage =  $langs->transnoentitiesnoconv('ErrorBadValueForParameter', $fk_c_exp_tax_cat, 'fk_c_exp_tax_cat');
 
-	$rep->response_status = 'error';
+    $rep->response_status = 'error';
 } else {
-	// @see ndfp.class.php:3576 (method: compute_total_km)
-	$expense = new ExpenseReport($db);
-	if ($expense->fetch($fk_expense) <= 0) {
-		$rep->errorMessage =  $langs->transnoentitiesnoconv('ErrorRecordNotFound');
-		$rep->response_status = 'error';
-	} else {
-		$userauthor = new User($db);
-		if ($userauthor->fetch($expense->fk_user_author) <= 0) {
-			$rep->errorMessage =  $langs->transnoentitiesnoconv('ErrorRecordNotFound');
-			$rep->response_status = 'error';
-		} else {
-			$expense = new ExpenseReport($db);
-			$result = $expense->fetch($fk_expense);
-			if ($result) {
-				$result = $expense->computeTotalKm($fk_c_exp_tax_cat, $qty, $vatrate);
-				if ($result < 0) {
-					$rep->errorMessage = $langs->trans('errorComputeTtcOnMileageExpense');
-					$rep->response_status = 'error';
-				} else {
-					$rep->data = $result;
-					$rep->response_status = 'success';
-				}
-			}
-		}
-	}
+    // @see ndfp.class.php:3576 (method: compute_total_km)
+    $expense = new ExpenseReport($db);
+    if ($expense->fetch($fk_expense) <= 0) {
+        $rep->errorMessage =  $langs->transnoentitiesnoconv('ErrorRecordNotFound');
+        $rep->response_status = 'error';
+    } else {
+        $userauthor = new User($db);
+        if ($userauthor->fetch($expense->fk_user_author) <= 0) {
+            $rep->errorMessage =  $langs->transnoentitiesnoconv('ErrorRecordNotFound');
+            $rep->response_status = 'error';
+        } else {
+            $expense = new ExpenseReport($db);
+            $result = $expense->fetch($fk_expense);
+            if ($result) {
+                $result = $expense->computeTotalKm($fk_c_exp_tax_cat, $qty, $vatrate);
+                if ($result < 0) {
+                    $rep->errorMessage = $langs->trans('errorComputeTtcOnMileageExpense');
+                    $rep->response_status = 'error';
+                } else {
+                    $rep->data = $result;
+                    $rep->response_status = 'success';
+                }
+            }
+        }
+    }
 }
 echo json_encode($rep);

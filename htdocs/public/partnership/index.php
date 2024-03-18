@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2009-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,12 +17,12 @@
  */
 
 /**
- *     	\file       htdocs/public/partnership/index.php
- *		\ingroup    core
- *		\brief      A redirect page to an error
+ *      \file       htdocs/public/partnership/index.php
+ *      \ingroup    core
+ *      \brief      A redirect page to an error
  */
 
 require '../../master.inc.php';
 
-header("Location: ".DOL_URL_ROOT.'/public/error-404.php');
+header("Location: " . DOL_URL_ROOT . '/public/error-404.php');
 exit;

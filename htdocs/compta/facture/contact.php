@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005      Patrick Rouillon     <patrick@rouillon.net>
  * Copyright (C) 2005-2009 Destailleur Laurent  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -28,13 +29,13 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/discount.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/invoice.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 if (isModEnabled('project')) {
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
+    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 // Load translation files required by the page
@@ -48,13 +49,13 @@ $action = GETPOST('action', 'aZ09');
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 
 $object = new Facture($db);
 // Load object
 if ($id > 0 || !empty($ref)) {
-	$ret = $object->fetch($id, $ref, '', '', (getDolGlobalString('INVOICE_USE_SITUATION') ? $conf->global->INVOICE_USE_SITUATION : 0));
+    $ret = $object->fetch($id, $ref, '', '', (getDolGlobalString('INVOICE_USE_SITUATION') ? $conf->global->INVOICE_USE_SITUATION : 0));
 }
 
 $result = restrictedArea($user, 'facture', $object->id);
@@ -67,53 +68,53 @@ $usercancreate = $user->hasRight("facture", "creer");
  * Actions
  */
 
-$parameters = array('id'=>$id);
+$parameters = array('id' => $id);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action);
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 if (empty($reshook)) {
-	// Add new contact
-	if ($action == 'addcontact' && $user->hasRight('facture', 'creer')) {
-		if ($result > 0 && $id > 0) {
-			$contactid = (GETPOST('userid') ? GETPOSTINT('userid') : GETPOSTINT('contactid'));
-			$typeid    = (GETPOST('typecontact') ? GETPOST('typecontact') : GETPOST('type'));
-			$result    = $object->add_contact($contactid, $typeid, GETPOST("source", 'aZ09'));
-		}
+    // Add new contact
+    if ($action == 'addcontact' && $user->hasRight('facture', 'creer')) {
+        if ($result > 0 && $id > 0) {
+            $contactid = (GETPOST('userid') ? GETPOSTINT('userid') : GETPOSTINT('contactid'));
+            $typeid    = (GETPOST('typecontact') ? GETPOST('typecontact') : GETPOST('type'));
+            $result    = $object->add_contact($contactid, $typeid, GETPOST("source", 'aZ09'));
+        }
 
-		if ($result >= 0) {
-			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-			exit;
-		} else {
-			if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
-				$langs->load("errors");
-				setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
-			} else {
-				setEventMessages($object->error, $object->errors, 'errors');
-			}
-		}
-	} elseif ($action == 'swapstatut' && $user->hasRight('facture', 'creer')) {
-		// Toggle the status of a contact
-		$result = $object->swapContactStatus(GETPOSTINT('ligne'));
-	} elseif ($action == 'deletecontact' && $user->hasRight('facture', 'creer')) {
-		// Delete contact
-		$result = $object->delete_contact($lineid);
+        if ($result >= 0) {
+            header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $object->id);
+            exit;
+        } else {
+            if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
+                $langs->load("errors");
+                setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
+            } else {
+                setEventMessages($object->error, $object->errors, 'errors');
+            }
+        }
+    } elseif ($action == 'swapstatut' && $user->hasRight('facture', 'creer')) {
+        // Toggle the status of a contact
+        $result = $object->swapContactStatus(GETPOSTINT('ligne'));
+    } elseif ($action == 'deletecontact' && $user->hasRight('facture', 'creer')) {
+        // Delete contact
+        $result = $object->delete_contact($lineid);
 
-		if ($result >= 0) {
-			header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-			exit;
-		} else {
-			dol_print_error($db);
-		}
-	}
+        if ($result >= 0) {
+            header("Location: " . $_SERVER['PHP_SELF'] . "?id=" . $object->id);
+            exit;
+        } else {
+            dol_print_error($db);
+        }
+    }
 }
 
 /*
  * View
  */
 
-$title = $object->ref." - ".$langs->trans('ContactsAddresses');
+$title = $object->ref . " - " . $langs->trans('ContactsAddresses');
 $helpurl = "EN:Customers_Invoices|FR:Factures_Clients|ES:Facturas_a_clientes";
 llxHeader('', $title, $helpurl);
 
@@ -130,68 +131,68 @@ $userstatic = new User($db);
 /* *************************************************************************** */
 
 if ($id > 0 || !empty($ref)) {
-	if ($object->fetch($id, $ref) > 0) {
-		$object->fetch_thirdparty();
+    if ($object->fetch($id, $ref) > 0) {
+        $object->fetch_thirdparty();
 
-		$head = facture_prepare_head($object);
+        $head = facture_prepare_head($object);
 
-		$totalpaid = $object->getSommePaiement();
+        $totalpaid = $object->getSommePaiement();
 
-		print dol_get_fiche_head($head, 'contact', $langs->trans('InvoiceCustomer'), -1, 'bill');
+        print dol_get_fiche_head($head, 'contact', $langs->trans('InvoiceCustomer'), -1, 'bill');
 
-		// Invoice content
+        // Invoice content
 
-		$linkback = '<a href="'.DOL_URL_ROOT.'/compta/facture/list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+        $linkback = '<a href="' . DOL_URL_ROOT . '/compta/facture/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-		$morehtmlref = '<div class="refidno">';
-		// Ref customer
-		$morehtmlref .= $form->editfieldkey("RefCustomer", 'ref_client', $object->ref_customer, $object, 0, 'string', '', 0, 1);
-		$morehtmlref .= $form->editfieldval("RefCustomer", 'ref_client', $object->ref_customer, $object, 0, 'string', '', null, null, '', 1);
-		// Thirdparty
-		$morehtmlref .= '<br>'.$object->thirdparty->getNomUrl(1, 'customer');
-		// Project
-		if (isModEnabled('project')) {
-			$langs->load("projects");
-			$morehtmlref .= '<br>';
-			if (0) {
-				$morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
-				if ($action != 'classify') {
-					$morehtmlref .= '<a class="editfielda" href="'.$_SERVER['PHP_SELF'].'?action=classify&token='.newToken().'&id='.$object->id.'">'.img_edit($langs->transnoentitiesnoconv('SetProject')).'</a> ';
-				}
-				$morehtmlref .= $form->form_project($_SERVER['PHP_SELF'].'?id='.$object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
-			} else {
-				if (!empty($object->fk_project)) {
-					$proj = new Project($db);
-					$proj->fetch($object->fk_project);
-					$morehtmlref .= $proj->getNomUrl(1);
-					if ($proj->title) {
-						$morehtmlref .= '<span class="opacitymedium"> - '.dol_escape_htmltag($proj->title).'</span>';
-					}
-				}
-			}
-		}
-		$morehtmlref .= '</div>';
+        $morehtmlref = '<div class="refidno">';
+        // Ref customer
+        $morehtmlref .= $form->editfieldkey("RefCustomer", 'ref_client', $object->ref_customer, $object, 0, 'string', '', 0, 1);
+        $morehtmlref .= $form->editfieldval("RefCustomer", 'ref_client', $object->ref_customer, $object, 0, 'string', '', null, null, '', 1);
+        // Thirdparty
+        $morehtmlref .= '<br>' . $object->thirdparty->getNomUrl(1, 'customer');
+        // Project
+        if (isModEnabled('project')) {
+            $langs->load("projects");
+            $morehtmlref .= '<br>';
+            if (0) {
+                $morehtmlref .= img_picto($langs->trans("Project"), 'project', 'class="pictofixedwidth"');
+                if ($action != 'classify') {
+                    $morehtmlref .= '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=classify&token=' . newToken() . '&id=' . $object->id . '">' . img_edit($langs->transnoentitiesnoconv('SetProject')) . '</a> ';
+                }
+                $morehtmlref .= $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, ($action == 'classify' ? 'projectid' : 'none'), 0, 0, 0, 1, '', 'maxwidth300');
+            } else {
+                if (!empty($object->fk_project)) {
+                    $proj = new Project($db);
+                    $proj->fetch($object->fk_project);
+                    $morehtmlref .= $proj->getNomUrl(1);
+                    if ($proj->title) {
+                        $morehtmlref .= '<span class="opacitymedium"> - ' . dol_escape_htmltag($proj->title) . '</span>';
+                    }
+                }
+            }
+        }
+        $morehtmlref .= '</div>';
 
-		$object->totalpaid = $totalpaid; // To give a chance to dol_banner_tab to use already paid amount to show correct status
+        $object->totalpaid = $totalpaid; // To give a chance to dol_banner_tab to use already paid amount to show correct status
 
-		dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref, '', 0, '', '', 1);
+        dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref, '', 0, '', '', 1);
 
-		print dol_get_fiche_end();
+        print dol_get_fiche_end();
 
-		//print '<br>';
+        //print '<br>';
 
-		// Contacts lines (modules that overwrite templates must declare this into descriptor)
-		$dirtpls = array_merge($conf->modules_parts['tpl'], array('/core/tpl'));
-		foreach ($dirtpls as $reldir) {
-			$res = @include dol_buildpath($reldir.'/contacts.tpl.php');
-			if ($res) {
-				break;
-			}
-		}
-	} else {
-		// Record not found
-		print "ErrorRecordNotFound";
-	}
+        // Contacts lines (modules that overwrite templates must declare this into descriptor)
+        $dirtpls = array_merge($conf->modules_parts['tpl'], array('/core/tpl'));
+        foreach ($dirtpls as $reldir) {
+            $res = @include dol_buildpath($reldir . '/contacts.tpl.php');
+            if ($res) {
+                break;
+            }
+        }
+    } else {
+        // Record not found
+        print "ErrorRecordNotFound";
+    }
 }
 
 // End of page

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023   Laurent Destailleur     <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,9 @@
  */
 
 /**
- *	\file       htdocs/debugbar/class/DataCollector/DolTimeDataCollector.php
- *	\brief      Class for debugbar collection
- *	\ingroup    debugbar
+ *  \file       htdocs/debugbar/class/DataCollector/DolTimeDataCollector.php
+ *  \brief      Class for debugbar collection
+ *  \ingroup    debugbar
  */
 
 use DebugBar\DataCollector\TimeDataCollector;
@@ -28,28 +29,28 @@ use DebugBar\DataCollector\TimeDataCollector;
  */
 class DolTimeDataCollector extends TimeDataCollector
 {
-	/**
-	 *	Return widget settings
-	 *
-	 *  @return array  Array
-	 */
-	public function getWidgets()
-	{
-		global $langs;
+    /**
+     *  Return widget settings
+     *
+     *  @return array  Array
+     */
+    public function getWidgets()
+    {
+        global $langs;
 
-		return array(
-			"time" => array(
-				"icon" => "clock-o",
-				"tooltip" => $langs->transnoentities('RequestDuration'),
-				"map" => "time.duration_str",
-				"default" => "'0ms'"
-			),
-			$langs->transnoentities('Timeline') => array(
-				"icon" => "tasks",
-				"widget" => "PhpDebugBar.Widgets.TimelineWidget",
-				"map" => "time",
-				"default" => "{}"
-			)
-		);
-	}
+        return array(
+            "time" => array(
+                "icon" => "clock-o",
+                "tooltip" => $langs->transnoentities('RequestDuration'),
+                "map" => "time.duration_str",
+                "default" => "'0ms'"
+            ),
+            $langs->transnoentities('Timeline') => array(
+                "icon" => "tasks",
+                "widget" => "PhpDebugBar.Widgets.TimelineWidget",
+                "map" => "time",
+                "default" => "{}"
+            )
+        );
+    }
 }

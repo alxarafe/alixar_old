@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003-2007  Rodolphe Quiedeville        <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2007  Laurent Destailleur         <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009  Regis Houssin               <regis.houssin@inodbox.com>
@@ -26,124 +27,124 @@
  * \brief      File containing class for advanced numbering model of Partnership
  */
 
-require_once DOL_DOCUMENT_ROOT.'/partnership/core/modules/partnership/modules_partnership.php';
+require_once DOL_DOCUMENT_ROOT . '/partnership/core/modules/partnership/modules_partnership.php';
 
 
 /**
- *	Class to manage the Advanced numbering rule for Partnership
+ *  Class to manage the Advanced numbering rule for Partnership
  */
 class mod_partnership_advanced extends ModeleNumRefPartnership
 {
-	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
-	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
+    /**
+     * Dolibarr version of the loaded document
+     * @var string
+     */
+    public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	/**
-	 * @var string Error message
-	 */
-	public $error = '';
+    /**
+     * @var string Error message
+     */
+    public $error = '';
 
-	/**
-	 * @var string name
-	 */
-	public $name = 'advanced';
+    /**
+     * @var string name
+     */
+    public $name = 'advanced';
 
 
-	/**
-	 *  Returns the description of the numbering model
-	 *
-	 *  @param  Translate	$langs      Lang object to use for output
-	 *  @return     string      Descriptive text
-	 */
-	public function info($langs)
-	{
-		global $db;
+    /**
+     *  Returns the description of the numbering model
+     *
+     *  @param  Translate   $langs      Lang object to use for output
+     *  @return     string      Descriptive text
+     */
+    public function info($langs)
+    {
+        global $db;
 
-		$langs->load("bills");
+        $langs->load("bills");
 
-		$form = new Form($db);
+        $form = new Form($db);
 
-		$text = $langs->trans('GenericNumRefModelDesc')."<br>\n";
-		$text .= '<form action="'.$_SERVER['PHP_SELF'].'" method="POST">';
-		$text .= '<input type="hidden" name="token" value="'.newToken().'">';
-		$text .= '<input type="hidden" name="action" value="updateMask">';
-		$text .= '<input type="hidden" name="maskconst" value="PARTNERSHIP_ADVANCED_MASK">';
-		$text .= '<table class="nobordernopadding" width="100%">';
+        $text = $langs->trans('GenericNumRefModelDesc') . "<br>\n";
+        $text .= '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST">';
+        $text .= '<input type="hidden" name="token" value="' . newToken() . '">';
+        $text .= '<input type="hidden" name="action" value="updateMask">';
+        $text .= '<input type="hidden" name="maskconst" value="PARTNERSHIP_ADVANCED_MASK">';
+        $text .= '<table class="nobordernopadding" width="100%">';
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Partnership"), $langs->transnoentities("Partnership"));
-		$tooltip .= $langs->trans("GenericMaskCodes2");
-		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Partnership"), $langs->transnoentities("Partnership"));
-		$tooltip .= $langs->trans("GenericMaskCodes5");
+        $tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Partnership"), $langs->transnoentities("Partnership"));
+        $tooltip .= $langs->trans("GenericMaskCodes2");
+        $tooltip .= $langs->trans("GenericMaskCodes3");
+        $tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Partnership"), $langs->transnoentities("Partnership"));
+        $tooltip .= $langs->trans("GenericMaskCodes5");
 
-		// Parametrage du prefix
-		$text .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$text .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskPartnership" value="'.getDolGlobalString('PARTNERSHIP_ADVANCED_MASK').'">', $tooltip, 1, 1).'</td>';
+        // Parametrage du prefix
+        $text .= '<tr><td>' . $langs->trans("Mask") . ':</td>';
+        $text .= '<td class="right">' . $form->textwithpicto('<input type="text" class="flat minwidth175" name="maskPartnership" value="' . getDolGlobalString('PARTNERSHIP_ADVANCED_MASK') . '">', $tooltip, 1, 1) . '</td>';
 
-		$text .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit" name="Button"value="'.$langs->trans("Modify").'"></td>';
+        $text .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button button-edit" name="Button"value="' . $langs->trans("Modify") . '"></td>';
 
-		$text .= '</tr>';
+        $text .= '</tr>';
 
-		$text .= '</table>';
-		$text .= '</form>';
+        $text .= '</table>';
+        $text .= '</form>';
 
-		return $text;
-	}
+        return $text;
+    }
 
-	/**
-	 *  Return an example of numbering
-	 *
-	 *  @return     string      Example
-	 */
-	public function getExample()
-	{
-		global $conf, $db, $langs, $mysoc;
+    /**
+     *  Return an example of numbering
+     *
+     *  @return     string      Example
+     */
+    public function getExample()
+    {
+        global $conf, $db, $langs, $mysoc;
 
-		$object = new Partnership($db);
-		$object->initAsSpecimen();
+        $object = new Partnership($db);
+        $object->initAsSpecimen();
 
-		/*$old_code_client = $mysoc->code_client;
-		$old_code_type = $mysoc->typent_code;
-		$mysoc->code_client = 'CCCCCCCCCC';
-		$mysoc->typent_code = 'TTTTTTTTTT';*/
+        /*$old_code_client = $mysoc->code_client;
+        $old_code_type = $mysoc->typent_code;
+        $mysoc->code_client = 'CCCCCCCCCC';
+        $mysoc->typent_code = 'TTTTTTTTTT';*/
 
-		$numExample = $this->getNextValue($object);
+        $numExample = $this->getNextValue($object);
 
-		/*$mysoc->code_client = $old_code_client;
-		$mysoc->typent_code = $old_code_type;*/
+        /*$mysoc->code_client = $old_code_client;
+        $mysoc->typent_code = $old_code_type;*/
 
-		if (!$numExample) {
-			$numExample = $langs->trans('NotConfigured');
-		}
-		return $numExample;
-	}
+        if (!$numExample) {
+            $numExample = $langs->trans('NotConfigured');
+        }
+        return $numExample;
+    }
 
-	/**
-	 * 	Return next free value
-	 *
-	 *  @param  Object		$object		Object we need next value for
-	 *  @return string|0                Next value if OK, 0 if KO
-	 */
-	public function getNextValue($object)
-	{
-		global $db, $conf;
+    /**
+     *  Return next free value
+     *
+     *  @param  Object      $object     Object we need next value for
+     *  @return string|0                Next value if OK, 0 if KO
+     */
+    public function getNextValue($object)
+    {
+        global $db, $conf;
 
-		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
-		// We get cursor rule
-		$mask = getDolGlobalString('PARTNERSHIP_ADVANCED_MASK');
+        // We get cursor rule
+        $mask = getDolGlobalString('PARTNERSHIP_ADVANCED_MASK');
 
-		if (!$mask) {
-			$this->error = 'NotConfigured';
-			return 0;
-		}
+        if (!$mask) {
+            $this->error = 'NotConfigured';
+            return 0;
+        }
 
-		$date = $object->date;
+        $date = $object->date;
 
-		$numFinal = get_next_value($db, $mask, 'partnership', 'ref', '', null, $date);
+        $numFinal = get_next_value($db, $mask, 'partnership', 'ref', '', null, $date);
 
-		return  $numFinal;
-	}
+        return  $numFinal;
+    }
 }

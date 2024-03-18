@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
@@ -27,10 +28,10 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/ecm.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/ecm/class/ecmdirectory.class.php';
-require_once DOL_DOCUMENT_ROOT.'/ecm/class/ecmfiles.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/ecm.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmdirectory.class.php';
+require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmfiles.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('ecm'));
@@ -44,8 +45,8 @@ $action = GETPOST('action', 'aZ09');
 $socid = GETPOSTINT("socid");
 // Security check
 if ($user->socid > 0) {
-	$action = '';
-	$socid = $user->socid;
+    $action = '';
+    $socid = $user->socid;
 }
 
 $backtopage = GETPOST('backtopage', 'alpha');
@@ -55,44 +56,44 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
 if (empty($page) || $page == -1) {
-	$page = 0;
+    $page = 0;
 }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) {
-	$sortorder = "ASC";
+    $sortorder = "ASC";
 }
 if (!$sortfield) {
-	$sortfield = "label";
+    $sortfield = "label";
 }
 
 $section = GETPOST("section", 'alpha');
 if (!$section) {
-	dol_print_error(null, 'Error, section parameter missing');
-	exit;
+    dol_print_error(null, 'Error, section parameter missing');
+    exit;
 }
 $urlfile = (string) dol_sanitizePathName(GETPOST("urlfile"));
 if (!$urlfile) {
-	dol_print_error(null, "ErrorParamNotDefined");
-	exit;
+    dol_print_error(null, "ErrorParamNotDefined");
+    exit;
 }
 
 // Load ecm object
 $ecmdir = new EcmDirectory($db);
 $result = $ecmdir->fetch(GETPOST("section", 'alpha'));
 if (!($result > 0)) {
-	dol_print_error($db, $ecmdir->error);
-	exit;
+    dol_print_error($db, $ecmdir->error);
+    exit;
 }
 $relativepath = $ecmdir->getRelativePath();
-$upload_dir = $conf->ecm->dir_output.'/'.$relativepath;
+$upload_dir = $conf->ecm->dir_output . '/' . $relativepath;
 
-$fullpath = $conf->ecm->dir_output.'/'.$relativepath.$urlfile;
+$fullpath = $conf->ecm->dir_output . '/' . $relativepath . $urlfile;
 
-$relativetodocument = 'ecm/'.$relativepath; // $relativepath is relative to ECM dir, we need relative to document
-$filepath = $relativepath.$urlfile;
-$filepathtodocument = $relativetodocument.$urlfile;
+$relativetodocument = 'ecm/' . $relativepath; // $relativepath is relative to ECM dir, we need relative to document
+$filepath = $relativepath . $urlfile;
+$filepathtodocument = $relativetodocument . $urlfile;
 
 // Try to load object from index
 $object = new EcmFiles($db);
@@ -102,8 +103,8 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 
 $result = $object->fetch(0, '', $filepathtodocument);
 if ($result < 0) {
-	dol_print_error($db, $object->error, $object->errors);
-	exit;
+    dol_print_error($db, $object->error, $object->errors);
+    exit;
 }
 
 $permissionnote = $user->hasRight('ecm', 'setup'); // Used by the include of actions_setnotes.inc.php
@@ -111,7 +112,7 @@ $permissionnote = $user->hasRight('ecm', 'setup'); // Used by the include of act
 $permissiontoread = $user->hasRight('ecm', 'read');
 
 if (!$permissiontoread) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -119,7 +120,7 @@ if (!$permissiontoread) {
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 
 
 /*
@@ -142,29 +143,29 @@ $tmpecmdir->fetch($ecmdir->id);
 $result = 1;
 $i = 0;
 while ($tmpecmdir && $result > 0) {
-	$tmpecmdir->ref = $tmpecmdir->label;
-	$s = $tmpecmdir->getNomUrl(1).$s;
-	if ($tmpecmdir->fk_parent) {
-		$s = ' -> '.$s;
-		$result = $tmpecmdir->fetch($tmpecmdir->fk_parent);
-	} else {
-		$tmpecmdir = 0;
-	}
-	$i++;
+    $tmpecmdir->ref = $tmpecmdir->label;
+    $s = $tmpecmdir->getNomUrl(1) . $s;
+    if ($tmpecmdir->fk_parent) {
+        $s = ' -> ' . $s;
+        $result = $tmpecmdir->fetch($tmpecmdir->fk_parent);
+    } else {
+        $tmpecmdir = 0;
+    }
+    $i++;
 }
 
 $urlfiletoshow = preg_replace('/\.noexe$/', '', $urlfile);
 
-$s = img_picto('', 'object_dir').' <a href="'.DOL_URL_ROOT.'/ecm/index.php">'.$langs->trans("ECMRoot").'</a> -> '.$s.' -> ';
+$s = img_picto('', 'object_dir') . ' <a href="' . DOL_URL_ROOT . '/ecm/index.php">' . $langs->trans("ECMRoot") . '</a> -> ' . $s . ' -> ';
 if ($action == 'edit') {
-	$s .= '<input type="text" name="label" class="quatrevingtpercent" value="'.$urlfiletoshow.'">';
+    $s .= '<input type="text" name="label" class="quatrevingtpercent" value="' . $urlfiletoshow . '">';
 } else {
-	$s .= $urlfiletoshow;
+    $s .= $urlfiletoshow;
 }
 
 $linkback = '';
 if ($backtopage) {
-	$linkback = '<a href="'.$backtopage.'">'.$langs->trans("BackToTree").'</a>';
+    $linkback = '<a href="' . $backtopage . '">' . $langs->trans("BackToTree") . '</a>';
 }
 
 $object->ref = ''; // Force to hide ref
@@ -177,8 +178,8 @@ print '<div class="underbanner clearboth"></div>';
 
 
 $cssclass = "titlefield";
-$moreparam = '&amp;section='.$section.'&amp;urlfile='.$urlfile;
-include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+$moreparam = '&amp;section=' . $section . '&amp;urlfile=' . $urlfile;
+include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
 
 print '</div>';
 

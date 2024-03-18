@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alexandre Janniaux   <alexandre.janniaux@gmail.com>
  *
@@ -19,22 +20,22 @@
 
 /**
  *      \file       test/phpunit/DoliDBTest.php
- *		\ingroup    test
+ *      \ingroup    test
  *      \brief      PHPUnit test
- *		\remarks	To run this script as CLI:  phpunit filename.php
+ *      \remarks    To run this script as CLI:  phpunit filename.php
  */
 
 global $conf,$user,$langs,$db;
-//define('TEST_DB_FORCE_TYPE','mysql');	// This is to force using mysql driver
+//define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
-require_once dirname(__FILE__).'/../../htdocs/master.inc.php';
-require_once dirname(__FILE__).'/../../htdocs/core/class/discount.class.php';
-require_once dirname(__FILE__).'/CommonClassTest.class.php';
+require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
+require_once dirname(__FILE__) . '/../../htdocs/core/class/discount.class.php';
+require_once dirname(__FILE__) . '/CommonClassTest.class.php';
 
 if (empty($user->id)) {
-	print "Load permissions for admin user nb 1\n";
-	$user->fetch(1);
-	$user->getrights();
+    print "Load permissions for admin user nb 1\n";
+    $user->fetch(1);
+    $user->getrights();
 }
 $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
 
@@ -44,49 +45,49 @@ $conf->global->MAIN_DISABLE_ALL_MAILS = 1;
  *
  * @backupGlobals disabled
  * @backupStaticAttributes enabled
- * @remarks	backupGlobals must be disabled to have db,conf,user and lang not erased.
+ * @remarks backupGlobals must be disabled to have db,conf,user and lang not erased.
  */
 class DoliDBTest extends CommonClassTest
 {
-	/**
-	 * testDDLUpdateField
-	 *
-	 * @return	int
-	 */
-	public function testDDLUpdateField()
-	{
-		global $conf,$user,$langs,$db;
-		$conf = $this->savconf;
-		$user = $this->savuser;
-		$langs = $this->savlangs;
-		$db = $this->savdb;
+    /**
+     * testDDLUpdateField
+     *
+     * @return  int
+     */
+    public function testDDLUpdateField()
+    {
+        global $conf,$user,$langs,$db;
+        $conf = $this->savconf;
+        $user = $this->savuser;
+        $langs = $this->savlangs;
+        $db = $this->savdb;
 
-		print __METHOD__.' db->type = '.$db->type."\n";
+        print __METHOD__ . ' db->type = ' . $db->type . "\n";
 
-		$savtype = '';
-		$savnull = '';
-		$resql = $db->DDLDescTable($db->prefix().'c_paper_format', 'code');
-		while ($obj = $db->fetch_object($resql)) {
-			if ($obj->Field == 'code') {
-				$savtype = $obj->Type;
-				$savnull = $obj->Null;
-			}
-		}
+        $savtype = '';
+        $savnull = '';
+        $resql = $db->DDLDescTable($db->prefix() . 'c_paper_format', 'code');
+        while ($obj = $db->fetch_object($resql)) {
+            if ($obj->Field == 'code') {
+                $savtype = $obj->Type;
+                $savnull = $obj->Null;
+            }
+        }
 
-		// Set new field
-		$field_desc = array('type' => 'varchar', 'value' => '17', 'null' => 'NOT NULL');
+        // Set new field
+        $field_desc = array('type' => 'varchar', 'value' => '17', 'null' => 'NOT NULL');
 
-		$result = $db->DDLUpdateField($db->prefix().'c_paper_format', 'code', $field_desc);
-		$this->assertEquals(1, $result);
-		print __METHOD__." result=".$result."\n";
+        $result = $db->DDLUpdateField($db->prefix() . 'c_paper_format', 'code', $field_desc);
+        $this->assertEquals(1, $result);
+        print __METHOD__ . " result=" . $result . "\n";
 
-		// TODO Use $savtype and $savnull instead of hard coded
-		$field_desc = array('type' => 'varchar', 'value' => '16', 'null' => 'NOT NULL');
+        // TODO Use $savtype and $savnull instead of hard coded
+        $field_desc = array('type' => 'varchar', 'value' => '16', 'null' => 'NOT NULL');
 
-		$result = $db->DDLUpdateField($db->prefix().'c_paper_format', 'code', $field_desc);
-		$this->assertEquals(1, $result);
-		print __METHOD__." result=".$result."\n";
+        $result = $db->DDLUpdateField($db->prefix() . 'c_paper_format', 'code', $field_desc);
+        $this->assertEquals(1, $result);
+        print __METHOD__ . " result=" . $result . "\n";
 
-		return $result;
-	}
+        return $result;
+    }
 }

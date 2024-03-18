@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2016	Marcos García	<marcosgdf@gmail.com>
+
+/* Copyright (C) 2016   Marcos García   <marcosgdf@gmail.com>
  * Copyright (C) 2022   Open-Dsi		<support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,32 +18,32 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1');
+    define('NOTOKENRENEWAL', '1');
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT.'/variants/class/ProductCombination.class.php';
+require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
 
 // Security check
 if (!isModEnabled('variants')) {
-	accessforbidden('Module not enabled');
+    accessforbidden('Module not enabled');
 }
 if ($user->socid > 0) { // Protection if external user
-	accessforbidden();
+    accessforbidden();
 }
 $result = restrictedArea($user, 'variants');
 
@@ -56,18 +57,18 @@ top_httphead('application/json');
 $id = GETPOSTINT('id');
 
 if (!$id) {
-	print json_encode(array(
-		'error' => 'ID not set'
-	));
-	exit();
+    print json_encode(array(
+        'error' => 'ID not set'
+    ));
+    exit();
 }
 
 $product = new Product($db);
 
 if ($product->fetch($id) < 0) {
-	print json_encode(array(
-		'error' => 'Product not found'
-	));
+    print json_encode(array(
+        'error' => 'Product not found'
+    ));
 }
 
 $prodcomb = new ProductCombination($db);

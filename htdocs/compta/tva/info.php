@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016-2023  Alexandre Spangaro      <aspangaro@easya.solutions>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,16 +17,16 @@
  */
 
 /**
- *	\file       htdocs/compta/tva/info.php
- *	\ingroup    tax
- *	\brief      Page with info about vat
+ *  \file       htdocs/compta/tva/info.php
+ *  \ingroup    tax
+ *  \brief      Page with info about vat
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/tva/class/tva.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/vat.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/vat.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('compta', 'bills'));
@@ -38,7 +39,7 @@ $object = new Tva($db);
 // Security check
 $socid = GETPOSTINT('socid');
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'tax', '', 'tva', 'charges');
 
@@ -48,11 +49,11 @@ $result = restrictedArea($user, 'tax', '', 'tva', 'charges');
  */
 
 if ($action == 'setlib' && $user->hasRight('tax', 'charges', 'creer')) {
-	$object->fetch($id);
-	$result = $object->setValueFrom('label', GETPOST('lib', 'alpha'), '', '', 'text', '', $user, 'TAX_MODIFY');
-	if ($result < 0) {
-		setEventMessages($object->error, $object->errors, 'errors');
-	}
+    $object->fetch($id);
+    $result = $object->setValueFrom('label', GETPOST('lib', 'alpha'), '', '', 'text', '', $user, 'TAX_MODIFY');
+    if ($result < 0) {
+        setEventMessages($object->error, $object->errors, 'errors');
+    }
 }
 
 
@@ -60,7 +61,7 @@ if ($action == 'setlib' && $user->hasRight('tax', 'charges', 'creer')) {
  * View
  */
 
-$title = $langs->trans("VAT")." - ".$langs->trans("Info");
+$title = $langs->trans("VAT") . " - " . $langs->trans("Info");
 $help_url = '';
 llxHeader("", $title, $help_url);
 
@@ -78,7 +79,7 @@ $morehtmlref .= $form->editfieldkey("Label", 'lib', $object->label, $object, $us
 $morehtmlref .= $form->editfieldval("Label", 'lib', $object->label, $object, $user->hasRight('tax', 'charges', 'creer'), 'string', '', null, null, '', 1);
 $morehtmlref .= '</div>';
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/compta/tva/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/compta/tva/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
 dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref, '', 0, '', '');
 

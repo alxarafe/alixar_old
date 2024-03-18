@@ -51,117 +51,117 @@ top_httphead();
  * Page used to upload new files in the current folder.
 -->
 <html>
-	<head>
-		<title>File Upload</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <head>
+        <title>File Upload</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <?php
-print '<!-- Includes CSS for Dolibarr theme -->'."\n";
+print '<!-- Includes CSS for Dolibarr theme -->' . "\n";
 // Output style sheets (optioncss='print' or ''). Note: $conf->css looks like '/theme/eldy/style.css.php'
 $themepath = dol_buildpath($conf->css, 1);
 $themesubdir = '';
-if (!empty($conf->modules_parts['theme'])) {	// This slow down
-	foreach ($conf->modules_parts['theme'] as $reldir) {
-		if (file_exists(dol_buildpath($reldir.$conf->css, 0))) {
-			$themepath = dol_buildpath($reldir.$conf->css, 1);
-			$themesubdir = $reldir;
-			break;
-		}
-	}
+if (!empty($conf->modules_parts['theme'])) {    // This slow down
+    foreach ($conf->modules_parts['theme'] as $reldir) {
+        if (file_exists(dol_buildpath($reldir . $conf->css, 0))) {
+            $themepath = dol_buildpath($reldir . $conf->css, 1);
+            $themesubdir = $reldir;
+            break;
+        }
+    }
 }
 
 //print 'themepath='.$themepath.' themeparam='.$themeparam;exit;
-print '<link rel="stylesheet" type="text/css" href="'.$themepath.'">'."\n";
+print '<link rel="stylesheet" type="text/css" href="' . $themepath . '">' . "\n";
 ?>
-		<link href="browser.css" type="text/css" rel="stylesheet" >
-		<script type="text/javascript" src="js/common.js"></script>
-		<script type="text/javascript">
+        <link href="browser.css" type="text/css" rel="stylesheet" >
+        <script type="text/javascript" src="js/common.js"></script>
+        <script type="text/javascript">
 
 function SetCurrentFolder( resourceType, folderPath )
 {
-	var sUrl = oConnector.ConnectorUrl + 'Command=FileUpload' ;
-	sUrl += '&Type=' + resourceType ;
-	sUrl += '&CurrentFolder=' + encodeURIComponent( folderPath );
+    var sUrl = oConnector.ConnectorUrl + 'Command=FileUpload' ;
+    sUrl += '&Type=' + resourceType ;
+    sUrl += '&CurrentFolder=' + encodeURIComponent( folderPath );
 
-	document.getElementById('frmUpload').action = sUrl ;
+    document.getElementById('frmUpload').action = sUrl ;
 }
 
 function OnSubmit()
 {
-	console.log("Click on OnSubmit");
-	if ( document.getElementById('NewFile').value.length == 0 )
-	{
-		alert( 'Please select a file from your computer' );
-		return false ;
-	}
+    console.log("Click on OnSubmit");
+    if ( document.getElementById('NewFile').value.length == 0 )
+    {
+        alert( 'Please select a file from your computer' );
+        return false ;
+    }
 
-	// Set the interface elements.
-	document.getElementById('eUploadMessage').innerHTML = 'Upload a new file in this folder (Upload in progress, please wait...)' ;
-	document.getElementById('btnUpload').disabled = true ;
+    // Set the interface elements.
+    document.getElementById('eUploadMessage').innerHTML = 'Upload a new file in this folder (Upload in progress, please wait...)' ;
+    document.getElementById('btnUpload').disabled = true ;
 
-	return true ;
+    return true ;
 }
 
 function OnUploadCompleted( errorNumber, data )
 {
-	console.log("errorNumber = "+errorNumber);
+    console.log("errorNumber = "+errorNumber);
 
-	// Reset the Upload Worker Frame.
-	window.parent.frames['frmUploadWorker'].location = 'javascript:void(0)' ;
+    // Reset the Upload Worker Frame.
+    window.parent.frames['frmUploadWorker'].location = 'javascript:void(0)' ;
 
-	// Reset the upload form (On IE we must do a little trick to avoid problems).
-	if ( document.all )
-		document.getElementById('NewFile').outerHTML = '<input id="NewFile" name="NewFile" style="WIDTH: 100%" type="file">' ;
-	else
-		document.getElementById('frmUpload').reset();
+    // Reset the upload form (On IE we must do a little trick to avoid problems).
+    if ( document.all )
+        document.getElementById('NewFile').outerHTML = '<input id="NewFile" name="NewFile" style="WIDTH: 100%" type="file">' ;
+    else
+        document.getElementById('frmUpload').reset();
 
-	// Reset the interface elements.
-	document.getElementById('eUploadMessage').innerHTML = 'Upload a new file in this folder' ;
-	document.getElementById('btnUpload').disabled = false ;
+    // Reset the interface elements.
+    document.getElementById('eUploadMessage').innerHTML = 'Upload a new file in this folder' ;
+    document.getElementById('btnUpload').disabled = false ;
 
-	switch ( errorNumber )
-	{
-		case 0:
-			window.parent.frames['frmResourcesList'].Refresh();
-			break;
-		case 1:	// Custom error.
-			alert( data );
-			break;
-		case 201:
-			window.parent.frames['frmResourcesList'].Refresh();
-			alert( 'A file with the same name is already available. The uploaded file has been renamed to "' + data + '"' );
-			break;
-		case 202:
-			alert( 'Invalid file (Bad extension)' );
-			break;
-		default:
-			alert( 'Error on file upload. Error number: ' + errorNumber );
-			break;
-	}
+    switch ( errorNumber )
+    {
+        case 0:
+            window.parent.frames['frmResourcesList'].Refresh();
+            break;
+        case 1: // Custom error.
+            alert( data );
+            break;
+        case 201:
+            window.parent.frames['frmResourcesList'].Refresh();
+            alert( 'A file with the same name is already available. The uploaded file has been renamed to "' + data + '"' );
+            break;
+        case 202:
+            alert( 'Invalid file (Bad extension)' );
+            break;
+        default:
+            alert( 'Error on file upload. Error number: ' + errorNumber );
+            break;
+    }
 }
 
 window.onload = function()
 {
-	window.top.IsLoadedUpload = true ;
+    window.top.IsLoadedUpload = true ;
 }
-		</script>
-	</head>
-	<body>
-		<form id="frmUpload" action="" target="frmUploadWorker" method="post" enctype="multipart/form-data" onsubmit="return OnSubmit();">
-			<input type="hidden" name="token" value="<?php echo newToken(); ?>" />
-			<table class="fullHeight" cellspacing="0" cellpadding="0" width="100%" border="0">
-				<tr>
-					<td class="nowrap valignmiddle">
-						<table width="100%" class="inline-block valignmiddle">
-							<tr>
-								<td><input id="NewFile" name="NewFile" type="file"></td>
-								<td class="nowrap">&nbsp;<input id="btnUpload" type="submit" value="Upload" class="flat button"></td>
-							</tr>
-						</table>
-						<!-- Section for upload result message -->
-						<span id="eUploadMessage"></span><br>
-					</td>
-				</tr>
-			</table>
-		</form>
-	</body>
+        </script>
+    </head>
+    <body>
+        <form id="frmUpload" action="" target="frmUploadWorker" method="post" enctype="multipart/form-data" onsubmit="return OnSubmit();">
+            <input type="hidden" name="token" value="<?php echo newToken(); ?>" />
+            <table class="fullHeight" cellspacing="0" cellpadding="0" width="100%" border="0">
+                <tr>
+                    <td class="nowrap valignmiddle">
+                        <table width="100%" class="inline-block valignmiddle">
+                            <tr>
+                                <td><input id="NewFile" name="NewFile" type="file"></td>
+                                <td class="nowrap">&nbsp;<input id="btnUpload" type="submit" value="Upload" class="flat button"></td>
+                            </tr>
+                        </table>
+                        <!-- Section for upload result message -->
+                        <span id="eUploadMessage"></span><br>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
 </html>

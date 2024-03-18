@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2001-2002	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
+
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
@@ -29,10 +30,10 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent.class.php';
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherent_type.class.php';
-require_once DOL_DOCUMENT_ROOT.'/adherents/class/subscription.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formother.class.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent_type.class.php';
+require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 
 
 // Load translation files required by the page
@@ -55,15 +56,15 @@ $result = restrictedArea($user, 'adherent');
 
 $userid = GETPOSTINT('userid');
 if (GETPOST('addbox')) {
-	// Add box (when submit is done from a form when ajax disabled)
-	require_once DOL_DOCUMENT_ROOT.'/core/class/infobox.class.php';
-	$zone = GETPOSTINT('areacode');
-	$boxorder = GETPOST('boxorder', 'aZ09');
-	$boxorder .= GETPOST('boxcombo', 'aZ09');
-	$result = InfoBox::saveboxorder($db, $zone, $boxorder, $userid);
-	if ($result > 0) {
-		setEventMessages($langs->trans("BoxAdded"), null);
-	}
+    // Add box (when submit is done from a form when ajax disabled)
+    require_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
+    $zone = GETPOSTINT('areacode');
+    $boxorder = GETPOST('boxorder', 'aZ09');
+    $boxorder .= GETPOST('boxcombo', 'aZ09');
+    $result = InfoBox::saveboxorder($db, $zone, $boxorder, $userid);
+    if ($result > 0) {
+        setEventMessages($langs->trans("BoxAdded"), null);
+    }
 }
 
 
@@ -90,58 +91,58 @@ print load_fiche_titre($langs->trans("MembersArea"), $resultboxes['selectboxlist
 
 $boxgraph = '';
 if ($conf->use_javascript_ajax) {
-	$year = date('Y');
-	$numberyears = getDolGlobalInt("MAIN_NB_OF_YEAR_IN_MEMBERSHIP_WIDGET_GRAPH");
+    $year = date('Y');
+    $numberyears = getDolGlobalInt("MAIN_NB_OF_YEAR_IN_MEMBERSHIP_WIDGET_GRAPH");
 
-	$boxgraph .='<div class="div-table-responsive-no-min">';
-	$boxgraph .='<table class="noborder nohover centpercent">';
-	$boxgraph .='<tr class="liste_titre"><th colspan="2">'.$langs->trans("Statistics").($numberyears ? ' ('.($year-$numberyears).' - '.$year.')' : '').'</th></tr>';
-	$boxgraph .='<tr><td class="center" colspan="2">';
+    $boxgraph .= '<div class="div-table-responsive-no-min">';
+    $boxgraph .= '<table class="noborder nohover centpercent">';
+    $boxgraph .= '<tr class="liste_titre"><th colspan="2">' . $langs->trans("Statistics") . ($numberyears ? ' (' . ($year - $numberyears) . ' - ' . $year . ')' : '') . '</th></tr>';
+    $boxgraph .= '<tr><td class="center" colspan="2">';
 
-	require_once DOL_DOCUMENT_ROOT.'/adherents/class/adherentstats.class.php';
-	$stats = new AdherentStats($db, 0, $userid);
+    require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherentstats.class.php';
+    $stats = new AdherentStats($db, 0, $userid);
 
-	// Show array
-	$sumMembers = $stats->countMembersByTypeAndStatus($numberyears);
-	if (is_array($sumMembers) && !empty($sumMembers)) {
-		$total = $sumMembers['total']['members_draft'] + $sumMembers['total']['members_pending'] + $sumMembers['total']['members_uptodate'] + $sumMembers['total']['members_expired'] + $sumMembers['total']['members_excluded'] + $sumMembers['total']['members_resiliated'];
-	} else {
-		$total = 0;
-	}
-	foreach (array('members_draft', 'members_pending', 'members_uptodate', 'members_expired', 'members_excluded', 'members_resiliated') as $val) {
-		if (empty($sumMembers['total'][$val])) {
-			$sumMembers['total'][$val] = 0;
-		}
-	}
+    // Show array
+    $sumMembers = $stats->countMembersByTypeAndStatus($numberyears);
+    if (is_array($sumMembers) && !empty($sumMembers)) {
+        $total = $sumMembers['total']['members_draft'] + $sumMembers['total']['members_pending'] + $sumMembers['total']['members_uptodate'] + $sumMembers['total']['members_expired'] + $sumMembers['total']['members_excluded'] + $sumMembers['total']['members_resiliated'];
+    } else {
+        $total = 0;
+    }
+    foreach (array('members_draft', 'members_pending', 'members_uptodate', 'members_expired', 'members_excluded', 'members_resiliated') as $val) {
+        if (empty($sumMembers['total'][$val])) {
+            $sumMembers['total'][$val] = 0;
+        }
+    }
 
-	$dataseries = array();
-	$dataseries[] = array($langs->transnoentitiesnoconv("MembersStatusToValid"), $sumMembers['total']['members_draft']);			// Draft, not yet validated
-	$dataseries[] = array($langs->transnoentitiesnoconv("WaitingSubscription"), $sumMembers['total']['members_pending']);
-	$dataseries[] = array($langs->transnoentitiesnoconv("UpToDate"), $sumMembers['total']['members_uptodate']);
-	$dataseries[] = array($langs->transnoentitiesnoconv("OutOfDate"), $sumMembers['total']['members_expired']);
-	$dataseries[] = array($langs->transnoentitiesnoconv("MembersStatusExcluded"), $sumMembers['total']['members_excluded']);
-	$dataseries[] = array($langs->transnoentitiesnoconv("MembersStatusResiliated"), $sumMembers['total']['members_resiliated']);
+    $dataseries = array();
+    $dataseries[] = array($langs->transnoentitiesnoconv("MembersStatusToValid"), $sumMembers['total']['members_draft']);            // Draft, not yet validated
+    $dataseries[] = array($langs->transnoentitiesnoconv("WaitingSubscription"), $sumMembers['total']['members_pending']);
+    $dataseries[] = array($langs->transnoentitiesnoconv("UpToDate"), $sumMembers['total']['members_uptodate']);
+    $dataseries[] = array($langs->transnoentitiesnoconv("OutOfDate"), $sumMembers['total']['members_expired']);
+    $dataseries[] = array($langs->transnoentitiesnoconv("MembersStatusExcluded"), $sumMembers['total']['members_excluded']);
+    $dataseries[] = array($langs->transnoentitiesnoconv("MembersStatusResiliated"), $sumMembers['total']['members_resiliated']);
 
-	include DOL_DOCUMENT_ROOT.'/theme/'.$conf->theme.'/theme_vars.inc.php';
+    include DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/theme_vars.inc.php';
 
-	include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
-	$dolgraph = new DolGraph();
-	$dolgraph->SetData($dataseries);
-	$dolgraph->SetDataColor(array('-'.$badgeStatus0, $badgeStatus1, $badgeStatus4, $badgeStatus8, '-'.$badgeStatus8, $badgeStatus6));
-	$dolgraph->setShowLegend(2);
-	$dolgraph->setShowPercent(1);
-	$dolgraph->SetType(array('pie'));
-	$dolgraph->setHeight('200');
-	$dolgraph->draw('idgraphstatus');
-	$boxgraph .=$dolgraph->show($total ? 0 : 1);
+    include_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
+    $dolgraph = new DolGraph();
+    $dolgraph->SetData($dataseries);
+    $dolgraph->SetDataColor(array('-' . $badgeStatus0, $badgeStatus1, $badgeStatus4, $badgeStatus8, '-' . $badgeStatus8, $badgeStatus6));
+    $dolgraph->setShowLegend(2);
+    $dolgraph->setShowPercent(1);
+    $dolgraph->SetType(array('pie'));
+    $dolgraph->setHeight('200');
+    $dolgraph->draw('idgraphstatus');
+    $boxgraph .= $dolgraph->show($total ? 0 : 1);
 
-	$boxgraph .= '</td></tr>';
-	$boxgraph .= '<tr class="liste_total"><td>'.$langs->trans("Total").'</td><td class="right">';
-	$boxgraph .= $total;
-	$boxgraph .= '</td></tr>';
-	$boxgraph .= '</table>';
-	$boxgraph .= '</div>';
-	$boxgraph .= '<br>';
+    $boxgraph .= '</td></tr>';
+    $boxgraph .= '<tr class="liste_total"><td>' . $langs->trans("Total") . '</td><td class="right">';
+    $boxgraph .= $total;
+    $boxgraph .= '</td></tr>';
+    $boxgraph .= '</table>';
+    $boxgraph .= '</div>';
+    $boxgraph .= '<br>';
 }
 
 // boxes
@@ -156,13 +157,13 @@ print $boxgraph;
 
 print $resultboxes['boxlista'];
 
-print '</div>'."\n";
+print '</div>' . "\n";
 
 print '<div class="secondcolumn fichehalfright boxhalfright" id="boxhalfright">';
 
 print $resultboxes['boxlistb'];
 
-print '</div>'."\n";
+print '</div>' . "\n";
 
 print '</div>';
 print '</div>';

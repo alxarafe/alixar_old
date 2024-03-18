@@ -1,8 +1,9 @@
 <?php
+
 // Protection to avoid direct call of template
 if (empty($context) || !is_object($context)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 print '
@@ -20,7 +21,7 @@ print '
 					';
 
 foreach ($context->errors as $err) {
-	print '<blockquote class="blockquote m-0">' . $err . '</blockquote>';
+    print '<blockquote class="blockquote m-0">' . $err . '</blockquote>';
 }
 
 print '

@@ -1,8 +1,9 @@
 <?php
+
 // Protection to avoid direct call of template
 if (empty($context) || !is_object($context)) {
-	print "Error, template page can't be called as URL";
-	exit(1);
+    print "Error, template page can't be called as URL";
+    exit(1);
 }
 
 global $langs;
@@ -24,78 +25,78 @@ $useJNotify = true;
 $context->loadEventMessages();
 // alert success
 if (!empty($context->eventMessages['mesgs'])) {
-	$htmlSuccess = '<div class="success" role="alert">';
-	$msgNum = 0;
-	foreach ($context->eventMessages['mesgs'] as $mesg) {
-		if ($msgNum > 0) {
-			$htmlSuccess .= '<br>';
-		}
-		$htmlSuccess .= $langs->trans($mesg);
-		$msgNum++;
-	}
-	$htmlSuccess .= '</div>';
-	if ($useJNotify) {
-		$jsSuccess = '
+    $htmlSuccess = '<div class="success" role="alert">';
+    $msgNum = 0;
+    foreach ($context->eventMessages['mesgs'] as $mesg) {
+        if ($msgNum > 0) {
+            $htmlSuccess .= '<br>';
+        }
+        $htmlSuccess .= $langs->trans($mesg);
+        $msgNum++;
+    }
+    $htmlSuccess .= '</div>';
+    if ($useJNotify) {
+        $jsSuccess = '
                jQuery.jnotify("' . dol_escape_js($htmlSuccess) . '",
                         "success",
                         3000
                );';
-	}
+    }
 }
 // alert warning
 if (!empty($context->eventMessages['warnings'])) {
-	$htmlWarning = '<div class="warning" role="alert">';
-	$msgNum = 0;
-	foreach ($context->eventMessages['warnings'] as $mesg) {
-		if ($msgNum > 0) {
-			$htmlWarning .= '<br>';
-		}
-		$htmlWarning .= $langs->trans($mesg);
-		$msgNum++;
-	}
-	$htmlWarning .= '</div>';
-	if ($useJNotify) {
-		$jsWarning .= 'jQuery.jnotify("' . dol_escape_js($htmlWarning) . '", "warning", true);';
-	}
+    $htmlWarning = '<div class="warning" role="alert">';
+    $msgNum = 0;
+    foreach ($context->eventMessages['warnings'] as $mesg) {
+        if ($msgNum > 0) {
+            $htmlWarning .= '<br>';
+        }
+        $htmlWarning .= $langs->trans($mesg);
+        $msgNum++;
+    }
+    $htmlWarning .= '</div>';
+    if ($useJNotify) {
+        $jsWarning .= 'jQuery.jnotify("' . dol_escape_js($htmlWarning) . '", "warning", true);';
+    }
 }
 // alert error
 if (!empty($context->eventMessages['errors'])) {
-	$htmlError = '<div class="error" role="alert">';
-	$msgNum = 0;
-	foreach ($context->eventMessages['errors'] as $mesg) {
-		if ($msgNum > 0) {
-			$htmlError .= '<br>';
-		}
-		$htmlError .= $langs->trans($mesg);
-		$msgNum++;
-	}
-	$htmlError .= '</div>';
-	if ($useJNotify) {
-		$jsError .= 'jQuery.jnotify("' . dol_escape_js($htmlError) . '", "error", true );';
-	}
+    $htmlError = '<div class="error" role="alert">';
+    $msgNum = 0;
+    foreach ($context->eventMessages['errors'] as $mesg) {
+        if ($msgNum > 0) {
+            $htmlError .= '<br>';
+        }
+        $htmlError .= $langs->trans($mesg);
+        $msgNum++;
+    }
+    $htmlError .= '</div>';
+    if ($useJNotify) {
+        $jsError .= 'jQuery.jnotify("' . dol_escape_js($htmlError) . '", "error", true );';
+    }
 }
 $html .= $htmlError . $htmlWarning . $htmlSuccess;
 if ($html) {
-	$jsOut = $jsSuccess . $jsWarning . $jsError;
-	if ($jsOut == '') {
-		print $html;
-	}
+    $jsOut = $jsSuccess . $jsWarning . $jsError;
+    if ($jsOut == '') {
+        print $html;
+    }
 }
 $context->clearEventMessages();
 
 if ($context->getErrors()) {
-	include __DIR__ . '/errors.tpl.php';
+    include __DIR__ . '/errors.tpl.php';
 }
 if ($jsOut) {
-	$js = '<script nonce="' . getNonce() . '">';
-	$js .= 'jQuery(document).ready(function() {';
-	$js .= $jsOut;
-	$js .= '});';
-	$js .= '</script>';
-	print $js;
+    $js = '<script nonce="' . getNonce() . '">';
+    $js .= 'jQuery(document).ready(function() {';
+    $js .= $jsOut;
+    $js .= '});';
+    $js .= '</script>';
+    print $js;
 }
 
-print '<script src="'.$context->getControllerUrl().'/js/theme.js"></script>';
+print '<script src="' . $context->getControllerUrl() . '/js/theme.js"></script>';
 ?>
 
 </body>

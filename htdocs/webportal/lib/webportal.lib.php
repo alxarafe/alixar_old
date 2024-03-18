@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  * Copyright (C) 2024		Frédéric France			<frederic.france@free.fr>
  *
@@ -30,39 +31,39 @@
  */
 function webportalAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$langs->load("website");
+    $langs->load("website");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . '/webportal/admin/setup.php';
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/webportal/admin/setup.php';
+    $head[$h][1] = $langs->trans("Settings");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/webportal/admin/setup_theme.php';
-	$head[$h][1] = $langs->trans("SkinAndColors");
-	$head[$h][2] = 'themesettings';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/webportal/admin/setup_theme.php';
+    $head[$h][1] = $langs->trans("SkinAndColors");
+    $head[$h][2] = 'themesettings';
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/webportal/admin/configcss.php';
-	$head[$h][1] = $langs->trans("CSSPage");
-	$head[$h][2] = 'css';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/webportal/admin/configcss.php';
+    $head[$h][1] = $langs->trans("CSSPage");
+    $head[$h][2] = 'css';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'webportal');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@webportal:/webportal/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'webportal');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'webportal', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'webportal', 'remove');
 
-	return $head;
+    return $head;
 }

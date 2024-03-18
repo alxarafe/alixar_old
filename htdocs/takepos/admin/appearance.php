@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2008-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2011-2017 Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2019-2020 Andreu Bisquerra Gaya		<jove@bisquerra.com>
@@ -18,21 +19,21 @@
  */
 
 /**
- *	\file       htdocs/takepos/admin/appearance.php
- *	\ingroup    takepos
- *	\brief      Setup page for TakePos module
+ *  \file       htdocs/takepos/admin/appearance.php
+ *  \ingroup    takepos
+ *  \brief      Setup page for TakePos module
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
-require_once DOL_DOCUMENT_ROOT."/core/lib/takepos.lib.php";
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+require_once DOL_DOCUMENT_ROOT . "/core/lib/takepos.lib.php";
 
 // Security check
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $langs->loadLangs(array("admin", "cashdesk", "commercial"));
@@ -42,27 +43,27 @@ $langs->loadLangs(array("admin", "cashdesk", "commercial"));
  */
 
 if (GETPOST('action', 'alpha') == 'set') {
-	$db->begin();
+    $db->begin();
 
-	$res = dolibarr_set_const($db, "TAKEPOS_COLOR_THEME", GETPOST('TAKEPOS_COLOR_THEME', 'alpha'), 'chaine', 0, '', $conf->entity);
-	$res = dolibarr_set_const($db, "TAKEPOS_LINES_TO_SHOW", GETPOST('TAKEPOS_LINES_TO_SHOW', 'alpha'), 'chaine', 0, '', $conf->entity);
-	if (GETPOSTISSET('TAKEPOS_SHOW_PRODUCT_REFERENCE')) {
-		$res = dolibarr_set_const($db, "TAKEPOS_SHOW_PRODUCT_REFERENCE", GETPOST('TAKEPOS_SHOW_PRODUCT_REFERENCE', 'alpha'), 'chaine', 0, '', $conf->entity);
-	}
+    $res = dolibarr_set_const($db, "TAKEPOS_COLOR_THEME", GETPOST('TAKEPOS_COLOR_THEME', 'alpha'), 'chaine', 0, '', $conf->entity);
+    $res = dolibarr_set_const($db, "TAKEPOS_LINES_TO_SHOW", GETPOST('TAKEPOS_LINES_TO_SHOW', 'alpha'), 'chaine', 0, '', $conf->entity);
+    if (GETPOSTISSET('TAKEPOS_SHOW_PRODUCT_REFERENCE')) {
+        $res = dolibarr_set_const($db, "TAKEPOS_SHOW_PRODUCT_REFERENCE", GETPOST('TAKEPOS_SHOW_PRODUCT_REFERENCE', 'alpha'), 'chaine', 0, '', $conf->entity);
+    }
 
-	dol_syslog("admin/cashdesk: level ".GETPOST('level', 'alpha'));
+    dol_syslog("admin/cashdesk: level " . GETPOST('level', 'alpha'));
 
-	if (!($res > 0)) {
-		$error++;
-	}
+    if (!($res > 0)) {
+        $error++;
+    }
 
-	if (!$error) {
-		$db->commit();
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		$db->rollback();
-		setEventMessages($langs->trans("Error"), null, 'errors');
-	}
+    if (!$error) {
+        $db->commit();
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    } else {
+        $db->rollback();
+        setEventMessages($langs->trans("Error"), null, 'errors');
+    }
 }
 
 
@@ -75,25 +76,25 @@ $formproduct = new FormProduct($db);
 
 llxHeader('', $langs->trans("CashDeskSetup"));
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
-print load_fiche_titre($langs->trans("CashDeskSetup").' (TakePOS)', $linkback, 'title_setup');
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">' . $langs->trans("BackToModuleList") . '</a>';
+print load_fiche_titre($langs->trans("CashDeskSetup") . ' (TakePOS)', $linkback, 'title_setup');
 $head = takepos_admin_prepare_head();
 print dol_get_fiche_head($head, 'appearance', 'TakePOS', -1, 'cash-register');
 
-print '<form action="'.$_SERVER['PHP_SELF'].'?terminal='.(empty($terminal) ? 1 : $terminal).'" method="post">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form action="' . $_SERVER['PHP_SELF'] . '?terminal=' . (empty($terminal) ? 1 : $terminal) . '" method="post">';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 print '<input type="hidden" name="action" value="set">';
 
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td class="titlefield">'.$langs->trans("Parameters").'</td><td>'.$langs->trans("Value").'</td>';
+print '<td class="titlefield">' . $langs->trans("Parameters") . '</td><td>' . $langs->trans("Value") . '</td>';
 print "</tr>\n";
 
 // Color theme
 print '<tr class="oddeven"><td>';
 print $langs->trans("ColorTheme");
 print '</td><td>';
-$array = array(0=>"Eldy", 1=>$langs->trans("Colorful"));
+$array = array(0 => "Eldy", 1 => $langs->trans("Colorful"));
 print $form->selectarray('TAKEPOS_COLOR_THEME', $array, (!getDolGlobalString('TAKEPOS_COLOR_THEME') ? '0' : $conf->global->TAKEPOS_COLOR_THEME), 0);
 print "</td></tr>\n";
 
@@ -106,11 +107,11 @@ print "</td></tr>\n";
 
 // Hide category images to speed up
 if (!getDolGlobalString('TAKEPOS_HIDE_CATEGORIES')) {
-	print '<tr class="oddeven"><td>';
-	print $langs->trans('HideCategoryImages');
-	print '</td><td>';
-	print ajax_constantonoff("TAKEPOS_HIDE_CATEGORY_IMAGES", array(), $conf->entity, 0, 0, 1, 0);
-	print "</td></tr>\n";
+    print '<tr class="oddeven"><td>';
+    print $langs->trans('HideCategoryImages');
+    print '</td><td>';
+    print ajax_constantonoff("TAKEPOS_HIDE_CATEGORY_IMAGES", array(), $conf->entity, 0, 0, 1, 0);
+    print "</td></tr>\n";
 }
 
 // Hide category images to speed up
@@ -124,7 +125,7 @@ print "</td></tr>\n";
 print '<tr class="oddeven"><td>';
 print $langs->trans('ShowProductReference');
 print '</td><td>';
-$array = array("0"=>$langs->trans("Label"), 1=>$langs->trans("Ref").'+'.$langs->trans("Label"), 2=>$langs->trans("Ref"));
+$array = array("0" => $langs->trans("Label"), 1 => $langs->trans("Ref") . '+' . $langs->trans("Label"), 2 => $langs->trans("Ref"));
 print $form->selectarray('TAKEPOS_SHOW_PRODUCT_REFERENCE', $array, getDolGlobalInt('TAKEPOS_SHOW_PRODUCT_REFERENCE', 2), 0);
 //print ajax_constantonoff("TAKEPOS_SHOW_PRODUCT_REFERENCE", array(), $conf->entity, 0, 0, 1, 0);
 print "</td></tr>\n";
@@ -133,7 +134,7 @@ print "</td></tr>\n";
 print '<tr class="oddeven"><td>';
 print $langs->trans("NumberOfLinesToShow");
 print '</td><td>';
-$array = array(1=>"1", 2=>"2", 3=>"3", 4=>"4", 5=>"5", 6=>"6");
+$array = array(1 => "1", 2 => "2", 3 => "3", 4 => "4", 5 => "5", 6 => "6");
 print $form->selectarray('TAKEPOS_LINES_TO_SHOW', $array, getDolGlobalInt('TAKEPOS_LINES_TO_SHOW', 2), 0);
 print "</td></tr>\n";
 

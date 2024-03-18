@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2020 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
@@ -29,84 +30,84 @@
  */
 class WorkstationResource extends CommonObject
 {
-	/** @var string $table_element Table name in SQL */
-	public $table_element = 'workstation_workstation_resource';
+    /** @var string $table_element Table name in SQL */
+    public $table_element = 'workstation_workstation_resource';
 
-	/** @var string $element Name of the element (tip for better integration in Dolibarr: this value should be the reflection of the class name with ucfirst() function) */
-	public $element = 'workstationresource';
+    /** @var string $element Name of the element (tip for better integration in Dolibarr: this value should be the reflection of the class name with ucfirst() function) */
+    public $element = 'workstationresource';
 
-	/**
-	 * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>  Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
-	 */
-	public $fields = array(
-		'fk_workstation' => array('type' => 'integer'),
-		'fk_resource' => array('type' => 'integer')
-	);
+    /**
+     * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>  Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
+     */
+    public $fields = array(
+        'fk_workstation' => array('type' => 'integer'),
+        'fk_resource' => array('type' => 'integer')
+    );
 
-	/**
-	 * @var int ID of workstation
-	 */
-	public $fk_workstation;
+    /**
+     * @var int ID of workstation
+     */
+    public $fk_workstation;
 
-	/**
-	 * @var int ID of dolresource
-	 */
-	public $fk_resource;
+    /**
+     * @var int ID of dolresource
+     */
+    public $fk_resource;
 
 
-	/**
-	 * WorkstationResource constructor.
-	 *
-	 * @param DoliDB    $db    Database connector
-	 */
-	public function __construct($db)
-	{
-		global $langs;
+    /**
+     * WorkstationResource constructor.
+     *
+     * @param DoliDB    $db    Database connector
+     */
+    public function __construct($db)
+    {
+        global $langs;
 
-		$this->db = $db;
+        $this->db = $db;
 
-		// Unset fields that are disabled
-		foreach ($this->fields as $key => $val) {
-			if (isset($val['enabled']) && empty($val['enabled'])) {
-				unset($this->fields[$key]);
-			}
-		}
+        // Unset fields that are disabled
+        foreach ($this->fields as $key => $val) {
+            if (isset($val['enabled']) && empty($val['enabled'])) {
+                unset($this->fields[$key]);
+            }
+        }
 
-		// Translate some data of arrayofkeyval
-		if (is_object($langs)) {
-			foreach ($this->fields as $key => $val) {
-				if (!empty($val['arrayofkeyval']) && is_array($val['arrayofkeyval'])) {
-					foreach ($val['arrayofkeyval'] as $key2 => $val2) {
-						$this->fields[$key]['arrayofkeyval'][$key2] = $langs->trans($val2);
-					}
-				}
-			}
-		}
-	}
+        // Translate some data of arrayofkeyval
+        if (is_object($langs)) {
+            foreach ($this->fields as $key => $val) {
+                if (!empty($val['arrayofkeyval']) && is_array($val['arrayofkeyval'])) {
+                    foreach ($val['arrayofkeyval'] as $key2 => $val2) {
+                        $this->fields[$key]['arrayofkeyval'][$key2] = $langs->trans($val2);
+                    }
+                }
+            }
+        }
+    }
 
-	/**
-	 * Function used to get an array with all resources linked to a workstation
-	 *
-	 * @param	int		$fk_workstation		Id of workstation we need to get linked resources
-	 * @return 	array						Array of record
-	 */
-	public static function getAllResourcesOfWorkstation($fk_workstation)
-	{
-		global $db;
-		$obj = new self($db);
-		return parent::getAllItemsLinkedByObjectID($fk_workstation, 'fk_resource', 'fk_workstation', $obj->table_element);
-	}
+    /**
+     * Function used to get an array with all resources linked to a workstation
+     *
+     * @param   int     $fk_workstation     Id of workstation we need to get linked resources
+     * @return  array                       Array of record
+     */
+    public static function getAllResourcesOfWorkstation($fk_workstation)
+    {
+        global $db;
+        $obj = new self($db);
+        return parent::getAllItemsLinkedByObjectID($fk_workstation, 'fk_resource', 'fk_workstation', $obj->table_element);
+    }
 
-	/**
-	 * Function used to remove all resources linked to a workstation
-	 *
-	 * @param	int		$fk_workstation		Id of workstation we need to remove linked resources
-	 * @return 	int							Return integer <0 if KO, 0 if nothing done, >0 if OK and something done
-	 */
-	public static function deleteAllResourcesOfWorkstation($fk_workstation)
-	{
-		global $db;
-		$obj = new self($db);
-		return parent::deleteAllItemsLinkedByObjectID($fk_workstation, 'fk_workstation', $obj->table_element);
-	}
+    /**
+     * Function used to remove all resources linked to a workstation
+     *
+     * @param   int     $fk_workstation     Id of workstation we need to remove linked resources
+     * @return  int                         Return integer <0 if KO, 0 if nothing done, >0 if OK and something done
+     */
+    public static function deleteAllResourcesOfWorkstation($fk_workstation)
+    {
+        global $db;
+        $obj = new self($db);
+        return parent::deleteAllItemsLinkedByObjectID($fk_workstation, 'fk_workstation', $obj->table_element);
+    }
 }

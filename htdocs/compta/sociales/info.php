@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2005-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,19 +17,19 @@
  */
 
 /**
- *	\file       htdocs/compta/sociales/info.php
- *	\ingroup    tax
- *	\brief      Page with info about social contribution
+ *  \file       htdocs/compta/sociales/info.php
+ *  \ingroup    tax
+ *  \brief      Page with info about social contribution
  */
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/sociales/class/chargesociales.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/tax.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/tax.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 if (isModEnabled('project')) {
-	include_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
-	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
+    include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+    include_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 
 // Load translation files required by the page
@@ -39,13 +40,13 @@ $action = GETPOST('action', 'aZ09');
 
 $object = new ChargeSociales($db);
 if ($id > 0) {
-	$object->fetch($id);
+    $object->fetch($id);
 }
 
 // Security check
 $socid = GETPOSTINT('socid');
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'tax', $object->id, 'chargesociales', 'charges');
 
@@ -55,11 +56,11 @@ $result = restrictedArea($user, 'tax', $object->id, 'chargesociales', 'charges')
  */
 
 if ($action == 'setlib' && $user->hasRight('tax', 'charges', 'creer')) {
-	$object->fetch($id);
-	$result = $object->setValueFrom('libelle', GETPOST('lib'), '', '', 'text', '', $user, 'TAX_MODIFY');
-	if ($result < 0) {
-		setEventMessages($object->error, $object->errors, 'errors');
-	}
+    $object->fetch($id);
+    $result = $object->setValueFrom('libelle', GETPOST('lib'), '', '', 'text', '', $user, 'TAX_MODIFY');
+    if ($result < 0) {
+        setEventMessages($object->error, $object->errors, 'errors');
+    }
 }
 
 
@@ -70,10 +71,10 @@ if ($action == 'setlib' && $user->hasRight('tax', 'charges', 'creer')) {
 $form = new Form($db);
 
 if (isModEnabled('project')) {
-	$formproject = new FormProjets($db);
+    $formproject = new FormProjets($db);
 }
 
-$title = $langs->trans("SocialContribution").' - '.$langs->trans("Info");
+$title = $langs->trans("SocialContribution") . ' - ' . $langs->trans("Info");
 $help_url = 'EN:Module_Taxes_and_social_contributions|FR:Module Taxes et dividendes|ES:M&oacute;dulo Impuestos y cargas sociales (IVA, impuestos)';
 llxHeader("", $title, $help_url);
 
@@ -92,22 +93,22 @@ $morehtmlref .= $form->editfieldkey("Label", 'lib', $object->label, $object, $us
 $morehtmlref .= $form->editfieldval("Label", 'lib', $object->label, $object, $user->hasRight('tax', 'charges', 'creer'), 'string', '', null, null, '', 1);
 // Project
 if (isModEnabled('project')) {
-	$langs->load("projects");
-	if (!empty($object->fk_project)) {
-		$morehtmlref .= '<br>';
-		$proj = new Project($db);
-		$proj->fetch($object->fk_project);
-		$morehtmlref .= $proj->getNomUrl(1);
-		if ($proj->title) {
-			$morehtmlref .= '<span class="opacitymedium"> - '.dol_escape_htmltag($proj->title).'</span>';
-		}
-	} else {
-		$morehtmlref .= '';
-	}
+    $langs->load("projects");
+    if (!empty($object->fk_project)) {
+        $morehtmlref .= '<br>';
+        $proj = new Project($db);
+        $proj->fetch($object->fk_project);
+        $morehtmlref .= $proj->getNomUrl(1);
+        if ($proj->title) {
+            $morehtmlref .= '<span class="opacitymedium"> - ' . dol_escape_htmltag($proj->title) . '</span>';
+        }
+    } else {
+        $morehtmlref .= '';
+    }
 }
 $morehtmlref .= '</div>';
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/compta/sociales/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/compta/sociales/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
 $object->totalpaid = $alreadypayed; // To give a chance to dol_banner_tab to use already paid amount to show correct status
 

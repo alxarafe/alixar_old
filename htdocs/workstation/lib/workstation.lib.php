@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2020 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,40 +29,40 @@
  */
 function workstationAdminPrepareHead()
 {
-	global $langs, $conf;
+    global $langs, $conf;
 
-	$langs->load("workstation");
+    $langs->load("workstation");
 
-	$h = 0;
-	$head = array();
-	$head[$h][0] = DOL_URL_ROOT."/admin/workstation.php";
-	$head[$h][1] = $langs->trans("Settings");
-	$head[$h][2] = 'settings';
-	$h++;
+    $h = 0;
+    $head = array();
+    $head[$h][0] = DOL_URL_ROOT . "/admin/workstation.php";
+    $head[$h][1] = $langs->trans("Settings");
+    $head[$h][2] = 'settings';
+    $h++;
 
-	/*
-	$head[$h][0] = dol_buildpath("/workstation/admin/myobject_extrafields.php", 1);
-	$head[$h][1] = $langs->trans("ExtraFields");
-	$head[$h][2] = 'myobject_extrafields';
-	$h++;
-	*/
+    /*
+    $head[$h][0] = dol_buildpath("/workstation/admin/myobject_extrafields.php", 1);
+    $head[$h][1] = $langs->trans("ExtraFields");
+    $head[$h][2] = 'myobject_extrafields';
+    $h++;
+    */
 
-	/*$head[$h][0] = require_once "/admin/about.php";
-	$head[$h][1] = $langs->trans("About");
-	$head[$h][2] = 'about';
-	$h++;*/
+    /*$head[$h][0] = require_once "/admin/about.php";
+    $head[$h][1] = $langs->trans("About");
+    $head[$h][2] = 'about';
+    $h++;*/
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@workstation:/workstation/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@workstation:/workstation/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'workstation');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@workstation:/workstation/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@workstation:/workstation/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'workstation');
 
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'workstation', 'remove');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'workstation', 'remove');
 
-	return $head;
+    return $head;
 }

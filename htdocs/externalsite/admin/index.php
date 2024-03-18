@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2003      Eric Seigne          <erics@rycks.com>
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
@@ -27,16 +28,16 @@
  */
 
 if (!defined('NOSCANPOSTFORINJECTION')) {
-	define('NOSCANPOSTFORINJECTION', '1'); // Do not check anti CSRF attack test
+    define('NOSCANPOSTFORINJECTION', '1'); // Do not check anti CSRF attack test
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 // Load translation files required by the page
@@ -51,27 +52,27 @@ $action = GETPOST('action', 'aZ09');
 
 // Sauvegardes parameters
 if ($action == 'update') {
-	$i = 0;
+    $i = 0;
 
-	$db->begin();
+    $db->begin();
 
-	$label  = GETPOST('EXTERNALSITE_LABEL', 'alphanohtml');
+    $label  = GETPOST('EXTERNALSITE_LABEL', 'alphanohtml');
 
-	// exturl can be an url or a HTML string
-	$exturl = GETPOST('EXTERNALSITE_URL', 'restricthtml');
-	$exturl = dol_string_onlythesehtmltags($exturl, 1, 1, 0, 1, array(), 1);
-	$exturl = dol_string_onlythesehtmlattributes($exturl);
+    // exturl can be an url or a HTML string
+    $exturl = GETPOST('EXTERNALSITE_URL', 'restricthtml');
+    $exturl = dol_string_onlythesehtmltags($exturl, 1, 1, 0, 1, array(), 1);
+    $exturl = dol_string_onlythesehtmlattributes($exturl);
 
-	$i += dolibarr_set_const($db, 'EXTERNALSITE_LABEL', trim($label), 'chaine', 0, '', $conf->entity);
-	$i += dolibarr_set_const($db, 'EXTERNALSITE_URL', trim($exturl), 'chaine', 0, '', $conf->entity);
+    $i += dolibarr_set_const($db, 'EXTERNALSITE_LABEL', trim($label), 'chaine', 0, '', $conf->entity);
+    $i += dolibarr_set_const($db, 'EXTERNALSITE_URL', trim($exturl), 'chaine', 0, '', $conf->entity);
 
-	if ($i >= 2) {
-		$db->commit();
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		$db->rollback();
-		setEventMessages($db->lasterror(), null, 'errors');
-	}
+    if ($i >= 2) {
+        $db->commit();
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    } else {
+        $db->rollback();
+        setEventMessages($db->lasterror(), null, 'errors');
+    }
 }
 
 
@@ -81,34 +82,34 @@ if ($action == 'update') {
 
 llxHeader();
 
-$linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
+$linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
 print load_fiche_titre($langs->trans("ExternalSiteSetup"), $linkback, 'title_setup');
 print '<br>';
 
-print '<span class="opacitymedium">'.$langs->trans("Module100Desc")."</span><br>\n";
+print '<span class="opacitymedium">' . $langs->trans("Module100Desc") . "</span><br>\n";
 print '<br>';
 
-print '<form name="externalsiteconfig" action="'.$_SERVER['PHP_SELF'].'" method="POST">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<form name="externalsiteconfig" action="' . $_SERVER['PHP_SELF'] . '" method="POST">';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 print '<input type="hidden" name="action" value="update">';
 print "<table class=\"noborder\" width=\"100%\">";
 
 print "<tr class=\"liste_titre\">";
-print "<td width=\"30%\">".$langs->trans("Parameter")."</td>";
-print "<td>".$langs->trans("Value")."</td>";
-print "<td>".$langs->trans("Examples")."</td>";
+print "<td width=\"30%\">" . $langs->trans("Parameter") . "</td>";
+print "<td>" . $langs->trans("Value") . "</td>";
+print "<td>" . $langs->trans("Examples") . "</td>";
 print "</tr>";
 
 
 print '<tr class="oddeven">';
-print '<td class="fieldrequired">'.$langs->trans("Label")."</td>";
-print "<td><input type=\"text\" class=\"flat\" name=\"EXTERNALSITE_LABEL\" value=\"".(GETPOST('EXTERNALSITE_LABEL', 'alpha') ? GETPOST('EXTERNALSITE_LABEL', 'alpha') : ((!getDolGlobalString('EXTERNALSITE_LABEL') || getDolGlobalString('EXTERNALSITE_LABEL') == 'ExternalSite') ? '' : $conf->global->EXTERNALSITE_LABEL))."\" size=\"12\"></td>";
-print "<td>".$langs->trans("ExampleMyMenuEntry")."</td>";
+print '<td class="fieldrequired">' . $langs->trans("Label") . "</td>";
+print "<td><input type=\"text\" class=\"flat\" name=\"EXTERNALSITE_LABEL\" value=\"" . (GETPOST('EXTERNALSITE_LABEL', 'alpha') ? GETPOST('EXTERNALSITE_LABEL', 'alpha') : ((!getDolGlobalString('EXTERNALSITE_LABEL') || getDolGlobalString('EXTERNALSITE_LABEL') == 'ExternalSite') ? '' : $conf->global->EXTERNALSITE_LABEL)) . "\" size=\"12\"></td>";
+print "<td>" . $langs->trans("ExampleMyMenuEntry") . "</td>";
 print "</tr>";
 
 
 print '<tr class="oddeven">';
-print '<td class="fieldrequired">'.$langs->trans("ExternalSiteURL")."</td>";
+print '<td class="fieldrequired">' . $langs->trans("ExternalSiteURL") . "</td>";
 print '<td><textarea class="flat minwidth500" name="EXTERNALSITE_URL">';
 
 $exturl = GETPOST('EXTERNALSITE_URL', 'restricthtml');

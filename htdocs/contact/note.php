@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003,2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2011      Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012      Regis Houssin        <regis.houssin@inodbox.com>
@@ -27,8 +28,8 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/contact.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 
 $action = GETPOST('action', 'aZ09');
 
@@ -39,14 +40,14 @@ $id = GETPOSTINT('id');
 
 $object = new Contact($db);
 if ($id > 0) {
-	$object->fetch($id);
+    $object->fetch($id);
 }
 
 // Security check
 if ($user->socid > 0) {
-	if ($object->fk_soc > 0 && $object->fk_soc != $user->socid) {
-		accessforbidden();
-	}
+    if ($object->fk_soc > 0 && $object->fk_soc != $user->socid) {
+        accessforbidden();
+    }
 }
 $result = restrictedArea($user, 'contact', $id, 'socpeople&societe');
 
@@ -65,10 +66,10 @@ $hookmanager->initHooks(array('contactnote'));
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 if (empty($reshook)) {
-	include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
+    include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
 }
 
 
@@ -86,61 +87,61 @@ $help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
 
 if ($id > 0) {
-	/*
-	 * Affichage onglets
-	 */
-	if (isModEnabled('notification')) {
-		$langs->load("mails");
-	}
+    /*
+     * Affichage onglets
+     */
+    if (isModEnabled('notification')) {
+        $langs->load("mails");
+    }
 
-	$head = contact_prepare_head($object);
+    $head = contact_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'note', $title, -1, 'contact');
+    print dol_get_fiche_head($head, 'note', $title, -1, 'contact');
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/contact/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/contact/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<a href="'.DOL_URL_ROOT.'/contact/vcard.php?id='.$object->id.'" class="refid">';
-	$morehtmlref .= img_picto($langs->trans("Download").' '.$langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
-	$morehtmlref .= '</a>';
+    $morehtmlref = '<a href="' . DOL_URL_ROOT . '/contact/vcard.php?id=' . $object->id . '" class="refid">';
+    $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+    $morehtmlref .= '</a>';
 
-	$morehtmlref .= '<div class="refidno">';
-	if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-		$objsoc = new Societe($db);
-		$objsoc->fetch($object->socid);
-		// Thirdparty
-		if ($objsoc->id > 0) {
-			$morehtmlref .= $objsoc->getNomUrl(1);
-		} else {
-			$morehtmlref .= '<span class="opacitymedium">'.$langs->trans("ContactNotLinkedToCompany").'</span>';
-		}
-	}
-	$morehtmlref .= '</div>';
+    $morehtmlref .= '<div class="refidno">';
+    if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
+        $objsoc = new Societe($db);
+        $objsoc->fetch($object->socid);
+        // Thirdparty
+        if ($objsoc->id > 0) {
+            $morehtmlref .= $objsoc->getNomUrl(1);
+        } else {
+            $morehtmlref .= '<span class="opacitymedium">' . $langs->trans("ContactNotLinkedToCompany") . '</span>';
+        }
+    }
+    $morehtmlref .= '</div>';
 
-	dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+    dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
 
-	$cssclass = 'titlefield';
-	//if ($action == 'editnote_public') $cssclass='titlefieldcreate';
-	//if ($action == 'editnote_private') $cssclass='titlefieldcreate';
+    $cssclass = 'titlefield';
+    //if ($action == 'editnote_public') $cssclass='titlefieldcreate';
+    //if ($action == 'editnote_private') $cssclass='titlefieldcreate';
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '<table class="border centpercent tableforfield">';
+    print '<table class="border centpercent tableforfield">';
 
-	// Civility
-	print '<tr><td class="'.$cssclass.'">'.$langs->trans("UserTitle").'</td><td>';
-	print $object->getCivilityLabel();
-	print '</td></tr>';
+    // Civility
+    print '<tr><td class="' . $cssclass . '">' . $langs->trans("UserTitle") . '</td><td>';
+    print $object->getCivilityLabel();
+    print '</td></tr>';
 
-	print "</table>";
+    print "</table>";
 
 
-	$cssclass = "titlefield";
-	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+    $cssclass = "titlefield";
+    include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
 
-	print '</div>';
+    print '</div>';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 }
 
 llxFooter();

@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2005-2012	Regis Houssin		<regis.houssin@inodbox.com>
+
+/* Copyright (C) 2005-2012  Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2007-2012	Laurent Destailleur	<eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,24 +23,24 @@
  */
 
 if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', '1'); // Disables token renewal
+    define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
 if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', '1');
+    define('NOREQUIREMENU', '1');
 }
 if (!defined('NOREQUIREHTML')) {
-	define('NOREQUIREHTML', '1');
+    define('NOREQUIREHTML', '1');
 }
 if (!defined('NOREQUIREAJAX')) {
-	define('NOREQUIREAJAX', '1');
+    define('NOREQUIREAJAX', '1');
 }
 if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
+    define('NOREQUIRESOC', '1');
 }
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/infobox.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
 
 $boxid = GETPOSTINT('boxid');
 $boxorder = GETPOST('boxorder');
@@ -48,7 +49,7 @@ $userid = GETPOSTINT('userid');
 
 // Security check
 if ($userid != $user->id) {
-	httponly_accessforbidden('Bad userid parameter. Must match logged user.');
+    httponly_accessforbidden('Bad userid parameter. Must match logged user.');
 }
 
 
@@ -58,31 +59,31 @@ if ($userid != $user->id) {
 
 top_httphead();
 
-print '<!-- Ajax page called with url '.dol_escape_htmltag($_SERVER['PHP_SELF']).'?'.dol_escape_htmltag($_SERVER["QUERY_STRING"]).' -->'."\n";
+print '<!-- Ajax page called with url ' . dol_escape_htmltag($_SERVER['PHP_SELF']) . '?' . dol_escape_htmltag($_SERVER["QUERY_STRING"]) . ' -->' . "\n";
 
 // Add a box
 if ($boxid > 0 && $zone != '' && $userid > 0) {
-	$tmp = explode('-', $boxorder);
-	$nbboxonleft = substr_count($tmp[0], ',');
-	$nbboxonright = substr_count($tmp[1], ',');
-	print $nbboxonleft.'-'.$nbboxonright;
-	if ($nbboxonleft > $nbboxonright) {
-		$boxorder = preg_replace('/B:/', 'B:'.$boxid.',', $boxorder); // Insert id of new box into list
-	} else {
-		$boxorder = preg_replace('/^A:/', 'A:'.$boxid.',', $boxorder); // Insert id of new box into list
-	}
+    $tmp = explode('-', $boxorder);
+    $nbboxonleft = substr_count($tmp[0], ',');
+    $nbboxonright = substr_count($tmp[1], ',');
+    print $nbboxonleft . '-' . $nbboxonright;
+    if ($nbboxonleft > $nbboxonright) {
+        $boxorder = preg_replace('/B:/', 'B:' . $boxid . ',', $boxorder); // Insert id of new box into list
+    } else {
+        $boxorder = preg_replace('/^A:/', 'A:' . $boxid . ',', $boxorder); // Insert id of new box into list
+    }
 }
 
 // Registering the location of boxes after a move
 if ($boxorder && $zone != '' && $userid > 0) {
-	// boxorder value is the target order: "A:idboxA1,idboxA2,A-B:idboxB1,idboxB2,B"
-	dol_syslog("AjaxBox boxorder=".$boxorder." zone=".$zone." userid=".$userid, LOG_DEBUG);
+    // boxorder value is the target order: "A:idboxA1,idboxA2,A-B:idboxB1,idboxB2,B"
+    dol_syslog("AjaxBox boxorder=" . $boxorder . " zone=" . $zone . " userid=" . $userid, LOG_DEBUG);
 
-	$result = InfoBox::saveboxorder($db, $zone, $boxorder, $userid);
-	if ($result > 0) {
-		$langs->load("boxes");
-		if (!GETPOST('closing')) {
-			setEventMessages($langs->trans("BoxAdded"), null);
-		}
-	}
+    $result = InfoBox::saveboxorder($db, $zone, $boxorder, $userid);
+    if ($result > 0) {
+        $langs->load("boxes");
+        if (!GETPOST('closing')) {
+            setEventMessages($langs->trans("BoxAdded"), null);
+        }
+    }
 }

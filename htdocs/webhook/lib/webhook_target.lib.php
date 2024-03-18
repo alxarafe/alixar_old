@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2022 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
@@ -24,24 +25,24 @@
 /**
  * Prepare array of tabs for Target
  *
- * @param	Target	$object		Target
- * @return 	array				Returns an array of tabs
+ * @param   Target  $object     Target
+ * @return  array               Returns an array of tabs
  */
 function targetPrepareHead($object)
 {
-	global $db, $langs, $conf;
+    global $db, $langs, $conf;
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . '/webhook/target_card.php?id=' . $object->id;
-	$head[$h][1] = $langs->trans("Card");
-	$head[$h][2] = 'card';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/webhook/target_card.php?id=' . $object->id;
+    $head[$h][1] = $langs->trans("Card");
+    $head[$h][2] = 'card';
+    $h++;
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'target@webhook');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'target@webhook');
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'target@webhook', 'remove');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'target@webhook', 'remove');
 
-	return $head;
+    return $head;
 }

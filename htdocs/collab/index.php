@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,9 +17,9 @@
  */
 
 /**
- *   	\file       htdocs/collab/index.php
- *		\ingroup    collab
- *		\brief      Page to work on a shared document (PAD)
+ *      \file       htdocs/collab/index.php
+ *      \ingroup    collab
+ *      \brief      Page to work on a shared document (PAD)
  */
 
 define('NOSCANPOSTFORINJECTION', 1);
@@ -26,14 +27,14 @@ define('NOSTYLECHECK', 1);
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "other", "website"));
 
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 $conf->dol_hide_leftmenu = 1; // Force hide of left menu.
@@ -45,35 +46,35 @@ $pageid = GETPOSTINT('pageid');
 $action = GETPOST('action', 'aZ09');
 
 if (GETPOST('delete')) {
-	$action = 'delete';
+    $action = 'delete';
 }
 if (GETPOST('preview')) {
-	$action = 'preview';
+    $action = 'preview';
 }
 if (GETPOST('create')) {
-	$action = 'create';
+    $action = 'create';
 }
 if (GETPOST('editmedia')) {
-	$action = 'editmedia';
+    $action = 'editmedia';
 }
 if (GETPOST('editcss')) {
-	$action = 'editcss';
+    $action = 'editcss';
 }
 if (GETPOST('editmenu')) {
-	$action = 'editmenu';
+    $action = 'editmenu';
 }
 if (GETPOST('setashome')) {
-	$action = 'setashome';
+    $action = 'setashome';
 }
 if (GETPOST('editmeta')) {
-	$action = 'editmeta';
+    $action = 'editmeta';
 }
 if (GETPOST('editcontent')) {
-	$action = 'editcontent';
+    $action = 'editcontent';
 }
 
 if (empty($action)) {
-	$action = 'preview';
+    $action = 'preview';
 }
 
 
@@ -84,73 +85,73 @@ if (empty($action)) {
  */
 
 if (GETPOST('refreshsite')) {
-	$pageid = 0; // If we change the site, we reset the pageid.
+    $pageid = 0; // If we change the site, we reset the pageid.
 }
 if (GETPOST('refreshpage')) {
-	$action = 'preview';
+    $action = 'preview';
 }
 
 
 // Add a collab page
 if ($action == 'add') {
-	$db->begin();
+    $db->begin();
 
-	$objectpage->title = GETPOST('WEBSITE_TITLE');
-	$objectpage->pageurl = GETPOST('WEBSITE_PAGENAME');
-	$objectpage->description = GETPOST('WEBSITE_DESCRIPTION');
-	$objectpage->keywords = GETPOST('WEBSITE_KEYWORD');
+    $objectpage->title = GETPOST('WEBSITE_TITLE');
+    $objectpage->pageurl = GETPOST('WEBSITE_PAGENAME');
+    $objectpage->description = GETPOST('WEBSITE_DESCRIPTION');
+    $objectpage->keywords = GETPOST('WEBSITE_KEYWORD');
 
-	if (empty($objectpage->title)) {
-		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("WEBSITE_PAGENAME")), null, 'errors');
-		$error++;
-	}
+    if (empty($objectpage->title)) {
+        setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("WEBSITE_PAGENAME")), null, 'errors');
+        $error++;
+    }
 
-	if (!$error) {
-		$res = $objectpage->create($user);
-		if ($res <= 0) {
-			$error++;
-			setEventMessages($objectpage->error, $objectpage->errors, 'errors');
-		}
-	}
-	if (!$error) {
-		$db->commit();
-		setEventMessages($langs->trans("PageAdded", $objectpage->pageurl), null, 'mesgs');
-		$action = '';
-	} else {
-		$db->rollback();
-	}
+    if (!$error) {
+        $res = $objectpage->create($user);
+        if ($res <= 0) {
+            $error++;
+            setEventMessages($objectpage->error, $objectpage->errors, 'errors');
+        }
+    }
+    if (!$error) {
+        $db->commit();
+        setEventMessages($langs->trans("PageAdded", $objectpage->pageurl), null, 'mesgs');
+        $action = '';
+    } else {
+        $db->rollback();
+    }
 
-	$action = 'preview';
-	$id = $objectpage->id;
+    $action = 'preview';
+    $id = $objectpage->id;
 }
 
 // Update page
 if ($action == 'delete') {
-	$db->begin();
+    $db->begin();
 
-	$res = $object->fetch(0, $website);
+    $res = $object->fetch(0, $website);
 
-	$res = $objectpage->fetch($pageid, $object->fk_website);
+    $res = $objectpage->fetch($pageid, $object->fk_website);
 
-	if ($res > 0) {
-		$res = $objectpage->delete($user);
-		if (!($res > 0)) {
-			$error++;
-			setEventMessages($objectpage->error, $objectpage->errors, 'errors');
-		}
+    if ($res > 0) {
+        $res = $objectpage->delete($user);
+        if (!($res > 0)) {
+            $error++;
+            setEventMessages($objectpage->error, $objectpage->errors, 'errors');
+        }
 
-		if (!$error) {
-			$db->commit();
-			setEventMessages($langs->trans("PageDeleted", $objectpage->pageurl, $website), null, 'mesgs');
+        if (!$error) {
+            $db->commit();
+            setEventMessages($langs->trans("PageDeleted", $objectpage->pageurl, $website), null, 'mesgs');
 
-			header("Location: ".$_SERVER['PHP_SELF'].'?website='.$website);
-			exit;
-		} else {
-			$db->rollback();
-		}
-	} else {
-		dol_print_error($db);
-	}
+            header("Location: " . $_SERVER['PHP_SELF'] . '?website=' . $website);
+            exit;
+        } else {
+            $db->rollback();
+        }
+    } else {
+        dol_print_error($db);
+    }
 }
 
 
@@ -163,19 +164,19 @@ $form = new Form($db);
 
 $help_url = '';
 
-llxHeader('', $langs->trans("WebsiteSetup"), $help_url, '', 0, '', '', '', '', '', '<!-- Begin div class="fiche" -->'."\n".'<div class="fichebutwithotherclass">');
+llxHeader('', $langs->trans("WebsiteSetup"), $help_url, '', 0, '', '', '', '', '', '<!-- Begin div class="fiche" -->' . "\n" . '<div class="fichebutwithotherclass">');
 
-print "\n".'<form action="'.$_SERVER['PHP_SELF'].'" method="POST"><div>';
-print '<input type="hidden" name="token" value="'.newToken().'">';
+print "\n" . '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST"><div>';
+print '<input type="hidden" name="token" value="' . newToken() . '">';
 if ($action == 'create') {
-	print '<input type="hidden" name="action" value="add">';
+    print '<input type="hidden" name="action" value="add">';
 }
 
 
 // Add a margin under toolbar ?
 $style = '';
 if ($action != 'preview' && $action != 'editcontent') {
-	$style = ' margin-bottom: 5px;';
+    $style = ' margin-bottom: 5px;';
 }
 
 //var_dump($objectpage);exit;

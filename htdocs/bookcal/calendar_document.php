@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2023 Alice Adminson <aadminson@example.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
@@ -26,12 +27,12 @@
 // Load Dolibarr environment
 require '../main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT.'/bookcal/class/calendar.class.php';
-require_once DOL_DOCUMENT_ROOT.'/bookcal/lib/bookcal_calendar.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT . '/bookcal/class/calendar.class.php';
+require_once DOL_DOCUMENT_ROOT . '/bookcal/lib/bookcal_calendar.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("agenda", "companies", "other", "mails"));
@@ -48,43 +49,43 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
 if (empty($page) || $page == -1) {
-	$page = 0;
+    $page = 0;
 }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) {
-	$sortorder = "ASC";
+    $sortorder = "ASC";
 }
 if (!$sortfield) {
-	$sortfield = "name";
+    $sortfield = "name";
 }
 //if (! $sortfield) $sortfield="position_name";
 
 // Initialize technical objects
 $object = new Calendar($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->bookcal->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->bookcal->dir_output . '/temp/massgeneration/' . $user->id;
 $hookmanager->initHooks(array('calendardocument', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
-include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->bookcal->multidir_output[$object->entity ? $object->entity : $conf->entity]."/calendar/".get_exdir(0, 0, 0, 1, $object);
+    $upload_dir = $conf->bookcal->multidir_output[$object->entity ? $object->entity : $conf->entity] . "/calendar/" . get_exdir(0, 0, 0, 1, $object);
 }
 
 // There is several ways to check permission.
 // Set $enablepermissioncheck to 1 to enable a minimum low level of checks
 $enablepermissioncheck = 0;
 if ($enablepermissioncheck) {
-	$permissiontoread = $user->hasRight('bookcal', 'calendar', 'read');
-	$permissiontoadd = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_linkedfiles.inc.php
+    $permissiontoread = $user->hasRight('bookcal', 'calendar', 'read');
+    $permissiontoadd = $user->hasRight('bookcal', 'calendar', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_linkedfiles.inc.php
 } else {
-	$permissiontoread = 1;
-	$permissiontoadd = 1;
+    $permissiontoread = 1;
+    $permissiontoadd = 1;
 }
 
 // Security check (enable the most restrictive one)
@@ -93,13 +94,13 @@ if ($enablepermissioncheck) {
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->module, $object->id, $object->table_element, $object->element, 'fk_soc', 'rowid', $isdraft);
 if (!isModEnabled("bookcal")) {
-	accessforbidden();
+    accessforbidden();
 }
 if (!$permissiontoread) {
-	accessforbidden();
+    accessforbidden();
 }
 if (empty($object->id)) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -108,7 +109,7 @@ if (empty($object->id)) {
  * Actions
  */
 
-include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
+include DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
 
 
 /*
@@ -117,7 +118,7 @@ include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
 
 $form = new Form($db);
 
-$title = $langs->trans("Calendar").' - '.$langs->trans("Files");
+$title = $langs->trans("Calendar") . ' - ' . $langs->trans("Files");
 $help_url = '';
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
@@ -132,12 +133,12 @@ print dol_get_fiche_head($head, 'document', $langs->trans("Calendar"), -1, $obje
 $filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
 $totalsize = 0;
 foreach ($filearray as $key => $file) {
-	$totalsize += $file['size'];
+    $totalsize += $file['size'];
 }
 
 // Object card
 // ------------------------------------------------------------
-$linkback = '<a href="'.dol_buildpath('/bookcal/calendar_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+$linkback = '<a href="' . dol_buildpath('/bookcal/calendar_list.php', 1) . '?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
 $morehtmlref = '<div class="refidno">';
 /*
@@ -186,10 +187,10 @@ print '<div class="underbanner clearboth"></div>';
 print '<table class="border centpercent tableforfield">';
 
 // Number of files
-print '<tr><td class="titlefield">'.$langs->trans("NbOfAttachedFiles").'</td><td colspan="3">'.count($filearray).'</td></tr>';
+print '<tr><td class="titlefield">' . $langs->trans("NbOfAttachedFiles") . '</td><td colspan="3">' . count($filearray) . '</td></tr>';
 
 // Total size
-print '<tr><td>'.$langs->trans("TotalSizeOfAttachedFiles").'</td><td colspan="3">'.$totalsize.' '.$langs->trans("bytes").'</td></tr>';
+print '<tr><td>' . $langs->trans("TotalSizeOfAttachedFiles") . '</td><td colspan="3">' . $totalsize . ' ' . $langs->trans("bytes") . '</td></tr>';
 
 print '</table>';
 
@@ -198,12 +199,12 @@ print '</div>';
 print dol_get_fiche_end();
 
 $modulepart = 'bookcal';
-$param = '&id='.$object->id;
+$param = '&id=' . $object->id;
 
 //$relativepathwithnofile='calendar/' . dol_sanitizeFileName($object->id).'/';
-$relativepathwithnofile = 'calendar/'.dol_sanitizeFileName($object->ref).'/';
+$relativepathwithnofile = 'calendar/' . dol_sanitizeFileName($object->ref) . '/';
 
-include DOL_DOCUMENT_ROOT.'/core/tpl/document_actions_post_headers.tpl.php';
+include DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_post_headers.tpl.php';
 
 // End of page
 llxFooter();

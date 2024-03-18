@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -18,16 +19,16 @@
  */
 
 /**
- * 	\file       htdocs/expensereport/info.php
- * 	\ingroup    expensereport
- * 	\brief      Page to show a trip information
+ *  \file       htdocs/expensereport/info.php
+ *  \ingroup    expensereport
+ *  \brief      Page to show a trip information
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/expensereport.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT.'/expensereport/class/expensereport.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
 
 // Load translation files required by the page
 $langs->load("trips");
@@ -39,27 +40,27 @@ $childids = $user->getAllChildIds(1);
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'expensereport', $id, 'expensereport');
 
 $object = new ExpenseReport($db);
 if (!$object->fetch($id, $ref) > 0) {
-	dol_print_error($db);
+    dol_print_error($db);
 }
 
 if ($object->id > 0) {
-	// Check current user can read this expense report
-	$canread = 0;
-	if ($user->hasRight('expensereport', 'readall')) {
-		$canread = 1;
-	}
-	if ($user->hasRight('expensereport', 'lire') && in_array($object->fk_user_author, $childids)) {
-		$canread = 1;
-	}
-	if (!$canread) {
-		accessforbidden();
-	}
+    // Check current user can read this expense report
+    $canread = 0;
+    if ($user->hasRight('expensereport', 'readall')) {
+        $canread = 1;
+    }
+    if ($user->hasRight('expensereport', 'lire') && in_array($object->fk_user_author, $childids)) {
+        $canread = 1;
+    }
+    if (!$canread) {
+        accessforbidden();
+    }
 }
 
 
@@ -69,39 +70,39 @@ if ($object->id > 0) {
 
 $form = new Form($db);
 
-$title = $langs->trans("ExpenseReport")." - ".$langs->trans("Info");
+$title = $langs->trans("ExpenseReport") . " - " . $langs->trans("Info");
 $helpurl = "EN:Module_Expense_Reports";
 llxHeader("", $title, $helpurl);
 
 if ($id > 0 || !empty($ref)) {
-	$object = new ExpenseReport($db);
-	$object->fetch($id, $ref);
-	$object->info($object->id);
+    $object = new ExpenseReport($db);
+    $object->fetch($id, $ref);
+    $object->info($object->id);
 
-	$head = expensereport_prepare_head($object);
+    $head = expensereport_prepare_head($object);
 
-	print dol_get_fiche_head($head, 'info', $langs->trans("ExpenseReport"), -1, 'trip');
+    print dol_get_fiche_head($head, 'info', $langs->trans("ExpenseReport"), -1, 'trip');
 
-	$linkback = '<a href="'.DOL_URL_ROOT.'/expensereport/list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+    $linkback = '<a href="' . DOL_URL_ROOT . '/expensereport/list.php?restore_lastsearch_values=1' . (!empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
 
-	$morehtmlref = '<div class="refidno">';
-	$morehtmlref .= '</div>';
+    $morehtmlref = '<div class="refidno">';
+    $morehtmlref .= '</div>';
 
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+    dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
 
-	print '<div class="fichecenter">';
-	print '<div class="underbanner clearboth"></div>';
+    print '<div class="fichecenter">';
+    print '<div class="underbanner clearboth"></div>';
 
-	print '<br>';
+    print '<br>';
 
-	print '<table width="100%"><tr><td>';
-	dol_print_object_info($object);
-	print '</td></tr></table>';
+    print '<table width="100%"><tr><td>';
+    dol_print_object_info($object);
+    print '</td></tr></table>';
 
-	print '</div>';
+    print '</div>';
 
-	print dol_get_fiche_end();
+    print dol_get_fiche_end();
 }
 
 // End of page

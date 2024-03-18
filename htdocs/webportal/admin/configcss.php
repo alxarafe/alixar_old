@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2023-2024 	Laurent Destailleur		<eldy@users.sourceforge.net>
+
+/* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  * Copyright (C) 2023-2024	Patrice Andreani		<pandreani@easya.solutions>
  *
@@ -39,12 +40,12 @@ $action = GETPOST('action', 'aZ09');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 if (empty($action)) {
-	$action = 'edit';
+    $action = 'edit';
 }
 
 // Access control
 if (!$user->admin) {
-	accessforbidden();
+    accessforbidden();
 }
 
 
@@ -55,22 +56,22 @@ if (!$user->admin) {
 $parameters = array();
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
-	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 }
 
 // Convert action set_XXX and del_XXX to set var (this is used when no javascript on for ajax_constantonoff)
 $regs = array();
 if (preg_match('/^(set|del)_([A-Z_]+)$/', $action, $regs)) {
-	if ($regs[1] == 'set') {
-		dolibarr_set_const($db, $regs[2], 1, 'chaine', 0, '', $conf->entity);
-	} else {
-		dolibarr_del_const($db, $regs[2], $conf->entity);
-	}
+    if ($regs[1] == 'set') {
+        dolibarr_set_const($db, $regs[2], 1, 'chaine', 0, '', $conf->entity);
+    } else {
+        dolibarr_del_const($db, $regs[2], $conf->entity);
+    }
 }
 
 if ($action == 'updatecss') {
-	dolibarr_set_const($db, "WEBPORTAL_CUSTOM_CSS", GETPOST('WEBPORTAL_CUSTOM_CSS', 'restricthtml'), 'chaine', 0, '', $conf->entity);
-	dolibarr_set_const($db, "WEBPORTAL_PARAMS_REV", ((int) $conf->global->WEBPORTAL_PARAMS_REV) + 1, 'chaine', 0, '', $conf->entity);
+    dolibarr_set_const($db, "WEBPORTAL_CUSTOM_CSS", GETPOST('WEBPORTAL_CUSTOM_CSS', 'restricthtml'), 'chaine', 0, '', $conf->entity);
+    dolibarr_set_const($db, "WEBPORTAL_PARAMS_REV", ((int) $conf->global->WEBPORTAL_PARAMS_REV) + 1, 'chaine', 0, '', $conf->entity);
 }
 
 
@@ -83,18 +84,18 @@ $title = "WebPortalSetup";
 $wikihelp = 'EN:First_setup|FR:Premiers_param&eacute;trages|ES:Primeras_configuraciones';
 
 llxHeader(
-	'',
-	$langs->trans($title),
-	$wikihelp,
-	'',
-	0,
-	0,
-	array(
-		'/includes/ace/src/ace.js',
-		'/includes/ace/src/ext-statusbar.js',
-		'/includes/ace/src/ext-language_tools.js',
-	),
-	array()
+    '',
+    $langs->trans($title),
+    $wikihelp,
+    '',
+    0,
+    0,
+    array(
+        '/includes/ace/src/ace.js',
+        '/includes/ace/src/ext-statusbar.js',
+        '/includes/ace/src/ext-language_tools.js',
+    ),
+    array()
 );
 
 // Subheader

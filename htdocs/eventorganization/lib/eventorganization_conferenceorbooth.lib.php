@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) ---Put here your own copyright and developer email---
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
@@ -26,90 +27,90 @@
 /**
  * Prepare array of tabs for ConferenceOrBooth
  *
- * @param	ConferenceOrBooth	$object		ConferenceOrBooth
- * @param	int	$with_project		Add project id to URL
- * @return 	array					Array of tabs
+ * @param   ConferenceOrBooth   $object     ConferenceOrBooth
+ * @param   int $with_project       Add project id to URL
+ * @return  array                   Array of tabs
  */
 function conferenceorboothPrepareHead($object, $with_project = 0)
 {
-	global $db, $langs, $conf;
+    global $db, $langs, $conf;
 
-	$langs->load("eventorganization");
+    $langs->load("eventorganization");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$withProjectUrl = '';
-	if ($with_project > 0) {
-		$withProjectUrl = "&withproject=1";
-	}
+    $withProjectUrl = '';
+    if ($with_project > 0) {
+        $withProjectUrl = "&withproject=1";
+    }
 
-	$head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorbooth_card.php?id=' . $object->id . $withProjectUrl;
-	$head[$h][1] = $langs->trans("Card");
-	$head[$h][2] = 'card';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorbooth_card.php?id=' . $object->id . $withProjectUrl;
+    $head[$h][1] = $langs->trans("Card");
+    $head[$h][2] = 'card';
+    $h++;
 
-	if (getDolGlobalString('MAIN_FEATURES_LEVEL') && getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
-		$head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorbooth_contact.php?id=' . $object->id . $withProjectUrl;
-		$head[$h][1] = $langs->trans("ContactsAddresses");
-		$head[$h][2] = 'contact';
-		$h++;
-	}
+    if (getDolGlobalString('MAIN_FEATURES_LEVEL') && getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 2) {
+        $head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorbooth_contact.php?id=' . $object->id . $withProjectUrl;
+        $head[$h][1] = $langs->trans("ContactsAddresses");
+        $head[$h][2] = 'contact';
+        $h++;
+    }
 
-	/*
-	$head[$h][0] = DOL_URL_ROOT.'/eventorganization/conferenceorboothattendee_list.php?conforboothid='.$object->id.$withProjectUrl;
-	$head[$h][1] = $langs->trans("Attendees");
-	$head[$h][2] = 'attendees';
-	// Enable caching of conf or booth count attendees
-	$nbAttendees = 0;
-	require_once DOL_DOCUMENT_ROOT.'/core/lib/memory.lib.php';
-	$cachekey = 'count_attendees_conferenceorbooth_'.$object->id;
-	$dataretrieved = dol_getcache($cachekey);
-	if (!is_null($dataretrieved)) {
-		$nbAttendees = $dataretrieved;
-	} else {
-		require_once DOL_DOCUMENT_ROOT.'/eventorganization/class/conferenceorboothattendee.class.php';
-		$attendees=new ConferenceOrBoothAttendee($db);
-		$result = $attendees->fetchAll('', '', 0, 0, array('t.fk_actioncomm'=>$object->id));
-		if (!is_array($result) && $result<0) {
-			setEventMessages($attendees->error, $attendees->errors, 'errors');
-		} else {
-			$nbAttendees = count($result);
-		}
-		dol_setcache($cachekey, $nbAttendees, 120);	// If setting cache fails, this is not a problem, so we do not test result.
-	}
-	if ($nbAttendees > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbAttendees.'</span>';
-	}
-	$h++;
-	*/
+    /*
+    $head[$h][0] = DOL_URL_ROOT.'/eventorganization/conferenceorboothattendee_list.php?conforboothid='.$object->id.$withProjectUrl;
+    $head[$h][1] = $langs->trans("Attendees");
+    $head[$h][2] = 'attendees';
+    // Enable caching of conf or booth count attendees
+    $nbAttendees = 0;
+    require_once DOL_DOCUMENT_ROOT.'/core/lib/memory.lib.php';
+    $cachekey = 'count_attendees_conferenceorbooth_'.$object->id;
+    $dataretrieved = dol_getcache($cachekey);
+    if (!is_null($dataretrieved)) {
+        $nbAttendees = $dataretrieved;
+    } else {
+        require_once DOL_DOCUMENT_ROOT.'/eventorganization/class/conferenceorboothattendee.class.php';
+        $attendees=new ConferenceOrBoothAttendee($db);
+        $result = $attendees->fetchAll('', '', 0, 0, array('t.fk_actioncomm'=>$object->id));
+        if (!is_array($result) && $result<0) {
+            setEventMessages($attendees->error, $attendees->errors, 'errors');
+        } else {
+            $nbAttendees = count($result);
+        }
+        dol_setcache($cachekey, $nbAttendees, 120); // If setting cache fails, this is not a problem, so we do not test result.
+    }
+    if ($nbAttendees > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbAttendees.'</span>';
+    }
+    $h++;
+    */
 
-	require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-	require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
-	$upload_dir = $conf->eventorganization->dir_output . "/conferenceorbooth/" . dol_sanitizeFileName($object->ref);
-	$nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
-	$nbLinks = Link::count($db, $object->element, $object->id);
-	$head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorbooth_document.php?id=' . $object->id . $withProjectUrl;
-	$head[$h][1] = $langs->trans('Documents');
-	if (($nbFiles + $nbLinks) > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">' . ($nbFiles + $nbLinks) . '</span>';
-	}
-	$head[$h][2] = 'document';
-	$h++;
+    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
+    $upload_dir = $conf->eventorganization->dir_output . "/conferenceorbooth/" . dol_sanitizeFileName($object->ref);
+    $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
+    $nbLinks = Link::count($db, $object->element, $object->id);
+    $head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorbooth_document.php?id=' . $object->id . $withProjectUrl;
+    $head[$h][1] = $langs->trans('Documents');
+    if (($nbFiles + $nbLinks) > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . ($nbFiles + $nbLinks) . '</span>';
+    }
+    $head[$h][2] = 'document';
+    $h++;
 
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	//$this->tabs = array(
-	//	'entity:+tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
-	//); // to add new tab
-	//$this->tabs = array(
-	//	'entity:-tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
-	//); // to remove a tab
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorbooth@eventorganization');
+    // Show more tabs from modules
+    // Entries must be declared in modules descriptor with line
+    //$this->tabs = array(
+    //  'entity:+tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
+    //); // to add new tab
+    //$this->tabs = array(
+    //  'entity:-tabname:Title:@eventorganization:/eventorganization/mypage.php?id=__ID__'
+    //); // to remove a tab
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorbooth@eventorganization');
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorbooth@eventorganization', 'remove');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorbooth@eventorganization', 'remove');
 
-	return $head;
+    return $head;
 }
 
 /**
@@ -120,98 +121,98 @@ function conferenceorboothPrepareHead($object, $with_project = 0)
  */
 function conferenceorboothProjectPrepareHead($object)
 {
-	global $db, $langs, $conf;
+    global $db, $langs, $conf;
 
-	$langs->load("eventorganization");
+    $langs->load("eventorganization");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . 'eventorganization/conferenceorbooth_list.php?projectid=' . $object->id;
-	$head[$h][1] = $langs->trans("ConferenceOrBooth");
-	$head[$h][2] = 'conferenceorbooth';
-	// Enable caching of conf or booth count attendees
-	$nbAttendees = 0;
-	$nbConferenceOrBooth = 0;
-	require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
-	$cachekey = 'count_conferenceorbooth_project_' . $object->id;
-	$dataretrieved = dol_getcache($cachekey);
-	if (!is_null($dataretrieved)) {
-		$nbAttendees = $dataretrieved;
-	} else {
-		require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorbooth.class.php';
-		$conforbooth = new ConferenceOrBooth($db);
-		$result = $conforbooth->fetchAll('', '', 0, 0, '(t.fk_project:=:' . ((int) $object->id) . ')');
-		if (!is_array($result) && $result < 0) {
-			setEventMessages($conforbooth->error, $conforbooth->errors, 'errors');
-		} else {
-			$nbConferenceOrBooth = count($result);
-		}
-		dol_setcache($cachekey, $nbConferenceOrBooth, 120);	// If setting cache fails, this is not a problem, so we do not test result.
-	}
-	if ($nbConferenceOrBooth > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbConferenceOrBooth . '</span>';
-	}
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . 'eventorganization/conferenceorbooth_list.php?projectid=' . $object->id;
+    $head[$h][1] = $langs->trans("ConferenceOrBooth");
+    $head[$h][2] = 'conferenceorbooth';
+    // Enable caching of conf or booth count attendees
+    $nbAttendees = 0;
+    $nbConferenceOrBooth = 0;
+    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+    $cachekey = 'count_conferenceorbooth_project_' . $object->id;
+    $dataretrieved = dol_getcache($cachekey);
+    if (!is_null($dataretrieved)) {
+        $nbAttendees = $dataretrieved;
+    } else {
+        require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorbooth.class.php';
+        $conforbooth = new ConferenceOrBooth($db);
+        $result = $conforbooth->fetchAll('', '', 0, 0, '(t.fk_project:=:' . ((int) $object->id) . ')');
+        if (!is_array($result) && $result < 0) {
+            setEventMessages($conforbooth->error, $conforbooth->errors, 'errors');
+        } else {
+            $nbConferenceOrBooth = count($result);
+        }
+        dol_setcache($cachekey, $nbConferenceOrBooth, 120); // If setting cache fails, this is not a problem, so we do not test result.
+    }
+    if ($nbConferenceOrBooth > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbConferenceOrBooth . '</span>';
+    }
+    $h++;
 
-	$head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorboothattendee_list.php?fk_project=' . $object->id . '&withproject=1';
-	$head[$h][1] = $langs->trans("Attendees");
-	$head[$h][2] = 'attendees';
-	// Enable caching of conf or booth count attendees
-	$nbAttendees = 0;
-	require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
-	$cachekey = 'count_attendees_conferenceorbooth_project_' . $object->id;
-	$dataretrieved = dol_getcache($cachekey);
-	if (!is_null($dataretrieved)) {
-		$nbAttendees = $dataretrieved;
-	} else {
-		require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorboothattendee.class.php';
-		$attendees = new ConferenceOrBoothAttendee($db);
-		$result = $attendees->fetchAll('', '', 0, 0, '(t.fk_project:=:' . ((int) $object->id) . ')');
-		if (!is_array($result) && $result < 0) {
-			setEventMessages($attendees->error, $attendees->errors, 'errors');
-		} else {
-			$nbAttendees = count($result);
-		}
-		dol_setcache($cachekey, $nbAttendees, 120);	// If setting cache fails, this is not a problem, so we do not test result.
-	}
-	if ($nbAttendees > 0) {
-		$head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbAttendees . '</span>';
-	}
+    $head[$h][0] = DOL_URL_ROOT . '/eventorganization/conferenceorboothattendee_list.php?fk_project=' . $object->id . '&withproject=1';
+    $head[$h][1] = $langs->trans("Attendees");
+    $head[$h][2] = 'attendees';
+    // Enable caching of conf or booth count attendees
+    $nbAttendees = 0;
+    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+    $cachekey = 'count_attendees_conferenceorbooth_project_' . $object->id;
+    $dataretrieved = dol_getcache($cachekey);
+    if (!is_null($dataretrieved)) {
+        $nbAttendees = $dataretrieved;
+    } else {
+        require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorboothattendee.class.php';
+        $attendees = new ConferenceOrBoothAttendee($db);
+        $result = $attendees->fetchAll('', '', 0, 0, '(t.fk_project:=:' . ((int) $object->id) . ')');
+        if (!is_array($result) && $result < 0) {
+            setEventMessages($attendees->error, $attendees->errors, 'errors');
+        } else {
+            $nbAttendees = count($result);
+        }
+        dol_setcache($cachekey, $nbAttendees, 120); // If setting cache fails, this is not a problem, so we do not test result.
+    }
+    if ($nbAttendees > 0) {
+        $head[$h][1] .= '<span class="badge marginleftonlyshort">' . $nbAttendees . '</span>';
+    }
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothproject@eventorganization');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothproject@eventorganization');
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothproject@eventorganization', 'remove');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothproject@eventorganization', 'remove');
 
-	return $head;
+    return $head;
 }
 
 
 /**
  * Prepare array of tabs for ConferenceOrBoothAttendees
  *
- * @param	ConferenceOrBoothAttendee	$object		ConferenceOrBoothAttendee
- * @return 	array<array<int,string>>				Array of tabs
+ * @param   ConferenceOrBoothAttendee   $object     ConferenceOrBoothAttendee
+ * @return  array<array<int,string>>                Array of tabs
  */
 function conferenceorboothAttendeePrepareHead($object)
 {
-	global $db, $langs, $conf;
+    global $db, $langs, $conf;
 
-	$langs->load("eventorganization");
+    $langs->load("eventorganization");
 
-	$h = 0;
-	$head = array();
+    $h = 0;
+    $head = array();
 
-	$head[$h][0] = DOL_URL_ROOT . "/eventorganization/conferenceorboothattendee_card.php?id=" . ((int) $object->id) . ($object->fk_actioncomm > 0 ? '&conforboothid=' . ((int) $object->fk_actioncomm) : '') . ($object->fk_project > 0 ? '&withproject=1&fk_project=' . ((int) $object->fk_project) : '');
-	$head[$h][1] = $langs->trans("Card");
-	$head[$h][2] = 'card';
-	$h++;
+    $head[$h][0] = DOL_URL_ROOT . "/eventorganization/conferenceorboothattendee_card.php?id=" . ((int) $object->id) . ($object->fk_actioncomm > 0 ? '&conforboothid=' . ((int) $object->fk_actioncomm) : '') . ($object->fk_project > 0 ? '&withproject=1&fk_project=' . ((int) $object->fk_project) : '');
+    $head[$h][1] = $langs->trans("Card");
+    $head[$h][2] = 'card';
+    $h++;
 
-	//TODO : Note and document
+    //TODO : Note and document
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothattendee@eventorganization');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothattendee@eventorganization');
 
-	complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothattendee@eventorganization', 'remove');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'conferenceorboothattendee@eventorganization', 'remove');
 
-	return $head;
+    return $head;
 }

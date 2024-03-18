@@ -1,5 +1,6 @@
 <?php
-/* Copyright (C) 2012	Christophe Battarel	<christophe.battarel@altairis.fr>
+
+/* Copyright (C) 2012   Christophe Battarel <christophe.battarel@altairis.fr>
  * Copyright (C) 2014   Marcos García       <marcosgdf@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,20 +18,20 @@
  */
 
 /**
- *	\file       htdocs/margin/index.php
- *	\ingroup    product margins
- *	\brief      Page d'index du module margin
+ *  \file       htdocs/margin/index.php
+ *  \ingroup    product margins
+ *  \brief      Page d'index du module margin
  */
 
 // Load Dolibarr environment
 require '../main.inc.php';
 
 if ($user->hasRight('produit', 'lire')) {
-	$page = 'productMargins';
+    $page = 'productMargins';
 } elseif ($user->hasRight('societe', 'lire')) {
-	$page = 'customerMargins';
+    $page = 'customerMargins';
 } else {
-	$page = 'agentMargins';
+    $page = 'agentMargins';
 }
 
-header('Location: '.DOL_URL_ROOT.'/margin/'.$page.'.php');
+header('Location: ' . DOL_URL_ROOT . '/margin/' . $page . '.php');

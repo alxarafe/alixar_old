@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2003 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  *
@@ -24,9 +25,9 @@
 
 // Load Dolibarr environment
 require '../../main.inc.php';
-require_once DOL_DOCUMENT_ROOT.'/reception/class/reception.class.php';
-require_once DOL_DOCUMENT_ROOT.'/reception/class/receptionstats.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
+require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
+require_once DOL_DOCUMENT_ROOT . '/reception/class/receptionstats.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 
 $year = GETPOSTINT("year");
 $socid = GETPOSTINT("socid");
@@ -34,7 +35,7 @@ $userid = GETPOSTINT("userid");
 
 // Security check
 if ($user->socid) {
-	$socid = $user->socid;
+    $socid = $user->socid;
 }
 $result = restrictedArea($user, 'reception', 0, '');
 
@@ -50,26 +51,26 @@ $HEIGHT = DolGraph::getDefaultGraphSizeForStats('height');
 
 $mesg = '';
 
-print load_fiche_titre($langs->trans("StatisticsOfReceptions").' '.GETPOSTINT("year"), $mesg);
+print load_fiche_titre($langs->trans("StatisticsOfReceptions") . ' ' . GETPOSTINT("year"), $mesg);
 $stats = new ReceptionStats($db, $socid, '', ($userid > 0 ? $userid : 0));
 $data = $stats->getNbByMonth($year);
 
 dol_mkdir($conf->reception->dir_temp);
 
-$filename = $conf->reception->dir_temp."/reception".$year.".png";
-$fileurl = DOL_URL_ROOT.'/viewimage.php?modulepart=receptionstats&file=reception'.$year.'.png';
+$filename = $conf->reception->dir_temp . "/reception" . $year . ".png";
+$fileurl = DOL_URL_ROOT . '/viewimage.php?modulepart=receptionstats&file=reception' . $year . '.png';
 
 $px = new DolGraph();
 $mesg = $px->isGraphKo();
 if (!$mesg) {
-	$px->SetData($data);
-	$px->SetMaxValue($px->GetCeilMaxValue());
-	$px->SetWidth($WIDTH);
-	$px->SetHeight($HEIGHT);
-	$px->SetYLabel($langs->trans("NbOfOrders"));
-	$px->SetShading(3);
-	$px->SetHorizTickIncrement(1);
-	$px->draw($filename, $fileurl);
+    $px->SetData($data);
+    $px->SetMaxValue($px->GetCeilMaxValue());
+    $px->SetWidth($WIDTH);
+    $px->SetHeight($HEIGHT);
+    $px->SetYLabel($langs->trans("NbOfOrders"));
+    $px->SetShading(3);
+    $px->SetHorizTickIncrement(1);
+    $px->draw($filename, $fileurl);
 }
 
 print '<table class="border centpercent">';
