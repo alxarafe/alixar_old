@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.0"
+   width="720"
+   height="200"
+   viewBox="0 0 540.00005 150.00001"
+   id="svg5"
+   sodipodi:docname="alixar_rectangular_logo.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title128">Logo Dolibarr ERP-CRM</title>
+  <defs
+     id="defs5">
+    <linearGradient
+       id="swatch8"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000080;stop-opacity:1;"
+         offset="0"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       id="swatch7"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#00000d;stop-opacity:1;"
+         offset="0"
+         id="stop7" />
+    </linearGradient>
+    <linearGradient
+       id="swatch6"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="0"
+         id="stop6" />
+    </linearGradient>
+    <rect
+       x="365.10675"
+       y="2670.1628"
+       width="2685.1697"
+       height="611.95404"
+       id="rect5" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#swatch8"
+       id="linearGradient8"
+       x1="227.81589"
+       y1="2093.1833"
+       x2="2293.9688"
+       y2="2093.1833"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#swatch8"
+       id="linearGradient127"
+       gradientUnits="userSpaceOnUse"
+       x1="227.81589"
+       y1="2093.1833"
+       x2="2293.9688"
+       y2="2093.1833" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#swatch8"
+       id="linearGradient21"
+       gradientUnits="userSpaceOnUse"
+       x1="227.81589"
+       y1="2093.1833"
+       x2="2293.9688"
+       y2="2093.1833" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.3440554"
+     inkscape:cx="358.61617"
+     inkscape:cy="99.698271"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <path
+     d="m 1701.62,721.15 c -2413.14,-1259.425 -1206.57,-629.713 0,0 z"
+     id="path2" />
+  <g
+     id="g64"
+     transform="matrix(0.07380527,0,0,0.07137077,-9.5644734,6.1047892)">
+    <path
+       d="M 1173.7246,177.17636 C 1980.9844,1428.1168 1096.9693,58.360322 1982.7012,1430.9039 l -957.6502,4.9547 -100.34276,157.8231 c 1.98208,1.9821 1380.02316,0.7433 1382.00526,-1.2388 L 1369.5782,177.46995 Z"
+       style="fill:#0000ff;fill-opacity:1;stroke-width:0.24776"
+       id="path1" />
+    <path
+       d="M 282.0188,1643.7292 380.87504,1787.43 1100.1223,554.32852 1606.296,1328.3308 c 9.6626,9.9104 10.6537,10.4059 29.7312,11.8924 18.8298,1.4866 184.3334,-2.4776 186.5633,-4.7074 L 1101.8566,219.357 c -1324.06904,2291.4914 436.624,-758.60321 -819.8378,1424.3722 z"
+       style="fill:#0000ff;fill-opacity:1;stroke-width:0.24776"
+       id="path3" />
+    <path
+       d="m 1100.3701,728.99932 -642.4417,1119.13188 1724.9051,10.406 131.5606,-161.7873 -1543.00669,0.914 L 1209.88,901.44028 Z"
+       style="fill:#0000ff;fill-opacity:1;stroke-width:0.24776"
+       id="path4" />
+  </g>
+  <g
+     id="g5"
+     style="fill:url(#linearGradient8)"
+     transform="matrix(0.17060688,0,0,0.17088237,133.63312,-250.43814)">
+    <text
+       xml:space="preserve"
+       transform="scale(0.75000007)"
+       id="text5"
+       style="font-size:170.667px;font-family:Z003;-inkscape-font-specification:'Z003, Normal';white-space:pre;shape-inside:url(#rect5);display:inline;fill:url(#linearGradient127);fill-opacity:0;stroke:#000000" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:600.456px;font-family:Serif;-inkscape-font-specification:'Serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:url(#linearGradient21);fill-opacity:1;stroke:#000000;stroke-width:0.879574"
+       x="194.57582"
+       y="2680.6714"
+       id="text6"
+       transform="scale(1.1730937,0.85244679)"><tspan
+         sodipodi:role="line"
+         id="tspan6"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:600.456px;font-family:Serif;-inkscape-font-specification:'Serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:url(#linearGradient21);fill-opacity:1;stroke-width:0.879574"
+         x="194.57582"
+         y="2680.6714">Alixar</tspan></text>
+  </g>
+  <metadata
+     id="metadata128">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Logo Dolibarr ERP-CRM</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.94354px;line-height:0%;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#007b8c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.745294"
+     x="445.40903"
+     y="46.705166"
+     id="text5484"
+     transform="scale(0.8955774,1.1165981)"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32.0121px;line-height:100%;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#007b8c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.745294"
+       sodipodi:role="line"
+       id="tspan5486"
+       x="445.40903"
+       y="46.705166">ERP/CRM</tspan></text>
+</svg>

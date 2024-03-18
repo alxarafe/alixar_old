@@ -218,9 +218,9 @@ if (!empty($mysoc->logo_small) && is_readable($conf->mycompany->dir_output . '/l
     $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/' . $mysoc->logo);
     $width = 128;
 } elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/img/dolibarr_logo.svg')) {
-    $urllogo = DOL_URL_ROOT . '/theme/' . $conf->theme . '/img/dolibarr_logo.svg';
-} elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/dolibarr_logo.svg')) {
-    $urllogo = DOL_URL_ROOT . '/theme/dolibarr_logo.svg';
+    $urllogo = DOL_URL_ROOT . '/theme/' . $conf->theme . '/img/alixar_rectangular_logo.svg';
+} elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/alixar_rectangular_logo.svg')) {
+    $urllogo = DOL_URL_ROOT . '/theme/alixar_rectangular_logo.svg';
 }
 
 // Security graphical code

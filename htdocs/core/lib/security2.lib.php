@@ -265,8 +265,8 @@ if (!function_exists('dol_loginfunction')) {
             $width = 128;
         } elseif (!empty($mysoc->logo_squarred_small) && is_readable($conf->mycompany->dir_output . '/logos/thumbs/' . $mysoc->logo_squarred_small)) {
             $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/thumbs/' . $mysoc->logo_squarred_small);
-        } elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/dolibarr_logo.svg')) {
-            $urllogo = DOL_URL_ROOT . '/theme/dolibarr_logo.svg';
+        } elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/alixar_rectangular_logo.svg')) {
+            $urllogo = DOL_URL_ROOT . '/theme/alixar_rectangular_logo.svg';
         }
 
         // Security graphical code
