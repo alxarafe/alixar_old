@@ -156,8 +156,8 @@ tools:
         order_alphabetically: false
         # To use specific config for a specific path, use path_configs: (see example on page https://scrutinizer-ci.com/docs/configuration/tool_config_structure)
 
-  # php_depend
-  php_depend:
+  # php_pdepend
+  php_pdepend:
     enabled: false
     configuration_file: null
     suffixes:
