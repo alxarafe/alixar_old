@@ -31,6 +31,7 @@
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 if (isModEnabled('ldap')) {
     require_once DOL_DOCUMENT_ROOT . "/core/class/ldap.class.php";
 }

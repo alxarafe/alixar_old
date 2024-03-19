@@ -51,9 +51,11 @@ define('DOL_URL_ROOT', get_url());
 
 define('GET_ROUTE_VAR', 'url_route');
 define('GET_FILENAME_VAR', 'url_filename');
+define('GET_API_VAR', 'api_route');
 
 $page = filter_input(INPUT_GET, GET_ROUTE_VAR);
 $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
+$api = filter_input(INPUT_GET, GET_API_VAR);
 
 if (empty($page) && empty($ctrl)) {
     require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
@@ -63,5 +65,9 @@ if (empty($page) && empty($ctrl)) {
 chdir(BASE_PATH . DIRECTORY_SEPARATOR . $page);
 
 $_SERVER['PHP_SELF'] = DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
+if (!empty($api)) {
+    $_SERVER['PHP_SELF'] = DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php'.DIRECTORY_SEPARATOR.$api;
+}
+
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
 require $path;
