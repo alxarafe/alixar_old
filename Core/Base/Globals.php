@@ -1,7 +1,5 @@
 <?php
-
-/*
- * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
+/* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +21,16 @@ use Alxarafe\Deprecated\Config;
 
 abstract class Globals
 {
+    /**
+     * Contains the information from the conf.php file.
+     *
+     * @var null|stdClass
+     */
     private static $config;
+
+    /**
+     * @var
+     */
     private static $db;
 
     public static function init()

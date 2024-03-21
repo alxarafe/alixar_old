@@ -1,6 +1,5 @@
 <?php
-/*
- * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
+/* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,11 +102,11 @@ abstract class Config
 
         // 'db' section
         $config->db = new stdClass();
-        $config->db->type = trim($dolibarr_main_db_type ?? 'mysql');                    // mysql
-        $config->db->host = trim($dolibarr_main_db_host ?? 'localhost');                // localhost
-        $config->db->port = trim($dolibarr_main_db_port ?? '');                         // 3306
-        $config->db->name = trim($dolibarr_main_db_name ?? 'dolibarr');                 // dolibarr
-        $config->db->user = trim($dolibarr_main_db_user ?? 'dolibarr');                 // dolibarr
+        $config->db->type = trim($dolibarr_main_db_type ?? 'mysql');
+        $config->db->host = trim($dolibarr_main_db_host ?? 'localhost');
+        $config->db->port = trim($dolibarr_main_db_port ?? '');
+        $config->db->name = trim($dolibarr_main_db_name ?? 'dolibarr');
+        $config->db->user = trim($dolibarr_main_db_user ?? 'dolibarr');
         $config->db->pass = trim($dolibarr_main_db_pass ?? '');
         $config->db->prefix = trim($dolibarr_main_db_prefix ?? '');
         $config->db->charset = trim($dolibarr_main_db_character_set ?? 'utf8');

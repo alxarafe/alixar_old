@@ -7741,6 +7741,18 @@ function dol_mkdir($dir, $dataroot = '', $newmask = '')
     return ($nberr ? -$nberr : $nbcreated);
 }
 
+/**
+ * Check if $value is an octal value
+ *
+ * @param $value
+ *
+ * @return bool
+ */
+function is_octal($value)
+{
+    return decoct(octdec($value)) == $value;
+}
+
 
 /**
  *  Change mod of a file
@@ -7754,7 +7766,7 @@ function dolChmod($filepath, $newmask = '')
 {
     $mask = empty($newmask) ? getDolGlobalString('MAIN_UMASK') : $newmask;
     if (!is_octal($mask)) {
-        dol_syslog($mask . ' is not a octal number in dolChmod!');
+        dol_syslog($mask . ' is not an octal number in dolChmod!');
     }
     @chmod($filepath, octdec($mask));
 }
