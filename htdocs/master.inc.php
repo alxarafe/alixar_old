@@ -31,7 +31,7 @@
  *  \file       htdocs/master.inc.php
  *  \ingroup    core
  *  \brief      File that defines environment for all Dolibarr process (pages or scripts)
- *              This script reads the conf file, init $lang, $db and and empty $user
+ *              This script reads the conf file, init $lang, $db and empty $user
  */
 
 // Include the conf.php and functions.lib.php and security.lib.php. This defined the constants like DOL_DOCUMENT_ROOT, DOL_DATA_ROOT, DOL_URL_ROOT...

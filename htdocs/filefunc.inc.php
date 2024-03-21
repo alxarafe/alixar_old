@@ -64,66 +64,6 @@ if (defined('DOL_INC_FOR_VERSION_ERROR')) {
     return;
 }
 
-
-/**
- * Replace session_start()
- *
- * @return void
- */
-function dol_session_start()
-{
-    session_start();
-}
-
-/**
- * Replace session_regenerate_id()
- *
- * @return bool True if success, false if failed
- */
-function dol_session_regenerate_id()
-{
-    return session_regenerate_id();
-}
-
-/**
- * Destroy and recreate a new session without losing content.
- * Not used yet.
- *
- * @param  $sessionname     string      Session name
- * @return void
- */
-function dol_session_rotate($sessionname = '')
-{
-    $oldsessionid = session_id();
-
-    // Backup the current session
-    $session_backup = $_SESSION;
-
-    // Set current session to expire in 1 minute
-    $_SESSION['OBSOLETE'] = true;
-    $_SESSION['EXPIRES'] = time() + 60;
-
-    // Close the current session
-    session_write_close();
-
-    // Set a new session id and start the session
-    session_name($sessionname);
-    dol_session_start();
-
-    // Restore the previous session backup
-    $_SESSION = $session_backup;
-
-    // Clean up
-    unset($session_backup);
-    unset($_SESSION['OBSOLETE']);
-    unset($_SESSION['EXPIRES']);
-
-    $newsessionid = session_id();
-    //var_dump("oldsessionid=".$oldsessionid." - newsessionid=".$newsessionid);
-}
-
-
-
 // Define vars
 $conffiletoshowshort = "conf.php";
 // Define localization of conf file
@@ -139,7 +79,7 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // --- End of part replaced by Dolibarr packager makepack-dolibarr
 
 // Include configuration
-$result = @include_once $conffile; // Keep @ because with some error reporting mode, this breaks the redirect done when file is not found
+$result = @include $conffile; // Keep @ because with some error reporting mode, this breaks the redirect done when file is not found
 
 // Disable some not used PHP stream
 $listofwrappers = stream_get_wrappers();
@@ -305,6 +245,7 @@ if (!defined('NOCSRFCHECK') && isset($dolibarr_nocsrfcheck) && $dolibarr_nocsrfc
     }
     // Another test is done later on token if option MAIN_SECURITY_CSRF_WITH_TOKEN is on.
 }
+
 if (empty($dolibarr_main_db_host) && !defined('NOREQUIREDB')) {
     print '<div class="center">Dolibarr setup is not yet complete.<br><br>' . "\n";
     print '<a href="install/index.php">Click here to finish Dolibarr install process</a> ...</div>' . "\n";

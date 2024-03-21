@@ -16,9 +16,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Illuminate\Queue\Capsule\Manager;
-
 require_once realpath('../vendor/autoload.php');
+
+use Alxarafe\Base\Globals;
 
 /**
  * Obtains main url
@@ -47,9 +47,12 @@ function get_url()
 }
 
 const BASE_PATH = __DIR__;
+define('BASE_URL', get_url());
 
 const DOL_DOCUMENT_ROOT = BASE_PATH;
-define('DOL_URL_ROOT', get_url());
+const DOL_URL_ROOT = BASE_URL;
+
+Globals::init();
 
 const GET_ROUTE_VAR = 'url_route';
 const GET_FILENAME_VAR = 'url_filename';
