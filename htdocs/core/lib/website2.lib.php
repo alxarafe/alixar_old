@@ -242,7 +242,7 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
         }
 
         // Add myself
-        $tplcontent .= '<?php if ($_SERVER['PHP_SELF'] == "' . (($object->fk_default_home == $objectpage->id) ? '/' : (($shortlangcode != substr($object->lang, 0, 2)) ? '/' . $shortlangcode : '')) . '/' . $objectpage->pageurl . '.php") { ?>' . "\n";
+        $tplcontent .= '<?php if ($_SERVER["PHP_SELF"] == "' . (($object->fk_default_home == $objectpage->id) ? '/' : (($shortlangcode != substr($object->lang, 0, 2)) ? '/' . $shortlangcode : '')) . '/' . $objectpage->pageurl . '.php") { ?>' . "\n";
         $tplcontent .= '<link rel="alternate" hreflang="' . $shortlangcode . '" href="<?php echo $website->virtualhost; ?>' . (($object->fk_default_home == $objectpage->id) ? '/' : (($shortlangcode != substr($object->lang, 0, 2)) ? '/' . $shortlangcode : '') . '/' . $objectpage->pageurl . '.php') . '" />' . "\n";
 
         $tplcontent .= '<?php } ?>' . "\n";

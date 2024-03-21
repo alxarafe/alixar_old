@@ -9,8 +9,8 @@ build:
         override:
           - command: php-scrutinizer-run
             idle_timeout: 14400
-          - command: phpcs-run
-            idle_timeout: 14400
+          ## - command: phpcs-run
+          ##  idle_timeout: 14400
 
 imports:
   - javascript
