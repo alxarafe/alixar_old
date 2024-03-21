@@ -10,3 +10,4 @@ English Dolibarr ChangeLog
 - Namespace Core/Base creation.
 - Composer installation.
 - Scrutinizer installation.
+- Eloquent/ORM installation.

@@ -1,5 +1,10 @@
 # Security Policy
 
+----------------------------------------------------------------------------------
+This document is pending review.
+Alxarafe is based on a Dolibarr fork and is an unstable application at the moment.
+----------------------------------------------------------------------------------
+
 This file contains some policies about the security reports on Dolibarr ERP CRM project, one of the most popular Open Source ERP and CRM in the world.
 
 ## Supported Versions for security reports

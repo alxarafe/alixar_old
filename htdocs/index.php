@@ -1,6 +1,6 @@
 <?php
-
-/* Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
+/**
+ *  Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+
+use Illuminate\Queue\Capsule\Manager;
 
 require_once realpath('../vendor/autoload.php');
 
@@ -46,12 +48,12 @@ function get_url()
 
 const BASE_PATH = __DIR__;
 
-define('DOL_DOCUMENT_ROOT', BASE_PATH);
+const DOL_DOCUMENT_ROOT = BASE_PATH;
 define('DOL_URL_ROOT', get_url());
 
-define('GET_ROUTE_VAR', 'url_route');
-define('GET_FILENAME_VAR', 'url_filename');
-define('GET_API_VAR', 'api_route');
+const GET_ROUTE_VAR = 'url_route';
+const GET_FILENAME_VAR = 'url_filename';
+const GET_API_VAR = 'api_route';
 
 $page = filter_input(INPUT_GET, GET_ROUTE_VAR);
 $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
@@ -66,7 +68,7 @@ chdir(BASE_PATH . DIRECTORY_SEPARATOR . $page);
 
 $_SERVER['PHP_SELF'] = DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
 if (!empty($api)) {
-    $_SERVER['PHP_SELF'] = DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php'.DIRECTORY_SEPARATOR.$api;
+    $_SERVER['PHP_SELF'] = DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php' . DIRECTORY_SEPARATOR . $api;
 }
 
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';

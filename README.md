@@ -1,5 +1,11 @@
 # ALIXAR ERP & CRM
 
+----------------------------------------------------------------------------------
+This document is pending review.
+Alxarafe is based on a Dolibarr fork and is an **unstable application** at the moment.
+----------------------------------------------------------------------------------
+
+
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alxarafe/alixar/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/alxarafe/alixar/?branch=main)
 [![Build Status](https://scrutinizer-ci.com/g/alxarafe/alixar/badges/build.png?b=main)](https://scrutinizer-ci.com/g/alxarafe/alixar/build-status/main)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Alxarafe/Alixar/issues?utf8=✓&q=is%3Aopen%20is%3Aissue)
