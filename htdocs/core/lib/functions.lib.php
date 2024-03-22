@@ -7760,15 +7760,17 @@ function is_octal($value)
  * @param string $filepath Full file path
  * @param string $newmask  Force new mask. For example '0644'
  *
- * @return void
+ * @return bool
+ * @throws Exception
  */
 function dolChmod($filepath, $newmask = '')
 {
     $mask = empty($newmask) ? getDolGlobalString('MAIN_UMASK') : $newmask;
     if (!is_octal($mask)) {
         dol_syslog($mask . ' is not an octal number in dolChmod!');
+        return false;
     }
-    @chmod($filepath, octdec($mask));
+    return @chmod($filepath, octdec($mask));
 }
 
 
