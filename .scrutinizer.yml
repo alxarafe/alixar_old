@@ -27,6 +27,8 @@ filter:
     - test/*
     - vendor/*
   paths:
+    - Core
+    - Modules
     - htdocs/*
     - scripts/*
 
@@ -49,6 +51,8 @@ tools:
         - htdocs/core/class/lessc.class.php
         - vendor/*
       paths:
+        - Core/
+        - Modules/
         - htdocs/
         - scripts/
     config:
