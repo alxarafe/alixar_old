@@ -129,6 +129,10 @@ abstract class Config
 
         $config->debug = intval($dolibarr_main_prod ?? 1) === 0;
 
+        // 'Server' section
+        $config->server = new stdClass();
+        $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
+
         return $config;
     }
 }

@@ -3152,7 +3152,7 @@ class CommandeFournisseur extends CommonOrder
                 $line->total_ht = 100;
                 $line->total_ttc = 119.6;
                 $line->total_tva = 19.6;
-                $line->remise_percent = 00;
+                $line->remise_percent = 0;
             }
             $line->fk_product = $prodid;
 

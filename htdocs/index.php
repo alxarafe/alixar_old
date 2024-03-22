@@ -23,8 +23,6 @@ use Alxarafe\Base\Globals;
 /**
  * Obtains main url
  *
- * @param $forwarded_host
- *
  * @return string
  */
 function get_url()
@@ -53,6 +51,7 @@ const DOL_DOCUMENT_ROOT = BASE_PATH;
 const DOL_URL_ROOT = BASE_URL;
 
 Globals::init();
+$config = \Alxarafe\Base\Globals::getConfig();
 
 const GET_ROUTE_VAR = 'url_route';
 const GET_FILENAME_VAR = 'url_filename';

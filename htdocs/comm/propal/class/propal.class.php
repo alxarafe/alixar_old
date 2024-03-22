@@ -3525,7 +3525,7 @@ class Propal extends CommonObject
                 $line->total_ht = 100;
                 $line->total_ttc = 120;
                 $line->total_tva = 20;
-                $line->remise_percent = 00;
+                $line->remise_percent = 0;
             }
 
             if ($num_prods > 0) {

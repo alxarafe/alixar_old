@@ -7766,11 +7766,11 @@ function is_octal($value)
 function dolChmod($filepath, $newmask = '')
 {
     $mask = empty($newmask) ? getDolGlobalString('MAIN_UMASK') : $newmask;
-    if (!is_octal($mask)) {
-        dol_syslog($mask . ' is not an octal number in dolChmod!');
-        return false;
+    try {
+        chmod($filepath, octdec($mask));
+    } catch (Exception $e) {
+        dol_syslog("Failure when changing permissions of $filepath to $value");
     }
-    return @chmod($filepath, octdec($mask));
 }
 
 
@@ -11033,7 +11033,8 @@ function printCommonFooter($zone = 'private')
             print '});' . "\n";
 
             // End of tuning
-            if (!empty($_SERVER['MAIN_SHOW_TUNING_INFO']) || getDolGlobalString('MAIN_SHOW_TUNING_INFO')) {
+            global $config;
+            if ($config->server->detailed_info || getDolGlobalString('MAIN_SHOW_TUNING_INFO')) {
                 print "\n";
                 print "/* JS CODE TO ENABLE to add memory info */\n";
                 print 'window.console && console.log("';
