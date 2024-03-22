@@ -7767,10 +7767,11 @@ function dolChmod($filepath, $newmask = '')
 {
     $mask = empty($newmask) ? getDolGlobalString('MAIN_UMASK') : $newmask;
     try {
-        chmod($filepath, octdec($mask));
+        return chmod($filepath, octdec($mask));
     } catch (Exception $e) {
-        dol_syslog("Failure when changing permissions of $filepath to $value");
+        dol_syslog("Failure when changing permissions of $filepath to $mask");
     }
+    return false;
 }
 
 

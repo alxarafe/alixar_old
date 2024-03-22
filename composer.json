@@ -28,6 +28,7 @@
   },
   "config": {
     "vendor-dir": "vendor",
+    "process-timeout": 0,
     "platform": {
       "php": "7.3"
     }
@@ -52,7 +53,8 @@
     "illuminate/database": "^8.83"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^3.0"
+    "squizlabs/php_codesniffer": "^3.0",
+    "phpstan/phpstan": "^1.10"
   },
   "suggest": {
     "ext-mysqlnd": "To use with MySQL or MariaDB",
