@@ -61,3 +61,4 @@ doc/install.lock
 phpstan_custom.neon
 /.php-cs-fixer.cache
 /.php_cs.cache
+/.github/tmp/

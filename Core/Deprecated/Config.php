@@ -17,6 +17,9 @@
 
 namespace Alxarafe\Deprecated;
 
+require_once BASE_PATH . '/core/class/conf.class.php';
+
+use Conf;
 use stdClass;
 
 /**
@@ -33,7 +36,14 @@ abstract class Config
      *
      * @var null|stdClass
      */
-    static private $config = null;
+    static protected $config = null;
+
+    /**
+     * Contains the information of the old conf global var.
+     *
+     * @var null|stdClass
+     */
+    static protected $conf = null;
 
     /**
      * Simply replace /htdocs with /documents in $pathDir
@@ -67,7 +77,7 @@ abstract class Config
     public static function loadConfig($reload = false): ?stdClass
     {
         if (isset(static::$config) && !$reload) {
-            return $config;
+            return static::$config;
         }
 
         $filename = static::getDolibarrConfigFilename();
@@ -81,9 +91,9 @@ abstract class Config
 
         // 'main' section
         $config->main = new stdClass();
-        $config->main->base_path = trim($dolibarr_main_document_root ?? BASE_PATH);     // /home/www/dolibarr/htdocs
-        $config->main->base_url = trim($dolibarr_main_url_root ?? BASE_URL);            // http://mydomain.com/dolibarr
-        $config->main->data_path = trim($dolibarr_main_data_root ?? static::getDataDir());
+        $config->main->base_path = trim($dolibarr_main_document_root ?? constant('BASE_PATH'));
+        $config->main->base_url = trim($dolibarr_main_url_root ?? constant('BASE_URL'));
+        $config->main->data_path = trim($dolibarr_main_data_root ?? static::getDataDir($config->main->base_path));
 
         $alt_base_path = $dolibarr_main_document_root_alt ?? false;
         if ($alt_base_path !== false) {
@@ -116,6 +126,10 @@ abstract class Config
         $config->security = new stdClass();
         $config->security->authentication_type = $dolibarr_main_authentication ?? 'dolibarr';
         $config->security->force_https = intval($dolibarr_main_force_https ?? 1);
+        $config->security->unique_id = $dolibarr_main_instance_unique_id ?? null;
+
+        $config->file = new stdClass();
+        $config->file->instance_unique_id = $config->security->unique_id;
 
         // Others
         $demo = $dolibarr_main_demo ?? false;
@@ -134,5 +148,86 @@ abstract class Config
         $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
 
         return $config;
+    }
+
+    public static function loadConf($reload = false): ?stdClass
+    {
+        if (isset(static::$conf) && !$reload) {
+            return static::$conf;
+        }
+
+        $filename = static::getDolibarrConfigFilename();
+        if (!file_exists($filename) || !is_readable($filename)) {
+            return null;
+        }
+
+        include $filename;
+
+        $conf = new Conf();
+
+        /*
+         * Create $conf object
+         */
+
+        $conf = new Conf();
+
+// Set properties specific to database
+        $conf->db->host = empty($dolibarr_main_db_host) ? '' : $dolibarr_main_db_host;
+        $conf->db->port = empty($dolibarr_main_db_port) ? '' : $dolibarr_main_db_port;
+        $conf->db->name = empty($dolibarr_main_db_name) ? '' : $dolibarr_main_db_name;
+        $conf->db->user = empty($dolibarr_main_db_user) ? '' : $dolibarr_main_db_user;
+        $conf->db->pass = empty($dolibarr_main_db_pass) ? '' : $dolibarr_main_db_pass;
+        $conf->db->type = $dolibarr_main_db_type;
+        $conf->db->prefix = $dolibarr_main_db_prefix;
+        $conf->db->character_set = $dolibarr_main_db_character_set;
+        $conf->db->dolibarr_main_db_collation = $dolibarr_main_db_collation;
+        $conf->db->dolibarr_main_db_encryption = $dolibarr_main_db_encryption ?? null;
+        $conf->db->dolibarr_main_db_cryptkey = $dolibarr_main_db_cryptkey ?? null;
+        if (defined('TEST_DB_FORCE_TYPE')) {
+            $conf->db->type = constant('TEST_DB_FORCE_TYPE'); // Force db type (for test purpose, by PHP unit for example)
+        }
+
+// Set properties specific to conf file
+        $conf->file->main_limit_users = $dolibarr_main_limit_users ?? null;
+        $conf->file->mailing_limit_sendbyweb = empty($dolibarr_mailing_limit_sendbyweb) ? 0 : $dolibarr_mailing_limit_sendbyweb;
+        $conf->file->mailing_limit_sendbycli = empty($dolibarr_mailing_limit_sendbycli) ? 0 : $dolibarr_mailing_limit_sendbycli;
+        $conf->file->mailing_limit_sendbyday = empty($dolibarr_mailing_limit_sendbyday) ? 0 : $dolibarr_mailing_limit_sendbyday;
+        $conf->file->main_authentication = empty($dolibarr_main_authentication) ? 'dolibarr' : $dolibarr_main_authentication; // Identification mode
+        $conf->file->main_force_https = empty($dolibarr_main_force_https) ? '' : $dolibarr_main_force_https; // Force https
+        $conf->file->strict_mode = empty($dolibarr_strict_mode) ? '' : $dolibarr_strict_mode; // Force php strict mode (for debug)
+        $conf->file->instance_unique_id = empty($dolibarr_main_instance_unique_id) ? (empty($dolibarr_main_cookie_cryptkey) ? '' : $dolibarr_main_cookie_cryptkey) : $dolibarr_main_instance_unique_id; // Unique id of instance
+        $conf->file->dol_main_url_root = $dolibarr_main_url_root;   // Define url inside the config file
+        $conf->file->dol_document_root = array('main' => (string) DOL_DOCUMENT_ROOT); // Define array of document root directories ('/home/htdocs')
+        $conf->file->dol_url_root = array('main' => (string) DOL_URL_ROOT); // Define array of url root path ('' or '/dolibarr')
+        if (!empty($dolibarr_main_document_root_alt)) {
+            // dolibarr_main_document_root_alt can contains several directories
+            $values = preg_split('/[;,]/', $dolibarr_main_document_root_alt);
+            $i = 0;
+            foreach ($values as $value) {
+                $conf->file->dol_document_root['alt' . ($i++)] = (string) $value;
+            }
+            $values = preg_split('/[;,]/', $dolibarr_main_url_root_alt);
+            $i = 0;
+            foreach ($values as $value) {
+                if (preg_match('/^http(s)?:/', $value)) {
+                    // Show error message
+                    $correct_value = str_replace($dolibarr_main_url_root, '', $value);
+                    print '<b>Error:</b><br>' . "\n";
+                    print 'Wrong <b>$dolibarr_main_url_root_alt</b> value in <b>conf.php</b> file.<br>' . "\n";
+                    print 'We now use a relative path to $dolibarr_main_url_root to build alternate URLs.<br>' . "\n";
+                    print 'Value found: ' . $value . '<br>' . "\n";
+                    print 'Should be replaced by: ' . $correct_value . '<br>' . "\n";
+                    print "Or something like following examples:<br>\n";
+                    print "\"/extensions\"<br>\n";
+                    print "\"/extensions1,/extensions2,...\"<br>\n";
+                    print "\"/../extensions\"<br>\n";
+                    print "\"/custom\"<br>\n";
+                    exit;
+                }
+                $conf->file->dol_url_root['alt' . ($i++)] = (string) $value;
+            }
+        }
+
+        return $conf;
     }
 }

@@ -40,6 +40,8 @@
  *  \brief      File that defines environment for Dolibarr GUI pages only (file not required by scripts)
  */
 
+global $config;
+
 //@ini_set('memory_limit', '128M'); // This may be useless if memory is hard limited by your PHP
 
 // For optional tuning. Enabled if environment variable MAIN_SHOW_TUNING_INFO is defined.

@@ -47,11 +47,25 @@ function get_url()
 const BASE_PATH = __DIR__;
 define('BASE_URL', get_url());
 
+/**
+ * @deprecated Use BASE_PATH instead.
+ */
 const DOL_DOCUMENT_ROOT = BASE_PATH;
+
+/**
+ * @deprecated Use BASE_URL instead.
+ */
 const DOL_URL_ROOT = BASE_URL;
 
-Globals::init();
-$config = \Alxarafe\Base\Globals::getConfig();
+/**
+ * @deprecated Use $config instead
+ */
+$conf = \Alxarafe\Deprecated\Config::loadConf();
+
+$db = Globals::getDb($conf);
+$config = Globals::getConfig();
+$hookmanager = Globals::getHookManager();
+$langs = Globals::getLangs($conf);
 
 const GET_ROUTE_VAR = 'url_route';
 const GET_FILENAME_VAR = 'url_filename';

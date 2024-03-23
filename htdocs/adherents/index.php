@@ -22,6 +22,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+new \Modules\Adherents\Adherent();
+die('1');
+
 /**
  *       \file       htdocs/adherents/index.php
  *       \ingroup    member

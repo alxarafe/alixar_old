@@ -17,7 +17,14 @@
 
 namespace Alxarafe\Base;
 
+require_once BASE_PATH . '/core/class/hookmanager.class.php';
+require_once BASE_PATH . '/core/class/translate.class.php';
+require_once BASE_PATH . '/core/lib/functions.lib.php';
+
 use Alxarafe\Deprecated\Config;
+use HookManager;
+use stdClass;
+use Translate;
 
 abstract class Globals
 {
@@ -26,32 +33,44 @@ abstract class Globals
      *
      * @var null|stdClass
      */
-    private static $config;
+    protected static $config;
 
-    /**
-     * @var
-     */
-    private static $db;
+    protected static $db;
 
-    public static function init()
-    {
-        static::$db = null;
+    protected static $hookManager;
 
-        static::$config = Config::loadConfig();
-        if (static::$config === null) {
-            return false;
-        }
+    protected static $langs;
 
-        static::$db = new \Alxarafe\Base\Database(static::$config->db);
-    }
 
     public static function getConfig()
     {
+        if (empty(static::$config)) {
+            static::$config = Config::loadConfig();
+        }
         return static::$config;
     }
 
-    public static function getDb()
+    public static function getDb($conf)
     {
+        if (empty(static::$db)) {
+            static::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+        }
         return static::$db;
+    }
+
+    public static function getHookManager()
+    {
+        if (empty(static::$hookManager)) {
+            static::$hookManager = new HookManager(static::$db);
+        }
+        return static::$hookManager;
+    }
+
+    public static function getLangs($conf)
+    {
+        if (empty(static::$langs)) {
+            static::$langs = new Translate('', $conf);
+        }
+        return static::$langs;
     }
 }
