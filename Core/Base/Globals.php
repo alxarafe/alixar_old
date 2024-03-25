@@ -20,11 +20,13 @@ namespace Alxarafe\Base;
 require_once BASE_PATH . '/core/class/hookmanager.class.php';
 require_once BASE_PATH . '/core/class/translate.class.php';
 require_once BASE_PATH . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/user/class/user.class.php';
 
 use Alxarafe\Deprecated\Config;
 use HookManager;
 use stdClass;
 use Translate;
+use User;
 
 abstract class Globals
 {
@@ -40,14 +42,24 @@ abstract class Globals
     protected static $hookManager;
 
     protected static $langs;
+    protected static $user;
+    protected static $menumanager;
 
 
-    public static function getConfig()
+    public static function getConfig($conf)
     {
         if (empty(static::$config)) {
             static::$config = Config::loadConfig();
         }
+
         return static::$config;
+    }
+
+    public static function setConfigValues($conf,$db)
+    {
+        // Here we read database (llx_const table) and define conf var $conf->global->XXX.
+        //print "We work with data into entity instance number '".$conf->entity."'";
+        $conf->setValues($db);
     }
 
     public static function getDb($conf)
@@ -73,4 +85,21 @@ abstract class Globals
         }
         return static::$langs;
     }
+
+    public static function getUser()
+    {
+        if (empty(static::$user)) {
+            static::$user = new User(static::$db);
+        }
+        return static::$user;
+    }
+
+    public static function getMenuManager($conf)
+    {
+        if (empty(static::$menumanager)) {
+            static::$menumanager = Config::getMenuManager($conf);
+        }
+        return static::$menumanager;
+    }
+
 }

@@ -17,37 +17,25 @@
 
 namespace Alxarafe\Deprecated;
 
-use Alxarafe\Base\Controller;
 use Alxarafe\Base\Globals;
 
 /**
- * Class DolibarrController. Controller to carry out the migration from Dolibarr to Alixar.
- *
- * @package    Alxarafe\Base
+ * Defines Dolibarr constants.
  *
  * @deprecated This class is only needed for compatibility with Dolibarr.
  */
-abstract class DolibarrController extends Controller
+abstract class Constants
 {
-    public $conf;
-    public $config;
-    public $db;
-    public $hookmanager;
-    public $user;
-    public $langs;
-
-    public function __construct()
+    public static function defineIfNotExists($name, $value)
     {
-        $this->conf = Config::loadConf();
-        $this->config = Globals::getConfig($this->conf);
-        $this->db = Globals::getDb($this->conf);
-        $this->hookmanager = Globals::getHookManager();
-        $this->user = Globals::getUser();
-        $this->menumanager = Globals::getMenuManager($this->conf);
-        $this->langs = Globals::getLangs($this->conf);
-
-        $this->go();
+        if (!defined($name) && isset($value)) {
+            define($name, $value);
+        }
     }
 
-    abstract public function go();
+    public static function define($config)
+    {
+        static::defineIfNotExists('DOL_DATA_ROOT', $config->main->data_path);
+        static::defineIfNotExists('MAIN_DB_PREFIX', $config->db->prefix);
+    }
 }

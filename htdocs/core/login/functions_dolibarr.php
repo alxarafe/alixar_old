@@ -30,11 +30,13 @@
 /**
  * Check validity of user/password/entity
  * If test is ko, reason must be filled into $_SESSION["dol_loginmesg"]
- * Note: On critical error (hack attempt), we put a log "functions_dolibarr::check_user_password_dolibarr authentication KO"
+ * Note: On critical error (hack attempt), we put a log "functions_dolibarr::check_user_password_dolibarr
+ * authentication KO"
  *
- * @param   string  $usertotest     Login
- * @param   string  $passwordtotest Password
- * @param   int     $entitytotest   Number of instance (always 1 if module multicompany not enabled)
+ * @param string $usertotest     Login
+ * @param string $passwordtotest Password
+ * @param int    $entitytotest   Number of instance (always 1 if module multicompany not enabled)
+ *
  * @return  string                  Login if OK, '' if KO
  */
 function check_user_password_dolibarr($usertotest, $passwordtotest, $entitytotest = 1)
@@ -109,7 +111,7 @@ function check_user_password_dolibarr($usertotest, $passwordtotest, $entitytotes
                     }
 
                     // By default, we use default setup for encryption rule
-                    if (!in_array($cryptType, array('auto'))) {
+                    if (!in_array($cryptType, ['auto'])) {
                         $cryptType = 'auto';
                     }
                     // Check encrypted password according to encryption algorithm
@@ -139,7 +141,7 @@ function check_user_password_dolibarr($usertotest, $passwordtotest, $entitytotes
                         sleep(1); // Anti brut force protection. Must be same delay when login is not valid
 
                         // Load translation files required by the page
-                        $langs->loadLangs(array('main', 'errors'));
+                        $langs->loadLangs(['main', 'errors']);
 
                         $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorBadLoginPassword");
                     }
@@ -167,7 +169,7 @@ function check_user_password_dolibarr($usertotest, $passwordtotest, $entitytotes
                     sleep(1);   // Anti brut force protection. Must be same delay when password is not valid
 
                     // Load translation files required by the page
-                    $langs->loadLangs(array('main', 'errors'));
+                    $langs->loadLangs(['main', 'errors']);
 
                     $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorBadLoginPassword");
                 }
@@ -180,7 +182,7 @@ function check_user_password_dolibarr($usertotest, $passwordtotest, $entitytotes
             dol_syslog("functions_dolibarr::check_user_password_dolibarr Authentication KO Too many attempts", LOG_NOTICE);
             sleep(1);   // Anti brut force protection. Must be same delay when password is not valid
             // Load translation files required by the page
-            $langs->loadLangs(array('main', 'errors'));
+            $langs->loadLangs(['main', 'errors']);
             $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorTooManyAttempts");
         }
     }

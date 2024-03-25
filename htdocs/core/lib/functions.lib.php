@@ -162,7 +162,12 @@ function getMultidirOutput($object, $module = '')
 function getDolGlobalString($key, $default = '')
 {
     global $conf;
-    return (string) (isset($conf->global->$key) ? $conf->global->$key : $default);
+    if ($key==='DATABASE_PWD_ENCRYPTED') {
+        dump([
+            'conf ' . $key => $conf->global->$key ?? '',
+            'conf' => $conf->global,
+        ]);
+    }    return (string) (isset($conf->global->$key) ? $conf->global->$key : $default);
 }
 
 /**

@@ -100,7 +100,7 @@ class MenuManager
             $leftmenu = GETPOST("leftmenu", 'aZ09');
             $_SESSION["leftmenu"] = $leftmenu;
 
-            if ($_SESSION["leftmenuopened"] == $leftmenu) { // To collapse
+            if ($_SESSION["leftmenuopened"] ?? null == $leftmenu) { // To collapse
                 //$leftmenu="";
                 $_SESSION["leftmenuopened"] = "";
             } else {

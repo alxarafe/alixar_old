@@ -47,7 +47,7 @@ global $config;
 // For optional tuning. Enabled if environment variable MAIN_SHOW_TUNING_INFO is defined.
 $micro_start_time = 0;
 if ($config->server->detailed_info) {
-    list($usec, $sec) = explode(" ", microtime());
+    [$usec, $sec] = explode(" ", microtime());
     $micro_start_time = ((float) $usec + (float) $sec);
     // Add Xdebug code coverage
     //define('XDEBUGCOVERAGE',1);
@@ -56,233 +56,243 @@ if ($config->server->detailed_info) {
     }
 }
 
-
 /**
  * Return the real char for a numeric entities.
- * WARNING: This function is required by testSqlAndScriptInject() and the GETPOST 'restricthtml'. Regex calling must be similar.
+ * WARNING: This function is required by testSqlAndScriptInject() and the GETPOST 'restricthtml'. Regex calling must be
+ * similar.
  *
- * @param   string      $matches            String of numeric entity
+ * @param string $matches String of numeric entity
+ *
  * @return  string                          New value
  */
-function realCharForNumericEntities($matches)
-{
-    $newstringnumentity = preg_replace('/;$/', '', $matches[1]);
-    //print  ' $newstringnumentity='.$newstringnumentity;
+if (!function_exists('realCharForNumericEntities')) {
+    function realCharForNumericEntities($matches)
+    {
+        $newstringnumentity = preg_replace('/;$/', '', $matches[1]);
+        //print  ' $newstringnumentity='.$newstringnumentity;
 
-    if (preg_match('/^x/i', $newstringnumentity)) {
-        $newstringnumentity = hexdec(preg_replace('/^x/i', '', $newstringnumentity));
+        if (preg_match('/^x/i', $newstringnumentity)) {
+            $newstringnumentity = hexdec(preg_replace('/^x/i', '', $newstringnumentity));
+        }
+
+        // The numeric value we don't want as entities because they encode ascii char, and why using html entities on ascii except for haking ?
+        if (($newstringnumentity >= 65 && $newstringnumentity <= 90) || ($newstringnumentity >= 97 && $newstringnumentity <= 122)) {
+            return chr((int) $newstringnumentity);
+        }
+
+        return '&#' . $matches[1]; // Value will be unchanged because regex was /&#(  )/
     }
-
-    // The numeric value we don't want as entities because they encode ascii char, and why using html entities on ascii except for haking ?
-    if (($newstringnumentity >= 65 && $newstringnumentity <= 90) || ($newstringnumentity >= 97 && $newstringnumentity <= 122)) {
-        return chr((int) $newstringnumentity);
-    }
-
-    return '&#' . $matches[1]; // Value will be unchanged because regex was /&#(  )/
 }
 
 /**
  * Security: WAF layer for SQL Injection and XSS Injection (scripts) protection (Filters on GET, POST, PHP_SELF).
- * Warning: Such a protection can't be enough. It is not reliable as it will always be possible to bypass this. Good protection can
- * only be guaranteed by escaping data during output.
+ * Warning: Such a protection can't be enough. It is not reliable as it will always be possible to bypass this. Good
+ * protection can only be guaranteed by escaping data during output.
  *
- * @param       string      $val        Brute value found into $_GET, $_POST or PHP_SELF
- * @param       string      $type       0=POST, 1=GET, 2=PHP_SELF, 3=GET without sql reserved keywords (the less tolerant test)
+ * @param string $val  Brute value found into $_GET, $_POST or PHP_SELF
+ * @param string $type 0=POST, 1=GET, 2=PHP_SELF, 3=GET without sql reserved keywords (the less tolerant test)
+ *
  * @return      int                     >0 if there is an injection, 0 if none
  */
-function testSqlAndScriptInject($val, $type)
-{
-    // Decode string first because a lot of things are obfuscated by encoding or multiple encoding.
-    // So <svg o&#110;load='console.log(&quot;123&quot;)' become <svg onload='console.log(&quot;123&quot;)'
-    // So "&colon;&apos;" become ":'" (due to ENT_HTML5)
-    // So "&Tab;&NewLine;" become ""
-    // So "&lpar;&rpar;" become "()"
+if (!function_exists('testSqlAndScriptInject')) {
+    function testSqlAndScriptInject($val, $type)
+    {
+        // Decode string first because a lot of things are obfuscated by encoding or multiple encoding.
+        // So <svg o&#110;load='console.log(&quot;123&quot;)' become <svg onload='console.log(&quot;123&quot;)'
+        // So "&colon;&apos;" become ":'" (due to ENT_HTML5)
+        // So "&Tab;&NewLine;" become ""
+        // So "&lpar;&rpar;" become "()"
 
-    // Loop to decode until no more things to decode.
-    //print "before decoding $val\n";
-    do {
-        $oldval = $val;
-        $val = html_entity_decode($val, ENT_QUOTES | ENT_HTML5);    // Decode '&colon;', '&apos;', '&Tab;', '&NewLine', ...
-        // Sometimes we have entities without the ; at end so html_entity_decode does not work but entities is still interpreted by browser.
-        $val = preg_replace_callback(
-            '/&#(x?[0-9][0-9a-f]+;?)/i',
-            /**
-             * @param string $m
-             * @return string
-             */
-            static function ($m) {
-                // Decode '&#110;', ...
-                return realCharForNumericEntities($m);
-            },
-            $val
-        );
+        // Loop to decode until no more things to decode.
+        //print "before decoding $val\n";
+        do {
+            $oldval = $val;
+            $val = html_entity_decode($val, ENT_QUOTES | ENT_HTML5);    // Decode '&colon;', '&apos;', '&Tab;', '&NewLine', ...
+            // Sometimes we have entities without the ; at end so html_entity_decode does not work but entities is still interpreted by browser.
+            $val = preg_replace_callback(
+                '/&#(x?[0-9][0-9a-f]+;?)/i',
+                /**
+                 * @param string $m
+                 *
+                 * @return string
+                 */
+                static function ($m) {
+                    // Decode '&#110;', ...
+                    return realCharForNumericEntities($m);
+                },
+                $val
+            );
 
-        // We clean html comments because some hacks try to obfuscate evil strings by inserting HTML comments. Example: on<!-- -->error=alert(1)
-        $val = preg_replace('/<!--[^>]*-->/', '', $val);
-        $val = preg_replace('/[\r\n\t]/', '', $val);
-    } while ($oldval != $val);
-    //print "type = ".$type." after decoding: ".$val."\n";
+            // We clean html comments because some hacks try to obfuscate evil strings by inserting HTML comments. Example: on<!-- -->error=alert(1)
+            $val = preg_replace('/<!--[^>]*-->/', '', $val);
+            $val = preg_replace('/[\r\n\t]/', '', $val);
+        } while ($oldval != $val);
+        //print "type = ".$type." after decoding: ".$val."\n";
 
-    $inj = 0;
+        $inj = 0;
 
-    // We check string because some hacks try to obfuscate evil strings by inserting non printable chars. Example: 'java(ascci09)scr(ascii00)ipt' is processed like 'javascript' (whatever is place of evil ascii char)
-    // We should use dol_string_nounprintableascii but function is not yet loaded/available
-    // Example of valid UTF8 chars:
-    // utf8=utf8mb3:    '\x09', '\x0A', '\x0D', '\x7E'
-    // utf8=utf8mb3:    '\xE0\xA0\x80'
-    // utf8mb4:         '\xF0\x9D\x84\x9E'   (but this may be refused by the database insert if pagecode is utf8=utf8mb3)
-    $newval = preg_replace('/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/u', '', $val); // /u operator makes UTF8 valid characters being ignored so are not included into the replace
+        // We check string because some hacks try to obfuscate evil strings by inserting non printable chars. Example: 'java(ascci09)scr(ascii00)ipt' is processed like 'javascript' (whatever is place of evil ascii char)
+        // We should use dol_string_nounprintableascii but function is not yet loaded/available
+        // Example of valid UTF8 chars:
+        // utf8=utf8mb3:    '\x09', '\x0A', '\x0D', '\x7E'
+        // utf8=utf8mb3:    '\xE0\xA0\x80'
+        // utf8mb4:         '\xF0\x9D\x84\x9E'   (but this may be refused by the database insert if pagecode is utf8=utf8mb3)
+        $newval = preg_replace('/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/u', '', $val); // /u operator makes UTF8 valid characters being ignored so are not included into the replace
 
-    // Note that $newval may also be completely empty '' when non valid UTF8 are found.
-    if ($newval != $val) {
-        // If $val has changed after removing non valid UTF8 chars, it means we have an evil string.
-        $inj += 1;
+        // Note that $newval may also be completely empty '' when non valid UTF8 are found.
+        if ($newval != $val) {
+            // If $val has changed after removing non valid UTF8 chars, it means we have an evil string.
+            $inj += 1;
+        }
+        //print 'inj='.$inj.'-type='.$type.'-val='.$val.'-newval='.$newval."\n";
+
+        // For SQL Injection (only GET are used to scan for such injection strings)
+        if ($type == 1 || $type == 3) {
+            // Note the \s+ is replaced into \s* because some spaces may have been modified in previous loop
+            $inj += preg_match('/delete\s*from/i', $val);
+            $inj += preg_match('/create\s*table/i', $val);
+            $inj += preg_match('/insert\s*into/i', $val);
+            $inj += preg_match('/select\s*from/i', $val);
+            $inj += preg_match('/into\s*(outfile|dumpfile)/i', $val);
+            $inj += preg_match('/user\s*\(/i', $val); // avoid to use function user() or mysql_user() that return current database login
+            $inj += preg_match('/information_schema/i', $val); // avoid to use request that read information_schema database
+            $inj += preg_match('/<svg/i', $val); // <svg can be allowed in POST
+            $inj += preg_match('/update[^&=\w].*set.+=/i', $val);   // the [^&=\w] test is to avoid error when request is like action=update&...set... or &updatemodule=...set...
+            $inj += preg_match('/union.+select/i', $val);
+        }
+        if ($type == 3) {
+            // Note the \s+ is replaced into \s* because some spaces may have been modified in previous loop
+            $inj += preg_match('/select|update|delete|truncate|replace|group\s*by|concat|count|from|union/i', $val);
+        }
+        if ($type != 2) {   // Not common key strings, so we can check them both on GET and POST
+            $inj += preg_match('/updatexml\(/i', $val);
+            $inj += preg_match('/(\.\.%2f)+/i', $val);
+            $inj += preg_match('/\s@@/', $val);
+        }
+        // For XSS Injection done by closing textarea to execute content into a textarea field
+        $inj += preg_match('/<\/textarea/i', $val);
+        // For XSS Injection done by adding javascript with script
+        // This is all cases a browser consider text is javascript:
+        // When it found '<script', 'javascript:', '<style', 'onload\s=' on body tag, '="&' on a tag size with old browsers
+        // All examples on page: http://ha.ckers.org/xss.html#XSScalc
+        // More on https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+        $inj += preg_match('/<audio/i', $val);
+        $inj += preg_match('/<embed/i', $val);
+        $inj += preg_match('/<iframe/i', $val);
+        $inj += preg_match('/<object/i', $val);
+        $inj += preg_match('/<script/i', $val);
+        $inj += preg_match('/Set\.constructor/i', $val); // ECMA script 6
+        if (!defined('NOSTYLECHECK')) {
+            $inj += preg_match('/<style/i', $val);
+        }
+        $inj += preg_match('/base\s+href/si', $val);
+        $inj += preg_match('/=data:/si', $val);
+        // List of dom events is on https://www.w3schools.com/jsref/dom_obj_event.asp and https://developer.mozilla.org/en-US/docs/Web/Events
+        $inj += preg_match('/on(mouse|drag|key|load|touch|pointer|select|transition)[a-z]*\s*=/i', $val); // onmousexxx can be set on img or any html tag like <img title='...' onmouseover=alert(1)>
+        $inj += preg_match('/on(abort|after|animation|auxclick|before|blur|cancel|canplay|canplaythrough|change|click|close|contextmenu|cuechange|copy|cut)[a-z]*\s*=/i', $val);
+        $inj += preg_match('/on(dblclick|drop|durationchange|emptied|end|ended|error|focus|focusin|focusout|formdata|gotpointercapture|hashchange|input|invalid)[a-z]*\s*=/i', $val);
+        $inj += preg_match('/on(lostpointercapture|offline|online|pagehide|pageshow)[a-z]*\s*=/i', $val);
+        $inj += preg_match('/on(paste|pause|play|playing|progress|ratechange|reset|resize|scroll|search|seeked|seeking|show|stalled|start|submit|suspend)[a-z]*\s*=/i', $val);
+        $inj += preg_match('/on(timeupdate|toggle|unload|volumechange|waiting|wheel)[a-z]*\s*=/i', $val);
+        // More not into the previous list
+
+        $inj += preg_match('/on(repeat|begin|finish|beforeinput)[a-z]*\s*=/i', $val);
+
+        // We refuse html into html because some hacks try to obfuscate evil strings by inserting HTML into HTML. Example: <img on<a>error=alert(1) to bypass test on onerror
+        $tmpval = preg_replace('/<[^<]+>/', '', $val);
+        // List of dom events is on https://www.w3schools.com/jsref/dom_obj_event.asp and https://developer.mozilla.org/en-US/docs/Web/Events
+        $inj += preg_match('/on(mouse|drag|key|load|touch|pointer|select|transition)[a-z]*\s*=/i', $tmpval); // onmousexxx can be set on img or any html tag like <img title='...' onmouseover=alert(1)>
+        $inj += preg_match('/on(abort|after|animation|auxclick|before|blur|cancel|canplay|canplaythrough|change|click|close|contextmenu|cuechange|copy|cut)[a-z]*\s*=/i', $tmpval);
+        $inj += preg_match('/on(dblclick|drop|durationchange|emptied|end|ended|error|focus|focusin|focusout|formdata|gotpointercapture|hashchange|input|invalid)[a-z]*\s*=/i', $tmpval);
+        $inj += preg_match('/on(lostpointercapture|offline|online|pagehide|pageshow)[a-z]*\s*=/i', $tmpval);
+        $inj += preg_match('/on(paste|pause|play|playing|progress|ratechange|reset|resize|scroll|search|seeked|seeking|show|stalled|start|submit|suspend)[a-z]*\s*=/i', $tmpval);
+        $inj += preg_match('/on(timeupdate|toggle|unload|volumechange|waiting|wheel)[a-z]*\s*=/i', $tmpval);
+        // More not into the previous list
+        $inj += preg_match('/on(repeat|begin|finish|beforeinput)[a-z]*\s*=/i', $tmpval);
+
+        //$inj += preg_match('/on[A-Z][a-z]+\*=/', $val);   // To lock event handlers onAbort(), ...
+        $inj += preg_match('/&#58;|&#0000058|&#x3A/i', $val); // refused string ':' encoded (no reason to have it encoded) to lock 'javascript:...'
+        $inj += preg_match('/j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\s*:/i', $val);
+        $inj += preg_match('/vbscript\s*:/i', $val);
+        // For XSS Injection done by adding javascript closing html tags like with onmousemove, etc... (closing a src or href tag with not cleaned param)
+        if ($type == 1 || $type == 3) {
+            $val = str_replace('enclosure="', 'enclosure=X', $val); // We accept enclosure=" for the export/import module
+            $inj += preg_match('/"/i', $val); // We refused " in GET parameters value.
+        }
+        if ($type == 2) {
+            $inj += preg_match('/[:;"\'<>\?\(\){}\$%]/', $val); // PHP_SELF is a file system (or url path without parameters). It can contains spaces.
+        }
+
+        return $inj;
     }
-    //print 'inj='.$inj.'-type='.$type.'-val='.$val.'-newval='.$newval."\n";
-
-    // For SQL Injection (only GET are used to scan for such injection strings)
-    if ($type == 1 || $type == 3) {
-        // Note the \s+ is replaced into \s* because some spaces may have been modified in previous loop
-        $inj += preg_match('/delete\s*from/i', $val);
-        $inj += preg_match('/create\s*table/i', $val);
-        $inj += preg_match('/insert\s*into/i', $val);
-        $inj += preg_match('/select\s*from/i', $val);
-        $inj += preg_match('/into\s*(outfile|dumpfile)/i', $val);
-        $inj += preg_match('/user\s*\(/i', $val); // avoid to use function user() or mysql_user() that return current database login
-        $inj += preg_match('/information_schema/i', $val); // avoid to use request that read information_schema database
-        $inj += preg_match('/<svg/i', $val); // <svg can be allowed in POST
-        $inj += preg_match('/update[^&=\w].*set.+=/i', $val);   // the [^&=\w] test is to avoid error when request is like action=update&...set... or &updatemodule=...set...
-        $inj += preg_match('/union.+select/i', $val);
-    }
-    if ($type == 3) {
-        // Note the \s+ is replaced into \s* because some spaces may have been modified in previous loop
-        $inj += preg_match('/select|update|delete|truncate|replace|group\s*by|concat|count|from|union/i', $val);
-    }
-    if ($type != 2) {   // Not common key strings, so we can check them both on GET and POST
-        $inj += preg_match('/updatexml\(/i', $val);
-        $inj += preg_match('/(\.\.%2f)+/i', $val);
-        $inj += preg_match('/\s@@/', $val);
-    }
-    // For XSS Injection done by closing textarea to execute content into a textarea field
-    $inj += preg_match('/<\/textarea/i', $val);
-    // For XSS Injection done by adding javascript with script
-    // This is all cases a browser consider text is javascript:
-    // When it found '<script', 'javascript:', '<style', 'onload\s=' on body tag, '="&' on a tag size with old browsers
-    // All examples on page: http://ha.ckers.org/xss.html#XSScalc
-    // More on https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-    $inj += preg_match('/<audio/i', $val);
-    $inj += preg_match('/<embed/i', $val);
-    $inj += preg_match('/<iframe/i', $val);
-    $inj += preg_match('/<object/i', $val);
-    $inj += preg_match('/<script/i', $val);
-    $inj += preg_match('/Set\.constructor/i', $val); // ECMA script 6
-    if (!defined('NOSTYLECHECK')) {
-        $inj += preg_match('/<style/i', $val);
-    }
-    $inj += preg_match('/base\s+href/si', $val);
-    $inj += preg_match('/=data:/si', $val);
-    // List of dom events is on https://www.w3schools.com/jsref/dom_obj_event.asp and https://developer.mozilla.org/en-US/docs/Web/Events
-    $inj += preg_match('/on(mouse|drag|key|load|touch|pointer|select|transition)[a-z]*\s*=/i', $val); // onmousexxx can be set on img or any html tag like <img title='...' onmouseover=alert(1)>
-    $inj += preg_match('/on(abort|after|animation|auxclick|before|blur|cancel|canplay|canplaythrough|change|click|close|contextmenu|cuechange|copy|cut)[a-z]*\s*=/i', $val);
-    $inj += preg_match('/on(dblclick|drop|durationchange|emptied|end|ended|error|focus|focusin|focusout|formdata|gotpointercapture|hashchange|input|invalid)[a-z]*\s*=/i', $val);
-    $inj += preg_match('/on(lostpointercapture|offline|online|pagehide|pageshow)[a-z]*\s*=/i', $val);
-    $inj += preg_match('/on(paste|pause|play|playing|progress|ratechange|reset|resize|scroll|search|seeked|seeking|show|stalled|start|submit|suspend)[a-z]*\s*=/i', $val);
-    $inj += preg_match('/on(timeupdate|toggle|unload|volumechange|waiting|wheel)[a-z]*\s*=/i', $val);
-    // More not into the previous list
-
-    $inj += preg_match('/on(repeat|begin|finish|beforeinput)[a-z]*\s*=/i', $val);
-
-    // We refuse html into html because some hacks try to obfuscate evil strings by inserting HTML into HTML. Example: <img on<a>error=alert(1) to bypass test on onerror
-    $tmpval = preg_replace('/<[^<]+>/', '', $val);
-    // List of dom events is on https://www.w3schools.com/jsref/dom_obj_event.asp and https://developer.mozilla.org/en-US/docs/Web/Events
-    $inj += preg_match('/on(mouse|drag|key|load|touch|pointer|select|transition)[a-z]*\s*=/i', $tmpval); // onmousexxx can be set on img or any html tag like <img title='...' onmouseover=alert(1)>
-    $inj += preg_match('/on(abort|after|animation|auxclick|before|blur|cancel|canplay|canplaythrough|change|click|close|contextmenu|cuechange|copy|cut)[a-z]*\s*=/i', $tmpval);
-    $inj += preg_match('/on(dblclick|drop|durationchange|emptied|end|ended|error|focus|focusin|focusout|formdata|gotpointercapture|hashchange|input|invalid)[a-z]*\s*=/i', $tmpval);
-    $inj += preg_match('/on(lostpointercapture|offline|online|pagehide|pageshow)[a-z]*\s*=/i', $tmpval);
-    $inj += preg_match('/on(paste|pause|play|playing|progress|ratechange|reset|resize|scroll|search|seeked|seeking|show|stalled|start|submit|suspend)[a-z]*\s*=/i', $tmpval);
-    $inj += preg_match('/on(timeupdate|toggle|unload|volumechange|waiting|wheel)[a-z]*\s*=/i', $tmpval);
-    // More not into the previous list
-    $inj += preg_match('/on(repeat|begin|finish|beforeinput)[a-z]*\s*=/i', $tmpval);
-
-    //$inj += preg_match('/on[A-Z][a-z]+\*=/', $val);   // To lock event handlers onAbort(), ...
-    $inj += preg_match('/&#58;|&#0000058|&#x3A/i', $val); // refused string ':' encoded (no reason to have it encoded) to lock 'javascript:...'
-    $inj += preg_match('/j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\s*:/i', $val);
-    $inj += preg_match('/vbscript\s*:/i', $val);
-    // For XSS Injection done by adding javascript closing html tags like with onmousemove, etc... (closing a src or href tag with not cleaned param)
-    if ($type == 1 || $type == 3) {
-        $val = str_replace('enclosure="', 'enclosure=X', $val); // We accept enclosure=" for the export/import module
-        $inj += preg_match('/"/i', $val); // We refused " in GET parameters value.
-    }
-    if ($type == 2) {
-        $inj += preg_match('/[:;"\'<>\?\(\){}\$%]/', $val); // PHP_SELF is a file system (or url path without parameters). It can contains spaces.
-    }
-
-    return $inj;
 }
 
 /**
  * Return true if security check on parameters are OK, false otherwise.
  *
- * @param       string|array    $var        Variable name
- * @param       int             $type       1=GET, 0=POST, 2=PHP_SELF
- * @param       int             $stopcode   0=No stop code, 1=Stop code (default) if injection found
+ * @param string|array $var      Variable name
+ * @param int          $type     1=GET, 0=POST, 2=PHP_SELF
+ * @param int          $stopcode 0=No stop code, 1=Stop code (default) if injection found
+ *
  * @return      boolean|null                True if there is no injection.
  */
-function analyseVarsForSqlAndScriptsInjection(&$var, $type, $stopcode = 1)
-{
-    if (is_array($var)) {
-        foreach ($var as $key => $value) {  // Warning, $key may also be used for attacks
-            // Exclude check for some variable keys
-            if ($type === 0 && defined('NOSCANPOSTFORINJECTION') && is_array(constant('NOSCANPOSTFORINJECTION')) && in_array($key, constant('NOSCANPOSTFORINJECTION'))) {
-                continue;
-            }
+if (!function_exists('analyseVarsForSqlAndScriptsInjection')) {
+    function analyseVarsForSqlAndScriptsInjection(&$var, $type, $stopcode = 1)
+    {
+        if (is_array($var)) {
+            foreach ($var as $key => $value) {  // Warning, $key may also be used for attacks
+                // Exclude check for some variable keys
+                if ($type === 0 && defined('NOSCANPOSTFORINJECTION') && is_array(constant('NOSCANPOSTFORINJECTION')) && in_array($key, constant('NOSCANPOSTFORINJECTION'))) {
+                    continue;
+                }
 
-            if (analyseVarsForSqlAndScriptsInjection($key, $type, $stopcode) && analyseVarsForSqlAndScriptsInjection($value, $type, $stopcode)) {
-                //$var[$key] = $value;  // This is useless
-            } else {
-                http_response_code(403);
-
-                // Get remote IP: PS: We do not use getRemoteIP(), function is not yet loaded and we need a value that can't be spoofed
-                $ip = (empty($_SERVER['REMOTE_ADDR']) ? 'unknown' : $_SERVER['REMOTE_ADDR']);
-
-                if ($stopcode) {
-                    $errormessage = 'Access refused to ' . htmlentities($ip, ENT_COMPAT, 'UTF-8') . ' by SQL or Script injection protection in main.inc.php:analyseVarsForSqlAndScriptsInjection type=' . htmlentities($type, ENT_COMPAT, 'UTF-8');
-                    //$errormessage .= ' paramkey='.htmlentities($key, ENT_COMPAT, 'UTF-8');    // Disabled to avoid text injection
-
-                    $errormessage2 = 'page=' . htmlentities((empty($_SERVER["REQUEST_URI"]) ? '' : $_SERVER["REQUEST_URI"]), ENT_COMPAT, 'UTF-8');
-                    $errormessage2 .= ' paramkey=' . htmlentities($key, ENT_COMPAT, 'UTF-8');
-                    $errormessage2 .= ' paramvalue=' . htmlentities($value, ENT_COMPAT, 'UTF-8');
-
-                    print $errormessage;
-                    print "<br>\n";
-                    print 'Try to go back, fix data of your form and resubmit it. You can contact also your technical support.';
-
-                    print "\n" . '<!--' . "\n";
-                    print $errormessage2;
-                    print "\n" . '-->';
-
-                    // Add entry into the PHP server error log
-                    if (function_exists('error_log')) {
-                        error_log($errormessage . ' ' . substr($errormessage2, 2000));
-                    }
-
-                    // Note: No addition into security audit table is done because we don't want to execute code in such a case.
-                    // Detection of too many such requests can be done with a fail2ban rule on 403 error code or into the PHP server error log.
-
-
-                    if (class_exists('PHPUnit\Framework\TestSuite')) {
-                        $message = $errormessage . ' ' . substr($errormessage2, 2000);
-                        throw new Exception("Security injection exception: $message");
-                    }
-                    exit;
+                if (analyseVarsForSqlAndScriptsInjection($key, $type, $stopcode) && analyseVarsForSqlAndScriptsInjection($value, $type, $stopcode)) {
+                    //$var[$key] = $value;  // This is useless
                 } else {
-                    return false;
+                    http_response_code(403);
+
+                    // Get remote IP: PS: We do not use getRemoteIP(), function is not yet loaded and we need a value that can't be spoofed
+                    $ip = (empty($_SERVER['REMOTE_ADDR']) ? 'unknown' : $_SERVER['REMOTE_ADDR']);
+
+                    if ($stopcode) {
+                        $errormessage = 'Access refused to ' . htmlentities($ip, ENT_COMPAT, 'UTF-8') . ' by SQL or Script injection protection in main.inc.php:analyseVarsForSqlAndScriptsInjection type=' . htmlentities($type, ENT_COMPAT, 'UTF-8');
+                        //$errormessage .= ' paramkey='.htmlentities($key, ENT_COMPAT, 'UTF-8');    // Disabled to avoid text injection
+
+                        $errormessage2 = 'page=' . htmlentities((empty($_SERVER["REQUEST_URI"]) ? '' : $_SERVER["REQUEST_URI"]), ENT_COMPAT, 'UTF-8');
+                        $errormessage2 .= ' paramkey=' . htmlentities($key, ENT_COMPAT, 'UTF-8');
+                        $errormessage2 .= ' paramvalue=' . htmlentities($value, ENT_COMPAT, 'UTF-8');
+
+                        print $errormessage;
+                        print "<br>\n";
+                        print 'Try to go back, fix data of your form and resubmit it. You can contact also your technical support.';
+
+                        print "\n" . '<!--' . "\n";
+                        print $errormessage2;
+                        print "\n" . '-->';
+
+                        // Add entry into the PHP server error log
+                        if (function_exists('error_log')) {
+                            error_log($errormessage . ' ' . substr($errormessage2, 2000));
+                        }
+
+                        // Note: No addition into security audit table is done because we don't want to execute code in such a case.
+                        // Detection of too many such requests can be done with a fail2ban rule on 403 error code or into the PHP server error log.
+
+
+                        if (class_exists('PHPUnit\Framework\TestSuite')) {
+                            $message = $errormessage . ' ' . substr($errormessage2, 2000);
+                            throw new Exception("Security injection exception: $message");
+                        }
+                        exit;
+                    } else {
+                        return false;
+                    }
                 }
             }
+            return true;
+        } else {
+            return (testSqlAndScriptInject($var, $type) <= 0);
         }
-        return true;
-    } else {
-        return (testSqlAndScriptInject($var, $type) <= 0);
     }
 }
 
@@ -303,7 +313,7 @@ if (defined('NOREQUIREUSER') && !defined('NOREQUIREMENU')) {
 
 // Sanity check on URL
 if (!defined('NOSCANPHPSELFFORINJECTION') && !empty($_SERVER['PHP_SELF'])) {
-    $morevaltochecklikepost = array($_SERVER['PHP_SELF']);
+    $morevaltochecklikepost = [$_SERVER['PHP_SELF']];
     analyseVarsForSqlAndScriptsInjection($morevaltochecklikepost, 2);
 }
 // Sanity check on GET parameters
@@ -311,7 +321,7 @@ if (!defined('NOSCANGETFORINJECTION') && !empty($_SERVER["QUERY_STRING"])) {
     // Note: QUERY_STRING is url encoded, but $_GET and $_POST are already decoded
     // Because the analyseVarsForSqlAndScriptsInjection is designed for already url decoded value, we must decode QUERY_STRING
     // Another solution is to provide $_GET as parameter with analyseVarsForSqlAndScriptsInjection($_GET, 1);
-    $morevaltochecklikeget = array(urldecode($_SERVER["QUERY_STRING"]));
+    $morevaltochecklikeget = [urldecode($_SERVER["QUERY_STRING"])];
     analyseVarsForSqlAndScriptsInjection($morevaltochecklikeget, 1);
 }
 // Sanity check on POST
@@ -333,7 +343,7 @@ require_once 'filefunc.inc.php';
 if (!empty($_POST["DOL_AUTOSET_COOKIE"])) {
     $tmpautoset = explode(':', $_POST["DOL_AUTOSET_COOKIE"], 2);
     $tmplist = explode(',', $tmpautoset[1]);
-    $cookiearrayvalue = array();
+    $cookiearrayvalue = [];
     foreach ($tmplist as $tmpkey) {
         $postkey = $tmpautoset[0] . '_' . $tmpkey;
         //var_dump('tmpkey='.$tmpkey.' postkey='.$postkey.' value='.$_POST[$postkey]);
@@ -348,14 +358,14 @@ if (!empty($_POST["DOL_AUTOSET_COOKIE"])) {
         setcookie($cookiename, empty($cookievalue) ? '' : $cookievalue, empty($cookievalue) ? 0 : (time() + (86400 * 354)), '/', '', ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true), true); // keep cookie 1 year and add tag httponly
     } else {
         // Only available for php >= 7.3
-        $cookieparams = array(
+        $cookieparams = [
             'expires' => empty($cookievalue) ? 0 : (time() + (86400 * 354)),
             'path' => '/',
             //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
             'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
             'httponly' => true,
-            'samesite' => 'Lax' // None || Lax  || Strict
-        );
+            'samesite' => 'Lax', // None || Lax  || Strict
+        ];
         setcookie($cookiename, empty($cookievalue) ? '' : $cookievalue, $cookieparams);
     }
     if (empty($cookievalue)) {
@@ -386,14 +396,14 @@ if (!defined('NOSESSION')) {
         session_set_cookie_params(0, '/', null, ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true), true); // Add tag secure and httponly on session cookie (same as setting session.cookie_httponly into php.ini). Must be called before the session_start.
     } else {
         // Only available for php >= 7.3
-        $sessioncookieparams = array(
+        $sessioncookieparams = [
             'lifetime' => 0,
             'path' => '/',
             //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
             'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
             'httponly' => true,
-            'samesite' => 'Lax' // None || Lax  || Strict
-        );
+            'samesite' => 'Lax', // None || Lax  || Strict
+        ];
         session_set_cookie_params($sessioncookieparams);
     }
     session_name($sessionname);
@@ -436,7 +446,6 @@ if (getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
         exit;
     }
 }
-
 
 // Activate end of page function
 register_shutdown_function('dol_shutdown');
@@ -529,6 +538,7 @@ if (!defined('NOLOGIN') && !defined('NOIPCHECK') && !empty($dolibarr_main_restri
 if (!defined('NOREQUIREHTML')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php'; // Need 660ko memory (800ko in 2.2)
 }
+
 if (!defined('NOREQUIREAJAX')) {
     require_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php'; // Need 22ko memory
 }
@@ -539,14 +549,17 @@ if (getDolGlobalString('MAIN_NOT_INSTALLED') || getDolGlobalString('MAIN_NOT_UPG
     header("Location: " . DOL_URL_ROOT . "/install/index.php");
     exit;
 }
+
 // If an upgrade process is required, we call the install page.
 $checkifupgraderequired = false;
 if (getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') && getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') != DOL_VERSION) {
     $checkifupgraderequired = true;
 }
+
 if (!getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') && getDolGlobalString('MAIN_VERSION_LAST_INSTALL') && getDolGlobalString('MAIN_VERSION_LAST_INSTALL') != DOL_VERSION) {
     $checkifupgraderequired = true;
 }
+
 if ($checkifupgraderequired) {
     $versiontocompare = getDolGlobalString('MAIN_VERSION_LAST_UPGRADE', getDolGlobalString('MAIN_VERSION_LAST_INSTALL'));
     require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
@@ -591,17 +604,17 @@ if ((!defined('NOCSRFCHECK') && empty($dolibarr_nocsrfcheck) && getDolGlobalInt(
     $sensitiveget = false;
     if ((GETPOSTISSET('massaction') || GETPOST('action', 'aZ09')) && getDolGlobalInt('MAIN_SECURITY_CSRF_WITH_TOKEN') >= 3) {
         // All GET actions (except the listed exception that are post actions) and mass actions are processed as sensitive.
-        if (GETPOSTISSET('massaction') || !in_array(GETPOST('action', 'aZ09'), array('create', 'createsite', 'createcard', 'edit', 'editvalidator', 'file_manager', 'presend', 'presend_addmessage', 'preview', 'specimen'))) { // We exclude some action that are not sensitive so legitimate
+        if (GETPOSTISSET('massaction') || !in_array(GETPOST('action', 'aZ09'), ['create', 'createsite', 'createcard', 'edit', 'editvalidator', 'file_manager', 'presend', 'presend_addmessage', 'preview', 'specimen'])) { // We exclude some action that are not sensitive so legitimate
             $sensitiveget = true;
         }
     } elseif (getDolGlobalInt('MAIN_SECURITY_CSRF_WITH_TOKEN') >= 2) {
         // Few GET actions coded with a &token into url are also processed as sensitive.
-        $arrayofactiontoforcetokencheck = array(
+        $arrayofactiontoforcetokencheck = [
             'activate',
             'doprev', 'donext', 'dvprev', 'dvnext',
             'freezone', 'install',
-            'reopen'
-        );
+            'reopen',
+        ];
         if (in_array(GETPOST('action', 'aZ09'), $arrayofactiontoforcetokencheck)) {
             $sensitiveget = true;
         }
@@ -624,7 +637,7 @@ if ((!defined('NOCSRFCHECK') && empty($dolibarr_nocsrfcheck) && getDolGlobalInt(
             top_httphead();
             if (GETPOSTINT('uploadform')) {
                 dol_syslog("--- Access to " . (empty($_SERVER["REQUEST_METHOD"]) ? '' : $_SERVER["REQUEST_METHOD"] . ' ') . $_SERVER['PHP_SELF'] . " refused. File size too large or not provided.");
-                $langs->loadLangs(array("errors", "install"));
+                $langs->loadLangs(["errors", "install"]);
                 print $langs->trans("ErrorFileSizeTooLarge") . ' ';
                 print $langs->trans("ErrorGoBackAndCorrectParameters");
             } else {
@@ -680,8 +693,9 @@ if ((!defined('NOCSRFCHECK') && empty($dolibarr_nocsrfcheck) && getDolGlobalInt(
 if (GETPOSTISSET('disablemodules')) {
     $_SESSION["disablemodules"] = GETPOST('disablemodules', 'alpha');
 }
+
 if (!empty($_SESSION["disablemodules"])) {
-    $modulepartkeys = array('css', 'js', 'tabs', 'triggers', 'login', 'substitutions', 'menus', 'theme', 'sms', 'tpl', 'barcode', 'models', 'societe', 'hooks', 'dir', 'syslog', 'tpllinkable', 'contactelement', 'moduleforexternal', 'websitetemplates');
+    $modulepartkeys = ['css', 'js', 'tabs', 'triggers', 'login', 'substitutions', 'menus', 'theme', 'sms', 'tpl', 'barcode', 'models', 'societe', 'hooks', 'dir', 'syslog', 'tpllinkable', 'contactelement', 'moduleforexternal', 'websitetemplates'];
 
     $disabled_modules = explode(',', $_SESSION["disablemodules"]);
     foreach ($disabled_modules as $module) {
@@ -714,7 +728,6 @@ if (is_array($modulepart) && count($modulepart) > 0) {
 if (is_array($modulepart)) {
     $modulepart = '';
 }
-
 
 /*
  * Phase authentication / login
@@ -787,8 +800,8 @@ if (!defined('NOLOGIN')) {
 
         // Hooks for security access
         $action = '';
-        $hookmanager->initHooks(array('login'));
-        $parameters = array();
+        $hookmanager->initHooks(['login']);
+        $parameters = [];
         $reshook = $hookmanager->executeHooks('beforeLoginAuthentication', $parameters, $user, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook < 0) {
             $test = false;
@@ -804,7 +817,7 @@ if (!defined('NOLOGIN')) {
             if (!$ok) {
                 dol_syslog('Bad value for code, connection refused', LOG_NOTICE);
                 // Load translation files required by page
-                $langs->loadLangs(array('main', 'errors'));
+                $langs->loadLangs(['main', 'errors']);
 
                 $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorBadValueForCode");
                 $test = false;
@@ -821,8 +834,8 @@ if (!defined('NOLOGIN')) {
 
                 // Hooks on failed login
                 $action = '';
-                $hookmanager->initHooks(array('login'));
-                $parameters = array('dol_authmode' => $authmode, 'dol_loginmesg' => $_SESSION["dol_loginmesg"]);
+                $hookmanager->initHooks(['login']);
+                $parameters = ['dol_authmode' => $authmode, 'dol_loginmesg' => $_SESSION["dol_loginmesg"]];
                 $reshook = $hookmanager->executeHooks('afterLoginFailed', $parameters, $user, $action); // Note that $action and $object may have been modified by some hooks
                 if ($reshook < 0) {
                     $error++;
@@ -878,7 +891,7 @@ if (!defined('NOLOGIN')) {
         if ($test && $goontestloop && (GETPOST('actionlogin', 'aZ09') == 'login' || $dolibarr_main_authentication != 'dolibarr')) {
             // Loop on each test mode defined into $authmode
             // $authmode is an array for example: array('0'=>'dolibarr', '1'=>'googleoauth');
-            $oauthmodetotestarray = array('google');
+            $oauthmodetotestarray = ['google'];
             foreach ($oauthmodetotestarray as $oauthmodetotest) {
                 if (in_array($oauthmodetotest . 'oauth', $authmode) && GETPOST('beforeoauthloginredirect') != $oauthmodetotest) {
                     // If we did not click on the link to use OAuth authentication, we do not try it.
@@ -892,10 +905,12 @@ if (!defined('NOLOGIN')) {
                 }
             }
 
+            dump([$usertotest, $passwordtotest, $entitytotest, $authmode,]);
             $login = checkLoginPassEntity($usertotest, $passwordtotest, $entitytotest, $authmode);
             if ($login === '--bad-login-validity--') {
                 $login = '';
             }
+            dump(['login' => $login]);
 
             $dol_authmode = '';
 
@@ -927,7 +942,7 @@ if (!defined('NOLOGIN')) {
             if (!$login) {
                 dol_syslog('Bad password, connection refused (see a previous notice message for more info)', LOG_NOTICE);
                 // Load translation files required by page
-                $langs->loadLangs(array('main', 'errors'));
+                $langs->loadLangs(['main', 'errors']);
 
                 // Bad password. No authmode has found a good password.
                 // We set a generic message if not defined inside function checkLoginPassEntity or subfunctions
@@ -947,8 +962,8 @@ if (!defined('NOLOGIN')) {
 
                 // Hooks on failed login
                 $action = '';
-                $hookmanager->initHooks(array('login'));
-                $parameters = array('dol_authmode' => $dol_authmode, 'dol_loginmesg' => $_SESSION["dol_loginmesg"]);
+                $hookmanager->initHooks(['login']);
+                $parameters = ['dol_authmode' => $dol_authmode, 'dol_loginmesg' => $_SESSION["dol_loginmesg"]];
                 $reshook = $hookmanager->executeHooks('afterLoginFailed', $parameters, $user, $action); // Note that $action and $object may have been modified by some hooks
                 if ($reshook < 0) {
                     $error++;
@@ -987,7 +1002,7 @@ if (!defined('NOLOGIN')) {
 
             if ($resultFetchUser == 0) {
                 // Load translation files required by page
-                $langs->loadLangs(array('main', 'errors'));
+                $langs->loadLangs(['main', 'errors']);
 
                 $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorCantLoadUserFromDolibarrDatabase", $login);
 
@@ -998,7 +1013,7 @@ if (!defined('NOLOGIN')) {
                 $user->context['audit'] = $user->error;
             } else {
                 // Load translation files required by the page
-                $langs->loadLangs(array('main', 'errors'));
+                $langs->loadLangs(['main', 'errors']);
 
                 $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorLoginDateValidity");
 
@@ -1015,14 +1030,14 @@ if (!defined('NOLOGIN')) {
 
             // Hooks on failed login
             $action = '';
-            $hookmanager->initHooks(array('login'));
-            $parameters = array('dol_authmode' => $dol_authmode, 'dol_loginmesg' => $_SESSION["dol_loginmesg"]);
+            $hookmanager->initHooks(['login']);
+            $parameters = ['dol_authmode' => $dol_authmode, 'dol_loginmesg' => $_SESSION["dol_loginmesg"]];
             $reshook = $hookmanager->executeHooks('afterLoginFailed', $parameters, $user, $action); // Note that $action and $object may have been modified by some hooks
             if ($reshook < 0) {
                 $error++;
             }
 
-            $paramsurl = array();
+            $paramsurl = [];
             if (GETPOSTINT('textbrowser')) {
                 $paramsurl[] = 'textbrowser=' . GETPOSTINT('textbrowser');
             }
@@ -1075,7 +1090,7 @@ if (!defined('NOLOGIN')) {
             session_start();
 
             if ($resultFetchUser == 0) {
-                $langs->loadLangs(array('main', 'errors'));
+                $langs->loadLangs(['main', 'errors']);
 
                 $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorCantLoadUserFromDolibarrDatabase", $login);
 
@@ -1085,7 +1100,7 @@ if (!defined('NOLOGIN')) {
 
                 $user->context['audit'] = $user->error;
             } else {
-                $langs->loadLangs(array('main', 'errors'));
+                $langs->loadLangs(['main', 'errors']);
 
                 $_SESSION["dol_loginmesg"] = $langs->transnoentitiesnoconv("ErrorSessionInvalidatedAfterPasswordChange");
 
@@ -1101,14 +1116,14 @@ if (!defined('NOLOGIN')) {
 
             // Hooks on failed login
             $action = '';
-            $hookmanager->initHooks(array('login'));
-            $parameters = array('dol_authmode' => (isset($dol_authmode) ? $dol_authmode : ''), 'dol_loginmesg' => $_SESSION["dol_loginmesg"]);
+            $hookmanager->initHooks(['login']);
+            $parameters = ['dol_authmode' => (isset($dol_authmode) ? $dol_authmode : ''), 'dol_loginmesg' => $_SESSION["dol_loginmesg"]];
             $reshook = $hookmanager->executeHooks('afterLoginFailed', $parameters, $user, $action); // Note that $action and $object may have been modified by some hooks
             if ($reshook < 0) {
                 $error++;
             }
 
-            $paramsurl = array();
+            $paramsurl = [];
             if (GETPOSTINT('textbrowser')) {
                 $paramsurl[] = 'textbrowser=' . GETPOSTINT('textbrowser');
             }
@@ -1123,7 +1138,7 @@ if (!defined('NOLOGIN')) {
             exit;
         } else {
             // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-            $hookmanager->initHooks(array('main'));
+            $hookmanager->initHooks(['main']);
 
             // Code for search criteria persistence.
             if (!empty($_GET['save_lastsearch_values']) && !empty($_SERVER["HTTP_REFERER"])) {    // We must use $_GET here
@@ -1159,9 +1174,10 @@ if (!defined('NOLOGIN')) {
                     unset($_SESSION['lastsearch_mode_tmp_' . $relativepathstring]);
                 }
             }
+
             if (!empty($_GET['save_pageforbacktolist']) && !empty($_SERVER["HTTP_REFERER"])) {    // We must use $_GET here
                 if (empty($_SESSION['pageforbacktolist'])) {
-                    $pageforbacktolistarray = array();
+                    $pageforbacktolistarray = [];
                 } else {
                     $pageforbacktolistarray = $_SESSION['pageforbacktolist'];
                 }
@@ -1173,7 +1189,7 @@ if (!defined('NOLOGIN')) {
             }
 
             $action = '';
-            $parameters = array();
+            $parameters = [];
             $reshook = $hookmanager->executeHooks('updateSession', $parameters, $user, $action);
             if ($reshook < 0) {
                 setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -1240,8 +1256,8 @@ if (!defined('NOLOGIN')) {
 
         // Hooks on successful login
         $action = '';
-        $hookmanager->initHooks(array('login'));
-        $parameters = array('dol_authmode' => $dol_authmode, 'dol_loginfo' => $loginfo);
+        $hookmanager->initHooks(['login']);
+        $parameters = ['dol_authmode' => $dol_authmode, 'dol_loginfo' => $loginfo];
         $reshook = $hookmanager->executeHooks('afterLogin', $parameters, $user, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook < 0) {
             $error++;
@@ -1266,7 +1282,6 @@ if (!defined('NOLOGIN')) {
             }
         }
     }
-
 
     // If user admin, we force the rights-based modules
     if ($user->admin) {
@@ -1377,9 +1392,9 @@ if (!empty($conf->browser->layout) && $conf->browser->layout != 'classic') {
 // If on smartphone or optimized for small screen
 if (
     (!empty($conf->browser->layout) && $conf->browser->layout == 'phone')
-            || (!empty($_SESSION['dol_screenwidth']) && $_SESSION['dol_screenwidth'] < 400)
-            || (!empty($_SESSION['dol_screenheight']) && $_SESSION['dol_screenheight'] < 400
-                || getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER'))
+    || (!empty($_SESSION['dol_screenwidth']) && $_SESSION['dol_screenwidth'] < 400)
+    || (!empty($_SESSION['dol_screenheight']) && $_SESSION['dol_screenheight'] < 400
+        || getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER'))
 ) {
     $conf->dol_optimize_smallscreen = 1;
 
@@ -1388,7 +1403,7 @@ if (
     }
 }
 // Replace themes bugged with jmobile with eldy
-if (!empty($conf->dol_use_jmobile) && in_array($conf->theme, array('bureau2crea', 'cameleo', 'amarok'))) {
+if (!empty($conf->dol_use_jmobile) && in_array($conf->theme, ['bureau2crea', 'cameleo', 'amarok'])) {
     $conf->theme = 'eldy';
     $conf->css = "/theme/" . $conf->theme . "/style.css.php";
 }
@@ -1416,7 +1431,7 @@ if (!defined('NOLOGIN')) {
     // Check if user is active
     if ($user->statut < 1) {
         // If not active, we refuse the user
-        $langs->loadLangs(array("errors", "other"));
+        $langs->loadLangs(["errors", "other"]);
         dol_syslog("Authentication KO as login is disabled", LOG_NOTICE);
         accessforbidden("ErrorLoginDisabled");
     }
@@ -1432,23 +1447,23 @@ dol_syslog("--- Access to " . (empty($_SERVER["REQUEST_METHOD"]) ? '' : $_SERVER
 // Load main languages files
 if (!defined('NOREQUIRETRAN')) {
     // Load translation files required by page
-    $langs->loadLangs(array('main', 'dict'));
+    $langs->loadLangs(['main', 'dict']);
 }
 
 // Define some constants used for style of arrays
-$bc = array(0 => 'class="impair"', 1 => 'class="pair"');
-$bcdd = array(0 => 'class="drag drop oddeven"', 1 => 'class="drag drop oddeven"');
-$bcnd = array(0 => 'class="nodrag nodrop nohover"', 1 => 'class="nodrag nodrop nohoverpair"'); // Used for tr to add new lines
-$bctag = array(0 => 'class="impair tagtr"', 1 => 'class="pair tagtr"');
+$bc = [0 => 'class="impair"', 1 => 'class="pair"'];
+$bcdd = [0 => 'class="drag drop oddeven"', 1 => 'class="drag drop oddeven"'];
+$bcnd = [0 => 'class="nodrag nodrop nohover"', 1 => 'class="nodrag nodrop nohoverpair"']; // Used for tr to add new lines
+$bctag = [0 => 'class="impair tagtr"', 1 => 'class="pair tagtr"'];
 
 // Define messages variables
 $mesg = '';
 $warning = '';
 $error = 0;
 // deprecated, see setEventMessages() and dol_htmloutput_events()
-$mesgs = array();
-$warnings = array();
-$errors = array();
+$mesgs = [];
+$warnings = [];
+$errors = [];
 
 // Constants used to defined number of lines in textarea
 if (empty($conf->browser->firefox)) {
@@ -1491,7 +1506,7 @@ if (!defined('NOREQUIREMENU')) {
     }
     if (!class_exists('MenuManager')) {
         $menufound = 0;
-        $dirmenus = array_merge(array("/core/menus/"), (array) $conf->modules_parts['menus']);
+        $dirmenus = array_merge(["/core/menus/"], (array) $conf->modules_parts['menus']);
         foreach ($dirmenus as $dirmenu) {
             $menufound = dol_include_once($dirmenu . "standard/" . $file_menu);
             if (class_exists('MenuManager')) {
@@ -1510,7 +1525,7 @@ if (!defined('NOREQUIREMENU')) {
 
 if (!empty(GETPOST('seteventmessages', 'alpha'))) {
     $message = GETPOST('seteventmessages', 'alpha');
-    $messages  = explode(',', $message);
+    $messages = explode(',', $message);
     foreach ($messages as $key => $msg) {
         $tmp = explode(':', $msg);
         setEventMessages($tmp[0], null, !empty($tmp[1]) ? $tmp[1] : 'mesgs');
@@ -1523,28 +1538,29 @@ if (!function_exists("llxHeader")) {
     /**
      *  Show HTML header HTML + BODY + Top menu + left menu + DIV
      *
-     * @param   string          $head               Optional head lines
-     * @param   string          $title              HTML title
-     * @param   string          $help_url           Url links to help page
+     * @param string       $head                    Optional head lines
+     * @param string       $title                   HTML title
+     * @param string       $help_url                Url links to help page
      *                                              Syntax is: For a wiki page: EN:EnglishPage|FR:FrenchPage|ES:SpanishPage|DE:GermanPage
      *                                              For other external page: http://server/url
-     * @param   string          $target             Target to use on links
-     * @param   int             $disablejs          More content into html header
-     * @param   int             $disablehead        More content into html header
-     * @param   array|string    $arrayofjs          Array of complementary js files
-     * @param   array|string    $arrayofcss         Array of complementary css files
-     * @param   string          $morequerystring    Query string to add to the link "print" to get same parameters (use only if autodetect fails)
-     * @param   string          $morecssonbody      More CSS on body tag. For example 'classforhorizontalscrolloftabs'.
-     * @param   string          $replacemainareaby  Replace call to main_area() by a print of this string
-     * @param   int             $disablenofollow    Disable the "nofollow" on meta robot header
-     * @param   int             $disablenoindex     Disable the "noindex" on meta robot header
+     * @param string       $target                  Target to use on links
+     * @param int          $disablejs               More content into html header
+     * @param int          $disablehead             More content into html header
+     * @param array|string $arrayofjs               Array of complementary js files
+     * @param array|string $arrayofcss              Array of complementary css files
+     * @param string       $morequerystring         Query string to add to the link "print" to get same parameters (use only if autodetect fails)
+     * @param string       $morecssonbody           More CSS on body tag. For example 'classforhorizontalscrolloftabs'.
+     * @param string       $replacemainareaby       Replace call to main_area() by a print of this string
+     * @param int          $disablenofollow         Disable the "nofollow" on meta robot header
+     * @param int          $disablenoindex          Disable the "noindex" on meta robot header
+     *
      * @return  void
      */
     function llxHeader($head = '', $title = '', $help_url = '', $target = '', $disablejs = 0, $disablehead = 0, $arrayofjs = '', $arrayofcss = '', $morequerystring = '', $morecssonbody = '', $replacemainareaby = '', $disablenofollow = 0, $disablenoindex = 0)
     {
         global $conf, $hookmanager;
 
-        $parameters = array(
+        $parameters = [
             'head' => & $head,
             'title' => & $title,
             'help_url' => & $help_url,
@@ -1557,9 +1573,9 @@ if (!function_exists("llxHeader")) {
             'morecssonbody' => & $morecssonbody,
             'replacemainareaby' => & $replacemainareaby,
             'disablenofollow' => & $disablenofollow,
-            'disablenoindex' => & $disablenoindex
+            'disablenoindex' => & $disablenoindex,
 
-        );
+        ];
         $reshook = $hookmanager->executeHooks('llxHeader', $parameters);
         if ($reshook > 0) {
             print $hookmanager->resPrint;
@@ -1571,7 +1587,7 @@ if (!function_exists("llxHeader")) {
 
         $tmpcsstouse = 'sidebar-collapse' . ($morecssonbody ? ' ' . $morecssonbody : '');
         // If theme MD and classic layer, we open the menulayer by default.
-        if ($conf->theme == 'md' && !in_array($conf->browser->layout, array('phone', 'tablet')) && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+        if ($conf->theme == 'md' && !in_array($conf->browser->layout, ['phone', 'tablet']) && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
             global $mainmenu;
             if ($mainmenu != 'website') {
                 $tmpcsstouse = $morecssonbody; // We do not use sidebar-collpase by default to have menuhider open by default.
@@ -1590,7 +1606,7 @@ if (!function_exists("llxHeader")) {
         }
 
         if (empty($conf->dol_hide_leftmenu) && !GETPOST('dol_openinpopup', 'aZ09')) {
-            left_menu(array(), $help_url, '', '', 1, $title, 1); // $menumanager is retrieved with a global $menumanager inside this function
+            left_menu([], $help_url, '', '', 1, $title, 1); // $menumanager is retrieved with a global $menumanager inside this function
         }
 
         // main area
@@ -1602,607 +1618,979 @@ if (!function_exists("llxHeader")) {
     }
 }
 
-
-/**
- *  Show HTTP header. Called by top_htmlhead().
- *
- *  @param  string  $contenttype    Content type. For example, 'text/html'
- *  @param  int     $forcenocache   Force disabling of cache for the page
- *  @return void
- */
-function top_httphead($contenttype = 'text/html', $forcenocache = 0)
-{
-    global $db, $conf, $hookmanager;
-
-    if ($contenttype == 'text/html') {
-        header("Content-Type: text/html; charset=" . $conf->file->character_set_client);
-    } else {
-        header("Content-Type: " . $contenttype);
-    }
-
-    // Security options
-
-    // X-Content-Type-Options
-    header("X-Content-Type-Options: nosniff"); // With the nosniff option, if the server says the content is text/html, the browser will render it as text/html (note that most browsers now force this option to on)
-
-    // X-Frame-Options
-    if (!defined('XFRAMEOPTIONS_ALLOWALL')) {
-        header("X-Frame-Options: SAMEORIGIN"); // By default, frames allowed only if on same domain (stop some XSS attacks)
-    } else {
-        header("X-Frame-Options: ALLOWALL");
-    }
-
-    if (getDolGlobalString('MAIN_SECURITY_FORCE_ACCESS_CONTROL_ALLOW_ORIGIN')) {
-        $tmpurl = constant('DOL_MAIN_URL_ROOT');
-        $tmpurl = preg_replace('/^(https?:\/\/[^\/]+)\/.*$/', '\1', $tmpurl);
-        header('Access-Control-Allow-Origin: ' . $tmpurl);
-        header('Vary: Origin');
-    }
-
-    // X-XSS-Protection
-    //header("X-XSS-Protection: 1");            // XSS filtering protection of some browsers (note: use of Content-Security-Policy is more efficient). Disabled as deprecated.
-
-    // Content-Security-Policy-Report-Only
-    if (!defined('MAIN_SECURITY_FORCECSPRO')) {
-        // If CSP not forced from the page
-
-        // A default security policy that keep usage of js external component like ckeditor, stripe, google, working
-        // For example: to restrict to only local resources, except for css (cloudflare+google), and js (transifex + google tags) and object/iframe (youtube)
-        // default-src 'self'; style-src: https://cdnjs.cloudflare.com https://fonts.googleapis.com; script-src: https://cdn.transifex.com https://www.googletagmanager.com; object-src https://youtube.com; frame-src https://youtube.com; img-src: *;
-        // For example, to restrict everything to itself except img that can be on other servers:
-        // default-src 'self'; img-src *;
-        // Pre-existing site that uses too much js code to fix but wants to ensure resources are loaded only over https and disable plugins:
-        // default-src https: 'unsafe-inline' 'unsafe-eval'; object-src 'none'
-        //
-        // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
-        // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
-        $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSPRO');
-
-        if (!is_object($hookmanager)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-            $hookmanager = new HookManager($db);
-        }
-        $hookmanager->initHooks(array("main"));
-
-        $parameters = array('contentsecuritypolicy' => $contentsecuritypolicy, 'mode' => 'reportonly');
-        $result = $hookmanager->executeHooks('setContentSecurityPolicy', $parameters); // Note that $action and $object may have been modified by some hooks
-        if ($result > 0) {
-            $contentsecuritypolicy = $hookmanager->resPrint; // Replace CSP
-        } else {
-            $contentsecuritypolicy .= $hookmanager->resPrint; // Concat CSP
-        }
-
-        if (!empty($contentsecuritypolicy)) {
-            header("Content-Security-Policy-Report-Only: " . $contentsecuritypolicy);
-        }
-    } else {
-        header("Content-Security-Policy: " . constant('MAIN_SECURITY_FORCECSPRO'));
-    }
-
-    // Content-Security-Policy
-    if (!defined('MAIN_SECURITY_FORCECSP')) {
-        // If CSP not forced from the page
-
-        // A default security policy that keep usage of js external component like ckeditor, stripe, google, working
-        // For example: to restrict to only local resources, except for css (cloudflare+google), and js (transifex + google tags) and object/iframe (youtube)
-        // default-src 'self'; style-src: https://cdnjs.cloudflare.com https://fonts.googleapis.com; script-src: https://cdn.transifex.com https://www.googletagmanager.com; object-src https://youtube.com; frame-src https://youtube.com; img-src: *;
-        // For example, to restrict everything to itself except img that can be on other servers:
-        // default-src 'self'; img-src *;
-        // Pre-existing site that uses too much js code to fix but wants to ensure resources are loaded only over https and disable plugins:
-        // default-src https: 'unsafe-inline' 'unsafe-eval'; object-src 'none'
-        //
-        // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
-        // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
-        $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSP');
-
-        if (!is_object($hookmanager)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-            $hookmanager = new HookManager($db);
-        }
-        $hookmanager->initHooks(array("main"));
-
-        $parameters = array('contentsecuritypolicy' => $contentsecuritypolicy, 'mode' => 'active');
-        $result = $hookmanager->executeHooks('setContentSecurityPolicy', $parameters); // Note that $action and $object may have been modified by some hooks
-        if ($result > 0) {
-            $contentsecuritypolicy = $hookmanager->resPrint; // Replace CSP
-        } else {
-            $contentsecuritypolicy .= $hookmanager->resPrint; // Concat CSP
-        }
-
-        if (!empty($contentsecuritypolicy)) {
-            header("Content-Security-Policy: " . $contentsecuritypolicy);
-        }
-    } else {
-        header("Content-Security-Policy: " . constant('MAIN_SECURITY_FORCECSP'));
-    }
-
-    // Referrer-Policy
-    // Say if we must provide the referrer when we jump onto another web page.
-    // Default browser are 'strict-origin-when-cross-origin' (only domain is sent on other domain switching), we want more so we use 'strict-origin' so browser doesn't send any referrer when going into another web site domain.
-    if (!defined('MAIN_SECURITY_FORCERP')) {
-        $referrerpolicy = getDolGlobalString('MAIN_SECURITY_FORCERP', "strict-origin");
-
-        header("Referrer-Policy: " . $referrerpolicy);
-    }
-
-    if ($forcenocache) {
-        header("Cache-Control: no-cache, no-store, must-revalidate, max-age=0");
-    }
-
-    // No need to add this token in header, we use instead the one into the forms.
-    //header("anti-csrf-token: ".newToken());
-}
-
-/**
- * Output html header of a page. It calls also top_httphead()
- * This code is also duplicated into security2.lib.php::dol_loginfunction
- *
- * @param   string  $head            Optional head lines
- * @param   string  $title           HTML title
- * @param   int     $disablejs       Disable js output
- * @param   int     $disablehead     Disable head output
- * @param   array   $arrayofjs       Array of complementary js files
- * @param   array   $arrayofcss      Array of complementary css files
- * @param   int     $disableforlogin Do not load heavy js and css for login pages
- * @param   int     $disablenofollow Disable nofollow tag for meta robots
- * @param   int     $disablenoindex  Disable noindex tag for meta robots
- * @return  void
- */
-function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arrayofjs = array(), $arrayofcss = array(), $disableforlogin = 0, $disablenofollow = 0, $disablenoindex = 0)
-{
-    global $db, $conf, $langs, $user, $mysoc, $hookmanager;
-
-    top_httphead();
-
-    if (empty($conf->css)) {
-        $conf->css = '/theme/eldy/style.css.php'; // If not defined, eldy by default
-    }
-
-    print '<!doctype html>' . "\n";
-
-    print '<html lang="' . substr($langs->defaultlang, 0, 2) . '">' . "\n";
-
-    //print '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">'."\n";
-    if (empty($disablehead)) {
-        if (!is_object($hookmanager)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-            $hookmanager = new HookManager($db);
-        }
-        $hookmanager->initHooks(array("main"));
-
-        $ext = 'layout=' . (empty($conf->browser->layout) ? '' : $conf->browser->layout) . '&amp;version=' . urlencode(DOL_VERSION);
-
-        print "<head>\n";
-
-        if (GETPOST('dol_basehref', 'alpha')) {
-            print '<base href="' . dol_escape_htmltag(GETPOST('dol_basehref', 'alpha')) . '">' . "\n";
-        }
-
-        // Displays meta
-        print '<meta charset="utf-8">' . "\n";
-        print '<meta name="robots" content="' . ($disablenoindex ? 'index' : 'noindex') . ($disablenofollow ? ',follow' : ',nofollow') . '">' . "\n"; // Do not index
-        print '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n"; // Scale for mobile device
-        print '<meta name="author" content="Dolibarr Development Team">' . "\n";
-        print '<meta name="anti-csrf-newtoken" content="' . newToken() . '">' . "\n";
-        print '<meta name="anti-csrf-currenttoken" content="' . currentToken() . '">' . "\n";
-        if (getDolGlobalInt('MAIN_FEATURES_LEVEL')) {
-            print '<meta name="MAIN_FEATURES_LEVEL" content="' . getDolGlobalInt('MAIN_FEATURES_LEVEL') . '">' . "\n";
-        }
-        // Favicon
-        $favicon = DOL_URL_ROOT . '/theme/alixar_square_logo_256x256_color.png';
-        if (!empty($mysoc->logo_squarred_mini)) {
-            $favicon = DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/thumbs/' . $mysoc->logo_squarred_mini);
-        }
-        if (getDolGlobalString('MAIN_FAVICON_URL')) {
-            $favicon = getDolGlobalString('MAIN_FAVICON_URL');
-        }
-        if (empty($conf->dol_use_jmobile)) {
-            print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n"; // Not required into an Android webview
-        }
-
-        // Mobile appli like icon
-        $manifest = DOL_URL_ROOT . '/theme/' . $conf->theme . '/manifest.json.php';
-        $parameters = array('manifest' => $manifest);
-        $resHook = $hookmanager->executeHooks('hookSetManifest', $parameters); // Note that $action and $object may have been modified by some hooks
-        if ($resHook > 0) {
-            $manifest = $hookmanager->resPrint; // Replace manifest.json
-        } else {
-            $manifest .= $hookmanager->resPrint; // Concat to actual manifest declaration
-        }
-        if (!empty($manifest)) {
-            print '<link rel="manifest" href="' . $manifest . '" />' . "\n";
-        }
-
-        if (getDolGlobalString('THEME_ELDY_TOPMENU_BACK1')) {
-            // TODO: use auto theme color switch
-            print '<meta name="theme-color" content="rgb(' . getDolGlobalString('THEME_ELDY_TOPMENU_BACK1') . ')">' . "\n";
-        }
-
-        // Auto refresh page
-        if (GETPOSTINT('autorefresh') > 0) {
-            print '<meta http-equiv="refresh" content="' . GETPOSTINT('autorefresh') . '">';
-        }
-
-        // Displays title
-        $appli = constant('DOL_APPLICATION_TITLE');
-        if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-            $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
-        }
-
-        print '<title>';
-        $titletoshow = '';
-        if ($title && getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/noapp/', $conf->global->MAIN_HTML_TITLE)) {
-            $titletoshow = dol_htmlentities($title);
-        } elseif ($title) {
-            $titletoshow = dol_htmlentities($appli . ' - ' . $title);
-        } else {
-            $titletoshow = dol_htmlentities($appli);
-        }
-
-        $parameters = array('title' => $titletoshow);
-        $result = $hookmanager->executeHooks('setHtmlTitle', $parameters); // Note that $action and $object may have been modified by some hooks
-        if ($result > 0) {
-            $titletoshow = $hookmanager->resPrint; // Replace Title to show
-        } else {
-            $titletoshow .= $hookmanager->resPrint; // Concat to Title to show
-        }
-
-        print $titletoshow;
-        print '</title>';
-
-        print "\n";
-
-        if (GETPOSTINT('version')) {
-            $ext = 'version=' . GETPOSTINT('version'); // useful to force no cache on css/js
-        }
-        // Refresh value of MAIN_IHM_PARAMS_REV before forging the parameter line.
-        if (GETPOST('dol_resetcache')) {
-            dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", getDolGlobalInt('MAIN_IHM_PARAMS_REV') + 1, 'chaine', 0, '', $conf->entity);
-        }
-
-        $themeparam = '?lang=' . $langs->defaultlang . '&amp;theme=' . $conf->theme . (GETPOST('optioncss', 'aZ09') ? '&amp;optioncss=' . GETPOST('optioncss', 'aZ09', 1) : '') . (empty($user->id) ? '' : ('&amp;userid=' . $user->id)) . '&amp;entity=' . $conf->entity;
-
-        $themeparam .= ($ext ? '&amp;' . $ext : '') . '&amp;revision=' . getDolGlobalInt("MAIN_IHM_PARAMS_REV");
-        if (GETPOSTISSET('dol_hide_topmenu')) {
-            $themeparam .= '&amp;dol_hide_topmenu=' . GETPOSTINT('dol_hide_topmenu');
-        }
-        if (GETPOSTISSET('dol_hide_leftmenu')) {
-            $themeparam .= '&amp;dol_hide_leftmenu=' . GETPOSTINT('dol_hide_leftmenu');
-        }
-        if (GETPOSTISSET('dol_optimize_smallscreen')) {
-            $themeparam .= '&amp;dol_optimize_smallscreen=' . GETPOSTINT('dol_optimize_smallscreen');
-        }
-        if (GETPOSTISSET('dol_no_mouse_hover')) {
-            $themeparam .= '&amp;dol_no_mouse_hover=' . GETPOSTINT('dol_no_mouse_hover');
-        }
-        if (GETPOSTISSET('dol_use_jmobile')) {
-            $themeparam .= '&amp;dol_use_jmobile=' . GETPOSTINT('dol_use_jmobile');
-            $conf->dol_use_jmobile = GETPOSTINT('dol_use_jmobile');
-        }
-        if (GETPOSTISSET('THEME_DARKMODEENABLED')) {
-            $themeparam .= '&amp;THEME_DARKMODEENABLED=' . GETPOSTINT('THEME_DARKMODEENABLED');
-        }
-        if (GETPOSTISSET('THEME_SATURATE_RATIO')) {
-            $themeparam .= '&amp;THEME_SATURATE_RATIO=' . GETPOSTINT('THEME_SATURATE_RATIO');
-        }
-
-        if (getDolGlobalString('MAIN_ENABLE_FONT_ROBOTO')) {
-            print '<link rel="preconnect" href="https://fonts.gstatic.com">' . "\n";
-            print '<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;300;400;500;600&display=swap" rel="stylesheet">' . "\n";
-        }
-
-        if (!defined('DISABLE_JQUERY') && !$disablejs && $conf->use_javascript_ajax) {
-            print '<!-- Includes CSS for JQuery (Ajax library) -->' . "\n";
-            $jquerytheme = 'base';
-            if (getDolGlobalString('MAIN_USE_JQUERY_THEME')) {
-                $jquerytheme = getDolGlobalString('MAIN_USE_JQUERY_THEME');
-            }
-            if (constant('JS_JQUERY_UI')) {
-                print '<link rel="stylesheet" type="text/css" href="' . JS_JQUERY_UI . 'css/' . $jquerytheme . '/jquery-ui.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // Forced JQuery
-            } else {
-                print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/css/' . $jquerytheme . '/jquery-ui.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JQuery
-            }
-            if (!defined('DISABLE_JQUERY_JNOTIFY')) {
-                print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify-alt.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JNotify
-            }
-            if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {     // jQuery plugin "mutiselect", "multiple-select", "select2"...
-                $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
-                print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/css/' . $tmpplugin . '.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
-            }
-        }
-
-        if (!defined('DISABLE_FONT_AWSOME')) {
-            print '<!-- Includes CSS for font awesome -->' . "\n";
-            $fontawesome_directory = getDolGlobalString('MAIN_FONTAWESOME_DIRECTORY', '/theme/common/fontawesome-5');
-            print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . $fontawesome_directory . '/css/all.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
-        }
-
-        print '<!-- Includes CSS for Dolibarr theme -->' . "\n";
-        // Output style sheets (optioncss='print' or ''). Note: $conf->css looks like '/theme/eldy/style.css.php'
-        $themepath = dol_buildpath($conf->css, 1);
-        $themesubdir = '';
-        if (!empty($conf->modules_parts['theme'])) {    // This slow down
-            foreach ($conf->modules_parts['theme'] as $reldir) {
-                if (file_exists(dol_buildpath($reldir . $conf->css, 0))) {
-                    $themepath = dol_buildpath($reldir . $conf->css, 1);
-                    $themesubdir = $reldir;
-                    break;
-                }
-            }
-        }
-
-        //print 'themepath='.$themepath.' themeparam='.$themeparam;exit;
-        print '<link rel="stylesheet" type="text/css" href="' . $themepath . $themeparam . '">' . "\n";
-        if (getDolGlobalString('MAIN_FIX_FLASH_ON_CHROME')) {
-            print '<!-- Includes CSS that does not exists as a workaround of flash bug of chrome -->' . "\n" . '<link rel="stylesheet" type="text/css" href="filethatdoesnotexiststosolvechromeflashbug">' . "\n";
-        }
-
-        // CSS forced by modules (relative url starting with /)
-        if (!empty($conf->modules_parts['css'])) {
-            $arraycss = (array) $conf->modules_parts['css'];
-            foreach ($arraycss as $modcss => $filescss) {
-                $filescss = (array) $filescss; // To be sure filecss is an array
-                foreach ($filescss as $cssfile) {
-                    if (empty($cssfile)) {
-                        dol_syslog("Warning: module " . $modcss . " declared a css path file into its descriptor that is empty.", LOG_WARNING);
-                    }
-                    // cssfile is a relative path
-                    $urlforcss = dol_buildpath($cssfile, 1);
-                    if ($urlforcss && $urlforcss != '/') {
-                        print '<!-- Includes CSS added by module ' . $modcss . ' -->' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $urlforcss;
-                        // We add params only if page is not static, because some web server setup does not return content type text/css if url has parameters, so browser cache is not used.
-                        if (!preg_match('/\.css$/i', $cssfile)) {
-                            print $themeparam;
-                        }
-                        print '">' . "\n";
-                    } else {
-                        dol_syslog("Warning: module " . $modcss . " declared a css path file for a file we can't find.", LOG_WARNING);
-                    }
-                }
-            }
-        }
-        // CSS forced by page in top_htmlhead call (relative url starting with /)
-        if (is_array($arrayofcss)) {
-            foreach ($arrayofcss as $cssfile) {
-                if (preg_match('/^(http|\/\/)/i', $cssfile)) {
-                    $urltofile = $cssfile;
-                } else {
-                    $urltofile = dol_buildpath($cssfile, 1);
-                }
-                print '<!-- Includes CSS added by page -->' . "\n" . '<link rel="stylesheet" type="text/css" title="default" href="' . $urltofile;
-                // We add params only if page is not static, because some web server setup does not return content type text/css if url has parameters and browser cache is not used.
-                if (!preg_match('/\.css$/i', $cssfile)) {
-                    print $themeparam;
-                }
-                print '">' . "\n";
-            }
-        }
-
-        // Custom CSS
-        if (getDolGlobalString('MAIN_IHM_CUSTOM_CSS')) {
-            // If a custom CSS was set, we add link to the custom css php file
-            print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/theme/custom.css.php' . ($ext ? '?' . $ext : '') . '&amp;revision=' . getDolGlobalInt("MAIN_IHM_PARAMS_REV") . '">' . "\n";
-        }
-
-        // Output standard javascript links
-        if (!defined('DISABLE_JQUERY') && !$disablejs && !empty($conf->use_javascript_ajax)) {
-            // JQuery. Must be before other includes
-            print '<!-- Includes JS for JQuery -->' . "\n";
-            if (defined('JS_JQUERY') && constant('JS_JQUERY')) {
-                print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY . 'jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            } else {
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/js/jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-            if (defined('JS_JQUERY_UI') && constant('JS_JQUERY_UI')) {
-                print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY_UI . 'jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            } else {
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/js/jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-            // jQuery jnotify
-            if (!getDolGlobalString('MAIN_DISABLE_JQUERY_JNOTIFY') && !defined('DISABLE_JQUERY_JNOTIFY')) {
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-            // Table drag and drop lines
-            if (empty($disableforlogin) && !defined('DISABLE_JQUERY_TABLEDND')) {
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/tablednd/jquery.tablednd.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-            // Chart
-            if (empty($disableforlogin) && (!getDolGlobalString('MAIN_JS_GRAPH') || getDolGlobalString('MAIN_JS_GRAPH') == 'chart') && !defined('DISABLE_JS_GRAPH')) {
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/nnnick/chartjs/dist/chart.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-
-            // jQuery jeditable for Edit In Place features
-            if (getDolGlobalString('MAIN_USE_JQUERY_JEDITABLE') && !defined('DISABLE_JQUERY_JEDITABLE')) {
-                print '<!-- JS to manage editInPlace feature -->' . "\n";
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ui-datepicker.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ui-autocomplete.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                print '<script>' . "\n";
-                print 'var urlSaveInPlace = \'' . DOL_URL_ROOT . '/core/ajax/saveinplace.php\';' . "\n";
-                print 'var urlLoadInPlace = \'' . DOL_URL_ROOT . '/core/ajax/loadinplace.php\';' . "\n";
-                print 'var tooltipInPlace = \'' . $langs->transnoentities('ClickToEdit') . '\';' . "\n"; // Added in title attribute of span
-                print 'var placeholderInPlace = \'&nbsp;\';' . "\n"; // If we put another string than $langs->trans("ClickToEdit") here, nothing is shown. If we put empty string, there is error, Why ?
-                print 'var cancelInPlace = \'' . $langs->trans("Cancel") . '\';' . "\n";
-                print 'var submitInPlace = \'' . $langs->trans('Ok') . '\';' . "\n";
-                print 'var indicatorInPlace = \'<img src="' . DOL_URL_ROOT . "/theme/" . $conf->theme . "/img/working.gif" . '">\';' . "\n";
-                print 'var withInPlace = 300;'; // width in pixel for default string edit
-                print '</script>' . "\n";
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/editinplace.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ckeditor.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-            // jQuery Timepicker
-            if (getDolGlobalString('MAIN_USE_JQUERY_TIMEPICKER') || defined('REQUIRE_JQUERY_TIMEPICKER')) {
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/timepicker/jquery-ui-timepicker-addon.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/timepicker.js.php?lang=' . $langs->defaultlang . ($ext ? '&amp;' . $ext : '') . '"></script>' . "\n";
-            }
-            if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {
-                // jQuery plugin "mutiselect", "multiple-select", "select2", ...
-                $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/js/' . $tmpplugin . '.full.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n"; // We include full because we need the support of containerCssClass
-            }
-            if (!defined('DISABLE_MULTISELECT')) {     // jQuery plugin "mutiselect" to select with checkboxes. Can be removed once we have an enhanced search tool
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/multiselect/jquery.multi-select.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-        }
-
-        if (!$disablejs && !empty($conf->use_javascript_ajax)) {
-            // CKEditor
-            if (empty($disableforlogin) && (isModEnabled('fckeditor') && (!getDolGlobalString('FCKEDITOR_EDITORNAME') || getDolGlobalString('FCKEDITOR_EDITORNAME') == 'ckeditor') && !defined('DISABLE_CKEDITOR')) || defined('FORCE_CKEDITOR')) {
-                print '<!-- Includes JS for CKEditor -->' . "\n";
-                $pathckeditor = DOL_URL_ROOT . '/includes/ckeditor/ckeditor/';
-                $jsckeditor = 'ckeditor.js';
-                if (constant('JS_CKEDITOR')) {
-                    // To use external ckeditor 4 js lib
-                    $pathckeditor = constant('JS_CKEDITOR');
-                }
-                print '<script nonce="' . getNonce() . '">';
-                print '/* enable ckeditor by main.inc.php */';
-                print 'var CKEDITOR_BASEPATH = \'' . dol_escape_js($pathckeditor) . '\';' . "\n";
-                print 'var ckeditorConfig = \'' . dol_escape_js(dol_buildpath($themesubdir . '/theme/' . $conf->theme . '/ckeditor/config.js' . ($ext ? '?' . $ext : ''), 1)) . '\';' . "\n"; // $themesubdir='' in standard usage
-                print 'var ckeditorFilebrowserBrowseUrl = \'' . DOL_URL_ROOT . '/core/filemanagerdol/browser/default/browser.php?Connector=' . DOL_URL_ROOT . '/core/filemanagerdol/connectors/php/connector.php\';' . "\n";
-                print 'var ckeditorFilebrowserImageBrowseUrl = \'' . DOL_URL_ROOT . '/core/filemanagerdol/browser/default/browser.php?Type=Image&Connector=' . DOL_URL_ROOT . '/core/filemanagerdol/connectors/php/connector.php\';' . "\n";
-                print '</script>' . "\n";
-                print '<script src="' . $pathckeditor . $jsckeditor . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                print '<script>';
-                if (GETPOST('mode', 'aZ09') == 'Full_inline') {
-                    print 'CKEDITOR.disableAutoInline = false;' . "\n";
-                } else {
-                    print 'CKEDITOR.disableAutoInline = true;' . "\n";
-                }
-                print '</script>' . "\n";
-            }
-
-            // Browser notifications (if NOREQUIREMENU is on, it is mostly a page for popup, so we do not enable notif too. We hide also for public pages).
-            if (!defined('NOBROWSERNOTIF') && !defined('NOREQUIREMENU') && !defined('NOLOGIN')) {
-                $enablebrowsernotif = false;
-                if (isModEnabled('agenda') && getDolGlobalString('AGENDA_REMINDER_BROWSER')) {
-                    $enablebrowsernotif = true;
-                }
-                if ($conf->browser->layout == 'phone') {
-                    $enablebrowsernotif = false;
-                }
-                if ($enablebrowsernotif) {
-                    print '<!-- Includes JS of Dolibarr (browser layout = ' . $conf->browser->layout . ')-->' . "\n";
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/lib_notification.js.php' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                }
-            }
-
-            // Global js function
-            print '<!-- Includes JS of Dolibarr -->' . "\n";
-            print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/lib_head.js.php?lang=' . $langs->defaultlang . ($ext ? '&amp;' . $ext : '') . '"></script>' . "\n";
-
-            // JS forced by modules (relative url starting with /)
-            if (!empty($conf->modules_parts['js'])) {       // $conf->modules_parts['js'] is array('module'=>array('file1','file2'))
-                $arrayjs = (array) $conf->modules_parts['js'];
-                foreach ($arrayjs as $modjs => $filesjs) {
-                    $filesjs = (array) $filesjs; // To be sure filejs is an array
-                    foreach ($filesjs as $jsfile) {
-                        // jsfile is a relative path
-                        $urlforjs = dol_buildpath($jsfile, 1);
-                        if ($urlforjs && $urlforjs != '/') {
-                            print '<!-- Include JS added by module ' . $modjs . '-->' . "\n";
-                            print '<script nonce="' . getNonce() . '" src="' . $urlforjs . ((strpos($jsfile, '?') === false) ? '?' : '&amp;') . 'lang=' . $langs->defaultlang . '"></script>' . "\n";
-                        } else {
-                            dol_syslog("Warning: module " . $modjs . " declared a js path file for a file we can't find.", LOG_WARNING);
-                        }
-                    }
-                }
-            }
-            // JS forced by page in top_htmlhead (relative url starting with /)
-            if (is_array($arrayofjs)) {
-                print '<!-- Includes JS added by page -->' . "\n";
-                foreach ($arrayofjs as $jsfile) {
-                    if (preg_match('/^(http|\/\/)/i', $jsfile)) {
-                        print '<script nonce="' . getNonce() . '" src="' . $jsfile . ((strpos($jsfile, '?') === false) ? '?' : '&amp;') . 'lang=' . $langs->defaultlang . '"></script>' . "\n";
-                    } else {
-                        print '<script nonce="' . getNonce() . '" src="' . dol_buildpath($jsfile, 1) . ((strpos($jsfile, '?') === false) ? '?' : '&amp;') . 'lang=' . $langs->defaultlang . '"></script>' . "\n";
-                    }
-                }
-            }
-        }
-
-        //If you want to load custom javascript file from your selected theme directory
-        if (getDolGlobalString('ALLOW_THEME_JS')) {
-            $theme_js = dol_buildpath('/theme/' . $conf->theme . '/' . $conf->theme . '.js', 0);
-            if (file_exists($theme_js)) {
-                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/theme/' . $conf->theme . '/' . $conf->theme . '.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-            }
-        }
-
-        if (!empty($head)) {
-            print $head . "\n";
-        }
-        if (getDolGlobalString('MAIN_HTML_HEADER')) {
-            print getDolGlobalString('MAIN_HTML_HEADER') . "\n";
-        }
-
-        $parameters = array();
-        $result = $hookmanager->executeHooks('addHtmlHeader', $parameters); // Note that $action and $object may have been modified by some hooks
-        print $hookmanager->resPrint; // Replace Title to show
-
-        print "</head>\n\n";
-    }
-
-    $conf->headerdone = 1; // To tell header was output
-}
-
-
-/**
- *  Show an HTML header + a BODY + The top menu bar
- *
- *  @param      string          $head               Lines in the HEAD
- *  @param      string          $title              Title of web page
- *  @param      string          $target             Target to use in menu links (Example: '' or '_top')
- *  @param      int             $disablejs          Do not output links to js (Ex: qd fonction utilisee par sous formulaire Ajax)
- *  @param      int             $disablehead        Do not output head section
- *  @param      array           $arrayofjs          Array of js files to add in header
- *  @param      array           $arrayofcss         Array of css files to add in header
- *  @param      string          $morequerystring    Query string to add to the link "print" to get same parameters (use only if autodetect fails)
- *  @param      string          $helppagename       Name of wiki page for help ('' by default).
- *                                                  Syntax is: For a wiki page: EN:EnglishPage|FR:FrenchPage|ES:SpanishPage|DE:GermanPage
- *                                                  For other external page: http://server/url
- *  @return     void
- */
-function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead = 0, $arrayofjs = array(), $arrayofcss = array(), $morequerystring = '', $helppagename = '')
-{
-    global $user, $conf, $langs, $db, $form;
-    global $dolibarr_main_authentication, $dolibarr_main_demo;
-    global $hookmanager, $menumanager;
-
-    $searchform = '';
-
-    // Instantiate hooks for external modules
-    $hookmanager->initHooks(array('toprightmenu'));
-
-    $toprightmenu = '';
-
-    // For backward compatibility with old modules
-    if (empty($conf->headerdone)) {
-        $disablenofollow = 0;
-        top_htmlhead($head, $title, $disablejs, $disablehead, $arrayofjs, $arrayofcss, 0, $disablenofollow);
-        print '<body id="mainbody">';
-    }
-
-    /*
-     * Top menu
+if (!function_exists('top_httphead')) {
+    /**
+     *  Show HTTP header. Called by top_htmlhead().
+     *
+     * @param string $contenttype  Content type. For example, 'text/html'
+     * @param int    $forcenocache Force disabling of cache for the page
+     *
+     * @return void
      */
-    if ((empty($conf->dol_hide_topmenu) || GETPOSTINT('dol_invisible_topmenu')) && (!defined('NOREQUIREMENU') || !constant('NOREQUIREMENU'))) {
-        if (!isset($form) || !is_object($form)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
-            $form = new Form($db);
+    function top_httphead($contenttype = 'text/html', $forcenocache = 0)
+    {
+        global $db, $conf, $hookmanager;
+
+        if ($contenttype == 'text/html') {
+            header("Content-Type: text/html; charset=" . $conf->file->character_set_client);
+        } else {
+            header("Content-Type: " . $contenttype);
         }
 
-        print "\n" . '<!-- Start top horizontal -->' . "\n";
+        // Security options
 
-        print '<header id="id-top" class="side-nav-vert' . (GETPOSTINT('dol_invisible_topmenu') ? ' hidden' : '') . '">'; // dol_invisible_topmenu differs from dol_hide_topmenu: dol_invisible_topmenu means we output menu but we make it invisible.
+        // X-Content-Type-Options
+        header("X-Content-Type-Options: nosniff"); // With the nosniff option, if the server says the content is text/html, the browser will render it as text/html (note that most browsers now force this option to on)
 
-        // Show menu entries
-        print '<div id="tmenu_tooltip' . (!getDolGlobalString('MAIN_MENU_INVERT') ? '' : 'invert') . '" class="tmenu">' . "\n";
-        $menumanager->atarget = $target;
-        $menumanager->showmenu('top', array('searchform' => $searchform)); // This contains a \n
-        print "</div>\n";
+        // X-Frame-Options
+        if (!defined('XFRAMEOPTIONS_ALLOWALL')) {
+            header("X-Frame-Options: SAMEORIGIN"); // By default, frames allowed only if on same domain (stop some XSS attacks)
+        } else {
+            header("X-Frame-Options: ALLOWALL");
+        }
 
-        // Define link to login card
+        if (getDolGlobalString('MAIN_SECURITY_FORCE_ACCESS_CONTROL_ALLOW_ORIGIN')) {
+            $tmpurl = constant('DOL_MAIN_URL_ROOT');
+            $tmpurl = preg_replace('/^(https?:\/\/[^\/]+)\/.*$/', '\1', $tmpurl);
+            header('Access-Control-Allow-Origin: ' . $tmpurl);
+            header('Vary: Origin');
+        }
+
+        // X-XSS-Protection
+        //header("X-XSS-Protection: 1");            // XSS filtering protection of some browsers (note: use of Content-Security-Policy is more efficient). Disabled as deprecated.
+
+        // Content-Security-Policy-Report-Only
+        if (!defined('MAIN_SECURITY_FORCECSPRO')) {
+            // If CSP not forced from the page
+
+            // A default security policy that keep usage of js external component like ckeditor, stripe, google, working
+            // For example: to restrict to only local resources, except for css (cloudflare+google), and js (transifex + google tags) and object/iframe (youtube)
+            // default-src 'self'; style-src: https://cdnjs.cloudflare.com https://fonts.googleapis.com; script-src: https://cdn.transifex.com https://www.googletagmanager.com; object-src https://youtube.com; frame-src https://youtube.com; img-src: *;
+            // For example, to restrict everything to itself except img that can be on other servers:
+            // default-src 'self'; img-src *;
+            // Pre-existing site that uses too much js code to fix but wants to ensure resources are loaded only over https and disable plugins:
+            // default-src https: 'unsafe-inline' 'unsafe-eval'; object-src 'none'
+            //
+            // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
+            // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
+            $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSPRO');
+
+            if (!is_object($hookmanager)) {
+                include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
+                $hookmanager = new HookManager($db);
+            }
+            $hookmanager->initHooks(["main"]);
+
+            $parameters = ['contentsecuritypolicy' => $contentsecuritypolicy, 'mode' => 'reportonly'];
+            $result = $hookmanager->executeHooks('setContentSecurityPolicy', $parameters); // Note that $action and $object may have been modified by some hooks
+            if ($result > 0) {
+                $contentsecuritypolicy = $hookmanager->resPrint; // Replace CSP
+            } else {
+                $contentsecuritypolicy .= $hookmanager->resPrint; // Concat CSP
+            }
+
+            if (!empty($contentsecuritypolicy)) {
+                header("Content-Security-Policy-Report-Only: " . $contentsecuritypolicy);
+            }
+        } else {
+            header("Content-Security-Policy: " . constant('MAIN_SECURITY_FORCECSPRO'));
+        }
+
+        // Content-Security-Policy
+        if (!defined('MAIN_SECURITY_FORCECSP')) {
+            // If CSP not forced from the page
+
+            // A default security policy that keep usage of js external component like ckeditor, stripe, google, working
+            // For example: to restrict to only local resources, except for css (cloudflare+google), and js (transifex + google tags) and object/iframe (youtube)
+            // default-src 'self'; style-src: https://cdnjs.cloudflare.com https://fonts.googleapis.com; script-src: https://cdn.transifex.com https://www.googletagmanager.com; object-src https://youtube.com; frame-src https://youtube.com; img-src: *;
+            // For example, to restrict everything to itself except img that can be on other servers:
+            // default-src 'self'; img-src *;
+            // Pre-existing site that uses too much js code to fix but wants to ensure resources are loaded only over https and disable plugins:
+            // default-src https: 'unsafe-inline' 'unsafe-eval'; object-src 'none'
+            //
+            // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
+            // $contentsecuritypolicy = "frame-ancestors 'self'; img-src * data:; font-src *; default-src *; script-src 'self' 'unsafe-inline' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self';";
+            $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSP');
+
+            if (!is_object($hookmanager)) {
+                include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
+                $hookmanager = new HookManager($db);
+            }
+            $hookmanager->initHooks(["main"]);
+
+            $parameters = ['contentsecuritypolicy' => $contentsecuritypolicy, 'mode' => 'active'];
+            $result = $hookmanager->executeHooks('setContentSecurityPolicy', $parameters); // Note that $action and $object may have been modified by some hooks
+            if ($result > 0) {
+                $contentsecuritypolicy = $hookmanager->resPrint; // Replace CSP
+            } else {
+                $contentsecuritypolicy .= $hookmanager->resPrint; // Concat CSP
+            }
+
+            if (!empty($contentsecuritypolicy)) {
+                header("Content-Security-Policy: " . $contentsecuritypolicy);
+            }
+        } else {
+            header("Content-Security-Policy: " . constant('MAIN_SECURITY_FORCECSP'));
+        }
+
+        // Referrer-Policy
+        // Say if we must provide the referrer when we jump onto another web page.
+        // Default browser are 'strict-origin-when-cross-origin' (only domain is sent on other domain switching), we want more so we use 'strict-origin' so browser doesn't send any referrer when going into another web site domain.
+        if (!defined('MAIN_SECURITY_FORCERP')) {
+            $referrerpolicy = getDolGlobalString('MAIN_SECURITY_FORCERP', "strict-origin");
+
+            header("Referrer-Policy: " . $referrerpolicy);
+        }
+
+        if ($forcenocache) {
+            header("Cache-Control: no-cache, no-store, must-revalidate, max-age=0");
+        }
+
+        // No need to add this token in header, we use instead the one into the forms.
+        //header("anti-csrf-token: ".newToken());
+    }
+}
+
+if (!function_exists('top_htmlhead')) {
+    /**
+     * Output html header of a page. It calls also top_httphead()
+     * This code is also duplicated into security2.lib.php::dol_loginfunction
+     *
+     * @param string $head            Optional head lines
+     * @param string $title           HTML title
+     * @param int    $disablejs       Disable js output
+     * @param int    $disablehead     Disable head output
+     * @param array  $arrayofjs       Array of complementary js files
+     * @param array  $arrayofcss      Array of complementary css files
+     * @param int    $disableforlogin Do not load heavy js and css for login pages
+     * @param int    $disablenofollow Disable nofollow tag for meta robots
+     * @param int    $disablenoindex  Disable noindex tag for meta robots
+     *
+     * @return  void
+     */
+    function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [], $disableforlogin = 0, $disablenofollow = 0, $disablenoindex = 0)
+    {
+        global $db, $conf, $langs, $user, $mysoc, $hookmanager;
+
+        top_httphead();
+
+        if (empty($conf->css)) {
+            $conf->css = '/theme/eldy/style.css.php'; // If not defined, eldy by default
+        }
+
+        print '<!doctype html>' . "\n";
+
+        print '<html lang="' . substr($langs->defaultlang, 0, 2) . '">' . "\n";
+
+        //print '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">'."\n";
+        if (empty($disablehead)) {
+            if (!is_object($hookmanager)) {
+                include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
+                $hookmanager = new HookManager($db);
+            }
+            $hookmanager->initHooks(["main"]);
+
+            $ext = 'layout=' . (empty($conf->browser->layout) ? '' : $conf->browser->layout) . '&amp;version=' . urlencode(DOL_VERSION);
+
+            print "<head>\n";
+
+            if (GETPOST('dol_basehref', 'alpha')) {
+                print '<base href="' . dol_escape_htmltag(GETPOST('dol_basehref', 'alpha')) . '">' . "\n";
+            }
+
+            // Displays meta
+            print '<meta charset="utf-8">' . "\n";
+            print '<meta name="robots" content="' . ($disablenoindex ? 'index' : 'noindex') . ($disablenofollow ? ',follow' : ',nofollow') . '">' . "\n"; // Do not index
+            print '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n"; // Scale for mobile device
+            print '<meta name="author" content="Dolibarr Development Team">' . "\n";
+            print '<meta name="anti-csrf-newtoken" content="' . newToken() . '">' . "\n";
+            print '<meta name="anti-csrf-currenttoken" content="' . currentToken() . '">' . "\n";
+            if (getDolGlobalInt('MAIN_FEATURES_LEVEL')) {
+                print '<meta name="MAIN_FEATURES_LEVEL" content="' . getDolGlobalInt('MAIN_FEATURES_LEVEL') . '">' . "\n";
+            }
+            // Favicon
+            $favicon = DOL_URL_ROOT . '/theme/alixar_square_logo_256x256_color.png';
+            if (!empty($mysoc->logo_squarred_mini)) {
+                $favicon = DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/thumbs/' . $mysoc->logo_squarred_mini);
+            }
+            if (getDolGlobalString('MAIN_FAVICON_URL')) {
+                $favicon = getDolGlobalString('MAIN_FAVICON_URL');
+            }
+            if (empty($conf->dol_use_jmobile)) {
+                print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n"; // Not required into an Android webview
+            }
+
+            // Mobile appli like icon
+            $manifest = DOL_URL_ROOT . '/theme/' . $conf->theme . '/manifest.json.php';
+            $parameters = ['manifest' => $manifest];
+            $resHook = $hookmanager->executeHooks('hookSetManifest', $parameters); // Note that $action and $object may have been modified by some hooks
+            if ($resHook > 0) {
+                $manifest = $hookmanager->resPrint; // Replace manifest.json
+            } else {
+                $manifest .= $hookmanager->resPrint; // Concat to actual manifest declaration
+            }
+            if (!empty($manifest)) {
+                print '<link rel="manifest" href="' . $manifest . '" />' . "\n";
+            }
+
+            if (getDolGlobalString('THEME_ELDY_TOPMENU_BACK1')) {
+                // TODO: use auto theme color switch
+                print '<meta name="theme-color" content="rgb(' . getDolGlobalString('THEME_ELDY_TOPMENU_BACK1') . ')">' . "\n";
+            }
+
+            // Auto refresh page
+            if (GETPOSTINT('autorefresh') > 0) {
+                print '<meta http-equiv="refresh" content="' . GETPOSTINT('autorefresh') . '">';
+            }
+
+            // Displays title
+            $appli = constant('DOL_APPLICATION_TITLE');
+            if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+                $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
+            }
+
+            print '<title>';
+            $titletoshow = '';
+            if ($title && getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/noapp/', $conf->global->MAIN_HTML_TITLE)) {
+                $titletoshow = dol_htmlentities($title);
+            } elseif ($title) {
+                $titletoshow = dol_htmlentities($appli . ' - ' . $title);
+            } else {
+                $titletoshow = dol_htmlentities($appli);
+            }
+
+            $parameters = ['title' => $titletoshow];
+            $result = $hookmanager->executeHooks('setHtmlTitle', $parameters); // Note that $action and $object may have been modified by some hooks
+            if ($result > 0) {
+                $titletoshow = $hookmanager->resPrint; // Replace Title to show
+            } else {
+                $titletoshow .= $hookmanager->resPrint; // Concat to Title to show
+            }
+
+            print $titletoshow;
+            print '</title>';
+
+            print "\n";
+
+            if (GETPOSTINT('version')) {
+                $ext = 'version=' . GETPOSTINT('version'); // useful to force no cache on css/js
+            }
+            // Refresh value of MAIN_IHM_PARAMS_REV before forging the parameter line.
+            if (GETPOST('dol_resetcache')) {
+                dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", getDolGlobalInt('MAIN_IHM_PARAMS_REV') + 1, 'chaine', 0, '', $conf->entity);
+            }
+
+            $themeparam = '?lang=' . $langs->defaultlang . '&amp;theme=' . $conf->theme . (GETPOST('optioncss', 'aZ09') ? '&amp;optioncss=' . GETPOST('optioncss', 'aZ09', 1) : '') . (empty($user->id) ? '' : ('&amp;userid=' . $user->id)) . '&amp;entity=' . $conf->entity;
+
+            $themeparam .= ($ext ? '&amp;' . $ext : '') . '&amp;revision=' . getDolGlobalInt("MAIN_IHM_PARAMS_REV");
+            if (GETPOSTISSET('dol_hide_topmenu')) {
+                $themeparam .= '&amp;dol_hide_topmenu=' . GETPOSTINT('dol_hide_topmenu');
+            }
+            if (GETPOSTISSET('dol_hide_leftmenu')) {
+                $themeparam .= '&amp;dol_hide_leftmenu=' . GETPOSTINT('dol_hide_leftmenu');
+            }
+            if (GETPOSTISSET('dol_optimize_smallscreen')) {
+                $themeparam .= '&amp;dol_optimize_smallscreen=' . GETPOSTINT('dol_optimize_smallscreen');
+            }
+            if (GETPOSTISSET('dol_no_mouse_hover')) {
+                $themeparam .= '&amp;dol_no_mouse_hover=' . GETPOSTINT('dol_no_mouse_hover');
+            }
+            if (GETPOSTISSET('dol_use_jmobile')) {
+                $themeparam .= '&amp;dol_use_jmobile=' . GETPOSTINT('dol_use_jmobile');
+                $conf->dol_use_jmobile = GETPOSTINT('dol_use_jmobile');
+            }
+            if (GETPOSTISSET('THEME_DARKMODEENABLED')) {
+                $themeparam .= '&amp;THEME_DARKMODEENABLED=' . GETPOSTINT('THEME_DARKMODEENABLED');
+            }
+            if (GETPOSTISSET('THEME_SATURATE_RATIO')) {
+                $themeparam .= '&amp;THEME_SATURATE_RATIO=' . GETPOSTINT('THEME_SATURATE_RATIO');
+            }
+
+            if (getDolGlobalString('MAIN_ENABLE_FONT_ROBOTO')) {
+                print '<link rel="preconnect" href="https://fonts.gstatic.com">' . "\n";
+                print '<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;300;400;500;600&display=swap" rel="stylesheet">' . "\n";
+            }
+
+            if (!defined('DISABLE_JQUERY') && !$disablejs && $conf->use_javascript_ajax) {
+                print '<!-- Includes CSS for JQuery (Ajax library) -->' . "\n";
+                $jquerytheme = 'base';
+                if (getDolGlobalString('MAIN_USE_JQUERY_THEME')) {
+                    $jquerytheme = getDolGlobalString('MAIN_USE_JQUERY_THEME');
+                }
+                if (constant('JS_JQUERY_UI')) {
+                    print '<link rel="stylesheet" type="text/css" href="' . JS_JQUERY_UI . 'css/' . $jquerytheme . '/jquery-ui.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // Forced JQuery
+                } else {
+                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/css/' . $jquerytheme . '/jquery-ui.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JQuery
+                }
+                if (!defined('DISABLE_JQUERY_JNOTIFY')) {
+                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify-alt.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JNotify
+                }
+                if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {     // jQuery plugin "mutiselect", "multiple-select", "select2"...
+                    $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
+                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/css/' . $tmpplugin . '.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
+                }
+            }
+
+            if (!defined('DISABLE_FONT_AWSOME')) {
+                print '<!-- Includes CSS for font awesome -->' . "\n";
+                $fontawesome_directory = getDolGlobalString('MAIN_FONTAWESOME_DIRECTORY', '/theme/common/fontawesome-5');
+                print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . $fontawesome_directory . '/css/all.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
+            }
+
+            print '<!-- Includes CSS for Dolibarr theme -->' . "\n";
+            // Output style sheets (optioncss='print' or ''). Note: $conf->css looks like '/theme/eldy/style.css.php'
+            $themepath = dol_buildpath($conf->css, 1);
+            $themesubdir = '';
+            if (!empty($conf->modules_parts['theme'])) {    // This slow down
+                foreach ($conf->modules_parts['theme'] as $reldir) {
+                    if (file_exists(dol_buildpath($reldir . $conf->css, 0))) {
+                        $themepath = dol_buildpath($reldir . $conf->css, 1);
+                        $themesubdir = $reldir;
+                        break;
+                    }
+                }
+            }
+
+            //print 'themepath='.$themepath.' themeparam='.$themeparam;exit;
+            print '<link rel="stylesheet" type="text/css" href="' . $themepath . $themeparam . '">' . "\n";
+            if (getDolGlobalString('MAIN_FIX_FLASH_ON_CHROME')) {
+                print '<!-- Includes CSS that does not exists as a workaround of flash bug of chrome -->' . "\n" . '<link rel="stylesheet" type="text/css" href="filethatdoesnotexiststosolvechromeflashbug">' . "\n";
+            }
+
+            // CSS forced by modules (relative url starting with /)
+            if (!empty($conf->modules_parts['css'])) {
+                $arraycss = (array) $conf->modules_parts['css'];
+                foreach ($arraycss as $modcss => $filescss) {
+                    $filescss = (array) $filescss; // To be sure filecss is an array
+                    foreach ($filescss as $cssfile) {
+                        if (empty($cssfile)) {
+                            dol_syslog("Warning: module " . $modcss . " declared a css path file into its descriptor that is empty.", LOG_WARNING);
+                        }
+                        // cssfile is a relative path
+                        $urlforcss = dol_buildpath($cssfile, 1);
+                        if ($urlforcss && $urlforcss != '/') {
+                            print '<!-- Includes CSS added by module ' . $modcss . ' -->' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $urlforcss;
+                            // We add params only if page is not static, because some web server setup does not return content type text/css if url has parameters, so browser cache is not used.
+                            if (!preg_match('/\.css$/i', $cssfile)) {
+                                print $themeparam;
+                            }
+                            print '">' . "\n";
+                        } else {
+                            dol_syslog("Warning: module " . $modcss . " declared a css path file for a file we can't find.", LOG_WARNING);
+                        }
+                    }
+                }
+            }
+            // CSS forced by page in top_htmlhead call (relative url starting with /)
+            if (is_array($arrayofcss)) {
+                foreach ($arrayofcss as $cssfile) {
+                    if (preg_match('/^(http|\/\/)/i', $cssfile)) {
+                        $urltofile = $cssfile;
+                    } else {
+                        $urltofile = dol_buildpath($cssfile, 1);
+                    }
+                    print '<!-- Includes CSS added by page -->' . "\n" . '<link rel="stylesheet" type="text/css" title="default" href="' . $urltofile;
+                    // We add params only if page is not static, because some web server setup does not return content type text/css if url has parameters and browser cache is not used.
+                    if (!preg_match('/\.css$/i', $cssfile)) {
+                        print $themeparam;
+                    }
+                    print '">' . "\n";
+                }
+            }
+
+            // Custom CSS
+            if (getDolGlobalString('MAIN_IHM_CUSTOM_CSS')) {
+                // If a custom CSS was set, we add link to the custom css php file
+                print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/theme/custom.css.php' . ($ext ? '?' . $ext : '') . '&amp;revision=' . getDolGlobalInt("MAIN_IHM_PARAMS_REV") . '">' . "\n";
+            }
+
+            // Output standard javascript links
+            if (!defined('DISABLE_JQUERY') && !$disablejs && !empty($conf->use_javascript_ajax)) {
+                // JQuery. Must be before other includes
+                print '<!-- Includes JS for JQuery -->' . "\n";
+                if (defined('JS_JQUERY') && constant('JS_JQUERY')) {
+                    print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY . 'jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                } else {
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/js/jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+                if (defined('JS_JQUERY_UI') && constant('JS_JQUERY_UI')) {
+                    print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY_UI . 'jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                } else {
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/js/jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+                // jQuery jnotify
+                if (!getDolGlobalString('MAIN_DISABLE_JQUERY_JNOTIFY') && !defined('DISABLE_JQUERY_JNOTIFY')) {
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+                // Table drag and drop lines
+                if (empty($disableforlogin) && !defined('DISABLE_JQUERY_TABLEDND')) {
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/tablednd/jquery.tablednd.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+                // Chart
+                if (empty($disableforlogin) && (!getDolGlobalString('MAIN_JS_GRAPH') || getDolGlobalString('MAIN_JS_GRAPH') == 'chart') && !defined('DISABLE_JS_GRAPH')) {
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/nnnick/chartjs/dist/chart.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+
+                // jQuery jeditable for Edit In Place features
+                if (getDolGlobalString('MAIN_USE_JQUERY_JEDITABLE') && !defined('DISABLE_JQUERY_JEDITABLE')) {
+                    print '<!-- JS to manage editInPlace feature -->' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ui-datepicker.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ui-autocomplete.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script>' . "\n";
+                    print 'var urlSaveInPlace = \'' . DOL_URL_ROOT . '/core/ajax/saveinplace.php\';' . "\n";
+                    print 'var urlLoadInPlace = \'' . DOL_URL_ROOT . '/core/ajax/loadinplace.php\';' . "\n";
+                    print 'var tooltipInPlace = \'' . $langs->transnoentities('ClickToEdit') . '\';' . "\n"; // Added in title attribute of span
+                    print 'var placeholderInPlace = \'&nbsp;\';' . "\n"; // If we put another string than $langs->trans("ClickToEdit") here, nothing is shown. If we put empty string, there is error, Why ?
+                    print 'var cancelInPlace = \'' . $langs->trans("Cancel") . '\';' . "\n";
+                    print 'var submitInPlace = \'' . $langs->trans('Ok') . '\';' . "\n";
+                    print 'var indicatorInPlace = \'<img src="' . DOL_URL_ROOT . "/theme/" . $conf->theme . "/img/working.gif" . '">\';' . "\n";
+                    print 'var withInPlace = 300;'; // width in pixel for default string edit
+                    print '</script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/editinplace.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ckeditor.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+                // jQuery Timepicker
+                if (getDolGlobalString('MAIN_USE_JQUERY_TIMEPICKER') || defined('REQUIRE_JQUERY_TIMEPICKER')) {
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/timepicker/jquery-ui-timepicker-addon.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/timepicker.js.php?lang=' . $langs->defaultlang . ($ext ? '&amp;' . $ext : '') . '"></script>' . "\n";
+                }
+                if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {
+                    // jQuery plugin "mutiselect", "multiple-select", "select2", ...
+                    $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/js/' . $tmpplugin . '.full.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n"; // We include full because we need the support of containerCssClass
+                }
+                if (!defined('DISABLE_MULTISELECT')) {     // jQuery plugin "mutiselect" to select with checkboxes. Can be removed once we have an enhanced search tool
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/multiselect/jquery.multi-select.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+            }
+
+            if (!$disablejs && !empty($conf->use_javascript_ajax)) {
+                // CKEditor
+                if (empty($disableforlogin) && (isModEnabled('fckeditor') && (!getDolGlobalString('FCKEDITOR_EDITORNAME') || getDolGlobalString('FCKEDITOR_EDITORNAME') == 'ckeditor') && !defined('DISABLE_CKEDITOR')) || defined('FORCE_CKEDITOR')) {
+                    print '<!-- Includes JS for CKEditor -->' . "\n";
+                    $pathckeditor = DOL_URL_ROOT . '/includes/ckeditor/ckeditor/';
+                    $jsckeditor = 'ckeditor.js';
+                    if (constant('JS_CKEDITOR')) {
+                        // To use external ckeditor 4 js lib
+                        $pathckeditor = constant('JS_CKEDITOR');
+                    }
+                    print '<script nonce="' . getNonce() . '">';
+                    print '/* enable ckeditor by main.inc.php */';
+                    print 'var CKEDITOR_BASEPATH = \'' . dol_escape_js($pathckeditor) . '\';' . "\n";
+                    print 'var ckeditorConfig = \'' . dol_escape_js(dol_buildpath($themesubdir . '/theme/' . $conf->theme . '/ckeditor/config.js' . ($ext ? '?' . $ext : ''), 1)) . '\';' . "\n"; // $themesubdir='' in standard usage
+                    print 'var ckeditorFilebrowserBrowseUrl = \'' . DOL_URL_ROOT . '/core/filemanagerdol/browser/default/browser.php?Connector=' . DOL_URL_ROOT . '/core/filemanagerdol/connectors/php/connector.php\';' . "\n";
+                    print 'var ckeditorFilebrowserImageBrowseUrl = \'' . DOL_URL_ROOT . '/core/filemanagerdol/browser/default/browser.php?Type=Image&Connector=' . DOL_URL_ROOT . '/core/filemanagerdol/connectors/php/connector.php\';' . "\n";
+                    print '</script>' . "\n";
+                    print '<script src="' . $pathckeditor . $jsckeditor . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script>';
+                    if (GETPOST('mode', 'aZ09') == 'Full_inline') {
+                        print 'CKEDITOR.disableAutoInline = false;' . "\n";
+                    } else {
+                        print 'CKEDITOR.disableAutoInline = true;' . "\n";
+                    }
+                    print '</script>' . "\n";
+                }
+
+                // Browser notifications (if NOREQUIREMENU is on, it is mostly a page for popup, so we do not enable notif too. We hide also for public pages).
+                if (!defined('NOBROWSERNOTIF') && !defined('NOREQUIREMENU') && !defined('NOLOGIN')) {
+                    $enablebrowsernotif = false;
+                    if (isModEnabled('agenda') && getDolGlobalString('AGENDA_REMINDER_BROWSER')) {
+                        $enablebrowsernotif = true;
+                    }
+                    if ($conf->browser->layout == 'phone') {
+                        $enablebrowsernotif = false;
+                    }
+                    if ($enablebrowsernotif) {
+                        print '<!-- Includes JS of Dolibarr (browser layout = ' . $conf->browser->layout . ')-->' . "\n";
+                        print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/lib_notification.js.php' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    }
+                }
+
+                // Global js function
+                print '<!-- Includes JS of Dolibarr -->' . "\n";
+                print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/lib_head.js.php?lang=' . $langs->defaultlang . ($ext ? '&amp;' . $ext : '') . '"></script>' . "\n";
+
+                // JS forced by modules (relative url starting with /)
+                if (!empty($conf->modules_parts['js'])) {       // $conf->modules_parts['js'] is array('module'=>array('file1','file2'))
+                    $arrayjs = (array) $conf->modules_parts['js'];
+                    foreach ($arrayjs as $modjs => $filesjs) {
+                        $filesjs = (array) $filesjs; // To be sure filejs is an array
+                        foreach ($filesjs as $jsfile) {
+                            // jsfile is a relative path
+                            $urlforjs = dol_buildpath($jsfile, 1);
+                            if ($urlforjs && $urlforjs != '/') {
+                                print '<!-- Include JS added by module ' . $modjs . '-->' . "\n";
+                                print '<script nonce="' . getNonce() . '" src="' . $urlforjs . ((strpos($jsfile, '?') === false) ? '?' : '&amp;') . 'lang=' . $langs->defaultlang . '"></script>' . "\n";
+                            } else {
+                                dol_syslog("Warning: module " . $modjs . " declared a js path file for a file we can't find.", LOG_WARNING);
+                            }
+                        }
+                    }
+                }
+                // JS forced by page in top_htmlhead (relative url starting with /)
+                if (is_array($arrayofjs)) {
+                    print '<!-- Includes JS added by page -->' . "\n";
+                    foreach ($arrayofjs as $jsfile) {
+                        if (preg_match('/^(http|\/\/)/i', $jsfile)) {
+                            print '<script nonce="' . getNonce() . '" src="' . $jsfile . ((strpos($jsfile, '?') === false) ? '?' : '&amp;') . 'lang=' . $langs->defaultlang . '"></script>' . "\n";
+                        } else {
+                            print '<script nonce="' . getNonce() . '" src="' . dol_buildpath($jsfile, 1) . ((strpos($jsfile, '?') === false) ? '?' : '&amp;') . 'lang=' . $langs->defaultlang . '"></script>' . "\n";
+                        }
+                    }
+                }
+            }
+
+            //If you want to load custom javascript file from your selected theme directory
+            if (getDolGlobalString('ALLOW_THEME_JS')) {
+                $theme_js = dol_buildpath('/theme/' . $conf->theme . '/' . $conf->theme . '.js', 0);
+                if (file_exists($theme_js)) {
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/theme/' . $conf->theme . '/' . $conf->theme . '.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                }
+            }
+
+            if (!empty($head)) {
+                print $head . "\n";
+            }
+            if (getDolGlobalString('MAIN_HTML_HEADER')) {
+                print getDolGlobalString('MAIN_HTML_HEADER') . "\n";
+            }
+
+            $parameters = [];
+            $result = $hookmanager->executeHooks('addHtmlHeader', $parameters); // Note that $action and $object may have been modified by some hooks
+            print $hookmanager->resPrint; // Replace Title to show
+
+            print "</head>\n\n";
+        }
+
+        $conf->headerdone = 1; // To tell header was output
+    }
+}
+
+if (!function_exists('top_menu')) {
+    /**
+     *  Show an HTML header + a BODY + The top menu bar
+     *
+     * @param string $head                              Lines in the HEAD
+     * @param string $title                             Title of web page
+     * @param string $target                            Target to use in menu links (Example: '' or '_top')
+     * @param int    $disablejs                         Do not output links to js (Ex: qd fonction utilisee par sous
+     *                                                  formulaire Ajax)
+     * @param int    $disablehead                       Do not output head section
+     * @param array  $arrayofjs                         Array of js files to add in header
+     * @param array  $arrayofcss                        Array of css files to add in header
+     * @param string $morequerystring                   Query string to add to the link "print" to get same parameters (use
+     *                                                  only if autodetect fails)
+     * @param string $helppagename                      Name of wiki page for help ('' by default).
+     *                                                  Syntax is: For a wiki page:
+     *                                                  EN:EnglishPage|FR:FrenchPage|ES:SpanishPage|DE:GermanPage For other
+     *                                                  external page: http://server/url
+     *
+     * @return     void
+     */
+    function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [], $morequerystring = '', $helppagename = '')
+    {
+        global $user, $conf, $langs, $db, $form;
+        global $dolibarr_main_authentication, $dolibarr_main_demo;
+        global $hookmanager, $menumanager;
+
+        $searchform = '';
+
+        // Instantiate hooks for external modules
+        $hookmanager->initHooks(['toprightmenu']);
+
+        $toprightmenu = '';
+
+        // For backward compatibility with old modules
+        if (empty($conf->headerdone)) {
+            $disablenofollow = 0;
+            top_htmlhead($head, $title, $disablejs, $disablehead, $arrayofjs, $arrayofcss, 0, $disablenofollow);
+            print '<body id="mainbody">';
+        }
+
+        /*
+         * Top menu
+         */
+        if ((empty($conf->dol_hide_topmenu) || GETPOSTINT('dol_invisible_topmenu')) && (!defined('NOREQUIREMENU') || !constant('NOREQUIREMENU'))) {
+            if (!isset($form) || !is_object($form)) {
+                include_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
+                $form = new Form($db);
+            }
+
+            print "\n" . '<!-- Start top horizontal -->' . "\n";
+
+            print '<header id="id-top" class="side-nav-vert' . (GETPOSTINT('dol_invisible_topmenu') ? ' hidden' : '') . '">'; // dol_invisible_topmenu differs from dol_hide_topmenu: dol_invisible_topmenu means we output menu but we make it invisible.
+
+            // Show menu entries
+            print '<div id="tmenu_tooltip' . (!getDolGlobalString('MAIN_MENU_INVERT') ? '' : 'invert') . '" class="tmenu">' . "\n";
+            $menumanager->atarget = $target;
+            $menumanager->showmenu('top', ['searchform' => $searchform]); // This contains a \n
+            print "</div>\n";
+
+            // Define link to login card
+            $appli = constant('DOL_APPLICATION_TITLE');
+            if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+                $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
+                if (preg_match('/\d\.\d/', $appli)) {
+                    if (!preg_match('/' . preg_quote(DOL_VERSION) . '/', $appli)) {
+                        $appli .= " (" . DOL_VERSION . ")"; // If new title contains a version that is different than core
+                    }
+                } else {
+                    $appli .= " " . DOL_VERSION;
+                }
+            } else {
+                $appli .= " " . DOL_VERSION;
+            }
+
+            if (getDolGlobalInt('MAIN_FEATURES_LEVEL')) {
+                $appli .= "<br>" . $langs->trans("LevelOfFeature") . ': ' . getDolGlobalInt('MAIN_FEATURES_LEVEL');
+            }
+
+            $logouttext = '';
+            $logouthtmltext = '';
+            if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                //$logouthtmltext=$appli.'<br>';
+                $stringforfirstkey = $langs->trans("KeyboardShortcut");
+                if ($conf->browser->name == 'chrome') {
+                    $stringforfirstkey .= ' ALT +';
+                } elseif ($conf->browser->name == 'firefox') {
+                    $stringforfirstkey .= ' ALT + SHIFT +';
+                } else {
+                    $stringforfirstkey .= ' CTL +';
+                }
+                if ($_SESSION["dol_authmode"] != 'forceuser' && $_SESSION["dol_authmode"] != 'http') {
+                    $logouthtmltext .= $langs->trans("Logout") . '<br>';
+                    $logouttext .= '<a accesskey="l" href="' . DOL_URL_ROOT . '/user/logout.php?token=' . newToken() . '">';
+                    $logouttext .= img_picto($langs->trans('Logout') . ' (' . $stringforfirstkey . ' l)', 'sign-out', '', false, 0, 0, '', 'atoplogin valignmiddle');
+                    $logouttext .= '</a>';
+                } else {
+                    $logouthtmltext .= $langs->trans("NoLogoutProcessWithAuthMode", $_SESSION["dol_authmode"]);
+                    $logouttext .= img_picto($langs->trans('Logout') . ' (' . $stringforfirstkey . ' l)', 'sign-out', '', false, 0, 0, '', 'atoplogin valignmiddle opacitymedium');
+                }
+            }
+
+            print '<div class="login_block usedropdown">' . "\n";
+
+            $toprightmenu .= '<div class="login_block_other">';
+
+            // Execute hook printTopRightMenu (hooks should output string like '<div class="login"><a href="">mylink</a></div>')
+            $parameters = [];
+            $result = $hookmanager->executeHooks('printTopRightMenu', $parameters); // Note that $action and $object may have been modified by some hooks
+            if (is_numeric($result)) {
+                if ($result == 0) {
+                    $toprightmenu .= $hookmanager->resPrint; // add
+                } else {
+                    $toprightmenu = $hookmanager->resPrint; // replace
+                }
+            } else {
+                $toprightmenu .= $result; // For backward compatibility
+            }
+
+            // Link to module builder
+            if (isModEnabled('modulebuilder')) {
+                $text = '<a href="' . DOL_URL_ROOT . '/modulebuilder/index.php?mainmenu=home&leftmenu=admintools" target="modulebuilder">';
+                //$text.= img_picto(":".$langs->trans("ModuleBuilder"), 'printer_top.png', 'class="printer"');
+                $text .= '<span class="fa fa-bug atoplogin valignmiddle"></span>';
+                $text .= '</a>';
+                // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
+                $toprightmenu .= $form->textwithtooltip('', $langs->trans("ModuleBuilder"), 2, 1, $text, 'login_block_elem', 2);
+            }
+
+            // Link to print main content area (optioncss=print)
+            if (!getDolGlobalString('MAIN_PRINT_DISABLELINK') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                $qs = dol_escape_htmltag($_SERVER["QUERY_STRING"]);
+
+                if (isset($_POST) && is_array($_POST)) {
+                    foreach ($_POST as $key => $value) {
+                        $key = preg_replace('/[^a-z0-9_\.\-\[\]]/i', '', $key);
+                        if (in_array($key, ['action', 'massaction', 'password'])) {
+                            continue;
+                        }
+                        if (!is_array($value)) {
+                            if ($value !== '') {
+                                $qs .= '&' . urlencode($key) . '=' . urlencode($value);
+                            }
+                        } else {
+                            foreach ($value as $value2) {
+                                if (($value2 !== '') && (!is_array($value2))) {
+                                    $qs .= '&' . urlencode($key) . '[]=' . urlencode($value2);
+                                }
+                            }
+                        }
+                    }
+                }
+                $qs .= (($qs && $morequerystring) ? '&' : '') . $morequerystring;
+                $text = '<a href="' . dol_escape_htmltag($_SERVER['PHP_SELF']) . '?' . $qs . ($qs ? '&' : '') . 'optioncss=print" target="_blank" rel="noopener noreferrer">';
+                //$text.= img_picto(":".$langs->trans("PrintContentArea"), 'printer_top.png', 'class="printer"');
+                $text .= '<span class="fa fa-print atoplogin valignmiddle"></span>';
+                $text .= '</a>';
+                // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
+                $toprightmenu .= $form->textwithtooltip('', $langs->trans("PrintContentArea"), 2, 1, $text, 'login_block_elem', 2);
+            }
+
+            // Link to Dolibarr wiki pages
+            if (!getDolGlobalString('MAIN_HELP_DISABLELINK') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                $langs->load("help");
+
+                $helpbaseurl = '';
+                $helppage = '';
+                $mode = '';
+                $helppresent = '';
+
+                if (empty($helppagename)) {
+                    $helppagename = 'EN:User_documentation|FR:Documentation_utilisateur|ES:Documentación_usuarios|DE:Benutzerdokumentation';
+                } else {
+                    $helppresent = 'helppresent';
+                }
+
+                // Get helpbaseurl, helppage and mode from helppagename and langs
+                $arrayres = getHelpParamFor($helppagename, $langs);
+                $helpbaseurl = $arrayres['helpbaseurl'];
+                $helppage = $arrayres['helppage'];
+                $mode = $arrayres['mode'];
+
+                // Link to help pages
+                if ($helpbaseurl && $helppage) {
+                    $text = '';
+                    $title = $langs->trans($mode == 'wiki' ? 'GoToWikiHelpPage' : 'GoToHelpPage') . ', ';
+                    if ($mode == 'wiki') {
+                        $title .= '<br>' . img_picto('', 'globe', 'class="pictofixedwidth"') . $langs->trans("PageWiki") . ' ' . dol_escape_htmltag('"' . strtr($helppage, '_', ' ') . '"');
+                        if ($helppresent) {
+                            $title .= ' <span class="opacitymedium">(' . $langs->trans("DedicatedPageAvailable") . ')</span>';
+                        } else {
+                            $title .= ' <span class="opacitymedium">(' . $langs->trans("HomePage") . ')</span>';
+                        }
+                    }
+                    $text .= '<a class="help" target="_blank" rel="noopener noreferrer" href="';
+                    if ($mode == 'wiki') {
+                        $text .= sprintf($helpbaseurl, urlencode(html_entity_decode($helppage)));
+                    } else {
+                        $text .= sprintf($helpbaseurl, $helppage);
+                    }
+                    $text .= '">';
+                    $text .= '<span class="fa fa-question-circle atoplogin valignmiddle' . ($helppresent ? ' ' . $helppresent : '') . '"></span>';
+                    $text .= '<span class="fa fa-long-arrow-alt-up helppresentcircle' . ($helppresent ? '' : ' unvisible') . '"></span>';
+                    $text .= '</a>';
+                    // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
+                    $toprightmenu .= $form->textwithtooltip('', $title, 2, 1, $text, 'login_block_elem', 2);
+                }
+
+                // Version
+                if (getDolGlobalString('MAIN_SHOWDATABASENAMEINHELPPAGESLINK')) {
+                    $langs->load('admin');
+                    $appli .= '<br>' . $langs->trans("Database") . ': ' . $db->database_name;
+                }
+            }
+
+            if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                $text = '<span class="aversion"><span class="hideonsmartphone small">' . DOL_VERSION . '</span></span>';
+                // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
+                $toprightmenu .= $form->textwithtooltip('', $appli, 2, 1, $text, 'login_block_elem', 2);
+            }
+
+            // Logout link
+            $toprightmenu .= $form->textwithtooltip('', $logouthtmltext, 2, 1, $logouttext, 'login_block_elem logout-btn', 2);
+
+            $toprightmenu .= '</div>'; // end div class="login_block_other"
+
+
+            // Add login user link
+            $toprightmenu .= '<div class="login_block_user">';
+
+            // Login name with photo and tooltip
+            $mode = -1;
+            $toprightmenu .= '<div class="inline-block login_block_elem login_block_elem_name nowrap centpercent" style="padding: 0px;">';
+
+            if (getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
+                // Add search dropdown
+                $toprightmenu .= top_menu_search();
+            }
+
+            if (getDolGlobalString('MAIN_USE_TOP_MENU_QUICKADD_DROPDOWN')) {
+                // Add search dropdown
+                $toprightmenu .= top_menu_quickadd();
+            }
+
+            // Add bookmark dropdown
+            $toprightmenu .= top_menu_bookmark();
+
+            // Add user dropdown
+            $toprightmenu .= top_menu_user();
+
+            $toprightmenu .= '</div>';
+
+            $toprightmenu .= '</div>' . "\n";
+
+
+            print $toprightmenu;
+
+            print "</div>\n"; // end div class="login_block"
+
+            print '</header>';
+            //print '<header class="header2">&nbsp;</header>';
+
+            print '<div style="clear: both;"></div>';
+            print "<!-- End top horizontal menu -->\n\n";
+        }
+
+        if (empty($conf->dol_hide_leftmenu) && empty($conf->dol_use_jmobile)) {
+            print '<!-- Begin div id-container --><div id="id-container" class="id-container">';
+        }
+    }
+}
+
+if (!function_exists('top_menu_user')) {
+    /**
+     * Build the tooltip on user login
+     *
+     * @param int    $hideloginname Hide login name. Show only the image.
+     * @param string $urllogout     URL for logout (Will use DOL_URL_ROOT.'/user/logout.php?token=...' if empty)
+     *
+     * @return  string                          HTML content
+     */
+    function top_menu_user($hideloginname = 0, $urllogout = '')
+    {
+        global $langs, $conf, $db, $hookmanager, $user, $mysoc;
+        global $dolibarr_main_authentication, $dolibarr_main_demo;
+        global $menumanager;
+
+        $langs->load('companies');
+
+        $userImage = $userDropDownImage = '';
+        if (!empty($user->photo)) {
+            $userImage = Form::showphoto('userphoto', $user, 0, 0, 0, 'photouserphoto userphoto', 'small', 0, 1);
+            $userDropDownImage = Form::showphoto('userphoto', $user, 0, 0, 0, 'dropdown-user-image', 'small', 0, 1);
+        } else {
+            $nophoto = '/public/theme/common/user_anonymous.png';
+            if ($user->gender == 'man') {
+                $nophoto = '/public/theme/common/user_man.png';
+            }
+            if ($user->gender == 'woman') {
+                $nophoto = '/public/theme/common/user_woman.png';
+            }
+
+            $userImage = '<img class="photo photouserphoto userphoto" alt="" src="' . DOL_URL_ROOT . $nophoto . '">';
+            $userDropDownImage = '<img class="photo dropdown-user-image" alt="" src="' . DOL_URL_ROOT . $nophoto . '">';
+        }
+
+        $dropdownBody = '';
+        $dropdownBody .= '<span id="topmenulogincompanyinfo-btn"><i class="fa fa-caret-right"></i> ' . $langs->trans("ShowCompanyInfos") . '</span>';
+        $dropdownBody .= '<div id="topmenulogincompanyinfo" >';
+
+        $dropdownBody .= '<br><b>' . $langs->trans("Company") . '</b>: <span>' . dol_escape_htmltag($mysoc->name) . '</span>';
+        if ($langs->transcountry("ProfId1", $mysoc->country_code) != '-') {
+            $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId1", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_SIREN"), 1) . '</span>';
+        }
+        if ($langs->transcountry("ProfId2", $mysoc->country_code) != '-') {
+            $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId2", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_SIRET"), 2) . '</span>';
+        }
+        if ($langs->transcountry("ProfId3", $mysoc->country_code) != '-') {
+            $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId3", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_APE"), 3) . '</span>';
+        }
+        if ($langs->transcountry("ProfId4", $mysoc->country_code) != '-') {
+            $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId4", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_RCS"), 4) . '</span>';
+        }
+        if ($langs->transcountry("ProfId5", $mysoc->country_code) != '-') {
+            $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId5", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_PROFID5"), 5) . '</span>';
+        }
+        if ($langs->transcountry("ProfId6", $mysoc->country_code) != '-') {
+            $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId6", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_PROFID6"), 6) . '</span>';
+        }
+        $dropdownBody .= '<br><b>' . $langs->trans("VATIntraShort") . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_TVAINTRA"), 'VAT') . '</span>';
+        $dropdownBody .= '<br><b>' . $langs->trans("Country") . '</b>: <span>' . ($mysoc->country_code ? $langs->trans("Country" . $mysoc->country_code) : '') . '</span>';
+        if (isModEnabled('multicurrency')) {
+            $dropdownBody .= '<br><b>' . $langs->trans("Currency") . '</b>: <span>' . $conf->currency . '</span>';
+        }
+        $dropdownBody .= '</div>';
+
+        $dropdownBody .= '<br>';
+        $dropdownBody .= '<span id="topmenuloginmoreinfo-btn"><i class="fa fa-caret-right"></i> ' . $langs->trans("ShowMoreInfos") . '</span>';
+        $dropdownBody .= '<div id="topmenuloginmoreinfo" >';
+
+        // login infos
+        if (!empty($user->admin)) {
+            $dropdownBody .= '<br><b>' . $langs->trans("Administrator") . '</b>: ' . yn($user->admin);
+        }
+        if (!empty($user->socid)) { // Add thirdparty for external users
+            $thirdpartystatic = new Societe($db);
+            $thirdpartystatic->fetch($user->socid);
+            $companylink = ' ' . $thirdpartystatic->getNomUrl(2); // picto only of company
+            $company = ' (' . $langs->trans("Company") . ': ' . $thirdpartystatic->name . ')';
+        }
+        $type = ($user->socid ? $langs->trans("External") . $company : $langs->trans("Internal"));
+        $dropdownBody .= '<br><b>' . $langs->trans("Type") . ':</b> ' . $type;
+        $dropdownBody .= '<br><b>' . $langs->trans("Status") . '</b>: ' . $user->getLibStatut(0);
+        $dropdownBody .= '<br>';
+
+        $dropdownBody .= '<br><u>' . $langs->trans("Session") . '</u>';
+        $dropdownBody .= '<br><b>' . $langs->trans("IPAddress") . '</b>: ' . dol_escape_htmltag($_SERVER["REMOTE_ADDR"]);
+        if (getDolGlobalString('MAIN_MODULE_MULTICOMPANY')) {
+            $dropdownBody .= '<br><b>' . $langs->trans("ConnectedOnMultiCompany") . ':</b> ' . $conf->entity . ' (user entity ' . $user->entity . ')';
+        }
+        $dropdownBody .= '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . $_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)');
+        $dropdownBody .= '<br><b>' . $langs->trans("ConnectedSince") . ':</b> ' . dol_print_date($user->datelastlogin, "dayhour", 'tzuser');
+        $dropdownBody .= '<br><b>' . $langs->trans("PreviousConnexion") . ':</b> ' . dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser');
+        $dropdownBody .= '<br><b>' . $langs->trans("CurrentTheme") . ':</b> ' . $conf->theme;
+        $dropdownBody .= '<br><b>' . $langs->trans("CurrentMenuManager") . ':</b> ' . (isset($menumanager) ? $menumanager->name : 'unknown');
+        $langFlag = picto_from_langcode($langs->getDefaultLang());
+        $dropdownBody .= '<br><b>' . $langs->trans("CurrentUserLanguage") . ':</b> ' . ($langFlag ? $langFlag . ' ' : '') . $langs->getDefaultLang();
+
+        $tz = (int) $_SESSION['dol_tz'] + (int) $_SESSION['dol_dst'];
+        $dropdownBody .= '<br><b>' . $langs->trans("ClientTZ") . ':</b> ' . ($tz ? ($tz >= 0 ? '+' : '') . $tz : '');
+        $dropdownBody .= ' (' . $_SESSION['dol_tz_string'] . ')';
+        //$dropdownBody .= ' &nbsp; &nbsp; &nbsp; '.$langs->trans("DaylingSavingTime").': ';
+        //if ($_SESSION['dol_dst'] > 0) $dropdownBody .= yn(1);
+        //else $dropdownBody .= yn(0);
+
+        $dropdownBody .= '<br><b>' . $langs->trans("Browser") . ':</b> ' . $conf->browser->name . ($conf->browser->version ? ' ' . $conf->browser->version : '') . ' <small class="opacitymedium">(' . dol_escape_htmltag($_SERVER['HTTP_USER_AGENT']) . ')</small>';
+        $dropdownBody .= '<br><b>' . $langs->trans("Layout") . ':</b> ' . $conf->browser->layout;
+        $dropdownBody .= '<br><b>' . $langs->trans("Screen") . ':</b> ' . $_SESSION['dol_screenwidth'] . ' x ' . $_SESSION['dol_screenheight'];
+        if ($conf->browser->layout == 'phone') {
+            $dropdownBody .= '<br><b>' . $langs->trans("Phone") . ':</b> ' . $langs->trans("Yes");
+        }
+        if (!empty($_SESSION["disablemodules"])) {
+            $dropdownBody .= '<br><b>' . $langs->trans("DisabledModules") . ':</b> <br>' . implode(', ', explode(',', $_SESSION["disablemodules"]));
+        }
+        $dropdownBody .= '</div>';
+
+        // Execute hook
+        $parameters = ['user' => $user, 'langs' => $langs];
+        $result = $hookmanager->executeHooks('printTopRightMenuLoginDropdownBody', $parameters); // Note that $action and $object may have been modified by some hooks
+        if (is_numeric($result)) {
+            if ($result == 0) {
+                $dropdownBody .= $hookmanager->resPrint; // add
+            } else {
+                $dropdownBody = $hookmanager->resPrint; // replace
+            }
+        }
+
+        if (empty($urllogout)) {
+            $urllogout = DOL_URL_ROOT . '/user/logout.php?token=' . newToken();
+        }
+
+        // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
+        // accesskey is for Mac:               CTRL + key for all browsers
+        $stringforfirstkey = $langs->trans("KeyboardShortcut");
+        if ($conf->browser->name == 'chrome') {
+            $stringforfirstkey .= ' ALT +';
+        } elseif ($conf->browser->name == 'firefox') {
+            $stringforfirstkey .= ' ALT + SHIFT +';
+        } else {
+            $stringforfirstkey .= ' CTL +';
+        }
+
+        // Defined the links for bottom of card
+        $profilLink = '<a accesskey="u" href="' . DOL_URL_ROOT . '/user/card.php?id=' . $user->id . '" class="button-top-menu-dropdown" title="' . dol_escape_htmltag($langs->trans("YourUserFile") . ' (' . $stringforfirstkey . ' u)') . '"><i class="fa fa-user"></i>  ' . $langs->trans("Card") . '</a>';
+        $urltovirtualcard = '/user/virtualcard.php?id=' . ((int) $user->id);
+        $virtuelcardLink = dolButtonToOpenUrlInDialogPopup('publicvirtualcardmenu', $langs->transnoentitiesnoconv("PublicVirtualCardUrl") . (is_object($user) ? ' - ' . $user->getFullName($langs) : '') . ' (' . $stringforfirstkey . ' v)', img_picto($langs->trans("PublicVirtualCardUrl") . ' (' . $stringforfirstkey . ' v)', 'card', ''), $urltovirtualcard, '', 'button-top-menu-dropdown marginleftonly nohover', "closeTopMenuLoginDropdown()", '', 'v');
+        $logoutLink = '<a accesskey="l" href="' . $urllogout . '" class="button-top-menu-dropdown" title="' . dol_escape_htmltag($langs->trans("Logout") . ' (' . $stringforfirstkey . ' l)') . '"><i class="fa fa-sign-out-alt padingright"></i><span class="hideonsmartphone">' . $langs->trans("Logout") . '</span></a>';
+
+        $profilName = $user->getFullName($langs) . ' (' . $user->login . ')';
+        if (!empty($user->admin)) {
+            $profilName = '<i class="far fa-star classfortooltip" title="' . $langs->trans("Administrator") . '" ></i> ' . $profilName;
+        }
+
+        // Define version to show
         $appli = constant('DOL_APPLICATION_TITLE');
         if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
             $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
@@ -2217,369 +2605,8 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
             $appli .= " " . DOL_VERSION;
         }
 
-        if (getDolGlobalInt('MAIN_FEATURES_LEVEL')) {
-            $appli .= "<br>" . $langs->trans("LevelOfFeature") . ': ' . getDolGlobalInt('MAIN_FEATURES_LEVEL');
-        }
-
-        $logouttext = '';
-        $logouthtmltext = '';
         if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-            //$logouthtmltext=$appli.'<br>';
-            $stringforfirstkey = $langs->trans("KeyboardShortcut");
-            if ($conf->browser->name == 'chrome') {
-                $stringforfirstkey .= ' ALT +';
-            } elseif ($conf->browser->name == 'firefox') {
-                $stringforfirstkey .= ' ALT + SHIFT +';
-            } else {
-                $stringforfirstkey .= ' CTL +';
-            }
-            if ($_SESSION["dol_authmode"] != 'forceuser' && $_SESSION["dol_authmode"] != 'http') {
-                $logouthtmltext .= $langs->trans("Logout") . '<br>';
-                $logouttext .= '<a accesskey="l" href="' . DOL_URL_ROOT . '/user/logout.php?token=' . newToken() . '">';
-                $logouttext .= img_picto($langs->trans('Logout') . ' (' . $stringforfirstkey . ' l)', 'sign-out', '', false, 0, 0, '', 'atoplogin valignmiddle');
-                $logouttext .= '</a>';
-            } else {
-                $logouthtmltext .= $langs->trans("NoLogoutProcessWithAuthMode", $_SESSION["dol_authmode"]);
-                $logouttext .= img_picto($langs->trans('Logout') . ' (' . $stringforfirstkey . ' l)', 'sign-out', '', false, 0, 0, '', 'atoplogin valignmiddle opacitymedium');
-            }
-        }
-
-        print '<div class="login_block usedropdown">' . "\n";
-
-        $toprightmenu .= '<div class="login_block_other">';
-
-        // Execute hook printTopRightMenu (hooks should output string like '<div class="login"><a href="">mylink</a></div>')
-        $parameters = array();
-        $result = $hookmanager->executeHooks('printTopRightMenu', $parameters); // Note that $action and $object may have been modified by some hooks
-        if (is_numeric($result)) {
-            if ($result == 0) {
-                $toprightmenu .= $hookmanager->resPrint; // add
-            } else {
-                $toprightmenu = $hookmanager->resPrint; // replace
-            }
-        } else {
-            $toprightmenu .= $result; // For backward compatibility
-        }
-
-        // Link to module builder
-        if (isModEnabled('modulebuilder')) {
-            $text = '<a href="' . DOL_URL_ROOT . '/modulebuilder/index.php?mainmenu=home&leftmenu=admintools" target="modulebuilder">';
-            //$text.= img_picto(":".$langs->trans("ModuleBuilder"), 'printer_top.png', 'class="printer"');
-            $text .= '<span class="fa fa-bug atoplogin valignmiddle"></span>';
-            $text .= '</a>';
-            // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
-            $toprightmenu .= $form->textwithtooltip('', $langs->trans("ModuleBuilder"), 2, 1, $text, 'login_block_elem', 2);
-        }
-
-        // Link to print main content area (optioncss=print)
-        if (!getDolGlobalString('MAIN_PRINT_DISABLELINK') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-            $qs = dol_escape_htmltag($_SERVER["QUERY_STRING"]);
-
-            if (isset($_POST) && is_array($_POST)) {
-                foreach ($_POST as $key => $value) {
-                    $key = preg_replace('/[^a-z0-9_\.\-\[\]]/i', '', $key);
-                    if (in_array($key, array('action', 'massaction', 'password'))) {
-                        continue;
-                    }
-                    if (!is_array($value)) {
-                        if ($value !== '') {
-                            $qs .= '&' . urlencode($key) . '=' . urlencode($value);
-                        }
-                    } else {
-                        foreach ($value as $value2) {
-                            if (($value2 !== '') && (!is_array($value2))) {
-                                $qs .= '&' . urlencode($key) . '[]=' . urlencode($value2);
-                            }
-                        }
-                    }
-                }
-            }
-            $qs .= (($qs && $morequerystring) ? '&' : '') . $morequerystring;
-            $text = '<a href="' . dol_escape_htmltag($_SERVER['PHP_SELF']) . '?' . $qs . ($qs ? '&' : '') . 'optioncss=print" target="_blank" rel="noopener noreferrer">';
-            //$text.= img_picto(":".$langs->trans("PrintContentArea"), 'printer_top.png', 'class="printer"');
-            $text .= '<span class="fa fa-print atoplogin valignmiddle"></span>';
-            $text .= '</a>';
-            // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
-            $toprightmenu .= $form->textwithtooltip('', $langs->trans("PrintContentArea"), 2, 1, $text, 'login_block_elem', 2);
-        }
-
-        // Link to Dolibarr wiki pages
-        if (!getDolGlobalString('MAIN_HELP_DISABLELINK') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-            $langs->load("help");
-
-            $helpbaseurl = '';
-            $helppage = '';
-            $mode = '';
-            $helppresent = '';
-
-            if (empty($helppagename)) {
-                $helppagename = 'EN:User_documentation|FR:Documentation_utilisateur|ES:Documentación_usuarios|DE:Benutzerdokumentation';
-            } else {
-                $helppresent = 'helppresent';
-            }
-
-            // Get helpbaseurl, helppage and mode from helppagename and langs
-            $arrayres = getHelpParamFor($helppagename, $langs);
-            $helpbaseurl = $arrayres['helpbaseurl'];
-            $helppage = $arrayres['helppage'];
-            $mode = $arrayres['mode'];
-
-            // Link to help pages
-            if ($helpbaseurl && $helppage) {
-                $text = '';
-                $title = $langs->trans($mode == 'wiki' ? 'GoToWikiHelpPage' : 'GoToHelpPage') . ', ';
-                if ($mode == 'wiki') {
-                    $title .= '<br>' . img_picto('', 'globe', 'class="pictofixedwidth"') . $langs->trans("PageWiki") . ' ' . dol_escape_htmltag('"' . strtr($helppage, '_', ' ') . '"');
-                    if ($helppresent) {
-                        $title .= ' <span class="opacitymedium">(' . $langs->trans("DedicatedPageAvailable") . ')</span>';
-                    } else {
-                        $title .= ' <span class="opacitymedium">(' . $langs->trans("HomePage") . ')</span>';
-                    }
-                }
-                $text .= '<a class="help" target="_blank" rel="noopener noreferrer" href="';
-                if ($mode == 'wiki') {
-                    $text .= sprintf($helpbaseurl, urlencode(html_entity_decode($helppage)));
-                } else {
-                    $text .= sprintf($helpbaseurl, $helppage);
-                }
-                $text .= '">';
-                $text .= '<span class="fa fa-question-circle atoplogin valignmiddle' . ($helppresent ? ' ' . $helppresent : '') . '"></span>';
-                $text .= '<span class="fa fa-long-arrow-alt-up helppresentcircle' . ($helppresent ? '' : ' unvisible') . '"></span>';
-                $text .= '</a>';
-                // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
-                $toprightmenu .= $form->textwithtooltip('', $title, 2, 1, $text, 'login_block_elem', 2);
-            }
-
-            // Version
-            if (getDolGlobalString('MAIN_SHOWDATABASENAMEINHELPPAGESLINK')) {
-                $langs->load('admin');
-                $appli .= '<br>' . $langs->trans("Database") . ': ' . $db->database_name;
-            }
-        }
-
-        if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-            $text = '<span class="aversion"><span class="hideonsmartphone small">' . DOL_VERSION . '</span></span>';
-            // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
-            $toprightmenu .= $form->textwithtooltip('', $appli, 2, 1, $text, 'login_block_elem', 2);
-        }
-
-        // Logout link
-        $toprightmenu .= $form->textwithtooltip('', $logouthtmltext, 2, 1, $logouttext, 'login_block_elem logout-btn', 2);
-
-        $toprightmenu .= '</div>'; // end div class="login_block_other"
-
-
-        // Add login user link
-        $toprightmenu .= '<div class="login_block_user">';
-
-        // Login name with photo and tooltip
-        $mode = -1;
-        $toprightmenu .= '<div class="inline-block login_block_elem login_block_elem_name nowrap centpercent" style="padding: 0px;">';
-
-        if (getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
-            // Add search dropdown
-            $toprightmenu .= top_menu_search();
-        }
-
-        if (getDolGlobalString('MAIN_USE_TOP_MENU_QUICKADD_DROPDOWN')) {
-            // Add search dropdown
-            $toprightmenu .= top_menu_quickadd();
-        }
-
-        // Add bookmark dropdown
-        $toprightmenu .= top_menu_bookmark();
-
-        // Add user dropdown
-        $toprightmenu .= top_menu_user();
-
-        $toprightmenu .= '</div>';
-
-        $toprightmenu .= '</div>' . "\n";
-
-
-        print $toprightmenu;
-
-        print "</div>\n"; // end div class="login_block"
-
-        print '</header>';
-        //print '<header class="header2">&nbsp;</header>';
-
-        print '<div style="clear: both;"></div>';
-        print "<!-- End top horizontal menu -->\n\n";
-    }
-
-    if (empty($conf->dol_hide_leftmenu) && empty($conf->dol_use_jmobile)) {
-        print '<!-- Begin div id-container --><div id="id-container" class="id-container">';
-    }
-}
-
-
-/**
- * Build the tooltip on user login
- *
- * @param   int         $hideloginname      Hide login name. Show only the image.
- * @param   string      $urllogout          URL for logout (Will use DOL_URL_ROOT.'/user/logout.php?token=...' if empty)
- * @return  string                          HTML content
- */
-function top_menu_user($hideloginname = 0, $urllogout = '')
-{
-    global $langs, $conf, $db, $hookmanager, $user, $mysoc;
-    global $dolibarr_main_authentication, $dolibarr_main_demo;
-    global $menumanager;
-
-    $langs->load('companies');
-
-    $userImage = $userDropDownImage = '';
-    if (!empty($user->photo)) {
-        $userImage          = Form::showphoto('userphoto', $user, 0, 0, 0, 'photouserphoto userphoto', 'small', 0, 1);
-        $userDropDownImage  = Form::showphoto('userphoto', $user, 0, 0, 0, 'dropdown-user-image', 'small', 0, 1);
-    } else {
-        $nophoto = '/public/theme/common/user_anonymous.png';
-        if ($user->gender == 'man') {
-            $nophoto = '/public/theme/common/user_man.png';
-        }
-        if ($user->gender == 'woman') {
-            $nophoto = '/public/theme/common/user_woman.png';
-        }
-
-        $userImage = '<img class="photo photouserphoto userphoto" alt="" src="' . DOL_URL_ROOT . $nophoto . '">';
-        $userDropDownImage = '<img class="photo dropdown-user-image" alt="" src="' . DOL_URL_ROOT . $nophoto . '">';
-    }
-
-    $dropdownBody = '';
-    $dropdownBody .= '<span id="topmenulogincompanyinfo-btn"><i class="fa fa-caret-right"></i> ' . $langs->trans("ShowCompanyInfos") . '</span>';
-    $dropdownBody .= '<div id="topmenulogincompanyinfo" >';
-
-    $dropdownBody .= '<br><b>' . $langs->trans("Company") . '</b>: <span>' . dol_escape_htmltag($mysoc->name) . '</span>';
-    if ($langs->transcountry("ProfId1", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId1", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_SIREN"), 1) . '</span>';
-    }
-    if ($langs->transcountry("ProfId2", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId2", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_SIRET"), 2) . '</span>';
-    }
-    if ($langs->transcountry("ProfId3", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId3", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_APE"), 3) . '</span>';
-    }
-    if ($langs->transcountry("ProfId4", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId4", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_RCS"), 4) . '</span>';
-    }
-    if ($langs->transcountry("ProfId5", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId5", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_PROFID5"), 5) . '</span>';
-    }
-    if ($langs->transcountry("ProfId6", $mysoc->country_code) != '-') {
-        $dropdownBody .= '<br><b>' . $langs->transcountry("ProfId6", $mysoc->country_code) . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_PROFID6"), 6) . '</span>';
-    }
-    $dropdownBody .= '<br><b>' . $langs->trans("VATIntraShort") . '</b>: <span>' . dol_print_profids(getDolGlobalString("MAIN_INFO_TVAINTRA"), 'VAT') . '</span>';
-    $dropdownBody .= '<br><b>' . $langs->trans("Country") . '</b>: <span>' . ($mysoc->country_code ? $langs->trans("Country" . $mysoc->country_code) : '') . '</span>';
-    if (isModEnabled('multicurrency')) {
-        $dropdownBody .= '<br><b>' . $langs->trans("Currency") . '</b>: <span>' . $conf->currency . '</span>';
-    }
-    $dropdownBody .= '</div>';
-
-    $dropdownBody .= '<br>';
-    $dropdownBody .= '<span id="topmenuloginmoreinfo-btn"><i class="fa fa-caret-right"></i> ' . $langs->trans("ShowMoreInfos") . '</span>';
-    $dropdownBody .= '<div id="topmenuloginmoreinfo" >';
-
-    // login infos
-    if (!empty($user->admin)) {
-        $dropdownBody .= '<br><b>' . $langs->trans("Administrator") . '</b>: ' . yn($user->admin);
-    }
-    if (!empty($user->socid)) { // Add thirdparty for external users
-        $thirdpartystatic = new Societe($db);
-        $thirdpartystatic->fetch($user->socid);
-        $companylink = ' ' . $thirdpartystatic->getNomUrl(2); // picto only of company
-        $company = ' (' . $langs->trans("Company") . ': ' . $thirdpartystatic->name . ')';
-    }
-    $type = ($user->socid ? $langs->trans("External") . $company : $langs->trans("Internal"));
-    $dropdownBody .= '<br><b>' . $langs->trans("Type") . ':</b> ' . $type;
-    $dropdownBody .= '<br><b>' . $langs->trans("Status") . '</b>: ' . $user->getLibStatut(0);
-    $dropdownBody .= '<br>';
-
-    $dropdownBody .= '<br><u>' . $langs->trans("Session") . '</u>';
-    $dropdownBody .= '<br><b>' . $langs->trans("IPAddress") . '</b>: ' . dol_escape_htmltag($_SERVER["REMOTE_ADDR"]);
-    if (getDolGlobalString('MAIN_MODULE_MULTICOMPANY')) {
-        $dropdownBody .= '<br><b>' . $langs->trans("ConnectedOnMultiCompany") . ':</b> ' . $conf->entity . ' (user entity ' . $user->entity . ')';
-    }
-    $dropdownBody .= '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . $_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)');
-    $dropdownBody .= '<br><b>' . $langs->trans("ConnectedSince") . ':</b> ' . dol_print_date($user->datelastlogin, "dayhour", 'tzuser');
-    $dropdownBody .= '<br><b>' . $langs->trans("PreviousConnexion") . ':</b> ' . dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser');
-    $dropdownBody .= '<br><b>' . $langs->trans("CurrentTheme") . ':</b> ' . $conf->theme;
-    $dropdownBody .= '<br><b>' . $langs->trans("CurrentMenuManager") . ':</b> ' . (isset($menumanager) ? $menumanager->name : 'unknown');
-    $langFlag = picto_from_langcode($langs->getDefaultLang());
-    $dropdownBody .= '<br><b>' . $langs->trans("CurrentUserLanguage") . ':</b> ' . ($langFlag ? $langFlag . ' ' : '') . $langs->getDefaultLang();
-
-    $tz = (int) $_SESSION['dol_tz'] + (int) $_SESSION['dol_dst'];
-    $dropdownBody .= '<br><b>' . $langs->trans("ClientTZ") . ':</b> ' . ($tz ? ($tz >= 0 ? '+' : '') . $tz : '');
-    $dropdownBody .= ' (' . $_SESSION['dol_tz_string'] . ')';
-    //$dropdownBody .= ' &nbsp; &nbsp; &nbsp; '.$langs->trans("DaylingSavingTime").': ';
-    //if ($_SESSION['dol_dst'] > 0) $dropdownBody .= yn(1);
-    //else $dropdownBody .= yn(0);
-
-    $dropdownBody .= '<br><b>' . $langs->trans("Browser") . ':</b> ' . $conf->browser->name . ($conf->browser->version ? ' ' . $conf->browser->version : '') . ' <small class="opacitymedium">(' . dol_escape_htmltag($_SERVER['HTTP_USER_AGENT']) . ')</small>';
-    $dropdownBody .= '<br><b>' . $langs->trans("Layout") . ':</b> ' . $conf->browser->layout;
-    $dropdownBody .= '<br><b>' . $langs->trans("Screen") . ':</b> ' . $_SESSION['dol_screenwidth'] . ' x ' . $_SESSION['dol_screenheight'];
-    if ($conf->browser->layout == 'phone') {
-        $dropdownBody .= '<br><b>' . $langs->trans("Phone") . ':</b> ' . $langs->trans("Yes");
-    }
-    if (!empty($_SESSION["disablemodules"])) {
-        $dropdownBody .= '<br><b>' . $langs->trans("DisabledModules") . ':</b> <br>' . implode(', ', explode(',', $_SESSION["disablemodules"]));
-    }
-    $dropdownBody .= '</div>';
-
-    // Execute hook
-    $parameters = array('user' => $user, 'langs' => $langs);
-    $result = $hookmanager->executeHooks('printTopRightMenuLoginDropdownBody', $parameters); // Note that $action and $object may have been modified by some hooks
-    if (is_numeric($result)) {
-        if ($result == 0) {
-            $dropdownBody .= $hookmanager->resPrint; // add
-        } else {
-            $dropdownBody = $hookmanager->resPrint; // replace
-        }
-    }
-
-    if (empty($urllogout)) {
-        $urllogout = DOL_URL_ROOT . '/user/logout.php?token=' . newToken();
-    }
-
-    // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
-    // accesskey is for Mac:               CTRL + key for all browsers
-    $stringforfirstkey = $langs->trans("KeyboardShortcut");
-    if ($conf->browser->name == 'chrome') {
-        $stringforfirstkey .= ' ALT +';
-    } elseif ($conf->browser->name == 'firefox') {
-        $stringforfirstkey .= ' ALT + SHIFT +';
-    } else {
-        $stringforfirstkey .= ' CTL +';
-    }
-
-    // Defined the links for bottom of card
-    $profilLink = '<a accesskey="u" href="' . DOL_URL_ROOT . '/user/card.php?id=' . $user->id . '" class="button-top-menu-dropdown" title="' . dol_escape_htmltag($langs->trans("YourUserFile") . ' (' . $stringforfirstkey . ' u)') . '"><i class="fa fa-user"></i>  ' . $langs->trans("Card") . '</a>';
-    $urltovirtualcard = '/user/virtualcard.php?id=' . ((int) $user->id);
-    $virtuelcardLink = dolButtonToOpenUrlInDialogPopup('publicvirtualcardmenu', $langs->transnoentitiesnoconv("PublicVirtualCardUrl") . (is_object($user) ? ' - ' . $user->getFullName($langs) : '') . ' (' . $stringforfirstkey . ' v)', img_picto($langs->trans("PublicVirtualCardUrl") . ' (' . $stringforfirstkey . ' v)', 'card', ''), $urltovirtualcard, '', 'button-top-menu-dropdown marginleftonly nohover', "closeTopMenuLoginDropdown()", '', 'v');
-    $logoutLink = '<a accesskey="l" href="' . $urllogout . '" class="button-top-menu-dropdown" title="' . dol_escape_htmltag($langs->trans("Logout") . ' (' . $stringforfirstkey . ' l)') . '"><i class="fa fa-sign-out-alt padingright"></i><span class="hideonsmartphone">' . $langs->trans("Logout") . '</span></a>';
-
-    $profilName = $user->getFullName($langs) . ' (' . $user->login . ')';
-    if (!empty($user->admin)) {
-        $profilName = '<i class="far fa-star classfortooltip" title="' . $langs->trans("Administrator") . '" ></i> ' . $profilName;
-    }
-
-    // Define version to show
-    $appli = constant('DOL_APPLICATION_TITLE');
-    if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-        $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
-        if (preg_match('/\d\.\d/', $appli)) {
-            if (!preg_match('/' . preg_quote(DOL_VERSION) . '/', $appli)) {
-                $appli .= " (" . DOL_VERSION . ")"; // If new title contains a version that is different than core
-            }
-        } else {
-            $appli .= " " . DOL_VERSION;
-        }
-    } else {
-        $appli .= " " . DOL_VERSION;
-    }
-
-    if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-        $btnUser = '<!-- div for user link -->
+            $btnUser = '<!-- div for user link -->
 	    <div id="topmenu-login-dropdown" class="userimg atoplogin dropdown user user-menu inline-block">
 	        <a href="' . DOL_URL_ROOT . '/user/card.php?id=' . $user->id . '" class="dropdown-toggle login-dropdown-a" data-toggle="dropdown">
 	            ' . $userImage . (empty($user->photo) ? '<span class="hidden-xs maxwidth200 atoploginusername hideonsmartphone paddingleft">' . dol_trunc($user->firstname ? $user->firstname : $user->login, 10) . '</span>' : '') . '
@@ -2590,19 +2617,19 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 	                ' . $userDropDownImage . '
 	                <p>
 	                    ' . $profilName . '<br>';
-        if ($user->datelastlogin) {
-            $title = $langs->trans("ConnectedSince") . ' : ' . dol_print_date($user->datelastlogin, "dayhour", 'tzuser');
-            if ($user->datepreviouslogin) {
-                $title .= '<br>' . $langs->trans("PreviousConnexion") . ' : ' . dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser');
+            if ($user->datelastlogin) {
+                $title = $langs->trans("ConnectedSince") . ' : ' . dol_print_date($user->datelastlogin, "dayhour", 'tzuser');
+                if ($user->datepreviouslogin) {
+                    $title .= '<br>' . $langs->trans("PreviousConnexion") . ' : ' . dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser');
+                }
             }
-        }
-        $btnUser .= '<small class="classfortooltip" title="' . dol_escape_htmltag($title) . '" ><i class="fa fa-user-clock"></i> ' . dol_print_date($user->datelastlogin, "dayhour", 'tzuser') . '</small><br>';
-        if ($user->datepreviouslogin) {
-            $btnUser .= '<small class="classfortooltip" title="' . dol_escape_htmltag($title) . '" ><i class="fa fa-user-clock opacitymedium"></i> ' . dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser') . '</small><br>';
-        }
+            $btnUser .= '<small class="classfortooltip" title="' . dol_escape_htmltag($title) . '" ><i class="fa fa-user-clock"></i> ' . dol_print_date($user->datelastlogin, "dayhour", 'tzuser') . '</small><br>';
+            if ($user->datepreviouslogin) {
+                $btnUser .= '<small class="classfortooltip" title="' . dol_escape_htmltag($title) . '" ><i class="fa fa-user-clock opacitymedium"></i> ' . dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser') . '</small><br>';
+            }
 
-        //$btnUser .= '<small class="classfortooltip"><i class="fa fa-cog"></i> '.$langs->trans("Version").' '.$appli.'</small>';
-        $btnUser .= '
+            //$btnUser .= '<small class="classfortooltip"><i class="fa fa-cog"></i> '.$langs->trans("Version").' '.$appli.'</small>';
+            $btnUser .= '
 	                </p>
 	            </div>
 
@@ -2625,18 +2652,18 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 
 	        </div>
 	    </div>';
-    } else {
-        $btnUser = '<!-- div for user link -->
+        } else {
+            $btnUser = '<!-- div for user link -->
 	    <div id="topmenu-login-dropdown" class="userimg atoplogin dropdown user user-menu inline-block">
 	    	<a href="' . DOL_URL_ROOT . '/user/card.php?id=' . $user->id . '" alt="' . $langs->trans("MyUserCard") . '">
 	    	' . $userImage . '
 	    		<span class="hidden-xs maxwidth200 atoploginusername hideonsmartphone">' . dol_trunc($user->firstname ? $user->firstname : $user->login, 10) . '</span>
 	    		</a>
 		</div>';
-    }
+        }
 
-    if (!defined('JS_JQUERY_DISABLE_DROPDOWN') && !empty($conf->use_javascript_ajax)) {    // This may be set by some pages that use different jquery version to avoid errors
-        $btnUser .= '
+        if (!defined('JS_JQUERY_DISABLE_DROPDOWN') && !empty($conf->use_javascript_ajax)) {    // This may be set by some pages that use different jquery version to avoid errors
+            $btnUser .= '
         <!-- Code to show/hide the user drop-down -->
         <script>
 		function closeTopMenuLoginDropdown() {
@@ -2654,8 +2681,8 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 		';
 
 
-        if ($conf->theme != 'md') {
-            $btnUser .= '
+            if ($conf->theme != 'md') {
+                $btnUser .= '
 	            jQuery("#topmenu-login-dropdown .dropdown-toggle").on("click", function(event) {
 					console.log("Click on #topmenu-login-dropdown .dropdown-toggle");
 					event.preventDefault();
@@ -2671,51 +2698,53 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 					console.log("Click on #topmenuloginmoreinfo-btn");
 	                jQuery("#topmenuloginmoreinfo").slideToggle();
 	            });';
-        }
+            }
 
-        $btnUser .= '
+            $btnUser .= '
         });
         </script>
         ';
-    }
+        }
 
-    return $btnUser;
+        return $btnUser;
+    }
 }
 
-/**
- * Build the tooltip on top menu quick add
- *
- * @return  string                  HTML content
- */
-function top_menu_quickadd()
-{
-    global $conf, $langs;
+if (!function_exists('top_menu_quickadd')) {
+    /**
+     * Build the tooltip on top menu quick add
+     *
+     * @return  string                  HTML content
+     */
+    function top_menu_quickadd()
+    {
+        global $conf, $langs;
 
-    // Button disabled on text browser
-    if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-        return '';
-    }
+        // Button disabled on text browser
+        if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+            return '';
+        }
 
-    $html = '';
+        $html = '';
 
-    // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
-    // accesskey is for Mac:               CTRL + key for all browsers
-    $stringforfirstkey = $langs->trans("KeyboardShortcut");
-    if ($conf->browser->name == 'chrome') {
-        $stringforfirstkey .= ' ALT +';
-    } elseif ($conf->browser->name == 'firefox') {
-        $stringforfirstkey .= ' ALT + SHIFT +';
-    } else {
-        $stringforfirstkey .= ' CTL +';
-    }
+        // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
+        // accesskey is for Mac:               CTRL + key for all browsers
+        $stringforfirstkey = $langs->trans("KeyboardShortcut");
+        if ($conf->browser->name == 'chrome') {
+            $stringforfirstkey .= ' ALT +';
+        } elseif ($conf->browser->name == 'firefox') {
+            $stringforfirstkey .= ' ALT + SHIFT +';
+        } else {
+            $stringforfirstkey .= ' CTL +';
+        }
 
-    $html .= '<!-- div for quick add link -->
+        $html .= '<!-- div for quick add link -->
     <div id="topmenu-quickadd-dropdown" class="atoplogin dropdown inline-block">
         <a accesskey="a" class="dropdown-toggle login-dropdown-a nofocusvisible" data-toggle="dropdown" href="#" title="' . $langs->trans('QuickAdd') . ' (' . $stringforfirstkey . ' a)"><i class="fa fa-plus-circle"></i></a>
         <div class="dropdown-menu">' . printDropdownQuickadd() . '</div>
     </div>';
-    if (!defined('JS_JQUERY_DISABLE_DROPDOWN') && !empty($conf->use_javascript_ajax)) {    // This may be set by some pages that use different jquery version to avoid errors
-        $html .= '
+        if (!defined('JS_JQUERY_DISABLE_DROPDOWN') && !empty($conf->use_javascript_ajax)) {    // This may be set by some pages that use different jquery version to avoid errors
+            $html .= '
         <!-- Code to show/hide the user drop-down for the quick add -->
         <script>
         jQuery(document).ready(function() {
@@ -2746,226 +2775,230 @@ function top_menu_quickadd()
         });
         </script>
         ';
+        }
+        return $html;
     }
-    return $html;
 }
 
-/**
- * Generate list of quickadd items
- *
- * @return string HTML output
- */
-function printDropdownQuickadd()
-{
-    global $user, $langs, $hookmanager;
+if (!function_exists('printDropdownQuickadd')) {
+    /**
+     * Generate list of quickadd items
+     *
+     * @return string HTML output
+     */
+    function printDropdownQuickadd()
+    {
+        global $user, $langs, $hookmanager;
 
-    $items = array(
-        'items' => array(
-            array(
-                "url" => "/adherents/card.php?action=create&amp;mainmenu=members",
-                "title" => "MenuNewMember@members",
-                "name" => "Adherent@members",
-                "picto" => "object_member",
-                "activation" => isModEnabled('member') && $user->hasRight("adherent", "write"), // vs hooking
-                "position" => 5,
-            ),
-            array(
-                "url" => "/societe/card.php?action=create&amp;mainmenu=companies",
-                "title" => "MenuNewThirdParty@companies",
-                "name" => "ThirdParty@companies",
-                "picto" => "object_company",
-                "activation" => isModEnabled("societe") && $user->hasRight("societe", "write"), // vs hooking
-                "position" => 10,
-            ),
-            array(
-                "url" => "/contact/card.php?action=create&amp;mainmenu=companies",
-                "title" => "NewContactAddress@companies",
-                "name" => "Contact@companies",
-                "picto" => "object_contact",
-                "activation" => isModEnabled("societe") && $user->hasRight("societe", "contact", "write"), // vs hooking
-                "position" => 20,
-            ),
-            array(
-                "url" => "/comm/propal/card.php?action=create&amp;mainmenu=commercial",
-                "title" => "NewPropal@propal",
-                "name" => "Proposal@propal",
-                "picto" => "object_propal",
-                "activation" => isModEnabled("propal") && $user->hasRight("propal", "write"), // vs hooking
-                "position" => 30,
-            ),
+        $items = [
+            'items' => [
+                [
+                    "url" => "/adherents/card.php?action=create&amp;mainmenu=members",
+                    "title" => "MenuNewMember@members",
+                    "name" => "Adherent@members",
+                    "picto" => "object_member",
+                    "activation" => isModEnabled('member') && $user->hasRight("adherent", "write"), // vs hooking
+                    "position" => 5,
+                ],
+                [
+                    "url" => "/societe/card.php?action=create&amp;mainmenu=companies",
+                    "title" => "MenuNewThirdParty@companies",
+                    "name" => "ThirdParty@companies",
+                    "picto" => "object_company",
+                    "activation" => isModEnabled("societe") && $user->hasRight("societe", "write"), // vs hooking
+                    "position" => 10,
+                ],
+                [
+                    "url" => "/contact/card.php?action=create&amp;mainmenu=companies",
+                    "title" => "NewContactAddress@companies",
+                    "name" => "Contact@companies",
+                    "picto" => "object_contact",
+                    "activation" => isModEnabled("societe") && $user->hasRight("societe", "contact", "write"), // vs hooking
+                    "position" => 20,
+                ],
+                [
+                    "url" => "/comm/propal/card.php?action=create&amp;mainmenu=commercial",
+                    "title" => "NewPropal@propal",
+                    "name" => "Proposal@propal",
+                    "picto" => "object_propal",
+                    "activation" => isModEnabled("propal") && $user->hasRight("propal", "write"), // vs hooking
+                    "position" => 30,
+                ],
 
-            array(
-                "url" => "/commande/card.php?action=create&amp;mainmenu=commercial",
-                "title" => "NewOrder@orders",
-                "name" => "Order@orders",
-                "picto" => "object_order",
-                "activation" => isModEnabled('order') && $user->hasRight("commande", "write"), // vs hooking
-                "position" => 40,
-            ),
-            array(
-                "url" => "/compta/facture/card.php?action=create&amp;mainmenu=billing",
-                "title" => "NewBill@bills",
-                "name" => "Bill@bills",
-                "picto" => "object_bill",
-                "activation" => isModEnabled('invoice') && $user->hasRight("facture", "write"), // vs hooking
-                "position" => 50,
-            ),
-            array(
-                "url" => "/contrat/card.php?action=create&amp;mainmenu=commercial",
-                "title" => "NewContractSubscription@contracts",
-                "name" => "Contract@contracts",
-                "picto" => "object_contract",
-                "activation" => isModEnabled('contract') && $user->hasRight("contrat", "write"), // vs hooking
-                "position" => 60,
-            ),
-            array(
-                "url" => "/supplier_proposal/card.php?action=create&amp;mainmenu=commercial",
-                "title" => "SupplierProposalNew@supplier_proposal",
-                "name" => "SupplierProposal@supplier_proposal",
-                "picto" => "supplier_proposal",
-                "activation" => isModEnabled('supplier_proposal') && $user->hasRight("supplier_invoice", "write"), // vs hooking
-                "position" => 70,
-            ),
-            array(
-                "url" => "/fourn/commande/card.php?action=create&amp;mainmenu=commercial",
-                "title" => "NewSupplierOrderShort@orders",
-                "name" => "SupplierOrder@orders",
-                "picto" => "supplier_order",
-                "activation" => (isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "commande", "write")) || (isModEnabled("supplier_order") && $user->hasRight("supplier_invoice", "write")), // vs hooking
-                "position" => 80,
-            ),
-            array(
-                "url" => "/fourn/facture/card.php?action=create&amp;mainmenu=billing",
-                "title" => "NewBill@bills",
-                "name" => "SupplierBill@bills",
-                "picto" => "supplier_invoice",
-                "activation" => (isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "facture", "write")) || (isModEnabled("supplier_invoice") && $user->hasRight("supplier_invoice", "write")), // vs hooking
-                "position" => 90,
-            ),
-            array(
-                "url" => "/ticket/card.php?action=create&amp;mainmenu=ticket",
-                "title" => "NewTicket@ticket",
-                "name" => "Ticket@ticket",
-                "picto" => "ticket",
-                "activation" => isModEnabled('ticket') && $user->hasRight("ticket", "write"), // vs hooking
-                "position" => 100,
-            ),
-            array(
-                "url" => "/fichinter/card.php?action=create&mainmenu=commercial",
-                "title" => "NewIntervention@interventions",
-                "name" => "Intervention@interventions",
-                "picto" => "intervention",
-                "activation" => isModEnabled('intervention') && $user->hasRight("ficheinter", "creer"), // vs hooking
-                "position" => 110,
-            ),
-            array(
-                "url" => "/product/card.php?action=create&amp;type=0&amp;mainmenu=products",
-                "title" => "NewProduct@products",
-                "name" => "Product@products",
-                "picto" => "object_product",
-                "activation" => isModEnabled("product") && $user->hasRight("produit", "write"), // vs hooking
-                "position" => 400,
-            ),
-            array(
-                "url" => "/product/card.php?action=create&amp;type=1&amp;mainmenu=products",
-                "title" => "NewService@products",
-                "name" => "Service@products",
-                "picto" => "object_service",
-                "activation" => isModEnabled("service") && $user->hasRight("service", "write"), // vs hooking
-                "position" => 410,
-            ),
-            array(
-                "url" => "/user/card.php?action=create&amp;type=1&amp;mainmenu=home",
-                "title" => "AddUser@users",
-                "name" => "User@users",
-                "picto" => "user",
-                "activation" => $user->hasRight("user", "user", "write"), // vs hooking
-                "position" => 500,
-            ),
-        ),
-    );
+                [
+                    "url" => "/commande/card.php?action=create&amp;mainmenu=commercial",
+                    "title" => "NewOrder@orders",
+                    "name" => "Order@orders",
+                    "picto" => "object_order",
+                    "activation" => isModEnabled('order') && $user->hasRight("commande", "write"), // vs hooking
+                    "position" => 40,
+                ],
+                [
+                    "url" => "/compta/facture/card.php?action=create&amp;mainmenu=billing",
+                    "title" => "NewBill@bills",
+                    "name" => "Bill@bills",
+                    "picto" => "object_bill",
+                    "activation" => isModEnabled('invoice') && $user->hasRight("facture", "write"), // vs hooking
+                    "position" => 50,
+                ],
+                [
+                    "url" => "/contrat/card.php?action=create&amp;mainmenu=commercial",
+                    "title" => "NewContractSubscription@contracts",
+                    "name" => "Contract@contracts",
+                    "picto" => "object_contract",
+                    "activation" => isModEnabled('contract') && $user->hasRight("contrat", "write"), // vs hooking
+                    "position" => 60,
+                ],
+                [
+                    "url" => "/supplier_proposal/card.php?action=create&amp;mainmenu=commercial",
+                    "title" => "SupplierProposalNew@supplier_proposal",
+                    "name" => "SupplierProposal@supplier_proposal",
+                    "picto" => "supplier_proposal",
+                    "activation" => isModEnabled('supplier_proposal') && $user->hasRight("supplier_invoice", "write"), // vs hooking
+                    "position" => 70,
+                ],
+                [
+                    "url" => "/fourn/commande/card.php?action=create&amp;mainmenu=commercial",
+                    "title" => "NewSupplierOrderShort@orders",
+                    "name" => "SupplierOrder@orders",
+                    "picto" => "supplier_order",
+                    "activation" => (isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "commande", "write")) || (isModEnabled("supplier_order") && $user->hasRight("supplier_invoice", "write")), // vs hooking
+                    "position" => 80,
+                ],
+                [
+                    "url" => "/fourn/facture/card.php?action=create&amp;mainmenu=billing",
+                    "title" => "NewBill@bills",
+                    "name" => "SupplierBill@bills",
+                    "picto" => "supplier_invoice",
+                    "activation" => (isModEnabled("fournisseur") && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD') && $user->hasRight("fournisseur", "facture", "write")) || (isModEnabled("supplier_invoice") && $user->hasRight("supplier_invoice", "write")), // vs hooking
+                    "position" => 90,
+                ],
+                [
+                    "url" => "/ticket/card.php?action=create&amp;mainmenu=ticket",
+                    "title" => "NewTicket@ticket",
+                    "name" => "Ticket@ticket",
+                    "picto" => "ticket",
+                    "activation" => isModEnabled('ticket') && $user->hasRight("ticket", "write"), // vs hooking
+                    "position" => 100,
+                ],
+                [
+                    "url" => "/fichinter/card.php?action=create&mainmenu=commercial",
+                    "title" => "NewIntervention@interventions",
+                    "name" => "Intervention@interventions",
+                    "picto" => "intervention",
+                    "activation" => isModEnabled('intervention') && $user->hasRight("ficheinter", "creer"), // vs hooking
+                    "position" => 110,
+                ],
+                [
+                    "url" => "/product/card.php?action=create&amp;type=0&amp;mainmenu=products",
+                    "title" => "NewProduct@products",
+                    "name" => "Product@products",
+                    "picto" => "object_product",
+                    "activation" => isModEnabled("product") && $user->hasRight("produit", "write"), // vs hooking
+                    "position" => 400,
+                ],
+                [
+                    "url" => "/product/card.php?action=create&amp;type=1&amp;mainmenu=products",
+                    "title" => "NewService@products",
+                    "name" => "Service@products",
+                    "picto" => "object_service",
+                    "activation" => isModEnabled("service") && $user->hasRight("service", "write"), // vs hooking
+                    "position" => 410,
+                ],
+                [
+                    "url" => "/user/card.php?action=create&amp;type=1&amp;mainmenu=home",
+                    "title" => "AddUser@users",
+                    "name" => "User@users",
+                    "picto" => "user",
+                    "activation" => $user->hasRight("user", "user", "write"), // vs hooking
+                    "position" => 500,
+                ],
+            ],
+        ];
 
-    $dropDownQuickAddHtml = '';
+        $dropDownQuickAddHtml = '';
 
-    // Define $dropDownQuickAddHtml
-    $dropDownQuickAddHtml .= '<div class="quickadd-body dropdown-body">';
-    $dropDownQuickAddHtml .= '<div class="dropdown-quickadd-list">';
+        // Define $dropDownQuickAddHtml
+        $dropDownQuickAddHtml .= '<div class="quickadd-body dropdown-body">';
+        $dropDownQuickAddHtml .= '<div class="dropdown-quickadd-list">';
 
-    // Allow the $items of the menu to be manipulated by modules
-    $parameters = array();
-    $hook_items = $items;
-    $reshook = $hookmanager->executeHooks('menuDropdownQuickaddItems', $parameters, $hook_items); // Note that $action and $object may have been modified by some hooks
-    if (is_numeric($reshook) && !empty($hookmanager->resArray) && is_array($hookmanager->resArray)) {
-        if ($reshook == 0) {
-            $items['items'] = array_merge($items['items'], $hookmanager->resArray); // add
-        } else {
-            $items = $hookmanager->resArray; // replace
+        // Allow the $items of the menu to be manipulated by modules
+        $parameters = [];
+        $hook_items = $items;
+        $reshook = $hookmanager->executeHooks('menuDropdownQuickaddItems', $parameters, $hook_items); // Note that $action and $object may have been modified by some hooks
+        if (is_numeric($reshook) && !empty($hookmanager->resArray) && is_array($hookmanager->resArray)) {
+            if ($reshook == 0) {
+                $items['items'] = array_merge($items['items'], $hookmanager->resArray); // add
+            } else {
+                $items = $hookmanager->resArray; // replace
+            }
+
+            // Sort menu items by 'position' value
+            $position = [];
+            foreach ($items['items'] as $key => $row) {
+                $position[$key] = $row['position'];
+            }
+            $array1_sort_order = SORT_ASC;
+            array_multisort($position, $array1_sort_order, $items['items']);
         }
 
-        // Sort menu items by 'position' value
-        $position = array();
-        foreach ($items['items'] as $key => $row) {
-            $position[$key] = $row['position'];
-        }
-        $array1_sort_order = SORT_ASC;
-        array_multisort($position, $array1_sort_order, $items['items']);
-    }
-
-    foreach ($items['items'] as $item) {
-        if (!$item['activation']) {
-            continue;
-        }
-        $langs->load(explode('@', $item['title'])[1]);
-        $langs->load(explode('@', $item['name'])[1]);
-        $dropDownQuickAddHtml .= '
+        foreach ($items['items'] as $item) {
+            if (!$item['activation']) {
+                continue;
+            }
+            $langs->load(explode('@', $item['title'])[1]);
+            $langs->load(explode('@', $item['name'])[1]);
+            $dropDownQuickAddHtml .= '
 			<a class="dropdown-item quickadd-item" href="' . DOL_URL_ROOT . $item['url'] . '" title="' . $langs->trans(explode('@', $item['title'])[0]) . '">
 			' . img_picto('', $item['picto'], 'style="width:18px;"') . ' ' . $langs->trans(explode('@', $item['name'])[0]) . '</a>
 		';
+        }
+
+        $dropDownQuickAddHtml .= '</div>';
+        $dropDownQuickAddHtml .= '</div>';
+
+        return $dropDownQuickAddHtml;
     }
-
-    $dropDownQuickAddHtml .= '</div>';
-    $dropDownQuickAddHtml .= '</div>';
-
-    return $dropDownQuickAddHtml;
 }
 
-/**
- * Build the tooltip on top menu bookmark
- *
- * @return  string                  HTML content
- */
-function top_menu_bookmark()
-{
-    global $langs, $conf, $db, $user;
+if (!function_exists('top_menu_bookmark')) {
+    /**
+     * Build the tooltip on top menu bookmark
+     *
+     * @return  string                  HTML content
+     */
+    function top_menu_bookmark()
+    {
+        global $langs, $conf, $db, $user;
 
-    $html = '';
+        $html = '';
 
-    // Define $bookmarks
-    if (!isModEnabled('bookmark') || !$user->hasRight('bookmark', 'lire')) {
-        return $html;
-    }
+        // Define $bookmarks
+        if (!isModEnabled('bookmark') || !$user->hasRight('bookmark', 'lire')) {
+            return $html;
+        }
 
-    // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
-    // accesskey is for Mac:               CTRL + key for all browsers
-    $stringforfirstkey = $langs->trans("KeyboardShortcut");
-    if ($conf->browser->name == 'chrome') {
-        $stringforfirstkey .= ' ALT +';
-    } elseif ($conf->browser->name == 'firefox') {
-        $stringforfirstkey .= ' ALT + SHIFT +';
-    } else {
-        $stringforfirstkey .= ' CTL +';
-    }
-
-    if (!defined('JS_JQUERY_DISABLE_DROPDOWN') && !empty($conf->use_javascript_ajax)) {     // This may be set by some pages that use different jquery version to avoid errors
-        include_once DOL_DOCUMENT_ROOT . '/bookmarks/bookmarks.lib.php';
-        $langs->load("bookmarks");
-
-        if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-            $html .= '<div id="topmenu-bookmark-dropdown" class="dropdown inline-block">';
-            $html .= printDropdownBookmarksList();
-            $html .= '</div>';
+        // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
+        // accesskey is for Mac:               CTRL + key for all browsers
+        $stringforfirstkey = $langs->trans("KeyboardShortcut");
+        if ($conf->browser->name == 'chrome') {
+            $stringforfirstkey .= ' ALT +';
+        } elseif ($conf->browser->name == 'firefox') {
+            $stringforfirstkey .= ' ALT + SHIFT +';
         } else {
-            $html .= '<!-- div for bookmark link -->
+            $stringforfirstkey .= ' CTL +';
+        }
+
+        if (!defined('JS_JQUERY_DISABLE_DROPDOWN') && !empty($conf->use_javascript_ajax)) {     // This may be set by some pages that use different jquery version to avoid errors
+            include_once DOL_DOCUMENT_ROOT . '/bookmarks/bookmarks.lib.php';
+            $langs->load("bookmarks");
+
+            if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                $html .= '<div id="topmenu-bookmark-dropdown" class="dropdown inline-block">';
+                $html .= printDropdownBookmarksList();
+                $html .= '</div>';
+            } else {
+                $html .= '<!-- div for bookmark link -->
 	        <div id="topmenu-bookmark-dropdown" class="dropdown inline-block">
 	            <a accesskey="b" class="dropdown-toggle login-dropdown-a nofocusvisible" data-toggle="dropdown" href="#" title="' . $langs->trans('Bookmarks') . ' (' . $stringforfirstkey . ' b)"><i class="fa fa-star"></i></a>
 	            <div class="dropdown-menu">
@@ -2973,7 +3006,7 @@ function top_menu_bookmark()
 	            </div>
 	        </div>';
 
-            $html .= '
+                $html .= '
 	        <!-- Code to show/hide the bookmark drop-down -->
 	        <script>
 	        jQuery(document).ready(function() {
@@ -3007,82 +3040,84 @@ function top_menu_bookmark()
 	        });
 	        </script>
 	        ';
+            }
         }
+        return $html;
     }
-    return $html;
 }
 
-/**
- * Build the tooltip on top menu tsearch
- *
- * @return  string                  HTML content
- */
-function top_menu_search()
-{
-    global $langs, $conf, $db, $user, $hookmanager;
+if (!function_exists('top_menu_search')) {
+    /**
+     * Build the tooltip on top menu tsearch
+     *
+     * @return  string                  HTML content
+     */
+    function top_menu_search()
+    {
+        global $langs, $conf, $db, $user, $hookmanager;
 
-    $html = '';
+        $html = '';
 
-    $usedbyinclude = 1;
-    $arrayresult = array();
-    include DOL_DOCUMENT_ROOT . '/core/ajax/selectsearchbox.php'; // This sets $arrayresult
+        $usedbyinclude = 1;
+        $arrayresult = [];
+        include DOL_DOCUMENT_ROOT . '/core/ajax/selectsearchbox.php'; // This sets $arrayresult
 
-    // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
-    // accesskey is for Mac:               CTRL + key for all browsers
-    $stringforfirstkey = $langs->trans("KeyboardShortcut");
-    if ($conf->browser->name == 'chrome') {
-        $stringforfirstkey .= ' ALT +';
-    } elseif ($conf->browser->name == 'firefox') {
-        $stringforfirstkey .= ' ALT + SHIFT +';
-    } else {
-        $stringforfirstkey .= ' CTL +';
-    }
-
-    $searchInput = '<input type="search" name="search_all"' . ($stringforfirstkey ? ' title="' . dol_escape_htmltag($stringforfirstkey . ' s') . '"' : '') . ' id="top-global-search-input" class="dropdown-search-input search_component_input" placeholder="' . $langs->trans('Search') . '" autocomplete="off">';
-
-    $defaultAction = '';
-    $buttonList = '<div class="dropdown-global-search-button-list" >';
-    // Menu with all searchable items
-    foreach ($arrayresult as $keyItem => $item) {
-        if (empty($defaultAction)) {
-            $defaultAction = $item['url'];
+        // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
+        // accesskey is for Mac:               CTRL + key for all browsers
+        $stringforfirstkey = $langs->trans("KeyboardShortcut");
+        if ($conf->browser->name == 'chrome') {
+            $stringforfirstkey .= ' ALT +';
+        } elseif ($conf->browser->name == 'firefox') {
+            $stringforfirstkey .= ' ALT + SHIFT +';
+        } else {
+            $stringforfirstkey .= ' CTL +';
         }
-        $buttonList .= '<button class="dropdown-item global-search-item tdoverflowmax300" data-target="' . dol_escape_htmltag($item['url']) . '" >';
-        $buttonList .= $item['text'];
-        $buttonList .= '</button>';
-    }
-    $buttonList .= '</div>';
 
-    $dropDownHtml = '<form role="search" id="top-menu-action-search" name="actionsearch" method="GET" action="' . $defaultAction . '">';
+        $searchInput = '<input type="search" name="search_all"' . ($stringforfirstkey ? ' title="' . dol_escape_htmltag($stringforfirstkey . ' s') . '"' : '') . ' id="top-global-search-input" class="dropdown-search-input search_component_input" placeholder="' . $langs->trans('Search') . '" autocomplete="off">';
 
-    $dropDownHtml .= '
+        $defaultAction = '';
+        $buttonList = '<div class="dropdown-global-search-button-list" >';
+        // Menu with all searchable items
+        foreach ($arrayresult as $keyItem => $item) {
+            if (empty($defaultAction)) {
+                $defaultAction = $item['url'];
+            }
+            $buttonList .= '<button class="dropdown-item global-search-item tdoverflowmax300" data-target="' . dol_escape_htmltag($item['url']) . '" >';
+            $buttonList .= $item['text'];
+            $buttonList .= '</button>';
+        }
+        $buttonList .= '</div>';
+
+        $dropDownHtml = '<form role="search" id="top-menu-action-search" name="actionsearch" method="GET" action="' . $defaultAction . '">';
+
+        $dropDownHtml .= '
         <!-- search input -->
         <div class="dropdown-header search-dropdown-header">
             ' . $searchInput . '
         </div>
     ';
 
-    $dropDownHtml .= '
+        $dropDownHtml .= '
         <!-- Menu Body search -->
         <div class="dropdown-body search-dropdown-body">
         ' . $buttonList . '
         </div>
         ';
 
-    $dropDownHtml .= '</form>';
+        $dropDownHtml .= '</form>';
 
-    // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
-    // accesskey is for Mac:               CTRL + key for all browsers
-    $stringforfirstkey = $langs->trans("KeyboardShortcut");
-    if ($conf->browser->name == 'chrome') {
-        $stringforfirstkey .= ' ALT +';
-    } elseif ($conf->browser->name == 'firefox') {
-        $stringforfirstkey .= ' ALT + SHIFT +';
-    } else {
-        $stringforfirstkey .= ' CTL +';
-    }
+        // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
+        // accesskey is for Mac:               CTRL + key for all browsers
+        $stringforfirstkey = $langs->trans("KeyboardShortcut");
+        if ($conf->browser->name == 'chrome') {
+            $stringforfirstkey .= ' ALT +';
+        } elseif ($conf->browser->name == 'firefox') {
+            $stringforfirstkey .= ' ALT + SHIFT +';
+        } else {
+            $stringforfirstkey .= ' CTL +';
+        }
 
-    $html .= '<!-- div for Global Search -->
+        $html .= '<!-- div for Global Search -->
     <div id="topmenu-global-search-dropdown" class="atoplogin dropdown inline-block">
         <a accesskey="s" class="dropdown-toggle login-dropdown-a nofocusvisible" data-toggle="dropdown" href="#" title="' . $langs->trans('Search') . ' (' . $stringforfirstkey . ' s)">
             <i class="fa fa-search" aria-hidden="true" ></i>
@@ -3092,7 +3127,7 @@ function top_menu_search()
         </div>
     </div>';
 
-    $html .= '
+        $html .= '
     <!-- Code to show/hide the user drop-down -->
     <script>
     jQuery(document).ready(function() {
@@ -3176,103 +3211,112 @@ function top_menu_search()
     </script>
     ';
 
-    return $html;
+        return $html;
+    }
 }
 
-/**
- *  Show left menu bar
- *
- *  @param  array   $menu_array_before          Table of menu entries to show before entries of menu handler. This param is deprecated and must be provided to ''.
- *  @param  string  $helppagename               Name of wiki page for help ('' by default).
- *                                              Syntax is: For a wiki page: EN:EnglishPage|FR:FrenchPage|ES:SpanishPage|DE:GermanPage
- *                                              For other external page: http://server/url
- *  @param  string  $notused                    Deprecated. Used in past to add content into left menu. Hooks can be used now.
- *  @param  array   $menu_array_after           Table of menu entries to show after entries of menu handler
- *  @param  int     $leftmenuwithoutmainarea    Must be set to 1. 0 by default for backward compatibility with old modules.
- *  @param  string  $title                      Title of web page
- *  @param  int     $acceptdelayedhtml          1 if caller request to have html delayed content not returned but saved into global $delayedhtmlcontent (so caller can show it at end of page to avoid flash FOUC effect)
- *  @return void
- */
-function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_array_after = array(), $leftmenuwithoutmainarea = 0, $title = '', $acceptdelayedhtml = 0)
-{
-    global $user, $conf, $langs, $db, $form;
-    global $hookmanager, $menumanager;
+if (!function_exists('left_menu')) {
+    /**
+     *  Show left menu bar
+     *
+     * @param array  $menu_array_before             Table of menu entries to show before entries of menu handler. This
+     *                                              param is deprecated and must be provided to ''.
+     * @param string $helppagename                  Name of wiki page for help ('' by default).
+     *                                              Syntax is: For a wiki page:
+     *                                              EN:EnglishPage|FR:FrenchPage|ES:SpanishPage|DE:GermanPage For other
+     *                                              external page: http://server/url
+     * @param string $notused                       Deprecated. Used in past to add content into left menu. Hooks can be
+     *                                              used now.
+     * @param array  $menu_array_after              Table of menu entries to show after entries of menu handler
+     * @param int    $leftmenuwithoutmainarea       Must be set to 1. 0 by default for backward compatibility with old
+     *                                              modules.
+     * @param string $title                         Title of web page
+     * @param int    $acceptdelayedhtml             1 if caller request to have html delayed content not returned but saved
+     *                                              into global $delayedhtmlcontent (so caller can show it at end of page
+     *                                              to avoid flash FOUC effect)
+     *
+     * @return void
+     */
+    function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_array_after = [], $leftmenuwithoutmainarea = 0, $title = '', $acceptdelayedhtml = 0)
+    {
+        global $user, $conf, $langs, $db, $form;
+        global $hookmanager, $menumanager;
 
-    $searchform = '';
+        $searchform = '';
 
-    if (!empty($menu_array_before)) {
-        dol_syslog("Deprecated parameter menu_array_before was used when calling main::left_menu function. Menu entries of module should now be defined into module descriptor and not provided when calling left_menu.", LOG_WARNING);
-    }
-
-    if (empty($conf->dol_hide_leftmenu) && (!defined('NOREQUIREMENU') || !constant('NOREQUIREMENU'))) {
-        // Instantiate hooks for external modules
-        $hookmanager->initHooks(array('leftblock'));
-
-        print "\n" . '<!-- Begin side-nav id-left -->' . "\n" . '<div class="side-nav"><div id="id-left">' . "\n";
-        print "\n";
-
-        if (!is_object($form)) {
-            $form = new Form($db);
+        if (!empty($menu_array_before)) {
+            dol_syslog("Deprecated parameter menu_array_before was used when calling main::left_menu function. Menu entries of module should now be defined into module descriptor and not provided when calling left_menu.", LOG_WARNING);
         }
-        $selected = -1;
-        if (!getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
-            // Select with select2 is awful on smartphone. TODO Is this still true with select2 v4 ?
-            if ($conf->browser->layout == 'phone') {
-                $conf->global->MAIN_USE_OLD_SEARCH_FORM = 1;
+
+        if (empty($conf->dol_hide_leftmenu) && (!defined('NOREQUIREMENU') || !constant('NOREQUIREMENU'))) {
+            // Instantiate hooks for external modules
+            $hookmanager->initHooks(['leftblock']);
+
+            print "\n" . '<!-- Begin side-nav id-left -->' . "\n" . '<div class="side-nav"><div id="id-left">' . "\n";
+            print "\n";
+
+            if (!is_object($form)) {
+                $form = new Form($db);
             }
-
-            $usedbyinclude = 1;
-            $arrayresult = array();
-            include DOL_DOCUMENT_ROOT . '/core/ajax/selectsearchbox.php'; // This make initHooks('searchform') then set $arrayresult
-
-            if ($conf->use_javascript_ajax && !getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
-                // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
-                // accesskey is for Mac:               CTRL + key for all browsers
-                $stringforfirstkey = $langs->trans("KeyboardShortcut");
-                if ($conf->browser->name == 'chrome') {
-                    $stringforfirstkey .= ' ALT +';
-                } elseif ($conf->browser->name == 'firefox') {
-                    $stringforfirstkey .= ' ALT + SHIFT +';
-                } else {
-                    $stringforfirstkey .= ' CTL +';
+            $selected = -1;
+            if (!getDolGlobalString('MAIN_USE_TOP_MENU_SEARCH_DROPDOWN')) {
+                // Select with select2 is awful on smartphone. TODO Is this still true with select2 v4 ?
+                if ($conf->browser->layout == 'phone') {
+                    $conf->global->MAIN_USE_OLD_SEARCH_FORM = 1;
                 }
 
-                $searchform .= $form->selectArrayFilter('searchselectcombo', $arrayresult, $selected, 'accesskey="s"', 1, 0, (!getDolGlobalString('MAIN_SEARCHBOX_CONTENT_LOADED_BEFORE_KEY') ? 1 : 0), 'vmenusearchselectcombo', 1, $langs->trans("Search"), 1, $stringforfirstkey . ' s');
-            } else {
-                if (is_array($arrayresult)) {
-                    foreach ($arrayresult as $key => $val) {
-                        $searchform .= printSearchForm($val['url'], $val['url'], $val['label'], 'maxwidth125', 'search_all', (empty($val['shortcut']) ? '' : $val['shortcut']), 'searchleft' . $key, $val['img']);
+                $usedbyinclude = 1;
+                $arrayresult = [];
+                include DOL_DOCUMENT_ROOT . '/core/ajax/selectsearchbox.php'; // This make initHooks('searchform') then set $arrayresult
+
+                if ($conf->use_javascript_ajax && !getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
+                    // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
+                    // accesskey is for Mac:               CTRL + key for all browsers
+                    $stringforfirstkey = $langs->trans("KeyboardShortcut");
+                    if ($conf->browser->name == 'chrome') {
+                        $stringforfirstkey .= ' ALT +';
+                    } elseif ($conf->browser->name == 'firefox') {
+                        $stringforfirstkey .= ' ALT + SHIFT +';
+                    } else {
+                        $stringforfirstkey .= ' CTL +';
+                    }
+
+                    $searchform .= $form->selectArrayFilter('searchselectcombo', $arrayresult, $selected, 'accesskey="s"', 1, 0, (!getDolGlobalString('MAIN_SEARCHBOX_CONTENT_LOADED_BEFORE_KEY') ? 1 : 0), 'vmenusearchselectcombo', 1, $langs->trans("Search"), 1, $stringforfirstkey . ' s');
+                } else {
+                    if (is_array($arrayresult)) {
+                        foreach ($arrayresult as $key => $val) {
+                            $searchform .= printSearchForm($val['url'], $val['url'], $val['label'], 'maxwidth125', 'search_all', (empty($val['shortcut']) ? '' : $val['shortcut']), 'searchleft' . $key, $val['img']);
+                        }
                     }
                 }
-            }
 
-            // Execute hook printSearchForm
-            $parameters = array('searchform' => $searchform);
-            $reshook = $hookmanager->executeHooks('printSearchForm', $parameters); // Note that $action and $object may have been modified by some hooks
-            if (empty($reshook)) {
-                $searchform .= $hookmanager->resPrint;
-            } else {
-                $searchform = $hookmanager->resPrint;
-            }
+                // Execute hook printSearchForm
+                $parameters = ['searchform' => $searchform];
+                $reshook = $hookmanager->executeHooks('printSearchForm', $parameters); // Note that $action and $object may have been modified by some hooks
+                if (empty($reshook)) {
+                    $searchform .= $hookmanager->resPrint;
+                } else {
+                    $searchform = $hookmanager->resPrint;
+                }
 
-            // Force special value for $searchform for text browsers or very old search form
-            if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') || empty($conf->use_javascript_ajax)) {
-                $urltosearch = DOL_URL_ROOT . '/core/search_page.php?showtitlebefore=1';
-                $searchform = '<div class="blockvmenuimpair blockvmenusearchphone"><div id="divsearchforms1"><a href="' . $urltosearch . '" accesskey="s" alt="' . dol_escape_htmltag($langs->trans("ShowSearchFields")) . '">' . $langs->trans("Search") . '...</a></div></div>';
-            } elseif ($conf->use_javascript_ajax && getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
-                $searchform = '<div class="blockvmenuimpair blockvmenusearchphone"><div id="divsearchforms1"><a href="#" alt="' . dol_escape_htmltag($langs->trans("ShowSearchFields")) . '">' . $langs->trans("Search") . '...</a></div><div id="divsearchforms2" style="display: none">' . $searchform . '</div>';
-                $searchform .= '<script>
+                // Force special value for $searchform for text browsers or very old search form
+                if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') || empty($conf->use_javascript_ajax)) {
+                    $urltosearch = DOL_URL_ROOT . '/core/search_page.php?showtitlebefore=1';
+                    $searchform = '<div class="blockvmenuimpair blockvmenusearchphone"><div id="divsearchforms1"><a href="' . $urltosearch . '" accesskey="s" alt="' . dol_escape_htmltag($langs->trans("ShowSearchFields")) . '">' . $langs->trans("Search") . '...</a></div></div>';
+                } elseif ($conf->use_javascript_ajax && getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
+                    $searchform = '<div class="blockvmenuimpair blockvmenusearchphone"><div id="divsearchforms1"><a href="#" alt="' . dol_escape_htmltag($langs->trans("ShowSearchFields")) . '">' . $langs->trans("Search") . '...</a></div><div id="divsearchforms2" style="display: none">' . $searchform . '</div>';
+                    $searchform .= '<script>
             	jQuery(document).ready(function () {
             		jQuery("#divsearchforms1").click(function(){
 	                   jQuery("#divsearchforms2").toggle();
 	               });
             	});
                 </script>' . "\n";
-                $searchform .= '</div>';
-            }
+                    $searchform .= '</div>';
+                }
 
-            // Key map shortcut
-            $searchform .= '<script>
+                // Key map shortcut
+                $searchform .= '<script>
 				jQuery(document).keydown(function(e){
 					if( e.which === 70 && e.ctrlKey && e.shiftKey ){
 						console.log(\'control + shift + f : trigger open global-search dropdown\');
@@ -3288,311 +3332,318 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
 		            jQuery("#searchselectcombo").select2(\'open\');
 		        }
 			</script>';
-        }
-
-        // Left column
-        print '<!-- Begin left menu -->' . "\n";
-
-        print '<div class="vmenu"' . (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') ? ' alt="Left menu"' : '') . '>' . "\n\n";
-
-        // Show left menu with other forms
-        $menumanager->menu_array = $menu_array_before;
-        $menumanager->menu_array_after = $menu_array_after;
-        $menumanager->showmenu('left', array('searchform' => $searchform)); // output menu_array and menu found in database
-
-        // Dolibarr version + help + bug report link
-        print "\n";
-        print "<!-- Begin Help Block-->\n";
-        print '<div id="blockvmenuhelp" class="blockvmenuhelp">' . "\n";
-
-        // Version
-        if (getDolGlobalString('MAIN_SHOW_VERSION')) {    // Version is already on help picto and on login page.
-            $doliurl = 'https://www.dolibarr.org';
-            //local communities
-            if (preg_match('/fr/i', $langs->defaultlang)) {
-                $doliurl = 'https://www.dolibarr.fr';
-            }
-            if (preg_match('/es/i', $langs->defaultlang)) {
-                $doliurl = 'https://www.dolibarr.es';
-            }
-            if (preg_match('/de/i', $langs->defaultlang)) {
-                $doliurl = 'https://www.dolibarr.de';
-            }
-            if (preg_match('/it/i', $langs->defaultlang)) {
-                $doliurl = 'https://www.dolibarr.it';
-            }
-            if (preg_match('/gr/i', $langs->defaultlang)) {
-                $doliurl = 'https://www.dolibarr.gr';
             }
 
-            $appli = constant('DOL_APPLICATION_TITLE');
-            if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
-                $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
-                $doliurl = '';
-                if (preg_match('/\d\.\d/', $appli)) {
-                    if (!preg_match('/' . preg_quote(DOL_VERSION) . '/', $appli)) {
-                        $appli .= " (" . DOL_VERSION . ")"; // If new title contains a version that is different than core
+            // Left column
+            print '<!-- Begin left menu -->' . "\n";
+
+            print '<div class="vmenu"' . (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') ? ' alt="Left menu"' : '') . '>' . "\n\n";
+
+            // Show left menu with other forms
+            $menumanager->menu_array = $menu_array_before;
+            $menumanager->menu_array_after = $menu_array_after;
+            $menumanager->showmenu('left', ['searchform' => $searchform]); // output menu_array and menu found in database
+
+            // Dolibarr version + help + bug report link
+            print "\n";
+            print "<!-- Begin Help Block-->\n";
+            print '<div id="blockvmenuhelp" class="blockvmenuhelp">' . "\n";
+
+            // Version
+            if (getDolGlobalString('MAIN_SHOW_VERSION')) {    // Version is already on help picto and on login page.
+                $doliurl = 'https://www.dolibarr.org';
+                //local communities
+                if (preg_match('/fr/i', $langs->defaultlang)) {
+                    $doliurl = 'https://www.dolibarr.fr';
+                }
+                if (preg_match('/es/i', $langs->defaultlang)) {
+                    $doliurl = 'https://www.dolibarr.es';
+                }
+                if (preg_match('/de/i', $langs->defaultlang)) {
+                    $doliurl = 'https://www.dolibarr.de';
+                }
+                if (preg_match('/it/i', $langs->defaultlang)) {
+                    $doliurl = 'https://www.dolibarr.it';
+                }
+                if (preg_match('/gr/i', $langs->defaultlang)) {
+                    $doliurl = 'https://www.dolibarr.gr';
+                }
+
+                $appli = constant('DOL_APPLICATION_TITLE');
+                if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+                    $appli = getDolGlobalString('MAIN_APPLICATION_TITLE');
+                    $doliurl = '';
+                    if (preg_match('/\d\.\d/', $appli)) {
+                        if (!preg_match('/' . preg_quote(DOL_VERSION) . '/', $appli)) {
+                            $appli .= " (" . DOL_VERSION . ")"; // If new title contains a version that is different than core
+                        }
+                    } else {
+                        $appli .= " " . DOL_VERSION;
                     }
                 } else {
                     $appli .= " " . DOL_VERSION;
                 }
-            } else {
-                $appli .= " " . DOL_VERSION;
+                print '<div id="blockvmenuhelpapp" class="blockvmenuhelp">';
+                if ($doliurl) {
+                    print '<a class="help" target="_blank" rel="noopener noreferrer" href="' . $doliurl . '">';
+                } else {
+                    print '<span class="help">';
+                }
+                print $appli;
+                if ($doliurl) {
+                    print '</a>';
+                } else {
+                    print '</span>';
+                }
+                print '</div>' . "\n";
             }
-            print '<div id="blockvmenuhelpapp" class="blockvmenuhelp">';
-            if ($doliurl) {
-                print '<a class="help" target="_blank" rel="noopener noreferrer" href="' . $doliurl . '">';
-            } else {
-                print '<span class="help">';
+
+            // Link to bugtrack
+            if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
+                require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+
+                if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK') == 'github') {
+                    $bugbaseurl = 'https://github.com/Dolibarr/dolibarr/issues/new?labels=Bug';
+                    $bugbaseurl .= '&title=';
+                    $bugbaseurl .= urlencode("Bug: ");
+                    $bugbaseurl .= '&body=';
+                    $bugbaseurl .= urlencode("# Instructions\n");
+                    $bugbaseurl .= urlencode("*This is a template to help you report good issues. You may use [Github Markdown](https://help.github.com/articles/getting-started-with-writing-and-formatting-on-github/) syntax to format your issue report.*\n");
+                    $bugbaseurl .= urlencode("*Please:*\n");
+                    $bugbaseurl .= urlencode("- *replace the bracket enclosed texts with meaningful information*\n");
+                    $bugbaseurl .= urlencode("- *remove any unused sub-section*\n");
+                    $bugbaseurl .= urlencode("\n");
+                    $bugbaseurl .= urlencode("\n");
+                    $bugbaseurl .= urlencode("# Bug\n");
+                    $bugbaseurl .= urlencode("[*Short description*]\n");
+                    $bugbaseurl .= urlencode("\n");
+                    $bugbaseurl .= urlencode("## Environment\n");
+                    $bugbaseurl .= urlencode("- **Version**: " . DOL_VERSION . "\n");
+                    $bugbaseurl .= urlencode("- **OS**: " . php_uname('s') . "\n");
+                    $bugbaseurl .= urlencode("- **Web server**: " . $_SERVER["SERVER_SOFTWARE"] . "\n");
+                    $bugbaseurl .= urlencode("- **PHP**: " . php_sapi_name() . ' ' . phpversion() . "\n");
+                    $bugbaseurl .= urlencode("- **Database**: " . $db::LABEL . ' ' . $db->getVersion() . "\n");
+                    $bugbaseurl .= urlencode("- **URL(s)**: " . $_SERVER["REQUEST_URI"] . "\n");
+                    $bugbaseurl .= urlencode("\n");
+                    $bugbaseurl .= urlencode("## Expected and actual behavior\n");
+                    $bugbaseurl .= urlencode("[*Verbose description*]\n");
+                    $bugbaseurl .= urlencode("\n");
+                    $bugbaseurl .= urlencode("## Steps to reproduce the behavior\n");
+                    $bugbaseurl .= urlencode("[*Verbose description*]\n");
+                    $bugbaseurl .= urlencode("\n");
+                    $bugbaseurl .= urlencode("## [Attached files](https://help.github.com/articles/issue-attachments) (Screenshots, screencasts, dolibarr.log, debugging information…)\n");
+                    $bugbaseurl .= urlencode("[*Files*]\n");
+                    $bugbaseurl .= urlencode("\n");
+
+                    $bugbaseurl .= urlencode("\n");
+                    $bugbaseurl .= urlencode("## Report\n");
+                } elseif (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
+                    $bugbaseurl = getDolGlobalString('MAIN_BUGTRACK_ENABLELINK');
+                } else {
+                    $bugbaseurl = "";
+                }
+
+                // Execute hook printBugtrackInfo
+                $parameters = ['bugbaseurl' => $bugbaseurl];
+                $reshook = $hookmanager->executeHooks('printBugtrackInfo', $parameters); // Note that $action and $object may have been modified by some hooks
+                if (empty($reshook)) {
+                    $bugbaseurl .= $hookmanager->resPrint;
+                } else {
+                    $bugbaseurl = $hookmanager->resPrint;
+                }
+
+                print '<div id="blockvmenuhelpbugreport" class="blockvmenuhelp">';
+                print '<a class="help" target="_blank" rel="noopener noreferrer" href="' . $bugbaseurl . '"><i class="fas fa-bug"></i> ' . $langs->trans("FindBug") . '</a>';
+                print '</div>';
             }
-            print $appli;
-            if ($doliurl) {
-                print '</a>';
-            } else {
-                print '</span>';
-            }
-            print '</div>' . "\n";
+
+            print "</div>\n";
+            print "<!-- End Help Block-->\n";
+            print "\n";
+
+            print "</div>\n";
+            print "<!-- End left menu -->\n";
+            print "\n";
+
+            // Execute hook printLeftBlock
+            $parameters = [];
+            $reshook = $hookmanager->executeHooks('printLeftBlock', $parameters); // Note that $action and $object may have been modified by some hooks
+            print $hookmanager->resPrint;
+
+            print '</div></div> <!-- End side-nav id-left -->'; // End div id="side-nav" div id="id-left"
         }
 
-        // Link to bugtrack
-        if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        print "\n";
+        print '<!-- Begin right area -->' . "\n";
 
-            if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK') == 'github') {
-                $bugbaseurl = 'https://github.com/Dolibarr/dolibarr/issues/new?labels=Bug';
-                $bugbaseurl .= '&title=';
-                $bugbaseurl .= urlencode("Bug: ");
-                $bugbaseurl .= '&body=';
-                $bugbaseurl .= urlencode("# Instructions\n");
-                $bugbaseurl .= urlencode("*This is a template to help you report good issues. You may use [Github Markdown](https://help.github.com/articles/getting-started-with-writing-and-formatting-on-github/) syntax to format your issue report.*\n");
-                $bugbaseurl .= urlencode("*Please:*\n");
-                $bugbaseurl .= urlencode("- *replace the bracket enclosed texts with meaningful information*\n");
-                $bugbaseurl .= urlencode("- *remove any unused sub-section*\n");
-                $bugbaseurl .= urlencode("\n");
-                $bugbaseurl .= urlencode("\n");
-                $bugbaseurl .= urlencode("# Bug\n");
-                $bugbaseurl .= urlencode("[*Short description*]\n");
-                $bugbaseurl .= urlencode("\n");
-                $bugbaseurl .= urlencode("## Environment\n");
-                $bugbaseurl .= urlencode("- **Version**: " . DOL_VERSION . "\n");
-                $bugbaseurl .= urlencode("- **OS**: " . php_uname('s') . "\n");
-                $bugbaseurl .= urlencode("- **Web server**: " . $_SERVER["SERVER_SOFTWARE"] . "\n");
-                $bugbaseurl .= urlencode("- **PHP**: " . php_sapi_name() . ' ' . phpversion() . "\n");
-                $bugbaseurl .= urlencode("- **Database**: " . $db::LABEL . ' ' . $db->getVersion() . "\n");
-                $bugbaseurl .= urlencode("- **URL(s)**: " . $_SERVER["REQUEST_URI"] . "\n");
-                $bugbaseurl .= urlencode("\n");
-                $bugbaseurl .= urlencode("## Expected and actual behavior\n");
-                $bugbaseurl .= urlencode("[*Verbose description*]\n");
-                $bugbaseurl .= urlencode("\n");
-                $bugbaseurl .= urlencode("## Steps to reproduce the behavior\n");
-                $bugbaseurl .= urlencode("[*Verbose description*]\n");
-                $bugbaseurl .= urlencode("\n");
-                $bugbaseurl .= urlencode("## [Attached files](https://help.github.com/articles/issue-attachments) (Screenshots, screencasts, dolibarr.log, debugging information…)\n");
-                $bugbaseurl .= urlencode("[*Files*]\n");
-                $bugbaseurl .= urlencode("\n");
+        if (empty($leftmenuwithoutmainarea)) {
+            main_area($title);
+        }
+    }
+}
 
-                $bugbaseurl .= urlencode("\n");
-                $bugbaseurl .= urlencode("## Report\n");
-            } elseif (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
-                $bugbaseurl = getDolGlobalString('MAIN_BUGTRACK_ENABLELINK');
-            } else {
-                $bugbaseurl = "";
-            }
+if (!function_exists('main_area')) {
+    /**
+     *  Begin main area
+     *
+     * @param string $title Title
+     *
+     * @return void
+     */
+    function main_area($title = '')
+    {
+        global $conf, $langs, $hookmanager;
 
-            // Execute hook printBugtrackInfo
-            $parameters = array('bugbaseurl' => $bugbaseurl);
-            $reshook = $hookmanager->executeHooks('printBugtrackInfo', $parameters); // Note that $action and $object may have been modified by some hooks
-            if (empty($reshook)) {
-                $bugbaseurl .= $hookmanager->resPrint;
-            } else {
-                $bugbaseurl = $hookmanager->resPrint;
-            }
-
-            print '<div id="blockvmenuhelpbugreport" class="blockvmenuhelp">';
-            print '<a class="help" target="_blank" rel="noopener noreferrer" href="' . $bugbaseurl . '"><i class="fas fa-bug"></i> ' . $langs->trans("FindBug") . '</a>';
-            print '</div>';
+        if (empty($conf->dol_hide_leftmenu) && !GETPOST('dol_openinpopup')) {
+            print '<div id="id-right">';
         }
 
-        print "</div>\n";
-        print "<!-- End Help Block-->\n";
         print "\n";
 
-        print "</div>\n";
-        print "<!-- End left menu -->\n";
-        print "\n";
+        print '<!-- Begin div class="fiche" -->' . "\n" . '<div class="fiche">' . "\n";
 
-        // Execute hook printLeftBlock
-        $parameters = array();
-        $reshook = $hookmanager->executeHooks('printLeftBlock', $parameters); // Note that $action and $object may have been modified by some hooks
+        $hookmanager->initHooks(['main']);
+        $parameters = [];
+        $reshook = $hookmanager->executeHooks('printMainArea', $parameters); // Note that $action and $object may have been modified by some hooks
         print $hookmanager->resPrint;
 
-        print '</div></div> <!-- End side-nav id-left -->'; // End div id="side-nav" div id="id-left"
-    }
+        if (getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
+            print info_admin($langs->trans("WarningYouAreInMaintenanceMode", getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')), 0, 0, 1, 'warning maintenancemode');
+        }
 
-    print "\n";
-    print '<!-- Begin right area -->' . "\n";
-
-    if (empty($leftmenuwithoutmainarea)) {
-        main_area($title);
-    }
-}
-
-
-/**
- *  Begin main area
- *
- *  @param  string  $title      Title
- *  @return void
- */
-function main_area($title = '')
-{
-    global $conf, $langs, $hookmanager;
-
-    if (empty($conf->dol_hide_leftmenu) && !GETPOST('dol_openinpopup')) {
-        print '<div id="id-right">';
-    }
-
-    print "\n";
-
-    print '<!-- Begin div class="fiche" -->' . "\n" . '<div class="fiche">' . "\n";
-
-    $hookmanager->initHooks(array('main'));
-    $parameters = array();
-    $reshook = $hookmanager->executeHooks('printMainArea', $parameters); // Note that $action and $object may have been modified by some hooks
-    print $hookmanager->resPrint;
-
-    if (getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')) {
-        print info_admin($langs->trans("WarningYouAreInMaintenanceMode", getDolGlobalString('MAIN_ONLY_LOGIN_ALLOWED')), 0, 0, 1, 'warning maintenancemode');
-    }
-
-    // Permit to add user company information on each printed document by setting SHOW_SOCINFO_ON_PRINT
-    if (getDolGlobalString('SHOW_SOCINFO_ON_PRINT') && GETPOST('optioncss', 'aZ09') == 'print' && empty(GETPOST('disable_show_socinfo_on_print', 'aZ09'))) {
-        $parameters = array();  // @phan-suppress-current-line PhanPluginRedundantAssignment
-        $reshook = $hookmanager->executeHooks('showSocinfoOnPrint', $parameters);
-        if (empty($reshook)) {
-            print '<!-- Begin show mysoc info header -->' . "\n";
-            print '<div id="mysoc-info-header">' . "\n";
-            print '<table class="centpercent div-table-responsive">' . "\n";
-            print '<tbody>';
-            print '<tr><td rowspan="0" class="width20p">';
-            if (getDolGlobalString('MAIN_SHOW_LOGO') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && getDolGlobalString('MAIN_INFO_SOCIETE_LOGO')) {
-                print '<img id="mysoc-info-header-logo" style="max-width:100%" alt="" src="' . DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_LOGO'))) . '">';
+        // Permit to add user company information on each printed document by setting SHOW_SOCINFO_ON_PRINT
+        if (getDolGlobalString('SHOW_SOCINFO_ON_PRINT') && GETPOST('optioncss', 'aZ09') == 'print' && empty(GETPOST('disable_show_socinfo_on_print', 'aZ09'))) {
+            $parameters = [];  // @phan-suppress-current-line PhanPluginRedundantAssignment
+            $reshook = $hookmanager->executeHooks('showSocinfoOnPrint', $parameters);
+            if (empty($reshook)) {
+                print '<!-- Begin show mysoc info header -->' . "\n";
+                print '<div id="mysoc-info-header">' . "\n";
+                print '<table class="centpercent div-table-responsive">' . "\n";
+                print '<tbody>';
+                print '<tr><td rowspan="0" class="width20p">';
+                if (getDolGlobalString('MAIN_SHOW_LOGO') && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && getDolGlobalString('MAIN_INFO_SOCIETE_LOGO')) {
+                    print '<img id="mysoc-info-header-logo" style="max-width:100%" alt="" src="' . DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_LOGO'))) . '">';
+                }
+                print '</td><td  rowspan="0" class="width50p"></td></tr>' . "\n";
+                print '<tr><td class="titre bold">' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_NOM')) . '</td></tr>' . "\n";
+                print '<tr><td>' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_ADDRESS')) . '<br>' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_ZIP')) . ' ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_TOWN')) . '</td></tr>' . "\n";
+                if (getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) {
+                    print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Phone") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) . '</td></tr>';
+                }
+                if (getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) {
+                    print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Email") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) . '</td></tr>';
+                }
+                if (getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) {
+                    print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Web") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) . '</td></tr>';
+                }
+                print '</tbody>';
+                print '</table>' . "\n";
+                print '</div>' . "\n";
+                print '<!-- End show mysoc info header -->' . "\n";
             }
-            print '</td><td  rowspan="0" class="width50p"></td></tr>' . "\n";
-            print '<tr><td class="titre bold">' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_NOM')) . '</td></tr>' . "\n";
-            print '<tr><td>' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_ADDRESS')) . '<br>' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_ZIP')) . ' ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_TOWN')) . '</td></tr>' . "\n";
-            if (getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) {
-                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Phone") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_TEL')) . '</td></tr>';
-            }
-            if (getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) {
-                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Email") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_MAIL')) . '</td></tr>';
-            }
-            if (getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) {
-                print '<tr><td style="padding-left: 1em" class="small">' . $langs->trans("Web") . ' : ' . dol_escape_htmltag(getDolGlobalString('MAIN_INFO_SOCIETE_WEB')) . '</td></tr>';
-            }
-            print '</tbody>';
-            print '</table>' . "\n";
-            print '</div>' . "\n";
-            print '<!-- End show mysoc info header -->' . "\n";
         }
     }
 }
 
+if (!function_exists('getHelpParamFor')) {
+    /**
+     *  Return helpbaseurl, helppage and mode
+     *
+     * @param string    $helppagename Page name ('EN:xxx,ES:eee,FR:fff,DE:ddd...' or 'http://localpage')
+     * @param Translate $langs        Language
+     *
+     * @return array       Array of help urls
+     */
+    function getHelpParamFor($helppagename, $langs)
+    {
+        $helpbaseurl = '';
+        $helppage = '';
+        $mode = '';
 
-/**
- *  Return helpbaseurl, helppage and mode
- *
- *  @param  string      $helppagename       Page name ('EN:xxx,ES:eee,FR:fff,DE:ddd...' or 'http://localpage')
- *  @param  Translate   $langs              Language
- *  @return array       Array of help urls
- */
-function getHelpParamFor($helppagename, $langs)
-{
-    $helpbaseurl = '';
-    $helppage = '';
-    $mode = '';
-
-    if (preg_match('/^http/i', $helppagename)) {
-        // If complete URL
-        $helpbaseurl = '%s';
-        $helppage = $helppagename;
-        $mode = 'local';
-    } else {
-        // If WIKI URL
-        $reg = array();
-        if (preg_match('/^es/i', $langs->defaultlang)) {
-            $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
-            if (preg_match('/ES:([^|]+)/i', $helppagename, $reg)) {
-                $helppage = $reg[1];
+        if (preg_match('/^http/i', $helppagename)) {
+            // If complete URL
+            $helpbaseurl = '%s';
+            $helppage = $helppagename;
+            $mode = 'local';
+        } else {
+            // If WIKI URL
+            $reg = [];
+            if (preg_match('/^es/i', $langs->defaultlang)) {
+                $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
+                if (preg_match('/ES:([^|]+)/i', $helppagename, $reg)) {
+                    $helppage = $reg[1];
+                }
             }
-        }
-        if (preg_match('/^fr/i', $langs->defaultlang)) {
-            $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
-            if (preg_match('/FR:([^|]+)/i', $helppagename, $reg)) {
-                $helppage = $reg[1];
+            if (preg_match('/^fr/i', $langs->defaultlang)) {
+                $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
+                if (preg_match('/FR:([^|]+)/i', $helppagename, $reg)) {
+                    $helppage = $reg[1];
+                }
             }
-        }
-        if (preg_match('/^de/i', $langs->defaultlang)) {
-            $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
-            if (preg_match('/DE:([^|]+)/i', $helppagename, $reg)) {
-                $helppage = $reg[1];
+            if (preg_match('/^de/i', $langs->defaultlang)) {
+                $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
+                if (preg_match('/DE:([^|]+)/i', $helppagename, $reg)) {
+                    $helppage = $reg[1];
+                }
             }
-        }
-        if (empty($helppage)) { // If help page not already found
-            $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
-            if (preg_match('/EN:([^|]+)/i', $helppagename, $reg)) {
-                $helppage = $reg[1];
+            if (empty($helppage)) { // If help page not already found
+                $helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
+                if (preg_match('/EN:([^|]+)/i', $helppagename, $reg)) {
+                    $helppage = $reg[1];
+                }
             }
+            $mode = 'wiki';
         }
-        $mode = 'wiki';
+        return ['helpbaseurl' => $helpbaseurl, 'helppage' => $helppage, 'mode' => $mode];
     }
-    return array('helpbaseurl' => $helpbaseurl, 'helppage' => $helppage, 'mode' => $mode);
 }
 
+if (!function_exists('printSearchForm')) {
+    /**
+     *  Show a search area.
+     *  Used when the javascript quick search is not used.
+     *
+     * @param string $urlaction         Url post
+     * @param string $urlobject         Url of the link under the search box
+     * @param string $title             Title search area
+     * @param string $htmlmorecss       Add more css
+     * @param string $htmlinputname     Field Name input form
+     * @param string $accesskey         Accesskey
+     * @param string $prefhtmlinputname Complement for id to avoid multiple same id in the page
+     * @param string $img               Image to use
+     * @param int    $showtitlebefore   Show title before input text instead of into placeholder. This can be set when
+     *                                  output is dedicated for text browsers.
+     * @param int    $autofocus         Set autofocus on field
+     *
+     * @return string
+     */
+    function printSearchForm($urlaction, $urlobject, $title, $htmlmorecss, $htmlinputname, $accesskey = '', $prefhtmlinputname = '', $img = '', $showtitlebefore = 0, $autofocus = 0)
+    {
+        global $langs, $user;
 
-/**
- *  Show a search area.
- *  Used when the javascript quick search is not used.
- *
- *  @param  string  $urlaction          Url post
- *  @param  string  $urlobject          Url of the link under the search box
- *  @param  string  $title              Title search area
- *  @param  string  $htmlmorecss        Add more css
- *  @param  string  $htmlinputname      Field Name input form
- *  @param  string  $accesskey          Accesskey
- *  @param  string  $prefhtmlinputname  Complement for id to avoid multiple same id in the page
- *  @param  string  $img                Image to use
- *  @param  int     $showtitlebefore    Show title before input text instead of into placeholder. This can be set when output is dedicated for text browsers.
- *  @param  int     $autofocus          Set autofocus on field
- *  @return string
- */
-function printSearchForm($urlaction, $urlobject, $title, $htmlmorecss, $htmlinputname, $accesskey = '', $prefhtmlinputname = '', $img = '', $showtitlebefore = 0, $autofocus = 0)
-{
-    global $langs, $user;
-
-    $ret = '';
-    $ret .= '<form action="' . $urlaction . '" method="post" class="searchform nowraponall tagtr">';
-    $ret .= '<input type="hidden" name="token" value="' . newToken() . '">';
-    $ret .= '<input type="hidden" name="savelogin" value="' . dol_escape_htmltag($user->login) . '">';
-    if ($showtitlebefore) {
-        $ret .= '<div class="tagtd left">' . $title . '</div> ';
+        $ret = '';
+        $ret .= '<form action="' . $urlaction . '" method="post" class="searchform nowraponall tagtr">';
+        $ret .= '<input type="hidden" name="token" value="' . newToken() . '">';
+        $ret .= '<input type="hidden" name="savelogin" value="' . dol_escape_htmltag($user->login) . '">';
+        if ($showtitlebefore) {
+            $ret .= '<div class="tagtd left">' . $title . '</div> ';
+        }
+        $ret .= '<div class="tagtd">';
+        $ret .= img_picto('', $img, '', false, 0, 0, '', 'paddingright width20');
+        $ret .= '<input type="text" class="flat ' . $htmlmorecss . '"';
+        $ret .= ' style="background-repeat: no-repeat; background-position: 3px;"';
+        $ret .= ($accesskey ? ' accesskey="' . $accesskey . '"' : '');
+        $ret .= ' placeholder="' . strip_tags($title) . '"';
+        $ret .= ($autofocus ? ' autofocus' : '');
+        $ret .= ' name="' . $htmlinputname . '" id="' . $prefhtmlinputname . $htmlinputname . '" />';
+        $ret .= '<button type="submit" class="button bordertransp" style="padding-top: 4px; padding-bottom: 4px; padding-left: 6px; padding-right: 6px">';
+        $ret .= '<span class="fa fa-search"></span>';
+        $ret .= '</button>';
+        $ret .= '</div>';
+        $ret .= "</form>\n";
+        return $ret;
     }
-    $ret .= '<div class="tagtd">';
-    $ret .= img_picto('', $img, '', false, 0, 0, '', 'paddingright width20');
-    $ret .= '<input type="text" class="flat ' . $htmlmorecss . '"';
-    $ret .= ' style="background-repeat: no-repeat; background-position: 3px;"';
-    $ret .= ($accesskey ? ' accesskey="' . $accesskey . '"' : '');
-    $ret .= ' placeholder="' . strip_tags($title) . '"';
-    $ret .= ($autofocus ? ' autofocus' : '');
-    $ret .= ' name="' . $htmlinputname . '" id="' . $prefhtmlinputname . $htmlinputname . '" />';
-    $ret .= '<button type="submit" class="button bordertransp" style="padding-top: 4px; padding-bottom: 4px; padding-left: 6px; padding-right: 6px">';
-    $ret .= '<span class="fa fa-search"></span>';
-    $ret .= '</button>';
-    $ret .= '</div>';
-    $ret .= "</form>\n";
-    return $ret;
 }
-
 
 if (!function_exists("llxFooter")) {
     /**
@@ -3600,9 +3651,10 @@ if (!function_exists("llxFooter")) {
      * Close div /DIV class=fiche + /DIV id-right + /DIV id-container + /BODY + /HTML.
      * If global var $delayedhtmlcontent was filled, we output it just before closing the body.
      *
-     * @param   string  $comment                    A text to add as HTML comment into HTML generated page
-     * @param   string  $zone                       'private' (for private pages) or 'public' (for public pages)
-     * @param   int     $disabledoutputofmessages   Clear all messages stored into session without displaying them
+     * @param string $comment                  A text to add as HTML comment into HTML generated page
+     * @param string $zone                     'private' (for private pages) or 'public' (for public pages)
+     * @param int    $disabledoutputofmessages Clear all messages stored into session without displaying them
+     *
      * @return  void
      */
     function llxFooter($comment = '', $zone = 'private', $disabledoutputofmessages = 0)
@@ -3616,7 +3668,7 @@ if (!function_exists("llxFooter")) {
 
         // Hook to add more things on all pages within fiche DIV
         $llxfooter = '';
-        $parameters = array();
+        $parameters = [];
         $reshook = $hookmanager->executeHooks('llxFooter', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
         if (empty($reshook)) {
             $llxfooter .= $hookmanager->resPrint;
@@ -3728,32 +3780,32 @@ if (!function_exists("llxFooter")) {
 
         // Wrapper to add log when clicking on download or preview
         if (isModEnabled('blockedlog') && is_object($object) && !empty($object->id) && $object->id > 0) {
-            if (in_array($object->element, array('facture')) && $object->statut > 0) {       // Restrict for the moment to element 'facture'
+            if (in_array($object->element, ['facture']) && $object->statut > 0) {       // Restrict for the moment to element 'facture'
                 print "\n<!-- JS CODE TO ENABLE log when making a download or a preview of a document -->\n";
                 ?>
                 <script>
-                jQuery(document).ready(function () {
-                    $('a.documentpreview').click(function() {
-                        $.post('<?php echo DOL_URL_ROOT . "/blockedlog/ajax/block-add.php" ?>'
+                    jQuery(document).ready(function () {
+                        $('a.documentpreview').click(function () {
+                            $.post('<?php echo DOL_URL_ROOT . "/blockedlog/ajax/block-add.php" ?>'
                                 , {
                                     id:<?php echo $object->id; ?>
-                                    , element:'<?php echo $object->element ?>'
-                                    , action:'DOC_PREVIEW'
+                                    , element: '<?php echo $object->element ?>'
+                                    , action: 'DOC_PREVIEW'
                                     , token: '<?php echo currentToken(); ?>'
                                 }
-                        );
-                    });
-                    $('a.documentdownload').click(function() {
-                        $.post('<?php echo DOL_URL_ROOT . "/blockedlog/ajax/block-add.php" ?>'
+                            );
+                        });
+                        $('a.documentdownload').click(function () {
+                            $.post('<?php echo DOL_URL_ROOT . "/blockedlog/ajax/block-add.php" ?>'
                                 , {
                                     id:<?php echo $object->id; ?>
-                                    , element:'<?php echo $object->element ?>'
-                                    , action:'DOC_DOWNLOAD'
+                                    , element: '<?php echo $object->element ?>'
+                                    , action: 'DOC_DOWNLOAD'
                                     , token: '<?php echo currentToken(); ?>'
                                 }
-                        );
+                            );
+                        });
                     });
-                });
                 </script>
                 <?php
             }
@@ -3798,51 +3850,61 @@ if (!function_exists("llxFooter")) {
                             $distrib = $dolibarr_distrib;
                         }
                         ?>
-                            <script>
+                        <script>
                             jQuery(document).ready(function (tmp) {
                                 console.log("Try Ping with hash_unique_id is dol_hash('dolibarr'+instance_unique_id, 'sha256')");
                                 $.ajax({
-                                      method: "POST",
-                                      url: "<?php echo $url_for_ping ?>",
-                                      timeout: 500,     // timeout milliseconds
-                                      cache: false,
-                                      data: {
-                                          hash_algo: 'dol_hash-sha256',
-                                          hash_unique_id: '<?php echo dol_escape_js($hash_unique_id); ?>',
-                                          action: 'dolibarrping',
-                                          version: '<?php echo (float) DOL_VERSION; ?>',
-                                          entity: '<?php echo (int) $conf->entity; ?>',
-                                          dbtype: '<?php echo dol_escape_js($db->type); ?>',
-                                          country_code: '<?php echo $mysoc->country_code ? dol_escape_js($mysoc->country_code) : 'unknown'; ?>',
-                                          php_version: '<?php echo dol_escape_js(phpversion()); ?>',
-                                          os_version: '<?php echo dol_escape_js(version_os('smr')); ?>',
-                                          db_version: '<?php echo dol_escape_js(version_db()); ?>',
-                                          distrib: '<?php echo $distrib ? dol_escape_js($distrib) : 'unknown'; ?>',
-                                          token: 'notrequired'
-                                      },
-                                      success: function (data, status, xhr) {   // success callback function (data contains body of response)
-                                            console.log("Ping ok");
-                                            $.ajax({
-                                                method: 'GET',
-                                                url: '<?php echo DOL_URL_ROOT . '/core/ajax/pingresult.php'; ?>',
-                                                timeout: 500,     // timeout milliseconds
-                                                cache: false,
-                                                data: { hash_algo: 'dol_hash-sha256', hash_unique_id: '<?php echo dol_escape_js($hash_unique_id); ?>', action: 'firstpingok', token: '<?php echo currentToken(); ?>' }, // for update
-                                              });
-                                      },
-                                      error: function (data,status,xhr) {   // error callback function
-                                            console.log("Ping ko: " + data);
-                                            $.ajax({
-                                                  method: 'GET',
-                                                  url: '<?php echo DOL_URL_ROOT . '/core/ajax/pingresult.php'; ?>',
-                                                  timeout: 500,     // timeout milliseconds
-                                                  cache: false,
-                                                  data: { hash_algo: 'dol_hash-sha256', hash_unique_id: '<?php echo dol_escape_js($hash_unique_id); ?>', action: 'firstpingko', token: '<?php echo currentToken(); ?>' },
-                                                });
-                                      }
+                                    method: "POST",
+                                    url: "<?php echo $url_for_ping ?>",
+                                    timeout: 500,     // timeout milliseconds
+                                    cache: false,
+                                    data: {
+                                        hash_algo: 'dol_hash-sha256',
+                                        hash_unique_id: '<?php echo dol_escape_js($hash_unique_id); ?>',
+                                        action: 'dolibarrping',
+                                        version: '<?php echo (float) DOL_VERSION; ?>',
+                                        entity: '<?php echo (int) $conf->entity; ?>',
+                                        dbtype: '<?php echo dol_escape_js($db->type); ?>',
+                                        country_code: '<?php echo $mysoc->country_code ? dol_escape_js($mysoc->country_code) : 'unknown'; ?>',
+                                        php_version: '<?php echo dol_escape_js(phpversion()); ?>',
+                                        os_version: '<?php echo dol_escape_js(version_os('smr')); ?>',
+                                        db_version: '<?php echo dol_escape_js(version_db()); ?>',
+                                        distrib: '<?php echo $distrib ? dol_escape_js($distrib) : 'unknown'; ?>',
+                                        token: 'notrequired'
+                                    },
+                                    success: function (data, status, xhr) {   // success callback function (data contains body of response)
+                                        console.log("Ping ok");
+                                        $.ajax({
+                                            method: 'GET',
+                                            url: '<?php echo DOL_URL_ROOT . '/core/ajax/pingresult.php'; ?>',
+                                            timeout: 500,     // timeout milliseconds
+                                            cache: false,
+                                            data: {
+                                                hash_algo: 'dol_hash-sha256',
+                                                hash_unique_id: '<?php echo dol_escape_js($hash_unique_id); ?>',
+                                                action: 'firstpingok',
+                                                token: '<?php echo currentToken(); ?>'
+                                            }, // for update
+                                        });
+                                    },
+                                    error: function (data, status, xhr) {   // error callback function
+                                        console.log("Ping ko: " + data);
+                                        $.ajax({
+                                            method: 'GET',
+                                            url: '<?php echo DOL_URL_ROOT . '/core/ajax/pingresult.php'; ?>',
+                                            timeout: 500,     // timeout milliseconds
+                                            cache: false,
+                                            data: {
+                                                hash_algo: 'dol_hash-sha256',
+                                                hash_unique_id: '<?php echo dol_escape_js($hash_unique_id); ?>',
+                                                action: 'firstpingko',
+                                                token: '<?php echo currentToken(); ?>'
+                                            },
+                                        });
+                                    }
                                 });
                             });
-                            </script>
+                        </script>
                         <?php
                     }
                 } else {
@@ -3855,7 +3917,7 @@ if (!function_exists("llxFooter")) {
             }
         }
 
-        $parameters = array();  // @phan-suppress-current-line PhanPluginRedundantAssignment
+        $parameters = [];  // @phan-suppress-current-line PhanPluginRedundantAssignment
         $reshook = $hookmanager->executeHooks('beforeBodyClose', $parameters); // Note that $action and $object may have been modified by some hooks
         if ($reshook > 0) {
             print $hookmanager->resPrint;

@@ -31,8 +31,9 @@
 /**
  *  Return user/group account of web server
  *
- *  @param  string  $mode       'user' or 'group'
- *  @return string              Return user or group of web server
+ * @param string $mode 'user' or 'group'
+ *
+ * @return string              Return user or group of web server
  */
 function dol_getwebuser($mode)
 {
@@ -49,12 +50,13 @@ function dol_getwebuser($mode)
 /**
  *  Return a login if login/pass was successful
  *
- *  @param      string  $usertotest         Login value to test
- *  @param      string  $passwordtotest     Password value to test
- *  @param      string  $entitytotest       Instance of data we must check
- *  @param      array   $authmode           Array list of selected authentication mode array('http', 'dolibarr', 'xxx'...)
- *  @param      string  $context            Context checkLoginPassEntity was created for ('api', 'dav', 'ws', '')
- *  @return     string                      Login or '' or '--bad-login-validity--'
+ * @param string $usertotest     Login value to test
+ * @param string $passwordtotest Password value to test
+ * @param string $entitytotest   Instance of data we must check
+ * @param array  $authmode       Array list of selected authentication mode array('http', 'dolibarr', 'xxx'...)
+ * @param string $context        Context checkLoginPassEntity was created for ('api', 'dav', 'ws', '')
+ *
+ * @return     string                      Login or '' or '--bad-login-validity--'
  */
 function checkLoginPassEntity($usertotest, $passwordtotest, $entitytotest, $authmode, $context = '')
 {
@@ -78,7 +80,7 @@ function checkLoginPassEntity($usertotest, $passwordtotest, $entitytotest, $auth
                 $authfile = 'functions_' . $mode . '.php';
                 $fullauthfile = '';
 
-                $dirlogin = array_merge(array("/core/login"), (array) $conf->modules_parts['login']);
+                $dirlogin = array_merge(["/core/login"], (array) $conf->modules_parts['login']);
                 foreach ($dirlogin as $reldir) {
                     $dir = dol_buildpath($reldir, 0);
                     $newdir = dol_osencode($dir);
@@ -111,7 +113,7 @@ function checkLoginPassEntity($usertotest, $passwordtotest, $entitytotest, $auth
                     dol_syslog("Authentication KO - failed to load file '" . $authfile . "'", LOG_ERR);
                     sleep(1);
                     // Load translation files required by the page
-                    $langs->loadLangs(array('other', 'main', 'errors'));
+                    $langs->loadLangs(['other', 'main', 'errors']);
 
                     $_SESSION["dol_loginmesg"] = (empty($_SESSION["dol_loginmesg"]) ? '' : $_SESSION["dol_loginmesg"] . ', ') . $langs->transnoentitiesnoconv("ErrorFailedToLoadLoginFileForMode", $mode);
                 }
@@ -128,9 +130,10 @@ if (!function_exists('dol_loginfunction')) {
      * Show Dolibarr default login page.
      * Part of this code is also duplicated into main.inc.php::top_htmlhead
      *
-     * @param       Translate   $langs      Lang object (must be initialized by a new).
-     * @param       Conf        $conf       Conf object
-     * @param       Societe     $mysoc      Company object
+     * @param Translate $langs Lang object (must be initialized by a new).
+     * @param Conf      $conf  Conf object
+     * @param Societe   $mysoc Company object
+     *
      * @return      void
      */
     function dol_loginfunction($langs, $conf, $mysoc)
@@ -138,10 +141,10 @@ if (!function_exists('dol_loginfunction')) {
         global $dolibarr_main_demo, $dolibarr_main_force_https;
         global $db, $hookmanager;
 
-        $langs->loadLangs(array("main", "other", "help", "admin"));
+        $langs->loadLangs(["main", "other", "help", "admin"]);
 
         // Instantiate hooks of thirdparty module only if not already define
-        $hookmanager->initHooks(array('mainloginpage'));
+        $hookmanager->initHooks(['mainloginpage']);
 
         $main_authentication = $conf->file->main_authentication;
 
@@ -177,7 +180,7 @@ if (!function_exists('dol_loginfunction')) {
 
         // Select templates dir
         if (!empty($conf->modules_parts['tpl'])) {  // Using this feature slow down application
-            $dirtpls = array_merge($conf->modules_parts['tpl'], array('/core/tpl/'));
+            $dirtpls = array_merge($conf->modules_parts['tpl'], ['/core/tpl/']);
             foreach ($dirtpls as $reldir) {
                 $tmp = dol_buildpath($reldir . 'login.tpl.php');
                 if (file_exists($tmp)) {
@@ -200,14 +203,14 @@ if (!function_exists('dol_loginfunction')) {
                     session_set_cookie_params(0, '/', null, ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true), true); // Add tag secure and httponly on session cookie (same as setting session.cookie_httponly into php.ini). Must be called before the session_start.
                 } else {
                     // Only available for php >= 7.3
-                    $sessioncookieparams = array(
+                    $sessioncookieparams = [
                         'lifetime' => 0,
                         'path' => '/',
                         //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
                         'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
                         'httponly' => true,
-                        'samesite' => 'Lax' // None || Lax  || Strict
-                    );
+                        'samesite' => 'Lax', // None || Lax  || Strict
+                    ];
                     session_set_cookie_params($sessioncookieparams);
                 }
 
@@ -236,17 +239,17 @@ if (!function_exists('dol_loginfunction')) {
         }
 
         // Execute hook getLoginPageOptions (for table)
-        $parameters = array('entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity'));
+        $parameters = ['entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity')];
         $reshook = $hookmanager->executeHooks('getLoginPageOptions', $parameters); // Note that $action and $object may have been modified by some hooks.
         $morelogincontent = $hookmanager->resPrint;
 
         // Execute hook getLoginPageExtraOptions (eg for js)
-        $parameters = array('entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity'));
+        $parameters = ['entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity')];
         $reshook = $hookmanager->executeHooks('getLoginPageExtraOptions', $parameters); // Note that $action and $object may have been modified by some hooks.
         $moreloginextracontent = $hookmanager->resPrint;
 
         //Redirect after connection
-        $parameters = array('entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity'));
+        $parameters = ['entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity')];
         $reshook = $hookmanager->executeHooks('redirectAfterConnection', $parameters); // Note that $action and $object may have been modified by some hooks.
         $php_self = $hookmanager->resPrint;
 
@@ -339,10 +342,11 @@ if (!function_exists('dol_loginfunction')) {
 /**
  *  Initialise the salt for the crypt function.
  *
- *  @param      int     $type       2 =>Return a salt for DES encryption
+ * @param int $type                 2 =>Return a salt for DES encryption
  *                                  12=>Return a salt for MD5 encryption
  *                                  Undefined=>Return a salt for default encryption
- *  @return     string              Salt string
+ *
+ * @return     string              Salt string
  */
 function makesalt($type = CRYPT_SALT_LENGTH)
 {
@@ -378,8 +382,9 @@ function makesalt($type = CRYPT_SALT_LENGTH)
 /**
  *  Encode or decode database password in config file
  *
- *  @param      int     $level      Encode level: 0 no encoding, 1 encoding
- *  @return     int                 Return integer <0 if KO, >0 if OK
+ * @param int $level Encode level: 0 no encoding, 1 encoding
+ *
+ * @return     int                 Return integer <0 if KO, >0 if OK
  */
 function encodedecode_dbpassconf($level = 0)
 {
@@ -394,7 +399,7 @@ function encodedecode_dbpassconf($level = 0)
 
             $lineofpass = 0;
 
-            $reg = array();
+            $reg = [];
             if (preg_match('/^[^#]*dolibarr_main_db_encrypted_pass[\s]*=[\s]*(.*)/i', $buffer, $reg)) { // Old way to save encrypted value
                 $val = trim($reg[1]); // This also remove CR/LF
                 $val = preg_replace('/^["\']/', '', $val);
@@ -480,9 +485,11 @@ function encodedecode_dbpassconf($level = 0)
 /**
  * Return a generated password using default module
  *
- * @param       boolean     $generic                true=Create generic password (32 chars/numbers), false=Use the configured password generation module
- * @param       array       $replaceambiguouschars  Discard ambiguous characters. For example array('I').
- * @param       int         $length                 Length of random string (Used only if $generic is true)
+ * @param boolean $generic               true=Create generic password (32 chars/numbers), false=Use the configured
+ *                                       password generation module
+ * @param array   $replaceambiguouschars Discard ambiguous characters. For example array('I').
+ * @param int     $length                Length of random string (Used only if $generic is true)
+ *
  * @return      string                              New value for password
  * @see dol_hash(), dolJSToSetRandomPassword()
  */
@@ -566,9 +573,10 @@ function getRandomPassword($generic = false, $replaceambiguouschars = null, $len
 /**
  * Output javascript to autoset a generated password using default module into a HTML element.
  *
- * @param       string      $htmlname           HTML name of element to insert key into
- * @param       string      $htmlnameofbutton   HTML name of button
- * @param       int         $generic            1=Return a generic pass, 0=Return a pass following setup rules
+ * @param string $htmlname         HTML name of element to insert key into
+ * @param string $htmlnameofbutton HTML name of button
+ * @param int    $generic          1=Return a generic pass, 0=Return a pass following setup rules
+ *
  * @return      string                          HTML javascript code to set a password
  * @see getRandomPassword()
  */

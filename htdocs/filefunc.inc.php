@@ -269,7 +269,7 @@ if (empty($dolibarr_main_data_root)) {
 
 // Define some constants
 define('DOL_CLASS_PATH', 'class/'); // Filesystem path to class dir (defined only for some code that want to be compatible with old versions without this parameter)
-define('DOL_DATA_ROOT', $dolibarr_main_data_root); // Filesystem data (documents)
+// define('DOL_DATA_ROOT', $dolibarr_main_data_root); // Filesystem data (documents)
 // Try to autodetect DOL_MAIN_URL_ROOT and DOL_URL_ROOT when root is not directly the main domain.
 // Note: autodetect works only in case 1, 2, 3 and 4 of phpunit test CoreTest.php. For case 5, 6, only setting value into conf.php will works.
 $tmp = '';
@@ -322,7 +322,7 @@ if (!defined('DOL_URL_ROOT')) {
 //print DOL_MAIN_URL_ROOT.'-'.DOL_URL_ROOT."\n";
 
 // Define prefix MAIN_DB_PREFIX
-define('MAIN_DB_PREFIX', $dolibarr_main_db_prefix);
+//define('MAIN_DB_PREFIX', $dolibarr_main_db_prefix);
 
 
 /*

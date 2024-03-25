@@ -128,7 +128,6 @@ if (!defined('NOREQUIRESOC')) {
     require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 }
 
-
 /*
  * Create object $langs (must be before all other code)
  */

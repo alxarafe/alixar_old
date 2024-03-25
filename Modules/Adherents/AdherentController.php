@@ -2,41 +2,54 @@
 
 namespace Modules\Adherents;
 
+global $conf;
+global $db;
+global $user;
+global $hookmanager;
+global $user;
+global $menumanager;
+global $langs;
+
 // Load Dolibarr environment
-require BASE_PATH.'/main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/adherents/class/adherent.class.php';
 require_once BASE_PATH . '/adherents/class/adherent_type.class.php';
+require_once BASE_PATH . '/adherents/class/adherentstats.class.php';
 require_once BASE_PATH . '/adherents/class/subscription.class.php';
 require_once BASE_PATH . '/core/class/html.formother.class.php';
 
+use Adherent;
+use AdherentStats;
 use AdherentType;
-use Alxarafe\Base\Globals;
 use Alxarafe\Deprecated\DolibarrController;
+use DolGraph;
 use Form;
 use FormOther;
-use HookManager;
 use InfoBox;
-use Sabre\CalDAV\Subscriptions\Subscription;
+use Subscription;
 
-class Adherent extends DolibarrController
+class AdherentController extends DolibarrController
 {
-    public function __construct()
+    public function go()
     {
-        global $langs, $hookmanager, $db, $user;
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
 
 // Load translation files required by the page
         $langs->loadLangs(["companies", "members"]);
 
-
-        $hookmanager = new HookManager($db);
+        // $hookmanager = new HookManager($db);
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
         $hookmanager->initHooks(['membersindex']);
 
-
 // Security check
         $result = restrictedArea($user, 'adherent');
-
 
         /*
          * Actions
@@ -54,7 +67,6 @@ class Adherent extends DolibarrController
                 setEventMessages($langs->trans("BoxAdded"), null);
             }
         }
-
 
         /*
          * View

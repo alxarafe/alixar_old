@@ -20,6 +20,7 @@ namespace Alxarafe\Deprecated;
 require_once BASE_PATH . '/core/class/conf.class.php';
 
 use Conf;
+use MenuManager;
 use stdClass;
 
 /**
@@ -228,6 +229,55 @@ abstract class Config
             }
         }
 
+        // Load the main includes of common libraries
+        if (!defined('NOREQUIREUSER')) {
+            require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php'; // Need 500ko memory
+        }
+        if (!defined('NOREQUIRETRAN')) {
+            require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
+        }
+        if (!defined('NOREQUIRESOC')) {
+            require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
+        }
+
         return $conf;
+    }
+
+    public static function getMenuManager($conf)
+    {
+// Init menu manager
+        global $db;
+        if (!defined('NOREQUIREMENU')) {
+            if (empty($user->socid)) {    // If internal user or not defined
+                $conf->standard_menu = (!getDolGlobalString('MAIN_MENU_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENU_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENU_STANDARD) : $conf->global->MAIN_MENU_STANDARD_FORCED);
+            } else {
+                // If external user
+                $conf->standard_menu = (!getDolGlobalString('MAIN_MENUFRONT_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENUFRONT_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENUFRONT_STANDARD) : $conf->global->MAIN_MENUFRONT_STANDARD_FORCED);
+            }
+
+            // Load the menu manager (only if not already done)
+            $file_menu = $conf->standard_menu;
+            if (GETPOST('menu', 'alpha')) {
+                $file_menu = GETPOST('menu', 'alpha'); // example: menu=eldy_menu.php
+            }
+            if (!class_exists('MenuManager')) {
+                $menufound = 0;
+                $dirmenus = array_merge(["/core/menus/"], (array) $conf->modules_parts['menus']);
+                foreach ($dirmenus as $dirmenu) {
+                    $menufound = dol_include_once($dirmenu . "standard/" . $file_menu);
+                    if (class_exists('MenuManager')) {
+                        break;
+                    }
+                }
+                if (!class_exists('MenuManager')) { // If failed to include, we try with standard eldy_menu.php
+                    dol_syslog("You define a menu manager '" . $file_menu . "' that can not be loaded.", LOG_WARNING);
+                    $file_menu = 'eldy_menu.php';
+                    include_once DOL_DOCUMENT_ROOT . "/core/menus/standard/" . $file_menu;
+                }
+            }
+            $menumanager = new MenuManager($db, empty($user->socid) ? 0 : 1);
+            $menumanager->loadMenu();
+        }
+        return $menumanager;
     }
 }

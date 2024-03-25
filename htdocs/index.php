@@ -19,6 +19,7 @@
 require_once realpath('../vendor/autoload.php');
 
 use Alxarafe\Base\Globals;
+use Alxarafe\Deprecated\Constants;
 
 /**
  * Obtains main url
@@ -63,9 +64,15 @@ const DOL_URL_ROOT = BASE_URL;
 $conf = \Alxarafe\Deprecated\Config::loadConf();
 
 $db = Globals::getDb($conf);
-$config = Globals::getConfig();
+$config = Globals::getConfig($conf);
+Constants::define($config);
+
 $hookmanager = Globals::getHookManager();
 $langs = Globals::getLangs($conf);
+$user = Globals::getUser();
+$menumanager = Globals::getMenuManager($conf);
+
+Globals::setConfigValues($conf, $db);
 
 const GET_ROUTE_VAR = 'url_route';
 const GET_FILENAME_VAR = 'url_filename';
