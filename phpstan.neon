@@ -11,6 +11,9 @@ parameters:
 	fileExtensions:
 		- php
 	paths:
+	    - Core
+	    - Deprecated
+	    - Modules
 		- htdocs
 		- scripts
 	excludePaths:

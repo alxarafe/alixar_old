@@ -27,8 +27,6 @@
  *  \brief      Dolibarr home page
  */
 
-use Deprecated\Modules\Adherent\Model\Adherent;
-
 define('CSRFCHECK_WITH_TOKEN', 1); // We force need to use a token to login when making a POST
 
 require 'main.inc.php';

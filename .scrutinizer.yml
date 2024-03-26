@@ -28,6 +28,7 @@ filter:
     - vendor/*
   paths:
     - Core
+    - Deprecated
     - Modules
     - htdocs/*
     - scripts/*
@@ -52,6 +53,7 @@ tools:
         - vendor/*
       paths:
         - Core/
+        - Deprecated
         - Modules/
         - htdocs/
         - scripts/
