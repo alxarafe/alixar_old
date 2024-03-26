@@ -15,13 +15,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Alxarafe\Deprecated;
-
-require_once BASE_PATH . '/core/class/conf.class.php';
+namespace DoliCore\Base;
 
 use Conf;
 use MenuManager;
 use stdClass;
+
+require_once BASE_PATH . '/core/class/conf.class.php';
 
 /**
  * Generate an object with the configuration of the Dolibarr conf.php file.

@@ -1,6 +1,28 @@
 <?php
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
+ * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
+ * Copyright (C) 2019       Nicolas ZABOURI         <info@inovea-conseil.com>
+ * Copyright (C) 2021-2023	Frédéric France			<frederic.france@netlgic.fr>
+ * Copyright (C) 2021-2023  Waël Almoman            <info@almoman.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 
-namespace Modules\Adherents;
+namespace DoliModules\Adherent\Controller;
 
 global $conf;
 global $db;
@@ -12,21 +34,17 @@ global $langs;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once BASE_PATH . '/adherents/class/adherent.class.php';
-require_once BASE_PATH . '/adherents/class/adherent_type.class.php';
-require_once BASE_PATH . '/adherents/class/adherentstats.class.php';
-require_once BASE_PATH . '/adherents/class/subscription.class.php';
 require_once BASE_PATH . '/core/class/html.formother.class.php';
 
-use Adherent;
-use AdherentStats;
-use AdherentType;
-use Alxarafe\Deprecated\DolibarrController;
 use DolGraph;
+use DoliCore\Base\DolibarrController;
+use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Adherent\Model\AdherentType;
+use DoliModules\Adherent\Model\Subscription;
+use DoliModules\Adherent\Statistics\AdherentStats;
 use Form;
 use FormOther;
 use InfoBox;
-use Subscription;
 
 class AdherentController extends DolibarrController
 {
@@ -99,7 +117,6 @@ class AdherentController extends DolibarrController
             $boxgraph .= '<tr class="liste_titre"><th colspan="2">' . $langs->trans("Statistics") . ($numberyears ? ' (' . ($year - $numberyears) . ' - ' . $year . ')' : '') . '</th></tr>';
             $boxgraph .= '<tr><td class="center" colspan="2">';
 
-            require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherentstats.class.php';
             $stats = new AdherentStats($db, 0, $userid);
 
             // Show array

@@ -1,8 +1,8 @@
 <?php
-
-/* Copyright (C) 2002-2004 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2006-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2002-2004  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2006-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,15 +26,19 @@
 
 //namespace DolibarrMember;
 
-use Deprecated\Modules\Adherent\Model\Adherent;
+namespace DoliModules\Adherent\Model;
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
+use AccountLine;
+use DoliCore\Base\Model;
+use DoliDB;
+use User;
 
 /**
  *  Class to manage subscriptions of foundation members
  */
-class Subscription extends CommonObject
+class Subscription extends Model
 {
     /**
      * @var string ID to identify managed object
@@ -49,7 +53,8 @@ class Subscription extends CommonObject
     /**
      * Does this object supports the multicompany module ?
      *
-     * @var int|string      0 if no test on entity, 1 if test with field entity, 2 if test with link by fk_soc, 'field@table' if test with link by field@table
+     * @var int|string      0 if no test on entity, 1 if test with field entity, 2 if test with link by fk_soc,
+     *      'field@table' if test with link by field@table
      */
     public $ismultientitymanaged = 'fk_adherent@adherent';
 
@@ -107,28 +112,30 @@ class Subscription extends CommonObject
     public $fk_bank;
 
     /**
-     * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>  Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
+     * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>
+     *       Array with all fields and their property. Do not use it as a static var. It may be modified by
+     *       constructor.
      */
-    public $fields = array(
-        'rowid' => array('type' => 'integer', 'label' => 'TechnicalID', 'enabled' => 1, 'visible' => -1, 'notnull' => 1, 'position' => 10),
-        'tms' => array('type' => 'timestamp', 'label' => 'DateModification', 'enabled' => 1, 'visible' => -1, 'notnull' => 1, 'position' => 15),
-        'datec' => array('type' => 'datetime', 'label' => 'DateCreation', 'enabled' => 1, 'visible' => -1, 'position' => 20),
-        'fk_adherent' => array('type' => 'integer', 'label' => 'Member', 'enabled' => 1, 'visible' => -1, 'position' => 25),
-        'dateadh' => array('type' => 'datetime', 'label' => 'DateSubscription', 'enabled' => 1, 'visible' => -1, 'position' => 30),
-        'datef' => array('type' => 'datetime', 'label' => 'DateEndSubscription', 'enabled' => 1, 'visible' => -1, 'position' => 35),
-        'subscription' => array('type' => 'double(24,8)', 'label' => 'Amount', 'enabled' => 1, 'visible' => -1, 'position' => 40, 'isameasure' => 1),
-        'fk_bank' => array('type' => 'integer', 'label' => 'BankId', 'enabled' => 1, 'visible' => -1, 'position' => 45),
-        'note' => array('type' => 'html', 'label' => 'Note', 'enabled' => 1, 'visible' => -1, 'position' => 50),
-        'fk_type' => array('type' => 'integer', 'label' => 'MemberType', 'enabled' => 1, 'visible' => -1, 'position' => 55),
-        'fk_user_creat' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'UserAuthor', 'enabled' => 1, 'visible' => -2, 'position' => 60),
-        'fk_user_valid' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'UserValidation', 'enabled' => 1, 'visible' => -1, 'position' => 65),
-    );
+    public $fields = [
+        'rowid' => ['type' => 'integer', 'label' => 'TechnicalID', 'enabled' => 1, 'visible' => -1, 'notnull' => 1, 'position' => 10],
+        'tms' => ['type' => 'timestamp', 'label' => 'DateModification', 'enabled' => 1, 'visible' => -1, 'notnull' => 1, 'position' => 15],
+        'datec' => ['type' => 'datetime', 'label' => 'DateCreation', 'enabled' => 1, 'visible' => -1, 'position' => 20],
+        'fk_adherent' => ['type' => 'integer', 'label' => 'Member', 'enabled' => 1, 'visible' => -1, 'position' => 25],
+        'dateadh' => ['type' => 'datetime', 'label' => 'DateSubscription', 'enabled' => 1, 'visible' => -1, 'position' => 30],
+        'datef' => ['type' => 'datetime', 'label' => 'DateEndSubscription', 'enabled' => 1, 'visible' => -1, 'position' => 35],
+        'subscription' => ['type' => 'double(24,8)', 'label' => 'Amount', 'enabled' => 1, 'visible' => -1, 'position' => 40, 'isameasure' => 1],
+        'fk_bank' => ['type' => 'integer', 'label' => 'BankId', 'enabled' => 1, 'visible' => -1, 'position' => 45],
+        'note' => ['type' => 'html', 'label' => 'Note', 'enabled' => 1, 'visible' => -1, 'position' => 50],
+        'fk_type' => ['type' => 'integer', 'label' => 'MemberType', 'enabled' => 1, 'visible' => -1, 'position' => 55],
+        'fk_user_creat' => ['type' => 'integer:User:user/class/user.class.php', 'label' => 'UserAuthor', 'enabled' => 1, 'visible' => -2, 'position' => 60],
+        'fk_user_valid' => ['type' => 'integer:User:user/class/user.class.php', 'label' => 'UserValidation', 'enabled' => 1, 'visible' => -1, 'position' => 65],
+    ];
 
 
     /**
      *  Constructor
      *
-     *  @param      DoliDB      $db     Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct($db)
     {
@@ -139,9 +146,10 @@ class Subscription extends CommonObject
     /**
      *  Function who permitted creation of the subscription
      *
-     *  @param  User    $user           User that create
-     *  @param  int     $notrigger      0=launch triggers after, 1=disable triggers
-     *  @return int                     Return integer <0 if KO, Id subscription created if OK
+     * @param User $user      User that create
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return int                     Return integer <0 if KO, Id subscription created if OK
      */
     public function create($user, $notrigger = 0)
     {
@@ -191,7 +199,7 @@ class Subscription extends CommonObject
         }
 
         if (!$error && !$notrigger) {
-            $this->context = array('member' => $member);
+            $this->context = ['member' => $member];
             // Call triggers
             $result = $this->call_trigger('MEMBER_SUBSCRIPTION_CREATE', $user);
             if ($result < 0) {
@@ -214,8 +222,9 @@ class Subscription extends CommonObject
     /**
      *  Method to load a subscription
      *
-     *  @param  int     $rowid      Id subscription
-     *  @return int                 Return integer <0 if KO, =0 if not found, >0 if OK
+     * @param int $rowid Id subscription
+     *
+     * @return int                 Return integer <0 if KO, =0 if not found, >0 if OK
      */
     public function fetch($rowid)
     {
@@ -233,19 +242,19 @@ class Subscription extends CommonObject
             if ($this->db->num_rows($resql)) {
                 $obj = $this->db->fetch_object($resql);
 
-                $this->id             = $obj->rowid;
-                $this->ref            = $obj->rowid;
+                $this->id = $obj->rowid;
+                $this->ref = $obj->rowid;
 
-                $this->fk_type        = $obj->fk_type;
-                $this->fk_adherent    = $obj->fk_adherent;
-                $this->datec          = $this->db->jdate($obj->datec);
-                $this->datem          = $this->db->jdate($obj->tms);
-                $this->dateh          = $this->db->jdate($obj->dateh);
-                $this->datef          = $this->db->jdate($obj->datef);
-                $this->amount         = $obj->subscription;
-                $this->note           = $obj->note_public;  // deprecated
-                $this->note_public    = $obj->note_public;
-                $this->fk_bank        = $obj->fk_bank;
+                $this->fk_type = $obj->fk_type;
+                $this->fk_adherent = $obj->fk_adherent;
+                $this->datec = $this->db->jdate($obj->datec);
+                $this->datem = $this->db->jdate($obj->tms);
+                $this->dateh = $this->db->jdate($obj->dateh);
+                $this->datef = $this->db->jdate($obj->datef);
+                $this->amount = $obj->subscription;
+                $this->note = $obj->note_public;  // deprecated
+                $this->note_public = $obj->note_public;
+                $this->fk_bank = $obj->fk_bank;
                 return 1;
             } else {
                 return 0;
@@ -260,9 +269,10 @@ class Subscription extends CommonObject
     /**
      *  Update subscription
      *
-     *  @param  User    $user           User who updated
-     *  @param  int     $notrigger      0=Disable triggers
-     *  @return int                     Return integer <0 if KO, >0 if OK
+     * @param User $user      User who updated
+     * @param int  $notrigger 0=Disable triggers
+     *
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function update($user, $notrigger = 0)
     {
@@ -299,7 +309,7 @@ class Subscription extends CommonObject
             $result = $member->update_end_date($user);
 
             if (!$error && !$notrigger) {
-                $this->context = array('member' => $member);
+                $this->context = ['member' => $member];
                 // Call triggers
                 $result = $this->call_trigger('MEMBER_SUBSCRIPTION_MODIFY', $user);
                 if ($result < 0) {
@@ -325,9 +335,10 @@ class Subscription extends CommonObject
     /**
      *  Delete a subscription
      *
-     *  @param  User    $user       User that delete
-     *  @param  int     $notrigger  0=launch triggers after, 1=disable triggers
-     *  @return int                 Return integer <0 if KO, 0 if not found, >0 if OK
+     * @param User $user      User that delete
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return int                 Return integer <0 if KO, 0 if not found, >0 if OK
      */
     public function delete($user, $notrigger = 0)
     {
@@ -403,12 +414,14 @@ class Subscription extends CommonObject
     /**
      *  Return clicable name (with picto eventually)
      *
-     *  @param  int     $withpicto                  0=No picto, 1=Include picto into link, 2=Only picto
-     *  @param  int     $notooltip                  1=Disable tooltip
-     *  @param  string  $option                     Page for link ('', 'nolink', ...)
-     *  @param  string  $morecss                    Add more css on link
-     *  @param  int     $save_lastsearch_value      -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save lastsearch_values whenclicking
-     *  @return string                              Chaine avec URL
+     * @param int    $withpicto             0=No picto, 1=Include picto into link, 2=Only picto
+     * @param int    $notooltip             1=Disable tooltip
+     * @param string $option                Page for link ('', 'nolink', ...)
+     * @param string $morecss               Add more css on link
+     * @param int    $save_lastsearch_value -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save
+     *                                      lastsearch_values whenclicking
+     *
+     * @return string                              Chaine avec URL
      */
     public function getNomUrl($withpicto = 0, $notooltip = 0, $option = '', $morecss = '', $save_lastsearch_value = -1)
     {
@@ -462,25 +475,30 @@ class Subscription extends CommonObject
     /**
      *  Return the label of the status
      *
-     *  @param  int     $mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
-     *  @return string                 Label of status
+     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                  label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
      */
     public function getLibStatut($mode = 0)
     {
         return '';
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Return the label of a given status
      *
-     *  @param  int     $status        Id status
-     *  @param  int     $mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
-     *  @return string                 Label of status
+     * @param int $status Id status
+     * @param int $mode   0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                    label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
      */
     public function LibStatut($status, $mode = 0)
     {
-		// phpcs:enable
+        // phpcs:enable
 
         //$langs->load("members");
 
@@ -490,8 +508,9 @@ class Subscription extends CommonObject
     /**
      *  Load information of the subscription object
      *
-     *  @param  int     $id       Id subscription
-     *  @return void
+     * @param int $id Id subscription
+     *
+     * @return void
      */
     public function info($id)
     {
@@ -519,9 +538,10 @@ class Subscription extends CommonObject
     /**
      *  Return clicable link of object (with eventually picto)
      *
-     *  @param      string      $option                 Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-     *  @param      array       $arraydata              Array of data
-     *  @return     string                              HTML Code for Kanban thumb.
+     * @param string $option    Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
+     * @param array  $arraydata Array of data
+     *
+     * @return     string                              HTML Code for Kanban thumb.
      */
     public function getKanbanView($option = '', $arraydata = null)
     {

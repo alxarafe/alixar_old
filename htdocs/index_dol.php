@@ -27,6 +27,8 @@
  *  \brief      Dolibarr home page
  */
 
+use Deprecated\Modules\Adherent\Model\Adherent;
+
 define('CSRFCHECK_WITH_TOKEN', 1); // We force need to use a token to login when making a POST
 
 require 'main.inc.php';
@@ -37,7 +39,6 @@ $_GET['mainmenu'] = GETPOST('mainmenu', 'aZ09') ? GETPOST('mainmenu', 'aZ09') : 
 $action = GETPOST('action', 'aZ09');
 
 $hookmanager->initHooks(array('index'));
-
 
 /*
  * Actions
@@ -70,7 +71,6 @@ if (GETPOST('addbox')) {    // Add box (when submit is done from a form when aja
     }
 }
 
-
 /*
  * View
  */
@@ -87,9 +87,7 @@ if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
 
 llxHeader('', $title);
 
-
 $resultboxes = FormOther::getBoxesArea($user, "0"); // Load $resultboxes (selectboxlist + boxactivated + boxlista + boxlistb)
-
 
 print load_fiche_titre('&nbsp;', $resultboxes['selectboxlist'], '', 0, '', 'titleforhome');
 

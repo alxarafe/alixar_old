@@ -15,9 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Alxarafe\Deprecated;
-
-use Alxarafe\Base\Globals;
+namespace DoliCore\Base;
 
 /**
  * Defines Dolibarr constants.

@@ -17,16 +17,16 @@
 
 namespace Alxarafe\Base;
 
-require_once BASE_PATH . '/core/class/hookmanager.class.php';
-require_once BASE_PATH . '/core/class/translate.class.php';
-require_once BASE_PATH . '/core/lib/functions.lib.php';
-require_once BASE_PATH . '/user/class/user.class.php';
-
-use Alxarafe\Deprecated\Config;
+use DoliCore\Base\Config;
 use HookManager;
 use stdClass;
 use Translate;
 use User;
+
+require_once BASE_PATH . '/core/class/hookmanager.class.php';
+require_once BASE_PATH . '/core/class/translate.class.php';
+require_once BASE_PATH . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/user/class/user.class.php';
 
 abstract class Globals
 {

@@ -21,4 +21,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-new \Modules\Adherents\AdherentController();
+use DoliModules\Adherent\Controller\AdherentController;
+
+new AdherentController();

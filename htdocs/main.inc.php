@@ -40,7 +40,26 @@
  *  \brief      File that defines environment for Dolibarr GUI pages only (file not required by scripts)
  */
 
-global $config;
+/**
+ * @deprecated Use $config instead
+ */
+
+use Alxarafe\Base\Globals;
+use DoliCore\Base\Constants;
+
+$conf = \DoliCore\Base\Config::loadConf();
+
+$db = Globals::getDb($conf);
+$config = Globals::getConfig($conf);
+Constants::define($config);
+
+$hookmanager = Globals::getHookManager();
+$langs = Globals::getLangs($conf);
+$user = Globals::getUser();
+$menumanager = Globals::getMenuManager($conf);
+
+Globals::setConfigValues($conf, $db);
+
 
 //@ini_set('memory_limit', '128M'); // This may be useless if memory is hard limited by your PHP
 

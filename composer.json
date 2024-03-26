@@ -73,8 +73,10 @@
   "autoload": {
     "psr-4": {
       "Alxarafe\\": "Core/",
+      "Alixar\\": "htdocs/",
       "Modules\\": "Modules/",
-      "Alixar\\": "htdocs/"
+      "DoliCore\\": "Deprecated/Core",
+      "DoliModules\\": "Deprecated/Modules"
     }
   }
 }

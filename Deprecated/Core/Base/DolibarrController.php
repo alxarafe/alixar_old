@@ -15,7 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Alxarafe\Deprecated;
+namespace DoliCore\Base;
 
 use Alxarafe\Base\Controller;
 use Alxarafe\Base\Globals;
