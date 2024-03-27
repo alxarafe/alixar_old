@@ -26,10 +26,7 @@
 
 //namespace DolibarrMember;
 
-use Deprecated\Modules\Adherent\Model\Adherent;
-
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
 
 /**
  *  Class to manage subscriptions of foundation members
