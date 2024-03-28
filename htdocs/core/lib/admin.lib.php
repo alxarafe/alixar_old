@@ -32,9 +32,10 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 /**
  *  Renvoi une version en chaine depuis une version en tableau
  *
- *  @param      array       $versionarray       Tableau de version (vermajeur,vermineur,autre)
- *  @return     string                          Chaine version
- *  @see versioncompare()
+ * @param array $versionarray Tableau de version (vermajeur,vermineur,autre)
+ *
+ * @return     string                          Chaine version
+ * @see versioncompare()
  */
 function versiontostring($versionarray)
 {
@@ -53,18 +54,22 @@ function versiontostring($versionarray)
 
 /**
  *  Compare 2 versions (stored into 2 arrays).
- *  To check if Dolibarr version is lower than (x,y,z), do "if versioncompare(versiondolibarrarray(), array(x.y.z)) <= 0"
- *  For example: if (versioncompare(versiondolibarrarray(),array(4,0,-5)) >= 0) is true if version is 4.0 alpha or higher.
- *  For example: if (versioncompare(versiondolibarrarray(),array(4,0,0)) >= 0) is true if version is 4.0 final or higher.
- *  For example: if (versioncompare(versiondolibarrarray(),array(4,0,1)) >= 0) is true if version is 4.0.1 or higher.
- *  Alternative way to compare: if ((float) DOL_VERSION >= 4.0) is true if version is 4.0 alpha or higher (works only to compare first and second level)
+ *  To check if Dolibarr version is lower than (x,y,z), do "if versioncompare(versiondolibarrarray(), array(x.y.z)) <=
+ *  0" For example: if (versioncompare(versiondolibarrarray(),array(4,0,-5)) >= 0) is true if version is 4.0 alpha or
+ *  higher. For example: if (versioncompare(versiondolibarrarray(),array(4,0,0)) >= 0) is true if version is 4.0 final
+ *  or higher. For example: if (versioncompare(versiondolibarrarray(),array(4,0,1)) >= 0) is true if version is 4.0.1
+ *  or higher. Alternative way to compare: if ((float) DOL_VERSION >= 4.0) is true if version is 4.0 alpha or higher
+ *  (works only to compare first and second level)
  *
- *  @param      array       $versionarray1      Array of version (vermajor,verminor,patch)
- *  @param      array       $versionarray2      Array of version (vermajor,verminor,patch)
- *  @return     int                             -4,-3,-2,-1 if versionarray1<versionarray2 (value depends on level of difference)
+ * @param array $versionarray1 Array of version (vermajor,verminor,patch)
+ * @param array $versionarray2 Array of version (vermajor,verminor,patch)
+ *
+ * @return     int                             -4,-3,-2,-1 if versionarray1<versionarray2 (value depends on level of
+ *                                             difference)
  *                                              0 if same
- *                                              1,2,3,4 if versionarray1>versionarray2 (value depends on level of difference)
- *  @see versiontostring()
+ *                                              1,2,3,4 if versionarray1>versionarray2 (value depends on level of
+ *                                              difference)
+ * @see versiontostring()
  */
 function versioncompare($versionarray1, $versionarray2)
 {
@@ -125,8 +130,8 @@ function versioncompare($versionarray1, $versionarray2)
 /**
  *  Return version PHP
  *
- *  @return     array               Tableau de version (vermajeur,vermineur,autre)
- *  @see versioncompare()
+ * @return     array               Tableau de version (vermajeur,vermineur,autre)
+ * @see versioncompare()
  */
 function versionphparray()
 {
@@ -136,8 +141,8 @@ function versionphparray()
 /**
  *  Return version Dolibarr
  *
- *  @return     array               Tableau de version (vermajeur,vermineur,autre)
- *  @see versioncompare()
+ * @return     array               Tableau de version (vermajeur,vermineur,autre)
+ * @see versioncompare()
  */
 function versiondolibarrarray()
 {
@@ -152,21 +157,27 @@ function versiondolibarrarray()
  *  - Running specific Sql by a module init
  *  - Loading sql file of website import package
  *  Install process however does not use it.
- *  Note that Sql files must have all comments at start of line. Also this function take ';' as the char to detect end of sql request
+ *  Note that Sql files must have all comments at start of line. Also this function take ';' as the char to detect end
+ *  of sql request
  *
- *  @param      string      $sqlfile                    Full path to sql file
- *  @param      int         $silent                     1=Do not output anything, 0=Output line for update page
- *  @param      int         $entity                     Entity targeted for multicompany module
- *  @param      int         $usesavepoint               1=Run a savepoint before each request and a rollback to savepoint if error (this allow to have some request with errors inside global transactions).
- *  @param      string      $handler                    Handler targeted for menu (replace __HANDLER__ with this value between quotes)
- *  @param      string      $okerror                    Family of errors we accept ('default', 'none')
- *  @param      int         $linelengthlimit            Limit for length of each line (Use 0 if unknown, may be faster if defined)
- *  @param      int         $nocommentremoval           Do no try to remove comments (in such a case, we consider that each line is a request, so use also $linelengthlimit=0)
- *  @param      int         $offsetforchartofaccount    Offset to use to load chart of account table to update sql on the fly to add offset to rowid and account_parent value
- *  @param      int         $colspan                    2=Add a colspan=2 on td
- *  @param      int         $onlysqltoimportwebsite     Only sql requests used to import a website template are allowed
- *  @param      string      $database                   Database (replace __DATABASE__ with this value)
- *  @return     int                                     Return integer <=0 if KO, >0 if OK
+ * @param string $sqlfile                 Full path to sql file
+ * @param int    $silent                  1=Do not output anything, 0=Output line for update page
+ * @param int    $entity                  Entity targeted for multicompany module
+ * @param int    $usesavepoint            1=Run a savepoint before each request and a rollback to savepoint if error
+ *                                        (this allow to have some request with errors inside global transactions).
+ * @param string $handler                 Handler targeted for menu (replace __HANDLER__ with this value between
+ *                                        quotes)
+ * @param string $okerror                 Family of errors we accept ('default', 'none')
+ * @param int    $linelengthlimit         Limit for length of each line (Use 0 if unknown, may be faster if defined)
+ * @param int    $nocommentremoval        Do no try to remove comments (in such a case, we consider that each line is a
+ *                                        request, so use also $linelengthlimit=0)
+ * @param int    $offsetforchartofaccount Offset to use to load chart of account table to update sql on the fly to add
+ *                                        offset to rowid and account_parent value
+ * @param int    $colspan                 2=Add a colspan=2 on td
+ * @param int    $onlysqltoimportwebsite  Only sql requests used to import a website template are allowed
+ * @param string $database                Database (replace __DATABASE__ with this value)
+ *
+ * @return     int                                     Return integer <=0 if KO, >0 if OK
  */
 function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler = '', $okerror = 'default', $linelengthlimit = 32768, $nocommentremoval = 0, $offsetforchartofaccount = 0, $colspan = 0, $onlysqltoimportwebsite = 0, $database = '')
 {
@@ -183,7 +194,7 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
     $error = 0;
     $i = 0;
     $buffer = '';
-    $arraysql = array();
+    $arraysql = [];
 
     // Get version of database
     $versionarray = $db->getVersionArray();
@@ -199,7 +210,7 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
             }
 
             // Test if request must be ran only for particular database or version (if yes, we must remove the -- comment)
-            $reg = array();
+            $reg = [];
             if (preg_match('/^--\sV(MYSQL|PGSQL)([^\s]*)/i', $buf, $reg)) {
                 $qualified = 1;
 
@@ -271,7 +282,7 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
     }
 
     // Loop on each request to see if there is a __+MAX_table__ key
-    $listofmaxrowid = array(); // This is a cache table
+    $listofmaxrowid = []; // This is a cache table
     foreach ($arraysql as $i => $sql) {
         $newsql = $sql;
 
@@ -325,13 +336,13 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
 
     // Loop on each request to execute request
     $cursorinsert = 0;
-    $listofinsertedrowid = array();
+    $listofinsertedrowid = [];
     $keyforsql = md5($sqlfile);
     foreach ($arraysql as $i => $sql) {
         if ($sql) {
             // Test if th SQL is allowed SQL
             if ($onlysqltoimportwebsite) {
-                $newsql = str_replace(array("\'"), '__BACKSLASHQUOTE__', $sql); // Replace the \' char
+                $newsql = str_replace(["\'"], '__BACKSLASHQUOTE__', $sql); // Replace the \' char
 
                 // Remove all strings contents including the ' so we can analyse SQL instruction only later
                 $l = strlen($newsql);
@@ -351,7 +362,7 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
                     }
                     $is++;
                 }
-                $newsqlclean = str_replace(array("null"), '__000__', $newsqlclean);
+                $newsqlclean = str_replace(["null"], '__000__', $newsqlclean);
                 //print $newsqlclean."<br>\n";
 
                 $qualified = 0;
@@ -476,7 +487,7 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
                 }
 
                 // Define list of errors we accept (array $okerrors)
-                $okerrors = array(  // By default
+                $okerrors = [  // By default
                     'DB_ERROR_TABLE_ALREADY_EXISTS',
                     'DB_ERROR_COLUMN_ALREADY_EXISTS',
                     'DB_ERROR_KEY_NAME_ALREADY_EXISTS',
@@ -489,10 +500,10 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
                     'DB_ERROR_CANNOT_CREATE', // Qd contrainte deja existante
                     'DB_ERROR_CANT_DROP_PRIMARY_KEY',
                     'DB_ERROR_PRIMARY_KEY_ALREADY_EXISTS',
-                    'DB_ERROR_22P02'
-                );
+                    'DB_ERROR_22P02',
+                ];
                 if ($okerror == 'none') {
-                    $okerrors = array();
+                    $okerrors = [];
                 }
 
                 // Is it an error we accept
@@ -555,12 +566,13 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
 /**
  *  Delete a constant
  *
- *  @param      DoliDB      $db         Database handler
- *  @param      string|int  $name       Name of constant or rowid of line
- *  @param      int         $entity     Multi company id, -1 for all entities
- *  @return     int                     Return integer <0 if KO, >0 if OK
+ * @param DoliDB     $db     Database handler
+ * @param string|int $name   Name of constant or rowid of line
+ * @param int        $entity Multi company id, -1 for all entities
  *
- *  @see        dolibarr_get_const(), dolibarr_set_const(), dol_set_user_param()
+ * @return     int                     Return integer <0 if KO, >0 if OK
+ *
+ * @see        dolibarr_get_const(), dolibarr_set_const(), dol_set_user_param()
  */
 function dolibarr_del_const($db, $name, $entity = 1)
 {
@@ -595,12 +607,13 @@ function dolibarr_del_const($db, $name, $entity = 1)
 /**
  *  Get the value of a setup constant from database
  *
- *  @param      DoliDB      $db         Database handler
- *  @param      string      $name       Name of constant
- *  @param      int         $entity     Multi company id
- *  @return     string                  Value of constant
+ * @param DoliDB $db     Database handler
+ * @param string $name   Name of constant
+ * @param int    $entity Multi company id
  *
- *  @see        dolibarr_del_const(), dolibarr_set_const(), dol_set_user_param()
+ * @return     string                  Value of constant
+ *
+ * @see        dolibarr_del_const(), dolibarr_set_const(), dol_set_user_param()
  */
 function dolibarr_get_const($db, $name, $entity = 1)
 {
@@ -627,16 +640,18 @@ function dolibarr_get_const($db, $name, $entity = 1)
 /**
  *  Insert a parameter (key,value) into database (delete old key then insert it again).
  *
- *  @param      DoliDB      $db         Database handler
- *  @param      string      $name       Name of constant
- *  @param      string      $value      Value of constant
- *  @param      string      $type       Type of constant. Deprecated, only strings are allowed for $value. Caller must json encode/decode to store other type of data.
- *  @param      int         $visible    Is constant visible in Setup->Other page (0 by default)
- *  @param      string      $note       Note on parameter
- *  @param      int         $entity     Multi company id (0 means all entities)
- *  @return     int                     -1 if KO, 1 if OK
+ * @param DoliDB $db      Database handler
+ * @param string $name    Name of constant
+ * @param string $value   Value of constant
+ * @param string $type    Type of constant. Deprecated, only strings are allowed for $value. Caller must json
+ *                        encode/decode to store other type of data.
+ * @param int    $visible Is constant visible in Setup->Other page (0 by default)
+ * @param string $note    Note on parameter
+ * @param int    $entity  Multi company id (0 means all entities)
  *
- *  @see        dolibarr_del_const(), dolibarr_get_const(), dol_set_user_param()
+ * @return     int                     -1 if KO, 1 if OK
+ *
+ * @see        dolibarr_del_const(), dolibarr_get_const(), dol_set_user_param()
  */
 function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, $note = '', $entity = 1)
 {
@@ -700,14 +715,13 @@ function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, 
 }
 
 
-
-
 /**
  * Prepare array with list of tabs
  *
- * @param   int     $nbofactivatedmodules       Number if activated modules
- * @param   int     $nboftotalmodules           Nb of total modules
- * @param   int     $nbmodulesnotautoenabled    Nb of modules not auto enabled that are activated
+ * @param int $nbofactivatedmodules    Number if activated modules
+ * @param int $nboftotalmodules        Nb of total modules
+ * @param int $nbmodulesnotautoenabled Nb of modules not auto enabled that are activated
+ *
  * @return  array                               Array of tabs to show
  */
 function modules_prepare_head($nbofactivatedmodules, $nboftotalmodules, $nbmodulesnotautoenabled)
@@ -718,7 +732,7 @@ function modules_prepare_head($nbofactivatedmodules, $nboftotalmodules, $nbmodul
     $desc = str_replace('{picto}', img_picto('', 'switch_off'), $desc);
 
     $h = 0;
-    $head = array();
+    $head = [];
     $mode = getDolGlobalString('MAIN_MODULE_SETUP_ON_LIST_BY_DEFAULT', 'commonkanban');
     $head[$h][0] = DOL_URL_ROOT . "/admin/modules.php?mode=" . $mode;
     if ($nbmodulesnotautoenabled <= getDolGlobalInt('MAIN_MIN_NB_ENABLED_MODULE_FOR_WARNING', 1)) { // If only minimal initial modules enabled)
@@ -759,7 +773,7 @@ function ihm_prepare_head()
 {
     global $langs, $conf, $user;
     $h = 0;
-    $head = array();
+    $head = [];
 
     $head[$h][0] = DOL_URL_ROOT . "/admin/ihm.php?mode=other";
     $head[$h][1] = $langs->trans("LanguageAndPresentation");
@@ -804,7 +818,7 @@ function security_prepare_head()
 {
     global $db, $langs, $conf, $user;
     $h = 0;
-    $head = array();
+    $head = [];
 
     $head[$h][0] = DOL_URL_ROOT . "/admin/security_other.php";
     $head[$h][1] = $langs->trans("Miscellaneous");
@@ -873,14 +887,15 @@ function security_prepare_head()
 /**
  * Prepare array with list of tabs
  *
- * @param   object  $object     Descriptor class
+ * @param object $object Descriptor class
+ *
  * @return  array               Array of tabs to show
  */
 function modulehelp_prepare_head($object)
 {
     global $langs, $conf;
     $h = 0;
-    $head = array();
+    $head = [];
 
     // FIX for compatibility habitual tabs
     $object->id = $object->numero;
@@ -909,6 +924,7 @@ function modulehelp_prepare_head($object)
 
     return $head;
 }
+
 /**
  * Prepare array with list of tabs
  *
@@ -918,7 +934,7 @@ function translation_prepare_head()
 {
     global $langs, $conf;
     $h = 0;
-    $head = array();
+    $head = [];
 
     $head[$h][0] = DOL_URL_ROOT . "/admin/translation.php?mode=searchkey";
     $head[$h][1] = $langs->trans("TranslationKeySearch");
@@ -948,7 +964,7 @@ function defaultvalues_prepare_head()
 {
     global $langs, $conf, $user;
     $h = 0;
-    $head = array();
+    $head = [];
 
     $head[$h][0] = DOL_URL_ROOT . "/admin/defaultvalues.php?mode=createform";
     $head[$h][1] = $langs->trans("DefaultCreateForm");
@@ -994,13 +1010,13 @@ function defaultvalues_prepare_head()
 /**
  *  Return list of session
  *
- *  @return     array           Array list of sessions
+ * @return     array           Array list of sessions
  */
 function listOfSessions()
 {
     global $conf;
 
-    $arrayofSessions = array();
+    $arrayofSessions = [];
     // session.save_path can be returned empty so we set a default location and work from there
     $sessPath = '/tmp';
     $iniPath = ini_get("session.save_path");
@@ -1029,7 +1045,7 @@ function listOfSessions()
                     ) { // limit to company name
                         $tmp = explode('_', $file);
                         $idsess = $tmp[1];
-                        $regs = array();
+                        $regs = [];
                         $loginfound = preg_match('/dol_login\|s:[0-9]+:"([A-Za-z0-9]+)"/i', $sessValues, $regs);
                         if ($loginfound) {
                             $arrayofSessions[$idsess]["login"] = $regs[1];
@@ -1051,8 +1067,9 @@ function listOfSessions()
 /**
  *  Purge existing sessions
  *
- *  @param      int     $mysessionid        To avoid to try to delete my own session
- *  @return     int                         >0 if OK, <0 if KO
+ * @param int $mysessionid To avoid to try to delete my own session
+ *
+ * @return     int                         >0 if OK, <0 if KO
  */
 function purgeSessions($mysessionid)
 {
@@ -1100,20 +1117,22 @@ function purgeSessions($mysessionid)
 }
 
 
-
 /**
  *  Enable a module
  *
- *  @param      string      $value                  Name of module to activate
- *  @param      int         $withdeps               Activate/Disable also all dependencies
- *  @param      int         $noconfverification     Remove verification of $conf variable for module
- *  @return     array                               array('nbmodules'=>nb modules activated with success, 'errors=>array of error messages, 'nbperms'=>Nb permission added);
+ * @param string $value              Name of module to activate
+ * @param int    $withdeps           Activate/Disable also all dependencies
+ * @param int    $noconfverification Remove verification of $conf variable for module
+ *
+ * @return     array                               array('nbmodules'=>nb modules activated with success, 'errors=>array
+ *                                                 of error messages, 'nbperms'=>Nb permission added);
  */
 function activateModule($value, $withdeps = 1, $noconfverification = 0)
 {
-    global $db, $langs, $conf, $mysoc;
+    global $langs, $mysoc;
 
-    $ret = array();
+    $conf = \DoliCore\Base\Config::loadConf();
+    $db = \Alxarafe\Base\Globals::getDb($conf);
 
     // Check parameters
     if (empty($value)) {
@@ -1121,7 +1140,7 @@ function activateModule($value, $withdeps = 1, $noconfverification = 0)
         return $ret;
     }
 
-    $ret = array('nbmodules' => 0, 'errors' => array(), 'nbperms' => 0);
+    $ret = ['nbmodules' => 0, 'errors' => [], 'nbperms' => 0];
     $modName = $value;
     $modFile = $modName . ".class.php";
 
@@ -1188,7 +1207,7 @@ function activateModule($value, $withdeps = 1, $noconfverification = 0)
                     }
 
                     if (!is_array($modulestringorarray)) {
-                        $modulestringorarray = array($modulestringorarray);
+                        $modulestringorarray = [$modulestringorarray];
                     }
 
                     foreach ($modulestringorarray as $modulestring) {
@@ -1248,9 +1267,10 @@ function activateModule($value, $withdeps = 1, $noconfverification = 0)
 /**
  *  Disable a module
  *
- *  @param      string      $value               Nom du module a desactiver
- *  @param      int         $requiredby          1=Desactive aussi modules dependants
- *  @return     string                           Error message or '';
+ * @param string $value      Nom du module a desactiver
+ * @param int    $requiredby 1=Desactive aussi modules dependants
+ *
+ * @return     string                           Error message or '';
  */
 function unActivateModule($value, $requiredby = 1)
 {
@@ -1314,19 +1334,20 @@ function unActivateModule($value, $requiredby = 1)
  *  Add external modules to list of dictionaries.
  *  Addition is done into var $taborder, $tabname, etc... that are passed with pointers.
  *
- *  @param      array       $taborder           Taborder
- *  @param      array       $tabname            Tabname
- *  @param      array       $tablib             Tablib
- *  @param      array       $tabsql             Tabsql
- *  @param      array       $tabsqlsort         Tabsqlsort
- *  @param      array       $tabfield           Tabfield
- *  @param      array       $tabfieldvalue      Tabfieldvalue
- *  @param      array       $tabfieldinsert     Tabfieldinsert
- *  @param      array       $tabrowid           Tabrowid
- *  @param      array       $tabcond            Tabcond
- *  @param      array       $tabhelp            Tabhelp
- *  @param      array       $tabcomplete        Tab complete (will replace all other in future). Key is table name.
- *  @return     int         1
+ * @param array $taborder       Taborder
+ * @param array $tabname        Tabname
+ * @param array $tablib         Tablib
+ * @param array $tabsql         Tabsql
+ * @param array $tabsqlsort     Tabsqlsort
+ * @param array $tabfield       Tabfield
+ * @param array $tabfieldvalue  Tabfieldvalue
+ * @param array $tabfieldinsert Tabfieldinsert
+ * @param array $tabrowid       Tabrowid
+ * @param array $tabcond        Tabcond
+ * @param array $tabhelp        Tabhelp
+ * @param array $tabcomplete    Tab complete (will replace all other in future). Key is table name.
+ *
+ * @return     int         1
  */
 function complete_dictionary_with_modules(&$taborder, &$tabname, &$tablib, &$tabsql, &$tabsqlsort, &$tabfield, &$tabfieldvalue, &$tabfieldinsert, &$tabrowid, &$tabcond, &$tabhelp, &$tabcomplete)
 {
@@ -1383,17 +1404,17 @@ function complete_dictionary_with_modules(&$taborder, &$tabname, &$tablib, &$tab
                                 }
                             }
 
-							// phpcs:disable
-							// Complete the arrays &$tabname,&$tablib,&$tabsql,&$tabsqlsort,&$tabfield,&$tabfieldvalue,&$tabfieldinsert,&$tabrowid,&$tabcond
-							if (empty($objMod->dictionaries) && !empty($objMod->{"dictionnaries"})) {
-								$objMod->dictionaries = $objMod->{"dictionnaries"}; // For backward compatibility
-							}
-							// phpcs:enable
+                            // phpcs:disable
+                            // Complete the arrays &$tabname,&$tablib,&$tabsql,&$tabsqlsort,&$tabfield,&$tabfieldvalue,&$tabfieldinsert,&$tabrowid,&$tabcond
+                            if (empty($objMod->dictionaries) && !empty($objMod->{"dictionnaries"})) {
+                                $objMod->dictionaries = $objMod->{"dictionnaries"}; // For backward compatibility
+                            }
+                            // phpcs:enable
 
                             if (!empty($objMod->dictionaries)) {
                                 //var_dump($objMod->dictionaries['tabname']);
                                 $nbtabname = $nbtablib = $nbtabsql = $nbtabsqlsort = $nbtabfield = $nbtabfieldvalue = $nbtabfieldinsert = $nbtabrowid = $nbtabcond = $nbtabfieldcheck = $nbtabhelp = 0;
-                                $tabnamerelwithkey = array();
+                                $tabnamerelwithkey = [];
                                 foreach ($objMod->dictionaries['tabname'] as $key => $val) {
                                     $tmptablename = preg_replace('/' . MAIN_DB_PREFIX . '/', '', $val);
                                     $nbtabname++;
@@ -1496,8 +1517,9 @@ function complete_dictionary_with_modules(&$taborder, &$tabname, &$tablib, &$tab
 /**
  *  Activate external modules mandatory when country is country_code
  *
- *  @param      string      $country_code   CountryCode
- *  @return     int         1
+ * @param string $country_code CountryCode
+ *
+ * @return     int         1
  */
 function activateModulesRequiredByCountry($country_code)
 {
@@ -1558,19 +1580,20 @@ function activateModulesRequiredByCountry($country_code)
 /**
  *  Search external modules to complete the list of contact element
  *
- *  @param      array       $elementList            elementList
- *  @return     int         1
+ * @param array $elementList elementList
+ *
+ * @return     int         1
  */
 function complete_elementList_with_modules(&$elementList)
 {
     global $db, $modules, $conf, $langs;
 
     // Search modules
-    $filename = array();
-    $modules = array();
-    $orders = array();
-    $categ = array();
-    $dirmod = array();
+    $filename = [];
+    $modules = [];
+    $orders = [];
+    $categ = [];
+    $dirmod = [];
 
     $i = 0; // is a sequencer of modules found
     $j = 0; // j is module number. Automatically affected if module number not defined.
@@ -1625,7 +1648,7 @@ function complete_elementList_with_modules(&$elementList)
 
                             $modules[$i] = $objMod;
                             $filename[$i] = $modName;
-                            $orders[$i]  = $objMod->family . "_" . $j; // Sort on family then module number
+                            $orders[$i] = $objMod->family . "_" . $j; // Sort on family then module number
                             $dirmod[$i] = $dir;
                             //print "x".$modName." ".$orders[$i]."\n<br>";
 
@@ -1661,12 +1684,16 @@ function complete_elementList_with_modules(&$elementList)
 /**
  *  Show array with constants to edit
  *
- *  @param  array   $tableau        Array of constants array('key'=>array('type'=>type, 'label'=>label)
- *                                  where type can be 'string', 'text', 'textarea', 'html', 'yesno', 'emailtemplate:xxx', ...
- *  @param  int     $strictw3c      0=Include form into table (deprecated), 1=Form is outside table to respect W3C (deprecated), 2=No form nor button at all, 3=No form nor button at all and each field has a unique name (form is output by caller, recommended)
- *  @param  string  $helptext       Tooltip help to use for the column name of values
- *  @param  string  $text           Text to use for the column name of values
- *  @return void
+ * @param array  $tableau           Array of constants array('key'=>array('type'=>type, 'label'=>label)
+ *                                  where type can be 'string', 'text', 'textarea', 'html', 'yesno',
+ *                                  'emailtemplate:xxx', ...
+ * @param int    $strictw3c         0=Include form into table (deprecated), 1=Form is outside table to respect W3C
+ *                                  (deprecated), 2=No form nor button at all, 3=No form nor button at all and each
+ *                                  field has a unique name (form is output by caller, recommended)
+ * @param string $helptext          Tooltip help to use for the column name of values
+ * @param string $text              Text to use for the column name of values
+ *
+ * @return void
  */
 function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Value')
 {
@@ -1731,7 +1758,7 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
             $obj = $db->fetch_object($result); // Take first result of select
 
             if (empty($obj)) {  // If not yet into table
-                $obj = (object) array('rowid' => '', 'name' => $const, 'value' => '', 'type' => $type, 'note' => '');
+                $obj = (object) ['rowid' => '', 'name' => $const, 'value' => '', 'type' => $type, 'note' => ''];
             }
 
             if (empty($strictw3c)) {
@@ -1791,7 +1818,7 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
                 print '<td>';
                 // List of possible labels (defined into $_Avery_Labels variable set into format_cards.lib.php)
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
-                $arrayoflabels = array();
+                $arrayoflabels = [];
                 foreach (array_keys($_Avery_Labels) as $codecards) {
                     $arrayoflabels[$codecards] = $_Avery_Labels[$codecards]['name'];
                 }
@@ -1803,7 +1830,7 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
                 print '<td>';
                 print '<input type="hidden" name="consttype' . (empty($strictw3c) ? '' : ($strictw3c == 3 ? '_' . $const : '[]')) . '" value="' . ($obj->type ? $obj->type : 'string') . '">';
                 print '<input type="hidden" name="constnote' . (empty($strictw3c) ? '' : ($strictw3c == 3 ? '_' . $const : '[]')) . '" value="' . nl2br(dol_escape_htmltag($obj->note)) . '">';
-                if ($obj->type == 'textarea' || in_array($const, array('ADHERENT_CARD_TEXT', 'ADHERENT_CARD_TEXT_RIGHT', 'ADHERENT_ETIQUETTE_TEXT'))) {
+                if ($obj->type == 'textarea' || in_array($const, ['ADHERENT_CARD_TEXT', 'ADHERENT_CARD_TEXT_RIGHT', 'ADHERENT_ETIQUETTE_TEXT'])) {
                     print '<textarea class="flat" name="constvalue' . (empty($strictw3c) ? '' : ($strictw3c == 3 ? '_' . $const : '[]')) . '" cols="50" rows="5" wrap="soft">' . "\n";
                     print $obj->value;
                     print "</textarea>\n";
@@ -1821,7 +1848,7 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
 
                     $nboftemplates = $formmail->fetchAllEMailTemplate($tmp[1], $user, null, -1); // We set lang=null to get in priority record with no lang
                     //$arraydefaultmessage = $formmail->getEMailTemplate($db, $tmp[1], $user, null, 0, 1, '');
-                    $arrayofmessagename = array();
+                    $arrayofmessagename = [];
                     if (is_array($formmail->lines_model)) {
                         foreach ($formmail->lines_model as $modelmail) {
                             //var_dump($modelmail);
@@ -1871,8 +1898,9 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
 /**
  *  Show array with constants to edit
  *
- *  @param  array   $modules        Array of all modules
- *  @return string                  HTML string with warning
+ * @param array $modules Array of all modules
+ *
+ * @return string                  HTML string with warning
  */
 function showModulesExludedForExternal($modules)
 {
@@ -1918,11 +1946,12 @@ function showModulesExludedForExternal($modules)
 /**
  *  Add document model used by doc generator
  *
- *  @param      string  $name           Model name
- *  @param      string  $type           Model type
- *  @param      string  $label          Model label
- *  @param      string  $description    Model description
- *  @return     int                     Return integer <0 if KO, >0 if OK
+ * @param string $name        Model name
+ * @param string $type        Model type
+ * @param string $label       Model label
+ * @param string $description Model description
+ *
+ * @return     int                     Return integer <0 if KO, >0 if OK
  */
 function addDocumentModel($name, $type, $label = '', $description = '')
 {
@@ -1951,9 +1980,10 @@ function addDocumentModel($name, $type, $label = '', $description = '')
 /**
  *  Delete document model used by doc generator
  *
- *  @param      string  $name           Model name
- *  @param      string  $type           Model type
- *  @return     int                     Return integer <0 if KO, >0 if OK
+ * @param string $name Model name
+ * @param string $type Model type
+ *
+ * @return     int                     Return integer <0 if KO, >0 if OK
  */
 function delDocumentModel($name, $type)
 {
@@ -1982,7 +2012,7 @@ function delDocumentModel($name, $type)
 /**
  *  Return the php_info into an array
  *
- *  @return     array       Array with PHP infos
+ * @return     array       Array with PHP infos
  */
 function phpinfo_array()
 {
@@ -1991,18 +2021,18 @@ function phpinfo_array()
     $phpinfostring = ob_get_contents();
     ob_end_clean();
 
-    $info_arr = array();
+    $info_arr = [];
     $info_lines = explode("\n", strip_tags($phpinfostring, "<tr><td><h2>"));
     $cat = "General";
     foreach ($info_lines as $line) {
         // new cat?
-        $title = array();
+        $title = [];
         preg_match("~<h2>(.*)</h2>~", $line, $title) ? $cat = $title[1] : null;
-        $val = array();
+        $val = [];
         if (preg_match("~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~", $line, $val)) {
             $info_arr[trim($cat)][trim($val[1])] = $val[2];
         } elseif (preg_match("~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~", $line, $val)) {
-            $info_arr[trim($cat)][trim($val[1])] = array("local" => $val[2], "master" => $val[3]);
+            $info_arr[trim($cat)][trim($val[1])] = ["local" => $val[2], "master" => $val[3]];
         }
     }
     return $info_arr;
@@ -2011,14 +2041,14 @@ function phpinfo_array()
 /**
  *  Return array head with list of tabs to view object information.
  *
- *  @return array                       head array with tabs
+ * @return array                       head array with tabs
  */
 function company_admin_prepare_head()
 {
     global $langs, $conf;
 
     $h = 0;
-    $head = array();
+    $head = [];
 
     $head[$h][0] = DOL_URL_ROOT . "/admin/company.php";
     $head[$h][1] = $langs->trans("Company");
@@ -2050,14 +2080,14 @@ function company_admin_prepare_head()
 /**
  *  Return array head with list of tabs to view object information.
  *
- *  @return array                       head array with tabs
+ * @return array                       head array with tabs
  */
 function email_admin_prepare_head()
 {
     global $langs, $conf, $user;
 
     $h = 0;
-    $head = array();
+    $head = [];
 
     if (!empty($user->admin) && (empty($_SESSION['leftmenu']) || $_SESSION['leftmenu'] != 'email_templates')) {
         $head[$h][0] = DOL_URL_ROOT . "/admin/mails.php";

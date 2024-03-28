@@ -17,6 +17,7 @@
 
 namespace DoliCore\Base;
 
+use Alxarafe\Base\Globals;
 use Conf;
 use MenuManager;
 use stdClass;
@@ -151,6 +152,13 @@ abstract class Config
         return $config;
     }
 
+    /**
+     * Create the Dolibarr conf variable.
+     *
+     * @param $reload
+     *
+     * @return stdClass|null
+     */
     public static function loadConf($reload = false): ?stdClass
     {
         if (isset(static::$conf) && !$reload) {
@@ -158,13 +166,10 @@ abstract class Config
         }
 
         $filename = static::getDolibarrConfigFilename();
-        if (!file_exists($filename) || !is_readable($filename)) {
-            return null;
+        $exists = file_exists($filename) && is_readable($filename);
+        if ($exists) {
+            include $filename;
         }
-
-        include $filename;
-
-        $conf = new Conf();
 
         /*
          * Create $conf object
@@ -178,10 +183,10 @@ abstract class Config
         $conf->db->name = empty($dolibarr_main_db_name) ? '' : $dolibarr_main_db_name;
         $conf->db->user = empty($dolibarr_main_db_user) ? '' : $dolibarr_main_db_user;
         $conf->db->pass = empty($dolibarr_main_db_pass) ? '' : $dolibarr_main_db_pass;
-        $conf->db->type = $dolibarr_main_db_type;
-        $conf->db->prefix = $dolibarr_main_db_prefix;
-        $conf->db->character_set = $dolibarr_main_db_character_set;
-        $conf->db->dolibarr_main_db_collation = $dolibarr_main_db_collation;
+        $conf->db->type = $dolibarr_main_db_type ?? 'mysqli';
+        $conf->db->prefix = $dolibarr_main_db_prefix ?? 'alx_';
+        $conf->db->character_set = $dolibarr_main_db_character_set ?? 'utf8';
+        $conf->db->dolibarr_main_db_collation = $dolibarr_main_db_collation ?? 'utf8-unicode-ci';
         $conf->db->dolibarr_main_db_encryption = $dolibarr_main_db_encryption ?? null;
         $conf->db->dolibarr_main_db_cryptkey = $dolibarr_main_db_cryptkey ?? null;
         if (defined('TEST_DB_FORCE_TYPE')) {
@@ -197,9 +202,9 @@ abstract class Config
         $conf->file->main_force_https = empty($dolibarr_main_force_https) ? '' : $dolibarr_main_force_https; // Force https
         $conf->file->strict_mode = empty($dolibarr_strict_mode) ? '' : $dolibarr_strict_mode; // Force php strict mode (for debug)
         $conf->file->instance_unique_id = empty($dolibarr_main_instance_unique_id) ? (empty($dolibarr_main_cookie_cryptkey) ? '' : $dolibarr_main_cookie_cryptkey) : $dolibarr_main_instance_unique_id; // Unique id of instance
-        $conf->file->dol_main_url_root = $dolibarr_main_url_root;   // Define url inside the config file
-        $conf->file->dol_document_root = array('main' => (string) DOL_DOCUMENT_ROOT); // Define array of document root directories ('/home/htdocs')
-        $conf->file->dol_url_root = array('main' => (string) DOL_URL_ROOT); // Define array of url root path ('' or '/dolibarr')
+        $conf->file->dol_main_url_root = $dolibarr_main_url_root ?? BASE_URL;   // Define url inside the config file
+        $conf->file->dol_document_root = ['main' => (string) DOL_DOCUMENT_ROOT]; // Define array of document root directories ('/home/htdocs')
+        $conf->file->dol_url_root = ['main' => (string) DOL_URL_ROOT]; // Define array of url root path ('' or '/dolibarr')
         if (!empty($dolibarr_main_document_root_alt)) {
             // dolibarr_main_document_root_alt can contains several directories
             $values = preg_split('/[;,]/', $dolibarr_main_document_root_alt);
@@ -243,10 +248,20 @@ abstract class Config
         return $conf;
     }
 
+    /**
+     * Create the content for the menumanager variable.
+     *
+     * @param $conf
+     *
+     * @return MenuManager
+     * @throws \Exception
+     */
     public static function getMenuManager($conf)
     {
-// Init menu manager
-        global $db;
+        // Init menu manager
+        $db = Globals::getDb($conf);
+
+        $menumanager=null;
         if (!defined('NOREQUIREMENU')) {
             if (empty($user->socid)) {    // If internal user or not defined
                 $conf->standard_menu = (!getDolGlobalString('MAIN_MENU_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENU_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENU_STANDARD) : $conf->global->MAIN_MENU_STANDARD_FORCED);

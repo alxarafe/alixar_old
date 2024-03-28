@@ -76,4 +76,5 @@ if (!empty($api)) {
 }
 
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
+
 require $path;

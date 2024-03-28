@@ -55,7 +55,7 @@ abstract class Globals
         return static::$config;
     }
 
-    public static function setConfigValues($conf,$db)
+    public static function setConfigValues($conf, $db)
     {
         // Here we read database (llx_const table) and define conf var $conf->global->XXX.
         //print "We work with data into entity instance number '".$conf->entity."'";

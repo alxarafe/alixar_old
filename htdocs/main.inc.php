@@ -48,24 +48,27 @@ use Alxarafe\Base\Globals;
 use DoliCore\Base\Constants;
 
 $conf = \DoliCore\Base\Config::loadConf();
+// If $conf is not empty, we load the "superglobal" variables.
+if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
+    $db = Globals::getDb($conf);
 
-$db = Globals::getDb($conf);
-$config = Globals::getConfig($conf);
-Constants::define($config);
+    $config = Globals::getConfig($conf);
+    Constants::define($config);
 
-$hookmanager = Globals::getHookManager();
-$langs = Globals::getLangs($conf);
-$user = Globals::getUser();
-$menumanager = Globals::getMenuManager($conf);
+    $hookmanager = Globals::getHookManager();
+    $langs = Globals::getLangs($conf);
+    $user = Globals::getUser();
+    $menumanager = Globals::getMenuManager($conf);
 
-Globals::setConfigValues($conf, $db);
+    Globals::setConfigValues($conf, $db);
+}
 
 
 //@ini_set('memory_limit', '128M'); // This may be useless if memory is hard limited by your PHP
 
 // For optional tuning. Enabled if environment variable MAIN_SHOW_TUNING_INFO is defined.
 $micro_start_time = 0;
-if ($config->server->detailed_info) {
+if (isset($config) && $config->server->detailed_info) {
     [$usec, $sec] = explode(" ", microtime());
     $micro_start_time = ((float) $usec + (float) $sec);
     // Add Xdebug code coverage
@@ -924,12 +927,10 @@ if (!defined('NOLOGIN')) {
                 }
             }
 
-            dump([$usertotest, $passwordtotest, $entitytotest, $authmode,]);
             $login = checkLoginPassEntity($usertotest, $passwordtotest, $entitytotest, $authmode);
             if ($login === '--bad-login-validity--') {
                 $login = '';
             }
-            dump(['login' => $login]);
 
             $dol_authmode = '';
 
@@ -1637,7 +1638,6 @@ if (!function_exists("llxHeader")) {
     }
 }
 
-if (!function_exists('top_httphead')) {
     /**
      *  Show HTTP header. Called by top_htmlhead().
      *
@@ -1768,9 +1768,219 @@ if (!function_exists('top_httphead')) {
         // No need to add this token in header, we use instead the one into the forms.
         //header("anti-csrf-token: ".newToken());
     }
-}
 
-if (!function_exists('top_htmlhead')) {
+    /**
+     * Show Dolibarr default login page.
+     * Part of this code is also duplicated into main.inc.php::top_htmlhead
+     *
+     * @param Translate $langs Lang object (must be initialized by a new).
+     * @param Conf      $conf  Conf object
+     * @param Societe   $mysoc Company object
+     *
+     * @return      void
+     */
+    function dol_loginfunction($langs, $conf, $mysoc)
+    {
+        global $dolibarr_main_demo, $dolibarr_main_force_https;
+        global $db, $hookmanager;
+
+        $langs->loadLangs(["main", "other", "help", "admin"]);
+
+        // Instantiate hooks of thirdparty module only if not already define
+        $hookmanager->initHooks(['mainloginpage']);
+
+        $main_authentication = $conf->file->main_authentication;
+
+        $session_name = session_name(); // Get current session name
+
+        $dol_url_root = DOL_URL_ROOT;
+
+        // Title
+        $appli = constant('DOL_APPLICATION_TITLE');
+        $title = $appli . (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') ? '' : ' ' . constant('DOL_VERSION'));
+        if (getDolGlobalString('MAIN_APPLICATION_TITLE')) {
+            $title = getDolGlobalString('MAIN_APPLICATION_TITLE');
+        }
+        $titletruedolibarrversion = constant('DOL_VERSION'); // $title used by login template after the @ to inform of true Dolibarr version
+
+        // Note: $conf->css looks like '/theme/eldy/style.css.php'
+        /*
+        $conf->css = "/theme/".(GETPOST('theme','aZ09')?GETPOST('theme','aZ09'):$conf->theme)."/style.css.php";
+        $themepath=dol_buildpath($conf->css,1);
+        if (!empty($conf->modules_parts['theme']))      // Using this feature slow down application
+        {
+            foreach($conf->modules_parts['theme'] as $reldir)
+            {
+                if (file_exists(dol_buildpath($reldir.$conf->css, 0)))
+                {
+                    $themepath=dol_buildpath($reldir.$conf->css, 1);
+                    break;
+                }
+            }
+        }
+        $conf_css = $themepath."?lang=".$langs->defaultlang;
+        */
+
+        // Select templates dir
+        if (!empty($conf->modules_parts['tpl'])) {  // Using this feature slow down application
+            $dirtpls = array_merge($conf->modules_parts['tpl'], ['/core/tpl/']);
+            foreach ($dirtpls as $reldir) {
+                $tmp = dol_buildpath($reldir . 'login.tpl.php');
+                if (file_exists($tmp)) {
+                    $template_dir = preg_replace('/login\.tpl\.php$/', '', $tmp);
+                    break;
+                }
+            }
+        } else {
+            $template_dir = DOL_DOCUMENT_ROOT . "/core/tpl/";
+        }
+
+        // Set cookie for timeout management. We set it as a cookie so we will be able to use it to set timeout on next page before the session start
+        // and the conf file is loaded.
+        $prefix = dol_getprefix('');
+        $sessiontimeout = 'DOLSESSTIMEOUT_' . $prefix;
+
+        if (getDolGlobalString('MAIN_SESSION_TIMEOUT')) {
+            if (session_status() != PHP_SESSION_ACTIVE) {
+                if (PHP_VERSION_ID < 70300) {
+                    session_set_cookie_params(0, '/', null, ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true), true); // Add tag secure and httponly on session cookie (same as setting session.cookie_httponly into php.ini). Must be called before the session_start.
+                } else {
+                    // Only available for php >= 7.3
+                    $sessioncookieparams = [
+                        'lifetime' => 0,
+                        'path' => '/',
+                        //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
+                        'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
+                        'httponly' => true,
+                        'samesite' => 'Lax', // None || Lax  || Strict
+                    ];
+                    session_set_cookie_params($sessioncookieparams);
+                }
+
+                setcookie($sessiontimeout, $conf->global->MAIN_SESSION_TIMEOUT, 0, "/", '', (empty($dolibarr_main_force_https) ? false : true), true);
+            }
+        }
+
+        if (GETPOST('urlfrom', 'alpha')) {
+            $_SESSION["urlfrom"] = GETPOST('urlfrom', 'alpha');
+        } else {
+            unset($_SESSION["urlfrom"]);
+        }
+
+        if (!GETPOST("username", 'alpha')) {
+            $focus_element = 'username';
+        } else {
+            $focus_element = 'password';
+        }
+
+        $demologin = '';
+        $demopassword = '';
+        if (!empty($dolibarr_main_demo)) {
+            $tab = explode(',', $dolibarr_main_demo);
+            $demologin = $tab[0];
+            $demopassword = $tab[1];
+        }
+
+        // Execute hook getLoginPageOptions (for table)
+        $parameters = ['entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity')];
+        $reshook = $hookmanager->executeHooks('getLoginPageOptions', $parameters); // Note that $action and $object may have been modified by some hooks.
+        $morelogincontent = $hookmanager->resPrint;
+
+        // Execute hook getLoginPageExtraOptions (eg for js)
+        $parameters = ['entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity')];
+        $reshook = $hookmanager->executeHooks('getLoginPageExtraOptions', $parameters); // Note that $action and $object may have been modified by some hooks.
+        $moreloginextracontent = $hookmanager->resPrint;
+
+        //Redirect after connection
+        $parameters = ['entity' => GETPOSTINT('entity'), 'switchentity' => GETPOSTINT('switchentity')];
+        $reshook = $hookmanager->executeHooks('redirectAfterConnection', $parameters); // Note that $action and $object may have been modified by some hooks.
+        $php_self = $hookmanager->resPrint;
+
+        // Login
+        $login = (!empty($hookmanager->resArray['username']) ? $hookmanager->resArray['username'] : (GETPOST("username", "alpha") ? GETPOST("username", "alpha") : $demologin));
+        $password = $demopassword;
+
+        // Show logo (search in order: small company logo, large company logo, theme logo, common logo)
+        $width = 0;
+        $urllogo = DOL_URL_ROOT . '/theme/common/login_logo.png';
+
+        if (!empty($mysoc->logo_small) && is_readable($conf->mycompany->dir_output . '/logos/thumbs/' . $mysoc->logo_small)) {
+            $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/thumbs/' . $mysoc->logo_small);
+        } elseif (!empty($mysoc->logo) && is_readable($conf->mycompany->dir_output . '/logos/' . $mysoc->logo)) {
+            $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/' . $mysoc->logo);
+            $width = 128;
+        } elseif (!empty($mysoc->logo_squarred_small) && is_readable($conf->mycompany->dir_output . '/logos/thumbs/' . $mysoc->logo_squarred_small)) {
+            $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/thumbs/' . $mysoc->logo_squarred_small);
+        } elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/alixar_rectangular_logo.svg')) {
+            $urllogo = DOL_URL_ROOT . '/theme/alixar_rectangular_logo.svg';
+        }
+
+        // Security graphical code
+        $captcha = 0;
+        $captcha_refresh = '';
+        if (function_exists("imagecreatefrompng") && getDolGlobalString('MAIN_SECURITY_ENABLECAPTCHA')) {
+            $captcha = 1;
+            $captcha_refresh = img_picto($langs->trans("Refresh"), 'refresh', 'id="captcha_refresh_img"');
+        }
+
+        // Extra link
+        $forgetpasslink = 0;
+        $helpcenterlink = 0;
+        if (!getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK') || !getDolGlobalString('MAIN_HELPCENTER_DISABLELINK')) {
+            if (!getDolGlobalString('MAIN_SECURITY_DISABLEFORGETPASSLINK')) {
+                $forgetpasslink = 1;
+            }
+
+            if (!getDolGlobalString('MAIN_HELPCENTER_DISABLELINK')) {
+                $helpcenterlink = 1;
+            }
+        }
+
+        // Home message
+        $main_home = '';
+        if (getDolGlobalString('MAIN_HOME')) {
+            $substitutionarray = getCommonSubstitutionArray($langs);
+            complete_substitutions_array($substitutionarray, $langs);
+            $texttoshow = make_substitutions(getDolGlobalString('MAIN_HOME'), $substitutionarray, $langs);
+
+            $main_home = dol_htmlcleanlastbr($texttoshow);
+        }
+
+        // Google AD
+        $main_google_ad_client = ((getDolGlobalString('MAIN_GOOGLE_AD_CLIENT') && getDolGlobalString('MAIN_GOOGLE_AD_SLOT')) ? 1 : 0);
+
+        // Set jquery theme
+        $dol_loginmesg = (!empty($_SESSION["dol_loginmesg"]) ? $_SESSION["dol_loginmesg"] : '');
+
+        $favicon = DOL_URL_ROOT . '/theme/alixar_square_logo_256x256_color.png';
+        if (!empty($mysoc->logo_squarred_mini)) {
+            $favicon = DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode('logos/thumbs/' . $mysoc->logo_squarred_mini);
+        }
+        if (getDolGlobalString('MAIN_FAVICON_URL')) {
+            $favicon = getDolGlobalString('MAIN_FAVICON_URL');
+        }
+
+        $jquerytheme = 'base';
+        if (getDolGlobalString('MAIN_USE_JQUERY_THEME')) {
+            $jquerytheme = getDolGlobalString('MAIN_USE_JQUERY_THEME');
+        }
+
+        // Set dol_hide_topmenu, dol_hide_leftmenu, dol_optimize_smallscreen, dol_no_mouse_hover
+        $dol_hide_topmenu = GETPOSTINT('dol_hide_topmenu');
+        $dol_hide_leftmenu = GETPOSTINT('dol_hide_leftmenu');
+        $dol_optimize_smallscreen = GETPOSTINT('dol_optimize_smallscreen');
+        $dol_no_mouse_hover = GETPOSTINT('dol_no_mouse_hover');
+        $dol_use_jmobile = GETPOSTINT('dol_use_jmobile');
+
+        // Include login page template
+        include $template_dir . 'login.tpl.php';
+
+        // Global html output events ($mesgs, $errors, $warnings)
+        dol_htmloutput_events(0);
+
+        $_SESSION["dol_loginmesg"] = '';
+    }
+
     /**
      * Output html header of a page. It calls also top_httphead()
      * This code is also duplicated into security2.lib.php::dol_loginfunction
@@ -2184,7 +2394,6 @@ if (!function_exists('top_htmlhead')) {
 
         $conf->headerdone = 1; // To tell header was output
     }
-}
 
 if (!function_exists('top_menu')) {
     /**

@@ -37,7 +37,8 @@
 /**
  * Same function than javascript unescape() function but in PHP.
  *
- * @param   string  $source     String to decode
+ * @param string $source String to decode
+ *
  * @return  string              Unescaped string
  */
 function jsUnEscape($source)
@@ -79,14 +80,15 @@ function jsUnEscape($source)
  * Detects directories that contain a subdirectory /core/modules.
  * Modules that contains 'disabled' in their name are excluded.
  *
- * @param   string                  $subdir Sub directory (Example: '/mailings' will look for /core/modules/mailings/)
+ * @param string $subdir Sub directory (Example: '/mailings' will look for /core/modules/mailings/)
+ *
  * @return  array<string,string>            Array of directories that can contain module descriptors ($key==value)
  */
 function dolGetModulesDirs($subdir = '')
 {
-    global $conf;
+    $conf = \DoliCore\Base\Config::loadConf();
 
-    $modulesdir = array();
+    $modulesdir = [];
 
     foreach ($conf->file->dol_document_root as $type => $dirroot) {
         // Default core/modules dir
@@ -118,8 +120,9 @@ function dolGetModulesDirs($subdir = '')
 /**
  *  Try to guess default paper format according to language into $langs
  *
- *  @param      Translate|null  $outputlangs        Output lang to use to autodetect output format if setup not done
- *  @return     string                              Default paper format code
+ * @param Translate|null $outputlangs Output lang to use to autodetect output format if setup not done
+ *
+ * @return     string                              Default paper format code
  */
 function dol_getDefaultFormat(Translate $outputlangs = null)
 {
@@ -144,16 +147,17 @@ function dol_getDefaultFormat(Translate $outputlangs = null)
  *  Show information on an object
  *  TODO Move this into html.formother
  *
- *  @param  object  $object         Object to show
- *  @param  int     $usetable       Output into a table
- *  @return void
+ * @param object $object   Object to show
+ * @param int    $usetable Output into a table
+ *
+ * @return void
  */
 function dol_print_object_info($object, $usetable = 0)
 {
     global $langs, $db;
 
     // Load translation files required by the page
-    $langs->loadLangs(array('other', 'admin'));
+    $langs->loadLangs(['other', 'admin']);
 
     include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
@@ -197,7 +201,7 @@ function dol_print_object_info($object, $usetable = 0)
         } else {
             print ': ';
         }
-        if (! empty($object->user_creation) && is_object($object->user_creation)) { // deprecated mode
+        if (!empty($object->user_creation) && is_object($object->user_creation)) { // deprecated mode
             if ($object->user_creation->id) {
                 print $object->user_creation->getNomUrl(-1, '', 0, 0, 0);
             } else {
@@ -645,9 +649,10 @@ function dol_print_object_info($object, $usetable = 0)
  *  Return an email formatted to include a tracking id
  *  For example  myemail@example.com becom myemail+trackingid@example.com
  *
- *  @param  string  $email          Email address (Ex: "toto@example.com", "John Do <johndo@example.com>")
- *  @param  string  $trackingid     Tracking id (Ex: thi123 for thirdparty with id 123)
- *  @return string                  Return email tracker string
+ * @param string $email      Email address (Ex: "toto@example.com", "John Do <johndo@example.com>")
+ * @param string $trackingid Tracking id (Ex: thi123 for thirdparty with id 123)
+ *
+ * @return string                  Return email tracker string
  */
 function dolAddEmailTrackId($email, $trackingid)
 {
@@ -658,12 +663,13 @@ function dolAddEmailTrackId($email, $trackingid)
 /**
  *  Return true if email has a domain name that can be resolved to MX type.
  *
- *  @param  string  $mail       Email address (Ex: "toto@example.com", "John Do <johndo@example.com>")
- *  @return int                 -1 if error (function not available), 0=Not valid, 1=Valid
+ * @param string $mail Email address (Ex: "toto@example.com", "John Do <johndo@example.com>")
+ *
+ * @return int                 -1 if error (function not available), 0=Not valid, 1=Valid
  */
 function isValidMailDomain($mail)
 {
-    list($user, $domain) = explode("@", $mail, 2);
+    [$user, $domain] = explode("@", $mail, 2);
     return ($domain ? isValidMXRecord($domain) : 0);
 }
 
@@ -671,14 +677,15 @@ function isValidMailDomain($mail)
  *  Url string validation
  *  <http[s]> :// [user[:pass]@] hostname [port] [/path] [?getquery] [anchor]
  *
- *  @param  string  $url        Url
- *  @param  int     $http       1: verify http is provided, 0: not verify http
- *  @param  int     $pass       1: verify user and pass is provided, 0: not verify user and pass
- *  @param  int     $port       1: verify port is provided, 0: not verify port
- *  @param  int     $path       1: verify a path is provided "/" or "/..." or "/.../", 0: not verify path
- *  @param  int     $query      1: verify query is provided, 0: not verify query
- *  @param  int     $anchor     1: verify anchor is provided, 0: not verify anchor
- *  @return int                 1=Check is OK, 0=Check is KO
+ * @param string $url    Url
+ * @param int    $http   1: verify http is provided, 0: not verify http
+ * @param int    $pass   1: verify user and pass is provided, 0: not verify user and pass
+ * @param int    $port   1: verify port is provided, 0: not verify port
+ * @param int    $path   1: verify a path is provided "/" or "/..." or "/.../", 0: not verify path
+ * @param int    $query  1: verify query is provided, 0: not verify query
+ * @param int    $anchor 1: verify anchor is provided, 0: not verify anchor
+ *
+ * @return int                 1=Check is OK, 0=Check is KO
  */
 function isValidUrl($url, $http = 0, $pass = 0, $port = 0, $path = 0, $query = 0, $anchor = 0)
 {
@@ -730,8 +737,9 @@ function isValidUrl($url, $http = 0, $pass = 0, $port = 0, $path = 0, $query = 0
 /**
  *  Check if VAT numero is valid (check done on syntax only, no database or remote access)
  *
- *  @param  Societe   $company       VAT number
- *  @return int                      1=Check is OK, 0=Check is KO
+ * @param Societe $company VAT number
+ *
+ * @return int                      1=Check is OK, 0=Check is KO
  */
 function isValidVATID($company)
 {
@@ -753,16 +761,17 @@ function isValidVATID($company)
 /**
  *  Clean an url string
  *
- *  @param  string  $url        Url
- *  @param  integer $http       1 = keep both http:// and https://, 0: remove http:// but not https://
- *  @return string              Cleaned url
+ * @param string  $url  Url
+ * @param integer $http 1 = keep both http:// and https://, 0: remove http:// but not https://
+ *
+ * @return string              Cleaned url
  */
 function clean_url($url, $http = 1)
 {
     // Fixed by Matelli (see http://matelli.fr/showcases/patch%73-dolibarr/fix-cleaning-url.html)
     // To include the minus sign in a char class, we must not escape it but put it at the end of the class
     // Also, there's no need of escape a dot sign in a class
-    $regs = array();
+    $regs = [];
     if (preg_match('/^(https?:[\\/]+)?([0-9A-Z.-]+\.[A-Z]{2,4})(:[0-9]+)?/i', $url, $regs)) {
         $proto = $regs[1];
         $domain = $regs[2];
@@ -790,17 +799,17 @@ function clean_url($url, $http = 1)
 }
 
 
-
 /**
  *  Returns an email value with obfuscated parts.
  *
- *  @param      string      $mail               Email
- *  @param      string      $replace            Replacement character (default: *)
- *  @param      int         $nbreplace          Number of replacement character (default: 8)
- *  @param      int         $nbdisplaymail      Number of character unchanged (default: 4)
- *  @param      int         $nbdisplaydomain    Number of character unchanged of domain (default: 3)
- *  @param      bool        $displaytld         Display tld (default: true)
- *  @return     string                          Return email with hidden parts or '';
+ * @param string $mail            Email
+ * @param string $replace         Replacement character (default: *)
+ * @param int    $nbreplace       Number of replacement character (default: 8)
+ * @param int    $nbdisplaymail   Number of character unchanged (default: 4)
+ * @param int    $nbdisplaydomain Number of character unchanged of domain (default: 3)
+ * @param bool   $displaytld      Display tld (default: true)
+ *
+ * @return     string                          Return email with hidden parts or '';
  */
 function dolObfuscateEmail($mail, $replace = "*", $nbreplace = 8, $nbdisplaymail = 4, $nbdisplaydomain = 3, $displaytld = true)
 {
@@ -839,10 +848,11 @@ function dolObfuscateEmail($mail, $replace = "*", $nbreplace = 8, $nbdisplaymail
  *  Return lines of an html table from an array
  *  Used by array2table function only
  *
- *  @param  array   $data       Array of data
- *  @param  string  $troptions  Options for tr
- *  @param  string  $tdoptions  Options for td
- *  @return string
+ * @param array  $data      Array of data
+ * @param string $troptions Options for tr
+ * @param string $tdoptions Options for td
+ *
+ * @return string
  */
 function array2tr($data, $troptions = '', $tdoptions = '')
 {
@@ -857,12 +867,13 @@ function array2tr($data, $troptions = '', $tdoptions = '')
 /**
  *  Return an html table from an array
  *
- *  @param  array   $data           Array of data
- *  @param  int     $tableMarkup    Table markup
- *  @param  string  $tableoptions   Options for table
- *  @param  string  $troptions      Options for tr
- *  @param  string  $tdoptions      Options for td
- *  @return string
+ * @param array  $data         Array of data
+ * @param int    $tableMarkup  Table markup
+ * @param string $tableoptions Options for table
+ * @param string $troptions    Options for tr
+ * @param string $tdoptions    Options for td
+ *
+ * @return string
  */
 function array2table($data, $tableMarkup = 1, $tableoptions = '', $troptions = '', $tdoptions = '')
 {
@@ -889,17 +900,20 @@ function array2table($data, $tableMarkup = 1, $tableoptions = '', $troptions = '
 /**
  * Return last or next value for a mask (according to area we should not reset)
  *
- * @param   DoliDB      $db             Database handler
- * @param   string      $mask           Mask to use. Must contains {0...0}. Can contains {t..}, {u...}, {user_extra_xxx}, .;.
- * @param   string      $table          Table containing field with counter
- * @param   string      $field          Field containing already used values of counter
- * @param   string      $where          To add a filter on selection (for example to filter on invoice types)
- * @param   Societe|string $objsoc      The company that own the object we need a counter for
- * @param   string      $date           Date to use for the {y},{m},{d} tags.
- * @param   string      $mode           'next' for next value or 'last' for last value
- * @param   bool        $bentityon      Activate the entity filter. Default is true (for modules not compatible with multicompany)
- * @param   User        $objuser        Object user we need data from.
- * @param   int         $forceentity    Entity id to force
+ * @param DoliDB         $db          Database handler
+ * @param string         $mask        Mask to use. Must contains {0...0}. Can contains {t..}, {u...}, {user_extra_xxx},
+ *                                    .;.
+ * @param string         $table       Table containing field with counter
+ * @param string         $field       Field containing already used values of counter
+ * @param string         $where       To add a filter on selection (for example to filter on invoice types)
+ * @param Societe|string $objsoc      The company that own the object we need a counter for
+ * @param string         $date        Date to use for the {y},{m},{d} tags.
+ * @param string         $mode        'next' for next value or 'last' for last value
+ * @param bool           $bentityon   Activate the entity filter. Default is true (for modules not compatible with
+ *                                    multicompany)
+ * @param User           $objuser     Object user we need data from.
+ * @param int            $forceentity Entity id to force
+ *
  * @return  string                      New value (numeric) or error message
  */
 function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $date = '', $mode = 'next', $bentityon = true, $objuser = null, $forceentity = null)
@@ -933,7 +947,7 @@ function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $
     //$date=dol_stringtotime('20130101');
 
     $hasglobalcounter = false;
-    $reg = array();
+    $reg = [];
     // Extract value for mask counter, mask raz and mask offset
     if (preg_match('/\{(0+)([@\+][0-9\-\+\=]+)?([@\+][0-9\-\+\=]+)?\}/i', $mask, $reg)) {
         $masktri = $reg[1] . (!empty($reg[2]) ? $reg[2] : '') . (!empty($reg[3]) ? $reg[3] : '');
@@ -953,7 +967,7 @@ function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $
     }
 
     // Extract value for third party mask counter
-    $regClientRef = array();
+    $regClientRef = [];
     if (preg_match('/\{(c+)(0*)\}/i', $mask, $regClientRef)) {
         $maskrefclient = $regClientRef[1] . $regClientRef[2];
         $maskrefclient_maskclientcode = $regClientRef[1];
@@ -975,7 +989,7 @@ function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $
     }
 
     // Extract value for third party type
-    $regType = array();
+    $regType = [];
     if (preg_match('/\{(t+)\}/i', $mask, $regType)) {
         $masktype = $regType[1];
         $masktype_value = dol_substr(preg_replace('/^TE_/', '', $objsoc->typent_code), 0, dol_strlen($regType[1])); // get n first characters of thirdparty typent_code (where n is length in mask)
@@ -986,7 +1000,7 @@ function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $
     }
 
     // Extract value for user
-    $regType = array();
+    $regType = [];
     if (preg_match('/\{(u+)\}/i', $mask, $regType)) {
         $lastname = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
         if (is_object($objuser)) {
@@ -1002,10 +1016,10 @@ function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $
     }
 
     // Personalized field {XXX-1} à {XXX-9}
-    $maskperso = array();
-    $maskpersonew = array();
+    $maskperso = [];
+    $maskpersonew = [];
     $tmpmask = $mask;
-    $regKey = array();
+    $regKey = [];
     while (preg_match('/\{([A-Z]+)\-([1-9])\}/', $tmpmask, $regKey)) {
         $maskperso[$regKey[1]] = '{' . $regKey[1] . '-' . $regKey[2] . '}';
         // @phan-suppress-next-line PhanParamSuspiciousOrder
@@ -1437,9 +1451,10 @@ function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $
  * If string is "STARTcontentEND" and $start is "START" and $end is "END",
  * then this function returns "content"
  *
- * @param   string  $string     String to test
- * @param   string  $start      String Value for start
- * @param   string  $end        String Value for end
+ * @param string $string String to test
+ * @param string $start  String Value for start
+ * @param string $end    String Value for end
+ *
  * @return  string              Return part of string
  */
 function get_string_between($string, $start, $end)
@@ -1459,8 +1474,9 @@ function get_string_between($string, $start, $end)
 /**
  * Check value
  *
- * @param   string  $mask       Mask to use
- * @param   string  $value      Value
+ * @param string $mask  Mask to use
+ * @param string $value Value
+ *
  * @return  int|string          Return integer <0 or error string if KO, 0 if OK
  */
 function check_value($mask, $value)
@@ -1469,7 +1485,7 @@ function check_value($mask, $value)
 
     $hasglobalcounter = false;
     // Extract value for mask counter, mask raz and mask offset
-    $reg = array();
+    $reg = [];
     if (preg_match('/\{(0+)([@\+][0-9]+)?([@\+][0-9]+)?\}/i', $mask, $reg)) {
         $masktri = $reg[1] . (isset($reg[2]) ? $reg[2] : '') . (isset($reg[3]) ? $reg[3] : '');
         $maskcounter = $reg[1];
@@ -1486,7 +1502,7 @@ function check_value($mask, $value)
     }
 
     // Extract value for third party mask counter
-    $regClientRef = array();
+    $regClientRef = [];
     if (preg_match('/\{(c+)(0*)\}/i', $mask, $regClientRef)) {
         $maskrefclient = $regClientRef[1] . $regClientRef[2];
         $maskrefclient_maskclientcode = $regClientRef[1];
@@ -1582,10 +1598,11 @@ function check_value($mask, $value)
 /**
  *  Convert a binary data to string that represent hexadecimal value
  *
- *  @param   string     $bin        Value to convert
- *  @param   boolean    $pad        Add 0
- *  @param   boolean    $upper      Convert to tupper
- *  @return  string                 x
+ * @param string  $bin   Value to convert
+ * @param boolean $pad   Add 0
+ * @param boolean $upper Convert to tupper
+ *
+ * @return  string                 x
  */
 function binhex($bin, $pad = false, $upper = false)
 {
@@ -1608,8 +1625,9 @@ function binhex($bin, $pad = false, $upper = false)
 /**
  *  Convert an hexadecimal string into a binary string
  *
- *  @param  string  $hexa       Hexadecimal string to convert (example: 'FF')
- *  @return string              bin
+ * @param string $hexa Hexadecimal string to convert (example: 'FF')
+ *
+ * @return string              bin
  */
 function hexbin($hexa)
 {
@@ -1624,8 +1642,9 @@ function hexbin($hexa)
 /**
  *  Retourne le numero de la semaine par rapport a une date
  *
- *  @param  string  $time       Date au format 'timestamp'
- *  @return string                  Number of week
+ * @param string $time Date au format 'timestamp'
+ *
+ * @return string                  Number of week
  */
 function numero_semaine($time)
 {
@@ -1669,12 +1688,12 @@ function numero_semaine($time)
 
     // Definition du numero de semaine: nb de jours entre "premier Jeudi de l'annee" et "Jeudi de la semaine";
     $numeroSemaine = (
-        (
-            date("z", mktime(12, 0, 0, date("m", $jeudiSemaine), date("d", $jeudiSemaine), date("Y", $jeudiSemaine)))
-        -
-        date("z", mktime(12, 0, 0, date("m", $premierJeudiAnnee), date("d", $premierJeudiAnnee), date("Y", $premierJeudiAnnee)))
-        ) / 7
-    ) + 1;
+            (
+                date("z", mktime(12, 0, 0, date("m", $jeudiSemaine), date("d", $jeudiSemaine), date("Y", $jeudiSemaine)))
+                -
+                date("z", mktime(12, 0, 0, date("m", $premierJeudiAnnee), date("d", $premierJeudiAnnee), date("Y", $premierJeudiAnnee)))
+            ) / 7
+        ) + 1;
 
     // Cas particulier de la semaine 53
     if ($numeroSemaine == 53) {
@@ -1694,10 +1713,11 @@ function numero_semaine($time)
 /**
  *  Convertit une masse d'une unite vers une autre unite
  *
- *  @param  float   $weight         Masse a convertir
- *  @param  int     $from_unit      Unite originale en puissance de 10
- *  @param  int     $to_unit        Nouvelle unite  en puissance de 10
- *  @return float                   Masse convertie
+ * @param float $weight    Masse a convertir
+ * @param int   $from_unit Unite originale en puissance de 10
+ * @param int   $to_unit   Nouvelle unite  en puissance de 10
+ *
+ * @return float                   Masse convertie
  */
 function weight_convert($weight, &$from_unit, $to_unit)
 {
@@ -1726,13 +1746,14 @@ function weight_convert($weight, &$from_unit, $to_unit)
 /**
  *  Save personal parameter
  *
- *  @param  DoliDB  $db         Handler database
- *  @param  Conf    $conf       Object conf
- *  @param  User    $user       Object user
- *  @param  array   $tab        Array (key=>value) with all parameters to save/update
- *  @return int                 Return integer <0 if KO, >0 if OK
+ * @param DoliDB $db   Handler database
+ * @param Conf   $conf Object conf
+ * @param User   $user Object user
+ * @param array  $tab  Array (key=>value) with all parameters to save/update
  *
- *  @see        dolibarr_get_const(), dolibarr_set_const(), dolibarr_del_const()
+ * @return int                 Return integer <0 if KO, >0 if OK
+ *
+ * @see        dolibarr_get_const(), dolibarr_set_const(), dolibarr_del_const()
  */
 function dol_set_user_param($db, $conf, &$user, $tab)
 {
@@ -1794,9 +1815,10 @@ function dol_set_user_param($db, $conf, &$user, $tab)
 /**
  *  Returns formatted reduction
  *
- *  @param  int         $reduction      Reduction percentage
- *  @param  Translate   $langs          Output language
- *  @return string                      Formatted reduction
+ * @param int       $reduction Reduction percentage
+ * @param Translate $langs     Output language
+ *
+ * @return string                      Formatted reduction
  */
 function dol_print_reduction($reduction, $langs)
 {
@@ -1814,8 +1836,9 @@ function dol_print_reduction($reduction, $langs)
  *  Return OS version.
  *  Note that PHP_OS returns only OS (not version) and OS PHP was built on, not necessarily OS PHP runs on.
  *
- *  @param      string      $option     Option string
- *  @return     string                  OS version
+ * @param string $option Option string
+ *
+ * @return     string                  OS version
  */
 function version_os($option = '')
 {
@@ -1830,8 +1853,8 @@ function version_os($option = '')
 /**
  *  Return PHP version
  *
- *  @return     string          PHP version
- *  @see        versionphparray(), versioncompare()
+ * @return     string          PHP version
+ * @see        versionphparray(), versioncompare()
  */
 function version_php()
 {
@@ -1841,7 +1864,7 @@ function version_php()
 /**
  *  Return DB version
  *
- *  @return     string          PHP version
+ * @return     string          PHP version
  */
 function version_db()
 {
@@ -1855,8 +1878,8 @@ function version_db()
 /**
  *  Return Dolibarr version
  *
- *  @return     string          Dolibarr version
- *  @see        versiondolibarrarray(), versioncompare()
+ * @return     string          Dolibarr version
+ * @see        versiondolibarrarray(), versioncompare()
  */
 function version_dolibarr()
 {
@@ -1866,7 +1889,7 @@ function version_dolibarr()
 /**
  *  Return web server version
  *
- *  @return     string          Web server version
+ * @return     string          Web server version
  */
 function version_webserver()
 {
@@ -1876,15 +1899,17 @@ function version_webserver()
 /**
  *  Return list of activated modules usable for document generation
  *
- *  @param  DoliDB      $db                 Database handler
- *  @param  string      $type               Type of models (company, invoice, ...)
- *  @param  int         $maxfilenamelength  Max length of value to show
- *  @return array|int                       0 if no module is activated, or array(key=>label). For modules that need directory scan, key is completed with ":filename".
+ * @param DoliDB $db                Database handler
+ * @param string $type              Type of models (company, invoice, ...)
+ * @param int    $maxfilenamelength Max length of value to show
+ *
+ * @return array|int                       0 if no module is activated, or array(key=>label). For modules that need
+ *                                         directory scan, key is completed with ":filename".
  */
 function getListOfModels($db, $type, $maxfilenamelength = 0)
 {
     global $conf, $langs;
-    $liste = array();
+    $liste = [];
     $found = 0;
     $dirtoscan = '';
 
@@ -1912,7 +1937,7 @@ function getListOfModels($db, $type, $maxfilenamelength = 0)
                 $const = $obj->description;
                 $dirtoscan = preg_replace('/[\r\n]+/', ',', trim(getDolGlobalString($const)));
 
-                $listoffiles = array();
+                $listoffiles = [];
 
                 // Now we add models found in directories scanned
                 $listofdir = explode(',', $dirtoscan);
@@ -1968,9 +1993,11 @@ function getListOfModels($db, $type, $maxfilenamelength = 0)
 
 /**
  * This function evaluates a string that should be a valid IPv4
- * Note: For ip 169.254.0.0, it returns 0 with some PHP (5.6.24) and 2 with some minor patches of PHP (5.6.25). See https://github.com/php/php-src/pull/1954.
+ * Note: For ip 169.254.0.0, it returns 0 with some PHP (5.6.24) and 2 with some minor patches of PHP (5.6.25). See
+ * https://github.com/php/php-src/pull/1954.
  *
- * @param   string $ip IP Address
+ * @param string $ip IP Address
+ *
  * @return  int 0 if not valid or reserved range, 1 if valid and public IP, 2 if valid and private range IP
  */
 function is_ip($ip)
@@ -1996,9 +2023,10 @@ function is_ip($ip)
 /**
  *  Build a login from lastname, firstname
  *
- *  @param  string      $lastname       Lastname
- *  @param  string      $firstname      Firstname
- *  @return string                      Login
+ * @param string $lastname  Lastname
+ * @param string $firstname Firstname
+ *
+ * @return string                      Login
  */
 function dol_buildlogin($lastname, $firstname)
 {
@@ -2028,13 +2056,13 @@ function dol_buildlogin($lastname, $firstname)
 /**
  *  Return array to use for SoapClient constructor
  *
- *  @return     array
+ * @return     array
  */
 function getSoapParams()
 {
     global $conf;
 
-    $params = array();
+    $params = [];
     $proxyuse = (!getDolGlobalString('MAIN_PROXY_USE') ? false : true);
     $proxyhost = (!getDolGlobalString('MAIN_PROXY_USE') ? false : $conf->global->MAIN_PROXY_HOST);
     $proxyport = (!getDolGlobalString('MAIN_PROXY_USE') ? false : $conf->global->MAIN_PROXY_PORT);
@@ -2044,25 +2072,27 @@ function getSoapParams()
     $response_timeout = (!getDolGlobalString('MAIN_USE_RESPONSE_TIMEOUT') ? 30 : $conf->global->MAIN_USE_RESPONSE_TIMEOUT); // Response timeout
     //print extension_loaded('soap');
     if ($proxyuse) {
-        $params = array('connection_timeout' => $timeout,
-                      'response_timeout' => $response_timeout,
-                      'proxy_use'      => 1,
-                      'proxy_host'     => $proxyhost,
-                      'proxy_port'     => $proxyport,
-                      'proxy_login'    => $proxyuser,
-                      'proxy_password' => $proxypass,
-                      'trace'          => 1
-        );
+        $params = [
+            'connection_timeout' => $timeout,
+            'response_timeout' => $response_timeout,
+            'proxy_use' => 1,
+            'proxy_host' => $proxyhost,
+            'proxy_port' => $proxyport,
+            'proxy_login' => $proxyuser,
+            'proxy_password' => $proxypass,
+            'trace' => 1,
+        ];
     } else {
-        $params = array('connection_timeout' => $timeout,
-                      'response_timeout' => $response_timeout,
-                      'proxy_use'      => 0,
-                      'proxy_host'     => false,
-                      'proxy_port'     => false,
-                      'proxy_login'    => false,
-                      'proxy_password' => false,
-                      'trace'          => 1
-        );
+        $params = [
+            'connection_timeout' => $timeout,
+            'response_timeout' => $response_timeout,
+            'proxy_use' => 0,
+            'proxy_host' => false,
+            'proxy_port' => false,
+            'proxy_login' => false,
+            'proxy_password' => false,
+            'trace' => 1,
+        ];
     }
     return $params;
 }
@@ -2071,10 +2101,11 @@ function getSoapParams()
 /**
  * Return link url to an object
  *
- * @param   int     $objectid       Id of record
- * @param   string  $objecttype     Type of object ('invoice', 'order', 'expedition_bon', 'myobject@mymodule', ...)
- * @param   int     $withpicto      Picto to show
- * @param   string  $option         More options
+ * @param int    $objectid   Id of record
+ * @param string $objecttype Type of object ('invoice', 'order', 'expedition_bon', 'myobject@mymodule', ...)
+ * @param int    $withpicto  Picto to show
+ * @param string $option     More options
+ *
  * @return  string                  URL of link to object id/type
  */
 function dolGetElementUrl($objectid, $objecttype, $withpicto = 0, $option = '')
@@ -2082,7 +2113,7 @@ function dolGetElementUrl($objectid, $objecttype, $withpicto = 0, $option = '')
     global $db, $conf, $langs;
 
     $ret = '';
-    $regs = array();
+    $regs = [];
 
     // If we ask a resource form external module (instead of default path)
     if (preg_match('/^([^@]+)@([^@]+)$/i', $objecttype, $regs)) {
@@ -2232,16 +2263,17 @@ function dolGetElementUrl($objectid, $objecttype, $withpicto = 0, $option = '')
 /**
  * Clean corrupted tree (orphelins linked to a not existing parent), record linked to themself and child-parent loop
  *
- * @param   DoliDB  $db                 Database handler
- * @param   string  $tabletocleantree   Table to clean
- * @param   string  $fieldfkparent      Field name that contains id of parent
+ * @param DoliDB $db               Database handler
+ * @param string $tabletocleantree Table to clean
+ * @param string $fieldfkparent    Field name that contains id of parent
+ *
  * @return  int                         Nb of records fixed/deleted
  */
 function cleanCorruptedTree($db, $tabletocleantree, $fieldfkparent)
 {
     $totalnb = 0;
-    $listofid = array();
-    $listofparentid = array();
+    $listofid = [];
+    $listofparentid = [];
 
     // Get list of all id in array listofid and all parents in array listofparentid
     $sql = "SELECT rowid, " . $fieldfkparent . " as parent_id FROM " . MAIN_DB_PREFIX . $tabletocleantree;
@@ -2278,13 +2310,13 @@ function cleanCorruptedTree($db, $tabletocleantree, $fieldfkparent)
         //else dol_print_error($db);
 
         // Check other loops
-        $listofidtoclean = array();
+        $listofidtoclean = [];
         foreach ($listofparentid as $id => $pid) {
             // Check depth
             //print 'Analyse record id='.$id.' with parent '.$pid.'<br>';
 
             $cursor = $id;
-            $arrayidparsed = array(); // We start from child $id
+            $arrayidparsed = []; // We start from child $id
             while ($cursor > 0) {
                 $arrayidparsed[$cursor] = 1;
                 if ($arrayidparsed[$listofparentid[$cursor]]) { // We detect a loop. A record with a parent that was already into child
@@ -2345,10 +2377,11 @@ function cleanCorruptedTree($db, $tabletocleantree, $fieldfkparent)
  *  Convert an array with RGB value into hex RGB value.
  *  This is the opposite function of colorStringToArray
  *
- *  @param  array   $arraycolor         Array
- *  @param  string  $colorifnotfound    Color code to return if entry not defined or not a RGB format
- *  @return string                      RGB hex value (without # before). For example: 'FF00FF', '01FF02'
- *  @see    colorStringToArray(), colorHexToRgb()
+ * @param array  $arraycolor      Array
+ * @param string $colorifnotfound Color code to return if entry not defined or not a RGB format
+ *
+ * @return string                      RGB hex value (without # before). For example: 'FF00FF', '01FF02'
+ * @see    colorStringToArray(), colorHexToRgb()
  */
 function colorArrayToHex($arraycolor, $colorifnotfound = '888888')
 {
@@ -2366,17 +2399,18 @@ function colorArrayToHex($arraycolor, $colorifnotfound = '888888')
  *  This is the opposite function of colorArrayToHex.
  *  If entry is already an array, return it.
  *
- *  @param  string  $stringcolor        String with hex (FFFFFF) or comma RGB ('255,255,255')
- *  @param  array   $colorifnotfound    Color code array to return if entry not defined
- *  @return array                       RGB hex value (without # before). For example: FF00FF
- *  @see    colorArrayToHex(), colorHexToRgb()
+ * @param string $stringcolor     String with hex (FFFFFF) or comma RGB ('255,255,255')
+ * @param array  $colorifnotfound Color code array to return if entry not defined
+ *
+ * @return array                       RGB hex value (without # before). For example: FF00FF
+ * @see    colorArrayToHex(), colorHexToRgb()
  */
-function colorStringToArray($stringcolor, $colorifnotfound = array(88, 88, 88))
+function colorStringToArray($stringcolor, $colorifnotfound = [88, 88, 88])
 {
     if (is_array($stringcolor)) {
         return $stringcolor; // If already into correct output format, we return as is
     }
-    $reg = array();
+    $reg = [];
     $tmp = preg_match('/^#?([0-9a-fA-F][0-9a-fA-F])([0-9a-fA-F][0-9a-fA-F])([0-9a-fA-F][0-9a-fA-F])$/', $stringcolor, $reg);
     if (!$tmp) {
         $tmp = explode(',', $stringcolor);
@@ -2385,12 +2419,13 @@ function colorStringToArray($stringcolor, $colorifnotfound = array(88, 88, 88))
         }
         return $tmp;
     }
-    return array(hexdec($reg[1]), hexdec($reg[2]), hexdec($reg[3]));
+    return [hexdec($reg[1]), hexdec($reg[2]), hexdec($reg[3])];
 }
 
 /**
- * @param string    $color          the color you need to valid
- * @param boolean   $allow_white    in case of white isn't valid
+ * @param string  $color       the color you need to valid
+ * @param boolean $allow_white in case of white isn't valid
+ *
  * @return boolean
  */
 function colorValidateHex($color, $allow_white = true)
@@ -2408,9 +2443,11 @@ function colorValidateHex($color, $allow_white = true)
 /**
  * Change color to make it less aggressive (ratio is negative) or more aggressive (ratio is positive)
  *
- * @param   string      $hex            Color in hex ('#AA1122' or 'AA1122' or '#a12' or 'a12')
- * @param   integer     $ratio          Default=-50. Note: 0=Component color is unchanged, -100=Component color become 88, +100=Component color become 00 or FF
- * @param   integer     $brightness     Default=0. Adjust brightness. -100=Decrease brightness by 100%, +100=Increase of 100%.
+ * @param string  $hex        Color in hex ('#AA1122' or 'AA1122' or '#a12' or 'a12')
+ * @param integer $ratio      Default=-50. Note: 0=Component color is unchanged, -100=Component color become 88,
+ *                            +100=Component color become 00 or FF
+ * @param integer $brightness Default=0. Adjust brightness. -100=Decrease brightness by 100%, +100=Increase of 100%.
+ *
  * @return string       New string of color
  * @see colorAdjustBrightness()
  */
@@ -2456,7 +2493,7 @@ function colorAgressiveness($hex, $ratio = -50, $brightness = 0)
             $color = ($color * (100 - abs($brightness)) / 100);
         }
 
-        $color   = max(0, min(255, $color)); // Adjust color to stay into valid range
+        $color = max(0, min(255, $color)); // Adjust color to stay into valid range
         $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
     }
 
@@ -2465,8 +2502,10 @@ function colorAgressiveness($hex, $ratio = -50, $brightness = 0)
 }
 
 /**
- * @param string    $hex        Color in hex ('#AA1122' or 'AA1122' or '#a12' or 'a12')
- * @param integer   $steps      Step/offset added to each color component. It should be between -255 and 255. Negative = darker, positive = lighter
+ * @param string  $hex   Color in hex ('#AA1122' or 'AA1122' or '#a12' or 'a12')
+ * @param integer $steps Step/offset added to each color component. It should be between -255 and 255. Negative =
+ *                       darker, positive = lighter
+ *
  * @return string               New color with format '#AA1122'
  * @see colorAgressiveness()
  */
@@ -2486,8 +2525,8 @@ function colorAdjustBrightness($hex, $steps)
     $return = '#';
 
     foreach ($color_parts as $color) {
-        $color   = hexdec($color); // Convert to decimal
-        $color   = max(0, min(255, $color + $steps)); // Adjust color
+        $color = hexdec($color); // Convert to decimal
+        $color = max(0, min(255, $color + $steps)); // Adjust color
         $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
     }
 
@@ -2495,8 +2534,9 @@ function colorAdjustBrightness($hex, $steps)
 }
 
 /**
- * @param string $hex color in hex
+ * @param string  $hex     color in hex
  * @param integer $percent 0 to 100
+ *
  * @return string
  */
 function colorDarker($hex, $percent)
@@ -2506,8 +2546,9 @@ function colorDarker($hex, $percent)
 }
 
 /**
- * @param string $hex color in hex
+ * @param string  $hex     color in hex
  * @param integer $percent 0 to 100
+ *
  * @return string
  */
 function colorLighten($hex, $percent)
@@ -2518,9 +2559,10 @@ function colorLighten($hex, $percent)
 
 
 /**
- * @param string        $hex            color in hex
- * @param float|false   $alpha          0 to 1 to add alpha channel
- * @param bool          $returnArray    true=return an array instead, false=return string
+ * @param string      $hex         color in hex
+ * @param float|false $alpha       0 to 1 to add alpha channel
+ * @param bool        $returnArray true=return an array instead, false=return string
+ *
  * @return string|array                 String or array
  */
 function colorHexToRgb($hex, $alpha = false, $returnArray = false)
@@ -2528,7 +2570,7 @@ function colorHexToRgb($hex, $alpha = false, $returnArray = false)
     $string = '';
     $hex = str_replace('#', '', $hex);
     $length = strlen($hex);
-    $rgb = array();
+    $rgb = [];
     $rgb['r'] = hexdec($length == 6 ? substr($hex, 0, 2) : ($length == 3 ? str_repeat(substr($hex, 0, 1), 2) : 0));
     $rgb['g'] = hexdec($length == 6 ? substr($hex, 2, 2) : ($length == 3 ? str_repeat(substr($hex, 1, 1), 2) : 0));
     $rgb['b'] = hexdec($length == 6 ? substr($hex, 4, 2) : ($length == 3 ? str_repeat(substr($hex, 2, 1), 2) : 0));
@@ -2549,9 +2591,10 @@ function colorHexToRgb($hex, $alpha = false, $returnArray = false)
 /**
  * Color Hex to Hsl (used for style)
  *
- * @param   string          $hex            Color in hex
- * @param   float|false     $alpha          0 to 1 to add alpha channel
- * @param   bool            $returnArray    true=return an array instead, false=return string
+ * @param string      $hex         Color in hex
+ * @param float|false $alpha       0 to 1 to add alpha channel
+ * @param bool        $returnArray true=return an array instead, false=return string
+ *
  * @return  string|array                    String or array
  */
 function colorHexToHsl($hex, $alpha = false, $returnArray = false)
@@ -2590,12 +2633,12 @@ function colorHexToHsl($hex, $alpha = false, $returnArray = false)
     $saturation = round($saturation * 100);
 
     if ($returnArray) {
-        return array(
+        return [
             'h' => $hue,
             'l' => $lightness,
             's' => $saturation,
-            'a' => $alpha === false ? 1 : $alpha
-        );
+            'a' => $alpha === false ? 1 : $alpha,
+        ];
     } elseif ($alpha) {
         return 'hsla(' . $hue . ', ' . $saturation . ', ' . $lightness . ' / ' . $alpha . ')';
     } else {
@@ -2607,7 +2650,8 @@ function colorHexToHsl($hex, $alpha = false, $returnArray = false)
  * Applies the Cartesian product algorithm to an array
  * Source: http://stackoverflow.com/a/15973172
  *
- * @param   array $input    Array of products
+ * @param array $input Array of products
+ *
  * @return  array           Array of combinations
  */
 function cartesianArray(array $input)
@@ -2615,10 +2659,10 @@ function cartesianArray(array $input)
     // filter out empty values
     $input = array_filter($input);
 
-    $result = array(array());
+    $result = [[]];
 
     foreach ($input as $key => $values) {
-        $append = array();
+        $append = [];
 
         foreach ($result as $product) {
             foreach ($values as $item) {
@@ -2637,7 +2681,8 @@ function cartesianArray(array $input)
 /**
  * Get name of directory where the api_...class.php file is stored
  *
- * @param   string  $moduleobject     Module object name
+ * @param string $moduleobject Module object name
+ *
  * @return  string                    Directory name
  */
 function getModuleDirForApiClass($moduleobject)
@@ -2649,7 +2694,7 @@ function getModuleDirForApiClass($moduleobject)
 
     if ($moduleobject == 'contracts') {
         $moduledirforclass = 'contrat';
-    } elseif (in_array($moduleobject, array('admin', 'login', 'setup', 'access', 'status', 'tools', 'documents'))) {
+    } elseif (in_array($moduleobject, ['admin', 'login', 'setup', 'access', 'status', 'tools', 'documents'])) {
         $moduledirforclass = 'api';
     } elseif ($moduleobject == 'contact' || $moduleobject == 'contacts' || $moduleobject == 'customer' || $moduleobject == 'thirdparty' || $moduleobject == 'thirdparties') {
         $moduledirforclass = 'societe';
@@ -2687,7 +2732,7 @@ function getModuleDirForApiClass($moduleobject)
         $moduledirforclass = 'mrp';
     } elseif ($moduleobject == 'accounting') {
         $moduledirforclass = 'accountancy';
-    } elseif (in_array($moduleobject, array('products', 'expensereports', 'users', 'tickets', 'boms', 'receptions', 'partnerships', 'recruitments'))) {
+    } elseif (in_array($moduleobject, ['products', 'expensereports', 'users', 'tickets', 'boms', 'receptions', 'partnerships', 'recruitments'])) {
         $moduledirforclass = preg_replace('/s$/', '', $moduleobject);
     } elseif ($moduleobject == 'paymentsalaries') {
         $moduledirforclass = 'salaries';
@@ -2701,8 +2746,9 @@ function getModuleDirForApiClass($moduleobject)
 /**
  * Return 2 hexa code randomly
  *
- * @param   int   $min      Between 0 and 255
- * @param   int   $max      Between 0 and 255
+ * @param int $min Between 0 and 255
+ * @param int $max Between 0 and 255
+ *
  * @return  string          A color string '12'
  */
 function randomColorPart($min = 0, $max = 255)
@@ -2713,8 +2759,9 @@ function randomColorPart($min = 0, $max = 255)
 /**
  * Return hexadecimal color randomly
  *
- * @param   int   $min     Between 0 and 255
- * @param   int   $max     Between 0 and 255
+ * @param int $min Between 0 and 255
+ * @param int $max Between 0 and 255
+ *
  * @return  string         A color string '123456'
  */
 function randomColor($min = 0, $max = 255)
@@ -2727,12 +2774,13 @@ if (!function_exists('dolEscapeXML')) {
     /**
      * Encode string for xml usage
      *
-     * @param   string  $string     String to encode
+     * @param string $string String to encode
+     *
      * @return  string              String encoded
      */
     function dolEscapeXML($string)
     {
-        return strtr($string, array('\'' => '&apos;', '"' => '&quot;', '&' => '&amp;', '<' => '&lt;', '>' => '&gt;'));
+        return strtr($string, ['\'' => '&apos;', '"' => '&quot;', '&' => '&amp;', '<' => '&lt;', '>' => '&gt;']);
     }
 }
 
@@ -2740,7 +2788,8 @@ if (!function_exists('dolEscapeXML')) {
 /**
  * Convert links to local wrapper to medias files into a string into a public external URL readable on internet
  *
- * @param   string      $notetoshow      Text to convert
+ * @param string $notetoshow Text to convert
+ *
  * @return  string                       String
  */
 function convertBackOfficeMediasLinksToPublicLinks($notetoshow)
@@ -2755,12 +2804,13 @@ function convertBackOfficeMediasLinksToPublicLinks($notetoshow)
 }
 
 /**
- *      Function to format a value into a defined format for French administration (no thousand separator & decimal separator force to ',' with two decimals)
- *      Function used into accountancy FEC export
+ *      Function to format a value into a defined format for French administration (no thousand separator & decimal
+ *      separator force to ',' with two decimals) Function used into accountancy FEC export
  *
- *      @param  float       $amount     Amount to format
- *      @return string                  Chain with formatted upright
- *      @see    price2num()             Format a numeric into a price for FEC files
+ * @param float $amount Amount to format
+ *
+ * @return string                  Chain with formatted upright
+ * @see    price2num()             Format a numeric into a price for FEC files
  */
 function price2fec($amount)
 {
@@ -2788,8 +2838,10 @@ function price2fec($amount)
 /**
  * Check the syntax of some PHP code.
  *
- * @param   string          $code   PHP code to check.
- * @return  boolean|array           If false, then check was successful, otherwise an array(message,line) of errors is returned.
+ * @param string $code PHP code to check.
+ *
+ * @return  boolean|array           If false, then check was successful, otherwise an array(message,line) of errors is
+ *                                  returned.
  */
 function phpSyntaxError($code)
 {
@@ -2866,10 +2918,10 @@ function phpSyntaxError($code)
         if (preg_match("'syntax error, (.+) in .+ on line (\d+)$'s", $code, $code)) {
             $code[2] = (int) $code[2];
             $code = $code[2] <= $braces
-                ? array($code[1], $code[2])
-                : array('unexpected $end' . substr($code[1], 14), $braces);
+                ? [$code[1], $code[2]]
+                : ['unexpected $end' . substr($code[1], 14), $braces];
         } else {
-            $code = array('syntax error', 0);
+            $code = ['syntax error', 0];
         }
     } else {
         ob_end_clean();
@@ -2884,7 +2936,8 @@ function phpSyntaxError($code)
 /**
  * Check the syntax of some PHP code.
  *
- * @return  int     >0 if OK, 0 if no           Return if we accept link added from the media browser into HTML field for public usage
+ * @return  int     >0 if OK, 0 if no           Return if we accept link added from the media browser into HTML field
+ *                  for public usage
  */
 function acceptLocalLinktoMedia()
 {
@@ -2902,7 +2955,7 @@ function acceptLocalLinktoMedia()
         // Parse $newUrl
         $newUrlArray = parse_url($urlwithouturlroot);
         $hosttocheck = $newUrlArray['host'];
-        $hosttocheck = str_replace(array('[', ']'), '', $hosttocheck); // Remove brackets of IPv6
+        $hosttocheck = str_replace(['[', ']'], '', $hosttocheck); // Remove brackets of IPv6
 
         if (function_exists('gethostbyname')) {
             $iptocheck = gethostbyname($hosttocheck);
@@ -2938,7 +2991,8 @@ function acceptLocalLinktoMedia()
 /**
  * Remove first and last parenthesis but only if first is the opening and last the closing of the same group
  *
- * @param   string  $string     String to sanitize
+ * @param string $string String to sanitize
+ *
  * @return  string              String without global parenthesis
  */
 function removeGlobalParenthesis($string)
@@ -2946,7 +3000,7 @@ function removeGlobalParenthesis($string)
     $string = trim($string);
 
     // If string does not start and end with parenthesis, we return $string as is.
-    if (! preg_match('/^\(.*\)$/', $string)) {
+    if (!preg_match('/^\(.*\)$/', $string)) {
         return $string;
     }
 

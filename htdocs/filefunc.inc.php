@@ -132,7 +132,7 @@ if (!$result && !empty($_SERVER["GATEWAY_INTERFACE"])) {    // If install not do
         }
     }
 
-    header("Location: " . $path . "install/index.php");
+    header("Location: " . BASE_URL . "/install/index.php");
 
     /*
     print '<br><center>';

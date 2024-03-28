@@ -161,13 +161,8 @@ function getMultidirOutput($object, $module = '')
  */
 function getDolGlobalString($key, $default = '')
 {
-    global $conf;
-    if ($key==='DATABASE_PWD_ENCRYPTED') {
-        dump([
-            'conf ' . $key => $conf->global->$key ?? '',
-            'conf' => $conf->global,
-        ]);
-    }    return (string) (isset($conf->global->$key) ? $conf->global->$key : $default);
+    $conf = \DoliCore\Base\Config::loadConf();
+    return (string) (isset($conf->global->$key) ? $conf->global->$key : $default);
 }
 
 /**
@@ -1317,7 +1312,7 @@ function dol_include_once($relpath, $classname = '')
  */
 function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
 {
-    global $conf;
+    $conf = \DoliCore\Base\Config::loadConf();
 
     $path = preg_replace('/^\//', '', $path);
 
@@ -7771,6 +7766,9 @@ function is_octal($value)
 function dolChmod($filepath, $newmask = '')
 {
     $mask = empty($newmask) ? getDolGlobalString('MAIN_UMASK') : $newmask;
+    if (empty($mask)) {
+        return true;
+    }
     try {
         return chmod($filepath, octdec($mask));
     } catch (Exception $e) {
