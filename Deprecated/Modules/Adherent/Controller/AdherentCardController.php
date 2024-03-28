@@ -55,6 +55,7 @@ use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use ExtraFields;
 use Form;
+use FormActions;
 use FormAdmin;
 use FormCompany;
 use FormFile;
@@ -1468,7 +1469,6 @@ class AdherentCardController extends DolibarrController
                     dol_print_error($db);
                     exit;
                 }
-
 
                 /*
                  * Show tabs
