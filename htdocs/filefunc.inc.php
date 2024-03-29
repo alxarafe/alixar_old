@@ -85,7 +85,7 @@ $result = @include $conffile; // Keep @ because with some error reporting mode, 
 $listofwrappers = stream_get_wrappers();
 // We need '.phar' for geoip2. TODO Replace phar in geoip with exploded files so we can disable phar by default.
 // phar stream does not auto unserialize content (possible code execution) since PHP 8.1
-$arrayofstreamtodisable = array('compress.zlib', 'compress.bzip2', 'ftp', 'ftps', 'glob', 'data', 'expect', 'ogg', 'rar', 'zip', 'zlib');
+$arrayofstreamtodisable = ['compress.zlib', 'compress.bzip2', 'ftp', 'ftps', 'glob', 'data', 'expect', 'ogg', 'rar', 'zip', 'zlib'];
 if (!empty($dolibarr_main_stream_to_disable) && is_array($dolibarr_main_stream_to_disable)) {
     $arrayofstreamtodisable = $dolibarr_main_stream_to_disable;
 }
@@ -223,7 +223,7 @@ include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
 // Note about $_SERVER[HTTP_HOST/SERVER_NAME]: http://shiflett.org/blog/2006/mar/server-name-versus-http-host
 // See also CSRF protections done into main.inc.php
 if (!defined('NOCSRFCHECK') && isset($dolibarr_nocsrfcheck) && $dolibarr_nocsrfcheck == 1) {    // If $dolibarr_nocsrfcheck is 0, there is a strict CSRF test with token in main
-    if (!empty($_SERVER['REQUEST_METHOD']) && !in_array($_SERVER['REQUEST_METHOD'], array('GET', 'HEAD')) && !empty($_SERVER['HTTP_HOST'])) {
+    if (!empty($_SERVER['REQUEST_METHOD']) && !in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD']) && !empty($_SERVER['HTTP_HOST'])) {
         $csrfattack = false;
         if (empty($_SERVER['HTTP_REFERER'])) {
             $csrfattack = true; // An evil browser was used

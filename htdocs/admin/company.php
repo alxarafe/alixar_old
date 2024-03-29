@@ -45,7 +45,7 @@ $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'ad
 $page_y = GETPOSTINT('page_y');
 
 // Load translation files required by the page
-$langs->loadLangs(array('admin', 'companies', 'bills'));
+$langs->loadLangs(['admin', 'companies', 'bills']);
 
 if (!$user->admin) {
     accessforbidden();
@@ -61,14 +61,14 @@ $maxheightmini = $tmparraysize['maxheightmini'];
 $quality = $tmparraysize['quality'];
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$hookmanager->initHooks(array('admincompany', 'globaladmin'));
+$hookmanager->initHooks(['admincompany', 'globaladmin']);
 
 
 /*
  * Actions
  */
 
-$parameters = array();
+$parameters = [];
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
     setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -85,7 +85,7 @@ if (
             $res = dolibarr_set_const($db, "MAIN_PROFID1_IN_ADDRESS", 1, 'chaine', 0, '', $conf->entity);
         }
 
-        $mysoc->country_id   = $tmparray['id'];
+        $mysoc->country_id = $tmparray['id'];
         $mysoc->country_code = $tmparray['code'];
         $mysoc->country_label = $tmparray['label'];
 
@@ -97,7 +97,7 @@ if (
 
     $tmparray = getState(GETPOSTINT('state_id'), 'all', $db, $langs, 0);
     if (!empty($tmparray['id'])) {
-        $mysoc->state_id   = $tmparray['id'];
+        $mysoc->state_id = $tmparray['id'];
         $mysoc->state_code = $tmparray['code'];
         $mysoc->state_label = $tmparray['label'];
 
@@ -125,7 +125,7 @@ if (
 
     $dirforimage = $conf->mycompany->dir_output . '/logos/';
 
-    $arrayofimages = array('logo', 'logo_squarred');
+    $arrayofimages = ['logo', 'logo_squarred'];
     //var_dump($_FILES); exit;
     foreach ($arrayofimages as $varforimage) {
         if ($_FILES[$varforimage]["name"] && !preg_match('/(\.jpeg|\.jpg|\.png)$/i', $_FILES[$varforimage]["name"])) {  // Logo can be used on a lot of different places. Only jpg and png can be supported.
@@ -136,7 +136,7 @@ if (
 
         // Remove to check file size to large
         /*if ($_FILES[$varforimage]["tmp_name"]) {*/
-        $reg = array();
+        $reg = [];
         if (preg_match('/([^\\/:]+)$/i', $_FILES[$varforimage]["name"], $reg)) {
             $original_file = $reg[1];
 
@@ -294,7 +294,7 @@ if ($action == 'addthumb' || $action == 'addthumbsquarred') {  // Regenerate thu
                 $constant = "MAIN_INFO_SOCIETE_LOGO_SQUARRED";
             }
 
-            $reg = array();
+            $reg = [];
 
             // Create thumbs
             //$object->addThumbs($newfile);    // We can't use addThumbs here yet because we need name of generated thumbs to add them into constants. TODO Check if need such constants. We should be able to retrieve value with get...
@@ -422,7 +422,6 @@ print "<br><br>\n";
 
 
 // Edit parameters
-
 if (!empty($conf->use_javascript_ajax)) {
     print "\n" . '<script type="text/javascript">';
     print '$(document).ready(function () {
@@ -616,7 +615,7 @@ print '</td></tr>';
 
 print '</table>';
 
-print $form->buttonsSaveCancel("Save", '', array(), false, 'reposition');
+print $form->buttonsSaveCancel("Save", '', [], false, 'reposition');
 
 print '<br><br>';
 
@@ -645,7 +644,7 @@ print '<input name="capital" id="capital" class="maxwidth100" value="' . dol_esc
 // Juridical Status
 print '<tr class="oddeven"><td><label for="forme_juridique_code">' . $langs->trans("JuridicalStatus") . '</label></td><td>';
 if ($mysoc->country_code) {
-    print $formcompany->select_juridicalstatus($conf->global->MAIN_INFO_SOCIETE_FORME_JURIDIQUE, $mysoc->country_code, '', 'forme_juridique_code');
+    print $formcompany->select_juridicalstatus($conf->global->MAIN_INFO_SOCIETE_FORME_JURIDIQUE ?? '', $mysoc->country_code, '', 'forme_juridique_code');
 } else {
     print $countrynotdefined;
 }
@@ -787,7 +786,7 @@ print $formother->select_month(getDolGlobalInt('SOCIETE_FISCAL_MONTH_START') ? $
 
 print "</table>";
 
-print $form->buttonsSaveCancel("Save", '', array(), false, 'reposition');
+print $form->buttonsSaveCancel("Save", '', [], false, 'reposition');
 
 print '<br>';
 
@@ -844,7 +843,7 @@ if ($mysoc->useLocalTax(1)) {
         $formcompany->select_localtax(1, $conf->global->MAIN_INFO_VALUE_LOCALTAX1, "lt1");
     }
 
-    $opcions = array($langs->trans("CalcLocaltax1") . ' ' . $langs->trans("CalcLocaltax1Desc"), $langs->trans("CalcLocaltax2") . ' - ' . $langs->trans("CalcLocaltax2Desc"), $langs->trans("CalcLocaltax3") . ' - ' . $langs->trans("CalcLocaltax3Desc"));
+    $opcions = [$langs->trans("CalcLocaltax1") . ' ' . $langs->trans("CalcLocaltax1Desc"), $langs->trans("CalcLocaltax2") . ' - ' . $langs->trans("CalcLocaltax2Desc"), $langs->trans("CalcLocaltax3") . ' - ' . $langs->trans("CalcLocaltax3Desc")];
 
     print '<br><label for="clt1">' . $langs->trans("CalcLocaltax") . '</label>: ';
     print $form->selectarray("clt1", $opcions, getDolGlobalString('MAIN_INFO_LOCALTAX_CALC1'));
@@ -885,7 +884,7 @@ if ($mysoc->useLocalTax(2)) {
     $tooltiphelp = ($tooltiphelp != "LocalTax2IsUsedExample" ? "<i>" . $langs->trans("Example") . ': ' . $langs->transcountry("LocalTax2IsUsedExample", $mysoc->country_code) . "</i>\n" : "");
     if (!isOnlyOneLocalTax(2)) {
         print '<br><label for="lt2">' . $langs->trans("LTRate") . '</label>: ';
-        $formcompany->select_localtax(2, $conf->global->MAIN_INFO_VALUE_LOCALTAX2, "lt2");
+        $formcompany->select_localtax(2, $conf->global->MAIN_INFO_VALUE_LOCALTAX2 ?? '', "lt2");
     }
     print '<br><label for="clt2">' . $langs->trans("CalcLocaltax") . '</label>: ';
     print $form->selectarray("clt2", $opcions, getDolGlobalString('MAIN_INFO_LOCALTAX_CALC2'));
@@ -971,7 +970,7 @@ if ($mysoc->country_code == 'GR') {
     print "</table>";
 }
 
-print $form->buttonsSaveCancel("Save", '', array(), false, 'reposition');
+print $form->buttonsSaveCancel("Save", '', [], false, 'reposition');
 
 print '</form>';
 

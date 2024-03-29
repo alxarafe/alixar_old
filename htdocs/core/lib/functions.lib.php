@@ -161,7 +161,7 @@ function getMultidirOutput($object, $module = '')
  */
 function getDolGlobalString($key, $default = '')
 {
-    $conf = \DoliCore\Base\Config::loadConf();
+    global $conf;
     return (string) (isset($conf->global->$key) ? $conf->global->$key : $default);
 }
 

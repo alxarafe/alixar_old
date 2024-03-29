@@ -40,7 +40,6 @@ require_once 'filefunc.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/conf.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 
-
 if (!function_exists('is_countable')) {
     /**
      * function is_countable (to remove when php version supported will be >= 7.3)

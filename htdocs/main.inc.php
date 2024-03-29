@@ -63,7 +63,6 @@ if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
     Globals::setConfigValues($conf, $db);
 }
 
-
 //@ini_set('memory_limit', '128M'); // This may be useless if memory is hard limited by your PHP
 
 // For optional tuning. Enabled if environment variable MAIN_SHOW_TUNING_INFO is defined.

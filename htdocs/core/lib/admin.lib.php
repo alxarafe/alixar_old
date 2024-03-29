@@ -1129,10 +1129,7 @@ function purgeSessions($mysessionid)
  */
 function activateModule($value, $withdeps = 1, $noconfverification = 0)
 {
-    global $langs, $mysoc;
-
-    $conf = \DoliCore\Base\Config::loadConf();
-    $db = \Alxarafe\Base\Globals::getDb($conf);
+    global $conf, $langs, $mysoc, $db;
 
     // Check parameters
     if (empty($value)) {
