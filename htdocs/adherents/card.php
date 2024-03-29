@@ -24,6 +24,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use DoliModules\Adherent\Controller\AdherentCardController;
+use DoliModules\Adherent\Controller\AdherentController;
 
-new AdherentCardController();
+new AdherentController();

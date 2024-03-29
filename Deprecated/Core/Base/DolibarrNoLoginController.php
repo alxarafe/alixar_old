@@ -17,7 +17,7 @@
 
 namespace DoliCore\Base;
 
-use Alxarafe\Base\Controller;
+use Alxarafe\Base\GenericController;
 use Alxarafe\Base\Globals;
 
 /**
@@ -27,7 +27,7 @@ use Alxarafe\Base\Globals;
  *
  * @deprecated This class is only needed for compatibility with Dolibarr.
  */
-abstract class DolibarrNoLoginController extends Controller
+abstract class DolibarrNoLoginController extends GenericController
 {
     public $conf;
     public $config;
@@ -46,26 +46,9 @@ abstract class DolibarrNoLoginController extends Controller
             $this->menumanager = Globals::getMenuManager($this->conf);
             */
             $this->langs = Globals::getLangs($this->conf);
-
-            $action = filter_input(INPUT_GET, GET_FILENAME_VAR);
-            switch ($action) {
-                case 'check':
-                    return $this->check();
-                case 'fileconf':
-                    return $this->fileconf();
-                case 'step1':
-                    return $this->step1();
-                case 'step2':
-                    return $this->step2();
-                case 'step4':
-                    return $this->step4();
-                case 'step5':
-                    return $this->step5();
-                case 'index':
-                default:
-                    return $this->index();
-            }
         }
+
+        parent::__construct();
     }
 
     abstract public function index();

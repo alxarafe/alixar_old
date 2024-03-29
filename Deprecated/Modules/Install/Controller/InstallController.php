@@ -3144,7 +3144,7 @@ $(".runupgrade").click(function() {
 
     public function step5()
     {
-        global $langs;
+        global $langs, $db;
 
         $conffile = Config::getDolibarrConfigFilename();
         $conffiletoshow = $conffile;

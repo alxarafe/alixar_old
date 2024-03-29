@@ -46,8 +46,6 @@ abstract class DolibarrController extends Controller
         $this->menumanager = Globals::getMenuManager($this->conf);
         $this->langs = Globals::getLangs($this->conf);
 
-        $this->go();
+        parent::__construct();
     }
-
-    abstract public function go();
 }
