@@ -62,6 +62,7 @@ return [
         'htdocs/includes/',
         'htdocs/core/class/lessc.class.php', // External library
         PHAN_DIR . '/stubs/',
+        'vendor/',
     ],
     //'exclude_file_regex' => '@^vendor/.*/(tests?|Tests?)/@',
     'exclude_file_regex' => '@^('  // @phpstan-ignore-line

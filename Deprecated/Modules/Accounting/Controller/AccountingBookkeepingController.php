@@ -32,6 +32,7 @@ global $hookmanager;
 global $user;
 global $menumanager;
 global $langs;
+global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
@@ -48,7 +49,14 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 
+use AccountancyExport;
+use AccountingAccount;
+use BookKeeping;
+use BookKeepingLine;
 use DoliCore\Base\DolibarrController;
+use Form;
+use FormAccounting;
+use FormFile;
 use FormOther;
 
 class AccountingBookkeepingController extends DolibarrController
@@ -3011,6 +3019,7 @@ class AccountingBookkeepingController extends DolibarrController
         global $user;
         global $menumanager;
         global $langs;
+        global $mysoc;
 
 // Load translation files required by the page
         $langs->loadLangs(array("accountancy", "compta"));

@@ -61,6 +61,7 @@ return [
     "exclude_analysis_directory_list" => [
         'htdocs/includes/',
         'htdocs/core/class/lessc.class.php', // External library
+        'vendor/',
         PHAN_DIR . '/stubs/',
     ],
     //'exclude_file_regex' => '@^vendor/.*/(tests?|Tests?)/@',

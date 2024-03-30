@@ -14,8 +14,8 @@ parameters:
 	    - Core
 	    - Deprecated
 	    - Modules
-		- htdocs
-		- scripts
+	    - htdocs
+	    - scripts
 	excludePaths:
 		analyseAndScan:
 		- htdocs/custom/*
