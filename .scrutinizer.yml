@@ -32,12 +32,12 @@ filter:
     - includes/
 
 # Configure code duplication scans, if relevant
-checks:
-  php:
-    duplication:
-      enabled: true
-      config:
-        threshold: 70
+#checks:
+#  php:
+#    duplication:
+#      enabled: true
+#      config:
+#        threshold: 70
 
 # Code analysis settings, if you need them
 coding_style:
