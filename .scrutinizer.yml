@@ -40,9 +40,9 @@ filter:
 #        threshold: 70
 
 # Code analysis settings, if you need them
-coding_style:
-  php:
-    enabled: true
+#coding_style:
+#  php:
+#    enabled: true
 
 # https://scrutinizer-ci.com/docs/configuration/build_status
 # build_failure_conditions:
