@@ -149,12 +149,12 @@ coding_style:
 # build_failure_conditions:
 
 # Configuración de herramientas de análisis específicas, si es necesario
-tools:
-  external_code_coverage:
-    timeout: 600
-  php_code_sniffer:
-    config:
-      standard: 'PSR-2'
+#tools:
+#  external_code_coverage:
+#    timeout: 600
+#  php_code_sniffer:
+#    config:
+#      standard: 'PSR-2'
 
 # https://scrutinizer-ci.com/docs/configuration/credentials
 # credentials:

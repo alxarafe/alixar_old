@@ -6,6 +6,6 @@
 - **customer**: Fully migrated as **AccountingCustomerController**.
 - **expensereport**: Pending migration to **???**.
 - **journal**: Pending migration to **???**.
-- **supplier**: Pending migration to **???**.
+- **supplier**: Fully migrated as **AccountingSupplierController**.
 - **tpl**: Pending migration to **???**.
 - *root*: Fully migrated as **AccountingController**.
