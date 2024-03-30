@@ -2,7 +2,7 @@
 - **admin**: Fully migrated as **AccountingAdminController**.
 - **bookkeeping**: Fully migrated as **AccountingBookkeepingController**.
 - **class**: Partially migrated as **???**.
-- **closure**: Pending migration to **???**.
+- **closure**: Fully migrated as **AccountingClosingController**.
 - **customer**: Pending migration to **???**.
 - **expensereport**: Pending migration to **???**.
 - **journal**: Pending migration to **???**.
