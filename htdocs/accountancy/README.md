@@ -1,0 +1,11 @@
+### Folder Migration Status
+- **admin**: Fully migrated as **AccountingAdminController**.
+- **bookkeeping**: Fully migrated as **AccountingBookkeepingController**.
+- **class**: Partially migrated as **???**.
+- **closure**: Pending migration to **???**.
+- **customer**: Pending migration to **???**.
+- **expensereport**: Pending migration to **???**.
+- **journal**: Pending migration to **???**.
+- **supplier**: Pending migration to **???**.
+- **tpl**: Pending migration to **???**.
+- *root*: Fully migrated as **AccountingController**.
