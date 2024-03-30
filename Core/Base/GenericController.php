@@ -25,6 +25,13 @@ namespace Alxarafe\Base;
 abstract class GenericController
 {
     /**
+     * Contains the controller to execute.
+     *
+     * @var string
+     */
+    protected $controller;
+
+    /**
      * Contains the action to execute.
      *
      * @var string
@@ -36,12 +43,13 @@ abstract class GenericController
      */
     public function __construct()
     {
-        $this->action = filter_input(INPUT_GET, GET_FILENAME_VAR);
-        if (empty($this->action)) {
-            $this->action = 'index';
+        $this->controller = filter_input(INPUT_GET, GET_FILENAME_VAR);
+        $this->action = filter_input(INPUT_GET, 'action');
+        if (empty($this->controller)) {
+            $this->controller = 'index';
         }
-        if (method_exists($this, $this->action)) {
-            return $this->{$this->action}();
+        if (method_exists($this, $this->controller)) {
+            return $this->{$this->controller}();
         }
         return $this->index();
     }

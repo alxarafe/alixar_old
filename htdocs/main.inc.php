@@ -1637,6 +1637,7 @@ if (!function_exists("llxHeader")) {
     }
 }
 
+if (!function_exists("top_httphead")) {
     /**
      *  Show HTTP header. Called by top_htmlhead().
      *
@@ -1767,7 +1768,9 @@ if (!function_exists("llxHeader")) {
         // No need to add this token in header, we use instead the one into the forms.
         //header("anti-csrf-token: ".newToken());
     }
+}
 
+if (!function_exists('dol_loginfunction')) {
     /**
      * Show Dolibarr default login page.
      * Part of this code is also duplicated into main.inc.php::top_htmlhead
@@ -1979,7 +1982,9 @@ if (!function_exists("llxHeader")) {
 
         $_SESSION["dol_loginmesg"] = '';
     }
+}
 
+if (!function_exists('top_htmlhead')) {
     /**
      * Output html header of a page. It calls also top_httphead()
      * This code is also duplicated into security2.lib.php::dol_loginfunction
@@ -2393,6 +2398,7 @@ if (!function_exists("llxHeader")) {
 
         $conf->headerdone = 1; // To tell header was output
     }
+}
 
 if (!function_exists('top_menu')) {
     /**
