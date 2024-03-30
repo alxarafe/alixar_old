@@ -4,8 +4,8 @@
 - **class**: Partially migrated as **???**.
 - **closure**: Fully migrated as **AccountingClosingController**.
 - **customer**: Fully migrated as **AccountingCustomerController**.
-- **expensereport**: Pending migration to **???**.
-- **journal**: Pending migration to **???**.
+- **expensereport**: Fully migrated as **AccountingExpenseReportController**.
+- **journal**: Fully migrated as **AccountingJournalController**.
 - **supplier**: Fully migrated as **AccountingSupplierController**.
 - **tpl**: Pending migration to **???**.
 - *root*: Fully migrated as **AccountingController**.
