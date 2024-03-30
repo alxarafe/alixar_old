@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004       Eric Seigne             <eric.seigne@ryxeo.com>
  * Copyright (C) 2004-2012  Laurent Destailleur     <eldy@users.sourceforge.net>

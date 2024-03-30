@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2002       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2008	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2009-2017	Regis Houssin			<regis.houssin@inodbox.com>
@@ -35,7 +36,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 use CommonObject;
 use DoliDB;
 use User;
-
 
 /**
  *  Class to manage members type

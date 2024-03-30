@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2016       Xebax Christy           <xebax@wanadoo.fr>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *

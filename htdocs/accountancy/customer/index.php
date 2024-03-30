@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2013       Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2014  Florian Henry       <florian.henry@open-concept.pro>
  * Copyright (C) 2013-2022  Alexandre Spangaro  <aspangaro@open-dsi.fr>

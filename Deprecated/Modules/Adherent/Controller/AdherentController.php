@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
@@ -308,7 +309,7 @@ class AdherentController extends DolibarrController
 
 
         /*
-         * 	Actions
+         *  Actions
          */
 
         $parameters = array('id' => $id, 'rowid' => $id, 'objcanvas' => $objcanvas, 'confirm' => $confirm);
@@ -3928,7 +3929,7 @@ class AdherentController extends DolibarrController
 
 
         /*
-         *	Actions
+         *  Actions
          */
 
         if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All tests are required to be compatible with all browsers

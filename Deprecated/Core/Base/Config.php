@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -38,14 +39,14 @@ abstract class Config
      *
      * @var null|stdClass
      */
-    static protected $config = null;
+    protected static $config = null;
 
     /**
      * Contains the information of the old conf global var.
      *
      * @var null|stdClass
      */
-    static protected $conf = null;
+    protected static $conf = null;
 
     /**
      * Simply replace /htdocs with /documents in $pathDir
@@ -261,7 +262,7 @@ abstract class Config
         // Init menu manager
         $db = Globals::getDb($conf);
 
-        $menumanager=null;
+        $menumanager = null;
         if (!defined('NOREQUIREMENU')) {
             if (empty($user->socid)) {    // If internal user or not defined
                 $conf->standard_menu = (!getDolGlobalString('MAIN_MENU_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENU_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENU_STANDARD) : $conf->global->MAIN_MENU_STANDARD_FORCED);

@@ -40,7 +40,6 @@
  *  \brief      File of parent class of all other business classes (invoices, contracts, proposals, orders, ...)
  */
 
-
 namespace DoliCore\Base;
 
 use Alxarafe\Base\Exception;

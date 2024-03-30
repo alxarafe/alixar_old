@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -61,5 +62,4 @@ abstract class DolibarrNoLoginController extends GenericController
     abstract public function step2();
     abstract public function step4();
     abstract public function step5();
-
 }

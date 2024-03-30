@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2004-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2004       Eric Seigne             <eric.seigne@ryxeo.com>
@@ -39,7 +40,6 @@ use DoliCore\Base\DolibarrNoLoginController;
 use FormAdmin;
 use HookManager;
 use User;
-
 
 define('ALLOWED_IF_UPGRADE_UNLOCK_FOUND', 1);
 
@@ -151,7 +151,7 @@ class InstallController extends DolibarrNoLoginController
 
 
         /*
-         *	View
+         *  View
          */
 
         pHeader('', ''); // No next step for navigation buttons. Next step is defined by click on links.
@@ -789,7 +789,7 @@ $(".runupgrade").click(function() {
 
 
         /*
-         *	View
+         *  View
          */
 
         session_start(); // To be able to keep info into session (used for not losing pass during navigation. pass must not transit through parameters)
@@ -1206,7 +1206,7 @@ $(".runupgrade").click(function() {
                                // @phan-suppress-next-line PhanParamSuspiciousOrder
                                $autofill = ((!empty($_SESSION['dol_save_pass'])) ? $_SESSION['dol_save_pass'] : str_pad('', strlen($force_install_databasepass), '*'));
                                if (!empty($dolibarr_main_prod) && empty($_SESSION['dol_save_pass'])) {    // So value can't be found if install page still accessible
-                                   $autofill = '';
+                                    $autofill = '';
                                }
                                print dol_escape_htmltag($autofill);
                                ?>"
@@ -1295,7 +1295,7 @@ $(".runupgrade").click(function() {
                                // @phan-suppress-next-line PhanParamSuspiciousOrder
                                $autofill = ((!empty($force_install_databaserootpass)) ? str_pad('', strlen($force_install_databaserootpass), '*') : (isset($db_pass_root) ? $db_pass_root : ''));
                                if (!empty($dolibarr_main_prod)) {
-                                   $autofill = '';
+                                    $autofill = '';
                                }
                                // Do not autofill password if instance is a production instance
                                if (
@@ -1304,7 +1304,7 @@ $(".runupgrade").click(function() {
                                        ['127.0.0.1', 'localhost', 'localhostgit']
                                    )
                                ) {
-                                   $autofill = '';
+                                    $autofill = '';
                                }    // Do not autofill password for remote access
                                print dol_escape_htmltag($autofill);
                                ?>"
@@ -1582,7 +1582,7 @@ $(".runupgrade").click(function() {
 
 
         /*
-         *	View
+         *  View
          */
 
         dolibarr_install_syslog("--- step1: entering step1.php page");
@@ -2412,8 +2412,6 @@ $(".runupgrade").click(function() {
         if ($ret) {
             exit($ret);
         }
-
-
     }
 
     public function step2()
@@ -2434,8 +2432,8 @@ $(".runupgrade").click(function() {
         $step = 2;
         $ok = 0;
 
-        $dolibarr_main_db_type=$conf->db->type;
-        $dolibarr_main_db_prefix=$conf->db->prefix;
+        $dolibarr_main_db_type = $conf->db->type;
+        $dolibarr_main_db_prefix = $conf->db->prefix;
 
 
 // This page can be long. We increase the time allowed. / Cette page peut etre longue. On augmente le delai autorise.
@@ -2495,7 +2493,7 @@ $(".runupgrade").click(function() {
 
 
         /*
-         *	View
+         *  View
          */
 
         pHeader($langs->trans("CreateDatabaseObjects"), "step4");
@@ -3072,7 +3070,7 @@ $(".runupgrade").click(function() {
 
 
         /*
-         *	View
+         *  View
          */
 
         pHeader($langs->trans("AdminAccountCreation"), "step5");
@@ -3209,7 +3207,7 @@ $(".runupgrade").click(function() {
         $error = 0;
 
         /*
-         *	Actions
+         *  Actions
          */
 
 // If install, check password and password_verification used to create admin account
@@ -3232,7 +3230,7 @@ $(".runupgrade").click(function() {
 
 
         /*
-         *	View
+         *  View
          */
 
         $morehtml = '';

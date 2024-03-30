@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019-2023  Open-DSI                <support@open-dsi.fr>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *

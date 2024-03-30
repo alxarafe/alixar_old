@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019-2023  Open-DSI            <support@open-dsi.fr>
  *
  * This program is free software; you can redistribute it and/or modify
