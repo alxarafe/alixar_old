@@ -25,7 +25,7 @@ filter:
     - 'Core/**'
     - 'Modules/**'
     - 'Deprecated/**'
-  exclude_paths:
+  excluded_paths:
     - 'test'
   dependency_paths:
     - vendor/
