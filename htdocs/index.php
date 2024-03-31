@@ -56,6 +56,9 @@ const DOL_DOCUMENT_ROOT = BASE_PATH;
  */
 const DOL_URL_ROOT = BASE_URL;
 
+/**
+ * @see htdocs/.htaccess
+ */
 const GET_ROUTE_VAR = 'url_route';
 const GET_FILENAME_VAR = 'url_filename';
 const GET_API_VAR = 'api_route';

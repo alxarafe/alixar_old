@@ -30,11 +30,11 @@
     "vendor-dir": "vendor",
     "process-timeout": 0,
     "platform": {
-      "php": "7.3"
+      "php": "8.2"
     }
   },
   "require": {
-    "php": ">=7.3.0",
+    "php": ">=8.2.0",
     "ckeditor/ckeditor": "4.12.1",
     "mike42/escpos-php": "^4.0",
     "mobiledetect/mobiledetectlib": "2.8.41",
