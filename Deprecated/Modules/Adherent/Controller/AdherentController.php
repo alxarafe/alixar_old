@@ -76,8 +76,10 @@ require_once BASE_PATH . '/product/class/html.formproduct.class.php';
 require_once BASE_PATH . '/product/class/product.class.php';
 require_once BASE_PATH . '/societe/class/societe.class.php';
 
+use Account;
 use Canvas;
 use Categorie;
+use Contact;
 use DolEditor;
 use DolGraph;
 use DoliCore\Base\DolibarrController;
@@ -95,6 +97,7 @@ use FormMail;
 use FormOther;
 use FormProduct;
 use InfoBox;
+use Ldap;
 use MailmanSpip;
 use Societe;
 use Translate;

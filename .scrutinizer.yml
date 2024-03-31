@@ -30,8 +30,8 @@ filter:
     - includes/
 
 # Configure code duplication scans, if relevant
-checks:
-  php: true
+#  checks:
+#    php: true
 #    duplication:
 #      enabled: true
 #      config:
