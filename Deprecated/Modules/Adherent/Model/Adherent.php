@@ -52,7 +52,7 @@ use Categorie;
 use CMailFile;
 use CommonObject;
 use CommonPeople;
-use DoliCore\Base\Model;
+use DoliCore\Base\GenericDocument;
 use DoliDB;
 use Facture;
 use Form;
@@ -68,7 +68,7 @@ use WorkboardResponse;
 /**
  *      Class to manage members of a foundation
  */
-class Adherent extends Model
+class Adherent extends GenericDocument
 {
     use CommonPeople;
 

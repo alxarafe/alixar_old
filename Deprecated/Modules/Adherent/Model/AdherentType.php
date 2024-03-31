@@ -31,16 +31,14 @@
 
 namespace DoliModules\Adherent\Model;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
-use CommonObject;
+use DoliCore\Base\GenericDocument;
 use DoliDB;
 use User;
 
 /**
  *  Class to manage members type
  */
-class AdherentType extends CommonObject
+class AdherentType extends GenericDocument
 {
     /**
      * @var string Name of table without prefix where object is stored

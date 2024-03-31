@@ -29,17 +29,15 @@
 
 namespace DoliModules\Adherent\Model;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
 use AccountLine;
-use DoliCore\Base\Model;
+use DoliCore\Base\GenericDocument;
 use DoliDB;
 use User;
 
 /**
  *  Class to manage subscriptions of foundation members
  */
-class Subscription extends Model
+class Subscription extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

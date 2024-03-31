@@ -56,4 +56,18 @@ abstract class GenericController
     }
 
     abstract public function index();
+
+    public static function url($full = false)
+    {
+        $url = '';
+        if ($full) {
+            $url .= BASE_URL . '/index.php';
+        }
+
+        $url .=
+            '?' . GET_ROUTE_VAR . '=' . filter_input(INPUT_GET, GET_ROUTE_VAR) .
+            '&' . GET_FILENAME_VAR . '=' . filter_input(INPUT_GET, GET_FILENAME_VAR);
+
+        return $url;
+    }
 }

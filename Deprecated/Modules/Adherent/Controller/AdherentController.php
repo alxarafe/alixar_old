@@ -47,7 +47,6 @@ global $langs;
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/accountancy/class/accountingjournal.class.php';
 require_once BASE_PATH . '/adherents/class/adherent.class.php';
-require_once BASE_PATH . '/adherents/class/adherent_type.class.php';
 require_once BASE_PATH . '/adherents/class/subscription.class.php';
 require_once BASE_PATH . '/core/class/extrafields.class.php';
 require_once BASE_PATH . '/core/class/html.formadmin.class.php';

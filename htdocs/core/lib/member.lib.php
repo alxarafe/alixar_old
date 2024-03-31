@@ -25,6 +25,8 @@
  * \brief      Functions for module members
  */
 
+use DoliModules\Adherent\Model\AdherentType;
+
 /**
  *  Return array head with list of tabs to view object information
  *
