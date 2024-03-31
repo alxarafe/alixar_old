@@ -27,7 +27,7 @@
 /**
  * Class to manage advanced emailing target selector
  */
-class AdvanceTargetingMailing extends CommonObject
+class AdvanceTargetingMailing extends GenericDocument
 {
     /**
      * @var DoliDB Database handler.

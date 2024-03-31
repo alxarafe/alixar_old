@@ -27,7 +27,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for AssetAccountancyCodes
  */
-class AssetAccountancyCodes extends CommonObject
+class AssetAccountancyCodes extends GenericDocument
 {
     /**
      * @var array  Array with all accountancy codes info by mode.

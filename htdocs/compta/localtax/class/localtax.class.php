@@ -28,7 +28,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  *  Class to manage local tax
  */
-class Localtax extends CommonObject
+class Localtax extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

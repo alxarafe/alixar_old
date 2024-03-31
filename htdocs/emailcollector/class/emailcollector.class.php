@@ -57,7 +57,7 @@ use OAuth\Common\Consumer\Credentials;
 /**
  * Class for EmailCollector
  */
-class EmailCollector extends CommonObject
+class EmailCollector extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

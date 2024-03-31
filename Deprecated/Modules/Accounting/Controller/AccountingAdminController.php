@@ -51,11 +51,6 @@ global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancycategory.class.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancyexport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancysystem.class.php';
 require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/fiscalyear.class.php';
@@ -5039,6 +5034,8 @@ class AccountingAdminController extends DolibarrController
         global $menumanager;
         global $langs;
 
+        global $sourceList;
+
         if (!defined('CSRFCHECK_WITH_TOKEN')) {
             define('CSRFCHECK_WITH_TOKEN', '1'); // Force use of CSRF protection with tokens even for GET
         }
@@ -7224,11 +7221,7 @@ class AccountingAdminController extends DolibarrController
      */
     private function fieldListJournal($fieldlist, $obj = null, $tabname = '', $context = '')
     {
-        global $conf, $langs, $db;
-        global $form, $mysoc;
-        global $region_id;
-        global $elementList, $sourceList, $localtax_typeList;
-        global $bc;
+        global $db, $form, $sourceList;
 
         $formadmin = new FormAdmin($db);
         $formcompany = new FormCompany($db);

@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for EmailCollectorFilter
  */
-class EmailCollectorFilter extends CommonObject
+class EmailCollectorFilter extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

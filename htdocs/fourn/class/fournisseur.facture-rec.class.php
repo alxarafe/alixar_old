@@ -8,7 +8,8 @@
  * Copyright (C) 2013       Florian Henry		  	<florian.henry@open-concept.pro>
  * Copyright (C) 2015       Marcos García           <marcosgdf@gmail.com>
  * Copyright (C) 2017-2024  Frédéric France         <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1991,7 +1992,7 @@ class FactureFournisseurRec extends CommonInvoice
  *  Class to manage supplier invoice lines of templates.
  *  Saved into database table llx_facture_fourn_det_rec
  */
-class FactureFournisseurLigneRec extends CommonObjectLine
+class FactureFournisseurLigneRec extends GenericDocumentLine
 {
     /**
      * @var string ID to identify managed object

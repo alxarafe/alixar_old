@@ -4,6 +4,7 @@
  * Copyright (C) 2021 Alexis LAURIER <contact@alexislaurier.fr>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,12 @@
  * \brief       This file is a CRUD class file for ProductFournisseurPrice (Create/Read/Update/Delete)
  */
 
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
 
 /**
  * Class for ProductFournisseurPrice
  */
-class ProductFournisseurPrice extends CommonObject
+class ProductFournisseurPrice extends GenericDocument
 {
     /**
      * @var string ID to identify managed object.
@@ -673,7 +673,7 @@ class ProductFournisseurPrice extends CommonObject
             if ($withpicto) {
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-                list($class, $module) = explode('@', $this->picto);
+                [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
                 $filearray = dol_dir_list($upload_dir, "files");
                 $filename = $filearray[0]['name'];

@@ -29,7 +29,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  *  Class to manage inventories
  */
-class ExpenseReportIk extends CommonObject
+class ExpenseReportIk extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

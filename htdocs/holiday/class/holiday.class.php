@@ -1,12 +1,13 @@
 <?php
 
-/* Copyright (C) 2011       Dimitri Mouillard   <dmouillard@teclib.com>
- * Copyright (C) 2012-2014	Laurent Destailleur	<eldy@users.sourceforge.net>
- * Copyright (C) 2012-2016	Regis Houssin		<regis.houssin@inodbox.com>
- * Copyright (C) 2013		Florian Henry		<florian.henry@open-concept.pro>
- * Copyright (C) 2016       Juanjo Menent       <jmenent@2byte.es>
+/* Copyright (C) 2011       Dimitri Mouillard       <dmouillard@teclib.com>
+ * Copyright (C) 2012-2014	Laurent Destailleur	    <eldy@users.sourceforge.net>
+ * Copyright (C) 2012-2016	Regis Houssin		    <regis.houssin@inodbox.com>
+ * Copyright (C) 2013		Florian Henry		    <florian.henry@open-concept.pro>
+ * Copyright (C) 2016       Juanjo Menent           <jmenent@2byte.es>
  * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +29,12 @@
  *    \brief      Class file of the module paid holiday.
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Class of the module paid holiday. Developed by Teclib ( http://www.teclib.com/ )
  */
-class Holiday extends CommonObject
+class Holiday extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

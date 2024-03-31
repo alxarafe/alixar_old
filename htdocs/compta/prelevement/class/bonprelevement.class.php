@@ -45,7 +45,7 @@ require_once DOL_DOCUMENT_ROOT . '/user/class/userbankaccount.class.php';
 /**
  *  Class to manage withdrawal receipts
  */
-class BonPrelevement extends CommonObject
+class BonPrelevement extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

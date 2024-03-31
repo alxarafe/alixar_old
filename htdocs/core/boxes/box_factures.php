@@ -1,9 +1,10 @@
 <?php
 
-/* Copyright (C) 2003-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+/* Copyright (C) 2003-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2009  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2015       Frederic France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,8 @@
  *  \brief      Module de generation de l'affichage de la box factures
  */
 
+use DoliModules\Billing\Model\Facture;
+
 include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
 
 /**
@@ -35,13 +38,13 @@ class box_factures extends ModeleBoxes
     public $boxcode = "lastcustomerbills";
     public $boximg = "object_bill";
     public $boxlabel = "BoxLastCustomerBills";
-    public $depends = array("facture");
+    public $depends = ["facture"];
 
     /**
      *  Constructor
      *
-     *  @param  DoliDB  $db         Database handler
-     *  @param  string  $param      More parameters
+     * @param DoliDB $db    Database handler
+     * @param string $param More parameters
      */
     public function __construct($db, $param)
     {
@@ -55,8 +58,9 @@ class box_factures extends ModeleBoxes
     /**
      *  Load data into info_box_contents array to show array later.
      *
-     *  @param  int     $max        Maximum number of records to load
-     *  @return void
+     * @param int $max Maximum number of records to load
+     *
+     * @return void
      */
     public function loadBox($max = 5)
     {
@@ -64,7 +68,6 @@ class box_factures extends ModeleBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $facturestatic = new Facture($this->db);
@@ -73,10 +76,10 @@ class box_factures extends ModeleBoxes
         $langs->load("bills");
 
         $text = $langs->trans("BoxTitleLast" . (getDolGlobalString('MAIN_LASTBOX_ON_OBJECT_DATE') ? "" : "Modified") . "CustomerBills", $max);
-        $this->info_box_head = array(
+        $this->info_box_head = [
             'text' => $text,
-            'limit' => dol_strlen($text)
-        );
+            'limit' => dol_strlen($text),
+        ];
 
         if ($user->hasRight('facture', 'lire')) {
             $sql = "SELECT f.rowid as facid";
@@ -164,67 +167,68 @@ class box_factures extends ModeleBoxes
                         $late = img_warning(sprintf($l_due_date, dol_print_date($datelimite, 'day', 'tzuserrel')));
                     }
 
-                    $this->info_box_contents[$line][] = array(
+                    $this->info_box_contents[$line][] = [
                         'td' => 'class="nowraponall"',
                         'text' => $facturestatic->getNomUrl(1),
                         'text2' => $late,
                         'asis' => 1,
-                    );
+                    ];
 
-                    $this->info_box_contents[$line][] = array(
+                    $this->info_box_contents[$line][] = [
                         'td' => 'class="tdoverflowmax200"',
                         'text' => $societestatic->getNomUrl(1, '', 40),
                         'asis' => 1,
-                    );
+                    ];
 
-                    $this->info_box_contents[$line][] = array(
+                    $this->info_box_contents[$line][] = [
                         'td' => 'class="right nowraponall amount"',
                         'text' => price($objp->total_ht, 0, $langs, 0, -1, -1, $conf->currency),
-                    );
+                    ];
 
-                    $this->info_box_contents[$line][] = array(
+                    $this->info_box_contents[$line][] = [
                         'td' => 'class="center nowraponall" title="' . dol_escape_htmltag($langs->trans("DateModification") . ': ' . dol_print_date($datem, 'dayhour', 'tzuserrel')) . '"',
                         'text' => dol_print_date($datem, 'day', 'tzuserrel'),
-                    );
+                    ];
 
-                    $this->info_box_contents[$line][] = array(
+                    $this->info_box_contents[$line][] = [
                         'td' => 'class="right" width="18"',
                         'text' => $facturestatic->LibStatut($objp->paye, $objp->status, 3, $objp->am),
-                    );
+                    ];
 
                     $line++;
                 }
 
                 if ($num == 0) {
-                    $this->info_box_contents[$line][0] = array(
+                    $this->info_box_contents[$line][0] = [
                         'td' => 'class="center"',
                         'text' => '<span class="opacitymedium">' . $langs->trans("NoRecordedInvoices") . '</span>',
-                    );
+                    ];
                 }
 
                 $this->db->free($result);
             } else {
-                $this->info_box_contents[0][0] = array(
+                $this->info_box_contents[0][0] = [
                     'td' => '',
                     'maxlength' => 500,
                     'text' => ($this->db->error() . ' sql=' . $sql),
-                );
+                ];
             }
         } else {
-            $this->info_box_contents[0][0] = array(
+            $this->info_box_contents[0][0] = [
                 'td' => 'class="nohover left"',
-                'text' => '<span class="opacitymedium">' . $langs->trans("ReadPermissionNotAllowed") . '</span>'
-            );
+                'text' => '<span class="opacitymedium">' . $langs->trans("ReadPermissionNotAllowed") . '</span>',
+            ];
         }
     }
 
     /**
      *  Method to show box
      *
-     *  @param  array   $head       Array with properties of box title
-     *  @param  array   $contents   Array with properties of box lines
-     *  @param  int     $nooutput   No print, only return string
-     *  @return string
+     * @param array $head     Array with properties of box title
+     * @param array $contents Array with properties of box lines
+     * @param int   $nooutput No print, only return string
+     *
+     * @return string
      */
     public function showBox($head = null, $contents = null, $nooutput = 0)
     {

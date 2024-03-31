@@ -35,7 +35,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for Job
  */
-class Job extends CommonObject
+class Job extends GenericDocument
 {
     /**
      * @var string ID of module.
@@ -1104,7 +1104,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class JobLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class JobLine extends CommonObjectLine
+class JobLine extends GenericDocumentLine
 {
     // To complete with content of an object JobLine
     // We should have a field rowid, fk_job and position

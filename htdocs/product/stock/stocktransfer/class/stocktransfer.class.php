@@ -26,6 +26,8 @@
  */
 
 // Put here all includes required by your class file
+use DoliModules\Billing\Trait\CommonIncoterm;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
 
@@ -35,7 +37,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
 /**
  * Class for StockTransfer
  */
-class StockTransfer extends CommonObject
+class StockTransfer extends GenericDocument
 {
     use CommonIncoterm;
 
@@ -803,7 +805,7 @@ class StockTransfer extends CommonObject
             if ($withpicto) {
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-                list($class, $module) = explode('@', $this->picto);
+                [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
                 $filearray = dol_dir_list($upload_dir, "files");
                 $filename = $filearray[0]['name'];

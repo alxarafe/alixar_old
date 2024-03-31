@@ -1,9 +1,10 @@
 <?php
 
-/* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2005-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2011 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2017 	   Nicolas Zabouri      <info@inovea-conseil.com>
+/* Copyright (C) 2003       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2005-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2011  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2017 	    Nicolas Zabouri         <info@inovea-conseil.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +27,6 @@
  */
 
 include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
-
 
 /**
  * Class to manage the box to show last contracted products/services lines
@@ -66,6 +66,7 @@ class box_services_contracts extends ModeleBoxes
         $this->max = $max;
 
         include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
+        include_once DOL_DOCUMENT_ROOT . '/contrat/class/contratligne.class.php';
 
         $form = new Form($this->db);
 

@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for Target
  */
-class Target extends CommonObject
+class Target extends GenericDocument
 {
     /**
      * @var string ID of module.
@@ -1001,7 +1001,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class TargetLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class TargetLine extends CommonObjectLine
+class TargetLine extends GenericDocumentLine
 {
     // To complete with content of an object TargetLine
     // We should have a field rowid, fk_target and position

@@ -43,17 +43,17 @@
  *  \brief      File for third party class
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
+use DoliCore\Base\GenericDocument;
+use DoliModules\Billing\Trait\CommonIncoterm;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonsocialnetworks.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
 require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
 
-
 /**
  *  Class to manage third parties objects (customers, suppliers, prospects...)
  */
-class Societe extends CommonObject
+class Societe extends GenericDocument
 {
     use CommonIncoterm;
     use CommonSocialNetworks;

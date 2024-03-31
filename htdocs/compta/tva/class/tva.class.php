@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  *  Put here description of your class
  */
-class Tva extends CommonObject
+class Tva extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

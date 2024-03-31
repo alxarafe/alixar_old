@@ -1,10 +1,10 @@
 <?php
 
-/**
- * Copyright (C) 2018       Andreu Bisquerra    <jove@bisquerra.com>
- * Copyright (C) 2021       Nicolas ZABOURI     <info@inovea-conseil.com>
- * Copyright (C) 2022-2023  Christophe Battarel <christophe.battarel@altairis.fr>
- * Copyright (C) 2024       MDW                         <mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2018       Andreu Bisquerra        <jove@bisquerra.com>
+ * Copyright (C) 2021       Nicolas ZABOURI         <info@inovea-conseil.com>
+ * Copyright (C) 2022-2023  Christophe Battarel     <christophe.battarel@altairis.fr>
+ * Copyright (C) 2024       MDW                     <mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 // if (! defined('NOREQUIREDB'))        define('NOREQUIREDB', '1');         // Not disabled cause need to load personalized language
 // if (! defined('NOREQUIRESOC'))       define('NOREQUIRESOC', '1');
 // if (! defined('NOREQUIRETRAN'))      define('NOREQUIRETRAN', '1');
+
+use DoliModules\Billing\Model\Facture;
 
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1');

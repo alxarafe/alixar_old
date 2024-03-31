@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  *      Class to manage trips and working credit notes
  */
-class Deplacement extends CommonObject
+class Deplacement extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

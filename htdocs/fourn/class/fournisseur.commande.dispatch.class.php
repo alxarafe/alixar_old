@@ -1,8 +1,9 @@
 <?php
 
-/* Copyright (C) 2015 Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2014 Juanjo Menent	      <jmenent@2byte.es>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+/* Copyright (C) 2015       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2014       Juanjo Menent	        <jmenent@2byte.es>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,15 +26,14 @@
  *              Initially built by build_class_from_table on 2015-02-24 10:38
  */
 
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . "/core/class/commonobject.class.php";
-require_once DOL_DOCUMENT_ROOT . "/reception/class/reception.class.php";
+use DoliCore\Base\GenericDocumentLine;
 
+require_once DOL_DOCUMENT_ROOT . "/reception/class/reception.class.php";
 
 /**
  *  Class to manage table commandefournisseurdispatch
  */
-class CommandeFournisseurDispatch extends CommonObjectLine
+class CommandeFournisseurDispatch extends GenericDocumentLine
 {
     /**
      * @var DoliDB Database handler.

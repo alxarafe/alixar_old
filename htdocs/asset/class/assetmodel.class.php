@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for AssetModel
  */
-class AssetModel extends CommonObject
+class AssetModel extends GenericDocument
 {
     /**
      * @var string ID of module.

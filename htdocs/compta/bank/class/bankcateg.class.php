@@ -1,9 +1,10 @@
 <?php
 
-/* Copyright (C) 2008 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2009 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2016 Marcos García        <marcosgdf@gmail.com>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+/* Copyright (C) 2008       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2009       Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2016       Marcos García           <marcosgdf@gmail.com>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +29,7 @@
 /**
  *    Class to manage bank categories
  */
-class BankCateg // extends CommonObject
+class BankCateg // extends GenericDocument
 {
     //public $element='bank_categ';         //!< Id that identify managed objects
     //public $table_element='bank_categ';   //!< Name of table without prefix where object is stored

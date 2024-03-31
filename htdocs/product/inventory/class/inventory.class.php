@@ -37,7 +37,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
  * Class for Inventory
  */
 
-class Inventory extends CommonObject
+class Inventory extends GenericDocument
 {
     /**
      * @var string ID to identify managed object
@@ -796,7 +796,7 @@ class Inventory extends CommonObject
 /**
  * Class InventoryLine
  */
-class InventoryLine extends CommonObjectLine
+class InventoryLine extends GenericDocumentLine
 {
     /**
      * @var string ID to identify managed object

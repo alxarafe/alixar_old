@@ -28,7 +28,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for Hook
  */
-class Hook extends CommonObject
+class Hook extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

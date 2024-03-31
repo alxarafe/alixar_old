@@ -1,7 +1,8 @@
 <?php
 
-/* Copyright (C) 2013 Cédric Salvador <csalvador@gpcsolutions.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2013       Cédric Salvador         <csalvador@gpcsolutions.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +24,12 @@
  *  \brief      File for link class
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Class to manage links
  */
-class Link extends CommonObject
+class Link extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

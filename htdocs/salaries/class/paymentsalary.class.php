@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 /**
  *  Class to manage payments of salaries
  */
-class PaymentSalary extends CommonObject
+class PaymentSalary extends GenericDocument
 {
     /**
      * @var string          ID to identify managed object

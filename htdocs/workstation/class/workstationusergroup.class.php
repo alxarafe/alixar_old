@@ -27,7 +27,7 @@
 /**
  * Class to link User groups and Workstations
  */
-class WorkstationUserGroup extends CommonObject
+class WorkstationUserGroup extends GenericDocument
 {
     /** @var string $table_element Table name in SQL */
     public $table_element = 'workstation_workstation_usergroup';

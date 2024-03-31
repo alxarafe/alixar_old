@@ -1,13 +1,14 @@
 <?php
 
-/* Copyright (C) 2008-2014  Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2010-2012	Regis Houssin		<regis.houssin@inodbox.com>
- * Copyright (C) 2014       Marcos García       <marcosgdf@gmail.com>
- * Copyright (C) 2018-2024  Frédéric France     <frederic.france@free.fr>
- * Copyright (C) 2020       Juanjo Menent		<jmenent@2byte.es>
- * Copyright (C) 2022       Charlene Benke		<charlene@patas-monkey.com>
- * Copyright (C) 2023      	Gauthier VERDOL     <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2008-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2010-2012	Regis Houssin		    <regis.houssin@inodbox.com>
+ * Copyright (C) 2014       Marcos García           <marcosgdf@gmail.com>
+ * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2020       Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2022       Charlene Benke		    <charlene@patas-monkey.com>
+ * Copyright (C) 2023      	Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,16 +30,15 @@
  *      \brief      This file is a CRUD class file for Task (Create/Read/Update/Delete)
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
+use DoliCore\Base\GenericDocumentLine;
+
 require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/timespent.class.php';
-
 
 /**
  *  Class to manage tasks
  */
-class Task extends CommonObjectLine
+class Task extends GenericDocumentLine
 {
     /**
      * @var string ID to identify managed object

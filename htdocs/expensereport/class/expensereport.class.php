@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport_rule.class.
 /**
  * Class to manage Trips and Expenses
  */
-class ExpenseReport extends CommonObject
+class ExpenseReport extends GenericDocument
 {
     /**
      * @var string ID to identify managed object
@@ -2855,7 +2855,7 @@ class ExpenseReport extends CommonObject
 /**
  * Class of expense report details lines
  */
-class ExpenseReportLine extends CommonObjectLine
+class ExpenseReportLine extends GenericDocumentLine
 {
     /**
      * @var DoliDB Database handler.

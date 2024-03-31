@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for RecruitmentJobPosition
  */
-class RecruitmentJobPosition extends CommonObject
+class RecruitmentJobPosition extends GenericDocument
 {
     /**
      * @var string ID of module.

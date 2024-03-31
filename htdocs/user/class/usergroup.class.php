@@ -1,15 +1,16 @@
 <?php
 
-/* Copyright (c) 2005       Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (c) 2005-2018	Laurent Destailleur	 <eldy@users.sourceforge.net>
- * Copyright (c) 2005-2018	Regis Houssin		 <regis.houssin@inodbox.com>
- * Copyright (C) 2012		Florian Henry		 <florian.henry@open-concept.pro>
- * Copyright (C) 2014		Juanjo Menent		 <jmenent@2byte.es>
- * Copyright (C) 2014		Alexis Algoud		 <alexis@atm-consulting.fr>
- * Copyright (C) 2018       Nicolas ZABOURI		 <info@inovea-conseil.com>
+/* Copyright (c) 2005       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (c) 2005-2018	Laurent Destailleur	    <eldy@users.sourceforge.net>
+ * Copyright (c) 2005-2018	Regis Houssin		    <regis.houssin@inodbox.com>
+ * Copyright (C) 2012		Florian Henry		    <florian.henry@open-concept.pro>
+ * Copyright (C) 2014		Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2014		Alexis Algoud		    <alexis@atm-consulting.fr>
+ * Copyright (C) 2018       Nicolas ZABOURI		    <info@inovea-conseil.com>
  * Copyright (C) 2019       Abbes Bahfir            <dolipar@dolipar.org>
- * Copyright (C) 2023-2024  Frédéric France      <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2023-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,17 +31,17 @@
  *   \brief      File of class to manage user groups
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 if (isModEnabled('ldap')) {
     require_once DOL_DOCUMENT_ROOT . "/core/class/ldap.class.php";
 }
 
-
 /**
  *  Class to manage user groups
  */
-class UserGroup extends CommonObject
+class UserGroup extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

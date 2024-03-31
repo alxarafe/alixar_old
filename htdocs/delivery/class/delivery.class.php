@@ -30,6 +30,8 @@
  *  \brief      Delivery Order Management Class File
  */
 
+use DoliModules\Billing\Trait\CommonIncoterm;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
@@ -45,7 +47,7 @@ if (isModEnabled('order')) {
 /**
  *  Class to manage receptions
  */
-class Delivery extends CommonObject
+class Delivery extends GenericDocument
 {
     use CommonIncoterm;
 
@@ -1184,7 +1186,7 @@ class Delivery extends CommonObject
 /**
  *  Management class of delivery note lines
  */
-class DeliveryLine extends CommonObjectLine
+class DeliveryLine extends GenericDocumentLine
 {
     /**
      * @var DoliDB Database handler.

@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for Skill
  */
-class Skill extends CommonObject
+class Skill extends GenericDocument
 {
     /**
      * @var string ID of module.

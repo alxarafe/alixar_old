@@ -9,6 +9,7 @@
  * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		William Mead			<william.mead@manchenumerique.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +31,9 @@
  *       \brief      File of class to manage agenda events (actions)
  */
 
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncommreminder.class.php';
 
@@ -39,7 +41,7 @@ require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncommreminder.class.ph
 /**
  *      Class to manage agenda events (actions)
  */
-class ActionComm extends CommonObject
+class ActionComm extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

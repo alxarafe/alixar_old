@@ -35,6 +35,8 @@
  *  \brief      File for class to manage receptions
  */
 
+use DoliModules\Billing\Trait\CommonIncoterm;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . "/core/class/commonobjectline.class.php";
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
@@ -49,7 +51,7 @@ if (isModEnabled('order')) {
 /**
  *  Class to manage receptions
  */
-class Reception extends CommonObject
+class Reception extends GenericDocument
 {
     use CommonIncoterm;
 

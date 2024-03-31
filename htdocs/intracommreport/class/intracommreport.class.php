@@ -30,7 +30,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class to manage intracomm report
  */
-class IntracommReport extends CommonObject
+class IntracommReport extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

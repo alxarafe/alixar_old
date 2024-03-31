@@ -37,7 +37,6 @@ global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
@@ -47,15 +46,8 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
-use AccountingAccount;
 use DoliCore\Base\DolibarrController;
-use Facture;
-use FactureLigne;
-use Form;
-use FormAccounting;
-use FormOther;
-use Product;
-use Societe;
+use DoliModules\Accounting\Model\AccountingAccount;
 
 class AccountingCustomerController extends DolibarrController
 {

@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
 /**
  *  Cron Job class
  */
-class Cronjob extends CommonObject
+class Cronjob extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

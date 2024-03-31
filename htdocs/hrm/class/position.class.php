@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for Position
  */
-class Position extends CommonObject
+class Position extends GenericDocument
 {
     /**
      * @var string ID of module.
@@ -1130,7 +1130,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class PositionLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class PositionLine extends CommonObjectLine
+class PositionLine extends GenericDocumentLine
 {
     // To complete with content of an object PositionLine
     // We should have a field rowid , fk_position and position

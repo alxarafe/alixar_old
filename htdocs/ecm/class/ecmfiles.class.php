@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class to manage ECM files
  */
-class EcmFiles extends CommonObject
+class EcmFiles extends GenericDocument
 {
     /**
      * @var string Id to identify managed objects

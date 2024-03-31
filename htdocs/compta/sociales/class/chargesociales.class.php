@@ -1,11 +1,12 @@
 <?php
 
-/* Copyright (C) 2002      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2007 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2016-2024  Frédéric France      <frederic.france@free.fr>
- * Copyright (C) 2017      Alexandre Spangaro	<aspangaro@open-dsi.fr>
- * Copyright (C) 2021      Gauthier VERDOL		<gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2002       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2007  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2016-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2017       Alexandre Spangaro	    <aspangaro@open-dsi.fr>
+ * Copyright (C) 2021       Gauthier VERDOL		    <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,14 +28,13 @@
  *      \brief      File for the ChargesSociales class
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Class for managing the social charges.
  *  The collected VAT is computed only on the paid invoices/charges
  */
-class ChargeSociales extends CommonObject
+class ChargeSociales extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

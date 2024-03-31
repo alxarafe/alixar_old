@@ -28,7 +28,7 @@
 /**
  * Class to link resource with Workstations
  */
-class WorkstationResource extends CommonObject
+class WorkstationResource extends GenericDocument
 {
     /** @var string $table_element Table name in SQL */
     public $table_element = 'workstation_workstation_resource';

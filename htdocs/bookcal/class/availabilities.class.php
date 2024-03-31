@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for Availabilities
  */
-class Availabilities extends CommonObject
+class Availabilities extends GenericDocument
 {
     /**
      * @var string ID of module.
@@ -1081,7 +1081,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class AvailabilitiesLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class AvailabilitiesLine extends CommonObjectLine
+class AvailabilitiesLine extends GenericDocumentLine
 {
     // To complete with content of an object AvailabilitiesLine
     // We should have a field rowid, fk_availabilities and position

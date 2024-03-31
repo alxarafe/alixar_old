@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.ph
 /**
  *  Class to manage payments of social contributions
  */
-class PaymentSocialContribution extends CommonObject
+class PaymentSocialContribution extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

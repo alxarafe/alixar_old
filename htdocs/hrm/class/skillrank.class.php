@@ -35,7 +35,7 @@ require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_skillrank.lib.php';
 /**
  * Class for SkillRank
  */
-class SkillRank extends CommonObject
+class SkillRank extends GenericDocument
 {
     /**
      * @var string ID of module.

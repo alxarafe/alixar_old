@@ -2,7 +2,8 @@
 
 /* Copyright (C) 2004-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2015 		Florian HENRY 			<florian.henry@open-concept.pro>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,14 +25,12 @@
  *  \brief      This file is an CRUD class file (Create/Read/Update/Delete)
  */
 
-require_once DOL_DOCUMENT_ROOT . "/core/class/commonobject.class.php";
-
-
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Put here description of your class
  */
-class Propalmergepdfproduct extends CommonObject
+class Propalmergepdfproduct extends GenericDocument
 {
     /**
      * @var string ID to identify managed object
@@ -564,53 +563,5 @@ class Propalmergepdfproduct extends CommonObject
         $this->import_key = '';
 
         return 1;
-    }
-}
-
-/**
- * Class to manage propal merge of product line
- */
-class PropalmergepdfproductLine
-{
-    /**
-     * @var int ID
-     */
-    public $id;
-
-    /**
-     * @var int ID
-     */
-    public $fk_product;
-
-    /**
-     * @var string Filename
-     */
-    public $file_name;
-
-    /**
-     * @var string Code lang
-     */
-    public $lang;
-
-    /**
-     * @var int ID
-     */
-    public $fk_user_author;
-
-    /**
-     * @var int ID
-     */
-    public $fk_user_mod;
-
-    public $datec = '';
-    public $tms = '';
-    public $import_key;
-
-    /**
-     *  Constructor
-     */
-    public function __construct()
-    {
-        return;
     }
 }

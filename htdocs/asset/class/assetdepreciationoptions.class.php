@@ -28,7 +28,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for AssetDepreciationOptions
  */
-class AssetDepreciationOptions extends CommonObject
+class AssetDepreciationOptions extends GenericDocument
 {
     /**
      * @var string Name of table without prefix where object is stored. This is also the key used for extrafields management.

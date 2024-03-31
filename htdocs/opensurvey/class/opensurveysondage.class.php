@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . "/core/class/commonobject.class.php";
 /**
  *  Put here description of your class
  */
-class Opensurveysondage extends CommonObject
+class Opensurveysondage extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

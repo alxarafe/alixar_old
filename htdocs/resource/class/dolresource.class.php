@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
 /**
  *  DAO Resource object
  */
-class Dolresource extends CommonObject
+class Dolresource extends GenericDocument
 {
     use CommonPeople;
 

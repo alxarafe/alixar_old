@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for MyObject
  */
-class MyObject extends CommonObject
+class MyObject extends GenericDocument
 {
     /**
      * @var string ID of module.
@@ -1254,7 +1254,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class MyObjectLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class MyObjectLine extends CommonObjectLine
+class MyObjectLine extends GenericDocumentLine
 {
     // To complete with content of an object MyObjectLine
     // We should have a field rowid, fk_myobject and position

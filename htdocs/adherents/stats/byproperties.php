@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (c) 2012 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +24,10 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Adherent\Model\Adherent;
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/member.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 
 $graphwidth = 700;
 $mapratio = 0.5;

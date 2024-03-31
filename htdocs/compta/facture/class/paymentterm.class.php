@@ -27,7 +27,7 @@
 /**
  *  Class to manage payment terms records in dictionary
  */
-class PaymentTerm // extends CommonObject
+class PaymentTerm // extends GenericDocument
 {
     /**
      * @var DoliDB Database handler.

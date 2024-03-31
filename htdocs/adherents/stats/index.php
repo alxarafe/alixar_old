@@ -1,8 +1,9 @@
 <?php
 
-/* Copyright (C) 2003      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
+/* Copyright (C) 2003       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2011  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,9 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Adherent\Statistics\AdherentStats;
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherentstats.class.php';

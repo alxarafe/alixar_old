@@ -29,7 +29,7 @@
 /**
  *    Class to manage cash fence
  */
-class CashControl extends CommonObject
+class CashControl extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

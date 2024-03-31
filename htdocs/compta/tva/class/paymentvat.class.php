@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 /**
  *  Class to manage payments of social contributions
  */
-class PaymentVAT extends CommonObject
+class PaymentVAT extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

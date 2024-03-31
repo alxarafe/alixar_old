@@ -1,7 +1,8 @@
 <?php
 
 /* Copyright (C) 2015       Alexandre Spangaro      <aspangaro@open-dsi.fr>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +24,12 @@
  *  \brief      File of class to manage payment of donations
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Class to manage payments of donations
  */
-class PaymentDonation extends CommonObject
+class PaymentDonation extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

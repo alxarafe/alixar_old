@@ -1,7 +1,8 @@
 <?php
 
-/* Copyright (C) 2007-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2013-2014 Cedric GROSS         <c.gross@kreiz-it.fr>
+/* Copyright (C) 2007-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2013-2014  Cedric GROSS            <c.gross@kreiz-it.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +25,12 @@
  *              with batch record
  */
 
+use DoliCore\Base\GenericDocument;
+
 /**
  *  CRUD class for batch number management within shipment
  */
-class ExpeditionLineBatch extends CommonObject
+class ExpeditionLineBatch extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

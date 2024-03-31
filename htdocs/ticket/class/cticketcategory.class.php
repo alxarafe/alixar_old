@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for MyObject
  */
-class CTicketCategory extends CommonObject
+class CTicketCategory extends GenericDocument
 {
     /**
      * @var string ID of module.

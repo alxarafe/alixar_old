@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class to manage payments of loans
  */
-class PaymentLoan extends CommonObject
+class PaymentLoan extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

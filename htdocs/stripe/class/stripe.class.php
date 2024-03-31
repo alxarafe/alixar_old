@@ -29,7 +29,7 @@ require_once DOL_DOCUMENT_ROOT . '/stripe/config.php'; // This set stripe global
 /**
  *  Stripe class
  */
-class Stripe extends CommonObject
+class Stripe extends GenericDocument
 {
     /**
      * @var int ID

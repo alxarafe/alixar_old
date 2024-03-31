@@ -1,6 +1,7 @@
 <?php
 
-/* Copyright (C) 2019 Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2019       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +18,12 @@
  * or see https://www.gnu.org/
  */
 
+use DoliCore\Base\GenericDocument;
+
 /**
  *  Class to manage comment
  */
-class Comment extends CommonObject
+class Comment extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

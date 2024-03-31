@@ -1,13 +1,14 @@
 <?php
 
-/* Copyright (C) 2013-2018 Jean-François Ferry <hello@librethic.io>
- * Copyright (C) 2016      Christophe Battarel <christophe@altairis.fr>
- * Copyright (C) 2019-2024  Frédéric France     <frederic.france@free.fr>
- * Copyright (C) 2020      Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2023      Charlene Benke 	   <charlene@patas-monkey.com>
- * Copyright (C) 2023	   Benjamin Falière	   <benjamin.faliere@altairis.fr>
- * Copyright (C) 2024		William Mead		<william.mead@manchenumerique.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2013-2018  Jean-François Ferry     <hello@librethic.io>
+ * Copyright (C) 2016       Christophe Battarel     <christophe@altairis.fr>
+ * Copyright (C) 2019-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2020       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2023       Charlene Benke 	        <charlene@patas-monkey.com>
+ * Copyright (C) 2023	    Benjamin Falière	    <benjamin.faliere@altairis.fr>
+ * Copyright (C) 2024		William Mead		    <william.mead@manchenumerique.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +31,8 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . "/core/class/commonobject.class.php";
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
 
@@ -38,7 +40,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
 /**
  *    Class to manage ticket
  */
-class Ticket extends CommonObject
+class Ticket extends GenericDocument
 {
     /**
      * @var DoliDB Database handler

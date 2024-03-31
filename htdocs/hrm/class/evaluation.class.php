@@ -36,7 +36,7 @@ require_once DOL_DOCUMENT_ROOT . '/hrm/class/evaluationdet.class.php';
 /**
  * Class for Evaluation
  */
-class Evaluation extends CommonObject
+class Evaluation extends GenericDocument
 {
     /**
      * @var string ID of module.

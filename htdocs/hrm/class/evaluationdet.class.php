@@ -36,7 +36,7 @@ require_once DOL_DOCUMENT_ROOT . '/hrm/class/skillrank.class.php';
 /**
  * Class for EvaluationLine
  */
-class EvaluationLine extends CommonObjectLine
+class EvaluationLine extends GenericDocumentLine
 {
     /**
      * @var string ID of module.

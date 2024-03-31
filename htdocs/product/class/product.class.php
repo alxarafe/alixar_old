@@ -17,7 +17,8 @@
  * Copyright (C) 2017		Gustavo Novaro
  * Copyright (C) 2019-2024  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2023		Benjamin Falière		<benjamin.faliere@altairis.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,8 +40,9 @@
  *    \brief      File of class to manage the predefined products or services
  */
 
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
@@ -48,7 +50,7 @@ require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 /**
  * Class to manage products or services
  */
-class Product extends CommonObject
+class Product extends GenericDocument
 {
     /**
      * Const sell or eat by mandatory id
@@ -6734,13 +6736,4 @@ class Product extends CommonObject
         $return .= '</div>';
         return $return;
     }
-}
-
-/**
- * Class to manage products or services.
- * Do not use 'Service' as class name since it is already used by APIs.
- */
-class ProductService extends Product
-{
-    public $picto = 'service';
 }

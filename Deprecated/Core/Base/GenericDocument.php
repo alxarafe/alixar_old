@@ -1,24 +1,25 @@
 <?php
 
-/* Copyright (C) 2006-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2013 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2010-2020 Juanjo Menent        <jmenent@2byte.es>
- * Copyright (C) 2012-2013 Christophe Battarel  <christophe.battarel@altairis.fr>
- * Copyright (C) 2011-2022 Philippe Grand       <philippe.grand@atoo-net.com>
- * Copyright (C) 2012-2015 Marcos García        <marcosgdf@gmail.com>
- * Copyright (C) 2012-2015 Raphaël Doursenaud   <rdoursenaud@gpcsolutions.fr>
- * Copyright (C) 2012      Cedric Salvador      <csalvador@gpcsolutions.fr>
- * Copyright (C) 2015-2022 Alexandre Spangaro   <aspangaro@open-dsi.fr>
- * Copyright (C) 2016      Bahfir abbes         <dolipar@dolipar.org>
- * Copyright (C) 2017      ATM Consulting       <support@atm-consulting.fr>
- * Copyright (C) 2017-2019 Nicolas ZABOURI      <info@inovea-conseil.com>
- * Copyright (C) 2017      Rui Strecht          <rui.strecht@aliartalentos.com>
- * Copyright (C) 2018-2024  Frédéric France     <frederic.france@free.fr>
- * Copyright (C) 2018      Josep Lluís Amador   <joseplluis@lliuretic.cat>
- * Copyright (C) 2023      Gauthier VERDOL      <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2021      Grégory Blémand      <gregory.blemand@atm-consulting.fr>
- * Copyright (C) 2023      Lenin Rivas      	<lenin.rivas777@gmail.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2006-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2013  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2010-2020  Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2012-2013  Christophe Battarel     <christophe.battarel@altairis.fr>
+ * Copyright (C) 2011-2022  Philippe Grand          <philippe.grand@atoo-net.com>
+ * Copyright (C) 2012-2015  Marcos García           <marcosgdf@gmail.com>
+ * Copyright (C) 2012-2015  Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
+ * Copyright (C) 2012       Cedric Salvador         <csalvador@gpcsolutions.fr>
+ * Copyright (C) 2015-2022  Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2016       Bahfir abbes            <dolipar@dolipar.org>
+ * Copyright (C) 2017       ATM Consulting          <support@atm-consulting.fr>
+ * Copyright (C) 2017-2019  Nicolas ZABOURI         <info@inovea-conseil.com>
+ * Copyright (C) 2017       Rui Strecht             <rui.strecht@aliartalentos.com>
+ * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2018       Josep Lluís Amador      <joseplluis@lliuretic.cat>
+ * Copyright (C) 2023       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2021       Grégory Blémand         <gregory.blemand@atm-consulting.fr>
+ * Copyright (C) 2023       Lenin Rivas      	    <lenin.rivas777@gmail.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,6 +80,7 @@ use Validate;
 
 /**
  * Class GenericDocument replaces CommonObject
+ * Parent class of all other business classes (invoices, contracts, proposals, orders, ...)
  *
  * @deprecated This class is only needed for compatibility with Dolibarr.
  */
@@ -125,12 +127,12 @@ abstract class GenericDocument extends Model
     /**
      * @var string[]    Array of error strings
      */
-    public $errors = [];
+    public $errors = array();
 
     /**
      * @var array       To store error results of ->validateField()
      */
-    private $validateFieldsErrors = [];
+    private $validateFieldsErrors = array();
 
     /**
      * @var string      ID to identify managed object
@@ -139,15 +141,14 @@ abstract class GenericDocument extends Model
 
     /**
      * @var string|int  Field with ID of parent key if this field has a parent (a string). For example 'fk_product'.
-     *                  ID of parent key itself (an int). For example in few classes like 'Comment', 'ActionComm' or
-     *                  'AdvanceTargetingMailing'.
+     *                  ID of parent key itself (an int). For example in few classes like 'Comment', 'ActionComm' or 'AdvanceTargetingMailing'.
      */
     public $fk_element;
 
     /**
-     * @var string      Name to use for 'features' parameter to check module permissions user->rights->feature with
-     *      restrictedArea(). Undefined means same value than $element. Can be use to force a check on another element
-     *      (for example for class of a line, we mention here its parent element).
+     * @var string      Name to use for 'features' parameter to check module permissions user->rights->feature with restrictedArea().
+     *                  Undefined means same value than $element.
+     *                  Can be use to force a check on another element (for example for class of a line, we mention here its parent element).
      */
     public $element_for_permission;
 
@@ -164,8 +165,7 @@ abstract class GenericDocument extends Model
     /**
      * Does this object supports the multicompany module ?
      *
-     * @var int|string      0 if no test on entity, 1 if test with field entity, 2 if test with link by fk_soc,
-     *      'field@table' if test with link by field@table
+     * @var int|string      0 if no test on entity, 1 if test with field entity, 2 if test with link by fk_soc, 'field@table' if test with link by field@table
      */
     public $ismultientitymanaged;
 
@@ -177,15 +177,13 @@ abstract class GenericDocument extends Model
     /**
      * @var mixed       Contains data to manage extrafields
      */
-    public $array_options = [];
+    public $array_options = array();
 
 
     /**
-     * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>
-     *       Array with all fields and their property. Do not use it as a static var. It may be modified by
-     *       constructor.
+     * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>  Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
      */
-    public $fields = [];
+    public $fields = array();
 
     /**
      * @var mixed       Array to store alternative languages values of object
@@ -198,8 +196,7 @@ abstract class GenericDocument extends Model
     public $contacts_ids;
 
     /**
-     * @var mixed       Array of linked objects, set and used when calling ->create() to be able to create links during
-     *      the creation of object
+     * @var mixed       Array of linked objects, set and used when calling ->create() to be able to create links during the creation of object
      */
     public $linked_objects;
 
@@ -214,14 +211,12 @@ abstract class GenericDocument extends Model
     public $linkedObjects;
 
     /**
-     * @var boolean[]   Array of boolean with object id as key and value as true if linkedObjects full loaded for
-     *      object id. Loaded by ->fetchObjectLinked. Important for pdf generation time reduction.
+     * @var boolean[]   Array of boolean with object id as key and value as true if linkedObjects full loaded for object id. Loaded by ->fetchObjectLinked. Important for pdf generation time reduction.
      */
-    private $linkedObjectsFullLoaded = [];
+    private $linkedObjectsFullLoaded = array();
 
     /**
-     * @var CommonObject    To store a cloned copy of the object before editing it (to keep track of its former
-     *      properties)
+     * @var CommonObject    To store a cloned copy of the object before editing it (to keep track of its former properties)
      */
     public $oldcopy;
 
@@ -236,8 +231,7 @@ abstract class GenericDocument extends Model
     protected $table_ref_field = '';
 
     /**
-     * @var integer     0=Default, 1=View may be restricted to sales representative only if no permission to see all or
-     *      to company of external user if external user
+     * @var integer     0=Default, 1=View may be restricted to sales representative only if no permission to see all or to company of external user if external user
      */
     public $restrictiononfksoc = 0;
 
@@ -248,7 +242,7 @@ abstract class GenericDocument extends Model
     /**
      * @var array<string,mixed>     Can be used to pass information when only the object is provided to the method
      */
-    public $context = [];
+    public $context = array();
 
     // Properties set and used by Agenda trigger
     public $actionmsg;
@@ -274,13 +268,13 @@ abstract class GenericDocument extends Model
     /**
      * @var Project         The related project object
      * @deprecated  Use $project instead
-     * @see         $project
+     * @see $project
      */
     public $projet;
 
     /**
      * @deprecated  Use $fk_project instead
-     * @see         $fk_project
+     * @see $fk_project
      */
     public $fk_projet;
 
@@ -326,10 +320,9 @@ abstract class GenericDocument extends Model
     public $origin_object;
 
     /**
-     * @var CommonObject|string|null    Sometimes the type of the originating object ('commande', 'facture', ...),
-     *      sometimes the object (as with MouvementStock)
+     * @var CommonObject|string|null    Sometimes the type of the originating object ('commande', 'facture', ...), sometimes the object (as with MouvementStock)
      * @deprecated                      Use now $origin_type and $origin_id;
-     * @see                             fetch_origin()
+     * @see fetch_origin()
      */
     public $origin;
 
@@ -364,21 +357,20 @@ abstract class GenericDocument extends Model
     public $ref_next;
 
     /**
-     * @var string      Ref to store on object to save the new ref to use for example when making a validate() of an
-     *      object
+     * @var string      Ref to store on object to save the new ref to use for example when making a validate() of an object
      */
     public $newref;
 
     /**
      * @var int         The object's status. Use status instead.
      * @deprecated  Use $status instead
-     * @see         setStatut()
+     * @see setStatut()
      */
     public $statut;
 
     /**
      * @var int|array<int, string>      The object's status (an int).
-     *                                    Or an array listing all the potential status of the object:
+     *                                  Or an array listing all the potential status of the object:
      *                                    array: int of the status => translated label of the status
      *                                    See for example the Account class.
      * @see setStatut()
@@ -418,8 +410,7 @@ abstract class GenericDocument extends Model
 
     /**
      * var  int         State ID
-     * @deprecated  Use $state_id. We can remove this property when the field 'fk_departement' have been renamed into
-     *              'state_id' in all tables
+     * @deprecated  Use $state_id. We can remove this property when the field 'fk_departement' have been renamed into 'state_id' in all tables
      */
     public $fk_departement;
 
@@ -498,7 +489,7 @@ abstract class GenericDocument extends Model
     /**
      * @var int         Payment terms ID
      * @deprecated Use $cond_reglement_id instead - Kept for compatibility
-     * @see        cond_reglement_id;
+     * @see cond_reglement_id;
      */
     public $cond_reglement;
 
@@ -529,15 +520,13 @@ abstract class GenericDocument extends Model
 
     /**
      * @var string|string[]             Multicurrency code
-     *                                  Or, just for the Paiement object, an array: invoice ID => currency code for
-     *                                  that invoice.
+     *                                  Or, just for the Paiement object, an array: invoice ID => currency code for that invoice.
      */
     public $multicurrency_code;
 
     /**
      * @var float|float[]               Multicurrency rate ("tx" = "taux" in French)
-     *                                  Or, just for the Paiement object, an array: invoice ID => currency rate for
-     *                                  that invoice.
+     *                                  Or, just for the Paiement object, an array: invoice ID => currency rate for that invoice.
      */
     public $multicurrency_tx;
 
@@ -661,7 +650,7 @@ abstract class GenericDocument extends Model
      * @var mixed       Comments
      * @see fetchComments()
      */
-    public $comments = [];
+    public $comments = array();
 
     /**
      * @var string      The name
@@ -799,12 +788,12 @@ abstract class GenericDocument extends Model
     /**
      * @var array       Array with labels of status
      */
-    public $labelStatus = [];
+    public $labelStatus = array();
 
     /**
      * @var array       Array with short labels of status
      */
-    public $labelStatusShort = [];
+    public $labelStatusShort = array();
 
     /**
      * @var array       Array to store lists of tpl
@@ -820,7 +809,7 @@ abstract class GenericDocument extends Model
     /**
      * @var array       nb used in load_stateboard
      */
-    public $nb = [];
+    public $nb = array();
 
     /**
      * @var int         used for the return of show_photos()
@@ -833,23 +822,21 @@ abstract class GenericDocument extends Model
     public $output;
 
     /**
-     * @var array|string    extra parameters. Try to store here the array of parameters. Old code is sometimes storing
-     *      a string.
+     * @var array|string    extra parameters. Try to store here the array of parameters. Old code is sometimes storing a string.
      */
-    public $extraparams = [];
+    public $extraparams = array();
 
     /**
-     * @var array<string,string[]|array{parent:string,parentkey:string}>    List of child tables. To test if we can
-     *      delete object.
+     * @var array<string,string[]|array{parent:string,parentkey:string}>    List of child tables. To test if we can delete object.
      */
-    protected $childtables = [];
+    protected $childtables = array();
 
     /**
      * @var string[]    List of child tables. To know object to delete on cascade.
      *               If name is like '@ClassName:FilePathClass:ParentFkFieldName', it will
      *               call method deleteByParentField(parentId, ParentFkFieldName) to fetch and delete child object.
      */
-    protected $childtablesoncascade = [];
+    protected $childtablesoncascade = array();
 
     /**
      * @var Product     Populated by fetch_product()
@@ -884,15 +871,13 @@ abstract class GenericDocument extends Model
 
     /**
      * Check if an object id or ref exists
-     * If you don't need or want to instantiate the object and just need to know if the object exists, use this method
-     * instead of fetch
+     * If you don't need or want to instantiate the object and just need to know if the object exists, use this method instead of fetch
      *
-     * @param string $element String of element ('product', 'facture', ...)
-     * @param int    $id      Id of object
-     * @param string $ref     Ref of object to check
-     * @param string $ref_ext Ref ext of object to check
-     *
-     * @return int                 Return integer <0 if KO, 0 if OK but not found, >0 if OK and exists
+     *  @param  string  $element    String of element ('product', 'facture', ...)
+     *  @param  int     $id         Id of object
+     *  @param  string  $ref        Ref of object to check
+     *  @param  string  $ref_ext    Ref ext of object to check
+     *  @return int                 Return integer <0 if KO, 0 if OK but not found, >0 if OK and exists
      */
     public static function isExistingObject($element, $id, $ref = '', $ref_ext = '')
     {
@@ -934,7 +919,6 @@ abstract class GenericDocument extends Model
      * setErrorsFromObject
      *
      * @param CommonObject $object commonobject
-     *
      * @return void
      */
     public function setErrorsFromObject($object)
@@ -950,10 +934,9 @@ abstract class GenericDocument extends Model
     /**
      * Return array of data to show into a tooltip. This method must be implemented in each object class.
      *
-     * @param array $params params to construct tooltip data
-     *
-     * @return array
      * @since v18
+     * @param array $params params to construct tooltip data
+     * @return array
      */
     public function getTooltipContentArray($params)
     {
@@ -964,9 +947,8 @@ abstract class GenericDocument extends Model
      * getTooltipContent
      *
      * @param array $params params
-     *
-     * @return string
      * @since v18
+     * @return string
      */
     public function getTooltipContent($params)
     {
@@ -1024,11 +1006,11 @@ abstract class GenericDocument extends Model
             $data['closedivextra'] = '</div>';
         }
 
-        $hookmanager->initHooks([$this->element . 'dao']);
-        $parameters = [
+        $hookmanager->initHooks(array($this->element . 'dao'));
+        $parameters = array(
             'tooltipcontentarray' => &$data,
             'params' => $params,
-        ];
+        );
         // Note that $action and $object may have been modified by some hooks
         $hookmanager->executeHooks('getTooltipContent', $parameters, $this, $action);
 
@@ -1053,15 +1035,14 @@ abstract class GenericDocument extends Model
     /**
      * Return customer ref for screen output.
      *
-     * @param string $objref Customer ref
-     *
+     * @param  string      $objref        Customer ref
      * @return string                     Customer ref formatted
      */
     public function getFormatedCustomerRef($objref)
     {
         global $hookmanager;
 
-        $parameters = ['objref' => $objref];
+        $parameters = array('objref' => $objref);
         $action = '';
         $reshook = $hookmanager->executeHooks('getFormatedCustomerRef', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook > 0) {
@@ -1073,15 +1054,14 @@ abstract class GenericDocument extends Model
     /**
      * Return supplier ref for screen output.
      *
-     * @param string $objref Supplier ref
-     *
+     * @param  string      $objref        Supplier ref
      * @return string                     Supplier ref formatted
      */
     public function getFormatedSupplierRef($objref)
     {
         global $hookmanager;
 
-        $parameters = ['objref' => $objref];
+        $parameters = array('objref' => $objref);
         $action = '';
         $reshook = $hookmanager->executeHooks('getFormatedSupplierRef', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook > 0) {
@@ -1093,12 +1073,11 @@ abstract class GenericDocument extends Model
     /**
      *  Return full address of contact
      *
-     * @param int    $withcountry   1=Add country into address string
-     * @param string $sep           Separator to use to build string
-     * @param int    $withregion    1=Add region into address string
-     * @param string $extralangcode User extralanguages as value
-     *
-     * @return     string                          Full address string
+     *  @param      int         $withcountry        1=Add country into address string
+     *  @param      string      $sep                Separator to use to build string
+     *  @param      int         $withregion         1=Add region into address string
+     *  @param      string      $extralangcode      User extralanguages as value
+     *  @return     string                          Full address string
      */
     public function getFullAddress($withcountry = 0, $sep = "\n", $withregion = 0, $extralangcode = '')
     {
@@ -1112,10 +1091,10 @@ abstract class GenericDocument extends Model
         if ($withregion && $this->state_id && (empty($this->state_code) || empty($this->state) || empty($this->region) || empty($this->region_code))) {
             require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
             $tmparray = getState($this->state_id, 'all', 0, 1);
-            $this->state_code = $tmparray['code'];
-            $this->state = $tmparray['label'];
-            $this->region_code = $tmparray['region_code'];
-            $this->region = $tmparray['region'];
+            $this->state_code   = $tmparray['code'];
+            $this->state        = $tmparray['label'];
+            $this->region_code  = $tmparray['region_code'];
+            $this->region       = $tmparray['region'];
         }
 
         return dol_format_address($this, $withcountry, $sep, '', 0, $extralangcode);
@@ -1125,10 +1104,9 @@ abstract class GenericDocument extends Model
     /**
      * Return the link of last main doc file for direct public download.
      *
-     * @param string $modulepart   Module related to document
-     * @param int    $initsharekey Init the share key if it was not yet defined
-     * @param int    $relativelink 0=Return full external link, 1=Return link relative to root of file
-     *
+     * @param   string  $modulepart         Module related to document
+     * @param   int     $initsharekey       Init the share key if it was not yet defined
+     * @param   int     $relativelink       0=Return full external link, 1=Return link relative to root of file
      * @return  string|-1                   Returns the link, or an empty string if no link was found, or -1 if error.
      */
     public function getLastMainDocLink($modulepart, $initsharekey = 0, $relativelink = 0)
@@ -1216,18 +1194,14 @@ abstract class GenericDocument extends Model
 
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Add a link between element $this->element and a contact
      *
-     * @param int        $fk_socpeople Id of thirdparty contact (if source = 'external') or id of user (if source =
-     *                                 'internal') to link
-     * @param int|string $type_contact Type of contact (code or id). Must be id or code found into table
-     *                                 llx_c_type_contact. For example: SALESREPFOLL
-     * @param string     $source       external=Contact extern (llx_socpeople), internal=Contact intern (llx_user)
-     * @param int        $notrigger    Disable all triggers
-     *
-     * @return int                             Return integer <0 if KO, 0 if already added or code not valid, >0 if OK
+     *  @param  int         $fk_socpeople       Id of thirdparty contact (if source = 'external') or id of user (if source = 'internal') to link
+     *  @param  int|string  $type_contact       Type of contact (code or id). Must be id or code found into table llx_c_type_contact. For example: SALESREPFOLL
+     *  @param  string      $source             external=Contact extern (llx_socpeople), internal=Contact intern (llx_user)
+     *  @param  int         $notrigger          Disable all triggers
+     *  @return int                             Return integer <0 if KO, 0 if already added or code not valid, >0 if OK
      */
     public function add_contact($fk_socpeople, $type_contact, $source = 'external', $notrigger = 0)
     {
@@ -1330,14 +1304,12 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *    Copy contact from one element to current
      *
-     * @param CommonObject $objFrom Source element
-     * @param string       $source  Nature of contact ('internal' or 'external')
-     *
-     * @return   int                         >0 if OK, <0 if KO
+     *    @param    CommonObject    $objFrom    Source element
+     *    @param    string          $source     Nature of contact ('internal' or 'external')
+     *    @return   int                         >0 if OK, <0 if KO
      */
     public function copy_linked_contact($objFrom, $source = 'internal')
     {
@@ -1352,16 +1324,14 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Update a link to contact line
      *
-     * @param int $rowid           Id of line contact-element
-     * @param int $statut          New status of link
-     * @param int $type_contact_id Id of contact type (not modified if 0)
-     * @param int $fk_socpeople    Id of soc_people to update (not modified if 0)
-     *
-     * @return int                         Return integer <0 if KO, >= 0 if OK
+     *      @param  int     $rowid              Id of line contact-element
+     *      @param  int     $statut             New status of link
+     *      @param  int     $type_contact_id    Id of contact type (not modified if 0)
+     *      @param  int     $fk_socpeople       Id of soc_people to update (not modified if 0)
+     *      @return int                         Return integer <0 if KO, >= 0 if OK
      */
     public function update_contact($rowid, $statut, $type_contact_id = 0, $fk_socpeople = 0)
     {
@@ -1386,14 +1356,12 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *    Delete a link to contact line
      *
-     * @param int $rowid     Id of contact link line to delete
-     * @param int $notrigger Disable all triggers
-     *
-     * @return   int                     >0 if OK, <0 if KO
+     *    @param    int     $rowid          Id of contact link line to delete
+     *    @param    int     $notrigger      Disable all triggers
+     *    @return   int                     >0 if OK, <0 if KO
      */
     public function delete_contact($rowid, $notrigger = 0)
     {
@@ -1438,20 +1406,18 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *    Delete all links between an object $this and all its contacts in llx_element_contact
      *
-     * @param string $source '' or 'internal' or 'external'
-     * @param string $code   Type of contact (code or id)
-     *
-     * @return   int                 Return integer <0 if KO, 0=Nothing done, >0 if OK
+     *    @param    string  $source     '' or 'internal' or 'external'
+     *    @param    string  $code       Type of contact (code or id)
+     *    @return   int                 Return integer <0 if KO, 0=Nothing done, >0 if OK
      */
     public function delete_linked_contact($source = '', $code = '')
     {
         // phpcs:enable
         $listId = '';
-        $temp = [];
+        $temp = array();
         $typeContact = $this->liste_type_contact($source, '', 0, 0, $code);
 
         if (!empty($typeContact)) {
@@ -1481,28 +1447,23 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *    Get array of all contacts for an object
      *
-     * @param int    $statusoflink Status of links to get (-1=all). Not used.
-     * @param string $source       Source of contact: 'external' or 'thirdparty' (llx_socpeople) or 'internal'
-     *                             (llx_user)
-     * @param int    $list         0:Returned array contains all properties, 1:Return array contains just id
-     * @param string $code         Filter on this code of contact type ('SHIPPING', 'BILLING', ...)
-     * @param int    $status       Status of user or company
-     * @param array  $arrayoftcids Array with ID of type of contacts. If we provide this, we can make a
-     *                             ec.fk_c_type_contact in ($arrayoftcids) to avoid link on tc table. TODO Not
-     *                             implemented.
-     *
-     * @return   array|int                   Array of contacts, -1 if error
+     *    @param    int         $statusoflink   Status of links to get (-1=all). Not used.
+     *    @param    string      $source         Source of contact: 'external' or 'thirdparty' (llx_socpeople) or 'internal' (llx_user)
+     *    @param    int         $list           0:Returned array contains all properties, 1:Return array contains just id
+     *    @param    string      $code           Filter on this code of contact type ('SHIPPING', 'BILLING', ...)
+     *    @param    int         $status         Status of user or company
+     *    @param    array       $arrayoftcids   Array with ID of type of contacts. If we provide this, we can make a ec.fk_c_type_contact in ($arrayoftcids) to avoid link on tc table. TODO Not implemented.
+     *    @return   array|int                   Array of contacts, -1 if error
      */
-    public function liste_contact($statusoflink = -1, $source = 'external', $list = 0, $code = '', $status = -1, $arrayoftcids = [])
+    public function liste_contact($statusoflink = -1, $source = 'external', $list = 0, $code = '', $status = -1, $arrayoftcids = array())
     {
         // phpcs:enable
         global $langs;
 
-        $tab = [];
+        $tab = array();
 
         $sql = "SELECT ec.rowid, ec.statut as statuslink, ec.fk_socpeople as id, ec.fk_c_type_contact"; // This field contains id of llx_socpeople or id of llx_user
         if ($source == 'internal') {
@@ -1556,7 +1517,7 @@ abstract class GenericDocument extends Model
                 if (!$list) {
                     $transkey = "TypeContact_" . $obj->element . "_" . $obj->source . "_" . $obj->code;
                     $libelle_type = ($langs->trans($transkey) != $transkey ? $langs->trans($transkey) : $obj->type_label);
-                    $tab[$i] = [
+                    $tab[$i] = array(
                         'parentId' => $this->id,
                         'source' => $obj->source,
                         'socid' => $obj->socid,
@@ -1573,8 +1534,8 @@ abstract class GenericDocument extends Model
                         'code' => $obj->code,
                         'libelle' => $libelle_type,
                         'status' => $obj->statuslink,
-                        'fk_c_type_contact' => $obj->fk_c_type_contact,
-                    ];
+                        'fk_c_type_contact' => $obj->fk_c_type_contact
+                    );
                 } else {
                     $tab[$i] = $obj->id;
                 }
@@ -1594,9 +1555,8 @@ abstract class GenericDocument extends Model
     /**
      *      Update status of a contact linked to object
      *
-     * @param int $rowid Id of link between object and contact
-     *
-     * @return int                 Return integer <0 if KO, >=0 if OK
+     *      @param  int     $rowid      Id of link between object and contact
+     *      @return int                 Return integer <0 if KO, >=0 if OK
      */
     public function swapContactStatus($rowid)
     {
@@ -1623,18 +1583,15 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Return array with list of possible values for type of contacts
      *
-     * @param string $source     'internal', 'external' or 'all'
-     * @param string $order      Sort order by : 'position', 'code', 'rowid'...
-     * @param int    $option     0=Return array id->label, 1=Return array code->label
-     * @param int    $activeonly 0=all status of contact, 1=only the active
-     * @param string $code       Type of contact (Example: 'CUSTOMER', 'SERVICE')
-     *
-     * @return array|null          Array list of type of contacts (id->label if option=0, code->label if option=1), or
-     *                             null if error
+     *      @param  string  $source     'internal', 'external' or 'all'
+     *      @param  string  $order      Sort order by : 'position', 'code', 'rowid'...
+     *      @param  int     $option     0=Return array id->label, 1=Return array code->label
+     *      @param  int     $activeonly 0=all status of contact, 1=only the active
+     *      @param  string  $code       Type of contact (Example: 'CUSTOMER', 'SERVICE')
+     *      @return array|null          Array list of type of contacts (id->label if option=0, code->label if option=1), or null if error
      */
     public function liste_type_contact($source = 'internal', $order = 'position', $option = 0, $activeonly = 0, $code = '')
     {
@@ -1648,7 +1605,7 @@ abstract class GenericDocument extends Model
             $order .= ',code';
         }
 
-        $tab = [];
+        $tab = array();
         $sql = "SELECT DISTINCT tc.rowid, tc.code, tc.libelle as type_label, tc.position";
         $sql .= " FROM " . $this->db->prefix() . "c_type_contact as tc";
         $sql .= " WHERE tc.element='" . $this->db->escape($this->element) . "'";
@@ -1691,28 +1648,26 @@ abstract class GenericDocument extends Model
     /**
      *      Return array with list of possible values for type of contacts
      *
-     * @param string $source         'internal', 'external' or 'all'
-     * @param int    $option         0=Return array id->label, 1=Return array code->label
-     * @param int    $activeonly     0=all status of contact, 1=only the active
-     * @param string $code           Type of contact (Example: 'CUSTOMER', 'SERVICE')
-     * @param string $element        Filter on 1 element type
-     * @param string $excludeelement Exclude 1 element type. Example: 'agenda'
-     *
-     * @return array|null                  Array list of type of contacts (id->label if option=0, code->label if
-     *                                     option=1), or null if error
+     *      @param  string  $source             'internal', 'external' or 'all'
+     *      @param  int     $option             0=Return array id->label, 1=Return array code->label
+     *      @param  int     $activeonly         0=all status of contact, 1=only the active
+     *      @param  string  $code               Type of contact (Example: 'CUSTOMER', 'SERVICE')
+     *      @param  string  $element            Filter on 1 element type
+     *      @param  string  $excludeelement     Exclude 1 element type. Example: 'agenda'
+     *      @return array|null                  Array list of type of contacts (id->label if option=0, code->label if option=1), or null if error
      */
     public function listeTypeContacts($source = 'internal', $option = 0, $activeonly = 0, $code = '', $element = '', $excludeelement = '')
     {
         global $langs, $conf;
 
-        $langs->loadLangs(['bills', 'contracts', 'interventions', 'orders', 'projects', 'propal', 'ticket', 'agenda']);
+        $langs->loadLangs(array('bills', 'contracts', 'interventions', 'orders', 'projects', 'propal', 'ticket', 'agenda'));
 
-        $tab = [];
+        $tab = array();
 
         $sql = "SELECT DISTINCT tc.rowid, tc.code, tc.libelle as type_label, tc.position, tc.element";
         $sql .= " FROM " . $this->db->prefix() . "c_type_contact as tc";
 
-        $sqlWhere = [];
+        $sqlWhere = array();
         if (!empty($element)) {
             $sqlWhere[] = " tc.element='" . $this->db->escape($element) . "'";
         }
@@ -1743,7 +1698,7 @@ abstract class GenericDocument extends Model
         if ($resql) {
             $num = $this->db->num_rows($resql);
             if ($num > 0) {
-                $langs->loadLangs(["propal", "orders", "bills", "suppliers", "contracts", "supplier_proposal"]);
+                $langs->loadLangs(array("propal", "orders", "bills", "suppliers", "contracts", "supplier_proposal"));
 
                 while ($obj = $this->db->fetch_object($resql)) {
                     $modulename = $obj->element;
@@ -1778,17 +1733,16 @@ abstract class GenericDocument extends Model
      *      Example: contact client de livraison ('external', 'SHIPPING')
      *      Example: contact interne suivi paiement ('internal', 'SALESREPFOLL')
      *
-     * @param string $source 'external' or 'internal'
-     * @param string $code   'BILLING', 'SHIPPING', 'SALESREPFOLL', ...
-     * @param int    $status limited to a certain status
-     *
-     * @return array|null          List of id for such contacts, or null if error
+     *      @param  string  $source     'external' or 'internal'
+     *      @param  string  $code       'BILLING', 'SHIPPING', 'SALESREPFOLL', ...
+     *      @param  int     $status     limited to a certain status
+     *      @return array|null          List of id for such contacts, or null if error
      */
     public function getIdContact($source, $code, $status = 0)
     {
         global $conf;
 
-        $result = [];
+        $result = array();
         $i = 0;
         // Particular case for shipping
         if ($this->element == 'shipping' && $this->origin_id != 0) {
@@ -1846,13 +1800,11 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Load object contact with id=$this->contact_id into $this->contact
      *
-     * @param int $contactid Id du contact. Use this->contact_id if empty.
-     *
-     * @return int                     Return integer <0 if KO, >0 if OK
+     *      @param  int     $contactid      Id du contact. Use this->contact_id if empty.
+     *      @return int                     Return integer <0 if KO, >0 if OK
      */
     public function fetch_contact($contactid = null)
     {
@@ -1873,13 +1825,11 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Load the third party of object, from id $this->socid or $this->fk_soc, into this->thirdparty
      *
-     * @param int $force_thirdparty_id Force thirdparty id
-     *
-     * @return     int                             Return integer <0 if KO, >0 if OK
+     *      @param      int     $force_thirdparty_id    Force thirdparty id
+     *      @return     int                             Return integer <0 if KO, >0 if OK
      */
     public function fetch_thirdparty($force_thirdparty_id = 0)
     {
@@ -1919,8 +1869,7 @@ abstract class GenericDocument extends Model
      * Looks for an object with ref matching the wildcard provided
      * It does only work when $this->table_ref_field is set
      *
-     * @param string $ref Wildcard
-     *
+     * @param   string  $ref    Wildcard
      * @return  int             >1 = OK, 0 = Not found or table_ref_field not defined, <0 = KO
      */
     public function fetchOneLike($ref)
@@ -1952,14 +1901,12 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Load data for barcode into properties ->barcode_type*
      *  Properties ->barcode_type that is id of barcode. Type is used to find other properties, but
      *  if it is not defined, ->element must be defined to know default barcode type.
      *
-     * @return     int         Return integer <0 if KO, 0 if can't guess type of barcode (ISBN, EAN13...), >0 if OK
-     *                         (all barcode properties loaded)
+     *  @return     int         Return integer <0 if KO, 0 if can't guess type of barcode (ISBN, EAN13...), >0 if OK (all barcode properties loaded)
      */
     public function fetch_barcode()
     {
@@ -1988,8 +1935,8 @@ abstract class GenericDocument extends Model
                 $resql = $this->db->query($sql);
                 if ($resql) {
                     $obj = $this->db->fetch_object($resql);
-                    $this->barcode_type = $obj->rowid;
-                    $this->barcode_type_code = $obj->code;
+                    $this->barcode_type       = $obj->rowid;
+                    $this->barcode_type_code  = $obj->code;
                     $this->barcode_type_label = $obj->label;
                     $this->barcode_type_coder = $obj->coder;
                     return 1;
@@ -2003,11 +1950,10 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Load the project with id $this->fk_project into this->project
      *
-     * @return     int         Return integer <0 if KO, >=0 if OK
+     *      @return     int         Return integer <0 if KO, >=0 if OK
      */
     public function fetch_project()
     {
@@ -2016,11 +1962,10 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Load the project with id $this->fk_project into this->project
      *
-     * @return     int         Return integer <0 if KO, >=0 if OK
+     *      @return     int         Return integer <0 if KO, >=0 if OK
      */
     public function fetch_projet()
     {
@@ -2043,11 +1988,10 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Load the product with id $this->fk_product into this->product
      *
-     * @return     int         Return integer <0 if KO, >=0 if OK
+     *      @return     int         Return integer <0 if KO, >=0 if OK
      */
     public function fetch_product()
     {
@@ -2066,13 +2010,11 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Load the user with id $userid into this->user
      *
-     * @param int $userid Id du contact
-     *
-     * @return int                     Return integer <0 if KO, >0 if OK
+     *      @param  int     $userid         Id du contact
+     *      @return int                     Return integer <0 if KO, >0 if OK
      */
     public function fetch_user($userid)
     {
@@ -2084,13 +2026,12 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Read linked origin object.
      *  Set ->origin_object
      *  Set also ->expedition or ->livraison or ->commandFournisseur (deprecated)
      *
-     * @return     void
+     *  @return     void
      */
     public function fetch_origin()
     {
@@ -2118,12 +2059,11 @@ abstract class GenericDocument extends Model
     /**
      *  Load object from specific field
      *
-     * @param string $table   Table element or element line
-     * @param string $field   Field selected
-     * @param string $key     Import key
-     * @param string $element Element name
-     *
-     * @return int|false           Return -1 or false if KO, >0 if OK
+     *  @param  string  $table      Table element or element line
+     *  @param  string  $field      Field selected
+     *  @param  string  $key        Import key
+     *  @param  string  $element    Element name
+     *  @return int|false           Return -1 or false if KO, >0 if OK
      */
     public function fetchObjectFrom($table, $field, $key, $element = null)
     {
@@ -2162,11 +2102,10 @@ abstract class GenericDocument extends Model
     /**
      *  Getter generic. Load value from a specific field
      *
-     * @param string $table Table of element or element line
-     * @param int    $id    Element id
-     * @param string $field Field selected
-     *
-     * @return int                 Return integer <0 if KO, >0 if OK
+     *  @param  string  $table      Table of element or element line
+     *  @param  int     $id         Element id
+     *  @param  string  $field      Field selected
+     *  @return int                 Return integer <0 if KO, >0 if OK
      */
     public function getValueFrom($table, $id, $field)
     {
@@ -2189,19 +2128,17 @@ abstract class GenericDocument extends Model
      *  Setter generic. Update a specific field into database.
      *  Warning: Trigger is run only if param trigkey is provided.
      *
-     * @param string      $field         Field to update
-     * @param mixed       $value         New value
-     * @param string      $table         To force other table element or element line (should not be used)
-     * @param int         $id            To force other object id (should not be used)
-     * @param string      $format        Data format ('text', 'int', 'date'). 'text' is used if not defined
-     * @param string      $id_field      To force rowid field name. 'rowid' is used if not defined
-     * @param User|string $fuser         Update the user of last update field with this user. If not provided, current
-     *                                   user is used except if value is 'none'
-     * @param string      $trigkey       Trigger key to run (in most cases something like 'XXX_MODIFY')
-     * @param string      $fk_user_field Name of field to save user id making change
-     *
-     * @return int                         Return integer <0 if KO, >0 if OK
-     * @see updateExtraField()
+     *  @param  string      $field          Field to update
+     *  @param  mixed       $value          New value
+     *  @param  string      $table          To force other table element or element line (should not be used)
+     *  @param  int         $id             To force other object id (should not be used)
+     *  @param  string      $format         Data format ('text', 'int', 'date'). 'text' is used if not defined
+     *  @param  string      $id_field       To force rowid field name. 'rowid' is used if not defined
+     *  @param  User|string $fuser          Update the user of last update field with this user. If not provided, current user is used except if value is 'none'
+     *  @param  string      $trigkey        Trigger key to run (in most cases something like 'XXX_MODIFY')
+     *  @param  string      $fk_user_field  Name of field to save user id making change
+     *  @return int                         Return integer <0 if KO, >0 if OK
+     *  @see updateExtraField()
      */
     public function setValueFrom($field, $value, $table = '', $id = null, $format = '', $id_field = '', $fuser = null, $trigkey = '', $fk_user_field = 'fk_user_modif')
     {
@@ -2225,10 +2162,10 @@ abstract class GenericDocument extends Model
             $field = 'note';
         }
 
-        if (in_array($table, ['actioncomm', 'adherent', 'advtargetemailing', 'cronjob', 'establishment'])) {
+        if (in_array($table, array('actioncomm', 'adherent', 'advtargetemailing', 'cronjob', 'establishment'))) {
             $fk_user_field = 'fk_user_mod';
         }
-        if (in_array($table, ['prelevement_bons'])) {  // TODO Add a field fk_user_modif into llx_prelevement_bons
+        if (in_array($table, array('prelevement_bons'))) {  // TODO Add a field fk_user_modif into llx_prelevement_bons
             $fk_user_field = '';
         }
 
@@ -2326,17 +2263,14 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *      Load properties id_previous and id_next by comparing $fieldid with $this->ref
      *
-     * @param string $filter            Optional SQL filter. Example: "(t.field1 = 'aa' OR t.field2 = 'bb')". Do not
-     *                                  allow user input data here. Use SQL and not Universal Search Filter. @TODO
-     *                                  Replace this with an USF string after changing all ->next_prev_filter
-     * @param string $fieldid           Name of field to use for the select MAX and MIN
-     * @param int    $nodbprefix        Do not include DB prefix to forge table name
-     *
-     * @return int                 Return integer <0 if KO, >0 if OK
+     *      @param  string  $filter     Optional SQL filter. Example: "(t.field1 = 'aa' OR t.field2 = 'bb')". Do not allow user input data here.
+     *                                  Use SQL and not Universal Search Filter. @TODO Replace this with an USF string after changing all ->next_prev_filter
+     *      @param  string  $fieldid    Name of field to use for the select MAX and MIN
+     *      @param  int     $nodbprefix Do not include DB prefix to forge table name
+     *      @return int                 Return integer <0 if KO, >0 if OK
      */
     public function load_previous_next_ref($filter, $fieldid, $nodbprefix = 0)
     {
@@ -2352,7 +2286,7 @@ abstract class GenericDocument extends Model
         }
 
         // For backward compatibility
-        if (in_array($this->table_element, ['facture_rec', 'facture_fourn_rec']) && $fieldid == 'title') {
+        if (in_array($this->table_element, array('facture_rec', 'facture_fourn_rec')) && $fieldid == 'title') {
             $fieldid = 'titre';
         }
 
@@ -2522,16 +2456,13 @@ abstract class GenericDocument extends Model
     /**
      *      Return list of id of contacts of object
      *
-     * @param string $source Source of contact: external (llx_socpeople) or internal (llx_user) or thirdparty
-     *                       (llx_societe)
-     *
-     * @return array               Array of id of contacts (if source=external or internal)
-     *                                  Array of id of third parties with at least one contact on object (if
-     *                                  source=thirdparty)
+     *      @param  string  $source     Source of contact: external (llx_socpeople) or internal (llx_user) or thirdparty (llx_societe)
+     *      @return array               Array of id of contacts (if source=external or internal)
+     *                                  Array of id of third parties with at least one contact on object (if source=thirdparty)
      */
     public function getListContactId($source = 'external')
     {
-        $contactAlreadySelected = [];
+        $contactAlreadySelected = array();
         $tab = $this->liste_contact(-1, $source);
         $num = count($tab);
         $i = 0;
@@ -2550,10 +2481,9 @@ abstract class GenericDocument extends Model
     /**
      *  Link element with a project
      *
-     * @param int $projectid Project id to link element to
-     * @param int $notrigger Disable the trigger
-     *
-     * @return     int                     Return integer <0 if KO, >0 if OK
+     *  @param      int     $projectid      Project id to link element to
+     *  @param      int     $notrigger      Disable the trigger
+     *  @return     int                     Return integer <0 if KO, >0 if OK
      */
     public function setProject($projectid, $notrigger = 0)
     {
@@ -2622,9 +2552,8 @@ abstract class GenericDocument extends Model
     /**
      *  Change the payments methods
      *
-     * @param int $id Id of new payment method
-     *
-     * @return     int             >0 if OK, <0 if KO
+     *  @param      int     $id     Id of new payment method
+     *  @return     int             >0 if OK, <0 if KO
      */
     public function setPaymentMethods($id)
     {
@@ -2690,9 +2619,8 @@ abstract class GenericDocument extends Model
     /**
      *  Change the multicurrency code
      *
-     * @param string $code multicurrency code
-     *
-     * @return     int             >0 if OK, <0 if KO
+     *  @param      string  $code   multicurrency code
+     *  @return     int             >0 if OK, <0 if KO
      */
     public function setMulticurrencyCode($code)
     {
@@ -2707,7 +2635,7 @@ abstract class GenericDocument extends Model
             if ($this->db->query($sql)) {
                 $this->multicurrency_code = $code;
 
-                [$fk_multicurrency, $rate] = MultiCurrency::getIdAndTxFromCode($this->db, $code);
+                list($fk_multicurrency, $rate) = MultiCurrency::getIdAndTxFromCode($this->db, $code);
                 if ($rate) {
                     $this->setMulticurrencyRate($rate, 2);
                 }
@@ -2728,11 +2656,9 @@ abstract class GenericDocument extends Model
     /**
      *  Change the multicurrency rate
      *
-     * @param double $rate multicurrency rate
-     * @param int    $mode mode 1 : amounts in company currency will be recalculated, mode 2 : amounts in foreign
-     *                     currency will be recalculated
-     *
-     * @return     int             >0 if OK, <0 if KO
+     *  @param      double  $rate   multicurrency rate
+     *  @param      int     $mode   mode 1 : amounts in company currency will be recalculated, mode 2 : amounts in foreign currency will be recalculated
+     *  @return     int             >0 if OK, <0 if KO
      */
     public function setMulticurrencyRate($rate, $mode = 1)
     {
@@ -2944,10 +2870,9 @@ abstract class GenericDocument extends Model
     /**
      *  Change the payments terms
      *
-     * @param int   $id              Id of new payment terms
-     * @param float $deposit_percent % of deposit if needed by payment terms
-     *
-     * @return     int                         >0 if OK, <0 if KO
+     *  @param      int     $id                 Id of new payment terms
+     *  @param      float   $deposit_percent    % of deposit if needed by payment terms
+     *  @return     int                         >0 if OK, <0 if KO
      */
     public function setPaymentTerms($id, $deposit_percent = null)
     {
@@ -2972,7 +2897,7 @@ abstract class GenericDocument extends Model
 
             $sql = 'UPDATE ' . $this->db->prefix() . $this->table_element;
             $sql .= " SET " . $fieldname . " = " . (($id > 0 || $id == '0') ? ((int) $id) : 'NULL');
-            if (in_array($this->table_element, ['propal', 'commande', 'societe'])) {
+            if (in_array($this->table_element, array('propal', 'commande', 'societe'))) {
                 $sql .= " , deposit_percent = " . (empty($deposit_percent) ? 'NULL' : "'" . $this->db->escape($deposit_percent) . "'");
             }
             $sql .= ' WHERE rowid=' . ((int) $this->id);
@@ -3001,9 +2926,8 @@ abstract class GenericDocument extends Model
     /**
      *  Change the transport mode methods
      *
-     * @param int $id Id of transport mode
-     *
-     * @return     int             >0 if OK, <0 if KO
+     *  @param      int     $id     Id of transport mode
+     *  @return     int             >0 if OK, <0 if KO
      */
     public function setTransportMode($id)
     {
@@ -3043,9 +2967,8 @@ abstract class GenericDocument extends Model
     /**
      *  Change the retained warranty payments terms
      *
-     * @param int $id Id of new payment terms
-     *
-     * @return     int             >0 if OK, <0 if KO
+     *  @param      int     $id     Id of new payment terms
+     *  @return     int             >0 if OK, <0 if KO
      */
     public function setRetainedWarrantyPaymentTerms($id)
     {
@@ -3074,12 +2997,10 @@ abstract class GenericDocument extends Model
 
     /**
      *  Define delivery address
+     *  @deprecated
      *
-     * @param int $id Address id
-     *
-     * @return     int             Return integer <0 si ko, >0 si ok
-     * @deprecated
-     *
+     *  @param      int     $id     Address id
+     *  @return     int             Return integer <0 si ko, >0 si ok
      */
     public function setDeliveryAddress($id)
     {
@@ -3105,11 +3026,10 @@ abstract class GenericDocument extends Model
     /**
      *  Change the shipping method
      *
-     * @param int  $shipping_method_id Id of shipping method
-     * @param int  $notrigger          0=launch triggers after, 1=disable triggers
-     * @param User $userused           Object user
-     *
-     * @return     int                             1 if OK, 0 if KO
+     *  @param      int     $shipping_method_id     Id of shipping method
+     *  @param      int     $notrigger              0=launch triggers after, 1=disable triggers
+     *  @param      User    $userused               Object user
+     *  @return     int                             1 if OK, 0 if KO
      */
     public function setShippingMethod($shipping_method_id, $notrigger = 0, $userused = null)
     {
@@ -3144,7 +3064,7 @@ abstract class GenericDocument extends Model
         } else {
             if (!$notrigger) {
                 // Call trigger
-                $this->context = ['shippingmethodupdate' => 1];
+                $this->context = array('shippingmethodupdate' => 1);
                 $result = $this->call_trigger(strtoupper(get_class($this)) . '_MODIFY', $userused);
                 if ($result < 0) {
                     $error++;
@@ -3166,9 +3086,8 @@ abstract class GenericDocument extends Model
     /**
      *  Change the warehouse
      *
-     * @param int $warehouse_id Id of warehouse
-     *
-     * @return     int              1 if OK, 0 if KO
+     *  @param      int     $warehouse_id     Id of warehouse
+     *  @return     int              1 if OK, 0 if KO
      */
     public function setWarehouse($warehouse_id)
     {
@@ -3199,10 +3118,9 @@ abstract class GenericDocument extends Model
     /**
      *      Set last model used by doc generator
      *
-     * @param User   $user     User object that make change
-     * @param string $modelpdf Modele name
-     *
-     * @return     int                 Return integer <0 if KO, >0 if OK
+     *      @param      User    $user       User object that make change
+     *      @param      string  $modelpdf   Modele name
+     *      @return     int                 Return integer <0 if KO, >0 if OK
      */
     public function setDocModel($user, $modelpdf)
     {
@@ -3232,11 +3150,10 @@ abstract class GenericDocument extends Model
     /**
      *  Change the bank account
      *
-     * @param int  $fk_account Id of bank account
-     * @param int  $notrigger  0=launch triggers after, 1=disable triggers
-     * @param User $userused   Object user
-     *
-     * @return     int                     1 if OK, 0 if KO
+     *  @param      int     $fk_account     Id of bank account
+     *  @param      int     $notrigger      0=launch triggers after, 1=disable triggers
+     *  @param      User    $userused       Object user
+     *  @return     int                     1 if OK, 0 if KO
      */
     public function setBankAccount($fk_account, $notrigger = 0, $userused = null)
     {
@@ -3302,12 +3219,10 @@ abstract class GenericDocument extends Model
      *  Save a new position (field rang) for details lines.
      *  You can choose to set position for lines with already a position or lines without any position defined.
      *
-     * @param boolean $renum          True to renum all already ordered lines, false to renum only not already ordered
-     *                                lines.
-     * @param string  $rowidorder     ASC or DESC
-     * @param boolean $fk_parent_line Table with fk_parent_line field or not
-     *
-     * @return     int                            Return integer <0 if KO, >0 if OK
+     *  @param      boolean     $renum             True to renum all already ordered lines, false to renum only not already ordered lines.
+     *  @param      string      $rowidorder        ASC or DESC
+     *  @param      boolean     $fk_parent_line    Table with fk_parent_line field or not
+     *  @return     int                            Return integer <0 if KO, >0 if OK
      */
     public function line_order($renum = false, $rowidorder = 'ASC', $fk_parent_line = true)
     {
@@ -3322,7 +3237,7 @@ abstract class GenericDocument extends Model
         }
 
         $fieldposition = 'rang'; // @todo Rename 'rang' into 'position'
-        if (in_array($this->table_element_line, ['bom_bomline', 'ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'])) {
+        if (in_array($this->table_element_line, array('bom_bomline', 'ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
             $fieldposition = 'position';
         }
 
@@ -3347,7 +3262,7 @@ abstract class GenericDocument extends Model
         }
         if ($nl > 0) {
             // The goal of this part is to reorder all lines, with all children lines sharing the same counter that parents.
-            $rows = [];
+            $rows = array();
 
             // We first search all lines that are parent lines (for multilevel details lines)
             $sql = "SELECT rowid FROM " . $this->db->prefix() . $this->table_element_line;
@@ -3390,19 +3305,18 @@ abstract class GenericDocument extends Model
     /**
      *  Get children of line
      *
-     * @param int $id             Id of parent line
-     * @param int $includealltree 0 = 1st level child, 1 = All level child
-     *
-     * @return array                       Array with list of children lines id
+     *  @param  int     $id                 Id of parent line
+     *  @param  int     $includealltree     0 = 1st level child, 1 = All level child
+     *  @return array                       Array with list of children lines id
      */
     public function getChildrenOfLine($id, $includealltree = 0)
     {
         $fieldposition = 'rang'; // @todo Rename 'rang' into 'position'
-        if (in_array($this->table_element_line, ['bom_bomline', 'ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'])) {
+        if (in_array($this->table_element_line, array('bom_bomline', 'ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
             $fieldposition = 'position';
         }
 
-        $rows = [];
+        $rows = array();
 
         $sql = "SELECT rowid FROM " . $this->db->prefix() . $this->table_element_line;
         $sql .= " WHERE " . $this->fk_element . " = " . ((int) $this->id);
@@ -3425,14 +3339,12 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update a line to have a lower rank
      *
-     * @param int     $rowid          Id of line
-     * @param boolean $fk_parent_line Table with fk_parent_line field or not
-     *
-     * @return void
+     *  @param  int         $rowid              Id of line
+     *  @param  boolean     $fk_parent_line     Table with fk_parent_line field or not
+     *  @return void
      */
     public function line_up($rowid, $fk_parent_line = true)
     {
@@ -3447,14 +3359,12 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update a line to have a higher rank
      *
-     * @param int     $rowid          Id of line
-     * @param boolean $fk_parent_line Table with fk_parent_line field or not
-     *
-     * @return void
+     *  @param  int         $rowid              Id of line
+     *  @param  boolean     $fk_parent_line     Table with fk_parent_line field or not
+     *  @return void
      */
     public function line_down($rowid, $fk_parent_line = true)
     {
@@ -3474,16 +3384,15 @@ abstract class GenericDocument extends Model
     /**
      *  Update position of line (rang)
      *
-     * @param int $rowid Id of line
-     * @param int $rang  Position
-     *
-     * @return int                 Return integer <0 if KO, >0 if OK
+     *  @param  int     $rowid      Id of line
+     *  @param  int     $rang       Position
+     *  @return int                 Return integer <0 if KO, >0 if OK
      */
     public function updateRangOfLine($rowid, $rang)
     {
         global $hookmanager;
         $fieldposition = 'rang'; // @todo Rename 'rang' into 'position'
-        if (in_array($this->table_element_line, ['bom_bomline', 'ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'])) {
+        if (in_array($this->table_element_line, array('bom_bomline', 'ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
             $fieldposition = 'position';
         }
 
@@ -3495,7 +3404,7 @@ abstract class GenericDocument extends Model
             dol_print_error($this->db);
             return -1;
         } else {
-            $parameters = ['rowid' => $rowid, 'rang' => $rang, 'fieldposition' => $fieldposition];
+            $parameters = array('rowid' => $rowid, 'rang' => $rang, 'fieldposition' => $fieldposition);
             $action = '';
             $reshook = $hookmanager->executeHooks('afterRankOfLineUpdate', $parameters, $this, $action);
             return 1;
@@ -3503,13 +3412,11 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update position of line with ajax (rang)
      *
-     * @param array $rows Array of rows
-     *
-     * @return void
+     *  @param  array   $rows   Array of rows
+     *  @return void
      */
     public function line_ajaxorder($rows)
     {
@@ -3523,16 +3430,15 @@ abstract class GenericDocument extends Model
     /**
      *  Update position of line up (rang)
      *
-     * @param int $rowid Id of line
-     * @param int $rang  Position
-     *
-     * @return void
+     *  @param  int     $rowid      Id of line
+     *  @param  int     $rang       Position
+     *  @return void
      */
     public function updateLineUp($rowid, $rang)
     {
         if ($rang > 1) {
             $fieldposition = 'rang';
-            if (in_array($this->table_element_line, ['ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'])) {
+            if (in_array($this->table_element_line, array('ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
                 $fieldposition = 'position';
             }
 
@@ -3554,17 +3460,16 @@ abstract class GenericDocument extends Model
     /**
      *  Update position of line down (rang)
      *
-     * @param int $rowid Id of line
-     * @param int $rang  Position
-     * @param int $max   Max
-     *
-     * @return void
+     *  @param  int     $rowid      Id of line
+     *  @param  int     $rang       Position
+     *  @param  int     $max        Max
+     *  @return void
      */
     public function updateLineDown($rowid, $rang, $max)
     {
         if ($rang < $max) {
             $fieldposition = 'rang';
-            if (in_array($this->table_element_line, ['ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'])) {
+            if (in_array($this->table_element_line, array('ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
                 $fieldposition = 'position';
             }
 
@@ -3586,14 +3491,13 @@ abstract class GenericDocument extends Model
     /**
      *  Get position of line (rang)
      *
-     * @param int $rowid Id of line
-     *
-     * @return     int                 Value of rang in table of lines
+     *  @param      int     $rowid      Id of line
+     *  @return     int                 Value of rang in table of lines
      */
     public function getRangOfLine($rowid)
     {
         $fieldposition = 'rang';
-        if (in_array($this->table_element_line, ['ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'])) {
+        if (in_array($this->table_element_line, array('ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
             $fieldposition = 'position';
         }
 
@@ -3613,14 +3517,13 @@ abstract class GenericDocument extends Model
     /**
      *  Get rowid of the line relative to its position
      *
-     * @param int $rang Rang value
-     *
-     * @return     int                 Rowid of the line
+     *  @param      int     $rang       Rang value
+     *  @return     int                 Rowid of the line
      */
     public function getIdOfLine($rang)
     {
         $fieldposition = 'rang';
-        if (in_array($this->table_element_line, ['ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'])) {
+        if (in_array($this->table_element_line, array('ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
             $fieldposition = 'position';
         }
 
@@ -3637,19 +3540,17 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Get max value used for position of line (rang)
      *
-     * @param int $fk_parent_line Parent line id
-     *
-     * @return     int                         Max value of rang in table of lines
+     *  @param      int     $fk_parent_line     Parent line id
+     *  @return     int                         Max value of rang in table of lines
      */
     public function line_max($fk_parent_line = 0)
     {
         // phpcs:enable
         $positionfield = 'rang';
-        if (in_array($this->table_element, ['bom_bom', 'product_attribute'])) {
+        if (in_array($this->table_element, array('bom_bom', 'product_attribute'))) {
             $positionfield = 'position';
         }
 
@@ -3686,13 +3587,11 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update external ref of element
      *
-     * @param string $ref_ext Update field ref_ext
-     *
-     * @return     int                     Return integer <0 if KO, >0 if OK
+     *  @param      string      $ref_ext    Update field ref_ext
+     *  @return     int                     Return integer <0 if KO, >0 if OK
      */
     public function update_ref_ext($ref_ext)
     {
@@ -3717,15 +3616,13 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update note of element
      *
-     * @param string $note      New value for note
-     * @param string $suffix    '', '_public' or '_private'
-     * @param int    $notrigger 1=Does not execute triggers, 0=execute triggers
-     *
-     * @return     int                     Return integer <0 if KO, >0 if OK
+     *  @param      string      $note       New value for note
+     *  @param      string      $suffix     '', '_public' or '_private'
+     *  @param      int         $notrigger  1=Does not execute triggers, 0=execute triggers
+     *  @return     int                     Return integer <0 if KO, >0 if OK
      */
     public function update_note($note, $suffix = '', $notrigger = 0)
     {
@@ -3737,7 +3634,7 @@ abstract class GenericDocument extends Model
             dol_syslog(get_class($this) . "::update_note was called on object with property table_element not defined", LOG_ERR);
             return -1;
         }
-        if (!in_array($suffix, ['', '_public', '_private'])) {
+        if (!in_array($suffix, array('', '_public', '_private'))) {
             $this->error = 'update_note Parameter suffix must be empty, \'_private\' or \'_public\'';
             dol_syslog(get_class($this) . "::update_note Parameter suffix must be empty, '_private' or '_public'", LOG_ERR);
             return -2;
@@ -3749,8 +3646,8 @@ abstract class GenericDocument extends Model
         if ($this->table_element == 'product' && $newsuffix == '_private') {
             $newsuffix = '';
         }
-        if (in_array($this->table_element, ['actioncomm', 'adherent', 'advtargetemailing', 'cronjob', 'establishment'])) {
-            $fieldusermod = "fk_user_mod";
+        if (in_array($this->table_element, array('actioncomm', 'adherent', 'advtargetemailing', 'cronjob', 'establishment'))) {
+            $fieldusermod =  "fk_user_mod";
         } elseif ($this->table_element == 'ecm_files') {
             $fieldusermod = "fk_user_m";
         } else {
@@ -3807,12 +3704,10 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update public note (kept for backward compatibility)
      *
-     * @param string $note New value for note
-     *
+     * @param      string       $note       New value for note
      * @return     int                      Return integer <0 if KO, >0 if OK
      * @deprecated
      * @see update_note()
@@ -3824,30 +3719,22 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update total_ht, total_ttc, total_vat, total_localtax1, total_localtax2 for an object (sum of lines).
      *  Must be called at end of methods addline or updateline.
      *
-     * @param int     $exclspec         >0 = Exclude special product (product_type=9)
-     * @param string  $roundingadjust   'none'=Do nothing, 'auto'=Use default method
-     *                                  (MAIN_ROUNDOFTOTAL_NOT_TOTALOFROUND if defined, or '0'), '0'=Force mode Total
-     *                                  of rounding, '1'=Force mode Rounding of total
-     * @param int     $nodatabaseupdate 1=Do not update database total fields of the main object. Update only
-     *                                  properties in memory. Can be used to save SQL when this method is called
-     *                                  several times, so we can do it only once at end.
-     * @param Societe $seller           If roundingadjust is '0' or '1' or maybe 'auto', it means we recalculate total
-     *                                  for lines before calculating total for object and for this, we need seller
-     *                                  object (used to analyze lines to check corrupted data).
-     *
-     * @return int                         Return integer <0 if KO, >0 if OK
+     *  @param  int     $exclspec           >0 = Exclude special product (product_type=9)
+     *  @param  string  $roundingadjust     'none'=Do nothing, 'auto'=Use default method (MAIN_ROUNDOFTOTAL_NOT_TOTALOFROUND if defined, or '0'), '0'=Force mode Total of rounding, '1'=Force mode Rounding of total
+     *  @param  int     $nodatabaseupdate   1=Do not update database total fields of the main object. Update only properties in memory. Can be used to save SQL when this method is called several times, so we can do it only once at end.
+     *  @param  Societe $seller             If roundingadjust is '0' or '1' or maybe 'auto', it means we recalculate total for lines before calculating total for object and for this, we need seller object (used to analyze lines to check corrupted data).
+     *  @return int                         Return integer <0 if KO, >0 if OK
      */
     public function update_price($exclspec = 0, $roundingadjust = 'none', $nodatabaseupdate = 0, $seller = null)
     {
         // phpcs:enable
         global $conf, $hookmanager, $action;
 
-        $parameters = ['exclspec' => $exclspec, 'roundingadjust' => $roundingadjust, 'nodatabaseupdate' => $nodatabaseupdate, 'seller' => $seller];
+        $parameters = array('exclspec' => $exclspec, 'roundingadjust' => $roundingadjust, 'nodatabaseupdate' => $nodatabaseupdate, 'seller' => $seller);
         $reshook = $hookmanager->executeHooks('updateTotalPrice', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook > 0) {
             return 1; // replacement code
@@ -3934,17 +3821,17 @@ abstract class GenericDocument extends Model
 
         $resql = $this->db->query($sql);
         if ($resql) {
-            $this->total_ht = 0;
+            $this->total_ht  = 0;
             $this->total_tva = 0;
             $this->total_localtax1 = 0;
             $this->total_localtax2 = 0;
             $this->total_ttc = 0;
-            $total_ht_by_vats = [];
-            $total_tva_by_vats = [];
-            $total_ttc_by_vats = [];
+            $total_ht_by_vats  = array();
+            $total_tva_by_vats = array();
+            $total_ttc_by_vats = array();
             $this->multicurrency_total_ht = 0;
-            $this->multicurrency_total_tva = 0;
-            $this->multicurrency_total_ttc = 0;
+            $this->multicurrency_total_tva  = 0;
+            $this->multicurrency_total_ttc  = 0;
 
             $this->db->begin();
 
@@ -3954,12 +3841,12 @@ abstract class GenericDocument extends Model
                 $obj = $this->db->fetch_object($resql);
 
                 // Note: There is no check on detail line and no check on total, if $forcedroundingmode = 'none'
-                $parameters = ['fk_element' => $obj->rowid];
+                $parameters = array('fk_element' => $obj->rowid);
                 $reshook = $hookmanager->executeHooks('changeRoundingMode', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 
                 if (empty($reshook) && $forcedroundingmode == '0') {    // Check if data on line are consistent. This may solve lines that were not consistent because set with $forcedroundingmode='auto'
                     // This part of code is to fix data. We should not call it too often.
-                    $localtax_array = [$obj->localtax1_type, $obj->localtax1_tx, $obj->localtax2_type, $obj->localtax2_tx];
+                    $localtax_array = array($obj->localtax1_type, $obj->localtax1_tx, $obj->localtax2_type, $obj->localtax2_tx);
                     $tmpcal = calcul_price_total($obj->qty, $obj->up, $obj->remise_percent, $obj->vatrate, $obj->localtax1_tx, $obj->localtax2_tx, 0, 'HT', $obj->info_bits, $obj->product_type, $seller, $localtax_array, (isset($obj->situation_percent) ? $obj->situation_percent : 100), $multicurrency_tx);
 
                     $diff_when_using_price_ht = price2num($tmpcal[1] - $obj->total_tva, 'MT', 1); // If price was set with tax price and unit price HT has a low number of digits, then we may have a diff on recalculation from unit price HT.
@@ -3991,14 +3878,14 @@ abstract class GenericDocument extends Model
                     }
                 }
 
-                $this->total_ht += $obj->total_ht; // The field visible at end of line detail
-                $this->total_tva += $obj->total_tva;
+                $this->total_ht        += $obj->total_ht; // The field visible at end of line detail
+                $this->total_tva       += $obj->total_tva;
                 $this->total_localtax1 += $obj->total_localtax1;
                 $this->total_localtax2 += $obj->total_localtax2;
-                $this->total_ttc += $obj->total_ttc;
-                $this->multicurrency_total_ht += $obj->multicurrency_total_ht; // The field visible at end of line detail
-                $this->multicurrency_total_tva += $obj->multicurrency_total_tva;
-                $this->multicurrency_total_ttc += $obj->multicurrency_total_ttc;
+                $this->total_ttc       += $obj->total_ttc;
+                $this->multicurrency_total_ht        += $obj->multicurrency_total_ht; // The field visible at end of line detail
+                $this->multicurrency_total_tva       += $obj->multicurrency_total_tva;
+                $this->multicurrency_total_ttc       += $obj->multicurrency_total_ttc;
 
                 if (!isset($total_ht_by_vats[$obj->vatrate])) {
                     $total_ht_by_vats[$obj->vatrate] = 0;
@@ -4009,7 +3896,7 @@ abstract class GenericDocument extends Model
                 if (!isset($total_ttc_by_vats[$obj->vatrate])) {
                     $total_ttc_by_vats[$obj->vatrate] = 0;
                 }
-                $total_ht_by_vats[$obj->vatrate] += $obj->total_ht;
+                $total_ht_by_vats[$obj->vatrate]  += $obj->total_ht;
                 $total_tva_by_vats[$obj->vatrate] += $obj->total_tva;
                 $total_ttc_by_vats[$obj->vatrate] += $obj->total_ttc;
 
@@ -4084,7 +3971,7 @@ abstract class GenericDocument extends Model
             $fieldlocaltax2 = 'localtax2';
             $fieldttc = 'total_ttc';
             // Specific code for backward compatibility with old field names
-            if (in_array($this->element, ['propal', 'commande', 'facture', 'facturerec', 'supplier_proposal', 'order_supplier', 'facture_fourn', 'invoice_supplier', 'invoice_supplier_rec', 'expensereport'])) {
+            if (in_array($this->element, array('propal', 'commande', 'facture', 'facturerec', 'supplier_proposal', 'order_supplier', 'facture_fourn', 'invoice_supplier', 'invoice_supplier_rec', 'expensereport'))) {
                 $fieldtva = 'total_tva';
             }
 
@@ -4124,17 +4011,15 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Add an object link into llx_element_element.
      *
-     * @param string $origin    Linked element type
-     * @param int    $origin_id Linked element id
-     * @param User   $f_user    User that create
-     * @param int    $notrigger 1=Does not execute triggers, 0=execute triggers
-     *
-     * @return     int                 Return integer <=0 if KO, >0 if OK
-     * @see        fetchObjectLinked(), updateObjectLinked(), deleteObjectLinked()
+     *  @param      string  $origin     Linked element type
+     *  @param      int     $origin_id  Linked element id
+     *  @param      User    $f_user     User that create
+     *  @param      int     $notrigger  1=Does not execute triggers, 0=execute triggers
+     *  @return     int                 Return integer <=0 if KO, >0 if OK
+     *  @see        fetchObjectLinked(), updateObjectLinked(), deleteObjectLinked()
      */
     public function add_object_linked($origin = null, $origin_id = null, $f_user = null, $notrigger = 0)
     {
@@ -4161,7 +4046,7 @@ abstract class GenericDocument extends Model
         // Add module part to target type
         $targettype = $this->getElementType();
 
-        $parameters = ['targettype' => $targettype];
+        $parameters = array('targettype' => $targettype);
         // Hook for explicitly set the targettype if it must be different than $this->element
         $reshook = $hookmanager->executeHooks('setLinkedObjectSourceTargetType', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook > 0) {
@@ -4220,7 +4105,7 @@ abstract class GenericDocument extends Model
     {
         // Elements of the core modules having a `$module` property but for which we may not want to prefix the element name with the module name for finding the linked object in llx_element_element.
         // It's because existing llx_element_element entries inserted prior to this modification (version <=14.2) may already use the element name alone in fk_source or fk_target (without the module name prefix).
-        $coreModule = ['knowledgemanagement', 'partnership', 'workstation', 'ticket', 'recruitment', 'eventorganization', 'asset'];
+        $coreModule = array('knowledgemanagement', 'partnership', 'workstation', 'ticket', 'recruitment', 'eventorganization', 'asset');
         // Add module part to target type if object has $module property and isn't in core modules.
         return ((!empty($this->module) && !in_array($this->module, $coreModule)) ? $this->module . '_' : '') . $this->element;
     }
@@ -4237,20 +4122,16 @@ abstract class GenericDocument extends Model
      *  - source id+type + target type -> will get list of targets of the type linked to source
      *  - target id+type + source type -> will get list of sources of the type linked to target
      *
-     * @param int        $sourceid        Object source id (if not defined, $this->id)
-     * @param string     $sourcetype      Object source type (if not defined, $this->element)
-     * @param int        $targetid        Object target id (if not defined, $this->id)
-     * @param string     $targettype      Object target type (if not defined, $this->element)
-     * @param string     $clause          'OR' or 'AND' clause used when both source id and target id are provided
-     * @param int        $alsosametype    0=Return only links to object that differs from source type. 1=Include also
-     *                                    link to objects of same type.
-     * @param string     $orderby         SQL 'ORDER BY' clause
-     * @param int|string $loadalsoobjects Load also the array $this->linkedObjects. Use 0 to not load (increase
-     *                                    performances), Use 1 to load all, Use value of type ('facture', 'facturerec',
-     *                                    ...) to load only a type of object.
-     *
-     * @return int                             Return integer <0 if KO, >0 if OK
-     * @see    add_object_linked(), updateObjectLinked(), deleteObjectLinked()
+     *  @param  int         $sourceid           Object source id (if not defined, $this->id)
+     *  @param  string      $sourcetype         Object source type (if not defined, $this->element)
+     *  @param  int         $targetid           Object target id (if not defined, $this->id)
+     *  @param  string      $targettype         Object target type (if not defined, $this->element)
+     *  @param  string      $clause             'OR' or 'AND' clause used when both source id and target id are provided
+     *  @param  int         $alsosametype       0=Return only links to object that differs from source type. 1=Include also link to objects of same type.
+     *  @param  string      $orderby            SQL 'ORDER BY' clause
+     *  @param  int|string  $loadalsoobjects    Load also the array $this->linkedObjects. Use 0 to not load (increase performances), Use 1 to load all, Use value of type ('facture', 'facturerec', ...) to load only a type of object.
+     *  @return int                             Return integer <0 if KO, >0 if OK
+     *  @see    add_object_linked(), updateObjectLinked(), deleteObjectLinked()
      */
     public function fetchObjectLinked($sourceid = null, $sourcetype = '', $targetid = null, $targettype = '', $clause = 'OR', $alsosametype = 1, $orderby = 'sourcetype', $loadalsoobjects = 1)
     {
@@ -4263,15 +4144,15 @@ abstract class GenericDocument extends Model
             return 1;
         }
 
-        $this->linkedObjectsIds = [];
-        $this->linkedObjects = [];
+        $this->linkedObjectsIds = array();
+        $this->linkedObjects = array();
 
         $justsource = false;
         $justtarget = false;
         $withtargettype = false;
         $withsourcetype = false;
 
-        $parameters = ['sourcetype' => $sourcetype, 'sourceid' => $sourceid, 'targettype' => $targettype, 'targetid' => $targetid];
+        $parameters = array('sourcetype' => $sourcetype, 'sourceid' => $sourceid, 'targettype' => $targettype, 'targetid' => $targetid);
         // Hook for explicitly set the targettype if it must be differtent than $this->element
         $reshook = $hookmanager->executeHooks('setLinkedObjectSourceTargetType', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook > 0) {
@@ -4399,11 +4280,10 @@ abstract class GenericDocument extends Model
     }
 
     /**
-     *  Clear the cache saying that all linked object were already loaded. So next fetchObjectLinked will reload all
-     *  links.
+     *  Clear the cache saying that all linked object were already loaded. So next fetchObjectLinked will reload all links.
      *
-     * @return int                     Return integer <0 if KO, >0 if OK
-     * @see    fetchObjectLinked()
+     *  @return int                     Return integer <0 if KO, >0 if OK
+     *  @see    fetchObjectLinked()
      */
     public function clearObjectLinkedCache()
     {
@@ -4417,15 +4297,14 @@ abstract class GenericDocument extends Model
     /**
      *  Update object linked of a current object
      *
-     * @param int    $sourceid   Object source id
-     * @param string $sourcetype Object source type
-     * @param int    $targetid   Object target id
-     * @param string $targettype Object target type
-     * @param User   $f_user     User that create
-     * @param int    $notrigger  1=Does not execute triggers, 0= execute triggers
-     *
-     * @return                         int >0 if OK, <0 if KO
-     * @see    add_object_linked(), fetObjectLinked(), deleteObjectLinked()
+     *  @param  int     $sourceid       Object source id
+     *  @param  string  $sourcetype     Object source type
+     *  @param  int     $targetid       Object target id
+     *  @param  string  $targettype     Object target type
+     *  @param  User    $f_user         User that create
+     *  @param  int     $notrigger      1=Does not execute triggers, 0= execute triggers
+     *  @return                         int >0 if OK, <0 if KO
+     *  @see    add_object_linked(), fetObjectLinked(), deleteObjectLinked()
      */
     public function updateObjectLinked($sourceid = null, $sourcetype = '', $targetid = null, $targettype = '', $f_user = null, $notrigger = 0)
     {
@@ -4487,16 +4366,15 @@ abstract class GenericDocument extends Model
     /**
      *  Delete all links between an object $this
      *
-     * @param int    $sourceid   Object source id
-     * @param string $sourcetype Object source type
-     * @param int    $targetid   Object target id
-     * @param string $targettype Object target type
-     * @param int    $rowid      Row id of line to delete. If defined, other parameters are not used.
-     * @param User   $f_user     User that create
-     * @param int    $notrigger  1=Does not execute triggers, 0= execute triggers
-     *
-     * @return                         int >0 if OK, <0 if KO
-     * @see    add_object_linked(), updateObjectLinked(), fetchObjectLinked()
+     *  @param  int     $sourceid       Object source id
+     *  @param  string  $sourcetype     Object source type
+     *  @param  int     $targetid       Object target id
+     *  @param  string  $targettype     Object target type
+     *  @param  int     $rowid          Row id of line to delete. If defined, other parameters are not used.
+     *  @param  User    $f_user         User that create
+     *  @param  int     $notrigger      1=Does not execute triggers, 0= execute triggers
+     *  @return                         int >0 if OK, <0 if KO
+     *  @see    add_object_linked(), updateObjectLinked(), fetchObjectLinked()
      */
     public function deleteObjectLinked($sourceid = null, $sourcetype = '', $targetid = null, $targettype = '', $rowid = 0, $f_user = null, $notrigger = 0)
     {
@@ -4571,11 +4449,10 @@ abstract class GenericDocument extends Model
     /**
      * Function used to get an array with all items linked to an object id in association table
      *
-     * @param int    $fk_object_where id of object we need to get linked items
-     * @param string $field_select    name of field we need to get a list
-     * @param string $field_where     name of field of object we need to get linked items
-     * @param string $table_element   name of association table
-     *
+     * @param   int     $fk_object_where        id of object we need to get linked items
+     * @param   string  $field_select           name of field we need to get a list
+     * @param   string  $field_where            name of field of object we need to get linked items
+     * @param   string  $table_element          name of association table
      * @return  array|int                       Array of record, -1 if empty
      */
     public static function getAllItemsLinkedByObjectID($fk_object_where, $field_select, $field_where, $table_element)
@@ -4592,7 +4469,7 @@ abstract class GenericDocument extends Model
         $sql = "SELECT " . $field_select . " FROM " . $db->prefix() . $table_element . " WHERE " . $field_where . " = " . ((int) $fk_object_where);
         $resql = $db->query($sql);
 
-        $TRes = [];
+        $TRes = array();
         if (!empty($resql)) {
             while ($res = $db->fetch_object($resql)) {
                 $TRes[] = $res->{$field_select};
@@ -4605,10 +4482,9 @@ abstract class GenericDocument extends Model
     /**
      * Count items linked to an object id in association table
      *
-     * @param int    $fk_object_where id of object we need to get linked items
-     * @param string $field_where     name of field of object we need to get linked items
-     * @param string $table_element   name of association table
-     *
+     * @param   int     $fk_object_where        id of object we need to get linked items
+     * @param   string  $field_where            name of field of object we need to get linked items
+     * @param   string  $table_element          name of association table
      * @return  array|int                       Array of record, -1 if empty
      */
     public static function getCountOfItemsLinkedByObjectID($fk_object_where, $field_where, $table_element)
@@ -4635,10 +4511,9 @@ abstract class GenericDocument extends Model
     /**
      * Function used to remove all items linked to an object id in association table
      *
-     * @param int    $fk_object_where id of object we need to remove linked items
-     * @param string $field_where     name of field of object we need to delete linked items
-     * @param string $table_element   name of association table
-     *
+     * @param   int     $fk_object_where        id of object we need to remove linked items
+     * @param   string  $field_where            name of field of object we need to delete linked items
+     * @param   string  $table_element          name of association table
      * @return  int                             Return integer <0 if KO, 0 if nothing done, >0 if OK and something done
      */
     public static function deleteAllItemsLinkedByObjectID($fk_object_where, $field_where, $table_element)
@@ -4662,14 +4537,12 @@ abstract class GenericDocument extends Model
     /**
      *      Set status of an object.
      *
-     * @param int    $status      Status to set
-     * @param int    $elementId   Id of element to force (use this->id by default if null)
-     * @param string $elementType Type of element to force (use this->table_element by default)
-     * @param string $trigkey     Trigger key to use for trigger. Use '' means automatic but it is not recommended and
-     *                            is deprecated.
-     * @param string $fieldstatus Name of status field in this->table_element
-     *
-     * @return int                     Return integer <0 if KO, >0 if OK
+     *      @param  int     $status         Status to set
+     *      @param  int     $elementId      Id of element to force (use this->id by default if null)
+     *      @param  string  $elementType    Type of element to force (use this->table_element by default)
+     *      @param  string  $trigkey        Trigger key to use for trigger. Use '' means automatic but it is not recommended and is deprecated.
+     *      @param  string  $fieldstatus    Name of status field in this->table_element
+     *      @return int                     Return integer <0 if KO, >0 if OK
      */
     public function setStatut($status, $elementId = null, $elementType = '', $trigkey = '', $fieldstatus = 'fk_statut')
     {
@@ -4711,13 +4584,13 @@ abstract class GenericDocument extends Model
         $sql .= " SET " . $fieldstatus . " = " . ((int) $status);
         // If status = 1 = validated, update also fk_user_valid
         // TODO Replace the test on $elementTable by doing a test on existence of the field in $this->fields
-        if ($status == 1 && in_array($elementTable, ['expensereport', 'inventory'])) {
+        if ($status == 1 && in_array($elementTable, array('expensereport', 'inventory'))) {
             $sql .= ", fk_user_valid = " . ((int) $user->id);
         }
-        if ($status == 1 && in_array($elementTable, ['expensereport'])) {
+        if ($status == 1 && in_array($elementTable, array('expensereport'))) {
             $sql .= ", date_valid = '" . $this->db->idate(dol_now()) . "'";
         }
-        if ($status == 1 && in_array($elementTable, ['inventory'])) {
+        if ($status == 1 && in_array($elementTable, array('inventory'))) {
             $sql .= ", date_validation = '" . $this->db->idate(dol_now()) . "'";
         }
         $sql .= " WHERE rowid = " . ((int) $elementId);
@@ -4797,10 +4670,9 @@ abstract class GenericDocument extends Model
     /**
      *  Load type of canvas of an object if it exists
      *
-     * @param int    $id  Record id
-     * @param string $ref Record ref
-     *
-     * @return     int             Return integer <0 if KO, 0 if nothing done, >0 if OK
+     *  @param      int     $id     Record id
+     *  @param      string  $ref    Record ref
+     *  @return     int             Return integer <0 if KO, 0 if nothing done, >0 if OK
      */
     public function getCanvas($id = 0, $ref = '')
     {
@@ -4845,9 +4717,8 @@ abstract class GenericDocument extends Model
     /**
      *  Get special code of a line
      *
-     * @param int $lineid Id of line
-     *
-     * @return int                 Special code
+     *  @param  int     $lineid     Id of line
+     *  @return int                 Special code
      */
     public function getSpecialCode($lineid)
     {
@@ -4866,10 +4737,9 @@ abstract class GenericDocument extends Model
      *  Function to check if an object is used by others (by children).
      *  Check is done into this->childtables. There is no check into llx_element_element.
      *
-     * @param int $id     Force id of object
-     * @param int $entity Force entity to check
-     *
-     * @return int                 Return integer <0 if KO, 0 if not used, >0 if already used
+     *  @param  int     $id         Force id of object
+     *  @param  int     $entity     Force entity to check
+     *  @return int                 Return integer <0 if KO, 0 if not used, >0 if already used
      */
     public function isObjectUsed($id = 0, $entity = 0)
     {
@@ -4953,11 +4823,8 @@ abstract class GenericDocument extends Model
     /**
      *  Function to say how many lines object contains
      *
-     * @param int $predefined -1=All, 0=Count free product/service only, 1=Count predefined product/service only,
-     *                        2=Count predefined product, 3=Count predefined service
-     *
-     * @return int                     Return integer <0 if KO, 0 if no predefined products, nb of lines with
-     *                                 predefined products if found
+     *  @param  int     $predefined     -1=All, 0=Count free product/service only, 1=Count predefined product/service only, 2=Count predefined product, 3=Count predefined service
+     *  @return int                     Return integer <0 if KO, 0 if no predefined products, nb of lines with predefined products if found
      */
     public function hasProductsOrServices($predefined = -1)
     {
@@ -5031,8 +4898,7 @@ abstract class GenericDocument extends Model
 
     /**
      * Return into unit=0, the calculated total of weight and volume of all lines * qty
-     * Calculate by adding weight and volume of each product line, so properties
-     * ->volume/volume_units/weight/weight_units must be loaded on line.
+     * Calculate by adding weight and volume of each product line, so properties ->volume/volume_units/weight/weight_units must be loaded on line.
      *
      * @return  array                           array('weight'=>...,'volume'=>...)
      */
@@ -5125,14 +4991,14 @@ abstract class GenericDocument extends Model
             }
         }
 
-        return ['weight' => $totalWeight, 'volume' => $totalVolume, 'ordered' => $totalOrdered, 'toship' => $totalToShip];
+        return array('weight' => $totalWeight, 'volume' => $totalVolume, 'ordered' => $totalOrdered, 'toship' => $totalToShip);
     }
 
 
     /**
      *  Set extra parameters
      *
-     * @return int      Return integer <0 if KO, >0 if OK
+     *  @return int      Return integer <0 if KO, >0 if OK
      */
     public function setExtraParameters()
     {
@@ -5166,12 +5032,11 @@ abstract class GenericDocument extends Model
     /**
      *  Show add free and predefined products/services form
      *
-     * @param int     $dateSelector  1=Show also date range input fields
-     * @param Societe $seller        Object thirdparty who sell
-     * @param Societe $buyer         Object thirdparty who buy
-     * @param string  $defaulttpldir Directory where to find the template
-     *
-     * @return void
+     *  @param  int             $dateSelector       1=Show also date range input fields
+     *  @param  Societe         $seller             Object thirdparty who sell
+     *  @param  Societe         $buyer              Object thirdparty who buy
+     *  @param  string          $defaulttpldir      Directory where to find the template
+     *  @return void
      */
     public function formAddObjectLine($dateSelector, $seller, $buyer, $defaulttpldir = '/core/tpl')
     {
@@ -5187,7 +5052,7 @@ abstract class GenericDocument extends Model
         // Output template part (modules that overwrite templates must declare this into descriptor)
         // Use global variables + $dateSelector + $seller and $buyer
         // Note: This is deprecated. If you need to overwrite the tpl file, use instead the hook 'formAddObjectLine'.
-        $dirtpls = array_merge($conf->modules_parts['tpl'], [$defaulttpldir]);
+        $dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
         foreach ($dirtpls as $module => $reldir) {
             if (!empty($module)) {
                 $tpl = dol_buildpath($reldir . '/objectline_create.tpl.php');
@@ -5217,14 +5082,13 @@ abstract class GenericDocument extends Model
      *  If lines are into a template, title must also be into a template
      *  But for the moment we don't know if it's possible as we keep a method available on overloaded objects.
      *
-     * @param string  $action        Action code
-     * @param Societe $seller        Object of seller third party
-     * @param Societe $buyer         Object of buyer third party
-     * @param int     $selected      ID line selected
-     * @param int     $dateSelector  1=Show also date range input fields
-     * @param string  $defaulttpldir Directory where to find the template
-     *
-     * @return void
+     *  @param  string      $action             Action code
+     *  @param  Societe     $seller             Object of seller third party
+     *  @param  Societe     $buyer              Object of buyer third party
+     *  @param  int         $selected           ID line selected
+     *  @param  int         $dateSelector       1=Show also date range input fields
+     *  @param  string      $defaulttpldir      Directory where to find the template
+     *  @return void
      */
     public function printObjectLines($action, $seller, $buyer, $selected = 0, $dateSelector = 0, $defaulttpldir = '/core/tpl')
     {
@@ -5234,7 +5098,7 @@ abstract class GenericDocument extends Model
 
         // Define usemargins
         $usemargins = 0;
-        if (isModEnabled('margin') && !empty($this->element) && in_array($this->element, ['facture', 'facturerec', 'propal', 'commande'])) {
+        if (isModEnabled('margin') && !empty($this->element) && in_array($this->element, array('facture', 'facturerec', 'propal', 'commande'))) {
             $usemargins = 1;
         }
 
@@ -5247,13 +5111,13 @@ abstract class GenericDocument extends Model
         }
         $extrafields->fetch_name_optionals_label($this->table_element_line);
 
-        $parameters = ['num' => $num, 'dateSelector' => $dateSelector, 'seller' => $seller, 'buyer' => $buyer, 'selected' => $selected, 'table_element_line' => $this->table_element_line];
+        $parameters = array('num' => $num, 'dateSelector' => $dateSelector, 'seller' => $seller, 'buyer' => $buyer, 'selected' => $selected, 'table_element_line' => $this->table_element_line);
         $reshook = $hookmanager->executeHooks('printObjectLineTitle', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
         if (empty($reshook)) {
             // Output template part (modules that overwrite templates must declare this into descriptor)
             // Use global variables + $dateSelector + $seller and $buyer
             // Note: This is deprecated. If you need to overwrite the tpl file, use instead the hook.
-            $dirtpls = array_merge($conf->modules_parts['tpl'], [$defaulttpldir]);
+            $dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
             foreach ($dirtpls as $module => $reldir) {
                 $res = 0;
                 if (!empty($module)) {
@@ -5284,10 +5148,10 @@ abstract class GenericDocument extends Model
             //if (is_object($hookmanager) && (($line->product_type == 9 && !empty($line->special_code)) || !empty($line->fk_parent_line)))
             if (is_object($hookmanager)) {   // Old code is commented on preceding line.
                 if (empty($line->fk_parent_line)) {
-                    $parameters = ['line' => $line, 'num' => $num, 'i' => $i, 'dateSelector' => $dateSelector, 'seller' => $seller, 'buyer' => $buyer, 'selected' => $selected, 'table_element_line' => $line->table_element, 'defaulttpldir' => $defaulttpldir];
+                    $parameters = array('line' => $line, 'num' => $num, 'i' => $i, 'dateSelector' => $dateSelector, 'seller' => $seller, 'buyer' => $buyer, 'selected' => $selected, 'table_element_line' => $line->table_element, 'defaulttpldir' => $defaulttpldir);
                     $reshook = $hookmanager->executeHooks('printObjectLine', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
                 } else {
-                    $parameters = ['line' => $line, 'num' => $num, 'i' => $i, 'dateSelector' => $dateSelector, 'seller' => $seller, 'buyer' => $buyer, 'selected' => $selected, 'table_element_line' => $line->table_element, 'fk_parent_line' => $line->fk_parent_line, 'defaulttpldir' => $defaulttpldir];
+                    $parameters = array('line' => $line, 'num' => $num, 'i' => $i, 'dateSelector' => $dateSelector, 'seller' => $seller, 'buyer' => $buyer, 'selected' => $selected, 'table_element_line' => $line->table_element, 'fk_parent_line' => $line->fk_parent_line, 'defaulttpldir' => $defaulttpldir);
                     $reshook = $hookmanager->executeHooks('printObjectSubLine', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
                 }
             }
@@ -5304,19 +5168,18 @@ abstract class GenericDocument extends Model
      *  Return HTML content of a detail line
      *  TODO Move this into an output class file (htmlline.class.php)
      *
-     * @param string           $action        GET/POST action
-     * @param CommonObjectLine $line          Selected object line to output
-     * @param string           $var           Not used
-     * @param int              $num           Number of line (0)
-     * @param int              $i             I
-     * @param int              $dateSelector  1=Show also date range input fields
-     * @param Societe          $seller        Object of seller third party
-     * @param Societe          $buyer         Object of buyer third party
-     * @param int              $selected      ID line selected
-     * @param Extrafields      $extrafields   Object of extrafields
-     * @param string           $defaulttpldir Directory where to find the template (deprecated)
-     *
-     * @return void
+     *  @param  string              $action             GET/POST action
+     *  @param  CommonObjectLine    $line               Selected object line to output
+     *  @param  string              $var                Not used
+     *  @param  int                 $num                Number of line (0)
+     *  @param  int                 $i                  I
+     *  @param  int                 $dateSelector       1=Show also date range input fields
+     *  @param  Societe             $seller             Object of seller third party
+     *  @param  Societe             $buyer              Object of buyer third party
+     *  @param  int                 $selected           ID line selected
+     *  @param  Extrafields         $extrafields        Object of extrafields
+     *  @param  string              $defaulttpldir      Directory where to find the template (deprecated)
+     *  @return void
      */
     public function printObjectLine($action, $line, $var, $num, $i, $dateSelector, $seller, $buyer, $selected = 0, $extrafields = null, $defaulttpldir = '/core/tpl')
     {
@@ -5379,7 +5242,7 @@ abstract class GenericDocument extends Model
             // Output template part (modules that overwrite templates must declare this into descriptor)
             // Use global variables + $dateSelector + $seller and $buyer
             // Note: This is deprecated. If you need to overwrite the tpl file, use instead the hook printObjectLine and printObjectSubLine.
-            $dirtpls = array_merge($conf->modules_parts['tpl'], [$defaulttpldir]);
+            $dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
             foreach ($dirtpls as $module => $reldir) {
                 $res = 0;
                 if (!empty($module)) {
@@ -5410,7 +5273,7 @@ abstract class GenericDocument extends Model
             // Output template part (modules that overwrite templates must declare this into descriptor)
             // Use global variables + $dateSelector + $seller and $buyer
             // Note: This is deprecated. If you need to overwrite the tpl file, use instead the hook printObjectLine and printObjectSubLine.
-            $dirtpls = array_merge($conf->modules_parts['tpl'], [$defaulttpldir]);
+            $dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
             foreach ($dirtpls as $module => $reldir) {
                 if (!empty($module)) {
                     $tpl = dol_buildpath($reldir . '/objectline_edit.tpl.php');
@@ -5440,12 +5303,11 @@ abstract class GenericDocument extends Model
      *  If lines are into a template, title must also be into a template
      *  But for the moment we don't know if it's possible, so we keep the method available on overloaded objects.
      *
-     * @param string $restrictlist  ''=All lines, 'services'=Restrict to services only
-     * @param array  $selectedLines Array of lines id for selected lines
-     *
-     * @return void
+     *  @param  string      $restrictlist       ''=All lines, 'services'=Restrict to services only
+     *  @param  array       $selectedLines      Array of lines id for selected lines
+     *  @return void
      */
-    public function printOriginLinesList($restrictlist = '', $selectedLines = [])
+    public function printOriginLinesList($restrictlist = '', $selectedLines = array())
     {
         global $langs, $hookmanager, $conf, $form, $action;
 
@@ -5472,7 +5334,7 @@ abstract class GenericDocument extends Model
                 $reshook = 0;
                 //if (is_object($hookmanager) && (($line->product_type == 9 && !empty($line->special_code)) || !empty($line->fk_parent_line))) {
                 if (is_object($hookmanager)) {   // Old code is commented on preceding line.
-                    $parameters = ['line' => $line, 'i' => $i, 'restrictlist' => $restrictlist, 'selectedLines' => $selectedLines];
+                    $parameters = array('line' => $line, 'i' => $i, 'restrictlist' => $restrictlist, 'selectedLines' => $selectedLines);
                     if (!empty($line->fk_parent_line)) {
                         $parameters['fk_parent_line'] = $line->fk_parent_line;
                     }
@@ -5493,15 +5355,14 @@ abstract class GenericDocument extends Model
      *  If lines are into a template, title must also be into a template
      *  But for the moment we don't know if it's possible as we keep a method available on overloaded objects.
      *
-     * @param CommonObjectLine $line          Line
-     * @param string           $var           Not used
-     * @param string           $restrictlist  ''=All lines, 'services'=Restrict to services only (strike line if not)
-     * @param string           $defaulttpldir Directory where to find the template
-     * @param array            $selectedLines Array of lines id for selected lines
-     *
-     * @return void
+     *  @param  CommonObjectLine    $line               Line
+     *  @param  string              $var                Not used
+     *  @param  string              $restrictlist       ''=All lines, 'services'=Restrict to services only (strike line if not)
+     *  @param  string              $defaulttpldir      Directory where to find the template
+     *  @param  array               $selectedLines      Array of lines id for selected lines
+     *  @return void
      */
-    public function printOriginLine($line, $var, $restrictlist = '', $defaulttpldir = '/core/tpl', $selectedLines = [])
+    public function printOriginLine($line, $var, $restrictlist = '', $defaulttpldir = '/core/tpl', $selectedLines = array())
     {
         global $langs, $conf;
 
@@ -5614,7 +5475,7 @@ abstract class GenericDocument extends Model
 
         // Output template part (modules that overwrite templates must declare this into descriptor)
         // Use global variables + $dateSelector + $seller and $buyer
-        $dirtpls = array_merge($conf->modules_parts['tpl'], [$defaulttpldir]);
+        $dirtpls = array_merge($conf->modules_parts['tpl'], array($defaulttpldir));
         foreach ($dirtpls as $module => $reldir) {
             if (!empty($module)) {
                 $tpl = dol_buildpath($reldir . '/originproductline.tpl.php');
@@ -5635,17 +5496,15 @@ abstract class GenericDocument extends Model
 
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Add resources to the current object : add entry into llx_element_resources
      *  Need $this->element & $this->id
      *
-     * @param int    $resource_id   Resource id
-     * @param string $resource_type 'resource'
-     * @param int    $busy          Busy or not
-     * @param int    $mandatory     Mandatory or not
-     *
-     * @return     int                         Return integer <=0 if KO, >0 if OK
+     *  @param      int     $resource_id        Resource id
+     *  @param      string  $resource_type      'resource'
+     *  @param      int     $busy               Busy or not
+     *  @param      int     $mandatory          Mandatory or not
+     *  @return     int                         Return integer <=0 if KO, >0 if OK
      */
     public function add_element_resource($resource_id, $resource_type, $busy = 0, $mandatory = 0)
     {
@@ -5675,20 +5534,18 @@ abstract class GenericDocument extends Model
         } else {
             $this->error = $this->db->lasterror();
             $this->db->rollback();
-            return 0;
+            return  0;
         }
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *    Delete a link to resource line
      *
-     * @param int $rowid     Id of resource line to delete
-     * @param int $element   element name (for trigger) TODO: use $this->element into commonobject class
-     * @param int $notrigger Disable all triggers
-     *
-     * @return   int                     >0 if OK, <0 if KO
+     *    @param    int     $rowid          Id of resource line to delete
+     *    @param    int     $element        element name (for trigger) TODO: use $this->element into commonobject class
+     *    @param    int     $notrigger      Disable all triggers
+     *    @return   int                     >0 if OK, <0 if KO
      */
     public function delete_resource($rowid, $element, $notrigger = 0)
     {
@@ -5742,14 +5599,13 @@ abstract class GenericDocument extends Model
     /**
      * Common function for all objects extending CommonObject for generating documents
      *
-     * @param string     $modelspath  Relative folder where generators are placed
-     * @param string     $modele      Generator to use. Caller must set it to obj->model_pdf or $_POST for example.
-     * @param Translate  $outputlangs Output language to use
-     * @param int        $hidedetails 1 to hide details. 0 by default
-     * @param int        $hidedesc    1 to hide product description. 0 by default
-     * @param int        $hideref     1 to hide product reference. 0 by default
-     * @param null|array $moreparams  Array to provide more information
-     *
+     * @param   string      $modelspath     Relative folder where generators are placed
+     * @param   string      $modele         Generator to use. Caller must set it to obj->model_pdf or $_POST for example.
+     * @param   Translate   $outputlangs    Output language to use
+     * @param   int         $hidedetails    1 to hide details. 0 by default
+     * @param   int         $hidedesc       1 to hide product description. 0 by default
+     * @param   int         $hideref        1 to hide product reference. 0 by default
+     * @param   null|array  $moreparams     Array to provide more information
      * @return  int                         >0 if OK, <0 if KO
      * @see addFileIntoDatabaseIndex()
      */
@@ -5759,7 +5615,7 @@ abstract class GenericDocument extends Model
 
         $srctemplatepath = '';
 
-        $parameters = ['modelspath' => $modelspath, 'modele' => $modele, 'outputlangs' => $outputlangs, 'hidedetails' => $hidedetails, 'hidedesc' => $hidedesc, 'hideref' => $hideref, 'moreparams' => $moreparams];
+        $parameters = array('modelspath' => $modelspath, 'modele' => $modele, 'outputlangs' => $outputlangs, 'hidedetails' => $hidedetails, 'hidedesc' => $hidedesc, 'hideref' => $hideref, 'moreparams' => $moreparams);
         $reshook = $hookmanager->executeHooks('commonGenerateDocument', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 
         if (!empty($reshook)) {
@@ -5791,13 +5647,13 @@ abstract class GenericDocument extends Model
         $file = '';
         $classname = '';
         $filefound = '';
-        $dirmodels = ['/'];
+        $dirmodels = array('/');
         if (is_array($conf->modules_parts['models'])) {
             $dirmodels = array_merge($dirmodels, $conf->modules_parts['models']);
         }
         foreach ($dirmodels as $reldir) {
-            foreach (['doc', 'pdf'] as $prefix) {
-                if (in_array(get_class($this), ['Adherent'])) {
+            foreach (array('doc', 'pdf') as $prefix) {
+                if (in_array(get_class($this), array('Adherent'))) {
                     // Member module use prefix_modele.class.php
                     $file = $prefix . "_" . $modele . ".class.php";
                 } else {
@@ -5843,7 +5699,7 @@ abstract class GenericDocument extends Model
             if ($varfortemplatedir && getDolGlobalString($varfortemplatedir)) {
                 $dirtoscan = getDolGlobalString($varfortemplatedir);
 
-                $listoffiles = [];
+                $listoffiles = array();
 
                 // Now we add first model found in directories scanned
                 $listofdir = explode(',', $dirtoscan);
@@ -5891,7 +5747,7 @@ abstract class GenericDocument extends Model
         // update model_pdf in object
         $this->model_pdf = $saved_model;
 
-        if (in_array(get_class($this), ['Adherent'])) {
+        if (in_array(get_class($this), array('Adherent'))) {
             $resultwritefile = $obj->write_file($this, $outputlangs, $srctemplatepath, 'member', 1, 'tmp_cards', $moreparams);
         } else {
             $resultwritefile = $obj->write_file($this, $outputlangs, $srctemplatepath, $hidedetails, $hidedesc, $hideref, $moreparams);
@@ -5940,12 +5796,10 @@ abstract class GenericDocument extends Model
     /**
      * Index a file into the ECM database
      *
-     * @param string $destfull                  Full path of file to index
-     * @param int    $update_main_doc_field     Update field main_doc field into the table of the object.
-     *                                          This param is set when called for a document generation if document
-     *                                          generator hase
+     * @param   string  $destfull               Full path of file to index
+     * @param   int     $update_main_doc_field  Update field main_doc field into the table of the object.
+     *                                          This param is set when called for a document generation if document generator hase
      *                                          ->update_main_doc_field set and returns ->result['fullpath'].
-     *
      * @return  int                             Return integer <0 if KO, >0 if OK
      */
     public function indexFile($destfull, $update_main_doc_field)
@@ -6028,7 +5882,7 @@ abstract class GenericDocument extends Model
                 $ecmfile->description = ''; // indexed content
                 $ecmfile->keywords = ''; // keyword content
                 $ecmfile->src_object_type = $this->table_element;   // $this->table_name is 'myobject' or 'mymodule_myobject'.
-                $ecmfile->src_object_id = $this->id;
+                $ecmfile->src_object_id   = $this->id;
 
                 $result = $ecmfile->create($user);
                 if ($result < 0) {
@@ -6061,12 +5915,10 @@ abstract class GenericDocument extends Model
 
     /**
      *  Build thumb
+     *  @todo Move this into files.lib.php
      *
-     * @param string $file Path file in UTF8 to original file to create thumbs from.
-     *
-     * @return     void
-     * @todo Move this into files.lib.php
-     *
+     *  @param      string  $file           Path file in UTF8 to original file to create thumbs from.
+     *  @return     void
      */
     public function addThumbs($file)
     {
@@ -6095,12 +5947,10 @@ abstract class GenericDocument extends Model
 
     /**
      *  Delete thumbs
+     *  @todo Move this into files.lib.php
      *
-     * @param string $file Path file in UTF8 to original file to delete thumbs.
-     *
-     * @return     void
-     * @todo Move this into files.lib.php
-     *
+     *  @param      string  $file           Path file in UTF8 to original file to delete thumbs.
+     *  @return     void
      */
     public function delThumbs($file)
     {
@@ -6120,14 +5970,12 @@ abstract class GenericDocument extends Model
      * Return values in this order:
      * 1) If parameter is available into POST, we return it first.
      * 2) If not but an alternate value was provided as parameter of function, we return it.
-     * 3) If not but a constant $conf->global->OBJECTELEMENT_FIELDNAME is set, we return it (It is better to use the
-     * dedicated table).
+     * 3) If not but a constant $conf->global->OBJECTELEMENT_FIELDNAME is set, we return it (It is better to use the dedicated table).
      * 4) Return value found into database (TODO No yet implemented)
      *
-     * @param string $fieldname      Name of field
-     * @param string $alternatevalue Alternate value to use
-     * @param string $type           Type of data
-     *
+     * @param   string              $fieldname          Name of field
+     * @param   string              $alternatevalue     Alternate value to use
+     * @param   string              $type               Type of data
      * @return  string|string[]                         Default value (can be an array if the GETPOST return an array)
      **/
     public function getDefaultCreateValueFor($fieldname, $alternatevalue = null, $type = 'alphanohtml')
@@ -6178,9 +6026,8 @@ abstract class GenericDocument extends Model
      * NB:  Error from trigger are stacked in interface->errors
      * NB2: If return code of triggers are < 0, action calling trigger should cancel all transaction.
      *
-     * @param string $triggerName trigger's name to execute
-     * @param User   $user        Object user
-     *
+     * @param   string    $triggerName   trigger's name to execute
+     * @param   User      $user           Object user
      * @return  int                       Result of run_triggers
      */
     public function call_trigger($triggerName, $user)
@@ -6219,9 +6066,8 @@ abstract class GenericDocument extends Model
      *  Function to get alternative languages of a data into $this->array_languages
      *  This method is NOT called by method fetch of objects but must be called separately.
      *
-     * @return int                     Return integer <0 if error, 0 if no values of alternative languages to find nor
-     *                                 found, 1 if a value was found and loaded
-     * @see fetch_optionnals()
+     *  @return int                     Return integer <0 if error, 0 if no values of alternative languages to find nor found, 1 if a value was found and loaded
+     *  @see fetch_optionnals()
      */
     public function fetchValuesForExtraLanguages()
     {
@@ -6236,7 +6082,7 @@ abstract class GenericDocument extends Model
             return 1;
         }
 
-        $this->array_languages = [];
+        $this->array_languages = array();
 
         $element = $this->element;
         if ($element == 'categorie') {
@@ -6289,12 +6135,8 @@ abstract class GenericDocument extends Model
     /**
      * Fill array_options property of object by extrafields value (using for data sent by forms)
      *
-     * @param string $onlykey Only the following key is filled. When we make update of only one language field ($action
-     *                        = 'update_languages'), calling page must set this to avoid to have other languages being
-     *                        reset.
-     *
-     * @return  int                     1 if array_options set, 0 if no value, -1 if error (field required missing for
-     *                                  example)
+     * @param   string  $onlykey        Only the following key is filled. When we make update of only one language field ($action = 'update_languages'), calling page must set this to avoid to have other languages being reset.
+     * @return  int                     1 if array_options set, 0 if no value, -1 if error (field required missing for example)
      */
     public function setValuesForExtraLanguages($onlykey = '')
     {
@@ -6335,27 +6177,27 @@ abstract class GenericDocument extends Model
             }
             //if (empty($perms)) continue;
 
-            if (in_array($key_type, ['date'])) {
+            if (in_array($key_type, array('date'))) {
                 // Clean parameters
                 // TODO GMT date in memory must be GMT so we should add gm=true in parameters
                 $value_key = dol_mktime(0, 0, 0, GETPOSTINT($postfieldkey . "month"), GETPOSTINT($postfieldkey . "day"), GETPOSTINT($postfieldkey . "year"));
-            } elseif (in_array($key_type, ['datetime'])) {
+            } elseif (in_array($key_type, array('datetime'))) {
                 // Clean parameters
                 // TODO GMT date in memory must be GMT so we should add gm=true in parameters
                 $value_key = dol_mktime(GETPOSTINT($postfieldkey . "hour"), GETPOSTINT($postfieldkey . "min"), 0, GETPOSTINT($postfieldkey . "month"), GETPOSTINT($postfieldkey . "day"), GETPOSTINT($postfieldkey . "year"));
-            } elseif (in_array($key_type, ['checkbox', 'chkbxlst'])) {
+            } elseif (in_array($key_type, array('checkbox', 'chkbxlst'))) {
                 $value_arr = GETPOST($postfieldkey, 'array'); // check if an array
                 if (!empty($value_arr)) {
                     $value_key = implode(',', $value_arr);
                 } else {
                     $value_key = '';
                 }
-            } elseif (in_array($key_type, ['price', 'double'])) {
+            } elseif (in_array($key_type, array('price', 'double'))) {
                 $value_arr = GETPOST($postfieldkey, 'alpha');
                 $value_key = price2num($value_arr);
             } else {
                 $value_key = GETPOST($postfieldkey);
-                if (in_array($key_type, ['link']) && $value_key == '-1') {
+                if (in_array($key_type, array('link')) && $value_key == '-1') {
                     $value_key = '';
                 }
             }
@@ -6378,8 +6220,7 @@ abstract class GenericDocument extends Model
     /**
      * Function to make a fetch but set environment to avoid to load computed values before.
      *
-     * @param int $id ID of object
-     *
+     * @param   int     $id         ID of object
      * @return  int                 >0 if OK, 0 if not found, <0 if KO
      */
     public function fetchNoCompute($id)
@@ -6389,8 +6230,7 @@ abstract class GenericDocument extends Model
         $savDisableCompute = $conf->disable_compute;
         $conf->disable_compute = 1;
 
-        $ret = $this->fetch($id);
-        /* @phpstan-ignore-line */
+        $ret = $this->fetch($id);   /* @phpstan-ignore-line */
 
         $conf->disable_compute = $savDisableCompute;
 
@@ -6398,19 +6238,14 @@ abstract class GenericDocument extends Model
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Function to get extra fields of an object into $this->array_options
      *  This method is in most cases called by method fetch of objects but you can call it separately.
      *
-     * @param int   $rowid        Id of line. Use the id of object if not defined. Deprecated. Function must be called
-     *                            without parameters.
-     * @param array $optionsArray Array resulting of call of extrafields->fetch_name_optionals_label(). Deprecated.
-     *                            Function must be called without parameters.
-     *
-     * @return int                     Return integer <0 if error, 0 if no values of extrafield to find nor found, 1 if
-     *                                 an attribute is found and value loaded
-     * @see fetchValuesForExtraLanguages()
+     *  @param  int     $rowid          Id of line. Use the id of object if not defined. Deprecated. Function must be called without parameters.
+     *  @param  array   $optionsArray   Array resulting of call of extrafields->fetch_name_optionals_label(). Deprecated. Function must be called without parameters.
+     *  @return int                     Return integer <0 if error, 0 if no values of extrafield to find nor found, 1 if an attribute is found and value loaded
+     *  @see fetchValuesForExtraLanguages()
      */
     public function fetch_optionals($rowid = null, $optionsArray = null)
     {
@@ -6429,7 +6264,7 @@ abstract class GenericDocument extends Model
             return 0;
         }
 
-        $this->array_options = [];
+        $this->array_options = array();
 
         if (!is_array($optionsArray)) {
             // If $extrafields is not a known object, we initialize it. Best practice is to have $extrafields defined into card.php or list.php page.
@@ -6475,7 +6310,7 @@ abstract class GenericDocument extends Model
                         // Test fetch_array ! is_int($key) because fetch_array result is a mix table with Key as alpha and Key as int (depend db engine)
                         if ($key != 'rowid' && $key != 'tms' && $key != 'fk_member' && !is_int($key)) {
                             // we can add this attribute to object
-                            if (!empty($extrafields->attributes[$this->table_element]) && in_array($extrafields->attributes[$this->table_element]['type'][$key], ['date', 'datetime'])) {
+                            if (!empty($extrafields->attributes[$this->table_element]) && in_array($extrafields->attributes[$this->table_element]['type'][$key], array('date', 'datetime'))) {
                                 //var_dump($extrafields->attributes[$this->table_element]['type'][$key]);
                                 $this->array_options["options_" . $key] = $this->db->jdate($value);
                             } else {
@@ -6525,8 +6360,8 @@ abstract class GenericDocument extends Model
     /**
      *  Delete all extra fields values for the current object.
      *
-     * @return int     Return integer <0 if KO, >0 if OK
-     * @see deleteExtraLanguages(), insertExtraField(), updateExtraField(), setValueFrom()
+     *  @return int     Return integer <0 if KO, >0 if OK
+     *  @see deleteExtraLanguages(), insertExtraField(), updateExtraField(), setValueFrom()
      */
     public function deleteExtraFields()
     {
@@ -6560,16 +6395,13 @@ abstract class GenericDocument extends Model
 
     /**
      *  Add/Update all extra fields values for the current object.
-     *  Data to describe values to insert/update are stored into
-     *  $this->array_options=array('options_codeforfield1'=>'valueforfield1',
-     *  'options_codeforfield2'=>'valueforfield2', ...) This function delete record with all extrafields and insert
-     *  them again from the array $this->array_options.
+     *  Data to describe values to insert/update are stored into $this->array_options=array('options_codeforfield1'=>'valueforfield1', 'options_codeforfield2'=>'valueforfield2', ...)
+     *  This function delete record with all extrafields and insert them again from the array $this->array_options.
      *
-     * @param string $trigger  If defined, call also the trigger (for example COMPANY_MODIFY)
-     * @param User   $userused Object user
-     *
-     * @return int                         -1=error, O=did nothing, 1=OK
-     * @see insertExtraLanguages(), updateExtraField(), deleteExtraField(), setValueFrom()
+     *  @param  string      $trigger        If defined, call also the trigger (for example COMPANY_MODIFY)
+     *  @param  User        $userused       Object user
+     *  @return int                         -1=error, O=did nothing, 1=OK
+     *  @see insertExtraLanguages(), updateExtraField(), deleteExtraField(), setValueFrom()
      */
     public function insertExtraFields($trigger = '', $userused = null)
     {
@@ -6593,7 +6425,7 @@ abstract class GenericDocument extends Model
             $target_extrafields = $extrafields->fetch_name_optionals_label($this->table_element);
 
             // Eliminate copied source object extra fields that do not exist in target object
-            $new_array_options = [];
+            $new_array_options = array();
             foreach ($this->array_options as $key => $value) {
                 if (in_array(substr($key, 8), array_keys($target_extrafields))) {   // We remove the 'options_' from $key for test
                     $new_array_options[$key] = $value;
@@ -6603,12 +6435,12 @@ abstract class GenericDocument extends Model
             }
 
             foreach ($new_array_options as $key => $value) {
-                $attributeKey = substr($key, 8); // Remove 'options_' prefix
-                $attributeType = $extrafields->attributes[$this->table_element]['type'][$attributeKey];
-                $attributeLabel = $extrafields->attributes[$this->table_element]['label'][$attributeKey];
-                $attributeParam = $extrafields->attributes[$this->table_element]['param'][$attributeKey];
+                $attributeKey      = substr($key, 8); // Remove 'options_' prefix
+                $attributeType     = $extrafields->attributes[$this->table_element]['type'][$attributeKey];
+                $attributeLabel    = $extrafields->attributes[$this->table_element]['label'][$attributeKey];
+                $attributeParam    = $extrafields->attributes[$this->table_element]['param'][$attributeKey];
                 $attributeRequired = $extrafields->attributes[$this->table_element]['required'][$attributeKey];
-                $attributeUnique = $extrafields->attributes[$this->table_element]['unique'][$attributeKey];
+                $attributeUnique   = $extrafields->attributes[$this->table_element]['unique'][$attributeKey];
                 $attrfieldcomputed = $extrafields->attributes[$this->table_element]['computed'][$attributeKey];
 
                 // If we clone, we have to clean unique extrafields to prevent duplicates.
@@ -6820,7 +6652,7 @@ abstract class GenericDocument extends Model
             if (!empty($extrafields->attributes[$this->table_element]['mandatoryfieldsofotherentities']) && is_array($extrafields->attributes[$this->table_element]['mandatoryfieldsofotherentities'])) {
                 foreach ($extrafields->attributes[$this->table_element]['mandatoryfieldsofotherentities'] as $tmpkey => $tmpval) {
                     if (!isset($extrafields->attributes[$this->table_element]['type'][$tmpkey])) {   // If field not already added previously
-                        if (in_array($tmpval, ['int', 'double', 'price'])) {
+                        if (in_array($tmpval, array('int', 'double', 'price'))) {
                             $sql .= ", 0";
                         } else {
                             $sql .= ", ''";
@@ -6839,7 +6671,7 @@ abstract class GenericDocument extends Model
 
             if (!$error && $trigger) {
                 // Call trigger
-                $this->context = ['extrafieldaddupdate' => 1];
+                $this->context = array('extrafieldaddupdate' => 1);
                 $result = $this->call_trigger($trigger, $userused);
                 if ($result < 0) {
                     $error++;
@@ -6861,16 +6693,13 @@ abstract class GenericDocument extends Model
 
     /**
      *  Add/Update all extra fields values for the current object.
-     *  Data to describe values to insert/update are stored into
-     *  $this->array_options=array('options_codeforfield1'=>'valueforfield1',
-     *  'options_codeforfield2'=>'valueforfield2', ...) This function delete record with all extrafields and insert
-     *  them again from the array $this->array_options.
+     *  Data to describe values to insert/update are stored into $this->array_options=array('options_codeforfield1'=>'valueforfield1', 'options_codeforfield2'=>'valueforfield2', ...)
+     *  This function delete record with all extrafields and insert them again from the array $this->array_options.
      *
-     * @param string $trigger  If defined, call also the trigger (for example COMPANY_MODIFY)
-     * @param User   $userused Object user
-     *
-     * @return int                         -1=error, O=did nothing, 1=OK
-     * @see insertExtraFields(), updateExtraField(), setValueFrom()
+     *  @param  string      $trigger        If defined, call also the trigger (for example COMPANY_MODIFY)
+     *  @param  User        $userused       Object user
+     *  @return int                         -1=error, O=did nothing, 1=OK
+     *  @see insertExtraFields(), updateExtraField(), setValueFrom()
      */
     public function insertExtraLanguages($trigger = '', $userused = null)
     {
@@ -6890,9 +6719,9 @@ abstract class GenericDocument extends Model
             $new_array_languages = $this->array_languages;
 
             foreach ($new_array_languages as $key => $value) {
-                $attributeKey = $key;
-                $attributeType = $this->fields[$attributeKey]['type'];
-                $attributeLabel = $this->fields[$attributeKey]['label'];
+                $attributeKey      = $key;
+                $attributeType     = $this->fields[$attributeKey]['type'];
+                $attributeLabel    = $this->fields[$attributeKey]['label'];
 
                 //dol_syslog("attributeLabel=".$attributeLabel, LOG_DEBUG);
                 //dol_syslog("attributeType=".$attributeType, LOG_DEBUG);
@@ -6960,7 +6789,7 @@ abstract class GenericDocument extends Model
 
             if (!$error && $trigger) {
                 // Call trigger
-                $this->context = ['extralanguagesaddupdate' => 1];
+                $this->context = array('extralanguagesaddupdate' => 1);
                 $result = $this->call_trigger($trigger, $userused);
                 if ($result < 0) {
                     $error++;
@@ -6982,16 +6811,13 @@ abstract class GenericDocument extends Model
 
     /**
      *  Update 1 extra field value for the current object. Keep other fields unchanged.
-     *  Data to describe values to update are stored into
-     *  $this->array_options=array('options_codeforfield1'=>'valueforfield1',
-     *  'options_codeforfield2'=>'valueforfield2', ...)
+     *  Data to describe values to update are stored into $this->array_options=array('options_codeforfield1'=>'valueforfield1', 'options_codeforfield2'=>'valueforfield2', ...)
      *
-     * @param string $key      Key of the extrafield to update (without starting 'options_')
-     * @param string $trigger  If defined, call also the trigger (for example COMPANY_MODIFY)
-     * @param User   $userused Object user
-     *
-     * @return int                         -1=error, O=did nothing, 1=OK
-     * @see updateExtraLanguages(), insertExtraFields(), deleteExtraFields(), setValueFrom()
+     *  @param  string      $key            Key of the extrafield to update (without starting 'options_')
+     *  @param  string      $trigger        If defined, call also the trigger (for example COMPANY_MODIFY)
+     *  @param  User        $userused       Object user
+     *  @return int                         -1=error, O=did nothing, 1=OK
+     *  @see updateExtraLanguages(), insertExtraFields(), deleteExtraFields(), setValueFrom()
      */
     public function updateExtraField($key, $trigger = null, $userused = null)
     {
@@ -7016,12 +6842,12 @@ abstract class GenericDocument extends Model
 
             $value = $this->array_options["options_" . $key];
 
-            $attributeKey = $key;
-            $attributeType = $extrafields->attributes[$this->table_element]['type'][$key];
-            $attributeLabel = $extrafields->attributes[$this->table_element]['label'][$key];
-            $attributeParam = $extrafields->attributes[$this->table_element]['param'][$key];
+            $attributeKey      = $key;
+            $attributeType     = $extrafields->attributes[$this->table_element]['type'][$key];
+            $attributeLabel    = $extrafields->attributes[$this->table_element]['label'][$key];
+            $attributeParam    = $extrafields->attributes[$this->table_element]['param'][$key];
             $attributeRequired = $extrafields->attributes[$this->table_element]['required'][$key];
-            $attributeUnique = $extrafields->attributes[$this->table_element]['unique'][$attributeKey];
+            $attributeUnique   = $extrafields->attributes[$this->table_element]['unique'][$attributeKey];
             $attrfieldcomputed = $extrafields->attributes[$this->table_element]['computed'][$key];
 
             // Similar code than into insertExtraFields
@@ -7210,7 +7036,7 @@ abstract class GenericDocument extends Model
                 */
                 case 'checkbox':
                 case 'chkbxlst':
-                    $new_array_options = [];
+                    $new_array_options = array();
                     if (is_array($this->array_options["options_" . $key])) {
                         $new_array_options["options_" . $key] = implode(',', $this->array_options["options_" . $key]);
                     } else {
@@ -7258,7 +7084,7 @@ abstract class GenericDocument extends Model
 
             if (!$error && $trigger) {
                 // Call trigger
-                $this->context = ['extrafieldupdate' => 1];
+                $this->context = array('extrafieldupdate' => 1);
                 $result = $this->call_trigger($trigger, $userused);
                 if ($result < 0) {
                     $error++;
@@ -7281,16 +7107,13 @@ abstract class GenericDocument extends Model
 
     /**
      *  Update an extra language value for the current object.
-     *  Data to describe values to update are stored into
-     *  $this->array_options=array('options_codeforfield1'=>'valueforfield1',
-     *  'options_codeforfield2'=>'valueforfield2', ...)
+     *  Data to describe values to update are stored into $this->array_options=array('options_codeforfield1'=>'valueforfield1', 'options_codeforfield2'=>'valueforfield2', ...)
      *
-     * @param string $key      Key of the extrafield (without starting 'options_')
-     * @param string $trigger  If defined, call also the trigger (for example COMPANY_MODIFY)
-     * @param User   $userused Object user
-     *
-     * @return int                         -1=error, O=did nothing, 1=OK
-     * @see updateExtraField(), insertExtraLanguages()
+     *  @param  string      $key            Key of the extrafield (without starting 'options_')
+     *  @param  string      $trigger        If defined, call also the trigger (for example COMPANY_MODIFY)
+     *  @param  User        $userused       Object user
+     *  @return int                         -1=error, O=did nothing, 1=OK
+     *  @see updateExtraField(), insertExtraLanguages()
      */
     public function updateExtraLanguages($key, $trigger = null, $userused = null)
     {
@@ -7314,18 +7137,14 @@ abstract class GenericDocument extends Model
      * Return HTML string to put an input field into a page
      * Code very similar with showInputField of extra fields
      *
-     * @param array|null   $val         Array of properties for field to show (used only if ->fields not defined)
-     * @param string       $key         Key of attribute
-     * @param string|array $value       Preselected value to show (for date type it must be in timestamp format, for
-     *                                  amount or price it must be a php numeric value, for array type must be array)
-     * @param string       $moreparam   To add more parameters on html input tag
-     * @param string       $keysuffix   Prefix string to add into name and id of field (can be used to avoid duplicate
-     *                                  names)
-     * @param string       $keyprefix   Suffix string to add into name and id of field (can be used to avoid duplicate
-     *                                  names)
-     * @param string|int   $morecss     Value for css to define style/length of field. May also be a numeric.
-     * @param int          $nonewbutton Force to not show the new button on field that are links to object
-     *
+     * @param  array|null   $val           Array of properties for field to show (used only if ->fields not defined)
+     * @param  string       $key           Key of attribute
+     * @param  string|array $value         Preselected value to show (for date type it must be in timestamp format, for amount or price it must be a php numeric value, for array type must be array)
+     * @param  string       $moreparam     To add more parameters on html input tag
+     * @param  string       $keysuffix     Prefix string to add into name and id of field (can be used to avoid duplicate names)
+     * @param  string       $keyprefix     Suffix string to add into name and id of field (can be used to avoid duplicate names)
+     * @param  string|int   $morecss       Value for css to define style/length of field. May also be a numeric.
+     * @param  int          $nonewbutton   Force to not show the new button on field that are links to object
      * @return string
      */
     public function showInputField($val, $key, $value, $moreparam = '', $keysuffix = '', $keyprefix = '', $morecss = 0, $nonewbutton = 0)
@@ -7354,41 +7173,41 @@ abstract class GenericDocument extends Model
         $out = '';
         $type = '';
         $isDependList = 0;
-        $param = [];
-        $param['options'] = [];
-        $reg = [];
+        $param = array();
+        $param['options'] = array();
+        $reg = array();
         $size = !empty($this->fields[$key]['size']) ? $this->fields[$key]['size'] : 0;
         // Because we work on extrafields
         if (preg_match('/^(integer|link):(.*):(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[2] . ':' . $reg[3] . ':' . $reg[4] . ':' . $reg[5] => 'N'];
+            $param['options'] = array($reg[2] . ':' . $reg[3] . ':' . $reg[4] . ':' . $reg[5] => 'N');
             $type = 'link';
         } elseif (preg_match('/^(integer|link):(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N'];
+            $param['options'] = array($reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N');
             $type = 'link';
         } elseif (preg_match('/^(integer|link):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[2] . ':' . $reg[3] => 'N'];
+            $param['options'] = array($reg[2] . ':' . $reg[3] => 'N');
             $type = 'link';
         } elseif (preg_match('/^(sellist):(.*):(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[2] . ':' . $reg[3] . ':' . $reg[4] . ':' . $reg[5] => 'N'];
+            $param['options'] = array($reg[2] . ':' . $reg[3] . ':' . $reg[4] . ':' . $reg[5] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^(sellist):(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N'];
+            $param['options'] = array($reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^(sellist):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[2] . ':' . $reg[3] => 'N'];
+            $param['options'] = array($reg[2] . ':' . $reg[3] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^chkbxlst:(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] => 'N'];
+            $param['options'] = array($reg[1] => 'N');
             $type = 'chkbxlst';
         } elseif (preg_match('/varchar\((\d+)\)/', $val['type'], $reg)) {
-            $param['options'] = [];
+            $param['options'] = array();
             $type = 'varchar';
             $size = $reg[1];
         } elseif (preg_match('/varchar/', $val['type'])) {
-            $param['options'] = [];
+            $param['options'] = array();
             $type = 'varchar';
         } else {
-            $param['options'] = [];
+            $param['options'] = array();
             $type = $this->fields[$key]['type'];
         }
         //var_dump($type); var_dump($param['options']);
@@ -7409,7 +7228,7 @@ abstract class GenericDocument extends Model
 
         $langfile = (!empty($this->fields[$key]['langfile']) ? $this->fields[$key]['langfile'] : '');
         $list = (!empty($this->fields[$key]['list']) ? $this->fields[$key]['list'] : 0);
-        $hidden = (in_array(abs($this->fields[$key]['visible']), [0, 2]) ? 1 : 0);
+        $hidden = (in_array(abs($this->fields[$key]['visible']), array(0, 2)) ? 1 : 0);
 
         $objectid = $this->id;
 
@@ -7429,7 +7248,7 @@ abstract class GenericDocument extends Model
                 $morecss = 'minwidth100imp';
             } elseif ($type == 'datetime' || $type == 'link') { // link means an foreign key to another primary id
                 $morecss = 'minwidth200imp';
-            } elseif (in_array($type, ['int', 'integer', 'price']) || preg_match('/^double(\([0-9],[0-9]\)){0,1}/', $type)) {
+            } elseif (in_array($type, array('int', 'integer', 'price')) || preg_match('/^double(\([0-9],[0-9]\)){0,1}/', $type)) {
                 $morecss = 'maxwidth75';
             } elseif ($type == 'url') {
                 $morecss = 'minwidth400';
@@ -7451,7 +7270,7 @@ abstract class GenericDocument extends Model
             $morecss .= $validationClass;
         }
 
-        if (in_array($type, ['date'])) {
+        if (in_array($type, array('date'))) {
             $tmp = explode(',', $size);
             $newsize = $tmp[0];
             $showtime = 0;
@@ -7463,7 +7282,7 @@ abstract class GenericDocument extends Model
 
             // TODO Must also support $moreparam
             $out = $form->selectDate($value, $keyprefix . $key . $keysuffix, $showtime, $showtime, $required, '', 1, (($keyprefix != 'search_' && $keyprefix != 'search_options_') ? 1 : 0), 0, 1);
-        } elseif (in_array($type, ['datetime'])) {
+        } elseif (in_array($type, array('datetime'))) {
             $tmp = explode(',', $size);
             $newsize = $tmp[0];
             $showtime = 1;
@@ -7475,17 +7294,17 @@ abstract class GenericDocument extends Model
 
             // TODO Must also support $moreparam
             $out = $form->selectDate($value, $keyprefix . $key . $keysuffix, $showtime, $showtime, $required, '', 1, (($keyprefix != 'search_' && $keyprefix != 'search_options_') ? 1 : 0), 0, 1, '', '', '', 1, '', '', 'tzuserrel');
-        } elseif (in_array($type, ['duration'])) {
+        } elseif (in_array($type, array('duration'))) {
             $out = $form->select_duration($keyprefix . $key . $keysuffix, $value, 0, 'text', 0, 1);
-        } elseif (in_array($type, ['int', 'integer'])) {
+        } elseif (in_array($type, array('int', 'integer'))) {
             $tmp = explode(',', $size);
             $newsize = $tmp[0];
             $out = '<input type="text" class="flat ' . $morecss . '" name="' . $keyprefix . $key . $keysuffix . '" id="' . $keyprefix . $key . $keysuffix . '"' . ($newsize > 0 ? ' maxlength="' . $newsize . '"' : '') . ' value="' . dol_escape_htmltag($value) . '"' . ($moreparam ? $moreparam : '') . ($autofocusoncreate ? ' autofocus' : '') . '>';
-        } elseif (in_array($type, ['real'])) {
+        } elseif (in_array($type, array('real'))) {
             $out = '<input type="text" class="flat ' . $morecss . '" name="' . $keyprefix . $key . $keysuffix . '" id="' . $keyprefix . $key . $keysuffix . '" value="' . dol_escape_htmltag($value) . '"' . ($moreparam ? $moreparam : '') . ($autofocusoncreate ? ' autofocus' : '') . '>';
         } elseif (preg_match('/varchar/', $type)) {
             $out = '<input type="text" class="flat ' . $morecss . '" name="' . $keyprefix . $key . $keysuffix . '" id="' . $keyprefix . $key . $keysuffix . '"' . ($size > 0 ? ' maxlength="' . $size . '"' : '') . ' value="' . dol_escape_htmltag($value) . '"' . ($moreparam ? $moreparam : '') . ($autofocusoncreate ? ' autofocus' : '') . '>';
-        } elseif (in_array($type, ['email', 'mail', 'phone', 'url', 'ip'])) {
+        } elseif (in_array($type, array('email', 'mail', 'phone', 'url', 'ip'))) {
             $out = '<input type="text" class="flat ' . $morecss . '" name="' . $keyprefix . $key . $keysuffix . '" id="' . $keyprefix . $key . $keysuffix . '" value="' . dol_escape_htmltag($value) . '" ' . ($moreparam ? $moreparam : '') . ($autofocusoncreate ? ' autofocus' : '') . '>';
         } elseif (preg_match('/^text/', $type)) {
             if (!preg_match('/search_/', $keyprefix)) {     // If keyprefix is search_ or search_options_, we must just use a simple text field
@@ -7525,7 +7344,7 @@ abstract class GenericDocument extends Model
             $out = '';  // @phan-suppress-current-line PhanPluginRedundantAssignment
             if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_EXTRAFIELDS_DISABLE_SELECT2')) {
                 include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
-                $out .= ajax_combobox($keyprefix . $key . $keysuffix, [], 0);
+                $out .= ajax_combobox($keyprefix . $key . $keysuffix, array(), 0);
             }
 
             $tmpselect = '';
@@ -7535,7 +7354,7 @@ abstract class GenericDocument extends Model
                     continue;
                 }
                 if (strpos($valb, "|") !== false) {
-                    [$valb, $parent] = explode('|', $valb);
+                    list($valb, $parent) = explode('|', $valb);
                 }
                 $nbchoice++;
                 $tmpselect .= '<option value="' . $keyb . '"';
@@ -7557,14 +7376,14 @@ abstract class GenericDocument extends Model
             $out = '';  // @phan-suppress-current-line PhanPluginRedundantAssignment
             if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_EXTRAFIELDS_DISABLE_SELECT2')) {
                 include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
-                $out .= ajax_combobox($keyprefix . $key . $keysuffix, [], 0);
+                $out .= ajax_combobox($keyprefix . $key . $keysuffix, array(), 0);
             }
 
             $out .= '<select class="flat ' . $morecss . ' maxwidthonsmartphone" name="' . $keyprefix . $key . $keysuffix . '" id="' . $keyprefix . $key . $keysuffix . '" ' . ($moreparam ? $moreparam : '') . '>';
             if (is_array($param['options'])) {
                 $param_list = array_keys($param['options']);
                 $InfoFieldList = explode(":", $param_list[0], 5);
-                if (!empty($InfoFieldList[4])) {
+                if (! empty($InfoFieldList[4])) {
                     $pos = 0;
                     $parenthesisopen = 0;
                     while (substr($InfoFieldList[4], $pos, 1) !== '' && ($parenthesisopen || $pos == 0 || substr($InfoFieldList[4], $pos, 1) != ':')) {
@@ -7606,7 +7425,7 @@ abstract class GenericDocument extends Model
                     }
                 }
                 if (count($InfoFieldList) > 3 && !empty($InfoFieldList[3])) {
-                    [$parentName, $parentField] = explode('|', $InfoFieldList[3]);
+                    list($parentName, $parentField) = explode('|', $InfoFieldList[3]);
                     $keyList .= ', ' . $parentField;
                 }
 
@@ -7653,7 +7472,7 @@ abstract class GenericDocument extends Model
                         $sqlwhere .= ' WHERE 1=1';
                     }
                     // Some tables may have field, some other not. For the moment we disable it.
-                    if (in_array($InfoFieldList[0], ['tablewithentity'])) {
+                    if (in_array($InfoFieldList[0], array('tablewithentity'))) {
                         $sqlwhere .= " AND entity = " . ((int) $conf->entity);
                     }
                     $sql .= $sqlwhere;
@@ -7778,7 +7597,7 @@ abstract class GenericDocument extends Model
                 $keyList = (empty($InfoFieldList[2]) ? 'rowid' : $InfoFieldList[2] . ' as rowid');
 
                 if (count($InfoFieldList) > 3 && !empty($InfoFieldList[3])) {
-                    [$parentName, $parentField] = explode('|', $InfoFieldList[3]);
+                    list($parentName, $parentField) = explode('|', $InfoFieldList[3]);
                     $keyList .= ', ' . $parentField;
                 }
                 if (count($InfoFieldList) > 4 && !empty($InfoFieldList[4])) {
@@ -7830,7 +7649,7 @@ abstract class GenericDocument extends Model
                         $sqlwhere .= ' WHERE 1=1';
                     }
                     // Some tables may have field, some other not. For the moment we disable it.
-                    if (in_array($InfoFieldList[0], ['tablewithentity'])) {
+                    if (in_array($InfoFieldList[0], array('tablewithentity'))) {
                         $sqlwhere .= " AND entity = " . ((int) $conf->entity);
                     }
                     // $sql.=preg_replace('/^ AND /','',$sqlwhere);
@@ -7843,7 +7662,7 @@ abstract class GenericDocument extends Model
                         $num = $this->db->num_rows($resql);
                         $i = 0;
 
-                        $data = [];
+                        $data = array();
 
                         while ($i < $num) {
                             $labeltoshow = '';
@@ -7941,7 +7760,7 @@ abstract class GenericDocument extends Model
                     (!GETPOSTISSET('backtopage') || strpos(GETPOST('backtopage'), $_SERVER['PHP_SELF']) === 0)  // // To avoid to open several times the 'Plus' button (we accept only one level)
                     && empty($val['disabled']) && empty($nonewbutton)
                 ) {    // and to avoid to show the button if the field is protected by a "disabled".
-                    [$class, $classfile] = explode(':', $param_list[0]);
+                    list($class, $classfile) = explode(':', $param_list[0]);
                     if (file_exists(dol_buildpath(dirname(dirname($classfile)) . '/card.php'))) {
                         $url_path = dol_buildpath(dirname(dirname($classfile)) . '/card.php', 1);
                     } else {
@@ -8020,15 +7839,13 @@ abstract class GenericDocument extends Model
      * Return HTML string to show a field into a page
      * Code very similar with showOutputField of extra fields
      *
-     * @param array  $val       Array of properties of field to show
-     * @param string $key       Key of attribute
-     * @param string $value     Preselected value to show (for date type it must be in timestamp format, for amount or
-     *                          price it must be a php numeric value)
-     * @param string $moreparam To add more parameters on html tag
-     * @param string $keysuffix Prefix string to add into name and id of field (can be used to avoid duplicate names)
-     * @param string $keyprefix Suffix string to add into name and id of field (can be used to avoid duplicate names)
-     * @param mixed  $morecss   Value for CSS to use (Old usage: May also be a numeric to define a size).
-     *
+     * @param  array    $val                Array of properties of field to show
+     * @param  string   $key                Key of attribute
+     * @param  string   $value              Preselected value to show (for date type it must be in timestamp format, for amount or price it must be a php numeric value)
+     * @param  string   $moreparam          To add more parameters on html tag
+     * @param  string   $keysuffix          Prefix string to add into name and id of field (can be used to avoid duplicate names)
+     * @param  string   $keyprefix          Suffix string to add into name and id of field (can be used to avoid duplicate names)
+     * @param  mixed    $morecss            Value for CSS to use (Old usage: May also be a numeric to define a size).
      * @return string
      */
     public function showOutputField($val, $key, $value, $moreparam = '', $keysuffix = '', $keyprefix = '', $morecss = '')
@@ -8041,9 +7858,9 @@ abstract class GenericDocument extends Model
         }
 
         //$label = empty($val['label']) ? '' : $val['label'];
-        $type = empty($val['type']) ? '' : $val['type'];
-        $size = empty($val['css']) ? '' : $val['css'];
-        $reg = [];
+        $type  = empty($val['type']) ? '' : $val['type'];
+        $size  = empty($val['css']) ? '' : $val['css'];
+        $reg = array();
 
         // Convert var to be able to share same code than showOutputField of extrafields
         if (preg_match('/varchar\((\d+)\)/', $type, $reg)) {
@@ -8063,8 +7880,8 @@ abstract class GenericDocument extends Model
         $computed = empty($val['computed']) ? '' : $val['computed'];
         $unique = empty($val['unique']) ? '' : $val['unique'];
         $required = empty($val['required']) ? '' : $val['required'];
-        $param = [];
-        $param['options'] = [];
+        $param = array();
+        $param['options'] = array();
 
         if (!empty($val['arrayofkeyval']) && is_array($val['arrayofkeyval'])) {
             $param['options'] = $val['arrayofkeyval'];
@@ -8076,18 +7893,18 @@ abstract class GenericDocument extends Model
             if ($reg[1] == 'User') {
                 $stringforoptions .= ':#getnomurlparam1=-1';
             }
-            $param['options'] = [$stringforoptions => $stringforoptions];
+            $param['options'] = array($stringforoptions => $stringforoptions);
         } elseif (preg_match('/^sellist:(.*):(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] . ':' . $reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N'];
+            $param['options'] = array($reg[1] . ':' . $reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^sellist:(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] . ':' . $reg[2] . ':' . $reg[3] => 'N'];
+            $param['options'] = array($reg[1] . ':' . $reg[2] . ':' . $reg[3] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^sellist:(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] . ':' . $reg[2] => 'N'];
+            $param['options'] = array($reg[1] . ':' . $reg[2] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^chkbxlst:(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] => 'N'];
+            $param['options'] = array($reg[1] => 'N');
             $type = 'chkbxlst';
         }
 
@@ -8112,7 +7929,7 @@ abstract class GenericDocument extends Model
                 $morecss = 'minwidth100imp';
             } elseif ($type == 'datetime' || $type == 'timestamp') {
                 $morecss = 'minwidth200imp';
-            } elseif (in_array($type, ['int', 'double', 'price'])) {
+            } elseif (in_array($type, array('int', 'double', 'price'))) {
                 $morecss = 'maxwidth75';
             } elseif ($type == 'url') {
                 $morecss = 'minwidth400';
@@ -8130,7 +7947,7 @@ abstract class GenericDocument extends Model
         }
 
         // Format output value differently according to properties of field
-        if (in_array($key, ['rowid', 'ref']) && method_exists($this, 'getNomUrl')) {
+        if (in_array($key, array('rowid', 'ref')) && method_exists($this, 'getNomUrl')) {
             if ($key != 'rowid' || empty($this->fields['ref'])) {   // If we want ref field or if we want ID and there is no ref field, we show the link.
                 $value = $this->getNomUrl(1, '', 0, '', 1);
             }
@@ -8263,7 +8080,7 @@ abstract class GenericDocument extends Model
                 } else {
                     require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
-                    $toprint = [];
+                    $toprint = array();
                     $obj = $this->db->fetch_object($resql);
                     $c = new Categorie($this->db);
                     $c->fetch($obj->rowid);
@@ -8282,7 +8099,7 @@ abstract class GenericDocument extends Model
             $value_arr = explode(',', $value);
             $value = '';
             if (is_array($value_arr) && count($value_arr) > 0) {
-                $toprint = [];
+                $toprint = array();
                 foreach ($value_arr as $keyval => $valueval) {
                     if (!empty($valueval)) {
                         $toprint[] = '<li class="select2-search-choice-dolibarr noborderoncategories" style="background: #bbb">' . $param['options'][$valueval] . '</li>';
@@ -8293,7 +8110,7 @@ abstract class GenericDocument extends Model
                 }
             }
         } elseif ($type == 'chkbxlst') {
-            $value_arr = (isset($value) ? explode(',', $value) : []);
+            $value_arr = (isset($value) ? explode(',', $value) : array());
 
             $param_list = array_keys($param['options']);
             $InfoFieldList = explode(":", $param_list[0]);
@@ -8332,7 +8149,7 @@ abstract class GenericDocument extends Model
             if ($resql) {
                 if ($filter_categorie === false) {
                     $value = ''; // value was used, so now we reste it to use it to build final output
-                    $toprint = [];
+                    $toprint = array();
                     while ($obj = $this->db->fetch_object($resql)) {
                         // Several field into label (eq table:code|libelle:rowid)
                         $fields_label = explode('|', $InfoFieldList[1]);
@@ -8365,7 +8182,7 @@ abstract class GenericDocument extends Model
                 } else {
                     require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
-                    $toprint = [];
+                    $toprint = array();
                     while ($obj = $this->db->fetch_object($resql)) {
                         if (is_array($value_arr) && in_array($obj->rowid, $value_arr)) {
                             $c = new Categorie($this->db);
@@ -8398,7 +8215,7 @@ abstract class GenericDocument extends Model
                 // Set $getnomurlparam1 et getnomurlparam2
                 $getnomurlparam = 3;
                 $getnomurlparam2 = '';
-                $regtmp = [];
+                $regtmp = array();
                 if (preg_match('/#getnomurlparam1=([^#]*)/', $param_list[0], $regtmp)) {
                     $getnomurlparam = $regtmp[1];
                 }
@@ -8417,7 +8234,7 @@ abstract class GenericDocument extends Model
                         }
                         if ($result > 0) {
                             if ($object->element === 'product') {
-                                $get_name_url_param_arr = [$getnomurlparam, $getnomurlparam2, 0, -1, 0, '', 0];
+                                $get_name_url_param_arr = array($getnomurlparam, $getnomurlparam2, 0, -1, 0, '', 0);
                                 if (isset($val['get_name_url_params'])) {
                                     $get_name_url_params = explode(':', $val['get_name_url_params']);
                                     if (!empty($get_name_url_params)) {
@@ -8468,7 +8285,6 @@ abstract class GenericDocument extends Model
      * clear validation message result for a field
      *
      * @param string $fieldKey Key of attribute to clear
-     *
      * @return void
      */
     public function clearFieldError($fieldKey)
@@ -8481,8 +8297,7 @@ abstract class GenericDocument extends Model
      * set validation error message a field
      *
      * @param string $fieldKey Key of attribute
-     * @param string $msg      the field error message
-     *
+     * @param string $msg the field error message
      * @return void
      */
     public function setFieldError($fieldKey, $msg = '')
@@ -8498,8 +8313,7 @@ abstract class GenericDocument extends Model
     /**
      * get field error message
      *
-     * @param string $fieldKey Key of attribute
-     *
+     * @param  string  $fieldKey            Key of attribute
      * @return string                       Error message of validation ('' if no error)
      */
     public function getFieldError($fieldKey)
@@ -8513,10 +8327,9 @@ abstract class GenericDocument extends Model
     /**
      * Return validation test result for a field
      *
-     * @param array  $fields     Array of properties of field to show
-     * @param string $fieldKey   Key of attribute
-     * @param string $fieldValue value of attribute
-     *
+     * @param  array   $fields              Array of properties of field to show
+     * @param  string  $fieldKey            Key of attribute
+     * @param  string  $fieldValue          value of attribute
      * @return bool return false if fail true on success, see $this->error for error message
      */
     public function validateField($fields, $fieldKey, $fieldValue)
@@ -8536,9 +8349,9 @@ abstract class GenericDocument extends Model
 
         $val = $fields[$fieldKey];
 
-        $param = [];
-        $param['options'] = [];
-        $type = $val['type'];
+        $param = array();
+        $param['options'] = array();
+        $type  = $val['type'];
 
         $required = false;
         if (isset($val['notnull']) && $val['notnull'] === 1) {
@@ -8552,7 +8365,7 @@ abstract class GenericDocument extends Model
         //
         // PREPARE Elements
         //
-        $reg = [];
+        $reg = array();
 
         // Convert var to be able to share same code than showOutputField of extrafields
         if (preg_match('/varchar\((\d+)\)/', $type, $reg)) {
@@ -8576,15 +8389,15 @@ abstract class GenericDocument extends Model
 
         if (preg_match('/^integer:(.*):(.*)/i', $val['type'], $reg)) {
             $type = 'link';
-            $param['options'] = [$reg[1] . ':' . $reg[2] => $reg[1] . ':' . $reg[2]];
+            $param['options'] = array($reg[1] . ':' . $reg[2] => $reg[1] . ':' . $reg[2]);
         } elseif (preg_match('/^sellist:(.*):(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] . ':' . $reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N'];
+            $param['options'] = array($reg[1] . ':' . $reg[2] . ':' . $reg[3] . ':' . $reg[4] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^sellist:(.*):(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] . ':' . $reg[2] . ':' . $reg[3] => 'N'];
+            $param['options'] = array($reg[1] . ':' . $reg[2] . ':' . $reg[3] => 'N');
             $type = 'sellist';
         } elseif (preg_match('/^sellist:(.*):(.*)/i', $val['type'], $reg)) {
-            $param['options'] = [$reg[1] . ':' . $reg[2] => 'N'];
+            $param['options'] = array($reg[1] . ':' . $reg[2] => 'N');
             $type = 'sellist';
         }
 
@@ -8627,7 +8440,7 @@ abstract class GenericDocument extends Model
         // TESTS for TYPE
         //
 
-        if (in_array($type, ['date', 'datetime', 'timestamp'])) {
+        if (in_array($type, array('date', 'datetime', 'timestamp'))) {
             if (!$validate->isTimestamp($fieldValue)) {
                 $this->setFieldError($fieldKey, $validate->error);
                 return false;
@@ -8641,7 +8454,7 @@ abstract class GenericDocument extends Model
             } else {
                 return true;
             }
-        } elseif (in_array($type, ['double', 'real', 'price'])) {
+        } elseif (in_array($type, array('double', 'real', 'price'))) {
             // is numeric
             if (!$validate->isNumeric($fieldValue)) {
                 $this->setFieldError($fieldKey, $validate->error);
@@ -8686,7 +8499,7 @@ abstract class GenericDocument extends Model
             $param_list = array_keys($param['options']);
             $InfoFieldList = explode(":", $param_list[0]);
             $value_arr = explode(',', $fieldValue);
-            $value_arr = array_map([$this->db, 'escape'], $value_arr);
+            $value_arr = array_map(array($this->db, 'escape'), $value_arr);
 
             $selectkey = "rowid";
             if (count($InfoFieldList) > 4 && !empty($InfoFieldList[4])) {
@@ -8718,21 +8531,15 @@ abstract class GenericDocument extends Model
 
     /**
      * Function to show lines of extrafields with output data.
-     * This function is responsible to output the <tr> and <td> according to correct number of columns received into
-     * $params['colspan'] or <div> according to $display_type
+     * This function is responsible to output the <tr> and <td> according to correct number of columns received into $params['colspan'] or <div> according to $display_type
      *
-     * @param Extrafields $extrafields  Extrafield Object
-     * @param string      $mode         Show output ('view') or input ('create' or 'edit') for extrafield
-     * @param array       $params       Optional parameters. Example: array('style'=>'class="oddeven"',
-     *                                  'colspan'=>$colspan)
-     * @param string      $keysuffix    Suffix string to add after name and id of field (can be used to avoid duplicate
-     *                                  names)
-     * @param string      $keyprefix    Prefix string to add before name and id of field (can be used to avoid
-     *                                  duplicate names)
-     * @param string      $onetrtd      All fields in same tr td. Used by objectline_create.tpl.php for example.
-     * @param string      $display_type "card" for form display, "line" for document line display (extrafields on
-     *                                  propal line, order line, etc...)
-     *
+     * @param   Extrafields $extrafields    Extrafield Object
+     * @param   string      $mode           Show output ('view') or input ('create' or 'edit') for extrafield
+     * @param   array       $params         Optional parameters. Example: array('style'=>'class="oddeven"', 'colspan'=>$colspan)
+     * @param   string      $keysuffix      Suffix string to add after name and id of field (can be used to avoid duplicate names)
+     * @param   string      $keyprefix      Prefix string to add before name and id of field (can be used to avoid duplicate names)
+     * @param   string      $onetrtd        All fields in same tr td. Used by objectline_create.tpl.php for example.
+     * @param   string      $display_type   "card" for form display, "line" for document line display (extrafields on propal line, order line, etc...)
      * @return  string                      String with html content to show
      */
     public function showOptionals($extrafields, $mode = 'view', $params = null, $keysuffix = '', $keyprefix = '', $onetrtd = '', $display_type = 'card')
@@ -8752,7 +8559,7 @@ abstract class GenericDocument extends Model
 
         $out = '';
 
-        $parameters = ['mode' => $mode, 'params' => $params, 'keysuffix' => $keysuffix, 'keyprefix' => $keyprefix, 'display_type' => $display_type];
+        $parameters = array('mode' => $mode, 'params' => $params, 'keysuffix' => $keysuffix, 'keyprefix' => $keyprefix, 'display_type' => $display_type);
         $reshook = $hookmanager->executeHooks('showOptionals', $parameters, $this, $action); // Note that $action and $object may have been modified by hook
 
         if (empty($reshook)) {
@@ -8796,9 +8603,9 @@ abstract class GenericDocument extends Model
                         $perms = (int) dol_eval($extrafields->attributes[$this->table_element]['perms'][$key], 1, 1, '2');
                     }
 
-                    if (($mode == 'create') && !in_array(abs($visibility), [1, 3])) {
+                    if (($mode == 'create') && !in_array(abs($visibility), array(1, 3))) {
                         continue; // <> -1 and <> 1 and <> 3 = not visible on forms, only on list
-                    } elseif (($mode == 'edit') && !in_array(abs($visibility), [1, 3, 4])) {
+                    } elseif (($mode == 'edit') && !in_array(abs($visibility), array(1, 3, 4))) {
                         continue; // <> -1 and <> 1 and <> 3 = not visible on forms, only on list and <> 4 = not visible at the creation
                     } elseif ($mode == 'view' && empty($visibility)) {
                         continue;
@@ -8817,7 +8624,7 @@ abstract class GenericDocument extends Model
                         if (array_key_exists('cols', $params)) {
                             $colspan = $params['cols'];
                         } elseif (array_key_exists('colspan', $params)) {   // For backward compatibility. Use cols instead now.
-                            $reg = [];
+                            $reg = array();
                             if (preg_match('/colspan="(\d+)"/', $params['colspan'], $reg)) {
                                 $colspan = $reg[1];
                             } else {
@@ -8836,7 +8643,7 @@ abstract class GenericDocument extends Model
                             // We get the value of property found with GETPOST so it takes into account:
                             // default values overwrite, restore back to list link, ... (but not 'default value in database' of field)
                             $check = 'alphanohtml';
-                            if (in_array($extrafields->attributes[$this->table_element]['type'][$key], ['html', 'text'])) {
+                            if (in_array($extrafields->attributes[$this->table_element]['type'][$key], array('html', 'text'))) {
                                 $check = 'restricthtml';
                             }
                             $getposttemp = GETPOST($keyprefix . 'options_' . $key . $keysuffix, $check, 3); // GETPOST can get value from GET, POST or setup of default values overwrite.
@@ -8895,7 +8702,7 @@ abstract class GenericDocument extends Model
                         }
 
                         // add html5 elements
-                        $domData = ' data-element="extrafield"';
+                        $domData  = ' data-element="extrafield"';
                         $domData .= ' data-targetelement="' . $this->element . '"';
                         $domData .= ' data-targetid="' . $this->id . '"';
 
@@ -8911,7 +8718,7 @@ abstract class GenericDocument extends Model
                         }
 
                         // Convert date into timestamp format (value in memory must be a timestamp)
-                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], ['date'])) {
+                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], array('date'))) {
                             $datenotinstring = null;
                             if (array_key_exists('options_' . $key, $this->array_options)) {
                                 $datenotinstring = $this->array_options['options_' . $key];
@@ -8922,7 +8729,7 @@ abstract class GenericDocument extends Model
                             $datekey = $keyprefix . 'options_' . $key . $keysuffix;
                             $value = (GETPOSTISSET($datekey)) ? dol_mktime(12, 0, 0, GETPOSTINT($datekey . 'month', 3), GETPOSTINT($datekey . 'day', 3), GETPOSTINT($datekey . 'year', 3)) : $datenotinstring;
                         }
-                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], ['datetime'])) {
+                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], array('datetime'))) {
                             $datenotinstring = null;
                             if (array_key_exists('options_' . $key, $this->array_options)) {
                                 $datenotinstring = $this->array_options['options_' . $key];
@@ -8934,7 +8741,7 @@ abstract class GenericDocument extends Model
                             $value = (GETPOSTISSET($timekey)) ? dol_mktime(GETPOSTINT($timekey . 'hour', 3), GETPOSTINT($timekey . 'min', 3), GETPOSTINT($timekey . 'sec', 3), GETPOSTINT($timekey . 'month', 3), GETPOSTINT($timekey . 'day', 3), GETPOSTINT($timekey . 'year', 3), 'tzuserrel') : $datenotinstring;
                         }
                         // Convert float submitted string into real php numeric (value in memory must be a php numeric)
-                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], ['price', 'double'])) {
+                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], array('price', 'double'))) {
                             if (GETPOSTISSET($keyprefix . 'options_' . $key . $keysuffix) || $value) {
                                 $value = price2num($value);
                             } elseif (isset($this->array_options['options_' . $key])) {
@@ -8943,7 +8750,7 @@ abstract class GenericDocument extends Model
                         }
 
                         // HTML, text, select, integer and varchar: take into account default value in database if in create mode
-                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], ['html', 'text', 'varchar', 'select', 'radio', 'int', 'boolean'])) {
+                        if (in_array($extrafields->attributes[$this->table_element]['type'][$key], array('html', 'text', 'varchar', 'select', 'radio', 'int', 'boolean'))) {
                             if ($action == 'create' || $mode == 'create') {
                                 $value = (GETPOSTISSET($keyprefix . 'options_' . $key . $keysuffix) || $value) ? $value : $extrafields->attributes[$this->table_element]['default'][$key];
                             }
@@ -9036,8 +8843,7 @@ abstract class GenericDocument extends Model
     }
 
     /**
-     * @param string $type Type for prefix
-     *
+     * @param   string  $type   Type for prefix
      * @return  string          JavaScript code to manage dependency
      */
     public function getJSListDependancies($type = '_extra')
@@ -9140,13 +8946,11 @@ abstract class GenericDocument extends Model
      * This function is meant to be called from replaceThirdparty with the appropriate tables
      * Column name fk_soc MUST be used to identify thirdparties
      *
-     * @param DoliDB   $dbs          Database handler
-     * @param int      $origin_id    Old thirdparty id (the thirdparty to delete)
-     * @param int      $dest_id      New thirdparty id (the thirdparty that will received element of the other)
-     * @param string[] $tables       Tables that need to be changed
-     * @param int      $ignoreerrors Ignore errors. Return true even if errors. We need this when replacement can fails
-     *                               like for categories (categorie of old thirdparty may already exists on new one)
-     *
+     * @param  DoliDB      $dbs           Database handler
+     * @param  int         $origin_id     Old thirdparty id (the thirdparty to delete)
+     * @param  int         $dest_id       New thirdparty id (the thirdparty that will received element of the other)
+     * @param  string[]    $tables        Tables that need to be changed
+     * @param  int         $ignoreerrors  Ignore errors. Return true even if errors. We need this when replacement can fails like for categories (categorie of old thirdparty may already exists on new one)
      * @return bool                       True if success, False if error
      */
     public static function commonReplaceThirdparty(DoliDB $dbs, $origin_id, $dest_id, array $tables, $ignoreerrors = 0)
@@ -9171,13 +8975,11 @@ abstract class GenericDocument extends Model
      * This function is meant to be called from replaceProduct with the appropriate tables
      * Column name fk_product MUST be used to identify products
      *
-     * @param DoliDB   $dbs          Database handler
-     * @param int      $origin_id    Old product id (the product to delete)
-     * @param int      $dest_id      New product id (the product that will received element of the other)
-     * @param string[] $tables       Tables that need to be changed
-     * @param int      $ignoreerrors Ignore errors. Return true even if errors. We need this when replacement can fails
-     *                               like for categories (categorie of old product may already exists on new one)
-     *
+     * @param  DoliDB      $dbs           Database handler
+     * @param  int         $origin_id     Old product id (the product to delete)
+     * @param  int         $dest_id       New product id (the product that will received element of the other)
+     * @param  string[]    $tables        Tables that need to be changed
+     * @param  int         $ignoreerrors  Ignore errors. Return true even if errors. We need this when replacement can fails like for categories (categorie of old product may already exists on new one)
      * @return bool                       True if success, False if error
      */
     public static function commonReplaceProduct(DoliDB $dbs, $origin_id, $dest_id, array $tables, $ignoreerrors = 0)
@@ -9204,10 +9006,9 @@ abstract class GenericDocument extends Model
      *   elseif calculation MARGIN_TYPE = 'pmp' and pmp is calculated, use pmp as buyprice
      *   else set min buy price as buy price
      *
-     * @param float $unitPrice       Product unit price
-     * @param float $discountPercent Line discount percent
-     * @param int   $fk_product      Product id
-     *
+     * @param float     $unitPrice       Product unit price
+     * @param float     $discountPercent Line discount percent
+     * @param int       $fk_product      Product id
      * @return float|int                 Return buy price if OK, integer <0 if KO
      */
     public function defineBuyPrice($unitPrice = 0.0, $discountPercent = 0.0, $fk_product = 0)
@@ -9248,7 +9049,7 @@ abstract class GenericDocument extends Model
                     }
                 }
 
-                if (empty($buyPrice) && isset($conf->global->MARGIN_TYPE) && in_array($conf->global->MARGIN_TYPE, ['1', 'pmp', 'costprice'])) {
+                if (empty($buyPrice) && isset($conf->global->MARGIN_TYPE) && in_array($conf->global->MARGIN_TYPE, array('1', 'pmp', 'costprice'))) {
                     require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
                     $productFournisseur = new ProductFournisseur($this->db);
                     if (($result = $productFournisseur->find_min_price_product_fournisseur($fk_product)) > 0) {
@@ -9266,9 +9067,8 @@ abstract class GenericDocument extends Model
     /**
      * getDataToShowPhoto
      *
-     * @param string $modulepart Module part
-     * @param string $imagesize  Image size
-     *
+     * @param   string  $modulepart     Module part
+     * @param   string  $imagesize      Image size
      * @return  array                   Array of data to show photo
      */
     public function getDataToShowPhoto($modulepart, $imagesize)
@@ -9301,34 +9101,28 @@ abstract class GenericDocument extends Model
         $email = empty($this->email) ? '' : $this->email;
         $capture = '';
 
-        return ['dir' => $dir, 'file' => $file, 'originalfile' => $originalfile, 'altfile' => $altfile, 'email' => $email, 'capture' => $capture];
+        return array('dir' => $dir, 'file' => $file, 'originalfile' => $originalfile, 'altfile' => $altfile, 'email' => $email, 'capture' => $capture);
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Show photos of an object (nbmax maximum), into several columns
      *
-     * @param string     $modulepart     'product', 'ticket', ...
-     * @param string     $sdir           Directory to scan (full absolute path)
-     * @param int        $size           0=original size, 1='small' use thumbnail if possible
-     * @param int        $nbmax          Nombre maximum de photos (0=pas de max)
-     * @param int        $nbbyrow        Number of image per line or -1 to use div separator or 0 to use no separator.
-     *                                   Used only if size=1 or 'small'.
-     * @param int        $showfilename   1=Show filename
-     * @param int        $showaction     1=Show icon with action links (resize, delete)
-     * @param int        $maxHeight      Max height of original image when size='small' (so we can use original even if
-     *                                   small requested). If 0, always use 'small' thumb image.
-     * @param int        $maxWidth       Max width of original image when size='small'
-     * @param int        $nolink         Do not add a href link to view enlarged imaged into a new tab
-     * @param int|string $overwritetitle Do not add title tag on image
-     * @param int        $usesharelink   Use the public shared link of image (if not available, the 'nophoto' image
-     *                                   will be shown instead)
-     * @param string     $cache          A string if we want to use a cached version of image
-     * @param string     $addphotorefcss Add CSS to img of photos
-     *
-     * @return     string                      Html code to show photo. Number of photos shown is saved in
-     *                                         this->nbphoto
+     *  @param      string      $modulepart     'product', 'ticket', ...
+     *  @param      string      $sdir           Directory to scan (full absolute path)
+     *  @param      int         $size           0=original size, 1='small' use thumbnail if possible
+     *  @param      int         $nbmax          Nombre maximum de photos (0=pas de max)
+     *  @param      int         $nbbyrow        Number of image per line or -1 to use div separator or 0 to use no separator. Used only if size=1 or 'small'.
+     *  @param      int         $showfilename   1=Show filename
+     *  @param      int         $showaction     1=Show icon with action links (resize, delete)
+     *  @param      int         $maxHeight      Max height of original image when size='small' (so we can use original even if small requested). If 0, always use 'small' thumb image.
+     *  @param      int         $maxWidth       Max width of original image when size='small'
+     *  @param      int         $nolink         Do not add a href link to view enlarged imaged into a new tab
+     *  @param      int|string  $overwritetitle Do not add title tag on image
+     *  @param      int         $usesharelink   Use the public shared link of image (if not available, the 'nophoto' image will be shown instead)
+     *  @param      string      $cache          A string if we want to use a cached version of image
+     *  @param      string      $addphotorefcss Add CSS to img of photos
+     *  @return     string                      Html code to show photo. Number of photos shown is saved in this->nbphoto
      */
     public function show_photos($modulepart, $sdir, $size = 0, $nbmax = 0, $nbbyrow = 5, $showfilename = 0, $showaction = 0, $maxHeight = 120, $maxWidth = 160, $nolink = 0, $overwritetitle = 0, $usesharelink = 0, $cache = '', $addphotorefcss = 'photoref')
     {
@@ -9558,8 +9352,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if type is array
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if array
      */
     protected function isArray($info)
@@ -9577,8 +9370,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if type is date
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if date
      */
     public function isDate($info)
@@ -9592,8 +9384,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if type is duration
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if field of type duration
      */
     public function isDuration($info)
@@ -9612,8 +9403,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if type is integer
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if integer
      */
     public function isInt($info)
@@ -9632,8 +9422,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if type is float
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if float
      */
     public function isFloat($info)
@@ -9651,8 +9440,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if type is text
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if type text
      */
     public function isText($info)
@@ -9670,8 +9458,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if field can be null
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if it can be null
      */
     protected function canBeNull($info)
@@ -9689,8 +9476,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if field is forced to null if zero or empty
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return  bool            true if forced to null
      */
     protected function isForcedToNullIfZero($info)
@@ -9708,8 +9494,7 @@ abstract class GenericDocument extends Model
     /**
      * Function test if is indexed
      *
-     * @param array $info content information of field
-     *
+     * @param   array   $info   content information of field
      * @return                  bool
      */
     protected function isIndex($info)
@@ -9737,7 +9522,7 @@ abstract class GenericDocument extends Model
     {
         global $conf;
 
-        $queryarray = [];
+        $queryarray = array();
         foreach ($this->fields as $field => $info) {    // Loop on definition of fields
             // Depending on field type ('datetime', ...)
             if ($this->isDate($info)) {
@@ -9798,8 +9583,7 @@ abstract class GenericDocument extends Model
     /**
      * Function to load data from a SQL pointer into properties of current object $this
      *
-     * @param stdClass $obj Contain data of object from database
-     *
+     * @param   stdClass    $obj    Contain data of object from database
      * @return void
      */
     public function setVarsFromFetchObj(&$obj)
@@ -9857,8 +9641,7 @@ abstract class GenericDocument extends Model
     }
 
     /**
-     * Sets all object fields to null. Useful for example in lists, when printing multiple lines and a different object
-     * os fetched for each line.
+     * Sets all object fields to null. Useful for example in lists, when printing multiple lines and a different object os fetched for each line.
      * @return void
      */
     public function emtpyObjectVars()
@@ -9871,17 +9654,15 @@ abstract class GenericDocument extends Model
     /**
      * Function to concat keys of fields
      *
-     * @param string $alias         String of alias of table for fields. For example 't'. It is recommended to use ''
-     *                              and set alias into fields definition.
-     * @param array  $excludefields Array of fields to exclude
-     *
+     * @param   string  $alias          String of alias of table for fields. For example 't'. It is recommended to use '' and set alias into fields definition.
+     * @param   array   $excludefields  Array of fields to exclude
      * @return  string                  List of alias fields
      */
-    public function getFieldList($alias = '', $excludefields = [])
+    public function getFieldList($alias = '', $excludefields = array())
     {
         $keys = array_keys($this->fields);
         if (!empty($alias)) {
-            $keys_with_alias = [];
+            $keys_with_alias = array();
             foreach ($keys as $fieldname) {
                 if (!empty($excludefields)) {
                     if (in_array($fieldname, $excludefields)) { // The field is excluded and must not be in output
@@ -9899,9 +9680,8 @@ abstract class GenericDocument extends Model
     /**
      * Add quote to field value if necessary
      *
-     * @param string|int $value       Value to protect
-     * @param array      $fieldsentry Properties of field
-     *
+     * @param   string|int  $value          Value to protect
+     * @param   array       $fieldsentry    Properties of field
      * @return  string|int
      */
     protected function quote($value, $fieldsentry)
@@ -9927,9 +9707,8 @@ abstract class GenericDocument extends Model
     /**
      * Create object into database
      *
-     * @param User $user      User that creates
-     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
-     *
+     * @param  User $user      User that creates
+     * @param  int  $notrigger 0=launch triggers after, 1=disable triggers
      * @return int             Return integer <0 if KO, Id of created object if OK
      */
     public function createCommon(User $user, $notrigger = 0)
@@ -9966,8 +9745,8 @@ abstract class GenericDocument extends Model
 
         unset($fieldvalues['rowid']); // The field 'rowid' is reserved field name for autoincrement field so we don't need it into insert.
 
-        $keys = [];
-        $values = []; // Array to store string forged for SQL syntax
+        $keys = array();
+        $values = array(); // Array to store string forged for SQL syntax
         foreach ($fieldvalues as $k => $v) {
             $keys[$k] = $k;
             $value = $this->fields[$k];
@@ -10107,14 +9886,12 @@ abstract class GenericDocument extends Model
 
 
     /**
-     * Load object in memory from the database. This does not load line. This is done by parent fetch() that call
-     * fetchCommon
+     * Load object in memory from the database. This does not load line. This is done by parent fetch() that call fetchCommon
      *
-     * @param int    $id            Id object
-     * @param string $ref           Ref
-     * @param string $morewhere     More SQL filters (' AND ...')
-     * @param int    $noextrafields 0=Default to load extrafields, 1=No extrafields
-     *
+     * @param   int     $id             Id object
+     * @param   string  $ref            Ref
+     * @param   string  $morewhere      More SQL filters (' AND ...')
+     * @param   int     $noextrafields  0=Default to load extrafields, 1=No extrafields
      * @return  int                     Return integer <0 if KO, 0 if not found, >0 if OK
      */
     public function fetchCommon($id, $ref = null, $morewhere = '', $noextrafields = 0)
@@ -10177,9 +9954,8 @@ abstract class GenericDocument extends Model
     /**
      * Load object in memory from the database
      *
-     * @param string $morewhere     More SQL filters (' AND ...')
-     * @param int    $noextrafields 0=Default to load extrafields, 1=No extrafields
-     *
+     * @param   string  $morewhere      More SQL filters (' AND ...')
+     * @param   int     $noextrafields  0=Default to load extrafields, 1=No extrafields
      * @return  int                     Return integer <0 if KO, 0 if not found, >0 if OK
      */
     public function fetchLinesCommon($morewhere = '', $noextrafields = 0)
@@ -10234,9 +10010,8 @@ abstract class GenericDocument extends Model
     /**
      * Update object into database
      *
-     * @param User $user      User that modifies
-     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
-     *
+     * @param  User $user       User that modifies
+     * @param  int  $notrigger  0=launch triggers after, 1=disable triggers
      * @return int              Return integer <0 if KO, >0 if OK
      */
     public function updateCommon(User $user, $notrigger = 0)
@@ -10272,9 +10047,9 @@ abstract class GenericDocument extends Model
         unset($fieldvalues['rowid']); // The field 'rowid' is reserved field name for autoincrement field so we don't need it into update.
 
         // Add quotes and escape on fields with type string
-        $keys = [];
-        $values = [];
-        $tmp = [];
+        $keys = array();
+        $values = array();
+        $tmp = array();
         foreach ($fieldvalues as $k => $v) {
             $keys[$k] = $k;
             $value = $this->fields[$k];
@@ -10345,12 +10120,10 @@ abstract class GenericDocument extends Model
     /**
      * Delete object in database
      *
-     * @param User $user               User that deletes
-     * @param int  $notrigger          0=launch triggers after, 1=disable triggers
-     * @param int  $forcechilddeletion 0=no, 1=Force deletion of children
-     *
-     * @return  int                             Return integer <0 if KO, 0=Nothing done because object has child, >0 if
-     *                                          OK
+     * @param   User    $user                   User that deletes
+     * @param   int     $notrigger              0=launch triggers after, 1=disable triggers
+     * @param   int     $forcechilddeletion     0=no, 1=Force deletion of children
+     * @return  int                             Return integer <0 if KO, 0=Nothing done because object has child, >0 if OK
      */
     public function deleteCommon(User $user, $notrigger = 0, $forcechilddeletion = 0)
     {
@@ -10483,13 +10256,11 @@ abstract class GenericDocument extends Model
     /**
      * Delete all child object from a parent ID
      *
-     * @param int    $parentId              Parent Id
-     * @param string $parentField           Name of Foreign key parent column
-     * @param string $filter                Filter as an Universal Search string.
-     *                                      Example: '((client:=:1) OR ((client:>=:2) AND (client:<=:3))) AND
-     *                                      (client:!=:8) AND (nom:like:'a%')'
-     * @param string $filtermode            No more used
-     *
+     * @param   int         $parentId       Parent Id
+     * @param   string      $parentField    Name of Foreign key parent column
+     * @param   string      $filter         Filter as an Universal Search string.
+     *                                      Example: '((client:=:1) OR ((client:>=:2) AND (client:<=:3))) AND (client:!=:8) AND (nom:like:'a%')'
+     * @param   string      $filtermode     No more used
      * @return  int                         Return integer <0 if KO, >0 if OK
      * @throws  Exception
      */
@@ -10553,11 +10324,10 @@ abstract class GenericDocument extends Model
     /**
      *  Delete a line of object in database
      *
-     * @param User $user      User that delete
-     * @param int  $idline    Id of line to delete
-     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
-     *
-     * @return int                 >0 if OK, <0 if KO
+     *  @param  User    $user       User that delete
+     *  @param  int     $idline     Id of line to delete
+     *  @param  int     $notrigger  0=launch triggers after, 1=disable triggers
+     *  @return int                 >0 if OK, <0 if KO
      */
     public function deleteLineCommon(User $user, $idline, $notrigger = 0)
     {
@@ -10613,12 +10383,11 @@ abstract class GenericDocument extends Model
     /**
      *  Set to a status
      *
-     * @param User   $user        Object user that modify
-     * @param int    $status      New status to set (often a constant like self::STATUS_XXX)
-     * @param int    $notrigger   1=Does not execute triggers, 0=Execute triggers
-     * @param string $triggercode Trigger code to use
-     *
-     * @return int                     Return integer <0 if KO, >0 if OK
+     *  @param  User    $user           Object user that modify
+     *  @param  int     $status         New status to set (often a constant like self::STATUS_XXX)
+     *  @param  int     $notrigger      1=Does not execute triggers, 0=Execute triggers
+     *  @param  string  $triggercode    Trigger code to use
+     *  @return int                     Return integer <0 if KO, >0 if OK
      */
     public function setStatusCommon($user, $status, $notrigger = 0, $triggercode = '')
     {
@@ -10627,7 +10396,7 @@ abstract class GenericDocument extends Model
         $this->db->begin();
 
         $statusfield = 'status';
-        if (in_array($this->element, ['don', 'donation', 'shipping'])) {
+        if (in_array($this->element, array('don', 'donation', 'shipping'))) {
             $statusfield = 'fk_statut';
         }
 
@@ -10666,12 +10435,11 @@ abstract class GenericDocument extends Model
     /**
      *  Set to a signed status
      *
-     * @param User   $user        Object user that modify
-     * @param int    $status      New status to set (often a constant like self::STATUS_XXX)
-     * @param int    $notrigger   1=Does not execute triggers, 0=Execute triggers
-     * @param string $triggercode Trigger code to use
-     *
-     * @return int                     Return integer <0 if KO, >0 if OK
+     *  @param  User    $user           Object user that modify
+     *  @param  int     $status         New status to set (often a constant like self::STATUS_XXX)
+     *  @param  int     $notrigger      1=Does not execute triggers, 0=Execute triggers
+     *  @param  string  $triggercode    Trigger code to use
+     *  @return int                     Return integer <0 if KO, >0 if OK
      */
     public function setSignedStatusCommon($user, $status, $notrigger = 0, $triggercode = '')
     {
@@ -10726,7 +10494,7 @@ abstract class GenericDocument extends Model
 
         $this->id = 0;
         $this->specimen = 1;
-        $fields = [
+        $fields = array(
             'label' => 'This is label',
             'ref' => 'ABCD1234',
             'description' => 'This is a description',
@@ -10738,7 +10506,7 @@ abstract class GenericDocument extends Model
             'fk_user_creat' => $user->id,
             'fk_user_modif' => $user->id,
             'date' => dol_now(),
-        ];
+        );
         foreach ($fields as $key => $value) {
             if (array_key_exists($key, $this->fields)) {
                 $this->{$key} = $value;     // @phpstan-ignore-line
@@ -10799,7 +10567,6 @@ abstract class GenericDocument extends Model
      * Trim object parameters
      *
      * @param string[] $parameters array of parameters to trim
-     *
      * @return void
      */
     public function trimParameters($parameters)
@@ -10823,8 +10590,7 @@ abstract class GenericDocument extends Model
      * Adds it to non existing supplied categories.
      * Existing categories are left untouch.
      *
-     * @param string $type_categ Category type ('customer', 'supplier', 'website_page', ...)
-     *
+     * @param   string      $type_categ     Category type ('customer', 'supplier', 'website_page', ...)
      * @return  int                         Array of category objects or < 0 if KO
      */
     public function getCategoriesCommon($type_categ)
@@ -10845,19 +10611,16 @@ abstract class GenericDocument extends Model
      * Deletes object from existing categories not supplied (if remove_existing==true).
      * Existing categories are left untouch.
      *
-     * @param int[]|int $categories      Category ID or array of Categories IDs
-     * @param string    $type_categ      Category type ('customer', 'supplier', 'website_page', ...) defined into const
-     *                                   class Categorie type
-     * @param boolean   $remove_existing True: Remove existings categories from Object if not supplies by $categories,
-     *                                   False: let them
-     *
+     * @param   int[]|int   $categories         Category ID or array of Categories IDs
+     * @param   string      $type_categ         Category type ('customer', 'supplier', 'website_page', ...) defined into const class Categorie type
+     * @param   boolean     $remove_existing    True: Remove existings categories from Object if not supplies by $categories, False: let them
      * @return  int                             Return integer <0 if KO, >0 if OK
      */
     public function setCategoriesCommon($categories, $type_categ = '', $remove_existing = true)
     {
         // Handle single category
         if (!is_array($categories)) {
-            $categories = [$categories];
+            $categories = array($categories);
         }
 
         dol_syslog(get_class($this) . "::setCategoriesCommon Object Id:" . $this->id . ' type_categ:' . $type_categ . ' nb tag add:' . count($categories), LOG_DEBUG);
@@ -10878,11 +10641,11 @@ abstract class GenericDocument extends Model
                 $to_del = array_diff($existing, $categories);
                 $to_add = array_diff($categories, $existing);
             } else {
-                $to_del = []; // Nothing to delete
+                $to_del = array(); // Nothing to delete
                 $to_add = $categories;
             }
         } else {
-            $to_del = []; // Nothing to delete
+            $to_del = array(); // Nothing to delete
             $to_add = array_diff($categories, $existing);
         }
 
@@ -10923,10 +10686,9 @@ abstract class GenericDocument extends Model
     /**
      * Copy related categories to another object
      *
-     * @param int    $fromId Id object source
-     * @param int    $toId   Id object cible
-     * @param string $type   Type of category ('product', ...)
-     *
+     * @param  int      $fromId Id object source
+     * @param  int      $toId   Id object cible
+     * @param  string   $type   Type of category ('product', ...)
      * @return int      Return integer < 0 if error, > 0 if ok
      */
     public function cloneCategories($fromId, $toId, $type = '')
@@ -10957,9 +10719,7 @@ abstract class GenericDocument extends Model
     /**
      * Delete related files of object in database
      *
-     * @param integer $mode 0=Use path to find record, 1=Use src_object_xxx fields (Mode 1 is recommended for new
-     *                      objects)
-     *
+     * @param   integer     $mode       0=Use path to find record, 1=Use src_object_xxx fields (Mode 1 is recommended for new objects)
      * @return  bool                    True if OK, False if KO
      */
     public function deleteEcmFiles($mode = 0)

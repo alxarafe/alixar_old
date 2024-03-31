@@ -1,11 +1,12 @@
 <?php
 
-/* Copyright (C) 2003-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2005-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2011      Jean Heimburger      <jean@tiaris.info>
- * Copyright (C) 2014	   Cedric GROSS	        <c.gross@kreiz-it.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+/* Copyright (C) 2003-2006  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2005-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2011       Jean Heimburger         <jean@tiaris.info>
+ * Copyright (C) 2014	    Cedric GROSS	           <c.gross@kreiz-it.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,11 +28,12 @@
  *  \brief      File of class to manage stock movement (input or output)
  */
 
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Class to manage stock movements
  */
-class MouvementStock extends CommonObject
+class MouvementStock extends GenericDocument
 {
     /**
      * @var string Id to identify managed objects

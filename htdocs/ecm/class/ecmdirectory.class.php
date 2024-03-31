@@ -27,7 +27,7 @@
 /**
  *  Class to manage ECM directories
  */
-class EcmDirectory extends CommonObject
+class EcmDirectory extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

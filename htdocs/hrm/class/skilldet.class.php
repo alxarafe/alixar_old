@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class for Skilldet
  */
-class Skilldet extends CommonObjectLine
+class Skilldet extends GenericDocumentLine
 {
     /**
      * @var string ID of module.

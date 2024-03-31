@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 /**
  *  Class to manage cheque delivery receipts
  */
-class RemiseCheque extends CommonObject
+class RemiseCheque extends GenericDocument
 {
     /**
      * @var string ID to identify managed object

@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class for StockTransferLine
  */
-class StockTransferLine extends CommonObjectLine
+class StockTransferLine extends GenericDocumentLine
 {
     /**
      * @var string ID to identify managed object.

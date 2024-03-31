@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for Calendar
  */
-class Calendar extends CommonObject
+class Calendar extends GenericDocument
 {
     /**
      * @var string ID of module.
@@ -1070,7 +1070,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 /**
  * Class CalendarLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class CalendarLine extends CommonObjectLine
+class CalendarLine extends GenericDocumentLine
 {
     // To complete with content of an object CalendarLine
     // We should have a field rowid, fk_calendar and position

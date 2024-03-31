@@ -1,9 +1,10 @@
 <?php
 
-/* Copyright (C) 2007-2023 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2013-2014 Cedric GROSS         <c.gross@kreiz-it.fr>
- * Copyright (C) 2024      Frédéric France      <frederic.france@free.fr>
- * Copyright (C) 2024      Ferran Marcet        <fmarcet@2byte.es>
+/* Copyright (C) 2007-2023  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2013-2014  Cedric GROSS            <c.gross@kreiz-it.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Ferran Marcet           <fmarcet@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +27,12 @@
  *              Manage table llx_product_batch (should have been named product_stock_batch)
  */
 
-require_once DOL_DOCUMENT_ROOT . "/core/class/commonobject.class.php";
-
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Manage record for batch number management
  */
-class Productbatch extends CommonObject
+class Productbatch extends GenericDocument
 {
     /**
      * Batches rules
