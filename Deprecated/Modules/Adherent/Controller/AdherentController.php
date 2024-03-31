@@ -1,12 +1,22 @@
 <?php
 
-/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
- * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
+/* Copyright (C) 2001-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2002-2003	Jean-Louis Bergamo		<jlb@j1b.org>
  * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
- * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
+ * Copyright (C) 2005-2021	Regis Houssin			<regis.houssin@inodbox.com>
+ * Copyright (C) 2005       Brice Davoleau          <brice.davoleau@gmail.com>
+ * Copyright (C) 2007       Patrick Raguin  		<patrick.raguin@gmail.com>
+ * Copyright (C) 2010       Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2013       Cédric Salvador         <csalvador@gpcsolutions.fr>
+ * Copyright (C) 2014 	    Henry Florian           <florian.henry@open-concept.pro>
+ * Copyright (C) 2015-2016  Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2015-2023	Frédéric France			<frederic.france@netlgic.fr>
  * Copyright (C) 2019       Nicolas ZABOURI         <info@inovea-conseil.com>
- * Copyright (C) 2021-2023	Frédéric France			<frederic.france@netlgic.fr>
+ * Copyright (C) 2019       Thibault FOUCART        <support@ptibogxiv.net>
+ * Copyright (C) 2020		Tobias Sekan		    <tobias.sekan@startmail.com>
+ * Copyright (C) 2021       NextGestion 			<contact@nextgestion.com>
  * Copyright (C) 2021-2023  Waël Almoman            <info@almoman.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -35,19 +45,36 @@ global $langs;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
+require_once BASE_PATH . '/accountancy/class/accountingjournal.class.php';
+require_once BASE_PATH . '/adherents/class/adherent.class.php';
+require_once BASE_PATH . '/adherents/class/adherent_type.class.php';
+require_once BASE_PATH . '/adherents/class/subscription.class.php';
 require_once BASE_PATH . '/core/class/extrafields.class.php';
-require_once BASE_PATH . '/core/lib/member.lib.php';
+require_once BASE_PATH . '/core/class/html.formadmin.class.php';
+require_once BASE_PATH . '/core/class/html.formfile.class.php';
+require_once BASE_PATH . '/core/class/html.formprojet.class.php';
+require_once BASE_PATH . '/core/class/ldap.class.php';
+require_once BASE_PATH . '/core/class/vcard.class.php';
+require_once BASE_PATH . '/core/lib/date.lib.php';
 require_once BASE_PATH . '/core/lib/company.lib.php';
-require_once BASE_PATH . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/core/lib/files.lib.php';
 require_once BASE_PATH . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/core/lib/ldap.lib.php';
+require_once BASE_PATH . '/core/lib/member.lib.php';
 require_once BASE_PATH . '/categories/class/categorie.class.php';
 require_once BASE_PATH . '/compta/bank/class/account.class.php';
+require_once BASE_PATH . '/contact/class/contact.class.php';
 require_once BASE_PATH . '/core/class/extrafields.class.php';
 require_once BASE_PATH . '/core/class/html.formadmin.class.php';
 require_once BASE_PATH . '/core/class/html.formcompany.class.php';
 require_once BASE_PATH . '/core/class/html.formfile.class.php';
 require_once BASE_PATH . '/core/class/html.formother.class.php';
+require_once BASE_PATH . '/partnership/class/partnership.class.php';
+require_once BASE_PATH . '/partnership/lib/partnership.lib.php';
 require_once BASE_PATH . '/product/class/html.formproduct.class.php';
+require_once BASE_PATH . '/product/class/product.class.php';
+require_once BASE_PATH . '/societe/class/societe.class.php';
 
 use Canvas;
 use Categorie;
@@ -74,7 +101,12 @@ use Translate;
 
 class AdherentController extends DolibarrController
 {
-    public function index()
+    /**
+     *    \file       htdocs/adherents/agenda.php
+     *    \ingroup    member
+     *    \brief      Page of members events
+     */
+    public function agenda()
     {
         global $conf;
         global $db;
@@ -85,140 +117,177 @@ class AdherentController extends DolibarrController
         global $langs;
 
 // Load translation files required by the page
-        $langs->loadLangs(["companies", "members"]);
+        $langs->loadLangs(array('companies', 'members'));
 
-        // $hookmanager = new HookManager($db);
+// Get Parameters
+        $id = GETPOSTINT('id') ? GETPOSTINT('id') : GETPOSTINT('rowid');
 
-// Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
-        $hookmanager->initHooks(['membersindex']);
+// Pagination
+        $limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
+        $sortfield = GETPOST('sortfield', 'aZ09comma');
+        $sortorder = GETPOST('sortorder', 'aZ09comma');
+        $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
+        if (empty($page) || $page == -1) {
+            $page = 0;
+        }     // If $page is not defined, or '' or -1
+        $offset = $limit * $page;
+        $pageprev = $page - 1;
+        $pagenext = $page + 1;
+        if (!$sortfield) {
+            $sortfield = 'a.datep,a.id';
+        }
+        if (!$sortorder) {
+            $sortorder = 'DESC';
+        }
+
+        if (GETPOST('actioncode', 'array')) {
+            $actioncode = GETPOST('actioncode', 'array', 3);
+            if (!count($actioncode)) {
+                $actioncode = '0';
+            }
+        } else {
+            $actioncode = GETPOST("actioncode", "alpha", 3) ? GETPOST("actioncode", "alpha", 3) : (GETPOST("actioncode") == '0' ? '0' : getDolGlobalString('AGENDA_DEFAULT_FILTER_TYPE_FOR_OBJECT'));
+        }
+        $search_rowid = GETPOST('search_rowid');
+        $search_agenda_label = GETPOST('search_agenda_label');
+
+// Get object canvas (By default, this is not defined, so standard usage of dolibarr)
+        $objcanvas = null;
+
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
+        $hookmanager->initHooks(array('memberagenda', 'globalcard'));
 
 // Security check
-        $result = restrictedArea($user, 'adherent');
+        $result = restrictedArea($user, 'adherent', $id);
+
+// Initialize technical objects
+        $object = new Adherent($db);
+        $result = $object->fetch($id);
+        if ($result > 0) {
+            $object->fetch_thirdparty();
+
+            $adht = new AdherentType($db);
+            $result = $adht->fetch($object->typeid);
+        }
+
 
         /*
-         * Actions
+         *	Actions
          */
 
-        $userid = GETPOSTINT('userid');
-        if (GETPOST('addbox')) {
-            // Add box (when submit is done from a form when ajax disabled)
-            require_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
-            $zone = GETPOSTINT('areacode');
-            $boxorder = GETPOST('boxorder', 'aZ09');
-            $boxorder .= GETPOST('boxcombo', 'aZ09');
-            $result = InfoBox::saveboxorder($db, $zone, $boxorder, $userid);
-            if ($result > 0) {
-                setEventMessages($langs->trans("BoxAdded"), null);
+        $parameters = array('id' => $id, 'objcanvas' => $objcanvas);
+        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
+
+        if (empty($reshook)) {
+            // Cancel
+            if (GETPOST('cancel', 'alpha') && !empty($backtopage)) {
+                header("Location: " . $backtopage);
+                exit;
+            }
+
+            // Purge search criteria
+            if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All test are required to be compatible with all browsers
+                $actioncode = '';
+                $search_rowid = '';
+                $search_agenda_label = '';
             }
         }
 
+
+
         /*
-         * View
+         *	View
          */
+
+        $contactstatic = new Contact($db);
 
         $form = new Form($db);
 
-// Load $resultboxes (selectboxlist + boxactivated + boxlista + boxlistb)
-        $resultboxes = FormOther::getBoxesArea($user, "2");
 
-        llxHeader('', $langs->trans("Members"), 'EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder');
+        if ($object->id > 0) {
+            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
-        $staticmember = new Adherent($db);
-        $statictype = new AdherentType($db);
-        $subscriptionstatic = new Subscription($db);
+            $langs->load("companies");
 
-        print load_fiche_titre($langs->trans("MembersArea"), $resultboxes['selectboxlist'], 'members');
+            $title = $langs->trans("Member") . " - " . $langs->trans("Agenda");
 
-        /*
-         * Statistics
-         */
+            $help_url = "EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder";
 
-        $boxgraph = '';
-        if ($conf->use_javascript_ajax) {
-            $year = date('Y');
-            $numberyears = getDolGlobalInt("MAIN_NB_OF_YEAR_IN_MEMBERSHIP_WIDGET_GRAPH");
+            llxHeader("", $title, $help_url);
 
-            $boxgraph .= '<div class="div-table-responsive-no-min">';
-            $boxgraph .= '<table class="noborder nohover centpercent">';
-            $boxgraph .= '<tr class="liste_titre"><th colspan="2">' . $langs->trans("Statistics") . ($numberyears ? ' (' . ($year - $numberyears) . ' - ' . $year . ')' : '') . '</th></tr>';
-            $boxgraph .= '<tr><td class="center" colspan="2">';
-
-            $stats = new AdherentStats($db, 0, $userid);
-
-            // Show array
-            $sumMembers = $stats->countMembersByTypeAndStatus($numberyears);
-            if (is_array($sumMembers) && !empty($sumMembers)) {
-                $total = $sumMembers['total']['members_draft'] + $sumMembers['total']['members_pending'] + $sumMembers['total']['members_uptodate'] + $sumMembers['total']['members_expired'] + $sumMembers['total']['members_excluded'] + $sumMembers['total']['members_resiliated'];
-            } else {
-                $total = 0;
+            if (isModEnabled('notification')) {
+                $langs->load("mails");
             }
-            foreach (['members_draft', 'members_pending', 'members_uptodate', 'members_expired', 'members_excluded', 'members_resiliated'] as $val) {
-                if (empty($sumMembers['total'][$val])) {
-                    $sumMembers['total'][$val] = 0;
+            $head = member_prepare_head($object);
+
+            print dol_get_fiche_head($head, 'agenda', $langs->trans("Member"), -1, 'user');
+
+            $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+            $morehtmlref = '<a href="' . DOL_URL_ROOT . '/adherents/vcard.php?id=' . $object->id . '" class="refid">';
+            $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+            $morehtmlref .= '</a>';
+
+            dol_banner_tab($object, 'rowid', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+
+            print '<div class="fichecenter">';
+
+            print '<div class="underbanner clearboth"></div>';
+
+            $object->info($id);
+            dol_print_object_info($object, 1);
+
+            print '</div>';
+
+            print dol_get_fiche_end();
+
+
+            //print '<div class="tabsAction">';
+            //print '</div>';
+
+
+            $newcardbutton = '';
+            if (isModEnabled('agenda')) {
+                $newcardbutton .= dolGetButtonTitle($langs->trans('AddAction'), '', 'fa fa-plus-circle', DOL_URL_ROOT . '/comm/action/card.php?action=create&backtopage=' . urlencode($_SERVER['PHP_SELF']) . ($object->id > 0 ? '?id=' . $object->id : '') . '&origin=member&originid=' . $id);
+            }
+
+            if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') || $user->hasRight('agenda', 'allactions', 'read'))) {
+                print '<br>';
+
+                $param = '&id=' . $id;
+                if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
+                    $param .= '&contextpage=' . $contextpage;
                 }
+                if ($limit > 0 && $limit != $conf->liste_limit) {
+                    $param .= '&limit=' . $limit;
+                }
+
+                print_barre_liste($langs->trans("ActionsOnMember"), 0, $_SERVER['PHP_SELF'], '', $sortfield, $sortorder, '', 0, -1, '', '', $newcardbutton, '', 0, 1, 1);
+
+                // List of all actions
+                $filters = array();
+                $filters['search_agenda_label'] = $search_agenda_label;
+                $filters['search_rowid'] = $search_rowid;
+
+                // TODO Replace this with same code than into list.php
+                show_actions_done($conf, $langs, $db, $object, null, 0, $actioncode, '', $filters, $sortfield, $sortorder);
             }
-
-            $dataseries = [];
-            $dataseries[] = [$langs->transnoentitiesnoconv("MembersStatusToValid"), $sumMembers['total']['members_draft']];            // Draft, not yet validated
-            $dataseries[] = [$langs->transnoentitiesnoconv("WaitingSubscription"), $sumMembers['total']['members_pending']];
-            $dataseries[] = [$langs->transnoentitiesnoconv("UpToDate"), $sumMembers['total']['members_uptodate']];
-            $dataseries[] = [$langs->transnoentitiesnoconv("OutOfDate"), $sumMembers['total']['members_expired']];
-            $dataseries[] = [$langs->transnoentitiesnoconv("MembersStatusExcluded"), $sumMembers['total']['members_excluded']];
-            $dataseries[] = [$langs->transnoentitiesnoconv("MembersStatusResiliated"), $sumMembers['total']['members_resiliated']];
-
-            include DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/theme_vars.inc.php';
-
-            include_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
-            $dolgraph = new DolGraph();
-            $dolgraph->SetData($dataseries);
-            $dolgraph->SetDataColor(['-' . $badgeStatus0, $badgeStatus1, $badgeStatus4, $badgeStatus8, '-' . $badgeStatus8, $badgeStatus6]);
-            $dolgraph->setShowLegend(2);
-            $dolgraph->setShowPercent(1);
-            $dolgraph->SetType(['pie']);
-            $dolgraph->setHeight('200');
-            $dolgraph->draw('idgraphstatus');
-            $boxgraph .= $dolgraph->show($total ? 0 : 1);
-
-            $boxgraph .= '</td></tr>';
-            $boxgraph .= '<tr class="liste_total"><td>' . $langs->trans("Total") . '</td><td class="right">';
-            $boxgraph .= $total;
-            $boxgraph .= '</td></tr>';
-            $boxgraph .= '</table>';
-            $boxgraph .= '</div>';
-            $boxgraph .= '<br>';
         }
-
-// boxes
-        print '<div class="clearboth"></div>';
-        print '<div class="fichecenter fichecenterbis">';
-
-        print '<div class="twocolumns">';
-
-        print '<div class="firstcolumn fichehalfleft boxhalfleft" id="boxhalfleft">';
-
-        print $boxgraph;
-
-        print $resultboxes['boxlista'];
-
-        print '</div>' . "\n";
-
-        print '<div class="secondcolumn fichehalfright boxhalfright" id="boxhalfright">';
-
-        print $resultboxes['boxlistb'];
-
-        print '</div>' . "\n";
-
-        print '</div>';
-        print '</div>';
-
-        $parameters = ['user' => $user];
-        $reshook = $hookmanager->executeHooks('dashboardMembers', $parameters, $object); // Note that $action and $object may have been modified by hook
 
 // End of page
         llxFooter();
         $db->close();
     }
 
+    /**
+     *  \file       htdocs/adherents/card.php
+     *  \ingroup    member
+     *  \brief      Page of a member
+     */
     public function card()
     {
         global $conf;
@@ -2292,6 +2361,554 @@ class AdherentController extends DolibarrController
         $db->close();
     }
 
+    /**
+     *  \file       htdocs/adherents/document.php
+     *  \brief      Tab for documents linked to third party
+     *  \ingroup    societe
+     */
+    public function document()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(array("companies", "members", "other"));
+
+
+        $id = GETPOSTISSET('id') ? GETPOSTINT('id') : GETPOSTINT('rowid');
+        $ref = GETPOST('ref', 'alphanohtml');
+        $action = GETPOST('action', 'aZ09');
+        $confirm = GETPOST('confirm', 'alpha');
+
+// Get parameters
+        $limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
+        $sortfield = GETPOST('sortfield', 'aZ09comma');
+        $sortorder = GETPOST('sortorder', 'aZ09comma');
+        $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
+        if (empty($page) || $page == -1) {
+            $page = 0;
+        }     // If $page is not defined, or '' or -1
+        $offset = $limit * $page;
+        $pageprev = $page - 1;
+        $pagenext = $page + 1;
+        if (!$sortorder) {
+            $sortorder = "ASC";
+        }
+        if (!$sortfield) {
+            $sortfield = "name";
+        }
+
+        $object = new Adherent($db);
+        $membert = new AdherentType($db);
+        $result = $object->fetch($id, $ref);
+        if ($result < 0) {
+            dol_print_error($db);
+            exit;
+        }
+        $upload_dir = $conf->adherent->dir_output . "/" . get_exdir(0, 0, 0, 1, $object, 'member');
+
+// Fetch object
+        if ($id > 0 || !empty($ref)) {
+            // Load member
+            $result = $object->fetch($id, $ref);
+
+            // Define variables to know what current user can do on users
+            $canadduser = ($user->admin || $user->hasRight('user', 'user', 'creer'));
+            // Define variables to know what current user can do on properties of user linked to edited member
+            if ($object->user_id) {
+                // $User is the user who edits, $object->user_id is the id of the related user in the edited member
+                $caneditfielduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'creer'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'creer')));
+                $caneditpassworduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'password'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'password')));
+            }
+        }
+
+// Define variables to determine what the current user can do on the members
+        $canaddmember = $user->hasRight('adherent', 'creer');
+// Define variables to determine what the current user can do on the properties of a member
+        if ($id) {
+            $caneditfieldmember = $user->hasRight('adherent', 'creer');
+        }
+
+        $permissiontoadd = $canaddmember;
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $object->id, '', '', 'socid', 'rowid', 0);
+
+
+        /*
+         * Actions
+         */
+
+        include DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
+
+
+        /*
+         * View
+         */
+
+        $form = new Form($db);
+
+        $title = $langs->trans("Member") . " - " . $langs->trans("Documents");
+
+        $help_url = "EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder";
+
+        llxHeader("", $title, $help_url);
+
+        if ($id > 0) {
+            $result = $membert->fetch($object->typeid);
+            if ($result > 0) {
+                // Build file list
+                $filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ? SORT_DESC : SORT_ASC), 1);
+                $totalsize = 0;
+                foreach ($filearray as $key => $file) {
+                    $totalsize += $file['size'];
+                }
+
+                if (isModEnabled('notification')) {
+                    $langs->load("mails");
+                }
+
+                $head = member_prepare_head($object);
+
+                print dol_get_fiche_head($head, 'document', $langs->trans("Member"), -1, 'user');
+
+                $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+                $morehtmlref = '<a href="' . DOL_URL_ROOT . '/adherents/vcard.php?id=' . $object->id . '" class="refid">';
+                $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+                $morehtmlref .= '</a>';
+
+                dol_banner_tab($object, 'rowid', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+
+                print '<div class="fichecenter">';
+
+                print '<div class="underbanner clearboth"></div>';
+                print '<table class="border tableforfield centpercent">';
+
+                $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+                // Login
+                if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
+                    print '<tr><td class="titlefield">' . $langs->trans("Login") . ' / ' . $langs->trans("Id") . '</td><td class="valeur">' . dol_escape_htmltag($object->login) . '</td></tr>';
+                }
+
+                // Type
+                print '<tr><td>' . $langs->trans("Type") . '</td>';
+                print '<td class="valeur">' . $membert->getNomUrl(1) . "</td></tr>\n";
+
+                // Morphy
+                print '<tr><td class="titlefield">' . $langs->trans("MemberNature") . '</td>';
+                print '<td class="valeur" >' . $object->getmorphylib('', 1) . '</td>';
+                print '</tr>';
+
+                // Company
+                print '<tr><td>' . $langs->trans("Company") . '</td><td class="valeur">' . dol_escape_htmltag($object->company) . '</td></tr>';
+
+                // Civility
+                print '<tr><td>' . $langs->trans("UserTitle") . '</td><td class="valeur">' . $object->getCivilityLabel() . '&nbsp;</td>';
+                print '</tr>';
+
+                // Number of Attached Files
+                print '<tr><td>' . $langs->trans("NbOfAttachedFiles") . '</td><td colspan="3">' . count($filearray) . '</td></tr>';
+
+                //Total Size Of Attached Files
+                print '<tr><td>' . $langs->trans("TotalSizeOfAttachedFiles") . '</td><td colspan="3">' . dol_print_size($totalsize, 1, 1) . '</td></tr>';
+
+                print '</table>';
+
+                print '</div>';
+
+                print dol_get_fiche_end();
+
+                $modulepart = 'member';
+                $permissiontoadd = $user->hasRight('adherent', 'creer');
+                $permtoedit = $user->hasRight('adherent', 'creer');
+                $param = '&id=' . $object->id;
+                include DOL_DOCUMENT_ROOT . '/core/tpl/document_actions_post_headers.tpl.php';
+                print "<br><br>";
+            } else {
+                dol_print_error($db);
+            }
+        } else {
+            $langs->load("errors");
+            print $langs->trans("ErrorRecordNotFound");
+        }
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *       \file       htdocs/adherents/index.php
+     *       \ingroup    member
+     *       \brief      Home page of membership module
+     */
+    public function index()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(["companies", "members"]);
+
+        // $hookmanager = new HookManager($db);
+
+// Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
+        $hookmanager->initHooks(['membersindex']);
+
+// Security check
+        $result = restrictedArea($user, 'adherent');
+
+        /*
+         * Actions
+         */
+
+        $userid = GETPOSTINT('userid');
+        if (GETPOST('addbox')) {
+            // Add box (when submit is done from a form when ajax disabled)
+            require_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
+            $zone = GETPOSTINT('areacode');
+            $boxorder = GETPOST('boxorder', 'aZ09');
+            $boxorder .= GETPOST('boxcombo', 'aZ09');
+            $result = InfoBox::saveboxorder($db, $zone, $boxorder, $userid);
+            if ($result > 0) {
+                setEventMessages($langs->trans("BoxAdded"), null);
+            }
+        }
+
+        /*
+         * View
+         */
+
+        $form = new Form($db);
+
+// Load $resultboxes (selectboxlist + boxactivated + boxlista + boxlistb)
+        $resultboxes = FormOther::getBoxesArea($user, "2");
+
+        llxHeader('', $langs->trans("Members"), 'EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder');
+
+        $staticmember = new Adherent($db);
+        $statictype = new AdherentType($db);
+        $subscriptionstatic = new Subscription($db);
+
+        print load_fiche_titre($langs->trans("MembersArea"), $resultboxes['selectboxlist'], 'members');
+
+        /*
+         * Statistics
+         */
+
+        $boxgraph = '';
+        if ($conf->use_javascript_ajax) {
+            $year = date('Y');
+            $numberyears = getDolGlobalInt("MAIN_NB_OF_YEAR_IN_MEMBERSHIP_WIDGET_GRAPH");
+
+            $boxgraph .= '<div class="div-table-responsive-no-min">';
+            $boxgraph .= '<table class="noborder nohover centpercent">';
+            $boxgraph .= '<tr class="liste_titre"><th colspan="2">' . $langs->trans("Statistics") . ($numberyears ? ' (' . ($year - $numberyears) . ' - ' . $year . ')' : '') . '</th></tr>';
+            $boxgraph .= '<tr><td class="center" colspan="2">';
+
+            $stats = new AdherentStats($db, 0, $userid);
+
+            // Show array
+            $sumMembers = $stats->countMembersByTypeAndStatus($numberyears);
+            if (is_array($sumMembers) && !empty($sumMembers)) {
+                $total = $sumMembers['total']['members_draft'] + $sumMembers['total']['members_pending'] + $sumMembers['total']['members_uptodate'] + $sumMembers['total']['members_expired'] + $sumMembers['total']['members_excluded'] + $sumMembers['total']['members_resiliated'];
+            } else {
+                $total = 0;
+            }
+            foreach (['members_draft', 'members_pending', 'members_uptodate', 'members_expired', 'members_excluded', 'members_resiliated'] as $val) {
+                if (empty($sumMembers['total'][$val])) {
+                    $sumMembers['total'][$val] = 0;
+                }
+            }
+
+            $dataseries = [];
+            $dataseries[] = [$langs->transnoentitiesnoconv("MembersStatusToValid"), $sumMembers['total']['members_draft']];            // Draft, not yet validated
+            $dataseries[] = [$langs->transnoentitiesnoconv("WaitingSubscription"), $sumMembers['total']['members_pending']];
+            $dataseries[] = [$langs->transnoentitiesnoconv("UpToDate"), $sumMembers['total']['members_uptodate']];
+            $dataseries[] = [$langs->transnoentitiesnoconv("OutOfDate"), $sumMembers['total']['members_expired']];
+            $dataseries[] = [$langs->transnoentitiesnoconv("MembersStatusExcluded"), $sumMembers['total']['members_excluded']];
+            $dataseries[] = [$langs->transnoentitiesnoconv("MembersStatusResiliated"), $sumMembers['total']['members_resiliated']];
+
+            include DOL_DOCUMENT_ROOT . '/theme/' . $conf->theme . '/theme_vars.inc.php';
+
+            include_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
+            $dolgraph = new DolGraph();
+            $dolgraph->SetData($dataseries);
+            $dolgraph->SetDataColor(['-' . $badgeStatus0, $badgeStatus1, $badgeStatus4, $badgeStatus8, '-' . $badgeStatus8, $badgeStatus6]);
+            $dolgraph->setShowLegend(2);
+            $dolgraph->setShowPercent(1);
+            $dolgraph->SetType(['pie']);
+            $dolgraph->setHeight('200');
+            $dolgraph->draw('idgraphstatus');
+            $boxgraph .= $dolgraph->show($total ? 0 : 1);
+
+            $boxgraph .= '</td></tr>';
+            $boxgraph .= '<tr class="liste_total"><td>' . $langs->trans("Total") . '</td><td class="right">';
+            $boxgraph .= $total;
+            $boxgraph .= '</td></tr>';
+            $boxgraph .= '</table>';
+            $boxgraph .= '</div>';
+            $boxgraph .= '<br>';
+        }
+
+// boxes
+        print '<div class="clearboth"></div>';
+        print '<div class="fichecenter fichecenterbis">';
+
+        print '<div class="twocolumns">';
+
+        print '<div class="firstcolumn fichehalfleft boxhalfleft" id="boxhalfleft">';
+
+        print $boxgraph;
+
+        print $resultboxes['boxlista'];
+
+        print '</div>' . "\n";
+
+        print '<div class="secondcolumn fichehalfright boxhalfright" id="boxhalfright">';
+
+        print $resultboxes['boxlistb'];
+
+        print '</div>' . "\n";
+
+        print '</div>';
+        print '</div>';
+
+        $parameters = ['user' => $user];
+        $reshook = $hookmanager->executeHooks('dashboardMembers', $parameters, $object); // Note that $action and $object may have been modified by hook
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *       \file       htdocs/adherents/ldap.php
+     *       \ingroup    ldap member
+     *       \brief      Page fiche LDAP adherent
+     */
+    public function ldap()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(array("companies", "members", "ldap", "admin"));
+
+        $id = GETPOSTINT('id');
+        $ref = GETPOST('ref', 'alphanohtml');
+        $action = GETPOST('action', 'aZ09');
+
+// Protection
+        $socid = 0;
+        if ($user->socid > 0) {
+            $socid = $user->socid;
+        }
+
+        $object = new Adherent($db);
+
+// Fetch object
+        if ($id > 0 || !empty($ref)) {
+            // Load member
+            $result = $object->fetch($id, $ref);
+
+            // Define variables to know what current user can do on users
+            $canadduser = (!empty($user->admin) || $user->hasRight('user', 'user', 'creer'));
+            // Define variables to know what current user can do on properties of user linked to edited member
+            if ($object->user_id) {
+                // $User is the user who edits, $object->user_id is the id of the related user in the edited member
+                $caneditfielduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'creer'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'creer')));
+                $caneditpassworduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'password'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'password')));
+            }
+        }
+
+// Define variables to determine what the current user can do on the members
+        $canaddmember = $user->hasRight('adherent', 'creer');
+// Define variables to determine what the current user can do on the properties of a member
+        if ($id) {
+            $caneditfieldmember = $user->hasRight('adherent', 'creer');
+        }
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $object->id, '', '', 'socid', 'rowid', 0);
+
+
+        /*
+         * Actions
+         */
+
+        if ($action == 'dolibarr2ldap') {
+            $ldap = new Ldap();
+            $result = $ldap->connectBind();
+
+            if ($result > 0) {
+                $info = $object->_load_ldap_info();
+                $dn = $object->_load_ldap_dn($info);
+                $olddn = $dn; // We can say that old dn = dn as we force synchro
+
+                $result = $ldap->update($dn, $info, $user, $olddn);
+            }
+
+            if ($result >= 0) {
+                setEventMessages($langs->trans("MemberSynchronized"), null, 'mesgs');
+            } else {
+                setEventMessages($ldap->error, $ldap->errors, 'errors');
+            }
+        }
+
+
+
+        /*
+         *	View
+         */
+
+        $form = new Form($db);
+
+        llxHeader('', $langs->trans("Member"), 'EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder');
+
+        $head = member_prepare_head($object);
+
+        print dol_get_fiche_head($head, 'ldap', $langs->trans("Member"), 0, 'user');
+
+        $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+        dol_banner_tab($object, 'rowid', $linkback);
+
+        print '<div class="fichecenter">';
+
+        print '<div class="underbanner clearboth"></div>';
+        print '<table class="border centpercent tableforfield">';
+
+// Login
+        print '<tr><td class="titlefield">' . $langs->trans("Login") . ' / ' . $langs->trans("Id") . '</td><td class="valeur">' . dol_escape_htmltag($object->login) . '&nbsp;</td></tr>';
+
+// If there is a link to the unencrypted password, we show the value in database here so we can compare because it is shown nowhere else
+// This is for very old situation. Password are now encrypted and $object->pass is empty.
+        if (getDolGlobalString('LDAP_MEMBER_FIELD_PASSWORD')) {
+            print '<tr><td>' . $langs->trans("LDAPFieldPasswordNotCrypted") . '</td>';
+            print '<td class="valeur">' . dol_escape_htmltag($object->pass) . '</td>';
+            print "</tr>\n";
+        }
+
+        $adht = new AdherentType($db);
+        $adht->fetch($object->typeid);
+
+// Type
+        print '<tr><td>' . $langs->trans("Type") . '</td><td class="valeur">' . $adht->getNomUrl(1) . "</td></tr>\n";
+
+// LDAP DN
+        print '<tr><td>LDAP ' . $langs->trans("LDAPMemberDn") . '</td><td class="valeur">' . getDolGlobalString('LDAP_MEMBER_DN') . "</td></tr>\n";
+
+// LDAP Cle
+        print '<tr><td>LDAP ' . $langs->trans("LDAPNamingAttribute") . '</td><td class="valeur">' . getDolGlobalString('LDAP_KEY_MEMBERS') . "</td></tr>\n";
+
+// LDAP Server
+        print '<tr><td>LDAP ' . $langs->trans("Type") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_TYPE') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("Version") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_PROTOCOLVERSION') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("LDAPPrimaryServer") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_HOST') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("LDAPSecondaryServer") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_HOST_SLAVE') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("LDAPServerPort") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_PORT') . "</td></tr>\n";
+
+        print '</table>';
+
+        print '</div>';
+
+        print dol_get_fiche_end();
+
+        /*
+         * Action bar
+         */
+        print '<div class="tabsAction">';
+
+        if (getDolGlobalString('LDAP_MEMBER_ACTIVE') && getDolGlobalString('LDAP_MEMBER_ACTIVE') != Ldap::SYNCHRO_LDAP_TO_DOLIBARR) {
+            print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;action=dolibarr2ldap">' . $langs->trans("ForceSynchronize") . '</a></div>';
+        }
+
+        print "</div>\n";
+
+        if (getDolGlobalString('LDAP_MEMBER_ACTIVE') && getDolGlobalString('LDAP_MEMBER_ACTIVE') != Ldap::SYNCHRO_LDAP_TO_DOLIBARR) {
+            print "<br>\n";
+        }
+
+
+
+// Affichage attributes LDAP
+        print load_fiche_titre($langs->trans("LDAPInformationsForThisMember"));
+
+        print '<table width="100%" class="noborder">';
+
+        print '<tr class="liste_titre">';
+        print '<td>' . $langs->trans("LDAPAttributes") . '</td>';
+        print '<td>' . $langs->trans("Value") . '</td>';
+        print '</tr>';
+
+// Lecture LDAP
+        $ldap = new Ldap();
+        $result = $ldap->connectBind();
+        if ($result > 0) {
+            $info = $object->_load_ldap_info();
+            $dn = $object->_load_ldap_dn($info, 1);
+            $search = "(" . $object->_load_ldap_dn($info, 2) . ")";
+
+            if (empty($dn)) {
+                $langs->load("errors");
+                print '<tr class="oddeven"><td colspan="2"><span class="error">' . $langs->trans("ErrorModuleSetupNotComplete", $langs->transnoentitiesnoconv("Member")) . '</span></td></tr>';
+            } else {
+                $records = $ldap->getAttribute($dn, $search);
+
+                //print_r($records);
+
+                // Show tree
+                if (((!is_numeric($records)) || $records != 0) && (!isset($records['count']) || $records['count'] > 0)) {
+                    if (!is_array($records)) {
+                        print '<tr class="oddeven"><td colspan="2"><span class="error">' . $langs->trans("ErrorFailedToReadLDAP") . '</span></td></tr>';
+                    } else {
+                        $result = show_ldap_content($records, 0, $records['count'], true);
+                    }
+                } else {
+                    print '<tr class="oddeven"><td colspan="2">' . $langs->trans("LDAPRecordNotFound") . ' (dn=' . dol_escape_htmltag($dn) . ' - search=' . dol_escape_htmltag($search) . ')</td></tr>';
+                }
+            }
+
+            $ldap->unbind();
+        } else {
+            setEventMessages($ldap->error, $ldap->errors, 'errors');
+        }
+
+
+        print '</table>';
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *  \file       htdocs/adherents/list.php
+     *  \ingroup    member
+     *  \brief      Page to list all members of foundation
+     */
     public function list()
     {
         global $conf;
@@ -3853,6 +4470,1634 @@ class AdherentController extends DolibarrController
         $db->close();
     }
 
+    /**
+     *      \file       htdocs/adherents/note.php
+     *      \ingroup    member
+     *      \brief      Tab for note of a member
+     */
+    public function note()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(array("companies", "members", "bills"));
+
+
+// Get parameters
+        $action = GETPOST('action', 'aZ09');
+        $id = GETPOSTINT('id');
+        $ref = GETPOST('ref', 'alphanohtml');
+
+
+// Initialize objects
+        $object = new Adherent($db);
+
+        $result = $object->fetch($id);
+        if ($result > 0) {
+            $adht = new AdherentType($db);
+            $result = $adht->fetch($object->typeid);
+        }
+
+
+        $permissionnote = $user->hasRight('adherent', 'creer'); // Used by the include of actions_setnotes.inc.php
+
+// Fetch object
+        if ($id > 0 || !empty($ref)) {
+            // Load member
+            $result = $object->fetch($id, $ref);
+
+            // Define variables to know what current user can do on users
+            $canadduser = ($user->admin || $user->hasRight('user', 'user', 'creer'));
+            // Define variables to know what current user can do on properties of user linked to edited member
+            if ($object->user_id) {
+                // $User is the user who edits, $object->user_id is the id of the related user in the edited member
+                $caneditfielduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'creer'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'creer')));
+                $caneditpassworduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'password'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'password')));
+            }
+        }
+
+// Define variables to determine what the current user can do on the members
+        $canaddmember = $user->hasRight('adherent', 'creer');
+// Define variables to determine what the current user can do on the properties of a member
+        if ($id) {
+            $caneditfieldmember = $user->hasRight('adherent', 'creer');
+        }
+
+        $hookmanager->initHooks(array('membernote'));
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $object->id, '', '', 'socid', 'rowid', 0);
+
+        /*
+         * Actions
+         */
+        $parameters = array();
+        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
+        if (empty($reshook)) {
+            include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
+        }
+
+
+        /*
+         * View
+         */
+
+        $title = $langs->trans("Member") . " - " . $langs->trans("Note");
+
+        $help_url = "EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder";
+
+        llxHeader("", $title, $help_url);
+
+        $form = new Form($db);
+
+        if ($id) {
+            $head = member_prepare_head($object);
+
+            print dol_get_fiche_head($head, 'note', $langs->trans("Member"), -1, 'user');
+
+            print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
+            print '<input type="hidden" name="token" value="' . newToken() . '">';
+
+            $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+            $morehtmlref = '<a href="' . DOL_URL_ROOT . '/adherents/vcard.php?id=' . $object->id . '" class="refid">';
+            $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+            $morehtmlref .= '</a>';
+
+            dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+
+            print '<div class="fichecenter">';
+
+            print '<div class="underbanner clearboth"></div>';
+            print '<table class="border centpercent tableforfield">';
+
+            // Login
+            if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
+                print '<tr><td class="titlefield">' . $langs->trans("Login") . ' / ' . $langs->trans("Id") . '</td><td class="valeur">' . dol_escape_htmltag($object->login) . '</td></tr>';
+            }
+
+            // Type
+            print '<tr><td>' . $langs->trans("Type") . '</td>';
+            print '<td class="valeur">' . $adht->getNomUrl(1) . "</td></tr>\n";
+
+            // Morphy
+            print '<tr><td class="titlefield">' . $langs->trans("MemberNature") . '</td>';
+            print '<td class="valeur" >' . $object->getmorphylib('', 1) . '</td>';
+            print '</tr>';
+
+            // Company
+            print '<tr><td>' . $langs->trans("Company") . '</td><td class="valeur">' . dol_escape_htmltag($object->company) . '</td></tr>';
+
+            // Civility
+            print '<tr><td>' . $langs->trans("UserTitle") . '</td><td class="valeur">' . $object->getCivilityLabel() . '</td>';
+            print '</tr>';
+
+            print "</table>";
+
+            print '</div>';
+
+
+            $cssclass = 'titlefield';
+            $permission = $user->hasRight('adherent', 'creer'); // Used by the include of notes.tpl.php
+            include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+
+            print dol_get_fiche_end();
+        }
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *      \file       partnership_card.php
+     *      \ingroup    partnership
+     *      \brief      Page to create/edit/view partnership
+     */
+    public function partnership()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(array("companies","members","partnership", "other"));
+
+// Get parameters
+        $id = GETPOSTINT('rowid') ? GETPOSTINT('rowid') : GETPOSTINT('id');
+        $ref = GETPOST('ref', 'alpha');
+        $action = GETPOST('action', 'aZ09');
+        $confirm = GETPOST('confirm', 'alpha');
+        $cancel = GETPOST('cancel', 'aZ09');
+        $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'partnershipcard'; // To manage different context of search
+        $backtopage = GETPOST('backtopage', 'alpha');
+        $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
+//$lineid   = GETPOST('lineid', 'int');
+
+        $object = new Adherent($db);
+        if ($id > 0) {
+            $object->fetch($id);
+        }
+
+// Initialize technical objects
+        $object         = new Partnership($db);
+        $extrafields    = new ExtraFields($db);
+        $adht           = new AdherentType($db);
+        $diroutputmassaction = $conf->partnership->dir_output . '/temp/massgeneration/' . $user->id;
+        $hookmanager->initHooks(array('partnershipthirdparty', 'globalcard')); // Note that conf->hooks_modules contains array
+
+// Fetch optionals attributes and labels
+        $extrafields->fetch_name_optionals_label($object->table_element);
+
+        $search_array_options = $extrafields->getOptionalsFromPost($object->table_element, '', 'search_');
+
+// Initialize array of search criteria
+        $search_all = GETPOST("search_all", 'alpha');
+        $search = array();
+
+        foreach ($object->fields as $key => $val) {
+            if (GETPOST('search_' . $key, 'alpha')) {
+                $search[$key] = GETPOST('search_' . $key, 'alpha');
+            }
+        }
+
+// Load object
+        include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
+
+        $permissiontoread = $user->hasRight('partnership', 'read');
+        $permissiontoadd = $user->hasRight('partnership', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+        $permissiontodelete = $user->hasRight('partnership', 'delete') || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
+        $permissionnote = $user->hasRight('partnership', 'write'); // Used by the include of actions_setnotes.inc.php
+        $permissiondellink = $user->hasRight('partnership', 'write'); // Used by the include of actions_dellink.inc.php
+        $usercanclose = $user->hasRight('partnership', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+        $upload_dir = $conf->partnership->multidir_output[isset($object->entity) ? $object->entity : 1];
+
+
+        if (getDolGlobalString('PARTNERSHIP_IS_MANAGED_FOR') != 'member') {
+            accessforbidden('Partnership module is not activated for members');
+        }
+        if (!isModEnabled('partnership')) {
+            accessforbidden();
+        }
+        if (empty($permissiontoread)) {
+            accessforbidden();
+        }
+        if ($action == 'edit' && empty($permissiontoadd)) {
+            accessforbidden();
+        }
+        if (($action == 'update' || $action == 'edit') && $object->status != $object::STATUS_DRAFT) {
+            accessforbidden();
+        }
+
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $id, '', '', 'socid', 'rowid', 0);
+
+
+        /*
+         * Actions
+         */
+
+        $parameters = array();
+        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
+
+        $date_start = dol_mktime(0, 0, 0, GETPOSTINT('date_partnership_startmonth'), GETPOSTINT('date_partnership_startday'), GETPOSTINT('date_partnership_startyear'));
+        $date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_partnership_endmonth'), GETPOSTINT('date_partnership_endday'), GETPOSTINT('date_partnership_endyear'));
+
+        if (empty($reshook)) {
+            $error = 0;
+
+            $backtopage = dol_buildpath('/partnership/partnership.php', 1) . '?rowid=' . ($id > 0 ? $id : '__ID__');
+
+            // Actions when linking object each other
+            include DOL_DOCUMENT_ROOT . '/core/actions_dellink.inc.php';
+        }
+
+        $object->fields['fk_member']['visible'] = 0;
+        if ($object->id > 0 && $object->status == $object::STATUS_REFUSED && empty($action)) {
+            $object->fields['reason_decline_or_cancel']['visible'] = 1;
+        }
+        $object->fields['note_public']['visible'] = 1;
+
+
+        /*
+         * View
+         */
+
+        $form = new Form($db);
+        $formfile = new FormFile($db);
+
+        $title = $langs->trans("Partnership");
+        llxHeader('', $title);
+
+        $form = new Form($db);
+
+        if ($id > 0) {
+            $langs->load("members");
+
+            $object = new Adherent($db);
+            $result = $object->fetch($id);
+
+            if (isModEnabled('notification')) {
+                $langs->load("mails");
+            }
+
+            $adht->fetch($object->typeid);
+
+            $head = member_prepare_head($object);
+
+            print dol_get_fiche_head($head, 'partnership', $langs->trans("ThirdParty"), -1, 'user');
+
+            $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+            dol_banner_tab($object, 'rowid', $linkback);
+
+            print '<div class="fichecenter">';
+
+            print '<div class="underbanner clearboth"></div>';
+            print '<table class="border centpercent tableforfield">';
+
+            // Login
+            if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
+                print '<tr><td class="titlefield">' . $langs->trans("Login") . ' / ' . $langs->trans("Id") . '</td><td class="valeur">' . $object->login . '&nbsp;</td></tr>';
+            }
+
+            // Type
+            print '<tr><td class="titlefield">' . $langs->trans("Type") . '</td><td class="valeur">' . $adht->getNomUrl(1) . "</td></tr>\n";
+
+            // Morphy
+            print '<tr><td>' . $langs->trans("MemberNature") . '</td><td class="valeur" >' . $object->getmorphylib() . '</td>';
+            print '</tr>';
+
+            // Company
+            print '<tr><td>' . $langs->trans("Company") . '</td><td class="valeur">' . $object->company . '</td></tr>';
+
+            // Civility
+            print '<tr><td>' . $langs->trans("UserTitle") . '</td><td class="valeur">' . $object->getCivilityLabel() . '&nbsp;</td>';
+            print '</tr>';
+
+            print '</table>';
+
+            print '</div>';
+
+            print dol_get_fiche_end();
+        } else {
+            dol_print_error(null, 'Parameter rowid not defined');
+        }
+
+
+// Part to show record
+        if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'))) {
+            // Buttons for actions
+
+            if ($action != 'presend') {
+                print '<div class="tabsAction">' . "\n";
+                $parameters = array();
+                $reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+                if ($reshook < 0) {
+                    setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+                }
+
+                if (empty($reshook)) {
+                    // Show
+                    if ($permissiontoadd) {
+                        print dolGetButtonAction($langs->trans('AddPartnership'), '', 'default', DOL_URL_ROOT . '/partnership/partnership_card.php?action=create&fk_member=' . $object->id . '&backtopage=' . urlencode(DOL_URL_ROOT . '/adherents/partnership.php?id=' . $object->id), '', $permissiontoadd);
+                    }
+                }
+                print '</div>' . "\n";
+            }
+
+
+            //$morehtmlright = 'partnership/partnership_card.php?action=create&backtopage=%2Fdolibarr%2Fhtdocs%2Fpartnership%2Fpartnership_list.php';
+            $morehtmlright = '';
+
+            print load_fiche_titre($langs->trans("PartnershipDedicatedToThisMember", $langs->transnoentitiesnoconv("Partnership")), $morehtmlright, '');
+
+            $memberid = $object->id;
+
+
+            // TODO Replace this card with the list of all partnerships.
+
+            $object = new Partnership($db);
+            $partnershipid = $object->fetch(0, "", $memberid);
+
+            if ($partnershipid > 0) {
+                print '<div class="fichecenter">';
+                print '<div class="fichehalfleft">';
+                print '<div class="underbanner clearboth"></div>';
+                print '<table class="border centpercent tableforfield">' . "\n";
+
+                // Common attributes
+                //$keyforbreak='fieldkeytoswitchonsecondcolumn';    // We change column just before this field
+                //unset($object->fields['fk_project']);             // Hide field already shown in banner
+                //unset($object->fields['fk_member']);                  // Hide field already shown in banner
+                include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
+
+                // End of subscription date
+                $fadherent = new Adherent($db);
+                $fadherent->fetch($object->fk_member);
+                print '<tr><td>' . $langs->trans("SubscriptionEndDate") . '</td><td class="valeur">';
+                if ($fadherent->datefin) {
+                    print dol_print_date($fadherent->datefin, 'day');
+                    if ($fadherent->hasDelay()) {
+                        print " " . img_warning($langs->trans("Late"));
+                    }
+                } else {
+                    if (!$adht->subscription) {
+                        print $langs->trans("SubscriptionNotRecorded");
+                        if ($fadherent->statut > 0) {
+                            print " " . img_warning($langs->trans("Late")); // Display a delay picto only if it is not a draft and is not canceled
+                        }
+                    } else {
+                        print $langs->trans("SubscriptionNotReceived");
+                        if ($fadherent->statut > 0) {
+                            print " " . img_warning($langs->trans("Late")); // Display a delay picto only if it is not a draft and is not canceled
+                        }
+                    }
+                }
+                print '</td></tr>';
+
+                print '</table>';
+                print '</div>';
+            }
+        }
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *       \file       htdocs/adherents/subscription.php
+     *       \ingroup    member
+     *       \brief      tab for Adding, editing, deleting a member's memberships
+     */
+    public function subscription()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+        $langs->loadLangs(array("companies", "bills", "members", "users", "mails", 'other'));
+
+        $action = GETPOST('action', 'aZ09');
+        $confirm = GETPOST('confirm', 'alpha');
+        $contextpage = GETPOST('contextpage', 'aZ09');
+        $optioncss = GETPOST('optioncss', 'aZ'); // Option for the css output (always '' except when 'print')
+
+        $id = GETPOSTINT('rowid') ? GETPOSTINT('rowid') : GETPOSTINT('id');
+        $rowid = $id;
+        $ref = GETPOST('ref', 'alphanohtml');
+        $typeid = GETPOSTINT('typeid');
+        $cancel = GETPOST('cancel');
+
+// Load variable for pagination
+        $limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
+        $sortfield = GETPOST('sortfield', 'aZ09comma');
+        $sortorder = GETPOST('sortorder', 'aZ09comma');
+        $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
+        if (empty($page) || $page == -1) {
+            $page = 0;
+        }     // If $page is not defined, or '' or -1
+        $offset = $limit * $page;
+        $pageprev = $page - 1;
+        $pagenext = $page + 1;
+
+// Default sort order (if not yet defined by previous GETPOST)
+        if (!$sortfield) {
+            $sortfield = "c.rowid";
+        }
+        if (!$sortorder) {
+            $sortorder = "DESC";
+        }
+
+        $object = new Adherent($db);
+        $extrafields = new ExtraFields($db);
+        $adht = new AdherentType($db);
+
+// fetch optionals attributes and labels
+        $extrafields->fetch_name_optionals_label($object->table_element);
+
+        $errmsg = '';
+
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
+        $hookmanager->initHooks(array('subscription'));
+
+// PDF
+        $hidedetails = (GETPOSTINT('hidedetails') ? GETPOSTINT('hidedetails') : (getDolGlobalString('MAIN_GENERATE_DOCUMENTS_HIDE_DETAILS') ? 1 : 0));
+        $hidedesc = (GETPOSTINT('hidedesc') ? GETPOSTINT('hidedesc') : (getDolGlobalString('MAIN_GENERATE_DOCUMENTS_HIDE_DESC') ? 1 : 0));
+        $hideref = (GETPOSTINT('hideref') ? GETPOSTINT('hideref') : (getDolGlobalString('MAIN_GENERATE_DOCUMENTS_HIDE_REF') ? 1 : 0));
+
+        $datefrom = 0;
+        $dateto = 0;
+        $paymentdate = -1;
+
+// Fetch object
+        if ($id > 0 || !empty($ref)) {
+            // Load member
+            $result = $object->fetch($id, $ref);
+
+            // Define variables to know what current user can do on users
+            $canadduser = ($user->admin || $user->hasRight("user", "user", "creer"));
+            // Define variables to know what current user can do on properties of user linked to edited member
+            if ($object->user_id) {
+                // $User is the user who edits, $object->user_id is the id of the related user in the edited member
+                $caneditfielduser = ((($user->id == $object->user_id) && $user->hasRight("user", "self", "creer"))
+                    || (($user->id != $object->user_id) && $user->hasRight("user", "user", "creer")));
+                $caneditpassworduser = ((($user->id == $object->user_id) && $user->hasRight("user", "self", "password"))
+                    || (($user->id != $object->user_id) && $user->hasRight("user", "user", "password")));
+            }
+        }
+
+// Define variables to determine what the current user can do on the members
+        $canaddmember = $user->hasRight('adherent', 'creer');
+// Define variables to determine what the current user can do on the properties of a member
+        if ($id) {
+            $caneditfieldmember = $user->hasRight('adherent', 'creer');
+        }
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $object->id, '', '', 'socid', 'rowid', 0);
+
+
+        /*
+         * 	Actions
+         */
+
+        $parameters = array();
+        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action);
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
+
+// Create third party from a member
+        if (empty($reshook) && $action == 'confirm_create_thirdparty' && $confirm == 'yes' && $user->hasRight('societe', 'creer')) {
+            if ($result > 0) {
+                // Creation of thirdparty
+                $company = new Societe($db);
+                $result = $company->create_from_member($object, GETPOST('companyname', 'alpha'), GETPOST('companyalias', 'alpha'), GETPOST('customercode', 'alpha'));
+
+                if ($result < 0) {
+                    $langs->load("errors");
+                    setEventMessages($company->error, $company->errors, 'errors');
+                } else {
+                    $action = 'addsubscription';
+                }
+            } else {
+                setEventMessages($object->error, $object->errors, 'errors');
+            }
+        }
+
+        if (empty($reshook) && $action == 'setuserid' && ($user->hasRight('user', 'self', 'creer') || $user->hasRight('user', 'user', 'creer'))) {
+            $error = 0;
+            if (!$user->hasRight('user', 'user', 'creer')) {    // If can edit only itself user, we can link to itself only
+                if (GETPOSTINT("userid") != $user->id && GETPOSTINT("userid") != $object->user_id) {
+                    $error++;
+                    setEventMessages($langs->trans("ErrorUserPermissionAllowsToLinksToItselfOnly"), null, 'errors');
+                }
+            }
+
+            if (!$error) {
+                if (GETPOSTINT("userid") != $object->user_id) {  // If link differs from currently in database
+                    $result = $object->setUserId(GETPOSTINT("userid"));
+                    if ($result < 0) {
+                        dol_print_error(null, $object->error);
+                    }
+                    $action = '';
+                }
+            }
+        }
+
+        if (empty($reshook) && $action == 'setsocid') {
+            $error = 0;
+            if (!$error) {
+                if (GETPOSTINT('socid') != $object->fk_soc) {    // If link differs from currently in database
+                    $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "adherent";
+                    $sql .= " WHERE fk_soc = '" . GETPOSTINT('socid') . "'";
+                    $resql = $db->query($sql);
+                    if ($resql) {
+                        $obj = $db->fetch_object($resql);
+                        if ($obj && $obj->rowid > 0) {
+                            $othermember = new Adherent($db);
+                            $othermember->fetch($obj->rowid);
+                            $thirdparty = new Societe($db);
+                            $thirdparty->fetch(GETPOSTINT('socid'));
+                            $error++;
+                            setEventMessages($langs->trans("ErrorMemberIsAlreadyLinkedToThisThirdParty", $othermember->getFullName($langs), $othermember->login, $thirdparty->name), null, 'errors');
+                        }
+                    }
+
+                    if (!$error) {
+                        $result = $object->setThirdPartyId(GETPOSTINT('socid'));
+                        if ($result < 0) {
+                            dol_print_error(null, $object->error);
+                        }
+                        $action = '';
+                    }
+                }
+            }
+        }
+
+        if ($user->hasRight('adherent', 'cotisation', 'creer') && $action == 'subscription' && !$cancel) {
+            $error = 0;
+
+            $langs->load("banks");
+
+            $result = $object->fetch($rowid);
+            $result = $adht->fetch($object->typeid);
+
+            // Subscription information
+            $datesubscription = 0;
+            $datesubend = 0;
+            $defaultdelay = !empty($adht->duration_value) ? $adht->duration_value : 1;
+            $defaultdelayunit = !empty($adht->duration_unit) ? $adht->duration_unit : 'y';
+            $paymentdate = ''; // Do not use 0 here, default value is '' that means not filled where 0 means 1970-01-01
+            if (GETPOSTINT("reyear") && GETPOSTINT("remonth") && GETPOSTINT("reday")) {
+                $datesubscription = dol_mktime(0, 0, 0, GETPOSTINT("remonth"), GETPOSTINT("reday"), GETPOSTINT("reyear"));
+            }
+            if (GETPOSTINT("endyear") && GETPOSTINT("endmonth") && GETPOSTINT("endday")) {
+                $datesubend = dol_mktime(0, 0, 0, GETPOSTINT("endmonth"), GETPOSTINT("endday"), GETPOSTINT("endyear"));
+            }
+            if (GETPOSTINT("paymentyear") && GETPOSTINT("paymentmonth") && GETPOSTINT("paymentday")) {
+                $paymentdate = dol_mktime(0, 0, 0, GETPOSTINT("paymentmonth"), GETPOSTINT("paymentday"), GETPOSTINT("paymentyear"));
+            }
+            $amount = price2num(GETPOST("subscription", 'alpha')); // Amount of subscription
+            $label = GETPOST("label");
+
+            // Payment information
+            $accountid = GETPOSTINT("accountid");
+            $operation = GETPOST("operation", "alphanohtml"); // Payment mode
+            $num_chq = GETPOST("num_chq", "alphanohtml");
+            $emetteur_nom = GETPOST("chqemetteur");
+            $emetteur_banque = GETPOST("chqbank");
+            $option = GETPOST("paymentsave");
+            if (empty($option)) {
+                $option = 'none';
+            }
+            $sendalsoemail = GETPOST("sendmail", 'alpha');
+
+            // Check parameters
+            if (!$datesubscription) {
+                $error++;
+                $langs->load("errors");
+                $errmsg = $langs->trans("ErrorBadDateFormat", $langs->transnoentitiesnoconv("DateSubscription"));
+                setEventMessages($errmsg, null, 'errors');
+                $action = 'addsubscription';
+            }
+            if (GETPOST('end') && !$datesubend) {
+                $error++;
+                $langs->load("errors");
+                $errmsg = $langs->trans("ErrorBadDateFormat", $langs->transnoentitiesnoconv("DateEndSubscription"));
+                setEventMessages($errmsg, null, 'errors');
+                $action = 'addsubscription';
+            }
+            if (!$datesubend) {
+                $datesubend = dol_time_plus_duree(dol_time_plus_duree($datesubscription, $defaultdelay, $defaultdelayunit), -1, 'd');
+            }
+            if (($option == 'bankviainvoice' || $option == 'bankdirect') && !$paymentdate) {
+                $error++;
+                $errmsg = $langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("DatePayment"));
+                setEventMessages($errmsg, null, 'errors');
+                $action = 'addsubscription';
+            }
+
+            // Check if a payment is mandatory or not
+            if ($adht->subscription) {  // Member type need subscriptions
+                if (!is_numeric($amount)) {
+                    // If field is '' or not a numeric value
+                    $errmsg = $langs->trans("ErrorFieldRequired", $langs->transnoentities("Amount"));
+                    setEventMessages($errmsg, null, 'errors');
+                    $error++;
+                    $action = 'addsubscription';
+                } else {
+                    // If an amount has been provided, we check also fields that becomes mandatory when amount is not null.
+                    if (isModEnabled('bank') && GETPOST("paymentsave") != 'none') {
+                        if (GETPOST("subscription")) {
+                            if (!GETPOST("label")) {
+                                $errmsg = $langs->trans("ErrorFieldRequired", $langs->transnoentities("Label"));
+                                setEventMessages($errmsg, null, 'errors');
+                                $error++;
+                                $action = 'addsubscription';
+                            }
+                            if (GETPOST("paymentsave") != 'invoiceonly' && !GETPOST("operation")) {
+                                $errmsg = $langs->trans("ErrorFieldRequired", $langs->transnoentities("PaymentMode"));
+                                setEventMessages($errmsg, null, 'errors');
+                                $error++;
+                                $action = 'addsubscription';
+                            }
+                            if (GETPOST("paymentsave") != 'invoiceonly' && !(GETPOSTINT("accountid") > 0)) {
+                                $errmsg = $langs->trans("ErrorFieldRequired", $langs->transnoentities("FinancialAccount"));
+                                setEventMessages($errmsg, null, 'errors');
+                                $error++;
+                                $action = 'addsubscription';
+                            }
+                        } else {
+                            if (GETPOSTINT("accountid")) {
+                                $errmsg = $langs->trans("ErrorDoNotProvideAccountsIfNullAmount");
+                                setEventMessages($errmsg, null, 'errors');
+                                $error++;
+                                $action = 'addsubscription';
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Record the subscription then complementary actions
+            if (!$error && $action == 'subscription') {
+                $db->begin();
+
+                // Create subscription
+                $crowid = $object->subscription($datesubscription, $amount, $accountid, $operation, $label, $num_chq, $emetteur_nom, $emetteur_banque, $datesubend);
+                if ($crowid <= 0) {
+                    $error++;
+                    $errmsg = $object->error;
+                    setEventMessages($object->error, $object->errors, 'errors');
+                }
+
+                if (!$error) {
+                    $result = $object->subscriptionComplementaryActions($crowid, $option, $accountid, $datesubscription, $paymentdate, $operation, $label, $amount, $num_chq, $emetteur_nom, $emetteur_banque);
+                    if ($result < 0) {
+                        $error++;
+                        setEventMessages($object->error, $object->errors, 'errors');
+                    } else {
+                        // If an invoice was created, it is into $object->invoice
+                    }
+                }
+
+                if (!$error) {
+                    $db->commit();
+                } else {
+                    $db->rollback();
+                    $action = 'addsubscription';
+                }
+
+                if (!$error) {
+                    setEventMessages("SubscriptionRecorded", null, 'mesgs');
+                }
+
+                // Send email
+                if (!$error) {
+                    // Send confirmation Email
+                    if ($object->email && $sendalsoemail) {   // $object is 'Adherent'
+                        $parameters = array(
+                            'datesubscription' => $datesubscription,
+                            'amount' => $amount,
+                            'ccountid' => $accountid,
+                            'operation' => $operation,
+                            'label' => $label,
+                            'num_chq' => $num_chq,
+                            'emetteur_nom' => $emetteur_nom,
+                            'emetteur_banque' => $emetteur_banque,
+                            'datesubend' => $datesubend
+                        );
+                        $reshook = $hookmanager->executeHooks('sendMail', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+                        if ($reshook < 0) {
+                            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+                        }
+
+                        if (empty($reshook)) {
+                            $subject = '';
+                            $msg = '';
+
+                            // Send subscription email
+                            include_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
+                            $formmail = new FormMail($db);
+                            // Set output language
+                            $outputlangs = new Translate('', $conf);
+                            $outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
+                            // Load traductions files required by page
+                            $outputlangs->loadLangs(array("main", "members"));
+
+                            // Get email content from template
+                            $arraydefaultmessage = null;
+                            $labeltouse = getDolGlobalString('ADHERENT_EMAIL_TEMPLATE_SUBSCRIPTION');
+
+                            if (!empty($labeltouse)) {
+                                $arraydefaultmessage = $formmail->getEMailTemplate($db, 'member', $user, $outputlangs, 0, 1, $labeltouse);
+                            }
+
+                            if (!empty($labeltouse) && is_object($arraydefaultmessage) && $arraydefaultmessage->id > 0) {
+                                $subject = $arraydefaultmessage->topic;
+                                $msg     = $arraydefaultmessage->content;
+                            }
+
+                            $substitutionarray = getCommonSubstitutionArray($outputlangs, 0, null, $object);
+                            complete_substitutions_array($substitutionarray, $outputlangs, $object);
+                            $subjecttosend = make_substitutions($subject, $substitutionarray, $outputlangs);
+                            $texttosend = make_substitutions(dol_concatdesc($msg, $adht->getMailOnSubscription()), $substitutionarray, $outputlangs);
+
+                            // Attach a file ?
+                            $file = '';
+                            $listofpaths = array();
+                            $listofnames = array();
+                            $listofmimes = array();
+                            if (is_object($object->invoice) && (!is_object($arraydefaultmessage) || intval($arraydefaultmessage->joinfiles))) {
+                                $invoicediroutput = $conf->facture->dir_output;
+                                $fileparams = dol_most_recent_file($invoicediroutput . '/' . $object->invoice->ref, preg_quote($object->invoice->ref, '/') . '[^\-]+');
+                                $file = $fileparams['fullname'];
+
+                                $listofpaths = array($file);
+                                $listofnames = array(basename($file));
+                                $listofmimes = array(dol_mimetype($file));
+                            }
+
+                            $moreinheader = 'X-Dolibarr-Info: send_an_email by adherents/subscription.php' . "\r\n";
+
+                            $result = $object->sendEmail($texttosend, $subjecttosend, $listofpaths, $listofmimes, $listofnames, "", "", 0, -1, '', $moreinheader);
+                            if ($result < 0) {
+                                $errmsg = $object->error;
+                                setEventMessages($object->error, $object->errors, 'errors');
+                            } else {
+                                setEventMessages($langs->trans("EmailSentToMember", $object->email), null, 'mesgs');
+                            }
+                        }
+                    } else {
+                        setEventMessages($langs->trans("NoEmailSentToMember"), null, 'mesgs');
+                    }
+                }
+
+                // Clean some POST vars
+                if (!$error) {
+                    $_POST["subscription"] = '';
+                    $_POST["accountid"] = '';
+                    $_POST["operation"] = '';
+                    $_POST["label"] = '';
+                    $_POST["num_chq"] = '';
+                }
+            }
+        }
+
+
+
+        /*
+         * View
+         */
+
+        $form = new Form($db);
+
+        $now = dol_now();
+
+        $title = $langs->trans("Member") . " - " . $langs->trans("Subscriptions");
+
+        $help_url = "EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder";
+
+        llxHeader("", $title, $help_url);
+
+
+        $param = '';
+        if (!empty($contextpage) && $contextpage != $_SERVER['PHP_SELF']) {
+            $param .= '&contextpage=' . urlencode($contextpage);
+        }
+        if ($limit > 0 && $limit != $conf->liste_limit) {
+            $param .= '&limit=' . ((int) $limit);
+        }
+        $param .= '&id=' . $rowid;
+        if ($optioncss != '') {
+            $param .= '&optioncss=' . urlencode($optioncss);
+        }
+// Add $param from extra fields
+//include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_search_param.tpl.php';
+
+
+        if (! ($object->id > 0)) {
+            $langs->load("errors");
+            print $langs->trans("ErrorRecordNotFound");
+        }
+
+        /*$res = $object->fetch($rowid);
+            if ($res < 0) {
+                dol_print_error($db, $object->error);
+                exit;
+            }
+        */
+
+        $adht->fetch($object->typeid);
+
+        $defaultdelay = !empty($adht->duration_value) ? $adht->duration_value : 1;
+        $defaultdelayunit = !empty($adht->duration_unit) ? $adht->duration_unit : 'y';
+
+        $head = member_prepare_head($object);
+
+        $rowspan = 10;
+        if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
+            $rowspan++;
+        }
+        if (isModEnabled('societe')) {
+            $rowspan++;
+        }
+
+        print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST">';
+        print '<input type="hidden" name="token" value="' . newToken() . '">';
+        print '<input type="hidden" name="rowid" value="' . $object->id . '">';
+
+        print dol_get_fiche_head($head, 'subscription', $langs->trans("Member"), -1, 'user');
+
+        $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+        $morehtmlref = '<a href="' . DOL_URL_ROOT . '/adherents/vcard.php?id=' . $object->id . '" class="refid">';
+        $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+        $morehtmlref .= '</a>';
+
+        dol_banner_tab($object, 'rowid', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+
+        print '<div class="fichecenter">';
+        print '<div class="fichehalfleft">';
+
+        print '<div class="underbanner clearboth"></div>';
+        print '<table class="border centpercent tableforfield">';
+
+// Login
+        if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
+            print '<tr><td class="titlefield">' . $langs->trans("Login") . ' / ' . $langs->trans("Id") . '</td><td class="valeur">' . dol_escape_htmltag($object->login) . '</td></tr>';
+        }
+
+// Type
+        print '<tr><td class="titlefield">' . $langs->trans("Type") . '</td>';
+        print '<td class="valeur">' . $adht->getNomUrl(1) . "</td></tr>\n";
+
+// Morphy
+        print '<tr><td>' . $langs->trans("MemberNature") . '</td>';
+        print '<td class="valeur" >' . $object->getmorphylib('', 1) . '</td>';
+        print '</tr>';
+
+// Company
+        print '<tr><td>' . $langs->trans("Company") . '</td><td class="valeur">' . dol_escape_htmltag($object->company) . '</td></tr>';
+
+// Civility
+        print '<tr><td>' . $langs->trans("UserTitle") . '</td><td class="valeur">' . $object->getCivilityLabel() . '</td>';
+        print '</tr>';
+
+// Password
+        if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
+            print '<tr><td>' . $langs->trans("Password") . '</td><td>';
+            if ($object->pass) {
+                print preg_replace('/./i', '*', $object->pass);
+            } else {
+                if ($user->admin) {
+                    print '<!-- ' . $langs->trans("Crypted") . ': ' . $object->pass_indatabase_crypted . ' -->';
+                }
+                print '<span class="opacitymedium">' . $langs->trans("Hidden") . '</span>';
+            }
+            if (!empty($object->pass_indatabase) && empty($object->user_id)) {  // Show warning only for old password still in clear (does not happen anymore)
+                $langs->load("errors");
+                $htmltext = $langs->trans("WarningPasswordSetWithNoAccount");
+                print ' ' . $form->textwithpicto('', $htmltext, 1, 'warning');
+            }
+            print '</td></tr>';
+        }
+
+// Date end subscription
+        print '<tr><td>' . $langs->trans("SubscriptionEndDate") . '</td><td class="valeur">';
+        if ($object->datefin) {
+            print dol_print_date($object->datefin, 'day');
+            if ($object->hasDelay()) {
+                print " " . img_warning($langs->trans("Late"));
+            }
+        } else {
+            if ($object->need_subscription == 0) {
+                print $langs->trans("SubscriptionNotNeeded");
+            } elseif (!$adht->subscription) {
+                print $langs->trans("SubscriptionNotRecorded");
+                if (Adherent::STATUS_VALIDATED == $object->statut) {
+                    print " " . img_warning($langs->trans("Late")); // displays delay Pictogram only if not a draft, not excluded and not resiliated
+                }
+            } else {
+                print $langs->trans("SubscriptionNotReceived");
+                if (Adherent::STATUS_VALIDATED == $object->statut) {
+                    print " " . img_warning($langs->trans("Late")); // displays delay Pictogram only if not a draft, not excluded and not resiliated
+                }
+            }
+        }
+        print '</td></tr>';
+
+        print '</table>';
+
+        print '</div>';
+
+        print '<div class="fichehalfright">';
+        print '<div class="underbanner clearboth"></div>';
+
+        print '<table class="border tableforfield centpercent">';
+
+// Tags / Categories
+        if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
+            print '<tr><td>' . $langs->trans("Categories") . '</td>';
+            print '<td colspan="2">';
+            print $form->showCategories($object->id, Categorie::TYPE_MEMBER, 1);
+            print '</td></tr>';
+        }
+
+// Birth Date
+        print '<tr><td class="titlefield">' . $langs->trans("DateOfBirth") . '</td><td class="valeur">' . dol_print_date($object->birth, 'day') . '</td></tr>';
+
+// Default language
+        if (getDolGlobalInt('MAIN_MULTILANGS')) {
+            require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            print '<tr><td>' . $langs->trans("DefaultLang") . '</td><td>';
+            //$s=picto_from_langcode($object->default_lang);
+            //print ($s?$s.' ':'');
+            $langs->load("languages");
+            $labellang = ($object->default_lang ? $langs->trans('Language_' . $object->default_lang) : '');
+            print picto_from_langcode($object->default_lang, 'class="paddingrightonly saturatemedium opacitylow"');
+            print $labellang;
+            print '</td></tr>';
+        }
+
+// Public
+        $linkofpubliclist = DOL_MAIN_URL_ROOT . '/public/members/public_list.php' . ((isModEnabled('multicompany')) ? '?entity=' . $conf->entity : '');
+        print '<tr><td>' . $form->textwithpicto($langs->trans("PublicFile"), $langs->trans("Public", getDolGlobalString('MAIN_INFO_SOCIETE_NOM'), $linkofpubliclist), 1, 'help', '', 0, 3, 'publicfile') . '</td><td class="valeur">' . yn($object->public) . '</td></tr>';
+
+// Other attributes
+        $cols = 2;
+        include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';
+
+// Third party Dolibarr
+        if (isModEnabled('societe')) {
+            print '<tr><td>';
+            print '<table class="nobordernopadding" width="100%"><tr><td>';
+            print $langs->trans("LinkedToDolibarrThirdParty");
+            print '</td>';
+            if ($action != 'editthirdparty' && $user->hasRight('adherent', 'creer')) {
+                print '<td class="right"><a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=editthirdparty&token=' . newToken() . '&rowid=' . $object->id . '">' . img_edit($langs->trans('SetLinkToThirdParty'), 1) . '</a></td>';
+            }
+            print '</tr></table>';
+            print '</td><td colspan="2" class="valeur">';
+            if ($action == 'editthirdparty') {
+                $htmlname = 'socid';
+                print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '" name="form' . $htmlname . '">';
+                print '<input type="hidden" name="rowid" value="' . $object->id . '">';
+                print '<input type="hidden" name="action" value="set' . $htmlname . '">';
+                print '<input type="hidden" name="token" value="' . newToken() . '">';
+                print '<table class="nobordernopadding">';
+                print '<tr><td>';
+                print $form->select_company($object->fk_soc, 'socid', '', 1);
+                print '</td>';
+                print '<td class="left"><input type="submit" class="button button-edit" value="' . $langs->trans("Modify") . '"></td>';
+                print '</tr></table></form>';
+            } else {
+                if ($object->fk_soc) {
+                    $company = new Societe($db);
+                    $result = $company->fetch($object->fk_soc);
+                    print $company->getNomUrl(1);
+
+                    // Show link to invoices
+                    $tmparray = $company->getOutstandingBills('customer');
+                    if (!empty($tmparray['refs'])) {
+                        print ' - ' . img_picto($langs->trans("Invoices"), 'bill', 'class="paddingright"') . '<a href="' . DOL_URL_ROOT . '/compta/facture/list.php?socid=' . $object->socid . '">' . $langs->trans("Invoices") . ' (' . count($tmparray['refs']) . ')';
+                        // TODO Add alert if warning on at least one invoice late
+                        print '</a>';
+                    }
+                } else {
+                    print '<span class="opacitymedium">' . $langs->trans("NoThirdPartyAssociatedToMember") . '</span>';
+                }
+            }
+            print '</td></tr>';
+        }
+
+// Login Dolibarr - Link to user
+        print '<tr><td>';
+        print '<table class="nobordernopadding" width="100%"><tr><td>';
+        print $langs->trans("LinkedToDolibarrUser");
+        print '</td>';
+        if ($action != 'editlogin' && $user->hasRight('adherent', 'creer')) {
+            print '<td class="right">';
+            if ($user->hasRight("user", "user", "creer")) {
+                print '<a class="editfielda" href="' . $_SERVER['PHP_SELF'] . '?action=editlogin&token=' . newToken() . '&rowid=' . $object->id . '">' . img_edit($langs->trans('SetLinkToUser'), 1) . '</a>';
+            }
+            print '</td>';
+        }
+        print '</tr></table>';
+        print '</td><td colspan="2" class="valeur">';
+        if ($action == 'editlogin') {
+            $form->form_users($_SERVER['PHP_SELF'] . '?rowid=' . $object->id, $object->user_id, 'userid', '');
+        } else {
+            if ($object->user_id) {
+                $linkeduser = new User($db);
+                $linkeduser->fetch($object->user_id);
+                print $linkeduser->getNomUrl(-1);
+            } else {
+                print '<span class="opacitymedium">' . $langs->trans("NoDolibarrAccess") . '</span>';
+            }
+        }
+        print '</td></tr>';
+
+        print "</table>\n";
+
+        print "</div></div>\n";
+        print '<div class="clearboth"></div>';
+
+        print dol_get_fiche_end();
+
+
+        /*
+         * Action bar
+         */
+
+// Button to create a new subscription if member no draft (-1) neither resiliated (0) neither excluded (-2)
+        if ($user->hasRight('adherent', 'cotisation', 'creer')) {
+            if ($action != 'addsubscription' && $action != 'create_thirdparty') {
+                print '<div class="tabsAction">';
+
+                if ($object->statut > 0) {
+                    print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?rowid=' . $rowid . '&action=addsubscription&token=' . newToken() . '">' . $langs->trans("AddSubscription") . "</a></div>";
+                } else {
+                    print '<div class="inline-block divButAction"><a class="butActionRefused classfortooltip" href="#" title="' . dol_escape_htmltag($langs->trans("ValidateBefore")) . '">' . $langs->trans("AddSubscription") . '</a></div>';
+                }
+
+                print '</div>';
+            }
+        }
+
+        /*
+         * List of subscriptions
+         */
+        if ($action != 'addsubscription' && $action != 'create_thirdparty') {
+            $sql = "SELECT d.rowid, d.firstname, d.lastname, d.societe, d.fk_adherent_type as type,";
+            $sql .= " c.rowid as crowid, c.subscription,";
+            $sql .= " c.datec, c.fk_type as cfk_type,";
+            $sql .= " c.dateadh as dateh,";
+            $sql .= " c.datef,";
+            $sql .= " c.fk_bank,";
+            $sql .= " b.rowid as bid,";
+            $sql .= " ba.rowid as baid, ba.label, ba.bank, ba.ref, ba.account_number, ba.fk_accountancy_journal, ba.number, ba.currency_code";
+            $sql .= " FROM " . MAIN_DB_PREFIX . "adherent as d, " . MAIN_DB_PREFIX . "subscription as c";
+            $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "bank as b ON c.fk_bank = b.rowid";
+            $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "bank_account as ba ON b.fk_account = ba.rowid";
+            $sql .= " WHERE d.rowid = c.fk_adherent AND d.rowid=" . ((int) $rowid);
+            $sql .= $db->order($sortfield, $sortorder);
+
+            $result = $db->query($sql);
+            if ($result) {
+                $subscriptionstatic = new Subscription($db);
+
+                $num = $db->num_rows($result);
+
+                print '<table class="noborder centpercent">' . "\n";
+
+                print '<tr class="liste_titre">';
+                print_liste_field_titre('Ref', $_SERVER['PHP_SELF'], 'c.rowid', '', $param, '', $sortfield, $sortorder);
+                print_liste_field_titre('DateCreation', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+                print_liste_field_titre('Type', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+                print_liste_field_titre('DateStart', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+                print_liste_field_titre('DateEnd', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'center ');
+                print_liste_field_titre('Amount', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
+                if (isModEnabled('bank')) {
+                    print_liste_field_titre('Account', $_SERVER['PHP_SELF'], '', '', $param, '', $sortfield, $sortorder, 'right ');
+                }
+                print "</tr>\n";
+
+                $accountstatic = new Account($db);
+                $adh = new Adherent($db);
+                $adht = new AdherentType($db);
+
+                $i = 0;
+                while ($i < $num) {
+                    $objp = $db->fetch_object($result);
+
+                    $adh->id = $objp->rowid;
+                    $adh->typeid = $objp->type;
+
+                    $subscriptionstatic->ref = $objp->crowid;
+                    $subscriptionstatic->id = $objp->crowid;
+
+                    $typeid = $objp->cfk_type;
+                    if ($typeid > 0) {
+                        $adht->fetch($typeid);
+                    }
+
+                    print '<tr class="oddeven">';
+                    print '<td>' . $subscriptionstatic->getNomUrl(1) . '</td>';
+                    print '<td class="center">' . dol_print_date($db->jdate($objp->datec), 'dayhour') . "</td>\n";
+                    print '<td class="center">';
+                    if ($typeid > 0) {
+                        print $adht->getNomUrl(1);
+                    }
+                    print '</td>';
+                    print '<td class="center">' . dol_print_date($db->jdate($objp->dateh), 'day') . "</td>\n";
+                    print '<td class="center">' . dol_print_date($db->jdate($objp->datef), 'day') . "</td>\n";
+                    print '<td class="right amount">' . price($objp->subscription) . '</td>';
+                    if (isModEnabled('bank')) {
+                        print '<td class="right">';
+                        if ($objp->bid) {
+                            $accountstatic->label = $objp->label;
+                            $accountstatic->id = $objp->baid;
+                            $accountstatic->number = $objp->number;
+                            $accountstatic->account_number = $objp->account_number;
+                            $accountstatic->currency_code = $objp->currency_code;
+
+                            if (isModEnabled('accounting') && $objp->fk_accountancy_journal > 0) {
+                                $accountingjournal = new AccountingJournal($db);
+                                $accountingjournal->fetch($objp->fk_accountancy_journal);
+
+                                $accountstatic->accountancy_journal = $accountingjournal->getNomUrl(0, 1, 1, '', 1);
+                            }
+
+                            $accountstatic->ref = $objp->ref;
+                            print $accountstatic->getNomUrl(1);
+                        } else {
+                            print '&nbsp;';
+                        }
+                        print '</td>';
+                    }
+                    print "</tr>";
+                    $i++;
+                }
+
+                if (empty($num)) {
+                    $colspan = 6;
+                    if (isModEnabled('bank')) {
+                        $colspan++;
+                    }
+                    print '<tr><td colspan="' . $colspan . '"><span class="opacitymedium">' . $langs->trans("None") . '</span></td></tr>';
+                }
+
+                print "</table>";
+            } else {
+                dol_print_error($db);
+            }
+        }
+
+
+        if (($action != 'addsubscription' && $action != 'create_thirdparty')) {
+            // Shon online payment link
+            $useonlinepayment = (isModEnabled('paypal') || isModEnabled('stripe') || isModEnabled('paybox'));
+
+            $parameters = array();
+            $reshook = $hookmanager->executeHooks('doShowOnlinePaymentUrl', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+            if ($reshook > 0) {
+                if (isset($hookmanager->resArray['showonlinepaymenturl'])) {
+                    $useonlinepayment = $hookmanager->resArray['showonlinepaymenturl'];
+                }
+            }
+
+            if ($useonlinepayment) {
+                print '<br>';
+
+                require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                print showOnlinePaymentUrl('membersubscription', $object->ref);
+                print '<br>';
+            }
+        }
+
+        /*
+         * Add new subscription form
+         */
+        if (($action == 'addsubscription' || $action == 'create_thirdparty') && $user->hasRight('adherent', 'cotisation', 'creer')) {
+            print '<br>';
+
+            print load_fiche_titre($langs->trans("NewCotisation"));
+
+            // Define default choice for complementary actions
+            $bankdirect = 0; // 1 means option by default is write to bank direct with no invoice
+            $invoiceonly = 0; // 1 means option by default is invoice only
+            $bankviainvoice = 0; // 1 means option by default is write to bank via invoice
+            if (GETPOST('paymentsave')) {
+                if (GETPOST('paymentsave') == 'bankdirect') {
+                    $bankdirect = 1;
+                }
+                if (GETPOST('paymentsave') == 'invoiceonly') {
+                    $invoiceonly = 1;
+                }
+                if (GETPOST('paymentsave') == 'bankviainvoice') {
+                    $bankviainvoice = 1;
+                }
+            } else {
+                if (getDolGlobalString('ADHERENT_BANK_USE') == 'bankviainvoice' && isModEnabled('bank') && isModEnabled('societe') && isModEnabled('invoice')) {
+                    $bankviainvoice = 1;
+                } elseif (getDolGlobalString('ADHERENT_BANK_USE') == 'bankdirect' && isModEnabled('bank')) {
+                    $bankdirect = 1;
+                } elseif (getDolGlobalString('ADHERENT_BANK_USE') == 'invoiceonly' && isModEnabled('bank') && isModEnabled('societe') && isModEnabled('invoice')) {
+                    $invoiceonly = 1;
+                }
+            }
+
+            print "\n\n<!-- Form add subscription -->\n";
+
+            if ($conf->use_javascript_ajax) {
+                //var_dump($bankdirect.'-'.$bankviainvoice.'-'.$invoiceonly);
+                print "\n" . '<script type="text/javascript">';
+                print '$(document).ready(function () {
+					$(".bankswitchclass, .bankswitchclass2").' . (($bankdirect || $bankviainvoice) ? 'show()' : 'hide()') . ';
+					$("#none, #invoiceonly").click(function() {
+						$(".bankswitchclass").hide();
+						$(".bankswitchclass2").hide();
+					});
+					$("#bankdirect, #bankviainvoice").click(function() {
+						$(".bankswitchclass").show();
+						$(".bankswitchclass2").show();
+					});
+					$("#selectoperation").change(function() {
+						var code = $(this).val();
+						if (code == "CHQ")
+						{
+							$(".fieldrequireddyn").addClass("fieldrequired");
+							if ($("#fieldchqemetteur").val() == "")
+							{
+								$("#fieldchqemetteur").val($("#memberlabel").val());
+							}
+						}
+						else
+						{
+							$(".fieldrequireddyn").removeClass("fieldrequired");
+						}
+					});
+					';
+                if (GETPOST('paymentsave')) {
+                    print '$("#' . GETPOST('paymentsave', 'aZ09') . '").prop("checked", true);';
+                }
+                print '});';
+                print '</script>' . "\n";
+            }
+
+
+            // Confirm create third party
+            if ($action == 'create_thirdparty') {
+                $companyalias = '';
+                $fullname = $object->getFullName($langs);
+
+                if ($object->morphy == 'mor') {
+                    $companyname = $object->company;
+                    if (!empty($fullname)) {
+                        $companyalias = $fullname;
+                    }
+                } else {
+                    $companyname = $fullname;
+                    if (!empty($object->company)) {
+                        $companyalias = $object->company;
+                    }
+                }
+
+                // Create a form array
+                $formquestion = array(
+                    array('label' => $langs->trans("NameToCreate"), 'type' => 'text', 'name' => 'companyname', 'value' => $companyname, 'morecss' => 'minwidth300', 'moreattr' => 'maxlength="128"'),
+                    array('label' => $langs->trans("AliasNames"), 'type' => 'text', 'name' => 'companyalias', 'value' => $companyalias, 'morecss' => 'minwidth300', 'moreattr' => 'maxlength="128"')
+                );
+                // If customer code was forced to "required", we ask it at creation to avoid error later
+                if (getDolGlobalString('MAIN_COMPANY_CODE_ALWAYS_REQUIRED')) {
+                    $tmpcompany = new Societe($db);
+                    $tmpcompany->name = $companyname;
+                    $tmpcompany->get_codeclient($tmpcompany, 0);
+                    $customercode = $tmpcompany->code_client;
+                    $formquestion[] = array(
+                        'label' => $langs->trans("CustomerCode"),
+                        'type' => 'text',
+                        'name' => 'customercode',
+                        'value' => $customercode,
+                        'morecss' => 'minwidth300',
+                        'moreattr' => 'maxlength="128"',
+                    );
+                }
+                // @todo Add other extrafields mandatory for thirdparty creation
+
+                print $form->formconfirm($_SERVER['PHP_SELF'] . "?rowid=" . $object->id, $langs->trans("CreateDolibarrThirdParty"), $langs->trans("ConfirmCreateThirdParty"), "confirm_create_thirdparty", $formquestion, 1);
+            }
+
+
+            print '<form name="subscription" method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
+            print '<input type="hidden" name="token" value="' . newToken() . '">';
+            print '<input type="hidden" name="action" value="subscription">';
+            print '<input type="hidden" name="rowid" value="' . $rowid . '">';
+            print '<input type="hidden" name="memberlabel" id="memberlabel" value="' . dol_escape_htmltag($object->getFullName($langs)) . '">';
+            print '<input type="hidden" name="thirdpartylabel" id="thirdpartylabel" value="' . dol_escape_htmltag($object->company) . '">';
+
+            print dol_get_fiche_head('');
+
+            print '<div class="div-table-responsive">';
+            print '<table class="border centpercent">' . "\n";
+            print '<tbody>';
+
+            // Date payment
+            if (GETPOST('paymentyear') && GETPOST('paymentmonth') && GETPOST('paymentday')) {
+                $paymentdate = dol_mktime(0, 0, 0, GETPOST('paymentmonth'), GETPOST('paymentday'), GETPOST('paymentyear'));
+            }
+
+            print '<tr>';
+            // Date start subscription
+            $currentyear = dol_print_date($now, "%Y");
+            $currentmonth = dol_print_date($now, "%m");
+            print '<td class="fieldrequired">' . $langs->trans("DateSubscription") . '</td><td>';
+            if (GETPOST('reday')) {
+                $datefrom = dol_mktime(0, 0, 0, GETPOSTINT('remonth'), GETPOSTINT('reday'), GETPOSTINT('reyear'));
+            }
+            if (!$datefrom) {
+                $datefrom = $object->datevalid;
+                if (getDolGlobalString('MEMBER_SUBSCRIPTION_START_AFTER')) {
+                    $datefrom = dol_time_plus_duree($now, (int) substr(getDolGlobalString('MEMBER_SUBSCRIPTION_START_AFTER'), 0, -1), substr(getDolGlobalString('MEMBER_SUBSCRIPTION_START_AFTER'), -1));
+                } elseif ($object->datefin > 0 && dol_time_plus_duree($object->datefin, $defaultdelay, $defaultdelayunit) > $now) {
+                    $datefrom = dol_time_plus_duree($object->datefin, 1, 'd');
+                }
+
+                if (getDolGlobalString('MEMBER_SUBSCRIPTION_START_FIRST_DAY_OF') === "m") {
+                    $datefrom = dol_get_first_day(dol_print_date($datefrom, "%Y"), dol_print_date($datefrom, "%m"));
+                } elseif (getDolGlobalString('MEMBER_SUBSCRIPTION_START_FIRST_DAY_OF') === "Y") {
+                    $datefrom = dol_get_first_day(dol_print_date($datefrom, "%Y"));
+                }
+            }
+            print $form->selectDate($datefrom, '', 0, 0, 0, "subscription", 1, 1);
+            print "</td></tr>";
+
+            // Date end subscription
+            if (GETPOST('endday')) {
+                $dateto = dol_mktime(0, 0, 0, GETPOSTINT('endmonth'), GETPOSTINT('endday'), GETPOSTINT('endyear'));
+            }
+            if (!$dateto) {
+                if (getDolGlobalInt('MEMBER_SUBSCRIPTION_SUGGEST_END_OF_MONTH')) {
+                    $dateto = dol_get_last_day(dol_print_date($datefrom, "%Y"), dol_print_date($datefrom, "%m"));
+                } elseif (getDolGlobalInt('MEMBER_SUBSCRIPTION_SUGGEST_END_OF_YEAR')) {
+                    $dateto = dol_get_last_day(dol_print_date($datefrom, "%Y"));
+                } else {
+                    $dateto = -1; // By default, no date is suggested
+                }
+            }
+            print '<tr><td>' . $langs->trans("DateEndSubscription") . '</td><td>';
+            print $form->selectDate($dateto, 'end', 0, 0, 0, "subscription", 1, 0);
+            print "</td></tr>";
+
+            if ($adht->subscription) {
+                // Amount
+                print '<tr><td class="fieldrequired">' . $langs->trans("Amount") . '</td><td><input type="text" name="subscription" size="6" value="' . (GETPOSTISSET('subscription') ? GETPOST('subscription') : price($adht->amount, 0, '', 0)) . '"> ' . $langs->trans("Currency" . $conf->currency) . '</td></tr>';
+
+                // Label
+                print '<tr><td>' . $langs->trans("Label") . '</td>';
+                print '<td><input name="label" type="text" size="32" value="';
+                if (!getDolGlobalString('MEMBER_NO_DEFAULT_LABEL')) {
+                    print $langs->trans("Subscription") . ' ' . dol_print_date(($datefrom ? $datefrom : time()), "%Y");
+                }
+                print '"></td></tr>';
+
+                // Complementary action
+                if ((isModEnabled('bank') || isModEnabled('invoice')) && !getDolGlobalString('ADHERENT_SUBSCRIPTION_HIDECOMPLEMENTARYACTIONS')) {
+                    $company = new Societe($db);
+                    if ($object->socid) {
+                        $result = $company->fetch($object->socid);
+                    }
+
+                    // No more action
+                    print '<tr><td class="tdtop fieldrequired">' . $langs->trans('MoreActions');
+                    print '</td>';
+                    print '<td class="line-height-large">';
+
+                    print '<input type="radio" class="moreaction" id="none" name="paymentsave" value="none"' . (empty($bankdirect) && empty($invoiceonly) && empty($bankviainvoice) ? ' checked' : '') . '>';
+                    print '<label for="none"> ' . $langs->trans("None") . '</label><br>';
+                    // Add entry into bank account
+                    if (isModEnabled('bank')) {
+                        print '<input type="radio" class="moreaction" id="bankdirect" name="paymentsave" value="bankdirect"' . (!empty($bankdirect) ? ' checked' : '');
+                        print '><label for="bankdirect">  ' . $langs->trans("MoreActionBankDirect") . '</label><br>';
+                    }
+                    // Add invoice with no payments
+                    if (isModEnabled('societe') && isModEnabled('invoice')) {
+                        print '<input type="radio" class="moreaction" id="invoiceonly" name="paymentsave" value="invoiceonly"' . (!empty($invoiceonly) ? ' checked' : '');
+                        //if (empty($object->fk_soc)) print ' disabled';
+                        print '><label for="invoiceonly"> ' . $langs->trans("MoreActionInvoiceOnly");
+                        if ($object->fk_soc) {
+                            print ' (' . $langs->trans("ThirdParty") . ': ' . $company->getNomUrl(1) . ')';
+                        } else {
+                            print ' (';
+                            if (empty($object->fk_soc)) {
+                                print img_warning($langs->trans("NoThirdPartyAssociatedToMember"));
+                            }
+                            print $langs->trans("NoThirdPartyAssociatedToMember");
+                            print ' - <a href="' . $_SERVER['PHP_SELF'] . '?rowid=' . $object->id . '&amp;action=create_thirdparty">';
+                            print $langs->trans("CreateDolibarrThirdParty");
+                            print '</a>)';
+                        }
+                        if (!getDolGlobalString('ADHERENT_VAT_FOR_SUBSCRIPTIONS') || getDolGlobalString('ADHERENT_VAT_FOR_SUBSCRIPTIONS') != 'defaultforfoundationcountry') {
+                            print '. <span class="opacitymedium">' . $langs->trans("NoVatOnSubscription", 0) . '</span>';
+                        }
+                        if (getDolGlobalString('ADHERENT_PRODUCT_ID_FOR_SUBSCRIPTIONS') && (isModEnabled('product') || isModEnabled('service'))) {
+                            $prodtmp = new Product($db);
+                            $result = $prodtmp->fetch(getDolGlobalString('ADHERENT_PRODUCT_ID_FOR_SUBSCRIPTIONS'));
+                            if ($result < 0) {
+                                setEventMessage($prodtmp->error, 'errors');
+                            }
+                            print '. ' . $langs->transnoentitiesnoconv("ADHERENT_PRODUCT_ID_FOR_SUBSCRIPTIONS", $prodtmp->getNomUrl(1)); // must use noentitiesnoconv to avoid to encode html into getNomUrl of product
+                        }
+                        print '</label><br>';
+                    }
+                    // Add invoice with payments
+                    if (isModEnabled('bank') && isModEnabled('societe') && isModEnabled('invoice')) {
+                        print '<input type="radio" class="moreaction" id="bankviainvoice" name="paymentsave" value="bankviainvoice"' . (!empty($bankviainvoice) ? ' checked' : '');
+                        //if (empty($object->fk_soc)) print ' disabled';
+                        print '><label for="bankviainvoice">  ' . $langs->trans("MoreActionBankViaInvoice");
+                        if ($object->socid) {
+                            print ' (' . $langs->trans("ThirdParty") . ': ' . $company->getNomUrl(1) . ')';
+                        } else {
+                            print ' (';
+                            if (empty($object->socid)) {
+                                print img_warning($langs->trans("NoThirdPartyAssociatedToMember"));
+                            }
+                            print $langs->trans("NoThirdPartyAssociatedToMember");
+                            print ' - <a href="' . $_SERVER['PHP_SELF'] . '?rowid=' . $object->id . '&amp;action=create_thirdparty">';
+                            print $langs->trans("CreateDolibarrThirdParty");
+                            print '</a>)';
+                        }
+                        if (!getDolGlobalString('ADHERENT_VAT_FOR_SUBSCRIPTIONS') || getDolGlobalString('ADHERENT_VAT_FOR_SUBSCRIPTIONS') != 'defaultforfoundationcountry') {
+                            print '. <span class="opacitymedium">' . $langs->trans("NoVatOnSubscription", 0) . '</span>';
+                        }
+                        if (getDolGlobalString('ADHERENT_PRODUCT_ID_FOR_SUBSCRIPTIONS') && (isModEnabled('product') || isModEnabled('service'))) {
+                            $prodtmp = new Product($db);
+                            $result = $prodtmp->fetch(getDolGlobalString('ADHERENT_PRODUCT_ID_FOR_SUBSCRIPTIONS'));
+                            if ($result < 0) {
+                                setEventMessage($prodtmp->error, 'errors');
+                            }
+                            print '. ' . $langs->transnoentitiesnoconv("ADHERENT_PRODUCT_ID_FOR_SUBSCRIPTIONS", $prodtmp->getNomUrl(1)); // must use noentitiesnoconv to avoid to encode html into getNomUrl of product
+                        }
+                        print '</label><br>';
+                    }
+                    print '</td></tr>';
+
+                    // Bank account
+                    print '<tr class="bankswitchclass"><td class="fieldrequired">' . $langs->trans("FinancialAccount") . '</td><td>';
+                    print img_picto('', 'bank_account');
+                    $form->select_comptes(GETPOST('accountid'), 'accountid', 0, '', 2, '', 0, 'minwidth200');
+                    print "</td></tr>\n";
+
+                    // Payment mode
+                    print '<tr class="bankswitchclass"><td class="fieldrequired">' . $langs->trans("PaymentMode") . '</td><td>';
+                    print $form->select_types_paiements(GETPOST('operation'), 'operation', '', 2, 1, 0, 0, 1, 'minwidth200', 1);
+                    print "</td></tr>\n";
+
+                    // Date of payment
+                    print '<tr class="bankswitchclass"><td class="fieldrequired">' . $langs->trans("DatePayment") . '</td><td>';
+                    print $form->selectDate(isset($paymentdate) ? $paymentdate : -1, 'payment', 0, 0, 1, 'subscription', 1, 1);
+                    print "</td></tr>\n";
+
+                    print '<tr class="bankswitchclass2"><td>' . $langs->trans('Numero');
+                    print ' <em>(' . $langs->trans("ChequeOrTransferNumber") . ')</em>';
+                    print '</td>';
+                    print '<td><input id="fieldnum_chq" name="num_chq" type="text" size="8" value="' . (!GETPOST('num_chq') ? '' : GETPOST('num_chq')) . '"></td></tr>';
+
+                    print '<tr class="bankswitchclass2 fieldrequireddyn"><td>' . $langs->trans('CheckTransmitter');
+                    print ' <em>(' . $langs->trans("ChequeMaker") . ')</em>';
+                    print '</td>';
+                    print '<td><input id="fieldchqemetteur" name="chqemetteur" size="32" type="text" value="' . (!GETPOST('chqemetteur') ? '' : GETPOST('chqemetteur')) . '"></td></tr>';
+
+                    print '<tr class="bankswitchclass2"><td>' . $langs->trans('Bank');
+                    print ' <em>(' . $langs->trans("ChequeBank") . ')</em>';
+                    print '</td>';
+                    print '<td><input id="chqbank" name="chqbank" size="32" type="text" value="' . (!GETPOST('chqbank') ? '' : GETPOST('chqbank')) . '"></td></tr>';
+                }
+            }
+
+            print '<tr><td></td><td></td></tr>';
+
+            print '<tr><td>' . $langs->trans("SendAcknowledgementByMail") . '</td>';
+            print '<td>';
+            if (!$object->email) {
+                print $langs->trans("NoEMail");
+            } else {
+                $adht = new AdherentType($db);
+                $adht->fetch($object->typeid);
+
+                // Send subscription email
+                $subject = '';
+                $msg = '';
+
+                // Send subscription email
+                include_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
+                $formmail = new FormMail($db);
+                // Set output language
+                $outputlangs = new Translate('', $conf);
+                $outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
+                // Load traductions files required by page
+                $outputlangs->loadLangs(array("main", "members"));
+                // Get email content from template
+                $arraydefaultmessage = null;
+                $labeltouse = getDolGlobalString('ADHERENT_EMAIL_TEMPLATE_SUBSCRIPTION');
+
+                if (!empty($labeltouse)) {
+                    $arraydefaultmessage = $formmail->getEMailTemplate($db, 'member', $user, $outputlangs, 0, 1, $labeltouse);
+                }
+
+                if (!empty($labeltouse) && is_object($arraydefaultmessage) && $arraydefaultmessage->id > 0) {
+                    $subject = $arraydefaultmessage->topic;
+                    $msg     = $arraydefaultmessage->content;
+                }
+
+                $substitutionarray = getCommonSubstitutionArray($outputlangs, 0, null, $object);
+                complete_substitutions_array($substitutionarray, $outputlangs, $object);
+                $subjecttosend = make_substitutions($subject, $substitutionarray, $outputlangs);
+                $texttosend = make_substitutions(dol_concatdesc($msg, $adht->getMailOnSubscription()), $substitutionarray, $outputlangs);
+
+                $tmp = '<input name="sendmail" type="checkbox"' . (GETPOST('sendmail', 'alpha') ? ' checked' : (getDolGlobalString('ADHERENT_DEFAULT_SENDINFOBYMAIL') ? ' checked' : '')) . '>';
+                $helpcontent = '';
+                $helpcontent .= '<b>' . $langs->trans("MailFrom") . '</b>: ' . getDolGlobalString('ADHERENT_MAIL_FROM') . '<br>' . "\n";
+                $helpcontent .= '<b>' . $langs->trans("MailRecipient") . '</b>: ' . $object->email . '<br>' . "\n";
+                $helpcontent .= '<b>' . $langs->trans("MailTopic") . '</b>:<br>' . "\n";
+                if ($subjecttosend) {
+                    $helpcontent .= $subjecttosend . "\n";
+                } else {
+                    $langs->load("errors");
+                    $helpcontent .= '<span class="error">' . $langs->trans("ErrorModuleSetupNotComplete", $langs->transnoentitiesnoconv("Module310Name")) . '</span>' . "\n";
+                }
+                $helpcontent .= "<br>";
+                $helpcontent .= '<b>' . $langs->trans("MailText") . '</b>:<br>';
+                if ($texttosend) {
+                    $helpcontent .= dol_htmlentitiesbr($texttosend) . "\n";
+                } else {
+                    $langs->load("errors");
+                    $helpcontent .= '<span class="error">' . $langs->trans("ErrorModuleSetupNotComplete", $langs->transnoentitiesnoconv("Module310Name")) . '</span>' . "\n";
+                }
+                // @phan-suppress-next-line PhanPluginSuspiciousParamOrder
+                print $form->textwithpicto($tmp, $helpcontent, 1, 'help', '', 0, 2, 'helpemailtosend');
+            }
+            print '</td></tr>';
+            print '</tbody>';
+            print '</table>';
+            print '</div>';
+
+            print dol_get_fiche_end();
+
+            print '<div class="center">';
+            $parameters = array();
+            $reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action);
+            if (empty($reshook)) {
+                print '<input type="submit" class="button" name="add" value="' . $langs->trans("AddSubscription") . '">';
+                print '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                print '<input type="submit" class="button button-cancel" name="cancel" value="' . $langs->trans("Cancel") . '">';
+            }
+            print '</div>';
+
+            print '</form>';
+
+            print "\n<!-- End form subscription -->\n\n";
+        }
+
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *      \file       htdocs/adherents/type.php
+     *      \ingroup    member
+     *      \brief      Member's type setup
+     */
     public function type()
     {
         global $conf;
@@ -4843,4 +7088,622 @@ class AdherentController extends DolibarrController
         llxFooter();
         $db->close();
     }
+
+    /**
+     *      \file       htdocs/adherents/type_ldap.php
+     *      \ingroup    ldap
+     *      \brief      Page fiche LDAP members types
+     */
+    public function type_ldap()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(array("admin", "members", "ldap"));
+
+        $id = GETPOSTINT('rowid');
+        $action = GETPOST('action', 'aZ09');
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $id, 'adherent_type');
+
+        $object = new AdherentType($db);
+        $object->fetch($id);
+
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
+        $hookmanager->initHooks(array('membertypeldapcard', 'globalcard'));
+
+        /*
+         * Actions
+         */
+
+
+        $parameters = array();
+        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
+
+        if (empty($reshook)) {
+            if ($action == 'dolibarr2ldap') {
+                $ldap = new Ldap();
+                $result = $ldap->connectBind();
+
+                if ($result > 0) {
+                    $object->listMembersForMemberType('', 1);
+
+                    $info = $object->_load_ldap_info();
+                    $dn = $object->_load_ldap_dn($info);
+                    $olddn = $dn; // We can say that old dn = dn as we force synchro
+
+                    $result = $ldap->update($dn, $info, $user, $olddn);
+                }
+
+                if ($result >= 0) {
+                    setEventMessages($langs->trans("MemberTypeSynchronized"), null, 'mesgs');
+                } else {
+                    setEventMessages($ldap->error, $ldap->errors, 'errors');
+                }
+            }
+        }
+
+        /*
+         * View
+         */
+
+        llxHeader();
+
+        $form = new Form($db);
+
+        $head = member_type_prepare_head($object);
+
+        print dol_get_fiche_head($head, 'ldap', $langs->trans("MemberType"), -1, 'group');
+
+        $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/type.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+        dol_banner_tab($object, 'rowid', $linkback);
+
+        print '<div class="fichecenter">';
+        print '<div class="underbanner clearboth"></div>';
+
+        print '<table class="border centpercent">';
+
+// LDAP DN
+        print '<tr><td>LDAP ' . $langs->trans("LDAPMemberTypeDn") . '</td><td class="valeur">' . getDolGlobalString('LDAP_MEMBER_TYPE_DN') . "</td></tr>\n";
+
+// LDAP Cle
+        print '<tr><td>LDAP ' . $langs->trans("LDAPNamingAttribute") . '</td><td class="valeur">' . getDolGlobalString('LDAP_KEY_MEMBERS_TYPES') . "</td></tr>\n";
+
+// LDAP Server
+        print '<tr><td>LDAP ' . $langs->trans("Type") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_TYPE') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("Version") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_PROTOCOLVERSION') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("LDAPPrimaryServer") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_HOST') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("LDAPSecondaryServer") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_HOST_SLAVE') . "</td></tr>\n";
+        print '<tr><td>LDAP ' . $langs->trans("LDAPServerPort") . '</td><td class="valeur">' . getDolGlobalString('LDAP_SERVER_PORT') . "</td></tr>\n";
+
+        print '</table>';
+
+        print '</div>';
+
+        print dol_get_fiche_end();
+
+        /*
+         * Action bar
+         */
+
+        print '<div class="tabsAction">';
+
+        if (getDolGlobalInt('LDAP_MEMBER_TYPE_ACTIVE') === Ldap::SYNCHRO_DOLIBARR_TO_LDAP) {
+            print '<a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?rowid=' . $object->id . '&action=dolibarr2ldap">' . $langs->trans("ForceSynchronize") . '</a>';
+        }
+
+        print "</div>\n";
+
+        if (getDolGlobalInt('LDAP_MEMBER_TYPE_ACTIVE') === Ldap::SYNCHRO_DOLIBARR_TO_LDAP) {
+            print "<br>\n";
+        }
+
+
+
+// Display LDAP attributes
+        print load_fiche_titre($langs->trans("LDAPInformationsForThisMemberType"));
+
+        print '<table width="100%" class="noborder">';
+
+        print '<tr class="liste_titre">';
+        print '<td>' . $langs->trans("LDAPAttributes") . '</td>';
+        print '<td>' . $langs->trans("Value") . '</td>';
+        print '</tr>';
+
+// LDAP reading
+        $ldap = new Ldap();
+        $result = $ldap->connectBind();
+        if ($result > 0) {
+            $info = $object->_load_ldap_info();
+            $dn = $object->_load_ldap_dn($info, 1);
+            $search = "(" . $object->_load_ldap_dn($info, 2) . ")";
+
+            $records = $ldap->getAttribute($dn, $search);
+
+            //print_r($records);
+
+            // Show tree
+            if (((!is_numeric($records)) || $records != 0) && (!isset($records['count']) || $records['count'] > 0)) {
+                if (!is_array($records)) {
+                    print '<tr class="oddeven"><td colspan="2"><span class="error">' . $langs->trans("ErrorFailedToReadLDAP") . '</span></td></tr>';
+                } else {
+                    $result = show_ldap_content($records, 0, $records['count'], true);
+                }
+            } else {
+                print '<tr class="oddeven"><td colspan="2">' . $langs->trans("LDAPRecordNotFound") . ' (dn=' . dol_escape_htmltag($dn) . ' - search=' . dol_escape_htmltag($search) . ')</td></tr>';
+            }
+
+            $ldap->unbind();
+        } else {
+            setEventMessages($ldap->error, $ldap->errors, 'errors');
+        }
+
+        print '</table>';
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *  \file       htdocs/adherents/type_translation.php
+     *  \ingroup    product
+     *  \brief      Member translation page
+     */
+    public function type_translation()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(array('members', 'languages'));
+
+        $id = GETPOSTINT('rowid') ? GETPOSTINT('rowid') : GETPOSTINT('id');
+        $action = GETPOST('action', 'aZ09');
+        $cancel = GETPOST('cancel', 'alpha');
+        $ref = GETPOST('ref', 'alphanohtml');
+
+// Security check
+        $fieldvalue = (!empty($id) ? $id : (!empty($ref) ? $ref : ''));
+        $fieldtype = (!empty($ref) ? 'ref' : 'rowid');
+        if ($user->socid) {
+            $socid = $user->socid;
+        }
+// Security check
+        $result = restrictedArea($user, 'adherent', $id, 'adherent_type');
+
+
+        /*
+         * Actions
+         */
+
+// return to translation display if cancellation
+        if ($cancel == $langs->trans("Cancel")) {
+            $action = '';
+        }
+
+        if ($action == 'delete' && GETPOST('langtodelete', 'alpha')) {
+            $object = new AdherentType($db);
+            $object->fetch($id);
+            $result = $object->delMultiLangs(GETPOST('langtodelete', 'alpha'), $user);
+            if ($result > 0) {
+                setEventMessages($langs->trans("RecordDeleted"), null, 'mesgs');
+                header("Location: " . $_SERVER['PHP_SELF'] . '?id=' . $id);
+                exit;
+            }
+        }
+
+// Add translation
+        if ($action == 'vadd' && $cancel != $langs->trans("Cancel") && $user->hasRight('adherent', 'configurer')) {
+            $object = new AdherentType($db);
+            $object->fetch($id);
+            $current_lang = $langs->getDefaultLang();
+
+            $forcelangprod = GETPOST("forcelangprod", 'aZ09');
+
+            // update of object
+            if ($forcelangprod == $current_lang) {
+                $object->label       = GETPOST("libelle", 'alphanohtml');
+                $object->description = dol_htmlcleanlastbr(GETPOST("desc", 'restricthtml'));
+                //$object->other         = dol_htmlcleanlastbr(GETPOST("other", 'restricthtml'));
+            } else {
+                $object->multilangs[$forcelangprod]["label"] = GETPOST("libelle", 'alphanohtml');
+                $object->multilangs[$forcelangprod]["description"] = dol_htmlcleanlastbr(GETPOST("desc", 'restricthtml'));
+                //$object->multilangs[$forcelangprod]["other"] = dol_htmlcleanlastbr(GETPOST("other", 'restricthtml'));
+            }
+
+            // backup into database
+            if ($object->setMultiLangs($user) > 0) {
+                $action = '';
+            } else {
+                $action = 'create';
+                setEventMessages($object->error, $object->errors, 'errors');
+            }
+        }
+
+// Edit translation
+        if ($action == 'vedit' && $cancel != $langs->trans("Cancel") && $user->hasRight('adherent', 'configurer')) {
+            $object = new AdherentType($db);
+            $object->fetch($id);
+            $current_lang = $langs->getDefaultLang();
+
+            foreach ($object->multilangs as $key => $value) { // saving new values in the object
+                if ($key == $current_lang) {
+                    $object->label          = GETPOST("libelle-" . $key, 'alphanohtml');
+                    $object->description = dol_htmlcleanlastbr(GETPOST("desc-" . $key, 'restricthtml'));
+                    $object->other          = dol_htmlcleanlastbr(GETPOST("other-" . $key, 'restricthtml'));
+                } else {
+                    $object->multilangs[$key]["label"]          = GETPOST("libelle-" . $key, 'alphanohtml');
+                    $object->multilangs[$key]["description"] = dol_htmlcleanlastbr(GETPOST("desc-" . $key, 'restricthtml'));
+                    $object->multilangs[$key]["other"]          = dol_htmlcleanlastbr(GETPOST("other-" . $key, 'restricthtml'));
+                }
+            }
+
+            if ($object->setMultiLangs($user) > 0) {
+                $action = '';
+            } else {
+                $action = 'edit';
+                setEventMessages($object->error, $object->errors, 'errors');
+            }
+        }
+
+// Delete translation
+        if ($action == 'vdelete' && $cancel != $langs->trans("Cancel") && $user->hasRight('adherent', 'configurer')) {
+            $object = new AdherentType($db);
+            $object->fetch($id);
+            $langtodelete = GETPOST('langdel', 'alpha');
+
+
+            if ($object->delMultiLangs($langtodelete, $user) > 0) {
+                $action = '';
+            } else {
+                $action = 'edit';
+                setEventMessages($object->error, $object->errors, 'errors');
+            }
+        }
+
+        $object = new AdherentType($db);
+        $result = $object->fetch($id);
+
+
+        /*
+         * View
+         */
+
+        $title = $langs->trans('MemberTypeCard');
+
+        $help_url = '';
+
+        $shortlabel = dol_trunc($object->label, 16);
+
+        $title = $langs->trans('MemberType') . " " . $shortlabel . " - " . $langs->trans('Translation');
+
+        $help_url = 'EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios|DE:Modul_Mitglieder';
+
+        llxHeader('', $title, $help_url);
+
+        $form = new Form($db);
+        $formadmin = new FormAdmin($db);
+
+        $head = member_type_prepare_head($object);
+        $titre = $langs->trans("MemberType" . $object->id);
+
+// Calculate $cnt_trans
+        $cnt_trans = 0;
+        if (!empty($object->multilangs)) {
+            foreach ($object->multilangs as $key => $value) {
+                $cnt_trans++;
+            }
+        }
+
+
+        print dol_get_fiche_head($head, 'translation', $titre, 0, 'group');
+
+        $linkback = '<a href="' . dol_buildpath('/adherents/type.php', 1) . '">' . $langs->trans("BackToList") . '</a>';
+
+        dol_banner_tab($object, 'rowid', $linkback);
+
+        print dol_get_fiche_end();
+
+
+
+        /*
+         * Action bar
+         */
+        print "\n<div class=\"tabsAction\">\n";
+
+        if ($action == '') {
+            if ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer')) {
+                print '<a class="butAction" href="' . DOL_URL_ROOT . '/adherents/type_translation.php?action=create&token=' . newToken() . '&rowid=' . $object->id . '">' . $langs->trans("Add") . '</a>';
+                if ($cnt_trans > 0) {
+                    print '<a class="butAction" href="' . DOL_URL_ROOT . '/adherents/type_translation.php?action=edit&token=' . newToken() . '&rowid=' . $object->id . '">' . $langs->trans("Update") . '</a>';
+                }
+            }
+        }
+
+        print "\n</div>\n";
+
+
+
+        if ($action == 'edit') {
+            //WYSIWYG Editor
+            require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
+
+            print '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST">';
+            print '<input type="hidden" name="token" value="' . newToken() . '">';
+            print '<input type="hidden" name="action" value="vedit">';
+            print '<input type="hidden" name="rowid" value="' . $object->id . '">';
+
+            if (!empty($object->multilangs)) {
+                foreach ($object->multilangs as $key => $value) {
+                    $s = picto_from_langcode($key);
+                    print '<br>';
+                    print '<div class="inline-block marginbottomonly">';
+                    print($s ? $s . ' ' : '') . '<b>' . $langs->trans('Language_' . $key) . ':</b>';
+                    print '</div>';
+                    print '<div class="inline-block marginbottomonly floatright">';
+                    print '<a href="' . $_SERVER['PHP_SELF'] . '?rowid=' . $object->id . '&action=delete&token=' . newToken() . '&langtodelete=' . $key . '">' . img_delete('', 'class="valigntextbottom"') . "</a><br>";
+                    print '</div>';
+
+                    print '<div class="underbanner clearboth"></div>';
+                    print '<table class="border centpercent">';
+                    print '<tr><td class="tdtop titlefieldcreate fieldrequired">' . $langs->trans('Label') . '</td><td><input name="libelle-' . $key . '" class="minwidth300" value="' . dol_escape_htmltag($object->multilangs[$key]["label"]) . '"></td></tr>';
+                    print '<tr><td class="tdtop">' . $langs->trans('Description') . '</td><td>';
+                    $doleditor = new DolEditor("desc-$key", $object->multilangs[$key]["description"], '', 160, 'dolibarr_notes', '', false, true, getDolGlobalInt('FCKEDITOR_ENABLE_SOCIETE'), ROWS_3, '90%');
+                    $doleditor->Create();
+                    print '</td></tr>';
+                    print '</td></tr>';
+                    print '</table>';
+                }
+            }
+
+            print $form->buttonsSaveCancel();
+
+            print '</form>';
+        } elseif ($action != 'create') {
+            if (!empty($object->multilangs)) {
+                foreach ($object->multilangs as $key => $value) {
+                    $s = picto_from_langcode($key);
+                    print '<div class="inline-block marginbottomonly">';
+                    print($s ? $s . ' ' : '') . '<b>' . $langs->trans('Language_' . $key) . ':</b>';
+                    print '</div>';
+                    print '<div class="inline-block marginbottomonly floatright">';
+                    print '<a href="' . $_SERVER['PHP_SELF'] . '?rowid=' . $object->id . '&action=delete&token=' . newToken() . '&langtodelete=' . $key . '">' . img_delete('', 'class="valigntextbottom"') . '</a>';
+                    print '</div>';
+
+
+                    print '<div class="fichecenter">';
+                    print '<div class="underbanner clearboth"></div>';
+                    print '<table class="border centpercent">';
+                    print '<tr><td class="titlefieldcreate">' . $langs->trans('Label') . '</td><td>' . $object->multilangs[$key]["label"] . '</td></tr>';
+                    print '<tr><td class="tdtop">' . $langs->trans('Description') . '</td><td>' . $object->multilangs[$key]["description"] . '</td></tr>';
+                    print '</table>';
+                    print '</div>';
+
+                    print '<br>';
+                }
+            }
+            if (!$cnt_trans && $action != 'create') {
+                print '<div class="opacitymedium">' . $langs->trans('NoTranslation') . '</div>';
+            }
+        }
+
+
+
+        /*
+         * Form to add a new translation
+         */
+
+        if ($action == 'create' && $user->hasRight('adherent', 'configurer')) {
+            //WYSIWYG Editor
+            require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
+
+            print '<br>';
+            print '<form action="' . $_SERVER['PHP_SELF'] . '" method="post">';
+            print '<input type="hidden" name="token" value="' . newToken() . '">';
+            print '<input type="hidden" name="action" value="vadd">';
+            print '<input type="hidden" name="rowid" value="' . GETPOSTINT("rowid") . '">';
+
+            print dol_get_fiche_head();
+
+            print '<table class="border centpercent">';
+            print '<tr><td class="tdtop titlefieldcreate fieldrequired">' . $langs->trans('Language') . '</td><td>';
+            print $formadmin->select_language('', 'forcelangprod', 0, $object->multilangs, 1);
+            print '</td></tr>';
+            print '<tr><td class="tdtop fieldrequired">' . $langs->trans('Label') . '</td><td><input name="libelle" class="minwidth300" value="' . dol_escape_htmltag(GETPOST("libelle", 'alphanohtml')) . '"></td></tr>';
+            print '<tr><td class="tdtop">' . $langs->trans('Description') . '</td><td>';
+            $doleditor = new DolEditor('desc', '', '', 160, 'dolibarr_notes', '', false, true, isModEnabled('fckeditor'), ROWS_3, '90%');
+            $doleditor->Create();
+            print '</td></tr>';
+
+            print '</table>';
+
+            print dol_get_fiche_end();
+
+            print $form->buttonsSaveCancel();
+
+            print '</form>';
+
+            print '<br>';
+        }
+
+// End of page
+        llxFooter();
+        $db->close();
+    }
+
+    /**
+     *      \file       htdocs/adherents/vcard.php
+     *      \ingroup    societe
+     *      \brief      Vcard tab of a member
+     */
+    public function vcard()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+        $id = GETPOSTINT('id');
+        $ref = GETPOST('ref', 'alphanohtml');
+
+        $object = new Adherent($db);
+
+// Fetch object
+        if ($id > 0 || !empty($ref)) {
+            // Load member
+            $result = $object->fetch($id, $ref);
+
+            // Define variables to know what current user can do on users
+            $canadduser = ($user->admin || $user->hasRight('user', 'user', 'creer'));
+            // Define variables to know what current user can do on properties of user linked to edited member
+            if ($object->user_id) {
+                // $User is the user who edits, $object->user_id is the id of the related user in the edited member
+                $caneditfielduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'creer'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'creer')));
+                $caneditpassworduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'password'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'password')));
+            }
+        }
+
+// Define variables to determine what the current user can do on the members
+        $canaddmember = $user->hasRight('adherent', 'creer');
+// Define variables to determine what the current user can do on the properties of a member
+        if ($id) {
+            $caneditfieldmember = $user->hasRight('adherent', 'creer');
+        }
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $object->id, '', '', 'socid', 'rowid', 0);
+
+
+        /*
+         * Actions
+         */
+
+// None
+
+
+        /*
+         * View
+         */
+
+        $company = new Societe($db);
+        if ($object->socid) {
+            $result = $company->fetch($object->socid);
+        }
+
+
+
+// We create VCard
+        $v = new vCard();
+        $v->setProdId('Dolibarr ' . DOL_VERSION);
+
+        $v->setUid('DOLIBARR-ADHERENTID-' . $object->id);
+        $v->setName($object->lastname, $object->firstname, "", $object->civility, "");
+        $v->setFormattedName($object->getFullName($langs, 1));
+
+        $v->setPhoneNumber($object->phone_pro, "TYPE=WORK;VOICE");
+//$v->setPhoneNumber($object->phone_perso,"TYPE=HOME;VOICE");
+        $v->setPhoneNumber($object->phone_mobile, "TYPE=CELL;VOICE");
+        $v->setPhoneNumber($object->fax, "TYPE=WORK;FAX");
+
+        $country = $object->country_code ? $object->country : '';
+
+        $v->setAddress("", "", $object->address, $object->town, $object->state, $object->zip, $country, "TYPE=WORK;POSTAL");
+// @phan-suppress-next-line PhanDeprecatedFunction  (setLabel is the old method, new is setAddress)
+        $v->setLabel("", "", $object->address, $object->town, $object->state, $object->zip, $country, "TYPE=WORK");
+
+        $v->setEmail($object->email);
+        $v->setNote($object->note_public);
+        $v->setTitle($object->poste);
+
+// Data from linked company
+        if ($company->id) {
+            $v->setURL($company->url, "TYPE=WORK");
+            if (!$object->phone_pro) {
+                $v->setPhoneNumber($company->phone, "TYPE=WORK;VOICE");
+            }
+            if (!$object->fax) {
+                $v->setPhoneNumber($company->fax, "TYPE=WORK;FAX");
+            }
+            if (!$object->zip) {
+                $v->setAddress("", "", $company->address, $company->town, $company->state, $company->zip, $company->country, "TYPE=WORK;POSTAL");
+            }
+            // when company e-mail is empty, use only adherent e-mail
+            if (empty(trim($company->email))) {
+                // was set before, don't set twice
+            } elseif (empty(trim($object->email))) {
+                // when adherent e-mail is empty, use only company e-mail
+                $v->setEmail($company->email);
+            } else {
+                $tmpobject = explode("@", trim($object->email));
+                $tmpcompany = explode("@", trim($company->email));
+
+                if (strtolower(end($tmpobject)) == strtolower(end($tmpcompany))) {
+                    // when e-mail domain of adherent and company are the same, use adherent e-mail at first (and company e-mail at second)
+                    $v->setEmail($object->email);
+
+                    // support by Microsoft Outlook (2019 and possible earlier)
+                    $v->setEmail($company->email, 'INTERNET');
+                } else {
+                    // when e-mail of adherent and company complete different use company e-mail at first (and adherent e-mail at second)
+                    $v->setEmail($company->email);
+
+                    // support by Microsoft Outlook (2019 and possible earlier)
+                    $v->setEmail($object->email, 'INTERNET');
+                }
+            }
+
+            // Si adherent lie a un tiers non de type "particulier"
+            if ($company->typent_code != 'TE_PRIVATE') {
+                $v->setOrg($company->name);
+            }
+        }
+
+// Personal information
+        $v->setPhoneNumber($object->phone_perso, "TYPE=HOME;VOICE");
+        if ($object->birth) {
+            $v->setBirthday($object->birth);
+        }
+
+        $db->close();
+
+
+// Renvoi la VCard au navigateur
+
+        $output = $v->getVCard();
+
+        $filename = trim(urldecode($v->getFileName())); // "Nom prenom.vcf"
+        $filenameurlencoded = dol_sanitizeFileName(urlencode($filename));
+//$filename = dol_sanitizeFileName($filename);
+
+
+        header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
+        header("Content-Length: " . dol_strlen($output));
+        header("Connection: close");
+        header("Content-Type: text/x-vcard; name=\"" . $filename . "\"");
+
+        print $output;
+    }
+
 }
