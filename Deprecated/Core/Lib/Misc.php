@@ -62,7 +62,7 @@ abstract class Misc
     }
 
     /**
-     * Same as createClassPaths, but trying to use a yaml file cache.
+     * Same as createClassPaths, but trying to use a file cache.
      *
      * @param $searchPath
      * @param $folderName
@@ -76,23 +76,33 @@ abstract class Misc
             // Failed to create directory for cache
             return static::createClassPaths();
         }
-        if (!function_exists('yaml_parse')) {
-            return static::createClassPaths();
-        }
-        $file = $path . '/classpaths.yaml';
+        $file = $path . '/classpaths.json';
         if (file_exists($file)) {
-            return yaml_parse_file($file);
+            return json_decode(file_get_contents($file), true);
         }
         $data = static::createClassPaths();
-        file_put_contents($file, yaml_parse($data));
+        file_put_contents($file, json_encode($data));
         return $data;
     }
 
-    public static function loadClass($name, $param)
+    /**
+     * Loads a model class given the name and an alternative parameter to be passed to
+     * the model during creation (usually a db instance is passed to it).
+     *
+     * @param $name
+     * @param $param
+     *
+     * @return mixed|null
+     */
+    public static function loadModel($name, $param = null)
     {
         $classes = static::getClassPaths();
         if (!isset($classes[$name])) {
             return null;
+        }
+
+        if ($param === null) {
+            return new $classes[$name]();
         }
 
         return new $classes[$name]($param);

@@ -60,6 +60,7 @@ if (class_exists($keyforclass)) {
         }
     }
 } else {
+    dump([$keyforclass]);
     dol_print_error($this->db, 'Failed to find class ' . $keyforclass . ', even after the include of ' . $keyforclassfile);
 }
 // End add common fields

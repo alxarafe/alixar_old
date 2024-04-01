@@ -1,12 +1,13 @@
 <?php
 
-/* Copyright (C) 2010-2013  Regis Houssin       <regis.houssin@inodbox.com>
- * Copyright (C) 2010-2011	Laurent Destailleur	<eldy@users.sourceforge.net>
- * Copyright (C) 2012-2013	Christophe Battarel	<christophe.battarel@altairis.fr>
- * Copyright (C) 2012       Cédric Salvador     <csalvador@gpcsolutions.fr>
- * Copyright (C) 2012-2014  Raphaël Doursenaud  <rdoursenaud@gpcsolutions.fr>
- * Copyright (C) 2013		Florian Henry		<florian.henry@open-concept.pro>
- * Copyright (C) 2017		Juanjo Menent		<jmenent@2byte.es>
+/* Copyright (C) 2010-2013  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2010-2011	Laurent Destailleur	    <eldy@users.sourceforge.net>
+ * Copyright (C) 2012-2013	Christophe Battarel	    <christophe.battarel@altairis.fr>
+ * Copyright (C) 2012       Cédric Salvador         <csalvador@gpcsolutions.fr>
+ * Copyright (C) 2012-2014  Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
+ * Copyright (C) 2013		Florian Henry		    <florian.henry@open-concept.pro>
+ * Copyright (C) 2017		Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,7 +85,7 @@ $domData .= ' data-qty="' . $line->qty . '"';
 $domData .= ' data-product_type="' . $line->product_type . '"';
 
 // Lines for extrafield
-$objectline = new BOMLine($object->db);
+$objectline = new BomLine($object->db);
 
 $coldisplay = 0;
 print "<!-- BEGIN PHP TEMPLATE objectline_view.tpl.php -->\n";
@@ -264,7 +265,7 @@ if ($resql) {
             $sub_bom->fetch($obj->fk_bom_child);
         }
 
-        $sub_bom_line = new BOMLine($object->db);
+        $sub_bom_line = new BomLine($object->db);
         $sub_bom_line->fetch($obj->rowid);
 
         //If hidden conf is set, we show directly all the sub-BOM lines

@@ -127,7 +127,7 @@ $entitytolang = array(
     'contract_line' => 'ContractLine',
     'translation'  => 'Translation',
     'bom'          => 'BOM',
-    'bomline'      => 'BOMLine'
+    'bomline'      => 'BomLine'
 );
 
 $datatoimport       = GETPOST('datatoimport');

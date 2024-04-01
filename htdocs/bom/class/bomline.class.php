@@ -38,7 +38,7 @@ if (isModEnabled('workstation')) {
 /**
  * Class for BOMLine
  */
-class BOMLine extends GenericDocumentLine
+class BomLine extends GenericDocumentLine
 {
     /**
      * @var string ID to identify managed object

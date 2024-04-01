@@ -253,7 +253,7 @@ class box_dolibarr_state_board extends ModeleBoxes
                     }
 
                     if (!isset($boardloaded[$classkeyforcache]) || !is_object($boardloaded[$classkeyforcache])) {
-                        $board = Misc::loadClass($class, $this->db);
+                        $board = Misc::loadModel($class, $this->db);
 
                         if (empty($board)) {
                             include_once $includes[$val]; // Loading a class cost around 1Mb

@@ -1,6 +1,7 @@
 <?php
-/* Copyright (C) 2010-2012  Regis Houssin   <regis.houssin@inodbox.com>
- * Copyright (C) 2017		Charlie Benke	<charlie@patas-monkey.com>
+/* Copyright (C) 2010-2012  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2017		Charlie Benke	        <charlie@patas-monkey.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +124,7 @@ if ($resql) {
         $sub_bom = new BOM($db);
         $sub_bom->fetch($obj->fk_bom_child);
 
-        $sub_bom_line = new BOMLine($db);
+        $sub_bom_line = new BomLine($db);
         $sub_bom_line->fetch($obj->rowid);
 
         //If hidden conf is set, we show directly all the sub-BOM lines

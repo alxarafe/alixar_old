@@ -283,7 +283,7 @@ class modBom extends DolibarrModules
         $keyforclassfile = '/bom/class/bom.class.php';
         $keyforelement = 'bom';
         include DOL_DOCUMENT_ROOT . '/core/commonfieldsinexport.inc.php';
-        $keyforclass = 'BOMLine';
+        $keyforclass = 'BomLine';
         $keyforclassfile = '/bom/class/bom.class.php';  // @phan-suppress-current-line PhanPluginRedundantAssignment
         $keyforelement = 'bomline';
         $keyforalias = 'tl';

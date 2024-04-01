@@ -231,7 +231,7 @@ class BOM extends GenericDocument
     /**
      * @var string    Name of subtable class that manage subtable lines
      */
-    public $class_element_line = 'BOMLine';
+    public $class_element_line = 'BomLine';
 
     // /**
     //  * @var array    List of child tables. To test if we can delete object.
@@ -648,7 +648,7 @@ class BOM extends GenericDocument
             }
 
             // Insert line
-            $line = new BOMLine($this->db);
+            $line = new BomLine($this->db);
 
             $line->context = $this->context;
 
@@ -739,7 +739,7 @@ class BOM extends GenericDocument
             $this->db->begin();
 
             //Fetch current line from the database and then clone the object and set it in $oldline property
-            $line = new BOMLine($this->db);
+            $line = new BomLine($this->db);
             $line->fetch($rowid);
             $line->fetch_optionals();
 
@@ -823,7 +823,7 @@ class BOM extends GenericDocument
         $this->db->begin();
 
         //Fetch current line from the database and then clone the object and set it in $oldline property
-        $line = new BOMLine($this->db);
+        $line = new BomLine($this->db);
         $line->fetch($idline);
         $line->fetch_optionals();
 
@@ -1276,7 +1276,7 @@ class BOM extends GenericDocument
     {
         $this->lines = array();
 
-        $objectline = new BOMLine($this->db);
+        $objectline = new BomLine($this->db);
         $result = $objectline->fetchAll('ASC', 'position', 0, 0, '(fk_bom:=:' . ((int) $this->id) . ')');
 
         if (is_numeric($result)) {
