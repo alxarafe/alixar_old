@@ -26,6 +26,8 @@
  *  \brief      Module Dolibarr state base
  */
 
+use DoliCore\Lib\Misc;
+
 include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
 
 /**
@@ -251,13 +253,13 @@ class box_dolibarr_state_board extends ModeleBoxes
                     }
 
                     if (!isset($boardloaded[$classkeyforcache]) || !is_object($boardloaded[$classkeyforcache])) {
-                        include_once $includes[$val]; // Loading a class cost around 1Mb
+                        $board = Misc::loadClass($class, $this->db);
 
-                        /**
-                         * TODO: Update to load class also if namespaces are used.
-                         *       As long as the system is mixed, this is a problem that I'm not sure is worth solving.
-                         */
-                        $board = new $class($this->db);
+                        if (empty($board)) {
+                            include_once $includes[$val]; // Loading a class cost around 1Mb
+                            $board = new $class($this->db);
+                        }
+
                         if (method_exists($board, 'load_state_board')) {
                             $board->load_state_board();
                         } elseif (method_exists($board, 'loadStateBoard')) {

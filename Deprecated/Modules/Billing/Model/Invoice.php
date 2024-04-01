@@ -42,6 +42,7 @@
 namespace DoliModules\Billing\Model;
 
 use DoliDB;
+use WorkboardResponse;
 
 /**
  *  Class to manage invoices

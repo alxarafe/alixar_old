@@ -1,11 +1,12 @@
 <?php
 
-/* Copyright (C) 2006      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2007-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2011-2016 Juanjo Menent        <jmenent@2byte.es>
- * Copyright (C) 2015      Marcos García        <marcosgdf@gmail.com>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+/* Copyright (C) 2006       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2007-2011  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2011-2016  Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2015       Marcos García           <marcosgdf@gmail.com>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +28,9 @@
  *  \brief      File with class to manage cheque delivery receipts
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
+use DoliCore\Base\GenericDocument;
 
+require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 
 /**
  *  Class to manage cheque delivery receipts

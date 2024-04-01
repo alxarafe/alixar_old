@@ -1,13 +1,14 @@
 <?php
 
-/* Copyright (C) 2004-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2010-2015 Juanjo Menent        <jmenent@2byte.es>
- * Copyright (C) 2010-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2014-2016 Ferran Marcet       <fmarcet@2byte.es>
- * Copyright (C) 2018      Nicolas ZABOURI     <info@inovea-conseil.com>
- * Copyright (C) 2019		JC Prieto			<jcprieto@virtual20.com><prietojc@gmail.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2004-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2010-2015  Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2010-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2014-2016  Ferran Marcet           <fmarcet@2byte.es>
+ * Copyright (C) 2018       Nicolas ZABOURI         <info@inovea-conseil.com>
+ * Copyright (C) 2019		JC Prieto			    <jcprieto@virtual20.com><prietojc@gmail.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +30,8 @@
  * \brief      File of withdrawal receipts class
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';

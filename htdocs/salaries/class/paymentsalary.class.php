@@ -1,10 +1,11 @@
 <?php
 
-/* Copyright (C) 2011-2022  Alexandre Spangaro  <aspangaro@open-dsi.fr>
- * Copyright (C) 2014       Juanjo Menent       <jmenent@2byte.es>
- * Copyright (C) 2021       Gauthier VERDOL     <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2011-2022  Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2014       Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +27,9 @@
  *  \brief      File of class to manage payment of salaries
  */
 
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
+use DoliCore\Base\GenericDocument;
 
+require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 
 /**
  *  Class to manage payments of salaries

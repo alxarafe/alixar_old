@@ -1,8 +1,9 @@
 <?php
 
-/* Copyright (C) 2018-2021  Thibault FOUCART       <support@ptibogxiv.net>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2018-2021  Thibault FOUCART        <support@ptibogxiv.net>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +19,12 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/stripe/config.php'; // This set stripe global env
-
 
 /**
  *  Stripe class

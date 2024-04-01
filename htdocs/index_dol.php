@@ -27,6 +27,9 @@
  *  \brief      Dolibarr home page
  */
 
+use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Billing\Model\Facture;
+
 define('CSRFCHECK_WITH_TOKEN', 1); // We force need to use a token to login when making a POST
 
 require 'main.inc.php';

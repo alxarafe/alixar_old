@@ -2,7 +2,8 @@
 
 /* Copyright (C) 2017       ATM Consulting          <support@atm-consulting.fr>
  * Copyright (C) 2017		Pierre-Henry Favre		<phf@atm-consulting.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +25,7 @@
  *  \brief      File of class to manage expense ik
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
 
 /**
  *  Class to manage inventories
