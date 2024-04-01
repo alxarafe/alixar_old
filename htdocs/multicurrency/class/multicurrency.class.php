@@ -30,6 +30,7 @@
  */
 
 // Put here all includes required by your class file
+use Alixar\multicurrency\class\CurrencyRate;
 use DoliCore\Base\GenericDocument;
 
 /**

@@ -37,6 +37,7 @@ include_once BASE_PATH . '/core/class/html.formadmin.class.php';
 use Alxarafe\Base\Globals;
 use DoliCore\Base\Config;
 use DoliCore\Base\DolibarrNoLoginController;
+use Exception;
 use FormAdmin;
 use HookManager;
 use User;

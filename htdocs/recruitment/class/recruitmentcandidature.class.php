@@ -1,8 +1,9 @@
 <?php
 
-/* Copyright (C) 2020  Laurent Destailleur <eldy@users.sourceforge.net>
+/* Copyright (C) 2020       Laurent Destailleur         <eldy@users.sourceforge.net>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José             <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +26,7 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+use DoliCore\Base\GenericDocument;
 
 /**
  * Class for RecruitmentCandidature
@@ -764,7 +763,7 @@ class RecruitmentCandidature extends GenericDocument
             if ($withpicto) {
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-                list($class, $module) = explode('@', $this->picto);
+                [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
                 $filearray = dol_dir_list($upload_dir, "files");
                 $filename = $filearray[0]['name'];
@@ -1097,27 +1096,5 @@ class RecruitmentCandidature extends GenericDocument
         $return .= '</div>';
         $return .= '</div>';
         return $return;
-    }
-}
-
-
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
-
-/**
- * Class RecruitmentCandidatureLine. You can also remove this and generate a CRUD class for lines objects.
- */
-class RecruitmentCandidatureLine extends GenericDocumentLine
-{
-    // To complete with content of an object RecruitmentCandidatureLine
-    // We should have a field rowid, fk_recruitmentcandidature and position
-
-    /**
-     * Constructor
-     *
-     * @param DoliDB $db Database handler
-     */
-    public function __construct(DoliDB $db)
-    {
-        $this->db = $db;
     }
 }

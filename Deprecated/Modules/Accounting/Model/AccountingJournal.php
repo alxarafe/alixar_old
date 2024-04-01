@@ -18,6 +18,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Accounting\Model;
+
 /**
  * \file        htdocs/accountancy/class/accountingjournal.class.php
  * \ingroup     Accountancy (Double entries)
@@ -47,7 +49,8 @@ class AccountingJournal extends GenericDocument
     public $fk_element = '';
 
     /**
-     * @var int     Does object support multicompany module ? 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
+     * @var int     Does object support multicompany module ? 0=No test on entity, 1=Test with field entity, 2=Test
+     *      with link by societe
      */
     public $ismultientitymanaged = 0;
 
@@ -89,12 +92,12 @@ class AccountingJournal extends GenericDocument
     /**
      * @var array       Accounting account cached
      */
-    public static $accounting_account_cached = array();
+    public static $accounting_account_cached = [];
 
     /**
      * @var array       Nature mapping
      */
-    public static $nature_maps = array(
+    public static $nature_maps = [
         1 => 'variousoperations',
         2 => 'sells',
         3 => 'purchases',
@@ -102,7 +105,7 @@ class AccountingJournal extends GenericDocument
         5 => 'expensereports',
         8 => 'inventories',
         9 => 'hasnew',
-    );
+    ];
 
     /**
      * Constructor
@@ -117,8 +120,9 @@ class AccountingJournal extends GenericDocument
     /**
      * Load an object from database
      *
-     * @param   int     $rowid              Id of record to load
-     * @param   string  $journal_code       Journal code
+     * @param int    $rowid        Id of record to load
+     * @param string $journal_code Journal code
+     *
      * @return  int                         Return integer <0 if KO, Id of record if OK and found
      */
     public function fetch($rowid = null, $journal_code = null)
@@ -143,13 +147,13 @@ class AccountingJournal extends GenericDocument
 
                 if ($obj) {
                     $this->id = $obj->rowid;
-                    $this->rowid        = $obj->rowid;
+                    $this->rowid = $obj->rowid;
 
-                    $this->code         = $obj->code;
-                    $this->ref          = $obj->code;
-                    $this->label        = $obj->label;
-                    $this->nature       = $obj->nature;
-                    $this->active       = $obj->active;
+                    $this->code = $obj->code;
+                    $this->ref = $obj->code;
+                    $this->label = $obj->label;
+                    $this->nature = $obj->nature;
+                    $this->active = $obj->active;
 
                     return $this->id;
                 } else {
@@ -166,12 +170,13 @@ class AccountingJournal extends GenericDocument
     /**
      * Load object in memory from the database
      *
-     * @param string        $sortorder  Sort Order
-     * @param string        $sortfield  Sort field
-     * @param int           $limit      limit
-     * @param int           $offset     offset limit
-     * @param string|array  $filter     filter array
-     * @param string        $filtermode filter mode (AND or OR)
+     * @param string       $sortorder  Sort Order
+     * @param string       $sortfield  Sort field
+     * @param int          $limit      limit
+     * @param int          $offset     offset limit
+     * @param string|array $filter     filter array
+     * @param string       $filtermode filter mode (AND or OR)
+     *
      * @return int                      Return integer <0 if KO, >0 if OK
      */
     public function fetchAll($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, $filter = '', $filtermode = 'AND')
@@ -183,7 +188,7 @@ class AccountingJournal extends GenericDocument
 
         // Manage filter
         if (is_array($filter)) {
-            $sqlwhere = array();
+            $sqlwhere = [];
             if (count($filter) > 0) {
                 foreach ($filter as $key => $value) {
                     if ($key == 't.code' || $key == 't.label' || $key == 't.nature') {
@@ -215,7 +220,7 @@ class AccountingJournal extends GenericDocument
         if (!empty($limit)) {
             $sql .= $this->db->plimit($limit + 1, $offset);
         }
-        $this->lines = array();
+        $this->lines = [];
 
         dol_syslog(get_class($this) . "::fetch", LOG_DEBUG);
         $resql = $this->db->query($sql);
@@ -248,11 +253,12 @@ class AccountingJournal extends GenericDocument
     /**
      * Return clickable name (with picto eventually)
      *
-     * @param   int     $withpicto      0=No picto, 1=Include picto into link, 2=Only picto
-     * @param   int     $withlabel      0=No label, 1=Include label of journal, 2=Include nature of journal
-     * @param   int     $nourl          1=Disable url
-     * @param   string  $moretitle      Add more text to title tooltip
-     * @param   int     $notooltip      1=Disable tooltip
+     * @param int    $withpicto 0=No picto, 1=Include picto into link, 2=Only picto
+     * @param int    $withlabel 0=No label, 1=Include label of journal, 2=Include nature of journal
+     * @param int    $nourl     1=Disable url
+     * @param string $moretitle Add more text to title tooltip
+     * @param int    $notooltip 1=Disable tooltip
+     *
      * @return  string  String with URL
      */
     public function getNomUrl($withpicto = 0, $withlabel = 0, $nourl = 0, $moretitle = '', $notooltip = 0)
@@ -318,8 +324,8 @@ class AccountingJournal extends GenericDocument
         $result .= $linkend;
 
         global $action;
-        $hookmanager->initHooks(array('accountingjournaldao'));
-        $parameters = array('id' => $this->id, 'getnomurl' => &$result);
+        $hookmanager->initHooks(['accountingjournaldao']);
+        $parameters = ['id' => $this->id, 'getnomurl' => &$result];
         $reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook > 0) {
             $result = $hookmanager->resPrint;
@@ -332,28 +338,32 @@ class AccountingJournal extends GenericDocument
     /**
      *  Return the label of the status
      *
-     *  @param  int     $mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
-     *  @return string                 Label of status
+     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                  label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
      */
     public function getLibType($mode = 0)
     {
         return $this->LibType($this->nature, $mode);
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Return type of an accounting journal
      *
-     *  @param  int     $nature         Id type
-     *  @param  int     $mode           0=label long, 1=label short
-     *  @return string                  Label of type
+     * @param int $nature Id type
+     * @param int $mode   0=label long, 1=label short
+     *
+     * @return string                  Label of type
      */
     public function LibType($nature, $mode = 0)
     {
-		// phpcs:enable
+        // phpcs:enable
         global $langs;
 
-        $langs->loadLangs(array("accountancy"));
+        $langs->loadLangs(["accountancy"]);
 
         if ($mode == 0) {
             $prefix = '';
@@ -392,11 +402,12 @@ class AccountingJournal extends GenericDocument
     /**
      *  Get journal data
      *
-     * @param   User            $user               User who get infos
-     * @param   string          $type               Type data returned ('view', 'bookkeeping', 'csv')
-     * @param   int             $date_start         Filter 'start date'
-     * @param   int             $date_end           Filter 'end date'
-     * @param   string          $in_bookkeeping     Filter 'in bookkeeping' ('already', 'notyet')
+     * @param User   $user           User who get infos
+     * @param string $type           Type data returned ('view', 'bookkeeping', 'csv')
+     * @param int    $date_start     Filter 'start date'
+     * @param int    $date_end       Filter 'end date'
+     * @param string $in_bookkeeping Filter 'in bookkeeping' ('already', 'notyet')
+     *
      * @return  array|int                           Return integer <0 if KO, >0 if OK
      */
     public function getData(User $user, $type = 'view', $date_start = null, $date_end = null, $in_bookkeeping = 'notyet')
@@ -411,10 +422,10 @@ class AccountingJournal extends GenericDocument
             $in_bookkeeping = 'notyet';
         }
 
-        $data = array();
+        $data = [];
 
-        $hookmanager->initHooks(array('accountingjournaldao'));
-        $parameters = array('data' => &$data, 'user' => $user, 'type' => $type, 'date_start' => $date_start, 'date_end' => $date_end, 'in_bookkeeping' => $in_bookkeeping);
+        $hookmanager->initHooks(['accountingjournaldao']);
+        $parameters = ['data' => &$data, 'user' => $user, 'type' => $type, 'date_start' => $date_start, 'date_end' => $date_end, 'in_bookkeeping' => $in_bookkeeping];
         $reshook = $hookmanager->executeHooks('getData', $parameters, $this); // Note that $action and $object may have been
         if ($reshook < 0) {
             $this->error = $hookmanager->error;
@@ -425,12 +436,12 @@ class AccountingJournal extends GenericDocument
                 case 1: // Various Journal
                     $data = $this->getAssetData($user, $type, $date_start, $date_end, $in_bookkeeping);
                     break;
-                    //              case 2: // Sells Journal
-                    //              case 3: // Purchases Journal
-                    //              case 4: // Bank Journal
-                    //              case 5: // Expense reports Journal
-                    //              case 8: // Inventory Journal
-                    //              case 9: // hasnew Journal
+                //              case 2: // Sells Journal
+                //              case 3: // Purchases Journal
+                //              case 4: // Bank Journal
+                //              case 5: // Expense reports Journal
+                //              case 8: // Inventory Journal
+                //              case 9: // hasnew Journal
             }
         }
 
@@ -440,11 +451,12 @@ class AccountingJournal extends GenericDocument
     /**
      *  Get asset data for various journal
      *
-     * @param   User            $user               User who get infos
-     * @param   string          $type               Type data returned ('view', 'bookkeeping', 'csv')
-     * @param   int             $date_start         Filter 'start date'
-     * @param   int             $date_end           Filter 'end date'
-     * @param   string          $in_bookkeeping     Filter 'in bookkeeping' ('already', 'notyet')
+     * @param User   $user           User who get infos
+     * @param string $type           Type data returned ('view', 'bookkeeping', 'csv')
+     * @param int    $date_start     Filter 'start date'
+     * @param int    $date_end       Filter 'end date'
+     * @param string $in_bookkeeping Filter 'in bookkeeping' ('already', 'notyet')
+     *
      * @return  array|int                           Return integer <0 if KO, >0 if OK
      */
     public function getAssetData(User $user, $type = 'view', $date_start = null, $date_end = null, $in_bookkeeping = 'notyet')
@@ -452,7 +464,7 @@ class AccountingJournal extends GenericDocument
         global $conf, $langs;
 
         if (!isModEnabled('asset')) {
-            return array();
+            return [];
         }
 
         require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
@@ -460,7 +472,7 @@ class AccountingJournal extends GenericDocument
         require_once DOL_DOCUMENT_ROOT . '/asset/class/assetaccountancycodes.class.php';
         require_once DOL_DOCUMENT_ROOT . '/asset/class/assetdepreciationoptions.class.php';
 
-        $langs->loadLangs(array("assets"));
+        $langs->loadLangs(["assets"]);
 
         // Clean parameters
         if (empty($type)) {
@@ -499,39 +511,39 @@ class AccountingJournal extends GenericDocument
             return -1;
         }
 
-        $pre_data = array(
-            'elements' => array(),
-        );
+        $pre_data = [
+            'elements' => [],
+        ];
         while ($obj = $this->db->fetch_object($resql)) {
             if (!isset($pre_data['elements'][$obj->rowid])) {
-                $pre_data['elements'][$obj->rowid] = array(
+                $pre_data['elements'][$obj->rowid] = [
                     'ref' => $obj->asset_ref,
                     'label' => $obj->asset_label,
                     'acquisition_value_ht' => $obj->asset_acquisition_value_ht,
-                    'depreciation' => array(),
-                );
+                    'depreciation' => [],
+                ];
 
                 // Disposal infos
                 if (isset($obj->asset_disposal_date)) {
-                    $pre_data['elements'][$obj->rowid]['disposal'] = array(
+                    $pre_data['elements'][$obj->rowid]['disposal'] = [
                         'date' => $this->db->jdate($obj->asset_disposal_date),
                         'amount' => $obj->asset_disposal_amount_ht,
                         'subject_to_vat' => !empty($obj->asset_disposal_subject_to_vat),
-                    );
+                    ];
                 }
             }
 
             $compta_debit = empty($obj->accountancy_code_debit) ? 'NotDefined' : $obj->accountancy_code_debit;
             $compta_credit = empty($obj->accountancy_code_credit) ? 'NotDefined' : $obj->accountancy_code_credit;
 
-            $pre_data['elements'][$obj->rowid]['depreciation'][$obj->depreciation_id] = array(
+            $pre_data['elements'][$obj->rowid]['depreciation'][$obj->depreciation_id] = [
                 'date' => $this->db->jdate($obj->depreciation_date),
                 'ref' => $obj->depreciation_ref,
-                'lines' => array(
+                'lines' => [
                     $compta_debit => -$obj->depreciation_ht,
                     $compta_credit => $obj->depreciation_ht,
-                ),
-            );
+                ],
+            ];
         }
 
         $disposal_ref = $langs->transnoentitiesnoconv('AssetDisposal');
@@ -542,7 +554,7 @@ class AccountingJournal extends GenericDocument
 
         $element_static = new Asset($this->db);
 
-        $journal_data = array();
+        $journal_data = [];
         foreach ($pre_data['elements'] as $pre_data_id => $pre_data_info) {
             $element_static->id = $pre_data_id;
             $element_static->ref = (string) $pre_data_info["ref"];
@@ -553,11 +565,11 @@ class AccountingJournal extends GenericDocument
             $element_name_formatted_0 = dol_trunc($element_static->label, 16);
             $label_operation = $element_static->getNomUrl(0, 'label', 16);
 
-            $element = array(
+            $element = [
                 'ref' => dol_trunc($element_static->ref, 16, 'right', 'UTF-8', 1),
                 'error' => $pre_data_info['error'],
-                'blocks' => array(),
-            );
+                'blocks' => [],
+            ];
 
             // Depreciation lines
             //--------------------
@@ -567,7 +579,7 @@ class AccountingJournal extends GenericDocument
                 $depreciation_date_formatted = dol_print_date($depreciation_date, 'day');
 
                 // lines
-                $blocks = array();
+                $blocks = [];
                 foreach ($line['lines'] as $account => $mt) {
                     $account_infos = $this->getAccountingAccountInfos($account);
 
@@ -577,7 +589,7 @@ class AccountingJournal extends GenericDocument
                             $account_to_show = '<span class="error">' . $langs->trans("AssetInAccountNotDefined") . '</span>';
                         }
 
-                        $blocks[] = array(
+                        $blocks[] = [
                             'date' => $depreciation_date_formatted,
                             'piece' => $element_link,
                             'account_accounting' => $account_to_show,
@@ -585,10 +597,10 @@ class AccountingJournal extends GenericDocument
                             'label_operation' => $label_operation . ' - ' . $depreciation_ref,
                             'debit' => $mt < 0 ? price(-$mt) : '',
                             'credit' => $mt >= 0 ? price($mt) : '',
-                        );
+                        ];
                     } elseif ($type == 'bookkeeping') {
                         if ($account_infos['found']) {
-                            $blocks[] = array(
+                            $blocks[] = [
                                 'doc_date' => $depreciation_date,
                                 'date_lim_reglement' => '',
                                 'doc_ref' => $element_static->ref,
@@ -612,17 +624,17 @@ class AccountingJournal extends GenericDocument
                                 'import_key' => '',
                                 'fk_user_author' => $user->id,
                                 'entity' => $conf->entity,
-                            );
+                            ];
                         }
                     } else { // $type == 'csv'
-                        $blocks[] = array(
+                        $blocks[] = [
                             $depreciation_date,                                     // Date
                             $element_static->ref,                                   // Piece
                             $account_infos['code_formatted_1'],                     // AccountAccounting
                             $element_name_formatted_0 . ' - ' . $depreciation_ref,  // LabelOperation
                             $mt < 0 ? price(-$mt) : '',                             // Debit
                             $mt >= 0 ? price($mt) : '',                             // Credit
-                        );
+                        ];
                     }
                 }
                 $element['blocks'][] = $blocks;
@@ -675,7 +687,7 @@ class AccountingJournal extends GenericDocument
                                 }
                             }
 
-                            $lines = array();
+                            $lines = [];
                             $lines[0][$accountancy_code_value_asset_sold] = -($element_static->acquisition_value_ht - $last_cumulative_amount_ht);
                             $lines[0][$accountancy_code_depreciation_asset] = -$last_cumulative_amount_ht;
                             $lines[0][$accountancy_code_asset] = $element_static->acquisition_value_ht;
@@ -688,7 +700,7 @@ class AccountingJournal extends GenericDocument
                             $lines[1][$accountancy_code_proceeds_from_sales] = $disposal_amount;
 
                             foreach ($lines as $lines_block) {
-                                $blocks = array();
+                                $blocks = [];
                                 foreach ($lines_block as $account => $mt) {
                                     $account_infos = $this->getAccountingAccountInfos($account);
 
@@ -698,7 +710,7 @@ class AccountingJournal extends GenericDocument
                                             $account_to_show = '<span class="error">' . $langs->trans("AssetInAccountNotDefined") . '</span>';
                                         }
 
-                                        $blocks[] = array(
+                                        $blocks[] = [
                                             'date' => $disposal_date_formatted,
                                             'piece' => $element_link,
                                             'account_accounting' => $account_to_show,
@@ -706,10 +718,10 @@ class AccountingJournal extends GenericDocument
                                             'label_operation' => $label_operation . ' - ' . $disposal_ref,
                                             'debit' => $mt < 0 ? price(-$mt) : '',
                                             'credit' => $mt >= 0 ? price($mt) : '',
-                                        );
+                                        ];
                                     } elseif ($type == 'bookkeeping') {
                                         if ($account_infos['found']) {
-                                            $blocks[] = array(
+                                            $blocks[] = [
                                                 'doc_date' => $disposal_date,
                                                 'date_lim_reglement' => '',
                                                 'doc_ref' => $element_static->ref,
@@ -733,17 +745,17 @@ class AccountingJournal extends GenericDocument
                                                 'import_key' => '',
                                                 'fk_user_author' => $user->id,
                                                 'entity' => $conf->entity,
-                                            );
+                                            ];
                                         }
                                     } else { // $type == 'csv'
-                                        $blocks[] = array(
+                                        $blocks[] = [
                                             $disposal_date,                                    // Date
                                             $element_static->ref,                              // Piece
                                             $account_infos['code_formatted_1'],                // AccountAccounting
                                             $element_name_formatted_0 . ' - ' . $disposal_ref, // LabelOperation
                                             $mt < 0 ? price(-$mt) : '',                        // Debit
                                             $mt >= 0 ? price($mt) : '',                        // Credit
-                                        );
+                                        ];
                                     }
                                 }
                                 $element['blocks'][] = $blocks;
@@ -763,8 +775,8 @@ class AccountingJournal extends GenericDocument
     /**
      *  Write bookkeeping
      *
-     * @param   User        $user               User who write in the bookkeeping
-     * @param   array       $journal_data       Journal data to write in the bookkeeping
+     * @param User  $user                       User who write in the bookkeeping
+     * @param array $journal_data               Journal data to write in the bookkeeping
      *                                          $journal_data = array(
      *                                          id_element => array(
      *                                          'ref' => 'ref',
@@ -800,18 +812,19 @@ class AccountingJournal extends GenericDocument
      *                                          ),
      *                                          ),
      *                                          );
-     * @param   int     $max_nb_errors          Nb error authorized before stop the process
+     * @param int   $max_nb_errors              Nb error authorized before stop the process
+     *
      * @return  int                             Return integer <0 if KO, >0 if OK
      */
-    public function writeIntoBookkeeping(User $user, &$journal_data = array(), $max_nb_errors = 10)
+    public function writeIntoBookkeeping(User $user, &$journal_data = [], $max_nb_errors = 10)
     {
         global $conf, $langs, $hookmanager;
         require_once DOL_DOCUMENT_ROOT . '/accountancy/class/bookkeeping.class.php';
 
         $error = 0;
 
-        $hookmanager->initHooks(array('accountingjournaldao'));
-        $parameters = array('journal_data' => &$journal_data);
+        $hookmanager->initHooks(['accountingjournaldao']);
+        $parameters = ['journal_data' => &$journal_data];
         $reshook = $hookmanager->executeHooks('writeBookkeeping', $parameters, $this); // Note that $action and $object may have been
         if ($reshook < 0) {
             $this->error = $hookmanager->error;
@@ -819,7 +832,7 @@ class AccountingJournal extends GenericDocument
             return -1;
         } elseif (empty($reshook)) {
             // Clean parameters
-            $journal_data = is_array($journal_data) ? $journal_data : array();
+            $journal_data = is_array($journal_data) ? $journal_data : [];
 
             foreach ($journal_data as $element_id => $element) {
                 $error_for_line = 0;
@@ -927,7 +940,7 @@ class AccountingJournal extends GenericDocument
      *  Export journal CSV
      *  ISO and not UTF8 !
      *
-     * @param   array           $journal_data           Journal data to write in the bookkeeping
+     * @param array  $journal_data                      Journal data to write in the bookkeeping
      *                                                  $journal_data = array(
      *                                                  id_element => array(
      *                                                  'continue' => false,
@@ -940,11 +953,12 @@ class AccountingJournal extends GenericDocument
      *                                                  ),
      *                                                  ),
      *                                                  );
-     * @param   int             $search_date_end        Search date end
-     * @param   string          $sep                    CSV separator
+     * @param int    $search_date_end                   Search date end
+     * @param string $sep                               CSV separator
+     *
      * @return  int|string                              Return integer <0 if KO, >0 if OK
      */
-    public function exportCsv(&$journal_data = array(), $search_date_end = 0, $sep = '')
+    public function exportCsv(&$journal_data = [], $search_date_end = 0, $sep = '')
     {
         global $conf, $langs, $hookmanager;
 
@@ -954,8 +968,8 @@ class AccountingJournal extends GenericDocument
         $out = '';
 
         // Hook
-        $hookmanager->initHooks(array('accountingjournaldao'));
-        $parameters = array('journal_data' => &$journal_data, 'search_date_end' => &$search_date_end, 'sep' => &$sep, 'out' => &$out);
+        $hookmanager->initHooks(['accountingjournaldao']);
+        $parameters = ['journal_data' => &$journal_data, 'search_date_end' => &$search_date_end, 'sep' => &$sep, 'out' => &$out];
         $reshook = $hookmanager->executeHooks('exportCsv', $parameters, $this); // Note that $action and $object may have been
         if ($reshook < 0) {
             $this->error = $hookmanager->error;
@@ -963,12 +977,12 @@ class AccountingJournal extends GenericDocument
             return -1;
         } elseif (empty($reshook)) {
             // Clean parameters
-            $journal_data = is_array($journal_data) ? $journal_data : array();
+            $journal_data = is_array($journal_data) ? $journal_data : [];
 
             // CSV header line
-            $header = array();
+            $header = [];
             if ($this->nature == 4) {
-                $header = array(
+                $header = [
                     $langs->transnoentitiesnoconv("BankId"),
                     $langs->transnoentitiesnoconv("Date"),
                     $langs->transnoentitiesnoconv("PaymentMode"),
@@ -980,25 +994,25 @@ class AccountingJournal extends GenericDocument
                     $langs->transnoentitiesnoconv("AccountingCredit"),
                     $langs->transnoentitiesnoconv("Journal"),
                     $langs->transnoentitiesnoconv("Note"),
-                );
+                ];
             } elseif ($this->nature == 5) {
-                $header = array(
+                $header = [
                     $langs->transnoentitiesnoconv("Date"),
                     $langs->transnoentitiesnoconv("Piece"),
                     $langs->transnoentitiesnoconv("AccountAccounting"),
                     $langs->transnoentitiesnoconv("LabelOperation"),
                     $langs->transnoentitiesnoconv("AccountingDebit"),
                     $langs->transnoentitiesnoconv("AccountingCredit"),
-                );
+                ];
             } elseif ($this->nature == 1) {
-                $header = array(
+                $header = [
                     $langs->transnoentitiesnoconv("Date"),
                     $langs->transnoentitiesnoconv("Piece"),
                     $langs->transnoentitiesnoconv("AccountAccounting"),
                     $langs->transnoentitiesnoconv("LabelOperation"),
                     $langs->transnoentitiesnoconv("AccountingDebit"),
                     $langs->transnoentitiesnoconv("AccountingCredit"),
-                );
+                ];
             }
 
             if (!empty($header)) {
@@ -1019,7 +1033,8 @@ class AccountingJournal extends GenericDocument
     /**
      *  Get accounting account infos
      *
-     * @param string    $account    Accounting account number
+     * @param string $account Accounting account number
+     *
      * @return array                Accounting account infos
      */
     public function getAccountingAccountInfos($account)
@@ -1030,21 +1045,21 @@ class AccountingJournal extends GenericDocument
             $accountingaccount = new AccountingAccount($this->db);
             $result = $accountingaccount->fetch(null, $account, true);
             if ($result > 0) {
-                self::$accounting_account_cached[$account] = array(
+                self::$accounting_account_cached[$account] = [
                     'found' => true,
                     'label' => $accountingaccount->label,
                     'code_formatted_1' => length_accounta(html_entity_decode($account)),
                     'label_formatted_1' => mb_convert_encoding(dol_trunc($accountingaccount->label, 32), 'ISO-8859-1'),
                     'label_formatted_2' => dol_trunc($accountingaccount->label, 32),
-                );
+                ];
             } else {
-                self::$accounting_account_cached[$account] = array(
+                self::$accounting_account_cached[$account] = [
                     'found' => false,
                     'label' => '',
                     'code_formatted_1' => length_accounta(html_entity_decode($account)),
                     'label_formatted_1' => '',
                     'label_formatted_2' => '',
-                );
+                ];
             }
         }
 

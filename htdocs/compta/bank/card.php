@@ -9,6 +9,7 @@
  * Copyright (C) 2016		Marcos García			<marcosgdf@gmail.com>
  * Copyright (C) 2018-2022  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2022       Charlene Benke          <charlene@patas-monkey.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +31,8 @@
  *      \brief      Page to create/view a bank account
  */
 
-// Load Dolibarr environment
+use DoliModules\Accounting\Model\AccountingAccount;
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
@@ -45,14 +47,11 @@ if (isModEnabled('accounting')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
 }
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
-}
-if (isModEnabled('accounting')) {
     require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 }
 
 // Load translation files required by the page
-$langs->loadLangs(array("banks", "bills", "categories", "companies", "compta", "withdrawals"));
+$langs->loadLangs(["banks", "bills", "categories", "companies", "compta", "withdrawals"]);
 
 $action = GETPOST('action', 'aZ09');
 $cancel = GETPOST('cancel', 'alpha');
@@ -66,7 +65,7 @@ $extrafields = new ExtraFields($db);
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$hookmanager->initHooks(array('bankcard', 'globalcard'));
+$hookmanager->initHooks(['bankcard', 'globalcard']);
 
 // Security check
 $id = GETPOSTINT("id") ? GETPOSTINT("id") : GETPOSTINT('ref');
@@ -88,7 +87,7 @@ $result = restrictedArea($user, 'banque', $id, 'bank_account&bank_account', '', 
  * Actions
  */
 
-$parameters = array();
+$parameters = [];
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
     setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -482,7 +481,7 @@ if ($action == 'create') {
         print '<tr><td>' . $langs->trans("Categories") . '</td><td>';
         $cate_arbo = $form->select_all_categories(Categorie::TYPE_ACCOUNT, '', 'parent', 64, 0, 1);
 
-        $arrayselected = array();
+        $arrayselected = [];
         $c = new Categorie($db);
         $cats = $c->containing($object->id, Categorie::TYPE_ACCOUNT);
         if (is_array($cats)) {
@@ -504,7 +503,7 @@ if ($action == 'create') {
     print '</td></tr>';
 
     // Other attributes
-    $parameters = array();
+    $parameters = [];
     $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
     print $hookmanager->resPrint;
     if (empty($reshook)) {
@@ -933,7 +932,7 @@ if ($action == 'create') {
         print '<input type="hidden" name="id" value="' . GETPOSTINT("id") . '">' . "\n\n";
         print '<input type="hidden" name="backtopage" value="' . $backtopage . '">';
 
-        print dol_get_fiche_head(array(), 0, '', 0);
+        print dol_get_fiche_head([], 0, '', 0);
 
         //print '<div class="underbanner clearboth"></div>';
 
@@ -1042,7 +1041,7 @@ if ($action == 'create') {
             print '<tr><td>' . $langs->trans("Categories") . '</td><td>';
             $cate_arbo = $form->select_all_categories(Categorie::TYPE_ACCOUNT, '', 'parent', 64, 0, 1);
 
-            $arrayselected = array();
+            $arrayselected = [];
             $c = new Categorie($db);
             $cats = $c->containing($object->id, Categorie::TYPE_ACCOUNT);
             if (is_array($cats)) {
@@ -1064,7 +1063,7 @@ if ($action == 'create') {
         print '</td></tr>';
 
         // Other attributes
-        $parameters = array();
+        $parameters = [];
         $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
         print $hookmanager->resPrint;
         if (empty($reshook)) {

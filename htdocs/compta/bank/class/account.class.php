@@ -36,6 +36,8 @@
 
 use DoliCore\Base\GenericDocument;
 
+require_once BASE_PATH . '/compta/bank/class/accountline.class.php';
+
 /**
  *  Class to manage bank accounts
  */

@@ -34,6 +34,8 @@
  *  \brief      File of class to manage bank accounts
  */
 
+use DoliCore\Base\GenericDocumentLine;
+
 /**
  *  Class to manage bank transaction lines
  */
