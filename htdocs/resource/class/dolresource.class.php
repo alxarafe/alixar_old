@@ -24,7 +24,8 @@
  *  \brief      Class file for resource object
  */
 
-require_once DOL_DOCUMENT_ROOT . "/core/class/commonobject.class.php";
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . "/core/lib/functions2.lib.php";
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
 
