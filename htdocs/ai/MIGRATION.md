@@ -1,4 +1,5 @@
 ### Folder Migration Status
-- **admin**: (LIKE) Fully migrated as **???**.
-- **class**: (LIKE) Partially migrated as **???**.
-- *root*: (LIKE) Pending migration to **???**.
+- **admin**: Fully migrated as **AiAdminController**.
+- **ajax**: Pending migration to **???**.
+- **class**: Pending migration to **???**.
+- **lib**: Pending migration to **???**.

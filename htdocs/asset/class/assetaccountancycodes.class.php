@@ -22,6 +22,8 @@
  * \brief       This file is a class file for AssetAccountancyCodes
  */
 
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**

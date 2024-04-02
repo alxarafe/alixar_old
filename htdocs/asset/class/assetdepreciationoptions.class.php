@@ -23,6 +23,8 @@
  * \brief       This file is a class file for AssetDepreciationOptions
  */
 
+use DoliCore\Base\GenericDocument;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**

@@ -1,4 +1,6 @@
 ### Folder Migration Status
-- **admin**: (LIKE) Fully migrated as **???**.
-- **class**: (LIKE) Partially migrated as **???**.
-- *root*: (LIKE) Pending migration to **???**.
+- **admin**: Fully migrated as **AssetAdminController**.
+- **class**: Pending migration to **???**.
+- **model**: Pending migration to **???**.
+- **tpl**: Pending migration to **???**.
+- *root*: Fully migrated as **AssetController**.
