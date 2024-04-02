@@ -80,4 +80,9 @@ if (!empty($api)) {
 }
 
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
+if (!file_exists($path)) {
+    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
+    die();
+}
+
 require $path;
