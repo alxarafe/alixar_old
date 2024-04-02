@@ -3,7 +3,7 @@
 - **canvas**: Pending migration to **???**.
 - **cartes**: Fully migrated as **AdherentCartesController**.
 - **class**: Partially migrated as **???**.
-- **stats**: Pending migration to **???**.
-- **subscription**: Pending migration to **???**.
+- **stats**: Fully migrated as **AdherentStatsController**.
+- **subscription**: Fully migrated as **AdherentsSubscriptionController**.
 - **tpl**: Partially migrated as **???**.
 - *root*: Fully migrated as **AdherentController**.
