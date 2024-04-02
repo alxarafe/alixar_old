@@ -1,7 +1,7 @@
 ### Folder Migration Status
-- **admin**: Fully migrated as **???**.
+- **admin**: Fully migrated as **AdherentAdminController**.
 - **canvas**: Pending migration to **???**.
-- **cartes**: Pending migration to **???**.
+- **cartes**: Fully migrated as **AdherentCartesController**.
 - **class**: Partially migrated as **???**.
 - **stats**: Pending migration to **???**.
 - **subscription**: Pending migration to **???**.
