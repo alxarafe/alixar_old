@@ -1,6 +1,7 @@
 <?php
 
-/* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2007-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\Fields;
+
 require_once '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/lib/recruitment.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/lib/recruitment_recruitmentjobposition.lib.php';
@@ -112,20 +115,8 @@ if ($reshook > 0) {
 }*/
 
 // Definition of array of fields for columns
-$arrayfields = array();
-foreach ($object->fields as $key => $val) {
-    // If $val['visible']==0, then we never show the field
-    if (!empty($val['visible'])) {
-        $visible = (int) dol_eval($val['visible'], 1);
-        $arrayfields['t.' . $key] = array(
-            'label' => $val['label'],
-            'checked' => (($visible < 0) ? 0 : 1),
-            'enabled' => (abs($visible) != 3 && (int) dol_eval($val['enabled'], 1)),
-            'position' => $val['position'],
-            'help' => isset($val['help']) ? $val['help'] : ''
-        );
-    }
-}
+$arrayfields = Fields::getArrayFields($object->fields);
+
 // Extra fields
 include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_list_array_fields.tpl.php';
 

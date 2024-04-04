@@ -1,12 +1,13 @@
 <?php
 
-/* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
- * Copyright (C) 2021 Jean-Pascal BOUDET <jean-pascal.boudet@atm-consulting.fr>
- * Copyright (C) 2021 Grégory BLEMAND <gregory.blemand@atm-consulting.fr>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2017       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2021       Greg Rastklan           <greg.rastklan@atm-consulting.fr>
+ * Copyright (C) 2021       Jean-Pascal BOUDET      <jean-pascal.boudet@atm-consulting.fr>
+ * Copyright (C) 2021       Grégory BLEMAND         <gregory.blemand@atm-consulting.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +29,8 @@
  * \brief       This file is a CRUD class file for Evaluationdet (Create/Read/Update/Delete)
  */
 
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
+use DoliCore\Base\GenericDocumentLine;
+
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/skillrank.class.php';
 
 
@@ -747,7 +748,7 @@ class EvaluationLine extends GenericDocumentLine
             if ($withpicto) {
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-                list($class, $module) = explode('@', $this->picto);
+                [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
                 $filearray = dol_dir_list($upload_dir, "files");
                 $filename = $filearray[0]['name'];

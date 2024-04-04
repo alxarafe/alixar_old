@@ -1,24 +1,25 @@
 <?php
 
-/* Copyright (C) 2001-2007 Rodolphe Quiedeville     <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2016 Laurent Destailleur		<eldy@users.sourceforge.net>
- * Copyright (C) 2004      Eric Seigne				<eric.seigne@ryxeo.com>
- * Copyright (C) 2005      Marc Barilley / Ocebo	<marc@ocebo.com>
- * Copyright (C) 2005-2013 Regis Houssin			<regis.houssin@inodbox.com>
- * Copyright (C) 2006      Andre Cianfarani			<acianfa@free.fr>
- * Copyright (C) 2010-2011 Juanjo Menent			<jmenent@2byte.es>
- * Copyright (C) 2010-2022 Philippe Grand			<philippe.grand@atoo-net.com>
- * Copyright (C) 2012      Christophe Battarel		<christophe.battarel@altairis.fr>
- * Copyright (C) 2013      Cédric Salvador			<csalvador@gpcsolutions.fr>
- * Copyright (C) 2015      Jean-François Ferry		<jfefe@aternatik.fr>
- * Copyright (C) 2016-2021 Ferran Marcet			<fmarcet@2byte.es>
- * Copyright (C) 2017-2023 Charlene Benke			<charlene@patas-monkey.com>
- * Copyright (C) 2018	   Nicolas ZABOURI			<info@inovea-conseil.com>
- * Copyright (C) 2019-2021 Alexandre Spangaro		<aspangaro@open-dsi.fr>
- * Copyright (C) 2021	   Anthony Berton			<anthony.berton@bb2a.fr>
- * Copyright (C) 2021      Frédéric France			<frederic.france@netlogic.fr>
- * Copyright (C) 2022      Josep Lluís Amador		<joseplluis@lliuretic.cat>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2001-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2016  Laurent Destailleur		<eldy@users.sourceforge.net>
+ * Copyright (C) 2004       Eric Seigne				<eric.seigne@ryxeo.com>
+ * Copyright (C) 2005       Marc Barilley / Ocebo	<marc@ocebo.com>
+ * Copyright (C) 2005-2013  Regis Houssin			<regis.houssin@inodbox.com>
+ * Copyright (C) 2006       Andre Cianfarani		<acianfa@free.fr>
+ * Copyright (C) 2010-2011  Juanjo Menent			<jmenent@2byte.es>
+ * Copyright (C) 2010-2022  Philippe Grand			<philippe.grand@atoo-net.com>
+ * Copyright (C) 2012       Christophe Battarel		<christophe.battarel@altairis.fr>
+ * Copyright (C) 2013       Cédric Salvador			<csalvador@gpcsolutions.fr>
+ * Copyright (C) 2015       Jean-François Ferry		<jfefe@aternatik.fr>
+ * Copyright (C) 2016-2021  Ferran Marcet			<fmarcet@2byte.es>
+ * Copyright (C) 2017-2023  Charlene Benke			<charlene@patas-monkey.com>
+ * Copyright (C) 2018	    Nicolas ZABOURI			<info@inovea-conseil.com>
+ * Copyright (C) 2019-2021  Alexandre Spangaro		<aspangaro@open-dsi.fr>
+ * Copyright (C) 2021	    Anthony Berton			<anthony.berton@bb2a.fr>
+ * Copyright (C) 2021       Frédéric France			<frederic.france@netlogic.fr>
+ * Copyright (C) 2022       Josep Lluís Amador		<joseplluis@lliuretic.cat>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +42,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\Fields;
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
@@ -265,20 +268,7 @@ foreach ($object->fields as $key => $val) {
 }*/
 
 // Definition of array of fields for columns
-/*$arrayfields = array();
-foreach ($object->fields as $key => $val) {
-    // If $val['visible']==0, then we never show the field
-    if (!empty($val['visible'])) {
-        $visible = (int) dol_eval($val['visible'], 1);
-        $arrayfields['t.'.$key] = array(
-            'label'=>$val['label'],
-            'checked'=>(($visible < 0) ? 0 : 1),
-            'enabled'=>(abs($visible) != 3 && (int) dol_eval($val['enabled'], 1)),
-            'position'=>$val['position'],
-            'help'=> isset($val['help']) ? $val['help'] : ''
-        );
-    }
-}*/
+$arrayfields = Fields::getArrayFields($object->fields);
 
 if (!$user->hasRight('societe', 'client', 'voir')) {
     $search_sale = $user->id;

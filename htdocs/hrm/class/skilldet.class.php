@@ -29,6 +29,8 @@
  */
 
 // Put here all includes required by your class file
+use DoliCore\Base\GenericDocumentLine;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 
 /**
@@ -734,7 +736,7 @@ class Skilldet extends GenericDocumentLine
             if ($withpicto) {
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-                list($class, $module) = explode('@', $this->picto);
+                [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
                 $filearray = dol_dir_list($upload_dir, "files");
                 $filename = $filearray[0]['name'];

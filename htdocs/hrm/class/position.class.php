@@ -1,12 +1,13 @@
 <?php
 
-/* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2021 Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2021 Greg Rastklan <greg.rastklan@atm-consulting.fr>
- * Copyright (C) 2021 Jean-Pascal BOUDET <jean-pascal.boudet@atm-consulting.fr>
- * Copyright (C) 2021 Grégory BLEMAND <gregory.blemand@atm-consulting.fr>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2017       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2021       Greg Rastklan           <greg.rastklan@atm-consulting.fr>
+ * Copyright (C) 2021       Jean-Pascal BOUDET      <jean-pascal.boudet@atm-consulting.fr>
+ * Copyright (C) 2021       Grégory BLEMAND         <gregory.blemand@atm-consulting.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +29,7 @@
  * \brief       This file is a CRUD class file for Position (Create/Read/Update/Delete)
  */
 
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
 
 /**
  * Class for Position
@@ -752,7 +752,7 @@ class Position extends GenericDocument
             if ($withpicto) {
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-                list($class, $module) = explode('@', $this->picto);
+                [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
                 $filearray = dol_dir_list($upload_dir, "files");
                 $filename = $filearray[0]['name'];
@@ -1121,32 +1121,5 @@ class Position extends GenericDocument
         $return .= '</div>';
         $return .= '</div>';
         return $return;
-    }
-}
-
-
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
-
-/**
- * Class PositionLine. You can also remove this and generate a CRUD class for lines objects.
- */
-class PositionLine extends GenericDocumentLine
-{
-    // To complete with content of an object PositionLine
-    // We should have a field rowid , fk_position and position
-
-    /**
-     * @var int  Does object support extrafields ? 0=No, 1=Yes
-     */
-    public $isextrafieldmanaged = 0;
-
-    /**
-     * Constructor
-     *
-     * @param DoliDB $db Database handler
-     */
-    public function __construct(DoliDB $db)
-    {
-        $this->db = $db;
     }
 }

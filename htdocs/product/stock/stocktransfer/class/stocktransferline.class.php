@@ -1,10 +1,10 @@
 <?php
 
-/* Copyright (C) 2017  Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2021  Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) ---Put here your own copyright and developer email---
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2017       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,7 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+use DoliCore\Base\GenericDocumentLine;
 
 /**
  * Class for StockTransferLine
@@ -790,7 +788,7 @@ class StockTransferLine extends GenericDocumentLine
             if ($withpicto) {
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
-                list($class, $module) = explode('@', $this->picto);
+                [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
                 $filearray = dol_dir_list($upload_dir, "files");
                 $filename = $filearray[0]['name'];

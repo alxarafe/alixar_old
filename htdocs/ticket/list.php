@@ -1,12 +1,13 @@
 <?php
 
-/* Copyright (C) 2013-2018  Jean-François FERRY <hello@librethic.io>
- * Copyright (C) 2016		Christophe Battarel	<christophe@altairis.fr>
- * Copyright (C) 2018		Regis Houssin		<regis.houssin@inodbox.com>
- * Copyright (C) 2019-2021	Juanjo Menent		<jmenent@2byte.es>
- * Copyright (C) 2019-2020  Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2023		Charlene Benke		<charlene@patas-monkey.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2013-2018  Jean-François FERRY     <hello@librethic.io>
+ * Copyright (C) 2016		Christophe Battarel	    <christophe@altairis.fr>
+ * Copyright (C) 2018		Regis Houssin		    <regis.houssin@inodbox.com>
+ * Copyright (C) 2019-2021	Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2019-2020  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2023		Charlene Benke		    <charlene@patas-monkey.com>
+ * Copyright (C) 2024		MDW					    <mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +30,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\Fields;
+
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/ticket/class/actions_ticket.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formticket.class.php';
@@ -139,20 +142,8 @@ $fieldstosearchall['s.zip'] = "Zip";
 $fieldstosearchall['s.town'] = "Town";
 
 // Definition of array of fields for columns
-$arrayfields = array();
-foreach ($object->fields as $key => $val) {
-    // If $val['visible']==0, then we never show the field
-    if (!empty($val['visible'])) {
-        $visible = (int) dol_eval($val['visible'], 1);
-        $arrayfields['t.' . $key] = array(
-            'label' => $val['label'],
-            'checked' => (($visible < 0) ? 0 : 1),
-            'enabled' => (abs($visible) != 3 && (int) dol_eval($val['enabled'], 1)),
-            'position' => $val['position'],
-            'help' => isset($val['help']) ? $val['help'] : ''
-        );
-    }
-}
+$arrayfields = Fields::getArrayFields($object->fields);
+
 // Extra fields
 include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_list_array_fields.tpl.php';
 

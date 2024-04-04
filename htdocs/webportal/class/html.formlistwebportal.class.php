@@ -3,8 +3,9 @@
 /* Copyright (C) 2023-2024  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023-2024	Lionel Vessiller		<lvessiller@easya.solutions>
  * Copyright (C) 2023-2024	Patrice Andreani		<pandreani@easya.solutions>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +27,8 @@
  * \ingroup    webportal
  * \brief      File of class with all html predefined components for WebPortal
  */
+
+use DoliCore\Lib\Fields;
 
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
@@ -184,20 +187,8 @@ class FormListWebPortal
         //$fieldstosearchall = array();
 
         // Definition of array of fields for columns
-        $arrayfields = array();
-        foreach ($object->fields as $key => $val) {
-            // If $val['visible']==0, then we never show the field
-            if (!empty($val['visible'])) {
-                $visible = (int) dol_eval($val['visible'], 1);
-                $arrayfields['t.' . $key] = array(
-                    'label' => $val['label'],
-                    'checked' => (($visible < 0) ? 0 : 1),
-                    'enabled' => (abs($visible) != 3 && (int) dol_eval($val['enabled'], 1)),
-                    'position' => $val['position'],
-                    'help' => isset($val['help']) ? $val['help'] : ''
-                );
-            }
-        }
+        $arrayfields = Fields::getArrayFields($object->fields);
+
         if ($elementEn == 'invoice') {
             $arrayfields['remain_to_pay'] = array('type' => 'price', 'label' => 'RemainderToPay', 'checked' => 1, 'enabled' => 1, 'visible' => 1, 'position' => 10000, 'help' => '',);
         }

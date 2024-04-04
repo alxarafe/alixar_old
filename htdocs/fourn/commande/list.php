@@ -1,16 +1,17 @@
 <?php
 
-/* Copyright (C) 2001-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2016 Laurent Destailleur	<eldy@users.sourceforge.net>
- * Copyright (C) 2005-2012 Regis Houssin		<regis.houssin@inodbox.com>
- * Copyright (C) 2013      Cédric Salvador		<csalvador@gpcsolutions.fr>
- * Copyright (C) 2014      Marcos García		<marcosgdf@gmail.com>
- * Copyright (C) 2014      Juanjo Menent		<jmenent@2byte.es>
- * Copyright (C) 2016      Ferran Marcet		<fmarcet@2byte.es>
- * Copyright (C) 2018-2021 Frédéric France		<frederic.france@netlogic.fr>
- * Copyright (C) 2018-2022 Charlene Benke		<charlene@patas-monkey.com>
- * Copyright (C) 2019      Nicolas Zabouri		<info@inovea-conseil.com>
- * Copyright (C) 2021-2023 Alexandre Spangaro   <aspangaro@open-dsi.fr>
+/* Copyright (C) 2001-2006  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2016  Laurent Destailleur	    <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2012  Regis Houssin		    <regis.houssin@inodbox.com>
+ * Copyright (C) 2013       Cédric Salvador		    <csalvador@gpcsolutions.fr>
+ * Copyright (C) 2014       Marcos García		    <marcosgdf@gmail.com>
+ * Copyright (C) 2014       Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2016       Ferran Marcet		    <fmarcet@2byte.es>
+ * Copyright (C) 2018-2021  Frédéric France		    <frederic.france@netlogic.fr>
+ * Copyright (C) 2018-2022  Charlene Benke		    <charlene@patas-monkey.com>
+ * Copyright (C) 2019       Nicolas Zabouri		    <info@inovea-conseil.com>
+ * Copyright (C) 2021-2023  Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +34,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\Fields;
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formorder.class.php';
@@ -193,19 +196,8 @@ $arrayfields = array(
     'cf.note_public' => array('label' => 'NotePublic', 'checked' => 0, 'enabled' => (!getDolGlobalInt('MAIN_LIST_HIDE_PUBLIC_NOTES')), 'position' => 750),
     'cf.note_private' => array('label' => 'NotePrivate', 'checked' => 0, 'enabled' => (!getDolGlobalInt('MAIN_LIST_HIDE_PRIVATE_NOTES')), 'position' => 760),
 );
-foreach ($object->fields as $key => $val) {
-    // If $val['visible']==0, then we never show the field
-    if (!empty($val['visible'])) {
-        $visible = (int) dol_eval($val['visible'], 1);
-        $arrayfields['cf.' . $key] = array(
-            'label' => $val['label'],
-            'checked' => (($visible < 0) ? 0 : 1),
-            'enabled' => (abs($visible) != 3 && (int) dol_eval($val['enabled'], 1)),
-            'position' => $val['position'],
-            'help' => isset($val['help']) ? $val['help'] : ''
-        );
-    }
-}
+$arrayfields = Fields::getArrayFields($object->fields, 'cf', $arrayfields);
+
 // Extra fields
 include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_list_array_fields.tpl.php';
 

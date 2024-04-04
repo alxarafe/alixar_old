@@ -44,7 +44,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/admin/dolistore/class/dolistore.class.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array("errors", "admin", "modulebuilder"));
+$langs->loadLangs(["errors", "admin", "modulebuilder"]);
 
 // if we set another view list mode, we keep it (till we change one more time)
 if (GETPOSTISSET('mode')) {
@@ -66,33 +66,33 @@ $search_version = GETPOST('search_version', 'alpha');
 
 
 // For dolistore search
-$options              = array();
-$options['per_page']  = 20;
+$options = [];
+$options['per_page'] = 20;
 $options['categorie'] = ((int) (GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
-$options['start']     = ((int) (GETPOSTINT('start') ? GETPOSTINT('start') : 0));
-$options['end']       = ((int) (GETPOSTINT('end') ? GETPOSTINT('end') : 0));
-$options['search']    = GETPOST('search_keyword', 'alpha');
-$dolistore            = new Dolistore(false);
+$options['start'] = ((int) (GETPOSTINT('start') ? GETPOSTINT('start') : 0));
+$options['end'] = ((int) (GETPOSTINT('end') ? GETPOSTINT('end') : 0));
+$options['search'] = GETPOST('search_keyword', 'alpha');
+$dolistore = new Dolistore(false);
 
 
 if (!$user->admin) {
     accessforbidden();
 }
 
-$familyinfo = array(
-    'hr' => array('position' => '001', 'label' => $langs->trans("ModuleFamilyHr")),
-    'crm' => array('position' => '006', 'label' => $langs->trans("ModuleFamilyCrm")),
-    'srm' => array('position' => '007', 'label' => $langs->trans("ModuleFamilySrm")),
-    'financial' => array('position' => '009', 'label' => $langs->trans("ModuleFamilyFinancial")),
-    'products' => array('position' => '012', 'label' => $langs->trans("ModuleFamilyProducts")),
-    'projects' => array('position' => '015', 'label' => $langs->trans("ModuleFamilyProjects")),
-    'ecm' => array('position' => '018', 'label' => $langs->trans("ModuleFamilyECM")),
-    'technic' => array('position' => '021', 'label' => $langs->trans("ModuleFamilyTechnic")),
-    'portal' => array('position' => '040', 'label' => $langs->trans("ModuleFamilyPortal")),
-    'interface' => array('position' => '050', 'label' => $langs->trans("ModuleFamilyInterface")),
-    'base' => array('position' => '060', 'label' => $langs->trans("ModuleFamilyBase")),
-    'other' => array('position' => '100', 'label' => $langs->trans("ModuleFamilyOther")),
-);
+$familyinfo = [
+    'hr' => ['position' => '001', 'label' => $langs->trans("ModuleFamilyHr")],
+    'crm' => ['position' => '006', 'label' => $langs->trans("ModuleFamilyCrm")],
+    'srm' => ['position' => '007', 'label' => $langs->trans("ModuleFamilySrm")],
+    'financial' => ['position' => '009', 'label' => $langs->trans("ModuleFamilyFinancial")],
+    'products' => ['position' => '012', 'label' => $langs->trans("ModuleFamilyProducts")],
+    'projects' => ['position' => '015', 'label' => $langs->trans("ModuleFamilyProjects")],
+    'ecm' => ['position' => '018', 'label' => $langs->trans("ModuleFamilyECM")],
+    'technic' => ['position' => '021', 'label' => $langs->trans("ModuleFamilyTechnic")],
+    'portal' => ['position' => '040', 'label' => $langs->trans("ModuleFamilyPortal")],
+    'interface' => ['position' => '050', 'label' => $langs->trans("ModuleFamilyInterface")],
+    'base' => ['position' => '060', 'label' => $langs->trans("ModuleFamilyBase")],
+    'other' => ['position' => '100', 'label' => $langs->trans("ModuleFamilyOther")],
+];
 
 $param = '';
 if (!GETPOST('buttonreset', 'alpha')) {
@@ -114,7 +114,7 @@ $dirins = DOL_DOCUMENT_ROOT . '/custom';
 $urldolibarrmodules = 'https://www.dolistore.com/';
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$hookmanager->initHooks(array('adminmodules', 'globaladmin'));
+$hookmanager->initHooks(['adminmodules', 'globaladmin']);
 
 // Execution Time
 $max_execution_time_for_deploy = (!getDolGlobalString('MODULE_UPLOAD_MAX_EXECUTION_TIME') ? 300 : $conf->global->MODULE_UPLOAD_MAX_EXECUTION_TIME); // 5mn if not defined
@@ -131,7 +131,7 @@ if ($max_time && $max_time < $max_execution_time_for_deploy) {
 
 $formconfirm = '';
 
-$parameters = array();
+$parameters = [];
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
     setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -217,7 +217,7 @@ if ($action == 'install') {
                 dol_syslog("Uncompress of module file is a success.");
 
                 // We check if this is a metapackage
-                $modulenamearrays = array();
+                $modulenamearrays = [];
                 if (dol_is_file($modulenamedir . '/metapackage.conf')) {
                     // This is a meta package
                     $metafile = file_get_contents($modulenamedir . '/metapackage.conf');
@@ -338,16 +338,14 @@ if ($action == 'set' && $user->admin) {
 }
 
 
-
-
 /*
  * View
  */
 
 $form = new Form($db);
 
-$morejs = array();
-$morecss = array("/admin/dolistore/css/dolistore.css");
+$morejs = [];
+$morecss = ["/admin/dolistore/css/dolistore.css"];
 
 // Set dir where external modules are installed
 if (!dol_is_dir($dirins)) {
@@ -362,17 +360,17 @@ llxHeader('', $langs->trans("Setup"), $help_url, '', '', '', $morejs, $morecss, 
 // Search modules dirs
 $modulesdir = dolGetModulesDirs();
 
-$arrayofnatures = array('core' => $langs->transnoentitiesnoconv("NativeModules"), 'external' => $langs->transnoentitiesnoconv("External") . ' - [' . $langs->trans("AllPublishers") . ']');
-$arrayofwarnings = array(); // Array of warning each module want to show when activated
-$arrayofwarningsext = array(); // Array of warning each module want to show when we activate an external module
-$filename = array();
-$modules = array();
-$orders = array();
-$categ = array();
+$arrayofnatures = ['core' => $langs->transnoentitiesnoconv("NativeModules"), 'external' => $langs->transnoentitiesnoconv("External") . ' - [' . $langs->trans("AllPublishers") . ']'];
+$arrayofwarnings = []; // Array of warning each module want to show when activated
+$arrayofwarningsext = []; // Array of warning each module want to show when we activate an external module
+$filename = [];
+$modules = [];
+$orders = [];
+$categ = [];
 
 $i = 0; // is a sequencer of modules found
 $j = 0; // j is module number. Automatically affected if module number not defined.
-$modNameLoaded = array();
+$modNameLoaded = [];
 
 foreach ($modulesdir as $dir) {
     // Load modules attributes in arrays (name, numero, orders) from dir directory
@@ -463,7 +461,7 @@ foreach ($modulesdir as $dir) {
                                 }
 
                                 $familyposition = (empty($familyinfo[$familykey]['position']) ? '0' : $familyinfo[$familykey]['position']);
-                                $listOfOfficialModuleGroups = array('hr', 'technic', 'interface', 'technic', 'portal', 'financial', 'crm', 'base', 'products', 'srm', 'ecm', 'projects', 'other');
+                                $listOfOfficialModuleGroups = ['hr', 'technic', 'interface', 'technic', 'portal', 'financial', 'crm', 'base', 'products', 'srm', 'ecm', 'projects', 'other'];
                                 if ($external && !in_array($familykey, $listOfOfficialModuleGroups)) {
                                     // If module is extern and into a custom group (not into an official predefined one), it must appear at end (custom groups should not be before official groups).
                                     if (is_numeric($familyposition)) {
@@ -552,7 +550,7 @@ if (in_array('import', $conf->modules)) {
 print load_fiche_titre($langs->trans("ModulesSetup"), '', 'title_setup');
 
 // Start to show page
-$deschelp  = '';
+$deschelp = '';
 if ($mode == 'common' || $mode == 'commonkanban') {
     $desc = $langs->trans("ModulesDesc", '{picto}');
     $desc .= ' ' . $langs->trans("ModulesDesc2", '{picto2}');
@@ -607,10 +605,10 @@ if ($mode == 'common' || $mode == 'commonkanban') {
     $moreforfilter = '<div class="valignmiddle">';
 
     $moreforfilter .= '<div class="floatright right pagination paddingtop --module-list"><ul><li>';
-    $moreforfilter .= dolGetButtonTitle($langs->trans('CheckForModuleUpdate'), $langs->trans('CheckForModuleUpdate') . '<br>' . $langs->trans('CheckForModuleUpdateHelp'), 'fa fa-sync', $_SERVER['PHP_SELF'] . '?action=checklastversion&token=' . newToken() . '&mode=' . $mode . $param, '', 1, array('morecss' => 'reposition'));
+    $moreforfilter .= dolGetButtonTitle($langs->trans('CheckForModuleUpdate'), $langs->trans('CheckForModuleUpdate') . '<br>' . $langs->trans('CheckForModuleUpdateHelp'), 'fa fa-sync', $_SERVER['PHP_SELF'] . '?action=checklastversion&token=' . newToken() . '&mode=' . $mode . $param, '', 1, ['morecss' => 'reposition']);
     $moreforfilter .= dolGetButtonTitleSeparator();
-    $moreforfilter .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'] . '?mode=common' . $param, '', ($mode == 'common' ? 2 : 1), array('morecss' => 'reposition'));
-    $moreforfilter .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'] . '?mode=commonkanban' . $param, '', ($mode == 'commonkanban' ? 2 : 1), array('morecss' => 'reposition'));
+    $moreforfilter .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', $_SERVER['PHP_SELF'] . '?mode=common' . $param, '', ($mode == 'common' ? 2 : 1), ['morecss' => 'reposition']);
+    $moreforfilter .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER['PHP_SELF'] . '?mode=commonkanban' . $param, '', ($mode == 'commonkanban' ? 2 : 1), ['morecss' => 'reposition']);
     $moreforfilter .= '</li></ul></div>';
 
     $moreforfilter .= '<div class="divfilteralone colorbacktimesheet float valignmiddle">';
@@ -622,7 +620,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
     $moreforfilter .= '</div>';
 
     if (getDolGlobalInt('MAIN_FEATURES_LEVEL')) {
-        $array_version = array('stable' => $langs->transnoentitiesnoconv("Stable"));
+        $array_version = ['stable' => $langs->transnoentitiesnoconv("Stable")];
         if (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 0) {
             $array_version['deprecated'] = $langs->trans("Deprecated");
         }
@@ -636,7 +634,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
         $moreforfilter .= $form->selectarray('search_version', $array_version, $search_version, $langs->transnoentitiesnoconv('Version'), 0, 0, '', 0, 0, 0, '', 'maxwidth150', 1);
         $moreforfilter .= '</div>';
     }
-    $array_status = array('active' => $langs->transnoentitiesnoconv("Enabled"), 'disabled' => $langs->transnoentitiesnoconv("Disabled"));
+    $array_status = ['active' => $langs->transnoentitiesnoconv("Enabled"), 'disabled' => $langs->transnoentitiesnoconv("Disabled")];
     $moreforfilter .= '<div class="divsearchfield paddingtop paddingbottom valignmiddle inline-block">';
     $moreforfilter .= $form->selectarray('search_status', $array_status, $search_status, $langs->transnoentitiesnoconv('Status'), 0, 0, '', 0, 0, 0, '', 'maxwidth150', 1);
     $moreforfilter .= '</div>';
@@ -654,7 +652,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
 
     if (!empty($moreforfilter)) {
         print $moreforfilter;
-        $parameters = array();
+        $parameters = [];
         $reshook = $hookmanager->executeHooks('printFieldPreListTitle', $parameters); // Note that $action and $object may have been modified by hook
         print $hookmanager->resPrint;
     }
@@ -664,13 +662,13 @@ if ($mode == 'common' || $mode == 'commonkanban') {
     print '<div class="clearboth"></div><br>';
 
     $object = new stdClass();
-    $parameters = array();
+    $parameters = [];
     $reshook = $hookmanager->executeHooks('insertExtraHeader', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
     if ($reshook < 0) {
         setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
     }
 
-    $disabled_modules = array();
+    $disabled_modules = [];
     if (!empty($_SESSION["disablemodules"])) {
         $disabled_modules = explode(',', $_SESSION["disablemodules"]);
     }
@@ -741,7 +739,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
             if (preg_match('/^external/', $search_nature) && $objMod->isCoreOrExternalModule() != 'external') {
                 continue;
             }
-            $reg = array();
+            $reg = [];
             if (preg_match('/^external_(.*)$/', $search_nature, $reg)) {
                 //print $reg[1].'-'.dol_escape_htmltag($objMod->getPublisher());
                 $publisher = dol_escape_htmltag($objMod->getPublisher());
@@ -917,7 +915,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
                 }
                 $backtourl = $_SERVER['PHP_SELF'] . $backtourlparam;
 
-                $regs = array();
+                $regs = [];
                 if (is_array($objMod->config_page_url)) {
                     $i = 0;
                     foreach ($objMod->config_page_url as $page) {
@@ -1138,17 +1136,17 @@ if ($mode == 'marketplace') {
         print '<div class="liste_titre liste_titre_bydiv centpercent"><div class="divsearchfield">';
 
         print '<form method="POST" class="centpercent" id="searchFormList" action="' . $dolistore->url . '">'; ?>
-                    <input type="hidden" name="token" value="<?php echo newToken(); ?>">
-                    <input type="hidden" name="mode" value="marketplace">
-                    <div class="divsearchfield">
-                        <input name="search_keyword" placeholder="<?php echo $langs->trans('Keyword') ?>" id="search_keyword" type="text" class="minwidth200" value="<?php echo dol_escape_htmltag($options['search']) ?>"><br>
-                    </div>
-                    <div class="divsearchfield">
-                        <input class="button buttongen" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
-                        <a class="buttonreset" href="<?php echo urlencode($dolistore->url) ?>"><?php echo $langs->trans('Reset') ?></a>
+        <input type="hidden" name="token" value="<?php echo newToken(); ?>">
+        <input type="hidden" name="mode" value="marketplace">
+        <div class="divsearchfield">
+            <input name="search_keyword" placeholder="<?php echo $langs->trans('Keyword') ?>" id="search_keyword" type="text" class="minwidth200" value="<?php echo dol_escape_htmltag($options['search']) ?>"><br>
+        </div>
+        <div class="divsearchfield">
+            <input class="button buttongen" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
+            <a class="buttonreset" href="<?php echo urlencode($dolistore->url) ?>"><?php echo $langs->trans('Reset') ?></a>
 
-                        &nbsp;
-                    </div>
+            &nbsp;
+        </div>
         <?php
         print $previouslink;
         print $nextlink;
@@ -1158,19 +1156,19 @@ if ($mode == 'marketplace') {
         print '<div class="clearboth"></div>';
         ?>
 
-            <div id="category-tree-left">
-                <ul class="tree">
-                    <?php
-                    echo $dolistore->get_categories();  // Do not use dol_escape_htmltag here, it is already a structured content?>
-                </ul>
-            </div>
-            <div id="listing-content">
-                <table summary="list_of_modules" id="list_of_modules" class="productlist centpercent">
-                    <tbody id="listOfModules">
-                        <?php echo $dolistore->get_products(); ?>
-                    </tbody>
-                </table>
-            </div>
+        <div id="category-tree-left">
+            <ul class="tree">
+                <?php
+                echo $dolistore->get_categories();  // Do not use dol_escape_htmltag here, it is already a structured content?>
+            </ul>
+        </div>
+        <div id="listing-content">
+            <table summary="list_of_modules" id="list_of_modules" class="productlist centpercent">
+                <tbody id="listOfModules">
+                <?php echo $dolistore->get_products(); ?>
+                </tbody>
+            </table>
+        </div>
         <?php
     }
 }

@@ -82,6 +82,7 @@ use Contact;
 use DolEditor;
 use DolGraph;
 use DoliCore\Base\DolibarrController;
+use DoliCore\Lib\Fields;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\Adherent\Model\Subscription;
@@ -3076,16 +3077,7 @@ class AdherentController extends DolibarrController
             }
             // If $val['visible']==0, then we never show the field
 
-            if (!empty($val['visible'])) {
-                $visible = (int) dol_eval($val['visible'], 1);
-                $arrayfields[$tableprefix . '.' . $key] = [
-                    'label' => $val['label'],
-                    'checked' => (($visible < 0) ? 0 : 1),
-                    'enabled' => (abs($visible) != 3 && (int) dol_eval($val['enabled'], 1)),
-                    'position' => $val['position'],
-                    'help' => isset($val['help']) ? $val['help'] : '',
-                ];
-            }
+            $arrayfields[$tableprefix . '.' . $key] = Fields::getVisibleField($val);
         }
         $arrayfields = dol_sort_array($arrayfields, 'position');
 //var_dump($arrayfields);exit;

@@ -1,15 +1,16 @@
 <?php
 
-/* Copyright (C) 2001-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2019 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005      Marc Bariley / Ocebo <marc@ocebo.com>
- * Copyright (C) 2005-2010 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2013      Cédric Salvador      <csalvador@gpcsolutions.fr>
- * Copyright (C) 2015 	   Claudio Aschieri     <c.aschieri@19.coop>
- * Copyright (C) 2018 	   Ferran Marcet	    <fmarcet@2byte.es>
- * Copyright (C) 2019 	   Juanjo Menent	    <jmenent@2byte.es>
- * Copyright (C) 2020	   Tobias Sean			<tobias.sekan@startmail.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2001-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2019  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005       Marc Bariley / Ocebo    <marc@ocebo.com>
+ * Copyright (C) 2005-2010  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2013       Cédric Salvador         <csalvador@gpcsolutions.fr>
+ * Copyright (C) 2015 	    Claudio Aschieri        <c.aschieri@19.coop>
+ * Copyright (C) 2018 	    Ferran Marcet	        <fmarcet@2byte.es>
+ * Copyright (C) 2019 	    Juanjo Menent	        <jmenent@2byte.es>
+ * Copyright (C) 2020	    Tobias Sean			    <tobias.sekan@startmail.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +33,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\Fields;
+
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
@@ -222,20 +225,8 @@ $fieldstosearchall['s.name_alias'] = "AliasNameShort";
 $fieldstosearchall['s.code_client'] = "CustomerCode";
 
 // Definition of array of fields for columns
-$arrayfields = array();
-foreach ($object->fields as $key => $val) {
-    // If $val['visible']==0, then we never show the field
-    if (!empty($val['visible'])) {
-        $visible = dol_eval($val['visible'], 1, 1, '1');
-        $arrayfields['p.' . $key] = array(
-            'label' => $val['label'],
-            'checked' => (($visible < 0) ? 0 : 1),
-            'enabled' => (abs($visible) != 3 && (int) dol_eval($val['enabled'], 1, 1, '1')),
-            'position' => $val['position'],
-            'help' => isset($val['help']) ? $val['help'] : ''
-        );
-    }
-}
+$arrayfields = Fields::getArrayFields($object->fields, 'p');
+
 // Extra fields
 include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_list_array_fields.tpl.php';
 

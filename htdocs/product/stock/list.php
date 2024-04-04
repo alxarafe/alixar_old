@@ -5,7 +5,8 @@
  * Copyright (C) 2005-2014	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2015       Juanjo Menent           <jmenent@2byte.es>
  * Copyright (C) 2020       Tobias Sekan            <tobias.sekan@startmail.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\Fields;
+
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 if (isModEnabled('category')) {
@@ -118,19 +121,8 @@ $arrayfields = array(
     'estimatedvalue' => array('type' => 'float', 'label' => 'EstimatedStockValue', 'enabled' => 1, 'visible' => 1, 'checked' => 1, 'position' => 171),
     'estimatedstockvaluesell' => array('type' => 'float', 'label' => 'EstimatedStockValueSell', 'enabled' => 1, 'checked' => 1, 'visible' => 2, 'position' => 172),
 );
-foreach ($object->fields as $key => $val) {
-    // If $val['visible']==0, then we never show the field
-    if (!empty($val['visible'])) {
-        $visible = (int) dol_eval($val['visible'], 1);
-        $arrayfields['t.' . $key] = array(
-            'label' => $val['label'],
-            'checked' => (($visible < 0) ? 0 : 1),
-            'enabled' => (abs($visible) != 3 && (int) dol_eval($val['enabled'], 1)),
-            'position' => $val['position'],
-            'help' => isset($val['help']) ? $val['help'] : ''
-        );
-    }
-}
+$arrayfields = Fields::getArrayFields($object->fields, 't', $arrayfields);
+
 // Extra fields
 include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_list_array_fields.tpl.php';
 
