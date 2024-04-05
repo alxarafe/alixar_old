@@ -24,7 +24,7 @@
  */
 
 // Load Dolibarr environment
-require '../../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/stocktransfer/class/stocktransfer.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/stocktransfer/lib/stocktransfer_stocktransfer.lib.php';
 

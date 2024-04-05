@@ -18,11 +18,17 @@
 
 namespace DoliCore\Base;
 
+use Illuminate\Database\Eloquent\Model as EloquentModel;
+
+//use Illuminate\Database\Capsule\Manager as DB;
+
 /**
- * Class Model replaces CommonObject
+ * This class implements an Eloquent Model
  *
  * @deprecated This class is only needed for compatibility with Dolibarr.
  */
-abstract class Model
+abstract class Model extends EloquentModel
 {
+    protected $primaryKey = 'rowid';
+    public $timestamps = false;
 }

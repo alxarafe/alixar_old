@@ -38,7 +38,7 @@
 // Load Dolibarr environment
 use DoliCore\Lib\Fields;
 
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';

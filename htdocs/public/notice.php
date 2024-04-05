@@ -41,7 +41,7 @@ if (!defined('NOBROWSERNOTIF')) {
 }
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 
 /**

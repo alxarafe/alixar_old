@@ -42,7 +42,7 @@
  */
 
 // Libraries
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';

@@ -27,7 +27,7 @@
  */
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/notify.class.php';
 require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';

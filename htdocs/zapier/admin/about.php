@@ -28,7 +28,7 @@
  */
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';

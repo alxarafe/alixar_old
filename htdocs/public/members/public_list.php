@@ -47,7 +47,7 @@ if (is_numeric($entity)) {
 }
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 // Security check
 if (!isModEnabled('member')) {

@@ -64,7 +64,7 @@ if (php_sapi_name() == "cli") {
 
 // core library
 // Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 // cron jobs library
 dol_include_once("/cron/class/cronjob.class.php");

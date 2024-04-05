@@ -24,6 +24,8 @@
  * \brief       Class file to manage Dolibarr database access
  */
 
+use DoliCore\Base\Config;
+
 require_once DOL_DOCUMENT_ROOT . '/core/db/Database.interface.php';
 
 /**
@@ -89,7 +91,8 @@ abstract class DoliDB implements Database
      */
     public function prefix()
     {
-        return (empty($this->prefix_db) ? MAIN_DB_PREFIX : $this->prefix_db);
+        $conf = Config::loadConf();
+        return (empty($this->prefix_db) ? $conf->db->prefix : $this->prefix_db);
     }
 
     /**

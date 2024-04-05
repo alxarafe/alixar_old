@@ -18,12 +18,21 @@
 
 namespace DoliCore\Base;
 
-use Alxarafe\Base\Globals;
+use Alxarafe\Tools\Debug;
 use Conf;
+use DoliCore\Lib\TraceableDB;
+use HookManager;
+use Illuminate\Database\Capsule\Manager as DB;
 use MenuManager;
 use stdClass;
+use Translate;
+use User;
 
 require_once BASE_PATH . '/core/class/conf.class.php';
+require_once BASE_PATH . '/core/class/hookmanager.class.php';
+require_once BASE_PATH . '/core/class/translate.class.php';
+require_once BASE_PATH . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/user/class/user.class.php';
 
 /**
  * Generate an object with the configuration of the Dolibarr conf.php file.
@@ -35,18 +44,231 @@ require_once BASE_PATH . '/core/class/conf.class.php';
 abstract class Config
 {
     /**
-     * Contains the information from the conf.php file.
-     *
-     * @var null|stdClass
-     */
-    protected static $config = null;
-
-    /**
      * Contains the information of the old conf global var.
      *
      * @var null|stdClass
      */
-    protected static $conf = null;
+    private static $dolibarrConfig = null;
+
+    /**
+     * Contains the information from the conf.php file.
+     *
+     * @var null|stdClass
+     */
+    private static $config = null;
+
+    private static $db;
+    private static $hookManager;
+
+    private static $langs;
+    private static $user;
+    private static $menumanager;
+
+
+    /**
+     * Load the Dolibarr configuration file and enter the content for the Dolibarr global
+     * variable $conf.
+     *
+     * The result is cached for future queries. If we want to reload the configuration file
+     * we will have to pass the parameter true.
+     *
+     * @param $reload
+     *
+     * @return stdClass|null
+     */
+    public static function loadConf($reload = false): ?stdClass
+    {
+        if (isset(static::$dolibarrConfig) && !$reload) {
+            return static::$dolibarrConfig;
+        }
+
+        $filename = static::getDolibarrConfigFilename();
+        $exists = file_exists($filename) && is_readable($filename);
+        if ($exists) {
+            include $filename;
+        }
+
+        /*
+         * Create $conf object
+         */
+        $conf = new Conf();
+
+        // Set properties specific to database
+        $conf->db->host = empty($dolibarr_main_db_host) ? '' : $dolibarr_main_db_host;
+        $conf->db->port = empty($dolibarr_main_db_port) ? '' : $dolibarr_main_db_port;
+        $conf->db->name = empty($dolibarr_main_db_name) ? '' : $dolibarr_main_db_name;
+        $conf->db->user = empty($dolibarr_main_db_user) ? '' : $dolibarr_main_db_user;
+        $conf->db->pass = empty($dolibarr_main_db_pass) ? '' : $dolibarr_main_db_pass;
+        $conf->db->type = $dolibarr_main_db_type ?? 'mysqli';
+        $conf->db->prefix = $dolibarr_main_db_prefix ?? 'alx_';
+        $conf->db->character_set = $dolibarr_main_db_character_set ?? 'utf8';
+        $conf->db->dolibarr_main_db_collation = $dolibarr_main_db_collation ?? 'utf8-unicode-ci';
+        $conf->db->dolibarr_main_db_encryption = $dolibarr_main_db_encryption ?? null;
+        $conf->db->dolibarr_main_db_cryptkey = $dolibarr_main_db_cryptkey ?? null;
+        if (defined('TEST_DB_FORCE_TYPE')) {
+            $conf->db->type = constant('TEST_DB_FORCE_TYPE'); // Force db type (for test purpose, by PHP unit for example)
+        }
+
+        // Set properties specific to conf file
+        $conf->file->main_limit_users = $dolibarr_main_limit_users ?? null;
+        $conf->file->mailing_limit_sendbyweb = empty($dolibarr_mailing_limit_sendbyweb) ? 0 : $dolibarr_mailing_limit_sendbyweb;
+        $conf->file->mailing_limit_sendbycli = empty($dolibarr_mailing_limit_sendbycli) ? 0 : $dolibarr_mailing_limit_sendbycli;
+        $conf->file->mailing_limit_sendbyday = empty($dolibarr_mailing_limit_sendbyday) ? 0 : $dolibarr_mailing_limit_sendbyday;
+        $conf->file->main_authentication = empty($dolibarr_main_authentication) ? 'dolibarr' : $dolibarr_main_authentication; // Identification mode
+        $conf->file->main_force_https = empty($dolibarr_main_force_https) ? '' : $dolibarr_main_force_https; // Force https
+        $conf->file->strict_mode = empty($dolibarr_strict_mode) ? '' : $dolibarr_strict_mode; // Force php strict mode (for debug)
+        $conf->file->instance_unique_id = empty($dolibarr_main_instance_unique_id) ? (empty($dolibarr_main_cookie_cryptkey) ? '' : $dolibarr_main_cookie_cryptkey) : $dolibarr_main_instance_unique_id; // Unique id of instance
+        $conf->file->dol_main_url_root = $dolibarr_main_url_root ?? BASE_URL;   // Define url inside the config file
+        $conf->file->dol_document_root = ['main' => (string) DOL_DOCUMENT_ROOT]; // Define array of document root directories ('/home/htdocs')
+        $conf->file->dol_url_root = ['main' => (string) DOL_URL_ROOT]; // Define array of url root path ('' or '/dolibarr')
+        if (!empty($dolibarr_main_document_root_alt)) {
+            // dolibarr_main_document_root_alt can contains several directories
+            $values = preg_split('/[;,]/', $dolibarr_main_document_root_alt);
+            $i = 0;
+            foreach ($values as $value) {
+                $conf->file->dol_document_root['alt' . ($i++)] = (string) $value;
+            }
+            $values = preg_split('/[;,]/', $dolibarr_main_url_root_alt);
+            $i = 0;
+            foreach ($values as $value) {
+                if (preg_match('/^http(s)?:/', $value)) {
+                    // Show error message
+                    $correct_value = str_replace($dolibarr_main_url_root, '', $value);
+                    print '<b>Error:</b><br>' . "\n";
+                    print 'Wrong <b>$dolibarr_main_url_root_alt</b> value in <b>conf.php</b> file.<br>' . "\n";
+                    print 'We now use a relative path to $dolibarr_main_url_root to build alternate URLs.<br>' . "\n";
+                    print 'Value found: ' . $value . '<br>' . "\n";
+                    print 'Should be replaced by: ' . $correct_value . '<br>' . "\n";
+                    print "Or something like following examples:<br>\n";
+                    print "\"/extensions\"<br>\n";
+                    print "\"/extensions1,/extensions2,...\"<br>\n";
+                    print "\"/../extensions\"<br>\n";
+                    print "\"/custom\"<br>\n";
+                    exit;
+                }
+                $conf->file->dol_url_root['alt' . ($i++)] = (string) $value;
+            }
+        }
+
+        // Load the main includes of common libraries
+        if (!defined('NOREQUIREUSER')) {
+            require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php'; // Need 500ko memory
+        }
+        if (!defined('NOREQUIRETRAN')) {
+            require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
+        }
+        if (!defined('NOREQUIRESOC')) {
+            require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
+        }
+
+        static::$dolibarrConfig = $conf;
+        return $conf;
+    }
+
+    public static function getConfig($conf)
+    {
+        if (empty(static::$config)) {
+            static::$config = Config::loadConfig();
+        }
+
+        return static::$config;
+    }
+
+    public static function setConfigValues($conf, $db)
+    {
+        // Here we read database (llx_const table) and define conf var $conf->global->XXX.
+        //print "We work with data into entity instance number '".$conf->entity."'";
+        $conf->setValues($db);
+    }
+
+    public static function getDb($conf)
+    {
+        if (empty(static::$db)) {
+            static::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+            static::$dolibarrConfig->setValues(static::$db);
+        }
+        return static::$db;
+    }
+
+    public static function debugDb()
+    {
+        if (isModEnabled('debugbar')) {
+            static::$db = new TraceableDB(static::$db);
+        }
+        return static::$db;
+    }
+
+    public static function getHookManager()
+    {
+        if (empty(static::$hookManager)) {
+            static::$hookManager = new HookManager(static::$db);
+        }
+        return static::$hookManager;
+    }
+
+    public static function getLangs($conf)
+    {
+        if (empty(static::$langs)) {
+            static::$langs = new Translate('', $conf);
+        }
+        return static::$langs;
+    }
+
+    public static function getUser()
+    {
+        if (empty(static::$user)) {
+            static::$user = new User(static::$db);
+        }
+        return static::$user;
+    }
+
+    public static function getMenuManager($conf)
+    {
+        if (!empty(static::$menumanager)) {
+            return static::$menumanager;
+        }
+
+        // Init menu manager
+        $db = static::getDb($conf);
+
+        $menumanager = null;
+        if (!defined('NOREQUIREMENU')) {
+            if (empty($user->socid)) {    // If internal user or not defined
+                $conf->standard_menu = (!getDolGlobalString('MAIN_MENU_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENU_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENU_STANDARD) : $conf->global->MAIN_MENU_STANDARD_FORCED);
+            } else {
+                // If external user
+                $conf->standard_menu = (!getDolGlobalString('MAIN_MENUFRONT_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENUFRONT_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENUFRONT_STANDARD) : $conf->global->MAIN_MENUFRONT_STANDARD_FORCED);
+            }
+
+            // Load the menu manager (only if not already done)
+            $file_menu = $conf->standard_menu;
+            if (GETPOST('menu', 'alpha')) {
+                $file_menu = GETPOST('menu', 'alpha'); // example: menu=eldy_menu.php
+            }
+            if (!class_exists('MenuManager')) {
+                $menufound = 0;
+                $dirmenus = array_merge(["/core/menus/"], (array) $conf->modules_parts['menus']);
+                foreach ($dirmenus as $dirmenu) {
+                    $menufound = dol_include_once($dirmenu . "standard/" . $file_menu);
+                    if (class_exists('MenuManager')) {
+                        break;
+                    }
+                }
+                if (!class_exists('MenuManager')) { // If failed to include, we try with standard eldy_menu.php
+                    dol_syslog("You define a menu manager '" . $file_menu . "' that can not be loaded.", LOG_WARNING);
+                    $file_menu = 'eldy_menu.php';
+                    include_once DOL_DOCUMENT_ROOT . "/core/menus/standard/" . $file_menu;
+                }
+            }
+            $menumanager = new MenuManager($db, empty($user->socid) ? 0 : 1);
+            $menumanager->loadMenu();
+        }
+
+        static::$menumanager = $menumanager;
+
+        return $menumanager;
+    }
+
 
     /**
      * Simply replace /htdocs with /documents in $pathDir
@@ -153,147 +375,27 @@ abstract class Config
         return $config;
     }
 
-    /**
-     * Create the Dolibarr conf variable.
-     *
-     * @param $reload
-     *
-     * @return stdClass|null
-     */
-    public static function loadConf($reload = false): ?stdClass
+    public static function load()
     {
-        if (isset(static::$conf) && !$reload) {
-            return static::$conf;
+        $dolibarrConfig = Config::loadConf();
+        if ($dolibarrConfig === null) {
+            return false;
         }
 
-        $filename = static::getDolibarrConfigFilename();
-        $exists = file_exists($filename) && is_readable($filename);
-        if ($exists) {
-            include $filename;
-        }
+        dd($dolibarrConfig);
 
-        /*
-         * Create $conf object
-         */
+        $db = static::getDb($dolibarrConfig);
+        return true;
+        $conf = static::loadConfig($dolibarrConfig);
 
-        $conf = new Conf();
 
-// Set properties specific to database
-        $conf->db->host = empty($dolibarr_main_db_host) ? '' : $dolibarr_main_db_host;
-        $conf->db->port = empty($dolibarr_main_db_port) ? '' : $dolibarr_main_db_port;
-        $conf->db->name = empty($dolibarr_main_db_name) ? '' : $dolibarr_main_db_name;
-        $conf->db->user = empty($dolibarr_main_db_user) ? '' : $dolibarr_main_db_user;
-        $conf->db->pass = empty($dolibarr_main_db_pass) ? '' : $dolibarr_main_db_pass;
-        $conf->db->type = $dolibarr_main_db_type ?? 'mysqli';
-        $conf->db->prefix = $dolibarr_main_db_prefix ?? 'alx_';
-        $conf->db->character_set = $dolibarr_main_db_character_set ?? 'utf8';
-        $conf->db->dolibarr_main_db_collation = $dolibarr_main_db_collation ?? 'utf8-unicode-ci';
-        $conf->db->dolibarr_main_db_encryption = $dolibarr_main_db_encryption ?? null;
-        $conf->db->dolibarr_main_db_cryptkey = $dolibarr_main_db_cryptkey ?? null;
-        if (defined('TEST_DB_FORCE_TYPE')) {
-            $conf->db->type = constant('TEST_DB_FORCE_TYPE'); // Force db type (for test purpose, by PHP unit for example)
-        }
+        $config = static::getConfig($dolibarrConfig);
+        Debug::load();
 
-// Set properties specific to conf file
-        $conf->file->main_limit_users = $dolibarr_main_limit_users ?? null;
-        $conf->file->mailing_limit_sendbyweb = empty($dolibarr_mailing_limit_sendbyweb) ? 0 : $dolibarr_mailing_limit_sendbyweb;
-        $conf->file->mailing_limit_sendbycli = empty($dolibarr_mailing_limit_sendbycli) ? 0 : $dolibarr_mailing_limit_sendbycli;
-        $conf->file->mailing_limit_sendbyday = empty($dolibarr_mailing_limit_sendbyday) ? 0 : $dolibarr_mailing_limit_sendbyday;
-        $conf->file->main_authentication = empty($dolibarr_main_authentication) ? 'dolibarr' : $dolibarr_main_authentication; // Identification mode
-        $conf->file->main_force_https = empty($dolibarr_main_force_https) ? '' : $dolibarr_main_force_https; // Force https
-        $conf->file->strict_mode = empty($dolibarr_strict_mode) ? '' : $dolibarr_strict_mode; // Force php strict mode (for debug)
-        $conf->file->instance_unique_id = empty($dolibarr_main_instance_unique_id) ? (empty($dolibarr_main_cookie_cryptkey) ? '' : $dolibarr_main_cookie_cryptkey) : $dolibarr_main_instance_unique_id; // Unique id of instance
-        $conf->file->dol_main_url_root = $dolibarr_main_url_root ?? BASE_URL;   // Define url inside the config file
-        $conf->file->dol_document_root = ['main' => (string) DOL_DOCUMENT_ROOT]; // Define array of document root directories ('/home/htdocs')
-        $conf->file->dol_url_root = ['main' => (string) DOL_URL_ROOT]; // Define array of url root path ('' or '/dolibarr')
-        if (!empty($dolibarr_main_document_root_alt)) {
-            // dolibarr_main_document_root_alt can contains several directories
-            $values = preg_split('/[;,]/', $dolibarr_main_document_root_alt);
-            $i = 0;
-            foreach ($values as $value) {
-                $conf->file->dol_document_root['alt' . ($i++)] = (string) $value;
-            }
-            $values = preg_split('/[;,]/', $dolibarr_main_url_root_alt);
-            $i = 0;
-            foreach ($values as $value) {
-                if (preg_match('/^http(s)?:/', $value)) {
-                    // Show error message
-                    $correct_value = str_replace($dolibarr_main_url_root, '', $value);
-                    print '<b>Error:</b><br>' . "\n";
-                    print 'Wrong <b>$dolibarr_main_url_root_alt</b> value in <b>conf.php</b> file.<br>' . "\n";
-                    print 'We now use a relative path to $dolibarr_main_url_root to build alternate URLs.<br>' . "\n";
-                    print 'Value found: ' . $value . '<br>' . "\n";
-                    print 'Should be replaced by: ' . $correct_value . '<br>' . "\n";
-                    print "Or something like following examples:<br>\n";
-                    print "\"/extensions\"<br>\n";
-                    print "\"/extensions1,/extensions2,...\"<br>\n";
-                    print "\"/../extensions\"<br>\n";
-                    print "\"/custom\"<br>\n";
-                    exit;
-                }
-                $conf->file->dol_url_root['alt' . ($i++)] = (string) $value;
-            }
-        }
+        dump([$dolibarrConfig->modules, $config]);
+        dump(isModEnabled('debugbar'));
 
-        // Load the main includes of common libraries
-        if (!defined('NOREQUIREUSER')) {
-            require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php'; // Need 500ko memory
-        }
-        if (!defined('NOREQUIRETRAN')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
-        }
-        if (!defined('NOREQUIRESOC')) {
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-        }
-
-        return $conf;
-    }
-
-    /**
-     * Create the content for the menumanager variable.
-     *
-     * @param $conf
-     *
-     * @return MenuManager
-     * @throws \Exception
-     */
-    public static function getMenuManager($conf)
-    {
-        // Init menu manager
-        $db = Globals::getDb($conf);
-
-        $menumanager = null;
-        if (!defined('NOREQUIREMENU')) {
-            if (empty($user->socid)) {    // If internal user or not defined
-                $conf->standard_menu = (!getDolGlobalString('MAIN_MENU_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENU_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENU_STANDARD) : $conf->global->MAIN_MENU_STANDARD_FORCED);
-            } else {
-                // If external user
-                $conf->standard_menu = (!getDolGlobalString('MAIN_MENUFRONT_STANDARD_FORCED') ? (!getDolGlobalString('MAIN_MENUFRONT_STANDARD') ? 'eldy_menu.php' : $conf->global->MAIN_MENUFRONT_STANDARD) : $conf->global->MAIN_MENUFRONT_STANDARD_FORCED);
-            }
-
-            // Load the menu manager (only if not already done)
-            $file_menu = $conf->standard_menu;
-            if (GETPOST('menu', 'alpha')) {
-                $file_menu = GETPOST('menu', 'alpha'); // example: menu=eldy_menu.php
-            }
-            if (!class_exists('MenuManager')) {
-                $menufound = 0;
-                $dirmenus = array_merge(["/core/menus/"], (array) $conf->modules_parts['menus']);
-                foreach ($dirmenus as $dirmenu) {
-                    $menufound = dol_include_once($dirmenu . "standard/" . $file_menu);
-                    if (class_exists('MenuManager')) {
-                        break;
-                    }
-                }
-                if (!class_exists('MenuManager')) { // If failed to include, we try with standard eldy_menu.php
-                    dol_syslog("You define a menu manager '" . $file_menu . "' that can not be loaded.", LOG_WARNING);
-                    $file_menu = 'eldy_menu.php';
-                    include_once DOL_DOCUMENT_ROOT . "/core/menus/standard/" . $file_menu;
-                }
-            }
-            $menumanager = new MenuManager($db, empty($user->socid) ? 0 : 1);
-            $menumanager->loadMenu();
-        }
-        return $menumanager;
+        $db = new \Alxarafe\Base\Database($config->db);
+        DB::select('SELECT * FROM alx_user');
     }
 }

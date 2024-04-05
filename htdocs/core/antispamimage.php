@@ -43,7 +43,7 @@ if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', 1);
 }
 
-require_once '../main.inc.php';
+require_once BASE_PATH . '/main.inc.php';
 
 
 /*

@@ -20,7 +20,7 @@
 // Put here all includes required by your class file
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';

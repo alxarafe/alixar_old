@@ -25,7 +25,7 @@ if (!defined('NOREQUIREMENU')) {
 }
 session_cache_limiter('public');
 
-require_once '../../main.inc.php';
+require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 
 // Security

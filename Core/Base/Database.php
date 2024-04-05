@@ -18,6 +18,8 @@
 
 namespace Alxarafe\Base;
 
+use Alxarafe\Tools\Debug;
+use DebugBar\DataCollector\PDO\PDOCollector;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 
 /**
@@ -59,5 +61,9 @@ class Database extends CapsuleManager
         ]);
         $this->setAsGlobal();
         $this->bootEloquent();
+
+        // Obtains Eloquent PDO
+        $pdo = $this->getConnection()->getPdo();
+        Debug::getDebugBar()->addCollector(new PDOCollector($pdo));
     }
 }

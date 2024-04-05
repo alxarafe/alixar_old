@@ -43,7 +43,7 @@ if (!defined('NOREQUIRESOC')) {
 }*/
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 $action = GETPOST('action');
 

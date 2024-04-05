@@ -37,7 +37,7 @@ if (!defined('NOREQUIRETRAN')) {
 }
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require DOL_DOCUMENT_ROOT . '/variants/class/ProductAttribute.class.php';
 
 // Security check

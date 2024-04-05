@@ -30,7 +30,7 @@
  */
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societeaccount.class.php';

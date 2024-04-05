@@ -22,7 +22,7 @@
 
 namespace DoliModules\Accounting\Model;
 
-use DoliCore\Base\Model;
+use DoliCore\Base\BasicModel;
 
 /**
  * \file        htdocs/accountancy/class/accountancysystem.class.php
@@ -33,7 +33,7 @@ use DoliCore\Base\Model;
 /**
  * Class to manage accountancy systems
  */
-class AccountancySystem extends Model
+class AccountancySystem extends BasicModel
 {
     /**
      * @var DoliDB Database handler.

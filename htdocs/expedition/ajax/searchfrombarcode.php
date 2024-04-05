@@ -35,7 +35,7 @@ if (!defined('NOREQUIREAJAX')) {
 if (!defined('NOREQUIRESOC')) {
     define('NOREQUIRESOC', '1');
 }
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 $action = GETPOST("action", "alpha");

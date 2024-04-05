@@ -40,7 +40,7 @@ namespace DoliModules\Accounting\Model;
  * \brief       Class accountancy export
  */
 
-use DoliCore\Base\Model;
+use DoliCore\Base\BasicModel;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
@@ -52,7 +52,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 /**
  * Manage the different format accountancy export
  */
-class AccountancyExport extends Model
+class AccountancyExport extends BasicModel
 {
     // Types of export.
     public static $EXPORT_TYPE_CONFIGURABLE = 1; // CSV

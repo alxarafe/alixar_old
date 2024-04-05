@@ -32,11 +32,8 @@
 // Put here all includes required by your class file
 namespace Alixar\multicurrency\class;
 
+use DoliCore\Base\GenericDocumentLine;
 use DoliDB;
-use GenericDocumentLine;
-use User;
-
-
 
 /**
  * Class CurrencyRate

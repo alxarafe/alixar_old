@@ -84,7 +84,7 @@ use Validate;
  *
  * @deprecated This class is only needed for compatibility with Dolibarr.
  */
-abstract class GenericDocument extends Model
+abstract class GenericDocument
 {
     const TRIGGER_PREFIX = ''; // to be overridden in child class implementations, i.e. 'BILL', 'TASK', 'PROPAL', etc.
 
@@ -2635,7 +2635,7 @@ abstract class GenericDocument extends Model
             if ($this->db->query($sql)) {
                 $this->multicurrency_code = $code;
 
-                list($fk_multicurrency, $rate) = MultiCurrency::getIdAndTxFromCode($this->db, $code);
+                [$fk_multicurrency, $rate] = MultiCurrency::getIdAndTxFromCode($this->db, $code);
                 if ($rate) {
                     $this->setMulticurrencyRate($rate, 2);
                 }
@@ -7354,7 +7354,7 @@ abstract class GenericDocument extends Model
                     continue;
                 }
                 if (strpos($valb, "|") !== false) {
-                    list($valb, $parent) = explode('|', $valb);
+                    [$valb, $parent] = explode('|', $valb);
                 }
                 $nbchoice++;
                 $tmpselect .= '<option value="' . $keyb . '"';
@@ -7425,7 +7425,7 @@ abstract class GenericDocument extends Model
                     }
                 }
                 if (count($InfoFieldList) > 3 && !empty($InfoFieldList[3])) {
-                    list($parentName, $parentField) = explode('|', $InfoFieldList[3]);
+                    [$parentName, $parentField] = explode('|', $InfoFieldList[3]);
                     $keyList .= ', ' . $parentField;
                 }
 
@@ -7597,7 +7597,7 @@ abstract class GenericDocument extends Model
                 $keyList = (empty($InfoFieldList[2]) ? 'rowid' : $InfoFieldList[2] . ' as rowid');
 
                 if (count($InfoFieldList) > 3 && !empty($InfoFieldList[3])) {
-                    list($parentName, $parentField) = explode('|', $InfoFieldList[3]);
+                    [$parentName, $parentField] = explode('|', $InfoFieldList[3]);
                     $keyList .= ', ' . $parentField;
                 }
                 if (count($InfoFieldList) > 4 && !empty($InfoFieldList[4])) {
@@ -7760,7 +7760,7 @@ abstract class GenericDocument extends Model
                     (!GETPOSTISSET('backtopage') || strpos(GETPOST('backtopage'), $_SERVER['PHP_SELF']) === 0)  // // To avoid to open several times the 'Plus' button (we accept only one level)
                     && empty($val['disabled']) && empty($nonewbutton)
                 ) {    // and to avoid to show the button if the field is protected by a "disabled".
-                    list($class, $classfile) = explode(':', $param_list[0]);
+                    [$class, $classfile] = explode(':', $param_list[0]);
                     if (file_exists(dol_buildpath(dirname(dirname($classfile)) . '/card.php'))) {
                         $url_path = dol_buildpath(dirname(dirname($classfile)) . '/card.php', 1);
                     } else {

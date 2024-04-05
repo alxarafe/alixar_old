@@ -28,7 +28,7 @@
  */
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
 

@@ -33,7 +33,9 @@
  */
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+use DoliModules\Accounting\Model\AccountancyCategory;
+
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';

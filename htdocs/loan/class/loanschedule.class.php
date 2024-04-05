@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2017       Florian HENRY           <florian.henry@atm-consulting.fr>
  * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,8 @@
  *      \ingroup    loan
  *      \brief      File of class to manage schedule of loans
  */
+
+use DoliCore\Base\GenericDocument;
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 

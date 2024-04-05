@@ -49,7 +49,7 @@ if (!defined('NOREQUIREMENU')) {
     define('NOREQUIREMENU', 1);
 }
 
-require_once '../main.inc.php';
+require_once BASE_PATH . '/main.inc.php';
 
 
 /*

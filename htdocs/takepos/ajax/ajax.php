@@ -39,7 +39,7 @@ if (!defined('NOBROWSERNOTIF')) {
 }
 
 // Load Dolibarr environment
-require '../../main.inc.php'; // Load $user and permissions
+require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT . "/product/class/product.class.php";
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';

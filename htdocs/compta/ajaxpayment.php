@@ -35,7 +35,7 @@ if (!defined('NOREQUIREHTML')) {
 }
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 $langs->load('compta');
 

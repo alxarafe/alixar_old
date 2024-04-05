@@ -28,7 +28,7 @@
  *  \brief      Page to setup module stock
  */
 
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/stock.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';

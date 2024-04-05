@@ -25,7 +25,7 @@
  *      \brief      Page of associated ticket
  */
 
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/contract.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 if (isModEnabled('project')) {

@@ -28,7 +28,7 @@
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Accounting\Model\AccountingJournal;
 
-require '../../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/accountline.class.php';

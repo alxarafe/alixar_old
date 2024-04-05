@@ -22,7 +22,7 @@
 define('NOTOKENRENEWAL', 1); // Disables token renewal
 
 // Load Dolibarr environment
-require '../../../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 $langs->load("ecm");
 

@@ -50,7 +50,7 @@ if (!defined('NOREQUIREAJAX')) {
 
 session_cache_limiter('public');
 
-require_once '../../main.inc.php';
+require_once BASE_PATH . '/main.inc.php';
 
 // Define javascript type
 top_httphead('text/javascript; charset=UTF-8');

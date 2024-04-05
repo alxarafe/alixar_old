@@ -39,7 +39,7 @@ if (!defined('NOREQUIREMENU')) {
     define('NOREQUIREMENU', 1);
 }
 
-require_once '../main.inc.php';
+require_once BASE_PATH . '/main.inc.php';
 
 if (GETPOST('lang', 'aZ09')) {
     $langs->setDefaultLang(GETPOST('lang', 'aZ09')); // If language was forced on URL by the main.inc.php

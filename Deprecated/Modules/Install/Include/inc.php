@@ -34,7 +34,7 @@
 if (!defined('DOL_INC_FOR_VERSION_ERROR')) {
     define('DOL_INC_FOR_VERSION_ERROR', '1');
 }
-require_once '../filefunc.inc.php';
+require_once BASE_PATH . '/filefunc.inc.php';
 
 
 

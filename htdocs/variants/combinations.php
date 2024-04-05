@@ -18,14 +18,17 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\Variants\Model\ProductCombination;
+use DoliModules\Variants\Model\ProductCombination2ValuePair;
+
+// use Illuminate\Database\Capsule\Manager as DB;
+
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductAttribute.class.php';
 require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductAttributeValue.class.php';
-require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
-require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination2ValuePair.class.php';
 
 $langs->loadLangs(array("products", "other"));
 
@@ -133,8 +136,8 @@ if ($action == 'create' && $subaction == 'delete') {    // We click on select co
 }
 
 
-$prodcomb = new ProductCombination($db);
-$prodcomb2val = new ProductCombination2ValuePair($db);
+$prodcomb = new ProductCombination();
+$prodcomb2val = new ProductCombination2ValuePair();
 
 $productCombination2ValuePairs1 = array();
 

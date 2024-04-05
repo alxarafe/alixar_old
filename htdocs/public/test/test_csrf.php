@@ -17,7 +17,7 @@ if (!defined("NOLOGIN")) {
 }
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 // Security
 if ($dolibarr_main_prod) {

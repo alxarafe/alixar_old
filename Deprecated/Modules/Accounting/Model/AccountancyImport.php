@@ -30,7 +30,7 @@
 
 namespace DoliModules\Accounting\Model;
 
-use DoliCore\Base\Model;
+use DoliCore\Base\BasicModel;
 
 /**
  * \file        htdocs/accountancy/class/accountancyimport.class.php
@@ -41,7 +41,7 @@ use DoliCore\Base\Model;
 /**
  * Manage the different format accountancy import
  */
-class AccountancyImport extends Model
+class AccountancyImport extends BasicModel
 {
     /**
      * @var DoliDB  Database handler

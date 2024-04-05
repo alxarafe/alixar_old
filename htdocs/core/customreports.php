@@ -27,7 +27,7 @@
  */
 
 if (!defined('USE_CUSTOM_REPORT_AS_INCLUDE')) {
-    require '../main.inc.php';
+    require BASE_PATH . '/main.inc.php';
 
     // Get parameters
     $action     = GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view'; // The action 'add', 'create', 'edit', 'update', 'view', ...

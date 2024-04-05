@@ -27,14 +27,14 @@ namespace DoliModules\Accounting\Model;
  * \brief   File of class to manage categories of an accounting category_type
  */
 
-use DoliCore\Base\Model;
+use DoliCore\Base\BasicModel;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 
 /**
  * Class to manage categories of an accounting account
  */
-class AccountancyCategory extends Model
+class AccountancyCategory extends BasicModel
 {
     /**
      * @var DoliDB Database handler.

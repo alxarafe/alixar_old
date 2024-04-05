@@ -26,7 +26,7 @@
  */
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 // Load translation files required by the page
 $langs->load("companies");

@@ -46,6 +46,8 @@
  *                  This file contains all frequently used functions.
  */
 
+use Alxarafe\Tools\Debug;
+
 include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 
 // Function for better PHP x compatibility
@@ -11096,8 +11098,9 @@ function printCommonFooter($zone = 'private')
         if ($user->hasRight('debugbar', 'read') && $debugbar instanceof DebugBar\DebugBar) {
             $debugbar['time']->stopMeasure('pageaftermaster');
             print '<!-- Output debugbar data -->' . "\n";
-            $renderer = $debugbar->getRenderer();
-            print $debugbar->getRenderer()->render();
+//            $renderer = $debugbar->getRenderer();
+//            print $debugbar->getRenderer()->render();
+            print Debug::getRenderFooter();
         } elseif (count($conf->logbuffer)) {    // If there is some logs in buffer to show
             print "\n";
             print "<!-- Start of log output\n";

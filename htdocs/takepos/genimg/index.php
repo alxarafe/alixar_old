@@ -39,7 +39,7 @@ if (!defined('NOREQUIREAJAX')) {
 }
 
 if (!defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE')) {
-    require '../../main.inc.php'; // Load $user and permissions
+    require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 }
 
 $id = GETPOSTINT('id');

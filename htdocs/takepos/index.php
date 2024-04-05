@@ -41,7 +41,7 @@ if (!defined('NOREQUIREAJAX')) {
 }
 
 // Load Dolibarr environment
-require '../main.inc.php'; // Load $user and permissions
+require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';

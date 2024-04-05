@@ -29,7 +29,7 @@
 // Load Dolibarr environment
 use DoliCore\Lib\Fields;
 
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 if (isModEnabled('accounting')) {

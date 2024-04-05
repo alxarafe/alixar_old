@@ -41,7 +41,7 @@ if (!defined('NOREQUIREAJAX')) {
     define('NOREQUIREAJAX', '1');
 }
 
-require '../../main.inc.php'; // Load $user and permissions
+require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 
 $warehouse_id = GETPOSTINT('warehouse_id');
 $batch = GETPOST('batch', 'alphanohtml');

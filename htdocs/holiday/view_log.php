@@ -27,7 +27,7 @@
  */
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 // Security check (access forbidden for external user too)
 if (!$user->hasRight('holiday', 'define_holiday') || $user->socid > 0) {

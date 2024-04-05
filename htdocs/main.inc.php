@@ -45,25 +45,26 @@
  * @deprecated Use $config instead
  */
 
-use Alxarafe\Base\Globals;
+use Alxarafe\Tools\Debug;
+use DoliCore\Base\Config;
 use DoliCore\Base\Constants;
 
 require_once BASE_PATH . '/main.inc.functions.php';
 
-$conf = \DoliCore\Base\Config::loadConf();
+$conf = Config::loadConf();
 // If $conf is not empty, we load the "superglobal" variables.
 if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
-    $db = Globals::getDb($conf);
+    $db = Config::getDb($conf);
 
-    $config = Globals::getConfig($conf);
+    $config = Config::getConfig($conf);
     Constants::define($config);
 
-    $hookmanager = Globals::getHookManager();
-    $langs = Globals::getLangs($conf);
-    $user = Globals::getUser();
-    $menumanager = Globals::getMenuManager($conf);
+    $hookmanager = Config::getHookManager();
+    $langs = Config::getLangs($conf);
+    $user = Config::getUser();
+    $menumanager = Config::getMenuManager($conf);
 
-    Globals::setConfigValues($conf, $db);
+    Config::setConfigValues($conf, $db);
 }
 
 //@ini_set('memory_limit', '128M'); // This may be useless if memory is hard limited by your PHP
@@ -359,7 +360,7 @@ if (!empty($_SERVER['DOCUMENT_ROOT']) && substr($_SERVER['DOCUMENT_ROOT'], -6) !
 }
 
 // Include the conf.php and functions.lib.php and security.lib.php. This defined the constants like DOL_DOCUMENT_ROOT, DOL_DATA_ROOT, DOL_URL_ROOT...
-require_once 'filefunc.inc.php';
+require_once BASE_PATH . '/filefunc.inc.php';
 
 // If there is a POST parameter to tell to save automatically some POST parameters into cookies, we do it.
 // This is used for example by form of boxes to save personalization of some options.
@@ -435,7 +436,6 @@ if (!defined('NOSESSION')) {
     //exit; // this exist generates a call to write and close
 }
 
-
 // Init the 6 global objects, this include will make the 'new Xxx()' and set properties for: $conf, $db, $langs, $user, $mysoc, $hookmanager
 require_once 'master.inc.php';
 
@@ -477,6 +477,7 @@ register_shutdown_function('dol_shutdown');
 // Load debugbar
 if (isModEnabled('debugbar') && !GETPOST('dol_use_jmobile') && empty($_SESSION['dol_use_jmobile'])) {
     global $debugbar;
+    /*
     include_once DOL_DOCUMENT_ROOT . '/debugbar/class/DebugBar.php';
     $debugbar = new DolibarrDebugBar();
     $renderer = $debugbar->getRenderer();
@@ -484,6 +485,16 @@ if (isModEnabled('debugbar') && !GETPOST('dol_use_jmobile') && empty($_SESSION['
         $conf->global->MAIN_HTML_HEADER = '';
     }
     $conf->global->MAIN_HTML_HEADER .= $renderer->renderHead();
+
+    $debugbar['time']->startMeasure('pageaftermaster', 'Page generation (after environment init)');
+    */
+
+    $debugbar = Debug::getDebugBar();
+
+    if (!getDolGlobalString('MAIN_HTML_HEADER')) {
+        $conf->global->MAIN_HTML_HEADER = '';
+    }
+    $conf->global->MAIN_HTML_HEADER .= Debug::getRenderHeader();
 
     $debugbar['time']->startMeasure('pageaftermaster', 'Page generation (after environment init)');
 }

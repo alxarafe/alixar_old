@@ -36,7 +36,7 @@ if (!defined('NOREQUIREHTML')) {
     define('NOREQUIREHTML', '1');
 }
 
-$res = require '../../main.inc.php';
+$res = require BASE_PATH . '/main.inc.php';
 
 $id = GETPOSTINT('id');
 $element = GETPOST('element', 'alpha');

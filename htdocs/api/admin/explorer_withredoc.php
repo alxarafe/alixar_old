@@ -25,7 +25,7 @@
  * @deprecated      Old explorer. Not using Swagger. See instead explorer in htdocs/api/index.php.
  */
 
-require_once '../../main.inc.php';
+require_once BASE_PATH . '/main.inc.php';
 
 // Enable and test if module Api is enabled
 if (!isModEnabled('api')) {

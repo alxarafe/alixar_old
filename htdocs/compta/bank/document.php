@@ -25,7 +25,7 @@
  *  \brief      Page de gestion des documents attaches a un compte bancaire
  */
 
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/bank.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/images.lib.php";

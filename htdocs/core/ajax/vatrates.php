@@ -32,7 +32,7 @@ if (!defined('NOREQUIREAJAX')) {
 }
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 $id = GETPOSTINT('id');
 $action = GETPOST('action', 'aZ09');    // 'getSellerVATRates' or 'getBuyerVATRates'

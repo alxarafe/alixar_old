@@ -24,7 +24,7 @@
  */
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/knowledgemanagement/class/knowledgerecord.class.php';
 require_once DOL_DOCUMENT_ROOT . '/knowledgemanagement/lib/knowledgemanagement_knowledgerecord.lib.php';

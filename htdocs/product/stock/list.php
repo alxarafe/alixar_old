@@ -31,7 +31,7 @@
 // Load Dolibarr environment
 use DoliCore\Lib\Fields;
 
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 if (isModEnabled('category')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcategory.class.php';

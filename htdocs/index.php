@@ -17,7 +17,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-require_once realpath('../vendor/autoload.php');
+use DoliCore\Base\Config;
 
 /**
  * Obtains main url
@@ -44,6 +44,13 @@ function get_url()
 }
 
 const BASE_PATH = __DIR__;
+$autoload_filename = realpath(BASE_PATH . '/../vendor/autoload.php');
+if (!file_exists($autoload_filename)) {
+    die('<h1>COMPOSER ERROR</h1><p>You need to run: "composer install"</p>');
+}
+
+require_once $autoload_filename;
+
 define('BASE_URL', get_url());
 
 /**
@@ -55,6 +62,9 @@ const DOL_DOCUMENT_ROOT = BASE_PATH;
  * @deprecated Use BASE_URL instead.
  */
 const DOL_URL_ROOT = BASE_URL;
+
+Config::load();
+$conf = Config::loadConfig();
 
 /**
  * @see htdocs/.htaccess
@@ -68,7 +78,7 @@ $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
 $api = filter_input(INPUT_GET, GET_API_VAR);
 
 if (empty($page) && empty($ctrl)) {
-    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
+    require BASE_PATH . DIRECTORY_SEPARATOR . 'dol_index.php';
     die();
 }
 
@@ -81,7 +91,7 @@ if (!empty($api)) {
 
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
 if (!file_exists($path)) {
-    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
+    require BASE_PATH . DIRECTORY_SEPARATOR . 'dol_index.php';
     die();
 }
 

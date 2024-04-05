@@ -35,7 +35,7 @@ if (!defined('NOREQUIREAJAX')) {
 }
 
 // Load Dolibarr environment
-require '../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 require DOL_DOCUMENT_ROOT . '/core/lib/loan.lib.php';
 
 $mens = price2num(GETPOST('mens'));

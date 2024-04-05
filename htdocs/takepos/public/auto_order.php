@@ -33,7 +33,7 @@ if (!defined('NOBROWSERNOTIF')) {
 }
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 if (!getDolGlobalString('TAKEPOS_AUTO_ORDER')) {
     accessforbidden('Auto order is not allwed'); // If Auto Order is disabled never allow access to this page (that is a NO LOGIN access)

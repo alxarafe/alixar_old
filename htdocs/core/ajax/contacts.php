@@ -33,7 +33,7 @@ if (!defined('NOREQUIREAJAX')) {
 }
 
 // Load Dolibarr environment
-require '../../main.inc.php';
+require BASE_PATH . '/main.inc.php';
 
 $id = GETPOSTINT('id'); // id of thirdparty
 $action = GETPOST('action', 'aZ09');

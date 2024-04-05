@@ -25,6 +25,7 @@
  *  \brief      This file is an CRUD class file (Create/Read/Update/Delete)
  */
 
+use Alixar\product\class\PropalmergepdfproductLine;
 use DoliCore\Base\GenericDocument;
 
 /**

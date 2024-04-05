@@ -51,7 +51,7 @@ if (!defined('NOREQUIREHTML')) {
     define('NOREQUIREHTML', 1);
 }
 
-require_once '../main.inc.php';
+require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
 if (GETPOST('lang', 'aZ09')) {
