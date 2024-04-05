@@ -277,7 +277,7 @@ abstract class Config
      *
      * @return string
      */
-    private static function getDataDir($pathDir)
+    public static function getDataDir($pathDir)
     {
         return preg_replace("/\/htdocs$/", "", $pathDir) . '/documents';
     }
@@ -382,18 +382,15 @@ abstract class Config
             return false;
         }
 
-        dd($dolibarrConfig);
-
         $db = static::getDb($dolibarrConfig);
-        return true;
+        $debugBar = isset($dolibarrConfig->modules['debugbar']);
+
         $conf = static::loadConfig($dolibarrConfig);
 
 
         $config = static::getConfig($dolibarrConfig);
         Debug::load();
 
-        dump([$dolibarrConfig->modules, $config]);
-        dump(isModEnabled('debugbar'));
 
         $db = new \Alxarafe\Base\Database($config->db);
         DB::select('SELECT * FROM alx_user');

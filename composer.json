@@ -42,7 +42,7 @@
     "tecnickcom/tcpdf": "^6.6",
     "nnnick/chartjs": "^3.7.1",
     "stripe/stripe-php": "^13.12",
-    "maximebf/debugbar": "^1.20",
+    "maximebf/debugbar": "^1.22",
     "erusev/parsedown": "^1.7",
     "ext-dom": "*",
     "webklex/php-imap": "^4.1",
@@ -50,7 +50,8 @@
     "globalcitizen/php-iban": "^4.2",
     "jenssegers/blade": "^1.4",
     "symfony/yaml": "^5.4",
-    "illuminate/database": "^8.83"
+    "illuminate/database": "^8.83",
+    "monolog/monolog": "^3.5"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",

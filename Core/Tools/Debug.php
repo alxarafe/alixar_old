@@ -70,7 +70,7 @@ abstract class Debug
 //        self::addCollector(new DolQueryCollector('SQL'));
         Debug::getDebugBar()->addCollector(new DolQueryCollector(Config::debugDb()));
 
-        $baseUrl = constant('BASE_URL') . '/Templates/Resources';
+        $baseUrl = constant('BASE_URL') . '/Templates/DebugBar/Resources';
         self::$render = self::getDebugBar()->getJavascriptRenderer($baseUrl, constant('BASE_PATH'));
 
         self::stopTimer($shortName);

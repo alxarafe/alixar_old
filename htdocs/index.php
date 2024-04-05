@@ -63,8 +63,11 @@ const DOL_DOCUMENT_ROOT = BASE_PATH;
  */
 const DOL_URL_ROOT = BASE_URL;
 
-Config::load();
 $conf = Config::loadConfig();
+
+define('DOL_DATA_ROOT', $conf->main->data_path ?? Config::getDataDir(BASE_PATH));
+
+Config::load();
 
 /**
  * @see htdocs/.htaccess
@@ -78,7 +81,7 @@ $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
 $api = filter_input(INPUT_GET, GET_API_VAR);
 
 if (empty($page) && empty($ctrl)) {
-    require BASE_PATH . DIRECTORY_SEPARATOR . 'dol_index.php';
+    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
     die();
 }
 
@@ -91,7 +94,7 @@ if (!empty($api)) {
 
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
 if (!file_exists($path)) {
-    require BASE_PATH . DIRECTORY_SEPARATOR . 'dol_index.php';
+    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
     die();
 }
 

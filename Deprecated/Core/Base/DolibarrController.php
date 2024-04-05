@@ -19,7 +19,6 @@
 namespace DoliCore\Base;
 
 use Alxarafe\Base\Controller;
-use Alxarafe\Base\Globals;
 
 /**
  * Class DolibarrController. Controller to carry out the migration from Dolibarr to Alixar.
@@ -40,12 +39,12 @@ abstract class DolibarrController extends Controller
     public function __construct()
     {
         $this->conf = Config::loadConf();
-        $this->config = Globals::getConfig($this->conf);
-        $this->db = Globals::getDb($this->conf);
-        $this->hookmanager = Globals::getHookManager();
-        $this->user = Globals::getUser();
-        $this->menumanager = Globals::getMenuManager($this->conf);
-        $this->langs = Globals::getLangs($this->conf);
+        $this->config = Config::getConfig($this->conf);
+        $this->db = Config::getDb($this->conf);
+        $this->hookmanager = Config::getHookManager();
+        $this->user = Config::getUser();
+        $this->menumanager = Config::getMenuManager($this->conf);
+        $this->langs = Config::getLangs($this->conf);
 
         parent::__construct();
     }
