@@ -40,13 +40,13 @@ abstract class DolibarrNoLoginController extends GenericController
     {
         $this->conf = Config::loadConf();
         if ($this->conf !== null) {
-            $this->config = Globals::getConfig($this->conf);
+            $this->config = Config::getConfig($this->conf);
             /*
-            $this->db = Globals::getDb($this->conf);
-            $this->hookmanager = Globals::getHookManager();
-            $this->menumanager = Globals::getMenuManager($this->conf);
+            $this->db = Config::getDb($this->conf);
+            $this->hookmanager = Config::getHookManager();
+            $this->menumanager = Config::getMenuManager($this->conf);
             */
-            $this->langs = Globals::getLangs($this->conf);
+            $this->langs = Config::getLangs($this->conf);
         }
 
         parent::__construct();

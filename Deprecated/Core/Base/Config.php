@@ -43,15 +43,24 @@ require_once BASE_PATH . '/user/class/user.class.php';
  */
 abstract class Config
 {
+    const DEFAULT_DB_PREFIX = 'alx_';
+
     /**
-     * Contains the information of the old conf global var.
+     * Contains the information of the old $conf global var.
+     *
+     * Config::loadConf() can be used at any point to retrieve the contents of the
+     * $conf variable used globally by Dolibarr.
+     *
+     * The content of the variable is saved with the first call and this copy is
+     * returned. If it is necessary to regenerate it, the parameter true can be
+     * passed to it.
      *
      * @var null|stdClass
      */
     private static $dolibarrConfig = null;
 
     /**
-     * Contains the information from the conf.php file.
+     * Contains the information from the conf.php file in a normalized stdClass.
      *
      * @var null|stdClass
      */
@@ -64,24 +73,14 @@ abstract class Config
     private static $user;
     private static $menumanager;
 
-
     /**
-     * Load the Dolibarr configuration file and enter the content for the Dolibarr global
-     * variable $conf.
+     * Load the configuration file and return the content that the $conf variable
+     * used globally by Dolibarr should have.
      *
-     * The result is cached for future queries. If we want to reload the configuration file
-     * we will have to pass the parameter true.
-     *
-     * @param $reload
-     *
-     * @return stdClass|null
+     * @return Conf|void
      */
-    public static function loadConf($reload = false): ?stdClass
+    private static function _loadConf()
     {
-        if (isset(static::$dolibarrConfig) && !$reload) {
-            return static::$dolibarrConfig;
-        }
-
         $filename = static::getDolibarrConfigFilename();
         $exists = file_exists($filename) && is_readable($filename);
         if ($exists) {
@@ -161,8 +160,112 @@ abstract class Config
             require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         }
 
-        static::$dolibarrConfig = $conf;
         return $conf;
+    }
+
+    /**
+     * Load the Dolibarr configuration file and enter the content for the Dolibarr global
+     * variable $conf.
+     *
+     * The result is cached for future queries. If we want to reload the configuration file
+     * we will have to pass the parameter true.
+     *
+     * @param $reload
+     *
+     * @return stdClass|null
+     */
+    public static function loadConf($reload = false): ?stdClass
+    {
+        if ($reload || !isset(static::$dolibarrConfig)) {
+            static::$dolibarrConfig = static::_loadConf();
+        }
+
+        return static::$dolibarrConfig;
+    }
+
+    /**
+     * Returns a stdClass with the information contained in the conf.php file.
+     *
+     * TODO: Refactor with loadConf.
+     *
+     * @param $reload
+     *
+     * @return stdClass|null
+     */
+    public static function loadConfig($reload = false): ?stdClass
+    {
+        if (isset(static::$config) && !$reload) {
+            return static::$config;
+        }
+
+        $filename = static::getDolibarrConfigFilename();
+        if (!file_exists($filename) || !is_readable($filename)) {
+            return null;
+        }
+
+        include $filename;
+
+        $config = new stdClass();
+
+        // 'main' section
+        $config->main = new stdClass();
+        $config->main->base_path = trim($dolibarr_main_document_root ?? constant('BASE_PATH'));
+        $config->main->base_url = trim($dolibarr_main_url_root ?? constant('BASE_URL'));
+        $config->main->data_path = trim($dolibarr_main_data_root ?? static::getDataDir($config->main->base_path));
+
+        $alt_base_path = $dolibarr_main_document_root_alt ?? false;
+        if ($alt_base_path !== false) {
+            $config->main->alt_base_path = trim($dolibarr_main_document_root_alt);
+        }
+
+        $alt_base_url = $dolibarr_main_url_root_alt ?? false;
+        if ($alt_base_url !== false) {
+            $config->main->alt_base_url = trim($dolibarr_main_url_root_alt);
+        }
+
+        $alt_data_path = $dolibarr_main_data_root_alt ?? false;
+        if ($alt_data_path !== false) {
+            $config->main->alt_data_path = trim($dolibarr_main_data_root_alt);
+        }
+
+        // 'db' section
+        $config->db = new stdClass();
+        $config->db->type = trim($dolibarr_main_db_type ?? 'mysql');
+        $config->db->host = trim($dolibarr_main_db_host ?? 'localhost');
+        $config->db->port = trim($dolibarr_main_db_port ?? '');
+        $config->db->name = trim($dolibarr_main_db_name ?? 'dolibarr');
+        $config->db->user = trim($dolibarr_main_db_user ?? 'dolibarr');
+        $config->db->pass = trim($dolibarr_main_db_pass ?? '');
+        $config->db->prefix = trim($dolibarr_main_db_prefix ?? '');
+        $config->db->charset = trim($dolibarr_main_db_character_set ?? 'utf8');
+        $config->db->collation = trim($dolibarr_main_db_collation ?? 'utf8mb4_unicode_ci');
+
+        // 'security' section
+        $config->security = new stdClass();
+        $config->security->authentication_type = $dolibarr_main_authentication ?? 'dolibarr';
+        $config->security->force_https = intval($dolibarr_main_force_https ?? 1);
+        $config->security->unique_id = $dolibarr_main_instance_unique_id ?? null;
+
+        $config->file = new stdClass();
+        $config->file->instance_unique_id = $config->security->unique_id;
+
+        // Others
+        $demo = $dolibarr_main_demo ?? false;
+        if ($demo !== false) {
+            $credentials = explode(',', $demo);
+            if (count($credentials) === 2) {
+                $config->demo->user = trim($credentials[0]);
+                $config->demo->pass = trim($credentials[1]);
+            }
+        }
+
+        $config->debug = intval($dolibarr_main_prod ?? 1) === 0;
+
+        // 'Server' section
+        $config->server = new stdClass();
+        $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
+
+        return $config;
     }
 
     public static function getConfig($conf)
@@ -177,7 +280,7 @@ abstract class Config
     public static function setConfigValues($conf, $db)
     {
         // Here we read database (llx_const table) and define conf var $conf->global->XXX.
-        //print "We work with data into entity instance number '".$conf->entity."'";
+        // print "We work with data into entity instance number '".$conf->entity."'";
         $conf->setValues($db);
     }
 
@@ -291,92 +394,10 @@ abstract class Config
     {
         return BASE_PATH . '/conf/conf.php';
     }
-
-    /**
-     * Returns a stdClass with the information contained in the conf.php file.
-     *
-     * @param $reload
-     *
-     * @return stdClass|null
-     */
-    public static function loadConfig($reload = false): ?stdClass
-    {
-        if (isset(static::$config) && !$reload) {
-            return static::$config;
-        }
-
-        $filename = static::getDolibarrConfigFilename();
-        if (!file_exists($filename) || !is_readable($filename)) {
-            return null;
-        }
-
-        include $filename;
-
-        $config = new stdClass();
-
-        // 'main' section
-        $config->main = new stdClass();
-        $config->main->base_path = trim($dolibarr_main_document_root ?? constant('BASE_PATH'));
-        $config->main->base_url = trim($dolibarr_main_url_root ?? constant('BASE_URL'));
-        $config->main->data_path = trim($dolibarr_main_data_root ?? static::getDataDir($config->main->base_path));
-
-        $alt_base_path = $dolibarr_main_document_root_alt ?? false;
-        if ($alt_base_path !== false) {
-            $config->main->alt_base_path = trim($dolibarr_main_document_root_alt);
-        }
-
-        $alt_base_url = $dolibarr_main_url_root_alt ?? false;
-        if ($alt_base_url !== false) {
-            $config->main->alt_base_url = trim($dolibarr_main_url_root_alt);
-        }
-
-        $alt_data_path = $dolibarr_main_data_root_alt ?? false;
-        if ($alt_data_path !== false) {
-            $config->main->alt_data_path = trim($dolibarr_main_data_root_alt);
-        }
-
-        // 'db' section
-        $config->db = new stdClass();
-        $config->db->type = trim($dolibarr_main_db_type ?? 'mysql');
-        $config->db->host = trim($dolibarr_main_db_host ?? 'localhost');
-        $config->db->port = trim($dolibarr_main_db_port ?? '');
-        $config->db->name = trim($dolibarr_main_db_name ?? 'dolibarr');
-        $config->db->user = trim($dolibarr_main_db_user ?? 'dolibarr');
-        $config->db->pass = trim($dolibarr_main_db_pass ?? '');
-        $config->db->prefix = trim($dolibarr_main_db_prefix ?? '');
-        $config->db->charset = trim($dolibarr_main_db_character_set ?? 'utf8');
-        $config->db->collation = trim($dolibarr_main_db_collation ?? 'utf8mb4_unicode_ci');
-
-        // 'security' section
-        $config->security = new stdClass();
-        $config->security->authentication_type = $dolibarr_main_authentication ?? 'dolibarr';
-        $config->security->force_https = intval($dolibarr_main_force_https ?? 1);
-        $config->security->unique_id = $dolibarr_main_instance_unique_id ?? null;
-
-        $config->file = new stdClass();
-        $config->file->instance_unique_id = $config->security->unique_id;
-
-        // Others
-        $demo = $dolibarr_main_demo ?? false;
-        if ($demo !== false) {
-            $credentials = explode(',', $demo);
-            if (count($credentials) === 2) {
-                $config->demo->user = trim($credentials[0]);
-                $config->demo->pass = trim($credentials[1]);
-            }
-        }
-
-        $config->debug = intval($dolibarr_main_prod ?? 1) === 0;
-
-        // 'Server' section
-        $config->server = new stdClass();
-        $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
-
-        return $config;
-    }
-
     public static function load()
     {
+        global $db;
+
         $dolibarrConfig = Config::loadConf();
         if ($dolibarrConfig === null) {
             return false;
@@ -392,7 +413,8 @@ abstract class Config
         Debug::load();
 
 
-        $db = new \Alxarafe\Base\Database($config->db);
+        new \Alxarafe\Base\Database($config->db);
         DB::select('SELECT * FROM alx_user');
+        $db->query('SELECT * FROM alx_user');
     }
 }

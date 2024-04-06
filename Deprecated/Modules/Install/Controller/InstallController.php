@@ -68,7 +68,7 @@ class InstallController extends DolibarrNoLoginController
         }
 
         if (!isset($langs)) {
-            $langs = Globals::getLangs($conf);
+            $langs = Config::getLangs($conf);
             $langs->setDefaultLang('auto');
         }
 
@@ -123,7 +123,7 @@ class InstallController extends DolibarrNoLoginController
         }
 
         if (!isset($langs)) {
-            $langs = Globals::getLangs($conf);
+            $langs = Config::getLangs($conf);
             $langs->setDefaultLang('auto');
         }
 
@@ -727,7 +727,7 @@ $(".runupgrade").click(function() {
         }
 
         if (!isset($langs)) {
-            $langs = Globals::getLangs($conf);
+            $langs = Config::getLangs($conf);
             $langs->setDefaultLang('auto');
         }
 
@@ -1453,7 +1453,7 @@ $(".runupgrade").click(function() {
         }
 
         if (!isset($langs)) {
-            $langs = Globals::getLangs($conf);
+            $langs = Config::getLangs($conf);
             $langs->setDefaultLang('auto');
         }
 
@@ -2426,7 +2426,7 @@ $(".runupgrade").click(function() {
             $conf = Config::loadConf(true);
 
         if (!isset($langs)) {
-            $langs = Globals::getLangs($conf);
+            $langs = Config::getLangs($conf);
             $langs->setDefaultLang('auto');
         }
 
@@ -3044,7 +3044,7 @@ $(".runupgrade").click(function() {
         }
 
         if (!isset($langs)) {
-            $langs = Globals::getLangs($conf);
+            $langs = Config::getLangs($conf);
             $langs->setDefaultLang('auto');
         }
 
@@ -3153,7 +3153,7 @@ $(".runupgrade").click(function() {
         }
 
         if (!isset($langs)) {
-            $langs = Globals::getLangs($conf);
+            $langs = Config::getLangs($conf);
             $langs->setDefaultLang('auto');
         }
 

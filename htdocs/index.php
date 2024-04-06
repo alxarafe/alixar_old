@@ -20,7 +20,13 @@
 use DoliCore\Base\Config;
 
 /**
+ * @deprecated It is needed only to display queries to the database using Dolibarr calls.
+ */
+global $db;
+
+/**
  * Obtains main url
+ * TODO: Move to functions
  *
  * @return string
  */
@@ -65,8 +71,15 @@ const DOL_URL_ROOT = BASE_URL;
 
 $conf = Config::loadConfig();
 
+/**
+ * @deprecated Necessary for compatibility with Dolibarr
+ */
 define('DOL_DATA_ROOT', $conf->main->data_path ?? Config::getDataDir(BASE_PATH));
 
+/**
+ * Load the configuration file and initialize all the variables of the Config class.
+ * At the moment it uses Config in Deprecated, but the functionalities will have to be moved to Core.
+ */
 Config::load();
 
 /**

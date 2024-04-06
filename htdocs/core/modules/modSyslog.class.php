@@ -28,6 +28,9 @@
 
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
+use Alxarafe\Tools\Debug;
+use Alxarafe\Tools\DebugBarCollector\DolLogsCollector;
+
 /**
  *  Class to enable/disable module Logs
  */
@@ -40,6 +43,8 @@ class modSyslog extends DolibarrModules
      */
     public function __construct($db)
     {
+        global $conf;
+
         $this->db = $db;
         $this->numero = 42;
 
@@ -105,5 +110,9 @@ class modSyslog extends DolibarrModules
                 'test' => true
             )
         );
+
+        if (isset($conf->modules['syslog'])) {
+            Debug::getDebugBar()->addCollector(new DolLogsCollector());
+        }
     }
 }

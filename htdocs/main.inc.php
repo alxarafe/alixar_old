@@ -41,6 +41,8 @@
  *  \brief      File that defines environment for Dolibarr GUI pages only (file not required by scripts)
  */
 
+global $db;
+
 /**
  * @deprecated Use $config instead
  */
@@ -54,7 +56,9 @@ require_once BASE_PATH . '/main.inc.functions.php';
 $conf = Config::loadConf();
 // If $conf is not empty, we load the "superglobal" variables.
 if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
-    $db = Config::getDb($conf);
+    if (!isset($db)) {
+        $db = Config::getDb($conf);
+    }
 
     $config = Config::getConfig($conf);
     Constants::define($config);

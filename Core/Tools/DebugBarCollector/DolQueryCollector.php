@@ -27,9 +27,12 @@ namespace Alxarafe\Tools\DebugBarCollector;
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
+use DoliCore\Lib\TraceableDB;
 
 /**
  * DolQueryCollector class
+ *
+ * @deprecated Delete when fully migrated to Eloquent
  */
 class DolQueryCollector extends DataCollector implements Renderable, AssetProvider
 {
@@ -41,8 +44,11 @@ class DolQueryCollector extends DataCollector implements Renderable, AssetProvid
     /**
      * Constructor
      */
-    public function __construct($db)
+    public function __construct()
     {
+        global $db;
+
+        $db = new TraceableDB($db);
         $this->db = $db;
     }
 
@@ -102,7 +108,7 @@ class DolQueryCollector extends DataCollector implements Renderable, AssetProvid
     {
         global $langs;
 
-        $title = $langs->transnoentities('SQL');
+        $title = $langs->transnoentities('DolSQL');
 
         return [
             "$title" => [

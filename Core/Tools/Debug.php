@@ -21,22 +21,12 @@ namespace Alxarafe\Tools;
 use Alxarafe\Tools\DebugBarCollector\DolQueryCollector;
 use Alxarafe\Tools\DebugBarCollector\PhpCollector;
 use DebugBar\DataCollector\DataCollectorInterface;
-use DebugBar\DataCollector\MessagesCollector;
 use DebugBar\DebugBar;
 use DebugBar\JavascriptRenderer;
 use DebugBar\StandardDebugBar;
-use DoliCore\Base\Config;
-use Illuminate\Database\Capsule\Manager as DB;
-use Monolog\Logger;
 
 abstract class Debug
 {
-    /**
-     * Private logger instance
-     *
-     * @var Logger
-     */
-    //    public static Logger $logger;
     /**
      * Private render instance
      *
@@ -63,12 +53,11 @@ abstract class Debug
         self::startTimer($shortName, $shortName . ' DebugTool Constructor');
 
         self::addCollector(new PhpCollector());
-        self::addCollector(new MessagesCollector('Deprecated'));
-//         self::addCollector(new MonologCollector(Logger::getLogger()));
+        // self::addCollector(new MessagesCollector('Deprecated'));
+        // self::addCollector(new MonologCollector(Logger::getLogger()));
         // self::addCollector(new TranslatorCollector());
 
-//        self::addCollector(new DolQueryCollector('SQL'));
-        Debug::getDebugBar()->addCollector(new DolQueryCollector(Config::debugDb()));
+        Debug::getDebugBar()->addCollector(new DolQueryCollector());
 
         $baseUrl = constant('BASE_URL') . '/Templates/DebugBar/Resources';
         self::$render = self::getDebugBar()->getJavascriptRenderer($baseUrl, constant('BASE_PATH'));
@@ -97,10 +86,6 @@ abstract class Debug
 
     /**
      * Return the internal debug instance for get the html code.
-     *
-     * TODO: Analizar qué funciones harían falta para el html y retornar el html.
-     * Tal y como está ahora mismo sería dependiente de DebugBar. DebugBar debería
-     * de quedar TOTALMENTE encapsulado en esta clase.
      *
      * @return StandardDebugBar
      * @throws DebugBarException
