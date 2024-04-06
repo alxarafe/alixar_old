@@ -21,8 +21,10 @@ namespace DoliCore\Base;
 use Alxarafe\Tools\Debug;
 use Conf;
 use DoliCore\Lib\TraceableDB;
+use DoliDB;
 use HookManager;
-use Illuminate\Database\Capsule\Manager as DB;
+
+// use Illuminate\Database\Capsule\Manager as DB;
 use MenuManager;
 use stdClass;
 use Translate;
@@ -48,38 +50,68 @@ abstract class Config
     /**
      * Contains the information of the old $conf global var.
      *
-     * Config::loadConf() can be used at any point to retrieve the contents of the
+     * Config::getConf() can be used at any point to retrieve the contents of the
      * $conf variable used globally by Dolibarr.
      *
      * The content of the variable is saved with the first call and this copy is
      * returned. If it is necessary to regenerate it, the parameter true can be
      * passed to it.
      *
-     * @var null|stdClass
+     * @var null|Conf
+     *
+     * @deprecated Use $config instead
      */
     private static $dolibarrConfig = null;
 
     /**
      * Contains the information from the conf.php file in a normalized stdClass.
      *
+     * The objective is to move what is really needed to this object and update the
+     * configuration file to a data file outside of public space.
+     *
      * @var null|stdClass
      */
     private static $config = null;
 
+    /**
+     * Contains a DoliDB connection.
+     *
+     * @var DoliDB, null
+     */
     private static $db;
+
+    /**
+     * Contains a HookManager class.
+     *
+     * @var $hookManager
+     */
     private static $hookManager;
 
+    /**
+     * Contains a Translate class
+     *
+     * @var Translate
+     */
     private static $langs;
+
+    /**
+     * Contains a User class instance.
+     *
+     * @var User
+     */
     private static $user;
+
     private static $menumanager;
 
     /**
      * Load the configuration file and return the content that the $conf variable
      * used globally by Dolibarr should have.
      *
-     * @return Conf|void
+     * @return Conf|null
+     *
+     * @deprecated Use loadConfig() instead!
      */
-    private static function _loadConf()
+    private static function loadConf()
     {
         $filename = static::getDolibarrConfigFilename();
         $exists = file_exists($filename) && is_readable($filename);
@@ -149,6 +181,10 @@ abstract class Config
             }
         }
 
+        $conf->file->dol_data_root = $dolibarr_main_data_root ?? static::getDataDir(BASE_PATH);
+
+        $conf->debug = intval($dolibarr_main_prod ?? 1) === 0;
+
         // Load the main includes of common libraries
         if (!defined('NOREQUIREUSER')) {
             require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php'; // Need 500ko memory
@@ -160,58 +196,29 @@ abstract class Config
             require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         }
 
+        static::$dolibarrConfig = $conf;
         return $conf;
     }
 
     /**
-     * Load the Dolibarr configuration file and enter the content for the Dolibarr global
-     * variable $conf.
-     *
-     * The result is cached for future queries. If we want to reload the configuration file
-     * we will have to pass the parameter true.
-     *
-     * @param $reload
+     * Returns a normalized config file.
      *
      * @return stdClass|null
      */
-    public static function loadConf($reload = false): ?stdClass
+    private static function loadConfig()
     {
-        if ($reload || !isset(static::$dolibarrConfig)) {
-            static::$dolibarrConfig = static::_loadConf();
-        }
-
-        return static::$dolibarrConfig;
-    }
-
-    /**
-     * Returns a stdClass with the information contained in the conf.php file.
-     *
-     * TODO: Refactor with loadConf.
-     *
-     * @param $reload
-     *
-     * @return stdClass|null
-     */
-    public static function loadConfig($reload = false): ?stdClass
-    {
-        if (isset(static::$config) && !$reload) {
-            return static::$config;
-        }
-
-        $filename = static::getDolibarrConfigFilename();
-        if (!file_exists($filename) || !is_readable($filename)) {
+        $conf = static::loadConf();
+        if (empty($conf)) {
             return null;
         }
-
-        include $filename;
 
         $config = new stdClass();
 
         // 'main' section
         $config->main = new stdClass();
-        $config->main->base_path = trim($dolibarr_main_document_root ?? constant('BASE_PATH'));
-        $config->main->base_url = trim($dolibarr_main_url_root ?? constant('BASE_URL'));
-        $config->main->data_path = trim($dolibarr_main_data_root ?? static::getDataDir($config->main->base_path));
+        $config->main->base_path = $conf->file->dol_document_root['main'] ?? constant('BASE_PATH');
+        $config->main->base_url = $conf->file->dol_main_url_root ?? constant('BASE_URL');
+        $config->main->data_path = $conf->file->dol_data_root ?? '';
 
         $alt_base_path = $dolibarr_main_document_root_alt ?? false;
         if ($alt_base_path !== false) {
@@ -229,25 +236,17 @@ abstract class Config
         }
 
         // 'db' section
-        $config->db = new stdClass();
-        $config->db->type = trim($dolibarr_main_db_type ?? 'mysql');
-        $config->db->host = trim($dolibarr_main_db_host ?? 'localhost');
-        $config->db->port = trim($dolibarr_main_db_port ?? '');
-        $config->db->name = trim($dolibarr_main_db_name ?? 'dolibarr');
-        $config->db->user = trim($dolibarr_main_db_user ?? 'dolibarr');
-        $config->db->pass = trim($dolibarr_main_db_pass ?? '');
-        $config->db->prefix = trim($dolibarr_main_db_prefix ?? '');
-        $config->db->charset = trim($dolibarr_main_db_character_set ?? 'utf8');
-        $config->db->collation = trim($dolibarr_main_db_collation ?? 'utf8mb4_unicode_ci');
+        $config->db = $conf->db;
+        $config->db->charset = $conf->db->character_set;
+        $config->db->collation = $conf->db->dolibarr_main_db_collation;
 
         // 'security' section
         $config->security = new stdClass();
-        $config->security->authentication_type = $dolibarr_main_authentication ?? 'dolibarr';
-        $config->security->force_https = intval($dolibarr_main_force_https ?? 1);
-        $config->security->unique_id = $dolibarr_main_instance_unique_id ?? null;
+        $config->security->authentication_type = $conf->file->main_authentication;
+        $config->security->force_https = $conf->file->main_force_https;
+        $config->security->unique_id = $conf->file->instance_unique_id;
 
-        $config->file = new stdClass();
-        $config->file->instance_unique_id = $config->security->unique_id;
+        $config->file = $conf->file;
 
         // Others
         $demo = $dolibarr_main_demo ?? false;
@@ -259,80 +258,64 @@ abstract class Config
             }
         }
 
-        $config->debug = intval($dolibarr_main_prod ?? 1) === 0;
+        $config->debug = $conf->debug;
 
         // 'Server' section
         $config->server = new stdClass();
         $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
 
+        static::$dolibarrConfig = $conf;
+        static::$config = $config;
+
         return $config;
     }
 
-    public static function getConfig($conf)
+    /**
+     * Returns a Dolibarr DB connection (DoliDB) instance.
+     *
+     * @return DoliDb
+     * @throws \Exception
+     */
+    private static function loadDb()
     {
-        if (empty(static::$config)) {
-            static::$config = Config::loadConfig();
-        }
-
-        return static::$config;
-    }
-
-    public static function setConfigValues($conf, $db)
-    {
-        // Here we read database (llx_const table) and define conf var $conf->global->XXX.
-        // print "We work with data into entity instance number '".$conf->entity."'";
-        $conf->setValues($db);
-    }
-
-    public static function getDb($conf)
-    {
-        if (empty(static::$db)) {
-            static::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
-            static::$dolibarrConfig->setValues(static::$db);
-        }
+        $conf = static::$dolibarrConfig;
+        static::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+        static::$dolibarrConfig->setValues(static::$db);
         return static::$db;
     }
 
-    public static function debugDb()
+    /**
+     * Returns a HookManager class instance.
+     *
+     * @return mixed
+     */
+    private static function loadHookManager()
     {
-        if (isModEnabled('debugbar')) {
-            static::$db = new TraceableDB(static::$db);
-        }
-        return static::$db;
-    }
-
-    public static function getHookManager()
-    {
-        if (empty(static::$hookManager)) {
-            static::$hookManager = new HookManager(static::$db);
-        }
+        static::$hookManager = new HookManager(static::$db);
         return static::$hookManager;
     }
 
-    public static function getLangs($conf)
+    /**
+     * Returns a Translate class instance.
+     *
+     * @return Translate
+     */
+    private static function loadLangs()
     {
-        if (empty(static::$langs)) {
-            static::$langs = new Translate('', $conf);
-        }
+        static::$langs = new Translate('', static::$dolibarrConfig);
         return static::$langs;
     }
 
-    public static function getUser()
+    private static function loadUser()
     {
-        if (empty(static::$user)) {
-            static::$user = new User(static::$db);
-        }
+        static::$user = new User(static::$db);
         return static::$user;
     }
 
-    public static function getMenuManager($conf)
+    private static function loadMenuManager()
     {
-        if (!empty(static::$menumanager)) {
-            return static::$menumanager;
-        }
-
-        // Init menu manager
-        $db = static::getDb($conf);
+        $conf = static::$dolibarrConfig;
+        $db = static::$db;
 
         $menumanager = null;
         if (!defined('NOREQUIREMENU')) {
@@ -368,10 +351,7 @@ abstract class Config
         }
 
         static::$menumanager = $menumanager;
-
-        return $menumanager;
     }
-
 
     /**
      * Simply replace /htdocs with /documents in $pathDir
@@ -394,27 +374,160 @@ abstract class Config
     {
         return BASE_PATH . '/conf/conf.php';
     }
+
+    /**
+     * Load the Dolibarr configuration file and enter the content for the Dolibarr global
+     * variable $conf.
+     *
+     * The result is cached for future queries. If we want to reload the configuration file
+     * we will have to pass the parameter true.
+     *
+     * @param $reload
+     *
+     * @return stdClass|null
+     */
+    public static function getConf($reload = false): ?stdClass
+    {
+        if ($reload || !isset(static::$dolibarrConfig)) {
+            static::$dolibarrConfig = static::loadConf();
+        }
+
+        return static::$dolibarrConfig;
+    }
+
+    /**
+     * Returns a stdClass with the information contained in the conf.php file.
+     *
+     * @param $reload
+     *
+     * @return stdClass|null
+     */
+    public static function getConfig($reload = false): ?stdClass
+    {
+        if ($reload || !isset(static::$config)) {
+            static::$config = static::loadConfig();
+        }
+
+        return static::$config;
+    }
+
+    /**
+     * Returns a DoliDB connection instance.
+     *
+     * @return DoliDB|null
+     */
+    public static function getDb(): ?DoliDB
+    {
+        return static::$db;
+    }
+
+    /**
+     * Fills in the additional data of the $conf variable, taken once the database
+     * is initialized
+     *
+     * @param $conf
+     */
+    public static function setConfigValues($conf)
+    {
+        // Here we read database (llx_const table) and define conf var $conf->global->XXX.
+        // print "We work with data into entity instance number '".$conf->entity."'";
+        $conf->setValues(static::$db);
+    }
+
+    /**
+     * Returns a TraceableDB connection instance.
+     *
+     * @return TraceableDB|null
+     */
+    public static function debugDb(): ?TraceableDB
+    {
+        if (isModEnabled('debugbar')) {
+            static::$db = new TraceableDB(static::$db);
+        }
+        return static::$db;
+    }
+
+    /**
+     * Returns a HookManager class instance.
+     *
+     * @return HookManager|null
+     */
+    public static function getHookManager(): ?HookManager
+    {
+        if (empty(static::$hookManager)) {
+            static::$hookManager = static::loadHookManager();
+        }
+        return static::$hookManager;
+    }
+
+    /**
+     * Returns a Translate class instance.
+     *
+     * @return Translate|null
+     */
+    public static function getLangs(): ?Translate
+    {
+        if (empty(static::$langs)) {
+            static::$langs = static::loadLangs();
+        }
+        return static::$langs;
+    }
+
+    /**
+     * Returns a User class instance.
+     *
+     * @return User|null
+     */
+    public static function getUser(): ?User
+    {
+        if (empty(static::$user)) {
+            static::$user = static::getUser();
+        }
+        return static::$user;
+    }
+
+    public static function getMenuManager($conf)
+    {
+        if (!empty(static::$menumanager)) {
+            static::$menumanager = static::loadMenuManager();
+        }
+        return static::$menumanager;
+    }
+
+    /**
+     * Load all Dolibar global variables.
+     *
+     * @return false|void
+     * @throws \DebugBar\DebugBarException
+     */
     public static function load()
     {
+        global $conf;
+        global $config;
         global $db;
+        global $hookmanager;
+        global $langs;
+        global $user;
+        global $menumanager;
 
-        $dolibarrConfig = Config::loadConf();
-        if ($dolibarrConfig === null) {
+        $conf = static::$dolibarrConfig = static::loadConf();
+        if (empty($conf->db->name ?? '')) {
             return false;
         }
 
-        $db = static::getDb($dolibarrConfig);
-        $debugBar = isset($dolibarrConfig->modules['debugbar']);
-
-        $conf = static::loadConfig($dolibarrConfig);
-
-
-        $config = static::getConfig($dolibarrConfig);
+        $config = static::$config = static::loadConfig();
+        $db = static::$db = static::loadDb();
+        $hookmanager = static::$hookManager = static::loadHookManager();
+        $langs = static::$langs = static::loadLangs();
+        $user = static::$user = static::loadUser();
+        if ($user->id > 0) {
+            $menumanager = static::$menumanager = static::loadMenuManager();
+        }
         Debug::load();
 
-
-        new \Alxarafe\Base\Database($config->db);
-        DB::select('SELECT * FROM alx_user');
-        $db->query('SELECT * FROM alx_user');
+        // TODO: Example of calling a SELECT from Eloquent and from Dolibarr
+        // new \Alxarafe\Base\Database($config->db);
+        // DB::select('SELECT * FROM alx_user'); // use Illuminate\Database\Capsule\Manager as DB;
+        // $db->query('SELECT * FROM alx_user');
     }
 }

@@ -47,6 +47,7 @@
  */
 
 use Alxarafe\Tools\Debug;
+use DoliCore\Base\Config;
 
 include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 
@@ -1314,7 +1315,7 @@ function dol_include_once($relpath, $classname = '')
  */
 function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
 {
-    $conf = \DoliCore\Base\Config::loadConf();
+    $conf = Config::getConf();
 
     $path = preg_replace('/^\//', '', $path);
 

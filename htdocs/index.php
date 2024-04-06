@@ -69,7 +69,7 @@ const DOL_DOCUMENT_ROOT = BASE_PATH;
  */
 const DOL_URL_ROOT = BASE_URL;
 
-$conf = Config::loadConfig();
+//$conf = Config::loadConfig();
 
 /**
  * @deprecated Necessary for compatibility with Dolibarr

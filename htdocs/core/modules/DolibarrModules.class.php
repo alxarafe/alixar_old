@@ -443,7 +443,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
     protected function _init($array_sql, $options = '')
     {
         // phpcs:enable
-        $conf = \DoliCore\Base\Config::loadConf();
+        $conf = \DoliCore\Base\Config::getConf();
 
         $err = 0;
 

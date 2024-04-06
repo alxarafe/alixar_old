@@ -28,6 +28,7 @@
  *              because it is used at low code level.
  */
 
+use DoliCore\Base\Config;
 
 /**
  *  Encode a string with base 64 algorithm + specific delta change.
@@ -190,7 +191,7 @@ function dolEncrypt($chain, $key = '', $ciphering = 'AES-256-CTR', $forceseed = 
  */
 function dolDecrypt($chain, $key = '')
 {
-    global $conf;
+    $conf = Config::getConf();
 
     if ($chain === '' || is_null($chain)) {
         return '';

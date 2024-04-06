@@ -58,17 +58,17 @@ class InstallController extends DolibarrNoLoginController
 
         $conffile = Config::getDolibarrConfigFilename();
 
-// If the config file exists and is filled, we're not on first install so we skip the language selection page
+        // If the config file exists and is filled, we're not on first install so we skip the language selection page
         if (file_exists($conffile) && isset($dolibarr_main_url_root)) {
             return $this->check(true);
         }
 
         if (!isset($conf)) {
-            $conf = Config::loadConf();
+            $conf = Config::getConf();
         }
 
         if (!isset($langs)) {
-            $langs = Config::getLangs($conf);
+            $langs = Config::getLangs();
             $langs->setDefaultLang('auto');
         }
 
@@ -119,7 +119,7 @@ class InstallController extends DolibarrNoLoginController
         $conffiletoshow = $conffile;
 
         if (!isset($conf)) {
-            $conf = Config::loadConf();
+            $conf = Config::getConf();
         }
 
         if (!isset($langs)) {
@@ -723,7 +723,7 @@ $(".runupgrade").click(function() {
         $conffiletoshow = $conffile;
 
         if (!isset($conf)) {
-            $conf = Config::loadConf();
+            $conf = Config::getConf();
         }
 
         if (!isset($langs)) {
@@ -1449,7 +1449,7 @@ $(".runupgrade").click(function() {
         $conffiletoshow = $conffile;
 
         if (!isset($conf)) {
-            $conf = Config::loadConf();
+            $conf = Config::getConf();
         }
 
         if (!isset($langs)) {
@@ -1940,7 +1940,7 @@ $(".runupgrade").click(function() {
             }
 
             // Table prefix
-            $main_db_prefix = (!empty($db_prefix) ? $db_prefix : 'llx_');
+            $main_db_prefix = (!empty($db_prefix) ? $db_prefix : static::DEFAULT_DATABASE_PREFIX);
 
             // Write conf file on disk
             if (!$error) {
@@ -2254,7 +2254,7 @@ $(".runupgrade").click(function() {
                     }
                 }   // end of user account creation
 
-                $conf = Config::loadConf(true);
+                $conf = Config::getConf(true);
 
                 // If database creation was asked, we create it
                 if (!$error && (isset($db_create_database) && ($db_create_database == "1" || $db_create_database == "on"))) {
@@ -2423,7 +2423,7 @@ $(".runupgrade").click(function() {
         $conffile = Config::getDolibarrConfigFilename();
         $conffiletoshow = $conffile;
 
-            $conf = Config::loadConf(true);
+        $conf = Config::getConf(true);
 
         if (!isset($langs)) {
             $langs = Config::getLangs($conf);
@@ -3040,7 +3040,7 @@ $(".runupgrade").click(function() {
         $conffiletoshow = $conffile;
 
         if (!isset($conf)) {
-            $conf = Config::loadConf();
+            $conf = Config::getConf();
         }
 
         if (!isset($langs)) {
@@ -3149,7 +3149,7 @@ $(".runupgrade").click(function() {
         $conffiletoshow = $conffile;
 
         if (!isset($conf)) {
-            $conf = Config::loadConf();
+            $conf = Config::getConf();
         }
 
         if (!isset($langs)) {

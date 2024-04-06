@@ -91,7 +91,7 @@ abstract class DoliDB implements Database
      */
     public function prefix()
     {
-        $conf = Config::loadConf();
+        $conf = Config::getConf();
         return (empty($this->prefix_db) ? $conf->db->prefix : $this->prefix_db);
     }
 

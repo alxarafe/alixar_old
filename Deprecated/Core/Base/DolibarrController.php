@@ -38,7 +38,7 @@ abstract class DolibarrController extends Controller
 
     public function __construct()
     {
-        $this->conf = Config::loadConf();
+        $this->conf = Config::getConf();
         $this->config = Config::getConfig($this->conf);
         $this->db = Config::getDb($this->conf);
         $this->hookmanager = Config::getHookManager();

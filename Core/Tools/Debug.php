@@ -22,6 +22,7 @@ use Alxarafe\Tools\DebugBarCollector\DolQueryCollector;
 use Alxarafe\Tools\DebugBarCollector\PhpCollector;
 use DebugBar\DataCollector\DataCollectorInterface;
 use DebugBar\DebugBar;
+use DebugBar\DebugBarException;
 use DebugBar\JavascriptRenderer;
 use DebugBar\StandardDebugBar;
 
@@ -148,7 +149,7 @@ abstract class Debug
         $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
         $caller['file'] = substr($caller['file'], strlen(BASE_DIR));
         self::$debugBar['exceptions']->addException($exception); // Use addThrowable instead!
-// Logger::info('Exception: ' . $exception->getMessage());
+        // Logger::info('Exception: ' . $exception->getMessage());
     }
 
     public static function message(string $message): void

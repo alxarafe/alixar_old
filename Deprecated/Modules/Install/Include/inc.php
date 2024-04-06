@@ -24,6 +24,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Base\Config;
+
 /**
  *  \file       htdocs/install/inc.php
  *  \ingroup    core
@@ -261,12 +263,13 @@ $conf->global->MAIN_ENABLE_LOG_TO_HTML = 1;
 
 // Define prefix
 if (!isset($dolibarr_main_db_prefix) || !$dolibarr_main_db_prefix) {
-    $dolibarr_main_db_prefix = 'llx_';
+    $dolibarr_main_db_prefix = Config::DEFAULT_DB_PREFIX;
 }
 define('MAIN_DB_PREFIX', (isset($dolibarr_main_db_prefix) ? $dolibarr_main_db_prefix : ''));
-
 define('DOL_CLASS_PATH', 'class/'); // Filesystem path to class dir
-define('DOL_DATA_ROOT', (isset($dolibarr_main_data_root) ? $dolibarr_main_data_root : DOL_DOCUMENT_ROOT . '/../documents'));
+if (!defined('DOL_DATA_ROOT')) {
+    define('DOL_DATA_ROOT', (isset($dolibarr_main_data_root) ? $dolibarr_main_data_root : DOL_DOCUMENT_ROOT . '/../documents'));
+}
 define('DOL_MAIN_URL_ROOT', (isset($dolibarr_main_url_root) ? $dolibarr_main_url_root : '')); // URL relative root
 $uri = preg_replace('/^http(s?):\/\//i', '', constant('DOL_MAIN_URL_ROOT')); // $uri contains url without http*
 $suburi = strstr($uri, '/'); // $suburi contains url without domain

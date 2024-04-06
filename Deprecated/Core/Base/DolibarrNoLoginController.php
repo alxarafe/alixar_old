@@ -38,7 +38,7 @@ abstract class DolibarrNoLoginController extends GenericController
 
     public function __construct()
     {
-        $this->conf = Config::loadConf();
+        $this->conf = Config::getConf();
         if ($this->conf !== null) {
             $this->config = Config::getConfig($this->conf);
             /*

@@ -86,7 +86,7 @@ function jsUnEscape($source)
  */
 function dolGetModulesDirs($subdir = '')
 {
-    $conf = \DoliCore\Base\Config::loadConf();
+    $conf = \DoliCore\Base\Config::getConf();
 
     $modulesdir = [];
 
