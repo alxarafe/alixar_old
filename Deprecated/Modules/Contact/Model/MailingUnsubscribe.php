@@ -1,6 +1,6 @@
 <?php
 
-/* Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
+/* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,17 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace DoliCore\Base;
+namespace DoliModules\Contact\Model;
 
-use Illuminate\Database\Capsule\Manager;
+use DoliCore\Base\Model;
 
-/**
- * Class BasicModel replaces CommonObject
- *
- * @deprecated This class is only needed for compatibility with Dolibarr.
- */
-abstract class BasicModel extends Manager
+
+class MailingUnsubscribe extends Model
 {
-    public $timestamps = false;
+    const CREATED_AT = 'date_creat';
+    const UPDATED_AT = 'tms';
+    public $timestamps = true;
+    protected $table = 'mailing_unsubscribe';
     protected $primaryKey = 'rowid';
+    protected $fillable = ['unsubscribegroup', 'ip'];
 }

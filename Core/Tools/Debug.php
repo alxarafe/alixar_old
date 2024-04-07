@@ -165,11 +165,11 @@ abstract class Debug
      */
     private static function addMessage(string $channel, string $message): void
     {
-        if (!defined('DEBUG') || constant('DEBUG') !== true) {
-            return;
-        }
+//        if (!defined('DEBUG') || constant('DEBUG') !== true) {
+//            return;
+//        }
         $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
-        $caller['file'] = substr($caller['file'], strlen(BASE_DIR));
+        $caller['file'] = substr($caller['file'], strlen(BASE_PATH));
         self::$debugBar[$channel]->addMessage($caller['file'] . ' (' . $caller['line'] . '): ' . $message);
     }
 

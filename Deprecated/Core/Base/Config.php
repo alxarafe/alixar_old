@@ -23,8 +23,7 @@ use Conf;
 use DoliCore\Lib\TraceableDB;
 use DoliDB;
 use HookManager;
-
-// use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Capsule\Manager as DB;
 use MenuManager;
 use stdClass;
 use Translate;
@@ -526,8 +525,8 @@ abstract class Config
         Debug::load();
 
         // TODO: Example of calling a SELECT from Eloquent and from Dolibarr
-        // new \Alxarafe\Base\Database($config->db);
-        // DB::select('SELECT * FROM alx_user'); // use Illuminate\Database\Capsule\Manager as DB;
+        new \Alxarafe\Base\Database($config->db);
+        DB::select('SELECT * FROM alx_user'); // use Illuminate\Database\Capsule\Manager as DB;
         // $db->query('SELECT * FROM alx_user');
     }
 }
