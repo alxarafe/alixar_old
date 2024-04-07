@@ -18,6 +18,9 @@
 
 namespace DoliModules\Contact\Trait;
 
+use Alxarafe\Tools\Debug;
+use DoliModules\Contact\Model\MailingUnsubscribe;
+
 trait Mailing
 {
     /**
@@ -29,53 +32,22 @@ trait Mailing
      */
     public function setNoEmail($no_email)
     {
-        $error = 0;
-
-        // Update mass emailing flag into table mailing_unsubscribe
-        if ($this->email) {
-            $this->db->begin();
-
-            if ($no_email) {
-                $sql = "SELECT COUNT(rowid) as nb FROM " . MAIN_DB_PREFIX . "mailing_unsubscribe WHERE entity IN (" . getEntity('mailing', 0) . ") AND email = '" . $this->db->escape($this->email) . "'";
-                $resql = $this->db->query($sql);
-                if ($resql) {
-                    $obj = $this->db->fetch_object($resql);
-                    $noemail = $obj->nb;
-                    if (empty($noemail)) {
-                        $sql = "INSERT INTO " . MAIN_DB_PREFIX . "mailing_unsubscribe(email, entity, date_creat) VALUES ('" . $this->db->escape($this->email) . "', " . getEntity('mailing', 0) . ", '" . $this->db->idate(dol_now()) . "')";
-                        $resql = $this->db->query($sql);
-                        if (!$resql) {
-                            $error++;
-                            $this->error = $this->db->lasterror();
-                            $this->errors[] = $this->error;
-                        }
-                    }
-                } else {
-                    $error++;
-                    $this->error = $this->db->lasterror();
-                    $this->errors[] = $this->error;
-                }
-            } else {
-                $sql = "DELETE FROM " . MAIN_DB_PREFIX . "mailing_unsubscribe WHERE email = '" . $this->db->escape($this->email) . "' AND entity IN (" . getEntity('mailing', 0) . ")";
-                $resql = $this->db->query($sql);
-                if (!$resql) {
-                    $error++;
-                    $this->error = $this->db->lasterror();
-                    $this->errors[] = $this->error;
-                }
-            }
-
-            if (empty($error)) {
-                $this->no_email = $no_email;
-                $this->db->commit();
-                return 1;
-            } else {
-                $this->db->rollback();
-                return $error * -1;
-            }
+        if (!$this->email) {
+            Debug::message('Called to Mailing::setNoEmail with no email');
+            return 0;
         }
 
-        return 0;
+        $entities = [getEntity('mailing', 0)];
+        $this->no_email = $no_email;
+
+        if ($no_email) {
+            Debug::message('setNoEmail: unsubscribeEmails(' . $this->email . ')');
+            return MailingUnsubscribe::unsubscribeEmail($this->email, $entities);
+        }
+
+        Debug::message('setNoEmail: subscribeEmail(' . $this->email . ')');
+        MailingUnsubscribe::removeUnsubscriptionEmail($this->email, $entities);
+        return 1;
     }
 
     /**
@@ -86,19 +58,19 @@ trait Mailing
      */
     public function getNoEmail()
     {
-        if ($this->email) {
-            $sql = "SELECT COUNT(rowid) as nb FROM " . MAIN_DB_PREFIX . "mailing_unsubscribe WHERE entity IN (" . getEntity('mailing') . ") AND email = '" . $this->db->escape($this->email) . "'";
-            $resql = $this->db->query($sql);
-            if ($resql) {
-                $obj = $this->db->fetch_object($resql);
-                $this->no_email = $obj->nb;
-                return 1;
-            } else {
-                $this->error = $this->db->lasterror();
-                $this->errors[] = $this->error;
-                return -1;
-            }
+        if (!$this->email) {
+            Debug::message('Called to Mailing::getNoEmail with no email');
+            return 0;
         }
+        $found = MailingUnsubscribe::unsubscribedEmail($this->email, [getEntity('mailing', 0)]);
+        Debug::message('getNoEmail ' . $this->email . ': ' . ($found ? '' : 'NOT ') . 'subscribed!');
+        if ($found) {
+            $this->no_email = 1;
+            return 1;
+        }
+
+        $this->no_email = 0;
         return 0;
     }
+
 }

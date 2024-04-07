@@ -147,7 +147,7 @@ abstract class Debug
             return;
         }
         $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
-        $caller['file'] = substr($caller['file'], strlen(BASE_DIR));
+        $caller['file'] = substr($caller['file'], strlen(BASE_PATH) - 7);
         self::$debugBar['exceptions']->addException($exception); // Use addThrowable instead!
         // Logger::info('Exception: ' . $exception->getMessage());
     }
@@ -169,7 +169,7 @@ abstract class Debug
 //            return;
 //        }
         $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
-        $caller['file'] = substr($caller['file'], strlen(BASE_PATH));
+        $caller['file'] = substr($caller['file'], strlen(BASE_PATH) - 7);
         self::$debugBar[$channel]->addMessage($caller['file'] . ' (' . $caller['line'] . '): ' . $message);
     }
 

@@ -29,6 +29,20 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
  */
 abstract class Model extends EloquentModel
 {
+    /**
+     * Name of the field containing the record creation date, by default 'created_at'.
+     */
+    const CREATED_AT = 'date_creat';
+
+    /**
+     * Name of the field that contains the date of the last update of the record, by default 'updated_at'.
+     */
+    const UPDATED_AT = 'tms';
+
+    /**
+     * Primary key name, default is 'id'.
+     *
+     * @var string
+     */
     protected $primaryKey = 'rowid';
-    public $timestamps = false;
 }

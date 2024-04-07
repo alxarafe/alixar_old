@@ -20,13 +20,77 @@ namespace DoliModules\Contact\Model;
 
 use DoliCore\Base\Model;
 
-
 class MailingUnsubscribe extends Model
 {
-    const CREATED_AT = 'date_creat';
-    const UPDATED_AT = 'tms';
+    /**
+     * Indicates whether the automatic record creation and update fields are to be used.
+     *
+     * @var bool
+     */
     public $timestamps = true;
+
+    /**
+     * Name of the table associated with the model. By default, it is the plural model name in
+     * snakecase format: 'mailing_unsubscribes'.
+     *
+     * @var string
+     */
     protected $table = 'mailing_unsubscribe';
-    protected $primaryKey = 'rowid';
-    protected $fillable = ['unsubscribegroup', 'ip'];
+
+    /**
+     * List of fields that will be autocompleted with 'null' during the registration of a new record.
+     *
+     * @var string[]
+     */
+    protected $fillable = ['unsubscribegroup', 'ip', 'entity', 'email'];
+
+
+    /**
+     * Register an email to unsubscribe from lists.
+     * TODO: It would be necessary to see if one or more entities really have to be passed.
+     *
+     * @param $email
+     * @param $entities
+     *
+     * @return bool
+     */
+    public static function unsubscribeEmail($email, $entities): bool
+    {
+        foreach ($entities as $entity) {
+            static::firstOrCreate([
+                'email' => $email,
+                'entity' => $entity,
+            ]);
+        }
+        return static::unsubscribedEmail($email, $entities);
+    }
+
+    /**
+     * Remove the email from the unsubscribed list.
+     * TODO: It would be necessary to see if one or more entities really have to be passed.
+     *
+     * @param $email
+     * @param $entities
+     *
+     * @return bool
+     */
+    public static function removeUnsubscriptionEmail($email, $entities): bool
+    {
+        return static::where('email', $email)->whereIn('entity', $entities)->delete();
+    }
+
+    /**
+     * Check if the email is subscribed in some of the indicated entities.
+     * TODO: It would be necessary to see if one or more entities really have to be passed.
+     *
+     * @param $email
+     * @param $entities
+     *
+     * @return bool
+     */
+    public static function unsubscribedEmail($email, $entities): bool
+    {
+        $data = static::where('email', $email)->whereIn('entity', $entities)->get();
+        return count($data) > 0;
+    }
 }

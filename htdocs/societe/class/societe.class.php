@@ -44,6 +44,7 @@
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Billing\Trait\CommonIncoterm;
 use DoliModules\Contact\Trait\Mailing;
