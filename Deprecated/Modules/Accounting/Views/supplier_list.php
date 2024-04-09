@@ -1,6 +1,5 @@
 <?php
 
-
 $form = new Form($db);
 $formother = new FormOther($db);
 

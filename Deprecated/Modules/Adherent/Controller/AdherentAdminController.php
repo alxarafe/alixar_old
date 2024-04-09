@@ -577,5 +577,4 @@ class AdherentAdminController extends DolibarrController
 
         $db->close();
     }
-
 }

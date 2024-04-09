@@ -1,6 +1,5 @@
 <?php
 
-
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 

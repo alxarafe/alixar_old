@@ -22,5 +22,4 @@ use DoliCore\Base\Model;
 
 class ProductCombinationLevel extends Model
 {
-
 }

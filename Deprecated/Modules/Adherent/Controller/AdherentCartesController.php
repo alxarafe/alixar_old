@@ -307,5 +307,4 @@ class AdherentCartesController extends DolibarrController
 
         $db->close();
     }
-
 }

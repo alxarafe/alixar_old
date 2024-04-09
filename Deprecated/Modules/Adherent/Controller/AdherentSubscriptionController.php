@@ -105,7 +105,7 @@ class AdherentSubscriptionController extends DolibarrController
 
 
         /*
-         * 	Actions
+         *  Actions
          */
 
         if ($cancel) {
@@ -396,5 +396,4 @@ class AdherentSubscriptionController extends DolibarrController
 
         $db->close();
     }
-
 }

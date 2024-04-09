@@ -188,5 +188,4 @@ class AdherentStatsController extends DolibarrController
 
         $db->close();
     }
-
 }

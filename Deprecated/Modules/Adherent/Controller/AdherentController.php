@@ -168,7 +168,7 @@ class AdherentController extends DolibarrController
         }
 
         /*
-         *	Actions
+         *  Actions
          */
 
         $parameters = array('id' => $id, 'objcanvas' => $objcanvas);
@@ -1289,7 +1289,7 @@ class AdherentController extends DolibarrController
 
 
         /*
-         *	View
+         *  View
          */
 
         require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/ldap.php');
@@ -2031,7 +2031,7 @@ class AdherentController extends DolibarrController
 
 
         /*
-         * 	Actions
+         *  Actions
          */
 
         $parameters = array();
@@ -2838,5 +2838,4 @@ class AdherentController extends DolibarrController
 
         require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/vcard.php');
     }
-
 }

@@ -33,6 +33,7 @@
  */
 
 use DoliCore\Base\GenericDocumentLine;
+
 class FichinterLigne extends GenericDocumentLine
 {
     /**

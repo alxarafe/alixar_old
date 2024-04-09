@@ -1,35 +1,40 @@
 <?php
 
-$textobject = $langs->transnoentitiesnoconv("Members");
+$help_url = '';
+$page_name = "AssetSetup";
+$textobject = $langs->transnoentitiesnoconv("Assets");
 
-$help_url = 'EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder';
-llxHeader('', $langs->trans("MembersSetup"), $help_url);
+llxHeader('', $langs->trans("AssetSetup"), $help_url);
 
 
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1">' . $langs->trans("BackToModuleList") . '</a>';
-print load_fiche_titre($langs->trans("MembersSetup"), $linkback, 'title_setup');
+print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 
-$head = member_admin_prepare_head();
+$head = assetAdminPrepareHead();
 
-print dol_get_fiche_head($head, 'attributes', $langs->trans("Members"), -1, 'user');
+print dol_get_fiche_head($head, 'asset_extrafields', $langs->trans($page_name), -1, 'asset');
 
 require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_view.tpl.php';
 
 print dol_get_fiche_end();
 
 
-// Creation of an optional field
+/*
+ * Creation of an optional field
+ */
 if ($action == 'create') {
-    print '<div name="topofform"></div><br>';
+    print '<br><div id="newattrib"></div>';
     print load_fiche_titre($langs->trans('NewAttribute'));
 
     require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_add.tpl.php';
 }
 
-// Edition of an optional field
+/*
+ * Edition of an optional field
+ */
 if ($action == 'edit' && !empty($attrname)) {
-    print '<div name="topofform"></div><br>';
+    print "<br>";
     print load_fiche_titre($langs->trans("FieldEdition", $attrname));
 
     require DOL_DOCUMENT_ROOT . '/core/tpl/admin_extrafields_edit.tpl.php';

@@ -1,6 +1,5 @@
 <?php
 
-
 $title = $langs->trans('MemberTypeCard');
 
 $help_url = '';

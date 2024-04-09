@@ -1,6 +1,5 @@
 <?php
 
-
 $company = new Societe($db);
 if ($object->socid) {
     $result = $company->fetch($object->socid);

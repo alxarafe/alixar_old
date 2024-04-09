@@ -20,7 +20,6 @@ namespace DoliCore\Lib;
 
 abstract class Misc
 {
-
     /**
      * It scans the $folderName folders that are within the folders that exist in
      * $searchPath, creating an associative array in which the index is the name

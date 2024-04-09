@@ -177,5 +177,4 @@ abstract class Debug
     {
         self::addMessage('SQL', $message);
     }
-
 }

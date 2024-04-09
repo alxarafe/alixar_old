@@ -1,4 +1,5 @@
 <?php
+
 $form = new Form($db);
 
 $title = $langs->trans("MembersSetup");

@@ -1,6 +1,5 @@
 <?php
 
-
 $form = new Form($db);
 
 $userstatic = new User($db);

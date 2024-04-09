@@ -1,6 +1,5 @@
 <?php
 
-
 llxHeader();
 
 $form = new Form($db);

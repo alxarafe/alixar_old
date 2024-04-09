@@ -60,7 +60,6 @@ use SupplierInvoiceLine;
 
 class AccountingSupplierController extends DolibarrController
 {
-
     /**
      * \file    htdocs/accountancy/supplier/card.php
      * \ingroup Accountancy (Double entries)

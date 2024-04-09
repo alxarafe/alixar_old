@@ -23,7 +23,6 @@
  *       \brief      File of the superclass of object classes that support incoterm (customer and supplier)
  */
 
-
 namespace DoliModules\Billing\Trait;
 
 /**

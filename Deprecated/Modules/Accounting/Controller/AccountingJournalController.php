@@ -97,7 +97,6 @@ use User;
 
 class AccountingJournalController extends DolibarrController
 {
-
     public function index()
     {
         return $this->bankjournal();

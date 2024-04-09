@@ -55,7 +55,6 @@ use User;
 
 class AccountingExpenseReportController extends DolibarrController
 {
-
     /**
      * \file        htdocs/accountancy/supplier/card.php
      * \ingroup     Accountancy (Double entries)

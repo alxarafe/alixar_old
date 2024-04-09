@@ -72,5 +72,4 @@ trait Mailing
         $this->no_email = 0;
         return 0;
     }
-
 }
