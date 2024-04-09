@@ -48,6 +48,13 @@ require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 use DoliCore\Base\DolibarrController;
 use DoliModules\Accounting\Model\AccountingAccount;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Billing\Model\FactureLigne;
+use Form;
+use FormAccounting;
+use FormOther;
+use Product;
+use Societe;
 
 class AccountingCustomerController extends DolibarrController
 {

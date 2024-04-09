@@ -30,6 +30,7 @@ namespace DoliModules\Accounting\Model;
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliDB;
 
 // Class
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';

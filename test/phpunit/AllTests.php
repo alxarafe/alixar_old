@@ -19,6 +19,23 @@
  * or see https://www.gnu.org/
  */
 
+use DoliCore\Base\Config;
+
+global $conf;
+global $config;
+global $db;
+global $hookmanager;
+global $langs;
+global $user;
+global $menumanager;
+
+define('BASE_PATH', realpath(__DIR__ . '/../../htdocs'));
+define('BASE_URL', 'http://localhost/');
+const DOL_DOCUMENT_ROOT = BASE_PATH;
+const DOL_URL_ROOT = BASE_URL;
+define('DOL_DATA_ROOT', $conf->main->data_path ?? Config::getDataDir(BASE_PATH));
+Config::load();
+
 /**
  *      \file       test/phpunit/AllTest.php
  *      \ingroup    test
