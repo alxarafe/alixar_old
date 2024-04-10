@@ -23,6 +23,7 @@
  * \brief   File for API management of Zapier hooks.
  */
 
+use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
 require_once DOL_DOCUMENT_ROOT . '/zapier/class/hook.class.php';

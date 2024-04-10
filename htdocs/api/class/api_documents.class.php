@@ -19,10 +19,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
 require_once DOL_DOCUMENT_ROOT . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/api/class/api.class.php';
+//require_once DOL_DOCUMENT_ROOT . '/api/class/api.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
 /**

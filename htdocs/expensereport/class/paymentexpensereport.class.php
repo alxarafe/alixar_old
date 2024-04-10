@@ -25,8 +25,9 @@
  *  \brief      File of class to manage payment of expense report
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
 
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**
  *  Class to manage payments of expense report

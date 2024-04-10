@@ -18,9 +18,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-require_once DOL_DOCUMENT_ROOT . '/api/class/api.class.php';
+//require_once DOL_DOCUMENT_ROOT . '/api/class/api.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 
+use DoliCore\Api\DolibarrApi;
 
 /**
  * API that gives the status of the Dolibarr instance.

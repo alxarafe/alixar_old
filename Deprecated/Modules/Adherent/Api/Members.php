@@ -26,7 +26,7 @@ namespace Deprecated\Modules\Adherent\Api;
 use Categorie;
 use Deprecated\Modules\Adherent\Model\Adherent;
 use Deprecated\Modules\Adherent\Model\AdherentType;
-use DolibarrApi;
+use DoliCore\Api\DolibarrApi;
 use DolibarrApiAccess;
 use Luracast\Restler\RestException;
 use Societe;

@@ -16,6 +16,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
 dol_include_once('/partnership/class/partnership.class.php');

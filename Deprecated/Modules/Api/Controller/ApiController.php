@@ -36,6 +36,7 @@ use DoliCore\Api\DolibarrApi;
 use DoliCore\Base\DolibarrController;
 use Luracast\Restler\Defaults;
 use Luracast\Restler\Format\UploadFormat;
+use Luracast\Restler\Scope;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
@@ -239,7 +240,6 @@ class ApiController extends DolibarrController
             }
         }
 
-        // TODO: $reg[2] is empty!
 
 // Call Explorer file for all APIs definitions (this part is slow)
         if (!empty($reg[1]) && $reg[1] == 'explorer' && ($reg[2] == '/swagger.json' || $reg[2] == '/swagger.json/root' || $reg[2] == '/resources.json' || $reg[2] == '/resources.json/root')) {
@@ -320,19 +320,23 @@ class ApiController extends DolibarrController
                 }
             }
 
+            $listofapis = [
+                'Explorer' => 'Luracast\Restler\Explorer',
+                'Login' => 'DoliCore\Api\Login',
+//                'Accountancy' => 'DoliModules\Accounting\Api\Accountancy',
+            ];
+
             // Sort the classes before adding them to Restler.
             // The Restler API Explorer shows the classes in the order they are added and it's a mess if they are not sorted.
             asort($listofapis);
             foreach ($listofapis as $apiname => $classname) {
-                $api->r->addAPIClass($classname, $apiname);
+                $api->r->addAPIClass($classname);
             }
-
-            //var_dump($api->r);
         }
 
 // Call one APIs or one definition of an API
         $regbis = [];
-        if (!empty($reg[1]) && ($reg[1] != 'explorer' || ($reg[2] != '/swagger.json' && $reg[2] != '/resources.json' && preg_match('/^\/(swagger|resources)\.json\/(.+)$/', $reg[2], $regbis) && $regbis[2] != 'root'))) {
+        if (!empty($reg[1]) && ($reg[1] != 'explorer' || (!empty($reg[2]) && $reg[2] != '/swagger.json' && $reg[2] != '/resources.json' && preg_match('/^\/(swagger|resources)\.json\/(.+)$/', $reg[2], $regbis) && $regbis[2] != 'root'))) {
             $moduleobject = $reg[1];
             if ($moduleobject == 'explorer') {  // If we call page to explore details of a service
                 $moduleobject = $regbis[2];
@@ -478,7 +482,7 @@ class ApiController extends DolibarrController
             }
 
             // Call a termination method. Warning: This method can do I/O, sync but must not make output.
-            call_user_func([Luracast\Restler\Scope::get($apiMethodInfo->className), $terminateCall], $responsedata);
+            call_user_func([Scope::get($apiMethodInfo->className), $terminateCall], $responsedata);
         }
 
 //session_destroy();

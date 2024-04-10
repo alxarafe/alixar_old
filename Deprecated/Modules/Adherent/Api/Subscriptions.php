@@ -20,7 +20,7 @@
 namespace Deprecated\Modules\Adherent\Api;
 
 use Deprecated\Modules\Adherent\Model\Subscription;
-use DolibarrApi;
+use DoliCore\Api\DolibarrApi;
 use DolibarrApiAccess;
 use Luracast\Restler\RestException;
 

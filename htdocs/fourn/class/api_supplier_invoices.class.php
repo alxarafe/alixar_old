@@ -19,6 +19,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';

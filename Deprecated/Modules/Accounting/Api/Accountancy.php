@@ -21,9 +21,10 @@
 
 namespace DoliModules\Accounting\Api;
 
-use BookKeeping;
-use DolibarrApi;
+use DoliCore\Api\DolibarrApi;
 use DolibarrApiAccess;
+use DoliModules\Accounting\Model\AccountancyExport;
+use DoliModules\Accounting\Model\BookKeeping;
 use Luracast\Restler\RestException;
 
 /**

@@ -17,9 +17,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
- use Luracast\Restler\RestException;
+use DoliCore\Api\DolibarrApi;
+use Luracast\Restler\RestException;
 
- require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
+require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
 
 /**
  * API class for receptions
