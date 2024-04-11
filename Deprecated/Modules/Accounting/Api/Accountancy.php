@@ -58,6 +58,7 @@ class Accountancy extends DolibarrApi
     public function __construct()
     {
         global $db, $langs;
+
         $this->db = $db;
 
         require_once DOL_DOCUMENT_ROOT . '/accountancy/class/bookkeeping.class.php';

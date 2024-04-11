@@ -1,7 +1,7 @@
 ### Folder Migration Status
 - **admin**: Fully migrated as **AccountingAdminController**.
 - **bookkeeping**: Fully migrated as **AccountingBookkeepingController**.
-- **class**: Partially migrated as **???**.
+- **class**: Fully migrated to Deprecated/Modules/Accounting/Model. Although some class may not be a model.
 - **closure**: Fully migrated as **AccountingClosingController**.
 - **customer**: Fully migrated as **AccountingCustomerController**.
 - **expensereport**: Fully migrated as **AccountingExpenseReportController**.

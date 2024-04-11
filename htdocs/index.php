@@ -18,6 +18,7 @@
  */
 
 use DoliCore\Base\Config;
+use DoliModules\Api\Controller\ApiController;
 
 /**
  * @deprecated It is needed only to display queries to the database using Dolibarr calls.
@@ -92,6 +93,11 @@ const GET_API_VAR = 'api_route';
 $page = filter_input(INPUT_GET, GET_ROUTE_VAR);
 $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
 $api = filter_input(INPUT_GET, GET_API_VAR);
+
+if ($api) {
+    new ApiController($api);
+    die();
+}
 
 if (empty($page) && empty($ctrl)) {
     require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';

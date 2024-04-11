@@ -1,5 +1,7 @@
 RewriteEngine On
 
+RewriteRule ^api/index.php/(.+)$ index.php?api_route=$1 [QSA,L]
+RewriteRule ^api/(.+)$ index.php?api_route=$1 [QSA,L]
 RewriteRule ^(.+)/(.+)\.php/(.+)$ index.php?url_route=$1&url_filename=$2&api_route=$3 [QSA,L]
 RewriteRule ^(.+)/(.+)\.php$ index.php?url_route=$1&url_filename=$2 [QSA,L]
 

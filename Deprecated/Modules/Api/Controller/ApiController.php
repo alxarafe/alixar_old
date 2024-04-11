@@ -36,6 +36,7 @@ use DoliCore\Api\DolibarrApi;
 use DoliCore\Base\DolibarrController;
 use Luracast\Restler\Defaults;
 use Luracast\Restler\Format\UploadFormat;
+use Luracast\Restler\Restler;
 use Luracast\Restler\Scope;
 
 // Load Dolibarr environment
@@ -52,6 +53,7 @@ class ApiController extends DolibarrController
     public function index()
     {
         global $db;
+
         if (!defined('NOCSRFCHECK')) {
             define('NOCSRFCHECK', '1'); // Do not check anti CSRF attack test
         }
@@ -107,12 +109,13 @@ class ApiController extends DolibarrController
 
 
         $res = 0;
-        if (!$res && file_exists("../main.inc.php")) {
-            $res = include '../main.inc.php';
-        }
-        if (!$res) {
-            die("Include of main fails");
-        }
+        include BASE_PATH . '/main.inc.php';
+//        if (!$res && file_exists("../main.inc.php")) {
+//            $res = include '../main.inc.php';
+//        }
+//        if (!$res) {
+//            die("Include of main fails");
+//        }
 
 //        require_once DOL_DOCUMENT_ROOT . '/includes/restler/framework/Luracast/Restler/AutoLoader.php';
 //
@@ -132,7 +135,9 @@ class ApiController extends DolibarrController
         require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 
-        $url = $_SERVER['PHP_SELF'];
+        // $url = $_SERVER['PHP_SELF'];
+        $url = trim('index.php/' . filter_input(INPUT_GET, GET_API_VAR), '/ ') . '/';
+
         if (preg_match('/api\/index\.php$/', $url)) {   // sometimes $_SERVER['PHP_SELF'] is 'api\/index\.php' instead of 'api\/index\.php/explorer.php' or 'api\/index\.php/method'
             $url = $_SERVER['PHP_SELF'] . (empty($_SERVER['PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']);
         }
@@ -179,6 +184,7 @@ class ApiController extends DolibarrController
         preg_match('/index\.php\/([^\/]+)(.*)$/', $url, $reg);
 // .../index.php/categories?sortfield=t.rowid&sortorder=ASC
 
+//        dd([$url, $reg]);
 
         $hookmanager->initHooks(['api']);
 
@@ -219,10 +225,13 @@ class ApiController extends DolibarrController
 
 // Enable the Restler API Explorer.
 // See https://github.com/Luracast/Restler-API-Explorer for more info.
-        $api->r->addAPIClass('Luracast\\Restler\\Explorer');
+        $api->r->addAPIClass('Luracast\\Restler\\Explorer\\v1', 'api/index.php/explorer');
+        $api->r->addAPIClass('Luracast\\Restler\\Resources', 'api/index.php/resources');
+        $api->r->addAPIClass('DoliCore\\Api\\Login', 'api/index.php/login');
+        $api->r->addAPIClass('DoliModules\\Accounting\\Api\\Accountancy', 'api/index.php/accountancy');
 
         $api->r->setSupportedFormats('JsonFormat', 'XmlFormat', 'UploadFormat'); // 'YamlFormat'
-        $api->r->addAuthenticationClass('DolibarrApiAccess', '');
+        $api->r->addAuthenticationClass('DoliCore\\Api\\DolibarrApiAccess');
 
 // Define accepted mime types
         UploadFormat::$allowedMimeTypes = ['image/jpeg', 'image/png', 'text/plain', 'application/octet-stream'];
@@ -241,7 +250,7 @@ class ApiController extends DolibarrController
         }
 
 
-// Call Explorer file for all APIs definitions (this part is slow)
+        // Call Explorer file for all APIs definitions (this part is slow)
         if (!empty($reg[1]) && $reg[1] == 'explorer' && ($reg[2] == '/swagger.json' || $reg[2] == '/swagger.json/root' || $reg[2] == '/resources.json' || $reg[2] == '/resources.json/root')) {
             // Scan all API files to load them
 
@@ -320,21 +329,24 @@ class ApiController extends DolibarrController
                 }
             }
 
+            /*
             $listofapis = [
-                'Explorer' => 'Luracast\Restler\Explorer',
+                'Explorer' => 'Luracast\Restler\Explorer\v1',
                 'Login' => 'DoliCore\Api\Login',
-//                'Accountancy' => 'DoliModules\Accounting\Api\Accountancy',
+                'Accountancy' => 'DoliModules\Accounting\Api\Accountancy',
             ];
+            */
 
             // Sort the classes before adding them to Restler.
             // The Restler API Explorer shows the classes in the order they are added and it's a mess if they are not sorted.
             asort($listofapis);
+
             foreach ($listofapis as $apiname => $classname) {
-                $api->r->addAPIClass($classname);
+                $api->r->addAPIClass($classname, 'api/index.php/' . strtolower($classname));
             }
         }
 
-// Call one APIs or one definition of an API
+        // Call one APIs or one definition of an API
         $regbis = [];
         if (!empty($reg[1]) && ($reg[1] != 'explorer' || (!empty($reg[2]) && $reg[2] != '/swagger.json' && $reg[2] != '/resources.json' && preg_match('/^\/(swagger|resources)\.json\/(.+)$/', $reg[2], $regbis) && $regbis[2] != 'root'))) {
             $moduleobject = $reg[1];
@@ -400,6 +412,7 @@ class ApiController extends DolibarrController
 
             dol_syslog('Search api file /' . $moduledirforclass . '/class/api_' . $classfile . '.class.php => dir_part_file=' . $dir_part_file . ', classname=' . $classname);
 
+            /*
             $res = false;
             if ($dir_part_file) {
                 $res = include_once $dir_part_file;
@@ -411,12 +424,12 @@ class ApiController extends DolibarrController
                 //session_destroy();
                 exit(0);
             }
+            */
 
             if (class_exists($classname)) {
                 $api->r->addAPIClass($classname);
             }
         }
-
 
 //var_dump($api->r->apiVersionMap);
 //exit;
@@ -467,6 +480,10 @@ class ApiController extends DolibarrController
 
             // Restler did not output data yet, we return it now
             echo $result;
+        }
+
+        if (!isset($api->r->apiMethodInfo)) {
+            return;
         }
 
 // Call API termination method

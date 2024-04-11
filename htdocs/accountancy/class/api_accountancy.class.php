@@ -18,8 +18,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Luracast\Restler\RestException;
-
 /**
  * API class for accountancy
  *

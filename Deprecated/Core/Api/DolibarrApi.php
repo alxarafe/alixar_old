@@ -49,7 +49,9 @@ class DolibarrApi
      */
     public function __construct($db, $cachedir = '', $refreshCache = false)
     {
-        global $conf, $dolibarr_main_url_root;
+        global $conf;
+
+        $dolibarr_main_url_root = BASE_URL;
 
         if (empty($cachedir)) {
             $cachedir = $conf->api->dir_temp;
@@ -61,15 +63,10 @@ class DolibarrApi
         $this->r = new Restler($production_mode, $refreshCache);
 
         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
-        $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-
         $urlwithouturlrootautodetect = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim(DOL_MAIN_URL_ROOT));
-        $urlwithrootautodetect = $urlwithouturlroot . DOL_URL_ROOT; // This is to use local domain autodetected by dolibarr from url
 
         $this->r->setBaseUrls($urlwithouturlroot, $urlwithouturlrootautodetect);
         $this->r->setAPIVersion(1);
-        //$this->r->setSupportedFormats('json');
-        //$this->r->setSupportedFormats('jsonFormat');
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore

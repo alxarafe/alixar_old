@@ -20,6 +20,7 @@
 namespace DoliCore\Api;
 
 use Luracast\Restler\RestException;
+use User;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
