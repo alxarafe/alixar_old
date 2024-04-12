@@ -207,7 +207,7 @@ if ($id) {
 
     // Form to record a reject
     if ($action == 'rejet' && $user->hasRight('prelevement', 'bons', 'credit')) {
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->fetch($lipre->socid);
 
         $rej = new RejetPrelevement($db, $user, $type);

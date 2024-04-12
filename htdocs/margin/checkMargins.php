@@ -146,7 +146,7 @@ if (empty($reshook)) {
  */
 
 $userstatic = new User($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $invoicestatic = new Facture($db);
 $productstatic = new Product($db);
 

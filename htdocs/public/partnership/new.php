@@ -256,7 +256,7 @@ if (empty($reshook) && $action == 'add') {
             }
         }
         // test if thirdparty already exists
-        $company = new Societe($db);
+        $company = new Company($db);
         $result = $company->fetch(0, GETPOST('societe'));
         if ($result == 0) { // if entry with name not found, we search using the email
             $result1 = $company->fetch(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, GETPOST('email'));
@@ -265,7 +265,7 @@ if (empty($reshook) && $action == 'add') {
                 $errmsg = $langs->trans("EmailAlreadyExistsPleaseRewriteYourCompanyName");
             } else {
                 // create thirdparty
-                $company = new Societe($db);
+                $company = new Company($db);
 
                 $company->name        = GETPOST('societe');
                 $company->address     = GETPOST('address');

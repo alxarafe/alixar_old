@@ -153,7 +153,7 @@ llxHeader('', $title, $help_url);
 
 
 if ($socid > 0) {
-    $objsoc = new Societe($db);
+    $objsoc = new Company($db);
     $objsoc->fetch($socid);
 }
 
@@ -207,7 +207,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
     }
 
     if (!empty($id) && $action != 'edit' && $action != 'create') {
-        $objsoc = new Societe($db);
+        $objsoc = new Company($db);
 
         /*
          * Card in view mode
@@ -225,7 +225,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
         $morehtmlref .= '<div class="refidno">';
         if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-            $objsoc = new Societe($db);
+            $objsoc = new Company($db);
             $objsoc->fetch($object->socid);
             // Thirdparty
             if ($objsoc->id > 0) {

@@ -49,7 +49,7 @@ $modulepart = GETPOST('modulepart', 'aZ09');    // Used by actions_setmoduleopti
 $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scan_dir', 'alpha');
 
-$specimenthirdparty = new Societe($db);
+$specimenthirdparty = new Company($db);
 $specimenthirdparty->initAsSpecimen();
 
 $error = 0;
@@ -150,7 +150,7 @@ if ($action == 'specimen') {  // For orders
 
     dolibarr_set_const($db, "COMMANDE_SUPPLIER_ADDON_NUMBER", $value, 'chaine', 0, '', $conf->entity);
 } elseif ($action == 'addcat') {
-    $fourn = new Fournisseur($db);
+    $fourn = new Supplier($db);
     $fourn->CreateCategory($user, GETPOST('cat', 'alphanohtml'));
 } elseif ($action == 'set_SUPPLIER_ORDER_OTHER') {
     $freetext = GETPOST('SUPPLIER_ORDER_FREE_TEXT', 'restricthtml'); // No alpha here, we want exact string

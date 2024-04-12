@@ -122,7 +122,7 @@ $result = restrictedArea($user, 'produit|service', $fieldvalue, 'product&product
  */
 
 $invoicestatic = new Facture($db);
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 
 $form = new Form($db);
 $formother = new FormOther($db);

@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2013 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +23,14 @@
  *  \brief      Box to show graph of invoices per month
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Supplier\Model\FactureStats;
 
 
 /**
  * Class to manage the box to show invoices per month graph
  */
-class box_graph_invoices_permonth extends ModeleBoxes
+class box_graph_invoices_permonth extends GenericBoxes
 {
     public $boxcode  = "invoicespermonth";
     public $boximg   = "object_bill";

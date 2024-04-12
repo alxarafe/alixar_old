@@ -48,7 +48,7 @@ if ($result <= 0) {
 }
 
 
-$company = new Societe($db);
+$company = new Company($db);
 if ($contact->socid) {
     $result = $company->fetch($contact->socid);
 }

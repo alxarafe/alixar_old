@@ -326,7 +326,7 @@ $formTicket = new FormTicket($db);
 $now = dol_now();
 
 $user_temp = new User($db);
-$socstatic = new Societe($db);
+$socstatic = new Company($db);
 
 $help_url = '';
 $title = $langs->trans('Tickets');
@@ -506,7 +506,7 @@ if ($num == 1 && getDolGlobalInt('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && $sear
 llxHeader('', $title, $help_url, '', 0, 0, $morejs, $morecss, '', 'bodyforlist');
 
 if ($socid && !$projectid && !$project_ref && $user->hasRight('societe', 'lire')) {
-    $socstat = new Societe($db);
+    $socstat = new Company($db);
     $res = $socstat->fetch($socid);
     if ($res > 0) {
         $tmpobject = $object;

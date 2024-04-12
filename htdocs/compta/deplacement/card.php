@@ -281,7 +281,7 @@ if ($action == 'create') {
             //WYSIWYG Editor
             require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
-            $soc = new Societe($db);
+            $soc = new Company($db);
             if ($object->socid) {
                 $soc->fetch($object->socid);
             }
@@ -371,7 +371,7 @@ if ($action == 'create') {
                 print $form->formconfirm($_SERVER['PHP_SELF'] . "?id=" . urlencode((string) ($id)), $langs->trans("DeleteTrip"), $langs->trans("ConfirmDeleteTrip"), "confirm_delete");
             }
 
-            $soc = new Societe($db);
+            $soc = new Company($db);
             if ($object->socid) {
                 $soc->fetch($object->socid);
             }

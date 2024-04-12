@@ -38,6 +38,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Billing\Model\OrderLine;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
@@ -939,7 +941,7 @@ if ($action == 'create') {
 
         $object = new $classname($db);
         if ($object->fetch($origin_id)) {   // This include the fetch_lines
-            $soc = new Societe($db);
+            $soc = new Company($db);
             $soc->fetch($object->socid);
 
             $author = new User($db);
@@ -1796,7 +1798,7 @@ if ($action == 'create') {
         $object->fetch_origin(); // Load property $object->origin_object (old $object->commande, $object->propal, ...)
     }
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($object->socid);
 
     $res = $object->fetch_optionals();

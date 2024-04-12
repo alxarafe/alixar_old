@@ -109,7 +109,7 @@ if ($action == 'fetch' && !empty($id)) {
                 $needchangeaccordingtothirdparty = 1;
             }
             if ($needchangeaccordingtothirdparty) {
-                $thirdpartytemp = new Societe($db);
+                $thirdpartytemp = new Company($db);
                 $thirdpartytemp->fetch($socid);
 
                 //Load translation description and label according to thirdparty language
@@ -230,7 +230,7 @@ if ($action == 'fetch' && !empty($id)) {
 
         // If we ask the price according to buyer, we change it.
         if (GETPOSTINT('addalsovatforthirdpartyid')) {
-            $thirdparty_buyer = new Societe($db);
+            $thirdparty_buyer = new Company($db);
             $thirdparty_buyer->fetch($socid);
 
             $tmpvatwithcode = get_default_tva($mysoc, $thirdparty_buyer, $id, 0);

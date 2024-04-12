@@ -139,7 +139,7 @@ if ($object->statut == Facture::STATUS_DRAFT) {
 }
 if (getDolGlobalString('TAKEPOS_SHOW_CUSTOMER')) {
     if ($object->socid != getDolGlobalInt('CASHDESK_ID_THIRDPARTY' . $_SESSION["takeposterminal"])) {
-        $soc = new Societe($db);
+        $soc = new Company($db);
         if ($object->socid > 0) {
             $soc->fetch($object->socid);
         } else {

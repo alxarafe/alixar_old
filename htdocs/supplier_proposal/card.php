@@ -1171,7 +1171,7 @@ $form = new Form($db);
 $formother = new FormOther($db);
 $formfile = new FormFile($db);
 $formmargin = new FormMargin($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 if (isModEnabled('project')) {
     $formproject = new FormProjets($db);
 }
@@ -1184,7 +1184,7 @@ if ($action == 'create') {
 
     print load_fiche_titre($langs->trans("SupplierProposalNew"), '', 'supplier_proposal');
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     if ($socid > 0) {
         $res = $soc->fetch($socid);
     }
@@ -1520,7 +1520,7 @@ if ($action == 'create') {
      * Show object in view mode
      */
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($object->socid);
 
     $head = supplier_proposal_prepare_head($object);
@@ -1764,7 +1764,7 @@ if ($action == 'create') {
                 print '</td><td class="valuefield">';
                 if ($action == 'editmulticurrencyrate' || $action == 'actualizemulticurrencyrate') {
                     if ($action == 'actualizemulticurrencyrate') {
-                        list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
+                        [$object->fk_multicurrency, $object->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
                     }
                     $form->form_multicurrency_rate($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->multicurrency_tx, 'multicurrency_tx', $object->multicurrency_code);
                 } else {

@@ -50,7 +50,7 @@ if ($id == 0) {
     $id = GETPOSTINT('id_fourn');
 }
 
-$object = new Societe($db);
+$object = new Company($db);
 if ($id > 0) {
     $object->fetch($id);
 }

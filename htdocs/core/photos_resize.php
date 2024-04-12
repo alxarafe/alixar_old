@@ -179,7 +179,7 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
     }
 } elseif ($modulepart == 'societe') {
     require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
-    $object = new Societe($db);
+    $object = new Company($db);
     if ($id > 0) {
         $result = $object->fetch($id);
         if ($result <= 0) {
@@ -479,8 +479,8 @@ if ($action == 'confirm_crop') {
 
 $head = '';
 $title = $langs->trans("ImageEditor");
-$morejs = array('/includes/jquery/plugins/jcrop/js/jquery.Jcrop.min.js', '/core/js/lib_photosresize.js');
-$morecss = array('/includes/jquery/plugins/jcrop/css/jquery.Jcrop.css');
+$morejs = ['/Templates/Lib/jquery/plugins/jcrop/js/jquery.Jcrop.min.js', '/core/js/lib_photosresize.js'];
+$morecss = ['/Templates/Lib/jquery/plugins/jcrop/css/jquery.Jcrop.css'];
 
 llxHeader($head, $title, '', '', 0, 0, $morejs, $morecss);
 

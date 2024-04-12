@@ -431,7 +431,7 @@ if (empty($reshook) && $action == 'add') {
 
                 // Auto-create thirdparty on member creation
                 if (getDolGlobalString('ADHERENT_DEFAULT_CREATE_THIRDPARTY')) {
-                    $company = new Societe($db);
+                    $company = new Company($db);
                     $result = $company->create_from_member($adh);
                     if ($result < 0) {
                         $error++;

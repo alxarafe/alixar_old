@@ -75,7 +75,7 @@ $statut = GETPOSTINT('statut');
 
 $bon = new BonPrelevement($db);
 $line = new LignePrelevement($db);
-$company = new Societe($db);
+$company = new Company($db);
 $userstatic = new User($db);
 
 $hookmanager->initHooks(array('withdrawalsreceiptslineslist'));

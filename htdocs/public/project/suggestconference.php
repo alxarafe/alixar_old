@@ -235,7 +235,7 @@ if (empty($reshook) && $action == 'add') {
 
     if (!$error) {
         // Getting the thirdparty or creating it
-        $thirdparty = new Societe($db);
+        $thirdparty = new Company($db);
         $resultfetchthirdparty = $thirdparty->fetch('', $societe);
 
         if ($resultfetchthirdparty < 0) {

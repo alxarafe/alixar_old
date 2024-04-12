@@ -93,7 +93,7 @@ class ExportExcel2007 extends ModeleExports
         $this->disabled = 0;
 
         if (empty($this->disabled)) {
-            require_once PHPEXCELNEW_PATH . 'Spreadsheet.php';
+//            require_once PHPEXCELNEW_PATH . 'Spreadsheet.php';
             $this->label_lib = 'PhpSpreadSheet';
             $this->version_lib = '1.12.0'; // No way to get info from library
         }
@@ -204,9 +204,9 @@ class ExportExcel2007 extends ModeleExports
 
         $outputlangs->load("exports");
 
-        require_once DOL_DOCUMENT_ROOT . '/includes/phpoffice/phpspreadsheet/src/autoloader.php';
-        require_once DOL_DOCUMENT_ROOT . '/includes/Psr/autoloader.php';
-        require_once PHPEXCELNEW_PATH . 'Spreadsheet.php';
+        //require_once DOL_DOCUMENT_ROOT . '/includes/phpoffice/phpspreadsheet/src/autoloader.php';
+        //require_once DOL_DOCUMENT_ROOT . '/includes/Psr/autoloader.php';
+//        require_once PHPEXCELNEW_PATH . 'Spreadsheet.php';
 
         if ($this->id == 'excel2007') {
             if (!class_exists('ZipArchive')) {  // For Excel2007, PHPSpreadSheet may need ZipArchive

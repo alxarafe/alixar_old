@@ -119,7 +119,7 @@ $calc = 0;
  */
 
 $form = new Form($db);
-$company_static = new Societe($db);
+$company_static = new Company($db);
 
 $morequerystring = '';
 $listofparams = array('date_startmonth', 'date_startyear', 'date_startday', 'date_endmonth', 'date_endyear', 'date_endday');
@@ -274,7 +274,7 @@ if ($calc == 0 || $calc == 1) {
     print '<td class="right">' . $vatsup . '</td>';
     print "</tr>\n";
 
-    $company_static = new Societe($db);
+    $company_static = new Company($db);
 
     $coll_list = tax_by_thirdparty('localtax' . $local, $db, 0, $date_start, $date_end, $modetax, 'buy');
     $parameters["direction"] = 'buy';

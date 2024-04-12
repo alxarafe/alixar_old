@@ -53,7 +53,7 @@ $result = restrictedArea($user, 'reception', 0, '');
  */
 
 $orderstatic = new CommandeFournisseur($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 
 $helpurl = 'EN:Module_Receptions|FR:Module_Receptions|ES:M&oacute;dulo_Receptiones';
 llxHeader('', $langs->trans("Reception"), $helpurl);

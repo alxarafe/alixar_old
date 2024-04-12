@@ -113,11 +113,11 @@ if ($id > 0 && $removeelem > 0 && $action == 'unlink') {
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'product';
     } elseif ($type == Categorie::TYPE_SUPPLIER && $user->hasRight('societe', 'creer')) {
-        $tmpobject = new Societe($db);
+        $tmpobject = new Company($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'supplier';
     } elseif ($type == Categorie::TYPE_CUSTOMER && $user->hasRight('societe', 'creer')) {
-        $tmpobject = new Societe($db);
+        $tmpobject = new Company($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'customer';
     } elseif ($type == Categorie::TYPE_MEMBER && $user->hasRight('adherent', 'creer')) {
@@ -192,11 +192,11 @@ if (
         $elementtype = 'product';
     } elseif ($type == Categorie::TYPE_CUSTOMER) {
         require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-        $newobject = new Societe($db);
+        $newobject = new Company($db);
         $elementtype = 'customer';
     } elseif ($type == Categorie::TYPE_SUPPLIER) {
         require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-        $newobject = new Societe($db);
+        $newobject = new Company($db);
         $elementtype = 'supplier';
     } elseif ($type == Categorie::TYPE_TICKET) {
         require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
@@ -248,8 +248,8 @@ if (
 $form = new Form($db);
 $formother = new FormOther($db);
 
-$arrayofjs = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.js', '/includes/jquery/plugins/jquerytreeview/lib/jquery.cookie.js');
-$arrayofcss = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css');
+$arrayofjs = ['/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.js', '/Templates/Lib/jquery/plugins/jquerytreeview/lib/jquery.cookie.js'];
+$arrayofcss = ['/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.css'];
 
 $help_url = '';
 
@@ -894,7 +894,7 @@ if ($type == Categorie::TYPE_CONTACT) {
             // @phan-suppress-next-line PhanPluginSuspiciousParamOrder
             print_barre_liste($langs->trans("Contact"), $page, $_SERVER['PHP_SELF'], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'contact', 0, $newcardbutton, '', $limit);
 
-            $objsoc = new Societe($db);
+            $objsoc = new Company($db);
 
             print '<table class="noborder centpercent">' . "\n";
             print '<tr class="liste_titre"><td colspan="2">' . $langs->trans("Ref") . '</td></tr>' . "\n";

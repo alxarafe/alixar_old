@@ -37,17 +37,14 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Company\Model\Company;
+
 require_once BASE_PATH . '/main.inc.php';
 include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
-if (isModEnabled('category')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcategory.class.php';
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "commercial", "customers", "suppliers", "bills", "compta", "categories", "cashdesk"));
@@ -204,7 +201,7 @@ if ($type == 'f') {
 }
 
 // Initialize technical objects to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$object = new Societe($db);
+$object = new Company($db);
 $extrafields = new ExtraFields($db);
 $hookmanager->initHooks(array($contextpage));
 
@@ -495,8 +492,8 @@ if ($search_status == '' && empty($search_all)) {
 
 $form = new Form($db);
 $formother = new FormOther($db);
-$companystatic = new Societe($db);
-$companyparent = new Societe($db);
+$companystatic = new Company($db);
+$companyparent = new Company($db);
 $formcompany = new FormCompany($db);
 $prospectstatic = new Client($db);
 $prospectstatic->client = 2;
@@ -1192,7 +1189,7 @@ foreach (array(1, 2, 3, 4, 5, 6) as $key) {
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "Information";
 $modelmail = "thirdparty";
-$objecttmp = new Societe($db);
+$objecttmp = new Company($db);
 $trackid = 'thi' . $object->id;
 include DOL_DOCUMENT_ROOT . '/core/tpl/massactions_pre.tpl.php';
 

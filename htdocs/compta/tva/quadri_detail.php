@@ -83,7 +83,7 @@ $result = restrictedArea($user, 'tax', '', 'tva', 'charges');
  */
 
 $form = new Form($db);
-$company_static = new Societe($db);
+$company_static = new Company($db);
 $invoice_customer = new Facture($db);
 $invoice_supplier = new FactureFournisseur($db);
 $expensereport = new ExpenseReport($db);

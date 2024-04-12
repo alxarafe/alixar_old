@@ -3,6 +3,7 @@
 /* Copyright (C) 2010      Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
  * Copyright (C) 2016-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +25,15 @@
  *      \brief      Module de generation de l'affichage de la box contracts
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
 
 
 /**
  * Class to manage the box to show last contracts
  */
-class box_contracts extends ModeleBoxes
+class box_contracts extends GenericBoxes
 {
     public $boxcode = "lastcontracts";
     public $boximg = "object_contract";
@@ -70,7 +73,7 @@ class box_contracts extends ModeleBoxes
 
         if ($user->hasRight('contrat', 'lire')) {
             $contractstatic = new Contrat($this->db);
-            $thirdpartytmp = new Societe($this->db);
+            $thirdpartytmp = new Company($this->db);
 
             $sql = "SELECT s.nom as name, s.rowid as socid, s.email, s.client, s.fournisseur, s.code_client, s.code_fournisseur, s.code_compta, s.code_compta_fournisseur,";
             $sql .= " c.rowid, c.ref, c.statut as fk_statut, c.date_contrat, c.datec, c.tms as date_modification, c.fin_validite, c.date_cloture,";

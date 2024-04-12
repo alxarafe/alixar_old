@@ -126,12 +126,12 @@ if (empty($reshook)) {
 
 $form = new Form($db);
 $productstatic = new Product($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 
 $title = $langs->trans('Supplier') . " - " . $langs->trans('ProductsAndServices');
 
 if ($fourn_id) {
-    $supplier = new Fournisseur($db);
+    $supplier = new Supplier($db);
     $supplier->fetch($fourn_id);
 }
 

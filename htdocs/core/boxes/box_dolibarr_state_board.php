@@ -28,12 +28,12 @@
 
 use DoliCore\Lib\Misc;
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 /**
  * Class to manage the box to show last thirdparties
  */
-class box_dolibarr_state_board extends ModeleBoxes
+class box_dolibarr_state_board extends GenericBoxes
 {
     public $boxcode = "dolibarrstatebox";
     public $boximg = "generic";
@@ -254,9 +254,7 @@ class box_dolibarr_state_board extends ModeleBoxes
 
                     if (!isset($boardloaded[$classkeyforcache]) || !is_object($boardloaded[$classkeyforcache])) {
                         $board = Misc::loadModel($class, $this->db);
-
                         if (empty($board)) {
-                            include_once $includes[$val]; // Loading a class cost around 1Mb
                             $board = new $class($this->db);
                         }
 

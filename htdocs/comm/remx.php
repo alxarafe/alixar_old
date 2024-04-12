@@ -174,7 +174,7 @@ if ($action == 'setremise' && $permissiontocreate) {
         }
 
         if (!$error) {
-            $soc = new Societe($db);
+            $soc = new Company($db);
             $soc->fetch($id);
             $discountid = $soc->set_remise_except($amount, $user, $desc, $tva_tx, $discount_type, $price_base_type);
 
@@ -226,7 +226,7 @@ llxHeader('', $langs->trans("GlobalDiscount"));
 
 if ($socid > 0) {
     // On recupere les donnees societes par l'objet
-    $object = new Societe($db);
+    $object = new Company($db);
     $object->fetch($socid);
 
     $isCustomer = $object->client == 1 || $object->client == 3;

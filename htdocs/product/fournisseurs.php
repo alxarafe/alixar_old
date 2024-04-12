@@ -290,7 +290,7 @@ if (empty($reshook)) {
             }
 
             if (!$error) {
-                $supplier = new Fournisseur($db);
+                $supplier = new Supplier($db);
                 $result = $supplier->fetch($id_fourn);
                 if (GETPOSTISSET('ref_fourn_price_id')) {
                     $object->fetch_product_fournisseur_price(GETPOSTINT('ref_fourn_price_id'));
@@ -496,7 +496,7 @@ if ($id > 0 || $ref) {
                 // Supplier
                 print '<tr><td class="titlefield fieldrequired">' . $langs->trans("Supplier") . '</td><td>';
                 if ($rowid) {
-                    $supplier = new Fournisseur($db);
+                    $supplier = new Supplier($db);
                     $supplier->fetch($socid);
                     print $supplier->getNomUrl(1);
                     print '<input type="hidden" name="id_fourn" value="' . $socid . '">';

@@ -71,16 +71,16 @@ $langs->loadlangs(array('users', 'projects'));
 $form = new Form($db);
 $formother = new FormOther($db);
 $userstatic = new User($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $contactstatic = new Contact($db);
 $task = new Task($db);
 
-$arrayofcss = array('/includes/jsgantt/jsgantt.css');
+$arrayofcss = ['/Templates/Lib/jsgantt/jsgantt.css'];
 
 if (!empty($conf->use_javascript_ajax)) {
     $arrayofjs = array(
-    '/includes/jsgantt/jsgantt.js',
-    '/projet/jsgantt_language.js.php?lang=' . $langs->defaultlang
+    '/Templates/Lib/jsgantt/jsgantt.js',
+        '/projet/jsgantt_language.js.php?lang=' . $langs->defaultlang
     );
 }
 

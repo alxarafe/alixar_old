@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015-2020 Frederic France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,13 @@
  *  \brief      Module to show box of last members subscriptions
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show last members subscriptions
  */
-class box_members_last_subscriptions extends ModeleBoxes
+class box_members_last_subscriptions extends GenericBoxes
 {
     public $boxcode  = "box_members_last_subscriptions";
     public $boximg   = "object_user";

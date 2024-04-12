@@ -42,7 +42,7 @@ $action = GETPOST('action', 'aZ09');
 
 
 // Initialize objects
-$object = new Societe($db);
+$object = new Company($db);
 if ($id > 0) {
     $object->fetch($id);
 }

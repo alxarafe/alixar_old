@@ -25,13 +25,14 @@
  *      \brief      Fichier de gestion d'une box des factures fournisseurs
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
-
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\Supplier\Model\Supplier;
 
 /**
  * Class to manage the box to show last supplier invoices
  */
-class box_factures_fourn extends ModeleBoxes
+class box_factures_fourn extends GenericBoxes
 {
     public $boxcode = "lastsupplierbills";
     public $boximg = "object_bill";
@@ -69,7 +70,7 @@ class box_factures_fourn extends ModeleBoxes
         include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
 
         $facturestatic = new FactureFournisseur($this->db);
-        $thirdpartystatic = new Fournisseur($this->db);
+        $thirdpartystatic = new Supplier($this->db);
 
         $this->info_box_head = array(
             'text' => $langs->trans("BoxTitleLast" . (getDolGlobalString('MAIN_LASTBOX_ON_OBJECT_DATE') ? "" : "Modified") . "SupplierBills", $max)

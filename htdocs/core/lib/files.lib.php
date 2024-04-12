@@ -2317,10 +2317,10 @@ function dol_compress_file($inputfile, $outputfile, $mode = "gz", &$errorstring 
                 return 1;
             }
 
-            if (defined('ODTPHP_PATHTOPCLZIP')) {
+            //if (defined('ODTPHP_PATHTOPCLZIP')) {
                 $foundhandler = 1;
 
-                include_once ODTPHP_PATHTOPCLZIP . '/pclzip.lib.php';
+//                include_once ODTPHP_PATHTOPCLZIP . '/pclzip.lib.php';
                 $archive = new PclZip($outputfile);
 
                 $result = $archive->add($inputfile, PCLZIP_OPT_REMOVE_PATH, dirname($inputfile));
@@ -2343,7 +2343,7 @@ function dol_compress_file($inputfile, $outputfile, $mode = "gz", &$errorstring 
                     return 1;
                 }
             }
-        }
+        //}
 
         if ($foundhandler) {
             $fp = fopen($outputfile, "w");

@@ -65,7 +65,7 @@ $pagenext = $page + 1;
 
 $now = dol_now();
 
-$object = new Societe($db);
+$object = new Company($db);
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
 $hookmanager->initHooks(array('thirdpartynotification', 'globalcard'));
@@ -136,7 +136,7 @@ if (empty($reshook)) {
 
 $form = new Form($db);
 
-$object = new Societe($db);
+$object = new Company($db);
 $result = $object->fetch($socid);
 
 $title = $langs->trans("ThirdParty") . ' - ' . $langs->trans("Notification");

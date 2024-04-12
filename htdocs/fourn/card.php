@@ -68,7 +68,7 @@ if ($user->socid) {
 }
 $result = restrictedArea($user, 'societe&fournisseur', $id, '&societe', '', 'rowid');
 
-$object = new Fournisseur($db);
+$object = new Supplier($db);
 $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels

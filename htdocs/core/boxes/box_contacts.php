@@ -6,6 +6,7 @@
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
  * Copyright (C) 2018      Josep Lluís Amador   <joseplluis@lliuretic.cat>
  * Copyright (C) 2020      Ferran Marcet	    <fmarcet@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,14 +28,17 @@
  *  \brief      Module to show box of contacts
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contact\Model\Contact;
+
 include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 
 
 /**
  * Class to manage the box to show last contacts
  */
-class box_contacts extends ModeleBoxes
+class box_contacts extends GenericBoxes
 {
     public $boxcode = "lastcontacts";
     public $boximg = "object_contact";
@@ -71,7 +75,7 @@ class box_contacts extends ModeleBoxes
         $this->max = $max;
 
         $contactstatic = new Contact($this->db);
-        $societestatic = new Societe($this->db);
+        $societestatic = new Company($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedContacts", $max));
 

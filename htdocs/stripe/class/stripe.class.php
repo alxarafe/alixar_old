@@ -989,7 +989,7 @@ class Stripe extends GenericDocument
         $sql .= " WHERE sa.rowid = " . ((int) $object->id); // We get record from ID, no need for filter on entity
         $sql .= " AND sa.type = 'ban'"; //type ban to get normal bank account of customer (prelevement)
 
-        $soc = new Societe($this->db);
+        $soc = new Company($this->db);
         $soc->fetch($object->fk_soc);
 
         dol_syslog(get_class($this) . "::sepaStripe search stripe ban id for paymentmode id=" . $object->id . ", stripeacc=" . $stripeacc . ", status=" . $status . ", createifnotlinkedtostripe=" . $createifnotlinkedtostripe, LOG_DEBUG);
@@ -1194,7 +1194,7 @@ class Stripe extends GenericDocument
             $stripeamount = $amount;
         }
 
-        $societe = new Societe($this->db);
+        $societe = new Company($this->db);
         if ($key > 0) {
             $societe->fetch($key);
         }

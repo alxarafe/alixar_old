@@ -88,7 +88,7 @@ if ($type == 'bank-transfer') {
 
 $form = new Form($db);
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 $invoicestatic = new Facture($db);
 $invoicesupplierstatic = new FactureFournisseur($db);
 $rej = new RejetPrelevement($db, $user, $type);

@@ -14,7 +14,6 @@
     <file>scripts</file>
     <file>test</file>
     <exclude-pattern>vendor/*</exclude-pattern>
-    <exclude-pattern>htdocs/includes/*</exclude-pattern>
 
     <!-- Include the whole PSR-1 standard -->
     <rule ref="PSR1"/>

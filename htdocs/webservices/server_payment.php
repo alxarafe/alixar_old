@@ -49,7 +49,7 @@ if (!defined("NOSESSION")) {
 }
 
 require BASE_PATH . '/main.inc.php';
-require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
+//require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
@@ -186,7 +186,7 @@ function createPayment($authentication, $payment)
     }
 
     if (!$error) {
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->fetch($payment['thirdparty_id']);
 
         $new_payment              = new Paiement($db);

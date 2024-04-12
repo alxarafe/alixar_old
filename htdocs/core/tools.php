@@ -41,7 +41,7 @@ if ($user->socid > 0) {
  * View
  */
 
-$socstatic = new Societe($db);
+$socstatic = new Company($db);
 
 llxHeader("", $langs->trans("Tools"), "");
 

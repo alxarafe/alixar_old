@@ -10,7 +10,7 @@ if ($action == 'exportcsv' && !$error) {        // ISO and not UTF8 !
     $type_export = 'journal';
     include DOL_DOCUMENT_ROOT . '/accountancy/tpl/export_journal.tpl.php';
 
-    $companystatic = new Fournisseur($db);
+    $companystatic = new Supplier($db);
     $invoicestatic = new FactureFournisseur($db);
 
     foreach ($tabfac as $key => $val) {
@@ -264,7 +264,7 @@ if (empty($action) || $action == 'view') {
     $i = 0;
 
     $invoicestatic = new FactureFournisseur($db);
-    $companystatic = new Fournisseur($db);
+    $companystatic = new Supplier($db);
 
     foreach ($tabfac as $key => $val) {
         $companystatic->id = $tabcompany[$key]['id'];

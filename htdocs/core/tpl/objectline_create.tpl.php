@@ -35,6 +35,8 @@
  * $inputalsopricewithtax (0 by default, 1 to also show column with unit price including tax)
  */
 
+use DoliModules\Billing\Model\OrderLine;
+
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
     print "Error: this template page cannot be called directly as an URL";

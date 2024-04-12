@@ -273,7 +273,7 @@ if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
 
 // Standard Extrafield feature
 if (!getDolGlobalString('MAIN_EXTRAFIELDS_DISABLED')) {
-    $socstatic = new Societe($db);
+    $socstatic = new Company($db);
     $elementtype = $socstatic->table_element;
     // fetch optionals attributes and labels
     require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
@@ -337,7 +337,7 @@ if (!getDolGlobalString('MAIN_EXTRAFIELDS_DISABLED')) {
         }
     }
 } else {
-    $std_soc = new Societe($db);
+    $std_soc = new Company($db);
     $action_search = 'query';
 
     $parameters = array('advtarget' => 1);

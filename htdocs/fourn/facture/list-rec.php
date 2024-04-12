@@ -163,7 +163,7 @@ $object->fields = dol_sort_array($object->fields, 'position');
 $arrayfields = dol_sort_array($arrayfields, 'position');
 
 if ($socid > 0) {
-    $tmpthirdparty = new Societe($db);
+    $tmpthirdparty = new Company($db);
     $res = $tmpthirdparty->fetch($socid);
     if ($res > 0) {
         $search_societe = $tmpthirdparty->name;
@@ -263,7 +263,7 @@ $formother = new FormOther($db);
 if (isModEnabled('project')) {
     $formproject = new FormProjets($db);
 }
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $supplierinvoicerectmp = new FactureFournisseurRec($db);
 $tmpuser = new User($db);
 

@@ -5,6 +5,7 @@
  * Copyright (C) 2015      Frederic France        <frederic.france@free.fr>
  * Copyright (C) 2016      Juan José Menent       <jmenent@2byte.es>
  * Copyright (C) 2020      Pierre Ardoin          <mapiolca@me.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +27,14 @@
  *  \brief      Module to show Project activity of the current Year
  */
 
-include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
+use DoliModules\Project\Model\Project;
 
 /**
  * Class to manage the box to show last project
  */
-class box_project extends ModeleBoxes
+class box_project extends GenericBoxes
 {
     public $boxcode = "project";
     public $boximg  = "object_projectpub";
@@ -82,7 +85,7 @@ class box_project extends ModeleBoxes
             include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
             include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
             $projectstatic = new Project($this->db);
-            $companystatic = new Societe($this->db);
+            $companystatic = new Company($this->db);
 
             $socid = 0;
             //if ($user->socid > 0) $socid = $user->socid;    // For external user, no check is done on company because readability is managed by public status of project and assignment.

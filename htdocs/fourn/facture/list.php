@@ -419,12 +419,12 @@ $formfile = new FormFile($db);
 $bankaccountstatic = new Account($db);
 $facturestatic = new FactureFournisseur($db);
 $formcompany = new FormCompany($db);
-$thirdparty = new Societe($db);
+$thirdparty = new Company($db);
 $subtypearray = $object->getArrayOfInvoiceSubtypes(0);
 $now = dol_now();
 
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     if (empty($search_company)) {
         $search_company = $soc->name;
@@ -809,7 +809,7 @@ if ($num == 1 && getDolGlobalInt('MAIN_SEARCH_DIRECT_OPEN_IF_ONLY_ONE') && $sear
 llxHeader('', $title, $help_url);
 
 if ($socid) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     if (empty($search_company)) {
         $search_company = $soc->name;
@@ -1495,7 +1495,7 @@ if (!getDolGlobalString('MAIN_CHECKBOX_LEFT_COLUMN')) {
 print '</tr>' . "\n";
 
 $facturestatic = new FactureFournisseur($db);
-$supplierstatic = new Fournisseur($db);
+$supplierstatic = new Supplier($db);
 $projectstatic = new Project($db);
 $userstatic = new User($db);
 $discount = new DiscountAbsolute($db);

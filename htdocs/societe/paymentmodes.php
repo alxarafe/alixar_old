@@ -63,7 +63,7 @@ if ($user->socid) {
 }
 
 // Initialize objects
-$object = new Societe($db);
+$object = new Company($db);
 $object->fetch($socid);
 
 $companybankaccount = new CompanyBankAccount($db);

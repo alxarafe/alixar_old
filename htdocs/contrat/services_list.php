@@ -116,7 +116,7 @@ $result = restrictedArea($user, 'contrat', $contratid);
 
 $staticcontrat = new Contrat($db);
 $staticcontratligne = new ContratLigne($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 
 $arrayfields = array(
     'c.ref' => array('label' => "Contract", 'checked' => 1, 'position' => 80),

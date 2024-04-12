@@ -284,7 +284,7 @@ $userstatic = new User($db);
 $formactions = new FormActions($db);
 
 $actionstatic = new ActionComm($db);
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 $contactstatic = new Contact($db);
 
 $nav = '';

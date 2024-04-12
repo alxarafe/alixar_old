@@ -50,7 +50,7 @@ if ($result <= 0) {
 }
 
 // Data from linked company
-$company = new Societe($db);
+$company = new Company($db);
 if ($object->socid > 0) {
     $result = $company->fetch($object->socid);
 }

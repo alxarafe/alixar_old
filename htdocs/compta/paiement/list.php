@@ -172,7 +172,7 @@ if (empty($reshook)) {
 $form = new Form($db);
 $formother = new FormOther($db);
 $accountstatic = new Account($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $bankline = new AccountLine($db);
 
 llxHeader('', $langs->trans('ListPayment'));

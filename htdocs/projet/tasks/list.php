@@ -273,7 +273,7 @@ if (empty($search_projectstatus) && $search_projectstatus == '') {
 
 $form = new Form($db);
 $formother = new FormOther($db);
-$socstatic = new Societe($db);
+$socstatic = new Company($db);
 $projectstatic = new Project($db);
 $puser = new User($db);
 $tuser = new User($db);

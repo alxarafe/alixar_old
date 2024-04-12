@@ -76,7 +76,7 @@ print load_fiche_titre($langs->trans("CustomersStandingOrdersArea"), $newcardbut
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 $invoicestatic = new Facture($db);
 $bprev = new BonPrelevement($db);
 

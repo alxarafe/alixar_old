@@ -48,7 +48,6 @@ function dolMd2Html($content, $parser = 'parsedown', $replaceimagepath = null)
         }
     }
     if ($parser == 'parsedown') {
-        include_once DOL_DOCUMENT_ROOT . '/includes/parsedown/Parsedown.php';
         $parsedown = new Parsedown();
         $parsedown->setSafeMode(true);      // This will escape HTML link <a href=""> into html entities but markdown links are ok
         $content = $parsedown->text($content);

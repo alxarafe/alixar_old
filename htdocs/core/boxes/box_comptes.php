@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2013      Juanjo Menent        <jmenent@2byte.es>
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +27,14 @@
  *      \brief      Module to generate box for bank accounts
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 
 /**
  * Class to manage the box to show bank accounts
  */
-class box_comptes extends ModeleBoxes
+class box_comptes extends GenericBoxes
 {
     public $boxcode  = "currentaccounts";
     public $boximg   = "bank_account";

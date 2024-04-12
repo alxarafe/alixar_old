@@ -554,7 +554,7 @@ if ($id > 0 || $ref) {
             print '<span class="paddingleft">' . $obj->rowid . '</span>';
             print '</a></td>';
             if (!$salaryBonPl) {
-                $thirdparty = new Societe($db);
+                $thirdparty = new Company($db);
                 $thirdparty->fetch($obj->socid);
             } else {
                 $userSalary = new User($db);

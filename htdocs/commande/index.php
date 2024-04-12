@@ -69,7 +69,7 @@ $maxOpenCount = !getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->glob
  */
 
 $commandestatic = new Commande($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $form = new Form($db);
 $formfile = new FormFile($db);
 $help_url = "EN:Module_Customers_Orders|FR:Module_Commandes_Clients|ES:Módulo_Pedidos_de_clientes";

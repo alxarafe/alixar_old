@@ -535,7 +535,7 @@ $formmargin = null;
 if (isModEnabled('margin')) {
     $formmargin = new FormMargin($db);
 }
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $projectstatic = new Project($db);
 $formcompany = new FormCompany($db);
 
@@ -837,7 +837,7 @@ $objectstatic = new Propal($db);
 $userstatic = new User($db);
 
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     $title = $langs->trans('Proposals') . ' - ' . $soc->name;
     if (empty($search_societe)) {

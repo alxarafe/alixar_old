@@ -128,7 +128,7 @@ if (empty($socid) && $action == 'view') {
 
 $id = $socid;
 
-$object = new Societe($db);
+$object = new Company($db);
 $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels
@@ -207,7 +207,7 @@ if (empty($reshook)) {
 
     if ($action == 'confirm_merge' && $confirm == 'yes' && $user->hasRight('societe', 'creer')) {
         $soc_origin_id = GETPOSTINT('soc_origin');
-        $soc_origin = new Societe($db);     // The thirdparty that we will delete
+        $soc_origin = new Company($db);     // The thirdparty that we will delete
 
         if ($soc_origin_id <= 0) {
             $langs->load('errors');

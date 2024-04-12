@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
  * Copyright (C) 2016      Charlie Benke        <charlie@patas-monkey.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +27,13 @@
  *  \brief      Module to generated widget of best customers (the most invoiced)
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show top-selling customers
  */
-class box_goodcustomers extends ModeleBoxes
+class box_goodcustomers extends GenericBoxes
 {
     public $boxcode  = "goodcustomers";
     public $boximg   = "object_company";
@@ -78,7 +79,7 @@ class box_goodcustomers extends ModeleBoxes
         $this->max = $max;
 
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-        $thirdpartystatic = new Societe($this->db);
+        $thirdpartystatic = new Company($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleGoodCustomers", $max));
 

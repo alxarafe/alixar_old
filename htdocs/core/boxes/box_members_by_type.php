@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015-2023 Frederic France      <frederic.france@netlogic.fr>
  * Copyright (C) 2021-2023 Waël Almoman         <info@almoman.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +27,13 @@
  *  \brief      Module to show box of members
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show last modofied members
  */
-class box_members_by_type extends ModeleBoxes
+class box_members_by_type extends GenericBoxes
 {
     public $boxcode = "box_members_by_type";
     public $boximg = "object_user";

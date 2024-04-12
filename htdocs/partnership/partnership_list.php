@@ -292,7 +292,7 @@ if (empty($reshook)) {
  */
 
 $form = new Form($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 
 $now = dol_now();
 
@@ -526,7 +526,7 @@ if ($managedfor == "member") {
     }
 } elseif ($managedfor == "thirdparty") {
     if ($socid && $user->hasRight('societe', 'lire')) {
-        $socstat = new Societe($db);
+        $socstat = new Company($db);
         $res = $socstat->fetch($socid);
         if ($res > 0) {
             $tmpobject = $object;
@@ -871,7 +871,7 @@ while ($i < $imaxinloop) {
         if (!empty($conf->cache['thirdparty'][$obj->fk_soc])) {
             $companyobj = $conf->cache['thirdparty'][$obj->fk_soc];
         } else {
-            $companyobj = new Societe($db);
+            $companyobj = new Company($db);
             $companyobj->fetch($obj->fk_soc);
             $conf->cache['thirdparty'][$obj->fk_soc] = $companyobj;
         }

@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015-2021 Frederic France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,14 @@
  *  \brief      Module for generating box to show last customers
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Client;
 
 
 /**
  * Class to manage the box to show last customers
  */
-class box_clients extends ModeleBoxes
+class box_clients extends GenericBoxes
 {
     public $boxcode  = "lastcustomers";
     public $boximg   = "object_company";

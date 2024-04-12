@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,14 @@
  *  \brief      Module d'affichage pour les encours dépassés
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
 
 
 /**
  * Class to manage the box to show last thirdparties
  */
-class box_customers_outstanding_bill_reached extends ModeleBoxes
+class box_customers_outstanding_bill_reached extends GenericBoxes
 {
     public $boxcode = "customersoutstandingbillreached";
     public $boximg = "object_company";
@@ -74,7 +76,7 @@ class box_customers_outstanding_bill_reached extends ModeleBoxes
         $this->max = $max;
 
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-        $thirdpartystatic = new Societe($this->db);
+        $thirdpartystatic = new Company($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastOutstandingBillReached", $max));
 

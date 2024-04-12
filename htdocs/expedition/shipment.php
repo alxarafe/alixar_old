@@ -245,7 +245,7 @@ if ($id > 0 || !empty($ref)) {
 
         $product_static = new Product($db);
 
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->fetch($object->socid);
 
         $author = new User($db);

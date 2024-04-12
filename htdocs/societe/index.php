@@ -29,20 +29,16 @@
  */
 
 // Load Dolibarr environment
-require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
+use DoliModules\Company\Model\Company;
 
+require BASE_PATH . '/main.inc.php';
 
 // Load translation files required by the page
 $langs->load("companies");
 
-
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
 $hookmanager = new HookManager($db);
 $hookmanager->initHooks(array('thirdpartiesindex'));
-
-
 
 $socid = GETPOSTINT('socid');
 if ($user->socid) {
@@ -52,7 +48,7 @@ if ($user->socid) {
 // Security check
 $result = restrictedArea($user, 'societe', 0, '', '', '', '');
 
-$thirdparty_static = new Societe($db);
+$thirdparty_static = new Company($db);
 
 if (!isset($form) || !is_object($form)) {
     $form = new Form($db);

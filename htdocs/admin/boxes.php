@@ -26,7 +26,8 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+
+use DoliCore\Base\GenericBoxes;
 require_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 
@@ -165,10 +166,10 @@ if ($action == 'switch') {
     // We switch values of field box_order for the 2 lines of table boxes
     $db->begin();
 
-    $objfrom = new ModeleBoxes($db);
+    $objfrom = new GenericBoxes($db);
     $objfrom->fetch(GETPOSTINT("switchfrom"));
 
-    $objto = new ModeleBoxes($db);
+    $objto = new GenericBoxes($db);
     $objto->fetch(GETPOSTINT('switchto'));
 
     $resultupdatefrom = 0;

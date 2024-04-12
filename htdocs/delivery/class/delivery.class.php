@@ -428,7 +428,7 @@ class Delivery extends GenericDocument
 
                     // Retrieving the new reference
                     $objMod = new $modName($this->db);
-                    $soc = new Societe($this->db);
+                    $soc = new Company($this->db);
                     $soc->fetch($this->socid);
 
                     if (preg_match('/^[\(]?PROV/i', $this->ref) || empty($this->ref)) { // empty should not happened, but when it occurs, the test save life

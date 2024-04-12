@@ -305,7 +305,7 @@ if (empty($reshook)) {
         if (!$error) {
             $db->begin();
 
-            $thirdparty = new Societe($db);
+            $thirdparty = new Company($db);
             if ($socid > 0) {
                 $thirdparty->fetch($socid);
             }
@@ -384,7 +384,7 @@ if (empty($reshook)) {
 $form = new Form($db);
 $formother = new FormOther($db);
 
-$supplierstatic = new Societe($db);
+$supplierstatic = new Company($db);
 $invoicesupplierstatic = new FactureFournisseur($db);
 
 llxHeader('', $langs->trans('ListPayment'));

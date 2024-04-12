@@ -45,7 +45,7 @@ if (!defined("NOSESSION")) {
 }
 
 require BASE_PATH . '/main.inc.php';
-require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
+//require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
@@ -522,7 +522,7 @@ function createUserFromThirdparty($authentication, $thirdpartywithuser)
         $fuser->getrights();
 
         if ($fuser->hasRight('societe', 'creer')) {
-            $thirdparty = new Societe($db);
+            $thirdparty = new Company($db);
 
             // If a contact / company already exists with the email, return the corresponding socid
             $sql = "SELECT s.rowid as socid FROM " . MAIN_DB_PREFIX . "societe as s";

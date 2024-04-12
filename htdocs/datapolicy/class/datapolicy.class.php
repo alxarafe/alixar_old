@@ -113,7 +113,7 @@ class DataPolicy
             $i = 0;
             while ($i < $num) {
                 $obj = $this->db->fetch_object($resql);
-                $societe = new Societe($db);
+                $societe = new Company($db);
                 $societe->fetch($obj->rowid);
 
                 DataPolicy::sendMailDataPolicyCompany($societe);

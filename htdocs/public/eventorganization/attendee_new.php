@@ -354,7 +354,7 @@ if (empty($reshook) && $action == 'add' && (!empty($conference->id) && $conferen
         $genericcompanyname = $langs->trans('EventParticipant') . ' ' . ($emailcompany ? $emailcompany : $email);   // Keep this label simple so we can retrieve same thirdparty for another event
 
         // Getting the thirdparty or creating it
-        $thirdparty = new Societe($db);
+        $thirdparty = new Company($db);
         $contact = new Contact($db);
         // Fetch using fk_soc if the attendee was already found
         if (!empty($confattendee->fk_soc) && $confattendee->fk_soc > 0) {

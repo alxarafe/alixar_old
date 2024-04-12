@@ -4,6 +4,7 @@
  * Copyright (C) 2013-2016  Jean-François FERRY <hello@librethic.io>
  * Copyright (C) 2016       Christophe Battarel <christophe@altairis.fr>
  * Copyright (C) 2018-2021  Frédéric France     <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +26,12 @@
  *     \brief       This box shows latest created tickets
  */
 
-require_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
+use DoliCore\Base\GenericBoxes;
 
 /**
  * Class to manage the box to show last created tickets
  */
-class box_last_ticket extends ModeleBoxes
+class box_last_ticket extends GenericBoxes
 {
     public $boxcode = "box_last_ticket";
     public $boximg  = "ticket";
@@ -119,7 +120,7 @@ class box_last_ticket extends ModeleBoxes
                     $ticket->status = $objp->status;
                     $ticket->subject = $objp->subject;
                     if ($objp->fk_soc > 0) {
-                        $thirdparty = new Societe($this->db);
+                        $thirdparty = new Company($this->db);
                         $thirdparty->id = $objp->fk_soc;
                         $thirdparty->email = $objp->socemail;
                         $thirdparty->client = $objp->client;

@@ -105,7 +105,7 @@
  *
  */
 
-require_once DOL_DOCUMENT_ROOT . '/includes/mike42/escpos-php/autoload.php';
+// require_once DOL_DOCUMENT_ROOT . '/includes/mike42/escpos-php/autoload.php';
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;

@@ -70,7 +70,7 @@ if (!$sortfield) {
 
 llxHeader();
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 
 if ($action == 'note') {
     $sql = "UPDATE " . MAIN_DB_PREFIX . "societe SET note='" . $db->escape($note) . "' WHERE rowid=" . ((int) $socid);

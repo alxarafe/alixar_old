@@ -188,7 +188,7 @@ if ($resql) {
     while ($i < min($num, $limit)) {
         $obj = $db->fetch_object($resql);
 
-        $soc = new Societe($db);
+        $soc = new Company($db);
         if ($obj->socid) {
             $soc->fetch($obj->socid);
         }

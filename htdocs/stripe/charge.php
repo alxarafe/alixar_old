@@ -62,7 +62,7 @@ $optioncss = GETPOST('optioncss', 'alpha');
  */
 
 $form = new Form($db);
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 $memberstatic = new Adherent($db);
 $acc = new Account($db);
 $stripe = new Stripe($db);

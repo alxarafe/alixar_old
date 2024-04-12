@@ -53,7 +53,7 @@ $excludeids = GETPOST('excludeids', 'intcomma');
 $showtype = GETPOSTINT('showtype', 'alpha');
 $showcode = GETPOSTINT('showcode', 'alpha');
 
-$object = new Societe($db);
+$object = new Company($db);
 if ($id > 0) {
     $object->fetch($id);
 }

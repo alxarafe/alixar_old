@@ -1770,7 +1770,7 @@ if ($action == 'create') {
 
     print load_fiche_titre($langs->trans("NewProp"), '', 'propal');
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     if ($socid > 0) {
         $res = $soc->fetch($socid);
     }
@@ -2245,7 +2245,7 @@ if ($action == 'create') {
     if ($object->thirdparty) {
         $soc = $object->thirdparty;
     } else {
-        $soc = new Societe($db);
+        $soc = new Company($db);
     }
 
     $head = propal_prepare_head($object);
@@ -2787,7 +2787,7 @@ if ($action == 'create') {
                 print '</td><td class="valuefield">';
                 if ($object->statut == $object::STATUS_DRAFT && ($action == 'editmulticurrencyrate' || $action == 'actualizemulticurrencyrate') && $usercancreate) {
                     if ($action == 'actualizemulticurrencyrate') {
-                        list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
+                        [$object->fk_multicurrency, $object->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
                     }
                     $form->form_multicurrency_rate($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->multicurrency_tx, 'multicurrency_tx', $object->multicurrency_code);
                 } else {

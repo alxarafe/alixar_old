@@ -211,7 +211,7 @@ foreach ($allparams as $key => $value) {
 llxHeader();
 
 $form = new Form($db);
-$thirdparty_static = new Societe($db);
+$thirdparty_static = new Company($db);
 $formother = new FormOther($db);
 
 // TODO Report from bookkeeping not yet available, so we switch on report on business events

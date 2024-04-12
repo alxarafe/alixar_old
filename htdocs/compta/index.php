@@ -96,7 +96,7 @@ $now = dol_now();
 
 $form = new Form($db);
 $formfile = new FormFile($db);
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 
 llxHeader("", $langs->trans("InvoicesArea"));
 
@@ -643,7 +643,7 @@ if (isModEnabled('invoice') && isModEnabled('order') && $user->hasRight("command
             print '</tr>';
 
             $tot_ht = $tot_ttc = $tot_tobill = 0;
-            $societestatic = new Societe($db);
+            $societestatic = new Company($db);
             while ($i < $num) {
                 $obj = $db->fetch_object($resql);
 

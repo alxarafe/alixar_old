@@ -25,31 +25,6 @@ use DoliModules\Api\Controller\ApiController;
  */
 global $db;
 
-/**
- * Obtains main url
- * TODO: Move to functions
- *
- * @return string
- */
-function get_url()
-{
-    $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
-    $proto = strtolower($_SERVER['SERVER_PROTOCOL']);
-    $proto = substr($proto, 0, strpos($proto, '/')) . ($ssl ? 's' : '');
-    if (isset($_SERVER['HTTP_HOST'])) {
-        $host = $_SERVER['HTTP_HOST'];
-    } else {
-        $port = $_SERVER['SERVER_PORT'];
-        $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
-        $host = $_SERVER['SERVER_NAME'] . $port;
-    }
-
-    $script = $_SERVER['SCRIPT_NAME'];
-
-    $script = substr($script, 0, strlen($script) - strlen('/index.php'));
-    return $proto . '://' . $host . $script;
-}
-
 const BASE_PATH = __DIR__;
 $autoload_filename = realpath(BASE_PATH . '/../vendor/autoload.php');
 if (!file_exists($autoload_filename)) {
@@ -58,7 +33,7 @@ if (!file_exists($autoload_filename)) {
 
 require_once $autoload_filename;
 
-define('BASE_URL', get_url());
+define('BASE_URL', getUrl());
 
 /**
  * @deprecated Use BASE_PATH instead.

@@ -682,7 +682,7 @@ if ($action == "dosign" && empty($cancel)) {
     print '</div>';
 
     // Add js code managed into the div #signature
-    print '<script language="JavaScript" type="text/javascript" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jSignature/jSignature.js"></script>
+    print '<script language="JavaScript" type="text/javascript" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jSignature/jSignature.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 	  $("#signature").jSignature({ color:"#000", lineWidth:0, ' . (empty($conf->dol_optimize_smallscreen) ? '' : 'width: 280, ') . 'height: 180});

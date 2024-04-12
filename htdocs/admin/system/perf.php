@@ -223,7 +223,7 @@ jQuery(document).ready(function() {
   getcssurl = $.ajax({
     type: "GET",
 	data: { token: \'notrequired\' },
-    url: \'' . DOL_URL_ROOT . '/includes/jquery/css/base/jquery-ui.css\',
+    url: \'' . DOL_URL_ROOT . '/Templates/Lib/jquery/css/base/jquery-ui.css\',
     cache: false,
     /* async: false, */
     /* crossDomain: true, */

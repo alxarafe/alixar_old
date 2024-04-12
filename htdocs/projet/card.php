@@ -593,7 +593,7 @@ if ($action == 'create' && $user->hasRight('projet', 'creer')) {
      * Create
      */
 
-    $thirdparty = new Societe($db);
+    $thirdparty = new Company($db);
     if ($socid > 0) {
         $thirdparty->fetch($socid);
     }

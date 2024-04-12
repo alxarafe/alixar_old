@@ -281,7 +281,7 @@ if ($action == 'create') {
         }
 
         if ($object->id > 0) {
-            $soc = new Societe($db);
+            $soc = new Company($db);
             $soc->fetch($object->socid);
 
             $head = delivery_prepare_head($object);

@@ -913,7 +913,7 @@ print '<table class="border tableforfield centpercent">';
 if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_BY_QTY_MULTIPRICES')) {
     // Price and min price are variable (depends on level of company).
     if (!empty($socid)) {
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->id = $socid;
         $soc->fetch($socid);
 
@@ -2088,7 +2088,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
         print '<table class="liste centpercent">';
         print '<tr>';
         print '<td class="titlefield fieldrequired">' . $langs->trans('ThirdParty') . '</td>';
-        $staticsoc = new Societe($db);
+        $staticsoc = new Company($db);
         $staticsoc->fetch($prodcustprice->fk_soc);
         print "<td>" . $staticsoc->getNomUrl(1) . "</td>";
         print '</tr>';
@@ -2180,7 +2180,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 
         $option = '&socid=' . GETPOSTINT('socid') . '&id=' . $object->id;
 
-        $staticsoc = new Societe($db);
+        $staticsoc = new Company($db);
         $staticsoc->fetch(GETPOSTINT('socid'));
 
         $title = $langs->trans('PriceByCustomerLog');
@@ -2219,7 +2219,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
 
             foreach ($prodcustprice->lines as $line) {
                 // Date
-                $staticsoc = new Societe($db);
+                $staticsoc = new Company($db);
                 $staticsoc->fetch($line->fk_soc);
 
                 $tva_tx = $line->default_vat_code ? $line->tva_tx . ' (' . $line->default_vat_code . ')' : $line->tva_tx;
@@ -2430,7 +2430,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
         if (count($prodcustprice->lines) > 0) {
             foreach ($prodcustprice->lines as $line) {
                 // Date
-                $staticsoc = new Societe($db);
+                $staticsoc = new Company($db);
                 $staticsoc->fetch($line->fk_soc);
 
                 $tva_tx = $line->default_vat_code ? $line->tva_tx . ' (' . $line->default_vat_code . ')' : $line->tva_tx;

@@ -97,11 +97,12 @@ if ($contextpage == 'employeelist' && $search_employee == 1) {
 } else {
     $title = $langs->trans("Users");
 }
+
 $arrayofjs = array(
-    '/includes/jquery/plugins/jquerytreeview/jquery.treeview.js',
-    '/includes/jquery/plugins/jquerytreeview/lib/jquery.cookie.js',
+    '/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.js',
+    '/Templates/Lib/jquery/plugins/jquerytreeview/lib/jquery.cookie.js',
 );
-$arrayofcss = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css');
+$arrayofcss = ['/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.css'];
 
 llxHeader('', $title, $help_url, '', 0, 0, $arrayofjs, $arrayofcss, '', 'bodyforlist');
 

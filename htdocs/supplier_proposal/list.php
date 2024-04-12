@@ -290,7 +290,7 @@ $form = new Form($db);
 $formother = new FormOther($db);
 $formfile = new FormFile($db);
 $formpropal = new FormPropal($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $formcompany = new FormCompany($db);
 
 $now = dol_now();
@@ -495,7 +495,7 @@ if ($resql) {
     $userstatic = new User($db);
 
     if ($socid > 0) {
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->fetch($socid);
         $title = $langs->trans('SupplierProposals') . ' - ' . $soc->name;
     } else {

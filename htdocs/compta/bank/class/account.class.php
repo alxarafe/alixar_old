@@ -1621,7 +1621,7 @@ class Account extends GenericDocument
         // If this class is linked to a third party
         if (!empty($this->socid)) {
             require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-            $company = new Societe($this->db);
+            $company = new Company($this->db);
             $result = $company->fetch($this->socid);
             if (!empty($company->country_code)) {
                 return $company->country_code;

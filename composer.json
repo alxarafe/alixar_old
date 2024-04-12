@@ -52,7 +52,8 @@
     "illuminate/database": "^8.83",
     "monolog/monolog": "^3.5",
     "symfony/mailer": "^6.4",
-    "restler/framework": "^5"
+    "restler/framework": "^5",
+    "pclzip/pclzip": "^2.8"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
@@ -80,6 +81,9 @@
       "Modules\\": "Modules/",
       "DoliCore\\": "Deprecated/Core",
       "DoliModules\\": "Deprecated/Modules"
-    }
+    },
+    "files": [
+      "Deprecated/Lib/Functions.php"
+    ]
   }
 }

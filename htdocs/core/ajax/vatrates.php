@@ -55,7 +55,7 @@ top_httphead('application/json');
 // Load original field value
 if (!empty($id) && !empty($action) && !empty($htmlname)) {
     $form = new Form($db);
-    $soc = new Societe($db);
+    $soc = new Company($db);
 
     $soc->fetch($id);
 

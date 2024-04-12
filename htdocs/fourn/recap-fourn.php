@@ -53,7 +53,7 @@ $userstatic = new User($db);
 llxHeader();
 
 if ($socid > 0) {
-    $societe = new Societe($db);
+    $societe = new Company($db);
     $societe->fetch($socid);
 
     /*

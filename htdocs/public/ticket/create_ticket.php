@@ -287,7 +287,7 @@ if (empty($reshook)) {
             // create third-party with contact
             $usertoassign = 0;
             if ($with_contact && !($with_contact->id > 0)) {
-                $company = new Societe($db);
+                $company = new Company($db);
                 if (!empty($company_name)) {
                     $company->name = $company_name;
                 } else {

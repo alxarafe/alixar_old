@@ -102,7 +102,7 @@ if (empty($conf->eventorganization->enabled)) {
  * Actions
  */
 
-$tmpthirdparty = new Societe($db);
+$tmpthirdparty = new Company($db);
 
 $listOfConferences = '<tr><td>' . $langs->trans('Label') . '</td>';
 $listOfConferences .= '<td>' . $langs->trans('Type') . '</td>';

@@ -215,7 +215,7 @@ if (empty($localTaxType)) {
  */
 
 $form = new Form($db);
-$company_static = new Societe($db);
+$company_static = new Company($db);
 $tva = new Tva($db);
 
 if ($localTaxType == 1) {

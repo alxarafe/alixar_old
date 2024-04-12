@@ -56,7 +56,7 @@ $result = restrictedArea($user, 'societe', $id, '&societe', '', 'fk_soc', 'rowid
  */
 
 if ($action == 'setpricelevel' && $user->hasRight('societe', 'creer')) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($id);
     $soc->setPriceLevel(GETPOST("price_level"), $user);
 
@@ -75,7 +75,7 @@ $userstatic = new User($db);
 
 if ($_socid > 0) {
     // We load data of thirdparty
-    $objsoc = new Societe($db);
+    $objsoc = new Company($db);
     $objsoc->id = $_socid;
     $objsoc->fetch($_socid);
 

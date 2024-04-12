@@ -57,7 +57,7 @@ $langs->loadLangs(array("main", "bills", "cashdesk"));
 
 $invoice = new Facture($db);
 $invoice->fetch($facid);
-$customer = new Societe($db);
+$customer = new Company($db);
 $customer->fetch($invoice->socid);
 
 

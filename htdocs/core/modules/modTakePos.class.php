@@ -276,7 +276,7 @@ class modTakePos extends DolibarrModules
 
         // Default customer for Point of sale
         if (!getDolGlobalInt('CASHDESK_ID_THIRDPARTY1')) {  // If a customer has already ben set into the TakePos setup page
-            $societe = new Societe($this->db);
+            $societe = new Company($this->db);
             $nametouse = $langs->trans("DefaultPOSThirdLabel");
 
             $searchcompanyid = $societe->fetch(0, $nametouse);

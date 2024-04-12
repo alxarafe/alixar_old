@@ -26,10 +26,8 @@ filter:
   excluded_paths:
     - 'test/**'
     - 'vendor/**'
-    - 'htdocs/includes/**'
   dependency_paths:
     - 'vendor/**'
-    - 'htdocs/includes/**'
 
 # Configure code duplication scans, if relevant
 #  checks:

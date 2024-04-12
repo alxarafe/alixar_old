@@ -337,7 +337,7 @@ function show_array_last_actions_done($max = 5)
         $i = 0;
 
         $staticaction = new ActionComm($db);
-        $customerstatic = new Societe($db);
+        $customerstatic = new Company($db);
 
         while ($i < $num) {
             $obj = $db->fetch_object($resql);

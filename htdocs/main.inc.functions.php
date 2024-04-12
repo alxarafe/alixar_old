@@ -637,14 +637,14 @@ if (!function_exists('top_htmlhead')) {
                 if (constant('JS_JQUERY_UI')) {
                     print '<link rel="stylesheet" type="text/css" href="' . JS_JQUERY_UI . 'css/' . $jquerytheme . '/jquery-ui.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // Forced JQuery
                 } else {
-                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/css/' . $jquerytheme . '/jquery-ui.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JQuery
+                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/Templates/Lib/jquery/css/' . $jquerytheme . '/jquery-ui.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JQuery
                 }
                 if (!defined('DISABLE_JQUERY_JNOTIFY')) {
-                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify-alt.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JNotify
+                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jnotify/jquery.jnotify-alt.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JNotify
                 }
                 if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {     // jQuery plugin "mutiselect", "multiple-select", "select2"...
                     $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
-                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/css/' . $tmpplugin . '.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
+                    print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/' . $tmpplugin . '/dist/css/' . $tmpplugin . '.css' . ($ext ? '?' . $ext : '') . '">' . "\n";
                 }
             }
 
@@ -726,34 +726,34 @@ if (!function_exists('top_htmlhead')) {
                 // JQuery. Must be before other includes
                 print '<!-- Includes JS for JQuery -->' . "\n";
                 if (defined('JS_JQUERY') && constant('JS_JQUERY')) {
-                    print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY . 'jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY . 'js/jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 } else {
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/js/jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/js/jquery.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 }
                 if (defined('JS_JQUERY_UI') && constant('JS_JQUERY_UI')) {
-                    print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY_UI . 'jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . JS_JQUERY_UI . 'js/jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 } else {
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/js/jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/js/jquery-ui.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 }
                 // jQuery jnotify
                 if (!getDolGlobalString('MAIN_DISABLE_JQUERY_JNOTIFY') && !defined('DISABLE_JQUERY_JNOTIFY')) {
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jnotify/jquery.jnotify.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jnotify/jquery.jnotify.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 }
                 // Table drag and drop lines
                 if (empty($disableforlogin) && !defined('DISABLE_JQUERY_TABLEDND')) {
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/tablednd/jquery.tablednd.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/tablednd/jquery.tablednd.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 }
                 // Chart
                 if (empty($disableforlogin) && (!getDolGlobalString('MAIN_JS_GRAPH') || getDolGlobalString('MAIN_JS_GRAPH') == 'chart') && !defined('DISABLE_JS_GRAPH')) {
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/nnnick/chartjs/dist/chart.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/nnnick/chartjs/dist/chart.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 }
 
                 // jQuery jeditable for Edit In Place features
                 if (getDolGlobalString('MAIN_USE_JQUERY_JEDITABLE') && !defined('DISABLE_JQUERY_JEDITABLE')) {
                     print '<!-- JS to manage editInPlace feature -->' . "\n";
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ui-datepicker.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ui-autocomplete.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jeditable/jquery.jeditable.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jeditable/jquery.jeditable.ui-datepicker.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jeditable/jquery.jeditable.ui-autocomplete.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                     print '<script>' . "\n";
                     print 'var urlSaveInPlace = \'' . DOL_URL_ROOT . '/core/ajax/saveinplace.php\';' . "\n";
                     print 'var urlLoadInPlace = \'' . DOL_URL_ROOT . '/core/ajax/loadinplace.php\';' . "\n";
@@ -765,20 +765,20 @@ if (!function_exists('top_htmlhead')) {
                     print 'var withInPlace = 300;'; // width in pixel for default string edit
                     print '</script>' . "\n";
                     print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/editinplace.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jeditable/jquery.jeditable.ckeditor.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jeditable/jquery.jeditable.ckeditor.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 }
                 // jQuery Timepicker
                 if (getDolGlobalString('MAIN_USE_JQUERY_TIMEPICKER') || defined('REQUIRE_JQUERY_TIMEPICKER')) {
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/timepicker/jquery-ui-timepicker-addon.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/timepicker/jquery-ui-timepicker-addon.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                     print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/core/js/timepicker.js.php?lang=' . $langs->defaultlang . ($ext ? '&amp;' . $ext : '') . '"></script>' . "\n";
                 }
                 if (!defined('DISABLE_SELECT2') && (getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT'))) {
                     // jQuery plugin "mutiselect", "multiple-select", "select2", ...
                     $tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/' . $tmpplugin . '/dist/js/' . $tmpplugin . '.full.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n"; // We include full because we need the support of containerCssClass
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/' . $tmpplugin . '/dist/js/' . $tmpplugin . '.full.min.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n"; // We include full because we need the support of containerCssClass
                 }
                 if (!defined('DISABLE_MULTISELECT')) {     // jQuery plugin "mutiselect" to select with checkboxes. Can be removed once we have an enhanced search tool
-                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/multiselect/jquery.multi-select.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
+                    print '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/multiselect/jquery.multi-select.js' . ($ext ? '?' . $ext : '') . '"></script>' . "\n";
                 }
             }
 
@@ -786,9 +786,9 @@ if (!function_exists('top_htmlhead')) {
                 // CKEditor
                 if (empty($disableforlogin) && (isModEnabled('fckeditor') && (!getDolGlobalString('FCKEDITOR_EDITORNAME') || getDolGlobalString('FCKEDITOR_EDITORNAME') == 'ckeditor') && !defined('DISABLE_CKEDITOR')) || defined('FORCE_CKEDITOR')) {
                     print '<!-- Includes JS for CKEditor -->' . "\n";
-                    $pathckeditor = DOL_URL_ROOT . '/includes/ckeditor/ckeditor/';
+                    $pathckeditor = DOL_URL_ROOT . '/Templates/Lib/ckeditor/ckeditor/';
                     $jsckeditor = 'ckeditor.js';
-                    if (constant('JS_CKEDITOR')) {
+                    if (defined('JS_CKEDITOR')) {
                         // To use external ckeditor 4 js lib
                         $pathckeditor = constant('JS_CKEDITOR');
                     }
@@ -1229,7 +1229,7 @@ if (!function_exists('top_menu_user')) {
             $dropdownBody .= '<br><b>' . $langs->trans("Administrator") . '</b>: ' . yn($user->admin);
         }
         if (!empty($user->socid)) { // Add thirdparty for external users
-            $thirdpartystatic = new Societe($db);
+            $thirdpartystatic = new Company($db);
             $thirdpartystatic->fetch($user->socid);
             $companylink = ' ' . $thirdpartystatic->getNomUrl(2); // picto only of company
             $company = ' (' . $langs->trans("Company") . ': ' . $thirdpartystatic->name . ')';

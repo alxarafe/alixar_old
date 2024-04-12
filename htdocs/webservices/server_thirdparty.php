@@ -44,7 +44,7 @@ if (!defined("NOSESSION")) {
 }
 
 require BASE_PATH . '/main.inc.php';
-require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
+//require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
@@ -341,7 +341,7 @@ function getThirdParty($authentication, $id = '', $ref = '', $ref_ext = '', $bar
         $fuser->getrights();
 
         if ($fuser->hasRight('societe', 'lire')) {
-            $thirdparty = new Societe($db);
+            $thirdparty = new Company($db);
             $result = $thirdparty->fetch($id, $ref, $ref_ext, $barcode, $profid1, $profid2);
             if ($result > 0) {
                 $thirdparty_result_fields = array(
@@ -465,7 +465,7 @@ function createThirdParty($authentication, $thirdparty)
     if (!$error) {
         include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
-        $newobject = new Societe($db);
+        $newobject = new Company($db);
         $newobject->ref = $thirdparty['ref'];
         $newobject->name = $thirdparty['ref'];
         $newobject->ref_ext = $thirdparty['ref_ext'];
@@ -598,7 +598,7 @@ function updateThirdParty($authentication, $thirdparty)
 
         include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
-        $object = new Societe($db);
+        $object = new Company($db);
         $result = $object->fetch($thirdparty['id']);
 
         if (!empty($object->id)) {
@@ -845,7 +845,7 @@ function deleteThirdParty($authentication, $id = '', $ref = '', $ref_ext = '')
         $fuser->getrights();
 
         if ($fuser->hasRight('societe', 'lire') && $fuser->hasRight('societe', 'supprimer')) {
-            $thirdparty = new Societe($db);
+            $thirdparty = new Company($db);
             $result = $thirdparty->fetch($id, $ref, $ref_ext);
 
             if ($result > 0) {

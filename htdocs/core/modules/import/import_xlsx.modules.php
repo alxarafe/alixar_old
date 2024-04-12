@@ -109,9 +109,9 @@ class ImportXlsx extends ModeleImports
         $this->version = '1.0'; // Driver version
 
         // If driver use an external library, put its name here
-        require_once DOL_DOCUMENT_ROOT . '/includes/phpoffice/phpspreadsheet/src/autoloader.php';
-        require_once DOL_DOCUMENT_ROOT . '/includes/Psr/autoloader.php';
-        require_once PHPEXCELNEW_PATH . 'Spreadsheet.php';
+        // require_once DOL_DOCUMENT_ROOT . '/includes/phpoffice/phpspreadsheet/src/autoloader.php';
+        // require_once DOL_DOCUMENT_ROOT . '/includes/Psr/autoloader.php';
+//        require_once PHPEXCELNEW_PATH . 'Spreadsheet.php';
         $this->workbook = new Spreadsheet();
 
         // If driver use an external library, put its name here
@@ -125,7 +125,7 @@ class ImportXlsx extends ModeleImports
 
         $this->datatoimport = $datatoimport;
         if (preg_match('/^societe_/', $datatoimport)) {
-            $this->thirdpartyobject = new Societe($this->db);
+            $this->thirdpartyobject = new Company($this->db);
         }
     }
 

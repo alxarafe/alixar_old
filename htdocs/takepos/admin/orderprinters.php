@@ -125,10 +125,10 @@ if ($type == Categorie::TYPE_PRODUCT) {
 }
 
 $arrayofjs = array(
-    '/includes/jquery/plugins/jquerytreeview/jquery.treeview.js',
-    '/includes/jquery/plugins/jquerytreeview/lib/jquery.cookie.js',
+    '/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.js',
+    '/Templates/Lib/jquery/plugins/jquerytreeview/lib/jquery.cookie.js',
 );
-$arrayofcss = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css');
+$arrayofcss = ['/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.css'];
 
 llxHeader('', $title, '', '', 0, 0, $arrayofjs, $arrayofcss);
 

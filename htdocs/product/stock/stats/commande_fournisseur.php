@@ -92,7 +92,7 @@ if (!$user->hasRight('produit', 'lire')) {
  */
 
 $commandefournisseurstatic = new CommandeFournisseur($db);
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 
 $form = new Form($db);
 $formother = new FormOther($db);

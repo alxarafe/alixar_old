@@ -2073,7 +2073,7 @@ if ($action == 'create') {
 
     $societe = '';
     if (GETPOSTINT('socid') > 0) {
-        $societe = new Societe($db);
+        $societe = new Company($db);
         $societe->fetch(GETPOSTINT('socid'));
         if (isModEnabled("multicurrency") && !empty($societe->multicurrency_code)) {
             $currency_code = $societe->multicurrency_code;

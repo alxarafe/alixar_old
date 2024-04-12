@@ -3,6 +3,7 @@
 /* Copyright (C) 2012      Charles-François BENKE <charles.fr@benke.fr>
  * Copyright (C) 2005-2017 Laurent Destailleur    <eldy@users.sourceforge.net>
  * Copyright (C) 2014-2020 Frederic France        <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +25,12 @@
  *  \brief      Module to show box of last user logins
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 /**
  *  Class to manage the box of last login
  */
-class box_lastlogin extends ModeleBoxes
+class box_lastlogin extends GenericBoxes
 {
     public $boxcode  = "lastlogin";
     public $boximg   = "object_user";

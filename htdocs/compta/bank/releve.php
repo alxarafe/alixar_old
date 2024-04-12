@@ -229,7 +229,7 @@ if ($action == 'confirm_editbankreceipt' && !empty($oldbankreceipt) && !empty($n
  */
 
 $form = new Form($db);
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 $chargestatic = new ChargeSociales($db);
 $memberstatic = new Adherent($db);
 $paymentstatic = new Paiement($db);

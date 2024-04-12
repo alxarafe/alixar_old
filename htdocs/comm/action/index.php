@@ -247,7 +247,7 @@ $help_url = 'EN:Module_Agenda_En|FR:Module_Agenda|ES:M&oacute;dulo_Agenda|DE:Mod
 llxHeader('', $langs->trans("Agenda"), $help_url);
 
 $form = new Form($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $contactstatic = new Contact($db);
 $userstatic = new User($db);
 
@@ -2203,7 +2203,7 @@ function show_day_events($db, $day, $month, $year, $monthshown, $style, &$eventa
                             $linerelatedto = '';
                             if ($thirdparty_id > 0) {
                                 if (!isset($cachethirdparties[$thirdparty_id]) || !is_object($cachethirdparties[$thirdparty_id])) {
-                                    $thirdparty = new Societe($db);
+                                    $thirdparty = new Company($db);
                                     $thirdparty->fetch($thirdparty_id);
                                     $cachethirdparties[$thirdparty_id] = $thirdparty;
                                 } else {

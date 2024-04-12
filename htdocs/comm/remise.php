@@ -64,7 +64,7 @@ if ($cancel) {
 }
 
 if ($action == 'setremise') {
-    $object = new Societe($db);
+    $object = new Company($db);
     $object->fetch($id);
 
     $discount_type = GETPOSTINT('discount_type');
@@ -105,7 +105,7 @@ llxHeader();
  *********************************************************************************/
 if ($socid > 0) {
     // On recupere les donnees societes par l'objet
-    $object = new Societe($db);
+    $object = new Company($db);
     $object->fetch($socid);
 
     $head = societe_prepare_head($object);

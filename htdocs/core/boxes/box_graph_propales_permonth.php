@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2013 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +23,14 @@
  *  \brief      Box to show graph of proposals per month
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Proposal\Model\PropaleStats;
 
 
 /**
  * Class to manage the box to show proposals per month graph
  */
-class box_graph_propales_permonth extends ModeleBoxes
+class box_graph_propales_permonth extends GenericBoxes
 {
     public $boxcode  = "propalpermonth";
     public $boximg   = "object_propal";

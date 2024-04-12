@@ -208,7 +208,7 @@ print "</tr>\n";
 
 
 $invoicestatic = new FactureFournisseur($db);
-$companystatic = new Fournisseur($db);
+$companystatic = new Supplier($db);
 
 foreach ($tabfac as $key => $val) {
     $invoicestatic->id = $key;

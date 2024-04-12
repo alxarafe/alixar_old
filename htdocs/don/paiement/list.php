@@ -154,7 +154,7 @@ if (empty($reshook)) {
 
 $form = new Form($db);
 $donationstatic = new Don($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $bankline = new AccountLine($db);
 $accountstatic = new Account($db);
 
@@ -512,7 +512,7 @@ while ($i < $imaxinloop) {
     $companystatic->id = $obj->soc_id;
     $companystatic->name = $obj->nom;
 
-    $company = new Societe($db);
+    $company = new Company($db);
     $result = $company->fetch($obj->socid);
 
     print '<tr class="oddeven">';

@@ -303,7 +303,7 @@ class pdf_sepamandate extends ModeleBankAccountDoc
                 $pdf->SetXY($this->marge_gauche, $posY);
                 $pdf->MultiCell($this->page_largeur - $this->marge_gauche - $this->marge_droite, 3, $outputlangs->transnoentitiesnoconv("SEPAFillForm"), 0, 'C');
 
-                $thirdparty = new Societe($this->db);
+                $thirdparty = new Company($this->db);
                 if ($object->socid > 0) {
                     $thirdparty->fetch($object->socid);
                 }

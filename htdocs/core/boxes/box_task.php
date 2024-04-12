@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2012-2018  Charlene BENKE  <charlie@patas-monkey.com>
  * Copyright (C) 2015-2021  Frederic France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +24,17 @@
  *  \brief      Module to Task activity of the current year
  */
 
-include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Project\Model\Project;
+use DoliModules\Project\Model\Task;
+
 require_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
 
 
 /**
  * Class to manage the box to show last task
  */
-class box_task extends ModeleBoxes
+class box_task extends GenericBoxes
 {
     public $boxcode = "projettask";
     public $boximg = "object_projecttask";

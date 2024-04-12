@@ -71,7 +71,7 @@ if (!$sortfield) {
 
 llxHeader();
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 
 /*
  * Mode List

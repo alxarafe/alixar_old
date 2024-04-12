@@ -805,7 +805,7 @@ $formmargin = null;
 if (isModEnabled('margin')) {
     $formmargin = new FormMargin($db);
 }
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $company_url_list = array();
 $formcompany = new FormCompany($db);
 $projectstatic = new Project($db);
@@ -1136,7 +1136,7 @@ if (!$resql) {
 }
 
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     $title = $langs->trans('CustomersOrders') . ' - ' . $soc->name;
     if (empty($search_company)) {
@@ -2237,7 +2237,7 @@ while ($i < $imaxinloop) {
             print '<td class="tdoverflowmax200">';
             if ($obj->fk_parent > 0) {
                 if (!isset($company_url_list[$obj->fk_parent])) {
-                    $companyparent = new Societe($db);
+                    $companyparent = new Company($db);
                     $res = $companyparent->fetch($obj->fk_parent);
                     if ($res > 0) {
                         $company_url_list[$obj->fk_parent] = $companyparent->getNomUrl(1);

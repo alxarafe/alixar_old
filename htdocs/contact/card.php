@@ -563,7 +563,7 @@ $form = new Form($db);
 $formadmin = new FormAdmin($db);
 $formcompany = new FormCompany($db);
 
-$objsoc = new Societe($db);
+$objsoc = new Company($db);
 if ($socid > 0) {
     $objsoc->fetch($socid);
 }
@@ -941,7 +941,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
                 $object->country      = $tmparray['label'];
             }
 
-            $objsoc = new Societe($db);
+            $objsoc = new Company($db);
             $objsoc->fetch($object->socid);
 
             // Show errors
@@ -1276,7 +1276,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
     // View mode
     if (!empty($id) && $action != 'edit' && $action != 'create') {
-        $objsoc = new Societe($db);
+        $objsoc = new Company($db);
 
         // Show errors
         dol_htmloutput_errors(is_numeric($error) ? '' : $error, $errors);

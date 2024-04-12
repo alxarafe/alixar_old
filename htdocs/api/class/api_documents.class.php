@@ -328,7 +328,7 @@ class Documents extends DolibarrApi
                 throw new RestException(403);
             }
 
-            $object = new Societe($this->db);
+            $object = new Company($this->db);
             $result = $object->fetch($id, $ref);
             if (!$result) {
                 throw new RestException(404, 'Thirdparty not found');

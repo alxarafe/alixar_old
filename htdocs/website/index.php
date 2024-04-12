@@ -2837,11 +2837,11 @@ if ($action == 'confirmgeneratesitemaps') {
 $helpurl = 'EN:Module_Website|FR:Module_Website_FR|ES:M&oacute;dulo_Website';
 
 $arrayofjs = array(
-    '/includes/ace/src/ace.js',
-    '/includes/ace/src/ext-statusbar.js',
-    '/includes/ace/src/ext-language_tools.js',
-    //'/includes/ace/src/ext-chromevox.js'
-    //'/includes/jquery/plugins/jqueryscoped/jquery.scoped.js',
+    '/Templates/Lib/ace/src/ace.js',
+    '/Templates/Lib/ace/src/ext-statusbar.js',
+    '/Templates/Lib/ace/src/ext-language_tools.js',
+    //'/Templates/Lib/ace/src/ext-chromevox.js'
+    //'/Templates/Lib/jquery/plugins/jqueryscoped/jquery.scoped.js',
 );
 $arrayofcss = array();
 

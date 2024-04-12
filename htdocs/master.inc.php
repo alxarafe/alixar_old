@@ -11,7 +11,8 @@
  * Copyright (C) 2010		Juanjo Menent			<jmenent@2byte.es>
  * Copyright (C) 2011		Philippe Grand			<philippe.grand@atoo-net.com>
  * Copyright (C) 2014		Teddy Andreotti			<125155@supinfo.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +34,9 @@
  *  \brief      File that defines environment for all Dolibarr process (pages or scripts)
  *              This script reads the conf file, init $lang, $db and empty $user
  */
+
+use DoliModules\Company\Model\Company;
+use DoliModules\User\Model\User;
 
 // Include the conf.php and functions.lib.php and security.lib.php. This defined the constants like DOL_DOCUMENT_ROOT, DOL_DATA_ROOT, DOL_URL_ROOT...
 // This file may have been already required by main.inc.php. But may not by scripts. So, here the require_once must be kept.
@@ -117,14 +121,8 @@ if (!empty($dolibarr_main_document_root_alt)) {
 }
 
 // Load the main includes of common libraries
-if (!defined('NOREQUIREUSER')) {
-    require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php'; // Need 500ko memory
-}
 if (!defined('NOREQUIRETRAN')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
-}
-if (!defined('NOREQUIRESOC')) {
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 }
 
 /*
@@ -210,9 +208,7 @@ $conf->setValues($db);
 
 // Create object $mysoc (A thirdparty object that contains properties of companies managed by Dolibarr.
 if (!defined('NOREQUIREDB') && !defined('NOREQUIRESOC')) {
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-
-    $mysoc = new Societe($db);
+    $mysoc = new Company($db);
     $mysoc->setMysoc($conf);
 
     // We set some specific default values according to country

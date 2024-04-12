@@ -230,7 +230,7 @@ if (class_exists('FPDF') && !class_exists('TCPDF')) {
         $s .= ' + ';
     }
     $s .= 'FPDF';
-    $s .= ' (' . @constant('FPDF_PATH') . ')';
+    //$s .= ' (' . @constant('FPDF_PATH') . ')';
     $i++;
 }
 if (class_exists('TCPDF')) {
@@ -238,7 +238,7 @@ if (class_exists('TCPDF')) {
         $s .= ' + ';
     }
     $s .= 'TCPDF';
-    $s .= ' (' . @constant('TCPDF_PATH') . ')';
+    //$s .= ' (' . @constant('TCPDF_PATH') . ')';
     $i++;
 }
 if (class_exists('FPDI')) {
@@ -246,7 +246,7 @@ if (class_exists('FPDI')) {
         $s .= ' + ';
     }
     $s .= 'FPDI';
-    $s .= ' (' . @constant('FPDI_PATH') . ')';
+    //$s .= ' (' . @constant('FPDI_PATH') . ')';
     $i++;
 }
 if (class_exists('TCPDI')) {
@@ -254,7 +254,7 @@ if (class_exists('TCPDI')) {
         $s .= ' + ';
     }
     $s .= 'TCPDI';
-    $s .= ' (' . @constant('TCPDI_PATH') . ')';
+    //$s .= ' (' . @constant('TCPDI_PATH') . ')';
     $i++;
 }
 

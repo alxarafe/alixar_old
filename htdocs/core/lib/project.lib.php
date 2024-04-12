@@ -29,9 +29,6 @@
  * \ingroup    project
  */
 
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-
-
 /**
  * Prepare array with list of tabs
  *
@@ -2526,7 +2523,7 @@ function print_projecttasks_array($db, $form, $socid, $projectsListId, $mytasks 
     }
 
     $projectstatic = new Project($db);
-    $thirdpartystatic = new Societe($db);
+    $thirdpartystatic = new Company($db);
 
     $sortfield = '';
     $sortorder = '';

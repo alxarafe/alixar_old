@@ -122,7 +122,7 @@ if ($type != 'bank-transfer') {
 
 llxHeader('', $title);
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 if ($type == 'bank-transfer') {
     $invoicestatic = new FactureFournisseur($db);
 } else {

@@ -88,7 +88,7 @@ if (empty($reshook)) {
  * View
  */
 
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $projectstatic = new Project($db);
 $form = new Form($db);
 $formfile = new FormFile($db);
@@ -310,7 +310,7 @@ if ($resql) {
 }
 
 
-$companystatic = new Societe($db); // We need a clean new object for next loop because current one has some properties set.
+$companystatic = new Company($db); // We need a clean new object for next loop because current one has some properties set.
 
 // List of open projects per thirdparty
 $sql = "SELECT COUNT(p.rowid) as nb, SUM(p.opp_amount)";

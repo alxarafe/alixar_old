@@ -2397,7 +2397,7 @@ function show_subsidiaries($conf, $langs, $db, $object)
     $num = $db->num_rows($result);
 
     if ($num) {
-        $socstatic = new Societe($db);
+        $socstatic = new Company($db);
 
         print load_fiche_titre($langs->trans("Subsidiaries"), '', '');
 

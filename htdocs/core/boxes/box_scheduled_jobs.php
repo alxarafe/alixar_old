@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2011 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2017 	   Nicolas Zabouri      <info@inovea-conseil.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,13 @@
  *      \brief      Widget of scheduled jobs
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show last contracted products/services lines
  */
-class box_scheduled_jobs extends ModeleBoxes
+class box_scheduled_jobs extends GenericBoxes
 {
     public $boxcode = "scheduledjobs";
     public $boximg = "object_cron";

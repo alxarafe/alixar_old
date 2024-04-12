@@ -353,7 +353,7 @@ foreach ($dirmodels as $reldir) {
                     print "</td>\n";
                     print "<td>\n";
                     require_once $dir . '/' . $file;
-                    $module = new $classname($db, new Societe($db));
+                    $module = new $classname($db, new Company($db));
                     if (method_exists($module, 'info')) {
                         print $module->info($langs);
                     } else {

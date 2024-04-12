@@ -388,7 +388,7 @@ if (empty($reshook)) {
             } else {
                 // Search if the VAT reverse-charge is activated by default in supplier card to resume the information
                 if (!empty($cmd->socid) > 0) {
-                    $societe = new Societe($db);
+                    $societe = new Company($db);
                     $societe->fetch($cmd->socid);
                     $objecttmp->vat_reverse_charge = $societe->vat_reverse_charge;
                 }
@@ -737,7 +737,7 @@ if (empty($reshook)) {
 $now = dol_now();
 
 $form = new Form($db);
-$thirdpartytmp = new Fournisseur($db);
+$thirdpartytmp = new Supplier($db);
 $commandestatic = new CommandeFournisseur($db);
 $formfile = new FormFile($db);
 $formorder = new FormOrder($db);
@@ -746,7 +746,7 @@ $formcompany = new FormCompany($db);
 
 $title = $langs->trans("SuppliersOrders");
 if ($socid > 0) {
-    $fourn = new Fournisseur($db);
+    $fourn = new Supplier($db);
     $fourn->fetch($socid);
     $title .= ' - ' . $fourn->name;
 }

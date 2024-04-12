@@ -141,7 +141,6 @@ install:
 
   #sudo apt install composer
   composer -V
-  composer -n config -g vendor-dir htdocs/includes
   echo
 
 - |
@@ -166,16 +165,16 @@ install:
   fi
 
   # Remove non expected files
-  rm -fr /home/travis/build/Dolibarr/dolibarr/htdocs/includes/phpunit/php-code-coverage/src/Report/Html/Renderer/Template/js
-  echo
-
-- |
-  echo "Adding path of binaries tools installed by composer to the PATH"
-  export PATH="$TRAVIS_BUILD_DIR/htdocs/includes/bin:$PATH"
-  echo $PATH
-  ls $TRAVIS_BUILD_DIR/htdocs/includes
-  ls $TRAVIS_BUILD_DIR/htdocs/includes/bin
-  echo
+#  rm -fr /home/travis/build/Dolibarr/dolibarr/htdocs/includes/phpunit/php-code-coverage/src/Report/Html/Renderer/Template/js
+#  echo
+#
+#- |
+#  echo "Adding path of binaries tools installed by composer to the PATH"
+#  export PATH="$TRAVIS_BUILD_DIR/htdocs/includes/bin:$PATH"
+#  echo $PATH
+#  ls $TRAVIS_BUILD_DIR/htdocs/includes
+#  ls $TRAVIS_BUILD_DIR/htdocs/includes/bin
+#  echo
 
 
 

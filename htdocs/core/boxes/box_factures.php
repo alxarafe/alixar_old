@@ -28,12 +28,13 @@
 
 use DoliModules\Billing\Model\Facture;
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
 
 /**
  * Class to manage the box to show last invoices
  */
-class box_factures extends ModeleBoxes
+class box_factures extends GenericBoxes
 {
     public $boxcode = "lastcustomerbills";
     public $boximg = "object_bill";
@@ -71,7 +72,7 @@ class box_factures extends ModeleBoxes
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $facturestatic = new Facture($this->db);
-        $societestatic = new Societe($this->db);
+        $societestatic = new Company($this->db);
 
         $langs->load("bills");
 

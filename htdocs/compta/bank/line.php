@@ -418,7 +418,7 @@ if ($result) {
                     print '</a>';*/
                     print $paymenttmp->getNomUrl(1);
                 } elseif ($links[$key]['type'] == 'company') {
-                    $societe = new Societe($db);
+                    $societe = new Company($db);
                     $societe->fetch($links[$key]['url_id']);
                     print $societe->getNomUrl(1);
                 } elseif ($links[$key]['type'] == 'sc') {

@@ -182,7 +182,7 @@ llxHeader('', $langs->trans('ListPayment'));
 $form = new Form($db);
 $formother = new FormOther($db);
 $accountstatic = new Account($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $paymentfournstatic = new PaiementFourn($db);
 
 $sql = 'SELECT p.rowid, p.ref, p.datep, p.fk_bank, p.statut, p.num_paiement as num_payment, p.amount';

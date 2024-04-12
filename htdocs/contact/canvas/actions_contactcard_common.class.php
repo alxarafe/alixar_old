@@ -229,7 +229,7 @@ abstract class ActionsContactCardCommon
             $this->tpl['showrefnav'] = $form->showrefnav($this->object, 'id');
 
             if ($this->object->socid > 0) {
-                $objsoc = new Societe($this->db);
+                $objsoc = new Company($this->db);
 
                 $objsoc->fetch($this->object->socid);
                 $this->tpl['company'] = $objsoc->getNomUrl(1);

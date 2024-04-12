@@ -177,7 +177,7 @@ class ActionsCardCompany extends ActionsCardCommon
 
             // Parent company
             if ($this->object->parent) {
-                $socm = new Societe($this->db);
+                $socm = new Company($this->db);
                 $socm->fetch($this->object->parent);
                 $this->tpl['parent_company'] = $socm->getNomUrl(1) . ' ' . ($socm->code_client ? "(" . $socm->code_client . ")" : "");
                 $this->tpl['parent_company'] .= ($socm->town ? ' - ' . $socm->town : '');

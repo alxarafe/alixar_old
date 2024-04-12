@@ -600,7 +600,7 @@ class AdvanceTargetingMailing extends GenericDocument
 
             //Standard Extrafield feature
             if (!getDolGlobalString('MAIN_EXTRAFIELDS_DISABLED')) {
-                $socstatic = new Societe($this->db);
+                $socstatic = new Company($this->db);
                 $elementtype = $socstatic->table_element;
 
                 $extrafields->fetch_name_optionals_label($elementtype);
@@ -853,7 +853,7 @@ class AdvanceTargetingMailing extends GenericDocument
 
                     //Standard Extrafield feature
                     if (!getDolGlobalString('MAIN_EXTRAFIELDS_DISABLED')) {
-                        $socstatic = new Societe($this->db);
+                        $socstatic = new Company($this->db);
                         $elementtype = $socstatic->table_element;
 
                         // fetch optionals attributes and labels

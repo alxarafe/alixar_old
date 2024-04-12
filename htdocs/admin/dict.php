@@ -2736,7 +2736,7 @@ function fieldList($fieldlist, $obj = null, $tabname = '', $context = '')
             print '</td>';
         } elseif ($value == 'fk_tva') {
             print '<td>';
-            print $form->load_tva('fk_tva', $obj->taux, $mysoc, new Societe($db), 0, 0, '', false, -1);
+            print $form->load_tva('fk_tva', $obj->taux, $mysoc, new Company($db), 0, 0, '', false, -1);
             print '</td>';
         } elseif ($value == 'fk_c_exp_tax_cat') {
             print '<td>';

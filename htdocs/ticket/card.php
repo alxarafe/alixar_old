@@ -1343,7 +1343,7 @@ if ($action == 'create' || $action == 'presend') {
             print '</div><!-- tagtr -->';
 
             // Contact list
-            $companystatic = new Societe($db);
+            $companystatic = new Company($db);
             $contactstatic = new Contact($db);
             $userstatic = new User($db);
             $var = false;

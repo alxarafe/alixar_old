@@ -58,7 +58,7 @@ if (isModEnabled('project')) {
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
-require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
+//require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 
 if (isModEnabled('variants')) {
     require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
@@ -1344,7 +1344,7 @@ if (empty($reshook)) {
                                 $tva_tx = $lines[$i]->tva_tx;
 
                                 if ($origin == "commande") {
-                                    $soc = new Societe($db);
+                                    $soc = new Company($db);
                                     $soc->fetch($socid);
                                     $tva_tx = get_default_tva($soc, $mysoc, $lines[$i]->fk_product, $product_fourn_price_id);
                                 }
@@ -1579,7 +1579,7 @@ if ($action == 'create') {
 
     $societe = '';
     if ($socid > 0) {
-        $societe = new Societe($db);
+        $societe = new Company($db);
         $societe->fetch($socid);
     }
 
@@ -2230,7 +2230,7 @@ if ($action == 'create') {
                 print '</td><td>';
                 if ($action == 'editmulticurrencyrate' || $action == 'actualizemulticurrencyrate') {
                     if ($action == 'actualizemulticurrencyrate') {
-                        list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
+                        [$object->fk_multicurrency, $object->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
                     }
                     $form->form_multicurrency_rate($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->multicurrency_tx, 'multicurrency_tx', $object->multicurrency_code);
                 } else {

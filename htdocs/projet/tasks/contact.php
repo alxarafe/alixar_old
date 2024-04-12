@@ -458,7 +458,7 @@ if ($id > 0 || !empty($ref)) {
         print '<td colspan="2">&nbsp;</td>';
         print "</tr>\n";
 
-        $companystatic = new Societe($db);
+        $companystatic = new Company($db);
 
         foreach (array('internal', 'external') as $source) {
             $tab = $object->liste_contact(-1, $source);

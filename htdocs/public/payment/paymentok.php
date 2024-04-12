@@ -669,7 +669,7 @@ if ($ispaymentok) {
                         }
                         $stripeacc = null; // No Oauth/connect use for public pages
 
-                        $thirdparty = new Societe($db);
+                        $thirdparty = new Company($db);
                         $thirdparty->fetch($thirdparty_id);
 
                         include_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';    // This also set $stripearrayofkeysbyenv
@@ -1369,7 +1369,7 @@ if ($ispaymentok) {
 
                     if (! $error) {
                         // Sending mail
-                        $thirdparty = new Societe($db);
+                        $thirdparty = new Company($db);
                         $resultthirdparty = $thirdparty->fetch($attendeetovalidate->fk_soc);
                         if ($resultthirdparty < 0) {
                             setEventMessages($resultthirdparty->error, $resultthirdparty->errors, "errors");
@@ -1594,7 +1594,7 @@ if ($ispaymentok) {
                                     $ispostactionok = -1;
                                     $error++;
                                 } else {
-                                    $thirdparty = new Societe($db);
+                                    $thirdparty = new Company($db);
                                     $resultthirdparty = $thirdparty->fetch($invoice->socid);
                                     if ($resultthirdparty < 0) {
                                         $error++;

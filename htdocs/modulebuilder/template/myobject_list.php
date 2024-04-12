@@ -720,7 +720,7 @@ while ($i < $imaxinloop) {
         if (!empty($conf->cache['thirdparty'][$obj->fk_soc])) {
             $companyobj = $conf->cache['thirdparty'][$obj->fk_soc];
         } else {
-            $companyobj = new Societe($db);
+            $companyobj = new Company($db);
             $companyobj->fetch($obj->fk_soc);
             $conf->cache['thirdparty'][$obj->fk_soc] = $companyobj;
         }

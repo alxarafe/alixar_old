@@ -587,7 +587,7 @@ if (empty($reshook)) {
 $now = dol_now();
 
 $form = new Form($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $reception = new Reception($db);
 $formcompany = new FormCompany($db);
 $formfile = new FormFile($db);

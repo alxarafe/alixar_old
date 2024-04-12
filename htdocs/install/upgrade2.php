@@ -40,6 +40,8 @@
  *  \brief      Upgrade some data
  */
 
+use DoliModules\Billing\Model\OrderLine;
+
 define('ALLOWED_IF_UPGRADE_UNLOCK_FOUND', 1);
 include_once 'inc.php';
 if (!file_exists($conffile)) {
@@ -1526,7 +1528,7 @@ function migrate_price_facture($db, $langs, $conf)
 {
     $err = 0;
 
-    $tmpmysoc = new Societe($db);
+    $tmpmysoc = new Company($db);
     $tmpmysoc->setMysoc($conf);
 
     $db->begin();
@@ -1629,7 +1631,7 @@ function migrate_price_facture($db, $langs, $conf)
  */
 function migrate_price_propal($db, $langs, $conf)
 {
-    $tmpmysoc = new Societe($db);
+    $tmpmysoc = new Company($db);
     $tmpmysoc->setMysoc($conf);
 
     $db->begin();
@@ -1712,7 +1714,7 @@ function migrate_price_contrat($db, $langs, $conf)
 {
     $db->begin();
 
-    $tmpmysoc = new Societe($db);
+    $tmpmysoc = new Company($db);
     $tmpmysoc->setMysoc($conf);
     if (empty($tmpmysoc->country_id)) {
         $tmpmysoc->country_id = 0; // Ti not have this set to '' or will make sql syntax error.
@@ -1796,7 +1798,7 @@ function migrate_price_commande($db, $langs, $conf)
 {
     $db->begin();
 
-    $tmpmysoc = new Societe($db);
+    $tmpmysoc = new Company($db);
     $tmpmysoc->setMysoc($conf);
 
     print '<tr><td colspan="4">';
@@ -1889,7 +1891,7 @@ function migrate_price_commande_fournisseur($db, $langs, $conf)
 
     $db->begin();
 
-    $tmpmysoc = new Societe($db);
+    $tmpmysoc = new Company($db);
     $tmpmysoc->setMysoc($conf);
 
     print '<tr><td colspan="4">';
@@ -2893,7 +2895,7 @@ function migrate_element_time($db, $langs, $conf)
                 if ($obj->element_duration > 0) {
                     // convert to second
                     // only for int time and float time ex: 1,75 for 1h45
-                    list($hour, $min) = explode('.', $obj->element_duration);
+                    [$hour, $min] = explode('.', $obj->element_duration);
                     $hour = $hour * 60 * 60;
                     $min = ($min / 100) * 60 * 60;
                     $newtime = $hour + $min;
@@ -4167,11 +4169,6 @@ function migrate_delete_old_dir($db, $langs, $conf)
         DOL_DOCUMENT_ROOT . '/core/modules/facture/terre',
         DOL_DOCUMENT_ROOT . '/core/modules/facture/mercure',
     );
-
-    // On linux, we can also removed old directory with a different case than new directory.
-    if (!empty($_SERVER["WINDIR"])) {
-        $filetodeletearray[] = DOL_DOCUMENT_ROOT . '/includes/phpoffice/PhpSpreadsheet';
-    }
 
     foreach ($filetodeletearray as $filetodelete) {
         $result = 1;

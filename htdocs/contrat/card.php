@@ -1110,7 +1110,7 @@ if ($action == 'create') {
     $objectsrc = null;
     print load_fiche_titre($langs->trans('NewContract'), '', 'contract');
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     if ($socid > 0) {
         $soc->fetch($socid);
     }

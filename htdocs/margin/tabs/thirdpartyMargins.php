@@ -55,7 +55,7 @@ if (!$sortfield) {
     $sortfield = "f.datef";
 }
 
-$object = new Societe($db);
+$object = new Company($db);
 if ($socid > 0) {
     $object->fetch($socid);
 }
@@ -97,7 +97,7 @@ $help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
 
 if ($socid > 0) {
-    $object = new Societe($db);
+    $object = new Company($db);
     $object->fetch($socid);
 
     /*

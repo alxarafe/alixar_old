@@ -81,7 +81,7 @@ if (empty($socid) && $action == 'view') {
 }
 
 // Initialize objects
-$object = new Societe($db);
+$object = new Company($db);
 $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels

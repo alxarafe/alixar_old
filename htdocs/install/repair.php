@@ -833,7 +833,7 @@ if ($ok && GETPOST('clean_orphelin_dir', 'alpha')) {
         // To show ref or specific information according to view to show (defined by $module)
         if ($modulepart == 'company') {
             include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-            $object_instance = new Societe($db);
+            $object_instance = new Company($db);
         }
         if ($modulepart == 'invoice') {
             include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
@@ -1630,7 +1630,7 @@ if ($ok && GETPOST('repair_supplier_order_duplicate_ref')) {
         /** @var CommandeFournisseur $supplierOrder */
         foreach (array_slice($supplierOrders, 1) as $supplierOrder) {
             // Definition of supplier order numbering model name
-            $soc = new Societe($db);
+            $soc = new Company($db);
             $soc->fetch($supplierOrder->fourn_id);
 
             $newRef = $supplierOrder->getNextNumRef($soc);

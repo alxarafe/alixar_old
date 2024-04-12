@@ -73,7 +73,7 @@ if (!$sortfield) {
 }
 
 // Initialize objects
-$object = new Societe($db);
+$object = new Company($db);
 if ($id > 0 || !empty($ref)) {
     $result = $object->fetch($id, $ref);
 

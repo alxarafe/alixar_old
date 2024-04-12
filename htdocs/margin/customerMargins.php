@@ -60,7 +60,7 @@ if (GETPOST('enddatemonth')) {
 }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$object = new Societe($db);
+$object = new Company($db);
 $hookmanager->initHooks(array('margincustomerlist'));
 
 // Security check
@@ -79,7 +79,7 @@ $result = restrictedArea($user, 'margins');
  * View
  */
 
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $invoicestatic = new Facture($db);
 
 $form = new Form($db);
@@ -105,7 +105,7 @@ print '<table class="border centpercent">';
 
 $client = false;
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
 
     if ($soc->client) {

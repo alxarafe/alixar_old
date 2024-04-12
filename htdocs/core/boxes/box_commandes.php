@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,15 @@
  *      \brief      Widget for latest sale orders
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
-
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Billing\Model\Commande;
+use DoliModules\Company\Model\Company;
+use DoliModules\User\Model\User;
 
 /**
  * Class to manage the box to show last customer orders
  */
-class box_commandes extends ModeleBoxes
+class box_commandes extends GenericBoxes
 {
     public $boxcode  = "lastcustomerorders";
     public $boximg   = "object_order";
@@ -70,7 +73,7 @@ class box_commandes extends ModeleBoxes
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $commandestatic = new Commande($this->db);
-        $societestatic = new Societe($this->db);
+        $societestatic = new Company($this->db);
         $userstatic = new User($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLast" . (getDolGlobalString('MAIN_LASTBOX_ON_OBJECT_DATE') ? "" : "Modified") . "CustomerOrders", $max));

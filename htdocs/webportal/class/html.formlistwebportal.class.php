@@ -575,7 +575,7 @@ class FormListWebPortal
                 // store company
                 $idCompany = (int) $obj->fk_soc;
                 if (!isset($this->companyStaticList[$obj->fk_soc])) {
-                    $companyStatic = new Societe($this->db);
+                    $companyStatic = new Company($this->db);
                     $companyStatic->fetch($idCompany);
                     $this->companyStaticList[$idCompany] = $companyStatic;
                 }

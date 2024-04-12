@@ -105,7 +105,7 @@ class ActionsAdherentCardDefault extends ActionsAdherentCardCommon
             $this->tpl['showhead'] = dol_get_fiche_head($head, 'card', $title, 0, 'adherent');
             $this->tpl['showend'] = dol_get_fiche_end();
 
-            $objsoc = new Societe($db);
+            $objsoc = new Company($db);
             $objsoc->fetch($this->object->socid);
 
             $this->tpl['actionstodo'] = show_actions_todo($conf, $langs, $db, $objsoc, $this->object, 1);

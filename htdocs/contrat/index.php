@@ -55,7 +55,7 @@ if (!empty($user->socid)) {
 }
 $result = restrictedArea($user, 'contrat', $id);
 
-$staticcompany = new Societe($db);
+$staticcompany = new Company($db);
 $staticcontrat = new Contrat($db);
 $staticcontratligne = new ContratLigne($db);
 $productstatic = new Product($db);

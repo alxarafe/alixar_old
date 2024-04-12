@@ -50,7 +50,7 @@ $result = restrictedArea($user, 'propal', $socid, '');
  *	View
  */
 
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 
 llxHeader();
 

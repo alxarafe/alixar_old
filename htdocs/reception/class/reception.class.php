@@ -525,7 +525,7 @@ class Reception extends GenericDocument
         $error = 0;
 
         // Define new ref
-        $soc = new Societe($this->db);
+        $soc = new Company($this->db);
         $soc->fetch($this->socid);
 
 

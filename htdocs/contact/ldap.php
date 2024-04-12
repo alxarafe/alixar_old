@@ -100,7 +100,7 @@ print '<table class="border centpercent">';
 
 // Company
 if ($object->socid > 0) {
-    $thirdparty = new Societe($db);
+    $thirdparty = new Company($db);
     $thirdparty->fetch($object->socid);
 
     print '<tr><td class="titlefield">' . $langs->trans("ThirdParty") . '</td><td colspan="3">' . $thirdparty->getNomUrl(1) . '</td></tr>';

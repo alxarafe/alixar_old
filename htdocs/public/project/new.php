@@ -210,7 +210,7 @@ if (empty($reshook) && $action == 'add') {
     $visibility = getDolGlobalString('PROJET_VISIBILITY');
 
     $proj = new Project($db);
-    $thirdparty = new Societe($db);
+    $thirdparty = new Company($db);
 
     if (!$error) {
         // Search thirdparty and set it if found to the new created project

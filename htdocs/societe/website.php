@@ -73,7 +73,7 @@ if (!$sortorder) {
 
 
 // Initialize technical objects
-$object = new Societe($db);
+$object = new Company($db);
 $objectwebsiteaccount = new SocieteAccount($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->website->dir_output . '/temp/massgeneration/' . $user->id;

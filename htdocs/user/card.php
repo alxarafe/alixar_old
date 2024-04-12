@@ -1798,7 +1798,7 @@ if ($action == 'create' || $action == 'adduserldap') {
                 print '<td>';
                 $s = '';
                 if (isset($object->socid) && $object->socid > 0) {
-                    $societe = new Societe($db);
+                    $societe = new Company($db);
                     $societe->fetch($object->socid);
                     if ($societe->id > 0) {
                         $s .= $societe->getNomUrl(1, '');
@@ -2755,7 +2755,7 @@ if ($action == 'create' || $action == 'adduserldap') {
                 print '<tr><td>' . $langs->trans("LinkToCompanyContact") . '</td>';
                 print '<td>';
                 if ($object->socid > 0) {
-                    $societe = new Societe($db);
+                    $societe = new Company($db);
                     $societe->fetch($object->socid);
                     print $societe->getNomUrl(1, '');
                     if ($object->contact_id) {

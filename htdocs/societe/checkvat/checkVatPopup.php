@@ -28,7 +28,7 @@ if (! defined('NOTOKENRENEWAL')) {
 
 require "../../main.inc.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once NUSOAP_PATH . '/nusoap.php';
+//require_once NUSOAP_PATH . '/nusoap.php';
 
 $langs->load("companies");
 

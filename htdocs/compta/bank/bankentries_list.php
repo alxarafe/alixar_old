@@ -418,12 +418,12 @@ $form = new Form($db);
 $formother = new FormOther($db);
 $formaccounting = new FormAccounting($db);
 
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $bankaccountstatic = new Account($db);
 $userstatic = new User($db);
 
 $banktransferstatic = new BonPrelevement($db);
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 $userstatic = new User($db);
 $chargestatic = new ChargeSociales($db);
 $loanstatic = new Loan($db);

@@ -268,7 +268,7 @@ $help_url = '';
 llxHeader('', $langs->trans("RepeatableIntervention"), $help_url);
 
 $form = new Form($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 if (isModEnabled('contract')) {
     $contratstatic = new Contrat($db);
 }

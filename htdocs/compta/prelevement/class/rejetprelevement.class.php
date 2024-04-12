@@ -270,7 +270,7 @@ class RejetPrelevement
             $emuser = new User($this->db);
             $emuser->fetch($userid);
 
-            $soc = new Societe($this->db);
+            $soc = new Company($this->db);
             $soc->fetch($fac->socid);
 
             require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';

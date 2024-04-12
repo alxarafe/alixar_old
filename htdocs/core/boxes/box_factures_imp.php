@@ -27,13 +27,13 @@
  */
 
 use DoliModules\Billing\Model\Facture;
-
-require_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
 
 /**
  * Class to manage the box to show not paid sales invoices
  */
-class box_factures_imp extends ModeleBoxes
+class box_factures_imp extends GenericBoxes
 {
     public $boxcode = "oldestunpaidcustomerbills";
     public $boximg = "object_bill";
@@ -71,7 +71,7 @@ class box_factures_imp extends ModeleBoxes
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $facturestatic = new Facture($this->db);
-        $societestatic = new Societe($this->db);
+        $societestatic = new Company($this->db);
 
         $langs->load("bills");
 

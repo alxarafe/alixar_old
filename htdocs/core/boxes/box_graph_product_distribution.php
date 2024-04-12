@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2013-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2018       Frédéric France     <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +24,16 @@
  *  \brief      Box to show graph of invoices per month
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliModules\Billing\Statistics\OrderStats;
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Supplier\Model\FactureStats;
+
 include_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 
 /**
  * Class to manage the box to show last invoices
  */
-class box_graph_product_distribution extends ModeleBoxes
+class box_graph_product_distribution extends GenericBoxes
 {
     public $boxcode = "productdistribution";
     public $boximg = "object_product";
@@ -214,7 +218,7 @@ class box_graph_product_distribution extends ModeleBoxes
                 $showpointvalue = 1;
                 $nocolor = 0;
                 $mode = 'customer';
-                $stats_order = new CommandeStats($this->db, $socid, $mode, ($userid > 0 ? $userid : 0));
+                $stats_order = new OrderStats($this->db, $socid, $mode, ($userid > 0 ? $userid : 0));
                 $data3 = $stats_order->getAllByProductEntry($year, (GETPOST('action', 'aZ09') == $refreshaction ? -1 : (3600 * 24)), $max);
                 if (empty($data3)) {
                     $showpointvalue = 0;

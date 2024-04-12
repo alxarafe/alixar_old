@@ -6,6 +6,7 @@
  * Copyright (C) 2016      Juan José Menent       <jmenent@2byte.es>
  * Copyright (C) 2020      Pierre Ardoin          <mapiolca@me.com>
  * Copyright (C) 2023      Gauthier VERDOL        <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,13 +28,13 @@
  *  \brief      Module to show validated projects whose tasks are assigned to the connected person, without any time entered by the connected person
  */
 
-include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show last projet
  */
-class box_validated_projects extends ModeleBoxes
+class box_validated_projects extends GenericBoxes
 {
     public $boxcode = "validated_project";
     public $boximg = "object_projectpub";
@@ -152,7 +153,7 @@ class box_validated_projects extends ModeleBoxes
                     if ($objp->fk_soc > 0) {
                         $sql = "SELECT rowid, nom as name FROM " . MAIN_DB_PREFIX . "societe WHERE rowid = " . ((int) $objp->fk_soc);
                         $resql = $this->db->query($sql);
-                        //$socstatic = new Societe($this->db);
+                        //$socstatic = new Company($this->db);
                         $obj2 = $this->db->fetch_object($resql);
                         $this->info_box_contents[$i][] = array(
                             'td' => 'class="tdoverflowmax150 maxwidth200onsmartphone"',

@@ -66,7 +66,7 @@ if ($id > 0 || $ref) {
 }
 
 if (!empty($socid) && $socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     if ($socid > 0) {
         $soc->fetch($socid);
     }
@@ -642,7 +642,7 @@ if (!empty($id) && $action == 'edit') {
     print "</tr>\n";
 
     if (isModEnabled("societe") && getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
-        $company = new Societe($db);
+        $company = new Company($db);
 
         print '<tr><td>' . $langs->trans("ThirdParty") . '</td><td colspan="2">';
         if ($object->socid > 0) {
@@ -811,7 +811,7 @@ if (!empty($id) && $action != 'edit') {
     print '</td></tr>';
 
     if (isModEnabled("societe") && getDolGlobalString('DONATION_USE_THIRDPARTIES')) {
-        $company = new Societe($db);
+        $company = new Company($db);
 
         print '<tr><td>' . $langs->trans("ThirdParty") . '</td><td colspan="2">';
         if ($object->socid > 0) {

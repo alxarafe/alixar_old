@@ -16,6 +16,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\Billing\Model\Facture;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
+use Stripe\Terminal\ConnectionToken;
+
 /**
  *  \file       htdocs/stripe/ajax/ajax.php
  *  \brief      Ajax action for Stipe ie: Terminal
@@ -44,8 +49,6 @@ if (!defined('NOBROWSERNOTIF')) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/includes/stripe/stripe-php/init.php';
-require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 
 $action = GETPOST('action', 'aZ09');
@@ -75,7 +78,7 @@ if ($action == 'getConnexionToken') {
         // Be sure to authenticate the endpoint for creating connection tokens.
         // Force to use the correct API key
         global $stripearrayofkeysbyenv;
-        \Stripe\Stripe::setApiKey($stripearrayofkeysbyenv[$servicestatus]['secret_key']);
+        Stripe::setApiKey($stripearrayofkeysbyenv[$servicestatus]['secret_key']);
         // The ConnectionToken's secret lets you connect to any Stripe Terminal reader
         // and take payments with your Stripe account.
         $array = array();
@@ -83,9 +86,9 @@ if ($action == 'getConnexionToken') {
             $array['location'] = $location;
         }
         if (empty($stripeacc)) {                // If the Stripe connect account not set, we use common API usage
-            $connectionToken = \Stripe\Terminal\ConnectionToken::create($array);
+            $connectionToken = ConnectionToken::create($array);
         } else {
-            $connectionToken = \Stripe\Terminal\ConnectionToken::create($array, array("stripe_account" => $stripeacc));
+            $connectionToken = ConnectionToken::create($array, ["stripe_account" => $stripeacc]);
         }
         echo json_encode(array('secret' => $connectionToken->secret));
     } catch (Error $e) {
@@ -123,9 +126,9 @@ if ($action == 'getConnexionToken') {
         $json_str = file_get_contents('php://input');
         $json_obj = json_decode($json_str);
         if (empty($stripeacc)) {                // If the Stripe connect account not set, we use common API usage
-            $intent = \Stripe\PaymentIntent::retrieve($json_obj->id);
+            $intent = PaymentIntent::retrieve($json_obj->id);
         } else {
-            $intent = \Stripe\PaymentIntent::retrieve($json_obj->id, array("stripe_account" => $stripeacc));
+            $intent = PaymentIntent::retrieve($json_obj->id, ["stripe_account" => $stripeacc]);
         }
         $intent = $intent->capture();
 

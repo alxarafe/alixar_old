@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2013 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +23,13 @@
  *  \brief      Box to show graph of invoices per year
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show invoices per year graph
  */
-class box_graph_invoices_peryear extends ModeleBoxes
+class box_graph_invoices_peryear extends GenericBoxes
 {
     public $boxcode  = "invoicesperyear";
     public $boximg   = "object_bill";

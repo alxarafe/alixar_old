@@ -3,6 +3,7 @@
 /* Copyright (C) 2013 Florian Henry     <florian.henry@open-concept.pro>
  * Copyright (C) 2013 Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2015 Frederic France	<frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +25,15 @@
  *      \brief      Box to show last interventions
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
+use DoliModules\Intervention\Model\Fichinter;
 
 
 /**
  * Class to manage the box to show last interventions
  */
-class box_ficheinter extends ModeleBoxes
+class box_ficheinter extends GenericBoxes
 {
     public $boxcode = "ficheinter";
     public $boximg = "object_intervention";
@@ -66,7 +69,7 @@ class box_ficheinter extends ModeleBoxes
 
         include_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
         $ficheinterstatic = new Fichinter($this->db);
-        $thirdpartystatic = new Societe($this->db);
+        $thirdpartystatic = new Company($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastFicheInter", $max));
 

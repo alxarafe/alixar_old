@@ -124,12 +124,12 @@ class modTcpdfbarcode extends ModeleBarCode
             if ($this->is2d) {
                 $height = 3;
                 $width = 3;
-                require_once TCPDF_PATH . 'tcpdf_barcodes_2d.php';
+                // require_once TCPDF_PATH . 'tcpdf_barcodes_2d.php';
                 $barcodeobj = new TCPDF2DBarcode($code, $tcpdfEncoding);
             } else {
                 $height = 50;
                 $width = 1;
-                require_once TCPDF_PATH . 'tcpdf_barcodes_1d.php';
+                // require_once TCPDF_PATH . 'tcpdf_barcodes_1d.php';
                 $barcodeobj = new TCPDFBarcode($code, $tcpdfEncoding);
             }
 
@@ -181,12 +181,12 @@ class modTcpdfbarcode extends ModeleBarCode
             if ($this->is2d) {
                 $height = 1;
                 $width = 1;
-                require_once TCPDF_PATH . 'tcpdf_barcodes_2d.php';
+                // require_once TCPDF_PATH . 'tcpdf_barcodes_2d.php';
                 $barcodeobj = new TCPDF2DBarcode($code, $tcpdfEncoding);
             } else {
                 $height = 50;
                 $width = 1;
-                require_once TCPDF_PATH . 'tcpdf_barcodes_1d.php';
+                // require_once TCPDF_PATH . 'tcpdf_barcodes_1d.php';
                 $barcodeobj = new TCPDFBarcode($code, $tcpdfEncoding);
             }
 

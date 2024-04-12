@@ -330,6 +330,13 @@ if (!defined('DOL_URL_ROOT')) {
  * To use other version than embedded libraries, define here constant to path. Use '' to use include class path autodetect.
  */
 // Path to root libraries
+if (!defined('JS_JQUERY')) {
+    define('JS_JQUERY', BASE_URL . '/Templates/Lib/jquery/');
+}
+if (!defined('JS_JQUERY_UI')) {
+    define('JS_JQUERY_UI', BASE_URL . '/Templates/Lib/jquery/');
+}
+/*
 if (!defined('TCPDF_PATH')) {
     define('TCPDF_PATH', (empty($dolibarr_lib_TCPDF_PATH)) ? DOL_DOCUMENT_ROOT . '/includes/tecnickcom/tcpdf/' : $dolibarr_lib_TCPDF_PATH . '/');
 }
@@ -364,7 +371,7 @@ if (!defined('DOL_DEFAULT_TTF')) {
 if (!defined('DOL_DEFAULT_TTF_BOLD')) {
     define('DOL_DEFAULT_TTF_BOLD', (!isset($dolibarr_font_DOL_DEFAULT_TTF_BOLD)) ? DOL_DOCUMENT_ROOT . '/includes/fonts/AerialBd.ttf' : (empty($dolibarr_font_DOL_DEFAULT_TTF_BOLD) ? '' : $dolibarr_font_DOL_DEFAULT_TTF_BOLD));
 }
-
+*/
 
 /*
  * Include functions

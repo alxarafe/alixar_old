@@ -236,7 +236,7 @@ if ($massaction == 'presend') {
             $fadherent->fetch($objecttmp->fk_member);
             $liste['member'] = $fadherent->getFullName($langs) . " &lt;" . $fadherent->email . "&gt;";
         } else {
-            $soc = new Societe($db);
+            $soc = new Company($db);
             $soc->fetch($thirdpartyid);
             foreach ($soc->thirdparty_and_contact_email_array(1) as $key => $value) {
                 $liste[$key] = $value;

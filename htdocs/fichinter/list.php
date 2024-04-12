@@ -223,7 +223,7 @@ if (empty($reshook)) {
 $form = new Form($db);
 $formfile = new FormFile($db);
 $objectstatic = new Fichinter($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 if (isModEnabled('project')) {
     $projetstatic = new Project($db);
 }
@@ -416,7 +416,7 @@ llxHeader('', $title, $help_url, '', 0, 0, $morejs, $morecss, '', 'bodyforlist')
 $arrayofselected = is_array($toselect) ? $toselect : array();
 
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     if (empty($search_company)) {
         $search_company = $soc->name;

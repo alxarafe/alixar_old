@@ -474,7 +474,7 @@ if ($object->id > 0) {
     print '<tr><td>' . $langs->trans('DiscountStillRemaining') . '</td><td colspan="3">';
 
     if ($type == 'bank-transfer') {
-        //$societe = new Fournisseur($db);
+        //$societe = new Supplier($db);
         //$result = $societe->fetch($object->socid);
         $thirdparty = $object->thirdparty;
         $discount_type = 1;

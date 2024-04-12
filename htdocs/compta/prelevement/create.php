@@ -209,7 +209,7 @@ if (empty($reshook)) {
 
 $form = new Form($db);
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 if ($type != 'bank-transfer') {
     $invoicestatic = new Facture($db);
 } else {

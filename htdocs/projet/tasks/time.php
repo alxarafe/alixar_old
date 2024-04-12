@@ -2155,7 +2155,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
                 print '<td class="tdoverflowmax125">';
                 if ($task_time->fk_soc > 0) {
                     if (empty($conf->cache['thridparty'][$task_time->fk_soc])) {
-                        $tmpsociete = new Societe($db);
+                        $tmpsociete = new Company($db);
                         $tmpsociete->fetch($task_time->fk_soc);
                         $conf->cache['thridparty'][$task_time->fk_soc] = $tmpsociete;
                     } else {
@@ -2173,7 +2173,7 @@ if (($id > 0 || !empty($ref)) || $projectidforalltimes > 0 || $allprojectforuser
             if (!empty($arrayfields['s.name_alias']['checked'])) {
                 if ($task_time->fk_soc > 0) {
                     if (empty($conf->cache['thridparty'][$task_time->fk_soc])) {
-                        $tmpsociete = new Societe($db);
+                        $tmpsociete = new Company($db);
                         $tmpsociete->fetch($task_time->fk_soc);
                         $conf->cache['thridparty'][$task_time->fk_soc] = $tmpsociete;
                     } else {

@@ -52,7 +52,7 @@ $result = restrictedArea($user, 'supplier_proposal');
  */
 $now = dol_now();
 $supplier_proposalstatic = new SupplierProposal($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $form = new Form($db);
 $formfile = new FormFile($db);
 $help_url = "EN:Module_Ask_Price_Supplier|FR:Module_Demande_de_prix_fournisseur";

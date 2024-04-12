@@ -294,7 +294,7 @@ if (empty($reshook)) {
 $form = new Form($db);
 $formfile = new FormFile($db);
 $formother = new FormOther($db);
-$socstatic = new Societe($db);
+$socstatic = new Company($db);
 $formcompany = new FormCompany($db);
 $contracttmp = new Contrat($db);
 
@@ -590,7 +590,7 @@ $i = 0;
 $arrayofselected = is_array($toselect) ? $toselect : array();
 
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     if (empty($search_name)) {
         $search_name = $soc->name;

@@ -49,7 +49,7 @@ $modulepart = GETPOST('modulepart', 'aZ09');    // Used by actions_setmoduleopti
 $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scan_dir', 'alpha');
 
-$specimenthirdparty = new Societe($db);
+$specimenthirdparty = new Company($db);
 $specimenthirdparty->initAsSpecimen();
 
 $error = 0;
@@ -164,7 +164,7 @@ if ($action == 'setmod') {
 }
 
 if ($action == 'addcat') {
-    $fourn = new Fournisseur($db);
+    $fourn = new Supplier($db);
     $fourn->CreateCategory($user, GETPOST('cat', 'alphanohtml'));
 }
 

@@ -46,7 +46,7 @@ $result = restrictedArea($user, 'societe', $socid, '');
 
 $commandestatic = new CommandeFournisseur($db);
 $facturestatic = new FactureFournisseur($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 
 llxHeader("", $langs->trans("SuppliersArea"));
 

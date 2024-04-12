@@ -1093,7 +1093,7 @@ class EmailCollector extends GenericDocument
 
         require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         if (getDolGlobalString('MAIN_IMAP_USE_PHPIMAP')) {
-            require_once DOL_DOCUMENT_ROOT . '/includes/webklex/php-imap/vendor/autoload.php';
+            //require_once DOL_DOCUMENT_ROOT . '/includes/webklex/php-imap/vendor/autoload.php';
         }
 
         dol_syslog("EmailCollector::doCollectOneCollector start for id=" . $this->id . " - " . $this->ref, LOG_INFO);
@@ -1166,10 +1166,6 @@ class EmailCollector extends GenericDocument
                 ) {
                     $OAUTH_SERVICENAME = $supportedoauth2array[$keyforsupportedoauth2array]['name'] . (!empty($keyforprovider) ? '-' . $keyforprovider : '');
                 }
-
-                require_once DOL_DOCUMENT_ROOT . '/includes/OAuth/bootstrap.php';
-                //$debugtext = "Host: ".$this->host."<br>Port: ".$this->port."<br>Login: ".$this->login."<br>Password: ".$this->password."<br>access type: ".$this->acces_type."<br>oauth service: ".$this->oauth_service."<br>Max email per collect: ".$this->maxemailpercollect;
-                //dol_syslog($debugtext);
 
                 $token = '';
 
@@ -1760,7 +1756,7 @@ class EmailCollector extends GenericDocument
 
                 //print "Process mail ".$iforemailloop." Subject: ".dol_escape_htmltag($headers['Subject'])." selected<br>\n";
 
-                $thirdpartystatic = new Societe($this->db);
+                $thirdpartystatic = new Company($this->db);
                 $contactstatic = new Contact($this->db);
                 $projectstatic = new Project($this->db);
 
@@ -1988,7 +1984,7 @@ class EmailCollector extends GenericDocument
                             $objectid = $reg[2];
                             // See also list into interface_50_modAgenda_ActionsAuto
                             if ($reg[1] == 'thi') {   // Third-party
-                                $objectemail = new Societe($this->db);
+                                $objectemail = new Company($this->db);
                             }
                             if ($reg[1] == 'ctc') {   // Contact
                                 $objectemail = new Contact($this->db);
@@ -2423,7 +2419,7 @@ class EmailCollector extends GenericDocument
                                             dol_syslog("Third party with id=" . $idtouseforthirdparty . " email=" . $emailtouseforthirdparty . " name=" . $nametouseforthirdparty . " name_alias=" . $namealiastouseforthirdparty . " was not found. We try to create it.");
 
                                             // Create thirdparty
-                                            $thirdpartystatic = new Societe($db);
+                                            $thirdpartystatic = new Company($db);
                                             $thirdpartystatic->name = $nametouseforthirdparty;
                                             if (!empty($namealiastouseforthirdparty)) {
                                                 if ($namealiastouseforthirdparty != $nametouseforthirdparty) {

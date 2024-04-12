@@ -1339,7 +1339,7 @@ class Form
             $placeholder = '';
             if ($selected && empty($selected_input_value)) {
                 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-                $societetmp = new Societe($this->db);
+                $societetmp = new Company($this->db);
                 $societetmp->fetch($selected);
                 $selected_input_value = $societetmp->name;
                 unset($societetmp);
@@ -1533,7 +1533,7 @@ class Form
                 $out .= '<option value="-1" data-html="' . dol_escape_htmltag('<span class="opacitymedium">' . ($textifempty ? $textifempty : '&nbsp;') . '</span>') . '">' . $textifempty . '</option>' . "\n";
             }
 
-            $companytemp = new Societe($this->db);
+            $companytemp = new Company($this->db);
 
             $num = $this->db->num_rows($resql);
             $i = 0;
@@ -2844,7 +2844,7 @@ class Form
             $sql .= " LEFT JOIN " . $this->db->prefix() . "product_lang as pl ON pl.fk_product = p.rowid ";
             if (getDolGlobalString('PRODUIT_TEXTS_IN_THIRDPARTY_LANGUAGE') && !empty($socid)) {
                 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-                $soc = new Societe($this->db);
+                $soc = new Company($this->db);
                 $result = $soc->fetch($socid);
                 if ($result > 0 && !empty($soc->default_lang)) {
                     $sql .= " AND pl.lang = '" . $this->db->escape($soc->default_lang) . "'";
@@ -6236,7 +6236,7 @@ class Form
         } else {
             if ($selected) {
                 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-                $soc = new Societe($this->db);
+                $soc = new Company($this->db);
                 $soc->fetch($selected);
                 $out .= $soc->getNomUrl(0, '');
             } else {
@@ -6592,7 +6592,7 @@ class Form
         if ($num > 0) {
             // Definition du taux a pre-selectionner (si defaulttx non force et donc vaut -1 ou '')
             if ($defaulttx < 0 || dol_strlen($defaulttx) == 0) {
-                $tmpthirdparty = new Societe($this->db);
+                $tmpthirdparty = new Company($this->db);
 
                 $defaulttx = get_default_tva($societe_vendeuse, (is_object($societe_acheteuse) ? $societe_acheteuse : $tmpthirdparty), $idprod);
                 $defaultnpr = get_default_npr($societe_vendeuse, (is_object($societe_acheteuse) ? $societe_acheteuse : $tmpthirdparty), $idprod);

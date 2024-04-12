@@ -28,13 +28,13 @@
 
 use DoliModules\Adherent\Model\Adherent;
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show members birthdays
  */
-class box_birthdays_members extends ModeleBoxes
+class box_birthdays_members extends GenericBoxes
 {
     public $boxcode  = "birthdays_members";
     public $boximg   = "object_user";

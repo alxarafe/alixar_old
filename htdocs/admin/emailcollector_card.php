@@ -403,7 +403,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
     if ($action == 'scan') {
         if (getDolGlobalString('MAIN_IMAP_USE_PHPIMAP')) {
-            require_once DOL_DOCUMENT_ROOT . '/includes/webklex/php-imap/vendor/autoload.php';
+            // require_once DOL_DOCUMENT_ROOT . '/includes/webklex/php-imap/vendor/autoload.php';
 
             if ($object->acces_type == 1) {
                 // Mode OAUth2 with PHP-IMAP
@@ -422,7 +422,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
                 $OAUTH_SERVICENAME = (empty($supportedoauth2array[$keyforsupportedoauth2array]['name']) ? 'Unknown' : $supportedoauth2array[$keyforsupportedoauth2array]['name'] . ($keyforprovider ? '-' . $keyforprovider : ''));
 
-                require_once DOL_DOCUMENT_ROOT . '/includes/OAuth/bootstrap.php';
+                // require_once DOL_DOCUMENT_ROOT . '/includes/OAuth/bootstrap.php';
                 //$debugtext = "Host: ".$this->host."<br>Port: ".$this->port."<br>Login: ".$this->login."<br>Password: ".$this->password."<br>access type: ".$this->acces_type."<br>oauth service: ".$this->oauth_service."<br>Max email per collect: ".$this->maxemailpercollect;
                 //dol_syslog($debugtext);
 

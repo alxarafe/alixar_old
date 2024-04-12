@@ -528,7 +528,7 @@ class PriceGlobalVariableUpdater
                 }
 
                 //SOAP client
-                require_once NUSOAP_PATH . '/nusoap.php';
+//                require_once NUSOAP_PATH . '/nusoap.php';
                 $soap_client = new nusoap_client($url);
                 $soap_client->soap_defencoding = 'UTF-8';
                 $soap_client->decodeUTF8(false);

@@ -93,7 +93,7 @@ if ($id > 0 || !empty($ref)) {
         $help_url = 'EN:Ask_Price_Supplier|FR:Demande_de_prix_fournisseur';
         llxHeader('', $title, $help_url);
 
-        $societe = new Societe($db);
+        $societe = new Company($db);
         if ($societe->fetch($object->socid)) {
             $head = supplier_proposal_prepare_head($object);
             print dol_get_fiche_head($head, 'note', $langs->trans('CommRequest'), -1, 'supplier_proposal');

@@ -77,7 +77,7 @@ if ($module == 'propal') {
 }
 
 $formcompany = new FormCompany($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $contactstatic = new Contact($db);
 $userstatic = new User($db);
 

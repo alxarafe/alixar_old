@@ -337,11 +337,9 @@ llxHeader(
     '',
     0,
     0,
-    array(
-    '/includes/ace/src/ace.js',
-    '/includes/ace/src/ext-statusbar.js',
-    '/includes/ace/src/ext-language_tools.js',
-    ),
+    '/Templates/Lib/ace/src/ace.js',
+    '/Templates/Lib/ace/src/ext-statusbar.js',
+    '/Templates/Lib/ace/src/ext-language_tools.js',
     array()
 );
 

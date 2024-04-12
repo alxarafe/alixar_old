@@ -309,7 +309,7 @@ function checkIbanForAccount(Account $account = null, $ibantocheck = null)
     } elseif ($ibantocheck == null) {
         $ibantocheck = ($account->iban ? $account->iban : $account->iban_prefix);       // iban or iban_prefix for backward compatibility
     }
-    require_once DOL_DOCUMENT_ROOT . '/includes/php-iban/oophp-iban.php';
+//    require_once DOL_DOCUMENT_ROOT . '/includes/php-iban/oophp-iban.php';
 
     $iban = new PHP_IBAN\IBAN($ibantocheck);
     $check = $iban->Verify();
@@ -330,7 +330,7 @@ function checkIbanForAccount(Account $account = null, $ibantocheck = null)
 function getIbanHumanReadable(Account $account)
 {
     if ($account->getCountryCode() == 'FR') {
-        require_once DOL_DOCUMENT_ROOT . '/includes/php-iban/oophp-iban.php';
+//        require_once DOL_DOCUMENT_ROOT . '/includes/php-iban/oophp-iban.php';
         $ibantoprint = preg_replace('/[^a-zA-Z0-9]/', '', empty($account->iban) ? '' : $account->iban);
         $iban = new PHP_IBAN\IBAN($ibantoprint);
         return $iban->HumanFormat();

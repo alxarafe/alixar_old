@@ -1,8 +1,9 @@
 <?php
 
-/* Copyright (C) 2012      Charles-François BENKE <charles.fr@benke.fr>
- * Copyright (C) 2005-2015 Laurent Destailleur    <eldy@users.sourceforge.net>
- * Copyright (C) 2014-2021 Frederic France        <frederic.france@netlogic.fr>
+/* Copyright (C) 2012       Charles-François BENKE  <charles.fr@benke.fr>
+ * Copyright (C) 2005-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2014-2021  Frederic France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +25,12 @@
  *  \brief      Module to show box of bills, orders & propal of the current year
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 /**
  * Class to manage the box of customer activity (invoice, order, proposal)
  */
-class box_activity extends ModeleBoxes
+class box_activity extends GenericBoxes
 {
     public $boxcode = "activity";
     public $boximg = "object_bill";

@@ -26,7 +26,7 @@
  * Put detailed description here.
  */
 
-include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
+use DoliCore\Base\GenericBoxes;
 
 
 /**
@@ -35,7 +35,7 @@ include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
  * Warning: for the box to be detected correctly by dolibarr,
  * the filename should be the lowercase classname
  */
-class mymodulewidget1 extends ModeleBoxes
+class mymodulewidget1 extends GenericBoxes
 {
     /**
      * @var string Alphanumeric ID. Populated by the constructor.

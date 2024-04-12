@@ -3039,10 +3039,10 @@ $dirins_ok = (dol_is_dir($dirins));
 
 $help_url = '';
 $morejs = array(
-    '/includes/ace/src/ace.js',
-    '/includes/ace/src/ext-statusbar.js',
-    '/includes/ace/src/ext-language_tools.js',
-    //'/includes/ace/src/ext-chromevox.js'
+    '/Templates/Lib/ace/src/ace.js',
+    '/Templates/Lib/ace/src/ext-statusbar.js',
+    '/Templates/Lib/ace/src/ext-language_tools.js',
+    //'/Templates/Lib/ace/src/ext-chromevox.js'
 );
 $morecss = array();
 
@@ -5958,9 +5958,10 @@ if ($module == 'initmodule') {
 
         if ($tab == 'widgets') {
             print '<!-- tab=widgets -->' . "\n";
-            require_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
 
-            $widgets = ModeleBoxes::getWidgetsList(array('/' . strtolower($module) . '/core/boxes'));
+            use DoliCore\Base\GenericBoxes;
+
+            $widgets = GenericBoxes::getWidgetsList(['/' . strtolower($module) . '/core/boxes']);
 
             if ($action != 'editfile' || empty($file)) {
                 print '<span class="opacitymedium">' . $langs->trans("WidgetDesc") . '</span><br>';

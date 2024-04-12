@@ -790,7 +790,7 @@ if ($object->fetch($id) >= 0) {
 
             $objectstaticmember = new Adherent($db);
             $objectstaticuser = new User($db);
-            $objectstaticcompany = new Societe($db);
+            $objectstaticcompany = new Company($db);
             $objectstaticcontact = new Contact($db);
             $objectstaticeventorganization = new ConferenceOrBoothAttendee($db);
 

@@ -398,8 +398,8 @@ if ($nboftargetok) {
 		$olddir=getcwd();
 		chdir("$SOURCE");
 		
-		print "Clean $SOURCE/htdocs/includes/autoload.php\n";
-		$ret=`rm -f  $SOURCE/htdocs/includes/autoload.php`;
+#		print "Clean $SOURCE/htdocs/includes/autoload.php\n";
+#		$ret=`rm -f  $SOURCE/htdocs/includes/autoload.php`;
 		
 		$ret=`git ls-files . --exclude-standard --others`;
 		if ($ret)
@@ -605,46 +605,46 @@ if ($nboftargetok) {
 	    $ret=`rm -f  $BUILDROOT/$PROJECT/.gitignore $BUILDROOT/$PROJECT/*/.gitignore $BUILDROOT/$PROJECT/*/*/.gitignore $BUILDROOT/$PROJECT/*/*/*/.gitignore $BUILDROOT/$PROJECT/*/*/*/*/.gitignore $BUILDROOT/$PROJECT/*/*/*/*/*/.gitignore $BUILDROOT/$PROJECT/*/*/*/*/*/*/.gitignore`;
 		
 		# Removed files installed by the awful composer   	    
-   	    $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/geoip/sample*.*`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/bin`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/ckeditor/ckeditor/adapters`;		# Keep this removal in case we embed libraries
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/ckeditor/ckeditor/samples`;		# Keep this removal in case we embed libraries
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/ckeditor/_source`;					# _source must be kept into tarball for official debian, not for the rest
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/composer`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/doctrine`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/jquery/plugins/multiselect/MIT-LICENSE.txt`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/jquery/plugins/select2/release.sh`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/mike42/escpos-php/doc`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/mike42/escpos-php/example`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/mike42/escpos-php/test`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/mobiledetect/mobiledetectlib/.gitmodules`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/mobiledetect/mobiledetectlib/docs`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/.github`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/docs`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/samples`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/scripts`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/src`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/test`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nusoap/samples`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/php-iban/docs`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/tests`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/stripe/tests`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/stripe/LICENSE`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/dejavu-fonts-ttf-*`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/freefont-*`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/ae_fonts_*`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/utils`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/examples`;
-        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/tools`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/vendor`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/webmozart`;
-        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/autoload.php`;
-        
-		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/bin`;
-		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/bin`;
-		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/*/bin`;
-		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/*/*/bin`;
-		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/*/*/*/bin`;
+#   	    $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/geoip/sample*.*`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/bin`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/ckeditor/ckeditor/adapters`;		# Keep this removal in case we embed libraries
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/ckeditor/ckeditor/samples`;		# Keep this removal in case we embed libraries
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/ckeditor/_source`;					# _source must be kept into tarball for official debian, not for the rest
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/composer`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/doctrine`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/jquery/plugins/multiselect/MIT-LICENSE.txt`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/jquery/plugins/select2/release.sh`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/mike42/escpos-php/doc`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/mike42/escpos-php/example`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/mike42/escpos-php/test`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/mobiledetect/mobiledetectlib/.gitmodules`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/mobiledetect/mobiledetectlib/docs`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/.github`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/docs`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/samples`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/scripts`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/src`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nnnick/chartjs/test`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/nusoap/samples`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/php-iban/docs`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/tests`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/stripe/tests`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/stripe/LICENSE`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/dejavu-fonts-ttf-*`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/freefont-*`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/ae_fonts_*`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/fonts/utils`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/examples`;
+#        $ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/tecnickcom/tcpdf/tools`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/vendor`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/webmozart`;
+#        $ret=`rm -f  $BUILDROOT/$PROJECT/htdocs/includes/autoload.php`;
+#
+#		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/bin`;
+#		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/bin`;
+#		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/*/bin`;
+#		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/*/*/bin`;
+#		$ret=`rm -fr $BUILDROOT/$PROJECT/htdocs/includes/sabre/sabre/*/*/*/*/bin`;
 	}
 
 	# Build package for each target

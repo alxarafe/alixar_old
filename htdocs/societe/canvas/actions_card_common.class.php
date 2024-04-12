@@ -66,7 +66,7 @@ abstract class ActionsCardCommon
     {
         //$ret = $this->getInstanceDao();
 
-        $object = new Societe($this->db);
+        $object = new Company($this->db);
         if (!empty($id) || !empty($ref)) {
             $object->fetch($id, $ref);
         }

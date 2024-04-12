@@ -92,7 +92,7 @@ $hookmanager->initHooks(array('publicnewmembercard', 'globalcard'));
 $extrafields = new ExtraFields($db);
 
 
-$objectsoc = new Societe($db);
+$objectsoc = new Company($db);
 $user->loadDefaultValues();
 
 
@@ -212,7 +212,7 @@ if (empty($reshook) && $action == 'add') {
     }
 
     if (!$error) {
-        $societe = new Societe($db);
+        $societe = new Company($db);
 
         $societe->name = GETPOST('name', 'alphanohtml');
 

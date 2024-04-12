@@ -170,12 +170,12 @@ function pdf_getInstance($format = '', $metric = 'mm', $pagetype = 'P')
     }
 
     // Load TCPDF
-    require_once TCPDF_PATH . 'tcpdf.php';
+    // require_once TCPDF_PATH . 'tcpdf.php';
 
     // We need to instantiate tcpdi object (instead of tcpdf) to use merging features. But we can disable it (this will break all merge features).
-    if (!getDolGlobalString('MAIN_DISABLE_TCPDI')) {
-        require_once TCPDI_PATH . 'tcpdi.php';
-    }
+//    if (!getDolGlobalString('MAIN_DISABLE_TCPDI')) {
+//        require_once TCPDI_PATH . 'tcpdi.php';
+//    }
 
     //$arrayformat=pdf_getFormat();
     //$format=array($arrayformat['width'],$arrayformat['height']);
@@ -236,7 +236,7 @@ function pdf_getInstance($format = '', $metric = 'mm', $pagetype = 'P')
  */
 function pdf_getEncryption($pathoffile)
 {
-    require_once TCPDF_PATH . 'tcpdf_parser.php';
+    // require_once TCPDF_PATH . 'tcpdf_parser.php';
 
     $isencrypted = false;
 
@@ -244,7 +244,7 @@ function pdf_getEncryption($pathoffile)
 
     //ob_start();
     @($parser = new TCPDF_PARSER(ltrim($content)));
-    list($xref, $data) = $parser->getParsedData();
+    [$xref, $data] = $parser->getParsedData();
     unset($parser);
     //ob_end_clean();
 
@@ -1197,7 +1197,7 @@ function pdf_pagefoot(&$pdf, $outputlangs, $paramfreetext, $fromcompany, $marge_
     $pdf->SetDrawColor(224, 224, 224);
     // Option for footer text color
     if (getDolGlobalString('PDF_FOOTER_TEXT_COLOR')) {
-        list($r, $g, $b) = sscanf($conf->global->PDF_FOOTER_TEXT_COLOR, '%d, %d, %d');
+        [$r, $g, $b] = sscanf($conf->global->PDF_FOOTER_TEXT_COLOR, '%d, %d, %d');
         $pdf->SetTextColor($r, $g, $b);
     }
 
@@ -1233,7 +1233,7 @@ function pdf_pagefoot(&$pdf, $outputlangs, $paramfreetext, $fromcompany, $marge_
 
             // Option for footer background color (without freetext zone)
             if (getDolGlobalString('PDF_FOOTER_BACKGROUND_COLOR')) {
-                list($r, $g, $b) = sscanf($conf->global->PDF_FOOTER_BACKGROUND_COLOR, '%d, %d, %d');
+                [$r, $g, $b] = sscanf($conf->global->PDF_FOOTER_BACKGROUND_COLOR, '%d, %d, %d');
                 $pdf->SetAutoPageBreak(0, 0); // Disable auto pagebreak
                 $pdf->Rect(0, $dims['hk'] - $posy + $freetextheight, $dims['wk'] + 1, $marginwithfooter + 1, 'F', '', $fill_color = array($r, $g, $b));
                 $pdf->SetAutoPageBreak(1, 0); // Restore pagebreak
@@ -1285,7 +1285,7 @@ function pdf_pagefoot(&$pdf, $outputlangs, $paramfreetext, $fromcompany, $marge_
 
             // Option for footer background color (without freetext zone)
             if (getDolGlobalString('PDF_FOOTER_BACKGROUND_COLOR')) {
-                list($r, $g, $b) = sscanf($conf->global->PDF_FOOTER_BACKGROUND_COLOR, '%d, %d, %d');
+                [$r, $g, $b] = sscanf($conf->global->PDF_FOOTER_BACKGROUND_COLOR, '%d, %d, %d');
                 $pdf->SetAutoPageBreak(0, 0); // Disable auto pagebreak
                 $pdf->Rect(0, $dims['hk'] - $posy + $freetextheight, $dims['wk'] + 1, $marginwithfooter + 1, 'F', '', $fill_color = array($r, $g, $b));
                 $pdf->SetAutoPageBreak(1, 0); // Restore pagebreak

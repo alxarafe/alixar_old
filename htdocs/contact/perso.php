@@ -160,7 +160,7 @@ if ($action == 'edit') {
     // Company
     if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
         if ($object->socid > 0) {
-            $objsoc = new Societe($db);
+            $objsoc = new Company($db);
             $objsoc->fetch($object->socid);
 
             print '<tr><td>' . $langs->trans("ThirdParty") . '</td><td>' . $objsoc->getNomUrl(1) . '</td>';
@@ -241,7 +241,7 @@ if ($action == 'edit') {
 
     $morehtmlref .= '<div class="refidno">';
     if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-        $objsoc = new Societe($db);
+        $objsoc = new Company($db);
         $objsoc->fetch($object->socid);
         // Thirdparty
         if ($objsoc->id > 0) {
@@ -267,7 +267,7 @@ if ($action == 'edit') {
     {
         if ($object->socid > 0)
         {
-            $objsoc = new Societe($db);
+            $objsoc = new Company($db);
             $objsoc->fetch($object->socid);
 
             print '<tr><td>'.$langs->trans("ThirdParty").'</td><td colspan="3">'.$objsoc->getNomUrl(1).'</td></tr>';

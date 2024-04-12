@@ -1617,7 +1617,7 @@ while ($i < $imaxinloop) {
         if (!empty($arrayfields['p.fk_soc']['checked']) || !empty($arrayfields['s.nom']['checked'])) {
             print '<td class="tdoverflowmax200">';
             if ($obj->socid) {
-                $objsoc = new Societe($db);
+                $objsoc = new Company($db);
                 $objsoc->fetch($obj->socid);
                 $option_link = 'customer';
                 if ($objsoc->client == 0 && $objsoc->fournisseur > 0) {

@@ -48,7 +48,7 @@ if ($user->socid) {
     $socid = $user->socid;
 }
 $result = restrictedArea($user, 'societe', $socid, '&societe');
-$object = new Societe($db);
+$object = new Company($db);
 if ($socid > 0) {
     $object->fetch($socid);
 }

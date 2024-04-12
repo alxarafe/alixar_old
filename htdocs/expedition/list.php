@@ -253,7 +253,7 @@ $now = dol_now();
 $form = new Form($db);
 $formother = new FormOther($db);
 $formfile = new FormFile($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $formcompany = new FormCompany($db);
 $shipment = new Expedition($db);
 

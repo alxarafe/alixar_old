@@ -76,8 +76,8 @@ if ($type == Categorie::TYPE_ACCOUNT) {
     $title = $langs->trans(ucfirst($type) . 'sCategoriesArea');
 }
 
-$arrayofjs = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.js', '/includes/jquery/plugins/jquerytreeview/lib/jquery.cookie.js');
-$arrayofcss = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css');
+$arrayofjs = ['/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.js', '/Templates/Lib/jquery/plugins/jquerytreeview/lib/jquery.cookie.js'];
+$arrayofcss = ['/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.css'];
 
 llxHeader('', $title, '', '', 0, 0, $arrayofjs, $arrayofcss);
 

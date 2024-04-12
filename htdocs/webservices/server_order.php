@@ -23,6 +23,8 @@
  *       \brief      File that is entry point to call Dolibarr WebServices
  */
 
+use DoliModules\Billing\Model\OrderLine;
+
 if (!defined('NOCSRFCHECK')) {
     define('NOCSRFCHECK', '1'); // Do not check anti CSRF attack test
 }
@@ -46,7 +48,7 @@ if (!defined("NOSESSION")) {
 }
 
 require BASE_PATH . '/main.inc.php';
-require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
+//require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . "/commande/class/commande.class.php";

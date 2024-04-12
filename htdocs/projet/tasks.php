@@ -400,7 +400,7 @@ if ($action == 'createtask' && $user->hasRight('projet', 'creer')) {
 $now = dol_now();
 $form = new Form($db);
 $formother = new FormOther($db);
-$socstatic = new Societe($db);
+$socstatic = new Company($db);
 $projectstatic = new Project($db);
 $taskstatic = new Task($db);
 $userstatic = new User($db);

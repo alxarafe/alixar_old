@@ -559,7 +559,7 @@ function getCustomerInvoiceDraftTable($maxCount = 500, $socid = 0)
             $result .= '</tr>';
 
             if ($num) {
-                $companystatic = new Societe($db);
+                $companystatic = new Company($db);
 
                 $i = 0;
                 $othernb = 0;
@@ -692,7 +692,7 @@ function getDraftSupplierTable($maxCount = 500, $socid = 0)
             $result .= '</tr>';
 
             if ($num) {
-                $companystatic = new Societe($db);
+                $companystatic = new Company($db);
 
                 $i = 0;
                 $othernb = 0;
@@ -819,7 +819,7 @@ function getCustomerInvoiceLatestEditTable($maxCount = 5, $socid = 0)
 
     $formfile = new FormFile($db);
     $objectstatic = new Facture($db);
-    $companystatic = new Societe($db);
+    $companystatic = new Company($db);
     $i = 0;
 
     while ($i < $num) {
@@ -926,7 +926,7 @@ function getPurchaseInvoiceLatestEditTable($maxCount = 5, $socid = 0)
     }
 
     $objectstatic = new FactureFournisseur($db);
-    $companystatic = new Societe($db);
+    $companystatic = new Company($db);
     $formfile = new FormFile($db);
     $i = 0;
 
@@ -1057,7 +1057,7 @@ function getCustomerInvoiceUnpaidOpenTable($maxCount = 500, $socid = 0)
             print '<th width="16">&nbsp;</th>';
             print '</tr>';
             if ($num) {
-                $societestatic = new Societe($db);
+                $societestatic = new Company($db);
                 $total_ttc = $totalam = $total = 0;
                 while ($i < $num) {
                     $obj = $db->fetch_object($resql);
@@ -1243,7 +1243,7 @@ function getPurchaseInvoiceUnpaidOpenTable($maxCount = 500, $socid = 0)
             print '<th class="right">' . $langs->trans("Paid") . '</th>';
             print '<th width="16">&nbsp;</th>';
             print "</tr>\n";
-            $societestatic = new Societe($db);
+            $societestatic = new Company($db);
             if ($num) {
                 $i = 0;
                 $total = $total_ttc = $totalam = 0;

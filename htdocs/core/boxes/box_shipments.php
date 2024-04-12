@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2019      Alexandre Spangaro   <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,16 @@
  *      \brief      Module for generating the display of the shipment box
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Billing\Model\Commande;
+use DoliModules\Company\Model\Company;
+use DoliModules\Shipment\Model\Expedition;
 
 
 /**
  * Class to manage the box to show last shipments
  */
-class box_shipments extends ModeleBoxes
+class box_shipments extends GenericBoxes
 {
     public $boxcode = "lastcustomershipments";
     public $boximg = "dolly";
@@ -72,7 +76,7 @@ class box_shipments extends ModeleBoxes
 
         $shipmentstatic = new Expedition($this->db);
         $orderstatic = new Commande($this->db);
-        $societestatic = new Societe($this->db);
+        $societestatic = new Company($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastCustomerShipments", $max));
 

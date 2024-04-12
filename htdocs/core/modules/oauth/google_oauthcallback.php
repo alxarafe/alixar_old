@@ -40,7 +40,8 @@ if (!defined('NOLOGIN') && $forlogin) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/includes/OAuth/bootstrap.php';
+
+//require_once DOL_DOCUMENT_ROOT . '/includes/OAuth/bootstrap.php';
 use OAuth\Common\Storage\DoliStorage;
 use OAuth\Common\Consumer\Credentials;
 

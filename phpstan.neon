@@ -25,7 +25,6 @@ parameters:
 		- htdocs/modulebuilder/template/test/*
 		- htdocs/support/*
 		analyse:
-		- htdocs/includes/*
 		- vendor/*
 	checkAlwaysTrueCheckTypeFunctionCall: false
 	checkAlwaysTrueInstanceof: false

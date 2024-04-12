@@ -147,7 +147,7 @@ if ($ret > 0) {
 
 $constforcompanyid = 'CASHDESK_ID_THIRDPARTY' . $takeposterminal;
 
-$soc = new Societe($db);
+$soc = new Company($db);
 if ($invoice->socid > 0) {
     $soc->fetch($invoice->socid);
 } else {
@@ -527,7 +527,7 @@ if (empty($reshook)) {
         $prod = new Product($db);
         $prod->fetch($idproduct);
 
-        $customer = new Societe($db);
+        $customer = new Company($db);
         $customer->fetch($invoice->socid);
 
         $datapriceofproduct = $prod->getSellPrice($mysoc, $customer, 0);
@@ -714,7 +714,7 @@ if (empty($reshook)) {
     }
 
     if ($action == "freezone" && $user->hasRight('takepos', 'run')) {
-        $customer = new Societe($db);
+        $customer = new Company($db);
         $customer->fetch($invoice->socid);
 
         $tva_tx = GETPOST('tva_tx', 'alpha');
@@ -843,7 +843,7 @@ if (empty($reshook)) {
     }
 
     if ($action == "updateprice") { // Test on permission is done later
-        $customer = new Societe($db);
+        $customer = new Company($db);
         $customer->fetch($invoice->socid);
 
         foreach ($invoice->lines as $line) {
@@ -884,7 +884,7 @@ if (empty($reshook)) {
     }
 
     if ($action == "updatereduction") { // Test on permission is done later
-        $customer = new Societe($db);
+        $customer = new Company($db);
         $customer->fetch($invoice->socid);
 
         foreach ($invoice->lines as $line) {

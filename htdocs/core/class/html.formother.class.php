@@ -33,6 +33,8 @@
  *  \brief      Fichier de la class des functions predefinie de composants html autre
  */
 
+use DoliCore\Base\GenericBoxes;
+
 
 /**
  *  Class permettant la generation de composants html autre
@@ -871,8 +873,8 @@ class FormOther
             // Case of selection of any color
             $langs->load("other");
             if (empty($conf->dol_use_jmobile) && !empty($conf->use_javascript_ajax) && !getDolGlobalInt('MAIN_USE_HTML5_COLOR_SELECTOR')) {
-                $out .= '<link rel="stylesheet" media="screen" type="text/css" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/jpicker/css/jPicker-1.1.6.css" />';
-                $out .= '<script nonce="' . getNonce() . '" type="text/javascript" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/jpicker/jpicker-1.1.6.js"></script>';
+                $out .= '<link rel="stylesheet" media="screen" type="text/css" href="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jpicker/css/jPicker-1.1.6.css" />';
+                $out .= '<script nonce="' . getNonce() . '" type="text/javascript" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jpicker/jpicker-1.1.6.js"></script>';
                 $out .= '<script nonce="' . getNonce() . '" type="text/javascript">
 	             jQuery(document).ready(function(){
 					var originalhex = null;
@@ -895,7 +897,7 @@ class FormOther
 		                    },
 		                },
 		                images: {
-		                    clientPath: \'' . DOL_URL_ROOT . '/includes/jquery/plugins/jpicker/images/\',
+		                    clientPath: \'' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/jpicker/images/\',
 		                    picker: { file: \'../../../../../theme/common/colorpicker.png\', width: 14, height: 14 }
 		          		},
 		                localization: // alter these to change the text presented by the picker (e.g. different language)
@@ -962,8 +964,8 @@ class FormOther
         } else {
             // In most cases, this is not used. We used instead function with no specific list of colors
             if (empty($conf->dol_use_jmobile) && !empty($conf->use_javascript_ajax)) {
-                $out .= '<link rel="stylesheet" href="' . DOL_URL_ROOT . '/includes/jquery/plugins/colorpicker/jquery.colorpicker.css" type="text/css" media="screen" />';
-                $out .= '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/includes/jquery/plugins/colorpicker/jquery.colorpicker.js" type="text/javascript"></script>';
+                $out .= '<link rel="stylesheet" href="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/colorpicker/jquery.colorpicker.css" type="text/css" media="screen" />';
+                $out .= '<script nonce="' . getNonce() . '" src="' . DOL_URL_ROOT . '/Templates/Lib/jquery/plugins/colorpicker/jquery.colorpicker.js" type="text/javascript"></script>';
                 $out .= '<script nonce="' . getNonce() . '" type="text/javascript">
 	             jQuery(document).ready(function(){
 	                 jQuery(\'#colorpicker' . $prefix . '\').colorpicker({
@@ -1368,7 +1370,7 @@ class FormOther
             // Load translation files required by the page
             $langs->loadLangs(array("boxes", "projects"));
 
-            $emptybox = new ModeleBoxes($db);
+            $emptybox = new GenericBoxes($db);
 
             $boxlista .= "\n<!-- Box left container -->\n";
 

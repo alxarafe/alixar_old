@@ -718,7 +718,7 @@ class doc_generic_project_odt extends ModelePDFProjects
                                     $objectdetail = new Contact($this->db);
                                     $objectdetail->fetch($contact['id']);
 
-                                    $soc = new Societe($this->db);
+                                    $soc = new Company($this->db);
                                     $soc->fetch($contact['socid']);
                                     $contact['socname'] = $soc->name;
                                 }
@@ -904,7 +904,7 @@ class doc_generic_project_odt extends ModelePDFProjects
                                 $objectdetail = new Contact($this->db);
                                 $objectdetail->fetch($contact['id']);
 
-                                $soc = new Societe($this->db);
+                                $soc = new Company($this->db);
                                 $soc->fetch($contact['socid']);
                                 $contact['socname'] = $soc->name;
                             }

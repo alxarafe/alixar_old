@@ -66,7 +66,7 @@ $pricelevel = 1;    // default price level if PRODUIT_MULTIPRICES. TODO Get pric
  * View
  */
 
-$thirdparty = new Societe($db);
+$thirdparty = new Company($db);
 
 if ($action == 'getProducts') {
     $tosell = GETPOSTISSET('tosell') ? GETPOSTINT('tosell') : '';

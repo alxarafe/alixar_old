@@ -90,7 +90,7 @@ $result = restrictedArea($user, 'produit|service', $fieldvalue, 'product&product
  */
 
 $supplierorderstatic = new CommandeFournisseur($db);
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 
 $form = new Form($db);
 $formother = new FormOther($db);

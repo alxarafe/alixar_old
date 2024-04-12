@@ -344,7 +344,7 @@ $formproject = new FormProjets($db);
 $projectstatic = new Project($db);
 $project = new Project($db);
 $taskstatic = new Task($db);
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 $holiday = new Holiday($db);
 
 $prev = dol_getdate($daytoparse - (24 * 3600));

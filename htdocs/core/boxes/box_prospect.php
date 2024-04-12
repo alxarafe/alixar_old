@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015-2019 Frederic France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,14 +26,16 @@
  *   \brief      Module to generate the last prospects box.
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Customer;
+
 include_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
 
 
 /**
  * Class to manage the box to show last prospects
  */
-class box_prospect extends ModeleBoxes
+class box_prospect extends GenericBoxes
 {
     public $boxcode = "lastprospects";
     public $boximg = "object_company";
@@ -73,7 +76,7 @@ class box_prospect extends ModeleBoxes
 
         $this->max = $max;
 
-        $thirdpartystatic = new Client($this->db);
+        $thirdpartystatic = new Customer($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedProspects", $max));
 

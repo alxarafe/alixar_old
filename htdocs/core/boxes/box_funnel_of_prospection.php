@@ -5,6 +5,7 @@
  * Copyright (C) 2015      Frederic France        <frederic.france@free.fr>
  * Copyright (C) 2016      Juan José Menent       <jmenent@2byte.es>
  * Copyright (C) 2020      Pierre Ardoin          <mapiolca@me.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +27,12 @@
  *  \brief      Module to show the funnel of prospection
  */
 
-include_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
-
+use DoliCore\Base\GenericBoxes;
 
 /**
  * Class to manage the box to show funnel of prospections
  */
-class box_funnel_of_prospection extends ModeleBoxes
+class box_funnel_of_prospection extends GenericBoxes
 {
     public $boxcode  = "FunnelOfProspection";
     public $boximg   = "object_projectpub";

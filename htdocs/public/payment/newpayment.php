@@ -154,7 +154,7 @@ if ($source == 'organizedeventregistration') {
 
                 $amount = price2num($invoice->total_ttc);
                 // Finding the associated thirdparty
-                $thirdparty = new Societe($db);
+                $thirdparty = new Company($db);
                 $resultthirdparty = $thirdparty->fetch($invoice->socid);
                 if ($resultthirdparty <= 0) {
                     setEventMessages(null, $thirdparty->errors, "errors");
@@ -173,7 +173,7 @@ if ($source == 'organizedeventregistration') {
     } else {
         $amount = price2num($invoice->total_ttc);
         // Finding the associated thirdparty
-        $thirdparty = new Societe($db);
+        $thirdparty = new Company($db);
         $resultthirdparty = $thirdparty->fetch($invoice->socid);
         if ($resultthirdparty <= 0) {
             setEventMessages(null, $thirdparty->errors, "errors");
@@ -282,7 +282,7 @@ if ((empty($paymentmethod) || $paymentmethod == 'paybox') && isModEnabled('paybo
     // No specific test for the moment
 }
 if ((empty($paymentmethod) || $paymentmethod == 'stripe') && isModEnabled('stripe')) {
-    require_once DOL_DOCUMENT_ROOT . '/stripe/config.php'; // This include also /stripe/lib/stripe.lib.php, /includes/stripe/stripe-php/init.php, ...
+    require_once DOL_DOCUMENT_ROOT . '/stripe/config.php';
 }
 
 // Initialize $validpaymentmethod
@@ -537,7 +537,7 @@ if ($action == 'charge' && isModEnabled('stripe')) {
                     $servicestatus = 1;
                 }
 
-                $thirdparty = new Societe($db);
+                $thirdparty = new Company($db);
                 $thirdparty->fetch($thirdparty_id);
 
                 // Create Stripe customer

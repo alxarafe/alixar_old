@@ -230,7 +230,7 @@ if ($reshook < 0) {
 }
 
 $form = new Form($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 
 $help_url = 'EN:Module_Agenda_En|FR:Module_Agenda|ES:M&oacute;dulo_Agenda|DE:Modul_Terminplanung';
 llxHeader('', $langs->trans("Agenda"), $help_url);
@@ -1305,7 +1305,7 @@ function show_day_events2($username, $day, $month, $year, $monthshown, $style, &
                             }
                             if ($event->socid > 0) {
                                 if (empty($cachethirdparties[$event->socid])) {
-                                    $tmpthirdparty = new Societe($db);
+                                    $tmpthirdparty = new Company($db);
                                     $tmpthirdparty->fetch($event->socid);
                                     $cachethirdparties[$event->socid] = $tmpthirdparty;
                                 }
@@ -1348,7 +1348,7 @@ function show_day_events2($username, $day, $month, $year, $monthshown, $style, &
                             }
                             if ($event->socid > 0) {
                                 if (empty($cachethirdparties[$event->socid])) {
-                                    $tmpthirdparty = new Societe($db);
+                                    $tmpthirdparty = new Company($db);
                                     $tmpthirdparty->fetch($event->socid);
                                     $cachethirdparties[$event->socid] = $tmpthirdparty;
                                 }
@@ -1391,7 +1391,7 @@ function show_day_events2($username, $day, $month, $year, $monthshown, $style, &
                             }
                             if ($event->socid > 0) {
                                 if (empty($cachethirdparties[$event->socid])) {
-                                    $tmpthirdparty = new Societe($db);
+                                    $tmpthirdparty = new Company($db);
                                     $tmpthirdparty->fetch($event->socid);
                                     $cachethirdparties[$event->socid] = $tmpthirdparty;
                                 }
@@ -1434,7 +1434,7 @@ function show_day_events2($username, $day, $month, $year, $monthshown, $style, &
                             }
                             if ($event->socid > 0) {
                                 if (empty($cachethirdparties[$event->socid])) {
-                                    $tmpthirdparty = new Societe($db);
+                                    $tmpthirdparty = new Company($db);
                                     $tmpthirdparty->fetch($event->socid);
                                     $cachethirdparties[$event->socid] = $tmpthirdparty;
                                 }

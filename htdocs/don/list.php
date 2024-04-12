@@ -417,7 +417,7 @@ while ($i < $imaxinloop) {
 
     $donationstatic->setVarsFromFetchObj($obj);
 
-    $company = new Societe($db);
+    $company = new Company($db);
     $result = $company->fetch($obj->socid);
 
     if ($mode == 'kanban') {

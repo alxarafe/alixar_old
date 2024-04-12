@@ -4,6 +4,7 @@
  * Copyright (C) 2013-2016  Jean-François FERRY     <hello@librethic.io>
  *               2016       Christophe Battarel     <christophe@altairis.fr>
  * Copyright (C) 2019-2021  Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +26,12 @@
  *     \brief       This box shows open tickets by severity
  */
 
-require_once DOL_DOCUMENT_ROOT . "/core/boxes/modules_boxes.php";
+use DoliCore\Base\GenericBoxes;
 
 /**
  * Class to manage the box
  */
-class box_graph_ticket_by_severity extends ModeleBoxes
+class box_graph_ticket_by_severity extends GenericBoxes
 {
     public $boxcode = "box_ticket_by_severity";
     public $boximg = "ticket";

@@ -1,10 +1,11 @@
 <?php
 
-/* Copyright (C) 2003-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2011 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2014 	   Charles-Fr BENKE        <charles.fr@benke.fr>
- * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+/* Copyright (C) 2003-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2011  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2011  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2014 	    Charles-Fr BENKE        <charles.fr@benke.fr>
+ * Copyright (C) 2015       Frederic France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +27,13 @@
  *  \brief      Module to build box for events
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
 
 /**
  * Class to manage the box to show last events
  */
-class box_actions extends ModeleBoxes
+class box_actions extends GenericBoxes
 {
     public $boxcode = "lastactions";
     public $boximg = "object_action";
@@ -71,7 +73,7 @@ class box_actions extends ModeleBoxes
 
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         include_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
-        $societestatic = new Societe($this->db);
+        $societestatic = new Company($this->db);
         $actionstatic = new ActionComm($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleOldestActionsToDo", $max));

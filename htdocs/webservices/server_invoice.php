@@ -45,7 +45,7 @@ if (!defined("NOSESSION")) {
 }
 
 require BASE_PATH . '/main.inc.php';
-require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
+//require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
@@ -589,7 +589,7 @@ function createInvoice($authentication, $invoice)
         $new_invoice->date_creation = $now;
 
         //take mode_reglement and cond_reglement from thirdparty
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $res = $soc->fetch($new_invoice->socid);
         if ($res > 0) {
             $new_invoice->mode_reglement_id = !empty($invoice['payment_mode_id']) ? $invoice['payment_mode_id'] : $soc->mode_reglement_id;

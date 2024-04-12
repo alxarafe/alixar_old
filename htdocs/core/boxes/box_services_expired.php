@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2011 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +23,15 @@
  *      \brief      Module to show the box of last expired services
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
 
 
 /**
  * Class to manage the box to show expired services
  */
-class box_services_expired extends ModeleBoxes
+class box_services_expired extends GenericBoxes
 {
     public $boxcode = "expiredservices"; // id of box
     public $boximg = "object_contract";
@@ -98,7 +101,7 @@ class box_services_expired extends ModeleBoxes
 
                 $i = 0;
 
-                $thirdpartytmp = new Societe($this->db);
+                $thirdpartytmp = new Company($this->db);
                 $contract = new Contrat($this->db);
 
                 while ($i < $num) {

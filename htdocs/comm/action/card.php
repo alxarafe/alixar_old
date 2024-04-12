@@ -1496,7 +1496,7 @@ if ($action == 'create') {
         // Related company
         print '<tr><td class="titlefieldcreate nowrap">' . $langs->trans("ActionOnCompany") . '</td><td>';
         if (GETPOSTINT('socid') > 0) {
-            $societe = new Societe($db);
+            $societe = new Company($db);
             $societe->fetch(GETPOSTINT('socid'));
             print $societe->getNomUrl(1);
             print '<input type="hidden" id="socid" name="socid" value="' . GETPOSTINT('socid') . '">';

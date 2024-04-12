@@ -50,7 +50,7 @@ if ($user->socid > 0) {
     $socid = $user->socid;
 }
 
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $fuserstatic = new User($db);
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array

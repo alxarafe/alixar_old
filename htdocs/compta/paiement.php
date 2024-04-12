@@ -221,7 +221,7 @@ if (empty($reshook)) {
 
         $db->begin();
 
-        $thirdparty = new Societe($db);
+        $thirdparty = new Company($db);
         if ($socid > 0) {
             $thirdparty->fetch($socid);
         }
@@ -646,7 +646,7 @@ if ($action == 'create' || $action == 'confirm_paiement' || $action == 'add_paie
                         $sign = -1;
                     }
 
-                    $soc = new Societe($db);
+                    $soc = new Company($db);
                     $soc->fetch($objp->socid);
 
                     $invoice = new Facture($db);

@@ -955,7 +955,7 @@ $formother = new FormOther($db);
 if (isModEnabled('project')) {
     $formproject = new FormProjets($db);
 }
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $invoicerectmp = new FactureRec($db);
 
 $now = dol_now();

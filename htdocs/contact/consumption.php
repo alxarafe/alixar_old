@@ -109,7 +109,7 @@ if ($reshook < 0) {
 $form = new Form($db);
 $formother = new FormOther($db);
 $productstatic = new Product($db);
-$objsoc = new Societe($db);
+$objsoc = new Company($db);
 
 $title = (getDolGlobalString('SOCIETE_ADDRESSES_MANAGEMENT') ? $langs->trans("Contacts") : $langs->trans("ContactsAddresses"));
 $help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';

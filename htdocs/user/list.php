@@ -99,7 +99,7 @@ foreach ($object->fields as $key => $val) {
 }
 
 $userstatic = new User($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $form = new Form($db);
 
 // List of fields to search into when doing a "search in all"

@@ -524,7 +524,7 @@ $morejs = array('/fourn/js/lib_dispatch.js.php');
 llxHeader('', $title, $help_url, '', 0, 0, $morejs, '', '', 'mod-supplier-order page-card_dispatch');
 
 if ($id > 0 || !empty($ref)) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($object->socid);
 
     $author = new User($db);

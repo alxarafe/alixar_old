@@ -30,8 +30,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
-
 /**
  *  Class to manage cheque delivery receipts
  */

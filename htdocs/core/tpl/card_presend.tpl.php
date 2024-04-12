@@ -341,7 +341,7 @@ if ($action == 'presend') {
         require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         $contactstatic = new Contact($db);
-        $tmpcompany = new Societe($db);
+        $tmpcompany = new Company($db);
 
         foreach ($contactarr as $contact) {
             $contactstatic->fetch($contact['id']);

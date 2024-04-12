@@ -92,7 +92,7 @@ if (
 
 $form = new Form($db);
 $formfile = new FormFile($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 if (isModEnabled("propal")) {
     $propalstatic = new Propal($db);
 }

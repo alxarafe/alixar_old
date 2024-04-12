@@ -29,6 +29,7 @@
  */
 
 use DoliCore\Base\Config;
+use DoliModules\User\Model\User;
 
 /**
  *  Encode a string with base 64 algorithm + specific delta change.

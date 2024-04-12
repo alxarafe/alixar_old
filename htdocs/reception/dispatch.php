@@ -318,7 +318,7 @@ if ($id > 0 || !empty($ref)) {
         $origin_id = $object->origin_id;
         $object->fetch_origin(); // Load property $object->commande, $object->propal, ...
     }
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($object->socid);
 
     $author = new User($db);

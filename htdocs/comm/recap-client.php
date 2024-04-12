@@ -50,7 +50,7 @@ $result = restrictedArea($user, 'societe', $id, '&societe', '', 'fk_soc', 'rowid
 llxHeader();
 
 if ($socid > 0) {
-    $societe = new Societe($db);
+    $societe = new Company($db);
     $societe->fetch($socid);
 
     /*

@@ -171,7 +171,7 @@ class FormTicket
         $formcompany = new FormCompany($this->db);
         $ticketstatic = new Ticket($this->db);
 
-        $soc = new Societe($this->db);
+        $soc = new Company($this->db);
         if (!empty($this->withfromsocid) && $this->withfromsocid > 0) {
             $soc->fetch($this->withfromsocid);
         }

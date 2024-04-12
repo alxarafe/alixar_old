@@ -1716,7 +1716,7 @@ class FormFile
         $object_instance = null;
         if ($modulepart == 'company') {
             include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-            $object_instance = new Societe($this->db);
+            $object_instance = new Company($this->db);
         } elseif ($modulepart == 'invoice') {
             include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
             $object_instance = new Facture($this->db);

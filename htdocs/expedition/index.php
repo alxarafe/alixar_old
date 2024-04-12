@@ -46,7 +46,7 @@ $langs->loadLangs(array('orders', 'sendings'));
  */
 
 $orderstatic = new Commande($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $shipment = new Expedition($db);
 
 $helpurl = 'EN:Module_Shipments|FR:Module_Exp&eacute;ditions|ES:M&oacute;dulo_Expediciones';

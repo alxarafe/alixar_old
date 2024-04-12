@@ -1,12 +1,13 @@
 <?php
 
-/* Copyright (C) 2004-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005      Simon Tosser         <simon@kornog-computing.com>
- * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2010	   Pierre Morin         <pierre.morin@auguria.net>
- * Copyright (C) 2010	   Juanjo Menent        <jmenent@2byte.es>
- * Copyright (C) 2022	   Ferran Marcet        <fmarcet@2byte.es>
+/* Copyright (C) 2004-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2013  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005       Simon Tosser            <simon@kornog-computing.com>
+ * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2010	    Pierre Morin            <pierre.morin@auguria.net>
+ * Copyright (C) 2010	    Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2022	    Ferran Marcet           <fmarcet@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,41 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  * or see https://www.gnu.org/
  */
+
+use DoliCore\Base\Config;
+
+const BASE_PATH = __DIR__;
+
+$autoload_filename = realpath(BASE_PATH . '/../vendor/autoload.php');
+if (!file_exists($autoload_filename)) {
+    die('<h1>COMPOSER ERROR</h1><p>You need to run: "composer install"</p>');
+}
+
+require_once $autoload_filename;
+
+define('BASE_URL', getUrl());
+/**
+ * @deprecated Use BASE_PATH instead.
+ */
+const DOL_DOCUMENT_ROOT = BASE_PATH;
+
+/**
+ * @deprecated Use BASE_URL instead.
+ */
+const DOL_URL_ROOT = BASE_URL;
+
+//$conf = Config::loadConfig();
+
+/**
+ * @deprecated Necessary for compatibility with Dolibarr
+ */
+define('DOL_DATA_ROOT', $conf->main->data_path ?? Config::getDataDir(BASE_PATH));
+
+/**
+ * Load the configuration file and initialize all the variables of the Config class.
+ * At the moment it uses Config in Deprecated, but the functionalities will have to be moved to Core.
+ */
+Config::load();
 
 /**
  *  \file       htdocs/document.php

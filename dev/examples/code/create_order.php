@@ -27,6 +27,8 @@
  *      \remarks    Put here some comments
  */
 
+use DoliModules\Billing\Model\OrderLine;
+
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);
 $path = dirname(__FILE__) . '/';

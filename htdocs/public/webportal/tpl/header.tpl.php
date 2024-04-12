@@ -26,7 +26,7 @@ global $langs;
     <?php
     // JNotify
     //$jNotifyCSSUrl = $context->rootUrl.'includes/jquery/plugins/jnotify/jquery.jnotify.css';
-    $jNotifyCSSUrl = dol_buildpath('/includes/jquery/plugins/jnotify/jquery.jnotify.css', 2);
+    $jNotifyCSSUrl = dol_buildpath('/Templates/Lib/jquery/plugins/jnotify/jquery.jnotify.css', 2);
     print '<link rel="stylesheet" href="' . $jNotifyCSSUrl . ' ">';
     ?>
     <?php
@@ -37,12 +37,12 @@ global $langs;
     <?php
     // JQuery
     //$jQueryJSUrl = $context->rootUrl.'includes/jquery/js/jquery.js';
-    $jQueryJSUrl = dol_buildpath('/includes/jquery/js/jquery.js', 2);
+    $jQueryJSUrl = dol_buildpath('/Templates/Lib/jquery/js/jquery.js', 2);
     print '<script src="' . $jQueryJSUrl . '"></script>';
 
     // JNotify
     //$jNotifyJSUrl = $context->rootUrl.'includes/jquery/plugins/jnotify/jquery.jnotify.js';
-    $jNotifyJSUrl = dol_buildpath('/includes/jquery/plugins/jnotify/jquery.jnotify.js', 2);
+    $jNotifyJSUrl = dol_buildpath('/Templates/Lib/jquery/plugins/jnotify/jquery.jnotify.js', 2);
     print '<script src="' . $jNotifyJSUrl . '"></script>';
     ?>
 </head>

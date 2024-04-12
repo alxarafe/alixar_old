@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015-2021 Frederic France      <frederic.france@netlogic.fr>
  * Copyright (C) 2020      Pierre Ardoin        <mapiolca@me.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +27,15 @@
  * \brief      Module de generation de l'affichage de la box propales
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
+use DoliModules\Proposal\Model\Propal;
 
 
 /**
  * Class to manage the box to show last proposals
  */
-class box_propales extends ModeleBoxes
+class box_propales extends GenericBoxes
 {
     public $boxcode = "lastpropals";
     public $boximg = "object_propal";
@@ -69,7 +72,7 @@ class box_propales extends ModeleBoxes
         include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         $propalstatic = new Propal($this->db);
-        $societestatic = new Societe($this->db);
+        $societestatic = new Company($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLast" . (getDolGlobalString('MAIN_LASTBOX_ON_OBJECT_DATE') ? "" : "Modified") . "Propals", $max));
 

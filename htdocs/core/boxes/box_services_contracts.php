@@ -26,12 +26,16 @@
  *      \brief      Widget of sells products
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\Contract\Model\ContratLigne;
+use DoliModules\Product\Model\Product;
 
 /**
  * Class to manage the box to show last contracted products/services lines
  */
-class box_services_contracts extends ModeleBoxes
+class box_services_contracts extends GenericBoxes
 {
     public $boxcode = "lastproductsincontract";
     public $boximg = "object_product";
@@ -75,7 +79,7 @@ class box_services_contracts extends ModeleBoxes
         if ($user->hasRight('service', 'lire') && $user->hasRight('contrat', 'lire')) {
             $contractstatic = new Contrat($this->db);
             $contractlinestatic = new ContratLigne($this->db);
-            $thirdpartytmp = new Societe($this->db);
+            $thirdpartytmp = new Company($this->db);
             $productstatic = new Product($this->db);
 
             $sql = "SELECT s.nom as name, s.rowid as socid, s.email, s.client, s.fournisseur, s.code_client, s.code_fournisseur, s.code_compta, s.code_compta_fournisseur,";

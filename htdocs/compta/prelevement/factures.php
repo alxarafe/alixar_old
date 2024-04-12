@@ -90,7 +90,7 @@ if ($type == 'bank-transfer') {
 
 $form = new Form($db);
 $invoicetmp = new Facture($db);
-$thirdpartytmp = new Societe($db);
+$thirdpartytmp = new Company($db);
 
 llxHeader('', $langs->trans("WithdrawalsReceipts"));
 

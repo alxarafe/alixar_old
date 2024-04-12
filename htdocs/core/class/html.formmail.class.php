@@ -1149,7 +1149,7 @@ class FormMail extends Form
                 $out .= '<input type="hidden" id="toname" name="toname" value="' . $this->toname . '" />';
                 $out .= '<input type="hidden" id="tomail" name="tomail" value="' . $this->tomail . '" />';
                 if ($this->totype == 'thirdparty') {
-                    $soc = new Societe($this->db);
+                    $soc = new Company($this->db);
                     $soc->fetch($this->toid);
                     $out .= $soc->getNomUrl(1);
                 } elseif ($this->totype == 'contact') {

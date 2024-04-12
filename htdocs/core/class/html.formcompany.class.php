@@ -657,7 +657,7 @@ class FormCompany extends Form
             $socid = 0;
             $name = '';
             if ($selected > 0) {
-                $tmpthirdparty = new Societe($this->db);
+                $tmpthirdparty = new Company($this->db);
                 $result = $tmpthirdparty->fetch($selected);
                 if ($result > 0) {
                     $socid = $selected;

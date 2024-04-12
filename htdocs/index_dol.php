@@ -28,7 +28,18 @@
  */
 
 use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\Holiday\Model\Holiday;
+use DoliModules\Project\Model\Project;
+use DoliModules\Project\Model\Task;
+use DoliModules\Proposal\Model\Propal;
+use DoliModules\Supplier\Model\CommandeFournisseur;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\SupplierProposal\Model\SupplierProposal;
+use DoliModules\Ticket\Model\Ticket;
 
 define('CSRFCHECK_WITH_TOKEN', 1); // We force need to use a token to login when making a POST
 

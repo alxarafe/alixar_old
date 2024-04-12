@@ -34,14 +34,9 @@ use DoliCore\Base\GenericDocument;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/paiementfourn.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/userbankaccount.class.php';
 
 
 /**
@@ -1098,7 +1093,7 @@ class BonPrelevement extends GenericDocument
             require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 
-            $tmpsoc = new Societe($this->db);
+            $tmpsoc = new Company($this->db);
             $tmpuser = new User($this->db);
 
             // Check BAN

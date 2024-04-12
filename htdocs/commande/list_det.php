@@ -366,7 +366,7 @@ $formmargin = null;
 if (isModEnabled('margin')) {
     $formmargin = new FormMargin($db);
 }
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $formcompany = new FormCompany($db);
 $projectstatic = new Project($db);
 
@@ -661,7 +661,7 @@ $sql .= $db->plimit($limit + 1, $offset);
 $resql = $db->query($sql);
 if ($resql) {
     if ($socid > 0) {
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->fetch($socid);
         $title = $langs->trans('ListOrderLigne') . ' - ' . $soc->name;
         if (empty($search_company)) {

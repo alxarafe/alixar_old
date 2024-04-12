@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015-2019 Frederic France      <frederic.france@free.fr>
  * Copyright (C) 2020      Pierre Ardoin      <mapiolca@me.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,14 @@
  * \brief      Module to generate box of suppliers
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Supplier\Model\Supplier;
 
 
 /**
  * Class to manage the box to show last suppliers
  */
-class box_fournisseurs extends ModeleBoxes
+class box_fournisseurs extends GenericBoxes
 {
     public $boxcode = "lastsuppliers";
     public $boximg = "object_company";
@@ -67,7 +69,7 @@ class box_fournisseurs extends ModeleBoxes
         $this->max = $max;
 
         include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
-        $thirdpartystatic = new Fournisseur($this->db);
+        $thirdpartystatic = new Supplier($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedSuppliers", $max));
 

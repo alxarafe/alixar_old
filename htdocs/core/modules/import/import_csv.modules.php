@@ -110,7 +110,7 @@ class ImportCsv extends ModeleImports
 
         $this->datatoimport = $datatoimport;
         if (preg_match('/^societe_/', $datatoimport)) {
-            $this->thirdpartyobject = new Societe($this->db);
+            $this->thirdpartyobject = new Company($this->db);
         }
     }
 

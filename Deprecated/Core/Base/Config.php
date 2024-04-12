@@ -22,18 +22,17 @@ use Alxarafe\Tools\Debug;
 use Conf;
 use DoliCore\Lib\TraceableDB;
 use DoliDB;
+use DoliModules\User\Model\User;
 use HookManager;
 use Illuminate\Database\Capsule\Manager as DB;
 use MenuManager;
 use stdClass;
 use Translate;
-use User;
 
 require_once BASE_PATH . '/core/class/conf.class.php';
 require_once BASE_PATH . '/core/class/hookmanager.class.php';
 require_once BASE_PATH . '/core/class/translate.class.php';
 require_once BASE_PATH . '/core/lib/functions.lib.php';
-require_once BASE_PATH . '/user/class/user.class.php';
 
 /**
  * Generate an object with the configuration of the Dolibarr conf.php file.
@@ -185,14 +184,8 @@ abstract class Config
         $conf->debug = intval($dolibarr_main_prod ?? 1) === 0;
 
         // Load the main includes of common libraries
-        if (!defined('NOREQUIREUSER')) {
-            require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php'; // Need 500ko memory
-        }
         if (!defined('NOREQUIRETRAN')) {
             require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
-        }
-        if (!defined('NOREQUIRESOC')) {
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         }
 
         static::$dolibarrConfig = $conf;

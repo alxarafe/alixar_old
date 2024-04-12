@@ -16,6 +16,7 @@
  * Copyright (C) 2018-2021  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2022	    Gauthier VERDOL     	<gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2023		Benjamin Falière		<benjamin.faliere@altairis.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,11 +60,6 @@ if (isModEnabled('project')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
-
-if (isModEnabled('variants')) {
-    require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
-}
-
 
 // Load translation files required by the page
 $langs->loadLangs(array('orders', 'sendings', 'companies', 'bills', 'propal', 'deliveries', 'products', 'other'));
@@ -1678,7 +1674,7 @@ if (isModEnabled('project')) {
 if ($action == 'create' && $usercancreate) {
     print load_fiche_titre($langs->trans('CreateOrder'), '', 'order');
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     if ($socid > 0) {
         $res = $soc->fetch($socid);
     }
@@ -2157,7 +2153,7 @@ if ($action == 'create' && $usercancreate) {
     if ($object->id > 0) {
         $product_static = new Product($db);
 
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->fetch($object->socid);
 
         $author = new User($db);
@@ -2689,7 +2685,7 @@ if ($action == 'create' && $usercancreate) {
                     print '</td><td class="valuefield">';
                     if ($action == 'editmulticurrencyrate' || $action == 'actualizemulticurrencyrate') {
                         if ($action == 'actualizemulticurrencyrate') {
-                            list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
+                            [$object->fk_multicurrency, $object->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
                         }
                         $form->form_multicurrency_rate($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->multicurrency_tx, 'multicurrency_tx', $object->multicurrency_code);
                     } else {

@@ -268,7 +268,7 @@ if (empty($reshook)) {
 
 llxHeader('', $langs->trans("Payment"));
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 
 $result = $object->fetch($id, $ref);
 if ($result <= 0) {

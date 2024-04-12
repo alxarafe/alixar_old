@@ -829,7 +829,7 @@ llxHeader('', $langs->trans("Intervention"), $help_url);
 if ($action == 'create') {
     // Create new intervention
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
 
     print load_fiche_titre($langs->trans("AddIntervention"), '', 'intervention');
 
@@ -910,7 +910,7 @@ if ($action == 'create') {
     //$numpr = $modFicheinter->getNextValue($soc, $object);
 
     if ($socid > 0) {
-        $soc = new Societe($db);
+        $soc = new Company($db);
         $soc->fetch($socid);
 
         print '<form name="fichinter" action="' . $_SERVER['PHP_SELF'] . '" method="POST">';
@@ -1100,7 +1100,7 @@ if ($action == 'create') {
     $object->fetch($id, $ref);
     $object->fetch_thirdparty();
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($object->socid);
 
     if ($error > 0) {

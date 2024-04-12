@@ -605,14 +605,14 @@ if (isModEnabled('margin')) {
 $bankaccountstatic = new Account($db);
 $facturestatic = new Facture($db);
 $formcompany = new FormCompany($db);
-$companystatic = new Societe($db);
-$companyparent = new Societe($db);
+$companystatic = new Company($db);
+$companyparent = new Company($db);
 
 $company_url_list = array();
 $subtypearray = $object->getArrayOfInvoiceSubtypes(0);
 
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     if (empty($search_company)) {
         $search_company = $soc->name;
@@ -2236,7 +2236,7 @@ if ($num > 0) {
                 print '<td class="tdoverflowmax200">';
                 if ($obj->fk_parent > 0) {
                     if (!isset($company_url_list[$obj->fk_parent])) {
-                        $companyparent = new Societe($db);
+                        $companyparent = new Company($db);
                         $res = $companyparent->fetch($obj->fk_parent);
                         if ($res > 0) {
                             $company_url_list[$obj->fk_parent] = $companyparent->getNomUrl(1);

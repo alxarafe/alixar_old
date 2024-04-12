@@ -86,7 +86,7 @@ if ($sortfield == "") {
 
 $rej = new RejetPrelevement($db, $user, $type);
 $line = new LignePrelevement($db);
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 $userstatic = new User($db);
 
 $hookmanager->initHooks(array('withdrawalsreceiptsrejectedlist'));

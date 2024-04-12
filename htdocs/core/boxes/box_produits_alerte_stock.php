@@ -6,6 +6,7 @@
  * Copyright (C) 2005-2012 Maxime Kohlhaas      <mko@atm-consulting.fr>
  * Copyright (C) 2015-2021 Frédéric France      <frederic.france@netlogic.fr>
  * Copyright (C) 2015      Juanjo Menent	    <jmenent@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,14 +28,13 @@
  *  \brief      Module to generate box of products with too low stock
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
-include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Product\Model\Product;
 
 /**
  * Class to manage the box to show too low stocks products
  */
-class box_produits_alerte_stock extends ModeleBoxes
+class box_produits_alerte_stock extends GenericBoxes
 {
     public $boxcode = "productsalertstock";
     public $boximg = "object_product";

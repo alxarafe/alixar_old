@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2009	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2019		Alexandre Spangaro		<aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +26,13 @@
  *      \brief      Module to generated widget of last manual entries
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show last manual entries
  */
-class box_accountancy_last_manual_entries extends ModeleBoxes
+class box_accountancy_last_manual_entries extends GenericBoxes
 {
     public $boxcode = "accountancy_last_manual_entries";
     public $boximg = "accounting";

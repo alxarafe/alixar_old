@@ -4,6 +4,7 @@
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2012      Raphaël Doursenaud   <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2015-2019 Frederic France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +26,14 @@
  * \brief      Module that generates the latest supplier orders box
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Supplier\Model\CommandeFournisseur;
+use DoliModules\Supplier\Model\Supplier;
 
 /**
  * Class that manages the box showing latest supplier orders
  */
-class box_supplier_orders extends ModeleBoxes
+class box_supplier_orders extends GenericBoxes
 {
     public $boxcode = "latestsupplierorders";
     public $boximg = "object_order";
@@ -68,7 +71,7 @@ class box_supplier_orders extends ModeleBoxes
         include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
         $supplierorderstatic = new CommandeFournisseur($this->db);
         include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
-        $thirdpartystatic = new Fournisseur($this->db);
+        $thirdpartystatic = new Supplier($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLatest" . (getDolGlobalString('MAIN_LASTBOX_ON_OBJECT_DATE') ? "" : "Modified") . "SupplierOrders", $max));
 

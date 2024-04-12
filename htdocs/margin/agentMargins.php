@@ -99,7 +99,7 @@ $hookmanager->initHooks(array('marginagentlist'));
  */
 
 $userstatic = new User($db);
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $invoicestatic = new Facture($db);
 
 $form = new Form($db);

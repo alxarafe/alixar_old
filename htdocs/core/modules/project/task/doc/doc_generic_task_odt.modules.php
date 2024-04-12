@@ -634,7 +634,7 @@ class doc_generic_task_odt extends ModelePDFTask
                                 $objectdetail = new Contact($this->db);
                                 $objectdetail->fetch($contact['id']);
 
-                                $soc = new Societe($this->db);
+                                $soc = new Company($this->db);
                                 $soc->fetch($contact['socid']);
                                 $contact['socname'] = $soc->name;
                             }
@@ -787,7 +787,7 @@ class doc_generic_task_odt extends ModelePDFTask
                                 $objectdetail = new Contact($this->db);
                                 $objectdetail->fetch($contact['id']);
 
-                                $soc = new Societe($this->db);
+                                $soc = new Company($this->db);
                                 $soc->fetch($contact['socid']);
                                 $contact['socname'] = $soc->name;
                             }

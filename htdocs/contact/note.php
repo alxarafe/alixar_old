@@ -106,7 +106,7 @@ if ($id > 0) {
 
     $morehtmlref .= '<div class="refidno">';
     if (!getDolGlobalString('SOCIETE_DISABLE_CONTACTS')) {
-        $objsoc = new Societe($db);
+        $objsoc = new Company($db);
         $objsoc->fetch($object->socid);
         // Thirdparty
         if ($objsoc->id > 0) {

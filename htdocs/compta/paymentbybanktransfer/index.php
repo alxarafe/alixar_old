@@ -66,7 +66,7 @@ if (prelevement_check_config('bank-transfer') < 0) {
     setEventMessages($langs->trans("ErrorModuleSetupNotComplete", $langs->transnoentitiesnoconv("PaymentByBankTransfer")), null, 'errors');
 }
 
-$thirdpartystatic = new Societe($db);
+$thirdpartystatic = new Company($db);
 $invoicestatic = new FactureFournisseur($db);
 $bprev = new BonPrelevement($db);
 $salary = new Salary($db);

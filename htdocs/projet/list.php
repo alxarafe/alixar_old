@@ -69,7 +69,7 @@ $title = $langs->trans("Projects");
 $socid = GETPOSTINT('socid');
 //if ($user->socid > 0) $socid = $user->socid;    // For external user, no check is done on company because readability is managed by public status of project and assignment.
 if ($socid > 0) {
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($socid);
     $title .= ' (<a href="list.php">' . $soc->name . '</a>)';
 }
@@ -408,7 +408,7 @@ $formcompany = new FormCompany($db);
 
 $now = dol_now();
 
-$companystatic = new Societe($db);
+$companystatic = new Company($db);
 $taskstatic = new Task($db);
 $formother = new FormOther($db);
 $formproject = new FormProjets($db);
@@ -1181,7 +1181,7 @@ if (!empty($arrayfields['p.title']['checked'])) {
 if (!empty($arrayfields['s.nom']['checked'])) {
     print '<td class="liste_titre">';
     if ($socid > 0) {
-        $tmpthirdparty = new Societe($db);
+        $tmpthirdparty = new Company($db);
         $tmpthirdparty->fetch($socid);
         $search_societe = $tmpthirdparty->name;
     }
@@ -1193,7 +1193,7 @@ if (!empty($arrayfields['s.nom']['checked'])) {
 if (!empty($arrayfields['s.name_alias']['checked'])) {
     print '<td class="liste_titre">';
     if ($socid > 0) {
-        $tmpthirdparty = new Societe($db);
+        $tmpthirdparty = new Company($db);
         $tmpthirdparty->fetch($socid);
         $search_societe_alias = $tmpthirdparty->name_alias;
     }

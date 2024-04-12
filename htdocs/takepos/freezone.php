@@ -69,7 +69,7 @@ if ($place > 0) {
 
 // get default vat rate
 $constforcompanyid = 'CASHDESK_ID_THIRDPARTY' . $_SESSION['takeposterminal'];
-$soc = new Societe($db);
+$soc = new Company($db);
 if ($invoice->socid > 0) {
     $soc->fetch($invoice->socid);
 } else {

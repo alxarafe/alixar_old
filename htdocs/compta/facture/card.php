@@ -3105,7 +3105,7 @@ $form = new Form($db);
 $formother = new FormOther($db);
 $formfile = new FormFile($db);
 $formmargin = new FormMargin($db);
-$soc = new Societe($db);
+$soc = new Company($db);
 $paymentstatic = new Paiement($db);
 $bankaccountstatic = new Account($db);
 if (isModEnabled('project')) {

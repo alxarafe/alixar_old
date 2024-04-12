@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015-2023 Frederic France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,14 +26,13 @@
  *  \brief      Module to generate box of last products/services
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
-include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-
+use DoliCore\Base\GenericBoxes;
+use DoliModules\Product\Model\Product;
 
 /**
  * Class to manage the box to show last products
  */
-class box_produits extends ModeleBoxes
+class box_produits extends GenericBoxes
 {
     public $boxcode = "lastproducts";
     public $boximg = "object_product";

@@ -189,7 +189,7 @@ if ($action == 'convert') {
             }
         }
 
-        $fourn = new Fournisseur($db);
+        $fourn = new Supplier($db);
 
         // Change supplier prices
         $sql = 'SELECT pfp.rowid, pfp.fk_soc, pfp.price as price, pfp.quantity as qty, pfp.fk_availability, pfp.ref_fourn';

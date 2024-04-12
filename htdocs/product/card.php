@@ -1045,7 +1045,7 @@ if (empty($reshook)) {
         }
 
         if ($thirpdartyid > 0) {
-            $soc = new Societe($db);
+            $soc = new Company($db);
             $result = $soc->fetch($thirpdartyid);
             if ($result <= 0) {
                 dol_print_error($db, $soc->error);

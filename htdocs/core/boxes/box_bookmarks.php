@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2005-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +24,12 @@
  *      \brief      Module to generate box of bookmarks list
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+use DoliCore\Base\GenericBoxes;
 
 /**
  * Class to manage the box to show bookmarks
  */
-class box_bookmarks extends ModeleBoxes
+class box_bookmarks extends GenericBoxes
 {
     public $boxcode = "bookmarks";
     public $boximg = "bookmark";

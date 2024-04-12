@@ -63,7 +63,7 @@ $hookmanager->initHooks(array('banktreso', 'globalcard'));
 /*
  * View
  */
-$societestatic = new Societe($db);
+$societestatic = new Company($db);
 $userstatic = new User($db);
 $facturestatic = new Facture($db);
 $facturefournstatic = new FactureFournisseur($db);

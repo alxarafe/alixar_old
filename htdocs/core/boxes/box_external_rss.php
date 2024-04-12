@@ -5,6 +5,7 @@
  * Copyright (C) 2004-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2011 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,13 +28,14 @@
  */
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/rssparser.class.php';
-include_once DOL_DOCUMENT_ROOT . '/core/boxes/modules_boxes.php';
+
+use DoliCore\Base\GenericBoxes;
 
 
 /**
  * Class to manage the box to show RSS feeds
  */
-class box_external_rss extends ModeleBoxes
+class box_external_rss extends GenericBoxes
 {
     public $boxcode = "lastrssinfos";
     public $boximg = "object_rss";

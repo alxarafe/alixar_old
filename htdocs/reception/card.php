@@ -788,7 +788,7 @@ if ($action == 'create') {
 
         $objectsrc = new $classname($db);
         if ($objectsrc->fetch($origin_id)) {    // This include the fetch_lines
-            $soc = new Societe($db);
+            $soc = new Company($db);
             $soc->fetch($objectsrc->socid);
 
             $author = new User($db);
@@ -1360,7 +1360,7 @@ if ($action == 'create') {
         $object->fetch_origin(); // Load property $object->commande, $object->propal, ...
     }
 
-    $soc = new Societe($db);
+    $soc = new Company($db);
     $soc->fetch($object->socid);
 
     $res = $object->fetch_optionals();

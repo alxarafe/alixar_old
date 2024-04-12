@@ -104,9 +104,9 @@ function tree_showpad(&$fulltree, $key, $silent = 0)
  *  Recursive function to output a tree. <ul id="iddivjstree"><li>...</li></ul>
  *  It is also used for the tree of categories.
  *  Note: To have this function working, check you have loaded the js and css for treeview.
- *  $arrayofjs=array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.js',
- *                   '/includes/jquery/plugins/jquerytreeview/lib/jquery.cookie.js');
- *  $arrayofcss=array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css');
+ *  $arrayofjs=array('/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.js',
+ *                   '/Templates/Lib/jquery/plugins/jquerytreeview/lib/jquery.cookie.js');
+ *  $arrayofcss=array('/Templates/Lib/jquery/plugins/jquerytreeview/jquery.treeview.css');
  *  TODO Replace with jstree plugin instead of treeview plugin.
  *
  *  @param  array   $tab                        Array of all elements
@@ -116,6 +116,7 @@ function tree_showpad(&$fulltree, $key, $silent = 0)
  *  @param  int     $donoresetalreadyloaded     Do not reset global array $donoresetalreadyloaded used to avoid to go down on an already processed record
  *  @param  int     $showfk                     1=show fk_links to parent into label  (used by menu editor only)
  *  @param  string  $moreparam                  Add more param on url of elements
+ *
  *  @return void
  */
 function tree_recur($tab, $pere, $rang, $iddivjstree = 'iddivjstree', $donoresetalreadyloaded = 0, $showfk = 0, $moreparam = '')
