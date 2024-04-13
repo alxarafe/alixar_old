@@ -2,6 +2,7 @@
 
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
+use DoliModules\Category\Model\Categorie;
 
 $form = new Form($db);
 $formother = new FormOther($db);
@@ -443,7 +444,6 @@ $selectedfields .= (count($arrayofmassactions) ? $form->showCheckAddButtons('che
 $moreforfilter = '';
 // Filter on categories
 if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
-    require_once BASE_PATH . '/categories/class/categorie.class.php';
     $moreforfilter .= '<div class="divsearchfield">';
     $moreforfilter .= img_picto($langs->trans('Categories'), 'category', 'class="pictofixedwidth"') . $formother->select_categories(Categorie::TYPE_MEMBER, $search_categ, 'search_categ', 1, $langs->trans("MembersCategoriesShort"));
     $moreforfilter .= '</div>';

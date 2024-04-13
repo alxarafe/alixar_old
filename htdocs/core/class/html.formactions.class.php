@@ -18,6 +18,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\User\Model\User;
+
 /**
  *      \file       htdocs/core/class/html.formactions.class.php
  *      \ingroup    core

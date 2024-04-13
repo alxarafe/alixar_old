@@ -1,5 +1,8 @@
 <?php
 
+use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Adherent\Statistics\AdherentStats;
+
 $memberstatic = new Adherent($db);
 $form = new Form($db);
 

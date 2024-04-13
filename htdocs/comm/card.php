@@ -33,41 +33,26 @@
  *       \brief      Page to show customer card of a third party
  */
 
-// Load Dolibarr environment
 use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Client;
+use DoliModules\Contact\Model\Contact;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\Intervention\Model\Fichinter;
+use DoliModules\Proposal\Model\Propal;
+use DoliModules\Shipment\Model\Expedition;
+use DoliModules\Supplier\Model\FactureRec;
+use DoliModules\User\Model\User;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-if (isModEnabled('invoice')) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
-}
-if (isModEnabled("propal")) {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
-}
-if (isModEnabled('order')) {
-    require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
-}
-if (isModEnabled("shipping")) {
-    require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
-}
-if (isModEnabled('contract')) {
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
-}
-if (isModEnabled('member')) {
-    require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
-}
-if (isModEnabled('intervention')) {
-    require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'banks'));

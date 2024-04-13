@@ -22,6 +22,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Company\Model;
+
 /**
  * \file        societe/class/societeaccount.class.php
  * \ingroup     societe
@@ -29,6 +31,7 @@
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliDB;
 
 /**
  * Class for SocieteAccount

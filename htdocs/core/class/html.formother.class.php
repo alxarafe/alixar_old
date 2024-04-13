@@ -34,6 +34,7 @@
  */
 
 use DoliCore\Base\GenericBoxes;
+use DoliModules\Category\Model\Categorie;
 
 
 /**
@@ -412,7 +413,6 @@ class FormOther
     {
 		// phpcs:enable
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         // For backward compatibility
         if (is_numeric($type)) {

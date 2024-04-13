@@ -32,6 +32,7 @@
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliModules\User\Model\User;
 
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';

@@ -35,13 +35,17 @@
  *  \ingroup    societe
  */
 
+use DoliModules\Company\Model\Company;
+use DoliModules\Company\Model\SocieteAccount;
+use DoliModules\Contact\Model\Contact;
+
 /**
  * Return array of tabs to used on pages for third parties cards.
  *
  * @param   Societe $object     Object company shown
  * @return  array               Array of tabs
  */
-function societe_prepare_head(Societe $object)
+function societe_prepare_head(Company $object)
 {
     global $db, $langs, $conf, $user;
     global $hookmanager;

@@ -29,10 +29,10 @@
  *  \brief      Page of third party projects
  */
 
+use DoliModules\Company\Model\Company;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 
@@ -112,7 +112,6 @@ $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 unset($_SESSION['pageforbacktolist']['project']);
 if ($socid) {
     require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
     $langs->load("companies");
 

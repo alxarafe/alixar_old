@@ -32,6 +32,7 @@
 use DoliModules\Company\Model\Company;
 
 require BASE_PATH . '/main.inc.php';
+require_once BASE_PATH . '/core/class/html.formother.class.php';
 
 // Load translation files required by the page
 $langs->load("companies");

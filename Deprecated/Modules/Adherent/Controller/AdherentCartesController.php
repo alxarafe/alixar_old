@@ -30,13 +30,14 @@ global $menumanager;
 global $langs;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/member/modules_cards.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/printsheet/modules_labels.php';
 
 use DoliCore\Base\DolibarrController;
+use DoliModules\Adherent\Model\Adherent;
+use ExtraFields;
 
 class AdherentCartesController extends DolibarrController
 {

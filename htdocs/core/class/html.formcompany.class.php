@@ -32,6 +32,8 @@
  *  Only common components are here.
  */
 
+use DoliModules\Contact\Model\Contact;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 
 

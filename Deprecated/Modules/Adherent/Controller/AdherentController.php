@@ -61,9 +61,7 @@ require_once BASE_PATH . '/core/lib/functions2.lib.php';
 require_once BASE_PATH . '/core/lib/images.lib.php';
 require_once BASE_PATH . '/core/lib/ldap.lib.php';
 require_once BASE_PATH . '/core/lib/member.lib.php';
-require_once BASE_PATH . '/categories/class/categorie.class.php';
 require_once BASE_PATH . '/compta/bank/class/account.class.php';
-require_once BASE_PATH . '/contact/class/contact.class.php';
 require_once BASE_PATH . '/core/class/extrafields.class.php';
 require_once BASE_PATH . '/core/class/html.formadmin.class.php';
 require_once BASE_PATH . '/core/class/html.formcompany.class.php';
@@ -71,30 +69,14 @@ require_once BASE_PATH . '/core/class/html.formfile.class.php';
 require_once BASE_PATH . '/core/class/html.formother.class.php';
 require_once BASE_PATH . '/partnership/class/partnership.class.php';
 require_once BASE_PATH . '/partnership/lib/partnership.lib.php';
-require_once BASE_PATH . '/product/class/html.formproduct.class.php';
-require_once BASE_PATH . '/product/class/product.class.php';
-require_once BASE_PATH . '/societe/class/societe.class.php';
 
-use Account;
-use Canvas;
-use Categorie;
-use DolEditor;
 use DoliCore\Base\DolibarrController;
 use DoliCore\Lib\Fields;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\Adherent\Model\Subscription;
 use ExtraFields;
-use Form;
-use FormAdmin;
-use FormFile;
-use FormMail;
-use FormProduct;
-use InfoBox;
-use Ldap;
 use MailmanSpip;
-use Societe;
-use Translate;
 
 class AdherentController extends DolibarrController
 {

@@ -55,6 +55,8 @@ use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Billing\Trait\CommonIncoterm;
 use DoliModules\Contact\Trait\Mailing;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\User\Model\User;
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonsocialnetworks.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
@@ -2806,8 +2808,6 @@ class Company extends GenericDocument
      */
     public function contact_array_objects()
     {
-        // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         $contacts = [];
 
         $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "socpeople WHERE fk_soc = " . ((int) $this->id);
@@ -4144,10 +4144,8 @@ class Company extends GenericDocument
             $arrayofref = [];
             $arrayofrefopened = [];
             if ($mode == 'supplier') {
-                require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                 $tmpobject = new FactureFournisseur($this->db);
             } else {
-                require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                 $tmpobject = new Facture($this->db);
             }
             while ($obj = $this->db->fetch_object($resql)) {

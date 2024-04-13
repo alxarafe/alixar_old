@@ -46,6 +46,8 @@
  * \brief      File of class with all html predefined components
  */
 
+use DoliModules\Category\Model\Categorie;
+
 
 /**
  * Class to manage generation of HTML components

@@ -1,5 +1,7 @@
 <?php
 
+use DoliCore\Lib\AveryLabels;
+
 $form = new Form($db);
 
 llxHeader('', $langs->trans("MembersCards"));
@@ -22,6 +24,7 @@ print '<input type="hidden" name="action" value="builddoc">';
 print $langs->trans("DescADHERENT_CARD_TYPE") . ' ';
 // List of possible labels (defined into $_Avery_Labels variable set into format_cards.lib.php)
 $arrayoflabels = [];
+$_Avery_Labels = AveryLabels::getAveryLables();
 foreach (array_keys($_Avery_Labels) as $codecards) {
     $arrayoflabels[$codecards] = $_Avery_Labels[$codecards]['name'];
 }

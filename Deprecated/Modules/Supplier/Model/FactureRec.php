@@ -34,11 +34,10 @@ namespace DoliModules\Supplier\Model;
  *  \brief      File of class to manage recurring invoices
  */
 
+use DoliDB;
 use DoliModules\Billing\Model\CommonInvoice;
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/notify.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
 /**

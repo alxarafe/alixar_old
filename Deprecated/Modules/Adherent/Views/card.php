@@ -2,6 +2,8 @@
 
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
 
 $form = new Form($db);
 $formfile = new FormFile($db);
@@ -45,7 +47,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
             $object->country = $tmparray['label'];
         }
 
-        $soc = new Societe($db);
+        $soc = new Company($db);
         if (!empty($socid)) {
             if ($socid > 0) {
                 $soc->fetch($socid);
