@@ -29,7 +29,6 @@ namespace DoliModules\Intervention\Api;
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
 
 
 /**

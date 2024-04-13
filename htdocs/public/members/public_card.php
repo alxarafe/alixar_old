@@ -49,8 +49,6 @@ if (is_numeric($entity)) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent_type.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 // Security check

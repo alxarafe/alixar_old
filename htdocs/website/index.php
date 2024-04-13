@@ -45,13 +45,9 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/website.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/website2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formwebsite.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/website/class/website.class.php';
 require_once DOL_DOCUMENT_ROOT . '/website/class/websitepage.class.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "other", "website", "errors"));
@@ -4883,7 +4879,6 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
             print getTitleFieldOfList($selectedfields, 0, $_SERVER['PHP_SELF'], '', '', '', '', $sortfield, $sortorder, 'center maxwidthsearch ') . "\n";
             print '</tr>';
 
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $c = new Categorie($db);
 
             $totalnbwords = 0;

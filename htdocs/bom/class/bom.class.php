@@ -36,9 +36,7 @@ if (isModEnabled('workstation')) {
     require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';
 }
 
-//require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-
+////
 
 /**
  * Class for BOM
@@ -1424,7 +1422,6 @@ class BOM extends GenericDocument
         }
 
         if (is_array($this->lines) && count($this->lines)) {
-            require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
             $productFournisseur = new ProductFournisseur($this->db);
             $tmpproduct = new Product($this->db);
 

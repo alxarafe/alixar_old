@@ -612,7 +612,6 @@ while ($i < min($num, $limit)) {
         if ($line->doc_type == 'customer_invoice') {
             $langs->loadLangs(['bills']);
 
-            require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
             $objectstatic = new Facture($db);
             $objectstatic->fetch($line->fk_doc);
             //$modulepart = 'facture';
@@ -636,7 +635,6 @@ while ($i < min($num, $limit)) {
         } elseif ($line->doc_type == 'expense_report') {
             $langs->loadLangs(['trips']);
 
-            require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
             $objectstatic = new ExpenseReport($db);
             $objectstatic->fetch($line->fk_doc);
             //$modulepart = 'expensereport';

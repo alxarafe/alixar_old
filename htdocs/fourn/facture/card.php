@@ -38,8 +38,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_invoice/modules_facturefournisseur.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture-rec.class.php';
@@ -50,19 +48,16 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 if (isModEnabled("product")) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
     require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 }
 if (isModEnabled('project')) {
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 
 if (isModEnabled('variants')) {
     require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
 }
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 }
 
 
@@ -3011,7 +3006,6 @@ if ($action == 'create') {
 
                 if (isModEnabled('stock') && getDolGlobalString('STOCK_CALCULATE_ON_SUPPLIER_BILL') && $qualified_for_stock_change) {
                     $langs->load("stocks");
-                    require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
                     $formproduct = new FormProduct($db);
                     $warehouse = new Entrepot($db);
                     $warehouse_array = $warehouse->list_array();
@@ -3043,7 +3037,6 @@ if ($action == 'create') {
             }
             if (isModEnabled('stock') && getDolGlobalString('STOCK_CALCULATE_ON_SUPPLIER_BILL') && $qualified_for_stock_change) {
                 $langs->load("stocks");
-                require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
                 $formproduct = new FormProduct($db);
                 $warehouse = new Entrepot($db);
                 $warehouse_array = $warehouse->list_array();
@@ -3138,7 +3131,6 @@ if ($action == 'create') {
 
             if (isModEnabled('stock') && getDolGlobalString('STOCK_CALCULATE_ON_SUPPLIER_BILL') && $qualified_for_stock_change) {
                 $langs->load("stocks");
-                require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
                 $formproduct = new FormProduct($db);
                 $warehouse = new Entrepot($db);
                 $warehouse_array = $warehouse->list_array();
@@ -3426,7 +3418,7 @@ if ($action == 'create') {
                     print '</td><td>';
                     if ($action == 'editmulticurrencyrate' || $action == 'actualizemulticurrencyrate') {
                         if ($action == 'actualizemulticurrencyrate') {
-                            list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
+                            [$object->fk_multicurrency, $object->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
                         }
                         $form->form_multicurrency_rate($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->multicurrency_tx, 'multicurrency_tx', $object->multicurrency_code);
                     } else {

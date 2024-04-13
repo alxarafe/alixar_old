@@ -24,7 +24,6 @@ use DoliCore\Api\DolibarrApi;
 use DolibarrApiAccess;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent_type.class.php';
 
 /**
  * API class for members types

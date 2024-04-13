@@ -27,7 +27,6 @@
  */
 
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
 /**
  *  Description and activation class for module EventOrganization

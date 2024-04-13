@@ -32,14 +32,13 @@ global $menumanager;
 global $langs;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent_type.class.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/member.lib.php';
 
 use DoliCore\Base\DolibarrController;
+use DoliModules\Adherent\Model\Subscription;
+use ExtraFields;
 
 class AdherentSubscriptionController extends DolibarrController
 {

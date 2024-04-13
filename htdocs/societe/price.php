@@ -29,14 +29,12 @@
  * \brief   Page to show product prices by customer
  */
 
-// Load Dolibarr environment
 use DoliCore\Lib\Fields;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
     require_once DOL_DOCUMENT_ROOT . '/product/class/productcustomerprice.class.php';

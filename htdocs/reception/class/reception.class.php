@@ -42,13 +42,6 @@ use DoliModules\Billing\Trait\CommonIncoterm;
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . "/core/class/commonobjectline.class.php";
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
-if (isModEnabled("propal")) {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
-}
-if (isModEnabled('order')) {
-    require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
-}
-
 
 /**
  *  Class to manage receptions

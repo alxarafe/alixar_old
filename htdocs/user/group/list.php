@@ -29,7 +29,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/usergroup.class.php';
 
 // Load translation files required by page
 $langs->loadLangs(array("users"));

@@ -991,7 +991,6 @@ class Invoice extends CommonInvoice
 
                     // If buyprice not defined from template invoice, we try to guess the best value
                     if (!$buyprice && $_facrec->lines[$i]->fk_product > 0) {
-                        require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
                         $producttmp = new ProductFournisseur($this->db);
                         $producttmp->fetch($_facrec->lines[$i]->fk_product);
 
@@ -3155,7 +3154,6 @@ class Invoice extends CommonInvoice
         $productStatic = null;
         $warehouseStatic = null;
         if ($batch_rule > 0) {
-            require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
             require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
             require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
             $productStatic = new Product($this->db);

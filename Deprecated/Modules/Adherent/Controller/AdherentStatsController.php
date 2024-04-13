@@ -30,8 +30,6 @@ global $menumanager;
 global $langs;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
-require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherentstats.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/member.lib.php';

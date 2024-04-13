@@ -36,13 +36,9 @@
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 require_once DOL_DOCUMENT_ROOT . '/contrat/class/contratligne.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 if (isModEnabled("category")) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 }
 
 // Load translation files required by the page

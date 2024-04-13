@@ -35,7 +35,6 @@ if (!defined('NOBROWSERNOTIF')) {
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
 if (!$conf->global->TAKEPOS_QR_MENU) {
     accessforbidden(); // If Restaurant Menu is disabled never allow NO LOGIN access

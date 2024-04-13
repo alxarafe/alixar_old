@@ -122,7 +122,6 @@ if (!$accessallowed) {
 // Define dir according to modulepart
 $dir = '';
 if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'service' || $modulepart == 'produit|service') {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
     $object = new Product($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -148,7 +147,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->project->multidir_output[$object->entity]; // By default
     }
 } elseif ($modulepart == 'propal') {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
     $object = new Propal($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -158,7 +156,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->propal->multidir_output[$object->entity]; // By default
     }
 } elseif ($modulepart == 'holiday') {
-    require_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
     $object = new Holiday($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -168,7 +165,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->$modulepart->dir_output; // By default
     }
 } elseif ($modulepart == 'member') {
-    require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
     $object = new Adherent($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -178,7 +174,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->adherent->dir_output; // By default
     }
 } elseif ($modulepart == 'societe') {
-    require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
     $object = new Company($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -188,7 +183,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->$modulepart->dir_output;
     }
 } elseif ($modulepart == 'user') {
-    require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
     $object = new User($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -198,7 +192,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->$modulepart->dir_output; // By default
     }
 } elseif ($modulepart == 'expensereport') {
-    require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
     $object = new ExpenseReport($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -258,7 +251,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->bank->dir_output; // By default
     }
 } elseif ($modulepart == 'facture') {
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
     $object = new Facture($db);
     if ($id > 0) {
         $result = $object->fetch($id);

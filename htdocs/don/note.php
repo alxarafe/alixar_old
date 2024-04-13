@@ -32,7 +32,6 @@ require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 

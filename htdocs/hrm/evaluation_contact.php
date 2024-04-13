@@ -28,9 +28,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/evaluation.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_evaluation.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/job.class.php';

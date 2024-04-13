@@ -171,7 +171,6 @@ class Subscription extends GenericDocument
 
         $sql = "INSERT INTO " . MAIN_DB_PREFIX . "subscription (fk_adherent, fk_type, datec, dateadh, datef, subscription, note)";
 
-        require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
         $member = new Adherent($this->db);
         $result = $member->fetch($this->fk_adherent);
 
@@ -302,7 +301,6 @@ class Subscription extends GenericDocument
         dol_syslog(get_class($this) . "::update", LOG_DEBUG);
         $resql = $this->db->query($sql);
         if ($resql) {
-            require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
             $member = new Adherent($this->db);
             $result = $member->fetch($this->fk_adherent);
             $result = $member->update_end_date($user);
@@ -370,7 +368,6 @@ class Subscription extends GenericDocument
             if ($resql) {
                 $num = $this->db->affected_rows($resql);
                 if ($num) {
-                    require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
                     $member = new Adherent($this->db);
                     $result = $member->fetch($this->fk_adherent);
                     $result = $member->update_end_date($user);

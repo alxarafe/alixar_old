@@ -659,7 +659,6 @@ class AccountancyExport extends BasicModel
             $refInvoice = '';
             if ($line->doc_type == 'customer_invoice') {
                 // Customer invoice
-                require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                 $invoice = new Facture($this->db);
                 $invoice->fetch($line->fk_doc);
 
@@ -1395,7 +1394,6 @@ class AccountancyExport extends BasicModel
                 $refInvoice = '';
                 if ($line->doc_type == 'customer_invoice') {
                     // Customer invoice
-                    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                     $invoice = new Facture($this->db);
                     $invoice->fetch($line->fk_doc);
 
@@ -1609,7 +1607,6 @@ class AccountancyExport extends BasicModel
                 $refInvoice = '';
                 if ($line->doc_type == 'customer_invoice') {
                     // Customer invoice
-                    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                     $invoice = new Facture($this->db);
                     $invoice->fetch($line->fk_doc);
 

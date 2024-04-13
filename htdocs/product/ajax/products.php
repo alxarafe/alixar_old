@@ -72,8 +72,6 @@ restrictedArea($user, 'produit|service|commande|propal|facture', 0, 'product&pro
 
 if ($action == 'fetch' && !empty($id)) {
     // action='fetch' is used to get product information on a product. So when action='fetch', id must be the product id.
-    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
     top_httphead('application/json');
 
@@ -276,7 +274,6 @@ if ($action == 'fetch' && !empty($id)) {
 
     echo json_encode($outjson);
 } else {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 
     $langs->loadLangs(array("main", "products"));
 

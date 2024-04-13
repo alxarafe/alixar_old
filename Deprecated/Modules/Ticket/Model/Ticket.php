@@ -36,7 +36,6 @@ namespace DoliModules\Ticket\Model;
 use DoliCore\Base\GenericDocument;
 use WorkboardResponse;
 
-require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
 
 
@@ -3136,7 +3135,6 @@ const STATUS_CANCELED = 9;
         }
         // show categories for this record only in ajax to not overload lists
         if (isModEnabled('category') && !$nofetch) {
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $form = new Form($this->db);
             $datas['categories'] = '<br>' . $form->showCategories($this->id, Categorie::TYPE_TICKET, 1);
         }

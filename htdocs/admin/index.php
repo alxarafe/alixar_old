@@ -23,6 +23,8 @@
  *      \brief      Home page of setup area
  */
 
+use DoliCore\Form\Form;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 

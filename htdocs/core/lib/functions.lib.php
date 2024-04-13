@@ -7179,7 +7179,6 @@ function get_product_vat_for_country($idprod, $thirdpartytouse, $idprodfournpric
 {
     global $db, $mysoc;
 
-    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
     $ret = 0;
     $found = 0;
@@ -7277,7 +7276,6 @@ function get_product_localtax_for_country($idprod, $local, $thirdpartytouse)
     global $db, $mysoc;
 
     if (!class_exists('Product')) {
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
     }
 
     $ret = 0;
@@ -7471,14 +7469,12 @@ function get_default_npr(Societe $thirdparty_seller, Societe $thirdparty_buyer, 
 
     if ($idprodfournprice > 0) {
         if (!class_exists('ProductFournisseur')) {
-            require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
         }
         $prodprice = new ProductFournisseur($db);
         $prodprice->fetch_product_fournisseur_price($idprodfournprice);
         return $prodprice->fourn_tva_npr;
     } elseif ($idprod > 0) {
         if (!class_exists('Product')) {
-            require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         }
         $prod = new Product($db);
         $prod->fetch($idprod);
@@ -13975,7 +13971,6 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
         require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 
         $formactions = new FormActions($db);
 

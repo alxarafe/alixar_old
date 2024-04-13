@@ -136,7 +136,6 @@ if ($type == 'bank-transfer') {
     require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
     $invoicestatic = new FactureFournisseur($db);
 } else {
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
     $invoicestatic = new Facture($db);
 }
 

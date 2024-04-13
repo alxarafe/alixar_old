@@ -37,6 +37,8 @@
 
 // Functions
 
+use DoliCore\Form\Form;
+
 if (!function_exists('dol_loginfunction')) {
     /**
      * Show Dolibarr default login page.

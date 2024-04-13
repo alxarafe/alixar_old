@@ -27,7 +27,6 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
 // Get parameters
 $id = GETPOSTINT('id');

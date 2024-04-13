@@ -26,7 +26,6 @@
  * \brief      File of class with all html predefined components for WebPortal
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 
 /**
  * Class to manage generation of HTML components
@@ -764,7 +763,7 @@ class FormWebPortal extends Form
                         continue;
                     }
                     if (strpos($valb, "|") !== false) {
-                        list($valb, $parent) = explode('|', $valb);
+                        [$valb, $parent] = explode('|', $valb);
                     }
                     $out .= '<option value="' . $keyb . '"';
                     $out .= (((string) $value == $keyb) ? ' selected' : '');
@@ -797,7 +796,7 @@ class FormWebPortal extends Form
                     }
                 }
                 if (count($InfoFieldList) > 3 && !empty($InfoFieldList[3])) {
-                    list($parentName, $parentField) = explode('|', $InfoFieldList[3]);
+                    [$parentName, $parentField] = explode('|', $InfoFieldList[3]);
                     $keyList .= ', ' . $parentField;
                 }
 
@@ -913,7 +912,6 @@ class FormWebPortal extends Form
                         $out .= 'Error in request ' . $sql . ' ' . $this->db->lasterror() . '. Check setup of extra parameters.<br>';
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                     $data = $this->select_all_categories(Categorie::$MAP_ID_TO_CODE[$InfoFieldList[5]], '', 'parent', 64, $InfoFieldList[6], 1, 1);
                     $out .= '<option value="0">&nbsp;</option>';
                     foreach ($data as $data_key => $data_value) {
@@ -1170,7 +1168,6 @@ class FormWebPortal extends Form
                         }
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
                     $toprint = array();
                     $obj = $this->db->fetch_object($resql);
@@ -1272,7 +1269,6 @@ class FormWebPortal extends Form
                         }
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
                     $toprint = array();
                     while ($obj = $this->db->fetch_object($resql)) {

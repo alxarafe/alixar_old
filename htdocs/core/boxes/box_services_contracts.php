@@ -27,6 +27,7 @@
  */
 
 use DoliCore\Base\GenericBoxes;
+use DoliCore\Form\Form;
 use DoliModules\Company\Model\Company;
 use DoliModules\Contract\Model\Contrat;
 use DoliModules\Contract\Model\ContratLigne;

@@ -1,5 +1,7 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\Category\Model\Categorie;
@@ -1189,7 +1191,6 @@ if (in_array('builddoc', array_keys($arrayofmassactions)) && ($nbtotalofrecords 
         $hidegeneratedfilelistifempty = 0;
     }
 
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
     $formfile = new FormFile($db);
 
     // Show list of available documents

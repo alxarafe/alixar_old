@@ -1188,7 +1188,6 @@ class Cronjob extends GenericDocument
         $conf->setEntityValues($this->db, $this->entity);
         dol_syslog(get_class($this) . "::run_jobs entity for running job is " . $conf->entity);
 
-        require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         $user = new User($this->db);
         $result = $user->fetch('', $userlogin);
         if ($result < 0) {
@@ -1456,7 +1455,6 @@ class Cronjob extends GenericDocument
 		// phpcs:enable
         dol_syslog(get_class($this) . "::reprogram_jobs userlogin:$userlogin", LOG_DEBUG);
 
-        require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         $user = new User($this->db);
         $result = $user->fetch('', $userlogin);
         if ($result < 0) {

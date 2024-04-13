@@ -45,23 +45,10 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
 
-use Account;
-use ActionComm;
-use Categorie;
-use CMailFile;
-use CommonObject;
 use CommonPeople;
 use DoliCore\Base\GenericDocument;
-use DoliDB;
-use Facture;
-use Form;
-use FormMail;
-use MailmanSpip;
-use Paiement;
-use PaymentTerm;
-use Societe;
-use Translate;
-use User;
+use DoliCore\Form\Form;
+use DoliModules\Category\Model\Categorie;
 use WorkboardResponse;
 
 /**
@@ -925,7 +912,6 @@ class Adherent extends GenericDocument
             if (!$error && $nbrowsaffected) { // If something has change in main data
                 // Update information on linked user if it is an update
                 if (!$error && $this->user_id > 0 && !$nosyncuser) {
-                    require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
                     dol_syslog(get_class($this) . "::update update linked user");
 
@@ -980,7 +966,6 @@ class Adherent extends GenericDocument
 
                 // Update information on linked thirdparty if it is an update
                 if (!$error && $this->fk_soc > 0 && !$nosyncthirdparty) {
-                    require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
                     dol_syslog(get_class($this) . "::update update linked thirdparty");
 
@@ -1242,7 +1227,6 @@ class Adherent extends GenericDocument
                 $this->pass_indatabase_crypted = $password_crypted;
 
                 if ($this->user_id && !$nosyncuser) {
-                    require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
                     // This member is linked with a user, so we also update users information
                     // if this is an update.
@@ -1596,7 +1580,6 @@ class Adherent extends GenericDocument
         // phpcs:enable
         global $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
 
         $sql = "SELECT c.rowid, c.fk_adherent, c.fk_type, c.subscription, c.note as note_public, c.fk_bank,";
         $sql .= " c.tms as datem,";
@@ -1690,7 +1673,6 @@ class Adherent extends GenericDocument
     {
         global $conf, $langs, $user;
 
-        require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
 
         $error = 0;
 
@@ -1815,7 +1797,6 @@ class Adherent extends GenericDocument
 
         // If option chosen, we create invoice
         if (($option == 'bankviainvoice' && $accountid) || $option == 'invoiceonly') {
-            require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
             require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/paymentterm.class.php';
 
             $invoice = new Facture($this->db);
@@ -2344,7 +2325,6 @@ class Adherent extends GenericDocument
         $datas['address'] = '<br><b>' . $langs->trans("Address") . ':</b> ' . dol_format_address($this, 1, ' ', $langs);
         // show categories for this record only in ajax to not overload lists
         if (isModEnabled('category') && !$nofetch) {
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $form = new Form($this->db);
             $datas['categories'] = '<br>' . $form->showCategories($this->id, Categorie::TYPE_MEMBER, 1);
         }
@@ -3039,7 +3019,6 @@ class Adherent extends GenericDocument
      */
     public function setCategories($categories)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         return parent::setCategoriesCommon($categories, Categorie::TYPE_MEMBER);
     }
 

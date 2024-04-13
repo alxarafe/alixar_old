@@ -35,8 +35,6 @@ namespace DoliModules\Intervention\Model;
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/notify.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
 
 
 /**

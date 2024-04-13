@@ -28,13 +28,13 @@
  *    \brief      Page to create/edit/view skills
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
 use DoliCore\Lib\Fields;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/skill.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_skill.lib.php';
 
@@ -494,7 +494,6 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 //*---------------------------------------------------------------------------
 
 if ($action != "create" && $action != "edit") {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
     require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
     require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
@@ -825,8 +824,7 @@ if ($action != "create" && $action != "edit") {
     //          $hidegeneratedfilelistifempty = 0;
     //      }
     //
-    //      require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-    //      $formfile = new FormFile($db);
+    //          //      $formfile = new FormFile($db);
     //
     //      // Show list of available documents
     //      $urlsource = $_SERVER['PHP_SELF'] . '?sortfield=' . $sortfield . '&sortorder=' . $sortorder;

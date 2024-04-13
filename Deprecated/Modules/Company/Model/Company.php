@@ -2033,7 +2033,6 @@ class Company extends GenericDocument
                 if (!$error && $nbrowsaffected) {
                     // Update information on linked member if it is an update
                     if (!$nosyncmember && isModEnabled('member')) {
-                        require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 
                         dol_syslog(get_class($this) . "::update update linked member");
 
@@ -2886,7 +2885,6 @@ class Company extends GenericDocument
     public function display_rib($mode = 'label')
     {
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
 
         $bac = new CompanyBankAccount($this->db);
         // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
@@ -2924,7 +2922,6 @@ class Company extends GenericDocument
     public function get_all_rib()
     {
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
         $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "societe_rib WHERE type='ban' AND fk_soc = " . ((int) $this->id);
         $result = $this->db->query($sql);
         if (!$result) {
@@ -3530,7 +3527,6 @@ class Company extends GenericDocument
         $this->db->begin();
 
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         $contact = new Contact($this->db);
 
         $contact->name = $this->name_bis;
@@ -3604,7 +3600,6 @@ class Company extends GenericDocument
      */
     public function setCategories($categories, $type_categ)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         // Decode type
         if (!in_array($type_categ, [Categorie::TYPE_CUSTOMER, Categorie::TYPE_SUPPLIER])) {
@@ -4274,7 +4269,6 @@ class Company extends GenericDocument
             }
 
             if (!isset($this->bank_account)) {
-                require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
                 $bac = new CompanyBankAccount($this->db);
                 // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
                 $result = $bac->fetch(0, $this->id);
@@ -4883,7 +4877,6 @@ class Company extends GenericDocument
         }
         // show categories for this record only in ajax to not overload lists
         if (!$nofetch && isModEnabled('category') && $this->client) {
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $form = new Form($this->db);
             $datas['categories_customer'] = '<br>' . $form->showCategories($this->id, Categorie::TYPE_CUSTOMER, 1, 1);
         }
@@ -4896,7 +4889,6 @@ class Company extends GenericDocument
         }
         // show categories for this record only in ajax to not overload lists
         if (!$nofetch && isModEnabled('category') && $this->fournisseur) {
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $form = new Form($this->db);
             $datas['categories_supplier'] = '<br>' . $form->showCategories($this->id, Categorie::TYPE_SUPPLIER, 1, 1);
         }
@@ -5365,7 +5357,6 @@ class Company extends GenericDocument
             }
 
             if (!$error) {
-                require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                 $static_cat = new Categorie($this->db);
                 $toute_categs = [];
 

@@ -1723,7 +1723,6 @@ class Contact extends GenericDocument
      */
     public function setCategories($categories)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         return parent::setCategoriesCommon($categories, Categorie::TYPE_CONTACT);
     }
 

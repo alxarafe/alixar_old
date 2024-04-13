@@ -32,10 +32,8 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 if (getDolGlobalString('PRODUIT_PDF_MERGE_PROPAL')) {
     require_once DOL_DOCUMENT_ROOT . '/product/class/propalmergepdfproduct.class.php';
 }

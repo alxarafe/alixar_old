@@ -42,7 +42,6 @@ if (!defined('NOBROWSERNOTIF')) {
 }
 
 include_once '../../main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/cunits.class.php';
 
 

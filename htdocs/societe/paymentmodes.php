@@ -30,15 +30,13 @@
  *      \brief      Tab of payment modes for the customer
  */
 
+use DoliModules\Company\Model\Company;
+use CompanyBankAccount;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/companypaymentmode.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societeaccount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 

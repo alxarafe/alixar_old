@@ -51,26 +51,21 @@ global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/fiscalyear.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcategory.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fiscalyear.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 use AccountingAccount;
 use Categorie;
 use DoliCore\Base\DolibarrController;
 use Fiscalyear;
-use Form;
+use DoliCore\Form\Form;
 use FormAccounting;
 use FormAdmin;
 use FormCategory;
@@ -313,7 +308,6 @@ class AccountingAdminController extends DolibarrController
         global $langs;
 
         if (isModEnabled('accounting')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
         }
 
 // Load translation files required by the page

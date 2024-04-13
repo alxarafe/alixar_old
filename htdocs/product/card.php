@@ -48,29 +48,19 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/genericobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/product/modules_product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 
 if (isModEnabled('propal')) {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
 }
 if (isModEnabled('invoice')) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 }
 if (isModEnabled('order')) {
-    require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 }
 if (isModEnabled('accounting')) {
     require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
 }
 if (isModEnabled('bom')) {
     require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';

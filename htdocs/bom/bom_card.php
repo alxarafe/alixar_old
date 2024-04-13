@@ -28,8 +28,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/lib/bom.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/lib/mrp.lib.php';
@@ -466,7 +464,6 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         $formquestion = array();
         if (isModEnabled('bom')) {
             $langs->load("mrp");
-            require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
             $forcecombo = 0;
             if ($conf->browser->name == 'ie') {
                 $forcecombo = 1; // There is a bug in IE10 that make combo inside popup crazy

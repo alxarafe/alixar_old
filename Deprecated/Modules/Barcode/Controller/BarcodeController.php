@@ -36,12 +36,10 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/printsheet/modules_labels.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 use DoliCore\Base\DolibarrController;
 use Exception;
-use Form;
+use DoliCore\Form\Form;
 use FormBarCode;
 use GenericObject;
 use Product;

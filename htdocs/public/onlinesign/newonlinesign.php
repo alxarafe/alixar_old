@@ -53,7 +53,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 // Load translation files
 $langs->loadLangs(array("main", "other", "dict", "bills", "companies", "errors", "members", "paybox", "propal", "commercial"));
@@ -145,7 +144,6 @@ if (!dol_verifyHash($securekeyseed . $type . $ref . (isModEnabled('multicompany'
 }
 
 if ($source == 'proposal') {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
     $object = new Propal($db);
     $result = $object->fetch(0, $ref, '', $entity);
 } elseif ($source == 'contract') {
@@ -153,11 +151,9 @@ if ($source == 'proposal') {
     $object = new Contrat($db);
     $result = $object->fetch(0, $ref);
 } elseif ($source == 'fichinter') {
-    require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
     $object = new Fichinter($db);
     $result = $object->fetch(0, $ref);
 } elseif ($source == 'societe_rib') {
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
     $object = new CompanyBankAccount($db);
     $result = $object->fetch($ref);
 } else {

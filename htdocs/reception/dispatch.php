@@ -39,7 +39,6 @@ require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/reception.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
@@ -444,7 +443,6 @@ if ($id > 0 || !empty($ref)) {
     $disabled = 0;  // This is used to disable or not the bulk selection of target warehouse. No reason to have it disabled so forced to 0.
 
     if ($object->statut == Reception::STATUS_DRAFT || ($object->statut == Reception::STATUS_VALIDATED && !getDolGlobalString('STOCK_CALCULATE_ON_RECEPTION'))) {
-        require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
         $formproduct = new FormProduct($db);
         $formproduct->loadWarehouses();
         $entrepot = new Entrepot($db);

@@ -34,10 +34,8 @@
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 
 if (isModEnabled('agenda')) {
     require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
@@ -46,10 +44,8 @@ if (isModEnabled('bank')) {
     require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
 }
 if (isModEnabled('category')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 }
 if (isModEnabled('order')) {
-    require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 }
 if (isModEnabled('contract')) {
     require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
@@ -64,14 +60,11 @@ if (isModEnabled('shipping')) {
     require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 }
 if (isModEnabled('expensereport')) {
-    require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
 }
 if (isModEnabled('invoice')) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
     require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 }
 if (isModEnabled('intervention')) {
-    require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
 }
 if (isModEnabled('loan')) {
     require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
@@ -81,7 +74,6 @@ if (isModEnabled('mrp')) {
     require_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
 }
 if (isModEnabled('propal')) {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
 }
 if (isModEnabled('salaries')) {
     require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';

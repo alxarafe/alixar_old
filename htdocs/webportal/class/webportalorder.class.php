@@ -25,7 +25,6 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 
 /**
  * Class for WebPortalOrder

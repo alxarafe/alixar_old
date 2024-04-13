@@ -39,10 +39,7 @@
 use DoliCore\Lib\Fields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "suppliers", "categories"));
@@ -289,7 +286,6 @@ if ($action == "change" && $user->hasRight('takepos', 'run')) { // Change custom
     $result = $db->query($sql);
     $num_lines = $db->num_rows($result);
     if ($num_lines == 0) {
-        require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
         $invoice = new Facture($db);
         $constforthirdpartyid = 'CASHDESK_ID_THIRDPARTY' . $_SESSION["takeposterminal"];
         $invoice->socid = getDolGlobalInt($constforthirdpartyid);
@@ -306,7 +302,6 @@ if ($action == "change" && $user->hasRight('takepos', 'run')) { // Change custom
 
     // set contact on invoice
     if (!isset($invoice)) {
-        require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
         $invoice = new Facture($db);
         $invoice->fetch(null, "(PROV-POS" . $_SESSION["takeposterminal"] . "-" . $place . ")");
         $invoice->delete_linked_contact('external', 'BILLING');
@@ -996,7 +991,6 @@ if ($user->hasRight('societe', 'client', 'voir')) {
 }
 
 if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
     $moreforfilter .= '<div class="divsearchfield">';
     $tmptitle = $langs->trans('ContactCategoriesShort');
     $moreforfilter .= img_picto($tmptitle, 'category', 'class="pictofixedwidth"');

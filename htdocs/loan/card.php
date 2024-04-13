@@ -28,15 +28,12 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/loan.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
 
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
 }
 
 if (isModEnabled('project')) {

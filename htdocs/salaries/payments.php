@@ -27,15 +27,14 @@
  *      \brief      List of salaries payments
  */
 
-// Load Dolibarr environment
 use DoliCore\Lib\Fields;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 }
 
 // Load translation files required by the page

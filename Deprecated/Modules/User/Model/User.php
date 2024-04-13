@@ -43,7 +43,7 @@ namespace DoliModules\User\Model;
 use CommonPeople;
 use DefaultValues;
 use DoliCore\Base\GenericDocument;
-use Form;
+use DoliCore\Form\Form;
 use stdClass;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
@@ -997,7 +997,6 @@ private $cache_childids;
      */
     public function setCategories($categories)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         return parent::setCategoriesCommon($categories, Categorie::TYPE_USER);
     }
 
@@ -1990,7 +1989,6 @@ private $cache_childids;
                 if ($this->fk_member > 0 && !$nosyncmember) {
                     dol_syslog(get_class($this) . "::update user is linked with a member. We try to update member too.", LOG_DEBUG);
 
-                    require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 
                     // This user is linked with a member, so we also update member information
                     // if this is an update.
@@ -2042,7 +2040,6 @@ private $cache_childids;
                 if ($this->contact_id > 0 && !$nosynccontact) {
                     dol_syslog(get_class($this) . "::update user is linked with a contact. We try to update contact too.", LOG_DEBUG);
 
-                    require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 
                     // This user is linked with a contact, so we also update contact information if this is an update.
                     $tmpobj = new Contact($this->db);
@@ -2215,7 +2212,6 @@ private $cache_childids;
                     $this->pass_indatabase_crypted = $password_crypted;
 
                     if ($this->fk_member && !$nosyncmember) {
-                        require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 
                         // This user is linked with a member, so we also update members information
                         // if this is an update.

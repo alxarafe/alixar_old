@@ -45,14 +45,10 @@ if (!defined('USESUFFIXINLOG')) {
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/ccountry.class.php';
-require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 
 
@@ -636,7 +632,6 @@ if ($event->type == 'payout.created') {
         $actioncomm = new ActionComm($db);
 
         if ($objinvoiceid > 0) {
-            require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
             $invoice = new Facture($db);
             $invoice->fetch($objinvoiceid);
 
@@ -676,8 +671,6 @@ if ($event->type == 'payout.created') {
 } elseif ($event->type == 'checkout.session.completed') {       // Called when making payment with new Checkout method ($conf->global->STRIPE_USE_NEW_CHECKOUT is on).
     // TODO: create fees
 } elseif ($event->type == 'payment_method.attached') {
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/companypaymentmode.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/societeaccount.class.php';
     $societeaccount = new SocieteAccount($db);
 
     $companypaymentmode = new CompanyPaymentMode($db);
@@ -719,7 +712,6 @@ if ($event->type == 'payout.created') {
         }
     }
 } elseif ($event->type == 'payment_method.updated') {
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/companypaymentmode.class.php';
     $companypaymentmode = new CompanyPaymentMode($db);
     $companypaymentmode->fetch(0, '', 0, '', " AND stripe_card_ref = '" . $db->escape($event->data->object->id) . "'");
     if ($companypaymentmode->id > 0) {

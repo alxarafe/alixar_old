@@ -30,10 +30,8 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/categories.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("categories", "compta"));
@@ -108,7 +106,6 @@ $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action
 // Remove element from category
 if ($id > 0 && $removeelem > 0 && $action == 'unlink') {
     if ($type == Categorie::TYPE_PRODUCT && ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         $tmpobject = new Product($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'product';
@@ -121,12 +118,10 @@ if ($id > 0 && $removeelem > 0 && $action == 'unlink') {
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'customer';
     } elseif ($type == Categorie::TYPE_MEMBER && $user->hasRight('adherent', 'creer')) {
-        require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
         $tmpobject = new Adherent($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'member';
     } elseif ($type == Categorie::TYPE_CONTACT && $user->hasRight('societe', 'creer')) {
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         $tmpobject = new Contact($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'contact';
@@ -136,12 +131,10 @@ if ($id > 0 && $removeelem > 0 && $action == 'unlink') {
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'account';
     } elseif ($type == Categorie::TYPE_PROJECT && $user->hasRight('projet', 'creer')) {
-        require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
         $tmpobject = new Project($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'project';
     } elseif ($type == Categorie::TYPE_USER && $user->hasRight('user', 'user', 'creer')) {
-        require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         $tmpobject = new User($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'user';
@@ -187,15 +180,12 @@ if (
     )
 ) {
     if ($type == Categorie::TYPE_PRODUCT) {
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         $newobject = new Product($db);
         $elementtype = 'product';
     } elseif ($type == Categorie::TYPE_CUSTOMER) {
-        require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         $newobject = new Company($db);
         $elementtype = 'customer';
     } elseif ($type == Categorie::TYPE_SUPPLIER) {
-        require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         $newobject = new Company($db);
         $elementtype = 'supplier';
     } elseif ($type == Categorie::TYPE_TICKET) {
@@ -203,19 +193,15 @@ if (
         $newobject = new Ticket($db);
         $elementtype = 'ticket';
     } elseif ($type == Categorie::TYPE_PROJECT) {
-        require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
         $newobject = new Project($db);
         $elementtype = 'project';
     } elseif ($type == Categorie::TYPE_MEMBER) {
-        require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
         $newobject = new Adherent($db);
         $elementtype = 'member';
     } elseif ($type == Categorie::TYPE_CONTACT) {
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         $newobject = new Contact($db);
         $elementtype = 'contact';
     } elseif ($type == Categorie::TYPE_USER) {
-        require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         $newobject = new User($db);
         $elementtype = 'user';
     } elseif ($type == Categorie::TYPE_ACCOUNT) {
@@ -397,16 +383,13 @@ if ($cats < 0) {
     // Load possible missing includes
     if (getDolGlobalString('CATEGORY_SHOW_COUNTS')) {
         if ($type == Categorie::TYPE_MEMBER) {
-            require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
         }
         if ($type == Categorie::TYPE_ACCOUNT) {
             require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         }
         if ($type == Categorie::TYPE_PROJECT) {
-            require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
         }
         if ($type == Categorie::TYPE_USER) {
-            require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         }
     }
 
@@ -762,7 +745,6 @@ if ($type == Categorie::TYPE_SUPPLIER) {
 // List of members
 if ($type == Categorie::TYPE_MEMBER) {
     if ($user->hasRight("adherent", "read")) {
-        require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 
         $permission = $user->hasRight('adherent', 'creer');
 
@@ -1032,7 +1014,6 @@ if ($type == Categorie::TYPE_ACCOUNT) {
 // List of Project
 if ($type == Categorie::TYPE_PROJECT) {
     if ($user->hasRight("project", "read")) {
-        require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
         $permission = $user->hasRight('projet', 'creer');
 
@@ -1121,7 +1102,6 @@ if ($type == Categorie::TYPE_PROJECT) {
 // List of users
 if ($type == Categorie::TYPE_USER) {
     if ($user->hasRight("user", "user", "read")) {
-        require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
         $users = $object->getObjectsInCateg($type);
         if ($users < 0) {

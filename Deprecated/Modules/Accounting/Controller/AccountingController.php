@@ -34,10 +34,9 @@ global $mysoc;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 
 use DoliCore\Base\DolibarrController;
-use FormOther;
+use DoliCore\Form\FormOther;
 
 class AccountingController extends DolibarrController
 {

@@ -1,5 +1,7 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\Adherent\Model\Subscription;

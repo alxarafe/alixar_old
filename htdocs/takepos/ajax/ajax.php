@@ -40,9 +40,7 @@ if (!defined('NOBROWSERNOTIF')) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT . "/product/class/product.class.php";
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 $category = GETPOST('category', 'alphanohtml'); // Can be id of category or 'supplements'
 $action = GETPOST('action', 'aZ09');
@@ -415,7 +413,6 @@ if ($action == 'getProducts') {
     top_httphead('application/html');
 
     require_once DOL_DOCUMENT_ROOT . '/core/class/dolreceiptprinter.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
     $printer = new dolReceiptPrinter($db);
     // check printer for terminal
     if ((getDolGlobalInt('TAKEPOS_PRINTER_TO_USE' . $term) > 0 || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") && getDolGlobalInt('TAKEPOS_TEMPLATE_TO_USE_FOR_INVOICES' . $term) > 0) {
@@ -426,7 +423,6 @@ if ($action == 'getProducts') {
 } elseif ($action == 'getInvoice') {
     top_httphead('application/json');
 
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 
     $object = new Facture($db);
     if ($id > 0) {
@@ -438,7 +434,6 @@ if ($action == 'getProducts') {
     top_httphead('application/html');
 
     $place = GETPOST('place', 'alpha');
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/dolreceiptprinter.class.php';
 
     $object = new Facture($db);

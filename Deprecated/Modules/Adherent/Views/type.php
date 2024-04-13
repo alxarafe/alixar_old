@@ -1,7 +1,10 @@
 <?php
 
+global $db;
+
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
+use DoliModules\Product\Model\FormProduct;
 
 $form = new Form($db);
 $formproduct = new FormProduct($db);

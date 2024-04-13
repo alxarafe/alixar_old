@@ -27,7 +27,6 @@ use DoliModules\Billing\Model\Expedition;
 use DoliModules\Billing\Model\Propal;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 
 /**
  * API class for orders
@@ -1025,7 +1024,6 @@ class Orders extends DolibarrApi
      */
     public function createOrderFromProposal($proposalid)
     {
-        require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
 
         if (!DolibarrApiAccess::$user->hasRight('propal', 'lire')) {
             throw new RestException(403);

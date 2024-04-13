@@ -43,25 +43,20 @@
 
 // Libraries
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmargin.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 if (isModEnabled('order')) {
-    require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 }
 if (isModEnabled('project')) {
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
@@ -69,7 +64,6 @@ if (isModEnabled('variants')) {
     require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
 }
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 }
 
 // Load translation files required by the page
@@ -4263,7 +4257,6 @@ if ($action == 'create') {
 
             if ($qualified_for_stock_change) {
                 $langs->load("stocks");
-                require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
                 $formproduct = new FormProduct($db);
                 $label = $object->type == Facture::TYPE_CREDIT_NOTE ? $langs->trans("SelectWarehouseForStockDecrease") : $langs->trans("SelectWarehouseForStockIncrease");
                 $forcecombo = 0;
@@ -4337,7 +4330,6 @@ if ($action == 'create') {
 
             if ($qualified_for_stock_change) {
                 $langs->load("stocks");
-                require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
                 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
                 $formproduct = new FormProduct($db);
                 $warehouse = new Entrepot($db);
@@ -4396,7 +4388,6 @@ if ($action == 'create') {
 
             if ($qualified_for_stock_change) {
                 $langs->load("stocks");
-                require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
                 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
                 $formproduct = new FormProduct($db);
                 $warehouse = new Entrepot($db);
@@ -4821,7 +4812,7 @@ if ($action == 'create') {
                 print '</td><td>';
                 if ($action == 'editmulticurrencyrate' || $action == 'actualizemulticurrencyrate') {
                     if ($action == 'actualizemulticurrencyrate') {
-                        list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
+                        [$object->fk_multicurrency, $object->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
                     }
                     $form->form_multicurrency_rate($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->multicurrency_tx, ($usercancreate ? 'multicurrency_tx' : 'none'), $object->multicurrency_code);
                 } else {

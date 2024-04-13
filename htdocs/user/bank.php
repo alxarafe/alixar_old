@@ -36,12 +36,9 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/user/class/userbankaccount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 if (isModEnabled('holiday')) {
-    require_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
 }
 if (isModEnabled('expensereport')) {
-    require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
 }
 if (isModEnabled('salaries')) {
     require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';

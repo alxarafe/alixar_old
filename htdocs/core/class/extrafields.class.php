@@ -945,7 +945,6 @@ class ExtraFields
         global $conf, $langs, $form;
 
         if (!is_object($form)) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
             $form = new Form($this->db);
         }
 
@@ -1235,7 +1234,7 @@ class ExtraFields
                     }
                 }
                 if (count($InfoFieldList) > 3 && !empty($InfoFieldList[3])) {
-                    list($parentName, $parentField) = explode('|', $InfoFieldList[3]);
+                    [$parentName, $parentField] = explode('|', $InfoFieldList[3]);
                     $keyList .= ', ' . $parentField;
                 }
 
@@ -1347,7 +1346,6 @@ class ExtraFields
                         print 'Error in request ' . $sql . ' ' . $this->db->lasterror() . '. Check setup of extra parameters.<br>';
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                     $data = $form->select_all_categories(Categorie::$MAP_ID_TO_CODE[$InfoFieldList[5]], '', 'parent', 64, $InfoFieldList[6], 1, 1);
                     $out .= '<option value="0">&nbsp;</option>';
                     if (is_array($data)) {
@@ -1398,7 +1396,7 @@ class ExtraFields
                 $keyList = (empty($InfoFieldList[2]) ? 'rowid' : $InfoFieldList[2] . ' as rowid');
 
                 if (count($InfoFieldList) > 3 && !empty($InfoFieldList[3])) {
-                    list($parentName, $parentField) = explode('|', $InfoFieldList[3]);
+                    [$parentName, $parentField] = explode('|', $InfoFieldList[3]);
                     $keyList .= ', ' . $parentField;
                 }
                 if (count($InfoFieldList) > 4 && !empty($InfoFieldList[4])) {
@@ -1578,7 +1576,6 @@ class ExtraFields
                         print 'Error in request ' . $sql . ' ' . $this->db->lasterror() . '. Check setup of extra parameters.<br>';
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                     $data = $form->select_all_categories(Categorie::$MAP_ID_TO_CODE[$InfoFieldList[5]], '', 'parent', 64, $InfoFieldList[6], 1, 1);
                     $out = $form->multiselectarray($keyprefix . $key . $keysuffix, $data, $value_arr, '', 0, '', 0, '100%');
                 }
@@ -1813,7 +1810,6 @@ class ExtraFields
                     $toprint = array();
                     $obj = $this->db->fetch_object($resql);
                     if ($obj->rowid) {
-                        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                         $c = new Categorie($this->db);
                         $result = $c->fetch($obj->rowid);
                         if ($result > 0) {
@@ -1921,7 +1917,6 @@ class ExtraFields
                         }
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
                     $toprint = array();
                     while ($obj = $this->db->fetch_object($resql)) {

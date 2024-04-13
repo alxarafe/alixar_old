@@ -31,7 +31,6 @@ require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/reception.lib.php';
 if (isModEnabled('project')) {
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';

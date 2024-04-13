@@ -232,7 +232,6 @@ class BlockedLog
         global $langs;
 
         if ($this->element === 'facture') {
-            require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 
             $object = new Facture($this->db);
             if ($object->fetch($this->fk_object) > 0) {
@@ -296,7 +295,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'subscription') {
-            require_once DOL_DOCUMENT_ROOT . '/adherents/class/subscription.class.php';
 
             $object = new Subscription($this->db);
             if ($object->fetch($this->fk_object) > 0) {
@@ -323,7 +321,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'project') {
-            require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
             $object = new Project($this->db);
             if ($object->fetch($this->fk_object) > 0) {

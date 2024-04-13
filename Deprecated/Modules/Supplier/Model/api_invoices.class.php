@@ -22,7 +22,6 @@
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 
 
@@ -380,7 +379,6 @@ class Invoices extends DolibarrApi
      */
     public function createInvoiceFromOrder($orderid)
     {
-        require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 
         if (!DolibarrApiAccess::$user->hasRight('commande', 'lire')) {
             throw new RestException(403);

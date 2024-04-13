@@ -34,7 +34,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
 }
 
 // Load translation files required by the page

@@ -26,16 +26,15 @@
 
 namespace DoliModules\Supplier\Model;
 
+use DoliDB;
+use DoliModules\Product\Model\Product;
+use DoliModules\User\Model\User;
+
 /**
  *  \file       htdocs/fourn/class/fournisseur.product.class.php
  *  \ingroup    produit
  *  \brief      File of class to manage predefined suppliers products
  */
-
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/productfournisseurprice.class.php';
-
 
 /**
  *  Class to manage predefined suppliers products

@@ -27,8 +27,6 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 dol_include_once('/bookcal/class/calendar.class.php');
 dol_include_once('/bookcal/lib/bookcal_calendar.lib.php');
 

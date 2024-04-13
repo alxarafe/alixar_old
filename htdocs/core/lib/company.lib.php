@@ -884,7 +884,6 @@ function show_projects($conf, $langs, $db, $object, $backtopage = '', $nocreatel
             print '</tr>';
 
             if ($num > 0) {
-                require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
                 $projecttmp = new Project($db);
 
@@ -1004,7 +1003,6 @@ function show_projects($conf, $langs, $db, $object, $backtopage = '', $nocreatel
                 print '</tr>';
 
                 if ($num > 0) {
-                    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
                     $projecttmp = new Project($db);
 
@@ -1095,7 +1093,6 @@ function show_contacts($conf, $langs, $db, $object, $backtopage = '', $showuserl
     global $user, $conf, $extrafields, $hookmanager;
     global $contextpage;
 
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
     $formcompany = new FormCompany($db);
     $form = new Form($db);
 
@@ -2076,7 +2073,6 @@ function show_actions_done($conf, $langs, $db, $filterobj, $objcon = null, $nopr
         require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 
         $formactions = new FormActions($db);
 

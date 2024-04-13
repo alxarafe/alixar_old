@@ -26,6 +26,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
 require_once DOL_DOCUMENT_ROOT . '/reception/class/receptionstats.class.php';

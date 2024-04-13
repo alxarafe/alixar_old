@@ -28,12 +28,14 @@
  *  \brief      Page to list stocks
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\Product\Model\Product;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('products', 'stocks'));

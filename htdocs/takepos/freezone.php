@@ -43,8 +43,6 @@ if (!defined('NOREQUIREAJAX')) {
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 global $mysoc;
 
@@ -136,7 +134,6 @@ if ($action == "addnote") {
 </form>
 <?php
 if ($action == 'freezone' && !getDolGlobalString("TAKEPOS_USE_DEFAULT_VATRATE_FOR_FREEZONE")) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 
     $form = new Form($db);
     $num = $form->load_cache_vatrates("'" . $mysoc->country_code . "'");

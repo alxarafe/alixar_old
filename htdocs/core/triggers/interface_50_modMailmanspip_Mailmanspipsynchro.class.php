@@ -18,6 +18,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\User\Model\User;
+
 /**
  *  \file       htdocs/core/triggers/interface_50_modMailmanspip_Mailmanspipsynchro.class.php
  *  \ingroup    core
@@ -66,7 +68,6 @@ class InterfaceMailmanSpipsynchro extends DolibarrTriggers
         }
 
         require_once DOL_DOCUMENT_ROOT . "/mailmanspip/class/mailmanspip.class.php";
-        require_once DOL_DOCUMENT_ROOT . "/user/class/usergroup.class.php";
 
         if ($action == 'CATEGORY_LINK') {
             dol_syslog("Trigger '" . $this->name . "' for action '$action' launched by " . __FILE__ . ". id=" . $object->id);

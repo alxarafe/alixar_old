@@ -80,8 +80,6 @@ if (!function_exists('dol_getprefix')) {
 
 include '../../main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societeaccount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/public/webportal/lib/webportal.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/webportal/class/context.class.php';
 require_once DOL_DOCUMENT_ROOT . '/webportal/class/webportalmember.class.php';

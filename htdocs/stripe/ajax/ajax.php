@@ -49,7 +49,6 @@ if (!defined('NOBROWSERNOTIF')) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 
 $action = GETPOST('action', 'aZ09');
 $location = GETPOST('location', 'alphanohtml');

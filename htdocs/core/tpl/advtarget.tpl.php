@@ -20,7 +20,6 @@
  */
 
 if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 }
 
 print '<script>

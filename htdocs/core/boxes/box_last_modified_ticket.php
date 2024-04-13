@@ -64,7 +64,6 @@ class box_last_modified_ticket extends GenericBoxes
 
         $this->max = $max;
 
-        require_once DOL_DOCUMENT_ROOT . "/ticket/class/ticket.class.php";
 
         $text = $langs->trans("BoxLastModifiedTicketDescription", $max);
         $this->info_box_head = array(

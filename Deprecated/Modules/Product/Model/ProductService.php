@@ -42,7 +42,6 @@ namespace DoliModules\Product\Model;
  *    \brief      File of class to manage the predefined products or services
  */
 
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
  * Class to manage products or services.

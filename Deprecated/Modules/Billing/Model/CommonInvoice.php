@@ -1009,7 +1009,6 @@ abstract class CommonInvoice extends GenericDocument
         dol_syslog(get_class($this) . "::demande_prelevement", LOG_DEBUG);
 
         if ($this->status > self::STATUS_DRAFT && $this->paye == 0) {
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
             $bac = new CompanyBankAccount($this->db);
             $bac->fetch(0, $this->socid);
 
@@ -1166,7 +1165,6 @@ abstract class CommonInvoice extends GenericDocument
 
         if ($this->status > self::STATUS_DRAFT && $this->paye == 0) {
             // Get the default payment mode for BAN payment of the third party
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
             $bac = new CompanyBankAccount($this->db);   // table societe_rib
             $result = $bac->fetch(0, $this->socid, 1, 'ban');
             if ($result <= 0 || empty($bac->id)) {
@@ -1205,7 +1203,6 @@ abstract class CommonInvoice extends GenericDocument
                 $amount = $obj->amount;
 
                 if (is_numeric($amount) && $amount != 0) {
-                    require_once DOL_DOCUMENT_ROOT . '/societe/class/companypaymentmode.class.php';
                     $companypaymentmode = new CompanyPaymentMode($this->db);    // table societe_rib
                     $companypaymentmode->fetch($bac->id);
 

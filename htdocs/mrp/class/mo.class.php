@@ -1283,7 +1283,6 @@ class Mo extends GenericDocument
             return 1;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
         $error = 0;
         $langs->load('stocks');
@@ -1406,7 +1405,6 @@ class Mo extends GenericDocument
             $datas['qty'] = '<br><b>' . $langs->trans('QtyToProduce') . ':</b> ' . $this->qty;
         }
         if (!$nofetch && isset($this->fk_product)) {
-            require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
             $product = new Product($this->db);
             $product->fetch($this->fk_product);
             $datas['product'] = '<br><b>' . $langs->trans('Product') . ':</b> ' . $product->getNomUrl(1, '', 0, -1, 1);

@@ -106,7 +106,6 @@ if ($action == "importSignature") {
         $data = base64_decode($signature);
 
         if ($mode == "propale" || $mode == 'proposal') {
-            require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
             $object = new Propal($db);
             $object->fetch(0, $ref);
@@ -376,7 +375,6 @@ if ($action == "importSignature") {
                 }
             }
         } elseif ($mode == 'fichinter') {
-            require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
             $object = new Fichinter($db);
             $object->fetch(0, $ref);
@@ -490,7 +488,6 @@ if ($action == "importSignature") {
             }
         } elseif ($mode == "societe_rib") {
             $langs->load('withdrawals');
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
             $modelpath = "core/modules/bank/doc/";
             $object = new CompanyBankAccount($db);

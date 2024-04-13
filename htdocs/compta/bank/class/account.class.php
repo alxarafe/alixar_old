@@ -1123,7 +1123,6 @@ class Account extends GenericDocument
      */
     public function setCategories($categories)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         return parent::setCategoriesCommon($categories, Categorie::TYPE_ACCOUNT);
     }
 
@@ -1462,7 +1461,6 @@ class Account extends GenericDocument
         }
         // show categories for this record only in ajax to not overload lists
         if (isModEnabled('category') && !$nofetch) {
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $form = new Form($this->db);
             $datas['categories'] = '<br>' . $form->showCategories($this->id, Categorie::TYPE_ACCOUNT, 1);
         }
@@ -1620,7 +1618,6 @@ class Account extends GenericDocument
 
         // If this class is linked to a third party
         if (!empty($this->socid)) {
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
             $company = new Company($this->db);
             $result = $company->fetch($this->socid);
             if (!empty($company->country_code)) {

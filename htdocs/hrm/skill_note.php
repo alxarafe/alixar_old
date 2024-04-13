@@ -28,7 +28,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/skill.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_skill.lib.php';
 

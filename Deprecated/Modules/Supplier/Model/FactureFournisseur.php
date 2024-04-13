@@ -49,8 +49,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
 
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
 }
 
 /**
@@ -2311,7 +2309,6 @@ class FactureFournisseur extends CommonInvoice
 
                     // If buyprice not defined from template invoice, we try to guess the best value
                     if (!$buyprice && $_facrec->lines[$i]->fk_product > 0) {
-                        require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
                         $producttmp = new ProductFournisseur($this->db);
                         $producttmp->fetch($_facrec->lines[$i]->fk_product);
 

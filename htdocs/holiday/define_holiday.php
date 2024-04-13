@@ -30,7 +30,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 require_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
 
 // Load translation files required by the page
@@ -259,7 +258,6 @@ include DOL_DOCUMENT_ROOT . '/core/tpl/massactions_pre.tpl.php';
 
 if ($massaction == 'preincreaseholiday') {
     $langs->load("holiday", "hrm");
-    require_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
     $staticholiday = new Holiday($db);
     $arraytypeholidays = $staticholiday->getTypes(1, 1);
     $formquestion = array();

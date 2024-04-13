@@ -42,9 +42,6 @@ if (!defined('NOREQUIREAJAX')) {
 if (!defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE')) {
     require BASE_PATH . '/main.inc.php';
 }
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 
 if (defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE')) {
@@ -125,7 +122,6 @@ if ($action == "productinfo") {
     if (GETPOSTISSET("payment")) {
         print '<h1>' . $langs->trans('Ordered') . '</h1>';
         require_once DOL_DOCUMENT_ROOT . '/core/class/dolreceiptprinter.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
         $printer = new dolReceiptPrinter($db);
         $printer->initPrinter(getDolGlobalString('TAKEPOS_PRINTER_TO_USE' . $_SESSION["takeposterminal"]));
         if ($printer->getPrintConnector()) {

@@ -193,7 +193,6 @@ class MouvementStock extends GenericDocument
 		// phpcs:enable
         global $conf, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
 
         $error = 0;
@@ -976,7 +975,6 @@ class MouvementStock extends GenericDocument
 
         switch ($origin_type) {
             case 'commande':
-                require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
                 $origin = new Commande($this->db);
                 break;
             case 'shipping':
@@ -984,7 +982,6 @@ class MouvementStock extends GenericDocument
                 $origin = new Expedition($this->db);
                 break;
             case 'facture':
-                require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                 $origin = new Facture($this->db);
                 break;
             case 'order_supplier':
@@ -996,7 +993,6 @@ class MouvementStock extends GenericDocument
                 $origin = new FactureFournisseur($this->db);
                 break;
             case 'project':
-                require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
                 $origin = new Project($this->db);
                 break;
             case 'mo':
@@ -1004,7 +1000,6 @@ class MouvementStock extends GenericDocument
                 $origin = new Mo($this->db);
                 break;
             case 'user':
-                require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
                 $origin = new User($this->db);
                 break;
             case 'reception':

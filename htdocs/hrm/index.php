@@ -28,29 +28,21 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Holiday\Model\Holiday;
+use DoliModules\User\Model\User;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/usergroup.class.php';
 
 if (isModEnabled('deplacement')) {
     require_once DOL_DOCUMENT_ROOT . '/compta/deplacement/class/deplacement.class.php';
-}
-if (isModEnabled('expensereport')) {
-    require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
 }
 if (isModEnabled('recruitment')) {
     require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentcandidature.class.php';
     require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentjobposition.class.php';
 }
-if (isModEnabled('holiday')) {
-    require_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
-}
-
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
 $hookmanager = new HookManager($db);

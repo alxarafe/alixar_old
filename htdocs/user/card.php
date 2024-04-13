@@ -38,30 +38,20 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/usergroup.class.php';
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
 if (isModEnabled('ldap')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/ldap.class.php';
 }
 if (isModEnabled('member')) {
-    require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 }
 if (isModEnabled('category')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 }
 if (isModEnabled('stock')) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
 }
 
 // Load translation files required by page

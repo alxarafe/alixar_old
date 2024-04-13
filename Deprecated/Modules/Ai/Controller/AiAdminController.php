@@ -37,7 +37,7 @@ require_once BASE_PATH . '/ai/lib/ai.lib.php';
 require_once BASE_PATH . '/core/lib/admin.lib.php';
 
 use DoliCore\Base\DolibarrController;
-use Form;
+use DoliCore\Form\Form;
 use FormSetup;
 
 class AiAdminController extends DolibarrController

@@ -420,7 +420,6 @@ class StockTransferLine extends GenericDocumentLine
     {
         global $conf, $user, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         include_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
         include_once DOL_DOCUMENT_ROOT . '/product/stock/stocktransfer/class/stocktransfer.class.php';
 

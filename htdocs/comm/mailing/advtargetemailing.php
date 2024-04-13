@@ -35,8 +35,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/emailing.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/advtargetemailing.class.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/html.formadvtargetemailing.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/mailings/advthirdparties.modules.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('mails', 'companies'));

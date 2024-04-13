@@ -21,6 +21,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\User\Model\User;
+
 /**
  *  \file       htdocs/core/triggers/interface_20_modWorkflow_WorkflowManager.class.php
  *  \ingroup    core
@@ -375,7 +377,6 @@ class InterfaceWorkflowManager extends DolibarrTriggers
                 // Find all shipments on sale order origin
 
                 if (in_array($object->origin, array('order', 'commande')) && $object->origin_id > 0) {
-                    require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
                     $order = new Commande($this->db);
                     $ret = $order->fetch($object->origin_id);
                     if ($ret < 0) {

@@ -25,7 +25,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 /**
  *  \file       htdocs/comm/action/index.php
  *  \ingroup    agenda
@@ -33,15 +32,16 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contact\Model\Contact;
+use DoliModules\Holiday\Model\Holiday;
+use DoliModules\User\Model\User;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
-if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
-}
 
 if (!isset($conf->global->AGENDA_MAX_EVENTS_DAY_VIEW)) {
     $conf->global->AGENDA_MAX_EVENTS_DAY_VIEW = 3;
@@ -1868,7 +1868,6 @@ function show_day_events($db, $day, $month, $year, $monthshown, $style, &$eventa
     $nextindextouse = is_array($colorindexused) ? count($colorindexused) : 0; // At first run this is 0, so fist user has 0, next 1, ...
     //var_dump($colorindexused);
 
-    include_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
     $tmpholiday = new Holiday($db);
 
     foreach ($eventarray as $daykey => $notused) {      // daykey is the 'YYYYMMDD' to show according to user

@@ -31,7 +31,6 @@ global $langs, $user;
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/eventorganization.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
 // Translations
 $langs->loadLangs(array("admin", "eventorganization", "categories"));
@@ -222,15 +221,12 @@ if ($action == 'edit') {
                 }
                 print $form->selectarray($constname, $arrayofmessagename, getDolGlobalString($constname), 'None', 0, 0, '', 0, 0, 0, '', '', 1);
             } elseif (preg_match('/category:/', $val['type'])) {
-                require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-                require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
                 $formother = new FormOther($db);
 
                 $tmp = explode(':', $val['type']);
                 print img_picto('', 'category', 'class="pictofixedwidth"');
                 print $formother->select_categories($tmp[1], getDolGlobalString($constname), $constname, 0, $langs->trans('CustomersProspectsCategoriesShort'));
             } elseif (preg_match('/thirdparty_type/', $val['type'])) {
-                require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
                 $formcompany = new FormCompany($db);
                 print $formcompany->selectProspectCustomerType(getDolGlobalString($constname), $constname, 'customerorprospect', 'form', '', 1);
             } elseif ($val['type'] == 'securekey') {

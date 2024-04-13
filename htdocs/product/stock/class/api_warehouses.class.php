@@ -20,7 +20,6 @@ use DoliCore\Api\DolibarrApi;
  use Luracast\Restler\RestException;
 
  require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
- require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
  * API class for warehouses

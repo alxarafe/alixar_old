@@ -29,9 +29,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 if (isModEnabled('category')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 }
 
 // Load translation files required by page
@@ -709,7 +707,6 @@ if (isModEnabled('category') && $user->hasRight("categorie", "read")) {
 }
 // Filter on warehouse
 if (isModEnabled('stock') && getDolGlobalString('MAIN_DEFAULT_WAREHOUSE_USER')) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
     $formproduct = new FormProduct($db);
     $moreforfilter .= '<div class="divsearchfield">';
     $tmptitle = $langs->trans('Warehouse');

@@ -866,7 +866,6 @@ class WebsitePage extends GenericDocument
      */
     public function setCategories($categories)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         return $this->setCategoriesCommon($categories, Categorie::TYPE_WEBSITE_PAGE);
     }
 

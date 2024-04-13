@@ -17,6 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\User\Model\User;
+
 /**
  * \file    core/triggers/interface_99_modZapier_ZapierTriggers.class.php
  * \ingroup zapier

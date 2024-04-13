@@ -45,13 +45,7 @@ global $langs;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once BASE_PATH . '/accountancy/class/accountingjournal.class.php';
-require_once BASE_PATH . '/adherents/class/adherent.class.php';
-require_once BASE_PATH . '/adherents/class/subscription.class.php';
 require_once BASE_PATH . '/core/class/extrafields.class.php';
-require_once BASE_PATH . '/core/class/html.formadmin.class.php';
-require_once BASE_PATH . '/core/class/html.formfile.class.php';
-require_once BASE_PATH . '/core/class/html.formprojet.class.php';
 require_once BASE_PATH . '/core/class/ldap.class.php';
 require_once BASE_PATH . '/core/class/vcard.class.php';
 require_once BASE_PATH . '/core/lib/date.lib.php';
@@ -63,10 +57,6 @@ require_once BASE_PATH . '/core/lib/ldap.lib.php';
 require_once BASE_PATH . '/core/lib/member.lib.php';
 require_once BASE_PATH . '/compta/bank/class/account.class.php';
 require_once BASE_PATH . '/core/class/extrafields.class.php';
-require_once BASE_PATH . '/core/class/html.formadmin.class.php';
-require_once BASE_PATH . '/core/class/html.formcompany.class.php';
-require_once BASE_PATH . '/core/class/html.formfile.class.php';
-require_once BASE_PATH . '/core/class/html.formother.class.php';
 require_once BASE_PATH . '/partnership/class/partnership.class.php';
 require_once BASE_PATH . '/partnership/lib/partnership.lib.php';
 

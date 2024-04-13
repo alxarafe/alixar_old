@@ -42,7 +42,6 @@ if (!defined('NOREQUIRESOC')) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 
 // Security check
 if (!getDolGlobalString('MAIN_USE_ZIPTOWN_DICTIONNARY')) {

@@ -38,8 +38,6 @@ require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formintervention.class.php';
 
 // Load translation files required by the page
@@ -802,7 +800,6 @@ if ($action == 'confirm_generateinter') {
         include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 
-        require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
         $tmpinter = new Fichinter($db);
         $tmptimespent = new Task($db);
         $fuser = new User($db);

@@ -1088,9 +1088,6 @@ class BonPrelevement extends GenericDocument
 
         if (!$error) {
             // Make some checks
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-            require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
-            require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 
             $tmpsoc = new Company($this->db);

@@ -53,7 +53,6 @@ if ($reshook < 0) {
 $form = new Form($db);
 
 if ($id) {
-    require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
     require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
 
     $object = new Contact($db);

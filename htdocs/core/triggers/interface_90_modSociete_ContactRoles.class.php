@@ -23,6 +23,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\User\Model\User;
+
 /**
  * \file htdocs/core/triggers/interface_90_modSociete_ContactRoles.class.php
  * \ingroup agenda
@@ -79,7 +81,6 @@ class InterfaceContactRoles extends DolibarrTriggers
             $socid = (property_exists($object, 'socid') ? $object->socid : $object->fk_soc);
 
             if (!empty($socid) && $socid > 0) {
-                require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
                 $contactdefault = new Contact($this->db);
                 $contactdefault->socid = $socid;
 

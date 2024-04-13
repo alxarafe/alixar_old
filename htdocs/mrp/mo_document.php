@@ -25,13 +25,10 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-
 require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/lib/mrp_mo.lib.php';
 

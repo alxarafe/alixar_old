@@ -37,22 +37,18 @@ global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 use DoliCore\Base\DolibarrController;
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Billing\Model\FactureLigne;
-use Form;
+use DoliCore\Form\Form;
 use FormAccounting;
-use FormOther;
+use DoliCore\Form\FormOther;
 use Product;
 use Societe;
 

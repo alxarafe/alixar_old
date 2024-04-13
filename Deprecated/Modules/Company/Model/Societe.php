@@ -2019,7 +2019,6 @@ class Societe extends Company
                 if (!$error && $nbrowsaffected) {
                     // Update information on linked member if it is an update
                     if (!$nosyncmember && isModEnabled('member')) {
-                        require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 
                         dol_syslog(get_class($this) . "::update update linked member");
 
@@ -2795,7 +2794,6 @@ class Societe extends Company
     public function contact_array_objects()
     {
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         $contacts = [];
 
         $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "socpeople WHERE fk_soc = " . ((int) $this->id);
@@ -2874,7 +2872,6 @@ class Societe extends Company
     public function display_rib($mode = 'label')
     {
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
 
         $bac = new CompanyBankAccount($this->db);
         // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
@@ -2912,7 +2909,6 @@ class Societe extends Company
     public function get_all_rib()
     {
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
         $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "societe_rib WHERE type='ban' AND fk_soc = " . ((int) $this->id);
         $result = $this->db->query($sql);
         if (!$result) {
@@ -3518,7 +3514,6 @@ class Societe extends Company
         $this->db->begin();
 
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         $contact = new Contact($this->db);
 
         $contact->name = $this->name_bis;
@@ -3592,7 +3587,6 @@ class Societe extends Company
      */
     public function setCategories($categories, $type_categ)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         // Decode type
         if (!in_array($type_categ, [Categorie::TYPE_CUSTOMER, Categorie::TYPE_SUPPLIER])) {
@@ -4135,7 +4129,6 @@ class Societe extends Company
                 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                 $tmpobject = new FactureFournisseur($this->db);
             } else {
-                require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                 $tmpobject = new Facture($this->db);
             }
             while ($obj = $this->db->fetch_object($resql)) {
@@ -4264,7 +4257,6 @@ class Societe extends Company
             }
 
             if (!isset($this->bank_account)) {
-                require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
                 $bac = new CompanyBankAccount($this->db);
                 // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
                 $result = $bac->fetch(0, $this->id);
@@ -4873,7 +4865,6 @@ class Societe extends Company
         }
         // show categories for this record only in ajax to not overload lists
         if (!$nofetch && isModEnabled('category') && $this->client) {
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $form = new Form($this->db);
             $datas['categories_customer'] = '<br>' . $form->showCategories($this->id, Categorie::TYPE_CUSTOMER, 1, 1);
         }
@@ -4886,7 +4877,6 @@ class Societe extends Company
         }
         // show categories for this record only in ajax to not overload lists
         if (!$nofetch && isModEnabled('category') && $this->fournisseur) {
-            require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $form = new Form($this->db);
             $datas['categories_supplier'] = '<br>' . $form->showCategories($this->id, Categorie::TYPE_SUPPLIER, 1, 1);
         }
@@ -5355,7 +5345,6 @@ class Societe extends Company
             }
 
             if (!$error) {
-                require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                 $static_cat = new Categorie($this->db);
                 $toute_categs = [];
 

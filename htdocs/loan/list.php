@@ -26,9 +26,9 @@
  *  \brief      Page to list all loans
  */
 
-// Load Dolibarr environment
 use DoliCore\Lib\Fields;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
 

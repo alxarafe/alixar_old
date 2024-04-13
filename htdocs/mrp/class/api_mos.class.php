@@ -318,7 +318,6 @@ class Mos extends DolibarrApi
         }
 
         // Code for consume and produce...
-        require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
         require_once DOL_DOCUMENT_ROOT . '/mrp/lib/mrp_mo.lib.php';
 

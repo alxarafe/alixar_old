@@ -38,7 +38,6 @@ require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
 
@@ -645,7 +644,6 @@ if ($id > 0 || !empty($ref)) {
         || $object->statut == CommandeFournisseur::STATUS_RECEIVED_PARTIALLY
         || $object->statut == CommandeFournisseur::STATUS_RECEIVED_COMPLETELY
     ) {
-        require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
         $formproduct = new FormProduct($db);
         $formproduct->loadWarehouses();
         $entrepot = new Entrepot($db);

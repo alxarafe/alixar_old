@@ -33,11 +33,9 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 

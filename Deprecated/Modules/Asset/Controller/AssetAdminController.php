@@ -43,7 +43,7 @@ require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 
 use DoliCore\Base\DolibarrController;
 use ExtraFields;
-use Form;
+use DoliCore\Form\Form;
 
 class AssetAdminController extends DolibarrController
 {

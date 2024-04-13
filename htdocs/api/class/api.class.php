@@ -21,7 +21,6 @@
 use Luracast\Restler\Restler;
 use Luracast\Restler\Defaults;
 
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
 /**
  * Class for API REST v1

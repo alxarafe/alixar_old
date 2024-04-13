@@ -30,13 +30,10 @@
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/resource/class/dolresource.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
 if (isModEnabled('project')) {
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 if (isModEnabled("product") || isModEnabled("service")) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 }
 
 // Load translation files required by the page

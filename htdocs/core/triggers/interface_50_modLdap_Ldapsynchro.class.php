@@ -19,6 +19,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\User\Model\User;
+
 /**
  *  \file       htdocs/core/triggers/interface_50_modLdap_Ldapsynchro.class.php
  *  \ingroup    core

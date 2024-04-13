@@ -29,9 +29,10 @@
  *  \brief      Homepage products and services
  */
 
+use DoliModules\Product\Model\Product;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_parser.class.php';
 
@@ -220,7 +221,6 @@ if ((isModEnabled("product") || isModEnabled("service")) && ($user->hasRight("pr
 
 
 if (isModEnabled('category') && getDolGlobalString('CATEGORY_GRAPHSTATS_ON_PRODUCTS')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
     print '<br>';
     print '<div class="div-table-responsive-no-min">';
     print '<table class="noborder centpercent">';

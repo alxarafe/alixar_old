@@ -29,10 +29,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'orders'));
@@ -206,8 +203,6 @@ if ($id > 0 || !empty($ref)) {
 
         // additional list with adherents of company
         if (isModEnabled('member') && $user->hasRight('adherent', 'lire')) {
-            require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
-            require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent_type.class.php';
 
             $membertypestatic = new AdherentType($db);
             $memberstatic = new Adherent($db);

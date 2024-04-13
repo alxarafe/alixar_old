@@ -35,7 +35,6 @@
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
@@ -1307,7 +1306,6 @@ class pdf_sponge extends ModelePDFFactures
 
                 //#21654: add account number used for the debit
                 if ($object->mode_reglement_code == "PRE") {
-                    require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
                     $bac = new CompanyBankAccount($this->db);
                     // @phan-suppress-next-line PhanPluginSuspiciousParamPosition
                     $bac->fetch(0, $object->thirdparty->id);

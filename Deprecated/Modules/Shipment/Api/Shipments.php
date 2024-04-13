@@ -585,8 +585,7 @@ class Shipments extends DolibarrApi
     public function createShipmentFromOrder($orderid)
     {
 
-        require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
-
+        
         if(! DolibarrApiAccess::$user->hasRight('expedition', 'lire')) {
                 throw new RestException(403);
         }

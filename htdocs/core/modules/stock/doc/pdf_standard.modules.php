@@ -28,7 +28,6 @@
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/stock/modules_stock.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';

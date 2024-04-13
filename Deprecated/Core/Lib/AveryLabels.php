@@ -41,11 +41,11 @@ class AveryLabels
      */
     public static function getAveryLables(): array
     {
-        if (!isset(static::$averyLabels)) {
-            static::$averyLabels = static::loadAveryLabels();
+        if (!isset(self::$averyLabels)) {
+            self::$averyLabels = self::loadAveryLabels();
         }
 
-        return static::$averyLabels;
+        return self::$averyLabels;
     }
 
     /**

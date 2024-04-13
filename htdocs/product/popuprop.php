@@ -30,7 +30,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('commande', 'propal', 'bills', 'other', 'products'));

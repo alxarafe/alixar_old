@@ -42,7 +42,6 @@ if (!defined('NOREQUIRESOC')) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 $htmlname = GETPOST('htmlname', 'aZ09');
 $filter = GETPOST('filter', 'alpha');
@@ -77,7 +76,6 @@ top_httphead('application/json');
 //print_r($_GET);
 
 if (!empty($action) && $action == 'fetch' && !empty($id)) {
-    require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
     $outjson = array();
 
@@ -92,7 +90,6 @@ if (!empty($action) && $action == 'fetch' && !empty($id)) {
 
     echo json_encode($outjson);
 } else {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
 
     if (empty($htmlname)) {
         return;

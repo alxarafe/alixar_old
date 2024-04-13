@@ -25,6 +25,7 @@
  */
 
 use DoliCore\Base\GenericBoxes;
+use DoliCore\Form\Form;
 use DoliModules\Project\Model\Project;
 use DoliModules\Project\Model\Task;
 

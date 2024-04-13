@@ -33,9 +33,6 @@ use DoliModules\Product\Model\ProductFournisseur;
 use DoliModules\Product\Model\Supplier;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
-require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductAttribute.class.php';
 require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductAttributeValue.class.php';
 

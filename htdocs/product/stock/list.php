@@ -28,14 +28,12 @@
  *      \brief      Page with warehouse and stock value
  */
 
-// Load Dolibarr environment
 use DoliCore\Lib\Fields;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 if (isModEnabled('category')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcategory.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 }
 
 // Load translation files required by the page
@@ -563,7 +561,6 @@ foreach ($object->fields as $key => $val) {
             print $form->selectDate(isset($search[$key . '_dtend']) ? $search[$key . '_dtend'] : '', "search_" . $key . "_dtend", 0, 0, 1, '', 1, 0, 0, '', '', '', '', 1, '', $langs->trans('to'));
             print '</div>';
         } elseif ($key == 'lang') {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
             $formadmin = new FormAdmin($db);
             print $formadmin->select_language($search[$key], 'search_lang', 0, null, 1, 0, 0, 'minwidth150 maxwidth200', 2);
         } else {
@@ -915,7 +912,6 @@ if (in_array('builddoc', array_keys($arrayofmassactions)) && ($nbtotalofrecords 
         $hidegeneratedfilelistifempty = 0;
     }
 
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
     $formfile = new FormFile($db);
 
     // Show list of available documents

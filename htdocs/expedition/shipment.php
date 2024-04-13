@@ -29,24 +29,18 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
-require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/order.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/sendings.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 if (isModEnabled('project')) {
     require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 if (isModEnabled('stock')) {
     require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 }
 if (isModEnabled("propal")) {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
 }
 if (isModEnabled("product") || isModEnabled("service")) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 }
 
 // Load translation files required by the page
@@ -418,7 +412,6 @@ if ($id > 0 || !empty($ref)) {
 
         // Warehouse
         if (isModEnabled('stock') && getDolGlobalString('WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER')) {
-            require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
             $formproduct = new FormProduct($db);
             print '<tr><td>';
             print '<table width="100%" class="nobordernopadding"><tr><td>';

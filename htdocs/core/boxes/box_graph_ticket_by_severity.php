@@ -81,7 +81,6 @@ class box_graph_ticket_by_severity extends GenericBoxes
         }
         $this->max = $max;
 
-        require_once DOL_DOCUMENT_ROOT . "/ticket/class/ticket.class.php";
 
         $text = $langs->trans("BoxTicketSeverity", $max);
         $this->info_box_head = array(

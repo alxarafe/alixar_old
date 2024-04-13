@@ -28,13 +28,22 @@
  *  \brief      Add a tab on thirdparty view to list all products/services bought or sells by thirdparty
  */
 
+use DoliModules\Billing\Model\Commande;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\Contract\Model\ContratLigne;
+use DoliModules\Intervention\Model\Fichinter;
+use DoliModules\Product\Model\Product;
+use DoliModules\Proposal\Model\Propal;
+use DoliModules\Supplier\Model\CommandeFournisseur;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\SupplierProposal\Model\SupplierProposal;
+
 // Load Dolibarr environment
 require "../main.inc.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
-
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "bills", "orders", "suppliers", "propal", "interventions", "contracts", "products"));
@@ -242,7 +251,6 @@ $documentstaticline = '';
     $doc_number='f.id';
 }*/
 if ($type_element == 'fichinter') {     // Customer : show products from invoices
-    require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
     $documentstatic = new Fichinter($db);
     $sql_select = 'SELECT f.rowid as doc_id, f.ref as doc_number, \'1\' as doc_type, f.datec as dateprint, f.fk_statut as status, NULL as paid, ';
     $sql_select .= 'NULL as fk_product, NULL as info_bits, NULL as date_start, NULL as date_end, NULL as prod_qty, NULL as total_ht, ';
@@ -253,7 +261,6 @@ if ($type_element == 'fichinter') {     // Customer : show products from invoice
     $doc_number = 'f.ref';
 }
 if ($type_element == 'invoice') {   // Customer : show products from invoices
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
     $documentstatic = new Facture($db);
     $sql_select = 'SELECT f.rowid as doc_id, f.ref as doc_number, f.type as doc_type, f.datef as dateprint, f.fk_statut as status, f.paye as paid, d.fk_remise_except, ';
     $tables_from = MAIN_DB_PREFIX . "facture as f," . MAIN_DB_PREFIX . "facturedet as d";
@@ -265,7 +272,6 @@ if ($type_element == 'invoice') {   // Customer : show products from invoices
     $thirdTypeSelect = 'customer';
 }
 if ($type_element == 'propal') {
-    require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
     $documentstatic = new Propal($db);
     $sql_select = 'SELECT c.rowid as doc_id, c.ref as doc_number, \'1\' as doc_type, c.datep as dateprint, c.fk_statut as status, NULL as paid,';
     $tables_from = MAIN_DB_PREFIX . "propal as c," . MAIN_DB_PREFIX . "propaldet as d";
@@ -277,7 +283,6 @@ if ($type_element == 'propal') {
     $thirdTypeSelect = 'customer';
 }
 if ($type_element == 'order') {
-    require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
     $langs->load('sendings'); // delivery planned date
     $documentstatic = new Commande($db);
     $sql_select = 'SELECT c.rowid as doc_id, c.ref as doc_number, \'1\' as doc_type, c.date_commande as dateprint, c.fk_statut as status, NULL as paid, c.date_livraison as delivery_planned_date,';
@@ -290,7 +295,6 @@ if ($type_element == 'order') {
     $thirdTypeSelect = 'customer';
 }
 if ($type_element == 'supplier_invoice') {  // Supplier : Show products from invoices.
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
     $documentstatic = new FactureFournisseur($db);
     $sql_select = 'SELECT f.rowid as doc_id, f.ref as doc_number, \'1\' as doc_type, f.datef as dateprint, f.fk_statut as status, f.paye as paid, ';
     $tables_from = MAIN_DB_PREFIX . "facture_fourn as f," . MAIN_DB_PREFIX . "facture_fourn_det as d";
@@ -302,7 +306,6 @@ if ($type_element == 'supplier_invoice') {  // Supplier : Show products from inv
     $thirdTypeSelect = 'supplier';
 }
 if ($type_element == 'supplier_proposal') {
-    require_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';
     $documentstatic = new SupplierProposal($db);
     $sql_select = 'SELECT c.rowid as doc_id, c.ref as doc_number, \'1\' as doc_type, c.date_valid as dateprint, c.fk_statut as status, NULL as paid, ';
     $tables_from = MAIN_DB_PREFIX . "supplier_proposal as c," . MAIN_DB_PREFIX . "supplier_proposaldet as d";
@@ -314,7 +317,6 @@ if ($type_element == 'supplier_proposal') {
     $thirdTypeSelect = 'supplier';
 }
 if ($type_element == 'supplier_order') {    // Supplier : Show products from orders.
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
     $langs->load('sendings'); // delivery planned date
     $documentstatic = new CommandeFournisseur($db);
     $sql_select = 'SELECT c.rowid as doc_id, c.ref as doc_number, \'1\' as doc_type, c.date_valid as dateprint, c.fk_statut as status, NULL as paid, c.date_livraison as delivery_planned_date, ';
@@ -327,7 +329,6 @@ if ($type_element == 'supplier_order') {    // Supplier : Show products from ord
     $thirdTypeSelect = 'supplier';
 }
 if ($type_element == 'contract') {  // Order
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
     $documentstatic = new Contrat($db);
     $documentstaticline = new ContratLigne($db);
     $sql_select = 'SELECT c.rowid as doc_id, c.ref as doc_number, \'1\' as doc_type, c.date_contrat as dateprint, d.statut as status, NULL as paid,';
@@ -592,7 +593,6 @@ if ($sql_select) {
             </a>
             <?php
             if ($objp->description) {
-                require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
                 if ($objp->description == '(CREDIT_NOTE)' && $objp->fk_remise_except > 0) {
                     $discount = new DiscountAbsolute($db);
                     $discount->fetch($objp->fk_remise_except);

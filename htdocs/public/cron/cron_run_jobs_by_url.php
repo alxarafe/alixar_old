@@ -104,7 +104,6 @@ if (empty($userlogin)) {
     echo 'Userlogin is required.';
     exit;
 }
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 $user = new User($db);
 $result = $user->fetch('', $userlogin);
 if ($result < 0) {

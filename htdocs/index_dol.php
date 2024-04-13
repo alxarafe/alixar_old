@@ -27,6 +27,8 @@
  *  \brief      Dolibarr home page
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\Facture;
@@ -44,7 +46,6 @@ use DoliModules\Ticket\Model\Ticket;
 define('CSRFCHECK_WITH_TOKEN', 1); // We force need to use a token to login when making a POST
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 
 // If not defined, we select menu "home"
 $_GET['mainmenu'] = GETPOST('mainmenu', 'aZ09') ? GETPOST('mainmenu', 'aZ09') : 'home';

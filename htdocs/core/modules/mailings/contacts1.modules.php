@@ -307,7 +307,6 @@ class mailing_contacts1 extends MailingTargets
 
         // Choose language
         if (getDolGlobalInt('MAIN_MULTILANGS')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
             $formadmin = new FormAdmin($this->db);
             $s .= img_picto($langs->trans("DefaultLang"), 'language', 'class="pictofixedwidth"');
             $s .= $formadmin->select_language(GETPOST('filter_lang', 'aZ09'), 'filter_lang', 0, null, $langs->trans("DefaultLang"), 0, 0, '', 0, 0, 0, null, 1);

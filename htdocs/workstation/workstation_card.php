@@ -24,8 +24,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/resource/class/html.formresource.class.php';
 require_once DOL_DOCUMENT_ROOT . '/resource/class/dolresource.class.php';
 require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';

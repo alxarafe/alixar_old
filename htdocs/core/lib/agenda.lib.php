@@ -25,6 +25,11 @@
  * \brief       Set of function for the agenda module
  */
 
+use DoliCore\Form\FormActions;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormProjets;
+use DoliModules\Resource\Model\FormResource;
+
 
 /**
  * Show filter form in agenda view
@@ -133,7 +138,6 @@ function print_actions_filter(
     }
 
     if (isModEnabled('project') && $user->hasRight('projet', 'lire')) {
-        require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
         $formproject = new FormProjets($db);
 
         print '<div class="divsearchfield">';
@@ -143,8 +147,6 @@ function print_actions_filter(
     }
 
     if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
         $formother = new FormOther($db);
         $langs->load('categories');
 

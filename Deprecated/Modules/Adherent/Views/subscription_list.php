@@ -1,5 +1,8 @@
 <?php
 
+use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Adherent\Model\Subscription;
+
 $form = new Form($db);
 $subscription = new Subscription($db);
 $adherent = new Adherent($db);

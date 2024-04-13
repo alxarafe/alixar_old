@@ -26,7 +26,6 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_global_variable.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_global_variable_updater.class.php';
 

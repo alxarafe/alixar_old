@@ -29,10 +29,11 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
 use DoliModules\Company\Model\Company;
 
 require BASE_PATH . '/main.inc.php';
-require_once BASE_PATH . '/core/class/html.formother.class.php';
 
 // Load translation files required by the page
 $langs->load("companies");
@@ -202,7 +203,6 @@ $thirdpartygraph .= '</div>';
 
 $thirdpartycateggraph = '';
 if (isModEnabled('category') && getDolGlobalString('CATEGORY_GRAPHSTATS_ON_THIRDPARTIES')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
     $elementtype = 'societe';
 
     $thirdpartycateggraph = '<div class="div-table-responsive-no-min">';

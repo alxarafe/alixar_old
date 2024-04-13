@@ -27,11 +27,8 @@
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 if (isModEnabled('category')) {
-    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 }
 
 // Load translation files required by the page
@@ -172,7 +169,6 @@ if (empty($reshook)) {
         $errorgrouparray = array();
 
         if ($groupid > 0) {
-            require_once DOL_DOCUMENT_ROOT . '/user/class/usergroup.class.php';
             $usergroup = new UserGroup($db);
             $result = $usergroup->fetch($groupid);
             if ($result > 0) {

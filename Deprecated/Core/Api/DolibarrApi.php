@@ -24,7 +24,6 @@ namespace DoliCore\Api;
 use Luracast\Restler\Defaults;
 use Luracast\Restler\Restler;
 
-require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 
 /**
  * Class for API REST v1

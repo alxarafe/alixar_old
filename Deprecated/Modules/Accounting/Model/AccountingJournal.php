@@ -1041,7 +1041,6 @@ class AccountingJournal extends GenericDocument
     {
         if (!isset(self::$accounting_account_cached[$account])) {
             require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-            require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
             $accountingaccount = new AccountingAccount($this->db);
             $result = $accountingaccount->fetch(null, $account, true);
             if ($result > 0) {

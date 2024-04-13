@@ -575,7 +575,6 @@ if (!defined('NOLOGIN') && !defined('NOIPCHECK') && !empty($dolibarr_main_restri
 
 // Loading of additional presentation includes
 if (!defined('NOREQUIREHTML')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php'; // Need 660ko memory (800ko in 2.2)
 }
 
 if (!defined('NOREQUIREAJAX')) {

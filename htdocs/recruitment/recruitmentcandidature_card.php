@@ -24,9 +24,6 @@
 
 // Load Dolibarr environment
 require_once BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentjobposition.class.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentcandidature.class.php';
@@ -669,7 +666,6 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     $job = new RecruitmentJobPosition($db);
     $job->fetch($object->fk_recruitmentjobposition);
 
-    require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
     $recruiter = new User($db);
     $recruiter->fetch($job->fk_user_recruiter);
 

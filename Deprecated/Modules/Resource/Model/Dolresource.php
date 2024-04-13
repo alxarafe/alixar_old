@@ -30,6 +30,7 @@ namespace DoliModules\Resource\Model;
 use CommonPeople;
 use DoliCore\Base\GenericDocument;
 use DoliDB;
+use ExtraFields;
 
 require_once DOL_DOCUMENT_ROOT . "/core/lib/functions2.lib.php";
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';

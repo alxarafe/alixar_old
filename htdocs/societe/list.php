@@ -15,6 +15,7 @@
  * Copyright (C) 2021       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2022       Anthony Berton          <anthony.berton@bb2a.fr>
  * Copyright (C) 2023       William Mead            <william.mead@manchenumerique.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,15 +37,19 @@
  *  \brief      Page to show list of third parties
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCategory;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Client;
 use DoliModules\Company\Model\Company;
 
+// Load Dolibarr environment
 require_once BASE_PATH . '/main.inc.php';
 include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "commercial", "customers", "suppliers", "bills", "compta", "categories", "cashdesk"));
@@ -337,7 +342,6 @@ if ($action == "change" && $user->hasRight('takepos', 'run')) { // Change custom
     $result = $db->query($sql);
     $num_lines = $db->num_rows($result);
     if ($num_lines == 0) {
-        require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
         $invoice = new Facture($db);
         $constforthirdpartyid = 'CASHDESK_ID_THIRDPARTY' . $_SESSION["takeposterminal"];
         $invoice->socid = getDolGlobalInt($constforthirdpartyid);

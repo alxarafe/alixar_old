@@ -45,7 +45,6 @@ namespace DoliCore\Base;
 
 use Alxarafe\Base\Exception;
 use Alxarafe\Base\stdClass;
-use Categorie;
 use Commande;
 use CommandeFournisseur;
 use CommandeFournisseurLigne;
@@ -57,12 +56,13 @@ use DiscountAbsolute;
 use DolEditor;
 use DoliDB;
 use DoliModules\Billing\Model\OrderLine;
+use DoliModules\Category\Model\Categorie;
 use EcmFiles;
 use Extrafields;
 use Facture;
 use FactureFournisseur;
 use FactureLigne;
-use Form;
+use DoliCore\Form\Form;
 use Interfaces;
 use MultiCurrency;
 use Product;
@@ -1817,7 +1817,6 @@ abstract class GenericDocument
             return 0;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         $contact = new Contact($this->db);
         $result = $contact->fetch($contactid);
         $this->contact = $contact;
@@ -1838,7 +1837,6 @@ abstract class GenericDocument
             return 0;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $idtofetch = isset($this->socid) ? $this->socid : (isset($this->fk_soc) ? $this->fk_soc : 0);
         if ($force_thirdparty_id) {
@@ -7152,7 +7150,6 @@ abstract class GenericDocument
         global $conf, $langs, $form;
 
         if (!is_object($form)) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
             $form = new Form($this->db);
         }
 
@@ -7552,7 +7549,6 @@ abstract class GenericDocument
                         print 'Error in request ' . $sql . ' ' . $this->db->lasterror() . '. Check setup of extra parameters.<br>';
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                     $data = $form->select_all_categories(Categorie::$MAP_ID_TO_CODE[$InfoFieldList[5]], '', 'parent', 64, $InfoFieldList[6], 1, 1);
                     $out .= '<option value="0">&nbsp;</option>';
                     foreach ($data as $data_key => $data_value) {
@@ -7726,7 +7722,6 @@ abstract class GenericDocument
                         print 'Error in request ' . $sql . ' ' . $this->db->lasterror() . '. Check setup of extra parameters.<br>';
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
                     $data = $form->select_all_categories(Categorie::$MAP_ID_TO_CODE[$InfoFieldList[5]], '', 'parent', 64, $InfoFieldList[6], 1, 1);
                     $out = $form->multiselectarray($keyprefix . $key . $keysuffix, $data, $value_arr, '', 0, $morecss, 0, '100%');
                 }
@@ -7853,7 +7848,6 @@ abstract class GenericDocument
         global $conf, $langs, $form;
 
         if (!is_object($form)) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
             $form = new Form($this->db);
         }
 
@@ -8078,7 +8072,6 @@ abstract class GenericDocument
                         }
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
                     $toprint = array();
                     $obj = $this->db->fetch_object($resql);
@@ -8180,7 +8173,6 @@ abstract class GenericDocument
                         }
                     }
                 } else {
-                    require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
                     $toprint = array();
                     while ($obj = $this->db->fetch_object($resql)) {
@@ -9024,7 +9016,6 @@ abstract class GenericDocument
             // Get cost price for margin calculation
             if (!empty($fk_product) && $fk_product > 0) {
                 if (getDolGlobalString('MARGIN_TYPE') == 'costprice') {
-                    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
                     $product = new Product($this->db);
                     $result = $product->fetch($fk_product);
                     if ($result <= 0) {
@@ -9037,7 +9028,6 @@ abstract class GenericDocument
                         $buyPrice = $product->pmp;
                     }
                 } elseif (getDolGlobalString('MARGIN_TYPE') == 'pmp') {
-                    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
                     $product = new Product($this->db);
                     $result = $product->fetch($fk_product);
                     if ($result <= 0) {
@@ -9050,7 +9040,6 @@ abstract class GenericDocument
                 }
 
                 if (empty($buyPrice) && isset($conf->global->MARGIN_TYPE) && in_array($conf->global->MARGIN_TYPE, array('1', 'pmp', 'costprice'))) {
-                    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
                     $productFournisseur = new ProductFournisseur($this->db);
                     if (($result = $productFournisseur->find_min_price_product_fournisseur($fk_product)) > 0) {
                         $buyPrice = $productFournisseur->fourn_unitprice;
@@ -10595,7 +10584,6 @@ abstract class GenericDocument
      */
     public function getCategoriesCommon($type_categ)
     {
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         // Get current categories
         $c = new Categorie($this->db);
@@ -10625,7 +10613,6 @@ abstract class GenericDocument
 
         dol_syslog(get_class($this) . "::setCategoriesCommon Object Id:" . $this->id . ' type_categ:' . $type_categ . ' nb tag add:' . count($categories), LOG_DEBUG);
 
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         if (empty($type_categ)) {
             dol_syslog(__METHOD__ . ': Type ' . $type_categ . 'is an unknown category type. Done nothing.', LOG_ERR);
@@ -10699,7 +10686,6 @@ abstract class GenericDocument
             $type = $this->table_element;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         $categorystatic = new Categorie($this->db);
 
         $sql = "INSERT INTO " . $this->db->prefix() . "categorie_" . (empty($categorystatic->MAP_CAT_TABLE[$type]) ? $type : $categorystatic->MAP_CAT_TABLE[$type]) . " (fk_categorie, fk_product)";

@@ -249,7 +249,6 @@ class IntracommReport extends GenericDocument
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         $sql = $this->getSQLFactLines($type, $period_reference, $exporttype);
 
