@@ -69,7 +69,6 @@ class box_commandes extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $commandestatic = new Commande($this->db);

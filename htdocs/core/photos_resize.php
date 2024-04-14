@@ -4,6 +4,7 @@
  * Copyright (C) 2009		Meos
  * Copyright (C) 2012		Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2016		Juanjo Menent		<jmenent@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +27,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Ticket\Model\Ticket;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
@@ -211,7 +214,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->$modulepart->dir_output; // By default
     }
 } elseif ($modulepart == 'ticket') {
-    require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
     $object = new Ticket($db);
     if ($id > 0) {
         $result = $object->fetch($id);

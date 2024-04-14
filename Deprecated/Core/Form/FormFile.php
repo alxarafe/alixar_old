@@ -1814,10 +1814,8 @@ public $infofiles;
             include_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';
             $object_instance = new SupplierProposal($this->db);
         } elseif ($modulepart == 'order') {
-            include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
             $object_instance = new Commande($this->db);
         } elseif ($modulepart == 'order_supplier') {
-            include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
             $object_instance = new CommandeFournisseur($this->db);
         } elseif ($modulepart == 'contract') {
             include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';

@@ -2,7 +2,8 @@
 
 /* Copyright (C) 2013-2016  Jean-François FERRY     <hello@librethic.io>
  * Copyright (C) 2019       Nicolas ZABOURI         <info@inovea-conseil.com>
- * Copyright (C) 2021-2024	Frédéric France				<frederic.france@netlogic.fr>
+ * Copyright (C) 2021-2024	Frédéric France			<frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +25,14 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Ticket\Model\Ticket;
+use DoliModules\Ticket\Model\TicketStats;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/ticket/class/actions_ticket.class.php';
-require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticketstats.class.php';
-
 
 $hookmanager = new HookManager($db);
 
@@ -69,15 +72,11 @@ if (!$user->hasRight('ticket', 'read') && !$user->hasRight('knowledgemanagement'
     accessforbidden('Not enough permissions');
 }
 
-
-
 /*
  * Actions
  */
 
 // None
-
-
 
 /*
  * View

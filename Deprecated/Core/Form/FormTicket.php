@@ -1,11 +1,11 @@
 <?php
 
-/* Copyright (C) 2013-2015 Jean-François FERRY     <hello@librethic.io>
- * Copyright (C) 2016      Christophe Battarel     <christophe@altairis.fr>
- * Copyright (C) 2019-2022 Frédéric France         <frederic.france@netlogic.fr>
- * Copyright (C) 2021      Juanjo Menent           <jmenent@2byte.es>
- * Copyright (C) 2021      Alexandre Spangaro      <aspangaro@open-dsi.fr>
- * Copyright (C) 2023      Charlene Benke	       <charlene.r@patas-monkey.com>
+/* Copyright (C) 2013-2015  Jean-François FERRY     <hello@librethic.io>
+ * Copyright (C) 2016       Christophe Battarel     <christophe@altairis.fr>
+ * Copyright (C) 2019-2022  Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2021       Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2021       Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2023       Charlene Benke	        <charlene.r@patas-monkey.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,13 +24,17 @@
 
 namespace DoliCore\Form;
 
+use DoliDB;
+use DoliModules\Company\Model\Company;
+use DoliModules\Ticket\Model\Ticket;
+use ExtraFields;
+
 /**
  *    \file       htdocs/core/class/html.formticket.class.php
  *    \ingroup    ticket
  *    \brief      File of class to generate the form for creating a new ticket.
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
 
 if (!class_exists('FormCompany')) {
     include DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';

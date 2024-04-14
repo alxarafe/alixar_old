@@ -5,7 +5,8 @@
  * Copyright (C) 2014      Marcos García       <marcosgdf@gmail.com>
  * Copyright (C) 2022      Ferran Marcet       <fmarcet@2byte.es>
  * Copyright (C) 2023      Alexandre Janniaux  <alexandre.janniaux@gmail.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,7 +87,6 @@ class InterfaceWorkflowManager extends DolibarrTriggers
                     return $ret;
                 }
 
-                include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
                 $newobject = new Commande($this->db);
 
                 $newobject->context['createfrompropal'] = 'createfrompropal';

@@ -139,7 +139,6 @@ if ($id > 0 && $removeelem > 0 && $action == 'unlink') {
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'user';
     } elseif ($type == Categorie::TYPE_TICKET && $user->hasRight('ticket', 'write')) {
-        require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
         $tmpobject = new Ticket($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'ticket';
@@ -189,7 +188,6 @@ if (
         $newobject = new Company($db);
         $elementtype = 'supplier';
     } elseif ($type == Categorie::TYPE_TICKET) {
-        require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
         $newobject = new Ticket($db);
         $elementtype = 'ticket';
     } elseif ($type == Categorie::TYPE_PROJECT) {

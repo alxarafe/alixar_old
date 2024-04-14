@@ -1425,7 +1425,6 @@ class Reception extends GenericDocument
     {
         global $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
         include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
         $now = dol_now();
 

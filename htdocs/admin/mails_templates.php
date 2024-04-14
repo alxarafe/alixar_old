@@ -13,6 +13,7 @@
  * Copyright (C) 2015       Ferran Marcet           <fmarcet@2byte.es>
  * Copyright (C) 2016       Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2018-2023  Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,13 +35,16 @@
  *      \brief      Page to administer emails templates
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormMail;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
 
 // Load translation files required by the page
 $langsArray = array("errors", "admin", "mails", "languages");
@@ -134,7 +138,6 @@ $tabcond[25] = true;
 
 // List of help for fields
 // Set MAIN_EMAIL_TEMPLATES_FOR_OBJECT_LINES to allow edit of template for lines
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
 $formmail = new FormMail($db);
 if (!getDolGlobalString('MAIN_EMAIL_TEMPLATES_FOR_OBJECT_LINES')) {
     $tmp = FormMail::getAvailableSubstitKey('formemail');

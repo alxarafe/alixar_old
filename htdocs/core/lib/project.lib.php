@@ -6,7 +6,8 @@
  * Copyright (C) 2018-2024 Frédéric France      <frederic.france@netlogic.fr>
  * Copyright (C) 2022      Charlene Benke       <charlene@patas-monkey.com>
  * Copyright (C) 2023      Gauthier VERDOL      <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -214,7 +215,6 @@ function project_prepare_head(Project $project, $moreparam = '')
     }
 
     if (isModEnabled('ticket') && $user->hasRight('ticket', 'read')) {
-        require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
         $Tickettatic = new Ticket($db);
         $nbTicket = $Tickettatic->getCountOfItemsLinkedByObjectID($project->id, 'fk_project', 'ticket');
         $head[$h][0] = DOL_URL_ROOT . '/ticket/list.php?projectid=' . ((int) $project->id);

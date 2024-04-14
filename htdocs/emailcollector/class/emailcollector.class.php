@@ -43,7 +43,7 @@ require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';        
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentcandidature.class.php';   // Recruiting
 require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';                      // Third-Party
 require_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';  // Supplier Proposal
-require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';                        // Ticket
+//require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';                        // Ticket
 //require_once DOL_DOCUMENT_ROOT .'/expensereport/class/expensereport.class.php';        // Expense Report
 //require_once DOL_DOCUMENT_ROOT .'/holiday/class/holiday.class.php';                    // Holidays (leave request)
 

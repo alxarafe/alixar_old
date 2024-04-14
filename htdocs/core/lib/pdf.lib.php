@@ -15,7 +15,8 @@
  * Copyright (C) 2020       Nicolas ZABOURI         <info@inovea-conseil.com>
  * Copyright (C) 2021-2022	Anthony Berton       	<anthony.berton@bb2a.fr>
  * Copyright (C) 2023       Frédéric France         <frederic.france@netlogic.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -2535,7 +2536,6 @@ function pdf_getLinkedObjects(&$object, $outputlangs)
                     if (empty($object->linkedObjects['commande']) && $object->element != 'commande') {    // There is not already a link to order and object is not the order, so we show also info with order
                         $elementobject->fetchObjectLinked(null, '', null, '', 'OR', 1, 'sourcetype', 0);
                         if (!empty($elementobject->linkedObjectsIds['commande'])) {
-                            include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
                             $order = new Commande($db);
                             $ret = $order->fetch(reset($elementobject->linkedObjectsIds['commande']));
                             if ($ret < 1) {
@@ -2558,7 +2558,6 @@ function pdf_getLinkedObjects(&$object, $outputlangs)
                 if (empty($object->linkedObjects['commande']) && $object->element != 'commande') {    // There is not already a link to order and object is not the order, so we show also info with order
                     $elementobject->fetchObjectLinked(null, '', null, '', 'OR', 1, 'sourcetype', 0);
                     if (!empty($elementobject->linkedObjectsIds['commande'])) {
-                        include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
                         $order = new Commande($db);
                         $ret = $order->fetch(reset($elementobject->linkedObjectsIds['commande']));
                         if ($ret < 1) {

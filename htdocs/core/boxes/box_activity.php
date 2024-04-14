@@ -186,7 +186,6 @@ class box_activity extends GenericBoxes
 
         // list the summary of the orders
         if (isModEnabled('order') && $user->hasRight("commande", "lire")) {
-            include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
             $commandestatic = new Commande($this->db);
 
             $langs->load("orders");

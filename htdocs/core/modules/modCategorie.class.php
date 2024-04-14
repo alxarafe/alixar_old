@@ -1,10 +1,11 @@
 <?php
 
-/* Copyright (C) 2005      Matthieu Valleton    <mv@seeschloss.org>
- * Copyright (C) 2005-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2012-2016 Juanjo Menent		<jmenent@2byte.es>
- * Copyright (C) 2020      Stéphane Lesage		<stephane.lesage@ateis.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2005       Matthieu Valleton       <mv@seeschloss.org>
+ * Copyright (C) 2005-2014  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2012-2016  Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2020       Stéphane Lesage		    <stephane.lesage@ateis.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,8 @@
  *      \ingroup    category
  *      \brief      Description and activation file for the module Category
  */
+
+use DoliModules\Category\Model\Categorie;
 
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';

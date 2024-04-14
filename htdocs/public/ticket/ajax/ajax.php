@@ -1,7 +1,8 @@
 <?php
 
-/**
- * Copyright (C) 2020 Laurent Destailleur <eldy@users.sourceforge.net>
+/*
+ * Copyright (C) 2020       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,8 @@
  *  This ajax component is called only by the create ticket public page. And only if TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST is set.
  *  This option TICKET_CREATE_THIRD_PARTY_WITH_CONTACT_IF_NOT_EXIST has been removed because it is a security hole.
  */
+
+use DoliModules\Ticket\Model\Ticket;
 
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1'); // Disables token renewal
@@ -80,8 +83,6 @@ if ($action == 'getContacts') {
     );
 
     if (!empty($email)) {
-        require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
-
         $ticket = new Ticket($db);
         $arrayofcontacts = $ticket->searchContactByEmail($email);
         if (is_array($arrayofcontacts)) {

@@ -1,5 +1,9 @@
 <?php
 
+global $db;
+
+use DoliCore\Lib\Misc;
+
 '@phan-var-force DolibarrModules $this';
 
 if (empty($keyforclass) || empty($keyforclassfile) || empty($keyforelement)) {
@@ -11,10 +15,13 @@ if (empty($keyforalias)) {
     $keyforalias = 't';
 }
 
-dol_include_once($keyforclassfile);
-if (class_exists($keyforclass)) {
+$tmpobject = Misc::loadModel($keyforclass, $db);
+if (!isset($tmpobject)) {
+    dol_include_once($keyforclassfile);
     $tmpobject = new $keyforclass($this->db);
+}
 
+if (isset($tmpobject)) {
     // Add common fields
     foreach ($tmpobject->fields as $keyfield => $valuefield) {
         $fieldname = $keyforalias . '.' . $keyfield;
@@ -60,7 +67,7 @@ if (class_exists($keyforclass)) {
         }
     }
 } else {
-    dump([$keyforclass]);
+    dump(['Error in commonfieldsinexport.inc.php' => $keyforclass]);
     dol_print_error($this->db, 'Failed to find class ' . $keyforclass . ', even after the include of ' . $keyforclassfile);
 }
 // End add common fields

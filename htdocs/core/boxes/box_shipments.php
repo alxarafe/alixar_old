@@ -71,7 +71,6 @@ class box_shipments extends GenericBoxes
         $this->max = $max;
 
         include_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
         include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $shipmentstatic = new Expedition($this->db);

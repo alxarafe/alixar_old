@@ -2591,7 +2591,6 @@ class ActionComm extends GenericDocument
         $resql = $this->db->query($sql);
 
         if ($resql) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
             $formmail = new FormMail($this->db);
 
             while ($obj = $this->db->fetch_object($resql)) {

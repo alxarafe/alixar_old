@@ -1,10 +1,11 @@
 <?php
 
-/* Copyright (C) 2003-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2011 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2011      Juanjo Menent	    <jmenent@2byte.es>
- * Copyright (C) 2013	   Philippe Grand	    <philippe.grand@atoo-net.com>
+/* Copyright (C) 2003-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2011  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2011       Juanjo Menent	        <jmenent@2byte.es>
+ * Copyright (C) 2013	    Philippe Grand	        <philippe.grand@atoo-net.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,8 @@
  *  \ingroup    expedition
  *  \brief      Description and activation file for the module Expedition
  */
+
+use DoliModules\Billing\Model\Commande;
 
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
@@ -230,7 +233,6 @@ class modExpedition extends DolibarrModules
         //--------
         $r = 0;
 
-        include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
         $shipment = new Commande($this->db);
         $contact_arrays = $shipment->liste_type_contact('external', '', 0, 0, '');
         if (is_array($contact_arrays) && count($contact_arrays) > 0) {

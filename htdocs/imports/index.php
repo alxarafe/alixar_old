@@ -1,6 +1,7 @@
 <?php
 
-/* Copyright (C) 2005-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2005-2015  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,8 @@
  *       \ingroup    import
  *       \brief      Home page of import wizard
  */
+
+use DoliCore\Form\Form;
 
 require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/imports/class/import.class.php';

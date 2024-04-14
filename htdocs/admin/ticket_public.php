@@ -1,7 +1,8 @@
 <?php
 
-/* Copyright (C) 2013-2018  Jean-François FERRY <hello@librethic.io>
- * Copyright (C) 2016		Christophe Battarel	<christophe@altairis.fr>
+/* Copyright (C) 2013-2018  Jean-François FERRY     <hello@librethic.io>
+ * Copyright (C) 2016		Christophe Battarel	    <christophe@altairis.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +27,6 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
-require_once DOL_DOCUMENT_ROOT . "/ticket/class/ticket.class.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/ticket.lib.php";
 
 // Load translation files required by the page

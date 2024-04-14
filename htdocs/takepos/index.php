@@ -1,9 +1,10 @@
 <?php
 
-/* Copyright (C) 2018   Andreu Bisquerra    <jove@bisquerra.com>
- * Copyright (C) 2019	Josep Lluís Amador	<joseplluis@lliuretic.cat>
- * Copyright (C) 2020	Thibault FOUCART	<support@ptibogxiv.net>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2018       Andreu Bisquerra        <jove@bisquerra.com>
+ * Copyright (C) 2019	    Josep Lluís Amador	    <joseplluis@lliuretic.cat>
+ * Copyright (C) 2020	    Thibault FOUCART	    <support@ptibogxiv.net>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +30,9 @@
 // if (! defined('NOREQUIREDB'))        define('NOREQUIREDB','1');          // Not disabled cause need to load personalized language
 // if (! defined('NOREQUIRESOC'))       define('NOREQUIRESOC','1');
 // if (! defined('NOREQUIRETRAN'))      define('NOREQUIRETRAN','1');
+
+use DoliCore\Form\Form;
+use DoliModules\Category\Model\Categorie;
 
 if (!defined('NOREQUIREMENU')) {
     define('NOREQUIREMENU', '1');
@@ -104,8 +108,6 @@ $term = empty($_SESSION['takeposterminal']) ? 1 : $_SESSION['takeposterminal'];
 
 // Security check
 $result = restrictedArea($user, 'takepos', 0, '');
-
-
 
 /*
  * View

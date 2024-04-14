@@ -68,7 +68,6 @@ class box_graph_orders_supplier_permonth extends GenericBoxes
 
         $refreshaction = 'refresh_' . $this->boxcode;
 
-        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 
         $startmonth = $conf->global->SOCIETE_FISCAL_MONTH_START ? ($conf->global->SOCIETE_FISCAL_MONTH_START) : 1;
         if (!getDolGlobalString('GRAPH_USE_FISCAL_YEAR')) {

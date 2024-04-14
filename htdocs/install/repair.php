@@ -845,10 +845,8 @@ if ($ok && GETPOST('clean_orphelin_dir', 'alpha')) {
             include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
             $object_instance = new Propal($db);
         } elseif ($modulepart == 'order') {
-            include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
             $object_instance = new Commande($db);
         } elseif ($modulepart == 'order_supplier') {
-            include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
             $object_instance = new CommandeFournisseur($db);
         } elseif ($modulepart == 'contract') {
             include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';

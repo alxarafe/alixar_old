@@ -34,6 +34,7 @@ namespace DoliModules\Ticket\Model;
 
 // Put here all includes required by your class file
 use DoliCore\Base\GenericDocument;
+use DoliCore\Base\Config;
 use WorkboardResponse;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
@@ -334,9 +335,9 @@ const STATUS_CANCELED = 9;
      *
      * @param DoliDB $db Database handler
      */
-    public function __construct($db)
+    public function __construct($db = null)
     {
-        $this->db = $db;
+        $this->db = $db ?? Config::getDb();
 
         $this->labelStatusShort = [
             self::STATUS_NOT_READ => 'Unread',

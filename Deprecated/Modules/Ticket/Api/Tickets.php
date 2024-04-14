@@ -23,7 +23,6 @@ namespace DoliModules\Ticket\Api;
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
 
 

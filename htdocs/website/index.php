@@ -1,8 +1,9 @@
 <?php
 
-/* Copyright (C) 2016-2023 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2020 	   Nicolas ZABOURI		<info@inovea-conseil.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2016-2023  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2020 	    Nicolas ZABOURI		    <info@inovea-conseil.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,11 @@
 /** @phan-file-suppress PhanPluginSuspiciousParamPosition */
 
 // We allow POST of rich content with js and style, but only for this php file and if into some given POST variable
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormWebsite;
+
 define('NOSCANPOSTFORINJECTION', array('PAGE_CONTENT', 'WEBSITE_CSS_INLINE', 'WEBSITE_JS_INLINE', 'WEBSITE_HTML_HEADER', 'htmlheader'));
 
 define('USEDOLIBARREDITOR', 1);
@@ -45,7 +51,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/website.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/website2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formwebsite.class.php';
 require_once DOL_DOCUMENT_ROOT . '/website/class/website.class.php';
 require_once DOL_DOCUMENT_ROOT . '/website/class/websitepage.class.php';
 

@@ -31,7 +31,9 @@
 // if (! defined('NOREQUIRESOC'))       define('NOREQUIRESOC', '1');
 // if (! defined('NOREQUIRETRAN'))      define('NOREQUIRETRAN', '1');
 
+use DoliCore\Form\Form;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
 
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1');
@@ -1102,7 +1104,6 @@ if (empty($reshook)) {
         }
     }
 }
-
 
 /*
  * View

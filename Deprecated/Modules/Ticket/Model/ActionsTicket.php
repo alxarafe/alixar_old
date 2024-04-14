@@ -28,7 +28,6 @@ namespace DoliModules\Ticket\Model;
  *    \brief      File Class ticket
  */
 
-require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';

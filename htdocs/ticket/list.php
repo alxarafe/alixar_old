@@ -29,12 +29,15 @@
  *    \brief    List page for tickets
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormTicket;
 use DoliCore\Lib\Fields;
+use DoliModules\Company\Model\Company;
+use DoliModules\Ticket\Model\Ticket;
+use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/ticket/class/actions_ticket.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formticket.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';

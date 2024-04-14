@@ -30,7 +30,6 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . "/core/class/html.formcategory.class.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/ticket.lib.php";
-require_once DOL_DOCUMENT_ROOT . "/ticket/class/ticket.class.php";
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "ticket"));

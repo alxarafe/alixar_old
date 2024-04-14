@@ -35,7 +35,6 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formaccounting.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';

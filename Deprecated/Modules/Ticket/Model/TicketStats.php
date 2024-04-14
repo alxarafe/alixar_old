@@ -19,6 +19,8 @@
 
 namespace DoliModules\Ticket\Model;
 
+use DoliCore\Base\Stats;
+
 /**
  *       \file       /ticket/class/ticketstats.class.php
  *       \ingroup    ticket
@@ -26,8 +28,6 @@ namespace DoliModules\Ticket\Model;
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
-require_once 'ticket.class.php';
-
 
 /**
  * Class to manage the ticket stats

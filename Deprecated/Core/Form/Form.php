@@ -8441,7 +8441,6 @@ class Form
             $placeholder = '';
 
             if ($selected && empty($selected_input_value)) {
-                require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
                 $tickettmpselect = new Ticket($this->db);
                 $tickettmpselect->fetch($selected);
                 $selected_input_value = $tickettmpselect->ref;
@@ -8537,7 +8536,6 @@ class Form
         dol_syslog(get_class($this) . "::selectTicketsList search tickets", LOG_DEBUG);
         $result = $this->db->query($sql);
         if ($result) {
-            require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
 
             $num = $this->db->num_rows($result);

@@ -4,7 +4,8 @@
  * Copyright (C) 2011-2018      Philippe Grand	    <philippe.grand@atoo-net.com>
  * Copyright (C) 2018		    Charlene Benke		<charlie@patas-monkey.com>
  * Copyright (C) 2018			Frédéric France         <frederic.france@netlogic.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
