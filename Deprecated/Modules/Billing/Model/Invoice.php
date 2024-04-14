@@ -505,7 +505,6 @@ class Invoice extends CommonInvoice
         if ($this->fac_rec > 0) {
             $this->fk_fac_rec_source = $this->fac_rec;
 
-            require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
             $_facrec = new FactureRec($this->db);
             $result = $_facrec->fetch($this->fac_rec);
             $result = $_facrec->fetchObjectLinked(null, '', null, '', 'OR', 1, 'sourcetype', 0); // This load $_facrec->linkedObjectsIds

@@ -1,7 +1,8 @@
 <?php
 
-/* Copyright (C) 2017       ATM-Consulting       <support@atm-consulting.fr>
- * Copyright (C) 2020		Maxime DEMAREST  	 <maxime@indelog.fr>
+/* Copyright (C) 2017       ATM-Consulting          <support@atm-consulting.fr>
+ * Copyright (C) 2020		Maxime DEMAREST  	    <maxime@indelog.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,9 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/rapport/pdf_paiement_fourn.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';

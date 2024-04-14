@@ -30,7 +30,10 @@
  *      \ingroup    invoice
  */
 
+use DoliCore\Form\FormFile;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
+use DoliModules\Supplier\Model\FactureFournisseur;
 
 /**
  * Initialize the array of tabs for customer invoice

@@ -8,6 +8,7 @@
  * Copyright (C) 2020       Tobias Sekan            <tobias.sekan@startmail.com>
  * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021-2023  Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,10 +31,14 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormSocialContrib;
+use DoliModules\Project\Model\Project;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsocialcontrib.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
 // Load translation files required by the page

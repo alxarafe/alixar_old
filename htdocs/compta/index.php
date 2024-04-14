@@ -33,9 +33,15 @@
  *  \brief      Main page of accountancy area
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
+use DoliModules\Donation\Model\Don;
+use DoliModules\Supplier\Model\FactureFournisseur;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';

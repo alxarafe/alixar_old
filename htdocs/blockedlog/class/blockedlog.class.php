@@ -259,7 +259,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'payment_supplier') {
-            require_once DOL_DOCUMENT_ROOT . '/fourn/class/paiementfourn.class.php';
 
             $object = new PaiementFourn($this->db);
             if ($object->fetch($this->fk_object) > 0) {

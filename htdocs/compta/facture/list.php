@@ -40,23 +40,27 @@
  *  \brief      List of customer invoices
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormMargin;
+use DoliCore\Form\FormOther;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Project\Model\Project;
+use DoliModules\User\Model\User;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-if (isModEnabled('margin')) {
-}
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-if (isModEnabled('order')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array('bills', 'companies', 'products', 'categories'));

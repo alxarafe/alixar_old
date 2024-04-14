@@ -16,6 +16,7 @@
  * Copyright (C) 2019-2023	Alexandre Spangaro		<aspangaro@easya.solutions>
  * Copyright (C) 2023		Nick Fragoulis
  * Copyright (C) 2023		Joachim Kueter		    <git-jk@bloxera.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +37,17 @@
  *       \ingroup    fournisseur,facture
  *       \brief      List of suppliers invoices
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Project\Model\Project;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\Supplier\Model\Supplier;
+use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

@@ -34,7 +34,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 if (isModEnabled('project')) {
     include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
     //include_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';

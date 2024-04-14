@@ -10,6 +10,7 @@
  * Copyright (C) 2018-2021	Ferran Marcet			<fmarcet@2byte.es>
  * Copyright (C) 2018		Charlene Benke			<charlie@patas-monkey.com>
  * Copyright (C) 2020		Tobias Sekan			<tobias.sekan@startmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,12 +32,15 @@
  *  \brief      Payment page for customer invoices
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Company\Model\Company;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bills', 'banks', 'compta', 'companies'));

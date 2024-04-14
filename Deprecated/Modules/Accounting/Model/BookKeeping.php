@@ -36,7 +36,6 @@ use DoliDB;
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/fiscalyear.class.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
 
 /**

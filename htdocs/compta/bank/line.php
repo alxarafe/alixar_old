@@ -408,7 +408,6 @@ if ($result) {
                     print '</a>';*/
                     print $paymenttmp->getNomUrl(1);
                 } elseif ($links[$key]['type'] == 'payment_supplier') {
-                    require_once DOL_DOCUMENT_ROOT . '/fourn/class/paiementfourn.class.php';
                     $paymenttmp = new PaiementFourn($db);
                     $paymenttmp->fetch($links[$key]['url_id']);
                     $paymenttmp->ref = $langs->trans("Payment") . ' ' . $paymenttmp->ref;

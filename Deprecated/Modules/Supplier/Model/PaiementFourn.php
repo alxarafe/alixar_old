@@ -29,6 +29,8 @@
 
 namespace DoliModules\Supplier\Model;
 
+use Paiement;
+
 /**
  *      \file       htdocs/fourn/class/paiementfourn.class.php
  *      \ingroup    fournisseur, facture

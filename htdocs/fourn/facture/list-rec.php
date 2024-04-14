@@ -31,9 +31,15 @@
  *  \brief      Page to show list of template/recurring invoices
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormProjets;
+use DoliModules\Company\Model\Company;
+use DoliModules\Supplier\Model\FactureFournisseurRec;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture-rec.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';

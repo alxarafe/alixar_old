@@ -58,7 +58,6 @@ if (isModEnabled('shipping')) {
 if (isModEnabled('expensereport')) {
 }
 if (isModEnabled('invoice')) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 }
 if (isModEnabled('intervention')) {
 }

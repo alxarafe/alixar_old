@@ -41,7 +41,6 @@ if (isModEnabled("propal")) {
 if (isModEnabled('invoice')) {
 }
 if (isModEnabled('invoice')) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture-rec.class.php';
 }
 if (isModEnabled('order')) {
 }

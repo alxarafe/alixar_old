@@ -51,7 +51,6 @@ require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 require_once DOL_DOCUMENT_ROOT . '/don/class/paymentdonation.class.php';
 require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/paiementfourn.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/cheque/class/remisecheque.class.php';
 
 // Load translation files required by the page

@@ -37,11 +37,16 @@
  *  \brief      Page for supplier invoice card (view, edit, validate)
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\Supplier\Model\FactureFournisseurRec;
+use DoliModules\Supplier\Model\PaiementFourn;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_invoice/modules_facturefournisseur.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture-rec.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/paiementfourn.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
@@ -50,14 +55,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 if (isModEnabled("product")) {
     require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 }
-if (isModEnabled('project')) {
-}
-
-if (isModEnabled('variants')) {
-}
-if (isModEnabled('accounting')) {
-}
-
 
 $langs->loadLangs(array('bills', 'compta', 'suppliers', 'companies', 'products', 'banks', 'admin'));
 if (isModEnabled('incoterm')) {
