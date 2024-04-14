@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2023 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +17,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliCore\Base;
+
 /**
  *  \file       htdocs/core/class/commondict.class.php
  *  \ingroup    core
@@ -24,7 +27,9 @@
 
 
 /**
- *  Parent class of all other dictionary classes
+ * Parent class of all other dictionary classes
+ *
+ * @deprecated This class is only needed for compatibility with Dolibarr.
  */
 abstract class CommonDict
 {
@@ -42,7 +47,7 @@ abstract class CommonDict
     /**
      * @var string[]    Array of error strings
      */
-    public $errors = array();
+    public $errors = [];
 
     /**
      * @var int         The object identifier

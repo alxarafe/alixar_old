@@ -30,6 +30,8 @@
  *      \brief      Set of function to manage users, groups and permissions
  */
 
+use DoliCore\Form\FormOther;
+
 /**
  * Prepare array with list of tabs
  *

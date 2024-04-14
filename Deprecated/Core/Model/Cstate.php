@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2016 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +17,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliCore\Model;
+
+use DoliCore\Base\CommonDict;
+
 /**
  *      \file       htdocs/core/class/cstate.class.php
  *      \ingroup    core
@@ -23,7 +28,6 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commondict.class.php';
 
 
 /**
@@ -58,7 +62,7 @@ class Cstate extends CommonDict
     /**
      *  Constructor
      *
-     *  @param      DoliDB      $db      Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct($db)
     {
@@ -69,9 +73,10 @@ class Cstate extends CommonDict
     /**
      *  Create object into database
      *
-     *  @param      User    $user        User that create
-     *  @param      int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return     int                  Return integer <0 if KO, Id of created object if OK
+     * @param User $user      User that create
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return     int                  Return integer <0 if KO, Id of created object if OK
      */
     public function create($user, $notrigger = 0)
     {
@@ -135,9 +140,10 @@ class Cstate extends CommonDict
     /**
      *  Load object in memory from database
      *
-     *  @param      int     $id     State ID
-     *  @param      string  $code   State code
-     *  @return     int             Return integer <0 if KO, >0 if OK
+     * @param int    $id   State ID
+     * @param string $code State code
+     *
+     * @return     int             Return integer <0 if KO, >0 if OK
      */
     public function fetch($id, $code = '')
     {
@@ -179,9 +185,10 @@ class Cstate extends CommonDict
     /**
      *  Update object into database
      *
-     *  @param      User    $user        User who updates
-     *  @param      int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return     int                  Return integer <0 if KO, >0 if OK
+     * @param User $user      User who updates
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return     int                  Return integer <0 if KO, >0 if OK
      */
     public function update($user = null, $notrigger = 0)
     {
@@ -236,9 +243,10 @@ class Cstate extends CommonDict
     /**
      *  Delete object in database
      *
-     *  @param  User    $user        User that delete
-     *  @param  int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return int                  Return integer <0 if KO, >0 if OK
+     * @param User $user      User that delete
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return int                  Return integer <0 if KO, >0 if OK
      */
     public function delete($user, $notrigger = 0)
     {
@@ -273,12 +281,14 @@ class Cstate extends CommonDict
     /**
      *  Return a link to the object card (with optionally the picto)
      *
-     *  @param  int     $withpicto                  Include picto in link (0=No picto, 1=Include picto into link, 2=Only picto)
-     *  @param  string  $option                     On what the link point to ('nolink', ...)
-     *  @param  int     $notooltip                  1=Disable tooltip
-     *  @param  string  $morecss                    Add more css on link
-     *  @param  int     $save_lastsearch_value      -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save lastsearch_values whenclicking
-     *  @return string                              String with URL
+     * @param int    $withpicto             Include picto in link (0=No picto, 1=Include picto into link, 2=Only picto)
+     * @param string $option                On what the link point to ('nolink', ...)
+     * @param int    $notooltip             1=Disable tooltip
+     * @param string $morecss               Add more css on link
+     * @param int    $save_lastsearch_value -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save
+     *                                      lastsearch_values whenclicking
+     *
+     * @return string                              String with URL
      */
     public function getNomUrl($withpicto = 0, $option = '', $notooltip = 0, $morecss = '', $save_lastsearch_value = -1)
     {

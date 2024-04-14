@@ -24,6 +24,7 @@
  *      \brief      Page to administer email sender profiles
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
 
 // Load Dolibarr environment

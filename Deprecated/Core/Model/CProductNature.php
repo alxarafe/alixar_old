@@ -19,15 +19,15 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliCore\Model;
+
+use DoliCore\Base\CommonDict;
+
 /**
  *      \file       htdocs/core/class/cproductnature.class.php
  *      \ingroup    core
  *      \brief      This file is CRUD class file (Create/Read/Update/Delete) for c_units dictionary
  */
-
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commondict.class.php';
-
 
 /**
  *  Class of dictionary of nature of product (used by imports)
@@ -37,7 +37,7 @@ class CProductNature extends CommonDict
     /**
      * @var array record
      */
-    public $records = array();
+    public $records = [];
 
     /**
      * @var string element
@@ -53,7 +53,7 @@ class CProductNature extends CommonDict
     /**
      *  Constructor
      *
-     *  @param      DoliDB      $db      Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct($db)
     {
@@ -64,9 +64,10 @@ class CProductNature extends CommonDict
     /**
      *  Create object into database
      *
-     *  @param      User    $user        User that create
-     *  @param      int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return     int                  Return integer <0 if KO, Id of created object if OK
+     * @param User $user      User that create
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return     int                  Return integer <0 if KO, Id of created object if OK
      */
     public function create($user, $notrigger = 0)
     {
@@ -106,9 +107,10 @@ class CProductNature extends CommonDict
     /**
      *  Load object in memory from database
      *
-     *  @param      int     $id             Id of CUnit object to fetch (rowid)
-     *  @param      string  $code           Code
-     *  @return     int                     Return integer <0 if KO, >0 if OK
+     * @param int    $id   Id of CUnit object to fetch (rowid)
+     * @param string $code Code
+     *
+     * @return     int                     Return integer <0 if KO, >0 if OK
      */
     public function fetch($id, $code = '')
     {
@@ -120,7 +122,7 @@ class CProductNature extends CommonDict
         $sql .= " t.label,";
         $sql .= " t.active";
         $sql .= " FROM " . $this->db->prefix() . $this->table_element . " as t";
-        $sql_where = array();
+        $sql_where = [];
         if ($id) {
             $sql_where[] = " t.rowid = " . ((int) $id);
         }
@@ -154,12 +156,13 @@ class CProductNature extends CommonDict
     /**
      * Load list of objects in memory from the database.
      *
-     * @param  string      $sortorder    Sort Order
-     * @param  string      $sortfield    Sort field
-     * @param  int         $limit        Limit
-     * @param  int         $offset       Offset
-     * @param  string      $filter       Filter USF
-     * @param  string      $filtermode   Filter mode (AND or OR)
+     * @param string $sortorder  Sort Order
+     * @param string $sortfield  Sort field
+     * @param int    $limit      Limit
+     * @param int    $offset     Offset
+     * @param string $filter     Filter USF
+     * @param string $filtermode Filter mode (AND or OR)
+     *
      * @return array|int                 int <0 if KO, array of pages if OK
      */
     public function fetchAll($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, $filter = '', $filtermode = 'AND')
@@ -176,7 +179,7 @@ class CProductNature extends CommonDict
 
         // Manage filter
         if (is_array($filter)) {
-            $sqlwhere = array();
+            $sqlwhere = [];
             if (count($filter) > 0) {
                 foreach ($filter as $key => $value) {
                     if ($key == 't.rowid' || $key == 't.active' || $key == 't.code') {
@@ -215,13 +218,13 @@ class CProductNature extends CommonDict
 
         $resql = $this->db->query($sql);
         if ($resql) {
-            $this->records = array();
+            $this->records = [];
             $num = $this->db->num_rows($resql);
             if ($num > 0) {
                 while ($obj = $this->db->fetch_object($resql)) {
                     $record = new self($this->db);
 
-                    $record->id    = $obj->rowid;
+                    $record->id = $obj->rowid;
                     $record->code = $obj->code;
                     $record->label = $obj->label;
                     $this->records[$record->id] = $record;
@@ -242,9 +245,10 @@ class CProductNature extends CommonDict
     /**
      *  Update object into database
      *
-     *  @param      User    $user        User that modify
-     *  @param      int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return     int                  Return integer <0 if KO, >0 if OK
+     * @param User $user      User that modify
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return     int                  Return integer <0 if KO, >0 if OK
      */
     public function update($user = null, $notrigger = 0)
     {
@@ -277,9 +281,10 @@ class CProductNature extends CommonDict
     /**
      *  Delete object in database
      *
-     *  @param  User    $user        User that delete
-     *  @param  int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return int                  Return integer <0 if KO, >0 if OK
+     * @param User $user      User that delete
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return int                  Return integer <0 if KO, >0 if OK
      */
     public function delete($user, $notrigger = 0)
     {
@@ -308,8 +313,10 @@ class CProductNature extends CommonDict
 
     /**
      * Get unit from code
-     * @param int $code code of unit
+     *
+     * @param int    $code code of unit
      * @param string $mode 0= id , short_label=Use short label as value, code=use code
+     *
      * @return int            Return integer <0 if KO, Id of code if OK
      */
     public function getProductNatureFromCode($code, $mode = 'code')

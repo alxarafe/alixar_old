@@ -3,6 +3,7 @@
 /* Copyright (C) 2005-2020  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2007		Rodolphe Quiedeville	<rodolphe@quiedeville.org>
  * Copyright (C) 2007-2012	Regis Houssin			<regis.houssin@inodbox.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,8 @@
  *  \file       htdocs/admin/system/dolibarr.php
  *  \brief      Page to show Dolibarr information
  */
+
+use DoliCore\Form\Form;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

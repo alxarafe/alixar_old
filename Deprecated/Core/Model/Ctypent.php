@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2007-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +17,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliCore\Model;
+
+use DoliCore\Base\CommonDict;
+
 /**
  *      \file       htdocs/core/class/ctypent.class.php
  *      \ingroup    core
@@ -23,7 +28,6 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commondict.class.php';
 
 
 /**
@@ -42,7 +46,7 @@ class Ctypent extends CommonDict
     /**
      *  Constructor
      *
-     *  @param      DoliDB      $db      Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct($db)
     {
@@ -53,9 +57,10 @@ class Ctypent extends CommonDict
     /**
      *  Create object into database
      *
-     *  @param      User    $user        User that create
-     *  @param      int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return     int                  Return integer <0 if KO, Id of created object if OK
+     * @param User $user      User that create
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return     int                  Return integer <0 if KO, Id of created object if OK
      */
     public function create($user, $notrigger = 0)
     {
@@ -129,10 +134,11 @@ class Ctypent extends CommonDict
     /**
      *  Load object in memory from database
      *
-     *  @param      int     $id     Id object
-     *  @param      string  $code   Code
-     *  @param      string  $label  Label
-     *  @return     int             Return integer <0 if KO, >0 if OK
+     * @param int    $id    Id object
+     * @param string $code  Code
+     * @param string $label Label
+     *
+     * @return     int             Return integer <0 if KO, >0 if OK
      */
     public function fetch($id, $code = '', $label = '')
     {
@@ -177,9 +183,10 @@ class Ctypent extends CommonDict
     /**
      *  Update object into database
      *
-     *  @param      User    $user        User that modify
-     *  @param      int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return     int                  Return integer <0 if KO, >0 if OK
+     * @param User $user      User that modify
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return     int                  Return integer <0 if KO, >0 if OK
      */
     public function update($user = null, $notrigger = 0)
     {
@@ -239,9 +246,10 @@ class Ctypent extends CommonDict
     /**
      *  Delete object in database
      *
-     *  @param  User    $user        User that delete
-     *  @param  int     $notrigger   0=launch triggers after, 1=disable triggers
-     *  @return int                  Return integer <0 if KO, >0 if OK
+     * @param User $user      User that delete
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return int                  Return integer <0 if KO, >0 if OK
      */
     public function delete($user, $notrigger = 0)
     {

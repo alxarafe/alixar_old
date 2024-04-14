@@ -24,6 +24,7 @@
  * Copyright (C) 2023       Joachim Kueter              <git-jk@bloxera.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		Lenin Rivas					<lenin.rivas777@gmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +49,7 @@
 
 use Alxarafe\Tools\Debug;
 use DoliCore\Base\Config;
+use DoliModules\Company\Model\Company;
 
 include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 
@@ -7337,15 +7339,15 @@ function get_product_localtax_for_country($idprod, $local, $thirdpartytouse)
  *   and (buyer = company) then VAT by default=0. End of rule VATRULE 6: Otherwise the VAT proposed by default=0. End
  *   of rule.
  *
- * @param Societe $thirdparty_seller Object Seller company
- * @param Societe $thirdparty_buyer  Object Buyer company
+ * @param Company $thirdparty_seller Object Seller company
+ * @param Company $thirdparty_buyer  Object Buyer company
  * @param int     $idprod            Id product
  * @param int     $idprodfournprice  Id product_fournisseur_price (for supplier order/invoice)
  *
  * @return float|string                        Vat rate to use with format 5.0 or '5.0 (XXX)', -1 if we can't guess it
  * @see get_default_npr(), get_default_localtax()
  */
-function get_default_tva(Societe $thirdparty_seller, Societe $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
+function get_default_tva(Company $thirdparty_seller, Company $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
 {
     global $conf;
 

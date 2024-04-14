@@ -21,14 +21,13 @@
 
 namespace DoliModules\Product\Model;
 
-use CUnits;
+use DoliCore\Model\CProductNature;
+use DoliCore\Model\CUnits;
 
 /**
  *  \file       htdocs/product/class/html.formproduct.class.php
  *  \brief      File for class with methods for building product related HTML components
  */
-
-require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 
 /**
  *  Class with static methods for building HTML components related to products
@@ -592,8 +591,6 @@ class FormProduct
 
         $return = '';
 
-        // TODO Use a cache
-        require_once DOL_DOCUMENT_ROOT . '/core/class/cunits.class.php';
         $measuringUnits = new CUnits($db);
 
         $filter = [];
@@ -671,7 +668,6 @@ class FormProduct
         $return = '';
 
         // TODO Use a cache
-        require_once DOL_DOCUMENT_ROOT . '/core/class/cproductnature.class.php';
         $productNature = new CProductNature($db);
 
         $filter = [];

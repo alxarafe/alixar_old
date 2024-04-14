@@ -45,6 +45,15 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormBarCode;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\Product\Model\Product;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
@@ -52,14 +61,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/product/modules_product.class.php';
-
-
-if (isModEnabled('propal')) {
-}
-if (isModEnabled('invoice')) {
-}
-if (isModEnabled('order')) {
-}
 if (isModEnabled('accounting')) {
     require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 }
@@ -1473,7 +1474,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
                         $fk_barcode_type = 0;
                     }
                 }
-                require_once DOL_DOCUMENT_ROOT . '/core/class/html.formbarcode.class.php';
                 $formbarcode = new FormBarCode($db);
                 print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
                 print '</td>';
@@ -2095,7 +2095,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
                             $fk_barcode_type = getDolGlobalString('PRODUIT_DEFAULT_BARCODE_TYPE');
                         }
                     }
-                    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formbarcode.class.php';
                     $formbarcode = new FormBarCode($db);
                     print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
                     print '</td></tr>';
@@ -2464,7 +2463,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
                     print '</tr></table>';
                     print '</td><td>';
                     if ($action == 'editbarcodetype' || $action == 'editbarcode') {
-                        require_once DOL_DOCUMENT_ROOT . '/core/class/html.formbarcode.class.php';
                         $formbarcode = new FormBarCode($db);
                     }
 

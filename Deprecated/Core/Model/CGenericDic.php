@@ -22,13 +22,14 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliCore\Model;
+
+use DoliCore\Base\CommonDict;
+
 /**
  * \file    htdocs/core/class/cgenericdic.class.php
  * \ingroup core
  */
-
-// Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/core/class/commondict.class.php';
 
 /**
  * Class CGenericDic
@@ -48,7 +49,7 @@ class CGenericDic extends CommonDict
     /**
      * @var CtyperesourceLine[] Lines
      */
-    public $lines = array();
+    public $lines = [];
 
     public $code;
 
@@ -73,162 +74,15 @@ class CGenericDic extends CommonDict
     }
 
     /**
-     * Create object into database
-     *
-     * @param  User $user       User that creates
-     * @param  int  $notrigger  0=launch triggers after, 1=disable triggers
-     * @return int              Return integer <0 if KO, Id of created object if OK
-     */
-    public function create(User $user, $notrigger = 0)
-    {
-        dol_syslog(__METHOD__, LOG_DEBUG);
-
-        $fieldlabel = 'label';
-        if ($this->table_element == 'c_stcomm') {
-            $fieldlabel = 'libelle';
-        } elseif ($this->table_element == 'c_type_fees') {
-            $fieldrowid = 'id';
-        }
-
-        $error = 0;
-
-        // Clean parameters
-
-        if (isset($this->code)) {
-            $this->code = trim($this->code);
-        }
-        if (isset($this->label)) {
-            $this->label = trim($this->label);
-        }
-        if (isset($this->active)) {
-            $this->active = (int) $this->active;
-        }
-
-        // Insert request
-        $sql = 'INSERT INTO ' . $this->db->prefix() . $this->table_element . '(';
-        $sql .= 'code,';
-        $sql .= $fieldlabel;
-        $sql .= 'active';
-        $sql .= ') VALUES (';
-        $sql .= ' ' . (!isset($this->code) ? 'NULL' : "'" . $this->db->escape($this->code) . "'") . ',';
-        $sql .= ' ' . (!isset($this->label) ? 'NULL' : "'" . $this->db->escape($this->label) . "'") . ',';
-        $sql .= ' ' . (!isset($this->active) ? 'NULL' : $this->active);
-        $sql .= ')';
-
-        $this->db->begin();
-
-        $resql = $this->db->query($sql);
-        if (!$resql) {
-            $error++;
-            $this->errors[] = 'Error ' . $this->db->lasterror();
-            dol_syslog(__METHOD__ . ' ' . implode(',', $this->errors), LOG_ERR);
-        }
-
-        if (!$error) {
-            $this->id = $this->db->last_insert_id($this->db->prefix() . $this->table_element);
-
-            // Uncomment this and change CTYPERESOURCE to your own tag if you
-            // want this action to call a trigger.
-            //if (!$notrigger) {
-
-            //  // Call triggers
-            //  $result=$this->call_trigger('CTYPERESOURCE_CREATE',$user);
-            //  if ($result < 0) $error++;
-            //  // End call triggers
-            //}
-        }
-
-        // Commit or rollback
-        if ($error) {
-            $this->db->rollback();
-
-            return -1 * $error;
-        } else {
-            $this->db->commit();
-
-            return $this->id;
-        }
-    }
-
-    /**
      * Load object in memory from the database
      *
-     * @param int    $id  Id object
-     * @param string $code code
-     * @param string $label Label
+     * @param string       $sortorder  Sort Order
+     * @param string       $sortfield  Sort field
+     * @param int          $limit      Limit
+     * @param int          $offset     offset limit
+     * @param string|array $filter     filter USF
+     * @param string       $filtermode filter mode (AND or OR)
      *
-     * @return int Return integer <0 if KO, 0 if not found, >0 if OK
-     */
-    public function fetch($id, $code = '', $label = '')
-    {
-        dol_syslog(__METHOD__, LOG_DEBUG);
-
-        $fieldrowid = 'rowid';
-        $fieldlabel = 'label';
-        if ($this->table_element == 'c_stcomm') {
-            $fieldrowid = 'id';
-            $fieldlabel = 'libelle';
-        } elseif ($this->table_element == 'c_type_fees') {
-            $fieldrowid = 'id';
-        }
-
-        $sql = "SELECT";
-        $sql .= " t." . $fieldrowid . ",";
-        $sql .= " t.code,";
-        $sql .= " t." . $fieldlabel . " as label,";
-        $sql .= " t.active";
-        $sql .= " FROM " . $this->db->prefix() . $this->table_element . " as t";
-        if ($id) {
-            $sql .= " WHERE t." . $fieldrowid . " = " . ((int) $id);
-        } elseif ($code) {
-            $sql .= " WHERE t.code = '" . $this->db->escape($code) . "'";
-        } elseif ($label) {
-            $sql .= " WHERE t.label = '" . $this->db->escape($label) . "'";
-        }
-
-        $resql = $this->db->query($sql);
-        if ($resql) {
-            $numrows = $this->db->num_rows($resql);
-            if ($numrows) {
-                $obj = $this->db->fetch_object($resql);
-
-                $this->id = $obj->$fieldrowid;
-
-                $this->code = $obj->code;
-                $this->label = $obj->label;
-                $this->active = $obj->active;
-            }
-
-            // Retrieve all extrafields for invoice
-            // fetch optionals attributes and labels
-            // $this->fetch_optionals();
-
-            // $this->fetch_lines();
-
-            $this->db->free($resql);
-
-            if ($numrows) {
-                return 1;
-            } else {
-                return 0;
-            }
-        } else {
-            $this->errors[] = 'Error ' . $this->db->lasterror();
-            dol_syslog(__METHOD__ . ' ' . implode(',', $this->errors), LOG_ERR);
-
-            return -1;
-        }
-    }
-
-    /**
-     * Load object in memory from the database
-     *
-     * @param string        $sortorder      Sort Order
-     * @param string        $sortfield      Sort field
-     * @param int           $limit          Limit
-     * @param int           $offset         offset limit
-     * @param string|array  $filter         filter USF
-     * @param string        $filtermode     filter mode (AND or OR)
      * @return int                          Return integer <0 if KO, >0 if OK
      */
     public function fetchAll($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, $filter = '', $filtermode = 'AND')
@@ -253,7 +107,7 @@ class CGenericDic extends CommonDict
 
         // Manage filter
         if (is_array($filter)) {
-            $sqlwhere = array();
+            $sqlwhere = [];
             if (count($filter) > 0) {
                 foreach ($filter as $key => $value) {
                     $sqlwhere[] = $this->db->sanitize($key) . " LIKE '%" . $this->db->escape($value) . "%'";
@@ -309,8 +163,9 @@ class CGenericDic extends CommonDict
     /**
      * Update object into database
      *
-     * @param  User $user       User that modifies
-     * @param  int  $notrigger  0=launch triggers after, 1=disable triggers
+     * @param User $user      User that modifies
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
      * @return int              Return integer <0 if KO, >0 if OK
      */
     public function update(User $user, $notrigger = 0)
@@ -384,8 +239,9 @@ class CGenericDic extends CommonDict
     /**
      * Delete object in database
      *
-     * @param User  $user       User that deletes
-     * @param int   $notrigger  0=launch triggers after, 1=disable triggers
+     * @param User $user      User that deletes
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
      * @return int              Return integer <0 if KO, >0 if OK
      */
     public function delete(User $user, $notrigger = 0)
@@ -437,8 +293,9 @@ class CGenericDic extends CommonDict
     /**
      * Load an object from its id and create a new one in database
      *
-     * @param   User    $user       User making the clone
-     * @param   int     $fromid     Id of object to clone
+     * @param User $user   User making the clone
+     * @param int  $fromid Id of object to clone
+     *
      * @return  int                 New id of clone
      */
     public function createFromClone(User $user, $fromid)
@@ -480,6 +337,155 @@ class CGenericDic extends CommonDict
             $this->db->rollback();
 
             return -1;
+        }
+    }
+
+    /**
+     * Load object in memory from the database
+     *
+     * @param int    $id    Id object
+     * @param string $code  code
+     * @param string $label Label
+     *
+     * @return int Return integer <0 if KO, 0 if not found, >0 if OK
+     */
+    public function fetch($id, $code = '', $label = '')
+    {
+        dol_syslog(__METHOD__, LOG_DEBUG);
+
+        $fieldrowid = 'rowid';
+        $fieldlabel = 'label';
+        if ($this->table_element == 'c_stcomm') {
+            $fieldrowid = 'id';
+            $fieldlabel = 'libelle';
+        } elseif ($this->table_element == 'c_type_fees') {
+            $fieldrowid = 'id';
+        }
+
+        $sql = "SELECT";
+        $sql .= " t." . $fieldrowid . ",";
+        $sql .= " t.code,";
+        $sql .= " t." . $fieldlabel . " as label,";
+        $sql .= " t.active";
+        $sql .= " FROM " . $this->db->prefix() . $this->table_element . " as t";
+        if ($id) {
+            $sql .= " WHERE t." . $fieldrowid . " = " . ((int) $id);
+        } elseif ($code) {
+            $sql .= " WHERE t.code = '" . $this->db->escape($code) . "'";
+        } elseif ($label) {
+            $sql .= " WHERE t.label = '" . $this->db->escape($label) . "'";
+        }
+
+        $resql = $this->db->query($sql);
+        if ($resql) {
+            $numrows = $this->db->num_rows($resql);
+            if ($numrows) {
+                $obj = $this->db->fetch_object($resql);
+
+                $this->id = $obj->$fieldrowid;
+
+                $this->code = $obj->code;
+                $this->label = $obj->label;
+                $this->active = $obj->active;
+            }
+
+            // Retrieve all extrafields for invoice
+            // fetch optionals attributes and labels
+            // $this->fetch_optionals();
+
+            // $this->fetch_lines();
+
+            $this->db->free($resql);
+
+            if ($numrows) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            $this->errors[] = 'Error ' . $this->db->lasterror();
+            dol_syslog(__METHOD__ . ' ' . implode(',', $this->errors), LOG_ERR);
+
+            return -1;
+        }
+    }
+
+    /**
+     * Create object into database
+     *
+     * @param User $user      User that creates
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
+     *
+     * @return int              Return integer <0 if KO, Id of created object if OK
+     */
+    public function create(User $user, $notrigger = 0)
+    {
+        dol_syslog(__METHOD__, LOG_DEBUG);
+
+        $fieldlabel = 'label';
+        if ($this->table_element == 'c_stcomm') {
+            $fieldlabel = 'libelle';
+        } elseif ($this->table_element == 'c_type_fees') {
+            $fieldrowid = 'id';
+        }
+
+        $error = 0;
+
+        // Clean parameters
+
+        if (isset($this->code)) {
+            $this->code = trim($this->code);
+        }
+        if (isset($this->label)) {
+            $this->label = trim($this->label);
+        }
+        if (isset($this->active)) {
+            $this->active = (int) $this->active;
+        }
+
+        // Insert request
+        $sql = 'INSERT INTO ' . $this->db->prefix() . $this->table_element . '(';
+        $sql .= 'code,';
+        $sql .= $fieldlabel;
+        $sql .= 'active';
+        $sql .= ') VALUES (';
+        $sql .= ' ' . (!isset($this->code) ? 'NULL' : "'" . $this->db->escape($this->code) . "'") . ',';
+        $sql .= ' ' . (!isset($this->label) ? 'NULL' : "'" . $this->db->escape($this->label) . "'") . ',';
+        $sql .= ' ' . (!isset($this->active) ? 'NULL' : $this->active);
+        $sql .= ')';
+
+        $this->db->begin();
+
+        $resql = $this->db->query($sql);
+        if (!$resql) {
+            $error++;
+            $this->errors[] = 'Error ' . $this->db->lasterror();
+            dol_syslog(__METHOD__ . ' ' . implode(',', $this->errors), LOG_ERR);
+        }
+
+        if (!$error) {
+            $this->id = $this->db->last_insert_id($this->db->prefix() . $this->table_element);
+
+            // Uncomment this and change CTYPERESOURCE to your own tag if you
+            // want this action to call a trigger.
+            //if (!$notrigger) {
+
+            //  // Call triggers
+            //  $result=$this->call_trigger('CTYPERESOURCE_CREATE',$user);
+            //  if ($result < 0) $error++;
+            //  // End call triggers
+            //}
+        }
+
+        // Commit or rollback
+        if ($error) {
+            $this->db->rollback();
+
+            return -1 * $error;
+        } else {
+            $this->db->commit();
+
+            return $this->id;
         }
     }
 
