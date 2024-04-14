@@ -1,7 +1,8 @@
 <?php
 
-/* Copyright (C) 2014-2015 Florian HENRY       <florian.henry@open-concept.pro>
- * Copyright (C) 2015-2021 Laurent Destailleur <ldestailleur@users.sourceforge.net>
+/* Copyright (C) 2014-2015  Florian HENRY           <florian.henry@open-concept.pro>
+ * Copyright (C) 2015-2021  Laurent Destailleur     <ldestailleur@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,11 +24,14 @@
  *       \brief      Page for project statistics
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormProjets;
+use DoliModules\Project\Model\ProjectStats;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/projectstats.class.php';
 
 $WIDTH = DolGraph::getDefaultGraphSizeForStats('width');
 $HEIGHT = DolGraph::getDefaultGraphSizeForStats('height');

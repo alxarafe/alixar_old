@@ -23,7 +23,6 @@ namespace DoliModules\Shipment\Api;
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 
 /**
  * API class for shipments

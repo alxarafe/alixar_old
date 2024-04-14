@@ -50,6 +50,8 @@
 use Alxarafe\Tools\Debug;
 use DoliCore\Base\Config;
 use DoliModules\Company\Model\Company;
+use DoliModules\Product\Model\Product;
+use DoliModules\Supplier\Model\ProductFournisseur;
 
 include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 
@@ -7457,27 +7459,23 @@ function get_default_tva(Company $thirdparty_seller, Company $thirdparty_buyer, 
 /**
  *  Function that returns whether VAT must be recoverable collected VAT (e.g.: VAT NPR in France)
  *
- * @param Societe $thirdparty_seller Thirdparty seller
- * @param Societe $thirdparty_buyer  Thirdparty buyer
+ * @param Company $thirdparty_seller Thirdparty seller
+ * @param Company $thirdparty_buyer  Thirdparty buyer
  * @param int     $idprod            Id product
  * @param int     $idprodfournprice  Id supplier price for product
  *
  * @return float                               0 or 1
  * @see get_default_tva(), get_default_localtax()
  */
-function get_default_npr(Societe $thirdparty_seller, Societe $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
+function get_default_npr(Company $thirdparty_seller, Company $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
 {
     global $db;
 
     if ($idprodfournprice > 0) {
-        if (!class_exists('ProductFournisseur')) {
-        }
         $prodprice = new ProductFournisseur($db);
         $prodprice->fetch_product_fournisseur_price($idprodfournprice);
         return $prodprice->fourn_tva_npr;
     } elseif ($idprod > 0) {
-        if (!class_exists('Product')) {
-        }
         $prod = new Product($db);
         $prod->fetch($idprod);
         return $prod->tva_npr;

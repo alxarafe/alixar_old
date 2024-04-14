@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2012      Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2013-2015 Laurent Destailleur <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,9 @@
 
 // TODO We must add a confirmation on button because this will make a mass change
 // FIXME Should also change table product_price for price levels
+
+use DoliCore\Form\Form;
+use DoliModules\Product\Model\Product;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

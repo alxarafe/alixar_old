@@ -37,30 +37,20 @@
  *    \brief      Card supplier order
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOrder;
+use DoliCore\Form\FormProjets;
+use DoliModules\Product\Model\Product;
+use DoliModules\Supplier\Model\CommandeFournisseur;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formorder.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_order/modules_commandefournisseur.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
-
-if (isModEnabled('supplier_proposal')) {
-    require_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';
-}
-if (isModEnabled("product")) {
-}
-if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-}
-//require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
-
-if (isModEnabled('variants')) {
-    require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
-}
-
 
 // Load translation files required by the page
 $langs->loadLangs(array('admin', 'orders', 'sendings', 'companies', 'bills', 'propal', 'receptions', 'supplier_proposal', 'deliveries', 'products', 'stocks', 'productbatch'));

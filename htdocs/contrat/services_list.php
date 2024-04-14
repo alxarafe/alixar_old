@@ -8,6 +8,7 @@
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2019      Juanjo Menent		<jmenent@2byte.es>
  * Copyright (C) 2023-2024	William Mead			<william.mead@manchenumerique.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +30,14 @@
  *      \brief      Page to list services in contracts
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\Contract\Model\ContratLigne;
+use DoliModules\Product\Model\Product;
+
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . "/contrat/class/contrat.class.php";
-require_once DOL_DOCUMENT_ROOT . "/product/class/product.class.php";
-require_once DOL_DOCUMENT_ROOT . "/societe/class/societe.class.php";
 
 // Load translation files required by the page
 $langs->loadLangs(array('products', 'contracts', 'companies'));

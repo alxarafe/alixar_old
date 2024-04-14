@@ -1067,7 +1067,6 @@ class Orders extends DolibarrApi
      */
     public function getOrderShipments($id)
     {
-        require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
         if (!DolibarrApiAccess::$user->hasRight('expedition', 'lire')) {
             throw new RestException(403);
         }
@@ -1123,7 +1122,6 @@ class Orders extends DolibarrApi
      */
     public function createOrderShipment($id, $warehouse_id)
     {
-        require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
         if (!DolibarrApiAccess::$user->hasRight('expedition', 'creer')) {
             throw new RestException(403);
         }

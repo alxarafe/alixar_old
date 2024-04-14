@@ -10736,9 +10736,8 @@ abstract class GenericDocument
                     break;
                 case 'task':
                 case 'project_task':
-                    require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 
-                    $project_result = $this->fetch_projet();
+            $project_result = $this->fetch_projet();
                     if ($project_result >= 0) {
                         $element = 'projet/' . dol_sanitizeFileName($this->project->ref) . '/';
                     }

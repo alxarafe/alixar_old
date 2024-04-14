@@ -1,7 +1,8 @@
 <?php
 
-/* Copyright (C) 2014-2015 Florian HENRY       <florian.henry@open-concept.pro>
- * Copyright (C) 2015      Laurent Destailleur <ldestailleur@users.sourceforge.net>
+/* Copyright (C) 2014-2015  Florian HENRY           <florian.henry@open-concept.pro>
+ * Copyright (C) 2015       Laurent Destailleur     <ldestailleur@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,17 +24,18 @@
  *       \brief      Page for tasks statistics
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Project\Model\TaskStats;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/taskstats.class.php';
 
 // Security check
 if (!$user->hasRight('projet', 'lire')) {
     accessforbidden();
 }
-
 
 $WIDTH = DolGraph::getDefaultGraphSizeForStats('width');
 $HEIGHT = DolGraph::getDefaultGraphSizeForStats('height');

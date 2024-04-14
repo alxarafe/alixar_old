@@ -31,14 +31,17 @@
  *    \brief        Page to add new time spent on a task
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormProjets;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Project\Model\Project;
+use DoliModules\Project\Model\Task;
+use DoliModules\User\Model\User;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formintervention.class.php';
 
 // Load translation files required by the page
 $langsLoad = array('projects', 'bills', 'orders', 'companies');

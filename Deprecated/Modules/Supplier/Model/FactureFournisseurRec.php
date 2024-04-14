@@ -36,7 +36,6 @@ namespace DoliModules\Supplier\Model;
 use DoliModules\Billing\Model\CommonInvoice;
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/notify.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
 

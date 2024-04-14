@@ -22,6 +22,8 @@
 
 namespace DoliModules\Intervention\Model;
 
+use DoliCore\Base\Stats;
+
 /**
  *       \file       htdocs/fichinter/class/fichinterstats.class.php
  *       \ingroup    fichinter

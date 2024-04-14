@@ -42,7 +42,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/salaries.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 // Load translation files required by the page

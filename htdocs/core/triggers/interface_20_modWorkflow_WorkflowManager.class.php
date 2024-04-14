@@ -459,7 +459,6 @@ class InterfaceWorkflowManager extends DolibarrTriggers
                 // Find all reception on purchase order origin
 
                 if (in_array($object->origin, array('order_supplier', 'supplier_order', 'commandeFournisseur')) && $object->origin_id > 0) {
-                    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
                     $order = new CommandeFournisseur($this->db);
                     $ret = $order->fetch($object->origin_id);
                     if ($ret < 0) {

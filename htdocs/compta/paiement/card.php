@@ -37,7 +37,6 @@ if (isModEnabled("bank")) {
     require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 }
 if (isModEnabled('margin')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmargin.class.php';
 }
 
 // Load translation files required by the page

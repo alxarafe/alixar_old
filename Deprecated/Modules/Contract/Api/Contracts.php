@@ -24,7 +24,6 @@ namespace DoliModules\Contract\Api;
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 
 /**
  * API class for contracts

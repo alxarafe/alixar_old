@@ -38,13 +38,11 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 if (isModEnabled("product") || isModEnabled("service")) {
 }
 if (isModEnabled('shipping')) {
-    require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 }
 if (isModEnabled('stock')) {
     require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 }
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 // Load translation files required by the page

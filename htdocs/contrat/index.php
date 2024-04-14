@@ -28,10 +28,12 @@
  *      \brief      Home page of contract area
  */
 
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\Contract\Model\ContratLigne;
+use DoliModules\Product\Model\Product;
+
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . "/contrat/class/contrat.class.php";
-require_once DOL_DOCUMENT_ROOT . "/contrat/class/contratligne.class.php";
-require_once DOL_DOCUMENT_ROOT . "/product/class/product.class.php";
 
 $hookmanager = new HookManager($db);
 

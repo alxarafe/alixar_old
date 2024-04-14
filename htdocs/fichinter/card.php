@@ -12,6 +12,7 @@
  * Copyright (C) 2020-2024	Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2023       Benjamin Grembi         <benjamin@oarces.fr>
  * Copyright (C) 2023-2024	William Mead			<william.mead@manchenumerique.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,18 +34,18 @@
  *  \ingroup    ficheinter
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormContract;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Company\Model\Company;
+use DoliModules\Intervention\Model\Fichinter;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/fichinter/modules_fichinter.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fichinter.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-}
-if (isModEnabled('contract')) {
-    require_once DOL_DOCUMENT_ROOT . "/core/class/html.formcontract.class.php";
-    require_once DOL_DOCUMENT_ROOT . "/contrat/class/contrat.class.php";
-}
 if (getDolGlobalString('FICHEINTER_ADDON') && is_readable(DOL_DOCUMENT_ROOT . "/core/modules/fichinter/mod_" . getDolGlobalString('FICHEINTER_ADDON') . ".php")) {
     require_once DOL_DOCUMENT_ROOT . "/core/modules/fichinter/mod_" . getDolGlobalString('FICHEINTER_ADDON') . '.php';
 }

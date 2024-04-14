@@ -48,13 +48,10 @@ if (isModEnabled("product") || isModEnabled("service")) {
 }
 if (isModEnabled("propal")) {
 }
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
 if (isModEnabled('productbatch')) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
 }
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 $langs->loadLangs(array("receptions", "companies", "bills", 'deliveries', 'orders', 'stocks', 'other', 'propal', 'sendings'));

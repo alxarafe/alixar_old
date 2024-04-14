@@ -40,7 +40,6 @@ if (!defined('NOBROWSERNOTIF')) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . "/product/class/product.class.php";
 
 $category = GETPOST('category', 'alphanohtml'); // Can be id of category or 'supplements'
 $action = GETPOST('action', 'aZ09');

@@ -485,7 +485,6 @@ while ($i < min($num, $limit)) {
         } elseif ($line->doc_type == 'supplier_invoice') {
             $langs->loadLangs(['bills']);
 
-            require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
             $objectstatic = new FactureFournisseur($db);
             $objectstatic->fetch($line->fk_doc);
             //$modulepart = 'invoice_supplier';

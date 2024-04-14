@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2006-2017  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2006-2012	Regis Houssin		<regis.houssin@inodbox.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,8 @@
  *      \file       htdocs/admin/tools/purge.php
  *      \brief      Page to purge files (temporary or not)
  */
+
+use DoliCore\Form\Form;
 
 if (! defined('CSRFCHECK_WITH_TOKEN')) {
     define('CSRFCHECK_WITH_TOKEN', '1');        // Force use of CSRF protection with tokens even for GET

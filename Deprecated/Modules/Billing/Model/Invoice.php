@@ -741,7 +741,6 @@ class Invoice extends CommonInvoice
                 $originforcontact = $this->origin;
                 $originidforcontact = $this->origin_id;
                 if ($originforcontact == 'shipping') {     // shipment and order share the same contacts. If creating from shipment we take data of order
-                    require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
                     $exp = new Expedition($this->db);
                     $exp->fetch($this->origin_id);
                     $exp->fetchObjectLinked(null, '', null, '', 'OR', 1, 'sourcetype', 0);
@@ -3154,7 +3153,6 @@ class Invoice extends CommonInvoice
         $productStatic = null;
         $warehouseStatic = null;
         if ($batch_rule > 0) {
-            require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
             require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
             $productStatic = new Product($this->db);
             $warehouseStatic = new Entrepot($this->db);

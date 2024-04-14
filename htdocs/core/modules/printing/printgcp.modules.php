@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2014-2019  Frédéric France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

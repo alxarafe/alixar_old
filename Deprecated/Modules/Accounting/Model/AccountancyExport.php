@@ -665,7 +665,6 @@ class AccountancyExport extends BasicModel
                 $refInvoice = $invoice->ref;
             } elseif ($line->doc_type == 'supplier_invoice') {
                 // Supplier invoice
-                require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                 $invoice = new FactureFournisseur($this->db);
                 $invoice->fetch($line->fk_doc);
 
@@ -1014,7 +1013,6 @@ class AccountancyExport extends BasicModel
                     } elseif ($line->doc_type == 'expense_report') {
                         $objectDirPath = !empty($conf->expensereport->multidir_output[$conf->entity]) ? $conf->expensereport->multidir_output[$conf->entity] : $conf->expensereport->dir_output;
                     } elseif ($line->doc_type == 'supplier_invoice') {
-                        require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                         $invoice = new FactureFournisseur($this->db);
                         $invoice->fetch($line->fk_doc);
                         $objectDirPath = !empty($conf->fournisseur->facture->multidir_output[$conf->entity]) ? $conf->fournisseur->facture->multidir_output[$conf->entity] : $conf->fournisseur->facture->dir_output;
@@ -1400,7 +1398,6 @@ class AccountancyExport extends BasicModel
                     $refInvoice = $invoice->ref;
                 } elseif ($line->doc_type == 'supplier_invoice') {
                     // Supplier invoice
-                    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                     $invoice = new FactureFournisseur($this->db);
                     $invoice->fetch($line->fk_doc);
 
@@ -1613,7 +1610,6 @@ class AccountancyExport extends BasicModel
                     $refInvoice = $invoice->ref;
                 } elseif ($line->doc_type == 'supplier_invoice') {
                     // Supplier invoice
-                    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                     $invoice = new FactureFournisseur($this->db);
                     $invoice->fetch($line->fk_doc);
 

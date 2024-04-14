@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2006-2010 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,8 @@
  * \brief      Ensemble de functions de base pour le module propal
  * \ingroup    propal
  */
+
+use DoliModules\Proposal\Model\Propal;
 
 /**
  * Prepare array with list of tabs

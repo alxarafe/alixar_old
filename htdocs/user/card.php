@@ -16,6 +16,7 @@
  * Copyright (C) 2016      Raphaël Doursenaud   <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2018-2023 Frédéric France      <frederic.france@netlogic.fr>
  * Copyright (C) 2018      David Beniamine      <David.Beniamine@Tetras-Libre.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +37,16 @@
  *       \brief      Tab of user card
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\User\Model\User;
+use DoliModules\User\Model\UserGroup;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
@@ -46,12 +57,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
 if (isModEnabled('ldap')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/ldap.class.php';
-}
-if (isModEnabled('member')) {
-}
-if (isModEnabled('category')) {
-}
-if (isModEnabled('stock')) {
 }
 
 // Load translation files required by page

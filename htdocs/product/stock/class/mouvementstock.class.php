@@ -978,18 +978,15 @@ class MouvementStock extends GenericDocument
                 $origin = new Commande($this->db);
                 break;
             case 'shipping':
-                require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
                 $origin = new Expedition($this->db);
                 break;
             case 'facture':
                 $origin = new Facture($this->db);
                 break;
             case 'order_supplier':
-                require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
                 $origin = new CommandeFournisseur($this->db);
                 break;
             case 'invoice_supplier':
-                require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                 $origin = new FactureFournisseur($this->db);
                 break;
             case 'project':

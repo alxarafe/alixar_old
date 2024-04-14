@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2012	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2012		Vinicius Nogueira	<viniciusvgn@gmail.com>
  * Copyright (C) 2019		Nicolas ZABOURI         <info@inovea-conseil.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +27,12 @@
  *    \brief      Home page of supplier's orders area
  */
 
+use DoliCore\Form\FormFile;
+use DoliModules\Supplier\Model\CommandeFournisseur;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
-
 
 // Load translation files required by the page
 $langs->loadLangs(array("suppliers", "orders"));
@@ -46,8 +49,6 @@ $hookmanager = new HookManager($db);
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
 $hookmanager->initHooks(array('orderssuppliersindex'));
-
-
 
 /*
  * 	View

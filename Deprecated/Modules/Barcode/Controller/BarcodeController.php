@@ -33,17 +33,16 @@ global $mysoc;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/genericobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/printsheet/modules_labels.php';
 
 use DoliCore\Base\DolibarrController;
+use DoliModules\Company\Model\Societe;
+use DoliModules\Product\Model\Product;
 use Exception;
 use DoliCore\Form\Form;
 use FormBarCode;
 use GenericObject;
-use Product;
-use Societe;
 
 class BarcodeController extends DolibarrController
 {

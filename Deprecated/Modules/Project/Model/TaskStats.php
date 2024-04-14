@@ -19,9 +19,10 @@
 
 namespace DoliModules\Project\Model;
 
+use DoliCore\Base\Stats;
+
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-
 
 /**
  * Class to manage statistics on project tasks

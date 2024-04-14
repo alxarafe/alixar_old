@@ -2423,7 +2423,6 @@ public $societe;
                     $originforcontact = $this->origin;
                     $originidforcontact = $this->origin_id;
                     if ($originforcontact == 'shipping') {     // shipment and order share the same contacts. If creating from shipment we take data of order
-                        require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
                         $exp = new Expedition($this->db);
                         $exp->fetch($this->origin_id);
                         $exp->fetchObjectLinked();

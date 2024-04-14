@@ -36,6 +36,7 @@ namespace DoliModules\Project\Model;
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliModules\User\Model\User;
 use WorkboardResponse;
 
 /**
@@ -804,7 +805,6 @@ public $weekWorkLoadPerTask;
      */
     public function getLinesArray($user, $loadRoleMode = 1)
     {
-        require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
         $taskstatic = new Task($this->db);
 
         $this->lines = $taskstatic->getTasksArray(0, $user, $this->id, 0, 0, '', '-1', '', 0, 0, [], 0, [], 0, $loadRoleMode);
@@ -1232,7 +1232,6 @@ public $weekWorkLoadPerTask;
 
             //Duplicate task
             if ($clone_task) {
-                require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 
                 $taskstatic = new Task($this->db);
 

@@ -72,7 +72,6 @@ print 'Argument id_thirdparty=' . $argv[1] . "\n";
 // Start of transaction
 $db->begin();
 
-require_once DOL_DOCUMENT_ROOT . "/contrat/class/contrat.class.php";
 
 // Create contract object
 $obj = new Contrat($db);

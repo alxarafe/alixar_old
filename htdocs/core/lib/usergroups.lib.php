@@ -31,6 +31,7 @@
  */
 
 use DoliCore\Form\FormOther;
+use DoliModules\User\Model\User;
 
 /**
  * Prepare array with list of tabs

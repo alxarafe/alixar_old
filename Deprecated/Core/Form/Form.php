@@ -3257,8 +3257,6 @@ class Form
         // phpcs:enable
         global $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/resource/class/html.formresource.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/resource/class/dolresource.class.php';
         $formresources = new FormResource($this->db);
         $resourcestatic = new Dolresource($this->db);
 

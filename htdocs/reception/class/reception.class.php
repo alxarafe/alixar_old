@@ -722,7 +722,6 @@ class Reception extends GenericDocument
      */
     public function getStatusDispatch()
     {
-        require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
         require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
 
         $status = CommandeFournisseur::STATUS_RECEIVED_PARTIALLY;

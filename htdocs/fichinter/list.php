@@ -10,6 +10,7 @@
  * Copyright (C) 2021-2023  Frédéric France			<frederic.france@netlogic.fr>
  * Copyright (C) 2022		Charlène Benke			<charlene@patas-monkey.com>
  * Copyright (C) 2024		William Mead			<william.mead@manchenumerique.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,15 +32,16 @@
  *  \ingroup    ficheinter
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\Intervention\Model\Fichinter;
+use DoliModules\Project\Model\Project;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-}
-if (isModEnabled('contract')) {
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'bills', 'interventions'));

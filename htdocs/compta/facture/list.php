@@ -45,7 +45,6 @@ use DoliModules\Billing\Model\Facture;
 
 require BASE_PATH . '/main.inc.php';
 if (isModEnabled('margin')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmargin.class.php';
 }
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
@@ -56,7 +55,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 if (isModEnabled('order')) {
 }
 

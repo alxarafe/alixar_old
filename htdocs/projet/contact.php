@@ -25,8 +25,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 if (isModEnabled('category')) {
 }
@@ -221,7 +219,6 @@ if (empty($reshook)) {
 
                 $affecttotask = GETPOST('tasksavailable', 'intcomma');
                 if (!empty($affecttotask)) {
-                    require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
                     $task_to_affect = explode(',', $affecttotask);
                     if (!empty($task_to_affect)) {
                         foreach ($task_to_affect as $task_id) {

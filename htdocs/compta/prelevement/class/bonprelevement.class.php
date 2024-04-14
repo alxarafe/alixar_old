@@ -962,7 +962,6 @@ class BonPrelevement extends GenericDocument
         dol_syslog(__METHOD__ . " Bank=" . $banque . " Office=" . $agence . " mode=" . $mode . " format=" . $format, LOG_DEBUG);
 
         require_once DOL_DOCUMENT_ROOT . "/compta/facture/class/facture.class.php";
-        require_once DOL_DOCUMENT_ROOT . "/societe/class/societe.class.php";
 
         // Check params
         if ($type != 'bank-transfer') {

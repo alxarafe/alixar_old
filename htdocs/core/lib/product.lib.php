@@ -114,7 +114,6 @@ function product_prepare_head($object)
     if (isModEnabled('variants') && ($object->isProduct() || $object->isService())) {
         global $db;
 
-        require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
 
         $prodcomb = new ProductCombination($db);
 

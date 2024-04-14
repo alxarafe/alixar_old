@@ -20,6 +20,9 @@
 
 namespace DoliModules\Project\Model;
 
+use DoliCore\Base\Stats;
+use DoliDB;
+
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
@@ -51,7 +54,6 @@ class ProjectStats extends Stats
 
         $this->db = $db;
 
-        require_once 'project.class.php';
         $this->project = new Project($this->db);
 
         $this->from = MAIN_DB_PREFIX . $this->project->table_element;

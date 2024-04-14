@@ -63,7 +63,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorboothattendee.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
 // Hook to be used by external payment modules (ie Payzen, ...)
 $hookmanager = new HookManager($db);
@@ -1296,7 +1295,6 @@ if ($source == 'contractline') {
     $found = true;
     $langs->load("contracts");
 
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 
     $contract = new Contrat($db);
     $contractline = new ContratLigne($db);

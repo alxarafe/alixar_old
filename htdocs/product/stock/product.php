@@ -39,16 +39,13 @@ require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productstockentrepot.class.php';
 if (isModEnabled('productbatch')) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
 }
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 if (isModEnabled('variants')) {
     require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductAttribute.class.php';
     require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductAttributeValue.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
     require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination2ValuePair.class.php';
 }
 
@@ -794,7 +791,6 @@ if ($id > 0 || $ref) {
 
             // Number of product from sales order already sent (partial shipping)
             if (isModEnabled("shipping")) {
-                require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
                 $filterShipmentStatus = '';
                 if (getDolGlobalString('STOCK_CALCULATE_ON_SHIPMENT')) {
                     $filterShipmentStatus = Expedition::STATUS_VALIDATED . ',' . Expedition::STATUS_CLOSED;

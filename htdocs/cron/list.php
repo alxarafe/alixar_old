@@ -1,9 +1,9 @@
 <?php
 
-/* Copyright (C) 2012      Nicolas Villa aka Boyquotes http://informetic.fr
- * Copyright (C) 2013      Florian Henry       <florian.henry@open-concept.pro>
- * Copyright (C) 2013-2021 Laurent Destailleur <eldy@users.sourceforge.net>
- * Copyright (C) 2019-2024 Frédéric France     <frederic.france@free.fr>
+/* Copyright (C) 2012       Nicolas Villa aka Boyquotes http://informetic.fr
+ * Copyright (C) 2013       Florian Henry           <florian.henry@open-concept.pro>
+ * Copyright (C) 2013-2021  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2019-2024  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
@@ -26,6 +26,8 @@
  *  \ingroup    cron
  *  \brief      Lists Jobs
  */
+
+use DoliCore\Form\Form;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

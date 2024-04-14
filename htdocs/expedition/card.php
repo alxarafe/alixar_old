@@ -38,11 +38,17 @@
  *  \brief      Card of a shipment
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\OrderLine;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\Product\Model\Product;
+use DoliModules\Shipment\Model\Expedition;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/sendings.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/expedition/modules_expedition.php';
@@ -50,16 +56,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
-if (isModEnabled("product") || isModEnabled("service")) {
-}
-if (isModEnabled("propal")) {
-}
-if (isModEnabled('productbatch')) {
-    require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
-}
-if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array("sendings", "companies", "bills", 'deliveries', 'orders', 'stocks', 'other', 'propal', 'productbatch'));

@@ -24,6 +24,10 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/partnership/class/partnership.class.php';
 require_once DOL_DOCUMENT_ROOT . '/partnership/lib/partnership.lib.php';

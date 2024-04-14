@@ -420,7 +420,6 @@ class Invoices extends DolibarrApi
      */
     public function createInvoiceFromContract($contractid)
     {
-        require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 
         if (!DolibarrApiAccess::$user->hasRight('contrat', 'lire')) {
             throw new RestException(403);

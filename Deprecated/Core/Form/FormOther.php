@@ -38,6 +38,7 @@ namespace DoliCore\Form;
 
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Category\Model\Categorie;
+use DoliModules\Project\Model\Task;
 use DoliModules\User\Model\User;
 use InfoBox;
 
@@ -947,7 +948,6 @@ class FormOther
     {
         global $user, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 
         //print $modeproject.'-'.$modetask;
         $task = new Task($this->db);

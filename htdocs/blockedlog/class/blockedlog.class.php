@@ -242,7 +242,6 @@ class BlockedLog
             }
         }
         if ($this->element === 'invoice_supplier') {
-            require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 
             $object = new FactureFournisseur($this->db);
             if ($object->fetch($this->fk_object) > 0) {

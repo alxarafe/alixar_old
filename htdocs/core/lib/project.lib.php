@@ -30,6 +30,9 @@
  * \ingroup    project
  */
 
+use DoliModules\Company\Model\Company;
+use DoliModules\Project\Model\Project;
+
 /**
  * Prepare array with list of tabs
  *
@@ -79,7 +82,6 @@ function project_prepare_head(Project $project, $moreparam = '')
         if (!is_null($dataretrieved)) {
             $nbTasks = $dataretrieved;
         } else {
-            require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
             $taskstatic = new Task($db);
             $nbTasks = count($taskstatic->getTasksArray(0, 0, $project->id, 0, 0));
             dol_setcache($cachekey, $nbTasks, 120); // If setting cache fails, this is not a problem, so we do not test result.
@@ -2504,7 +2506,6 @@ function print_projecttasks_array($db, $form, $socid, $projectsListId, $mytasks 
 
     $maxofloop = (!getDolGlobalString('MAIN_MAXLIST_OVERLOAD') ? 500 : $conf->global->MAIN_MAXLIST_OVERLOAD);
 
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
     $listofstatus = array_keys($listofoppstatus);
 

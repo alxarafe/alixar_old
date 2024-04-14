@@ -41,9 +41,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 if (isModEnabled('margin')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmargin.class.php';
 }
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
 if (isModEnabled('category')) {
 }

@@ -41,20 +41,25 @@
  *  \brief          Page of commercial proposals card and list
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCategory;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormMargin;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormPropal;
 use DoliCore\Lib\Fields;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\Project\Model\Project;
+use DoliModules\Proposal\Model\Propal;
+use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formpropal.class.php';
-if (isModEnabled('margin')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmargin.class.php';
-}
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-if (isModEnabled('category')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'propal', 'compta', 'bills', 'orders', 'products', 'deliveries', 'categories'));

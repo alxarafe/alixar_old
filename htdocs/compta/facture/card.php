@@ -49,19 +49,16 @@ require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmargin.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 if (isModEnabled('order')) {
 }
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
 if (isModEnabled('variants')) {
-    require_once DOL_DOCUMENT_ROOT . '/variants/class/ProductCombination.class.php';
 }
 if (isModEnabled('accounting')) {
 }
@@ -1527,7 +1524,6 @@ if (empty($reshook)) {
                     $object->linked_objects[$object->origin] = $object->origin_id;
                     // link with order if it is a shipping invoice
                     if ($object->origin == 'shipping') {
-                        require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
                         $exp = new Expedition($db);
                         $exp->fetch($object->origin_id);
                         $exp->fetchObjectLinked();

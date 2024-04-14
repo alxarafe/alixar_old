@@ -27,32 +27,13 @@
 
 // Put here all includes required by your class file
 include_once DOL_DOCUMENT_ROOT . '/emailcollector/lib/emailcollector.lib.php';
-
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-
-require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';                   // Customer Proposal
-require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';                    // Sale Order
-require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';               // Customer Invoice
-require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';                      // Contact / Address
-require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';                // Shipping / Delivery
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';           // Purchase Order
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';            // Purchase Invoice
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';                       // Project
-require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';                  // Reception
-require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentcandidature.class.php';   // Recruiting
-require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';                      // Third-Party
-require_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';  // Supplier Proposal
-//require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';                        // Ticket
-//require_once DOL_DOCUMENT_ROOT .'/expensereport/class/expensereport.class.php';        // Expense Report
-//require_once DOL_DOCUMENT_ROOT .'/holiday/class/holiday.class.php';                    // Holidays (leave request)
-
 
 use DoliCore\Base\GenericDocument;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\InvalidWhereQueryCriteriaException;
-
 use OAuth\Common\Storage\DoliStorage;
 use OAuth\Common\Consumer\Credentials;
 

@@ -26,6 +26,9 @@
  *    \brief      Page to create/edit/view Bill Of Material
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';

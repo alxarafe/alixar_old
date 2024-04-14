@@ -24,6 +24,7 @@
 namespace DoliModules\Proposal\Model;
 
 use DoliCore\Base\Stats;
+use DoliModules\SupplierProposal\Model\SupplierProposal;
 
 /**
  *  \file       htdocs/comm/propal/class/propalestats.class.php

@@ -1815,7 +1815,6 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
             if ($const == 'ADHERENT_CARD_TYPE' || $const == 'ADHERENT_ETIQUETTE_TYPE') {
                 print '<td>';
                 // List of possible labels (defined into $_Avery_Labels variable set into format_cards.lib.php)
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
                 $arrayoflabels = [];
                 foreach (array_keys($_Avery_Labels) as $codecards) {
                     $arrayoflabels[$codecards] = $_Avery_Labels[$codecards]['name'];

@@ -26,7 +26,6 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
 
 /**
  * Class for WebPortalPropal

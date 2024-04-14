@@ -25,6 +25,8 @@
  *  \brief      File to list all Dolibarr modules
  */
 
+use DoliCore\Form\Form;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';

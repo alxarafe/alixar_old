@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2009	Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2019		Nicolas ZABOURI		<info@inovea-conseil.com>
  * Copyright (C) 2020		Tobias Sekan			<tobias.sekan@startmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,8 @@
  *  \ingroup    stock
  *  \brief      Home page of stock area
  */
+
+use DoliModules\Product\Model\Product;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

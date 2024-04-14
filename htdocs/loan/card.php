@@ -37,7 +37,6 @@ if (isModEnabled('accounting')) {
 }
 
 if (isModEnabled('project')) {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 

@@ -26,7 +26,6 @@ namespace DoliModules\Proposal\Api;
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
 
 
 /**

@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015	   Charlene Benke        <charlene@patas-monkey.com>
  * Copyright (C) 2019      Nicolas ZABOURI      <info@inovea-conseil.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,10 @@
  *  \ingroup    ficheinter
  *  \brief      Home page of interventional module
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliModules\Intervention\Model\Fichinter;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

@@ -32,15 +32,21 @@
  *  \brief      Page to list projects
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCategory;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormProjets;
 use DoliCore\Lib\Fields;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Project\Model\Project;
+use DoliModules\Project\Model\Task;
+use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
-if (isModEnabled('category')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array('projects', 'companies', 'commercial'));

@@ -140,7 +140,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         }
     }
 } elseif ($modulepart == 'project') {
-    require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
     $object = new Project($db);
     if ($id > 0) {
         $result = $object->fetch($id);
@@ -262,7 +261,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->$modulepart->dir_output; // By default
     }
 } elseif ($modulepart == 'facture_fourn' || $modulepart == 'facture_fournisseur') {
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
     $object = new FactureFournisseur($db);
     if ($id > 0) {
         $result = $object->fetch($id);

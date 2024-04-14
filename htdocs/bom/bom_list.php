@@ -24,6 +24,7 @@
  *    \brief      List page for BillOfMaterials
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
 
 // Load Dolibarr environment

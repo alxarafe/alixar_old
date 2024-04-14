@@ -20,6 +20,8 @@
 
 namespace DoliCore\Form;
 
+use DoliModules\Supplier\Model\CommandeFournisseur;
+
 /**
  *  \file       htdocs/core/class/html.formorder.class.php
  *  \ingroup    core

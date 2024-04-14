@@ -45,7 +45,6 @@ require __DIR__ . '/../../htdocs/master.inc.php';
 require_once DOL_DOCUMENT_ROOT . "/compta/facture/class/facture.class.php";
 require_once DOL_DOCUMENT_ROOT . "/comm/propal/class/propal.class.php";
 require_once DOL_DOCUMENT_ROOT . "/commande/class/commande.class.php";
-require_once DOL_DOCUMENT_ROOT . "/societe/class/societe.class.php";
 
 /*
  * Parameters

@@ -133,7 +133,6 @@ if ($action == 'confirm_rejet' && $permissiontoadd) {
 $form = new Form($db);
 
 if ($type == 'bank-transfer') {
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
     $invoicestatic = new FactureFournisseur($db);
 } else {
     $invoicestatic = new Facture($db);

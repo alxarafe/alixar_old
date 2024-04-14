@@ -35,9 +35,14 @@
  *      \brief      Page to list all contacts
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormOther;
 use DoliCore\Lib\Fields;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Contact\Model\Contact;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 

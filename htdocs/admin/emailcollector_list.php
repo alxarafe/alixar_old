@@ -23,6 +23,7 @@
  *      \brief      List page for emailcollector
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
 
 // Load Dolibarr environment

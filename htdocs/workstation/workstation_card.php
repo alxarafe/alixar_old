@@ -1,6 +1,7 @@
 <?php
 
-/* Copyright (C) 2017 Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2017       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +23,12 @@
  *      \brief      Page to create/edit/view workstation
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliModules\Resource\Model\FormResource;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/resource/class/html.formresource.class.php';
-require_once DOL_DOCUMENT_ROOT . '/resource/class/dolresource.class.php';
 require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';
 require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstationusergroup.class.php';
 require_once DOL_DOCUMENT_ROOT . '/workstation/lib/workstation_workstation.lib.php';

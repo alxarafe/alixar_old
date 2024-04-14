@@ -42,8 +42,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncommreminder.class.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 
 
 // Load translation files required by the page

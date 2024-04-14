@@ -4,6 +4,7 @@
  * Copyright (C) 2007		Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2010-2012	Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2010		Juanjo Menent        <jmenent@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,8 @@
  *  \brief      Ensemble de functions de base pour le module commande
  *  \ingroup    commande
  */
+
+use DoliModules\Billing\Model\Commande;
 
 /**
  * Prepare array with list of tabs

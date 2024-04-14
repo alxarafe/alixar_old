@@ -31,8 +31,6 @@
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/project/modules_project.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
@@ -48,13 +46,10 @@ if (isModEnabled('invoice')) {
 if (isModEnabled('order')) {
 }
 if (isModEnabled("supplier_invoice")) {
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 }
 if (isModEnabled("supplier_order")) {
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 }
 if (isModEnabled('contract')) {
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 }
 if (isModEnabled('intervention')) {
 }
@@ -65,7 +60,6 @@ if (isModEnabled('agenda')) {
     require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 }
 if (isModEnabled('shipping')) {
-    require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 }
 
 /**

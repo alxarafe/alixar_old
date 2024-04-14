@@ -24,11 +24,15 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Project\Model\Project;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorbooth.class.php';
 require_once DOL_DOCUMENT_ROOT . '/eventorganization/lib/eventorganization_conferenceorbooth.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
 global $dolibarr_main_url_root;
 

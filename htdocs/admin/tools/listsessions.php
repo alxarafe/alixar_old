@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2004-2012  Laurent Destailleur <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012	Regis Houssin		<regis.houssin@inodbox.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,9 @@
  *      \ingroup    core
  *      \brief      List of PHP sessions
  */
+
+use DoliCore\Form\Form;
+use DoliModules\User\Model\User;
 
 if (! defined('CSRFCHECK_WITH_TOKEN')) {
     define('CSRFCHECK_WITH_TOKEN', '1');        // Force use of CSRF protection with tokens even for GET

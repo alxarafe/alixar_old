@@ -34,7 +34,6 @@ if (! defined('CSRFCHECK_WITH_TOKEN')) {
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 
 // Load translation files required by the page

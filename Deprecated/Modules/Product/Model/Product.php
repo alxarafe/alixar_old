@@ -1706,7 +1706,6 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
             $stock_commande_client = $this->stats_commande['qty'];
         }
         if (isModEnabled("shipping")) {
-            require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
             $filterShipmentStatus = '';
             if (getDolGlobalString('STOCK_CALCULATE_ON_SHIPMENT')) {
                 $filterShipmentStatus = Expedition::STATUS_VALIDATED . ',' . Expedition::STATUS_CLOSED;

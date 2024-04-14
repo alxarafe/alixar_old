@@ -259,7 +259,6 @@ if (empty($reshook)) {
             dol_syslog("Validate invoice with stock change into warehouse defined into constant " . $constantforkey . " = " . getDolGlobalString($constantforkey));
             $batch_rule = 0;
             if (isModEnabled('productbatch') && getDolGlobalString('CASHDESK_FORCE_DECREASE_STOCK')) {
-                require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
                 $batch_rule = Productbatch::BATCH_RULE_SELLBY_EATBY_DATES_FIRST;
             }
             $res = $invoice->validate($user, '', getDolGlobalString($constantforkey), 0, $batch_rule);
@@ -480,7 +479,6 @@ if (empty($reshook)) {
             dol_syslog("Validate invoice with stock change into warehouse defined into constant " . $constantforkey . " = " . getDolGlobalString($constantforkey));
             $batch_rule = 0;
             if (isModEnabled('productbatch') && getDolGlobalString('CASHDESK_FORCE_DECREASE_STOCK')) {
-                require_once DOL_DOCUMENT_ROOT . '/product/class/productbatch.class.php';
                 $batch_rule = Productbatch::BATCH_RULE_SELLBY_EATBY_DATES_FIRST;
             }
             $res = $creditnote->validate($user, '', getDolGlobalString($constantforkey), 0, $batch_rule);

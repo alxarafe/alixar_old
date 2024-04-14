@@ -32,8 +32,6 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
@@ -48,7 +46,6 @@ if (isModEnabled('category')) {
 if (isModEnabled('order')) {
 }
 if (isModEnabled('contract')) {
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 }
 if (isModEnabled('deplacement')) {
     require_once DOL_DOCUMENT_ROOT . '/compta/deplacement/class/deplacement.class.php';
@@ -57,7 +54,6 @@ if (isModEnabled('don')) {
     require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 }
 if (isModEnabled('shipping')) {
-    require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 }
 if (isModEnabled('expensereport')) {
 }
@@ -83,13 +79,10 @@ if (isModEnabled('stock')) {
     require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
 }
 if (isModEnabled('supplier_invoice')) {
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 }
 if (isModEnabled('supplier_order')) {
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 }
 if (isModEnabled('supplier_proposal')) {
-    require_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';
 }
 if (isModEnabled('tax')) {
     require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';

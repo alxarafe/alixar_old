@@ -245,7 +245,6 @@ if ($type_element == 'fichinter') {     // Customer : show products from invoice
     $doc_number = 'c.ref';
     $thirdTypeSelect = 'customer';
 } elseif ($type_element == 'supplier_invoice') {    // Supplier : Show products from invoices.
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
     $documentstatic = new FactureFournisseur($db);
     $sql_select = 'SELECT f.rowid as doc_id, f.ref as doc_number, \'1\' as doc_type, f.datef as dateprint, f.fk_statut as status, f.paye as paid, tc.libelle as type_contact_label, ';
     $tables_from = MAIN_DB_PREFIX . 'facture_fourn_det d';
@@ -270,7 +269,6 @@ if ($type_element == 'fichinter') {     // Customer : show products from invoice
     //    $thirdTypeSelect='supplier';
     //}
 } elseif ($type_element == 'supplier_order') {  // Supplier : Show products from orders.
-    require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
     $documentstatic = new CommandeFournisseur($db);
     $sql_select = 'SELECT c.rowid as doc_id, c.ref as doc_number, \'1\' as doc_type, c.date_valid as dateprint, c.fk_statut as status, tc.libelle as type_contact_label, ';
     $tables_from = MAIN_DB_PREFIX . 'commande_fournisseurdet d';
@@ -283,7 +281,6 @@ if ($type_element == 'fichinter') {     // Customer : show products from invoice
     $doc_number = 'c.ref';
     $thirdTypeSelect = 'supplier';
 } elseif ($type_element == 'contract') {    // Order
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
     $documentstatic = new Contrat($db);
     $documentstaticline = new ContratLigne($db);
     $sql_select = 'SELECT c.rowid as doc_id, c.ref as doc_number, \'1\' as doc_type, c.date_contrat as dateprint, d.statut as status, tc.libelle as type_contact_label, ';

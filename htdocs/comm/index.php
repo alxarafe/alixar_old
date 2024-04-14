@@ -7,6 +7,7 @@
  * Copyright (C) 2019		Nicolas ZABOURI			<info@inovea-conseil.com>
  * Copyright (C) 2020		Pierre Ardoin			<mapiolca@me.com>
  * Copyright (C) 2020		Tobias Sekan			<tobias.sekan@startmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,21 +29,22 @@
  *  \brief      Home page of commercial area
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliModules\Billing\Model\Commande;
+use DoliModules\Company\Model\Company;
+use DoliModules\Company\Model\Societe;
+use DoliModules\Intervention\Model\Fichinter;
+use DoliModules\Proposal\Model\Propal;
+use DoliModules\Supplier\Model\CommandeFournisseur;
+use DoliModules\SupplierProposal\Model\SupplierProposal;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
-require_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
-require_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/propal.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/order.lib.php';
-if (isModEnabled('contract')) {
-    require_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
-}
-if (isModEnabled('intervention')) {
-}
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
 $hookmanager = new HookManager($db);
