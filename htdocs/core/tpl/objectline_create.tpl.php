@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010-2012  Regis Houssin       <regis.houssin@inodbox.com>
  * Copyright (C) 2010-2014	Laurent Destailleur	<eldy@users.sourceforge.net>
  * Copyright (C) 2012-2013	Christophe Battarel	<christophe.battarel@altairis.fr>

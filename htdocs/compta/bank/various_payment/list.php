@@ -30,10 +30,12 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormAccounting;
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Accounting\Model\AccountingJournal;
+use DoliModules\Bank\Model\Account;
+use DoliModules\Bank\Model\AccountLine;
+use DoliModules\Bank\Model\PaymentVarious;
 use DoliModules\Project\Model\Project;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/accountline.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 
 // Load translation files required by the page

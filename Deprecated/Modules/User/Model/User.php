@@ -2212,7 +2212,6 @@ private $cache_childids;
                     $this->pass_indatabase_crypted = $password_crypted;
 
                     if ($this->fk_member && !$nosyncmember) {
-
                         // This user is linked with a member, so we also update members information
                         // if this is an update.
                         $adh = new Adherent($this->db);

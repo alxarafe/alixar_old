@@ -30,7 +30,6 @@ namespace DoliModules\ExpenseReport\Model;
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  *  Class to manage payments of expense report
  */

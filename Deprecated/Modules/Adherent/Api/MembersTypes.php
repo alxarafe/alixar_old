@@ -24,7 +24,6 @@ use DoliCore\Api\DolibarrApi;
 use DolibarrApiAccess;
 use Luracast\Restler\RestException;
 
-
 /**
  * API class for members types
  *

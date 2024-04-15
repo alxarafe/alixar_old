@@ -26,7 +26,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  * Class for AssetDepreciationOptions
  */

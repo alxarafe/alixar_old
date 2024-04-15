@@ -29,6 +29,13 @@
  *  \brief      Page to list stock movements
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\Product\Model\Product;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';

@@ -27,7 +27,6 @@
  */
 
 use DoliCore\Lib\Misc;
-
 use DoliCore\Base\GenericBoxes;
 
 /**

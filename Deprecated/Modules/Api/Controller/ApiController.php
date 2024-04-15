@@ -504,5 +504,4 @@ class ApiController extends DolibarrController
 
 //session_destroy();
     }
-
 }

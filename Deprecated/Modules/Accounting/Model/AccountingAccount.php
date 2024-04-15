@@ -33,7 +33,6 @@ namespace DoliModules\Accounting\Model;
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  * Class to manage accounting accounts
  */

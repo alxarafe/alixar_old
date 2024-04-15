@@ -605,7 +605,6 @@ if (GETPOST('ajoutsujet')) {
         print '<input type="submit" class="button button-cancel" name="cancel" value="' . dol_escape_htmltag($langs->trans("Cancel")) . '">';
         print '<br><br>' . "\n";
     } else {
-
         $formother = new FormOther($db);
         //ajout d'une date avec creneau horaire
         print $langs->trans("AddADate") . ':<br><br>' . "\n";

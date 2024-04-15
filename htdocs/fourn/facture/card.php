@@ -40,6 +40,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliModules\Bank\Model\Account;
 use DoliModules\Supplier\Model\FactureFournisseur;
 use DoliModules\Supplier\Model\FactureFournisseurRec;
 use DoliModules\Supplier\Model\PaiementFourn;

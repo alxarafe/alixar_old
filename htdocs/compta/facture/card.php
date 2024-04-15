@@ -46,6 +46,7 @@ use DoliCore\Form\FormFile;
 use DoliCore\Form\FormMargin;
 use DoliCore\Form\FormOther;
 use DoliCore\Form\FormProjets;
+use DoliModules\Bank\Model\Account;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Company\Model\Company;
 use DoliModules\Supplier\Model\FactureRec;

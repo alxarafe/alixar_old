@@ -34,6 +34,8 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
+use DoliModules\Bank\Model\Account;
+use DoliModules\Bank\Model\AccountLine;
 use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment

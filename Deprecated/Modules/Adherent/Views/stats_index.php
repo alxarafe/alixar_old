@@ -1,5 +1,6 @@
 <?php
 
+use DoliCore\Form\Form;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Statistics\AdherentStats;
 

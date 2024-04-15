@@ -28,13 +28,14 @@
  *      \brief      Page with warehouse and stock value
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCategory;
 use DoliCore\Lib\Fields;
+use DoliModules\Category\Model\Categorie;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
-if (isModEnabled('category')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array("stocks", "other"));

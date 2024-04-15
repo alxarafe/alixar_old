@@ -8,6 +8,7 @@
  * Copyright (C) 2012      Juanjo Menent	    <jmenent@2byte.es>
  * Copyright (C) 2014      Marcos García        <marcosgdf@gmail.com>
  * Copyright (C) 2020 	   Gauthier VERDOL <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,8 +33,6 @@
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonnumrefgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php'; // required for use by classes that inherit
-
 
 /**
  *  Parent class for documents models

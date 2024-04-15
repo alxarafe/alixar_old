@@ -37,7 +37,6 @@ use ExtraFields;
  *    \brief      File of class to generate the form for creating a new ticket.
  */
 
-
 if (!class_exists('FormCompany')) {
     include DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 }

@@ -31,7 +31,6 @@ include_once DOL_DOCUMENT_ROOT . '/core/class/rssparser.class.php';
 
 use DoliCore\Base\GenericBoxes;
 
-
 /**
  * Class to manage the box to show RSS feeds
  */

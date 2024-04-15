@@ -27,9 +27,7 @@
  */
 
 use DoliModules\Adherent\Model\Adherent;
-
 use DoliCore\Base\GenericBoxes;
-
 
 /**
  * Class to manage the box to show members birthdays

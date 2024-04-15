@@ -38,6 +38,7 @@
 // Load Dolibarr environment
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
+use DoliModules\Bank\Model\Account;
 use DoliModules\Company\Model\Company;
 use DoliModules\Supplier\Model\PaiementFourn;
 

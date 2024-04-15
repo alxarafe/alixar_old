@@ -23,7 +23,6 @@ namespace DoliModules\Shipment\Api;
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-
 /**
  * API class for shipments
  *

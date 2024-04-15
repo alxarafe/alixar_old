@@ -203,7 +203,6 @@ if ($id > 0 || !empty($ref)) {
 
         // additional list with adherents of company
         if (isModEnabled('member') && $user->hasRight('adherent', 'lire')) {
-
             $membertypestatic = new AdherentType($db);
             $memberstatic = new Adherent($db);
 

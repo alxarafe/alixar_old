@@ -28,8 +28,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
-
 /**
  * Class to manage payments of loans
  */
@@ -538,7 +536,6 @@ class PaymentLoan extends GenericDocument
         $this->db->begin();
 
         if (isModEnabled("bank")) {
-
             $acc = new Account($this->db);
             $acc->fetch($accountid);
 

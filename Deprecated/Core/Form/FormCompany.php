@@ -37,7 +37,6 @@ namespace DoliCore\Form;
 
 use DoliModules\Contact\Model\Contact;
 
-
 /**
  * Class of forms component to manage companies
  */

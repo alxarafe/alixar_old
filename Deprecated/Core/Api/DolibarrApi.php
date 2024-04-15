@@ -24,7 +24,6 @@ namespace DoliCore\Api;
 use Luracast\Restler\Defaults;
 use Luracast\Restler\Restler;
 
-
 /**
  * Class for API REST v1
  */

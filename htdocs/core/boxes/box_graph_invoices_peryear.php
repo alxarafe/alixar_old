@@ -25,7 +25,6 @@
 
 use DoliCore\Base\GenericBoxes;
 
-
 /**
  * Class to manage the box to show invoices per year graph
  */

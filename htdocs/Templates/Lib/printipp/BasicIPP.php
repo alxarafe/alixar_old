@@ -50,7 +50,8 @@ class ippException extends \Exception
 
     public function getErrorFormatted()
     {
-        $return = sprintf("[ipp]: %s -- " . _(" file %s, line %s"),
+        $return = sprintf(
+            "[ipp]: %s -- " . _(" file %s, line %s"),
             $this->getMessage(), $this->getFile(), $this->getLine());
         return $return;
     }
@@ -74,7 +75,7 @@ class BasicIPP
     public $ssl = false;
     public $debug_level = 3; // max 3: almost silent
     public $alert_on_end_tag; // debugging purpose: echo "END tag OK" if (1 and  reads while end tag)
-    public $with_exceptions = 1; // compatibility mode for old scripts		// DOL_LDR_CHANGE set this to 1
+    public $with_exceptions = 1; // compatibility mode for old scripts      // DOL_LDR_CHANGE set this to 1
     public $handle_http_exceptions = 1;
 
     // readables variables
@@ -332,7 +333,6 @@ class BasicIPP
         $this->debug[$this->debug_count] = substr($string, 0, 1024);
         $this->debug_count++;
         //$this->debug .= substr($string,0,1024);
-
     }
 
     public function setUnix($socket = '/var/run/cups/cups.sock')
@@ -412,7 +412,6 @@ class BasicIPP
             . chr(0x00) . chr(0x0d) // name-length
             . "document-name" // mimeMediaType
             . self::_giveMeStringLength($document_name) . $document_name; // value
-
     }
 
     public function setAuthentification($username, $password)
@@ -511,7 +510,7 @@ class BasicIPP
         }
         $page_ranges = trim(str_replace("-", ":", $page_ranges));
         $first = true;
-        #$page_ranges = split(' ', $page_ranges);
+        // $page_ranges = split(' ', $page_ranges);
         $page_ranges = preg_split('# #', $page_ranges);
         foreach ($page_ranges as $page_range) {
             $value = self::_rangeOfIntegerBuild($page_range);
@@ -535,7 +534,7 @@ class BasicIPP
 
     protected function _rangeOfIntegerBuild($integers)
     {
-        #$integers = split(":", $integers);
+        // $integers = split(":", $integers);
         $integers = preg_split("#:#", $integers);
         for ($i = 0; $i < 2; $i++) {
             $outvalue[$i] = self::_integerBuild($integers[$i]);
@@ -575,13 +574,16 @@ class BasicIPP
             }
         } else {
             trigger_error(
-                sprintf(_('SetAttribute: Tag "%s" is not a printer or a job attribute'),
+                sprintf(
+                    _('SetAttribute: Tag "%s" is not a printer or a job attribute'),
                     $attribute), E_USER_NOTICE);
             self::_putDebug(
-                sprintf(_('SetAttribute: Tag "%s" is not a printer or a job attribute'),
+                sprintf(
+                    _('SetAttribute: Tag "%s" is not a printer or a job attribute'),
                     $attribute), 3);
             self::_errorLog(
-                sprintf(_('SetAttribute: Tag "%s" is not a printer or a job attribute'),
+                sprintf(
+                    _('SetAttribute: Tag "%s" is not a printer or a job attribute'),
                     $attribute), 2);
             return false;
         }
@@ -609,13 +611,16 @@ class BasicIPP
             );
         } else {
             trigger_error(
-                sprintf(_('unsetAttribute: Tag "%s" is not a printer or a job attribute'),
+                sprintf(
+                    _('unsetAttribute: Tag "%s" is not a printer or a job attribute'),
                     $attribute), E_USER_NOTICE);
             self::_putDebug(
-                sprintf(_('unsetAttribute: Tag "%s" is not a printer or a job attribute'),
+                sprintf(
+                    _('unsetAttribute: Tag "%s" is not a printer or a job attribute'),
                     $attribute), 3);
             self::_errorLog(
-                sprintf(_('unsetAttribute: Tag "%s" is not a printer or a job attribute'),
+                sprintf(
+                    _('unsetAttribute: Tag "%s" is not a printer or a job attribute'),
                     $attribute), 2);
             return false;
         }
@@ -1093,7 +1098,8 @@ class BasicIPP
         }
         $this->stringjob .= chr(0x03); // end-of-attributes | end-of-attributes-tag
         self::_putDebug(
-            sprintf(_("String sent to the server is: %s"),
+            sprintf(
+                _("String sent to the server is: %s"),
                 $this->stringjob)
         );
         return true;
@@ -1421,7 +1427,7 @@ class BasicIPP
         self::_putDebug(_("Processing HTTP request"), 2);
         $this->serveroutput->headers = [];
         $this->serveroutput->body = "";
-        $http = new http_class;
+        $http = new http_class();
         if (!$this->unix) {
             // DOL_LDR_CHANGE
             if (empty($this->host)) {
@@ -1467,7 +1473,8 @@ class BasicIPP
                 "File" => $post_values["File"],
             ];
         }
-        if (isset($post_values["FileType"])
+        if (
+            isset($post_values["FileType"])
             && !strcmp($post_values["FileType"], "TEXT")
         ) {
             $arguments["BodyStream"][] = ["Data" => Chr(12)];
@@ -1597,7 +1604,7 @@ class BasicIPP
 
             default:
                 $server_response = preg_replace("/: $/", '', $this->serveroutput->headers[0]);
-                #$strings = split(' ', $server_response, 3);
+                // $strings = split(' ', $server_response, 3);
                 $strings = preg_split('# #', $server_response, 3);
                 $errno = $strings[1];
                 $string = strtoupper(str_replace(' ', '_', $strings[2]));
@@ -1637,14 +1644,16 @@ class BasicIPP
 
             default:
                 $this->serveroutput->ipp_version =
-                    sprintf("%u.%u (Unknown)",
+                    sprintf(
+                        "%u.%u (Unknown)",
                         ord($this->serveroutput->body[$this->_parsing->offset]) * 256,
                         ord($this->serveroutput->body[$this->_parsing->offset + 1]));
                 break;
         }
         self::_putDebug("I P P    R E S P O N S E :\n\n");
         self::_putDebug(
-            sprintf("IPP version %s%s: %s",
+            sprintf(
+                "IPP version %s%s: %s",
                 ord($this->serveroutput->body[$this->_parsing->offset]),
                 ord($this->serveroutput->body[$this->_parsing->offset + 1]),
                 $this->serveroutput->ipp_version));

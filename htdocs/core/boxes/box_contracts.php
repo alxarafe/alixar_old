@@ -29,7 +29,6 @@ use DoliCore\Base\GenericBoxes;
 use DoliModules\Company\Model\Company;
 use DoliModules\Contract\Model\Contrat;
 
-
 /**
  * Class to manage the box to show last contracts
  */

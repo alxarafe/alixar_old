@@ -26,8 +26,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
-
 /**
  *      Class to manage Schedule of loans
  */

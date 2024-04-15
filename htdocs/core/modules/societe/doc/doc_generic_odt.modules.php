@@ -304,7 +304,6 @@ class doc_generic_odt extends ModeleThirdPartyDoc
                 $num = $this->db->num_rows($result);
 
                 if ($num) {
-
                     $i = 0;
                     $contactstatic = new Contact($this->db);
 

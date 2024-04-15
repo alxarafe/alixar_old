@@ -30,7 +30,6 @@
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php'; // required for use by classes that inherit
 
 
 /**

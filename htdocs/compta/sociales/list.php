@@ -34,6 +34,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
 use DoliCore\Form\FormSocialContrib;
+use DoliModules\Bank\Model\Account;
 use DoliModules\Project\Model\Project;
 
 require BASE_PATH . '/main.inc.php';

@@ -19,8 +19,6 @@
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-
-
 require_once DOL_DOCUMENT_ROOT . '/adherents/class/api_members.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/api_products.class.php';
 require_once DOL_DOCUMENT_ROOT . '/societe/class/api_contacts.class.php';

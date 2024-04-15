@@ -29,7 +29,6 @@ use DoliCore\Base\GenericBoxes;
 use DoliModules\Supplier\Model\FactureFournisseur;
 use DoliModules\Supplier\Model\Supplier;
 
-
 /**
  * Class to manage the box to show not paid suppliers invoices
  */

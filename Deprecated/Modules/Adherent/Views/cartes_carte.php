@@ -1,5 +1,6 @@
 <?php
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\AveryLabels;
 
 $form = new Form($db);

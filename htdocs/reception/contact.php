@@ -30,7 +30,6 @@ require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/reception.lib.php';
 if (isModEnabled('project')) {
 }
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
 
 $langs->loadLangs(array("orders", "receptions", "companies"));
 

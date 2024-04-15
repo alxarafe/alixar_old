@@ -21,6 +21,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Form\Form;
+use DoliModules\User\Model\User;
+
 /**
  *      \file       htdocs/user/hierarchy.php
  *      \ingroup    user

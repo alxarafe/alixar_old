@@ -111,7 +111,8 @@ class PrintIPP extends BasicIPP
                 $this->jobs_uri = array_merge($this->jobs_uri, [""]);
                 self::_errorLog(sprintf("printing job: ", $this->last_job) . $this->serveroutput->status, 1);
                 if ($this->with_exceptions) {
-                    throw new ippException(sprintf("job status: %s",
+                    throw new ippException(sprintf(
+                        "job status: %s",
                         $this->serveroutput->status));
                 }
             }
@@ -365,7 +366,7 @@ class PrintIPP extends BasicIPP
         }
 
         if ($this->setup->datatype != "TEXT") {
-            unset ($this->setup->mime_media_type);
+            unset($this->setup->mime_media_type);
         }
 
         if (!isset($this->setup->jobname)) {
@@ -579,10 +580,12 @@ class PrintIPP extends BasicIPP
             $this->status = array_merge($this->status, [$this->serveroutput->status]);
 
             if ($this->serveroutput->status == "successfull-ok") {
-                self::_errorLog(sprintf(_("getting printer attributes of %s: %s"), $this->printer_uri,
+                self::_errorLog(sprintf(
+                    _("getting printer attributes of %s: %s"), $this->printer_uri,
                     $this->serveroutput->status), 3);
             } else {
-                self::_errorLog(sprintf(_("getting printer attributes of %s: %s"), $this->printer_uri,
+                self::_errorLog(sprintf(
+                    _("getting printer attributes of %s: %s"), $this->printer_uri,
                     $this->serveroutput->status), 1);
             }
 
@@ -592,7 +595,8 @@ class PrintIPP extends BasicIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("getting printer's attributes of %s : OPERATION FAILED"),
+            . sprintf(
+                _("getting printer's attributes of %s : OPERATION FAILED"),
                 $this->printer_uri), 3);
 
         return false;
@@ -744,7 +748,7 @@ class PrintIPP extends BasicIPP
                 . ''
                 . self::_giveMeStringLength('job-state-reason')
                 . 'job-state-reason';
-        } else { # cups 1.4.4 doesn't return much of anything without this
+        } else { // cups 1.4.4 doesn't return much of anything without this
             $this->stringjob .=
                 chr(0x44) // keyword
                 . self::_giveMeStringLength('requested-attributes')
@@ -790,7 +794,8 @@ class PrintIPP extends BasicIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("getting jobs of %s : OPERATION FAILED"),
+            . sprintf(
+                _("getting jobs of %s : OPERATION FAILED"),
                 $this->printer_uri), 3);
 
         return false;
@@ -837,10 +842,10 @@ class PrintIPP extends BasicIPP
                 $this->jobs_attributes->$job_index->$php_name->_type = $type;
                 $this->jobs_attributes->$job_index->$php_name->_range = $range;
                 for ($j = 0; $j < (count($this->parsed[$job_nbr][$i]) - 3); $j++) {
-                    # This causes incorrect parsing of integer job attributes.
-                    # 2010-08-16
-                    # bpkroth
-                    #$value = self::_interpretAttribute($name,$type,$this->parsed[$job_nbr][$i][$j]);
+                    // This causes incorrect parsing of integer job attributes.
+                    // 2010-08-16
+                    // bpkroth
+                    // $value = self::_interpretAttribute($name,$type,$this->parsed[$job_nbr][$i][$j]);
                     $value = $this->parsed[$job_nbr][$i][$j];
                     $index = '_value' . $j;
                     $this->jobs_attributes->$job_index->$php_name->$index = $value;
@@ -987,7 +992,8 @@ class PrintIPP extends BasicIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("getting jobs attributes of %s : OPERATION FAILED"),
+            . sprintf(
+                _("getting jobs attributes of %s : OPERATION FAILED"),
                 $job_uri), 3);
 
         return false;
@@ -1009,7 +1015,7 @@ class PrintIPP extends BasicIPP
 
     public function resetError($error)
     {
-        unset ($this->error_generation->$error);
+        unset($this->error_generation->$error);
         trigger_error(sprintf(_('Reset Error %s'), $error), E_USER_NOTICE);
     }
 

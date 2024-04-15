@@ -3530,8 +3530,6 @@ class SupplierOrder extends CommonOrder
     public function calcAndSetStatusDispatch(User $user, $closeopenorder = 1, $comment = '')
     {
         if (isModEnabled("supplier_order")) {
-            require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
-
             $qtydelivered = [];
             $qtywished = [];
 

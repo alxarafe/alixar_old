@@ -1232,7 +1232,6 @@ public $weekWorkLoadPerTask;
 
             //Duplicate task
             if ($clone_task) {
-
                 $taskstatic = new Task($this->db);
 
                 // Security check

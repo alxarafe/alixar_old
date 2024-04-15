@@ -217,7 +217,6 @@ function show_contacts_projects($conf, $langs, $db, $object, $backtopage = '', $
             print '</tr>';
 
             if ($num > 0) {
-
                 $projecttmp = new Project($db);
 
                 $i = 0;

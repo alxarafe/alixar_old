@@ -76,7 +76,6 @@ top_httphead('application/json');
 //print_r($_GET);
 
 if (!empty($action) && $action == 'fetch' && !empty($id)) {
-
     $outjson = array();
 
     if ($object->id > 0) {
@@ -90,7 +89,6 @@ if (!empty($action) && $action == 'fetch' && !empty($id)) {
 
     echo json_encode($outjson);
 } else {
-
     if (empty($htmlname)) {
         return;
     }

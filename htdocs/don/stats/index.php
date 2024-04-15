@@ -29,9 +29,10 @@
 // Load Dolibarr environment
 use DoliCore\Form\Form;
 use DoliCore\Form\FormCompany;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Donation\Model\DonationStats;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/donstats.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 
 $WIDTH = DolGraph::getDefaultGraphSizeForStats('width');

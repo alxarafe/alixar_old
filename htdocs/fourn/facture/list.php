@@ -42,6 +42,7 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormCompany;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormOther;
+use DoliModules\Bank\Model\Account;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
 use DoliModules\Project\Model\Project;

@@ -1918,7 +1918,6 @@ class ExtraFields
                         }
                     }
                 } else {
-
                     $toprint = array();
                     while ($obj = $this->db->fetch_object($resql)) {
                         if (is_array($value_arr) && in_array($obj->rowid, $value_arr)) {

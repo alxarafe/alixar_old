@@ -24,7 +24,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  * Class for AssetAccountancyCodes
  */

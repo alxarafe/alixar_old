@@ -26,7 +26,6 @@
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Proposal\Model\PropaleStats;
 
-
 /**
  * Class to manage the box to show proposals per month graph
  */

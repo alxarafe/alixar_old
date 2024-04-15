@@ -8,6 +8,7 @@
  * Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2019       Nicolas ZABOURI         <info@inovea-conseil.com>
  * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,9 @@
  *      \ingroup    compta
  *      \brief      Page to list payments of special expenses
  */
+
+use DoliCore\Form\Form;
+use DoliModules\Bank\Model\Account;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

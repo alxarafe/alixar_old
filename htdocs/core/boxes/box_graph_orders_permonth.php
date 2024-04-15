@@ -26,7 +26,6 @@
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Billing\Statistics\CommandeStats;
 
-
 /**
  * Class to manage the box to show orders per month graph
  */

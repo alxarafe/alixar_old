@@ -27,10 +27,12 @@
  *  \brief      List of donations
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Donation\Model\Don;
+use DoliModules\Project\Model\Project;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-if (isModEnabled('project')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'donations'));

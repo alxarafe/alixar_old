@@ -27,7 +27,6 @@ use DoliModules\Billing\Model\Expedition;
 use DoliModules\Billing\Model\Propal;
 use Luracast\Restler\RestException;
 
-
 /**
  * API class for orders
  *

@@ -22,7 +22,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  * Class ProductAttribute
  * Used to represent a product attribute

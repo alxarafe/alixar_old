@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Obtains main url
  *
@@ -22,4 +23,3 @@ function getUrl()
     $script = substr($script, 0, strlen($script) - strlen('/index.php'));
     return $proto . '://' . $host . $script;
 }
-

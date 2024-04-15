@@ -1,7 +1,9 @@
 <?php
 
+use DoliCore\Form\Form;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\Subscription;
+use DoliModules\Bank\Model\Account;
 
 $form = new Form($db);
 $subscription = new Subscription($db);

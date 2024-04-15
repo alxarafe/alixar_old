@@ -30,7 +30,6 @@ use DoliCore\Form\FormOther;
 use DoliCore\Form\FormProjets;
 use DoliModules\Resource\Model\FormResource;
 
-
 /**
  * Show filter form in agenda view
  *

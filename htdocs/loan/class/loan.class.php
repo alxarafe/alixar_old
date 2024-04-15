@@ -25,7 +25,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  *  Loan
  */

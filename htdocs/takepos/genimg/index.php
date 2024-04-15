@@ -79,7 +79,6 @@ if ($query == "cat") {
     header('Location: ../../public/theme/common/nophoto.png');
     exit;
 } elseif ($query == "pro") {
-
     $objProd = new Product($db);
     $objProd->fetch($id);
     $image = $objProd->show_photos('product', $conf->product->multidir_output[$objProd->entity], 'small', 1);

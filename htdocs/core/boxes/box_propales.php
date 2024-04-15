@@ -31,7 +31,6 @@ use DoliCore\Base\GenericBoxes;
 use DoliModules\Company\Model\Company;
 use DoliModules\Proposal\Model\Propal;
 
-
 /**
  * Class to manage the box to show last proposals
  */

@@ -22,6 +22,8 @@
 
 namespace DoliModules\Shipment\Model;
 
+use DoliCore\Base\Stats;
+
 /**
  *  \file       htdocs/expedition/class/expeditionstats.class.php
  *  \ingroup    expedition
@@ -31,7 +33,6 @@ namespace DoliModules\Shipment\Model;
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-
 
 /**
  *      Class to manage shipment statistics

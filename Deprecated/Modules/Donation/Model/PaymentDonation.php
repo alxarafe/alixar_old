@@ -592,7 +592,6 @@ class PaymentDonation extends GenericDocument
         $error = 0;
 
         if (isModEnabled("bank")) {
-
             $acc = new Account($this->db);
             $acc->fetch($accountid);
 

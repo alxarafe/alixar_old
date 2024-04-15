@@ -28,7 +28,6 @@
 
 use DoliCore\Base\GenericBoxes;
 
-
 /**
  * Class to manage the box to show last members subscriptions
  */

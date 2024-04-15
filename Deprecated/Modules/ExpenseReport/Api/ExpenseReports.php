@@ -27,7 +27,6 @@ use DoliModules\ExpenseReport\Model\ExpenseReport;
 use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
 use Luracast\Restler\RestException;
 
-
 /**
  * API class for Expense Reports
  *

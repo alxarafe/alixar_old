@@ -36,7 +36,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/reception.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
 if (isModEnabled('project')) {
 }
-require_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.dispatch.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('receptions', 'companies', 'other'));

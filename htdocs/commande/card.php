@@ -1356,7 +1356,6 @@ if (empty($reshook)) {
                     GETPOST('generate_deposit', 'alpha') == 'on' && !empty($deposit_percent_from_payment_terms)
                     && isModEnabled('invoice') && $user->hasRight('facture', 'creer')
                 ) {
-
                     $date = dol_mktime(0, 0, 0, GETPOSTINT('datefmonth'), GETPOSTINT('datefday'), GETPOSTINT('datefyear'));
                     $forceFields = array();
 
@@ -2240,7 +2239,6 @@ if ($action == 'create' && $usercancreate) {
                 $deposit_percent_from_payment_terms = (float) getDictionaryValue('c_payment_term', 'deposit_percent', $object->cond_reglement_id);
 
                 if (!empty($deposit_percent_from_payment_terms) && isModEnabled('invoice') && $user->hasRight('facture', 'creer')) {
-
                     $object->fetchObjectLinked();
 
                     $eligibleForDepositGeneration = true;

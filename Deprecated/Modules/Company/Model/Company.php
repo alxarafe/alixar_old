@@ -2033,7 +2033,6 @@ class Company extends GenericDocument
                 if (!$error && $nbrowsaffected) {
                     // Update information on linked member if it is an update
                     if (!$nosyncmember && isModEnabled('member')) {
-
                         dol_syslog(get_class($this) . "::update update linked member");
 
                         $lmember = new Adherent($this->db);

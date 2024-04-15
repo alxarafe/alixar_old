@@ -32,7 +32,6 @@
 
 use DoliModules\Bank\Model\Account;
 
-
 /**
  * Prepare array with list of tabs
  *

@@ -233,7 +233,6 @@ class BlockedLog
         global $langs;
 
         if ($this->element === 'facture') {
-
             $object = new Facture($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);
@@ -242,7 +241,6 @@ class BlockedLog
             }
         }
         if ($this->element === 'invoice_supplier') {
-
             $object = new FactureFournisseur($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);
@@ -259,7 +257,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'payment_supplier') {
-
             $object = new PaiementFourn($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);
@@ -267,7 +264,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'payment_donation') {
-
             $object = new PaymentDonation($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);
@@ -275,7 +271,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'payment_various') {
-
             $object = new PaymentVarious($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);
@@ -283,7 +278,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'don' || $this->element === 'donation') {
-
             $object = new Don($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);
@@ -291,7 +285,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'subscription') {
-
             $object = new Subscription($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);
@@ -317,7 +310,6 @@ class BlockedLog
                 $this->error++;
             }
         } elseif ($this->element === 'project') {
-
             $object = new Project($this->db);
             if ($object->fetch($this->fk_object) > 0) {
                 return $object->getNomUrl(1);

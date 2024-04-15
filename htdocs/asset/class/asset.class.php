@@ -28,7 +28,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  * Class for Asset
  */

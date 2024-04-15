@@ -55,7 +55,6 @@ require_once BASE_PATH . '/core/lib/functions2.lib.php';
 require_once BASE_PATH . '/core/lib/images.lib.php';
 require_once BASE_PATH . '/core/lib/ldap.lib.php';
 require_once BASE_PATH . '/core/lib/member.lib.php';
-require_once BASE_PATH . '/compta/bank/class/account.class.php';
 require_once BASE_PATH . '/core/class/extrafields.class.php';
 require_once BASE_PATH . '/partnership/class/partnership.class.php';
 require_once BASE_PATH . '/partnership/lib/partnership.lib.php';

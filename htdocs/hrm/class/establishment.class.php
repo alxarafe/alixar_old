@@ -27,7 +27,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-
 /**
  * Class to manage establishments
  */

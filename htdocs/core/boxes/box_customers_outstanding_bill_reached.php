@@ -29,7 +29,6 @@
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Company\Model\Company;
 
-
 /**
  * Class to manage the box to show last thirdparties
  */

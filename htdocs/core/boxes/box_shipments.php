@@ -31,7 +31,6 @@ use DoliModules\Billing\Model\Commande;
 use DoliModules\Company\Model\Company;
 use DoliModules\Shipment\Model\Expedition;
 
-
 /**
  * Class to manage the box to show last shipments
  */

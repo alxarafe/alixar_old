@@ -1,4 +1,5 @@
 <?php
+
 /* @(#) $Header: /sources/phpprintipp/phpprintipp/php_classes/http_class.php,v 1.7 2010/08/22 15:45:17 harding Exp $ */
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 /* ====================================================================
@@ -77,7 +78,8 @@ class httpException extends Exception
 
     public function getErrorFormatted()
     {
-        return sprintf("[http_class]: %s -- " . _(" file %s, line %s"),
+        return sprintf(
+            "[http_class]: %s -- " . _(" file %s, line %s"),
             $this->getMessage(), $this->getFile(), $this->getLine());
     }
 
@@ -209,7 +211,8 @@ class http_class
 
             default:
                 $error =
-                    sprintf(_("need '%s' authentication mechanism, but have not"),
+                    sprintf(
+                        _("need '%s' authentication mechanism, but have not"),
                         $authtype[0]);
                 return $this->_HttpError($error, E_USER_WARNING);
                 break;
@@ -322,7 +325,8 @@ class http_class
         foreach ($backtrace as $trace) {
             $trace .= sprintf("in [file: '%s'][function: '%s'][line: %s];\n", $trace['file'], $trace['function'], $trace['line']);
         }
-        $msg = sprintf('%s\n%s: [errno: %s]: %s',
+        $msg = sprintf(
+            '%s\n%s: [errno: %s]: %s',
             $trace, error2string($level), $errno, $msg);
         if ($this->with_exceptions) {
             throw new httpException($msg, $errno);
@@ -425,7 +429,8 @@ class http_class
 
                 default:
                     return $this->_HttpError(
-                        sprintf(_("digest Authorization: algorithm '%s' not implemented"),
+                        sprintf(
+                            _("digest Authorization: algorithm '%s' not implemented"),
                             $algorithm),
                         E_USER_WARNING);
                     return false;
@@ -441,7 +446,8 @@ class http_class
                 $qop = "auth";
             } else {
                 self::_HttpError(
-                    sprintf(_("digest Authorization: algorithm '%s' not implemented"),
+                    sprintf(
+                        _("digest Authorization: algorithm '%s' not implemented"),
                         $qop),
                     E_USER_WARNING);
                 return false;
@@ -454,7 +460,8 @@ class http_class
                     ":" . $A2);
         }
         $auth_scheme =
-            sprintf('Digest username="%s", realm="%s", nonce="%s", uri="%s", response="%s"',
+            sprintf(
+                'Digest username="%s", realm="%s", nonce="%s", uri="%s", response="%s"',
                 $username, $fields["realm"], $fields['nonce'],
                 $this->arguments["RequestURI"], $response);
         if (isset($algorithm)) {
@@ -530,7 +537,8 @@ class http_class
         }
         $this->connection = @fsockopen($transport_type . $url, $port, $errno, $errstr, $this->timeout);
         $error =
-            sprintf(_('Unable to connect to "%s%s port %s": %s'), $transport_type,
+            sprintf(
+                _('Unable to connect to "%s%s port %s": %s'), $transport_type,
                 $url, $port, $errstr);
         if (!$this->connection) {
             return $this->_HttpError($error, E_USER_WARNING);

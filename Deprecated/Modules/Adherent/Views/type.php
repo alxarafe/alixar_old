@@ -2,6 +2,7 @@
 
 global $db;
 
+use DoliCore\Form\Form;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\Product\Model\FormProduct;

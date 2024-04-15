@@ -235,7 +235,6 @@ class Documents extends DolibarrApi
                 throw new RestException(500, 'Error generating document');
             }
         } elseif ($modulepart == 'contrat' || $modulepart == 'contract') {
-
             $tmpobject = new Contrat($this->db);
             $result = $tmpobject->fetch(0, preg_replace('/\.[^\.]+$/', '', basename($original_file)));
 
@@ -250,7 +249,6 @@ class Documents extends DolibarrApi
                 throw new RestException(500, 'Error generating document missing doctemplate parameter');
             }
         } elseif ($modulepart == 'expedition' || $modulepart == 'shipment') {
-
             $tmpobject = new Expedition($this->db);
             $result = $tmpobject->fetch(0, preg_replace('/\.[^\.]+$/', '', basename($original_file)));
 
@@ -316,7 +314,6 @@ class Documents extends DolibarrApi
         $type = 'files';
 
         if ($modulepart == 'societe' || $modulepart == 'thirdparty') {
-
             if (!DolibarrApiAccess::$user->hasRight('societe', 'lire')) {
                 throw new RestException(403);
             }
@@ -329,7 +326,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->societe->multidir_output[$object->entity] . "/" . $object->id;
         } elseif ($modulepart == 'user') {
-
             // Can get doc if has permission to read all user or if it is user itself
             if (!DolibarrApiAccess::$user->hasRight('user', 'user', 'lire') && DolibarrApiAccess::$user->id != $id) {
                 throw new RestException(403);
@@ -343,7 +339,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->user->dir_output . '/' . get_exdir(0, 0, 0, 0, $object, 'user') . '/' . $object->id;
         } elseif ($modulepart == 'adherent' || $modulepart == 'member') {
-
             if (!DolibarrApiAccess::$user->hasRight('adherent', 'lire')) {
                 throw new RestException(403);
             }
@@ -356,7 +351,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->adherent->dir_output . "/" . get_exdir(0, 0, 0, 1, $object, 'member');
         } elseif ($modulepart == 'propal' || $modulepart == 'proposal') {
-
             if (!DolibarrApiAccess::$user->hasRight('propal', 'lire')) {
                 throw new RestException(403);
             }
@@ -369,7 +363,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->propal->multidir_output[$object->entity] . "/" . get_exdir(0, 0, 0, 1, $object, 'propal');
         } elseif ($modulepart == 'supplier_proposal') {
-
             if (!DolibarrApiAccess::$user->hasRight('supplier_proposal', 'read')) {
                 throw new RestException(403);
             }
@@ -382,7 +375,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->propal->multidir_output[$object->entity] . "/" . get_exdir(0, 0, 0, 1, $object, 'propal');
         } elseif ($modulepart == 'commande' || $modulepart == 'order') {
-
             if (!DolibarrApiAccess::$user->hasRight('commande', 'lire')) {
                 throw new RestException(403);
             }
@@ -410,7 +402,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->fournisseur->dir_output . "/commande/" . dol_sanitizeFileName($object->ref);
         } elseif ($modulepart == 'shipment' || $modulepart == 'expedition') {
-
             if (!DolibarrApiAccess::$user->hasRight('expedition', 'lire')) {
                 throw new RestException(403);
             }
@@ -423,7 +414,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->expedition->dir_output . "/sending/" . get_exdir(0, 0, 0, 1, $object, 'shipment');
         } elseif ($modulepart == 'facture' || $modulepart == 'invoice') {
-
             if (!DolibarrApiAccess::$user->hasRight('facture', 'lire')) {
                 throw new RestException(403);
             }
@@ -451,7 +441,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->fournisseur->dir_output . "/facture/" . get_exdir($object->id, 2, 0, 0, $object, 'invoice_supplier') . dol_sanitizeFileName($object->ref);
         } elseif ($modulepart == 'produit' || $modulepart == 'product') {
-
             if (!DolibarrApiAccess::$user->hasRight('produit', 'lire')) {
                 throw new RestException(403);
             }
@@ -480,7 +469,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->agenda->dir_output . '/' . dol_sanitizeFileName($object->ref);
         } elseif ($modulepart == 'expensereport') {
-
             if (!DolibarrApiAccess::$user->hasRight('expensereport', 'read') && !DolibarrApiAccess::$user->hasRights('expensereport', 'read')) {
                 throw new RestException(403);
             }
@@ -507,7 +495,6 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->knowledgemanagement->dir_output . '/knowledgerecord/' . dol_sanitizeFileName($object->ref);
         } elseif ($modulepart == 'categorie' || $modulepart == 'category') {
-
             if (!DolibarrApiAccess::$user->hasRight('categorie', 'lire')) {
                 throw new RestException(403);
             }

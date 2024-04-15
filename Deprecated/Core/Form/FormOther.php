@@ -42,7 +42,6 @@ use DoliModules\Project\Model\Task;
 use DoliModules\User\Model\User;
 use InfoBox;
 
-
 /**
  *  Class permettant la generation de composants html autre
  *  Only common components are here.

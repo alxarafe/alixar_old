@@ -114,7 +114,7 @@ class ExtendedPrintIPP extends PrintIPP
             self::_errorLog("Document URI is not set, die", 2);
             return false;
         }
-        unset ($this->setup->document_uri);
+        unset($this->setup->document_uri);
 
         if (!isset($this->setup->uri)) {
             $this->getPrinters();
@@ -155,7 +155,7 @@ class ExtendedPrintIPP extends PrintIPP
         if (!isset($this->setup->mime_media_type)) {
             self::setMimeMediaType();
         }
-        unset ($this->setup->mime_media_type);
+        unset($this->setup->mime_media_type);
 
         if (!isset($this->setup->jobname)) {
             if (is_readable($this->data)) {
@@ -319,7 +319,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("purging jobs of %s : OPERATION FAILED"),
+            . sprintf(
+                _("purging jobs of %s : OPERATION FAILED"),
                 $this->printer_uri), 3);
 
         return false;
@@ -420,7 +421,7 @@ class ExtendedPrintIPP extends PrintIPP
             . $jobattributes
             . chr(0x03); // end-of-attributes | end-of-attributes-tag
 
-        unset ($this->meta->copies, $this->meta->sides, $this->meta->page_ranges);
+        unset($this->meta->copies, $this->meta->sides, $this->meta->page_ranges);
 
         self::_putDebug(sprintf(_("String sent to the server is:\n%s\n"), $this->stringjob));
 
@@ -451,7 +452,6 @@ class ExtendedPrintIPP extends PrintIPP
                 self::_errorLog(sprintf(_("Create job: job %s"), $this->last_job)
                     . $this->serveroutput->status, 3);
             } else {
-
                 $this->jobs = array_merge($this->jobs, [""]);
                 $this->jobs_uri = array_merge($this->jobs_uri, [""]);
                 self::_errorLog(sprintf(_("Create-Job: %s"), $this->serveroutput->status), 1);
@@ -462,7 +462,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("Creating job on %s : OPERATION FAILED"),
+            . sprintf(
+                _("Creating job on %s : OPERATION FAILED"),
                 $this->printer_uri), 3);
 
         $this->jobs = array_merge($this->jobs, [""]);
@@ -511,7 +512,6 @@ class ExtendedPrintIPP extends PrintIPP
         }
 
         if (self::_sendHttp($post_values, $this->paths['printers'])) {
-
             if (self::_parseServerOutput()) {
                 $this->_getJobId();
                 //$this->_getPrinterUri();
@@ -587,7 +587,7 @@ class ExtendedPrintIPP extends PrintIPP
             $this->meta->mime_media_type = "";
         }
         if ($this->setup->datatype != "TEXT") {
-            unset ($this->setup->mime_media_type);
+            unset($this->setup->mime_media_type);
         }
 
         if (!isset($this->meta->fidelity)) {
@@ -703,7 +703,7 @@ class ExtendedPrintIPP extends PrintIPP
             self::_errorLog("Document URI is not set, die", 2);
             return false;
         }
-        unset ($this->setup->document_uri);
+        unset($this->setup->document_uri);
 
         if ($is_last == false) {
             $is_last = chr(0x00);
@@ -745,7 +745,7 @@ class ExtendedPrintIPP extends PrintIPP
         if (!isset($this->setup->mime_media_type)) {
             $this->meta->mime_media_type = "";
         }
-        unset ($this->setup->mime_media_type);
+        unset($this->setup->mime_media_type);
 
         if (!isset($this->meta->fidelity)) {
             $this->meta->fidelity = '';
@@ -882,7 +882,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("pause printer %s : OPERATION FAILED"),
+            . sprintf(
+                _("pause printer %s : OPERATION FAILED"),
                 $this->printer_uri), 3);
 
         return false;
@@ -968,7 +969,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("resume printer %s : OPERATION FAILED"),
+            . sprintf(
+                _("resume printer %s : OPERATION FAILED"),
                 $this->printer_uri), 3);
 
         return false;
@@ -1042,7 +1044,6 @@ class ExtendedPrintIPP extends PrintIPP
             self::_parseAttributes();
         }
         if (isset($this->serveroutput) && isset($this->serveroutput->status)) {
-
             $this->status = array_merge($this->status, [$this->serveroutput->status]);
 
             if ($this->serveroutput->status == "successfull-ok") {
@@ -1059,7 +1060,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("hold job %s until %s : OPERATION FAILED"),
+            . sprintf(
+                _("hold job %s until %s : OPERATION FAILED"),
                 $job_uri, $until), 3);
 
         return false;
@@ -1137,7 +1139,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("release job %s: OPERATION FAILED"),
+            . sprintf(
+                _("release job %s: OPERATION FAILED"),
                 $job_uri), 3);
 
         return false;
@@ -1220,7 +1223,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("release job %s: OPERATION FAILED"),
+            . sprintf(
+                _("release job %s: OPERATION FAILED"),
                 $job_uri), 3);
 
         return false;
@@ -1233,7 +1237,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         self::_setOperationId();
         $this->parsed = [];
-        unset ($this->attributes);
+        unset($this->attributes);
 
         if (!isset($this->setup->charset)) {
             self::setCharset();
@@ -1328,7 +1332,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("set job attributes for job %s: OPERATION FAILED"),
+            . sprintf(
+                _("set job attributes for job %s: OPERATION FAILED"),
                 $job_uri), 3);
 
         return false;
@@ -1356,7 +1361,7 @@ class ExtendedPrintIPP extends PrintIPP
 
         $this->jobs = array_merge($this->jobs, [""]);
         $this->jobs_uri = array_merge($this->jobs_uri, [""]);
-        unset ($this->attributes);
+        unset($this->attributes);
 
         self::_setOperationId();
         $this->parsed = [];
@@ -1460,7 +1465,8 @@ class ExtendedPrintIPP extends PrintIPP
         $this->status = array_merge($this->status, ["OPERATION FAILED"]);
         self::_errorLog(date("Y-m-d H:i:s : ")
             . basename($_SERVER['PHP_SELF'])
-            . sprintf(_("set printer attributes for printer %s: OPERATION FAILED"),
+            . sprintf(
+                _("set printer attributes for printer %s: OPERATION FAILED"),
                 $this->printer_uri), 1);
 
         return false;

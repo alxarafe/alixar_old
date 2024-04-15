@@ -29,7 +29,6 @@
 
 use DoliCore\Base\GenericBoxes;
 
-
 /**
  * Class to manage the box to show (last modified) members by tags
  */

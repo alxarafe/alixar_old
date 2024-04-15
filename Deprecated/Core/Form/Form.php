@@ -56,7 +56,6 @@ use DoliModules\Resource\Model\FormResource;
 use DoliModules\User\Model\User;
 use stdClass;
 
-
 /**
  * Class to manage generation of HTML components
  * Only common components must be here.

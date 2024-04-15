@@ -911,7 +911,6 @@ class Adherent extends GenericDocument
             if (!$error && $nbrowsaffected) { // If something has change in main data
                 // Update information on linked user if it is an update
                 if (!$error && $this->user_id > 0 && !$nosyncuser) {
-
                     dol_syslog(get_class($this) . "::update update linked user");
 
                     $luser = new User($this->db);
@@ -965,7 +964,6 @@ class Adherent extends GenericDocument
 
                 // Update information on linked thirdparty if it is an update
                 if (!$error && $this->fk_soc > 0 && !$nosyncthirdparty) {
-
                     dol_syslog(get_class($this) . "::update update linked thirdparty");
 
                     // This member is linked with a thirdparty, so we also update thirdparty information
@@ -1226,7 +1224,6 @@ class Adherent extends GenericDocument
                 $this->pass_indatabase_crypted = $password_crypted;
 
                 if ($this->user_id && !$nosyncuser) {
-
                     // This member is linked with a user, so we also update users information
                     // if this is an update.
                     $luser = new User($this->db);
@@ -1762,7 +1759,6 @@ class Adherent extends GenericDocument
 
         // Insert into bank account directlty (if option chosen for) + link to llx_subscription if option is 'bankdirect'
         if ($option == 'bankdirect' && $accountid) {
-
             $acct = new Account($this->db);
             $result = $acct->fetch($accountid);
 

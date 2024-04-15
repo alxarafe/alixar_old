@@ -21,7 +21,6 @@
 use Luracast\Restler\Restler;
 use Luracast\Restler\Defaults;
 
-
 /**
  * Class for API REST v1
  */

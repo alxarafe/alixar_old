@@ -274,7 +274,6 @@ if ($action == 'fetch' && !empty($id)) {
 
     echo json_encode($outjson);
 } else {
-
     $langs->loadLangs(array("main", "products"));
 
     top_httphead();

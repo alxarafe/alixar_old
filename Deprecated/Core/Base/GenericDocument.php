@@ -8072,7 +8072,6 @@ abstract class GenericDocument
                         }
                     }
                 } else {
-
                     $toprint = array();
                     $obj = $this->db->fetch_object($resql);
                     $c = new Categorie($this->db);
@@ -8173,7 +8172,6 @@ abstract class GenericDocument
                         }
                     }
                 } else {
-
                     $toprint = array();
                     while ($obj = $this->db->fetch_object($resql)) {
                         if (is_array($value_arr) && in_array($obj->rowid, $value_arr)) {
@@ -10736,7 +10734,6 @@ abstract class GenericDocument
                     break;
                 case 'task':
                 case 'project_task':
-
             $project_result = $this->fetch_projet();
                     if ($project_result >= 0) {
                         $element = 'projet/' . dol_sanitizeFileName($this->project->ref) . '/';

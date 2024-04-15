@@ -133,7 +133,6 @@ $morehtmlref .= $form->editfieldval(
 $morehtmlref .= '<br>' . $langs->trans('ThirdParty') . ' : ' . $object->thirdparty->getNomUrl(1);
 // Project
 if (! empty($conf->projet->enabled)) {
-
     $langs->load("projects");
     $morehtmlref .= '<br>' . $langs->trans('Project') . ' : ';
     if (! empty($object->fk_project)) {

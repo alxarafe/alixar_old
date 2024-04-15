@@ -740,7 +740,6 @@ if ($type == Categorie::TYPE_SUPPLIER) {
 // List of members
 if ($type == Categorie::TYPE_MEMBER) {
     if ($user->hasRight("adherent", "read")) {
-
         $permission = $user->hasRight('adherent', 'creer');
 
         $members = $object->getObjectsInCateg($type, 0, $limit, $offset);
@@ -920,7 +919,6 @@ if ($type == Categorie::TYPE_CONTACT) {
 // List of bank accounts
 if ($type == Categorie::TYPE_ACCOUNT) {
     if ($user->hasRight("banque", "read")) {
-
         $permission = $user->hasRight('banque', 'creer');
 
         $accounts = $object->getObjectsInCateg($type, 0, $limit, $offset);
@@ -1008,7 +1006,6 @@ if ($type == Categorie::TYPE_ACCOUNT) {
 // List of Project
 if ($type == Categorie::TYPE_PROJECT) {
     if ($user->hasRight("project", "read")) {
-
         $permission = $user->hasRight('projet', 'creer');
 
         $objects = $object->getObjectsInCateg($type, 0, $limit, $offset);
@@ -1096,7 +1093,6 @@ if ($type == Categorie::TYPE_PROJECT) {
 // List of users
 if ($type == Categorie::TYPE_USER) {
     if ($user->hasRight("user", "user", "read")) {
-
         $users = $object->getObjectsInCateg($type);
         if ($users < 0) {
             dol_print_error($db, $object->error, $object->errors);

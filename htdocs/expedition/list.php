@@ -7,6 +7,7 @@
  * Copyright (C) 2019      Nicolas ZABOURI      <info@inovea-conseil.com>
  * Copyright (C) 2020      Thibault FOUCART     <support@ptibogxiv.net>
  * Copyright (C) 2023      Christophe Battarel	<christophe@altairis.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,14 @@
  *      \ingroup    expedition
  *      \brief      Page to list all shipments
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Shipment\Model\Expedition;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

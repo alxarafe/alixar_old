@@ -28,6 +28,8 @@ namespace DoliModules\Donation\Model;
  *  \brief      File of class to manage donations statistics
  */
 
+use DoliCore\Base\Stats;
+
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';

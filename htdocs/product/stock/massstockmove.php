@@ -1,7 +1,8 @@
 <?php
 
-/* Copyright (C) 2013-2022 Laurent Destaileur   <ely@users.sourceforge.net>
- * Copyright (C) 2014	   Regis Houssin		<regis.houssin@inodbox.com>
+/* Copyright (C) 2013-2022  Laurent Destaileur      <ely@users.sourceforge.net>
+ * Copyright (C) 2014	    Regis Houssin		    <regis.houssin@inodbox.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,10 @@
  *  \brief      This page allows to select several products, then incoming warehouse and
  *              outgoing warehouse and create all stock movements for this.
  */
+
+use DoliCore\Form\Form;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\Product\Model\Product;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

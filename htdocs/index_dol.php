@@ -30,6 +30,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
 use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Bank\Model\Account;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Contract\Model\Contrat;

@@ -1,5 +1,9 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\Category\Model\Categorie;

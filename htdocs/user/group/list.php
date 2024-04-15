@@ -28,6 +28,9 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliModules\User\Model\UserGroup;
+
 require BASE_PATH . '/main.inc.php';
 
 // Load translation files required by page

@@ -26,7 +26,6 @@
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Supplier\Model\FactureStats;
 
-
 /**
  * Class to manage the box to show invoices per month graph
  */

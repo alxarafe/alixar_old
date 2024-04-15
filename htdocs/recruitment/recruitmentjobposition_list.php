@@ -24,7 +24,6 @@
  */
 
 use DoliCore\Lib\Fields;
-
 use DoliCore\Form\Form;
 
 // Load Dolibarr environment

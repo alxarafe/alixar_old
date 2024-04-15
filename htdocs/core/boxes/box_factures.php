@@ -27,7 +27,6 @@
  */
 
 use DoliModules\Billing\Model\Facture;
-
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Company\Model\Company;
 

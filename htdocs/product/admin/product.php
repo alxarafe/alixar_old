@@ -743,7 +743,6 @@ if (getDolGlobalString('PRODUCT_CANVAS_ABILITY')) {
     print '</tr>' . "\n";
 
     if (is_dir($dir)) {
-
         $handle = opendir($dir);
         if (is_resource($handle)) {
             while (($file = readdir($handle)) !== false) {

@@ -22,7 +22,6 @@
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-
 /**
  * API class for supplier invoices
  *

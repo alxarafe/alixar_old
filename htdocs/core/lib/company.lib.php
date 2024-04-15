@@ -885,7 +885,6 @@ function show_projects($conf, $langs, $db, $object, $backtopage = '', $nocreatel
             print '</tr>';
 
             if ($num > 0) {
-
                 $projecttmp = new Project($db);
 
                 $i = 0;
@@ -1004,7 +1003,6 @@ function show_projects($conf, $langs, $db, $object, $backtopage = '', $nocreatel
                 print '</tr>';
 
                 if ($num > 0) {
-
                     $projecttmp = new Project($db);
 
                     $i = 0;

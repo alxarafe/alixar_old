@@ -32,7 +32,6 @@
 // Put here all includes required by your class file
 use DoliCore\Base\GenericDocument;
 
-
 /**
  * Class to manage ECM files
  */

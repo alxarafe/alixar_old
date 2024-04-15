@@ -30,6 +30,8 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormAccounting;
 use DoliCore\Form\FormProjets;
+use DoliModules\Bank\Model\BankCateg;
+use DoliModules\Bank\Model\PaymentVarious;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

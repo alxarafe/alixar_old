@@ -32,8 +32,6 @@ use Luracast\Restler\RestException;
 use Societe;
 use timestamp;
 
-
-
 /**
  * API class for members
  *

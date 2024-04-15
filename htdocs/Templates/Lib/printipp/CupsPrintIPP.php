@@ -148,7 +148,6 @@ class CupsPrintIPP extends ExtendedPrintIPP
         ];
 
         if (self::_sendHttp($post_values, '/')) {
-
             if (self::_parseServerOutput()) {
                 self::_parsePrinterAttributes();
             }
@@ -167,7 +166,6 @@ class CupsPrintIPP extends ExtendedPrintIPP
         }
 
         if (isset($this->serveroutput) && isset($this->serveroutput->status)) {
-
             $this->status = array_merge($this->status, [$this->serveroutput->status]);
             if ($this->serveroutput->status == "successfull-ok") {
                 self::_errorLog("getting defaults: " . $this->serveroutput->status, 3);
@@ -335,14 +333,12 @@ class CupsPrintIPP extends ExtendedPrintIPP
         ];
 
         if (self::_sendHttp($post_values, '/admin/')) {
-
             if (self::_parseServerOutput()) {
                 self::_parseAttributes();
             }
         }
 
         if (isset($this->serveroutput) && isset($this->serveroutput->status)) {
-
             $this->status = array_merge($this->status, [$this->serveroutput->status]);
             if ($this->serveroutput->status == "successfull-ok") {
                 self::_errorLog("getting defaults: " . $this->serveroutput->status, 3);
@@ -411,14 +407,12 @@ class CupsPrintIPP extends ExtendedPrintIPP
         ];
 
         if (self::_sendHttp($post_values, '/admin/')) {
-
             if (self::_parseServerOutput()) {
                 self::_parseAttributes();
             }
         }
 
         if (isset($this->serveroutput) && isset($this->serveroutput->status)) {
-
             $this->status = array_merge($this->status, [$this->serveroutput->status]);
             if ($this->serveroutput->status == "successfull-ok") {
                 self::_errorLog("getting defaults: " . $this->serveroutput->status, 3);
@@ -453,7 +447,7 @@ class CupsPrintIPP extends ExtendedPrintIPP
         $this->jobs = array_merge($this->jobs, [""]);
         $this->jobs_uri = array_merge($this->jobs_uri, [""]);
 
-        unset ($this->printers_attributes);
+        unset($this->printers_attributes);
 
         if (!isset($this->setup->charset)) {
             self::setCharset();
@@ -515,14 +509,12 @@ class CupsPrintIPP extends ExtendedPrintIPP
         ];
 
         if (self::_sendHttp($post_values, '/')) {
-
             if (self::_parseServerOutput()) {
                 $this->_getAvailablePrinters();
             }
         }
 
         if (isset($this->serveroutput) && isset($this->serveroutput->status)) {
-
             $this->status = array_merge($this->status, [$this->serveroutput->status]);
             if ($this->serveroutput->status == "successfull-ok") {
                 self::_errorLog("getting printers: " . $this->serveroutput->status, 3);
@@ -553,7 +545,6 @@ class CupsPrintIPP extends ExtendedPrintIPP
                 $phpname = "_printer" . $k;
                 $this->printers_attributes->$phpname = new \stdClass();
                 for ($j = 0; array_key_exists($j, $this->serveroutput->response[$i]); $j++) {
-
                     $value = $this->serveroutput->response[$i][$j]['value'];
                     $name = str_replace("-", "_", $this->serveroutput->response[$i][$j]['name']);
 
@@ -601,7 +592,7 @@ class CupsPrintIPP extends ExtendedPrintIPP
             return false;
         }
 
-        if (isset ($this->printer_attributes->printer_type)) {
+        if (isset($this->printer_attributes->printer_type)) {
             $printer_type = $this->printer_attributes->printer_type->_value0;
             $table = self::_interpretPrinterType($printer_type);
 

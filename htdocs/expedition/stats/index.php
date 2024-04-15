@@ -24,9 +24,11 @@
  *     \brief      Page with shipment statistics
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Shipment\Model\ExpeditionStats;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/expedition/class/expeditionstats.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
 
 $WIDTH = DolGraph::getDefaultGraphSizeForStats('width');
