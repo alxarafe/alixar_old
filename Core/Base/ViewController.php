@@ -18,6 +18,8 @@
 
 namespace Alxarafe\Base;
 
+use Jenssegers\Blade\Blade;
+
 /**
  * Class ViewController. The views controller adds support for views to the generic controller.
  *
@@ -25,4 +27,20 @@ namespace Alxarafe\Base;
  */
 abstract class ViewController extends GenericController
 {
+    public $template;
+
+    public function index()
+    {
+        if (isset($this->template)) {
+            $this->view(['self' => $this]);
+        }
+    }
+
+    public function view($vars = [])
+    {
+        $viewPaths = BASE_PATH . '/Templates';
+        $cachePaths = realpath(BASE_PATH . '/../tmp');
+        $blade = new Blade($viewPaths, $cachePaths);
+        echo $blade->render($this->template, $vars);
+    }
 }

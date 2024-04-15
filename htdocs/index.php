@@ -17,6 +17,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alxarafe\Tools\Dispatcher;
 use DoliCore\Base\Config;
 use DoliModules\Api\Controller\ApiController;
 
@@ -61,6 +62,20 @@ try {
 } catch (\DebugBar\DebugBarException $e) {
     dump($e);
     die('loading-error');
+}
+
+/**
+ * If a value has been defined for the GET controller variable, an attempt
+ * is made to launch the controller.const CONTROLLER_VAR = 'controller';
+ */
+const MODULE_NAME_VAR = 'module';
+const CONTROLLER_VAR = 'controller';
+$module = filter_input(INPUT_GET, MODULE_NAME_VAR);
+$controller = filter_input(INPUT_GET, CONTROLLER_VAR);
+if ($module && $controller) {
+    if (Dispatcher::run($module, $controller)) {
+        die(); // The controller has been executed succesfully!
+    }
 }
 
 /**

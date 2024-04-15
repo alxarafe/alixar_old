@@ -44,14 +44,7 @@ abstract class GenericController
      */
     public function __construct()
     {
-        $this->controller = filter_input(INPUT_GET, GET_FILENAME_VAR);
         $this->action = filter_input(INPUT_GET, 'action');
-        if (empty($this->controller)) {
-            $this->controller = 'index';
-        }
-        if (method_exists($this, $this->controller)) {
-            return $this->{$this->controller}();
-        }
         return $this->index();
     }
 
