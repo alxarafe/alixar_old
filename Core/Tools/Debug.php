@@ -18,7 +18,6 @@
 
 namespace Alxarafe\Tools;
 
-use Alxarafe\Tools\DebugBarCollector\DolQueryCollector;
 use Alxarafe\Tools\DebugBarCollector\PhpCollector;
 use DebugBar\DataCollector\DataCollectorInterface;
 use DebugBar\DebugBar;
@@ -58,7 +57,6 @@ abstract class Debug
         // self::addCollector(new MonologCollector(Logger::getLogger()));
         // self::addCollector(new TranslatorCollector());
 
-        Debug::getDebugBar()->addCollector(new DolQueryCollector());
 
         $baseUrl = constant('BASE_URL') . '/Templates/DebugBar/Resources';
         self::$render = self::getDebugBar()->getJavascriptRenderer($baseUrl, constant('BASE_PATH'));

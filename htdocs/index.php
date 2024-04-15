@@ -56,7 +56,12 @@ define('DOL_DATA_ROOT', $conf->main->data_path ?? Config::getDataDir(BASE_PATH))
  * Load the configuration file and initialize all the variables of the Config class.
  * At the moment it uses Config in Deprecated, but the functionalities will have to be moved to Core.
  */
-Config::load();
+try {
+    Config::load();
+} catch (\DebugBar\DebugBarException $e) {
+    dump($e);
+    die('loading-error');
+}
 
 /**
  * @see htdocs/.htaccess

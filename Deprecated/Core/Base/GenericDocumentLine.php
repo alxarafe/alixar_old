@@ -34,7 +34,9 @@ namespace DoliCore\Base;
  *
  * TODO For the moment we use the extends on CommonObject until PHP min is 5.4 so we can use Traits.
  *
- * @deprecated This class is only needed for compatibility with Dolibarr.
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Base
  */
 abstract class GenericDocumentLine extends GenericDocument
 {

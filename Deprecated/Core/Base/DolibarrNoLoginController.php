@@ -18,17 +18,16 @@
 
 namespace DoliCore\Base;
 
-use Alxarafe\Base\GenericController;
 use Alxarafe\Base\Globals;
 
 /**
  * Class DolibarrController. Controller to carry out the migration from Dolibarr to Alixar.
  *
- * @package    Alxarafe\Base
+ * This class is only needed for compatibility with Dolibarr.
  *
- * @deprecated This class is only needed for compatibility with Dolibarr.
+ * @package DoliCore\Base
  */
-abstract class DolibarrNoLoginController extends GenericController
+abstract class DolibarrNoLoginController extends DolibarrGenericController
 {
     public $conf;
     public $config;

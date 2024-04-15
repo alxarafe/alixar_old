@@ -22,7 +22,7 @@
  *  \ingroup    debugbar
  */
 
-namespace Alxarafe\Tools\DebugBarCollector;
+namespace DoliCore\Tools\DebugBarCollector;
 
 use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
@@ -32,7 +32,10 @@ use DoliCore\Lib\TraceableDB;
 /**
  * DolQueryCollector class
  *
- * @deprecated Delete when fully migrated to Eloquent
+ * Delete when fully migrated to Eloquent
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Tools\DebugBarCollector
  */
 class DolQueryCollector extends DataCollector implements Renderable, AssetProvider
 {

@@ -83,6 +83,7 @@
       "DoliModules\\": "Deprecated/Modules"
     },
     "files": [
+      "Core/Lib/Functions.php",
       "Deprecated/Lib/Functions.php"
     ]
   }

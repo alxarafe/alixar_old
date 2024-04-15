@@ -27,6 +27,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
 use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment

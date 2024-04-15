@@ -47,7 +47,7 @@
  *                  This file contains all frequently used functions.
  */
 
-use Alxarafe\Tools\Debug;
+use DoliCore\Tools\Debug;
 use DoliCore\Base\Config;
 use DoliModules\Company\Model\Company;
 use DoliModules\Product\Model\Product;

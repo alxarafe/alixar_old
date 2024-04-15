@@ -25,16 +25,11 @@
 namespace DoliCore\Base;
 
 /**
- *      \file       htdocs/core/boxes/modules_boxes.php
- *      \ingroup    core
- *      \brief      File containing the parent class of boxes
- */
-
-
-/**
  * Class GenericBoxes
  *
- * Boxes parent class
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Base
  */
 class GenericBoxes // Can't be abstract as it is instantiated to build "empty" boxes
 {

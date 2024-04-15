@@ -1,6 +1,6 @@
 <?php
 
-/* Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
+/* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +16,25 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace DoliCore\Base;
+namespace DoliCore\Tools;
 
-use Illuminate\Database\Capsule\Manager;
+use DoliCore\Tools\DebugBarCollector\DolLogsCollector;
+use DoliCore\Tools\DebugBarCollector\DolQueryCollector;
 
 /**
- * Class BasicModel replaces CommonObject
+ * Class Debug
  *
  * This class is only needed for compatibility with Dolibarr.
  *
- * @package DoliCore\Base
+ * @package DoliCore\Tools
  */
-abstract class BasicModel extends Manager
+abstract class Debug extends \Alxarafe\Tools\Debug
 {
-    public $timestamps = false;
-    protected $primaryKey = 'rowid';
+    public static function load()
+    {
+        parent::load();
+
+        parent::getDebugBar()->addCollector(new DolQueryCollector());
+        parent::getDebugBar()->addCollector(new DolLogsCollector());
+    }
 }

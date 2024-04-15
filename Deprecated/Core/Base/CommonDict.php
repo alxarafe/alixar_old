@@ -19,6 +19,8 @@
 
 namespace DoliCore\Base;
 
+use DoliDB;
+
 /**
  *  \file       htdocs/core/class/commondict.class.php
  *  \ingroup    core
@@ -29,7 +31,9 @@ namespace DoliCore\Base;
 /**
  * Parent class of all other dictionary classes
  *
- * @deprecated This class is only needed for compatibility with Dolibarr.
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Base
  */
 abstract class CommonDict
 {

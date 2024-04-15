@@ -18,39 +18,31 @@
 
 namespace Alxarafe\Base;
 
-use Alxarafe\Tools\Debug;
+use DebugBar\DebugBarException;
+use DoliCore\Tools\Debug;
 use DebugBar\DataCollector\PDO\PDOCollector;
 use Illuminate\Database\Capsule\Manager as CapsuleManager;
 
 /**
- * Create a database connection
+ * Create a PDO database connection
  *
  * @package Alxarafe\Base
  */
 class Database extends CapsuleManager
 {
     /**
-     * It can be received as a database type, the name used in Dolibarr. For compatibility,
-     * if the name used in Dolibarr is in the index (e.g. mysqli), the value will be used
-     * (e.g. mysql).
-     */
-    const DB_TYPES = [
-        'mysqli' => 'mysql',
-    ];
-
-    /**
      * Construct the database access
      *
      * @param $db
+     *
+     * @throws DebugBarException
      */
-    function __construct($db)
+    public function __construct($db)
     {
         parent::__construct();
 
-        $type = self::DB_TYPES[$db->type] ?? $db->type;
-
         $this->addConnection([
-            'driver' => $type,
+            'driver' => $db->type,
             'host' => $db->host,
             'database' => $db->name,
             'username' => $db->user,

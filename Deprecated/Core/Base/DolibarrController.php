@@ -18,16 +18,14 @@
 
 namespace DoliCore\Base;
 
-use Alxarafe\Base\Controller;
-
 /**
  * Class DolibarrController. Controller to carry out the migration from Dolibarr to Alixar.
  *
  * @package    Alxarafe\Base
  *
- * @deprecated This class is only needed for compatibility with Dolibarr.
+ * @package DoliCore\Base
  */
-abstract class DolibarrController extends Controller
+abstract class DolibarrController extends DolibarrGenericController
 {
     public $conf;
     public $config;

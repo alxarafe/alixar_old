@@ -18,7 +18,7 @@
 
 namespace DoliCore\Base;
 
-use Alxarafe\Tools\Debug;
+use DoliCore\Tools\Debug;
 use Conf;
 use DoliCore\Lib\TraceableDB;
 use DoliDB;
@@ -39,7 +39,9 @@ require_once BASE_PATH . '/core/lib/functions.lib.php';
  *
  * @info https://wiki.dolibarr.org/index.php/Configuration_file
  *
- * @deprecated This class is only needed for compatibility with Dolibarr.
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Base
  */
 abstract class Config
 {
@@ -517,7 +519,7 @@ abstract class Config
         }
         Debug::load();
 
-        new \Alxarafe\Base\Database($config->db);
+        new Database($config->db);
 
         // TODO: Example of calling a SELECT from Eloquent and from Dolibarr
         // DB::select('SELECT * FROM alx_user'); // use Illuminate\Database\Capsule\Manager as DB;

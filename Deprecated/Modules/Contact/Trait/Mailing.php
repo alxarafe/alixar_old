@@ -18,7 +18,7 @@
 
 namespace DoliModules\Contact\Trait;
 
-use Alxarafe\Tools\Debug;
+use DoliCore\Tools\Debug;
 use DoliModules\Contact\Model\MailingUnsubscribe;
 
 trait Mailing

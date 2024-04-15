@@ -82,7 +82,9 @@ use Validate;
  * Class GenericDocument replaces CommonObject
  * Parent class of all other business classes (invoices, contracts, proposals, orders, ...)
  *
- * @deprecated This class is only needed for compatibility with Dolibarr.
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Base
  */
 abstract class GenericDocument
 {

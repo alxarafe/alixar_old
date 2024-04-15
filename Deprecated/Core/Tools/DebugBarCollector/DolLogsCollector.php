@@ -22,7 +22,7 @@
  *  \ingroup    debugbar
  */
 
-namespace Alxarafe\Tools\DebugBarCollector;
+namespace DoliCore\Tools\DebugBarCollector;
 
 use DebugBar\DataCollector\MessagesCollector;
 use Psr\Log\LogLevel;
@@ -33,7 +33,10 @@ use ReflectionClass;
 /**
  * DolLogsCollector class
  *
- * @deprecated Delete when fully migrated to Monolog
+ * Delete when fully migrated to Monolog
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Tools\DebugBarCollector
  */
 class DolLogsCollector extends MessagesCollector
 {

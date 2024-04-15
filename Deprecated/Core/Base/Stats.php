@@ -31,7 +31,9 @@ namespace DoliCore\Base;
 /**
  * Parent class of statistics class
  *
- * @deprecated This class is only needed for compatibility with Dolibarr.
+ * This class is only needed for compatibility with Dolibarr.
+ *
+ * @package DoliCore\Base
  */
 abstract class Stats
 {

@@ -28,8 +28,8 @@
 
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
-use Alxarafe\Tools\Debug;
-use Alxarafe\Tools\DebugBarCollector\DolLogsCollector;
+use DoliCore\Tools\Debug;
+use DoliCore\Tools\DebugBarCollector\DolLogsCollector;
 
 /**
  *  Class to enable/disable module Logs

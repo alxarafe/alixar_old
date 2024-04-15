@@ -47,7 +47,7 @@ global $db;
  * @deprecated Use $config instead
  */
 
-use Alxarafe\Tools\Debug;
+use DoliCore\Tools\Debug;
 use DoliCore\Base\Config;
 use DoliCore\Base\Constants;
 
