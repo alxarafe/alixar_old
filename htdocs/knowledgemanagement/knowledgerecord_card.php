@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2017-2021 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +23,14 @@
  *      \brief      Page to create/edit/view knowledgerecord
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Category\Model\Categorie;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-
 require_once DOL_DOCUMENT_ROOT . '/knowledgemanagement/class/knowledgerecord.class.php';
 require_once DOL_DOCUMENT_ROOT . '/knowledgemanagement/lib/knowledgemanagement_knowledgerecord.lib.php';
 

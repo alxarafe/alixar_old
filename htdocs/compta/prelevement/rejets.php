@@ -1,9 +1,10 @@
 <?php
 
-/* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2010-2013 Juanjo Menent 		<jmenent@2byte.es>
- * Copyright (C) 2005-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
+/* Copyright (C) 2005       Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2010-2013  Juanjo Menent 		    <jmenent@2byte.es>
+ * Copyright (C) 2005-2012  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +27,14 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliModules\Company\Model\Company;
+use DoliModules\User\Model\User;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/rejetprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/ligneprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 
 // Load translation files required by the page
@@ -88,7 +92,6 @@ $thirdpartystatic = new Company($db);
 $userstatic = new User($db);
 
 $hookmanager->initHooks(array('withdrawalsreceiptsrejectedlist'));
-
 
 // List of invoices
 

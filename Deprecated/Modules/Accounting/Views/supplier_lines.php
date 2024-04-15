@@ -1,5 +1,12 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Accounting\Model\AccountingAccount;
+use DoliModules\Company\Model\Societe;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\Supplier\Model\ProductFournisseur;
+
 $form = new Form($db);
 $formother = new FormOther($db);
 

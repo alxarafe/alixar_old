@@ -242,7 +242,6 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
         $dir = $conf->$modulepart->dir_output; // By default
     }
 } elseif ($modulepart == 'bank') {
-    require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
     $object = new Account($db);
     if ($id > 0) {
         $result = $object->fetch($id);

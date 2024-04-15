@@ -33,7 +33,6 @@
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/defaultvalues.class.php';
 
 if (!$user->admin) {

@@ -30,7 +30,6 @@ namespace DoliModules\User\Model;
  *      \brief      File of class to manage bank accounts description of users
  */
 
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 
 /**

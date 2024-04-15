@@ -31,6 +31,9 @@
  *       into the dirins directory.
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+
 if (!defined('NOSCANPOSTFORINJECTION')) {
     define('NOSCANPOSTFORINJECTION', '1'); // Do not check anti SQL+XSS injection attack test
 }
@@ -5958,8 +5961,6 @@ if ($module == 'initmodule') {
 
         if ($tab == 'widgets') {
             print '<!-- tab=widgets -->' . "\n";
-
-            use DoliCore\Base\GenericBoxes;
 
             $widgets = GenericBoxes::getWidgetsList(['/' . strtolower($module) . '/core/boxes']);
 

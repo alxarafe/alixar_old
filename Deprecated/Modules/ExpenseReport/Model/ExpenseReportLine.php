@@ -24,6 +24,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\ExpenseReport\Model;
+
 /**
  *       \file       htdocs/expensereport/class/expensereport.class.php
  *       \ingroup    expensereport
@@ -32,7 +34,6 @@
 
 use DoliCore\Base\GenericDocumentLine;
 
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport_ik.class.php';
 require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport_rule.class.php';
 
 /**

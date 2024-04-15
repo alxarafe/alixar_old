@@ -27,15 +27,14 @@
  *      \brief      List of salaries payments
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
+use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-if (isModEnabled('accounting')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array("compta", "salaries", "bills", "hrm"));

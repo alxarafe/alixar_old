@@ -24,12 +24,9 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/expensereport/modules_expensereport.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
 if (isModEnabled("bank")) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 }
 
 // Load translation files required by the page

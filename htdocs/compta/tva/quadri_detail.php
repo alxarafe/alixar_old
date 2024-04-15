@@ -8,6 +8,7 @@
  * Copyright (C) 2018-2021  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2019       Eric Seigne             <eric.seigne@cap-rel.fr>
  * Copyright (C) 2021-2022  Open-Dsi                <support@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +30,15 @@
  *        \brief      VAT by rate
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
+use DoliModules\Product\Model\Product;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\Supplier\Model\PaiementFourn;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
@@ -37,8 +47,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/localtax/class/localtax.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("other", "compta", "banks", "bills", "companies", "product", "trips", "admin"));

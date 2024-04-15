@@ -166,7 +166,6 @@ if (getDolGlobalString('CATEGORY_SHOW_COUNTS')) {
     if ($type == Categorie::TYPE_MEMBER) {
     }
     if ($type == Categorie::TYPE_ACCOUNT) {
-        require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
     }
     if ($type == Categorie::TYPE_PROJECT) {
     }

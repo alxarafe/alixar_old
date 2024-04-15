@@ -1,5 +1,10 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
+
 $formaccounting = new FormAccounting($db);
 $formfile = new FormFile($db);
 $formother = new FormOther($db);
@@ -643,7 +648,6 @@ while ($i < min($num, $limit)) {
             $urlsource = $_SERVER['PHP_SELF'] . '?id=' . $objectstatic->id;
             $documentlink = $formfile->getDocumentsLink($objectstatic->element, $filename, $filedir);
         } elseif ($line->doc_type == 'bank') {
-            require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
             $objectstatic = new AccountLine($db);
             $objectstatic->fetch($line->fk_doc);
         } else {

@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2020       Maxime Kohlhaas         <maxime@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +21,10 @@
  *     \file        htdocs/compta/stats/supplier_turnover_by_prodserv.php
  *     \brief      Page reporting purchase turnover by Products & Services
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

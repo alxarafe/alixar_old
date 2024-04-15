@@ -1,5 +1,9 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+
 $help_url = 'EN:Module_Double_Entry_Accounting|FR:Module_Comptabilit&eacute;_en_Partie_Double#Liaisons_comptables';
 
 llxHeader("", $langs->trans('FicheVentilation'), $help_url);

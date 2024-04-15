@@ -26,7 +26,9 @@
  *  \brief      Page to list all loans
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
+use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

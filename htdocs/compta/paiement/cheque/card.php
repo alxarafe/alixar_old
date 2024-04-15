@@ -7,6 +7,7 @@
  * Copyright (C) 2013 		Philippe Grand			<philippe.grand@atoo-net.com>
  * Copyright (C) 2015-2016	Alexandre Spangaro		<aspangaro@open-dsi.fr>
  * Copyright (C) 2018-2021  Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +29,14 @@
  *  \brief      Page for cheque deposits
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliModules\Bank\Model\AccountLine;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/cheque/class/remisecheque.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'categories', 'bills', 'companies', 'compta'));

@@ -126,7 +126,6 @@ if ($id > 0 && $removeelem > 0 && $action == 'unlink') {
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'contact';
     } elseif ($type == Categorie::TYPE_ACCOUNT && $user->hasRight('banque', 'configurer')) {
-        require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         $tmpobject = new Account($db);
         $result = $tmpobject->fetch($removeelem);
         $elementtype = 'account';
@@ -203,7 +202,6 @@ if (
         $newobject = new User($db);
         $elementtype = 'user';
     } elseif ($type == Categorie::TYPE_ACCOUNT) {
-        require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         $newobject = new Account($db);
         $elementtype = 'bank_account';
     } else {
@@ -383,7 +381,6 @@ if ($cats < 0) {
         if ($type == Categorie::TYPE_MEMBER) {
         }
         if ($type == Categorie::TYPE_ACCOUNT) {
-            require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         }
         if ($type == Categorie::TYPE_PROJECT) {
         }
@@ -923,7 +920,6 @@ if ($type == Categorie::TYPE_CONTACT) {
 // List of bank accounts
 if ($type == Categorie::TYPE_ACCOUNT) {
     if ($user->hasRight("banque", "read")) {
-        require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
         $permission = $user->hasRight('banque', 'creer');
 

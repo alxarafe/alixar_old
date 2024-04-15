@@ -30,7 +30,6 @@
 // Put here all includes required by your class file
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**
  *  Put here description of your class
@@ -655,7 +654,6 @@ class Tva extends GenericDocument
                 $ok = 1;
                 if (isModEnabled("bank") && !empty($this->amount)) {
                     // Insert into llx_bank
-                    require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
                     $acc = new Account($this->db);
                     $result = $acc->fetch($this->accountid);

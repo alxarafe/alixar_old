@@ -4,6 +4,7 @@
  * Copyright (C) 2011       François Legastelois    <flegastelois@teclib.com>
  * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2020       Tobias Sekan            <tobias.sekan@startmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,10 @@
  *      \ingroup    holiday
  *      \brief      Monthly report of leave requests.
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Holiday\Model\Holiday;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

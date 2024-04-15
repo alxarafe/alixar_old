@@ -30,7 +30,6 @@ require_once DOL_DOCUMENT_ROOT . "/core/lib/bank.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/images.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/class/html.formfile.class.php";
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'companies', 'other'));

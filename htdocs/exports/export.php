@@ -5,6 +5,7 @@
  * Copyright (C) 2012		Marcos García		<marcosgdf@gmail.com>
  * Copyright (C) 2012		Charles-Fr BENKE	<charles.fr@benke.fr>
  * Copyright (C) 2015       Juanjo Menent       <jmenent@2byte.es>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,10 @@
  *       \ingroup    export
  *       \brief      Pages of export Wizard
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
 
 require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/exports/class/export.class.php';

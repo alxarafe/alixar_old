@@ -48,7 +48,6 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/ccountry.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 
@@ -221,7 +220,6 @@ if ($event->type == 'payout.created') {
         $label = $event->data->object->description;
         $amount = $event->data->object->amount / 100;
         $amount_to = $event->data->object->amount / 100;
-        require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
         $accountfrom = new Account($db);
         $accountfrom->fetch(getDolGlobalString('STRIPE_BANK_ACCOUNT_FOR_PAYMENTS'));

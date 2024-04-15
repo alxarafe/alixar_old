@@ -1,5 +1,7 @@
 <?php
 
+use DoliCore\Form\Form;
+
 $max = 100;
 
 $form = new Form($db);

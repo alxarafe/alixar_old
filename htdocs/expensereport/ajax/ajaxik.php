@@ -41,8 +41,6 @@ if (!defined('NOREQUIRESOC')) {
 
 $res = 0;
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport_ik.class.php';
 
 // Load translation files required by the page
 $langs->loadlangs(array('errors', 'trips'));

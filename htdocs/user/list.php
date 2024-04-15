@@ -28,10 +28,15 @@
  *      \brief      Page of users
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Product\Model\FormProduct;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-if (isModEnabled('category')) {
-}
 
 // Load translation files required by page
 $langs->loadLangs(array('users', 'companies', 'hrm', 'salaries'));

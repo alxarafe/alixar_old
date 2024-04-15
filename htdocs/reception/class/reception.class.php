@@ -39,7 +39,6 @@
 use DoliCore\Base\GenericDocument;
 use DoliModules\Billing\Trait\CommonIncoterm;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . "/core/class/commonobjectline.class.php";
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
 

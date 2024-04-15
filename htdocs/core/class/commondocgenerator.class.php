@@ -624,7 +624,6 @@ abstract class CommonDocGenerator
             $bank_account = null;
 
             if (property_exists($object, 'fk_account') && $object->fk_account > 0) {
-                require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
                 $bank_account = new Account($this->db);
                 $bank_account->fetch($object->fk_account);
             }

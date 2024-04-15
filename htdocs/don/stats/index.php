@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2013 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015      Alexandre Spangaro   <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +27,13 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 require_once DOL_DOCUMENT_ROOT . '/don/class/donstats.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
-if (isModEnabled('category')) {
-}
+
 $WIDTH = DolGraph::getDefaultGraphSizeForStats('width');
 $HEIGHT = DolGraph::getDefaultGraphSizeForStats('height');
 

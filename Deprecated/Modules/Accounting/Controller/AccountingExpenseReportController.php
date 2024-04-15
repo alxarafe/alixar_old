@@ -36,19 +36,14 @@ global $menumanager;
 global $langs;
 global $mysoc;
 
+use DoliCore\Base\DolibarrController;
+use DoliCore\Form\FormAccounting;
+use DoliModules\Accounting\Model\AccountingAccount;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-
-use DoliCore\Base\DolibarrController;
-use DoliModules\Accounting\Model\AccountingAccount;
-use ExpenseReport;
-use DoliCore\Form\Form;
-use FormAccounting;
-use DoliCore\Form\FormOther;
-use User;
 
 class AccountingExpenseReportController extends DolibarrController
 {

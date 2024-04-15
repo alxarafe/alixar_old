@@ -1,5 +1,8 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+
 $form = new Form($db);
 $formadmin = new FormAdmin($db);
 
@@ -177,7 +180,7 @@ if ($tabname[$id]) {
     $errors = $hookmanager->errors;
 
     if (empty($reshook)) {
-        fieldListAccountingCategories($fieldlist, $obj, $tabname[$id], 'add');
+        $this->fieldListAccountingCategories($fieldlist, $obj, $tabname[$id], 'add');
     }
 
     print '<td colspan="2" class="right">';
@@ -387,7 +390,7 @@ if ($resql) {
 
                 // Show fields
                 if (empty($reshook)) {
-                    fieldListAccountingCategories($fieldlist, $obj, $tabname[$id], 'edit');
+                    $this->fieldListAccountingCategories($fieldlist, $obj, $tabname[$id], 'edit');
                 }
 
                 print '<td></td>';

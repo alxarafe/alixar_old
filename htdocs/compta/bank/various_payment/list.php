@@ -4,6 +4,7 @@
  * Copyright (C) 2017       Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2020       Tobias Sekan            <tobias.sekan@startmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,15 +26,15 @@
  *  \brief      List of various payments
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Accounting\Model\AccountingJournal;
+use DoliModules\Project\Model\Project;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/accountline.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("compta", "banks", "bills", "accountancy"));

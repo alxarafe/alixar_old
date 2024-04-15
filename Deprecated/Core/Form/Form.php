@@ -51,6 +51,8 @@ namespace DoliCore\Form;
 
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
+use DoliModules\Resource\Model\Dolresource;
+use DoliModules\Resource\Model\FormResource;
 use DoliModules\User\Model\User;
 use stdClass;
 
@@ -5431,7 +5433,6 @@ class Form
             $langs->load('banks');
 
             if ($selected) {
-                require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
                 $bankstatic = new Account($this->db);
                 $result = $bankstatic->fetch($selected);
                 if ($result) {

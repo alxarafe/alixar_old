@@ -3,6 +3,7 @@
 /* Copyright (C) 2012-2013  Christophe Battarel <christophe.battarel@altairis.fr>
  * Copyright (C) 2014		Ferran Marcet		<fmarcet@2byte.es>
  * Copyright (C) 2020		Alexandre Spangaro	<aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,10 @@
  *  \ingroup    margin
  *  \brief      Page des marges par produit
  */
+
+use DoliCore\Form\Form;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Product\Model\Product;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

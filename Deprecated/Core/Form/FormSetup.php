@@ -1029,7 +1029,6 @@ class FormSetupItem
                 $this->setErrors($product->errors);
             }
         } elseif ($this->type == 'selectBankAccount') {
-            require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
             $bankaccount = new Account($this->db);
             $resbank = $bankaccount->fetch($this->fieldValue);

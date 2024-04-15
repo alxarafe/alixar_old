@@ -1,16 +1,17 @@
 <?php
 
-/* Copyright (C) 2001-2002  Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2019  Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2010  Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2012       Vinícius Nogueira    <viniciusvgn@gmail.com>
- * Copyright (C) 2014       Florian Henry        <florian.henry@open-cooncept.pro>
- * Copyright (C) 2015       Jean-François Ferry  <jfefe@aternatik.fr>
- * Copyright (C) 2016       Juanjo Menent        <jmenent@2byte.es>
- * Copyright (C) 2017-2019  Alexandre Spangaro   <aspangaro@open-dsi.fr>
- * Copyright (C) 2018       Ferran Marcet        <fmarcet@2byte.es>
+/* Copyright (C) 2001-2002  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2019  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2010  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2012       Vinícius Nogueira       <viniciusvgn@gmail.com>
+ * Copyright (C) 2014       Florian Henry           <florian.henry@open-cooncept.pro>
+ * Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
+ * Copyright (C) 2016       Juanjo Menent           <jmenent@2byte.es>
+ * Copyright (C) 2017-2019  Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2018       Ferran Marcet           <fmarcet@2byte.es>
  * Copyright (C) 2018-2021  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,23 +34,31 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormOther;
+use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Bank\Model\Account;
+use DoliModules\Bank\Model\AccountLine;
+use DoliModules\Bank\Model\BankCateg;
+use DoliModules\Bank\Model\PaymentVarious;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
+use DoliModules\Donation\Model\Don;
+use DoliModules\Donation\Model\PaymentDonation;
+use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
+use DoliModules\Supplier\Model\PaiementFourn;
+use DoliModules\User\Model\User;
+
 require BASE_PATH . '/main.inc.php';
-
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
-
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/bankcateg.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/paymentvat.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/paymentsocialcontribution.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/paymentdonation.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/cheque/class/remisecheque.class.php';
 
@@ -533,7 +542,6 @@ llxHeader('', $title, $help_url, '', 0, 0, array(), array(), $param);
 
 if ($id > 0 || !empty($ref)) {
     // Load bank groups
-    require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/bankcateg.class.php';
     $bankcateg = new BankCateg($db);
 
     $arrayofbankcateg = $bankcateg->fetchAll();

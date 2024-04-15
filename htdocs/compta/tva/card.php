@@ -6,6 +6,7 @@
  * Copyright (C) 2015-2023  Alexandre Spangaro      <aspangaro@easya.solutions>
  * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +29,13 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/paymentvat.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/vat.lib.php';
 
 if (isModEnabled('accounting')) {

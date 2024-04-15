@@ -23,9 +23,10 @@
  *      \brief      List page for cashcontrol
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/cashcontrol/class/cashcontrol.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';

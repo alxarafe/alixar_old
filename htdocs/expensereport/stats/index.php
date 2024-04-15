@@ -4,6 +4,7 @@
  * Copyright (c) 2004-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2012      Marcos García        <marcosgdf@gmail.com>
  * Copyright (C) 2018      Frédéric France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +26,13 @@
  *  \brief      Page for statistics of module trips and expenses
  */
 
+use DoliCore\Form\Form;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\ExpenseReport\Model\ExpenseReportStats;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereportstats.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('trips', 'companies'));

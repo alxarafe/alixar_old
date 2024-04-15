@@ -26,7 +26,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 
 /**

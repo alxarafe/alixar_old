@@ -18,10 +18,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Donation\Api;
+
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 
 /**
  * API class for donations

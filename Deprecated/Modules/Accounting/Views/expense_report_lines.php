@@ -1,5 +1,11 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Accounting\Model\AccountingAccount;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\User\Model\User;
+
 $form = new Form($db);
 $formother = new FormOther($db);
 

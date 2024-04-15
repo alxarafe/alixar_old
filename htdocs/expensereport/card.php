@@ -29,23 +29,27 @@
  *  \brief          Page for trip and expense report card
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormActions;
+use DoliCore\Form\FormExpenseReport;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Bank\Model\Account;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
+use DoliModules\Project\Model\Project;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formexpensereport.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmfiles.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/expensereport/modules_expensereport.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-if (isModEnabled('accounting')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array("trips", "bills", "mails"));

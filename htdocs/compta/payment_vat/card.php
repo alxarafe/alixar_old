@@ -33,7 +33,6 @@ require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/paymentvat.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 if (isModEnabled("bank")) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 }
 
 // Load translation files required by the page

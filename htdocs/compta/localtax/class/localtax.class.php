@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2011-2014  Juanjo Menent   <jmenent@2byte.es>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
  *      \ingroup    tax
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+use DoliCore\Base\GenericDocument;
 
 
 /**
@@ -527,7 +528,6 @@ class Localtax extends GenericDocument
                 $ok = 1;
                 if (isModEnabled("bank")) {
                     // Insertion dans llx_bank
-                    require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
                     $acc = new Account($this->db);
                     $result = $acc->fetch($this->accountid);

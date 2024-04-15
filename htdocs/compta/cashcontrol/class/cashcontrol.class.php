@@ -1,9 +1,9 @@
 <?php
 
-/* Copyright (C) 2008 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2009 Regis Houssin        <regis.houssin@capnetworks.com>
- * Copyright (C) 2016 Marcos García        <marcosgdf@gmail.com>
- * Copyright (C) 2018 Andreu Bisquerra     <jove@bisquerra.com>
+/* Copyright (C) 2008       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2009       Regis Houssin           <regis.houssin@capnetworks.com>
+ * Copyright (C) 2016       Marcos García           <marcosgdf@gmail.com>
+ * Copyright (C) 2018       Andreu Bisquerra        <jove@bisquerra.com>
  * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
@@ -26,6 +26,8 @@
  * \ingroup    cashdesk|takepos
  * \brief      This file is CRUD class file (Create/Read/Update/Delete) for cash fence table
  */
+
+use DoliCore\Base\GenericDocument;
 
 /**
  *    Class to manage cash fence

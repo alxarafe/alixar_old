@@ -27,12 +27,15 @@
  * \brief       Page for accounting result
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+use DoliModules\Accounting\Model\AccountancyCategory;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancycategory.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('compta', 'bills', 'donation', 'salaries', 'accountancy'));

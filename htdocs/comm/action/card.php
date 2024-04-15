@@ -33,10 +33,16 @@
  *    \brief      Page for event card
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormActions;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Contact\Model\Contact;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';

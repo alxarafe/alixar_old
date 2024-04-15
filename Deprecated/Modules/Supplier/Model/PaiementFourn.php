@@ -37,7 +37,6 @@ use Paiement;
  *      \brief      File of class to manage payments of suppliers invoices
  */
 
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
 

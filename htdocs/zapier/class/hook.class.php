@@ -23,7 +23,6 @@
  * \brief       This file is a CRUD class file for Zapier Hook record (Create/Read/Update/Delete)
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 
 /**
  * Class for Hook

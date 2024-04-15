@@ -41,6 +41,7 @@ namespace DoliModules\Accounting\Model;
  */
 
 use DoliCore\Base\BasicModel;
+use DoliDB;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';

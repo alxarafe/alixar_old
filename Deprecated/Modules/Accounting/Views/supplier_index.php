@@ -1,5 +1,7 @@
 <?php
 
+use DoliModules\Supplier\Model\FactureFournisseur;
+
 $help_url = 'EN:Module_Double_Entry_Accounting|FR:Module_Comptabilit&eacute;_en_Partie_Double#Liaisons_comptables';
 
 llxHeader('', $langs->trans("SuppliersVentilation"), $help_url);

@@ -6,6 +6,7 @@
  * Copyright (C) 2013       Antoine Iauch           <aiauch@gpcsolutions.fr>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2022       Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,8 @@
  *      \file        htdocs/compta/stats/cabyuser.php
  *      \brief       Page reporting Salesover by user
  */
+
+use DoliCore\Form\Form;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

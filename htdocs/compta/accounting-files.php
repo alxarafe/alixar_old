@@ -1,11 +1,11 @@
 <?php
 
-/* Copyright (C) 2001-2006  Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2019  Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2017       Pierre-Henry Favre   <support@atm-consulting.fr>
- * Copyright (C) 2020       Maxime DEMAREST      <maxime@indelog.fr>
- * Copyright (C) 2021       Gauthier VERDOL      <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2022-2024  Alexandre Spangaro   <aspangaro@easya.solutions>
+/* Copyright (C) 2001-2006  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2019  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2017       Pierre-Henry Favre      <support@atm-consulting.fr>
+ * Copyright (C) 2020       Maxime DEMAREST         <maxime@indelog.fr>
+ * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2022-2024  Alexandre Spangaro      <aspangaro@easya.solutions>
  * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
@@ -29,6 +29,16 @@
  *  \brief      Page to show portoflio and files of a thirdparty and download it
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Bank\Model\PaymentVarious;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Donation\Model\Don;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\User\Model\User;
+
 if ((array_key_exists('action', $_GET) && $_GET['action'] == 'dl') || (array_key_exists('action', $_POST) && $_POST['action'] == 'dl')) {   // To not replace token when downloading file
     if (!defined('NOTOKENRENEWAL')) {
         define('NOTOKENRENEWAL', '1');
@@ -43,9 +53,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/paymentloan.class.php';
 
 if (isModEnabled('project')) {

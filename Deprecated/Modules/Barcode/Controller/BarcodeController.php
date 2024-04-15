@@ -31,18 +31,17 @@ global $menumanager;
 global $langs;
 global $mysoc;
 
+use DoliCore\Base\DolibarrController;
+use DoliCore\Form\FormBarCode;
+use DoliCore\Lib\AveryLabels;
+use DoliModules\Company\Model\Societe;
+use DoliModules\Product\Model\Product;
+use DoliCore\Form\Form;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/genericobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/printsheet/modules_labels.php';
-
-use DoliCore\Base\DolibarrController;
-use DoliModules\Company\Model\Societe;
-use DoliModules\Product\Model\Product;
-use Exception;
-use DoliCore\Form\Form;
-use FormBarCode;
-use GenericObject;
 
 class BarcodeController extends DolibarrController
 {
@@ -806,6 +805,7 @@ function confirm_erase() {
         print '</div><div class="tagtd maxwidthonsmartphone" style="overflow: hidden; white-space: nowrap;">';
 // List of possible labels (defined into $_Avery_Labels variable set into core/lib/format_cards.lib.php)
         $arrayoflabels = [];
+        $_Avery_Labels = AveryLabels::getAveryLables();
         foreach (array_keys($_Avery_Labels) as $codecards) {
             $labeltoshow = $_Avery_Labels[$codecards]['name'];
             //$labeltoshow.=' ('.$_Avery_Labels[$row['code']]['paper-size'].')';
@@ -926,7 +926,6 @@ jQuery(document).ready(function() {
         print '	<div class="tagtd" style="overflow: hidden; white-space: nowrap; max-width: 300px;">';
         print $langs->trans("BarcodeType") . ' &nbsp; ';
         print '</div><div class="tagtd" style="overflow: hidden; white-space: nowrap; max-width: 300px;">';
-        require_once DOL_DOCUMENT_ROOT . '/core/class/html.formbarcode.class.php';
         $formbarcode = new FormBarCode($db);
         print $formbarcode->selectBarcodeType($fk_barcode_type, 'fk_barcode_type', 1);
         print '</div></div>';

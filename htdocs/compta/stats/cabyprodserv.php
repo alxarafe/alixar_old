@@ -5,6 +5,7 @@
  * Copyright (C) 2015       Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2022       Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,10 @@
  *     \file        htdocs/compta/stats/cabyprodserv.php
  *     \brief      Page reporting TO by Products & Services
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

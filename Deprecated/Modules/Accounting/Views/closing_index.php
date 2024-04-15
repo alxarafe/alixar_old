@@ -1,5 +1,8 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+
 $form = new Form($db);
 $formaccounting = new FormAccounting($db);
 

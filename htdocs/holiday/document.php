@@ -8,6 +8,7 @@
  * Copyright (C) 2011-2012  Juanjo Menent           <jmenent@2byte.es>
  * Copyright (C) 2013       Cédric Salvador         <csalvador@gpcsolutions.fr>
  * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,8 @@
  *       \ingroup    fichinter
  *       \brief      Page des documents joints sur les contrats
  */
+
+use DoliCore\Form\Form;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

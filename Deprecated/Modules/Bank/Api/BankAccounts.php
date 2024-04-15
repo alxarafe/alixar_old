@@ -1,7 +1,7 @@
 <?php
 
-/*
- * Copyright (C) 2016 Xebax Christy <xebax@wanadoo.fr>
+/* Copyright (C) 2016       Xebax Christy           <xebax@wanadoo.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,30 +17,31 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Bank\Api;
+
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 /**
  * API class for accounts
  *
  * @property DoliDB $db
  * @access protected
- * @class DolibarrApiAccess {@requires user,external}
+ * @class  DolibarrApiAccess {@requires user,external}
  */
 class BankAccounts extends DolibarrApi
 {
     /**
      * array $FIELDS Mandatory fields, checked when creating an object
      */
-    public static $FIELDS = array(
+    public static $FIELDS = [
         'ref',
         'label',
         'type',
         'currency_code',
-        'country_id'
-    );
+        'country_id',
+    ];
 
     /**
      * Constructor
@@ -54,20 +55,23 @@ class BankAccounts extends DolibarrApi
     /**
      * Get the list of accounts.
      *
-     * @param string    $sortfield  Sort field
-     * @param string    $sortorder  Sort order
-     * @param int       $limit      Limit for list
-     * @param int       $page       Page number
-     * @param  int      $category   Use this param to filter list by category
-     * @param string    $sqlfilters Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.import_key:<:'20160101')"
-     * @param string    $properties Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
+     * @param string $sortfield  Sort field
+     * @param string $sortorder  Sort order
+     * @param int    $limit      Limit for list
+     * @param int    $page       Page number
+     * @param int    $category   Use this param to filter list by category
+     * @param string $sqlfilters Other criteria to filter answers separated by a comma. Syntax example
+     *                           "(t.ref:like:'SO-%') and (t.import_key:<:'20160101')"
+     * @param string $properties Restrict the data returned to these properties. Ignored if empty. Comma separated list
+     *                           of properties names
+     *
      * @return array                List of account objects
      *
      * @throws RestException
      */
     public function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $category = 0, $sqlfilters = '', $properties = '')
     {
-        $list = array();
+        $list = [];
 
         if (!DolibarrApiAccess::$user->hasRight('banque', 'lire')) {
             throw new RestException(403);
@@ -122,32 +126,27 @@ class BankAccounts extends DolibarrApi
     }
 
     /**
-     * Get account by ID.
+     * Clean sensible object datas
      *
-     * @param   int         $id             ID of account
-     * @return  Object                      Object with cleaned properties
+     * @param Object $object Object to clean
      *
-     * @throws RestException
+     * @return  Object              Object with cleaned properties
      */
-    public function get($id)
+    protected function _cleanObjectDatas($object)
     {
-        if (!DolibarrApiAccess::$user->hasRight('banque', 'lire')) {
-            throw new RestException(403);
-        }
+        // phpcs:enable
+        $object = parent::_cleanObjectDatas($object);
 
-        $account = new Account($this->db);
-        $result = $account->fetch($id);
-        if (!$result) {
-            throw new RestException(404, 'account not found');
-        }
+        unset($object->rowid);
 
-        return $this->_cleanObjectDatas($account);
+        return $object;
     }
 
     /**
      * Create account object
      *
-     * @param   array $request_data     Request data
+     * @param array $request_data Request data
+     *
      * @return  int                     ID of account
      */
     public function post($request_data = null)
@@ -175,30 +174,59 @@ class BankAccounts extends DolibarrApi
         $account->courant = $account->type;
 
         if ($account->create(DolibarrApiAccess::$user) < 0) {
-            throw new RestException(500, 'Error creating bank account', array_merge(array($account->error), $account->errors));
+            throw new RestException(500, 'Error creating bank account', array_merge([$account->error], $account->errors));
         }
         return $account->id;
     }
 
     /**
+     * Validate fields before creating an object
+     *
+     * @param array|null $data Data to validate
+     *
+     * @return array
+     *
+     * @throws RestException
+     */
+    private function _validate($data)
+    {
+        $account = [];
+        foreach (BankAccounts::$FIELDS as $field) {
+            if (!isset($data[$field])) {
+                throw new RestException(400, "$field field missing");
+            }
+            $account[$field] = $data[$field];
+        }
+        return $account;
+    }
+
+    /**
      * Create an internal wire transfer between two bank accounts
      *
-     * @param int     $bankaccount_from_id  BankAccount ID to use as the source of the internal wire transfer       {@from body}{@required true}
-     * @param int     $bankaccount_to_id    BankAccount ID to use as the destination of the internal wire transfer  {@from body}{@required true}
-     * @param string  $date                 Date of the internal wire transfer (UNIX timestamp)                     {@from body}{@required true}{@type timestamp}
-     * @param string  $description          Description of the internal wire transfer                               {@from body}{@required true}
-     * @param float   $amount               Amount to transfer from the source to the destination BankAccount       {@from body}{@required true}
-     * @param float   $amount_to            Amount to transfer to the destination BankAccount (only when accounts does not share the same currency)     {@from body}{@required false}
-     * @param string  $cheque_number        Cheque numero                                                           {@from body}{@required false}
+     * @param int    $bankaccount_from_id BankAccount ID to use as the source of the internal wire transfer
+     *                                    {@from body}{@required true}
+     * @param int    $bankaccount_to_id   BankAccount ID to use as the destination of the internal wire transfer
+     *                                    {@from body}{@required true}
+     * @param string $date                Date of the internal wire transfer (UNIX timestamp)
+     *                                    {@from body}{@required true}{@type timestamp}
+     * @param string $description         Description of the internal wire transfer
+     *                                    {@from body}{@required true}
+     * @param float  $amount              Amount to transfer from the source to the destination BankAccount
+     *                                    {@from body}{@required true}
+     * @param float  $amount_to           Amount to transfer to the destination BankAccount (only when accounts does
+     *                                    not share the same currency)     {@from body}{@required false}
+     * @param string $cheque_number       Cheque numero
+     *                                    {@from body}{@required false}
      *
-     * @url POST    /transfer
+     * @url    POST    /transfer
      *
      * @return array
      *
      * @status 201
      *
      * @throws RestException 401 Unauthorized: User does not have permission to configure bank accounts
-     * @throws RestException 404 Not Found: Either the source or the destination bankaccount for the provided id does not exist
+     * @throws RestException 404 Not Found: Either the source or the destination bankaccount for the provided id does
+     *                       not exist
      * @throws RestException 422 Unprocessable Entity: Refer to detailed exception message for the cause
      * @throws RestException 500 Internal Server Error: Error(s) returned by the RDBMS
      */
@@ -208,7 +236,6 @@ class BankAccounts extends DolibarrApi
             throw new RestException(403);
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
         $accountfrom = new Account($this->db);
         $resultAccountFrom = $accountfrom->fetch($bankaccount_from_id);
@@ -305,14 +332,14 @@ class BankAccounts extends DolibarrApi
         if (!$error) {
             $this->db->commit();
 
-            return array(
-                'success' => array(
+            return [
+                'success' => [
                     'code' => 201,
                     'message' => 'Internal wire transfer created successfully.',
                     'bank_id_from' => $bank_line_id_from,
                     'bank_id_to' => $bank_line_id_to,
-                )
-            );
+                ],
+            ];
         } else {
             $this->db->rollback();
             throw new RestException(500, $accountfrom->error . ' ' . $accountto->error);
@@ -320,182 +347,21 @@ class BankAccounts extends DolibarrApi
     }
 
     /**
-     * Update account
-     *
-     * @param   int    $id              ID of account
-     * @param   array  $request_data    data
-     * @return  Object                  Object with cleaned properties
-     */
-    public function put($id, $request_data = null)
-    {
-        if (!DolibarrApiAccess::$user->hasRight('banque', 'configurer')) {
-            throw new RestException(403);
-        }
-
-        $account = new Account($this->db);
-        $result = $account->fetch($id);
-        if (!$result) {
-            throw new RestException(404, 'account not found');
-        }
-
-        foreach ($request_data as $field => $value) {
-            if ($field == 'id') {
-                continue;
-            }
-            if ($field === 'caller') {
-                // Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
-                $account->context['caller'] = $request_data['caller'];
-                continue;
-            }
-
-            $account->$field = $this->_checkValForAPI($field, $value, $account);
-        }
-
-        if ($account->update(DolibarrApiAccess::$user) > 0) {
-            return $this->get($id);
-        } else {
-            throw new RestException(500, $account->error);
-        }
-    }
-
-    /**
-     * Delete account
-     *
-     * @param int    $id    ID of account
-     * @return array
-     */
-    public function delete($id)
-    {
-        if (!DolibarrApiAccess::$user->hasRight('banque', 'configurer')) {
-            throw new RestException(403);
-        }
-        $account = new Account($this->db);
-        $result = $account->fetch($id);
-        if (!$result) {
-            throw new RestException(404, 'account not found');
-        }
-
-        if ($account->delete(DolibarrApiAccess::$user) < 0) {
-            throw new RestException(401, 'error when deleting account');
-        }
-
-        return array(
-            'success' => array(
-                'code' => 200,
-                'message' => 'account deleted'
-            )
-        );
-    }
-
-    /**
-     * Validate fields before creating an object
-     *
-     * @param array|null    $data    Data to validate
-     * @return array
-     *
-     * @throws RestException
-     */
-    private function _validate($data)
-    {
-        $account = array();
-        foreach (BankAccounts::$FIELDS as $field) {
-            if (!isset($data[$field])) {
-                throw new RestException(400, "$field field missing");
-            }
-            $account[$field] = $data[$field];
-        }
-        return $account;
-    }
-
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore
-    /**
-     * Clean sensible object datas
-     *
-     * @param   Object  $object     Object to clean
-     * @return  Object              Object with cleaned properties
-     */
-    protected function _cleanObjectDatas($object)
-    {
-		// phpcs:enable
-        $object = parent::_cleanObjectDatas($object);
-
-        unset($object->rowid);
-
-        return $object;
-    }
-
-    /**
-     * Get the list of lines of the account.
-     *
-     * @param int $id ID of account
-     * @return array Array of AccountLine objects
-     *
-     * @throws RestException
-     *
-     * @url GET {id}/lines
-     * @param string    $sqlfilters Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.import_key:<:'20160101')"
-     */
-    public function getLines($id, $sqlfilters = '')
-    {
-        $list = array();
-
-        if (!DolibarrApiAccess::$user->hasRight('banque', 'lire')) {
-            throw new RestException(403);
-        }
-
-        $account = new Account($this->db);
-        $result = $account->fetch($id);
-        if (!$result) {
-            throw new RestException(404, 'account not found');
-        }
-
-        $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "bank ";
-        $sql .= " WHERE fk_account = " . ((int) $id);
-
-        // Add sql filters
-        if ($sqlfilters) {
-            $errormessage = '';
-            $sql .= forgeSQLFromUniversalSearchCriteria($sqlfilters, $errormessage);
-            if ($errormessage) {
-                throw new RestException(400, 'Error when validating parameter sqlfilters -> ' . $errormessage);
-            }
-        }
-
-        $sql .= " ORDER BY rowid";
-
-        $result = $this->db->query($sql);
-
-        if ($result) {
-            $num = $this->db->num_rows($result);
-            for ($i = 0; $i < $num; $i++) {
-                $obj = $this->db->fetch_object($result);
-                $accountLine = new AccountLine($this->db);
-                if ($accountLine->fetch($obj->rowid) > 0) {
-                    $list[] = $this->_cleanObjectDatas($accountLine);
-                }
-            }
-        } else {
-            throw new RestException(503, 'Error when retrieving list of account lines: ' . $this->db->lasterror());
-        }
-
-        return $list;
-    }
-
-    /**
      * Add a line to an account
      *
-     * @param int    $id               ID of account
-     * @param string $date             Payment date (timestamp) {@from body} {@type timestamp}
-     * @param string $type             Payment mode (TYP,VIR,PRE,LIQ,VAD,CB,CHQ...) {@from body}
-     * @param string $label            Label {@from body}
-     * @param float  $amount           Amount (may be 0) {@from body}
-     * @param int    $category         Category
-     * @param string $cheque_number    Cheque numero {@from body}
-     * @param string $cheque_writer    Name of cheque writer {@from body}
-     * @param string $cheque_bank      Bank of cheque writer {@from body}
-     * @param string $accountancycode  Accountancy code {@from body}
-     * @param string $datev            Payment date value (timestamp) {@from body} {@type timestamp}
-     * @param string $num_releve       Bank statement numero {@from body}
+     * @param int    $id              ID of account
+     * @param string $date            Payment date (timestamp) {@from body} {@type timestamp}
+     * @param string $type            Payment mode (TYP,VIR,PRE,LIQ,VAD,CB,CHQ...) {@from body}
+     * @param string $label           Label {@from body}
+     * @param float  $amount          Amount (may be 0) {@from body}
+     * @param int    $category        Category
+     * @param string $cheque_number   Cheque numero {@from body}
+     * @param string $cheque_writer   Name of cheque writer {@from body}
+     * @param string $cheque_bank     Bank of cheque writer {@from body}
+     * @param string $accountancycode Accountancy code {@from body}
+     * @param string $datev           Payment date value (timestamp) {@from body} {@type timestamp}
+     * @param string $num_releve      Bank statement numero {@from body}
+     *
      * @return int                     ID of line
      *
      * @url POST {id}/lines
@@ -541,14 +407,140 @@ class BankAccounts extends DolibarrApi
     }
 
     /**
+     * Update account
+     *
+     * @param int   $id           ID of account
+     * @param array $request_data data
+     *
+     * @return  Object                  Object with cleaned properties
+     */
+    public function put($id, $request_data = null)
+    {
+        if (!DolibarrApiAccess::$user->hasRight('banque', 'configurer')) {
+            throw new RestException(403);
+        }
+
+        $account = new Account($this->db);
+        $result = $account->fetch($id);
+        if (!$result) {
+            throw new RestException(404, 'account not found');
+        }
+
+        foreach ($request_data as $field => $value) {
+            if ($field == 'id') {
+                continue;
+            }
+            if ($field === 'caller') {
+                // Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
+                $account->context['caller'] = $request_data['caller'];
+                continue;
+            }
+
+            $account->$field = $this->_checkValForAPI($field, $value, $account);
+        }
+
+        if ($account->update(DolibarrApiAccess::$user) > 0) {
+            return $this->get($id);
+        } else {
+            throw new RestException(500, $account->error);
+        }
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore
+
+    /**
+     * Get account by ID.
+     *
+     * @param int $id ID of account
+     *
+     * @return  Object                      Object with cleaned properties
+     *
+     * @throws RestException
+     */
+    public function get($id)
+    {
+        if (!DolibarrApiAccess::$user->hasRight('banque', 'lire')) {
+            throw new RestException(403);
+        }
+
+        $account = new Account($this->db);
+        $result = $account->fetch($id);
+        if (!$result) {
+            throw new RestException(404, 'account not found');
+        }
+
+        return $this->_cleanObjectDatas($account);
+    }
+
+    /**
+     * Get the list of lines of the account.
+     *
+     * @param int    $id         ID of account
+     * @param string $sqlfilters Other criteria to filter answers separated by a comma. Syntax example
+     *                           "(t.ref:like:'SO-%') and (t.import_key:<:'20160101')"
+     *
+     * @return array Array of AccountLine objects
+     *
+     * @throws RestException
+     *
+     * @url GET {id}/lines
+     */
+    public function getLines($id, $sqlfilters = '')
+    {
+        $list = [];
+
+        if (!DolibarrApiAccess::$user->hasRight('banque', 'lire')) {
+            throw new RestException(403);
+        }
+
+        $account = new Account($this->db);
+        $result = $account->fetch($id);
+        if (!$result) {
+            throw new RestException(404, 'account not found');
+        }
+
+        $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "bank ";
+        $sql .= " WHERE fk_account = " . ((int) $id);
+
+        // Add sql filters
+        if ($sqlfilters) {
+            $errormessage = '';
+            $sql .= forgeSQLFromUniversalSearchCriteria($sqlfilters, $errormessage);
+            if ($errormessage) {
+                throw new RestException(400, 'Error when validating parameter sqlfilters -> ' . $errormessage);
+            }
+        }
+
+        $sql .= " ORDER BY rowid";
+
+        $result = $this->db->query($sql);
+
+        if ($result) {
+            $num = $this->db->num_rows($result);
+            for ($i = 0; $i < $num; $i++) {
+                $obj = $this->db->fetch_object($result);
+                $accountLine = new AccountLine($this->db);
+                if ($accountLine->fetch($obj->rowid) > 0) {
+                    $list[] = $this->_cleanObjectDatas($accountLine);
+                }
+            }
+        } else {
+            throw new RestException(503, 'Error when retrieving list of account lines: ' . $this->db->lasterror());
+        }
+
+        return $list;
+    }
+
+    /**
      * Add a link to an account line
      *
-     * @param int    $id            ID of account
-     * @param int    $line_id       ID of account line
-     * @param int    $url_id        ID to set in the URL {@from body}
-     * @param string $url           URL of the link {@from body}
-     * @param string $label         Label {@from body}
-     * @param string $type          Type of link ('payment', 'company', 'member', ...) {@from body}
+     * @param int    $id      ID of account
+     * @param int    $line_id ID of account line
+     * @param int    $url_id  ID to set in the URL {@from body}
+     * @param string $url     URL of the link {@from body}
+     * @param string $label   Label {@from body}
+     * @param string $type    Type of link ('payment', 'company', 'member', ...) {@from body}
+     *
      * @return int  ID of link
      *
      * @url POST {id}/lines/{line_id}/links
@@ -585,8 +577,9 @@ class BankAccounts extends DolibarrApi
     /**
      * Get the list of links for a line of the account.
      *
-     * @param int    $id            ID of account
-     * @param int    $line_id       ID of account line
+     * @param int $id      ID of account
+     * @param int $line_id ID of account line
+     *
      * @return array Array of links
      *
      * @throws RestException
@@ -596,7 +589,7 @@ class BankAccounts extends DolibarrApi
      */
     public function getLinks($id, $line_id)
     {
-        $list = array();
+        $list = [];
 
         if (!DolibarrApiAccess::$user->hasRight('banque', 'lire')) {
             throw new RestException(403);
@@ -619,9 +612,10 @@ class BankAccounts extends DolibarrApi
     /**
      * Update an account line
      *
-     * @param int    $id            ID of account
-     * @param int    $line_id       ID of account line
-     * @param string $label         Label {@from body}
+     * @param int    $id      ID of account
+     * @param int    $line_id ID of account line
+     * @param string $label   Label {@from body}
+     *
      * @return int  ID of link
      *
      * @url PUT {id}/lines/{line_id}
@@ -656,8 +650,9 @@ class BankAccounts extends DolibarrApi
     /**
      * Delete an account line
      *
-     * @param int    $id            ID of account
-     * @param int    $line_id       ID of account line
+     * @param int $id      ID of account
+     * @param int $line_id ID of account line
+     *
      * @return array
      *
      * @url DELETE {id}/lines/{line_id}
@@ -687,8 +682,38 @@ class BankAccounts extends DolibarrApi
         return array(
             'success' => array(
                 'code' => 200,
-                'message' => "account line $line_id deleted"
-            )
+                'message' => "account line $line_id deleted",
+            ),
         );
+    }
+
+    /**
+     * Delete account
+     *
+     * @param int $id ID of account
+     *
+     * @return array
+     */
+    public function delete($id)
+    {
+        if (!DolibarrApiAccess::$user->hasRight('banque', 'configurer')) {
+            throw new RestException(403);
+        }
+        $account = new Account($this->db);
+        $result = $account->fetch($id);
+        if (!$result) {
+            throw new RestException(404, 'account not found');
+        }
+
+        if ($account->delete(DolibarrApiAccess::$user) < 0) {
+            throw new RestException(401, 'error when deleting account');
+        }
+
+        return [
+            'success' => [
+                'code' => 200,
+                'message' => 'account deleted',
+            ],
+        ];
     }
 }

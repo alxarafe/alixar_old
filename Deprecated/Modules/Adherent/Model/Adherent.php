@@ -41,7 +41,6 @@
 
 namespace DoliModules\Adherent\Model;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
 
@@ -1763,7 +1762,6 @@ class Adherent extends GenericDocument
 
         // Insert into bank account directlty (if option chosen for) + link to llx_subscription if option is 'bankdirect'
         if ($option == 'bankdirect' && $accountid) {
-            require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
             $acct = new Account($this->db);
             $result = $acct->fetch($accountid);
@@ -1917,7 +1915,6 @@ class Adherent extends GenericDocument
             // Add payment onto invoice
             if (!$error && $option == 'bankviainvoice' && $accountid) {
                 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-                require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
                 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 
                 $amounts = [];

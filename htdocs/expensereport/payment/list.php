@@ -37,9 +37,13 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Bank\Model\Account;
+use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
+use DoliModules\User\Model\User;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
 // Load translation files required by the page

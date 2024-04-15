@@ -21,6 +21,8 @@
 
 namespace DoliCore\Form;
 
+use DoliModules\Bank\Model\Account;
+
 /**
  *  \file       htdocs/core/class/html.formbank.class.php
  *  \ingroup    core

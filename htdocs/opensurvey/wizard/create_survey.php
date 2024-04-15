@@ -4,6 +4,7 @@
  * Copyright (C) 2014      Marcos García       <marcosgdf@gmail.com>
  * Copyright (C) 2015-2016 Alexandre Spangaro  <aspangaro@open-dsi.fr>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,8 @@
  *  \ingroup    opensurvey
  *  \brief      Page to create a new survey
  */
+
+use DoliCore\Form\Form;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

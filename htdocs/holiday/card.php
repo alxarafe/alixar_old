@@ -1,14 +1,15 @@
 <?php
 
-/* Copyright (C) 2011       Dimitri Mouillard   <dmouillard@teclib.com>
- * Copyright (C) 2012-2016	Laurent Destailleur	<eldy@users.sourceforge.net>
- * Copyright (C) 2012-2016	Regis Houssin		<regis.houssin@inodbox.com>
- * Copyright (C) 2013		Juanjo Menent		<jmenent@2byte.es>
- * Copyright (C) 2017		Alexandre Spangaro	<aspangaro@open-dsi.fr>
- * Copyright (C) 2014-2017  Ferran Marcet		<fmarcet@2byte.es>
- * Copyright (C) 2018-2024  Frédéric France     <frederic.france@free.fr>
- * Copyright (C) 2020-2021  Udo Tamm            <dev@dolibit.de>
- * Copyright (C) 2022		Anthony Berton      <anthony.berton@bb2a.fr>
+/* Copyright (C) 2011       Dimitri Mouillard       <dmouillard@teclib.com>
+ * Copyright (C) 2012-2016	Laurent Destailleur	    <eldy@users.sourceforge.net>
+ * Copyright (C) 2012-2016	Regis Houssin		    <regis.houssin@inodbox.com>
+ * Copyright (C) 2013		Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2017		Alexandre Spangaro	    <aspangaro@open-dsi.fr>
+ * Copyright (C) 2014-2017  Ferran Marcet		    <fmarcet@2byte.es>
+ * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2020-2021  Udo Tamm                <dev@dolibit.de>
+ * Copyright (C) 2022		Anthony Berton          <anthony.berton@bb2a.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +30,9 @@
  *      \ingroup    holiday
  *      \brief      Form and file creation of paid holiday.
  */
+
+use DoliCore\Form\Form;
+use DoliModules\Holiday\Model\Holiday;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

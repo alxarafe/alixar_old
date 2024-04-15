@@ -27,7 +27,6 @@
 
 // Put here all includes required by your class file
 include_once DOL_DOCUMENT_ROOT . '/emailcollector/lib/emailcollector.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
 
 use DoliCore\Base\GenericDocument;

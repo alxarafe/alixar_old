@@ -25,7 +25,12 @@
  *      \brief      List page for knowledgerecord
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormCategory;
 use DoliCore\Lib\Fields;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

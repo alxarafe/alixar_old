@@ -20,6 +20,9 @@
 
 namespace DoliCore\Form;
 
+use DoliDB;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+
 /**
  * \file       htdocs/core/class/html.formexpensereport.class.php
  * \ingroup    core

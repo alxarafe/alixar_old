@@ -7,6 +7,7 @@
  * Copyright (C) 2015-2016  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2018-2019  Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2018-2020  Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,16 +29,19 @@
  *  \brief      Page of donation card
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliModules\Donation\Model\Don;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/dons/modules_don.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-if (isModEnabled('project')) {
-}
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
 $langs->loadLangs(array('bills', 'companies', 'donations', 'users'));

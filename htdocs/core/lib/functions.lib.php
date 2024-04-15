@@ -13970,7 +13970,6 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
 
         require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
 
         $formactions = new FormActions($db);
 

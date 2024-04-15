@@ -9,6 +9,7 @@
  * Copyright (C) 2018       Charlene Benke       <charlie@patas-monkey.com>
  * Copyright (C) 2019       Juanjo Menent		 <jmenent@2byte.es>
  * Copyright (C) 2019-2021  Frédéric France      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +31,18 @@
  *      \brief      list of expense reports
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormExpenseReport;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formexpensereport.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport_ik.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'users', 'trips'));

@@ -4,6 +4,7 @@
  * Copyright (C) 2003      Eric Seigne          <erics@rycks.com>
  * Copyright (C) 2004-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,8 @@
  *      \ingroup    commercial
  *      \brief      Page with reports of actions
  */
+
+use DoliCore\Form\FormFile;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

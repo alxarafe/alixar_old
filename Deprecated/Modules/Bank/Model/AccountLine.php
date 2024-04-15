@@ -28,6 +28,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Bank\Model;
+
 /**
  *  \file       htdocs/compta/bank/class/account.class.php
  *  \ingroup    bank
@@ -35,6 +37,7 @@
  */
 
 use DoliCore\Base\GenericDocumentLine;
+use DoliDB;
 
 /**
  *  Class to manage bank transaction lines
@@ -192,7 +195,7 @@ class AccountLine extends GenericDocumentLine
     /**
      *  Constructor
      *
-     *  @param  DoliDB  $db     Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct(DoliDB $db)
     {
@@ -202,10 +205,11 @@ class AccountLine extends GenericDocumentLine
     /**
      *  Load into memory content of a bank transaction line
      *
-     *  @param      int     $rowid      Id of bank transaction to load
-     *  @param      string  $ref        Ref of bank transaction to load
-     *  @param      string  $num        External num to load (ex: num of transaction for paypal fee)
-     *  @return     int                 Return integer <0 if KO, 0 if OK but not found, >0 if OK and found
+     * @param int    $rowid Id of bank transaction to load
+     * @param string $ref   Ref of bank transaction to load
+     * @param string $num   External num to load (ex: num of transaction for paypal fee)
+     *
+     * @return     int                 Return integer <0 if KO, 0 if OK but not found, >0 if OK and found
      */
     public function fetch($rowid, $ref = '', $num = '')
     {
@@ -349,8 +353,9 @@ class AccountLine extends GenericDocumentLine
     /**
      * Delete bank transaction record
      *
-     * @param   User|null   $user       User object that delete
-     * @param   int         $notrigger  1=Does not execute triggers, 0= execute triggers
+     * @param User|null $user      User object that delete
+     * @param int       $notrigger 1=Does not execute triggers, 0= execute triggers
+     *
      * @return  int                     Return integer <0 if KO, >0 if OK
      */
     public function delete(User $user = null, $notrigger = 0)
@@ -429,16 +434,18 @@ class AccountLine extends GenericDocumentLine
     }
 
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Delete bank line records
      *
-     *  @param  User|null   $user   User object that delete
-     *  @return int                 Return integer <0 if KO, >0 if OK
+     * @param User|null $user User object that delete
+     *
+     * @return int                 Return integer <0 if KO, >0 if OK
      */
     public function delete_urls(User $user = null)
     {
-		// phpcs:enable
+        // phpcs:enable
         $nbko = 0;
 
         if ($this->rappro) {
@@ -469,9 +476,10 @@ class AccountLine extends GenericDocumentLine
     /**
      *      Update bank account record in database
      *
-     *      @param  User    $user           Object user making update
-     *      @param  int     $notrigger      0=Disable all triggers
-     *      @return int                     Return integer <0 if KO, >0 if OK
+     * @param User $user      Object user making update
+     * @param int  $notrigger 0=Disable all triggers
+     *
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function update(User $user, $notrigger = 0)
     {
@@ -499,7 +507,7 @@ class AccountLine extends GenericDocumentLine
     /**
      *      Update bank account record label in database
      *
-     *      @return int                     Return integer <0 if KO, >0 if OK
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function updateLabel()
     {
@@ -522,18 +530,20 @@ class AccountLine extends GenericDocumentLine
     }
 
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Update conciliation field
      *
-     *  @param  User    $user           Object user making update
-     *  @param  int     $cat            Category id
-     *  @param  int     $conciliated    1=Set transaction to conciliated, 0=Keep transaction non conciliated
-     *  @return int                     Return integer <0 if KO, >0 if OK
+     * @param User $user        Object user making update
+     * @param int  $cat         Category id
+     * @param int  $conciliated 1=Set transaction to conciliated, 0=Keep transaction non conciliated
+     *
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function update_conciliation(User $user, $cat, $conciliated = 1)
     {
-		// phpcs:enable
+        // phpcs:enable
         global $conf, $langs;
 
         $this->db->begin();
@@ -584,17 +594,34 @@ class AccountLine extends GenericDocumentLine
     }
 
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *  Increase value date of a rowid
+     *
+     * @param int $id Id of line to change
+     *
+     * @return int             >0 if OK, 0 if KO
+     */
+    public function datev_next($id)
+    {
+        // phpcs:enable
+        return $this->datev_change($id, 1);
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Increase/decrease value date of a rowid
      *
-     *  @param  int     $rowid      Id of line
-     *  @param  int     $sign       1 or -1
-     *  @return int                 >0 if OK, 0 if KO
+     * @param int $rowid Id of line
+     * @param int $sign  1 or -1
+     *
+     * @return int                 >0 if OK, 0 if KO
      */
     public function datev_change($rowid, $sign = 1)
     {
-		// phpcs:enable
+        // phpcs:enable
         $sql = "SELECT datev FROM " . MAIN_DB_PREFIX . "bank WHERE rowid = " . ((int) $rowid);
         $resql = $this->db->query($sql);
         if ($resql) {
@@ -620,44 +647,50 @@ class AccountLine extends GenericDocumentLine
         return 0;
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-    /**
-     *  Increase value date of a rowid
-     *
-     *  @param  int     $id     Id of line to change
-     *  @return int             >0 if OK, 0 if KO
-     */
-    public function datev_next($id)
-    {
-		// phpcs:enable
-        return $this->datev_change($id, 1);
-    }
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
     /**
      *  Decrease value date of a rowid
      *
-     *  @param  int     $id     Id of line to change
-     *  @return int             >0 if OK, 0 if KO
+     * @param int $id Id of line to change
+     *
+     * @return int             >0 if OK, 0 if KO
      */
     public function datev_previous($id)
     {
-		// phpcs:enable
+        // phpcs:enable
         return $this->datev_change($id, -1);
     }
 
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *  Increase operation date of a rowid
+     *
+     * @param int $id Id of line to change
+     *
+     * @return int             >0 if OK, 0 if KO
+     */
+    public function dateo_next($id)
+    {
+        // phpcs:enable
+        return $this->dateo_change($id, 1);
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Increase/decrease operation date of a rowid
      *
-     *  @param  int     $rowid      Id of line
-     *  @param  int     $sign       1 or -1
-     *  @return int                 >0 if OK, 0 if KO
+     * @param int $rowid Id of line
+     * @param int $sign  1 or -1
+     *
+     * @return int                 >0 if OK, 0 if KO
      */
     public function dateo_change($rowid, $sign = 1)
     {
-		// phpcs:enable
+        // phpcs:enable
         $sql = "SELECT dateo FROM " . MAIN_DB_PREFIX . "bank WHERE rowid = " . ((int) $rowid);
         $resql = $this->db->query($sql);
         if ($resql) {
@@ -683,29 +716,18 @@ class AccountLine extends GenericDocumentLine
         return 0;
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-    /**
-     *  Increase operation date of a rowid
-     *
-     *  @param  int     $id     Id of line to change
-     *  @return int             >0 if OK, 0 if KO
-     */
-    public function dateo_next($id)
-    {
-		// phpcs:enable
-        return $this->dateo_change($id, 1);
-    }
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
     /**
      *  Decrease operation date of a rowid
      *
-     *  @param  int     $id     Id of line to change
-     *  @return int             >0 if OK, 0 if KO
+     * @param int $id Id of line to change
+     *
+     * @return int             >0 if OK, 0 if KO
      */
     public function dateo_previous($id)
     {
-		// phpcs:enable
+        // phpcs:enable
         return $this->dateo_change($id, -1);
     }
 
@@ -713,8 +735,9 @@ class AccountLine extends GenericDocumentLine
     /**
      *  Load miscellaneous information for tab "Info"
      *
-     *  @param  int     $id     Id of object to load
-     *  @return void
+     * @param int $id Id of object to load
+     *
+     * @return void
      */
     public function info($id)
     {
@@ -732,7 +755,7 @@ class AccountLine extends GenericDocumentLine
 
                 $this->user_creation_id = $obj->fk_user_author;
                 $this->user_rappro = $obj->fk_user_rappro;
-                $this->date_creation     = $this->db->jdate($obj->datec);
+                $this->date_creation = $this->db->jdate($obj->datec);
                 $this->date_modification = $this->db->jdate($obj->datem);
                 //$this->date_rappro       = $obj->daterappro;    // Not yet managed
             }
@@ -746,11 +769,13 @@ class AccountLine extends GenericDocumentLine
     /**
      *      Return clickable name (with picto eventually)
      *
-     *      @param  int     $withpicto      0=No picto, 1=Include picto into link, 2=Only picto
-     *      @param  int     $maxlen         Longueur max libelle
-     *      @param  string  $option         Option ('', 'showall', 'showconciliated', 'showconciliatedandaccounted'). Options may be slow.
-     *      @param  int     $notooltip      1=Disable tooltip
-     *      @return string                  Chaine avec URL
+     * @param int    $withpicto 0=No picto, 1=Include picto into link, 2=Only picto
+     * @param int    $maxlen    Longueur max libelle
+     * @param string $option    Option ('', 'showall', 'showconciliated', 'showconciliatedandaccounted'). Options may
+     *                          be slow.
+     * @param int    $notooltip 1=Disable tooltip
+     *
+     * @return string                  Chaine avec URL
      */
     public function getNomUrl($withpicto = 0, $maxlen = 0, $option = '', $notooltip = 0)
     {
@@ -816,32 +841,37 @@ class AccountLine extends GenericDocumentLine
     /**
      *  Return the label of the status
      *
-     *  @param  int     $mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
-     *  @return string                 Label of status
+     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                  label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
      */
     public function getLibStatut($mode = 0)
     {
         return $this->LibStatut($this->status, $mode);
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Return the label of a given status
      *
-     *  @param  int     $status        Id status
-     *  @param  int     $mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
-     *  @return string                 Label of status
+     * @param int $status Id status
+     * @param int $mode   0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                    label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
      */
     public function LibStatut($status, $mode = 0)
     {
-		// phpcs:enable
+        // phpcs:enable
         return '';
     }
 
     /**
      *  Return if a bank line was dispatched into bookkeeping
      *
-     *  @return     int         Return integer <0 if KO, 0=no, 1=yes
+     * @return     int         Return integer <0 if KO, 0=no, 1=yes
      */
     public function getVentilExportCompta()
     {

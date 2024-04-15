@@ -28,6 +28,24 @@
 
 namespace DoliCore\Form;
 
+use ChargeSociales;
+use DoliModules\Bank\Model\Account;
+use DoliModules\Billing\Model\Commande;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contract\Model\Contrat;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\Holiday\Model\Holiday;
+use DoliModules\Intervention\Model\Fichinter;
+use DoliModules\Product\Model\Product;
+use DoliModules\Project\Model\Project;
+use DoliModules\Project\Model\Task;
+use DoliModules\Proposal\Model\Propal;
+use DoliModules\Supplier\Model\CommandeFournisseur;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\SupplierProposal\Model\SupplierProposal;
+use DoliModules\User\Model\User;
+use Mo;
 use ModeleAction;
 use ModeleChequeReceipts;
 use ModeleDon;
@@ -55,6 +73,10 @@ use ModelePDFTask;
 use ModelePDFUser;
 use ModelePDFUserGroup;
 use ModeleThirdPartyDoc;
+use RecruitmentCandidature;
+use RemiseCheque;
+use Salary;
+use Tva;
 
 /**
  *  \file       htdocs/core/class/html.formfile.class.php

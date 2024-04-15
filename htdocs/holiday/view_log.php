@@ -1,9 +1,10 @@
 <?php
 
-/* Copyright (C) 2007-2016 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2011      Dimitri Mouillard    <dmouillard@teclib.com>
- * Copyright (C) 2020      Tobias Sekan         <tobias.sekan@startmail.com>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+/* Copyright (C) 2007-2016  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2011       Dimitri Mouillard       <dmouillard@teclib.com>
+ * Copyright (C) 2020       Tobias Sekan            <tobias.sekan@startmail.com>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,11 @@
  *  \file       htdocs/holiday/view_log.php
  *  \ingroup    holiday
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Holiday\Model\Holiday;
+use DoliModules\User\Model\UserGroup;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

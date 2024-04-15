@@ -1,10 +1,11 @@
 <?php
 
-/* Copyright (C) 2004-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2005-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2011      Juanjo Menent		<jmenent@2byte.es>
- * Copyright (C) 2013      Florian Henry		<florian.henry@open-concept.pro>
+/* Copyright (C) 2004-2005  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2005-2012  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2011       Juanjo Menent		    <jmenent@2byte.es>
+ * Copyright (C) 2013       Florian Henry		    <florian.henry@open-concept.pro>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +27,13 @@
  *  \brief      Home page for direct debit orders
  */
 
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/prelevement.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'categories', 'withdrawals'));

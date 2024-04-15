@@ -4,6 +4,7 @@
  * Copyright (c) 2005-2008 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\ExpenseReport\Model;
+
+use DoliCore\Base\Stats;
+use DoliDB;
+
 /**
  *       \file       htdocs/expensereport/class/expensereportstats.class.php
  *       \ingroup    expensereport
@@ -26,7 +32,6 @@
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
 
 /**
  *  Class to manage the statistics of the expensereports and expense notes

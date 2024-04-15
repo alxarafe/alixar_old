@@ -22,6 +22,8 @@
 
 namespace DoliModules\Ticket\Model;
 
+use CommonHookActions;
+
 /**
  *    \file       ticket/class/actions_ticket.class.php
  *    \ingroup    ticket

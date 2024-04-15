@@ -3,6 +3,7 @@
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016   Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2020-2024  Frédéric France		<frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +19,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use DoliCore\Api\DolibarrApi;
-use Luracast\Restler\RestException;
+namespace DoliModules\ExpenseReport\Api;
 
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
+use DoliCore\Api\DolibarrApi;
+use DoliModules\ExpenseReport\Model\DolibarrApiAccess;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
+use Luracast\Restler\RestException;
 
 
 /**

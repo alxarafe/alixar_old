@@ -39,10 +39,28 @@ global $menumanager;
 global $langs;
 global $mysoc;
 
+use ChargeSociales;
+use DoliCore\Base\DolibarrController;
+use DoliModules\Accounting\Model\AccountingAccount;
+use DoliModules\Accounting\Model\AccountingJournal;
+use DoliModules\Adherent\Model\Subscription;
+use DoliModules\Bank\Model\Account;
+use DoliModules\Bank\Model\AccountLine;
+use DoliModules\Bank\Model\PaymentVarious;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Societe;
+use DoliModules\Donation\Model\PaymentDonation;
+use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\Supplier\Model\PaiementFourn;
+use DoliModules\User\Model\User;
+use Paiement;
+use PaymentLoan;
+use PaymentSalary;
+use Tva;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
@@ -51,40 +69,9 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
-require_once DOL_DOCUMENT_ROOT . '/don/class/paymentdonation.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/paymentexpensereport.class.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/paymentloan.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
-
-use Account;
-use AccountingAccount;
-use AccountingJournal;
-use AccountLine;
-use ChargeSociales;
-use Client;
-use DoliCore\Base\DolibarrController;
-use Don;
-use ExpenseReport;
-use Facture;
-use FactureFournisseur;
-use DoliCore\Form\Form;
-use Fournisseur;
-use Loan;
-use Paiement;
-use PaiementFourn;
-use PaymentDonation;
-use PaymentExpenseReport;
-use PaymentLoan;
-use PaymentSalary;
-use PaymentVarious;
-use Salary;
-use Societe;
-use DoliModules\Adherent\Model\Subscription;
-use Tva;
-use User;
 
 class AccountingJournalController extends DolibarrController
 {

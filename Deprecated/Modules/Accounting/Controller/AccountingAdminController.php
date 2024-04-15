@@ -60,17 +60,14 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/fiscalyear.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
 
-use AccountingAccount;
-use Categorie;
 use DoliCore\Base\DolibarrController;
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormCompany;
+use DoliModules\Accounting\Model\AccountancyCategory;
+use DoliModules\Accounting\Model\AccountancyExport;
+use DoliModules\Accounting\Model\AccountingAccount;
 use Fiscalyear;
-use DoliCore\Form\Form;
-use FormAccounting;
-use FormAdmin;
-use FormCategory;
-use FormCompany;
-use Product;
-use stdClass;
 
 class AccountingAdminController extends DolibarrController
 {
@@ -1277,70 +1274,71 @@ class AccountingAdminController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_categories_list.php');
 
         $db->close();
+    }
 
 
-        /**
-         *  Show fields in insert/edit mode
-         *
-         * @param array  $fieldlist Array of fields
-         * @param Object $obj       If we show a particular record, obj is filled with record fields
-         * @param string $tabname   Name of SQL table
-         * @param string $context   'add'=Output field for the "add form", 'edit'=Output field for the "edit form", 'hide'=Output field for the "add form" but we don't want it to be rendered
-         *
-         * @return     void
-         */
-        function fieldListAccountingCategories($fieldlist, $obj = null, $tabname = '', $context = '')
-        {
-            global $conf, $langs, $db;
-            global $form, $mysoc;
+    /**
+     *  Show fields in insert/edit mode
+     *
+     * @param array  $fieldlist Array of fields
+     * @param Object $obj       If we show a particular record, obj is filled with record fields
+     * @param string $tabname   Name of SQL table
+     * @param string $context   'add'=Output field for the "add form", 'edit'=Output field for the "edit form",
+     *                          'hide'=Output field for the "add form" but we don't want it to be rendered
+     *
+     * @return     void
+     */
+    public function fieldListAccountingCategories($fieldlist, $obj = null, $tabname = '', $context = '')
+    {
+        global $conf, $langs, $db;
+        global $form, $mysoc;
 
-            $formadmin = new FormAdmin($db);
-            $formcompany = new FormCompany($db);
-            if (isModEnabled('accounting')) {
-                $formaccounting = new FormAccounting($db);
-            }
+        $formadmin = new FormAdmin($db);
+        $formcompany = new FormCompany($db);
+        if (isModEnabled('accounting')) {
+            $formaccounting = new FormAccounting($db);
+        }
 
-            foreach ($fieldlist as $field => $value) {
-                if ($fieldlist[$field] == 'country') {
-                    print '<td>';
-                    $fieldname = 'country';
-                    if ($context == 'add') {
-                        $fieldname = 'country_id';
-                        $preselectcountrycode = GETPOSTISSET('country_id') ? GETPOSTINT('country_id') : $mysoc->country_code;
-                        print $form->select_country($preselectcountrycode, $fieldname, '', 28, 'maxwidth150 maxwidthonsmartphone');
-                    } else {
-                        $preselectcountrycode = (empty($obj->country_code) ? (empty($obj->country) ? $mysoc->country_code : $obj->country) : $obj->country_code);
-                        print $form->select_country($preselectcountrycode, $fieldname, '', 28, 'maxwidth150 maxwidthonsmartphone');
-                    }
-                    print '</td>';
-                } elseif ($fieldlist[$field] == 'country_id') {
-                    if (!in_array('country', $fieldlist)) { // If there is already a field country, we don't show country_id (avoid duplicate)
-                        $country_id = (!empty($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : 0);
-                        print '<td>';
-                        print '<input type="hidden" name="' . $fieldlist[$field] . '" value="' . $country_id . '">';
-                        print '</td>';
-                    }
-                } elseif ($fieldlist[$field] == 'category_type') {
-                    print '<td>';
-                    print $form->selectyesno($fieldlist[$field], (!empty($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : ''), 1);
-                    print '</td>';
-                } elseif ($fieldlist[$field] == 'code' && isset($obj->{$fieldlist[$field]})) {
-                    print '<td><input type="text" class="flat minwidth100" value="' . (!empty($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : '') . '" name="' . $fieldlist[$field] . '"></td>';
+        foreach ($fieldlist as $field => $value) {
+            if ($fieldlist[$field] == 'country') {
+                print '<td>';
+                $fieldname = 'country';
+                if ($context == 'add') {
+                    $fieldname = 'country_id';
+                    $preselectcountrycode = GETPOSTISSET('country_id') ? GETPOSTINT('country_id') : $mysoc->country_code;
+                    print $form->select_country($preselectcountrycode, $fieldname, '', 28, 'maxwidth150 maxwidthonsmartphone');
                 } else {
+                    $preselectcountrycode = (empty($obj->country_code) ? (empty($obj->country) ? $mysoc->country_code : $obj->country) : $obj->country_code);
+                    print $form->select_country($preselectcountrycode, $fieldname, '', 28, 'maxwidth150 maxwidthonsmartphone');
+                }
+                print '</td>';
+            } elseif ($fieldlist[$field] == 'country_id') {
+                if (!in_array('country', $fieldlist)) { // If there is already a field country, we don't show country_id (avoid duplicate)
+                    $country_id = (!empty($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : 0);
                     print '<td>';
-                    $class = '';
-                    if (in_array($fieldlist[$field], ['code', 'formula'])) {
-                        $class = 'maxwidth75';
-                    }
-                    if (in_array($fieldlist[$field], ['label', 'range_account'])) {
-                        $class = 'maxwidth150';
-                    }
-                    if ($fieldlist[$field] == 'position') {
-                        $class = 'maxwidth50';
-                    }
-                    print '<input type="text" class="flat' . ($class ? ' ' . $class : '') . '" value="' . (isset($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : '') . '" name="' . $fieldlist[$field] . '">';
+                    print '<input type="hidden" name="' . $fieldlist[$field] . '" value="' . $country_id . '">';
                     print '</td>';
                 }
+            } elseif ($fieldlist[$field] == 'category_type') {
+                print '<td>';
+                print $form->selectyesno($fieldlist[$field], (!empty($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : ''), 1);
+                print '</td>';
+            } elseif ($fieldlist[$field] == 'code' && isset($obj->{$fieldlist[$field]})) {
+                print '<td><input type="text" class="flat minwidth100" value="' . (!empty($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : '') . '" name="' . $fieldlist[$field] . '"></td>';
+            } else {
+                print '<td>';
+                $class = '';
+                if (in_array($fieldlist[$field], ['code', 'formula'])) {
+                    $class = 'maxwidth75';
+                }
+                if (in_array($fieldlist[$field], ['label', 'range_account'])) {
+                    $class = 'maxwidth150';
+                }
+                if ($fieldlist[$field] == 'position') {
+                    $class = 'maxwidth50';
+                }
+                print '<input type="text" class="flat' . ($class ? ' ' . $class : '') . '" value="' . (isset($obj->{$fieldlist[$field]}) ? $obj->{$fieldlist[$field]} : '') . '" name="' . $fieldlist[$field] . '">';
+                print '</td>';
             }
         }
     }

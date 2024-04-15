@@ -1,9 +1,7 @@
 <?php
 
-/* Copyright (C) 2015-2017  Alexandre Spangaro  <aspangaro@open-dsi.fr>
- * Copyright (C) 2018       Nicolas ZABOURI  <info@inovea-conseil.com>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2015       Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,30 +18,30 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Donation\Model;
+
 /**
- *  \file       htdocs/expensereport/class/paymentexpensereport.class.php
- *  \ingroup    Expense Report
- *  \brief      File of class to manage payment of expense report
+ *  \file       htdocs/don/class/paymentdonation.class.php
+ *  \ingroup    Donation
+ *  \brief      File of class to manage payment of donations
  */
 
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-
 /**
- *  Class to manage payments of expense report
+ *  Class to manage payments of donations
  */
-class PaymentExpenseReport extends GenericDocument
+class PaymentDonation extends GenericDocument
 {
     /**
      * @var string ID to identify managed object
      */
-    public $element = 'payment_expensereport';
+    public $element = 'payment_donation';
 
     /**
      * @var string Name of table without prefix where object is stored
      */
-    public $table_element = 'payment_expensereport';
+    public $table_element = 'payment_donation';
 
     /**
      * @var string String with name of icon for myobject. Must be the part after the 'object_' into object_myobject.png
@@ -58,30 +56,18 @@ class PaymentExpenseReport extends GenericDocument
     /**
      * @var int ID
      */
-    public $fk_expensereport;
+    public $fk_donation;
 
-    /**
-     * @var int|string
-     */
     public $datec = '';
 
-    /**
-     * @var int|string
-     */
     public $datep = '';
-    /**
-     * @var float|int
-     */
+
     public $amount; // Total amount of payment
-    /**
-     * @var array<float|int>
-     */
+
     public $amounts = []; // Array of amounts
 
-    /**
-     * @var int ID
-     */
-    public $fk_typepayment;
+    public $fk_typepayment; // Payment mode ID
+    public $paymenttype;    // Payment mode ID or Code. TODO Use only the code in this field.
 
     /**
      * @var string      Payment reference
@@ -105,30 +91,27 @@ class PaymentExpenseReport extends GenericDocument
     public $fk_user_modif;
 
     /**
-     * @var string
+     * @deprecated
+     * @see $amount, $amounts
      */
+    public $total;
+
     public $type_code;
-
-    /**
-     * @var string
-     */
     public $type_label;
-
-    /**
-     * @var int
-     */
+    public $chid;
+    public $datepaid;
     public $bank_account;
-
-    /**
-     * @var int
-     */
     public $bank_line;
 
     /**
-     * @var string
+     * @var string Id of external payment mode
      */
-    public $label;
+    public $ext_payment_id;
 
+    /**
+     * @var string Name of external payment mode
+     */
+    public $ext_payment_site;
 
     /**
      *  Constructor
@@ -148,27 +131,27 @@ class PaymentExpenseReport extends GenericDocument
      *
      * @return int                     Return integer <0 if KO, >0 if OK
      */
-    public function update($user = null, $notrigger = 0)
+    public function update($user, $notrigger = 0)
     {
-        // phpcs:enable
+        global $conf, $langs;
         $error = 0;
 
         // Clean parameters
 
-        if (isset($this->fk_expensereport)) {
-            $this->fk_expensereport = (int) $this->fk_expensereport;
+        if (isset($this->fk_donation)) {
+            $this->fk_donation = (int) $this->fk_donation;
         }
         if (isset($this->amount)) {
             $this->amount = trim($this->amount);
         }
         if (isset($this->fk_typepayment)) {
-            $this->fk_typepayment = (int) $this->fk_typepayment;
+            $this->fk_typepayment = trim($this->fk_typepayment);
         }
         if (isset($this->num_payment)) {
             $this->num_payment = trim($this->num_payment);
         }
-        if (isset($this->note)) {
-            $this->note = trim($this->note);
+        if (isset($this->note_public)) {
+            $this->note_public = trim($this->note_public);
         }
         if (isset($this->fk_bank)) {
             $this->fk_bank = (int) $this->fk_bank;
@@ -180,20 +163,23 @@ class PaymentExpenseReport extends GenericDocument
             $this->fk_user_modif = (int) $this->fk_user_modif;
         }
 
+        // Check parameters
+        // Put here code to add control on parameters values
+
         // Update request
-        $sql = "UPDATE " . MAIN_DB_PREFIX . "payment_expensereport SET";
-        $sql .= " fk_expensereport=" . (isset($this->fk_expensereport) ? $this->fk_expensereport : "null") . ",";
+        $sql = "UPDATE " . MAIN_DB_PREFIX . "payment_donation SET";
+        $sql .= " fk_donation=" . (isset($this->fk_donation) ? $this->fk_donation : "null") . ",";
         $sql .= " datec=" . (dol_strlen($this->datec) != 0 ? "'" . $this->db->idate($this->datec) . "'" : 'null') . ",";
         $sql .= " tms=" . (dol_strlen($this->tms) != 0 ? "'" . $this->db->idate($this->tms) . "'" : 'null') . ",";
         $sql .= " datep=" . (dol_strlen($this->datep) != 0 ? "'" . $this->db->idate($this->datep) . "'" : 'null') . ",";
         $sql .= " amount=" . (isset($this->amount) ? $this->amount : "null") . ",";
         $sql .= " fk_typepayment=" . (isset($this->fk_typepayment) ? $this->fk_typepayment : "null") . ",";
         $sql .= " num_payment=" . (isset($this->num_payment) ? "'" . $this->db->escape($this->num_payment) . "'" : "null") . ",";
-        $sql .= " note=" . (isset($this->note) ? "'" . $this->db->escape($this->note) . "'" : "null") . ",";
+        $sql .= " note=" . (isset($this->note_public) ? "'" . $this->db->escape($this->note_public) . "'" : "null") . ",";
         $sql .= " fk_bank=" . (isset($this->fk_bank) ? $this->fk_bank : "null") . ",";
         $sql .= " fk_user_creat=" . (isset($this->fk_user_creat) ? $this->fk_user_creat : "null") . ",";
         $sql .= " fk_user_modif=" . (isset($this->fk_user_modif) ? $this->fk_user_modif : "null");
-        $sql .= " WHERE rowid=" . ((int) $this->id);
+        $sql .= " WHERE rowid=" . (int) $this->id;
 
         $this->db->begin();
 
@@ -202,6 +188,19 @@ class PaymentExpenseReport extends GenericDocument
         if (!$resql) {
             $error++;
             $this->errors[] = "Error " . $this->db->lasterror();
+        }
+
+        if (!$error) {
+            if (!$notrigger) {
+                if (!$error && !$notrigger) {
+                    // Call triggers
+                    $result = $this->call_trigger('DONATION_PAYMENT_MODIFY', $user);
+                    if ($result < 0) {
+                        $error++;
+                    }
+                    // End call triggers
+                }
+            }
         }
 
         // Commit or rollback
@@ -228,14 +227,14 @@ class PaymentExpenseReport extends GenericDocument
      */
     public function delete($user, $notrigger = 0)
     {
-        // phpcs:enable
+        global $conf, $langs;
         $error = 0;
 
         $this->db->begin();
 
         if (!$error) {
             $sql = "DELETE FROM " . MAIN_DB_PREFIX . "bank_url";
-            $sql .= " WHERE type='payment_expensereport' AND url_id=" . ((int) $this->id);
+            $sql .= " WHERE type='payment_donation' AND url_id=" . (int) $this->id;
 
             dol_syslog(get_class($this) . "::delete", LOG_DEBUG);
             $resql = $this->db->query($sql);
@@ -246,7 +245,7 @@ class PaymentExpenseReport extends GenericDocument
         }
 
         if (!$error) {
-            $sql = "DELETE FROM " . MAIN_DB_PREFIX . "payment_expensereport";
+            $sql = "DELETE FROM " . MAIN_DB_PREFIX . "payment_donation";
             $sql .= " WHERE rowid=" . ((int) $this->id);
 
             dol_syslog(get_class($this) . "::delete", LOG_DEBUG);
@@ -254,6 +253,19 @@ class PaymentExpenseReport extends GenericDocument
             if (!$resql) {
                 $error++;
                 $this->errors[] = "Error " . $this->db->lasterror();
+            }
+        }
+
+        if (!$error) {
+            if (!$notrigger) {
+                if (!$error && !$notrigger) {
+                    // Call triggers
+                    $result = $this->call_trigger('DONATION_PAYMENT_DELETE', $user);
+                    if ($result < 0) {
+                        $error++;
+                    }
+                    // End call triggers
+                }
             }
         }
 
@@ -271,8 +283,6 @@ class PaymentExpenseReport extends GenericDocument
         }
     }
 
-    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
-
     /**
      *  Load an object from its id and create a new one in database
      *
@@ -285,7 +295,7 @@ class PaymentExpenseReport extends GenericDocument
     {
         $error = 0;
 
-        $object = new PaymentExpenseReport($this->db);
+        $object = new PaymentDonation($this->db);
 
         $this->db->begin();
 
@@ -307,6 +317,9 @@ class PaymentExpenseReport extends GenericDocument
             $error++;
         }
 
+        if (!$error) {
+        }
+
         unset($object->context['createfromclone']);
 
         // End
@@ -319,8 +332,6 @@ class PaymentExpenseReport extends GenericDocument
         }
     }
 
-    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
-
     /**
      *  Load object in memory from database
      *
@@ -330,9 +341,10 @@ class PaymentExpenseReport extends GenericDocument
      */
     public function fetch($id)
     {
+        global $langs;
         $sql = "SELECT";
         $sql .= " t.rowid,";
-        $sql .= " t.fk_expensereport,";
+        $sql .= " t.fk_donation,";
         $sql .= " t.datec,";
         $sql .= " t.tms,";
         $sql .= " t.datep,";
@@ -345,7 +357,7 @@ class PaymentExpenseReport extends GenericDocument
         $sql .= " t.fk_user_modif,";
         $sql .= " pt.code as type_code, pt.libelle as type_label,";
         $sql .= ' b.fk_account';
-        $sql .= " FROM " . MAIN_DB_PREFIX . "payment_expensereport as t";
+        $sql .= " FROM " . MAIN_DB_PREFIX . "payment_donation as t";
         $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "c_paiement as pt ON t.fk_typepayment = pt.id";
         $sql .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'bank as b ON t.fk_bank = b.rowid';
         $sql .= " WHERE t.rowid = " . ((int) $id);
@@ -359,12 +371,13 @@ class PaymentExpenseReport extends GenericDocument
                 $this->id = $obj->rowid;
                 $this->ref = $obj->rowid;
 
-                $this->fk_expensereport = $obj->fk_expensereport;
+                $this->fk_donation = $obj->fk_donation;
                 $this->datec = $this->db->jdate($obj->datec);
                 $this->tms = $this->db->jdate($obj->tms);
                 $this->datep = $this->db->jdate($obj->datep);
                 $this->amount = $obj->amount;
-                $this->fk_typepayment = $obj->fk_typepayment;
+                $this->fk_typepayment = $obj->fk_typepayment;   // Id on type of payent
+                $this->paymenttype = $obj->fk_typepayment;   // Id on type of payment. We should store the code into paymenttype.
                 $this->num_payment = $obj->num_payment;
                 $this->note_public = $obj->note_public;
                 $this->fk_bank = $obj->fk_bank;
@@ -387,54 +400,57 @@ class PaymentExpenseReport extends GenericDocument
     }
 
     /**
-     *  Create payment of expense report into database.
+     *  Create payment of donation into database.
      *  Use this->amounts to have list of lines for the payment
      *
-     * @param User $user User making payment
+     * @param User $user      User making payment
+     * @param int  $notrigger 0=launch triggers after, 1=disable triggers
      *
-     * @return     int                 Return integer <0 if KO, id of payment if OK
+     * @return     int                         Return integer <0 if KO, id of payment if OK
      */
-    public function create($user)
+    public function create($user, $notrigger = 0)
     {
         $error = 0;
 
         $now = dol_now();
+
         // Validate parameters
         if (!$this->datep) {
-            $this->error = 'ErrorBadValueForParameterCreatePaymentExpenseReport';
+            $this->error = 'ErrorBadValueForParameterCreatePaymentDonation';
             return -1;
         }
 
         // Clean parameters
-        if (isset($this->fk_expensereport)) {
-            $this->fk_expensereport = (int) $this->fk_expensereport;
+        if (isset($this->chid)) {
+            $this->chid = (int) $this->chid;
+        } elseif (isset($this->fk_donation)) {
+            // NOTE : The property used in INSERT for fk_donation is not fk_donation but chid
+            //        (keep priority to chid property)
+            $this->chid = (int) $this->fk_donation;
+        }
+        if (isset($this->fk_donation)) {
+            $this->fk_donation = (int) $this->fk_donation;
         }
         if (isset($this->amount)) {
             $this->amount = trim($this->amount);
         }
         if (isset($this->fk_typepayment)) {
-            $this->fk_typepayment = (int) $this->fk_typepayment;
+            $this->fk_typepayment = trim($this->fk_typepayment);
         }
         if (isset($this->num_payment)) {
             $this->num_payment = trim($this->num_payment);
         }
-        if (isset($this->note)) {
-            $this->note = trim($this->note);
-        }
         if (isset($this->note_public)) {
             $this->note_public = trim($this->note_public);
         }
-        if (isset($this->note_private)) {
-            $this->note_private = trim($this->note_private);
-        }
         if (isset($this->fk_bank)) {
-            $this->fk_bank = ((int) $this->fk_bank);
+            $this->fk_bank = (int) $this->fk_bank;
         }
         if (isset($this->fk_user_creat)) {
-            $this->fk_user_creat = ((int) $this->fk_user_creat);
+            $this->fk_user_creat = (int) $this->fk_user_creat;
         }
         if (isset($this->fk_user_modif)) {
-            $this->fk_user_modif = ((int) $this->fk_user_modif);
+            $this->fk_user_modif = (int) $this->fk_user_modif;
         }
 
         $totalamount = 0;
@@ -454,25 +470,38 @@ class PaymentExpenseReport extends GenericDocument
         $this->db->begin();
 
         if ($totalamount != 0) {
-            $sql = "INSERT INTO " . MAIN_DB_PREFIX . "payment_expensereport (fk_expensereport, datec, datep, amount,";
-            $sql .= " fk_typepayment, num_payment, note, fk_user_creat, fk_bank)";
-            $sql .= " VALUES ($this->fk_expensereport, '" . $this->db->idate($now) . "',";
+            $sql = "INSERT INTO " . MAIN_DB_PREFIX . "payment_donation (fk_donation, datec, datep, amount,";
+            $sql .= " fk_typepayment, num_payment, note, ext_payment_id, ext_payment_site,";
+            $sql .= " fk_user_creat, fk_bank)";
+            $sql .= " VALUES (" . ((int) $this->chid) . ", '" . $this->db->idate($now) . "',";
             $sql .= " '" . $this->db->idate($this->datep) . "',";
-            $sql .= " " . price2num($totalamount) . ",";
-            $sql .= " " . ((int) $this->fk_typepayment) . ", '" . $this->db->escape($this->num_payment) . "', '" . $this->db->escape($this->note_public) . "', " . ((int) $user->id) . ",";
-            $sql .= " 0)";  // fk_bank is ID of transaction into ll_bank
+            $sql .= " " . ((float) price2num($totalamount)) . ",";
+            $sql .= " " . ((int) $this->paymenttype) . ", '" . $this->db->escape($this->num_payment) . "', '" . $this->db->escape($this->note_public) . "', ";
+            $sql .= " " . ($this->ext_payment_id ? "'" . $this->db->escape($this->ext_payment_id) . "'" : "null") . ", " . ($this->ext_payment_site ? "'" . $this->db->escape($this->ext_payment_site) . "'" : "null") . ",";
+            $sql .= " " . ((int) $user->id) . ", 0)";
 
             dol_syslog(get_class($this) . "::create", LOG_DEBUG);
             $resql = $this->db->query($sql);
             if ($resql) {
-                $this->id = $this->db->last_insert_id(MAIN_DB_PREFIX . "payment_expensereport");
+                $this->id = $this->db->last_insert_id(MAIN_DB_PREFIX . "payment_donation");
+                $this->ref = (string) $this->id;
             } else {
                 $error++;
             }
         }
 
+        if (!$error && !$notrigger) {
+            // Call triggers
+            $result = $this->call_trigger('DONATION_PAYMENT_CREATE', $user);
+            if ($result < 0) {
+                $error++;
+            }
+            // End call triggers
+        }
+
         if ($totalamount != 0 && !$error) {
             $this->amount = $totalamount;
+            $this->total = $totalamount; // deprecated
             $this->db->commit();
             return $this->id;
         } else {
@@ -480,312 +509,6 @@ class PaymentExpenseReport extends GenericDocument
             $this->db->rollback();
             return -1;
         }
-    }
-
-    /**
-     *  Return the label of a given status
-     *
-     * @param int $status Id status
-     * @param int $mode   0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
-     *                    label + Picto, 6=Long label + Picto
-     *
-     * @return string                 Label of status
-     */
-    public function LibStatut($status, $mode = 0)
-    {
-        // phpcs:enable
-        //global $langs;
-
-        return '';
-    }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Initialise an instance with random values.
-     *  Used to build previews or test instances.
-     *  id must be 0 if object instance is a specimen.
-     *
-     * @return int
-     */
-    public function initAsSpecimen()
-    {
-        $this->id = 0;
-
-        $this->fk_expensereport = 0;
-        $this->datec = dol_now();
-        $this->tms = dol_now();
-        $this->datep = dol_now();
-        $this->amount = 100;
-        $this->fk_typepayment = 0;
-        $this->num_payment = '123456';
-        $this->note_public = 'Public note';
-        $this->note_private = 'Private note';
-        $this->fk_bank = 0;
-        $this->fk_user_creat = 0;
-        $this->fk_user_modif = 0;
-
-        return 1;
-    }
-
-    /**
-     *      Add record into bank for payment with links between this bank record and invoices of payment.
-     *      All payment properties must have been set first like after a call to create().
-     *
-     * @param User   $user            Object of user making payment
-     * @param string $mode            'payment_expensereport'
-     * @param string $label           Label to use in bank record
-     * @param int    $accountid       Id of bank account to do link with
-     * @param string $emetteur_nom    Name of transmitter
-     * @param string $emetteur_banque Name of bank
-     *
-     * @return int                         Return integer <0 if KO, >0 if OK
-     */
-    public function addPaymentToBank($user, $mode, $label, $accountid, $emetteur_nom, $emetteur_banque)
-    {
-        global $langs;
-
-        $error = 0;
-
-        if (isModEnabled("bank")) {
-            include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-
-            $acc = new Account($this->db);
-            $acc->fetch($accountid);
-
-            //Fix me field
-            $total = $this->amount;
-
-            if ($mode == 'payment_expensereport') {
-                $amount = $total;
-            }
-
-            // Insert payment into llx_bank
-            $bank_line_id = $acc->addline(
-                $this->datep,
-                $this->fk_typepayment, // Payment mode id or code ("CHQ or VIR for example")
-                $label,
-                -$amount,
-                $this->num_payment,
-                '',
-                $user,
-                $emetteur_nom,
-                $emetteur_banque
-            );
-
-            // Update fk_bank in llx_paiement.
-            // So we will know the payment that has generated the bank transaction
-            if ($bank_line_id > 0) {
-                $result = $this->update_fk_bank($bank_line_id);
-                if ($result <= 0) {
-                    $error++;
-                    dol_print_error($this->db);
-                }
-
-                // Add link 'payment', 'payment_supplier', 'payment_expensereport' in bank_url between payment and bank transaction
-                $url = '';
-                if ($mode == 'payment_expensereport') {
-                    $url = DOL_URL_ROOT . '/expensereport/payment/card.php?rowid=';
-                }
-                if ($url) {
-                    $result = $acc->add_url_line($bank_line_id, $this->id, $url, '(paiement)', $mode);
-                    if ($result <= 0) {
-                        $error++;
-                        dol_print_error($this->db);
-                    }
-                }
-
-                // Add link 'user' in bank_url between user and bank transaction
-                if (!$error) {
-                    foreach ($this->amounts as $key => $value) {  // We should have always same user but we loop in case of.
-                        if ($mode == 'payment_expensereport') {
-                            $fuser = new User($this->db);
-                            $fuser->fetch($key);
-
-                            $result = $acc->add_url_line(
-                                $bank_line_id,
-                                $fuser->id,
-                                DOL_URL_ROOT . '/user/card.php?id=',
-                                $fuser->getFullName($langs),
-                                'user'
-                            );
-                            if ($result <= 0) {
-                                $this->error = $this->db->lasterror();
-                                dol_syslog(get_class($this) . '::addPaymentToBank ' . $this->error);
-                                $error++;
-                            }
-                        }
-                    }
-                }
-            } else {
-                $this->error = $acc->error;
-                $this->errors = $acc->errors;
-                $error++;
-            }
-        }
-
-        if (!$error) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     *  Update link between the expense report payment and the generated line in llx_bank
-     *
-     * @param int $id_bank Id if bank
-     *
-     * @return int                      >0 if OK, <=0 if KO
-     */
-    public function update_fk_bank($id_bank)
-    {
-        // phpcs:enable
-        $sql = "UPDATE " . MAIN_DB_PREFIX . "payment_expensereport SET fk_bank = " . ((int) $id_bank) . " WHERE rowid = " . ((int) $this->id);
-
-        dol_syslog(get_class($this) . "::update_fk_bank", LOG_DEBUG);
-        $result = $this->db->query($sql);
-        if ($result) {
-            return 1;
-        } else {
-            $this->error = $this->db->error();
-            return 0;
-        }
-    }
-
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *    Tab information on object
-     *
-     * @param int $id Payment id
-     *
-     * @return  void
-     */
-    public function info($id)
-    {
-        $sql = 'SELECT e.rowid, e.datec, e.fk_user_creat, e.fk_user_modif, e.tms';
-        $sql .= ' FROM ' . MAIN_DB_PREFIX . 'payment_expensereport as e';
-        $sql .= ' WHERE e.rowid = ' . ((int) $id);
-
-        dol_syslog(get_class($this) . '::info', LOG_DEBUG);
-        $result = $this->db->query($sql);
-
-        if ($result) {
-            if ($this->db->num_rows($result)) {
-                $obj = $this->db->fetch_object($result);
-
-                $this->id = $obj->rowid;
-
-                $this->user_creation_id = $obj->fk_user_creat;
-                $this->user_modification_id = $obj->fk_user_modif;
-                $this->date_creation = $this->db->jdate($obj->datec);
-                $this->date_modification = $this->db->jdate($obj->tms);
-            }
-            $this->db->free($result);
-        } else {
-            dol_print_error($this->db);
-        }
-    }
-
-    /**
-     *  Return clicable link of object (with eventually picto)
-     *
-     * @param string $option    Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-     * @param array  $arraydata Array of data
-     *
-     * @return     string                              HTML Code for Kanban thumb.
-     */
-    public function getKanbanView($option = '', $arraydata = null)
-    {
-        global $langs;
-
-        $selected = (empty($arraydata['selected']) ? 0 : $arraydata['selected']);
-
-        $return = '<div class="box-flex-item box-flex-grow-zero">';
-        $return .= '<div class="info-box info-box-sm">';
-        $return .= '<span class="info-box-icon bg-infobox-action">';
-        $return .= img_picto('', $this->picto);
-        $return .= '</span>';
-        $return .= '<div class="info-box-content">';
-        $return .= '<span class="info-box-ref inline-block tdoverflowmax150 valignmiddle">' . (method_exists($this, 'getNomUrl') ? $this->getNomUrl(1) : $this->ref) . '</span>';
-        if ($selected >= 0) {
-            $return .= '<input id="cb' . $this->id . '" class="flat checkforselect fright" type="checkbox" name="toselect[]" value="' . $this->id . '"' . ($selected ? ' checked="checked"' : '') . '>';
-        }
-        if (property_exists($this, 'datep')) {
-            $return .= '<br><span class="opacitymedium">' . $langs->trans("Date") . '</span> : <span class="info-box-label">' . dol_print_date($this->db->jdate($this->datep), 'dayhour') . '</span>';
-        }
-        if (property_exists($this, 'fk_typepayment')) {
-            $return .= '<br><span class="opacitymedium">' . $langs->trans("Type") . '</span> : <span class="info-box-label">' . $this->fk_typepayment . '</span>';
-        }
-        if (property_exists($this, 'fk_bank') && !is_null($this->fk_bank)) {
-            $return .= '<br><span class="opacitymedium">' . $langs->trans("BankAccount") . '</span> : <span class="info-box-label">' . $this->fk_bank . '</span>';
-        }
-        if (property_exists($this, 'amount')) {
-            $return .= '<br><span class="opacitymedium">' . $langs->trans("Amount") . '</span> : <span class="info-box-label amount">' . price($this->amount) . '</span>';
-        }
-        if (method_exists($this, 'getLibStatut')) {
-            $return .= '<br><div class="info-box-status">' . $this->getLibStatut(3) . '</div>';
-        }
-        $return .= '</div>';
-        $return .= '</div>';
-        $return .= '</div>';
-        return $return;
-    }
-
-    /**
-     *  Return clicable name (with picto eventually)
-     *
-     * @param int $withpicto 0=No picto, 1=Include picto into link, 2=Only picto
-     * @param int $maxlen    Longueur max libelle
-     *
-     * @return string                  Chaine avec URL
-     */
-    public function getNomUrl($withpicto = 0, $maxlen = 0)
-    {
-        global $langs, $hookmanager;
-
-        $result = '';
-
-        if (empty($this->ref)) {
-            $this->ref = $this->label;
-        }
-        $label = img_picto('', $this->picto) . ' <u class="paddingrightonly">' . $langs->trans("Payment") . '</u>';
-        if (isset($this->status)) {
-            $label .= ' ' . $this->getLibStatut(5);
-        }
-        if (!empty($this->ref)) {
-            $label .= '<br><b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
-        }
-        if (!empty($this->datep)) {
-            $label .= '<br><b>' . $langs->trans('Date') . ':</b> ' . dol_print_date($this->datep, 'dayhour');
-        }
-
-        if (!empty($this->id)) {
-            $link = '<a href="' . DOL_URL_ROOT . '/expensereport/payment/card.php?id=' . $this->id . '" title="' . dol_escape_htmltag($label, 1) . '" class="classfortooltip">';
-            $linkend = '</a>';
-
-            if ($withpicto) {
-                $result .= ($link . img_object($label, 'payment', 'class="classfortooltip"') . $linkend . ' ');
-            }
-            if ($withpicto && $withpicto != 2) {
-                $result .= ' ';
-            }
-            if ($withpicto != 2) {
-                $result .= $link . ($maxlen ? dol_trunc($this->ref, $maxlen) : $this->ref) . $linkend;
-            }
-        }
-        global $action;
-        $hookmanager->initHooks([$this->element . 'dao']);
-        $parameters = ['id' => $this->id, 'getnomurl' => &$result];
-        $reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
-        if ($reshook > 0) {
-            $result = $hookmanager->resPrint;
-        } else {
-            $result .= $hookmanager->resPrint;
-        }
-        return $result;
     }
 
     /**
@@ -799,5 +522,198 @@ class PaymentExpenseReport extends GenericDocument
     public function getLibStatut($mode = 0)
     {
         return '';
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *  Return the label of a given status
+     *
+     * @param int $status Id status
+     * @param int $mode   0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                    label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
+     */
+    public function LibStatut($status, $mode = 0)
+    {
+        // phpcs:enable
+        global $langs;
+
+        return '';
+    }
+
+
+    /**
+     *  Initialise an instance with random values.
+     *  Used to build previews or test instances.
+     *  id must be 0 if object instance is a specimen.
+     *
+     * @return int
+     */
+    public function initAsSpecimen()
+    {
+        $this->id = 0;
+
+        $this->fk_donation = 0;
+        $this->datec = '';
+        $this->tms = dol_now();
+        $this->datep = '';
+        $this->amount = '';
+        $this->fk_typepayment = '';
+        $this->paymenttype = '';
+        $this->num_payment = '';
+        $this->note_public = '';
+        $this->fk_bank = 0;
+        $this->fk_user_creat = dol_now();
+        $this->fk_user_modif = dol_now();
+
+        return 1;
+    }
+
+
+    /**
+     *      Add record into bank for payment with links between this bank record and invoices of payment.
+     *      All payment properties must have been set first like after a call to create().
+     *
+     * @param User   $user            Object of user making payment
+     * @param string $mode            'payment_donation'
+     * @param string $label           Label to use in bank record
+     * @param int    $accountid       Id of bank account to do link with
+     * @param string $emetteur_nom    Name of transmitter
+     * @param string $emetteur_banque Name of bank
+     *
+     * @return int                         Return integer <0 if KO, >0 if OK
+     */
+    public function addPaymentToBank($user, $mode, $label, $accountid, $emetteur_nom, $emetteur_banque)
+    {
+        global $conf;
+
+        $error = 0;
+
+        if (isModEnabled("bank")) {
+
+            $acc = new Account($this->db);
+            $acc->fetch($accountid);
+
+            $total = $this->total;
+            if ($mode == 'payment_donation') {
+                $amount = $total;
+            }
+            // Insert payment into llx_bank
+            $bank_line_id = $acc->addline(
+                $this->datep,
+                $this->paymenttype, // Payment mode id or code ("CHQ or VIR for example")
+                $label,
+                $amount,
+                $this->num_payment,
+                '',
+                $user,
+                $emetteur_nom,
+                $emetteur_banque
+            );
+
+            // Update fk_bank in llx_paiement.
+            // On connait ainsi le paiement qui a genere l'ecriture bancaire
+            if ($bank_line_id > 0) {
+                $result = $this->update_fk_bank($bank_line_id);
+                if ($result <= 0) {
+                    $error++;
+                    dol_print_error($this->db);
+                }
+
+                // Add link 'payment', 'payment_supplier', 'payment_donation' in bank_url between payment and bank transaction
+                $url = '';
+                if ($mode == 'payment_donation') {
+                    $url = DOL_URL_ROOT . '/don/payment/card.php?rowid=';
+                }
+                if ($url) {
+                    $result = $acc->add_url_line($bank_line_id, $this->id, $url, '(paiement)', $mode);
+                    if ($result <= 0) {
+                        $error++;
+                        dol_print_error($this->db);
+                    }
+                }
+            } else {
+                $this->error = $acc->error;
+                $error++;
+            }
+        }
+
+        if (!$error) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *  Update link between the donation payment and the generated line in llx_bank
+     *
+     * @param int $id_bank Id if bank
+     *
+     * @return int                      >0 if OK, <=0 if KO
+     */
+    public function update_fk_bank($id_bank)
+    {
+        // phpcs:enable
+        $sql = "UPDATE " . MAIN_DB_PREFIX . "payment_donation SET fk_bank = " . (int) $id_bank . " WHERE rowid = " . (int) $this->id;
+
+        dol_syslog(get_class($this) . "::update_fk_bank", LOG_DEBUG);
+        $result = $this->db->query($sql);
+        if ($result) {
+            return 1;
+        } else {
+            $this->error = $this->db->error();
+            return 0;
+        }
+    }
+
+    /**
+     *  Return clicable name (with picto eventually)
+     *
+     * @param int $withpicto 0=No picto, 1=Include picto into link, 2=Only picto
+     * @param int $maxlen    Max length
+     *
+     * @return string                  String with URL
+     */
+    public function getNomUrl($withpicto = 0, $maxlen = 0)
+    {
+        global $langs, $hookmanager;
+
+        $result = '';
+
+        $label = '<u>' . $langs->trans("DonationPayment") . '</u>';
+        $label .= '<br>';
+        $label .= '<b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
+
+        if (!empty($this->id)) {
+            $link = '<a href="' . DOL_URL_ROOT . '/don/payment/card.php?id=' . $this->id . '" title="' . dol_escape_htmltag($label, 1) . '" class="classfortooltip">';
+            $linkend = '</a>';
+
+            if ($withpicto) {
+                $result .= ($link . img_object($label, 'payment', 'class="classfortooltip"') . $linkend . ' ');
+            }
+            if ($withpicto && $withpicto != 2) {
+                $result .= ' ';
+            }
+            if ($withpicto != 2) {
+                $result .= $link . ($maxlen ? dol_trunc($this->ref, $maxlen) : $this->ref) . $linkend;
+            }
+        }
+
+        global $action;
+        $hookmanager->initHooks([$this->element . 'dao']);
+        $parameters = ['id' => $this->id, 'getnomurl' => &$result];
+        $reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook > 0) {
+            $result = $hookmanager->resPrint;
+        } else {
+            $result .= $hookmanager->resPrint;
+        }
+        return $result;
     }
 }

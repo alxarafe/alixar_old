@@ -329,7 +329,6 @@ class modTakePos extends DolibarrModules
 
         // Create cash account CASH-POS / DefaultCashPOSLabel if not exists
         if (!getDolGlobalInt('CASHDESK_ID_BANKACCOUNT_CASH1')) {
-            require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
             $cashaccount = new Account($this->db);
             $searchaccountid = $cashaccount->fetch(0, "CASH-POS");
             if ($searchaccountid == 0) {

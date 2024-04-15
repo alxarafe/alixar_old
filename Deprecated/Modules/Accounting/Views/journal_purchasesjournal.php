@@ -1,5 +1,9 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\Supplier\Model\Supplier;
+
 $form = new Form($db);
 
 // Export

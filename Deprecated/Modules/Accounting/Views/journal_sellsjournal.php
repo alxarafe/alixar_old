@@ -1,5 +1,9 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Client;
+
 $form = new Form($db);
 
 // Export

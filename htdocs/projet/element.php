@@ -39,7 +39,6 @@ if (isModEnabled('agenda')) {
     require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 }
 if (isModEnabled('bank')) {
-    require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
 }
 if (isModEnabled('category')) {
 }
@@ -51,7 +50,6 @@ if (isModEnabled('deplacement')) {
     require_once DOL_DOCUMENT_ROOT . '/compta/deplacement/class/deplacement.class.php';
 }
 if (isModEnabled('don')) {
-    require_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';
 }
 if (isModEnabled('shipping')) {
 }

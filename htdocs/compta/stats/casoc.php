@@ -8,6 +8,7 @@
  * Copyright (C) 2015       Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2018       Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2022       Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,11 @@
  *       \file        htdocs/compta/stats/casoc.php
  *       \brief       Page reporting Turnover (CA) by thirdparty
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

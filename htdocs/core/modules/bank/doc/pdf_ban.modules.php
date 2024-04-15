@@ -26,7 +26,6 @@
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/bank/modules_bank.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';

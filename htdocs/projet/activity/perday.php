@@ -28,6 +28,15 @@
  *  \brief      List activities of tasks (per day entry)
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormOther;
+use DoliCore\Form\FormProjets;
+use DoliModules\Company\Model\Company;
+use DoliModules\Holiday\Model\Holiday;
+use DoliModules\Project\Model\Project;
+use DoliModules\Project\Model\Task;
+
 require "../../main.inc.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';

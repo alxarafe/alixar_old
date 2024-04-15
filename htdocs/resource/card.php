@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2013-2014  Jean-François Ferry <jfefe@aternatik.fr>
  * Copyright (C) 2023-2024	William Mead		<william.mead@manchenumerique.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,10 @@
  *      \ingroup    resource
  *      \brief      Page to manage resource object
  */
+
+use DoliCore\Form\Form;
+use DoliModules\Resource\Model\Dolresource;
+use DoliModules\Resource\Model\FormResource;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

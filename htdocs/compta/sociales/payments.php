@@ -8,6 +8,7 @@
  * Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2019       Nicolas ZABOURI         <info@inovea-conseil.com>
  * Copyright (C) 2021       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +30,9 @@
  *      \brief      Page to list payments of special expenses
  */
 
+use DoliCore\Form\FormSocialContrib;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
@@ -36,7 +40,6 @@ require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.ph
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/paymentsocialcontribution.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 if (isModEnabled('accounting')) {
     include_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 }

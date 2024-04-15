@@ -1,5 +1,8 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+
 $form = new Form($db);
 $formadmin = new FormAdmin($db);
 

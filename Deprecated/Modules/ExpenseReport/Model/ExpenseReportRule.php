@@ -19,6 +19,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\ExpenseReport\Model;
+
 /**
  *  \file       htdocs/expensereport/class/expensereport_ik.class.php
  *  \ingroup    expenseik

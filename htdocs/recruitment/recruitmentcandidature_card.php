@@ -1,6 +1,7 @@
 <?php
 
 /* Copyright (C) 2020 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,10 @@
  *      \ingroup    recruitment
  *      \brief      Page to create/edit/view recruitmentcandidature
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
 
 // Load Dolibarr environment
 require_once BASE_PATH . '/main.inc.php';

@@ -35,18 +35,19 @@ global $menumanager;
 global $langs;
 global $mysoc;
 
+use DoliCore\Base\DolibarrController;
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormFile;
+use DoliModules\Accounting\Model\AccountancyExport;
+use DoliModules\Accounting\Model\BookKeeping;
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-
-use DoliCore\Base\DolibarrController;
-use DoliModules\Accounting\Model\BookKeeping;
-use DoliCore\Form\Form;
-use FormAccounting;
-use FormFile;
-use DoliCore\Form\FormOther;
 
 class AccountingBookkeepingController extends DolibarrController
 {
@@ -910,7 +911,6 @@ class AccountingBookkeepingController extends DolibarrController
                 $param .= '&search_doc_ref=' . urlencode($search_doc_ref);
             }
             if ($search_account_category != '-1' && !empty($search_account_category)) {
-                require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancycategory.class.php';
                 $accountingcategory = new AccountancyCategory($db);
 
                 $listofaccountsforgroup = $accountingcategory->getCptsCat(0, 'fk_accounting_category = ' . ((int) $search_account_category));
@@ -1613,7 +1613,6 @@ class AccountingBookkeepingController extends DolibarrController
                 $param .= '&search_doc_ref=' . urlencode($search_doc_ref);
             }
             if ($search_account_category != '-1' && !empty($search_account_category)) {
-                require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancycategory.class.php';
                 $accountingcategory = new AccountancyCategory($db);
 
                 $listofaccountsforgroup = $accountingcategory->getCptsCat(0, 'fk_accounting_category = ' . ((int) $search_account_category));
@@ -2237,7 +2236,6 @@ class AccountingBookkeepingController extends DolibarrController
                 $param .= '&doc_datemonth=' . GETPOSTINT('doc_datemonth') . '&doc_dateday=' . GETPOSTINT('doc_dateday') . '&doc_dateyear=' . GETPOSTINT('doc_dateyear');
             }
             if ($search_account_category != '-1' && !empty($search_account_category)) {
-                require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountancycategory.class.php';
                 $accountingcategory = new AccountancyCategory($db);
 
                 $listofaccountsforgroup = $accountingcategory->getCptsCat(0, 'fk_accounting_category = ' . ((int) $search_account_category));

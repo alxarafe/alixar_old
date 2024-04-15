@@ -7,6 +7,7 @@
  * Copyright (C) 2015       Alexandre Spangaro   <aspangaro@open-dsi.fr>
  * Copyright (C) 2019       Nicolas ZABOURI      <info@inovea-conseil.com>
  * Copyright (C) 2019       Frédéric FRANCE      <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +30,11 @@
  *  \brief      Page list of expenses
  */
 
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
-require_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
 
 $hookmanager = new HookManager($db);
 

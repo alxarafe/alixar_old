@@ -31,10 +31,6 @@
 
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/hrm/class/evaluationdet.class.php';
-
-
 /**
  * Class for Evaluation
  */

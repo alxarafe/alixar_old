@@ -5,6 +5,7 @@
  * Copyright (C) 2016-2018  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2017-2022  Alexandre Spangaro      <aspangaro@open-dsi.fr>
  * Copyright (C) 2021       Gauthier VERDOL     	<gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +27,13 @@
  *      \brief      Social contribution card page
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormProjets;
+use DoliCore\Form\FormSocialContrib;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/paymentsocialcontribution.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';

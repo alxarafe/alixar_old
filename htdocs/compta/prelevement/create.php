@@ -30,6 +30,11 @@
  *  \brief      Page to create a direct debit order or a credit transfer order
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
+use DoliModules\Supplier\Model\FactureFournisseur;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
@@ -38,7 +43,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/prelevement.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'categories', 'withdrawals', 'companies', 'bills'));
@@ -117,7 +121,6 @@ if (empty($reshook)) {
         if ($id_bankaccount != getDolGlobalInt($default_account)) {
             $res = dolibarr_set_const($db, $default_account, $id_bankaccount, 'chaine', 0, '', $conf->entity); // Set as default
         }
-        require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         $bank = new Account($db);
         $bank->fetch(getDolGlobalInt($default_account));
         // ICS is not mandatory with payment by bank transfer

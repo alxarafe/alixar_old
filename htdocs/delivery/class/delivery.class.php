@@ -33,7 +33,6 @@
 
 use DoliModules\Billing\Trait\CommonIncoterm;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
 if (isModEnabled("propal")) {

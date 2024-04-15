@@ -33,10 +33,8 @@ use DoliCore\Base\GenericDocument;
 use DoliCore\Base\GenericDocumentLine;
 
 // Class
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/fiscalyear.class.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
 
 /**
  * Class BookKeepingLine

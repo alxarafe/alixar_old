@@ -27,6 +27,7 @@
  *    \brief      List page of jobs
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\Fields;
 
 // Load Dolibarr environment

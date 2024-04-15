@@ -24,6 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+global $db;
 
 /**
  *      \file       htdocs/compta/bank/card.php
@@ -31,20 +32,18 @@
  *      \brief      Page to create/view a bank account
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormBank;
+use DoliCore\Form\FormCompany;
+use DoliModules\Bank\Model\Account;
 use DoliModules\Accounting\Model\AccountingAccount;
+use DoliModules\Category\Model\Categorie;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formbank.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-if (isModEnabled('category')) {
-}
-if (isModEnabled('accounting')) {
-}
-if (isModEnabled('accounting')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(["banks", "bills", "categories", "companies", "compta", "withdrawals"]);

@@ -4,6 +4,7 @@
  * Copyright (C) 2018       Nicolas ZABOURI         <info@inovea-conseil.com>
  * Copyright (C) 2018-2021  Frédéric France         <frederic.france@netlogic.fr>
  * Copyright (C) 2024		William Mead			<william.mead@manchenumerique.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,9 @@
  *      \ingroup    resource
  *      \brief      Page to manage resource objects
  */
+
+use DoliCore\Form\Form;
+use DoliModules\Resource\Model\Dolresource;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

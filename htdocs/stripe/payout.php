@@ -2,6 +2,7 @@
 
 /* Copyright (C) 2018-2023  Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +21,11 @@
 // Put here all includes required by your class file
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliModules\Bank\Model\Account;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
-//require_once DOL_DOCUMENT_ROOT.'/core/lib/stripe.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-if (isModEnabled('accounting')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array('compta', 'salaries', 'bills', 'hrm', 'stripe'));

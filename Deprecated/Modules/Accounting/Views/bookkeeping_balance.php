@@ -1,5 +1,7 @@
 <?php
 
+use DoliModules\Accounting\Model\AccountingAccount;
+
 if ($type == 'sub') {
     $title_page = $langs->trans("AccountBalanceSubAccount");
 } else {

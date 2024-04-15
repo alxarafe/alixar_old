@@ -5,6 +5,7 @@
  * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2010-2018  Juanjo Menent           <jmenent@2byte.es>
  * Copyright (C) 2022       Alexandre Spangaro      <aspangaro@open-dsi.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +27,14 @@
  *      \brief      Page to list direct debit orders or credit transfers orders
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Company\Model\Company;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/ligneprelevement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'withdrawals', 'companies', 'categories'));
@@ -103,7 +107,6 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
     $search_company = "";
     $statut = "";
 }
-
 
 /*
  *  View

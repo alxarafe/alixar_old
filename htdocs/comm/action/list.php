@@ -30,6 +30,12 @@
  *      \brief      Page to list actions
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormActions;
+use DoliModules\Company\Model\Company;
+use DoliModules\Contact\Model\Contact;
+use DoliModules\User\Model\User;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';

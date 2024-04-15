@@ -32,6 +32,9 @@
  *      \brief      Form and file creation of paid holiday.
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Holiday\Model\Holiday;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';

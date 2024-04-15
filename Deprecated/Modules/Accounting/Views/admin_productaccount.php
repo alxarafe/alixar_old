@@ -1,6 +1,10 @@
 <?php
 
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormCategory;
 use DoliModules\Accounting\Model\AccountingAccount;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Product\Model\Product;
 
 $form = new FormAccounting($db);
 

@@ -27,15 +27,14 @@
  *  \brief      Page of various expenses
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAccounting;
+use DoliCore\Form\FormProjets;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/paymentvarious.class.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-require_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingaccount.class.php';
-if (isModEnabled('project')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array("compta", "banks", "bills", "users", "accountancy", "categories"));
@@ -350,7 +349,6 @@ llxHeader('', $title, $help_url);
 $options = array();
 
 // Load bank groups
-require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/bankcateg.class.php';
 $bankcateg = new BankCateg($db);
 
 $arrayofbankcategs = $bankcateg->fetchAll();

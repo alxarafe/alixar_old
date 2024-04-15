@@ -1,11 +1,12 @@
 <?php
 
-/* Copyright (C) 2004-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005      Simon Tosser         <simon@kornog-computing.com>
- * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2010	   Pierre Morin         <pierre.morin@auguria.net>
- * Copyright (C) 2013      Marcos García        <marcosgdf@gmail.com>
+/* Copyright (C) 2004-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2012  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005       Simon Tosser            <simon@kornog-computing.com>
+ * Copyright (C) 2005-2012  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2010	    Pierre Morin            <pierre.morin@auguria.net>
+ * Copyright (C) 2013       Marcos García           <marcosgdf@gmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,9 @@
  *              Call of this service is made with URL:
  *              ajaxdirpreview.php?mode=nojs&action=preview&module=ecm&section=0&file=xxx
  */
+
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
 
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', 1); // Disables token renewal

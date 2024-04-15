@@ -27,6 +27,10 @@
  *      \brief      Pages of import Wizard
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
+
 require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/imports/class/import.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/import/modules_import.php';
