@@ -22,7 +22,7 @@ filter:
     - 'htdocs/**'
     - 'Core/**'
     - 'Modules/**'
-    - 'Deprecated/**'
+    - 'Dolibarr/**'
   excluded_paths:
     - 'test/**'
     - 'vendor/**'

@@ -7,8 +7,8 @@
     <arg name="parallel" value="80"/>
 
     <file>Core</file>
-    <file>Deprecated</file>
     <file>Modules</file>
+    <file>Dolibarr</file>
     <file>dev</file>
     <file>htdocs</file>
     <file>scripts</file>

@@ -39,7 +39,10 @@ abstract class ViewController extends GenericController
     public function view($vars = [])
     {
         $viewPaths = BASE_PATH . '/Templates';
-        $cachePaths = realpath(BASE_PATH . '/../tmp');
+        $cachePaths = realpath(BASE_PATH . '/../tmp') . '/blade';
+        if (!is_dir($cachePaths) && !mkdir($cachePaths) && !is_dir($cachePaths)) {
+            die('Could not create cache directory for templates.');
+        }
         $blade = new Blade($viewPaths, $cachePaths);
         echo $blade->render($this->template, $vars);
     }

@@ -79,12 +79,12 @@
       "Alxarafe\\": "Core/",
       "Alixar\\": "htdocs/",
       "Modules\\": "Modules/",
-      "DoliCore\\": "Deprecated/Core",
-      "DoliModules\\": "Deprecated/Modules"
+      "DoliCore\\": "Dolibarr/Core",
+      "DoliModules\\": "Dolibarr/Modules"
     },
     "files": [
       "Core/Lib/Functions.php",
-      "Deprecated/Lib/Functions.php"
+      "Dolibarr/Lib/Functions.php"
     ]
   }
 }
