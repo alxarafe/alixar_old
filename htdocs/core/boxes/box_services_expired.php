@@ -64,7 +64,6 @@ class box_services_expired extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 
         $now = dol_now();
 

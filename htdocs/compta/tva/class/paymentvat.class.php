@@ -584,8 +584,6 @@ class PaymentVAT extends GenericDocument
         $error = 0;
 
         if (isModEnabled("bank")) {
-            include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-
             $acc = new Account($this->db);
             $acc->fetch($accountid);
 

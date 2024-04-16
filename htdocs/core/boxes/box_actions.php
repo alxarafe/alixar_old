@@ -71,7 +71,6 @@ class box_actions extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         include_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         $societestatic = new Company($this->db);
         $actionstatic = new ActionComm($this->db);

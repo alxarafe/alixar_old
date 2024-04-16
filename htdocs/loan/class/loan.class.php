@@ -298,7 +298,6 @@ class Loan extends GenericDocument
         $this->db->begin();
 
         // Get bank transaction lines for this loan
-        include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         $account = new Account($this->db);
         $lines_url = $account->get_url('', $this->id, 'loan');
 

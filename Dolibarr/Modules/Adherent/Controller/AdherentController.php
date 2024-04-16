@@ -167,7 +167,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/agenda.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/agenda.php');
 
         $db->close();
     }
@@ -1022,7 +1022,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/card.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/card.php');
 
         $db->close();
     }
@@ -1119,7 +1119,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/document.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/document.php');
 
         $db->close();
     }
@@ -1171,7 +1171,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/index.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/index.php');
 
         $db->close();
     }
@@ -1263,7 +1263,7 @@ class AdherentController extends DolibarrController
          *  View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/ldap.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/ldap.php');
 
         $db->close();
     }
@@ -1619,7 +1619,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/list.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/list.php');
 
         $db->close();
     }
@@ -1707,7 +1707,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/note.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/note.php');
 
         $title = $langs->trans("Member") . " - " . $langs->trans("Note");
 
@@ -1899,7 +1899,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/partnership.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/partnership.php');
 
         $db->close();
     }
@@ -2315,7 +2315,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/subscription.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription.php');
 
         $db->close();
     }
@@ -2537,7 +2537,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/type.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/type.php');
 
         $db->close();
     }
@@ -2610,7 +2610,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/type_ldap.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/type_ldap.php');
 
         $db->close();
     }
@@ -2745,7 +2745,7 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/type_translation.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/type_translation.php');
         $db->close();
     }
 
@@ -2807,6 +2807,6 @@ class AdherentController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/vcard.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/vcard.php');
     }
 }

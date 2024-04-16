@@ -75,7 +75,6 @@ class box_members_by_tags extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
         $staticmember = new Adherent($this->db);
 
         $now = dol_now();

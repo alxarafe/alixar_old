@@ -38,7 +38,7 @@ abstract class Misc
      *
      * @return array
      */
-    private static function createClassPaths($searchPath = '/../Deprecated/Modules', $folderName = 'Model')
+    private static function createClassPaths($searchPath = '/../Dolibarr/Modules', $folderName = 'Model')
     {
         $result = [];
         $path = realpath(BASE_PATH . $searchPath) . DIRECTORY_SEPARATOR;
@@ -68,7 +68,7 @@ abstract class Misc
      *
      * @return array|false|mixed
      */
-    public static function getClassPaths($searchPath = '/../Deprecated/Modules', $folderName = 'Model')
+    public static function getClassPaths($searchPath = '/../Dolibarr/Modules', $folderName = 'Model')
     {
         $path = realpath(BASE_PATH . '/../tmp');
         if (!is_dir($path) && !mkdir($path)) {

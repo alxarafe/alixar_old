@@ -68,7 +68,6 @@ class box_mos extends GenericBoxes
         $this->max = $max;
 
         include_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
         $mostatic = new Mo($this->db);
         $productstatic = new Product($this->db);

@@ -68,7 +68,6 @@ class box_boms extends GenericBoxes
         $this->max = $max;
 
         include_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
         $bomstatic = new BOM($this->db);
         $productstatic = new Product($this->db);

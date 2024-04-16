@@ -68,7 +68,6 @@ class box_factures extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
         $facturestatic = new Facture($this->db);
         $societestatic = new Company($this->db);

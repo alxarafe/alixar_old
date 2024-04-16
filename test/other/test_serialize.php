@@ -15,7 +15,6 @@ if (! $res) {
 if (! $res) {
     @include_once './master.inc.php';
 }
-include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 
 // Generate an object sample

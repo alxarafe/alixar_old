@@ -79,8 +79,6 @@ class box_project_opportunities extends GenericBoxes
         $i = 0;
         // list the summary of the orders
         if ($user->hasRight('projet', 'lire')) {
-            include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-            include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
             $projectstatic = new Project($this->db);
             $companystatic = new Company($this->db);
 

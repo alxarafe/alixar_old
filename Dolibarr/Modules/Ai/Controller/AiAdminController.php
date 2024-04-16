@@ -135,7 +135,7 @@ class AiAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Ai/Views/setup.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Ai/Views/setup.php');
 
         $db->close();
     }
@@ -297,7 +297,7 @@ class AiAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Ai/Views/custom_prompt.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Ai/Views/custom_prompt.php');
 
         $db->close();
     }

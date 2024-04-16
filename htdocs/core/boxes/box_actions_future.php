@@ -73,7 +73,6 @@ class box_actions_future extends GenericBoxes
 
         $now = dol_now();
 
-        include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         include_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         $societestatic = new Company($this->db);
         $actionstatic = new ActionComm($this->db);

@@ -169,7 +169,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/accountancy_codes.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/accountancy_codes.php');
 
         $db->close();
     }
@@ -296,7 +296,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/agenda.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/agenda.php');
 
         $db->close();
     }
@@ -451,7 +451,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/card.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/card.php');
 
         $db->close();
     }
@@ -536,7 +536,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/depreciation.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/depreciation.php');
         $db->close();
     }
 
@@ -657,7 +657,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/depreciation_options.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/depreciation_options.php');
 
         $db->close();
     }
@@ -734,7 +734,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/disposal.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/disposal.php');
 
         $db->close();
     }
@@ -818,7 +818,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/document.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/document.php');
 
         $db->close();
     }
@@ -995,7 +995,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/list.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/list.php');
 
         $db->close();
     }
@@ -1069,7 +1069,7 @@ class AssetController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/note.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/note.php');
 
         $db->close();
     }

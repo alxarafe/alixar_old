@@ -25,4 +25,28 @@ namespace Alxarafe\Base;
  */
 abstract class Controller extends ViewController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    private function isLogged()
+    {
+        return true;
+    }
+
+    public function doLogin()
+    {
+        dump($_POST);
+        die('Ahora haría un login');
+    }
+
+    public function index(bool $executeActions = true): bool
+    {
+        $executeActions = $executeActions && $this->isLogged();
+        if (!$executeActions) {
+            $this->template = 'auth/login';
+        }
+        return parent::index($executeActions);
+    }
 }

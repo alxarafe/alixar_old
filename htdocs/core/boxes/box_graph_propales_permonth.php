@@ -105,7 +105,6 @@ class box_graph_propales_permonth extends GenericBoxes
             $param_showtot = 'DOLUSERCOOKIE_box_' . $this->boxcode . '_showtot';
 
             include_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
-            include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propalestats.class.php';
             $autosetarray = preg_split("/[,;:]+/", GETPOST('DOL_AUTOSET_COOKIE'));
             if (in_array('DOLUSERCOOKIE_box_' . $this->boxcode, $autosetarray)) {
                 $endyear = GETPOSTINT($param_year);

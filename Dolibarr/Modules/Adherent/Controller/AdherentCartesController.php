@@ -303,7 +303,7 @@ class AdherentCartesController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/cartes_carte.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/cartes_carte.php');
 
         $db->close();
     }

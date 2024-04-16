@@ -581,10 +581,8 @@ class BlockedLog
 
                     $tmpobject = null;
                     if ($this->element == 'payment_supplier') {
-                        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
                         $tmpobject = new FactureFournisseur($this->db);
                     } elseif ($this->element == 'payment') {
-                        include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                         $tmpobject = new Facture($this->db);
                     } elseif ($this->element == 'payment_donation') {
                         include_once DOL_DOCUMENT_ROOT . '/don/class/don.class.php';

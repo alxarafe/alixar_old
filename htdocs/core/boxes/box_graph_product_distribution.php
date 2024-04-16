@@ -76,9 +76,6 @@ class box_graph_product_distribution extends GenericBoxes
 
         $refreshaction = 'refresh_' . $this->boxcode;
 
-        include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
-
         $param_year = 'DOLUSERCOOKIE_box_' . $this->boxcode . '_year';
         $param_showinvoicenb = 'DOLUSERCOOKIE_box_' . $this->boxcode . '_showinvoicenb';
         $param_showpropalnb = 'DOLUSERCOOKIE_box_' . $this->boxcode . '_showpropalnb';
@@ -150,7 +147,6 @@ class box_graph_product_distribution extends GenericBoxes
             // Build graphic number of object. $data = array(array('Lib',val1,val2,val3),...)
             if ($showpropalnb) {
                 $langs->load("propal");
-                include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propalestats.class.php';
 
                 $showpointvalue = 1;
                 $nocolor = 0;
@@ -212,7 +208,6 @@ class box_graph_product_distribution extends GenericBoxes
             // Build graphic number of object. $data = array(array('Lib',val1,val2,val3),...)
             if ($showordernb) {
                 $langs->load("orders");
-                include_once DOL_DOCUMENT_ROOT . '/commande/class/commandestats.class.php';
 
                 $showpointvalue = 1;
                 $nocolor = 0;
@@ -276,7 +271,6 @@ class box_graph_product_distribution extends GenericBoxes
             // Build graphic number of object. $data = array(array('Lib',val1,val2,val3),...)
             if ($showinvoicenb) {
                 $langs->load("bills");
-                include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facturestats.class.php';
 
                 $showpointvalue = 1;
                 $nocolor = 0;

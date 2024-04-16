@@ -283,7 +283,7 @@ class AccountingAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_account.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_account.php');
 
         $db->close();
     }
@@ -598,7 +598,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_accountmodel.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_accountmodel.php');
 
         $db->close();
     }
@@ -782,7 +782,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_card.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_card.php');
 
         $db->close();
     }
@@ -882,7 +882,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_categories.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_categories.php');
 
         $db->close();
     }
@@ -1271,7 +1271,7 @@ class AccountingAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_categories_list.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_categories_list.php');
 
         $db->close();
     }
@@ -1427,7 +1427,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_closure.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_closure.php');
 
         $db->close();
     }
@@ -1608,7 +1608,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_defaultaccounts.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_defaultaccounts.php');
 
         $db->close();
     }
@@ -1726,7 +1726,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_export.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_export.php');
 
         $db->close();
     }
@@ -1798,7 +1798,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_fiscalyear.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_fiscalyear.php');
 
         $db->close();
     }
@@ -1962,7 +1962,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_fiscalyear_card.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_fiscalyear_card.php');
 
         $db->close();
     }
@@ -1998,7 +1998,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_fiscalyear_info.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_fiscalyear_info.php');
 
         $db->close();
     }
@@ -2254,7 +2254,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_index.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_index.php');
 
         $db->close();
     }
@@ -2592,7 +2592,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_journals_list.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_journals_list.php');
 
         $db->close();
     }
@@ -2833,7 +2833,7 @@ class AccountingAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_productaccount.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_productaccount.php');
 
         $db->close();
     }
@@ -2946,7 +2946,7 @@ class AccountingAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/admin_subaccount.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/admin_subaccount.php');
 
         $db->close();
     }

@@ -86,7 +86,6 @@ class box_validated_projects extends GenericBoxes
 
         // list the summary of the orders
         if ($user->hasRight('projet', 'lire')) {
-            include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
             $projectstatic = new Project($this->db);
 
             $socid = 0;

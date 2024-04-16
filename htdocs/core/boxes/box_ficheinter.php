@@ -66,7 +66,6 @@ class box_ficheinter extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
         $ficheinterstatic = new Fichinter($this->db);
         $thirdpartystatic = new Company($this->db);
 

@@ -67,7 +67,6 @@ class box_fournisseurs extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
         $thirdpartystatic = new Supplier($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedSuppliers", $max));

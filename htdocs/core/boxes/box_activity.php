@@ -99,7 +99,6 @@ class box_activity extends GenericBoxes
 
         // list the summary of the propals
         if (isModEnabled("propal") && $user->hasRight("propal", "lire")) {
-            include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
             $propalstatic = new Propal($this->db);
 
             $data = array();
@@ -272,7 +271,6 @@ class box_activity extends GenericBoxes
 
         // list the summary of the bills
         if (isModEnabled('invoice') && $user->hasRight("facture", "lire")) {
-            include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
             $facturestatic = new Facture($this->db);
 
             // part 1

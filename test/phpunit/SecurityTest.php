@@ -986,8 +986,6 @@ class SecurityTest extends CommonClassTest
         $db = $this->savdb;
 
         // Declare classes found into string to evaluate
-        include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
 
         $result = dol_eval('1==1', 1, 0);
         print "result1 = " . $result . "\n";

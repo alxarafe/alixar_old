@@ -934,7 +934,6 @@ if (empty($reshook)) {
     }
 
     if ($action == "order" && $placeid != 0 && ($user->hasRight('takepos', 'run') || defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE'))) {
-        include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         if ((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE' . $term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") {
             require_once DOL_DOCUMENT_ROOT . '/core/class/dolreceiptprinter.class.php';
             $printer = new dolReceiptPrinter($db);

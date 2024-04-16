@@ -585,7 +585,6 @@ class RemiseCheque extends GenericDocument
         // Charge le modele
         $file = "pdf_" . $model . ".class.php";
         if (file_exists($dir . $file)) {
-            include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
             include_once $dir . $file;
 
             $classname = 'BordereauCheque' . ucfirst($model);

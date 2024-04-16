@@ -17,8 +17,6 @@
  */
 
 include_once DOL_DOCUMENT_ROOT . '/core/modules/mailings/modules_mailings.php';
-include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 
 
 /**

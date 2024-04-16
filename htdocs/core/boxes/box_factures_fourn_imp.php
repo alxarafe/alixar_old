@@ -67,8 +67,6 @@ class box_factures_fourn_imp extends GenericBoxes
         $this->max = $max;
         //$this->max = 1000;
 
-        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.class.php';
 
         $facturestatic = new FactureFournisseur($this->db);
         $thirdpartystatic = new Supplier($this->db);

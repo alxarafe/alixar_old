@@ -118,7 +118,7 @@ class AccountingExpenseReportController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/expense_report_card.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_card.php');
 
         $db->close();
     }
@@ -286,7 +286,7 @@ class AccountingExpenseReportController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/expense_report_index.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_index.php');
 
         $db->close();
     }
@@ -434,7 +434,7 @@ class AccountingExpenseReportController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/expense_report_lines.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_lines.php');
 
         $db->close();
     }
@@ -636,7 +636,7 @@ class AccountingExpenseReportController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/expense_report_list.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_list.php');
 
         $db->close();
     }

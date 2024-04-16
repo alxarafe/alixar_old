@@ -29,9 +29,6 @@
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Company\Model\Customer;
 
-include_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
-
-
 /**
  * Class to manage the box to show last prospects
  */

@@ -74,7 +74,6 @@ class box_customers_outstanding_bill_reached extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         $thirdpartystatic = new Company($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastOutstandingBillReached", $max));

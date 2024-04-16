@@ -66,7 +66,6 @@ class box_contracts extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastContracts", $max));
 

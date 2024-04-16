@@ -30,9 +30,6 @@
 use DoliCore\Base\GenericBoxes;
 use DoliModules\Bank\Model\Account;
 
-include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
-
-
 /**
  * Class to manage the box to show bank accounts
  */

@@ -2837,7 +2837,6 @@ function dol_check_secure_access_document($modulepart, $original_file, $entity, 
             $accessallowed = 1;
             // If we known $id of holiday, call checkUserAccessToObject to check permission on properties and hierarchy of leave request
             if ($refname && !$fuser->hasRight('holiday', 'readall') && !preg_match('/^specimen/i', $original_file)) {
-                include_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
                 $tmpholiday = new Holiday($db);
                 $tmpholiday->fetch('', $refname);
                 $accessallowed = checkUserAccessToObject($user, array('holiday'), $tmpholiday, 'holiday', '', '', 'rowid', '');
@@ -2849,7 +2848,6 @@ function dol_check_secure_access_document($modulepart, $original_file, $entity, 
             $accessallowed = 1;
             // If we known $id of expensereport, call checkUserAccessToObject to check permission on properties and hierarchy of expense report
             if ($refname && !$fuser->hasRight('expensereport', 'readall') && !preg_match('/^specimen/i', $original_file)) {
-                include_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
                 $tmpexpensereport = new ExpenseReport($db);
                 $tmpexpensereport->fetch('', $refname);
                 $accessallowed = checkUserAccessToObject($user, array('expensereport'), $tmpexpensereport, 'expensereport', '', '', 'rowid', '');
@@ -3103,7 +3101,6 @@ function dol_check_secure_access_document($modulepart, $original_file, $entity, 
             $accessallowed = 1;
             // If we known $id of project, call checkUserAccessToObject to check permission on properties and contact of project
             if ($refname && !preg_match('/^specimen/i', $original_file)) {
-                include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
                 $tmpproject = new Project($db);
                 $tmpproject->fetch('', $refname);
                 $accessallowed = checkUserAccessToObject($user, array('projet'), $tmpproject->id, 'projet&project', '', '', 'rowid', '');
@@ -3116,7 +3113,6 @@ function dol_check_secure_access_document($modulepart, $original_file, $entity, 
             $accessallowed = 1;
             // If we known $id of project, call checkUserAccessToObject to check permission on properties and contact of project
             if ($refname && !preg_match('/^specimen/i', $original_file)) {
-                include_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
                 $tmptask = new Task($db);
                 $tmptask->fetch('', $refname);
                 $accessallowed = checkUserAccessToObject($user, array('projet_task'), $tmptask->id, 'projet_task&project', '', '', 'rowid', '');

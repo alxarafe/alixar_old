@@ -199,7 +199,7 @@ class AdherentSubscriptionController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/subscription_index.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription_index.php');
 
         $db->close();
     }
@@ -233,7 +233,7 @@ class AdherentSubscriptionController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/subscription_info.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription_info.php');
 
         $db->close();
     }
@@ -390,7 +390,7 @@ class AdherentSubscriptionController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/subscription_list.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription_list.php');
 
         $db->close();
     }

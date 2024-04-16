@@ -276,7 +276,7 @@ class AccountingBookkeepingController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/bookkeeping_balance.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_balance.php');
 
         $db->close();
     }
@@ -589,7 +589,7 @@ class AccountingBookkeepingController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/bookkeeping_card.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_card.php');
 
         $db->close();
     }
@@ -1301,7 +1301,7 @@ class AccountingBookkeepingController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/bookkeeping_export.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_export.php');
 
         $db->close();
     }
@@ -1968,7 +1968,7 @@ class AccountingBookkeepingController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/bookkeeping_list.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_list.php');
 
         $db->close();
     }
@@ -2496,7 +2496,7 @@ class AccountingBookkeepingController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/bookkeeping_listbyaccount.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_listbyaccount.php');
 
         $db->close();
     }

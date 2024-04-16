@@ -1903,7 +1903,6 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
                     $this->stats_commande['qty'] -= $adeduire;
                 } else {
                     // If option DECREASE_ONLY_UNINVOICEDPRODUCTS is off, we make a compensation with lines of invoices linked to the order
-                    include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 
                     // For every order having invoice already validated we need to decrease stock cause it's in physical stock
                     $adeduire = 0;

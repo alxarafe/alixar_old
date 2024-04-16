@@ -1778,7 +1778,6 @@ abstract class CommonInvoice extends GenericDocument
             $complementaryinfo .= '/30/' . $this->thirdparty->tva_intra;
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         $bankaccount = new Account($this->db);
 
         // Header

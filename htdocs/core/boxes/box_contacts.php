@@ -32,9 +32,6 @@ use DoliCore\Base\GenericBoxes;
 use DoliModules\Company\Model\Company;
 use DoliModules\Contact\Model\Contact;
 
-include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
-
-
 /**
  * Class to manage the box to show last contacts
  */

@@ -30,9 +30,6 @@ namespace DoliModules\Company\Model;
 use DoliDB;
 use Societe;
 
-include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-
-
 /**
  *  Class to manage customers or prospects
  */

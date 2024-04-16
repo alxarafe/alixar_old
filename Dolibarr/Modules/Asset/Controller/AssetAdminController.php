@@ -106,7 +106,7 @@ class AssetAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/admin_asset_extrafields.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/admin_asset_extrafields.php');
 
         $db->close();
     }
@@ -157,7 +157,7 @@ class AssetAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/admin_assetmodel_extrafields.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/admin_assetmodel_extrafields.php');
 
         $db->close();
     }
@@ -325,7 +325,7 @@ class AssetAdminController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Asset/Views/admin_setup.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/admin_setup.php');
 
         $db->close();
     }

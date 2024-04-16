@@ -97,7 +97,6 @@ if (isModEnabled('stripe')) {
     $stripe = new Stripe($db);
     $stripeacc = $stripe->getStripeAccount($service); // Get Stripe OAuth connect account (no remote access to Stripe here)
 
-    include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
     $invoicetmp = new Facture($db);
     $invoicetmp->fetch($invoiceid);
     $stripecu = $stripe->getStripeCustomerAccount($invoicetmp->socid, $servicestatus, $site_account); // Get remote Stripe customer 'cus_...' (no remote access to Stripe here)
@@ -171,10 +170,10 @@ if ($invoiceid > 0) {
 if ($usestripeterminals && $invoice->type != $invoice::TYPE_CREDIT_NOTE) {
     if (!getDolGlobalString($keyforstripeterminalbank)) { ?>
         const config = {
-            simulated: <?php if (empty($servicestatus) && getDolGlobalString('STRIPE_TERMINAL_SIMULATED')) { ?> true <?php 
-} else { ?> false <?php 
+            simulated: <?php if (empty($servicestatus) && getDolGlobalString('STRIPE_TERMINAL_SIMULATED')) { ?> true <?php
+} else { ?> false <?php
 } ?>
-            <?php if (getDolGlobalString('STRIPE_LOCATION')) { ?>, location: '<?php echo $conf->global->STRIPE_LOCATION; ?>'<?php 
+            <?php if (getDolGlobalString('STRIPE_LOCATION')) { ?>, location: '<?php echo $conf->global->STRIPE_LOCATION; ?>'<?php
 } ?>
         }
         terminal.discoverReaders(config).then(function(discoverResult) {

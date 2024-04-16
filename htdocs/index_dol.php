@@ -187,21 +187,18 @@ if (!getDolGlobalString('MAIN_DISABLE_GLOBAL_WORKBOARD') && getDolGlobalInt('MAI
 
     // Number of project opened
     if (isModEnabled('project') && !getDolGlobalString('MAIN_DISABLE_BLOCK_PROJECT') && $user->hasRight('projet', 'lire')) {
-        include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
         $board = new Project($db);
         $dashboardlines[$board->element] = $board->load_board($user);
     }
 
     // Number of tasks to do (late)
     if (isModEnabled('project') && !getDolGlobalString('MAIN_DISABLE_BLOCK_PROJECT') && !getDolGlobalString('PROJECT_HIDE_TASKS') && $user->hasRight('projet', 'lire')) {
-        include_once DOL_DOCUMENT_ROOT . '/projet/class/task.class.php';
         $board = new Task($db);
         $dashboardlines[$board->element] = $board->load_board($user);
     }
 
     // Number of commercial customer proposals open (expired)
     if (isModEnabled('propal') && !getDolGlobalString('MAIN_DISABLE_BLOCK_CUSTOMER') && $user->hasRight('propal', 'read')) {
-        include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
         $board = new Propal($db);
         $dashboardlines[$board->element . '_opened'] = $board->load_board($user, "opened");
         // Number of commercial proposals CLOSED signed (billed)
@@ -211,7 +208,6 @@ if (!getDolGlobalString('MAIN_DISABLE_GLOBAL_WORKBOARD') && getDolGlobalInt('MAI
     // Number of supplier proposals open (expired)
     if (isModEnabled('supplier_proposal')  && !getDolGlobalString('MAIN_DISABLE_BLOCK_SUPPLIER') && $user->hasRight('supplier_proposal', 'lire')) {
         $langs->load("supplier_proposal");
-        include_once DOL_DOCUMENT_ROOT . '/supplier_proposal/class/supplier_proposal.class.php';
         $board = new SupplierProposal($db);
         $dashboardlines[$board->element . '_opened'] = $board->load_board($user, "opened");
         // Number of commercial proposals CLOSED signed (billed)
@@ -240,7 +236,6 @@ if (!getDolGlobalString('MAIN_DISABLE_GLOBAL_WORKBOARD') && getDolGlobalInt('MAI
 
     // Number of contract / services enabled (delayed)
     if (isModEnabled('contract')  && !getDolGlobalString('MAIN_DISABLE_BLOCK_CONTRACT') && $user->hasRight('contrat', 'lire')) {
-        include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
         $board = new Contrat($db);
         $dashboardlines[$board->element . '_inactive'] = $board->load_board($user, "inactive");
         // Number of active services (expired)
@@ -257,21 +252,18 @@ if (!getDolGlobalString('MAIN_DISABLE_GLOBAL_WORKBOARD') && getDolGlobalInt('MAI
 
     // Number of invoices customers (paid)
     if (isModEnabled('invoice') && !getDolGlobalString('MAIN_DISABLE_BLOCK_CUSTOMER') && $user->hasRight('facture', 'lire')) {
-        include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
         $board = new Facture($db);
         $dashboardlines[$board->element] = $board->load_board($user);
     }
 
     // Number of supplier invoices (paid)
     if (isModEnabled('supplier_invoice') && !getDolGlobalString('MAIN_DISABLE_BLOCK_SUPPLIER') && $user->hasRight('fournisseur', 'facture', 'lire')) {
-        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
         $board = new FactureFournisseur($db);
         $dashboardlines[$board->element] = $board->load_board($user);
     }
 
     // Number of transactions to conciliate
     if (isModEnabled('bank')  && !getDolGlobalString('MAIN_DISABLE_BLOCK_BANK') && $user->hasRight('banque', 'lire') && !$user->socid) {
-        include_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
         $board = new Account($db);
         $nb = $board->countAccountToReconcile(); // Get nb of account to reconciliate
         if ($nb > 0) {
@@ -301,7 +293,6 @@ if (!getDolGlobalString('MAIN_DISABLE_GLOBAL_WORKBOARD') && getDolGlobalInt('MAI
 
     // Number of foundation members
     if (isModEnabled('member')  && !getDolGlobalString('MAIN_DISABLE_BLOCK_ADHERENT') && $user->hasRight('adherent', 'lire') && !$user->socid) {
-        include_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
         $board = new Adherent($db);
         $dashboardlines[$board->element . '_shift'] = $board->load_board($user, 'shift');
         $dashboardlines[$board->element . '_expired'] = $board->load_board($user, 'expired');
@@ -309,21 +300,18 @@ if (!getDolGlobalString('MAIN_DISABLE_GLOBAL_WORKBOARD') && getDolGlobalInt('MAI
 
     // Number of expense reports to approve
     if (isModEnabled('expensereport')  && !getDolGlobalString('MAIN_DISABLE_BLOCK_EXPENSEREPORT') && $user->hasRight('expensereport', 'approve')) {
-        include_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
         $board = new ExpenseReport($db);
         $dashboardlines[$board->element . '_toapprove'] = $board->load_board($user, 'toapprove');
     }
 
     // Number of expense reports to pay
     if (isModEnabled('expensereport')  && !getDolGlobalString('MAIN_DISABLE_BLOCK_EXPENSEREPORT') && $user->hasRight('expensereport', 'to_paid')) {
-        include_once DOL_DOCUMENT_ROOT . '/expensereport/class/expensereport.class.php';
         $board = new ExpenseReport($db);
         $dashboardlines[$board->element . '_topay'] = $board->load_board($user, 'topay');
     }
 
     // Number of holidays to approve
     if (isModEnabled('holiday')  && !getDolGlobalString('MAIN_DISABLE_BLOCK_HOLIDAY') && $user->hasRight('holiday', 'approve')) {
-        include_once DOL_DOCUMENT_ROOT . '/holiday/class/holiday.class.php';
         $board = new Holiday($db);
         $dashboardlines[$board->element] = $board->load_board($user);
     }

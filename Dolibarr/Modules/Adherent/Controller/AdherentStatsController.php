@@ -81,7 +81,7 @@ class AdherentStatsController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/stats_byproperties.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/stats_byproperties.php');
 
         $db->close();
     }
@@ -128,7 +128,7 @@ class AdherentStatsController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/stats_geo.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/stats_geo.php');
 
         $db->close();
     }
@@ -183,7 +183,7 @@ class AdherentStatsController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/stats_index.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/stats_index.php');
 
         $db->close();
     }

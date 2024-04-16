@@ -27,18 +27,35 @@ use Jenssegers\Blade\Blade;
  */
 abstract class ViewController extends GenericController
 {
+    /**
+     * Theme name. TODO: Has to be updated according to the configuration.
+     *
+     * @var string
+     */
+    public $theme = 'eldy';
+
+    /**
+     * Name of the blade template to execute.
+     *
+     * @var string|null
+     */
     public $template;
 
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         if (isset($this->template)) {
             $this->view(['self' => $this]);
+            return false;
         }
+        return parent::index($executeActions);
     }
 
     public function view($vars = [])
     {
-        $viewPaths = BASE_PATH . '/Templates';
+        $viewPaths = [
+            BASE_PATH . '/Templates',
+            BASE_PATH . '/Templates/theme/' . $this->theme,
+        ];
         $cachePaths = realpath(BASE_PATH . '/../tmp') . '/blade';
         if (!is_dir($cachePaths) && !mkdir($cachePaths) && !is_dir($cachePaths)) {
             die('Could not create cache directory for templates.');

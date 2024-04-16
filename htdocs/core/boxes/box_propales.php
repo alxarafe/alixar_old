@@ -68,8 +68,6 @@ class box_propales extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/comm/propal/class/propal.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
         $propalstatic = new Propal($this->db);
         $societestatic = new Company($this->db);
 

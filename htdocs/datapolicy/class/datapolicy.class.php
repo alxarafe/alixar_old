@@ -23,8 +23,6 @@
  * \brief   Class to manage feature of Data Policy module.
  */
 
-include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
-include_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 include_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
 

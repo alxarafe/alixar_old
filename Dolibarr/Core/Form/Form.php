@@ -2699,7 +2699,6 @@ class Form
 
             $i = 0;
             if ($num) {
-                include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
                 $contactstatic = new Contact($this->db);
 
                 while ($i < $num) {
@@ -9481,7 +9480,6 @@ class Form
      */
     public function showCategories($id, $type, $rendermode = 0, $nolink = 0)
     {
-        include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         $cat = new Categorie($this->db);
         $categories = $cat->containing($id, $type);
@@ -9539,8 +9537,6 @@ class Form
         // phpcs:enable
         global $conf, $langs;
         $langs->load("categories");
-
-        include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
         // For backward compatibility
         if (is_numeric($type)) {
@@ -9811,7 +9807,6 @@ class Form
                 $listofidcompanytoscan .= ',' . $object->thirdparty->parent;
             }
             if (($object->fk_project > 0) && getDolGlobalString('THIRDPARTY_INCLUDE_PROJECT_THIRDPARY_IN_LINKTO')) {
-                include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
                 $tmpproject = new Project($this->db);
                 $tmpproject->fetch($object->fk_project);
                 if ($tmpproject->socid > 0 && ($tmpproject->socid != $object->thirdparty->id)) {

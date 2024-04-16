@@ -1845,7 +1845,6 @@ const STATUS_CANCELED = 9;
         }
 
         // Get current categories
-        include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         $c = new Categorie($this->db);
         $existing = $c->containing($this->id, Categorie::TYPE_TICKET, 'id');
 
@@ -2442,7 +2441,6 @@ const STATUS_CANCELED = 9;
         $res = $this->db->query($sql);
         if ($res) {
             while ($rec = $this->db->fetch_object($res)) {
-                include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
                 $contactstatic = new Contact($this->db);
                 $contactstatic->fetch($rec->rowid);
                 $contacts[] = $contactstatic;
@@ -2614,7 +2612,6 @@ const STATUS_CANCELED = 9;
 
         $langs->load("mails");
 
-        include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
         //$contactstatic = new Contact($this->db);
 
         // If no receiver defined, load all ticket linked contacts

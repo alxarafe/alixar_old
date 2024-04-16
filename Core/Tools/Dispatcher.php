@@ -50,8 +50,9 @@ class Dispatcher
             return false;
         }
         $controller = new $className();
-        return true;
+        if ($controller === null) {
+            return false;
+        }
+        return $controller->index();;
     }
-
-
 }

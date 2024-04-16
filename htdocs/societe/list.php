@@ -47,7 +47,6 @@ use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment
 require_once BASE_PATH . '/main.inc.php';
-include_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 

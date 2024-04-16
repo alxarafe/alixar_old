@@ -92,7 +92,7 @@ class AccountingController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/index.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/index.php');
 
         $db->close();
     }

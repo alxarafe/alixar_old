@@ -1917,7 +1917,6 @@ class ActionComm extends GenericDocument
         }
 
         // Get current categories
-        include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         $c = new Categorie($this->db);
         $existing = $c->containing($this->id, Categorie::TYPE_ACTIONCOMM, 'id');
 

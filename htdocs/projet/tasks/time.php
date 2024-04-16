@@ -414,10 +414,6 @@ if ($action == 'confirm_generateinvoice') {
     if (!($projectstatic->thirdparty->id > 0)) {
         setEventMessages($langs->trans("ThirdPartyRequiredToGenerateInvoice"), null, 'errors');
     } else {
-        include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-
         $tmpinvoice = new Facture($db);
         $tmptimespent = new Task($db);
         $tmpproduct = new Product($db);
@@ -798,11 +794,6 @@ if ($action == 'confirm_generateinter') {
     if (!($projectstatic->thirdparty->id > 0)) {
         setEventMessages($langs->trans("ThirdPartyRequiredToGenerateIntervention"), null, 'errors');
     } else {
-        include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-
-
         $tmpinter = new Fichinter($db);
         $tmptimespent = new Task($db);
         $fuser = new User($db);

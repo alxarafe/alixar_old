@@ -1970,7 +1970,6 @@ abstract class GenericDocument
     public function fetch_projet()
     {
         // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 
         if (empty($this->fk_project) && !empty($this->fk_projet)) {
             $this->fk_project = $this->fk_projet; // For backward compatibility
@@ -1996,7 +1995,6 @@ abstract class GenericDocument
     public function fetch_product()
     {
         // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
         if (empty($this->fk_product)) {
             return 0;
@@ -3938,7 +3936,6 @@ abstract class GenericDocument
 
             // Situations totals
             if (!empty($this->situation_cycle_ref) && !empty($this->situation_counter) && $this->situation_counter > 1 && method_exists($this, 'get_prev_sits')) {
-                include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                 if ($this->type != Facture::TYPE_CREDIT_NOTE) { // @phpstan-ignore-line
                     $prev_sits = $this->get_prev_sits();
 

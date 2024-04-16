@@ -487,7 +487,6 @@ class modEventOrganization extends DolibarrModules
         include_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
         $formmail = new FormMail($this->db);
 
-        include_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         if (!is_object($user)) {
             $user = new User($this->db); // To avoid error during migration
         }

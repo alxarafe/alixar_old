@@ -185,7 +185,6 @@ function show_array_actions_to_do($max = 5)
     $now = dol_now();
 
     include_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
-    include_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
 
     $sql = "SELECT a.id, a.label, a.datep as dp, a.datep2 as dp2, a.fk_user_author, a.percent";
     $sql .= ", c.code, c.libelle as type_label";

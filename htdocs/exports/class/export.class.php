@@ -713,7 +713,6 @@ class Export
                                 if ($obj->f_rowid > 0) {
                                     global $tmpobjforcomputecall;
                                     if (!is_object($tmpobjforcomputecall)) {
-                                        include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
                                         $tmpobjforcomputecall = new Facture($this->db);
                                     }
                                     $tmpobjforcomputecall->id = $obj->f_rowid;

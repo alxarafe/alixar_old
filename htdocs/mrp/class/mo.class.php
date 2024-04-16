@@ -299,7 +299,6 @@ class Mo extends GenericDocument
 
         // If kits feature is enabled and we don't allow kits into BOM and MO, we check that the product is not a kit/virtual product
         if (getDolGlobalString('PRODUIT_SOUSPRODUITS') && !getDolGlobalString('ALLOW_USE_KITS_INTO_BOM_AND_MO') && $this->fk_product > 0) {
-            include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
             $tmpproduct = new Product($this->db);
             $tmpproduct->fetch($this->fk_product);
             if ($tmpproduct->hasFatherOrChild(1) > 0) {
@@ -710,7 +709,6 @@ class Mo extends GenericDocument
             $moline->qty = $this->qty;
             $moline->fk_product = $this->fk_product;
             $moline->position = 1;
-            include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
             $tmpproduct = new Product($this->db);
             $tmpproduct->fetch($this->fk_product);
             $moline->fk_unit = $tmpproduct->fk_unit;

@@ -4207,7 +4207,6 @@ function migrate_reload_modules($db, $langs, $conf, $listofmodule = array(), $fo
     }
 
     if (!is_object($user)) {
-        include_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         $user = new User($db);  // To avoid error during migration
     }
 

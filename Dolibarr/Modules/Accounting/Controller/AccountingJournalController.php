@@ -1092,7 +1092,7 @@ class AccountingJournalController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/journal_bankjournal.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_bankjournal.php');
 
         $db->close();
 
@@ -1673,7 +1673,7 @@ class AccountingJournalController extends DolibarrController
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/journal_expensereportjournal.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_expensereportjournal.php');
 
         $db->close();
     }
@@ -2412,7 +2412,7 @@ GROUP BY fk_facture_fourn
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/journal_purchasesjournal.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_purchasesjournal.php');
 
         $db->close();
     }
@@ -3208,7 +3208,7 @@ GROUP BY fk_facture
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/journal_sellsjournal.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_sellsjournal.php');
 
         $db->close();
     }
@@ -3372,7 +3372,7 @@ GROUP BY fk_facture
         /*
          * View
          */
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Accounting/Views/journal_variousjournal.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_variousjournal.php');
 
         $db->close();
     }

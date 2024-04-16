@@ -74,7 +74,6 @@ class box_members_last_subscriptions extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
         $staticmember = new Adherent($this->db);
         $statictype = new AdherentType($this->db);
         $subscriptionstatic = new Subscription($this->db);

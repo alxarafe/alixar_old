@@ -259,7 +259,7 @@ class AdherentAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/admin_member.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/admin_member.php');
 
         $db->close();
     }
@@ -378,7 +378,7 @@ class AdherentAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/admin_member_emails.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/admin_member_emails.php');
 
         $db->close();
     }
@@ -431,7 +431,7 @@ class AdherentAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/admin_member_extrafields.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/admin_member_extrafields.php');
 
         $db->close();
     }
@@ -484,7 +484,7 @@ class AdherentAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/admin_member_type_extrafields.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/admin_member_type_extrafields.php');
 
         $db->close();
     }
@@ -574,7 +574,7 @@ class AdherentAdminController extends DolibarrController
          * View
          */
 
-        require_once realpath(BASE_PATH . '/../Deprecated/Modules/Adherent/Views/admin_website.php');
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/admin_website.php');
 
         $db->close();
     }

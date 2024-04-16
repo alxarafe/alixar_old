@@ -1893,8 +1893,6 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
             $obj = $this->db->fetch_object($resql);
 
             if ($obj !== null && !empty($obj->value) && !empty($this->rights)) {
-                include_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
-
                 // If the module is active
                 foreach ($this->rights as $key => $value) {
                     $r_id = $this->rights[$key][0];   // permission id in llx_rights_def (not unique because primary key is couple id-entity)

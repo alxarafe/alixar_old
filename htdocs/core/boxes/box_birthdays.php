@@ -67,9 +67,7 @@ class box_birthdays extends GenericBoxes
         global $conf, $user, $langs;
 
         include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-        include_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
         $userstatic = new User($this->db);
-
 
         $langs->load("boxes");
 

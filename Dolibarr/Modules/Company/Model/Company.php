@@ -5126,7 +5126,6 @@ class Company extends GenericDocument
             }
 
             // Merge categories
-            include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
             $static_cat = new Categorie($this->db);
 
             $custcats_ori = $static_cat->containing($soc_origin->id, 'customer', 'id');

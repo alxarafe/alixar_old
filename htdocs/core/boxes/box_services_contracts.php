@@ -70,9 +70,6 @@ class box_services_contracts extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/contrat/class/contratligne.class.php';
-
         $form = new Form($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxLastProductsInContract", $max));

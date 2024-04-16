@@ -1490,7 +1490,6 @@ function pdf_getlinedesc($object, $i, $outputlangs, $hideref = 0, $hidedesc = 0,
         include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.product.class.php';
         $prodser = new ProductFournisseur($db);
     } else {
-        include_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
         $prodser = new Product($db);
 
         if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES')) {
@@ -1714,7 +1713,6 @@ function pdf_getlinedesc($object, $i, $outputlangs, $hideref = 0, $hidedesc = 0,
 
     // Add an additional description for the category products
     if (getDolGlobalString('CATEGORY_ADD_DESC_INTO_DOC') && $idprod && isModEnabled('category')) {
-        include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
         $categstatic = new Categorie($db);
         // recovering the list of all the categories linked to product
         $tblcateg = $categstatic->containing($idprod, Categorie::TYPE_PRODUCT);

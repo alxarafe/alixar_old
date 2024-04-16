@@ -35,10 +35,7 @@ use DoliModules\Supplier\Model\CommandeFournisseur;
  */
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
-include_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
-include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.commande.class.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-
 
 /**
  *    Class to manage order statistics (customer and supplier)

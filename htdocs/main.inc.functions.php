@@ -932,7 +932,6 @@ if (!function_exists('top_menu')) {
          */
         if ((empty($conf->dol_hide_topmenu) || GETPOSTINT('dol_invisible_topmenu')) && (!defined('NOREQUIREMENU') || !constant('NOREQUIREMENU'))) {
             if (!isset($form) || !is_object($form)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
                 $form = new Form($db);
             }
 

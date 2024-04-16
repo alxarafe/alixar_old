@@ -1063,7 +1063,6 @@ function checkUserAccessToObject($user, array $featuresarray, $object = 0, $tabl
             if (isModEnabled('project') && !$user->hasRight('projet', 'all', 'lire')) {
                 $projectid = $objectid;
 
-                include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
                 $projectstatic = new Project($db);
                 $tmps = $projectstatic->getProjectsAuthorizedForUser($user, 0, 1, 0);
 
@@ -1085,7 +1084,6 @@ function checkUserAccessToObject($user, array $featuresarray, $object = 0, $tabl
                 $task->fetch($objectid);
                 $projectid = $task->fk_project;
 
-                include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
                 $projectstatic = new Project($db);
                 $tmps = $projectstatic->getProjectsAuthorizedForUser($user, 0, 1, 0);
 

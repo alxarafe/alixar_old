@@ -67,7 +67,6 @@ class box_graph_invoices_supplier_permonth extends GenericBoxes
 
         $refreshaction = 'refresh_' . $this->boxcode;
 
-        include_once DOL_DOCUMENT_ROOT . '/fourn/class/fournisseur.facture.class.php';
 
         $startmonth = $conf->global->SOCIETE_FISCAL_MONTH_START ? ($conf->global->SOCIETE_FISCAL_MONTH_START) : 1;
         if (!getDolGlobalString('GRAPH_USE_FISCAL_YEAR')) {
@@ -102,7 +101,6 @@ class box_graph_invoices_supplier_permonth extends GenericBoxes
             $param_showtot = 'DOLUSERCOOKIE_box_' . $this->boxcode . '_showtot';
 
             include_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
-            include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facturestats.class.php';
             $autosetarray = preg_split("/[,;:]+/", GETPOST('DOL_AUTOSET_COOKIE'));
             if (in_array('DOLUSERCOOKIE_box_' . $this->boxcode, $autosetarray)) {
                 $endyear = GETPOSTINT($param_year);

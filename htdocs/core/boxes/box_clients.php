@@ -74,7 +74,6 @@ class box_clients extends GenericBoxes
 
         $this->max = $max;
 
-        include_once DOL_DOCUMENT_ROOT . '/societe/class/client.class.php';
         $thirdpartystatic = new Client($this->db);
 
         $this->info_box_head = array('text' => $langs->trans("BoxTitleLastModifiedCustomers", $max));

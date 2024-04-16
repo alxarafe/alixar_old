@@ -18,6 +18,8 @@
 
 namespace Alxarafe\Base;
 
+use Alxarafe\Tools\Debug;
+
 /**
  * Class GenericController. The generic controller contains what is necessary for any controller
  *
@@ -44,13 +46,47 @@ abstract class GenericController
      */
     public function __construct()
     {
-        $this->action = filter_input(INPUT_GET, 'action');
-        return $this->index();
+        $this->action = filter_input(INPUT_POST, 'action');
     }
 
-    abstract public function index();
+    /**
+     * Execute the selected action, returning true if successful.
+     *
+     * @param bool $executeActions
+     *
+     * @return bool
+     */
+    public function index(bool $executeActions = true): bool
+    {
+        if (!$executeActions) {
+            return false;
+        }
+        return $this->executeAction();
+    }
 
-    public static function url($full = false)
+    /**
+     * Execute the selected action, returning true if successful.
+     *
+     * @return bool
+     */
+    private function executeAction(): bool
+    {
+        $actionMethod = 'do' . ucfirst($this->action);
+        if (!method_exists($this, $actionMethod)) {
+            Debug::message('Does not exist the method ' . $actionMethod);
+            return false;
+        }
+        return $this->$actionMethod();
+    }
+
+    /**
+     * Returns the generic url of the controller;
+     *
+     * @param $full
+     *
+     * @return string
+     */
+    public static function url($full = true)
     {
         $url = '';
         if ($full) {
@@ -58,8 +94,8 @@ abstract class GenericController
         }
 
         $url .=
-            '?' . GET_ROUTE_VAR . '=' . filter_input(INPUT_GET, GET_ROUTE_VAR) .
-            '&' . GET_FILENAME_VAR . '=' . filter_input(INPUT_GET, GET_FILENAME_VAR);
+            '?module=' . filter_input(INPUT_GET, 'module') .
+            '&controller=' . filter_input(INPUT_GET, 'controller');
 
         return $url;
     }
