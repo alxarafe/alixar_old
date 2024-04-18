@@ -36,9 +36,11 @@
  *  \ingroup    societe
  */
 
+use DoliCore\Form\FormActions;
 use DoliModules\Company\Model\Company;
 use DoliModules\Company\Model\SocieteAccount;
 use DoliModules\Contact\Model\Contact;
+use DoliModules\User\Model\User;
 
 /**
  * Return array of tabs to used on pages for third parties cards.

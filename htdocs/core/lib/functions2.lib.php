@@ -9,6 +9,7 @@
  * Copyright (C) 2017       Juanjo Menent               <jmenent@2byte.es>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  * or see https://www.gnu.org/
  */
+
+use DoliCore\Lib\AveryLabels;
+use DoliModules\User\Model\User;
 
 /**
  *  \file           htdocs/core/lib/functions2.lib.php
@@ -1967,8 +1971,7 @@ function getListOfModels($db, $type, $maxfilenamelength = 0)
                 }
             } else {
                 if ($type == 'member' && $obj->doc_template_name == 'standard') {   // Special case, if member template, we add variant per format
-                    global $_Avery_Labels;
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/format_cards.lib.php';
+                    $_Avery_Labels = AveryLabels::getAveryLables();
                     foreach ($_Avery_Labels as $key => $val) {
                         $liste[$obj->id . ':' . $key] = ($obj->label ? $obj->label : $obj->doc_template_name) . ' ' . $val['name'];
                     }

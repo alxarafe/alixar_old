@@ -42,6 +42,7 @@ global $hookmanager;
 global $user;
 global $menumanager;
 global $langs;
+global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
@@ -186,6 +187,7 @@ class AdherentController extends DolibarrController
         global $user;
         global $menumanager;
         global $langs;
+        global $mysoc;
 
 // Load translation files required by the page
         $langs->loadLangs(array("companies", "bills", "members", "users", "other", "paypal"));

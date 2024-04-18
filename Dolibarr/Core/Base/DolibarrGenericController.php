@@ -57,7 +57,7 @@ abstract class DolibarrGenericController
         return $this->index();
     }
 
-    abstract public function index();
+    public function index(bool $executeActions = true): bool;
 
     public static function url($full = false)
     {

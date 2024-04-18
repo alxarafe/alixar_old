@@ -28,6 +28,12 @@ use Alxarafe\Tools\Debug;
 abstract class GenericController
 {
     /**
+     * Contains the action to execute.
+     *
+     * @var string
+     */
+    public $action;
+    /**
      * Contains the controller to execute.
      *
      * @var string
@@ -35,18 +41,35 @@ abstract class GenericController
     protected $controller;
 
     /**
-     * Contains the action to execute.
-     *
-     * @var string
-     */
-    protected $action;
-
-    /**
      * GenericController constructor.
      */
     public function __construct()
     {
         $this->action = filter_input(INPUT_POST, 'action');
+        if ($this->action === null) {
+            $this->action = filter_input(INPUT_GET, 'action');
+        }
+    }
+
+    /**
+     * Returns the generic url of the controller;
+     *
+     * @param $full
+     *
+     * @return string
+     */
+    public static function url($full = true)
+    {
+        $url = '';
+        if ($full) {
+            $url .= BASE_URL . '/index.php';
+        }
+
+        $url .=
+            '?module=' . filter_input(INPUT_GET, 'module') .
+            '&controller=' . filter_input(INPUT_GET, 'controller');
+
+        return $url;
     }
 
     /**
@@ -77,26 +100,5 @@ abstract class GenericController
             return false;
         }
         return $this->$actionMethod();
-    }
-
-    /**
-     * Returns the generic url of the controller;
-     *
-     * @param $full
-     *
-     * @return string
-     */
-    public static function url($full = true)
-    {
-        $url = '';
-        if ($full) {
-            $url .= BASE_URL . '/index.php';
-        }
-
-        $url .=
-            '?module=' . filter_input(INPUT_GET, 'module') .
-            '&controller=' . filter_input(INPUT_GET, 'controller');
-
-        return $url;
     }
 }

@@ -30,6 +30,7 @@ global $hookmanager;
 global $user;
 global $menumanager;
 global $langs;
+global $mysoc;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';

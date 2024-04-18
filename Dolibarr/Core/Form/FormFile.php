@@ -45,38 +45,8 @@ use DoliModules\Supplier\Model\CommandeFournisseur;
 use DoliModules\Supplier\Model\FactureFournisseur;
 use DoliModules\SupplierProposal\Model\SupplierProposal;
 use DoliModules\User\Model\User;
-use Mo;
-use ModeleAction;
-use ModeleChequeReceipts;
-use ModeleDon;
-use ModeleExpenseReport;
+use Link;
 use ModelePDFCards;
-use ModelePDFCommandes;
-use ModelePDFContract;
-use ModelePDFDeliveryOrder;
-use ModelePDFEvaluation;
-use ModelePdfExpedition;
-use ModelePDFFactures;
-use ModelePDFFicheinter;
-use ModelePDFMovement;
-use ModelePDFProduct;
-use ModelePDFProductBatch;
-use ModelePDFProjects;
-use ModelePDFPropales;
-use ModelePdfReception;
-use ModelePDFStock;
-use ModelePDFSupplierProposal;
-use ModelePDFSuppliersInvoices;
-use ModelePDFSuppliersOrders;
-use ModelePDFSuppliersPayments;
-use ModelePDFTask;
-use ModelePDFUser;
-use ModelePDFUserGroup;
-use ModeleThirdPartyDoc;
-use RecruitmentCandidature;
-use RemiseCheque;
-use Salary;
-use Tva;
 
 /**
  *  \file       htdocs/core/class/html.formfile.class.php
@@ -84,6 +54,10 @@ use Tva;
  *  \brief      File of class to offer components to list and upload files
  */
 
+require_once BASE_PATH . '/core/class/link.class.php';
+require_once BASE_PATH . '/core/modules/cheque/modules_chequereceipts.php';
+require_once BASE_PATH . '/core/modules/export/modules_export.php';
+require_once BASE_PATH . '/core/modules/member/modules_cards.php';
 
 /**
  *  Class to offer components to list and upload files
@@ -95,8 +69,8 @@ class FormFile
      */
     public $error;
     public $numoffiles;
-public $infofiles;
-        private $db; // Used to return information by function getDocumentsLink
+    public $infofiles;
+    private $db; // Used to return information by function getDocumentsLink
 
     /**
      *  Constructor
@@ -649,7 +623,6 @@ public $infofiles;
                 if (is_array($genallowed)) {
                     $modellist = $genallowed;
                 } else {
-                    include_once DOL_DOCUMENT_ROOT . '/core/modules/export/modules_export.php';
                     //$modellist = ModeleExports::liste_modeles($this->db);     // liste_modeles() does not exists. We are using listOfAvailableExportFormat() method instead that return a different array format.
                     $modellist = [];  // @phan-suppress-current-line PhanPluginRedundantAssignment
                 }
@@ -676,7 +649,6 @@ public $infofiles;
                 if (is_array($genallowed)) {
                     $modellist = $genallowed;
                 } else {
-                    include_once DOL_DOCUMENT_ROOT . '/core/modules/cheque/modules_chequereceipts.php';
                     $modellist = ModeleChequeReceipts::liste_modeles($this->db);
                 }
             } elseif ($modulepart == 'donation') {
@@ -876,7 +848,6 @@ public $infofiles;
         if (!empty($filedir)) {
             $link_list = [];
             if (is_object($object)) {
-                require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
                 $link = new Link($this->db);
                 $sortfield = $sortorder = null;
                 $res = $link->fetchAll($link_list, $object->element, $object->id, $sortfield, $sortorder);

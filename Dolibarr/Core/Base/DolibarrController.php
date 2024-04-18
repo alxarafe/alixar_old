@@ -30,9 +30,20 @@ abstract class DolibarrController extends DolibarrGenericController
     public $conf;
     public $config;
     public $db;
+    public $menumanager;
     public $hookmanager;
     public $user;
     public $langs;
+
+    private function isLogged()
+    {
+        return true;
+    }
+
+    public function doLogin($user, $password)
+    {
+        return true;
+    }
 
     public function __construct()
     {

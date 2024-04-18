@@ -37,6 +37,7 @@ global $hookmanager;
 global $user;
 global $menumanager;
 global $langs;
+global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

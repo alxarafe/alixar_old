@@ -1,5 +1,8 @@
 <?php
 
+use DoliCore\Form\Form;
+use DoliModules\Contact\Model\Contact;
+
 $contactstatic = new Contact($db);
 
 $form = new Form($db);

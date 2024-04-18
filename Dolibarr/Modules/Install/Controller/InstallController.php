@@ -30,17 +30,11 @@
 
 namespace DoliModules\Install\Controller;
 
-include_once realpath(BASE_PATH . '/../Dolibarr/Modules/Install/Include/inc.php');
-include_once BASE_PATH . '/core/class/html.form.class.php';
-include_once BASE_PATH . '/core/class/html.formadmin.class.php';
-
-use Alxarafe\Base\Globals;
 use DoliCore\Base\Config;
 use DoliCore\Base\DolibarrNoLoginController;
-use Exception;
-use FormAdmin;
-use HookManager;
-use User;
+use DoliCore\Form\FormAdmin;
+
+include_once realpath(BASE_PATH . '/../Dolibarr/Modules/Install/Include/inc.php');
 
 define('ALLOWED_IF_UPGRADE_UNLOCK_FOUND', 1);
 

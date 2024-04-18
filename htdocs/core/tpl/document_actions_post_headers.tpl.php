@@ -31,6 +31,8 @@
 // $savingdocmask = dol_sanitizeFileName($object->ref).'-__file__';
 
 // Protection to avoid direct call of template
+use DoliCore\Form\FormFile;
+
 if (empty($langs) || !is_object($langs)) {
     print "Error, template page can't be called as URL";
     exit(1);

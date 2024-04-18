@@ -27,6 +27,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\Install\Controller\InstallController;
+
 /**
  *  \file       htdocs/filefunc.inc.php
  *  \ingroup    core
@@ -36,6 +38,7 @@
 if (!defined('DOL_APPLICATION_TITLE')) {
     define('DOL_APPLICATION_TITLE', 'Dolibarr');
 }
+
 if (!defined('DOL_VERSION')) {
     define('DOL_VERSION', '20.0.0-alpha'); // a.b.c-alpha, a.b.c-beta, a.b.c-rcX or a.b.c
 }
@@ -79,69 +82,9 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // --- End of part replaced by Dolibarr packager makepack-dolibarr
 
 // Include configuration
-$result = @include $conffile; // Keep @ because with some error reporting mode, this breaks the redirect done when file is not found
+// $result = @include $conffile; // Keep @ because with some error reporting mode, this breaks the redirect done when file is not found
 
-// Disable some not used PHP stream
-$listofwrappers = stream_get_wrappers();
-// We need '.phar' for geoip2. TODO Replace phar in geoip with exploded files so we can disable phar by default.
-// phar stream does not auto unserialize content (possible code execution) since PHP 8.1
-$arrayofstreamtodisable = ['compress.zlib', 'compress.bzip2', 'ftp', 'ftps', 'glob', 'data', 'expect', 'ogg', 'rar', 'zip', 'zlib'];
-if (!empty($dolibarr_main_stream_to_disable) && is_array($dolibarr_main_stream_to_disable)) {
-    $arrayofstreamtodisable = $dolibarr_main_stream_to_disable;
-}
-foreach ($arrayofstreamtodisable as $streamtodisable) {
-    if (!empty($listofwrappers) && in_array($streamtodisable, $listofwrappers)) {
-        /*if (!empty($dolibarr_main_stream_do_not_disable) && is_array($dolibarr_main_stream_do_not_disable) && in_array($streamtodisable, $dolibarr_main_stream_do_not_disable)) {
-            continue;   // We do not disable this stream
-        }*/
-        stream_wrapper_unregister($streamtodisable);
-    }
-}
-
-if (!$result && !empty($_SERVER["GATEWAY_INTERFACE"])) {    // If install not done and we are in a web session
-    if (!empty($_SERVER["CONTEXT_PREFIX"])) {    // CONTEXT_PREFIX and CONTEXT_DOCUMENT_ROOT are not defined on all apache versions
-        $path = $_SERVER["CONTEXT_PREFIX"]; // example '/dolibarr/' when using an apache alias.
-        if (!preg_match('/\/$/', $path)) {
-            $path .= '/';
-        }
-    } elseif (preg_match('/index\.php/', $_SERVER['PHP_SELF'])) {
-        // When we ask index.php, we MUST BE SURE that $path is '' at the end. This is required to make install process
-        // when using apache alias like '/dolibarr/' that point to htdocs.
-        // Note: If calling page was an index.php not into htdocs (ie comm/index.php, ...), then this redirect will fails,
-        // but we don't want to change this because when URL is correct, we must be sure the redirect to install/index.php will be correct.
-        $path = '';
-    } else {
-        // If what we look is not index.php, we can try to guess location of root. May not work all the time.
-        // There is no real solution, because the only way to know the apache url relative path is to have it into conf file.
-        // If it fails to find correct $path, then only solution is to ask user to enter the correct URL to index.php or install/index.php
-        $TDir = explode('/', $_SERVER['PHP_SELF']);
-        $path = '';
-        $i = count($TDir);
-        while ($i--) {
-            if (empty($TDir[$i]) || $TDir[$i] == 'htdocs') {
-                break;
-            }
-            if ($TDir[$i] == 'dolibarr') {
-                break;
-            }
-            if (substr($TDir[$i], -4, 4) == '.php') {
-                continue;
-            }
-
-            $path .= '../';
-        }
-    }
-
-    header("Location: " . BASE_URL . "/install/index.php");
-
-    /*
-    print '<br><center>';
-    print 'The conf/conf.php file was not found or is not readable by the web server. If this is your first access, <a href="'.$path.'install/index.php">click here to start the Dolibarr installation process</a> to create it...';
-    print '</center><br>';
-    */
-
-    exit;
-}
+unregisterStreamWrappers($config->security->stream_to_disable);
 
 // Force PHP error_reporting setup (Dolibarr may report warning without this)
 if (!empty($dolibarr_strict_mode)) {
@@ -155,51 +98,110 @@ if (!empty($dolibarr_main_prod)) {
     ini_set('display_errors', 'Off');
 }
 
-// Clean parameters
-$dolibarr_main_data_root = (empty($dolibarr_main_data_root) ? '' : trim($dolibarr_main_data_root));
-$dolibarr_main_url_root = trim(preg_replace('/\/+$/', '', empty($dolibarr_main_url_root) ? '' : $dolibarr_main_url_root));
-$dolibarr_main_url_root_alt = (empty($dolibarr_main_url_root_alt) ? '' : trim($dolibarr_main_url_root_alt));
-$dolibarr_main_document_root = (empty($dolibarr_main_document_root) ? '' : trim($dolibarr_main_document_root));
-$dolibarr_main_document_root_alt = (empty($dolibarr_main_document_root_alt) ? '' : trim($dolibarr_main_document_root_alt));
-
-if (empty($dolibarr_main_db_port)) {
-    $dolibarr_main_db_port = 3306; // For compatibility with old configs, if not defined, we take 'mysql' type
-}
-if (empty($dolibarr_main_db_type)) {
-    $dolibarr_main_db_type = 'mysqli'; // For compatibility with old configs, if not defined, we take 'mysql' type
+/**
+ * If no DB connection, executes installation.
+ */
+if (!isset($db)) {
+    new InstallController();
+    die();
 }
 
-// Mysql driver support has been removed in favor of mysqli
-if ($dolibarr_main_db_type == 'mysql') {
-    $dolibarr_main_db_type = 'mysqli';
-}
-if (empty($dolibarr_main_db_prefix)) {
-    $dolibarr_main_db_prefix = 'llx_';
-}
-if (empty($dolibarr_main_db_character_set)) {
-    $dolibarr_main_db_character_set = ($dolibarr_main_db_type == 'mysqli' ? 'utf8' : ''); // Old installation
-}
-if (empty($dolibarr_main_db_collation)) {
-    $dolibarr_main_db_collation = ($dolibarr_main_db_type == 'mysqli' ? 'utf8_unicode_ci' : ''); // Old installation
-}
-if (empty($dolibarr_main_db_encryption)) {
-    $dolibarr_main_db_encryption = 0;
-}
-if (empty($dolibarr_main_db_cryptkey)) {
-    $dolibarr_main_db_cryptkey = '';
-}
+/**
+ * @deprecated Contains the main_url. Use BASE_URL or $config->main->base_url instead!
+ */
+$dolibarr_main_url_root = $config->main->base_url;
+
+/**
+ * @deprecated Contains the main_document_root. Use BASE_PATH or $config->file->base_path instead!
+ */
+$dolibarr_main_document_root = $config->main->base_path;
+
+/**
+ * @deprecated Contains the alternative main_url_root. Use $config->main->file->alt_base_url instead!
+ */
+$dolibarr_main_url_root_alt = implode(',', $config->file->url);
+
+/**
+ * @deprecated Contains the alternative main_datadocument_root. Use $config->main->alt_base_path instead!
+ */
+$dolibarr_main_document_root_alt = implode(',', $config->file->path);
+
+/**
+ * @deprecated Contains the main_path. Use $config->main->data_path instead!
+ */
+$dolibarr_main_data_root = $config->main->data_path;
+
+/**
+ * @deprecated Contains the db host. Use $config->db->host instead!
+ */
+$dolibarr_main_db_host = $config->db->host;
+
+/**
+ * @deprecated Contains the db port. Use $config->db->port instead!
+ */
+$dolibarr_main_db_port = $config->db->port;
+
+/**
+ * @deprecated Contains the db type. Use $config->db->type instead!
+ */
+$dolibarr_main_db_type = $config->db->type;
+
+/**
+ * @deprecated Contains the db prefix. Use $config->db->prefix instead!
+ */
+$dolibarr_main_db_prefix = $config->db->prefix;
+
+/**
+ * @deprecated Contains the db character set. Use $config->db->charset instead!
+ */
+$dolibarr_main_db_character_set = $config->db->charset;
+
+/**
+ * @deprecated Contains the collation. Use $config->db->collation instead!
+ */
+$dolibarr_main_db_collation = $config->db->collation;
+
+/**
+ * @deprecated Contains the encryption. Use $config->db->encryption instead!
+ */
+$dolibarr_main_db_encryption = $config->db->encryption;
+
+/**
+ * @deprecated Contains the cryptkey. Use $config->db->cryptkey instead!
+ */
+$dolibarr_main_db_cryptkey = $config->db->cryptkey;
+
+/**
+ * TODO: Add to $config
+ */
 if (empty($dolibarr_main_limit_users)) {
     $dolibarr_main_limit_users = 0;
 }
+
+/**
+ * TODO: Add to $config
+ */
 if (empty($dolibarr_mailing_limit_sendbyweb)) {
     $dolibarr_mailing_limit_sendbyweb = 0;
 }
+
+/**
+ * TODO: Add to $config
+ */
 if (empty($dolibarr_mailing_limit_sendbycli)) {
     $dolibarr_mailing_limit_sendbycli = 0;
 }
+
+/**
+ * TODO: Add to $config
+ */
 if (empty($dolibarr_mailing_limit_sendbyday)) {
     $dolibarr_mailing_limit_sendbyday = 0;
 }
+
+/**
+ * TODO: Add to $config
+ */
 if (empty($dolibarr_strict_mode)) {
     $dolibarr_strict_mode = 0; // For debug in php strict mode
 }
@@ -210,12 +212,9 @@ if (!file_exists(DOL_DOCUMENT_ROOT . "/core/lib/functions.lib.php")) {
     exit;
 }
 
-
 // Included by default (must be before the CSRF check so wa can use the dol_syslog)
 include_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
 include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
-//print memory_get_usage();
-
 
 // Security: CSRF protection
 // This test check if referrer ($_SERVER['HTTP_REFERER']) is same web site than Dolibarr ($_SERVER['HTTP_HOST'])

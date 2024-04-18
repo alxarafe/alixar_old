@@ -18,6 +18,8 @@
 
 namespace Alxarafe\Base;
 
+// use Illuminate\Database\Capsule\Manager as DB;
+
 /**
  * Class Controller. Controller is the general purpose controller and requires the user to be authenticated.
  *
@@ -27,18 +29,19 @@ abstract class Controller extends ViewController
 {
     public function __construct()
     {
+        // $db = DB::connection()->getPdo();
+
         parent::__construct();
     }
 
     private function isLogged()
     {
-        return true;
+        return false;
     }
 
-    public function doLogin()
+    public function doLogin($user, $password)
     {
-        dump($_POST);
-        die('Ahora haría un login');
+        return true;
     }
 
     public function index(bool $executeActions = true): bool

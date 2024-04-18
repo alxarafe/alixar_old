@@ -34,22 +34,6 @@ abstract class ViewController extends GenericController
      */
     public $theme = 'eldy';
 
-    /**
-     * Name of the blade template to execute.
-     *
-     * @var string|null
-     */
-    public $template;
-
-    public function index(bool $executeActions = true): bool
-    {
-        if (isset($this->template)) {
-            $this->view(['self' => $this]);
-            return false;
-        }
-        return parent::index($executeActions);
-    }
-
     public function view($vars = [])
     {
         $viewPaths = [
@@ -62,5 +46,11 @@ abstract class ViewController extends GenericController
         }
         $blade = new Blade($viewPaths, $cachePaths);
         echo $blade->render($this->template, $vars);
+    }
+
+    public function __destruct()
+    {
+        $this->view(['self' => $this]);
+        die();
     }
 }

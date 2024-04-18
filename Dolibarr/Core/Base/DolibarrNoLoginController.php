@@ -51,7 +51,7 @@ abstract class DolibarrNoLoginController extends DolibarrGenericController
         parent::__construct();
     }
 
-    abstract public function index();
+    public function index(bool $executeActions = true): bool;
 
     abstract public function check();
 

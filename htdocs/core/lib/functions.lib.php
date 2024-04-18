@@ -47,42 +47,14 @@
  *                  This file contains all frequently used functions.
  */
 
-use DoliCore\Tools\Debug;
 use DoliCore\Base\Config;
+use DoliCore\Tools\Debug;
 use DoliModules\Company\Model\Company;
 use DoliModules\Product\Model\Product;
 use DoliModules\Supplier\Model\ProductFournisseur;
 
 include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 
-// Function for better PHP x compatibility
-if (!function_exists('utf8_encode')) {
-    /**
-     * Implement utf8_encode for PHP that does not support it.
-     *
-     * @param mixed $elements PHP Object to json encode
-     *
-     * @return  string                  Json encoded string
-     */
-    function utf8_encode($elements)
-    {
-        return mb_convert_encoding($elements, 'UTF-8', 'ISO-8859-1');
-    }
-}
-
-if (!function_exists('utf8_decode')) {
-    /**
-     * Implement utf8_decode for PHP that does not support it.
-     *
-     * @param mixed $elements PHP Object to json encode
-     *
-     * @return  string                  Json encoded string
-     */
-    function utf8_decode($elements)
-    {
-        return mb_convert_encoding($elements, 'ISO-8859-1', 'UTF-8');
-    }
-}
 if (!function_exists('str_starts_with')) {
     /**
      * str_starts_with
@@ -235,31 +207,27 @@ function getDolUserInt($key, $default = 0, $tmpuser = null)
  *
  * The value is typically the name of module's root directory.
  */
-define(
-    'MODULE_MAPPING',
-    [
-        // Map deprecated names to new names
-        'adherent' => 'member',  // Has new directory
-        'member_type' => 'adherent_type',   // No directory, but file called adherent_type
-        'banque' => 'bank',   // Has new directory
-        'contrat' => 'contract', // Has new directory
-        'entrepot' => 'stock',   // Has new directory
-        'projet' => 'project', // Has new directory
-        'categorie' => 'category', // Has old directory
-        'commande' => 'order',    // Has old directory
-        'expedition' => 'shipping', // Has old directory
-        'facture' => 'invoice', // Has old directory
-        'fichinter' => 'intervention', // Has old directory
-        'ficheinter' => 'intervention',  // Backup for 'fichinter'
-        'propale' => 'propal', // Has old directory
-        'socpeople' => 'contact', // Has old directory
-        'fournisseur' => 'supplier',  // Has old directory
-
-        'actioncomm' => 'agenda',  // NO module directory (public dir agenda)
-        'product_price' => 'productprice', // NO directory
-        'product_fournisseur_price' => 'productsupplierprice', // NO directory
-    ]
-);
+const MODULE_MAPPING = [
+    // Map deprecated names to new names
+    'adherent' => 'member',  // Has new directory
+    'member_type' => 'adherent_type',   // No directory, but file called adherent_type
+    'banque' => 'bank',   // Has new directory
+    'contrat' => 'contract', // Has new directory
+    'entrepot' => 'stock',   // Has new directory
+    'projet' => 'project', // Has new directory
+    'categorie' => 'category', // Has old directory
+    'commande' => 'order',    // Has old directory
+    'expedition' => 'shipping', // Has old directory
+    'facture' => 'invoice', // Has old directory
+    'fichinter' => 'intervention', // Has old directory
+    'ficheinter' => 'intervention',  // Backup for 'fichinter'
+    'propale' => 'propal', // Has old directory
+    'socpeople' => 'contact', // Has old directory
+    'fournisseur' => 'supplier',  // Has old directory
+    'actioncomm' => 'agenda',  // NO module directory (public dir agenda)
+    'product_price' => 'productprice', // NO directory
+    'product_fournisseur_price' => 'productsupplierprice', // NO directory
+];
 
 /**
  * Is Dolibarr module enabled
@@ -1296,24 +1264,28 @@ function dol_include_once($relpath, $classname = '')
 
 
 /**
- *  Return path of url or filesystem. Can check into alternate dir or alternate dir + main dir depending on value of
- *  $returnemptyifnotfound.
+ *  Return path of url or filesystem.
+ *  Can check into alternate dir or alternate dir + main dir depending on value of $returnemptyifnotfound.
  *
- * @param string $path                          Relative path to file (if mode=0) or relative url (if mode=1). Ie:
- *                                              mydir/myfile, ../myfile
- * @param int    $type                          0=Used for a Filesystem path, 1=Used for an URL path (output relative),
- *                                              2=Used for an URL path (output full path using same host that current
- *                                              url), 3=Used for an URL path (output full path using host defined into
- *                                              $dolibarr_main_url_root of conf file)
- * @param int    $returnemptyifnotfound         0:If $type==0 and if file was not found into alternate dir, return
- *                                              default path into main dir (no test on it)
- *                                              1:If $type==0 and if file was not found into alternate dir, return
- *                                              empty string
- *                                              2:If $type==0 and if file was not found into alternate dir, test into
- *                                              main dir, return default path if found, empty string if not found
+ * @param string $path                            Relative path to file (if mode=0) or relative url (if mode=1). Ie:
+ *                                                mydir/myfile, ../myfile
  *
- * @return string                              Full filesystem path (if path=0) or '' if file not found, Full url path
- *                                             (if mode=1)
+ * @param int    $type                            0=Used for a Filesystem path,
+ *                                                1=Used for an URL path (output relative),
+ *                                                2=Used for an URL path (output full path using same host that current
+ *                                                url),
+ *                                                3=Used for an URL path (output full path using host defined into
+ *                                                $dolibarr_main_url_root of conf file)
+ *
+ * @param int    $returnemptyifnotfound           0:If $type==0 and if file was not found into alternate dir,
+ *                                                return default path into main dir (no test on it)
+ *                                                1:If $type==0 and if file was not found into alternate dir,
+ *                                                return empty string
+ *                                                2:If $type==0 and if file was not found into alternate dir, test into
+ *                                                main dir, return default path if found, empty string if not found
+ *
+ * @return string                              Full filesystem path (if path=0) or '' if file not found,
+ *                                             Full url path (if mode=1)
  */
 function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
 {
@@ -1323,8 +1295,8 @@ function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
 
     if (empty($type)) { // For a filesystem path
         $res = DOL_DOCUMENT_ROOT . '/' . $path; // Standard default path
-        if (is_array($conf->file->dol_document_root)) {
-            foreach ($conf->file->dol_document_root as $key => $dirroot) {  // ex: array("main"=>"/home/main/htdocs", "alt0"=>"/home/dirmod/htdocs", ...)
+        if (is_array($conf->file->path)) {
+            foreach ($conf->file->path as $key => $dirroot) {  // ex: array("main"=>"/home/main/htdocs", "alt0"=>"/home/dirmod/htdocs", ...)
                 if ($key == 'main') {
                     continue;
                 }
@@ -1358,7 +1330,7 @@ function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
             $res = DOL_URL_ROOT . '/' . $path;
         }
 
-        foreach ($conf->file->dol_document_root as $key => $dirroot) {  // ex: array(["main"]=>"/home/main/htdocs", ["alt0"]=>"/home/dirmod/htdocs", ...)
+        foreach ($conf->file->path as $key => $dirroot) {  // ex: array(["main"]=>"/home/main/htdocs", ["alt0"]=>"/home/dirmod/htdocs", ...)
             if ($key == 'main') {
                 if ($type == 3) {
                     /*global $dolibarr_main_url_root;*/

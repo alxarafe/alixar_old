@@ -39,6 +39,12 @@ class AdherentTypeController extends Controller
 //            default:
 //                $this->template = 'page/adherent/type_edit';
         }
-        return parent::index();
+        return parent::index($executeActions);
+    }
+
+    public function doPrueba(): bool
+    {
+        $this->template = 'page/prueba';
+        return true;
     }
 }

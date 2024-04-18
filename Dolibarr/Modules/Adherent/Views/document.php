@@ -1,5 +1,7 @@
 <?php
 
+use DoliCore\Form\Form;
+
 $form = new Form($db);
 
 $title = $langs->trans("Member") . " - " . $langs->trans("Documents");
