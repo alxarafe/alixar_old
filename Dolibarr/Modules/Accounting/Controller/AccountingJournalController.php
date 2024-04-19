@@ -75,7 +75,7 @@ require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
 
 class AccountingJournalController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         return $this->bankjournal();
     }

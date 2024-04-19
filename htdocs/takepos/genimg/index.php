@@ -21,22 +21,12 @@
 
 //if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER','1');    // Not disabled cause need to load personalized language
 //if (! defined('NOREQUIREDB'))     define('NOREQUIREDB','1');      // Not disabled cause need to load personalized language
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
+defineIfNotDefined('NOREQUIRESOC', '1');
 //if (! defined('NOREQUIRETRAN'))       define('NOREQUIRETRAN','1');
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1');
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 if (!defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE')) {
     require BASE_PATH . '/main.inc.php'; // Load $user and permissions
@@ -105,7 +95,7 @@ if ($query == "cat") {
     $filename = $query . ".jpg";
 
     // Dimensions
-    list($width, $height) = getimagesize($filename);
+    [$width, $height] = getimagesize($filename);
     $new_width = $w;
     $new_height = $h;
 

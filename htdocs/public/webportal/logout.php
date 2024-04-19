@@ -28,12 +28,8 @@ define('WEBPORTAL_NOREQUIREUSER', 1);
 define('WEBPORTAL_NOREQUIRETRAN', 1);
 define('WEBPORTAL_NOLOGIN', 1);
 
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 include 'webportal.main.inc.php';
 

@@ -261,8 +261,4 @@ if (!defined('NOREQUIRETRAN')) {
     $langs->setDefaultLang($langcode);
 }
 
-
-
-if (!defined('MAIN_LABEL_MENTION_NPR')) {
-    define('MAIN_LABEL_MENTION_NPR', 'NPR');
-}
+defineIfNotDefined('MAIN_LABEL_MENTION_NPR', 'NPR');

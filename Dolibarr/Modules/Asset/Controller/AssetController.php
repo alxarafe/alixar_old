@@ -174,7 +174,7 @@ class AssetController extends DolibarrController
         $db->close();
     }
 
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;

@@ -53,9 +53,7 @@ $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'ad
 
 $mode = GETPOST('mode', 'aZ09') ? GETPOST('mode', 'aZ09') : 'other'; // 'template', 'dashboard', 'login', 'other'
 
-if (!defined("MAIN_MOTD")) {
-    define("MAIN_MOTD", "");
-}
+defineIfNotDefined("MAIN_MOTD", "");
 
 /*
  * Action

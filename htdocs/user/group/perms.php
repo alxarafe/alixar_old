@@ -26,9 +26,7 @@
  *      \brief      Page to set permissions of a user group record
  */
 
-if (!defined('CSRFCHECK_WITH_TOKEN')) {
-    define('CSRFCHECK_WITH_TOKEN', '1'); // Force use of CSRF protection with tokens even for GET
-}
+defineIfNotDefined('CSRFCHECK_WITH_TOKEN', '1'); // Force use of CSRF protection with tokens even for GET
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

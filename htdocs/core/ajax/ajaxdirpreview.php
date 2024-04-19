@@ -35,15 +35,9 @@ use DoliCore\Form\FormFile;
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', 1); // Disables token renewal
 }
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 if (!isset($mode) || $mode != 'noajax') {    // For ajax call
     require_once BASE_PATH . '/main.inc.php';

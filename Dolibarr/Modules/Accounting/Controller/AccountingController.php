@@ -40,7 +40,7 @@ use DoliCore\Form\FormOther;
 
 class AccountingController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;

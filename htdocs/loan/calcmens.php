@@ -24,15 +24,9 @@
  *  \brief File to calculate loan monthly payments
  */
 
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1'); // Disables token renewal
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1'); // Disables token renewal
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

@@ -25,24 +25,14 @@
  */
 
 //if (! defined('NOTOKENRENEWAL')) define('NOTOKENRENEWAL','1'); // Uncomment creates pb to relogon after a disconnect
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 /* We do now force CSRF check so we can logout using logout.php page (required for DoliDroid for example)
-if (!defined('CSRFCHECK_WITH_TOKEN')) {
-    define('CSRFCHECK_WITH_TOKEN', '1');
-}
+defineIfNotDefined('CSRFCHECK_WITH_TOKEN', '1');
 */
 //if (! defined('NOREQUIRESOC'))   define('NOREQUIRESOC','1');  // We need company to get correct logo onto home page
-if (!defined('EVEN_IF_ONLY_LOGIN_ALLOWED')) {
-    define('EVEN_IF_ONLY_LOGIN_ALLOWED', '1');
-}
+defineIfNotDefined('EVEN_IF_ONLY_LOGIN_ALLOWED', '1');
 
 require_once BASE_PATH . '/main.inc.php';
 

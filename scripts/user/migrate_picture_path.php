@@ -25,9 +25,7 @@
  * \brief Migrate pictures from old system prior to 3.7 to new path for 3.7+
  */
 
-if (!defined('NOSESSION')) {
-    define('NOSESSION', '1');
-}
+defineIfNotDefined('NOSESSION', '1');
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);

@@ -22,18 +22,10 @@
  *  \brief      Page with the content for smpcb payment
  */
 
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1');
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

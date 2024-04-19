@@ -29,18 +29,10 @@
 if (!defined('WEBPORTAL')) {
     define('WEBPORTAL', 1);
 }
-if (!defined('NOLOGIN')) {
-    define('NOLOGIN', 1);
-}
-if (!defined('NOREQUIREUSER')) {
-    define('NOREQUIREUSER', 1);
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', 1);
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', 1);
-}
+defineIfNotDefined('NOLOGIN', '1');
+defineIfNotDefined('NOREQUIREUSER', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIRESOC', '1');
 if (!defined('EVEN_IF_ONLY_LOGIN_ALLOWED')) {
     define('EVEN_IF_ONLY_LOGIN_ALLOWED', 1);
 }

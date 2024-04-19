@@ -20,27 +20,13 @@
 // This page return an image of a QR code of a public link
 // Note: Generating a QR code from a string, like done by this script, can be done with any online tool.
 
-if (!defined("NOLOGIN")) {
-    define("NOLOGIN", '1'); // If this page is public (can be called outside logged session)
-}
-if (!defined('NOIPCHECK')) {
-    define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1');
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOLOGIN', '1'); // If this page is public (can be called outside logged session)
+defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
+defineIfNotDefined('NOREQUIRESOC', '1');
+defineIfNotDefined('NOTOKENRENEWAL', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions

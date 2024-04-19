@@ -35,9 +35,8 @@ $pos = strstr($uri, '/'); // $pos contient alors url sans nom domaine
 if ($pos == '/') {
     $pos = ''; // si $pos vaut /, on le met a ''
 }
-if (!defined('DOL_URL_ROOT')) {
-    define('DOL_URL_ROOT', $pos); // URL racine relative
-}
+
+defineIfNotDefined('DOL_URL_ROOT', $pos); // URL racine relative
 
 $langs->loadLangs(array("other", "help"));
 

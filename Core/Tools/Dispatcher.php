@@ -53,6 +53,7 @@ class Dispatcher
         if ($controller === null) {
             return false;
         }
-        return $controller->index();;
+        $controller->index();
+        return true;
     }
 }

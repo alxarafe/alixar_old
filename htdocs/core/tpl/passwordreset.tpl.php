@@ -18,9 +18,7 @@
 // Page called to validate a password change
 // To show this page, we need parameters: setnewpassword=1&username=...&passworduidhash=...
 
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', 1);
-}
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {

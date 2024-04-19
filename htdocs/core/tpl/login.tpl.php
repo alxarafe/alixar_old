@@ -20,9 +20,7 @@
 // Caller can also set  $morelogincontent = array(['options']=>array('js'=>..., 'table'=>...);
 // $titletruedolibarrversion must be defined
 
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', 1);
-}
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {

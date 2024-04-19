@@ -18,9 +18,7 @@
  * or see https://www.gnu.org/
  */
 
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', 1);
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1');
 
 
 /**

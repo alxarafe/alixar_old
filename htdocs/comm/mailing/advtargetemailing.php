@@ -23,9 +23,7 @@
  *       \brief      Page to define emailing targets
  */
 
-if (!defined('NOSTYLECHECK')) {
-    define('NOSTYLECHECK', '1');
-}
+defineIfNotDefined('NOSTYLECHECK', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

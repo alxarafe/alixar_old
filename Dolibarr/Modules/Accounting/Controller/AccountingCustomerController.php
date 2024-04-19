@@ -224,7 +224,7 @@ class AccountingCustomerController extends DolibarrController
      * \ingroup Accountancy (Double entries)
      * \brief   Home customer journalization page
      */
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;

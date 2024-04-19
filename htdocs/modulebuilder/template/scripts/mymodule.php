@@ -42,9 +42,7 @@
 //if (! defined("MAIN_AUTHENTICATION_MODE")) define('MAIN_AUTHENTICATION_MODE', 'aloginmodule');    // Force authentication handler
 //if (! defined('CSRFCHECK_WITH_TOKEN'))     define('CSRFCHECK_WITH_TOKEN', '1');       // Force use of CSRF protection with tokens even for GET
 //if (! defined('NOBROWSERNOTIF'))           define('NOBROWSERNOTIF', '1');             // Disable browser notification
-if (!defined('NOSESSION')) {
-    define('NOSESSION', '1');
-}   // On CLI mode, no need to use web sessions
+defineIfNotDefined('NOSESSION', '1');   // On CLI mode, no need to use web sessions
 
 
 $sapi_type = php_sapi_name();

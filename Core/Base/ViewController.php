@@ -34,8 +34,9 @@ abstract class ViewController extends GenericController
      */
     public $theme = 'eldy';
 
-    public function view($vars = [])
+    public function __destruct()
     {
+        $vars = ['self' => $this];
         $viewPaths = [
             BASE_PATH . '/Templates',
             BASE_PATH . '/Templates/theme/' . $this->theme,
@@ -46,11 +47,5 @@ abstract class ViewController extends GenericController
         }
         $blade = new Blade($viewPaths, $cachePaths);
         echo $blade->render($this->template, $vars);
-    }
-
-    public function __destruct()
-    {
-        $this->view(['self' => $this]);
-        die();
     }
 }

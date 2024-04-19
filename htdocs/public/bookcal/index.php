@@ -28,15 +28,9 @@
  *                  Example of URL: https://localhost/public/bookcal/index.php?id=...
  */
 
-if (!defined('NOLOGIN')) {
-    define("NOLOGIN", 1); // This means this output page does not require to be logged.
-}
-if (!defined('NOCSRFCHECK')) {
-    define("NOCSRFCHECK", 1); // We accept to go on this page from external web site.
-}
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', '1');
-}
+defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
+defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

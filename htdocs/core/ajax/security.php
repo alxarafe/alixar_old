@@ -25,22 +25,12 @@
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
+defineIfNotDefined('NOREQUIRESOC', '1');
 // We need langs because the getRandomPassword may use the user language to define some rules of pass generation
-/*if (!defined('NOREQUIRETRAN')) {
-    define('NOREQUIRETRAN', '1');
-}*/
+/*defineIfNotDefined('NOREQUIRETRAN', '1');*/
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

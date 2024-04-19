@@ -25,9 +25,7 @@
  * \brief Script to update users into Dolibarr from LDAP
  */
 
-if (!defined('NOSESSION')) {
-    define('NOSESSION', '1');
-}
+defineIfNotDefined('NOSESSION', '1');
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);

@@ -24,27 +24,15 @@
 
 define('NOLOGIN', 1);
 
-if (!defined('NOREQUIREUSER')) {
-    define('NOREQUIREUSER', 1);
-}
-if (!defined('NOREQUIREDB')) {
-    define('NOREQUIREDB', 1);
-}
-if (!defined('NOREQUIRETRAN')) {
-    define('NOREQUIRETRAN', 1);
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', 1);
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', 1);
-}
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', 1);
-}
+// NO_USER_REQUIRED!
+defineIfNotDefined('NOREQUIREUSER', '1');
+defineIfNotDefined('NOREQUIREDB', '1');
+defineIfNotDefined('NOREQUIRETRAN', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIRESOC', '1');
+defineIfNotDefined('NOTOKENRENEWAL', '1');
 
 require_once BASE_PATH . '/main.inc.php';
-
 
 /*
  * View

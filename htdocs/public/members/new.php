@@ -40,15 +40,9 @@
  *  MEMBER_NEWFORM_FORCECOUNTRYCODE     Force country
  */
 
-if (!defined('NOLOGIN')) {
-    define("NOLOGIN", 1); // This means this output page does not require to be logged.
-}
-if (!defined('NOCSRFCHECK')) {
-    define("NOCSRFCHECK", 1); // We accept to go on this page from external web site.
-}
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', '1');
-}
+defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
+defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 
 // For MultiCompany module.

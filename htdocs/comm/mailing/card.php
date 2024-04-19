@@ -31,9 +31,7 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormMail;
 use DoliCore\Form\FormOther;
 
-if (!defined('NOSTYLECHECK')) {
-    define('NOSTYLECHECK', '1');
-}
+defineIfNotDefined('NOSTYLECHECK', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

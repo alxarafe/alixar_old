@@ -25,13 +25,8 @@
  *  \brief      Page to activate/disable all modules
  */
 
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu
-}
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1'); // Disabled because this page is into a popup on module search page and we want to avoid to have an Anti CSRF token error (done if MAIN_SECURITY_CSRF_WITH_TOKEN is on) when we make a second search after closing popup.
-}
-
+defineIfNotDefined('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu
+defineIfNotDefined('NOTOKENRENEWAL', '1'); // Disabled because this page is into a popup on module search page and we want to avoid to have an Anti CSRF token error (done if MAIN_SECURITY_CSRF_WITH_TOKEN is on) when we make a second search after closing popup.
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

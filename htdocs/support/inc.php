@@ -26,9 +26,7 @@
  */
 
 // Define DOL_DOCUMENT_ROOT
-if (!defined('DOL_DOCUMENT_ROOT')) {
-    define('DOL_DOCUMENT_ROOT', '..');
-}
+defineIfNotDefined('DOL_DOCUMENT_ROOT', '..');
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/conf.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';

@@ -130,7 +130,7 @@ class AccountingSupplierController extends DolibarrController
      * \ingroup     Accountancy (Double entries)
      * \brief       Home supplier journalization page
      */
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;

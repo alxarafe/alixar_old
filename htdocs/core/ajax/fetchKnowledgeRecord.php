@@ -23,31 +23,19 @@
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
+defineIfNotDefined('NOREQUIRESOC', '1');
 // Do not check anti CSRF attack test
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
 // If there is no need to load and show top and left menu
 if (!empty($_GET['public'])) {  // GETPOST() is not yet defined so we use $_GET
     if (!defined("NOLOGIN")) {
         define("NOLOGIN", '1');
     }
 }
-if (!defined('NOIPCHECK')) {
-    define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
-}
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', '1');
-}
+defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 include '../../main.inc.php';
 
 $action = GETPOST('action', 'aZ09');

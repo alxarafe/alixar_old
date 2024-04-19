@@ -28,44 +28,19 @@
 //if (! defined('NOREQUIREDB'))   define('NOREQUIREDB','1');        // Not disabled cause need to load personalized language
 //if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC','1');
 //if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');      // Not disabled cause need to do translations
-if (!defined('NOCSRFCHECK')) {
-    define('NOCSRFCHECK', 1);
-}
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', 1);
-}
+defineIfNotDefined('NOCSRFCHECK', '1');
+defineIfNotDefined('NOTOKENRENEWAL', '1');
 //if (! defined('NOLOGIN')) define('NOLOGIN',1);                    // Not disabled cause need to load personalized language
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', 1);
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', 1);
-}
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', 1);
-}
-
-if (!defined('DISABLE_JQUERY_TABLEDND')) {
-    define('DISABLE_JQUERY_TABLEDND', 1);
-}
-if (!defined('DISABLE_JQUERY_JNOTIFY')) {
-    define('DISABLE_JQUERY_JNOTIFY', 1);
-}
-if (!defined('DISABLE_JQUERY_FLOT')) {
-    define('DISABLE_JQUERY_FLOT', 1);
-}
-if (!defined('DISABLE_JQUERY_JEDITABLE')) {
-    define('DISABLE_JQUERY_JEDITABLE', 1);
-}
-if (!defined('DISABLE_CKEDITOR')) {
-    define('DISABLE_CKEDITOR', 1);
-}
-if (!defined('DISABLE_DATE_PICKER')) {
-    define('DISABLE_DATE_PICKER', 1);
-}
-if (!defined('DISABLE_SELECT2')) {
-    define('DISABLE_SELECT2', 1);
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOBROWSERNOTIF', '1');
+defineIfNotDefined('DISABLE_JQUERY_TABLEDND', '1');
+defineIfNotDefined('DISABLE_JQUERY_JNOTIFY', '1');
+defineIfNotDefined('DISABLE_JQUERY_FLOT', '1');
+defineIfNotDefined('DISABLE_JQUERY_JEDITABLE', '1');
+defineIfNotDefined('DISABLE_CKEDITOR', '1');
+defineIfNotDefined('DISABLE_DATE_PICKER', '1');
+defineIfNotDefined('DISABLE_SELECT2', '1');
 
 require_once BASE_PATH . '/main.inc.php';
 

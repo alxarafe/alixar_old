@@ -42,7 +42,7 @@ use ExtraFields;
 
 class AdherentSubscriptionController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
@@ -54,6 +54,8 @@ class AdherentSubscriptionController extends DolibarrController
         global $mysoc;
 
         $this->card();
+
+        return true;
     }
 
     /**

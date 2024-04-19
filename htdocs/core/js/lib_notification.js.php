@@ -25,27 +25,14 @@
  *  \brief          Javascript code to manage browser reminers
  */
 
-if (!defined('NOREQUIREUSER')) {
-    define('NOREQUIREUSER', '1');
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
-if (!defined('NOCSRFCHECK')) {
-    define('NOCSRFCHECK', 1);
-}
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', 1);
-}
-if (!defined('NOLOGIN')) {
-    define('NOLOGIN', 1);
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', 1);
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', 1);
-}
+// NO_USER_REQUIRED!
+defineIfNotDefined('NOREQUIREUSER', '1');
+defineIfNotDefined('NOREQUIRESOC', '1');
+defineIfNotDefined('NOCSRFCHECK', '1');
+defineIfNotDefined('NOTOKENRENEWAL', '1');
+defineIfNotDefined('NOLOGIN', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
 
 session_cache_limiter('public');
 

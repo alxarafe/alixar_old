@@ -36,7 +36,7 @@ abstract class Controller extends ViewController
 
     private function isLogged()
     {
-        return false;
+        return true;
     }
 
     public function doLogin($user, $password)

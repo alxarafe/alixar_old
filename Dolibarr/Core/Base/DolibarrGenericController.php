@@ -18,6 +18,8 @@
 
 namespace DoliCore\Base;
 
+use Alxarafe\Base\GenericController;
+
 /**
  * Class DolibarrGenericController. The generic controller contains what is necessary for any controller
  *
@@ -25,40 +27,43 @@ namespace DoliCore\Base;
  *
  * @package DoliCore\Base
  */
-abstract class DolibarrGenericController
+abstract class DolibarrGenericController extends GenericController
 {
     /**
      * Contains the controller to execute.
      *
      * @var string
      */
-    protected $controller;
-
-    /**
-     * Contains the action to execute.
-     *
-     * @var string
-     */
-    protected $action;
+    protected string $controller;
 
     /**
      * GenericController constructor.
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->controller = filter_input(INPUT_GET, GET_FILENAME_VAR);
         $this->action = filter_input(INPUT_GET, 'action');
+
         if (empty($this->controller)) {
             $this->controller = 'index';
         }
+
         if (method_exists($this, $this->controller)) {
             return $this->{$this->controller}();
         }
+
         return $this->index();
     }
 
-    public function index(bool $executeActions = true): bool;
-
+    /**
+     * Returns the generic url of the controller;
+     *
+     * @param $full
+     *
+     * @return string
+     */
     public static function url($full = false)
     {
         $url = '';

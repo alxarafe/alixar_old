@@ -41,7 +41,7 @@ use ExtraFields;
 
 class AdherentCartesController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
@@ -53,6 +53,8 @@ class AdherentCartesController extends DolibarrController
         global $mysoc;
 
         $this->carte();
+
+        return true;
     }
 
     /**

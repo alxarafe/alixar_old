@@ -27,9 +27,7 @@
  * \brief   Script to send a prepared and validated emaling from command line
  */
 
-if (!defined('NOSESSION')) {
-    define('NOSESSION', '1');
-}
+defineIfNotDefined('NOSESSION', '1');
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);

@@ -33,17 +33,14 @@ use DoliCore\Base\Config;
  */
 
 // Just to define version DOL_VERSION
-if (!defined('DOL_INC_FOR_VERSION_ERROR')) {
-    define('DOL_INC_FOR_VERSION_ERROR', '1');
-}
+defineIfNotDefined('DOL_INC_FOR_VERSION_ERROR', '1');
+
 require_once BASE_PATH . '/filefunc.inc.php';
 
 
 
 // Define DOL_DOCUMENT_ROOT used for install/upgrade process
-if (!defined('DOL_DOCUMENT_ROOT')) {
-    define('DOL_DOCUMENT_ROOT', '..');
-}
+defineIfNotDefined('DOL_DOCUMENT_ROOT', '..');
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/conf.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
@@ -265,12 +262,10 @@ $conf->global->MAIN_ENABLE_LOG_TO_HTML = 1;
 if (!isset($dolibarr_main_db_prefix) || !$dolibarr_main_db_prefix) {
     $dolibarr_main_db_prefix = Config::DEFAULT_DB_PREFIX;
 }
-define('MAIN_DB_PREFIX', (isset($dolibarr_main_db_prefix) ? $dolibarr_main_db_prefix : ''));
-define('DOL_CLASS_PATH', 'class/'); // Filesystem path to class dir
-if (!defined('DOL_DATA_ROOT')) {
-    define('DOL_DATA_ROOT', (isset($dolibarr_main_data_root) ? $dolibarr_main_data_root : DOL_DOCUMENT_ROOT . '/../documents'));
-}
-define('DOL_MAIN_URL_ROOT', (isset($dolibarr_main_url_root) ? $dolibarr_main_url_root : '')); // URL relative root
+defineIfNotDefined('MAIN_DB_PREFIX', (isset($dolibarr_main_db_prefix) ? $dolibarr_main_db_prefix : ''));
+defineIfNotDefined('DOL_CLASS_PATH', 'class/'); // Filesystem path to class dir
+defineIfNotDefined('DOL_DATA_ROOT', (isset($dolibarr_main_data_root) ? $dolibarr_main_data_root : DOL_DOCUMENT_ROOT . '/../documents'));
+defineIfNotDefined('DOL_MAIN_URL_ROOT', (isset($dolibarr_main_url_root) ? $dolibarr_main_url_root : '')); // URL relative root
 $uri = preg_replace('/^http(s?):\/\//i', '', constant('DOL_MAIN_URL_ROOT')); // $uri contains url without http*
 $suburi = strstr($uri, '/'); // $suburi contains url without domain
 if ($suburi == '/') {
@@ -361,9 +356,7 @@ if ($islocked) {    // Pages are locked
 // Force usage of log file for install and upgrades
 $conf->modules['syslog'] = 'syslog';
 $conf->global->SYSLOG_LEVEL = constant('LOG_DEBUG');
-if (!defined('SYSLOG_HANDLERS')) {
-    define('SYSLOG_HANDLERS', '["mod_syslog_file"]');
-}
+defineIfNotDefined('SYSLOG_HANDLERS', '["mod_syslog_file"]');
 if (!defined('SYSLOG_FILE')) {  // To avoid warning on systems with constant already defined
     if (@is_writable('/tmp')) {
         define('SYSLOG_FILE', '/tmp/dolibarr_install.log');
@@ -381,9 +374,8 @@ if (!defined('SYSLOG_FILE')) {  // To avoid warning on systems with constant alr
 if (defined('SYSLOG_FILE')) {
     $conf->global->SYSLOG_FILE = constant('SYSLOG_FILE');
 }
-if (!defined('SYSLOG_FILE_NO_ERROR')) {
-    define('SYSLOG_FILE_NO_ERROR', 1);
-}
+defineIfNotDefined('SYSLOG_FILE_NO_ERROR', 1);
+
 // We init log handler for install
 $handlers = array('mod_syslog_file');
 foreach ($handlers as $handler) {
@@ -476,9 +468,7 @@ function conf($dolibarr_main_document_root)
     // Force usage of log file for install and upgrades
     $conf->modules['syslog'] = 'syslog';
     $conf->global->SYSLOG_LEVEL = constant('LOG_DEBUG');
-    if (!defined('SYSLOG_HANDLERS')) {
-        define('SYSLOG_HANDLERS', '["mod_syslog_file"]');
-    }
+    defineIfNotDefined('SYSLOG_HANDLERS', '["mod_syslog_file"]');
     if (!defined('SYSLOG_FILE')) {  // To avoid warning on systems with constant already defined
         if (@is_writable('/tmp')) {
             define('SYSLOG_FILE', '/tmp/dolibarr_install.log');
@@ -496,10 +486,7 @@ function conf($dolibarr_main_document_root)
     if (defined('SYSLOG_FILE')) {
         $conf->global->SYSLOG_FILE = constant('SYSLOG_FILE');
     }
-    if (!defined('SYSLOG_FILE_NO_ERROR')) {
-        define('SYSLOG_FILE_NO_ERROR', 1);
-    }
-    // We init log handler for install
+    defineIfNotDefined('SYSLOG_FILE_NO_ERROR', '1');    // We init log handler for install
     $handlers = array('mod_syslog_file');
     foreach ($handlers as $handler) {
         $file = DOL_DOCUMENT_ROOT . '/core/modules/syslog/' . $handler . '.php';
@@ -685,9 +672,7 @@ function pFooter($nonext = 0, $setuplang = '', $jscheckfunction = '', $withpleas
  */
 function dolibarr_install_syslog($message, $level = LOG_DEBUG)
 {
-    if (!defined('LOG_DEBUG')) {
-        define('LOG_DEBUG', 6);
-    }
+    defineIfNotDefined('LOG_DEBUG', 6);
     dol_syslog($message, $level);
 }
 

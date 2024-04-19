@@ -23,25 +23,15 @@
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
+defineIfNotDefined('NOREQUIRESOC', '1');
 // If there is no need to load and show top and left menu
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
 if (!defined("NOLOGIN")) {
     define("NOLOGIN", '1');
 }
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', '1');
-}
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';

@@ -40,9 +40,7 @@ use DoliModules\Supplier\Model\FactureFournisseur;
 use DoliModules\User\Model\User;
 
 if ((array_key_exists('action', $_GET) && $_GET['action'] == 'dl') || (array_key_exists('action', $_POST) && $_POST['action'] == 'dl')) {   // To not replace token when downloading file
-    if (!defined('NOTOKENRENEWAL')) {
-        define('NOTOKENRENEWAL', '1');
-    }
+    defineIfNotDefined('NOTOKENRENEWAL', '1');
 }
 
 // Load Dolibarr environment

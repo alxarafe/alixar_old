@@ -494,10 +494,7 @@ function conf($dolibarr_main_document_root)
     if (defined('SYSLOG_FILE')) {
         $conf->global->SYSLOG_FILE = constant('SYSLOG_FILE');
     }
-    if (!defined('SYSLOG_FILE_NO_ERROR')) {
-        define('SYSLOG_FILE_NO_ERROR', 1);
-    }
-    // We init log handler for install
+    defineIfNotDefined('SYSLOG_FILE_NO_ERROR', '1');    // We init log handler for install
     $handlers = array('mod_syslog_file');
     foreach ($handlers as $handler) {
         $file = DOL_DOCUMENT_ROOT . '/core/modules/syslog/' . $handler . '.php';
@@ -683,9 +680,7 @@ function pFooter($nonext = 0, $setuplang = '', $jscheckfunction = '', $withpleas
  */
 function dolibarr_install_syslog($message, $level = LOG_DEBUG)
 {
-    if (!defined('LOG_DEBUG')) {
-        define('LOG_DEBUG', 6);
-    }
+    defineIfNotDefined('LOG_DEBUG', 6);
     dol_syslog($message, $level);
 }
 

@@ -25,24 +25,12 @@
  */
 
 /* We need object $user->default_values
-if (!defined('NOREQUIREUSER')) {
-    define('NOREQUIREUSER', '1');
-}*/
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOLOGIN')) {
-    define("NOLOGIN", 1); // This means this output page does not require to be logged.
-}
-if (!defined('NOIPCHECK')) {
-    define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
-}
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', '1');
-}
+defineIfNotDefined('NOREQUIREUSER', '1');*/
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
+defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 // For MultiCompany module.
 // Do not use GETPOST here, function is not defined and define must be done before including main.inc.php

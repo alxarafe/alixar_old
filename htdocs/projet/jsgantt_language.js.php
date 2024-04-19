@@ -21,27 +21,13 @@
  *      \brief      Fichier de javascript de traduction pour JSGantt
  */
 
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
-if (!defined('NOCSRFCHECK')) {
-    define('NOCSRFCHECK', 1);
-}
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', 1);
-}
-if (!defined('NOLOGIN')) {
-    define('NOLOGIN', 1);
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', 1);
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', 1);
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOREQUIRESOC', '1');
+defineIfNotDefined('NOCSRFCHECK', '1');
+defineIfNotDefined('NOTOKENRENEWAL', '1');
+defineIfNotDefined('NOLOGIN', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 require_once __DIR__ . '/../main.inc.php';
 

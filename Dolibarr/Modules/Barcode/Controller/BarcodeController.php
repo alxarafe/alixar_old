@@ -45,7 +45,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/modules/printsheet/modules_labels.php';
 
 class BarcodeController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
@@ -517,9 +517,7 @@ function confirm_erase() {
         global $_Avery_Labels;
 
         if (!empty($_POST['mode']) && $_POST['mode'] === 'label') { // Page is called to build a PDF and output, we must not renew the token.
-            if (!defined('NOTOKENRENEWAL')) {
-                define('NOTOKENRENEWAL', '1'); // Do not roll the Anti CSRF token (used if MAIN_SECURITY_CSRF_WITH_TOKEN is on)
-            }
+            defineIfNotDefined('NOTOKENRENEWAL', '1'); // Do not roll the Anti CSRF token (used if MAIN_SECURITY_CSRF_WITH_TOKEN is on)
         }
 
 // Load translation files required by the page

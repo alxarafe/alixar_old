@@ -25,9 +25,7 @@
  * \brief Script to update all contacts from Dolibarr into a LDAP database
  */
 
-if (!defined('NOSESSION')) {
-    define('NOSESSION', '1');
-}
+defineIfNotDefined('NOSESSION', '1');
 
 $sapi_type = php_sapi_name();
 $script_file = basename(__FILE__);

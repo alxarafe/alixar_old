@@ -25,15 +25,9 @@
  *      \brief      Entry page to access demo
  */
 
-if (!defined('NOLOGIN')) {
-    define('NOLOGIN', '1');
-}
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', 1);
-}
-if (!defined('NOIPCHECK')) {
-    define('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
-}
+defineIfNotDefined('NOLOGIN', '1');
+defineIfNotDefined('NOBROWSERNOTIF', '1');
+defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

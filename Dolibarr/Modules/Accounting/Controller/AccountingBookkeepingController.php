@@ -51,7 +51,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
 
 class AccountingBookkeepingController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         $this->list();
     }

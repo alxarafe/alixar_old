@@ -128,7 +128,7 @@ class AccountingExpenseReportController extends DolibarrController
      * \ingroup     Accountancy (Double entries)
      * \brief       Home expense report ventilation
      */
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;

@@ -42,7 +42,7 @@ use FormSetup;
 
 class AiAdminController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;

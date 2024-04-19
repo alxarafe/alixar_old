@@ -30,15 +30,9 @@ abstract class GenericController
     /**
      * Contains the action to execute.
      *
-     * @var string
+     * @var string|null
      */
-    public $action;
-    /**
-     * Contains the controller to execute.
-     *
-     * @var string
-     */
-    protected $controller;
+    public ?string $action;
 
     /**
      * GenericController constructor.

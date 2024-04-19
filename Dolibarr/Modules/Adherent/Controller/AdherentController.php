@@ -1131,7 +1131,7 @@ class AdherentController extends DolibarrController
      *       \ingroup    member
      *       \brief      Home page of membership module
      */
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
@@ -1176,6 +1176,8 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/index.php');
 
         $db->close();
+
+        return true;
     }
 
     /**
@@ -1703,7 +1705,6 @@ class AdherentController extends DolibarrController
         if (empty($reshook)) {
             include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
         }
-
 
         /*
          * View

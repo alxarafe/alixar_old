@@ -72,42 +72,22 @@ define('MAIN_SECURITY_FORCECSP', "default-src: 'none'");
 
 //if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER','1');    // Not disabled cause need to load personalized language
 //if (! defined('NOREQUIREDB'))     define('NOREQUIREDB','1');      // Not disabled cause need to load personalized language
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1');
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // For direct external download link, we don't need to load/check we are into a login session
 if (isset($_GET["hashp"]) && !defined("NOLOGIN")) {
-    if (!defined("NOLOGIN")) {
-        define("NOLOGIN", 1);
-    }
-    if (!defined("NOCSRFCHECK")) {
-        define("NOCSRFCHECK", 1); // We accept to go on this page from external web site.
-    }
-    if (!defined("NOIPCHECK")) {
-        define("NOIPCHECK", 1); // Do not check IP defined into conf $dolibarr_main_restrict_ip
-    }
+    defineIfNotDefined('NOLOGIN', '1');
+    defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
+    defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
 }
 // Some value of modulepart can be used to get resources that are public so no login are required.
 if ((isset($_GET["modulepart"]) && $_GET["modulepart"] == 'medias')) {
-    if (!defined("NOLOGIN")) {
-        define("NOLOGIN", 1);
-    }
-    if (!defined("NOCSRFCHECK")) {
-        define("NOCSRFCHECK", 1); // We accept to go on this page from external web site.
-    }
-    if (!defined("NOIPCHECK")) {
-        define("NOIPCHECK", 1); // Do not check IP defined into conf $dolibarr_main_restrict_ip
-    }
+    defineIfNotDefined('NOLOGIN', '1');
+    defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
+    defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
 }
 
 /**

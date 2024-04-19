@@ -2008,7 +2008,7 @@ class AccountingAdminController extends DolibarrController
      * \ingroup     Accountancy (Double entries)
      * \brief       Setup page to configure accounting expert module
      */
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
@@ -2276,9 +2276,7 @@ class AccountingAdminController extends DolibarrController
 
         global $sourceList;
 
-        if (!defined('CSRFCHECK_WITH_TOKEN')) {
-            define('CSRFCHECK_WITH_TOKEN', '1'); // Force use of CSRF protection with tokens even for GET
-        }
+        defineIfNotDefined('CSRFCHECK_WITH_TOKEN', '1'); // Force use of CSRF protection with tokens even for GET
 
 // Load translation files required by the page
         $langs->loadLangs(["admin", "compta", "accountancy"]);

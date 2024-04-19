@@ -23,9 +23,7 @@
  *    \brief      Public page to add and manage tickets
  */
 
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
 
 if (!defined('NOLOGIN')) {
     define('NOLOGIN', '1');       // If this page is public (can be called outside logged session)
@@ -35,9 +33,7 @@ if (!defined('NOIPCHECK')) {
     define('NOIPCHECK', '1');     // Do not check IP defined into conf $dolibarr_main_restrict_ip
 }
 
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', '1');
-}
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 // For MultiCompany module
 // Do not use GETPOST here, function is not defined and define must be done before including main.inc.php

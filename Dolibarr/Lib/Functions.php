@@ -25,3 +25,16 @@ function unregisterStreamWrappers(array $streamsToDisable = null)
 
     return $ok;
 }
+
+/**
+ * Defines the constant $name, if it is not already defined.
+ *
+ * @param string $name
+ * @param        $value
+ */
+function defineIfNotDefined(string $name, $value)
+{
+    if (!defined($name)) {
+        define($name, $value);
+    }
+}

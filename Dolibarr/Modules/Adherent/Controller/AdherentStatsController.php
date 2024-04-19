@@ -139,7 +139,7 @@ class AdherentStatsController extends DolibarrController
      *      \ingroup    member
      *      \brief      Page of subscription members statistics
      */
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
@@ -187,5 +187,7 @@ class AdherentStatsController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/stats_index.php');
 
         $db->close();
+
+        return true;
     }
 }

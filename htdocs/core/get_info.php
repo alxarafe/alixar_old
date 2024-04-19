@@ -28,16 +28,10 @@
 //if (! defined('NOREQUIREDB'))   define('NOREQUIREDB','1');        // Not disabled cause need to load personalized language
 //if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC','1');
 //if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');      // Not disabled cause need to do translations
-if (!defined('NOCSRFCHECK')) {
-    define('NOCSRFCHECK', 1);
-}
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', 1);
-}
+defineIfNotDefined('NOCSRFCHECK', '1');
+defineIfNotDefined('NOTOKENRENEWAL', '1');
 //if (! defined('NOLOGIN')) define('NOLOGIN',1);                    // Not disabled cause need to load personalized language and need security layer
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', 1);
-}
+defineIfNotDefined('NOREQUIREMENU', '1');
 
 require_once BASE_PATH . '/main.inc.php';
 

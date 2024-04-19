@@ -23,9 +23,7 @@
  * \brief       Script to reset (set email to empty) from a list of email
  */
 
-if (!defined('NOSESSION')) {
-    define('NOSESSION', '1');
-}
+defineIfNotDefined('NOSESSION', '1');
 if (!defined('MAXEMAILS')) {
     define('MAXEMAILS', 100);
 }

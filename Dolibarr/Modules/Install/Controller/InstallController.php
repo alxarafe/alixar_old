@@ -43,7 +43,7 @@ class InstallController extends DolibarrNoLoginController
     const DEFAULT_DATABASE_NAME = 'alixar';
     const DEFAULT_DATABASE_PREFIX = 'alx_';
 
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $langs;
         global $conf;

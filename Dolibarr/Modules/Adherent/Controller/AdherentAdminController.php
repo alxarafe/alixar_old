@@ -52,7 +52,7 @@ use DoliCore\Form\Form;
 
 class AdherentAdminController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
@@ -64,6 +64,8 @@ class AdherentAdminController extends DolibarrController
         global $mysoc;
 
         $this->member();
+
+        return true;
     }
 
     /**

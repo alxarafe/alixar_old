@@ -44,7 +44,7 @@ class AccountingClosingController extends DolibarrController
      * \ingroup     Accountancy
      * \brief       Home closure page
      */
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;

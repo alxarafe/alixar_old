@@ -20,9 +20,7 @@
  */
 
 
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1');
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

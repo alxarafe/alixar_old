@@ -32,9 +32,7 @@
  *  \brief      List of sales from POS
  */
 
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu
-}
+defineIfNotDefined('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu
 if (!defined('NOBROWSERNOTIF')) {
     define('NOBROWSERNOTIF', '1'); // Disable browser notification
 }

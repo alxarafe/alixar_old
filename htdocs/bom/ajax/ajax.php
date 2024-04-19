@@ -22,24 +22,12 @@
  *  \brief      Ajax component for BOM.
  */
 
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1'); // Disables token renewal
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
-if (!defined('NOREQUIREAJAX')) {
-    define('NOREQUIREAJAX', '1');
-}
-if (!defined('NOREQUIRESOC')) {
-    define('NOREQUIRESOC', '1');
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOBROWSERNOTIF')) {
-    define('NOBROWSERNOTIF', '1');
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1'); // Disables token renewal
+defineIfNotDefined('NOREQUIREHTML', '1');
+defineIfNotDefined('NOREQUIREAJAX', '1');
+defineIfNotDefined('NOREQUIRESOC', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 include_once '../../main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT . '/core/class/cunits.class.php';

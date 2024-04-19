@@ -28,15 +28,9 @@
 // if (! defined('NOREQUIRESOC'))       define('NOREQUIRESOC', '1');
 // if (! defined('NOREQUIRETRAN'))      define('NOREQUIRETRAN', '1');
 
-if (!defined('NOTOKENRENEWAL')) {
-    define('NOTOKENRENEWAL', '1');
-}
-if (!defined('NOREQUIREMENU')) {
-    define('NOREQUIREMENU', '1');
-}
-if (!defined('NOREQUIREHTML')) {
-    define('NOREQUIREHTML', '1');
-}
+defineIfNotDefined('NOTOKENRENEWAL', '1');
+defineIfNotDefined('NOREQUIREMENU', '1');
+defineIfNotDefined('NOREQUIREHTML', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions

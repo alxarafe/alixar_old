@@ -47,7 +47,7 @@ use DoliCore\Form\Form;
 
 class AssetAdminController extends DolibarrController
 {
-    public function index()
+    public function index(bool $executeActions = true): bool
     {
         global $conf;
         global $db;
