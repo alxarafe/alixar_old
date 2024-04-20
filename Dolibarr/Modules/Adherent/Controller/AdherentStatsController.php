@@ -85,6 +85,7 @@ class AdherentStatsController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/stats_byproperties.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -132,6 +133,7 @@ class AdherentStatsController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/stats_geo.php');
 
         $db->close();
+        return true;
     }
 
     /**

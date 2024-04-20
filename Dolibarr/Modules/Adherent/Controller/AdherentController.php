@@ -171,6 +171,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/agenda.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1027,6 +1028,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/card.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1124,6 +1126,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/document.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1270,6 +1273,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/ldap.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1626,6 +1630,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/list.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1778,6 +1783,7 @@ class AdherentController extends DolibarrController
 // End of page
         llxFooter();
         $db->close();
+        return true;
     }
 
     /**
@@ -1905,6 +1911,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/partnership.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -2321,6 +2328,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -2543,6 +2551,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/type.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -2616,6 +2625,7 @@ class AdherentController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/type_ldap.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -2750,6 +2760,7 @@ class AdherentController extends DolibarrController
 
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/type_translation.php');
         $db->close();
+        return true;
     }
 
     /**

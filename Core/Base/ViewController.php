@@ -32,10 +32,21 @@ abstract class ViewController extends GenericController
      *
      * @var string
      */
-    public $theme = 'eldy';
+    public $theme;
 
     public function __destruct()
     {
+        $this->theme = $_POST['theme'];
+        if (empty($theme)) {
+            $this->theme = 'adminlte';
+        }
+
+        if (!isset($this->template)) {
+            dd([
+                $this,
+                debug_backtrace(),
+            ]);
+        }
         $vars = ['self' => $this];
         $viewPaths = [
             BASE_PATH . '/Templates',

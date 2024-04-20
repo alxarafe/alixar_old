@@ -54,6 +54,8 @@ class AccountingBookkeepingController extends DolibarrController
     public function index(bool $executeActions = true): bool
     {
         $this->list();
+
+        return true;
     }
 
     /**
@@ -279,6 +281,7 @@ class AccountingBookkeepingController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_balance.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -592,6 +595,7 @@ class AccountingBookkeepingController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_card.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1304,6 +1308,7 @@ class AccountingBookkeepingController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_export.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1971,6 +1976,7 @@ class AccountingBookkeepingController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_list.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -2499,5 +2505,6 @@ class AccountingBookkeepingController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/bookkeeping_listbyaccount.php');
 
         $db->close();
+        return true;
     }
 }

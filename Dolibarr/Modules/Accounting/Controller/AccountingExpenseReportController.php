@@ -64,7 +64,7 @@ class AccountingExpenseReportController extends DolibarrController
         global $mysoc;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("bills", "accountancy", "trips"));
+        $langs->loadLangs(["bills", "accountancy", "trips"]);
 
         $action = GETPOST('action', 'aZ09');
         $cancel = GETPOST('cancel', 'alpha');
@@ -121,6 +121,7 @@ class AccountingExpenseReportController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_card.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -140,7 +141,7 @@ class AccountingExpenseReportController extends DolibarrController
         global $mysoc;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("compta", "bills", "other", "accountancy"));
+        $langs->loadLangs(["compta", "bills", "other", "accountancy"]);
 
         $validatemonth = GETPOSTINT('validatemonth');
         $validateyear = GETPOSTINT('validateyear');
@@ -289,6 +290,7 @@ class AccountingExpenseReportController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_index.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -308,7 +310,7 @@ class AccountingExpenseReportController extends DolibarrController
         global $mysoc;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("compta", "bills", "other", "accountancy", "trips", "productbatch", "hrm"));
+        $langs->loadLangs(["compta", "bills", "other", "accountancy", "trips", "productbatch", "hrm"]);
 
         $optioncss = GETPOST('optioncss', 'aZ'); // Option for the css output (always '' except when 'print')
 
@@ -437,6 +439,7 @@ class AccountingExpenseReportController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_lines.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -456,7 +459,7 @@ class AccountingExpenseReportController extends DolibarrController
         global $mysoc;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("bills", "companies", "compta", "accountancy", "other", "trips", "productbatch", "hrm"));
+        $langs->loadLangs(["bills", "companies", "compta", "accountancy", "other", "trips", "productbatch", "hrm"]);
 
         $action = GETPOST('action', 'aZ09');
         $massaction = GETPOST('massaction', 'alpha');
@@ -515,7 +518,7 @@ class AccountingExpenseReportController extends DolibarrController
         }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-        $hookmanager->initHooks(array('accountancyexpensereportlist'));
+        $hookmanager->initHooks(['accountancyexpensereportlist']);
 
         $formaccounting = new FormAccounting($db);
         $accounting = new AccountingAccount($db);
@@ -546,7 +549,7 @@ class AccountingExpenseReportController extends DolibarrController
             $massaction = '';
         }
 
-        $parameters = array();
+        $parameters = [];
         $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook < 0) {
             setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -639,5 +642,6 @@ class AccountingExpenseReportController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/expense_report_list.php');
 
         $db->close();
+        return true;
     }
 }

@@ -58,6 +58,8 @@ class AssetAdminController extends DolibarrController
         global $langs;
 
         $this->setup();
+
+        return true;
     }
 
     /**
@@ -109,6 +111,7 @@ class AssetAdminController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/admin_asset_extrafields.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -160,6 +163,7 @@ class AssetAdminController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/admin_assetmodel_extrafields.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -328,5 +332,6 @@ class AssetAdminController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/admin_setup.php');
 
         $db->close();
+        return true;
     }
 }

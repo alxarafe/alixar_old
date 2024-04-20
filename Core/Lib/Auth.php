@@ -11,14 +11,21 @@ class Auth
         $this->auth = $auth;
     }
 
-    public function login($email, $password)
+    public static function login($email, $password)
     {
-        return $this->auth->login($email, $password);
+        /**
+         * TODO: This is a test. It will be checked against a user database.
+         */
+        setcookie('login_alixar', $email, time() + 3600);
+        return ($email === 'user') && ($password === 'password');
     }
 
-    public function isLogged()
+    public static function isLogged()
     {
-        return $this->auth->isLogged();
+        /**
+         * TODO: This is a test.
+         */
+        return $_COOKIE['login_alixar'];
     }
 
     public function changePassword($currentPassword, $newPassword)

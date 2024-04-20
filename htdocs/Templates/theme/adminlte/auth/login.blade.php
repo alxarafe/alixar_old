@@ -1,6 +1,16 @@
 @extends('theme.adminlte.layout.main_empty')
 
 @section('content')
+    @if ($self->alert)
+        <div class="alert alert-danger" role="alert">
+            {!! $self->alert !!}
+        </div>
+    @endif
+    @if ($self->message)
+        <div class="alert alert-success" role="alert">
+            {!! $self->message !!}
+        </div>
+    @endif
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header">
@@ -10,9 +20,9 @@
                     <form action="{!! $self->url() !!}" method="post">
                         <div class="input-group mb-1">
                             <div class="form-floating">
-                                <input id="loginEmail" type="email" name="email" class="form-control" value="" placeholder="">
+                                <input id="loginEmail" type="text" name="username" class="form-control" value="" placeholder="">
                                 <label for="loginEmail">Email</label></div>
-                            <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+                            <div class="input-group-text"><span class="bi bi-person-fill"></span></div>
                         </div>
                         <div class="input-group mb-1">
                             <div class="form-floating">

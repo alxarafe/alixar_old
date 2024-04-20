@@ -217,6 +217,7 @@ class AccountingCustomerController extends DolibarrController
 // End of page
         llxFooter();
         $db->close();
+        return true;
     }
 
     /**
@@ -948,6 +949,8 @@ class AccountingCustomerController extends DolibarrController
 // End of page
         llxFooter();
         $db->close();
+
+        return true;
     }
 
     /**
@@ -1514,6 +1517,7 @@ class AccountingCustomerController extends DolibarrController
 // End of page
         llxFooter();
         $db->close();
+        return true;
     }
 
     /**
@@ -2319,5 +2323,6 @@ jQuery(document).ready(function() {
 // End of page
         llxFooter();
         $db->close();
+        return true;
     }
 }

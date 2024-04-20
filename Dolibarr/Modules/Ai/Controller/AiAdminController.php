@@ -138,6 +138,7 @@ class AiAdminController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Ai/Views/setup.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -300,5 +301,6 @@ class AiAdminController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Ai/Views/custom_prompt.php');
 
         $db->close();
+        return true;
     }
 }

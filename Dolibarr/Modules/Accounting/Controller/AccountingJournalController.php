@@ -1676,6 +1676,7 @@ class AccountingJournalController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_expensereportjournal.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -2415,6 +2416,7 @@ GROUP BY fk_facture_fourn
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_purchasesjournal.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -3211,6 +3213,7 @@ GROUP BY fk_facture
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_sellsjournal.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -3375,5 +3378,6 @@ GROUP BY fk_facture
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/journal_variousjournal.php');
 
         $db->close();
+        return true;
     }
 }

@@ -205,6 +205,7 @@ class AdherentSubscriptionController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription_index.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -239,6 +240,7 @@ class AdherentSubscriptionController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription_info.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -396,5 +398,6 @@ class AdherentSubscriptionController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription_list.php');
 
         $db->close();
+        return true;
     }
 }

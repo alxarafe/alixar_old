@@ -123,6 +123,7 @@ class AccountingSupplierController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/supplier_card.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -407,6 +408,7 @@ class AccountingSupplierController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/supplier_index.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -565,6 +567,7 @@ class AccountingSupplierController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/supplier_lines.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -773,5 +776,6 @@ class AccountingSupplierController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/supplier_list.php');
 
         $db->close();
+        return true;
     }
 }

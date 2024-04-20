@@ -465,7 +465,7 @@ class ApiController extends DolibarrController
         }
 
         if (!isset($api->r->apiMethodInfo)) {
-            return;
+            return false;
         }
 
 // Call API termination method
@@ -485,5 +485,6 @@ class ApiController extends DolibarrController
         }
 
 //session_destroy();
+        return true;
     }
 }

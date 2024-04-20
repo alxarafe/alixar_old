@@ -309,5 +309,6 @@ class AdherentCartesController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/cartes_carte.php');
 
         $db->close();
+        return true;
     }
 }

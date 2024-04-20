@@ -172,6 +172,7 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/accountancy_codes.php');
 
         $db->close();
+        return true;
     }
 
     public function index(bool $executeActions = true): bool
@@ -299,6 +300,7 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/agenda.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -454,6 +456,7 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/card.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -538,6 +541,7 @@ class AssetController extends DolibarrController
          */
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/depreciation.php');
         $db->close();
+        return true;
     }
 
     /**
@@ -660,6 +664,7 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/depreciation_options.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -737,6 +742,7 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/disposal.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -821,6 +827,7 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/document.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -998,6 +1005,7 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/list.php');
 
         $db->close();
+        return true;
     }
 
     /**
@@ -1072,5 +1080,6 @@ class AssetController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Asset/Views/note.php');
 
         $db->close();
+        return true;
     }
 }

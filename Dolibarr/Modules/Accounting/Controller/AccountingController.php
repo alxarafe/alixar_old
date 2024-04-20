@@ -95,5 +95,7 @@ class AccountingController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/index.php');
 
         $db->close();
+
+        return true;
     }
 }

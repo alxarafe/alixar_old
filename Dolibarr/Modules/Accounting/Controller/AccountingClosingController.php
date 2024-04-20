@@ -183,5 +183,7 @@ class AccountingClosingController extends DolibarrController
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Accounting/Views/closing_index.php');
 
         $db->close();
+
+        return true;
     }
 }
