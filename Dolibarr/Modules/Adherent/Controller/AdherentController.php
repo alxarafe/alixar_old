@@ -64,7 +64,6 @@ use DoliCore\Base\DolibarrController;
 use DoliCore\Lib\Fields;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
-use DoliModules\Adherent\Model\Subscription;
 use ExtraFields;
 use MailmanSpip;
 
@@ -86,7 +85,7 @@ class AdherentController extends DolibarrController
         global $langs;
 
 // Load translation files required by the page
-        $langs->loadLangs(array('companies', 'members'));
+        $langs->loadLangs(['companies', 'members']);
 
 // Get Parameters
         $id = GETPOSTINT('id') ? GETPOSTINT('id') : GETPOSTINT('rowid');
@@ -124,7 +123,7 @@ class AdherentController extends DolibarrController
         $objcanvas = null;
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-        $hookmanager->initHooks(array('memberagenda', 'globalcard'));
+        $hookmanager->initHooks(['memberagenda', 'globalcard']);
 
 // Security check
         $result = restrictedArea($user, 'adherent', $id);
@@ -143,7 +142,7 @@ class AdherentController extends DolibarrController
          *  Actions
          */
 
-        $parameters = array('id' => $id, 'objcanvas' => $objcanvas);
+        $parameters = ['id' => $id, 'objcanvas' => $objcanvas];
         $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook < 0) {
             setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -191,7 +190,7 @@ class AdherentController extends DolibarrController
         global $mysoc;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("companies", "bills", "members", "users", "other", "paypal"));
+        $langs->loadLangs(["companies", "bills", "members", "users", "other", "paypal"]);
 
 
 // Get parameters
@@ -233,7 +232,7 @@ class AdherentController extends DolibarrController
         }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-        $hookmanager->initHooks(array('membercard', 'globalcard'));
+        $hookmanager->initHooks(['membercard', 'globalcard']);
 
 // Fetch object
         if ($id > 0 || !empty($ref)) {
@@ -273,7 +272,7 @@ class AdherentController extends DolibarrController
          *  Actions
          */
 
-        $parameters = array('id' => $id, 'rowid' => $id, 'objcanvas' => $objcanvas, 'confirm' => $confirm);
+        $parameters = ['id' => $id, 'rowid' => $id, 'objcanvas' => $objcanvas, 'confirm' => $confirm];
         $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook < 0) {
             setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -436,29 +435,29 @@ class AdherentController extends DolibarrController
 
                     // Change values
                     $object->civility_id = trim(GETPOST("civility_id", 'alphanohtml'));
-                    $object->firstname   = trim(GETPOST("firstname", 'alphanohtml'));
-                    $object->lastname    = trim(GETPOST("lastname", 'alphanohtml'));
-                    $object->gender      = trim(GETPOST("gender", 'alphanohtml'));
-                    $object->login       = trim(GETPOST("login", 'alphanohtml'));
+                    $object->firstname = trim(GETPOST("firstname", 'alphanohtml'));
+                    $object->lastname = trim(GETPOST("lastname", 'alphanohtml'));
+                    $object->gender = trim(GETPOST("gender", 'alphanohtml'));
+                    $object->login = trim(GETPOST("login", 'alphanohtml'));
                     if (GETPOSTISSET('pass')) {
-                        $object->pass        = trim(GETPOST("pass", 'none'));   // For password, we must use 'none'
+                        $object->pass = trim(GETPOST("pass", 'none'));   // For password, we must use 'none'
                     }
 
-                    $object->societe     = trim(GETPOST("societe", 'alphanohtml')); // deprecated
-                    $object->company     = trim(GETPOST("societe", 'alphanohtml'));
+                    $object->societe = trim(GETPOST("societe", 'alphanohtml')); // deprecated
+                    $object->company = trim(GETPOST("societe", 'alphanohtml'));
 
-                    $object->address     = trim(GETPOST("address", 'alphanohtml'));
-                    $object->zip         = trim(GETPOST("zipcode", 'alphanohtml'));
-                    $object->town        = trim(GETPOST("town", 'alphanohtml'));
-                    $object->state_id    = GETPOSTINT("state_id");
-                    $object->country_id  = GETPOSTINT("country_id");
+                    $object->address = trim(GETPOST("address", 'alphanohtml'));
+                    $object->zip = trim(GETPOST("zipcode", 'alphanohtml'));
+                    $object->town = trim(GETPOST("town", 'alphanohtml'));
+                    $object->state_id = GETPOSTINT("state_id");
+                    $object->country_id = GETPOSTINT("country_id");
 
-                    $object->phone       = trim(GETPOST("phone", 'alpha'));
+                    $object->phone = trim(GETPOST("phone", 'alpha'));
                     $object->phone_perso = trim(GETPOST("phone_perso", 'alpha'));
                     $object->phone_mobile = trim(GETPOST("phone_mobile", 'alpha'));
                     $object->email = preg_replace('/\s+/', '', GETPOST("member_email", 'alpha'));
                     $object->url = trim(GETPOST('member_url', 'custom', 0, FILTER_SANITIZE_URL));
-                    $object->socialnetworks = array();
+                    $object->socialnetworks = [];
                     foreach ($socialnetworks as $key => $value) {
                         if (GETPOSTISSET($key) && GETPOST($key, 'alphanohtml') != '') {
                             $object->socialnetworks[$key] = trim(GETPOST($key, 'alphanohtml'));
@@ -619,20 +618,20 @@ class AdherentController extends DolibarrController
                 $default_lang = GETPOST('default_lang', 'alpha');
 
                 $object->civility_id = $civility_id;
-                $object->firstname   = $firstname;
-                $object->lastname    = $lastname;
-                $object->gender      = $gender;
-                $object->societe     = $societe; // deprecated
-                $object->company     = $societe;
-                $object->address     = $address;
-                $object->zip         = $zip;
-                $object->town        = $town;
-                $object->state_id    = $state_id;
-                $object->country_id  = $country_id;
-                $object->phone       = $phone;
+                $object->firstname = $firstname;
+                $object->lastname = $lastname;
+                $object->gender = $gender;
+                $object->societe = $societe; // deprecated
+                $object->company = $societe;
+                $object->address = $address;
+                $object->zip = $zip;
+                $object->town = $town;
+                $object->state_id = $state_id;
+                $object->country_id = $country_id;
+                $object->phone = $phone;
                 $object->phone_perso = $phone_perso;
                 $object->phone_mobile = $phone_mobile;
-                $object->socialnetworks = array();
+                $object->socialnetworks = [];
                 if (isModEnabled('socialnetworks')) {
                     foreach ($socialnetworks as $key => $value) {
                         if (GETPOSTISSET($key) && GETPOST($key, 'alphanohtml') != '') {
@@ -641,18 +640,18 @@ class AdherentController extends DolibarrController
                     }
                 }
 
-                $object->email       = $email;
-                $object->url         = $url;
-                $object->login       = $login;
-                $object->pass        = $pass;
-                $object->birth       = $birthdate;
-                $object->photo       = $photo;
-                $object->typeid      = $typeid;
+                $object->email = $email;
+                $object->url = $url;
+                $object->login = $login;
+                $object->pass = $pass;
+                $object->birth = $birthdate;
+                $object->photo = $photo;
+                $object->typeid = $typeid;
                 //$object->note        = $comment;
-                $object->morphy      = $morphy;
-                $object->user_id     = $userid;
+                $object->morphy = $morphy;
+                $object->user_id = $userid;
                 $object->socid = $socid;
-                $object->public      = $public;
+                $object->public = $public;
                 $object->default_lang = $default_lang;
                 // Fill array 'array_options' with data from add form
                 $ret = $extrafields->setOptionalsFromPost(null, $object);
@@ -806,7 +805,7 @@ class AdherentController extends DolibarrController
                         $outputlangs = new Translate('', $conf);
                         $outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
                         // Load traductions files required by page
-                        $outputlangs->loadLangs(array("main", "members", "companies", "install", "other"));
+                        $outputlangs->loadLangs(["main", "members", "companies", "install", "other"]);
                         // Get email content from template
                         $arraydefaultmessage = null;
                         $labeltouse = getDolGlobalString('ADHERENT_EMAIL_TEMPLATE_MEMBER_VALIDATION');
@@ -817,7 +816,7 @@ class AdherentController extends DolibarrController
 
                         if (!empty($labeltouse) && is_object($arraydefaultmessage) && $arraydefaultmessage->id > 0) {
                             $subject = $arraydefaultmessage->topic;
-                            $msg     = $arraydefaultmessage->content;
+                            $msg = $arraydefaultmessage->content;
                         }
 
                         if (empty($labeltouse) || (int) $labeltouse === -1) {
@@ -833,7 +832,7 @@ class AdherentController extends DolibarrController
 
                             $moreinheader = 'X-Dolibarr-Info: send_an_email by adherents/card.php' . "\r\n";
 
-                            $result = $object->sendEmail($texttosend, $subjecttosend, array(), array(), array(), "", "", 0, -1, '', $moreinheader);
+                            $result = $object->sendEmail($texttosend, $subjecttosend, [], [], [], "", "", 0, -1, '', $moreinheader);
                             if ($result < 0) {
                                 $error++;
                                 setEventMessages($object->error, $object->errors, 'errors');
@@ -874,7 +873,7 @@ class AdherentController extends DolibarrController
                             $outputlangs = new Translate('', $conf);
                             $outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
                             // Load traductions files required by page
-                            $outputlangs->loadLangs(array("main", "members", "companies", "install", "other"));
+                            $outputlangs->loadLangs(["main", "members", "companies", "install", "other"]);
                             // Get email content from template
                             $arraydefaultmessage = null;
                             $labeltouse = getDolGlobalString('ADHERENT_EMAIL_TEMPLATE_CANCELATION');
@@ -885,7 +884,7 @@ class AdherentController extends DolibarrController
 
                             if (!empty($labeltouse) && is_object($arraydefaultmessage) && $arraydefaultmessage->id > 0) {
                                 $subject = $arraydefaultmessage->topic;
-                                $msg     = $arraydefaultmessage->content;
+                                $msg = $arraydefaultmessage->content;
                             }
 
                             if (empty($labeltouse) || (int) $labeltouse === -1) {
@@ -900,7 +899,7 @@ class AdherentController extends DolibarrController
 
                                 $moreinheader = 'X-Dolibarr-Info: send_an_email by adherents/card.php' . "\r\n";
 
-                                $result = $object->sendEmail($texttosend, $subjecttosend, array(), array(), array(), "", "", 0, -1, '', $moreinheader);
+                                $result = $object->sendEmail($texttosend, $subjecttosend, [], [], [], "", "", 0, -1, '', $moreinheader);
                                 if ($result < 0) {
                                     $error++;
                                     setEventMessages($object->error, $object->errors, 'errors');
@@ -941,7 +940,7 @@ class AdherentController extends DolibarrController
                             $outputlangs = new Translate('', $conf);
                             $outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
                             // Load traductions files required by page
-                            $outputlangs->loadLangs(array("main", "members", "companies", "install", "other"));
+                            $outputlangs->loadLangs(["main", "members", "companies", "install", "other"]);
                             // Get email content from template
                             $arraydefaultmessage = null;
                             $labeltouse = getDolGlobalString('ADHERENT_EMAIL_TEMPLATE_EXCLUSION');
@@ -952,7 +951,7 @@ class AdherentController extends DolibarrController
 
                             if (!empty($labeltouse) && is_object($arraydefaultmessage) && $arraydefaultmessage->id > 0) {
                                 $subject = $arraydefaultmessage->topic;
-                                $msg     = $arraydefaultmessage->content;
+                                $msg = $arraydefaultmessage->content;
                             }
 
                             if (empty($labeltouse) || (int) $labeltouse === -1) {
@@ -967,7 +966,7 @@ class AdherentController extends DolibarrController
 
                                 $moreinheader = 'X-Dolibarr-Info: send_an_email by adherents/card.php' . "\r\n";
 
-                                $result = $object->sendEmail($texttosend, $subjecttosend, array(), array(), array(), "", "", 0, -1, '', $moreinheader);
+                                $result = $object->sendEmail($texttosend, $subjecttosend, [], [], [], "", "", 0, -1, '', $moreinheader);
                                 if ($result < 0) {
                                     $error++;
                                     setEventMessages($object->error, $object->errors, 'errors');
@@ -1047,7 +1046,7 @@ class AdherentController extends DolibarrController
         global $langs;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("companies", "members", "other"));
+        $langs->loadLangs(["companies", "members", "other"]);
 
 
         $id = GETPOSTISSET('id') ? GETPOSTINT('id') : GETPOSTINT('rowid');
@@ -1199,7 +1198,7 @@ class AdherentController extends DolibarrController
         global $langs;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("companies", "members", "ldap", "admin"));
+        $langs->loadLangs(["companies", "members", "ldap", "admin"]);
 
         $id = GETPOSTINT('id');
         $ref = GETPOST('ref', 'alphanohtml');
@@ -1263,7 +1262,6 @@ class AdherentController extends DolibarrController
                 setEventMessages($ldap->error, $ldap->errors, 'errors');
             }
         }
-
 
 
         /*
@@ -1634,287 +1632,6 @@ class AdherentController extends DolibarrController
     }
 
     /**
-     *      \file       htdocs/adherents/note.php
-     *      \ingroup    member
-     *      \brief      Tab for note of a member
-     */
-    public function note()
-    {
-        global $conf;
-        global $db;
-        global $user;
-        global $hookmanager;
-        global $user;
-        global $menumanager;
-        global $langs;
-
-// Load translation files required by the page
-        $langs->loadLangs(array("companies", "members", "bills"));
-
-
-// Get parameters
-        $action = GETPOST('action', 'aZ09');
-        $id = GETPOSTINT('id');
-        $ref = GETPOST('ref', 'alphanohtml');
-
-
-// Initialize objects
-        $object = new Adherent($db);
-
-        $result = $object->fetch($id);
-        if ($result > 0) {
-            $adht = new AdherentType($db);
-            $result = $adht->fetch($object->typeid);
-        }
-
-
-        $permissionnote = $user->hasRight('adherent', 'creer'); // Used by the include of actions_setnotes.inc.php
-
-// Fetch object
-        if ($id > 0 || !empty($ref)) {
-            // Load member
-            $result = $object->fetch($id, $ref);
-
-            // Define variables to know what current user can do on users
-            $canadduser = ($user->admin || $user->hasRight('user', 'user', 'creer'));
-            // Define variables to know what current user can do on properties of user linked to edited member
-            if ($object->user_id) {
-                // $User is the user who edits, $object->user_id is the id of the related user in the edited member
-                $caneditfielduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'creer'))
-                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'creer')));
-                $caneditpassworduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'password'))
-                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'password')));
-            }
-        }
-
-// Define variables to determine what the current user can do on the members
-        $canaddmember = $user->hasRight('adherent', 'creer');
-// Define variables to determine what the current user can do on the properties of a member
-        if ($id) {
-            $caneditfieldmember = $user->hasRight('adherent', 'creer');
-        }
-
-        $hookmanager->initHooks(array('membernote'));
-
-// Security check
-        $result = restrictedArea($user, 'adherent', $object->id, '', '', 'socid', 'rowid', 0);
-
-        /*
-         * Actions
-         */
-        $parameters = array();
-        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
-        if ($reshook < 0) {
-            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
-        }
-        if (empty($reshook)) {
-            include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
-        }
-
-        /*
-         * View
-         */
-
-        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/note.php');
-
-        $title = $langs->trans("Member") . " - " . $langs->trans("Note");
-
-        $help_url = "EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder";
-
-        llxHeader("", $title, $help_url);
-
-        $form = new Form($db);
-
-        if ($id) {
-            $head = member_prepare_head($object);
-
-            print dol_get_fiche_head($head, 'note', $langs->trans("Member"), -1, 'user');
-
-            print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
-            print '<input type="hidden" name="token" value="' . newToken() . '">';
-
-            $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
-
-            $morehtmlref = '<a href="' . DOL_URL_ROOT . '/adherents/vcard.php?id=' . $object->id . '" class="refid">';
-            $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
-            $morehtmlref .= '</a>';
-
-            dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
-
-            print '<div class="fichecenter">';
-
-            print '<div class="underbanner clearboth"></div>';
-            print '<table class="border centpercent tableforfield">';
-
-            // Login
-            if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
-                print '<tr><td class="titlefield">' . $langs->trans("Login") . ' / ' . $langs->trans("Id") . '</td><td class="valeur">' . dol_escape_htmltag($object->login) . '</td></tr>';
-            }
-
-            // Type
-            print '<tr><td>' . $langs->trans("Type") . '</td>';
-            print '<td class="valeur">' . $adht->getNomUrl(1) . "</td></tr>\n";
-
-            // Morphy
-            print '<tr><td class="titlefield">' . $langs->trans("MemberNature") . '</td>';
-            print '<td class="valeur" >' . $object->getmorphylib('', 1) . '</td>';
-            print '</tr>';
-
-            // Company
-            print '<tr><td>' . $langs->trans("Company") . '</td><td class="valeur">' . dol_escape_htmltag($object->company) . '</td></tr>';
-
-            // Civility
-            print '<tr><td>' . $langs->trans("UserTitle") . '</td><td class="valeur">' . $object->getCivilityLabel() . '</td>';
-            print '</tr>';
-
-            print "</table>";
-
-            print '</div>';
-
-
-            $cssclass = 'titlefield';
-            $permission = $user->hasRight('adherent', 'creer'); // Used by the include of notes.tpl.php
-            include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
-
-
-            print dol_get_fiche_end();
-        }
-
-// End of page
-        llxFooter();
-        $db->close();
-        return true;
-    }
-
-    /**
-     *      \file       partnership_card.php
-     *      \ingroup    partnership
-     *      \brief      Page to create/edit/view partnership
-     */
-    public function partnership()
-    {
-        global $conf;
-        global $db;
-        global $user;
-        global $hookmanager;
-        global $user;
-        global $menumanager;
-        global $langs;
-
-// Load translation files required by the page
-        $langs->loadLangs(array("companies","members","partnership", "other"));
-
-// Get parameters
-        $id = GETPOSTINT('rowid') ? GETPOSTINT('rowid') : GETPOSTINT('id');
-        $ref = GETPOST('ref', 'alpha');
-        $action = GETPOST('action', 'aZ09');
-        $confirm = GETPOST('confirm', 'alpha');
-        $cancel = GETPOST('cancel', 'aZ09');
-        $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'partnershipcard'; // To manage different context of search
-        $backtopage = GETPOST('backtopage', 'alpha');
-        $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
-//$lineid   = GETPOST('lineid', 'int');
-
-        $object = new Adherent($db);
-        if ($id > 0) {
-            $object->fetch($id);
-        }
-
-// Initialize technical objects
-        $object         = new Partnership($db);
-        $extrafields    = new ExtraFields($db);
-        $adht           = new AdherentType($db);
-        $diroutputmassaction = $conf->partnership->dir_output . '/temp/massgeneration/' . $user->id;
-        $hookmanager->initHooks(array('partnershipthirdparty', 'globalcard')); // Note that conf->hooks_modules contains array
-
-// Fetch optionals attributes and labels
-        $extrafields->fetch_name_optionals_label($object->table_element);
-
-        $search_array_options = $extrafields->getOptionalsFromPost($object->table_element, '', 'search_');
-
-// Initialize array of search criteria
-        $search_all = GETPOST("search_all", 'alpha');
-        $search = array();
-
-        foreach ($object->fields as $key => $val) {
-            if (GETPOST('search_' . $key, 'alpha')) {
-                $search[$key] = GETPOST('search_' . $key, 'alpha');
-            }
-        }
-
-// Load object
-        include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
-
-        $permissiontoread = $user->hasRight('partnership', 'read');
-        $permissiontoadd = $user->hasRight('partnership', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
-        $permissiontodelete = $user->hasRight('partnership', 'delete') || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
-        $permissionnote = $user->hasRight('partnership', 'write'); // Used by the include of actions_setnotes.inc.php
-        $permissiondellink = $user->hasRight('partnership', 'write'); // Used by the include of actions_dellink.inc.php
-        $usercanclose = $user->hasRight('partnership', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
-        $upload_dir = $conf->partnership->multidir_output[isset($object->entity) ? $object->entity : 1];
-
-
-        if (getDolGlobalString('PARTNERSHIP_IS_MANAGED_FOR') != 'member') {
-            accessforbidden('Partnership module is not activated for members');
-        }
-        if (!isModEnabled('partnership')) {
-            accessforbidden();
-        }
-        if (empty($permissiontoread)) {
-            accessforbidden();
-        }
-        if ($action == 'edit' && empty($permissiontoadd)) {
-            accessforbidden();
-        }
-        if (($action == 'update' || $action == 'edit') && $object->status != $object::STATUS_DRAFT) {
-            accessforbidden();
-        }
-
-
-// Security check
-        $result = restrictedArea($user, 'adherent', $id, '', '', 'socid', 'rowid', 0);
-
-
-        /*
-         * Actions
-         */
-
-        $parameters = array();
-        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
-        if ($reshook < 0) {
-            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
-        }
-
-        $date_start = dol_mktime(0, 0, 0, GETPOSTINT('date_partnership_startmonth'), GETPOSTINT('date_partnership_startday'), GETPOSTINT('date_partnership_startyear'));
-        $date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_partnership_endmonth'), GETPOSTINT('date_partnership_endday'), GETPOSTINT('date_partnership_endyear'));
-
-        if (empty($reshook)) {
-            $error = 0;
-
-            $backtopage = dol_buildpath('/partnership/partnership.php', 1) . '?rowid=' . ($id > 0 ? $id : '__ID__');
-
-            // Actions when linking object each other
-            include DOL_DOCUMENT_ROOT . '/core/actions_dellink.inc.php';
-        }
-
-        $object->fields['fk_member']['visible'] = 0;
-        if ($object->id > 0 && $object->status == $object::STATUS_REFUSED && empty($action)) {
-            $object->fields['reason_decline_or_cancel']['visible'] = 1;
-        }
-        $object->fields['note_public']['visible'] = 1;
-
-
-        /*
-         * View
-         */
-
-        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/partnership.php');
-
-        $db->close();
-        return true;
-    }
-
-    /**
      *       \file       htdocs/adherents/subscription.php
      *       \ingroup    member
      *       \brief      tab for Adding, editing, deleting a member's memberships
@@ -1929,7 +1646,7 @@ class AdherentController extends DolibarrController
         global $menumanager;
         global $langs;
 
-        $langs->loadLangs(array("companies", "bills", "members", "users", "mails", 'other'));
+        $langs->loadLangs(["companies", "bills", "members", "users", "mails", 'other']);
 
         $action = GETPOST('action', 'aZ09');
         $confirm = GETPOST('confirm', 'alpha');
@@ -1972,7 +1689,7 @@ class AdherentController extends DolibarrController
         $errmsg = '';
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-        $hookmanager->initHooks(array('subscription'));
+        $hookmanager->initHooks(['subscription']);
 
 // PDF
         $hidedetails = (GETPOSTINT('hidedetails') ? GETPOSTINT('hidedetails') : (getDolGlobalString('MAIN_GENERATE_DOCUMENTS_HIDE_DETAILS') ? 1 : 0));
@@ -2015,7 +1732,7 @@ class AdherentController extends DolibarrController
          *  Actions
          */
 
-        $parameters = array();
+        $parameters = [];
         $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action);
         if ($reshook < 0) {
             setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -2231,7 +1948,7 @@ class AdherentController extends DolibarrController
                 if (!$error) {
                     // Send confirmation Email
                     if ($object->email && $sendalsoemail) {   // $object is 'Adherent'
-                        $parameters = array(
+                        $parameters = [
                             'datesubscription' => $datesubscription,
                             'amount' => $amount,
                             'ccountid' => $accountid,
@@ -2240,8 +1957,8 @@ class AdherentController extends DolibarrController
                             'num_chq' => $num_chq,
                             'emetteur_nom' => $emetteur_nom,
                             'emetteur_banque' => $emetteur_banque,
-                            'datesubend' => $datesubend
-                        );
+                            'datesubend' => $datesubend,
+                        ];
                         $reshook = $hookmanager->executeHooks('sendMail', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
                         if ($reshook < 0) {
                             setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -2258,7 +1975,7 @@ class AdherentController extends DolibarrController
                             $outputlangs = new Translate('', $conf);
                             $outputlangs->setDefaultLang(empty($object->thirdparty->default_lang) ? $mysoc->default_lang : $object->thirdparty->default_lang);
                             // Load traductions files required by page
-                            $outputlangs->loadLangs(array("main", "members"));
+                            $outputlangs->loadLangs(["main", "members"]);
 
                             // Get email content from template
                             $arraydefaultmessage = null;
@@ -2270,7 +1987,7 @@ class AdherentController extends DolibarrController
 
                             if (!empty($labeltouse) && is_object($arraydefaultmessage) && $arraydefaultmessage->id > 0) {
                                 $subject = $arraydefaultmessage->topic;
-                                $msg     = $arraydefaultmessage->content;
+                                $msg = $arraydefaultmessage->content;
                             }
 
                             $substitutionarray = getCommonSubstitutionArray($outputlangs, 0, null, $object);
@@ -2280,17 +1997,17 @@ class AdherentController extends DolibarrController
 
                             // Attach a file ?
                             $file = '';
-                            $listofpaths = array();
-                            $listofnames = array();
-                            $listofmimes = array();
+                            $listofpaths = [];
+                            $listofnames = [];
+                            $listofmimes = [];
                             if (is_object($object->invoice) && (!is_object($arraydefaultmessage) || intval($arraydefaultmessage->joinfiles))) {
                                 $invoicediroutput = $conf->facture->dir_output;
                                 $fileparams = dol_most_recent_file($invoicediroutput . '/' . $object->invoice->ref, preg_quote($object->invoice->ref, '/') . '[^\-]+');
                                 $file = $fileparams['fullname'];
 
-                                $listofpaths = array($file);
-                                $listofnames = array(basename($file));
-                                $listofmimes = array(dol_mimetype($file));
+                                $listofpaths = [$file];
+                                $listofnames = [basename($file)];
+                                $listofmimes = [dol_mimetype($file)];
                             }
 
                             $moreinheader = 'X-Dolibarr-Info: send_an_email by adherents/subscription.php' . "\r\n";
@@ -2320,12 +2037,292 @@ class AdherentController extends DolibarrController
         }
 
 
-
         /*
          * View
          */
 
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/subscription.php');
+
+        $db->close();
+        return true;
+    }
+
+    /**
+     *      \file       htdocs/adherents/note.php
+     *      \ingroup    member
+     *      \brief      Tab for note of a member
+     */
+    public function note()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(["companies", "members", "bills"]);
+
+
+// Get parameters
+        $action = GETPOST('action', 'aZ09');
+        $id = GETPOSTINT('id');
+        $ref = GETPOST('ref', 'alphanohtml');
+
+
+// Initialize objects
+        $object = new Adherent($db);
+
+        $result = $object->fetch($id);
+        if ($result > 0) {
+            $adht = new AdherentType($db);
+            $result = $adht->fetch($object->typeid);
+        }
+
+
+        $permissionnote = $user->hasRight('adherent', 'creer'); // Used by the include of actions_setnotes.inc.php
+
+// Fetch object
+        if ($id > 0 || !empty($ref)) {
+            // Load member
+            $result = $object->fetch($id, $ref);
+
+            // Define variables to know what current user can do on users
+            $canadduser = ($user->admin || $user->hasRight('user', 'user', 'creer'));
+            // Define variables to know what current user can do on properties of user linked to edited member
+            if ($object->user_id) {
+                // $User is the user who edits, $object->user_id is the id of the related user in the edited member
+                $caneditfielduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'creer'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'creer')));
+                $caneditpassworduser = ((($user->id == $object->user_id) && $user->hasRight('user', 'self', 'password'))
+                    || (($user->id != $object->user_id) && $user->hasRight('user', 'user', 'password')));
+            }
+        }
+
+// Define variables to determine what the current user can do on the members
+        $canaddmember = $user->hasRight('adherent', 'creer');
+// Define variables to determine what the current user can do on the properties of a member
+        if ($id) {
+            $caneditfieldmember = $user->hasRight('adherent', 'creer');
+        }
+
+        $hookmanager->initHooks(['membernote']);
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $object->id, '', '', 'socid', 'rowid', 0);
+
+        /*
+         * Actions
+         */
+        $parameters = [];
+        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
+        if (empty($reshook)) {
+            include DOL_DOCUMENT_ROOT . '/core/actions_setnotes.inc.php'; // Must be include, not include_once
+        }
+
+        /*
+         * View
+         */
+
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/note.php');
+
+        $title = $langs->trans("Member") . " - " . $langs->trans("Note");
+
+        $help_url = "EN:Module_Foundations|FR:Module_Adh&eacute;rents|ES:M&oacute;dulo_Miembros|DE:Modul_Mitglieder";
+
+        llxHeader("", $title, $help_url);
+
+        $form = new Form($db);
+
+        if ($id) {
+            $head = member_prepare_head($object);
+
+            print dol_get_fiche_head($head, 'note', $langs->trans("Member"), -1, 'user');
+
+            print '<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">';
+            print '<input type="hidden" name="token" value="' . newToken() . '">';
+
+            $linkback = '<a href="' . DOL_URL_ROOT . '/adherents/list.php?restore_lastsearch_values=1">' . $langs->trans("BackToList") . '</a>';
+
+            $morehtmlref = '<a href="' . DOL_URL_ROOT . '/adherents/vcard.php?id=' . $object->id . '" class="refid">';
+            $morehtmlref .= img_picto($langs->trans("Download") . ' ' . $langs->trans("VCard"), 'vcard.png', 'class="valignmiddle marginleftonly paddingrightonly"');
+            $morehtmlref .= '</a>';
+
+            dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'ref', $morehtmlref);
+
+            print '<div class="fichecenter">';
+
+            print '<div class="underbanner clearboth"></div>';
+            print '<table class="border centpercent tableforfield">';
+
+            // Login
+            if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
+                print '<tr><td class="titlefield">' . $langs->trans("Login") . ' / ' . $langs->trans("Id") . '</td><td class="valeur">' . dol_escape_htmltag($object->login) . '</td></tr>';
+            }
+
+            // Type
+            print '<tr><td>' . $langs->trans("Type") . '</td>';
+            print '<td class="valeur">' . $adht->getNomUrl(1) . "</td></tr>\n";
+
+            // Morphy
+            print '<tr><td class="titlefield">' . $langs->trans("MemberNature") . '</td>';
+            print '<td class="valeur" >' . $object->getmorphylib('', 1) . '</td>';
+            print '</tr>';
+
+            // Company
+            print '<tr><td>' . $langs->trans("Company") . '</td><td class="valeur">' . dol_escape_htmltag($object->company) . '</td></tr>';
+
+            // Civility
+            print '<tr><td>' . $langs->trans("UserTitle") . '</td><td class="valeur">' . $object->getCivilityLabel() . '</td>';
+            print '</tr>';
+
+            print "</table>";
+
+            print '</div>';
+
+
+            $cssclass = 'titlefield';
+            $permission = $user->hasRight('adherent', 'creer'); // Used by the include of notes.tpl.php
+            include DOL_DOCUMENT_ROOT . '/core/tpl/notes.tpl.php';
+
+
+            print dol_get_fiche_end();
+        }
+
+// End of page
+        llxFooter();
+        $db->close();
+        return true;
+    }
+
+    /**
+     *      \file       partnership_card.php
+     *      \ingroup    partnership
+     *      \brief      Page to create/edit/view partnership
+     */
+    public function partnership()
+    {
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
+
+// Load translation files required by the page
+        $langs->loadLangs(["companies", "members", "partnership", "other"]);
+
+// Get parameters
+        $id = GETPOSTINT('rowid') ? GETPOSTINT('rowid') : GETPOSTINT('id');
+        $ref = GETPOST('ref', 'alpha');
+        $action = GETPOST('action', 'aZ09');
+        $confirm = GETPOST('confirm', 'alpha');
+        $cancel = GETPOST('cancel', 'aZ09');
+        $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'partnershipcard'; // To manage different context of search
+        $backtopage = GETPOST('backtopage', 'alpha');
+        $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
+//$lineid   = GETPOST('lineid', 'int');
+
+        $object = new Adherent($db);
+        if ($id > 0) {
+            $object->fetch($id);
+        }
+
+// Initialize technical objects
+        $object = new Partnership($db);
+        $extrafields = new ExtraFields($db);
+        $adht = new AdherentType($db);
+        $diroutputmassaction = $conf->partnership->dir_output . '/temp/massgeneration/' . $user->id;
+        $hookmanager->initHooks(['partnershipthirdparty', 'globalcard']); // Note that conf->hooks_modules contains array
+
+// Fetch optionals attributes and labels
+        $extrafields->fetch_name_optionals_label($object->table_element);
+
+        $search_array_options = $extrafields->getOptionalsFromPost($object->table_element, '', 'search_');
+
+// Initialize array of search criteria
+        $search_all = GETPOST("search_all", 'alpha');
+        $search = [];
+
+        foreach ($object->fields as $key => $val) {
+            if (GETPOST('search_' . $key, 'alpha')) {
+                $search[$key] = GETPOST('search_' . $key, 'alpha');
+            }
+        }
+
+// Load object
+        include DOL_DOCUMENT_ROOT . '/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
+
+        $permissiontoread = $user->hasRight('partnership', 'read');
+        $permissiontoadd = $user->hasRight('partnership', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+        $permissiontodelete = $user->hasRight('partnership', 'delete') || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
+        $permissionnote = $user->hasRight('partnership', 'write'); // Used by the include of actions_setnotes.inc.php
+        $permissiondellink = $user->hasRight('partnership', 'write'); // Used by the include of actions_dellink.inc.php
+        $usercanclose = $user->hasRight('partnership', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+        $upload_dir = $conf->partnership->multidir_output[isset($object->entity) ? $object->entity : 1];
+
+
+        if (getDolGlobalString('PARTNERSHIP_IS_MANAGED_FOR') != 'member') {
+            accessforbidden('Partnership module is not activated for members');
+        }
+        if (!isModEnabled('partnership')) {
+            accessforbidden();
+        }
+        if (empty($permissiontoread)) {
+            accessforbidden();
+        }
+        if ($action == 'edit' && empty($permissiontoadd)) {
+            accessforbidden();
+        }
+        if (($action == 'update' || $action == 'edit') && $object->status != $object::STATUS_DRAFT) {
+            accessforbidden();
+        }
+
+
+// Security check
+        $result = restrictedArea($user, 'adherent', $id, '', '', 'socid', 'rowid', 0);
+
+
+        /*
+         * Actions
+         */
+
+        $parameters = [];
+        $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook < 0) {
+            setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+        }
+
+        $date_start = dol_mktime(0, 0, 0, GETPOSTINT('date_partnership_startmonth'), GETPOSTINT('date_partnership_startday'), GETPOSTINT('date_partnership_startyear'));
+        $date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_partnership_endmonth'), GETPOSTINT('date_partnership_endday'), GETPOSTINT('date_partnership_endyear'));
+
+        if (empty($reshook)) {
+            $error = 0;
+
+            $backtopage = dol_buildpath('/partnership/partnership.php', 1) . '?rowid=' . ($id > 0 ? $id : '__ID__');
+
+            // Actions when linking object each other
+            include DOL_DOCUMENT_ROOT . '/core/actions_dellink.inc.php';
+        }
+
+        $object->fields['fk_member']['visible'] = 0;
+        if ($object->id > 0 && $object->status == $object::STATUS_REFUSED && empty($action)) {
+            $object->fields['reason_decline_or_cancel']['visible'] = 1;
+        }
+        $object->fields['note_public']['visible'] = 1;
+
+
+        /*
+         * View
+         */
+
+        require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/partnership.php');
 
         $db->close();
         return true;
@@ -2346,14 +2343,14 @@ class AdherentController extends DolibarrController
         global $menumanager;
         global $langs;
 
-// Load translation files required by the page
+        // Load translation files required by the page
         $langs->load("members");
 
-        $rowid  = GETPOSTINT('rowid');
+        $rowid = GETPOSTINT('rowid');
         $action = GETPOST('action', 'aZ09');
         $massaction = GETPOST('massaction', 'alpha');
         $cancel = GETPOST('cancel', 'alpha');
-        $toselect   = GETPOST('toselect', 'array');
+        $toselect = GETPOST('toselect', 'array');
         $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : str_replace('_', '', basename(dirname(__FILE__)) . basename(__FILE__, '.php')); // To manage different context of search
         $backtopage = GETPOST('backtopage', 'alpha');
         $mode = GETPOST('mode', 'alpha');
@@ -2368,7 +2365,7 @@ class AdherentController extends DolibarrController
         $status = GETPOST('status', 'alpha');
         $optioncss = GETPOST('optioncss', 'alpha');
 
-// Load variable for pagination
+        // Load variable for pagination
         $limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
         $sortfield = GETPOST('sortfield', 'aZ09comma');
         $sortorder = GETPOST('sortorder', 'aZ09comma');
@@ -2399,15 +2396,15 @@ class AdherentController extends DolibarrController
         $mail_valid = GETPOST("mail_valid", 'restricthtml');
         $caneditamount = GETPOSTINT("caneditamount");
 
-// Initialize technical objects
+        // Initialize technical objects
         $object = new AdherentType($db);
         $extrafields = new ExtraFields($db);
-        $hookmanager->initHooks(array('membertypecard', 'globalcard'));
+        $hookmanager->initHooks(['membertypecard', 'globalcard']);
 
-// Fetch optionals attributes and labels
+        // Fetch optionals attributes and labels
         $extrafields->fetch_name_optionals_label($object->table_element);
 
-// Security check
+        // Security check
         $result = restrictedArea($user, 'adherent', $rowid, 'adherent_type');
 
 
@@ -2570,7 +2567,7 @@ class AdherentController extends DolibarrController
         global $langs;
 
 // Load translation files required by the page
-        $langs->loadLangs(array("admin", "members", "ldap"));
+        $langs->loadLangs(["admin", "members", "ldap"]);
 
         $id = GETPOSTINT('rowid');
         $action = GETPOST('action', 'aZ09');
@@ -2582,14 +2579,14 @@ class AdherentController extends DolibarrController
         $object->fetch($id);
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-        $hookmanager->initHooks(array('membertypeldapcard', 'globalcard'));
+        $hookmanager->initHooks(['membertypeldapcard', 'globalcard']);
 
         /*
          * Actions
          */
 
 
-        $parameters = array();
+        $parameters = [];
         $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
         if ($reshook < 0) {
             setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -2644,7 +2641,7 @@ class AdherentController extends DolibarrController
         global $langs;
 
 // Load translation files required by the page
-        $langs->loadLangs(array('members', 'languages'));
+        $langs->loadLangs(['members', 'languages']);
 
         $id = GETPOSTINT('rowid') ? GETPOSTINT('rowid') : GETPOSTINT('id');
         $action = GETPOST('action', 'aZ09');
@@ -2691,7 +2688,7 @@ class AdherentController extends DolibarrController
 
             // update of object
             if ($forcelangprod == $current_lang) {
-                $object->label       = GETPOST("libelle", 'alphanohtml');
+                $object->label = GETPOST("libelle", 'alphanohtml');
                 $object->description = dol_htmlcleanlastbr(GETPOST("desc", 'restricthtml'));
                 //$object->other         = dol_htmlcleanlastbr(GETPOST("other", 'restricthtml'));
             } else {
@@ -2717,13 +2714,13 @@ class AdherentController extends DolibarrController
 
             foreach ($object->multilangs as $key => $value) { // saving new values in the object
                 if ($key == $current_lang) {
-                    $object->label          = GETPOST("libelle-" . $key, 'alphanohtml');
+                    $object->label = GETPOST("libelle-" . $key, 'alphanohtml');
                     $object->description = dol_htmlcleanlastbr(GETPOST("desc-" . $key, 'restricthtml'));
-                    $object->other          = dol_htmlcleanlastbr(GETPOST("other-" . $key, 'restricthtml'));
+                    $object->other = dol_htmlcleanlastbr(GETPOST("other-" . $key, 'restricthtml'));
                 } else {
-                    $object->multilangs[$key]["label"]          = GETPOST("libelle-" . $key, 'alphanohtml');
+                    $object->multilangs[$key]["label"] = GETPOST("libelle-" . $key, 'alphanohtml');
                     $object->multilangs[$key]["description"] = dol_htmlcleanlastbr(GETPOST("desc-" . $key, 'restricthtml'));
-                    $object->multilangs[$key]["other"]          = dol_htmlcleanlastbr(GETPOST("other-" . $key, 'restricthtml'));
+                    $object->multilangs[$key]["other"] = dol_htmlcleanlastbr(GETPOST("other-" . $key, 'restricthtml'));
                 }
             }
 

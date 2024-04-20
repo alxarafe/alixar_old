@@ -33,13 +33,47 @@ abstract class Controller extends ViewController
         // $db = DB::connection()->getPdo();
 
         parent::__construct();
+        $this->checkLogin();
+    }
+
+    public function checkLogin()
+    {
+        if ($this->action === 'logout') {
+            return $this->doLogout();
+        }
+        if ($this->action !== 'login') {
+            return true;
+        }
+        $this->doLogin();
+    }
+
+    public function doLogout()
+    {
+        Auth::logout();
+        return true;
+    }
+
+    public function doLogin()
+    {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $ok = Auth::login($username, $password);
+        if ($ok) {
+            $this->message = 'Login ok';
+        } else {
+            $this->alert = 'Login KO';
+        }
+        return $ok;
     }
 
     public function index(bool $executeActions = true): bool
     {
-        if (!$this->isLogged()) {
-            if (!$this->isLogged()) {
+        $log = $this->isLogged();
+        if (!$log) {
+            $login = $this->doLogin();
+            if (!$login) {
                 $this->template = 'auth/login';
+                $this->action = 'index';
                 $executeActions = false;
             }
         }
@@ -52,18 +86,5 @@ abstract class Controller extends ViewController
             $this->username = Auth::isLogged();
         }
         return isset($this->username);
-    }
-
-    public function doLogin()
-    {
-        $login = $_POST['username'];
-        $password = $_POST['password'];
-        $ok = Auth::login($login, $password);
-        if ($ok) {
-            $this->message = 'Login ok';
-        } else {
-            $this->alert = 'Login KO';
-        }
-        return $ok;
     }
 }

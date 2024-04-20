@@ -42,11 +42,9 @@ abstract class ViewController extends GenericController
         }
 
         if (!isset($this->template)) {
-            dd([
-                $this,
-                debug_backtrace(),
-            ]);
+            $this->template = 'index';
         }
+
         $vars = ['self' => $this];
         $viewPaths = [
             BASE_PATH . '/Templates',

@@ -43,6 +43,9 @@ abstract class GenericController
         if ($this->action === null) {
             $this->action = filter_input(INPUT_GET, 'action');
         }
+        if ($this->action === null) {
+            $this->action = 'index';
+        }
     }
 
     /**
@@ -62,6 +65,11 @@ abstract class GenericController
         $url .=
             '?module=' . filter_input(INPUT_GET, 'module') .
             '&controller=' . filter_input(INPUT_GET, 'controller');
+
+        $action = filter_input(INPUT_GET, 'action');
+        if ($action) {
+            $url .= '&action=' . $action;
+        }
 
         return $url;
     }

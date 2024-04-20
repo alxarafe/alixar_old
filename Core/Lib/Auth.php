@@ -1,23 +1,57 @@
 <?php
 
+/* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 namespace Alxarafe\Lib;
 
-class Auth
+abstract class Auth
 {
-    protected $auth;
-
-    public function __construct(PHPAuth $auth)
+    /**
+     * Return true if login is correct with user/mail and password.
+     * TODO: This is a test. It will be checked against a user database.
+     *
+     * @param $email
+     * @param $password
+     *
+     * @return bool
+     */
+    public static function login($username, $password)
     {
-        $this->auth = $auth;
+        static::logout();
+
+        // If bad user or password, no login
+        if ($username !== 'user' || $password !== 'password') {
+            return false;
+        }
+
+        // Save the cookie
+        $rememberme = filter_input(INPUT_POST, 'rememberme');
+        $time = time() + 3600;
+        if (isset($rememberme)) {
+            $time += 365 * 24 * 60 * 60;
+        }
+        setcookie('login_alixar', $username, $time);
+        return true;
     }
 
-    public static function login($email, $password)
+    public static function logout()
     {
-        /**
-         * TODO: This is a test. It will be checked against a user database.
-         */
-        setcookie('login_alixar', $email, time() + 3600);
-        return ($email === 'user') && ($password === 'password');
+        // Erase old cookie.
+        setcookie('login_alixar', '', time() - 60);
     }
 
     public static function isLogged()
@@ -26,21 +60,5 @@ class Auth
          * TODO: This is a test.
          */
         return $_COOKIE['login_alixar'];
-    }
-
-    public function changePassword($currentPassword, $newPassword)
-    {
-        $uid = $this->auth->getCurrentUID();
-        return $this->auth->changePassword($uid, $currentPassword, $newPassword);
-    }
-
-    public function sendEmail($email, $subject, $body)
-    {
-        // Implement email sending logic here, possibly using a separate email sending class or library
-    }
-
-    public function logout()
-    {
-        return $this->auth->logout();
     }
 }
