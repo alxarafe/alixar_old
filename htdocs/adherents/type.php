@@ -9,7 +9,10 @@
  * Copyright (C) 2019-2022	Thibault Foucart		<support@ptibogxiv.net>
  * Copyright (C) 2020		Josep Lluís Amador		<joseplluis@lliuretic.cat>
  * Copyright (C) 2021		Waël Almoman			<info@almoman.com>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com> * This program is free software; you can redistribute it and/or modify
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+
+ * This program is free software; you can redistribute it and/or modify
+ *
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
@@ -23,6 +26,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use DoliModules\Adherent\Controller\AdherentController;
+use DoliModules\Adherent\Controller\AdherentTypeController;
 
-new AdherentController();
+new AdherentTypeController();

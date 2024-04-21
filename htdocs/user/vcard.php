@@ -27,6 +27,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Company\Model\Company;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/vcard.class.php';
 

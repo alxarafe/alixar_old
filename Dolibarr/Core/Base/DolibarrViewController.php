@@ -16,7 +16,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Alxarafe\Base;
+namespace DoliCore\Base;
 
 use Jenssegers\Blade\Blade;
 
@@ -25,7 +25,7 @@ use Jenssegers\Blade\Blade;
  *
  * @package Alxarafe\Base
  */
-abstract class ViewController extends GenericController
+abstract class DolibarrViewController extends DolibarrGenericController
 {
     /**
      * Theme name. TODO: Has to be updated according to the configuration.

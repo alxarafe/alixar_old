@@ -25,7 +25,7 @@ namespace DoliCore\Base;
  *
  * @package DoliCore\Base
  */
-abstract class DolibarrController extends DolibarrGenericController
+abstract class DolibarrController extends DolibarrViewController
 {
     public $conf;
     public $config;
