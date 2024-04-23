@@ -3,8 +3,11 @@
 <head>
     @include('partial.head')
 </head>
-<body class="login-page bg-body-secondary">
-@include('partial.content')
+<body class="{!! $me->body_class !!}">
+@include('partial.body')
+
+{{-- Common scripts --}}
+
 @stack('scripts')
 </body>
 </html>

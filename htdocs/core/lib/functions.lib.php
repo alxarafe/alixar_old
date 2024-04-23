@@ -586,6 +586,8 @@ function dol_shutdown()
  */
 function GETPOSTISSET($paramname)
 {
+    Debug::message("Use Filter::GetPostIsset('$paramname') instead!");
+
     $isset = false;
 
     $relativepathstring = $_SERVER['PHP_SELF'];
@@ -1016,7 +1018,6 @@ function GETPOSTINT($paramname, $method = 0)
 {
     return (int) GETPOST($paramname, 'int', $method, null, null, 0);
 }
-
 
 /**
  *  Return the value of a $_GET or $_POST supervariable, converted into float.

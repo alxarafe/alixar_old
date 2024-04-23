@@ -1,13 +1,14 @@
 <!-- BEGIN TEMPLATE resource_add.tpl.php -->
 <?php
 
+use DoliCore\Form\Form;
+use DoliModules\Resource\Model\FormResource;
+
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
     print "Error, template page can't be called as URL";
     exit(1);
 }
-
-
 
 $form = new Form($db);
 $formresources = new FormResource($db);

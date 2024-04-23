@@ -30,6 +30,7 @@
  */
 
 use DoliCore\Lib\Fields;
+use DoliModules\Product\Model\ProductCustomerPrice;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

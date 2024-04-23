@@ -1,14 +1,15 @@
 <!-- BEGIN TEMPLATE resource_view.tpl.php -->
 <?php
+
+use DoliCore\Form\Form;
+
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
     print "Error, template page can't be called as URL";
     exit(1);
 }
 
-
 $form = new Form($db);
-
 
 print '<div class="tagtable centpercent noborder allwidth">';
 

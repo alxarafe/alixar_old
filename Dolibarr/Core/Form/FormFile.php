@@ -46,7 +46,33 @@ use DoliModules\Supplier\Model\FactureFournisseur;
 use DoliModules\SupplierProposal\Model\SupplierProposal;
 use DoliModules\User\Model\User;
 use Link;
+use ModeleAction;
+use ModeleChequeReceipts;
+use ModeleDon;
+use ModeleExpenseReport;
 use ModelePDFCards;
+use ModelePDFCommandes;
+use ModelePDFContract;
+use ModelePDFDeliveryOrder;
+use ModelePDFEvaluation;
+use ModelePdfExpedition;
+use ModelePDFFactures;
+use ModelePDFFicheinter;
+use ModelePDFMovement;
+use ModelePDFProduct;
+use ModelePDFProductBatch;
+use ModelePDFProjects;
+use ModelePDFPropales;
+use ModelePdfReception;
+use ModelePDFStock;
+use ModelePDFSupplierProposal;
+use ModelePDFSuppliersInvoices;
+use ModelePDFSuppliersOrders;
+use ModelePDFSuppliersPayments;
+use ModelePDFTask;
+use ModelePDFUser;
+use ModelePDFUserGroup;
+use ModeleThirdPartyDoc;
 
 /**
  *  \file       htdocs/core/class/html.formfile.class.php
@@ -55,6 +81,7 @@ use ModelePDFCards;
  */
 
 require_once BASE_PATH . '/core/class/link.class.php';
+require_once BASE_PATH . '/core/modules/action/modules_action.php';
 require_once BASE_PATH . '/core/modules/cheque/modules_chequereceipts.php';
 require_once BASE_PATH . '/core/modules/export/modules_export.php';
 require_once BASE_PATH . '/core/modules/member/modules_cards.php';

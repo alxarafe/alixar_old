@@ -42,6 +42,7 @@ global $mysoc;
 require BASE_PATH . '/main.inc.php';
 
 use DoliCore\Base\DolibarrController;
+use DoliCore\Lib\Menu;
 use DoliModules\Adherent\Model\AdherentType;
 use ExtraFields;
 
@@ -62,6 +63,9 @@ class AdherentTypeController extends DolibarrController
         global $menumanager;
         global $langs;
         global $mysoc;
+
+        $menu = Menu::loadMenu();
+        // dd($menu);
 
         // Load translation files required by the page
         $this->langs->load("members");
@@ -127,7 +131,6 @@ class AdherentTypeController extends DolibarrController
         // Security check
         $result = restrictedArea($user, 'adherent', $rowid, 'adherent_type');
 
-
         /*
          *  Actions
          */
@@ -145,6 +148,7 @@ class AdherentTypeController extends DolibarrController
             $action = 'list';
             $massaction = '';
         }
+
         if (!GETPOST('confirmmassaction', 'alpha') && $massaction != 'presend' && $massaction != 'confirm_presend') {
             $massaction = '';
         }
@@ -259,13 +263,6 @@ class AdherentTypeController extends DolibarrController
                 $action = '';
             }
         }
-
-
-        /*
-         * View
-         */
-
-        // require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Adherent/Views/type.php');
 
         $this->db->close();
 

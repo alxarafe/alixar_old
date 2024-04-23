@@ -297,6 +297,7 @@ if (!function_exists("llxHeader")) {
         ];
         $reshook = $hookmanager->executeHooks('llxHeader', $parameters);
         if ($reshook > 0) {
+            dd(['$hookmanager->resPrint' => $hookmanager->resPrint]);
             print $hookmanager->resPrint;
             return;
         }

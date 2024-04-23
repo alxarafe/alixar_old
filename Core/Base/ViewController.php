@@ -18,8 +18,6 @@
 
 namespace Alxarafe\Base;
 
-use Jenssegers\Blade\Blade;
-
 /**
  * Class ViewController. The views controller adds support for views to the generic controller.
  *
@@ -27,35 +25,5 @@ use Jenssegers\Blade\Blade;
  */
 abstract class ViewController extends GenericController
 {
-    /**
-     * Theme name. TODO: Has to be updated according to the configuration.
-     *
-     * @var string
-     */
-    public $theme;
-
-    public function __destruct()
-    {
-        $this->theme = $_GET['theme'];
-        if (empty($this->theme)) {
-            $this->theme = 'adminlte';
-        }
-
-        if (!isset($this->template)) {
-            $this->template = 'index';
-        }
-
-        $vars = ['me' => $this];
-        $viewPaths = [
-            BASE_PATH . '/Templates',
-            BASE_PATH . '/Templates/theme/' . $this->theme,
-            BASE_PATH . '/Templates/common',
-        ];
-        $cachePaths = realpath(BASE_PATH . '/../tmp') . '/blade';
-        if (!is_dir($cachePaths) && !mkdir($cachePaths) && !is_dir($cachePaths)) {
-            die('Could not create cache directory for templates.');
-        }
-        $blade = new Blade($viewPaths, $cachePaths);
-        echo $blade->render($this->template, $vars);
-    }
+    use ViewTrait;
 }

@@ -57,6 +57,7 @@ use DolEditor;
 use DoliDB;
 use DoliModules\Billing\Model\OrderLine;
 use DoliModules\Category\Model\Categorie;
+use DoliModules\Company\Model\Company;
 use EcmFiles;
 use Extrafields;
 use Facture;
@@ -1846,7 +1847,7 @@ abstract class GenericDocument
         }
 
         if ($idtofetch) {
-            $thirdparty = new Societe($this->db);
+            $thirdparty = new Company($this->db);
             $result = $thirdparty->fetch($idtofetch);
             if ($result < 0) {
                 $this->errors = array_merge($this->errors, $thirdparty->errors);

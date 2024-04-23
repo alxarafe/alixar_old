@@ -25,11 +25,13 @@
  *  \brief      Page de gestion des documents attaches a un compte bancaire
  */
 
+use DoliCore\Form\Form;
+use DoliModules\Bank\Model\Account;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/bank.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/images.lib.php";
-require_once DOL_DOCUMENT_ROOT . "/core/class/html.formfile.class.php";
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'companies', 'other'));

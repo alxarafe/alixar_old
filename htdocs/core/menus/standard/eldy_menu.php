@@ -53,8 +53,8 @@ class MenuManager
     /**
      *  Constructor
      *
-     *  @param  DoliDB      $db         Database handler
-     *  @param  int         $type_user  Type of user
+     * @param DoliDB $db        Database handler
+     * @param int    $type_user Type of user
      */
     public function __construct($db, $type_user)
     {
@@ -66,8 +66,9 @@ class MenuManager
     /**
      * Load this->tabMenu
      *
-     * @param   string  $forcemainmenu      To force mainmenu to load
-     * @param   string  $forceleftmenu      To force leftmenu to load
+     * @param string $forcemainmenu To force mainmenu to load
+     * @param string $forceleftmenu To force leftmenu to load
+     *
      * @return  void
      */
     public function loadMenu($forcemainmenu = '', $forceleftmenu = '')
@@ -116,7 +117,7 @@ class MenuManager
         }
 
         require_once DOL_DOCUMENT_ROOT . '/core/class/menubase.class.php';
-        $tabMenu = array();
+        $tabMenu = [];
         $menuArbo = new Menubase($this->db, 'eldy');
         $menuArbo->menuLoad($mainmenu, $leftmenu, $this->type_user, 'eldy', $tabMenu);
         $this->tabMenu = $tabMenu;
@@ -130,15 +131,14 @@ class MenuManager
      *  Show menu.
      *  Menu defined in sql tables were stored into $this->tabMenu BEFORE this is called.
      *
-     *  @param  string  $mode           'top', 'topnb', 'left', 'jmobile' (used to get full xml ul/li menu)
-     *  @param  array   $moredata       An array with more data to output
-     *  @return int                     0 or nb of top menu entries if $mode = 'topnb'
+     * @param string $mode     'top', 'topnb', 'left', 'jmobile' (used to get full xml ul/li menu)
+     * @param array  $moredata An array with more data to output
+     *
+     * @return int                     0 or nb of top menu entries if $mode = 'topnb'
      */
     public function showmenu($mode, $moredata = null)
     {
         global $conf, $langs, $user;
-
-        //var_dump($this->tabMenu);
 
         require_once DOL_DOCUMENT_ROOT . '/core/menus/standard/eldy.lib.php';
 
@@ -176,14 +176,14 @@ class MenuManager
 
             // $this->menu->liste is top menu
             //var_dump($this->menu->liste);exit;
-            $lastlevel = array();
+            $lastlevel = [];
             print '<!-- Generate menu list from menu handler ' . $this->name . ' -->' . "\n";
             foreach ($this->menu->liste as $key => $val) {      // $val['url','titre','level','enabled'=0|1|2,'target','mainmenu','leftmenu'
                 print '<ul class="ulmenu" data-inset="true">';
                 print '<li class="lilevel0">';
 
                 if ($val['enabled'] == 1) {
-                    $substitarray = array('__LOGIN__' => $user->login, '__USER_ID__' => $user->id, '__USER_SUPERVISOR_ID__' => $user->fk_user);
+                    $substitarray = ['__LOGIN__' => $user->login, '__USER_ID__' => $user->id, '__USER_SUPERVISOR_ID__' => $user->fk_user];
                     $substitarray['__USERID__'] = $user->id; // For backward compatibility
                     $val['url'] = make_substitutions($val['url'], $substitarray);
 
@@ -221,7 +221,7 @@ class MenuManager
 
                     print '<ul>' . "\n";
                     if (
-                        ($canonrelurl != $canonnexturl && !in_array($val['mainmenu'], array('tools')))
+                        ($canonrelurl != $canonnexturl && !in_array($val['mainmenu'], ['tools']))
                         || (strpos($canonrelurl, '/product/index.php') !== false || strpos($canonrelurl, '/compta/bank/list.php') !== false)
                     ) {
                         // We add sub entry
@@ -233,7 +233,7 @@ class MenuManager
                         }
 
                         if ($langs->trans(ucfirst($val['mainmenu']) . "Dashboard") == ucfirst($val['mainmenu']) . "Dashboard") {  // No translation
-                            if (in_array($val['mainmenu'], array('cashdesk', 'externalsite', 'website', 'collab', 'takepos'))) {
+                            if (in_array($val['mainmenu'], ['cashdesk', 'externalsite', 'website', 'collab', 'takepos'])) {
                                 print $langs->trans("Access");
                             } else {
                                 print $langs->trans("Dashboard");
@@ -258,7 +258,7 @@ class MenuManager
                     }
                     */
 
-                    $lastlevel2 = array();
+                    $lastlevel2 = [];
                     foreach ($submenu->liste as $key2 => $val2) {       // $val['url','titre','level','enabled'=0|1|2,'target','mainmenu','leftmenu'
                         $showmenu = true;
                         if (getDolGlobalString('MAIN_MENU_HIDE_UNAUTHORIZED') && empty($val2['enabled'])) {
@@ -277,7 +277,7 @@ class MenuManager
                         }
 
                         if ($showmenu) {        // Visible (option to hide when not allowed is off or allowed)
-                            $substitarray = array('__LOGIN__' => $user->login, '__USER_ID__' => $user->id, '__USER_SUPERVISOR_ID__' => $user->fk_user);
+                            $substitarray = ['__LOGIN__' => $user->login, '__USER_ID__' => $user->id, '__USER_SUPERVISOR_ID__' => $user->fk_user];
                             $substitarray['__USERID__'] = $user->id; // For backward compatibility
                             $val2['url'] = make_substitutions($val2['url'], $substitarray); // Make also substitution of __(XXX)__ and __[XXX]__
 
@@ -288,7 +288,7 @@ class MenuManager
                             }
                             $canonurl2 = preg_replace('/\?.*$/', '', $val2['url']);
                             //var_dump($val2['url'].' - '.$canonurl2.' - '.$val2['level']);
-                            if (in_array($canonurl2, array('/admin/index.php', '/admin/tools/index.php', '/core/tools.php'))) {
+                            if (in_array($canonurl2, ['/admin/index.php', '/admin/tools/index.php', '/core/tools.php'])) {
                                 $relurl2 = '';
                             }
 
