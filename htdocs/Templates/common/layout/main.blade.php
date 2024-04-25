@@ -5,9 +5,6 @@
 </head>
 <body class="{!! $me->body_class !!}">
 @include('partial.body')
-
-{{-- Common scripts --}}
-
 @stack('scripts')
 </body>
 </html>

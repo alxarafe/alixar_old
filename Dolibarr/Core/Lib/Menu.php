@@ -27,14 +27,6 @@ abstract class Menu
         global $mainmenu, $leftmenu; // To export to dol_eval function
         global $db;
 
-        /*
-        dd([
-            'user' => $user,
-            \DoliCore\Model\Menu::loadTopMenu(1, empty($user->socid) ? 0 : 1),
-            \DoliCore\Model\Menu::loadSideMenu(1, empty($user->socid) ? 0 : 1),
-        ]);
-        */
-
         $type_user = empty($user->socid) ? 0 : 1;
 
         $sql = "SELECT m.rowid, m.type, m.module, m.fk_menu, m.fk_mainmenu, m.fk_leftmenu, m.url, m.titre,";
@@ -147,18 +139,10 @@ abstract class Menu
             // If a child have a position lower that its parent, we can make a loop to fix this here, but we prefer to show a warning
             // into the leftMenuCharger later to avoid useless operations.
 
-            /*
-            dump([
-                'user' => $user,
-                'sql' => $sql,
-                'result' => $tabMenu,
-            ]);
-            */
-
-            return 1;
+            return $tabMenu;
         } else {
             dol_print_error($db);
-            return -1;
+            return [];
         }
     }
 }

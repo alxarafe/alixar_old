@@ -65,7 +65,6 @@ class AdherentTypeController extends DolibarrController
         global $mysoc;
 
         $menu = Menu::loadMenu();
-        // dd($menu);
 
         // Load translation files required by the page
         $this->langs->load("members");
@@ -267,6 +266,20 @@ class AdherentTypeController extends DolibarrController
         $this->db->close();
 
         $this->template = '/page/adherent/type_list';
+
+        $this->menu = [];
+        foreach ($menu as $item) {
+            if ($item['type'] === 'left' || !$item['enabled']) {
+                continue;
+            }
+            $this->menu[] = [
+                'name' => $item['mainmenu'],
+                'href' => BASE_URL . $item['url'],
+                'prefix' => $item['prefix'],
+                'title' => $item['titre'],
+                'selected' => false,
+            ];
+        }
 
         return true;
     }
