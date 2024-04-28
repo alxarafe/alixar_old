@@ -22,6 +22,7 @@
  */
 
 use DoliCore\Api\DolibarrApi;
+use DoliModules\Accounting\Model\BonPrelevement;
 use Luracast\Restler\RestException;
 
 /**

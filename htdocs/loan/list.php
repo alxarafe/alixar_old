@@ -27,6 +27,7 @@
  */
 
 use DoliCore\Form\Form;
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 use DoliModules\User\Model\User;
 

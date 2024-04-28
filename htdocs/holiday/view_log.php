@@ -29,6 +29,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Holiday\Model\Holiday;
 use DoliModules\User\Model\UserGroup;
 
@@ -40,7 +41,7 @@ if (!$user->hasRight('holiday', 'define_holiday') || $user->socid > 0) {
     accessforbidden();
 }
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 $action             = GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view'; // The action 'add', 'create', 'edit', 'update', 'view', ...
 $massaction         = GETPOST('massaction', 'alpha'); // The bulk action (combo box choice into lists)

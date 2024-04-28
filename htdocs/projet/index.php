@@ -34,7 +34,7 @@ use DoliModules\Project\Model\Project;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 $hookmanager = new HookManager($db);
 

@@ -28,7 +28,11 @@
  *  \brief      File with class to manage cheque delivery receipts
  */
 
+namespace DoliModules\Accounting\Model;
+
 use DoliCore\Base\GenericDocument;
+use DoliCore\Model\WorkboardResponse;
+use DoliModules\User\Model\User;
 
 /**
  *  Class to manage cheque delivery receipts
@@ -76,7 +80,7 @@ class RemiseCheque extends GenericDocument
     /**
      *  Constructor
      *
-     *  @param      DoliDB      $db      Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct($db)
     {
@@ -86,9 +90,10 @@ class RemiseCheque extends GenericDocument
     /**
      *  Load record
      *
-     *  @param  int     $id             Id record
-     *  @param  string  $ref            Ref record
-     *  @return int                     Return integer <0 if KO, > 0 if OK
+     * @param int    $id  Id record
+     * @param string $ref Ref record
+     *
+     * @return int                     Return integer <0 if KO, > 0 if OK
      */
     public function fetch($id, $ref = '')
     {
@@ -111,16 +116,16 @@ class RemiseCheque extends GenericDocument
         $resql = $this->db->query($sql);
         if ($resql) {
             if ($obj = $this->db->fetch_object($resql)) {
-                $this->id             = $obj->rowid;
-                $this->amount         = $obj->amount;
+                $this->id = $obj->rowid;
+                $this->amount = $obj->amount;
                 $this->date_bordereau = $this->db->jdate($obj->date_bordereau);
-                $this->account_id     = $obj->fk_bank_account;
-                $this->account_label  = $obj->account_label;
-                $this->author_id      = $obj->fk_user_author;
-                $this->nbcheque       = $obj->nbcheque;
-                $this->statut         = $obj->statut;
-                $this->ref_ext        = $obj->ref_ext;
-                $this->type           = $obj->type;
+                $this->account_id = $obj->fk_bank_account;
+                $this->account_label = $obj->account_label;
+                $this->author_id = $obj->fk_user_author;
+                $this->nbcheque = $obj->nbcheque;
+                $this->statut = $obj->statut;
+                $this->ref_ext = $obj->ref_ext;
+                $this->type = $obj->type;
 
                 if ($this->statut == 0) {
                     $this->ref = "(PROV" . $this->id . ")";
@@ -140,11 +145,12 @@ class RemiseCheque extends GenericDocument
     /**
      *  Create a receipt to send cheques
      *
-     *  @param  User    $user           User making creation
-     *  @param  int     $account_id     Bank account for cheque receipt
-     *  @param  int     $limit          Limit ref of cheque to this
-     *  @param  array   $toRemise       array with cheques to remise
-     *  @return int                     Return integer <0 if KO, >0 if OK
+     * @param User  $user       User making creation
+     * @param int   $account_id Bank account for cheque receipt
+     * @param int   $limit      Limit ref of cheque to this
+     * @param array $toRemise   array with cheques to remise
+     *
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function create($user, $account_id, $limit, $toRemise)
     {
@@ -210,7 +216,7 @@ class RemiseCheque extends GenericDocument
                 }
             }
 
-            $lines = array();
+            $lines = [];
 
             if ($this->id > 0 && $this->errno == 0) {
                 $sql = "SELECT b.rowid";
@@ -290,8 +296,9 @@ class RemiseCheque extends GenericDocument
     /**
      *  Delete deposit from database
      *
-     *  @param  User    $user       User that delete
-     *  @return int
+     * @param User $user User that delete
+     *
+     * @return int
      */
     public function delete($user)
     {
@@ -340,8 +347,9 @@ class RemiseCheque extends GenericDocument
     /**
      *  Validate a receipt
      *
-     *  @param  User    $user       User
-     *  @return int                 Return integer <0 if KO, >0 if OK
+     * @param User $user User
+     *
+     * @return int                 Return integer <0 if KO, >0 if OK
      */
     public function validate($user)
     {
@@ -393,8 +401,9 @@ class RemiseCheque extends GenericDocument
      *      Return next reference of cheque receipts not already used (or last reference)
      *      according to numbering module defined into constant FACTURE_ADDON
      *
-     *      @param     string       $mode       'next' for next value or 'last' for last value
-     *      @return    string                   free ref or last ref
+     * @param string $mode 'next' for next value or 'last' for last value
+     *
+     * @return    string                   free ref or last ref
      */
     public function getNextNumRef($mode = 'next')
     {
@@ -417,7 +426,7 @@ class RemiseCheque extends GenericDocument
             $classname = getDolGlobalString('CHEQUERECEIPTS_ADDON');
 
             // Include file with class
-            $dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
+            $dirmodels = array_merge(['/'], (array) $conf->modules_parts['models']);
 
             foreach ($dirmodels as $reldir) {
                 $dir = dol_buildpath($reldir . "core/modules/cheque/");
@@ -471,17 +480,19 @@ class RemiseCheque extends GenericDocument
     }
 
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *      Load indicators for dashboard (this->nbtodo and this->nbtodolate)
      *
-     *      @param  User    $user       Object user
-     *      @param  string  $type       Type of payment mode deposit ('CHQ', 'TRA', ...)
-     *      @return WorkboardResponse|int Return integer <0 if KO, WorkboardResponse if OK
+     * @param User   $user Object user
+     * @param string $type Type of payment mode deposit ('CHQ', 'TRA', ...)
+     *
+     * @return WorkboardResponse|int Return integer <0 if KO, WorkboardResponse if OK
      */
     public function load_board($user, $type = 'CHQ')
     {
-		// phpcs:enable
+        // phpcs:enable
         global $conf, $langs;
 
         if ($user->socid) {
@@ -529,8 +540,9 @@ class RemiseCheque extends GenericDocument
     /**
      *      Load indicators this->nb for the state board
      *
-     *      @param  string  $type       Type of payment mode deposit ('CHQ', 'TRA', ...)
-     *      @return int                 Return integer <0 if ko, >0 if ok
+     * @param string $type Type of payment mode deposit ('CHQ', 'TRA', ...)
+     *
+     * @return int                 Return integer <0 if ko, >0 if ok
      */
     public function loadStateBoard($type = 'CHQ')
     {
@@ -566,9 +578,10 @@ class RemiseCheque extends GenericDocument
     /**
      *  Build document
      *
-     *  @param  string      $model          Model name
-     *  @param  Translate   $outputlangs    Object langs
-     *  @return int                         Return integer <0 if KO, >0 if OK
+     * @param string    $model       Model name
+     * @param Translate $outputlangs Object langs
+     *
+     * @return int                         Return integer <0 if KO, >0 if OK
      */
     public function generatePdf($model, $outputlangs)
     {
@@ -616,7 +629,7 @@ class RemiseCheque extends GenericDocument
             $docmodel->nbcheque = $this->nbcheque;
             $docmodel->ref = $this->ref;
             $docmodel->amount = $this->amount;
-            $docmodel->date   = $this->date_bordereau;
+            $docmodel->date = $this->date_bordereau;
 
             $account = new Account($this->db);
             $account->fetch($this->account_id);
@@ -646,7 +659,7 @@ class RemiseCheque extends GenericDocument
     /**
      *  Mets a jour le montant total
      *
-     *  @return     int     0 en cas de success
+     * @return     int     0 en cas de success
      */
     public function updateAmount()
     {
@@ -699,8 +712,9 @@ class RemiseCheque extends GenericDocument
     /**
      *  Insere la remise en base
      *
-     *  @param  int     $account_id         Compte bancaire concerne
-     *  @return int
+     * @param int $account_id Compte bancaire concerne
+     *
+     * @return int
      */
     public function removeCheck($account_id)
     {
@@ -727,9 +741,10 @@ class RemiseCheque extends GenericDocument
      *  Check return management
      *  Reopen linked invoices and create a new negative payment.
      *
-     *  @param  int     $bank_id           Id of bank transaction line concerned
-     *  @param  integer $rejection_date    Date to use on the negative payment
-     *  @return int                        Id of negative payment line created
+     * @param int     $bank_id        Id of bank transaction line concerned
+     * @param integer $rejection_date Date to use on the negative payment
+     *
+     * @return int                        Id of negative payment line created
      */
     public function rejectCheck($bank_id, $rejection_date)
     {
@@ -763,7 +778,7 @@ class RemiseCheque extends GenericDocument
         $resql = $this->db->query($sql);
         if ($resql) {
             $rejectedPayment = new Paiement($this->db);
-            $rejectedPayment->amounts = array();
+            $rejectedPayment->amounts = [];
             $rejectedPayment->datepaye = $rejection_date;
             $rejectedPayment->paiementid = dol_getIdFromCode($this->db, 'CHQ', 'c_paiement', 'code', 'id', 1);
             $rejectedPayment->num_payment = $payment->num_payment;
@@ -808,17 +823,19 @@ class RemiseCheque extends GenericDocument
         }
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *      Set the creation date
      *
-     *      @param  User        $user           Object user
-     *      @param  int   $date           Date creation
-     *      @return int                         Return integer <0 if KO, >0 if OK
+     * @param User $user Object user
+     * @param int  $date Date creation
+     *
+     * @return int                         Return integer <0 if KO, >0 if OK
      */
     public function set_date($user, $date)
     {
-		// phpcs:enable
+        // phpcs:enable
         if ($user->hasRight('banque', 'cheque')) {
             $sql = "UPDATE " . MAIN_DB_PREFIX . "bordereau_cheque";
             $sql .= " SET date_bordereau = " . ($date ? "'" . $this->db->idate($date) . "'" : 'null');
@@ -838,17 +855,19 @@ class RemiseCheque extends GenericDocument
         }
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *      Set the ref of bordereau
      *
-     *      @param  User        $user           Object user
-     *      @param  int   $ref         ref of bordereau
-     *      @return int                         Return integer <0 if KO, >0 if OK
+     * @param User $user Object user
+     * @param int  $ref  ref of bordereau
+     *
+     * @return int                         Return integer <0 if KO, >0 if OK
      */
     public function set_number($user, $ref)
     {
-		// phpcs:enable
+        // phpcs:enable
         if ($user->hasRight('banque', 'cheque')) {
             $sql = "UPDATE " . MAIN_DB_PREFIX . "bordereau_cheque";
             $sql .= " SET ref = '" . $this->db->escape($ref) . "'";
@@ -872,8 +891,9 @@ class RemiseCheque extends GenericDocument
      *  Used to build previews or test instances.
      *  id must be 0 if object instance is a specimen.
      *
-     *  @param  string      $option     ''=Create a specimen invoice with lines, 'nolines'=No lines
-     *  @return int
+     * @param string $option ''=Create a specimen invoice with lines, 'nolines'=No lines
+     *
+     * @return int
      */
     public function initAsSpecimen($option = '')
     {
@@ -895,12 +915,14 @@ class RemiseCheque extends GenericDocument
     /**
      *  Return clicable name (with picto eventually)
      *
-     *  @param  int     $withpicto                  0=No picto, 1=Include picto into link, 2=Only picto
-     *  @param  string  $option                     Sur quoi pointe le lien
-     *  @param  int     $notooltip                  1=Disable tooltip
-     *  @param  string  $morecss                    Add more css on link
-     *  @param  int     $save_lastsearch_value      -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save lastsearch_values whenclicking
-     *  @return string                              Chaine avec URL
+     * @param int    $withpicto             0=No picto, 1=Include picto into link, 2=Only picto
+     * @param string $option                Sur quoi pointe le lien
+     * @param int    $notooltip             1=Disable tooltip
+     * @param string $morecss               Add more css on link
+     * @param int    $save_lastsearch_value -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save
+     *                                      lastsearch_values whenclicking
+     *
+     * @return string                              Chaine avec URL
      */
     public function getNomUrl($withpicto = 0, $option = '', $notooltip = 0, $morecss = '', $save_lastsearch_value = -1)
     {
@@ -956,25 +978,30 @@ class RemiseCheque extends GenericDocument
     /**
      *  Return the label of the status
      *
-     *  @param  int     $mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
-     *  @return string                 Label of status
+     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                  label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
      */
     public function getLibStatut($mode = 0)
     {
         return $this->LibStatut($this->statut, $mode);
     }
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Return the label of a given status
      *
-     *  @param  int     $status        Id status
-     *  @param  int     $mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
-     *  @return string                 Label of status
+     * @param int $status Id status
+     * @param int $mode   0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                    label + Picto, 6=Long label + Picto
+     *
+     * @return string                 Label of status
      */
     public function LibStatut($status, $mode = 0)
     {
-		// phpcs:enable
+        // phpcs:enable
         if (empty($this->labelStatus) || empty($this->labelStatusShort)) {
             global $langs;
             $langs->load('compta');
@@ -995,9 +1022,10 @@ class RemiseCheque extends GenericDocument
     /**
      *  Return clicable link of object (with eventually picto)
      *
-     *  @param      string      $option                 Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-     *  @param      array       $arraydata              Array of data
-     *  @return     string                              HTML Code for Kanban thumb.
+     * @param string $option    Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
+     * @param array  $arraydata Array of data
+     *
+     * @return     string                              HTML Code for Kanban thumb.
      */
     public function getKanbanView($option = '', $arraydata = null)
     {

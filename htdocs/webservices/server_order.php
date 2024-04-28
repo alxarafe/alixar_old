@@ -23,6 +23,7 @@
  *       \brief      File that is entry point to call Dolibarr WebServices
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Billing\Model\OrderLine;
 
 defineIfNotDefined('NOCSRFCHECK', '1'); // Do not check anti CSRF attack test
@@ -663,7 +664,7 @@ function createOrder($authentication, $order)
 {
     global $db, $conf, $langs;
 
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
     $now = dol_now();
 

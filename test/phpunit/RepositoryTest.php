@@ -116,7 +116,7 @@ class RepositoryTest extends CommonClassTest
         $langs = $this->savlangs;
         $db = $this->savdb;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         $filesarray = dol_dir_list(DOL_DOCUMENT_ROOT, 'directories', 1, '', array('\/custom\/'), 'fullname', SORT_ASC, 0, 1, '', 1);
         //$filesarray = dol_dir_list(DOL_DOCUMENT_ROOT, 'files', 1, '\.php', null, 'fullname');
 

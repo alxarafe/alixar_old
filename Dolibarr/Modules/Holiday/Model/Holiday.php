@@ -32,7 +32,7 @@ namespace DoliModules\Holiday\Model;
  */
 
 use DoliCore\Base\GenericDocument;
-use WorkboardResponse;
+use DoliCore\Model\WorkboardResponse;
 
 /**
  *  Class of the module paid holiday. Developed by Teclib ( http://www.teclib.com/ )
@@ -1073,7 +1073,7 @@ class Holiday extends GenericDocument
     public function validate($user = null, $notrigger = 0)
     {
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         $error = 0;
 
         $checkBalance = getDictionaryValue('c_holiday_types', 'block_if_negative', $this->fk_type);

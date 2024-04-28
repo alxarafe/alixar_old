@@ -24,9 +24,11 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/lib/bom.lib.php';

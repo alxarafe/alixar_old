@@ -27,7 +27,7 @@
 
 // Put here all includes required by your class file
 include_once DOL_DOCUMENT_ROOT . '/emailcollector/lib/emailcollector.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 use DoliCore\Base\GenericDocument;
 use Webklex\PHPIMAP\ClientManager;
@@ -292,7 +292,7 @@ class EmailCollector extends GenericDocument
             return -1;
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
         $this->password = dolEncrypt($this->password);
 
         $id = $this->createCommon($user, $notrigger);
@@ -414,7 +414,7 @@ class EmailCollector extends GenericDocument
     {
         $result = $this->fetchCommon($id, $ref);
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
         $this->password = dolDecrypt($this->password);
 
         //if ($result > 0 && !empty($this->table_element_line)) $this->fetchLines();
@@ -512,7 +512,7 @@ class EmailCollector extends GenericDocument
             return -1;
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
         $this->password = dolEncrypt($this->password);
 
         $result = $this->updateCommon($user, $notrigger);
@@ -2510,7 +2510,7 @@ class EmailCollector extends GenericDocument
                                             if (!$errorforactions) {
                                                 // Search state by name or code (for country if defined)
                                                 if (!empty($contactstatic->state)) {
-                                                    require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+                                                    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                                                     $result = dol_getIdFromCode($this->db, $contactstatic->state, 'c_departements', 'nom', 'rowid');
                                                     if (empty($result)) {
                                                         $errorforactions++;
@@ -2524,7 +2524,7 @@ class EmailCollector extends GenericDocument
                                                         $operationslog .= '<br>We set property state_id=' . dol_escape_htmltag($result);
                                                     }
                                                 } elseif (!empty($contactstatic->state_code)) {
-                                                    require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+                                                    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                                                     $result = dol_getIdFromCode($this->db, $contactstatic->state_code, 'c_departements', 'code_departement', 'rowid');
                                                     if (empty($result)) {
                                                         $errorforactions++;

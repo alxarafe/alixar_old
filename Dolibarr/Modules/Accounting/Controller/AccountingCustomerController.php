@@ -49,7 +49,7 @@ use DoliModules\Product\Model\Product;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 class AccountingCustomerController extends DolibarrController
 {

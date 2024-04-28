@@ -29,6 +29,8 @@
  *  \ingroup    expedition
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare array with list of tabs
  *

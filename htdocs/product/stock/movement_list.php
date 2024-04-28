@@ -32,6 +32,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Product\Model\FormProduct;
 use DoliModules\Product\Model\Product;
 use DoliModules\User\Model\User;
@@ -43,7 +44,7 @@ require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php'
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/stock.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 if (isModEnabled('project')) {
 }
 
@@ -252,9 +253,9 @@ if (empty($reshook)) {
             exit;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         $objecttmp = new MouvementStock($db);
         $listofobjectid = array();

@@ -34,20 +34,20 @@
 
 namespace DoliModules\User\Model;
 
+use DoliCore\Base\CommonPeople;
+use DoliCore\Base\GenericDocument;
+use DoliCore\Form\Form;
+use DoliCore\Model\DefaultValues;
+use DoliDB;
+use stdClass;
+
 /**
  *  \file       htdocs/user/class/user.class.php
  *  \brief      File of class to manage users
  *  \ingroup    core
  */
 
-use CommonPeople;
-use DefaultValues;
-use DoliCore\Base\GenericDocument;
-use DoliCore\Form\Form;
-use stdClass;
-
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
+require_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/Security.php';
 
 /**
  *  Class to manage Dolibarr users
@@ -1376,7 +1376,6 @@ private $cache_childids;
 
         if (getDolGlobalString('MAIN_ENABLE_DEFAULT_VALUES')) {
             // Load user->default_values for user. TODO Save this in memcached ?
-            require_once DOL_DOCUMENT_ROOT . '/core/class/defaultvalues.class.php';
 
             $defaultValues = new DefaultValues($this->db);
             $result = $defaultValues->fetchAll('', '', 0, 0, '(t.user_id:in:0,' . $this->id . ') AND (entity:in:' . (isset($this->entity) ? $this->entity : $conf->entity) . ',' . $conf->entity . ')');    // User 0 (all) + me (if defined)
@@ -2726,7 +2725,7 @@ private $cache_childids;
      */
     public function isNotIntoValidityDateRange()
     {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         $now = dol_now();
 

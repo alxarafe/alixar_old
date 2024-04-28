@@ -25,6 +25,8 @@
  *  \brief      This file is library for resource module
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare head for tabs
  *
@@ -76,7 +78,7 @@ function resource_prepare_head($object)
         $h++;
     }
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     $upload_dir = $conf->resource->dir_output . "/" . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
     $head[$h][0] = DOL_URL_ROOT . '/resource/document.php?id=' . $object->id;

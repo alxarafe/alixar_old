@@ -28,7 +28,7 @@
 require_once DOL_DOCUMENT_ROOT . '/core/modules/project/modules_project.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 

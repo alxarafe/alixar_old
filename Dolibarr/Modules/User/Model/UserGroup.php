@@ -35,7 +35,7 @@ namespace DoliModules\User\Model;
 
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 if (isModEnabled('ldap')) {
     require_once DOL_DOCUMENT_ROOT . "/core/class/ldap.class.php";
 }

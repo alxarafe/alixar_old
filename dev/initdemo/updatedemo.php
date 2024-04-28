@@ -63,7 +63,7 @@ if (!$res && preg_match('/\/nltechno([^\/]*)\//', $_SERVER["PHP_SELF"], $reg)) {
 if (!$res) {
     die("Failed to include master.inc.php file\n");
 }
-include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 
 /*

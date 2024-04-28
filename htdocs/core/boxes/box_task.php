@@ -29,8 +29,7 @@ use DoliCore\Form\Form;
 use DoliModules\Project\Model\Project;
 use DoliModules\Project\Model\Task;
 
-require_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
-
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 /**
  * Class to manage the box to show last task

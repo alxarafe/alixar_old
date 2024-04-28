@@ -26,6 +26,8 @@
  *      \brief      Run repair script
  */
 
+use DoliCore\Lib\ExtraFields;
+
 include_once 'inc.php';
 if (file_exists($conffile)) {
     include_once $conffile;

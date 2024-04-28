@@ -22,6 +22,8 @@
  *       \brief      Public file to list tickets
  */
 
+use DoliCore\Lib\ExtraFields;
+
 defineIfNotDefined('NOREQUIREMENU', '1');
 // If there is no need to load and show top and left menu
 if (!defined("NOLOGIN")) {
@@ -42,7 +44,7 @@ if (is_numeric($entity)) {
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
 

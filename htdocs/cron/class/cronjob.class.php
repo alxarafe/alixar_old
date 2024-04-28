@@ -29,7 +29,7 @@
 // Put here all includes required by your class file
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 /**
  *  Cron Job class

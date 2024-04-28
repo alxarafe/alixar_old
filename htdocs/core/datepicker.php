@@ -40,7 +40,7 @@ defineIfNotDefined('NOREQUIREMENU', '1');
 defineIfNotDefined('NOREQUIREHTML', '1');
 
 require_once BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 if (GETPOST('lang', 'aZ09')) {
     $langs->setDefaultLang(GETPOST('lang', 'aZ09')); // If language was forced on URL by the main.inc.php

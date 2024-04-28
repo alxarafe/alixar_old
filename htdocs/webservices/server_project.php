@@ -22,6 +22,8 @@
  *       \brief      File that is entry point to call Dolibarr WebServices
  */
 
+use DoliCore\Lib\ExtraFields;
+
 defineIfNotDefined('NOCSRFCHECK', '1'); // Do not check anti CSRF attack test
 defineIfNotDefined('NOTOKENRENEWAL', '1'); // Do not check anti POST attack test
 defineIfNotDefined('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu
@@ -33,7 +35,7 @@ defineIfNotDefined('NOSESSION', '1');
 require BASE_PATH . '/main.inc.php';
 //require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 

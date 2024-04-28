@@ -43,12 +43,12 @@ namespace DoliModules\Accounting\Model;
 use DoliCore\Base\BasicModel;
 use DoliDB;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 /**
  * Manage the different format accountancy export

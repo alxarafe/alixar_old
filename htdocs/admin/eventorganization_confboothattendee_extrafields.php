@@ -27,6 +27,8 @@
  *      \brief      Page to setup extra fields of conferenceorboothattendee
  */
 
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/eventorganization.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';

@@ -1,12 +1,11 @@
 <?php
-
 /* Copyright (C) 2001      Fabien Seisen        <seisen@linuxfr.org>
  * Copyright (C) 2002-2005 Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2004-2011 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2006      Andre Cianfarani     <acianfa@free.fr>
  * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
  * Copyright (C) 2015      Raphaël Doursenaud   <rdoursenaud@gpcsolutions.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,14 +23,14 @@
  */
 
 /**
- *  \file       htdocs/core/db/sqlite3.class.php
- *  \brief      Class file to manage Dolibarr database access for a SQLite database
+ *    \file       htdocs/core/db/sqlite3.class.php
+ *    \brief      Class file to manage Dolibarr database access for a SQLite database
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/db/DoliDB.class.php';
 
 /**
- *  Class to manage Dolibarr database access for a SQLite database
+ *    Class to manage Dolibarr database access for a SQLite database
  */
 class DoliDBSqlite3 extends DoliDB
 {
@@ -43,7 +42,7 @@ class DoliDBSqlite3 extends DoliDB
     const VERSIONMIN = '3.0.0';
 
     /**
-     * @var SQLite3Result|boolean   Resultset of last query
+     * @var SQLite3Result|boolean    Resultset of last query
      */
     private $_results;
 
@@ -56,12 +55,12 @@ class DoliDBSqlite3 extends DoliDB
      *  Constructor.
      *  This create an opened connection to a database server and eventually to a database
      *
-     *  @param      string  $type       Type of database (mysql, pgsql...). Not used.
-     *  @param      string  $host       Address of database server
-     *  @param      string  $user       Nom de l'utilisateur autorise
-     *  @param      string  $pass       Password
-     *  @param      string  $name       Nom de la database
-     *  @param      int     $port       Port of database server
+     * @param string $type Type of database (mysql, pgsql...). Not used.
+     * @param string $host Address of database server
+     * @param string $user Nom de l'utilisateur autorise
+     * @param string $pass Password
+     * @param string $name Nom de la database
+     * @param int    $port Port of database server
      */
     public function __construct($type, $host, $user, $pass, $name = '', $port = 0)
     {
@@ -135,9 +134,10 @@ class DoliDBSqlite3 extends DoliDB
     /**
      *  Convert a SQL request in Mysql syntax to native syntax
      *
-     *  @param     string   $line   SQL request line to convert
-     *  @param     string   $type   Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for create, alter...)
-     *  @return    string           SQL request line converted
+     * @param string $line SQL request line to convert
+     * @param string $type Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for create, alter...)
+     *
+     * @return    string        SQL request line converted
      */
     public function convertSQLFromMysql($line, $type = 'ddl')
     {
@@ -269,7 +269,7 @@ class DoliDBSqlite3 extends DoliDB
             // Delete using criteria on other table must not declare twice the deleted table
             // DELETE FROM tabletodelete USING tabletodelete, othertable -> DELETE FROM tabletodelete USING othertable
             if (preg_match('/DELETE FROM ([a-z_]+) USING ([a-z_]+), ([a-z_]+)/i', $line, $reg)) {
-                if ($reg[1] == $reg[2]) {   // If same table, we remove second one
+                if ($reg[1] == $reg[2]) {    // If same table, we remove second one
                     $line = preg_replace('/DELETE FROM ([a-z_]+) USING ([a-z_]+), ([a-z_]+)/i', 'DELETE FROM \\1 USING \\3', $line);
                 }
             }
@@ -290,17 +290,19 @@ class DoliDBSqlite3 extends DoliDB
         }
 
         return $line;
-    }
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Select a database
+     *    Select a database
      *
-     *  @param      string  $database   Name of database
-     *  @return     boolean             true if OK, false if KO
+     * @param string $database Name of database
+     *
+     * @return        boolean            true if OK, false if KO
      */
     public function select_db($database)
-    {
+	{
 		// phpcs:enable
         dol_syslog(get_class($this) . "::select_db database=" . $database, LOG_DEBUG);
         // sqlite_select_db() does not exist
@@ -310,15 +312,16 @@ class DoliDBSqlite3 extends DoliDB
 
 
     /**
-     *  Connection to server
+     *    Connection to server
      *
-     *  @param      string  $host       database server host
-     *  @param      string  $login      login
-     *  @param      string  $passwd     password
-     *  @param      string  $name       name of database (not used for mysql, used for pgsql)
-     *  @param      integer $port       Port of database server
-     *  @return     SQLite3|string              Database access handler
-     *  @see        close()
+     * @param string  $host   database server host
+     * @param string  $login  login
+     * @param string  $passwd password
+     * @param string  $name   name of database (not used for mysql, used for pgsql)
+     * @param integer $port   Port of database server
+     *
+     * @return        SQLite3|string                Database access handler
+     * @see        close()
      */
     public function connect($host, $login, $passwd, $name, $port = 0)
     {
@@ -349,9 +352,9 @@ class DoliDBSqlite3 extends DoliDB
 
 
     /**
-     *  Return version of database server
+     *    Return version of database server
      *
-     *  @return         string      Version string
+     * @return            string      Version string
      */
     public function getVersion()
     {
@@ -360,9 +363,9 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Return version of database client driver
+     *    Return version of database client driver
      *
-     *  @return         string      Version string
+     * @return            string      Version string
      */
     public function getDriverInfo()
     {
@@ -373,8 +376,8 @@ class DoliDBSqlite3 extends DoliDB
     /**
      *  Close database connection
      *
-     *  @return     bool     True if disconnect successful, false otherwise
-     *  @see        connect()
+     * @return     bool     True if disconnect successful, false otherwise
+     * @see        connect()
      */
     public function close()
     {
@@ -391,14 +394,18 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Execute a SQL request and return the resultset
+     *    Execute a SQL request and return the resultset
      *
-     *  @param  string  $query          SQL query string
-     *  @param  int     $usesavepoint   0=Default mode, 1=Run a savepoint before and a rollbock to savepoint if error (this allow to have some request with errors inside global transactions).
-     *                                  Note that with Mysql, this parameter is not used as Myssql can already commit a transaction even if one request is in error, without using savepoints.
-     *  @param  string  $type           Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for create, alter...)
-     * @param   int     $result_mode    Result mode (not used with sqlite)
-     *  @return bool|SQLite3Result      Resultset of answer
+     * @param string $query               SQL query string
+     * @param int    $usesavepoint        0=Default mode, 1=Run a savepoint before and a rollbock to savepoint if error
+     *                                    (this allow to have some request with errors inside global transactions).
+     *                                    Note that with Mysql, this parameter is not used as Myssql can already commit
+     *                                    a transaction even if one request is in error, without using savepoints.
+     * @param string $type                Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for
+     *                                    create, alter...)
+     * @param int    $result_mode         Result mode (not used with sqlite)
+     *
+     * @return    bool|SQLite3Result|null    Resultset of answer
      */
     public function query($query, $usesavepoint = 0, $type = 'auto', $result_mode = 0)
     {
@@ -411,7 +418,7 @@ class DoliDBSqlite3 extends DoliDB
         $this->error = '';
 
         // Convert MySQL syntax to SQLite syntax
-        $reg = array();
+        $reg = [];
         if (preg_match('/ALTER\s+TABLE\s*(.*)\s*ADD\s+CONSTRAINT\s+(.*)\s*FOREIGN\s+KEY\s*\(([\w,\s]+)\)\s*REFERENCES\s+(\w+)\s*\(([\w,\s]+)\)/i', $query, $reg)) {
             // Ajout d'une clef étrangère à la table
             // procédure de replacement de la table pour ajouter la contrainte
@@ -453,7 +460,7 @@ class DoliDBSqlite3 extends DoliDB
         }
         //print "After convertSQLFromMysql:\n".$query."<br>\n";
 
-        if (!in_array($query, array('BEGIN', 'COMMIT', 'ROLLBACK'))) {
+        if (!in_array($query, ['BEGIN', 'COMMIT', 'ROLLBACK'])) {
             $SYSLOG_SQL_LIMIT = 10000; // limit log to 10kb per line to limit DOS attacks
             dol_syslog('sql=' . substr($query, 0, $SYSLOG_SQL_LIMIT), LOG_DEBUG);
         }
@@ -506,17 +513,19 @@ class DoliDBSqlite3 extends DoliDB
         }
 
         return $ret;
-    }
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Returns the current line (as an object) for the resultset cursor
+     *    Returns the current line (as an object) for the resultset cursor
      *
-     *  @param  SQLite3Result   $resultset  Curseur de la requete voulue
-     *  @return false|object                Object result line or false if KO or end of cursor
+     * @param SQLite3Result $resultset Curseur de la requete voulue
+     *
+     * @return    false|object                Object result line or false if KO or end of cursor
      */
     public function fetch_object($resultset)
-    {
+	{
 		// phpcs:enable
         // Si le resultset n'est pas fourni, on prend le dernier utilise sur cette connection
         if (!is_object($resultset)) {
@@ -528,18 +537,20 @@ class DoliDBSqlite3 extends DoliDB
             return (object) $ret;
         }
         return false;
-    }
+	}
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Return datas as an array
+     *    Return datas as an array
      *
-     *  @param  SQLite3Result   $resultset  Resultset of request
-     *  @return false|array                 Array or false if KO or end of cursor
+     * @param SQLite3Result $resultset Resultset of request
+     *
+     * @return    false|array                    Array or false if KO or end of cursor
      */
     public function fetch_array($resultset)
-    {
+	{
 		// phpcs:enable
         // If resultset not provided, we take the last used by connection
         if (!is_object($resultset)) {
@@ -548,18 +559,20 @@ class DoliDBSqlite3 extends DoliDB
         //return $resultset->fetch(PDO::FETCH_ASSOC);
         $ret = $resultset->fetchArray(SQLITE3_ASSOC);
         return $ret;
-    }
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Return datas as an array
+     *    Return datas as an array
      *
-     *  @param  SQLite3Result   $resultset  Resultset of request
-     *  @return false|array                 Array or false if KO or end of cursor
+     * @param SQLite3Result $resultset Resultset of request
+     *
+     * @return    false|array                    Array or false if KO or end of cursor
      */
     public function fetch_row($resultset)
-    {
-		// phpcs:enable
+	{
+        // phpcs:enable
         // If resultset not provided, we take the last used by connection
         if (!is_bool($resultset)) {
             if (!is_object($resultset)) {
@@ -569,20 +582,22 @@ class DoliDBSqlite3 extends DoliDB
         } else {
             // si le curseur est un boolean on retourne la valeur 0
             return false;
-        }
-    }
+		}
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Return number of lines for result of a SELECT
+     *    Return number of lines for result of a SELECT
      *
-     *  @param  SQLite3Result   $resultset  Resulset of requests
-     *  @return int                     Nb of lines
-     *  @see    affected_rows()
+     * @param SQLite3Result $resultset Resulset of requests
+     *
+     * @return int                        Nb of lines
+     * @see    affected_rows()
      */
     public function num_rows($resultset)
     {
-		// phpcs:enable
+        // phpcs:enable
         // FIXME: SQLite3Result does not have a queryString member
 
         // If resultset not provided, we take the last used by connection
@@ -591,21 +606,23 @@ class DoliDBSqlite3 extends DoliDB
         }
         if (preg_match("/^SELECT/i", $resultset->queryString)) {
             return $this->db->querySingle("SELECT count(*) FROM (" . $resultset->queryString . ") q");
-        }
-        return 0;
-    }
+		}
+		return 0;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Return number of lines for result of a SELECT
+     *    Return number of lines for result of a SELECT
      *
-     *  @param  SQLite3Result   $resultset  Resulset of requests
-     *  @return int                     Nb of lines
-     *  @see    affected_rows()
+     * @param SQLite3Result $resultset Resulset of requests
+     *
+     * @return int                        Nb of lines
+     * @see    affected_rows()
      */
     public function affected_rows($resultset)
     {
-		// phpcs:enable
+        // phpcs:enable
         // FIXME: SQLite3Result does not have a queryString member
 
         // If resultset not provided, we take the last used by connection
@@ -622,10 +639,11 @@ class DoliDBSqlite3 extends DoliDB
 
 
     /**
-     *  Free last resultset used.
+     *    Free last resultset used.
      *
-     *  @param  SQLite3Result   $resultset   Curseur de la requete voulue
-     *  @return void
+     * @param SQLite3Result $resultset Curseur de la requete voulue
+     *
+     * @return    void
      */
     public function free($resultset = null)
     {
@@ -640,10 +658,11 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Escape a string to insert data
+     *    Escape a string to insert data
      *
-     *  @param  string  $stringtoencode     String to escape
-     *  @return string                      String escaped
+     * @param string $stringtoencode String to escape
+     *
+     * @return    string                        String escaped
      */
     public function escape($stringtoencode)
     {
@@ -651,20 +670,21 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Escape a string to insert data into a like
+     *    Escape a string to insert data into a like
      *
-     *  @param  string  $stringtoencode     String to escape
-     *  @return string                      String escaped
+     * @param string $stringtoencode String to escape
+     *
+     * @return    string                        String escaped
      */
     public function escapeforlike($stringtoencode)
     {
-        return str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), (string) $stringtoencode);
+        return str_replace(['\\', '_', '%'], array('\\\\', '\_', '\%'), (string) $stringtoencode);
     }
 
     /**
-     *  Renvoie le code erreur generique de l'operation precedente.
+     *    Renvoie le code erreur generique de l'operation precedente.
      *
-     *  @return string      Error code (Examples: DB_ERROR_TABLE_ALREADY_EXISTS, DB_ERROR_RECORD_ALREADY_EXISTS...)
+     * @return    string        Error code (Examples: DB_ERROR_TABLE_ALREADY_EXISTS, DB_ERROR_RECORD_ALREADY_EXISTS...)
      */
     public function errno()
     {
@@ -731,9 +751,9 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Renvoie le texte de l'erreur mysql de l'operation precedente.
+     *    Renvoie le texte de l'erreur mysql de l'operation precedente.
      *
-     *  @return string  Error text
+     * @return    string    Error text
      */
     public function error()
     {
@@ -741,21 +761,24 @@ class DoliDBSqlite3 extends DoliDB
             // Si il y a eu echec de connection, $this->db n'est pas valide pour sqlite_error.
             return 'Not connected. Check setup parameters in conf/conf.php file and your sqlite version';
         } else {
-            return $this->error;
-        }
-    }
+			return $this->error;
+		}
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      * Get last ID after an insert INSERT
      *
-     * @param   string  $tab        Table name concerned by insert. Ne sert pas sous MySql mais requis pour compatibilite avec Postgresql
-     * @param   string  $fieldid    Field name
-     * @return  int                 Id of row
+     * @param string $tab     Table name concerned by insert. Ne sert pas sous MySql mais requis pour compatibilite
+     *                        avec Postgresql
+     * @param string $fieldid Field name
+     *
+     * @return  int                Id of row
      */
     public function last_insert_id($tab, $fieldid = 'rowid')
     {
-		// phpcs:enable
+        // phpcs:enable
         return $this->db->lastInsertRowId();
     }
 
@@ -763,9 +786,11 @@ class DoliDBSqlite3 extends DoliDB
      * Encrypt sensitive data in database
      * Warning: This function includes the escape and add the SQL simple quotes on strings.
      *
-     * @param   string  $fieldorvalue   Field name or value to encrypt
-     * @param   int     $withQuotes     Return string including the SQL simple quotes. This param must always be 1 (Value 0 is bugged and deprecated).
-     * @return  string                  XXX(field) or XXX('value') or field or 'value'
+     * @param string $fieldorvalue Field name or value to encrypt
+     * @param int    $withQuotes   Return string including the SQL simple quotes. This param must always be 1 (Value 0
+     *                             is bugged and deprecated).
+     *
+     * @return    string                    XXX(field) or XXX('value') or field or 'value'
      */
     public function encrypt($fieldorvalue, $withQuotes = 1)
     {
@@ -783,7 +808,7 @@ class DoliDBSqlite3 extends DoliDB
             if ($cryptType == 2) {
                 $escapedstringwithquotes = "AES_ENCRYPT(" . $escapedstringwithquotes . ", '" . $this->escape($cryptKey) . "')";
             } elseif ($cryptType == 1) {
-                $escapedstringwithquotes = "DES_ENCRYPT(" . $escapedstringwithquotes . ", '" . $this->escape($cryptKey) . "')";
+                $escapedstringwithquotes = "DES_ENCRYPT(" . $escapedstringwithquotes . ", '". $this->escape($cryptKey) . "')";
             }
         }
 
@@ -791,10 +816,11 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Decrypt sensitive data in database
+     *    Decrypt sensitive data in database
      *
-     *  @param  string  $value          Value to decrypt
-     *  @return string                  Decrypted value if used
+     * @param string $value Value to decrypt
+     *
+     * @return    string                    Decrypted value if used
      */
     public function decrypt($value)
     {
@@ -812,42 +838,45 @@ class DoliDBSqlite3 extends DoliDB
             if ($cryptType == 2) {
                 $return = 'AES_DECRYPT(' . $value . ',\'' . $cryptKey . '\')';
             } elseif ($cryptType == 1) {
-                $return = 'DES_DECRYPT(' . $value . ',\'' . $cryptKey . '\')';
-            }
-        }
+                $return = 'DES_DECRYPT(' . $value . ',\'' . $cryptKey.'\')';
+			}
+		}
 
-        return $return;
-    }
+		return $return;
+	}
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      * Return connection ID
      *
-     * @return          string      Id connection
-     */
-    public function DDLGetConnectId()
-    {
+     * @return            string      Id connection
+	 */
+	public function DDLGetConnectId()
+	{
 		// phpcs:enable
-        return '?';
-    }
+		return '?';
+	}
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Create a new database
-     *  Do not use function xxx_create_db (xxx=mysql, ...) as they are deprecated
-     *  We force to create database with charset this->forcecharset and collate this->forcecollate
+     *    Create a new database
+     *    Do not use function xxx_create_db (xxx=mysql, ...) as they are deprecated
+     *    We force to create database with charset this->forcecharset and collate this->forcecollate
      *
-     *  @param  string  $database       Database name to create
-     *  @param  string  $charset        Charset used to store data
-     *  @param  string  $collation      Charset used to sort data
-     *  @param  string  $owner          Username of database owner
-     *  @return SQLite3Result           resource defined if OK, null if KO
+     * @param string $database  Database name to create
+     * @param string $charset   Charset used to store data
+     * @param string $collation Charset used to sort data
+     * @param string $owner     Username of database owner
+     *
+     * @return    SQLite3Result        resource defined if OK, null if KO
      */
     public function DDLCreateDb($database, $charset = '', $collation = '', $owner = '')
     {
-		// phpcs:enable
+        // phpcs:enable
         if (empty($charset)) {
             $charset = $this->forcecharset;
         }
@@ -860,23 +889,25 @@ class DoliDBSqlite3 extends DoliDB
         $sql .= " DEFAULT CHARACTER SET " . $this->escape($charset) . " DEFAULT COLLATE " . $this->escape($collation);
 
         dol_syslog($sql, LOG_DEBUG);
-        $ret = $this->query($sql);
+		$ret = $this->query($sql);
 
-        return $ret;
-    }
+		return $ret;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  List tables into a database
      *
-     *  @param  string      $database   Name of database
-     *  @param  string      $table      Name of table filter ('xxx%')
-     *  @return array                   List of tables in an array
+     * @param string $database Name of database
+     * @param string $table    Name of table filter ('xxx%')
+     *
+     * @return    array                    List of tables in an array
      */
     public function DDLListTables($database, $table = '')
     {
-		// phpcs:enable
-        $listtables = array();
+        // phpcs:enable
+        $listtables = [];
 
         $like = '';
         if ($table) {
@@ -892,23 +923,25 @@ class DoliDBSqlite3 extends DoliDB
         if ($result) {
             while ($row = $this->fetch_row($result)) {
                 $listtables[] = $row[0];
-            }
-        }
-        return $listtables;
-    }
+			}
+		}
+		return $listtables;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  List tables into a database with table type
      *
-     *  @param  string      $database   Name of database
-     *  @param  string      $table      Name of table filter ('xxx%')
-     *  @return array                   List of tables in an array
+     * @param string $database Name of database
+     * @param string $table    Name of table filter ('xxx%')
+     *
+     * @return    array                    List of tables in an array
      */
     public function DDLListTablesFull($database, $table = '')
     {
-		// phpcs:enable
-        $listtables = array();
+        // phpcs:enable
+        $listtables = [];
 
         $like = '';
         if ($table) {
@@ -924,23 +957,24 @@ class DoliDBSqlite3 extends DoliDB
         if ($result) {
             while ($row = $this->fetch_row($result)) {
                 $listtables[] = $row;
-            }
-        }
-        return $listtables;
-    }
+			}
+		}
+		return $listtables;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  List information of columns into a table.
      *
-     *  @param  string  $table      Name of table
-     *  @return array               Tableau des information des champs de la table
-     *  TODO modify for sqlite
-     */
-    public function DDLInfoTable($table)
+     * @param string $table Name of table
+     * @return    array                Tableau des information des champs de la table
+     *                      TODO modify for sqlite
+	 */
+	public function DDLInfoTable($table)
     {
-		// phpcs:enable
-        $infotables = array();
+        // phpcs:enable
+        $infotables = [];
 
         $tmptable = preg_replace('/[^a-z0-9\.\-\_]/i', '', $table);
 
@@ -951,72 +985,128 @@ class DoliDBSqlite3 extends DoliDB
         if ($result) {
             while ($row = $this->fetch_row($result)) {
                 $infotables[] = $row;
-            }
-        }
-        return $infotables;
-    }
+			}
+		}
+		return $infotables;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Create a table into database
+     *    Create a table into database
      *
-     *  @param      string  $table          Nom de la table
-     *  @param      array   $fields         Tableau associatif [nom champ][tableau des descriptions]
-     *  @param      string  $primary_key    Nom du champ qui sera la clef primaire
-     *  @param      string  $type           Type de la table
-     *  @param      array   $unique_keys    Tableau associatifs Nom de champs qui seront clef unique => valeur
-     *  @param      array   $fulltext_keys  Tableau des Nom de champs qui seront indexes en fulltext
-     *  @param      array   $keys           Tableau des champs cles noms => valeur
-     *  @return     int                     Return integer <0 if KO, >=0 if OK
+     * @param string                                                                                                                                                                                                                                                                                                                                $table         Nom
+     *                                                                                                                                                                                                                                                                                                                                                             de
+     *                                                                                                                                                                                                                                                                                                                                                             la
+     *                                                                                                                                                                                                                                                                                                                                                             table
+     * @param array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}> $fields        Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             associatif
+     *                                                                                                                                                                                                                                                                                                                                                             [nom
+     *                                                                                                                                                                                                                                                                                                                                                             champ][tableau
+     *                                                                                                                                                                                                                                                                                                                                                             des
+     *                                                                                                                                                                                                                                                                                                                                                             descriptions]
+     * @param string                                                                                                                                                                                                                                                                                                                                $primary_key   Nom
+     *                                                                                                                                                                                                                                                                                                                                                             du
+     *                                                                                                                                                                                                                                                                                                                                                             champ
+     *                                                                                                                                                                                                                                                                                                                                                             qui
+     *                                                                                                                                                                                                                                                                                                                                                             sera
+     *                                                                                                                                                                                                                                                                                                                                                             la
+     *                                                                                                                                                                                                                                                                                                                                                             clef
+     *                                                                                                                                                                                                                                                                                                                                                             primaire
+     * @param string                                                                                                                                                                                                                                                                                                                                $type          Type
+     *                                                                                                                                                                                                                                                                                                                                                             de
+     *                                                                                                                                                                                                                                                                                                                                                             la
+     *                                                                                                                                                                                                                                                                                                                                                             table
+     * @param array                                                                                                                                                                                                                                                                                                                                 $unique_keys   Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             associatifs
+     *                                                                                                                                                                                                                                                                                                                                                             Nom
+     *                                                                                                                                                                                                                                                                                                                                                             de
+     *                                                                                                                                                                                                                                                                                                                                                             champs
+     *                                                                                                                                                                                                                                                                                                                                                             qui
+     *                                                                                                                                                                                                                                                                                                                                                             seront
+     *                                                                                                                                                                                                                                                                                                                                                             clef
+     *                                                                                                                                                                                                                                                                                                                                                             unique
+     *                                                                                                                                                                                                                                                                                                                                                             =>
+     *                                                                                                                                                                                                                                                                                                                                                             valeur
+     * @param array                                                                                                                                                                                                                                                                                                                                 $fulltext_keys Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             des
+     *                                                                                                                                                                                                                                                                                                                                                             Nom
+     *                                                                                                                                                                                                                                                                                                                                                             de
+     *                                                                                                                                                                                                                                                                                                                                                             champs
+     *                                                                                                                                                                                                                                                                                                                                                             qui
+     *                                                                                                                                                                                                                                                                                                                                                             seront
+     *                                                                                                                                                                                                                                                                                                                                                             indexes
+     *                                                                                                                                                                                                                                                                                                                                                             en
+     *                                                                                                                                                                                                                                                                                                                                                             fulltext
+     * @param array                                                                                                                                                                                                                                                                                                                                 $keys          Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             des
+     *                                                                                                                                                                                                                                                                                                                                                             champs
+     *                                                                                                                                                                                                                                                                                                                                                             cles
+     *                                                                                                                                                                                                                                                                                                                                                             noms
+     *                                                                                                                                                                                                                                                                                                                                                             =>
+     *                                                                                                                                                                                                                                                                                                                                                             valeur
+     *
+     * @return        int                        Return integer <0 if KO, >=0 if OK
      */
     public function DDLCreateTable($table, $fields, $primary_key, $type, $unique_keys = null, $fulltext_keys = null, $keys = null)
     {
-		// phpcs:enable
-        // FIXME: $fulltext_keys parameter is unused
+        // phpcs:enable
+        // @TODO: $fulltext_keys parameter is unused
 
-        $sqlfields = array();
-        $sqlk = array();
-        $sqluq = array();
+        $sqlk = [];
+        $sqluq = [];
 
-        // cles recherchees dans le tableau des descriptions (fields) : type,value,attribute,null,default,extra
-        // ex. : $fields['rowid'] = array('type'=>'int','value'=>'11','null'=>'not null','extra'=> 'auto_increment');
-        $sql = "create table " . $table . "(";
+        // Keys found into the array $fields: type,value,attribute,null,default,extra
+        // ex. : $fields['rowid'] = array(
+        //			'type'=>'int' or 'integer',
+        //			'value'=>'11',
+        //			'null'=>'not null',
+        //			'extra'=> 'auto_increment'
+        //		);
+        $sql = "CREATE TABLE " . $this->sanitize($table) . "(";
         $i = 0;
+        $sqlfields = [];
         foreach ($fields as $field_name => $field_desc) {
-            $sqlfields[$i] = $field_name . " ";
-            $sqlfields[$i] .= $field_desc['type'];
-            if (preg_match("/^[^\s]/i", $field_desc['value'])) {
-                $sqlfields[$i]  .= "(" . $field_desc['value'] . ")";
-            } elseif (preg_match("/^[^\s]/i", $field_desc['attribute'])) {
-                $sqlfields[$i]  .= " " . $field_desc['attribute'];
-            } elseif (preg_match("/^[^\s]/i", $field_desc['default'])) {
-                if (preg_match("/null/i", $field_desc['default'])) {
-                    $sqlfields[$i] .= " default " . $field_desc['default'];
+            $sqlfields[$i] = $this->sanitize($field_name) . " ";
+            $sqlfields[$i] .= $this->sanitize($field_desc['type']);
+            if (!is_null($field_desc['value']) && $field_desc['value'] !== '') {
+                $sqlfields[$i] .= "(" . $this->sanitize($field_desc['value']) . ")";
+            }
+            if (!is_null($field_desc['attribute']) && $field_desc['attribute'] !== '') {
+                $sqlfields[$i] .= " " . $this->sanitize($field_desc['attribute']);
+            }
+            if (!is_null($field_desc['default']) && $field_desc['default'] !== '') {
+                if (in_array($field_desc['type'], ['tinyint', 'smallint', 'int', 'double'])) {
+                    $sqlfields[$i] .= " DEFAULT " . ((float) $field_desc['default']);
+                } elseif ($field_desc['default'] == 'null' || $field_desc['default'] == 'CURRENT_TIMESTAMP') {
+                    $sqlfields[$i] .= " DEFAULT " . $this->sanitize($field_desc['default']);
                 } else {
-                    $sqlfields[$i] .= " default '" . $this->escape($field_desc['default']) . "'";
+                    $sqlfields[$i] .= " DEFAULT '" . $this->escape($field_desc['default']) . "'";
                 }
-            } elseif (preg_match("/^[^\s]/i", $field_desc['null'])) {
-                $sqlfields[$i] .= " " . $field_desc['null'];
-            } elseif (preg_match("/^[^\s]/i", $field_desc['extra'])) {
-                $sqlfields[$i] .= " " . $field_desc['extra'];
+            }
+            if (!is_null($field_desc['null']) && $field_desc['null'] !== '') {
+                $sqlfields[$i] .= " " . $this->sanitize($field_desc['null'], 0, 0, 1);
+            }
+            if (!is_null($field_desc['extra']) && $field_desc['extra'] !== '') {
+                $sqlfields[$i] .= " " . $this->sanitize($field_desc['extra'], 0, 0, 1);
             }
             $i++;
         }
         if ($primary_key != "") {
-            $pk = "primary key(" . $primary_key . ")";
+            $pk = "PRIMARY KEY(" . $this->sanitize($primary_key) . ")";
         }
 
         if (is_array($unique_keys)) {
             $i = 0;
             foreach ($unique_keys as $key => $value) {
-                $sqluq[$i] = "UNIQUE KEY '" . $key . "' ('" . $this->escape($value) . "')";
+                $sqluq[$i] = "UNIQUE KEY '" . $this->sanitize($key) . "' ('" . $this->escape($value) . "')";
                 $i++;
             }
         }
         if (is_array($keys)) {
             $i = 0;
             foreach ($keys as $key => $value) {
-                $sqlk[$i] = "KEY " . $key . " (" . $value . ")";
+                $sqlk[$i] = "KEY " . $this->sanitize($key) . " (" . $value . ")";
                 $i++;
             }
         }
@@ -1024,31 +1114,34 @@ class DoliDBSqlite3 extends DoliDB
         if ($primary_key != "") {
             $sql .= "," . $pk;
         }
-        if (is_array($unique_keys)) {
+        if ($unique_keys != "") {
             $sql .= "," . implode(',', $sqluq);
         }
         if (is_array($keys)) {
             $sql .= "," . implode(',', $sqlk);
         }
-        $sql .= ") type=" . $type;
+        $sql .= ")";
+        //$sql .= " engine=".$this->sanitize($type);
 
-        dol_syslog($sql, LOG_DEBUG);
-        if (!$this -> query($sql)) {
+        if (!$this->query($sql)) {
             return -1;
-        }
-        return 1;
-    }
+        } else {
+			return 1;
+		}
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Drop a table into database
+     *    Drop a table into database
      *
-     *  @param      string  $table          Name of table
-     *  @return     int                     Return integer <0 if KO, >=0 if OK
+     * @param string $table Name of table
+     *
+     * @return        int                        Return integer <0 if KO, >=0 if OK
      */
     public function DDLDropTable($table)
     {
-		// phpcs:enable
+        // phpcs:enable
         $tmptable = preg_replace('/[^a-z0-9\.\-\_]/i', '', $table);
 
         $sql = "DROP TABLE " . $tmptable;
@@ -1056,135 +1149,175 @@ class DoliDBSqlite3 extends DoliDB
         if (!$this->query($sql)) {
             return -1;
         } else {
-            return 1;
-        }
-    }
+			return 1;
+		}
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Return a pointer of line with description of a table or field
+     *    Return a pointer of line with description of a table or field
      *
-     *  @param  string      $table  Name of table
-     *  @param  string      $field  Optionnel : Name of field if we want description of field
-     *  @return bool|SQLite3Result      Resource
+     * @param string $table Name of table
+     * @param string $field Optionnel : Name of field if we want description of field
+     *
+     * @return    bool|SQLite3Result        Resource
      */
     public function DDLDescTable($table, $field = "")
     {
-		// phpcs:enable
+        // phpcs:enable
         $sql = "DESC " . $table . " " . $field;
 
         dol_syslog(get_class($this) . "::DDLDescTable " . $sql, LOG_DEBUG);
         $this->_results = $this->query($sql);
-        return $this->_results;
-    }
+		return $this->_results;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Create a new field into table
+     *    Create a new field into table
      *
-     *  @param  string  $table              Table name
-     *  @param  string  $field_name         Field name to add
-     *  @param  string  $field_desc         Associative table with description of field to insert [parameter name][parameter value]
-     *  @param  string  $field_position     Optional e.g.: "after some_field"
-     *  @return int                         Return integer <0 if KO, >0 if OK
+     * @param string                                                                                                                                                                                                                                                                                                                  $table          Table
+     *                                                                                                                                                                                                                                                                                                                                                name
+     * @param string                                                                                                                                                                                                                                                                                                                  $field_name     Field
+     *                                                                                                                                                                                                                                                                                                                                                name
+     *                                                                                                                                                                                                                                                                                                                                                to
+     *                                                                                                                                                                                                                                                                                                                                                add
+     * @param array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string} $field_desc     Associative
+     *                                                                                                                                                                                                                                                                                                                                                table
+     *                                                                                                                                                                                                                                                                                                                                                with
+     *                                                                                                                                                                                                                                                                                                                                                description
+     *                                                                                                                                                                                                                                                                                                                                                of
+     *                                                                                                                                                                                                                                                                                                                                                field
+     *                                                                                                                                                                                                                                                                                                                                                to
+     *                                                                                                                                                                                                                                                                                                                                                insert
+     *                                                                                                                                                                                                                                                                                                                                                [parameter
+     *                                                                                                                                                                                                                                                                                                                                                name][parameter
+     *                                                                                                                                                                                                                                                                                                                                                value]
+     * @param string                                                                                                                                                                                                                                                                                                                  $field_position Optional
+     *                                                                                                                                                                                                                                                                                                                                                e.g.:
+     *                                                                                                                                                                                                                                                                                                                                                "after
+     *                                                                                                                                                                                                                                                                                                                                                some_field"
+     *
+     * @return    int                            Return integer <0 if KO, >0 if OK
      */
     public function DDLAddField($table, $field_name, $field_desc, $field_position = "")
     {
-		// phpcs:enable
+        // phpcs:enable
         // cles recherchees dans le tableau des descriptions (field_desc) : type,value,attribute,null,default,extra
         // ex. : $field_desc = array('type'=>'int','value'=>'11','null'=>'not null','extra'=> 'auto_increment');
         $sql = "ALTER TABLE " . $table . " ADD " . $field_name . " ";
         $sql .= $field_desc['type'];
-        if (preg_match("/^[^\s]/i", $field_desc['value'])) {
-            if (!in_array($field_desc['type'], array('date', 'datetime'))) {
+        if (isset($field_desc['value']) && preg_match("/^[^\s]/i", $field_desc['value'])) {
+            if (!in_array($field_desc['type'], ['date', 'datetime'])) {
                 $sql .= "(" . $field_desc['value'] . ")";
             }
         }
-        if (preg_match("/^[^\s]/i", $field_desc['attribute'])) {
-            $sql .= " " . $field_desc['attribute'];
+        if (isset($field_desc['attribute']) && preg_match("/^[^\s]/i", $field_desc['attribute'])) {
+            $sql .= " " . $this->sanitize($field_desc['attribute']);
         }
-        if (preg_match("/^[^\s]/i", $field_desc['null'])) {
-            $sql .= " " . $field_desc['null'];
+        if (isset($field_desc['null']) && preg_match("/^[^\s]/i", $field_desc['null'])) {
+            $sql .= " " . $this->sanitize($field_desc['null'], 0, 0, 1);
         }
-        if (preg_match("/^[^\s]/i", $field_desc['default'])) {
-            if (preg_match("/null/i", $field_desc['default'])) {
-                $sql .= " default " . $field_desc['default'];
+        if (isset($field_desc['default']) && preg_match("/^[^\s]/i", $field_desc['default'])) {
+            if (in_array($field_desc['type'], ['tinyint', 'smallint', 'int', 'double'])) {
+                $sql .= " DEFAULT " . ((float) $field_desc['default']);
+            } elseif ($field_desc['default'] == 'null' || $field_desc['default'] == 'CURRENT_TIMESTAMP') {
+                $sql .= " DEFAULT " . $this->sanitize($field_desc['default']);
             } else {
-                $sql .= " default '" . $this->escape($field_desc['default']) . "'";
+                $sql .= " DEFAULT '" . $this->escape($field_desc['default']) . "'";
             }
         }
-        if (preg_match("/^[^\s]/i", $field_desc['extra'])) {
-            $sql .= " " . $field_desc['extra'];
+        if (isset($field_desc['extra']) && preg_match("/^[^\s]/i", $field_desc['extra'])) {
+            $sql .= " " . $this->sanitize($field_desc['extra'], 0, 0, 1);
         }
-        $sql .= " " . $field_position;
+        $sql .= " " . $this->sanitize($field_position, 0, 0, 1);
 
         dol_syslog(get_class($this) . "::DDLAddField " . $sql, LOG_DEBUG);
         if (!$this->query($sql)) {
             return -1;
-        }
-        return 1;
-    }
+		}
+		return 1;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Update format of a field into a table
+     *    Update format of a field into a table
      *
-     *  @param  string  $table              Name of table
-     *  @param  string  $field_name         Name of field to modify
-     *  @param  string  $field_desc         Array with description of field format
-     *  @return int                         Return integer <0 if KO, >0 if OK
+     * @param string                                                                                                                                                                                                                                                                                                                  $table      Name
+     *                                                                                                                                                                                                                                                                                                                                            of
+     *                                                                                                                                                                                                                                                                                                                                            table
+     * @param string                                                                                                                                                                                                                                                                                                                  $field_name Name
+     *                                                                                                                                                                                                                                                                                                                                            of
+     *                                                                                                                                                                                                                                                                                                                                            field
+     *                                                                                                                                                                                                                                                                                                                                            to
+     *                                                                                                                                                                                                                                                                                                                                            modify
+     * @param array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string} $field_desc Array
+     *                                                                                                                                                                                                                                                                                                                                            with
+     *                                                                                                                                                                                                                                                                                                                                            description
+     *                                                                                                                                                                                                                                                                                                                                            of
+     *                                                                                                                                                                                                                                                                                                                                            field
+     *                                                                                                                                                                                                                                                                                                                                            format
+     *
+     * @return    int                            Return integer <0 if KO, >0 if OK
      */
     public function DDLUpdateField($table, $field_name, $field_desc)
     {
-		// phpcs:enable
-        $sql = "ALTER TABLE " . $table;
-        $sql .= " MODIFY COLUMN " . $field_name . " " . $field_desc['type'];
+        // phpcs:enable
+        $sql = "ALTER TABLE " . $this->sanitize($table);
+        $sql .= " MODIFY COLUMN " . $this->sanitize($field_name) . " " . $this->sanitize($field_desc['type']);
         if ($field_desc['type'] == 'tinyint' || $field_desc['type'] == 'int' || $field_desc['type'] == 'varchar') {
-            $sql .= "(" . $field_desc['value'] . ")";
+            $sql .= "(" . $this->sanitize($field_desc['value']) . ")";
         }
 
         dol_syslog(get_class($this) . "::DDLUpdateField " . $sql, LOG_DEBUG);
         if (!$this->query($sql)) {
             return -1;
-        }
-        return 1;
-    }
+		}
+		return 1;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Drop a field from table
+     *    Drop a field from table
      *
-     *  @param  string  $table          Name of table
-     *  @param  string  $field_name     Name of field to drop
-     *  @return int                     Return integer <0 if KO, >0 if OK
+     * @param string $table      Name of table
+     * @param string $field_name Name of field to drop
+     *
+     * @return    int                        Return integer <0 if KO, >0 if OK
      */
     public function DDLDropField($table, $field_name)
     {
-		// phpcs:enable
+        // phpcs:enable
         $tmp_field_name = preg_replace('/[^a-z0-9\.\-\_]/i', '', $field_name);
 
-        $sql = "ALTER TABLE " . $table . " DROP COLUMN `" . $tmp_field_name . "`";
+        $sql = "ALTER TABLE " . $this->sanitize($table) . " DROP COLUMN `" . $this->sanitize($tmp_field_name) . "`";
         if (!$this->query($sql)) {
             $this->error = $this->lasterror();
-            return -1;
-        }
-        return 1;
-    }
+			return -1;
+		}
+		return 1;
+	}
 
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Create a user and privileges to connect to database (even if database does not exists yet)
+     *    Create a user and privileges to connect to database (even if database does not exists yet)
      *
-     *  @param  string  $dolibarr_main_db_host      Ip serveur
-     *  @param  string  $dolibarr_main_db_user      Nom user a creer
-     *  @param  string  $dolibarr_main_db_pass      Password user a creer
-     *  @param  string  $dolibarr_main_db_name      Database name where user must be granted
-     *  @return int                                 Return integer <0 if KO, >=0 if OK
+     * @param string $dolibarr_main_db_host Ip serveur
+     * @param string $dolibarr_main_db_user Nom user a creer
+     * @param string $dolibarr_main_db_pass Password user a creer
+     * @param string $dolibarr_main_db_name Database name where user must be granted
+     *
+     * @return    int                                    Return integer <0 if KO, >=0 if OK
      */
     public function DDLCreateUser($dolibarr_main_db_host, $dolibarr_main_db_user, $dolibarr_main_db_pass, $dolibarr_main_db_name)
     {
-		// phpcs:enable
+        // phpcs:enable
         $sql = "INSERT INTO user ";
         $sql .= "(Host,User,password,Select_priv,Insert_priv,Update_priv,Delete_priv,Create_priv,Drop_priv,Index_Priv,Alter_priv,Lock_tables_priv)";
         $sql .= " VALUES ('" . $this->escape($dolibarr_main_db_host) . "','" . $this->escape($dolibarr_main_db_user) . "',password('" . addslashes($dolibarr_main_db_pass) . "')";
@@ -1218,9 +1351,9 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Return charset used to store data in database
+     *    Return charset used to store data in database
      *
-     *  @return     string      Charset
+     * @return        string        Charset
      */
     public function getDefaultCharacterSetDatabase()
     {
@@ -1228,13 +1361,13 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Return list of available charset that can be used to store data in database
+     *    Return list of available charset that can be used to store data in database
      *
-     *  @return     array       List of Charset
+     * @return        array        List of Charset
      */
     public function getListOfCharacterSet()
     {
-        $liste = array();
+        $liste = [];
         $i = 0;
         $liste[$i]['charset'] = 'UTF-8';
         $liste[$i]['description'] = 'UTF-8';
@@ -1242,9 +1375,9 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Return collation used in database
+     *    Return collation used in database
      *
-     *  @return     string      Collation value
+     * @return        string        Collation value
      */
     public function getDefaultCollationDatabase()
     {
@@ -1252,13 +1385,13 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Return list of available collation that can be used for database
+     *    Return list of available collation that can be used for database
      *
-     *  @return     array       List of Collation
+     * @return        array        List of Collation
      */
     public function getListOfCollation()
     {
-        $liste = array();
+        $liste = [];
         $i = 0;
         $liste[$i]['charset'] = 'UTF-8';
         $liste[$i]['description'] = 'UTF-8';
@@ -1266,9 +1399,9 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Return full path of dump program
+     *    Return full path of dump program
      *
-     *  @return     string      Full path of dump program
+     * @return        string        Full path of dump program
      */
     public function getPathOfDump()
     {
@@ -1285,9 +1418,9 @@ class DoliDBSqlite3 extends DoliDB
     }
 
     /**
-     *  Return full path of restore program
+     *    Return full path of restore program
      *
-     *  @return     string      Full path of restore program
+     * @return        string        Full path of restore program
      */
     public function getPathOfRestore()
     {
@@ -1306,12 +1439,13 @@ class DoliDBSqlite3 extends DoliDB
     /**
      * Return value of server parameters
      *
-     * @param   string  $filter     Filter list on a particular value
-     * @return  array               Array of key-values (key=>value)
+     * @param string $filter Filter list on a particular value
+     *
+     * @return    array                Array of key-values (key=>value)
      */
     public function getServerParametersValues($filter = '')
     {
-        $result = array();
+        $result = [];
         static $pragmas;
         if (!isset($pragmas)) {
             // Définition de la liste des pragmas utilisés qui ne retournent qu'une seule valeur
@@ -1328,7 +1462,8 @@ class DoliDBSqlite3 extends DoliDB
                 'query_only', 'quick_check', 'read_uncommitted', 'recursive_triggers',
                 'reverse_unordered_selects', 'schema_version', 'user_version',
                 'secure_delete', 'short_column_names', 'shrink_memory', 'soft_heap_limit',
-                'synchronous', 'temp_store', /*'temp_store_directory',*/ 'threads',
+                'synchronous', 'temp_store', /*'temp_store_directory',*/
+                'threads',
                 'vdbe_addoptrace', 'vdbe_debug', 'vdbe_listing', 'vdbe_trace',
                 'wal_autocheckpoint',
             );
@@ -1353,12 +1488,13 @@ class DoliDBSqlite3 extends DoliDB
     /**
      * Return value of server status
      *
-     * @param   string  $filter     Filter list on a particular value
-     * @return  array               Array of key-values (key=>value)
+     * @param string $filter Filter list on a particular value
+     *
+     * @return  array                Array of key-values (key=>value)
      */
     public function getServerStatusValues($filter = '')
     {
-        $result = array();
+        $result = [];
         /*
         $sql='SHOW STATUS';
         if ($filter) $sql.=" LIKE '".$this->escape($filter)."'";
@@ -1379,9 +1515,10 @@ class DoliDBSqlite3 extends DoliDB
      *   - The function must be static and public.
      *   - The number of arguments is automatically determined when arg_count is < 0
      *
-     * @param   string  $name           Function name to define in Sqlite
-     * @param   int     $arg_count      Arguments count
-     * @return  void
+     * @param string $name      Function name to define in Sqlite
+     * @param int    $arg_count Arguments count
+     *
+     * @return    void
      */
     private function addCustomFunction($name, $arg_count = -1)
     {
@@ -1395,22 +1532,24 @@ class DoliDBSqlite3 extends DoliDB
             }
             if (!$this->db->createFunction($name, $localname, $arg_count)) {
                 $this->error = "unable to create custom function '$name'";
-            }
-        }
-    }
+			}
+		}
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      * calc_daynr
      *
-     * @param   int     $year       Year
-     * @param   int     $month      Month
-     * @param   int     $day        Day
+     * @param int $year  Year
+     * @param int $month Month
+     * @param int $day   Day
+     *
      * @return int Formatted date
      */
     private static function calc_daynr($year, $month, $day)
     {
-		// phpcs:enable
+        // phpcs:enable
         $y = $year;
         if ($y == 0 && $month == 0) {
             return 0;
@@ -1423,50 +1562,56 @@ class DoliDBSqlite3 extends DoliDB
         }
         $temp = floor(($y / 100 + 1) * 3 / 4);
         return (int) ($num + floor($y / 4) - $temp);
-    }
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      * calc_weekday
      *
-     * @param int   $daynr                          ???
-     * @param bool  $sunday_first_day_of_week       ???
+     * @param int  $daynr                    ???
+     * @param bool $sunday_first_day_of_week ???
+     *
      * @return int
      */
     private static function calc_weekday($daynr, $sunday_first_day_of_week)
     {
-		// phpcs:enable
+        // phpcs:enable
         $ret = (int) floor(($daynr + 5 + ($sunday_first_day_of_week ? 1 : 0)) % 7);
-        return $ret;
-    }
+		return $ret;
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      * calc_days_in_year
      *
-     * @param   string  $year       Year
-     * @return  int                 Nb of days in year
+     * @param int $year Year
+     *
+     * @return    int                    Nb of days in year
      */
     private static function calc_days_in_year($year)
     {
-		// phpcs:enable
+        // phpcs:enable
         return (($year & 3) == 0 && ($year % 100 || ($year % 400 == 0 && $year)) ? 366 : 365);
-    }
+	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      * calc_week
      *
-     * @param   int     $year               Year
-     * @param   int     $month              Month
-     * @param   int     $day                Day
-     * @param   int     $week_behaviour     Week behaviour, bit masks: WEEK_MONDAY_FIRST, WEEK_YEAR, WEEK_FIRST_WEEKDEAY
-     * @param   int     $calc_year          ??? Year where the week started
-     * @return  int                         ??? Week number in year
+     * @param int $year           Year
+     * @param int $month          Month
+     * @param int $day            Day
+     * @param int $week_behaviour Week behaviour, bit masks: WEEK_MONDAY_FIRST, WEEK_YEAR, WEEK_FIRST_WEEKDEAY
+     * @param int $calc_year      ??? Year where the week started
+     *
+     * @return    int                            ??? Week number in year
      */
     private static function calc_week($year, $month, $day, $week_behaviour, &$calc_year)
     {
-		// phpcs:enable
+        // phpcs:enable
         $daynr = self::calc_daynr($year, $month, $day);
         $first_daynr = self::calc_daynr($year, 1, 1);
         $monday_first = ($week_behaviour & self::WEEK_MONDAY_FIRST) ? 1 : 0;
@@ -1498,7 +1643,7 @@ class DoliDBSqlite3 extends DoliDB
                 $calc_year++;
                 return 1;
             }
-        }
-        return (int) floor($days / 7 + 1);
-    }
+		}
+		return (int) floor($days / 7 + 1);
+	}
 }

@@ -31,6 +31,7 @@
  */
 
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\User\Model\User;
 
 /**
@@ -182,7 +183,7 @@ function user_prepare_head(User $object)
         $h++;
 
         // Attached files
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
         $upload_dir = $conf->user->dir_output . "/" . $object->id;
         $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

@@ -393,7 +393,7 @@ class EcmDirectory extends GenericDocument
     public function delete($user, $mode = 'all', $deletedirrecursive = 0)
     {
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -764,7 +764,7 @@ class EcmDirectory extends GenericDocument
     public function refreshcachenboffile($all = 0)
     {
         global $conf;
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $dir = $conf->ecm->dir_output . '/' . $this->getRelativePath();
         $filelist = dol_dir_list($dir, 'files', 0, '', '(\.meta|_preview.*\.png)$');

@@ -30,6 +30,7 @@
 
 // Load Dolibarr environment
 use DoliCore\Form\FormCategory;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Bank\Model\Account;
 use DoliModules\Category\Model\Categorie;
 

@@ -64,7 +64,7 @@ use DoliCore\Base\DolibarrController;
 use DoliCore\Lib\Fields;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
-use ExtraFields;
+use DoliCore\Lib\ExtraFields;
 use MailmanSpip;
 
 class AdherentController extends DolibarrController
@@ -395,7 +395,7 @@ class AdherentController extends DolibarrController
             }
 
             if ($action == 'update' && !$cancel && $user->hasRight('adherent', 'creer')) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                 $birthdate = '';
                 if (GETPOSTINT("birthday") && GETPOSTINT("birthmonth") && GETPOSTINT("birthyear")) {
@@ -523,7 +523,7 @@ class AdherentController extends DolibarrController
                             $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
                             if ($file_OK) {
                                 if (GETPOST('deletephoto')) {
-                                    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                                    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                                     $fileimg = $conf->adherent->dir_output . '/' . get_exdir(0, 0, 0, 1, $object, 'member') . '/photos/' . $object->photo;
                                     $dirthumbs = $conf->adherent->dir_output . '/' . get_exdir(0, 0, 0, 1, $object, 'member') . '/photos/thumbs';
                                     dol_delete_file($fileimg);

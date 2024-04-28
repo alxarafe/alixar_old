@@ -40,6 +40,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Bank\Model\Account;
 use DoliModules\Supplier\Model\FactureFournisseur;
 use DoliModules\Supplier\Model\FactureFournisseurRec;
@@ -50,8 +51,8 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_invoice/modules_facturefournisseur.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 if (isModEnabled("product")) {
     require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';

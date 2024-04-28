@@ -30,7 +30,7 @@ use DoliCore\Form\FormOther;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/rapport/pdf_paiement_fourn.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 $langs->loadLangs(array('bills'));
 

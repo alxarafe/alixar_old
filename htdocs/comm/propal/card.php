@@ -46,6 +46,7 @@ use DoliCore\Form\FormFile;
 use DoliCore\Form\FormMargin;
 use DoliCore\Form\FormProjets;
 use DoliCore\Form\FormPropal;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Proposal\Model\Propal;
 

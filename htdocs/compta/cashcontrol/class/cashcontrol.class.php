@@ -252,7 +252,7 @@ class CashControl extends GenericDocument
     public function valid(User $user, $notrigger = 0)
     {
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 

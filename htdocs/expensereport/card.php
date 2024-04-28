@@ -34,6 +34,7 @@ use DoliCore\Form\FormActions;
 use DoliCore\Form\FormExpenseReport;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Bank\Model\Account;
 use DoliModules\ExpenseReport\Model\ExpenseReport;
 use DoliModules\ExpenseReport\Model\PaymentExpenseReport;
@@ -45,7 +46,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmfiles.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/expensereport/modules_expensereport.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
@@ -2210,7 +2211,7 @@ if ($action == 'create') {
                                             // Conversion du PDF en image png si fichier png non existent
                                             if (!file_exists($fileimage) || (filemtime($fileimage) < filemtime($filepdf))) {
                                                 if (!getDolGlobalString('MAIN_DISABLE_PDF_THUMBS')) {       // If you experience trouble with pdf thumb generation and imagick, you can disable here.
-                                                    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                                                    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                                                     $ret = dol_convert_file($filepdf, 'png', $fileimage, '0'); // Convert first page of PDF into a file _preview.png
                                                     if ($ret < 0) {
                                                         $error++;
@@ -2425,7 +2426,7 @@ if ($action == 'create') {
                 $nbFiles = $nbLinks = 0;
                 $arrayoffiles = array();
                 if (!getDolGlobalString('EXPENSEREPORT_DISABLE_ATTACHMENT_ON_LINES')) {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                     require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
                     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
                     $upload_dir = $conf->expensereport->dir_output . "/" . dol_sanitizeFileName($object->ref);

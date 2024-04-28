@@ -42,6 +42,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormCategory;
 use DoliCore\Form\FormCompany;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Product\Model\FormProduct;
 use DoliModules\Product\Model\Product;

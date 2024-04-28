@@ -516,7 +516,7 @@ public $listmeths;
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         dol_syslog(get_class($this) . "::valid");
 
@@ -1505,7 +1505,7 @@ public $listmeths;
     {
         global $conf, $langs, $user;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
         $this->error = '';
@@ -1741,7 +1741,7 @@ public $listmeths;
             global $user;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
         $this->error = '';

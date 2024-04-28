@@ -12,7 +12,7 @@ defineIfNotDefined('NOREQUIREMENU', '1');
 session_cache_limiter('public');
 
 require_once BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 // Security
 if ($dolibarr_main_prod) {

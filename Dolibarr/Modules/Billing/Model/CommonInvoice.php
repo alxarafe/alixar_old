@@ -962,7 +962,7 @@ abstract class CommonInvoice extends GenericDocument
             $datelim += ($cdr_decalage * 3600 * 24);
         } elseif ($cdr_type == 2 && !empty($cdr_decalage)) {
             // 2 : application of the rule, the N of the current or next month
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
             $datelim = $this->date + ($cdr_nbjour * 3600 * 24);
 
             $date_piece = dol_mktime(0, 0, 0, date('m', $datelim), date('d', $datelim), date('Y', $datelim)); // Sans les heures minutes et secondes

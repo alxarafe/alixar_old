@@ -43,7 +43,7 @@ use DoliModules\Company\Model\Company;
 use DoliModules\Supplier\Model\PaiementFourn;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'bills', 'banks', 'compta'));

@@ -25,6 +25,8 @@
  *  \brief      File to build cheque deposit receipts
  */
 
+use DoliModules\Accounting\Model\RemiseCheque;
+
 require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/cheque/modules_chequereceipts.php';

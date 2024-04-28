@@ -37,7 +37,7 @@ if (substr($sapi_type, 0, 3) == 'cgi') {
 }
 
 require_once $path . "../../htdocs/master.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';

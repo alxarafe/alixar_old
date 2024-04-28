@@ -21,6 +21,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliModules\User\Model\User;
 
 /**

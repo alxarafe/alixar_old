@@ -23,7 +23,7 @@ namespace DoliModules\Project\Api;
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 
 /**

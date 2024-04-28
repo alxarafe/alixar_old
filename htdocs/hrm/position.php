@@ -27,6 +27,7 @@
  *    \brief      Page to create/edit/view position
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 
 // Load Dolibarr environment
@@ -35,7 +36,7 @@ require_once DOL_DOCUMENT_ROOT . '/hrm/class/position.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/job.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_position.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_job.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
 

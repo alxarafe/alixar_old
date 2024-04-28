@@ -39,6 +39,8 @@
 
 
 // Protection
+use DoliCore\Lib\ExtraFields;
+
 if (empty($objectclass) || empty($uploaddir)) {
     dol_print_error(null, 'include of actions_massactions.inc.php is done but var $objectclass or $uploaddir was not defined');
     exit;
@@ -78,7 +80,7 @@ if (!$error && $massaction == 'confirm_presend') {
     $nbsent = 0;
     $nbignored = 0;
     $langs->load("mails");
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     include_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
 
     $listofobjectid = array();
@@ -736,9 +738,9 @@ if (!$error && $massaction == "builddoc" && $permissiontoread && !GETPOST('butto
         exit;
     }
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
     $objecttmp = new $objectclass($db);
     $listofobjectid = array();
@@ -905,7 +907,7 @@ if (!$error && $massaction == "builddoc" && $permissiontoread && !GETPOST('butto
 
 // Remove a file from massaction area
 if ($action == 'remove_file') {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     $langs->load("other");
     $upload_dir = $diroutputmassaction;

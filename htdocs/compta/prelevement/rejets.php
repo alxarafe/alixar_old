@@ -28,6 +28,7 @@
 
 // Load Dolibarr environment
 use DoliCore\Form\Form;
+use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Company\Model\Company;
 use DoliModules\User\Model\User;
 

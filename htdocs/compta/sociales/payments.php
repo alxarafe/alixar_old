@@ -39,7 +39,7 @@ require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/paymentsocialcontribution.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 if (isModEnabled('accounting')) {
     include_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';
 }

@@ -47,6 +47,7 @@ use DoliCore\Form\FormActions;
 use DoliCore\Form\FormAdmin;
 use DoliCore\Form\FormCompany;
 use DoliCore\Form\FormFile;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
@@ -54,8 +55,8 @@ use DoliModules\Company\Model\Company;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 if (isModEnabled('accounting')) {
     require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
@@ -727,7 +728,7 @@ if (empty($reshook)) {
 
                                 // Index file in database
                                 if (getDolGlobalString('THIRDPARTY_LOGO_ALLOW_EXTERNAL_DOWNLOAD')) {
-                                    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                                    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                                     // the dir dirname($newfile) is directory of logo, so we should have only one file at once into index, so we delete indexes for the dir
                                     deleteFilesIntoDatabaseIndex(dirname($newfile), '', '');
                                     // now we index the uploaded logo file

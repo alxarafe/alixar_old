@@ -41,6 +41,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\OrderLine;
 use DoliModules\Product\Model\FormProduct;

@@ -27,10 +27,12 @@
  *  \brief      Page of a project task
  */
 
+use DoliCore\Lib\ExtraFields;
+
 require "../../main.inc.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/project/task/modules_task.php';
 
 // Load translation files required by the page
@@ -200,7 +202,7 @@ if ($action == 'builddoc' && $user->hasRight('projet', 'creer')) {
 
 // Delete file in doc form
 if ($action == 'remove_file' && $user->hasRight('projet', 'creer')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     $langs->load("other");
     $upload_dir = $conf->project->dir_output;

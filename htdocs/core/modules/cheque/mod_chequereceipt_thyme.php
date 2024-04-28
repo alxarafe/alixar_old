@@ -24,6 +24,8 @@
  * \brief      File containing class for numbering module Thyme
  */
 
+use DoliModules\Accounting\Model\RemiseCheque;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/cheque/modules_chequereceipts.php';
 
 

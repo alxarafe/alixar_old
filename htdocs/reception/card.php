@@ -38,6 +38,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Product\Model\FormProduct;
 use DoliModules\Product\Model\Product;
 use DoliModules\Supplier\Model\CommandeFournisseur;
@@ -571,7 +572,7 @@ if (empty($reshook)) {
         }
     } elseif ($action == 'remove_file' && $permissiontoadd) {
         // Delete file in doc form
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $upload_dir = $conf->reception->dir_output;
         $file = $upload_dir . '/' . GETPOST('file');

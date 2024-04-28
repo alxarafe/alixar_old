@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/contract.lib.php';
 if (isModEnabled('project')) {
 }
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 $langs->loadLangs(array('companies', 'contracts', 'tickets'));
 

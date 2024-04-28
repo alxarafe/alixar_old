@@ -27,6 +27,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Project\Model\Project;
 
 require BASE_PATH . '/main.inc.php';

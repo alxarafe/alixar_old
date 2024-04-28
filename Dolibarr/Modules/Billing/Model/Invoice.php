@@ -42,7 +42,7 @@
 namespace DoliModules\Billing\Model;
 
 use DoliDB;
-use WorkboardResponse;
+use DoliCore\Model\WorkboardResponse;
 
 /**
  *  Class to manage invoices
@@ -413,7 +413,7 @@ class Invoice extends CommonInvoice
             return null;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         if ($date > (dol_get_last_hour(dol_now('tzuserrel')) + (!getDolGlobalString('INVOICE_MAX_FUTURE_DELAY') ? 0 : $conf->global->INVOICE_MAX_FUTURE_DELAY))) {
             $origin->error = 'ErrorDateIsInFuture';
@@ -1124,7 +1124,7 @@ class Invoice extends CommonInvoice
     public function validate($user, $force_number = '', $idwarehouse = 0, $notrigger = 0, $batch_rule = 0)
     {
         global $conf, $langs, $mysoc;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $productStatic = null;
         $warehouseStatic = null;
@@ -4344,7 +4344,7 @@ class Invoice extends CommonInvoice
     public function delete($user, $notrigger = 0, $idwarehouse = -1)
     {
         global $langs, $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $rowid = $this->id;
 
@@ -5512,7 +5512,7 @@ class Invoice extends CommonInvoice
         }
         */
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
         $formmail = new FormMail($this->db);
 

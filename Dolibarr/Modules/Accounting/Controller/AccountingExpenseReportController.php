@@ -43,7 +43,7 @@ use DoliModules\Accounting\Model\AccountingAccount;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 class AccountingExpenseReportController extends DolibarrController
 {

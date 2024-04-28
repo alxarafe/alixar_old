@@ -491,7 +491,7 @@ class RecruitmentJobPosition extends GenericDocument
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -837,7 +837,7 @@ class RecruitmentJobPosition extends GenericDocument
             }
         } else {
             if ($withpicto) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                 [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);

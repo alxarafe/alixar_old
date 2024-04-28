@@ -45,6 +45,8 @@
 
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 $res = 0;
 // Try main.inc.php into web root known defined into CONTEXT_DOCUMENT_ROOT (not always defined)
 if (!$res && !empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) {
@@ -77,7 +79,7 @@ if (!$res) {
 }
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 dol_include_once('/mymodule/class/myobject.class.php');
 dol_include_once('/mymodule/lib/mymodule_myobject.lib.php');

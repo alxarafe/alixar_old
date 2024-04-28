@@ -21,6 +21,8 @@
  *       \brief      File to return Ajax response on a selection list request
  */
 
+use DoliCore\Lib\ExtraFields;
+
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', 1); // Disables token renewal
 }

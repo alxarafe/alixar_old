@@ -1425,7 +1425,7 @@ class Form
         $orig_set_time = $set_time;
 
         if ($set_time === '' && $emptydate == 0) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
             if ($gm == 'tzuser' || $gm == 'tzuserrel') {
                 $set_time = dol_now($gm);
             } else {
@@ -8335,7 +8335,7 @@ class Form
 
         // Hours
         if ($iSecond != '') {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
             $hourSelected = convertSecondToTime($iSecond, 'allhour');
             $minSelected = convertSecondToTime($iSecond, 'min');

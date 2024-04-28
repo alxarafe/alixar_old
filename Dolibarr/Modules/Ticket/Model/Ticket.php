@@ -35,7 +35,7 @@ namespace DoliModules\Ticket\Model;
 // Put here all includes required by your class file
 use DoliCore\Base\GenericDocument;
 use DoliCore\Base\Config;
-use WorkboardResponse;
+use DoliCore\Model\WorkboardResponse;
 
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
 
@@ -1802,7 +1802,7 @@ const STATUS_CANCELED = 9;
     public function is_photo_available($sdir)
     {
         // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         global $conf;
 
@@ -2246,7 +2246,7 @@ const STATUS_CANCELED = 9;
 
         // Create form object
         include_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
         $maxwidthsmall = 270;

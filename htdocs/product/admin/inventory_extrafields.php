@@ -28,6 +28,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 
 global $conf, $langs, $user;

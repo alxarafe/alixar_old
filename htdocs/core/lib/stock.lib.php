@@ -22,6 +22,8 @@
  * \brief      Library file with function for stock module
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare array with list of tabs
  *

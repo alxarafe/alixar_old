@@ -22,6 +22,8 @@
  *  \brief      File of class to calculate prices using expression
  */
 
+use DoliCore\Lib\ExtraFields;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/evalmath.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_expression.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_global_variable.class.php';
@@ -100,7 +102,7 @@ class PriceParser
         if (empty($this->error_parser)) {
             return $langs->trans("ErrorPriceExpressionUnknown", 0); //this is not supposed to happen
         }
-        list($code, $info) = $this->error_parser;
+        [$code, $info] = $this->error_parser;
         if (in_array($code, array(9, 14, 19, 20))) { //Errors which have 0 arg
             return $langs->trans("ErrorPriceExpression" . $code);
         } elseif (in_array($code, array(1, 2, 3, 4, 5, 8, 10, 11, 17, 21, 22))) { //Errors which have 1 arg

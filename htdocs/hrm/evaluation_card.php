@@ -27,6 +27,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/evaluation.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/job.class.php';
@@ -220,7 +222,7 @@ if (empty($reshook)) {
     // action to remove file
     if ($action == 'remove_file_comfirm') {
         // Delete file in doc form
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $upload_dir = $conf->hrm->dir_output;
         $file = $upload_dir . '/' . GETPOST('file');

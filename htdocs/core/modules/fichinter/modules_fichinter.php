@@ -144,7 +144,7 @@ function fichinter_create($db, $object, $modele, $outputlangs, $hidedetails = 0,
             $outputlangs->charset_output = $sav_charset_output;
 
             // We delete old preview
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             dol_delete_preview($object);
 
             return 1;

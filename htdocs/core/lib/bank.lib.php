@@ -30,6 +30,7 @@
  * \brief      Ensemble de functions de base pour le module banque
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Bank\Model\Account;
 
 /**
@@ -99,7 +100,7 @@ function bank_prepare_head(Account $object)
     }
 
     // Attached files
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->bank->dir_output . "/" . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
@@ -207,7 +208,7 @@ function account_statement_prepare_head($object, $num)
     $h++;
 
     // Attached files
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->bank->dir_output . "/" . $object->id . '/statement/' . dol_sanitizeFileName($num);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
@@ -253,7 +254,7 @@ function various_payment_prepare_head($object)
     // $this->tabs = array('entity:-tabname);                                                   to remove a tab
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'various_payment');
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->bank->dir_output . "/" . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

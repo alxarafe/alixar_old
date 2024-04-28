@@ -30,7 +30,7 @@ namespace DoliModules\Resource\Model;
 use CommonPeople;
 use DoliCore\Base\GenericDocument;
 use DoliDB;
-use ExtraFields;
+use DoliCore\Lib\ExtraFields;
 
 require_once DOL_DOCUMENT_ROOT . "/core/lib/functions2.lib.php";
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
@@ -542,7 +542,7 @@ class Dolresource extends GenericDocument
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $rowid = $this->id;
 

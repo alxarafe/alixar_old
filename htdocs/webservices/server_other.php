@@ -32,7 +32,7 @@ defineIfNotDefined('NOSESSION', '1');
 require BASE_PATH . '/main.inc.php';
 //require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 

@@ -630,7 +630,7 @@ function dolibarr_get_const($db, $name, $entity = 1)
     if ($resql) {
         $obj = $db->fetch_object($resql);
         if ($obj) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
             $value = dolDecrypt($obj->value);
         }
     }
@@ -686,7 +686,7 @@ function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, 
             // To list all sensitive constant, you can make a
             // WHERE name like '%\_KEY' or name like '%\_EXPORTKEY' or name like '%\_SECUREKEY' or name like '%\_SERVERKEY' or name like '%\_PASS' or name like '%\_PASSWORD' or name like '%\_SECRET'
             // or name like '%\_SECURITY_TOKEN' or name like '%\WEB_TOKEN'
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
             $newvalue = dolEncrypt($value);
         } else {
             $newvalue = $value;

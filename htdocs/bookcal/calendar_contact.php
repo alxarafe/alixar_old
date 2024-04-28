@@ -25,6 +25,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 
 dol_include_once('/bookcal/class/calendar.class.php');

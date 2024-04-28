@@ -24,6 +24,8 @@
  * \brief      This file is a library for Ticket module
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Build tabs for admin page
  *
@@ -106,7 +108,7 @@ function ticket_prepare_head($object)
     complete_head_from_modules($conf, $langs, $object, $head, $h, 'ticket', 'add', 'core');
 
     // Attached files
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     $upload_dir = $conf->ticket->dir_output . "/" . $object->ref;
     $nbFiles = count(dol_dir_list($upload_dir, 'files'));
     $head[$h][0] = DOL_URL_ROOT . '/ticket/document.php?id=' . $object->id;

@@ -1201,7 +1201,7 @@ class FormMail extends Form
     {
         // phpcs:enable
         global $conf, $user;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // Set tmp user directory
         $vardir = $conf->user->dir_output . "/" . $user->id;

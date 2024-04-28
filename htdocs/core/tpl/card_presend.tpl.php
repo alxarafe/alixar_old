@@ -54,7 +54,7 @@ if ($action == 'presend') {
         if (!empty($object->last_main_doc) && is_readable(DOL_DATA_ROOT . '/' . $object->last_main_doc) && is_file(DOL_DATA_ROOT . '/' . $object->last_main_doc)) {
             $fileparams['fullname'] = DOL_DATA_ROOT . '/' . $object->last_main_doc;
         } else {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             // Special case
             if ($object->element == 'invoice_supplier') {
                 $fileparams = dol_most_recent_file($diroutput . '/' . get_exdir($object->id, 2, 0, 0, $object, $object->element) . $ref, preg_quote($ref, '/') . '([^\-])+');

@@ -350,7 +350,7 @@ class GenericBoxes // Can't be abstract as it is instantiated to build "empty" b
             return "\n<!-- Box " . get_class($this) . " hidden -->\n"; // Nothing done if hidden (for example when user has no permission)
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $MAXLENGTHBOX = 60; // When set to 0: no length limit
 

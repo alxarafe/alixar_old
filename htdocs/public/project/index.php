@@ -23,6 +23,8 @@
  *      \brief      File to offer a way to suggest a conference or a booth for an event
  */
 
+use DoliCore\Lib\ExtraFields;
+
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
 defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
 defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip

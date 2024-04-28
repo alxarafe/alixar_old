@@ -458,7 +458,7 @@ class FormFile
             $form = new Form($this->db);
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // For backward compatibility
         if (!empty($iconPDF)) {
@@ -1106,7 +1106,7 @@ class FormFile
     {
         global $conf, $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $out = '';
         $this->infofiles = ['nboffiles' => 0, 'extensions' => [], 'files' => []];

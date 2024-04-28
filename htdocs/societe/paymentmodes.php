@@ -30,8 +30,9 @@
  *      \brief      Tab of payment modes for the customer
  */
 
+use DoliCore\Lib\ExtraFields;
+use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Company\Model\Company;
-use CompanyBankAccount;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

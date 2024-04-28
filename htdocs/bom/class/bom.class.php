@@ -30,7 +30,7 @@
 // Put here all includes required by your class file
 use DoliCore\Base\GenericDocument;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 if (isModEnabled('workstation')) {
     require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';
@@ -910,7 +910,7 @@ class BOM extends GenericDocument
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -1332,7 +1332,7 @@ class BOM extends GenericDocument
     public function is_photo_available($sdir)
     {
 		// phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
         $sdir .= '/' . get_exdir(0, 0, 0, 0, $this, 'bom');

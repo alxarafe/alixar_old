@@ -697,7 +697,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
         global $langs;
         $langs->load("admin");
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
 
         $content = '';
@@ -786,7 +786,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
         global $langs;
         $langs->load("admin");
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
 
         $filefound = false;

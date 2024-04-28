@@ -4,7 +4,7 @@ define("NOCSRFCHECK", 1); // We accept to go on this page from external web site
 defineIfNotDefined('NOSESSION', '1');
 
 require_once BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 if ($dolibarr_main_prod) {
     accessforbidden('Access forbidden when $dolibarr_main_prod is set to 1');

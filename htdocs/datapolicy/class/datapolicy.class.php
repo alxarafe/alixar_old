@@ -24,7 +24,7 @@
  */
 
 include_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
-include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
 
 
 /**

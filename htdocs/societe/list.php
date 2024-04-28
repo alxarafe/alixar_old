@@ -41,6 +41,7 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormCategory;
 use DoliCore\Form\FormCompany;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Client;
 use DoliModules\Company\Model\Company;

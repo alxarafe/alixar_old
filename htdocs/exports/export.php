@@ -34,7 +34,7 @@ use DoliCore\Form\FormOther;
 require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/exports/class/export.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/export/modules_export.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 // Load translation files required by the page
 $langs->loadlangs(array('admin', 'exports', 'other', 'users', 'companies', 'projects', 'suppliers', 'products', 'bank', 'bills'));

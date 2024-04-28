@@ -402,7 +402,7 @@ class Delivery extends GenericDocument
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         dol_syslog(get_class($this) . "::valid begin");
 
@@ -688,7 +688,7 @@ class Delivery extends GenericDocument
     {
         global $conf, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $this->db->begin();
 

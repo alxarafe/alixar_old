@@ -5,7 +5,7 @@ define("NOCSRFCHECK", 1); // We accept to go on this page from external web site
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Security
 if ($dolibarr_main_prod) {

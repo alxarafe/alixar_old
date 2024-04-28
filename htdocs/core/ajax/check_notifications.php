@@ -58,7 +58,7 @@ if ($action == 'stopreminder') {
     }
     //}
 
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
     // Clean database
     $sql = 'DELETE FROM ' . MAIN_DB_PREFIX . 'actioncomm_reminder';

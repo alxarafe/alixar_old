@@ -142,7 +142,7 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
     // Now create the .tpl file (duplicate code with actions updatesource or updatecontent but we need this to save new header)
     dol_syslog("dolSavePageContent We regenerate the tpl page filetpl=" . $filetpl);
 
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     if (dol_is_file($filetpl)) {
         if ($backupold) {
@@ -726,7 +726,7 @@ function checkPHPCode($phpfullcodestringold, $phpfullcodestring)
         if (!$error) {
             $dolibarrdataroot = preg_replace('/([\\/]+)$/i', '', DOL_DATA_ROOT);
             $allowimportsite = true;
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             if (dol_is_file($dolibarrdataroot . '/installmodules.lock')) {
                 $allowimportsite = false;
             }

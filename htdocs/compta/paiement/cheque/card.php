@@ -31,6 +31,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
+use DoliModules\Accounting\Model\RemiseCheque;
 use DoliModules\Bank\Model\AccountLine;
 
 // Load Dolibarr environment
@@ -269,7 +270,7 @@ if ($action == 'builddoc' && $user->hasRight('banque', 'cheque')) {
 } elseif ($action == 'remove_file' && $user->hasRight('banque', 'cheque')) {
     // Remove file in doc form
     if ($object->fetch($id) > 0) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $langs->load("other");
 

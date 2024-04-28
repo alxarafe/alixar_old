@@ -44,7 +44,7 @@ use DoliModules\SupplierProposal\Model\SupplierProposal;
 // Load Dolibarr environment
 require "../main.inc.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "bills", "orders", "suppliers", "propal", "interventions", "contracts", "products"));

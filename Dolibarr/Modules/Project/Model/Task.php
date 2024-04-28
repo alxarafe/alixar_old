@@ -33,9 +33,7 @@ namespace DoliModules\Project\Model;
  */
 
 use DoliCore\Base\GenericDocumentLine;
-use WorkboardResponse;
-
-require_once DOL_DOCUMENT_ROOT . '/core/class/timespent.class.php';
+use DoliCore\Model\WorkboardResponse;
 
 /**
  *  Class to manage tasks
@@ -709,7 +707,7 @@ public $timespent_withhour;
         }
 
         if (getDolGlobalString('PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
             $restrictBefore = dol_time_plus_duree(dol_now(), -$conf->global->PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS, 'm');
 
             if ($this->timespent_date < $restrictBefore) {
@@ -1027,7 +1025,7 @@ public $timespent_withhour;
                 $olddir = $conf->project->dir_output . '/' . dol_sanitizeFileName($project->ref) . '/' . dol_sanitizeFileName($this->oldcopy->ref);
                 $newdir = $conf->project->dir_output . '/' . dol_sanitizeFileName($project->ref) . '/' . dol_sanitizeFileName($this->ref);
                 if (file_exists($olddir)) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                     $res = dol_move_dir($olddir, $newdir);
                     if (!$res) {
                         $langs->load("errors");
@@ -1518,7 +1516,7 @@ public $timespent_withhour;
         }
 
         if (getDolGlobalString('PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
             $restrictBefore = dol_time_plus_duree(dol_now(), -$conf->global->PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS, 'm');
 
             if ($this->timespent_date < $restrictBefore) {
@@ -1620,7 +1618,7 @@ public $timespent_withhour;
         $error = 0;
 
         if (getDolGlobalString('PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
             $restrictBefore = dol_time_plus_duree(dol_now(), -$conf->global->PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS, 'm');
 
             if ($this->timespent_date < $restrictBefore) {
@@ -1692,7 +1690,7 @@ public $timespent_withhour;
     public function delete($user, $notrigger = 0)
     {
         global $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -1785,7 +1783,7 @@ public $timespent_withhour;
                 $dir = $conf->project->dir_output . "/" . dol_sanitizeFileName($projectstatic->ref) . '/' . dol_sanitizeFileName($this->id);
                 dol_syslog(get_class($this) . "::delete dir=" . $dir, LOG_DEBUG);
                 if (file_exists($dir)) {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                     $res = @dol_delete_dir_recursive($dir);
                     if (!$res) {
                         $this->error = 'ErrorFailToDeleteDir';
@@ -1958,7 +1956,7 @@ public $timespent_withhour;
 
             //Duplicate file
             if ($clone_file) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                 //retrieve project origin ref to know folder to copy
                 $projectstatic = new Project($this->db);

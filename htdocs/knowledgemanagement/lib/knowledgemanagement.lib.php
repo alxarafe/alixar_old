@@ -22,6 +22,8 @@
  * \brief   Library files with common functions for KnowledgeManagement
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare admin pages header
  *

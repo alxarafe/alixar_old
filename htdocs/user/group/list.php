@@ -29,6 +29,7 @@
 
 // Load Dolibarr environment
 use DoliCore\Form\Form;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\User\Model\UserGroup;
 
 require BASE_PATH . '/main.inc.php';

@@ -28,6 +28,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormAccounting;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Accounting\Model\AccountingJournal;
 use DoliModules\Bank\Model\Account;

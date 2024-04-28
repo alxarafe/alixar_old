@@ -50,6 +50,7 @@ use DoliCore\Form\FormAccounting;
 use DoliCore\Form\FormBarCode;
 use DoliCore\Form\FormCompany;
 use DoliCore\Form\FormFile;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Product\Model\FormProduct;
 use DoliModules\Product\Model\Product;

@@ -24,7 +24,7 @@ use DoliCore\Base\Stats;
 use DoliDB;
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
-include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 
 /**
@@ -314,7 +314,7 @@ class ProjectStats extends Stats
 
         // Search into cache
         if (!empty($cachedelay)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
         }
 
@@ -426,7 +426,7 @@ class ProjectStats extends Stats
 
         // Search into cache
         if (!empty($cachedelay)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
         }
 

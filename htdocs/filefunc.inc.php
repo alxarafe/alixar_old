@@ -206,15 +206,15 @@ if (empty($dolibarr_strict_mode)) {
     $dolibarr_strict_mode = 0; // For debug in php strict mode
 }
 
-if (!file_exists(DOL_DOCUMENT_ROOT . "/core/lib/functions.lib.php")) {
+if (!file_exists(DOL_DOCUMENT_ROOT . "/../Dolibarr/Lib/Functions.php")) {
     print "Error: Dolibarr config file content seems to be not correctly defined.<br>\n";
     print "Please run dolibarr setup by calling page <b>/install</b>.<br>\n";
     exit;
 }
 
 // Included by default (must be before the CSRF check so wa can use the dol_syslog)
-include_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
-include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
 
 // Security: CSRF protection
 // This test check if referrer ($_SERVER['HTTP_REFERER']) is same web site than Dolibarr ($_SERVER['HTTP_HOST'])

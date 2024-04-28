@@ -85,7 +85,7 @@ class Utils
 
         $langs->load("admin");
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         if (empty($choices)) {
             $choices = 'tempfilesold+logfiles';
@@ -252,7 +252,7 @@ class Utils
         $langs->load("admin");
 
         dol_syslog("Utils::dumpDatabase type=" . $type . " compression=" . $compression . " file=" . $file, LOG_DEBUG);
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // Clean data
         $file = dol_sanitizeFileName($file);
@@ -1008,7 +1008,7 @@ class Utils
             return -1;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $nbSaves = intval(getDolGlobalString('SYSLOG_FILE_SAVES', 10));
 
@@ -1334,7 +1334,7 @@ class Utils
         }
 
         $tmpfiles = array();
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         if ($filename) {
             if (dol_is_file($conf->admin->dir_output . '/backup/' . $filename)) {
                 $tmpfiles = dol_most_recent_file($conf->admin->dir_output . '/backup', $filename);

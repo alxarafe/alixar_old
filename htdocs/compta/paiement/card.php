@@ -29,6 +29,7 @@
  *      \remarks    Nearly same file than fournisseur/paiement/card.php
  */
 
+use DoliModules\Accounting\Model\RemiseCheque;
 use DoliModules\Bank\Model\AccountLine;
 
 // Load Dolibarr environment

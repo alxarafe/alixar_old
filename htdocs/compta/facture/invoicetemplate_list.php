@@ -35,6 +35,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Supplier\Model\FactureRec;
 use DoliModules\User\Model\User;
@@ -43,7 +44,7 @@ use DoliModules\User\Model\User;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 // Load translation files required by the page

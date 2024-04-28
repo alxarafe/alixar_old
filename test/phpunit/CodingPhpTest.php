@@ -91,7 +91,7 @@ class CodingPhpTest extends CommonClassTest
     public function phpFilesProvider()
     {
         // File functions are needed
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 
         $excludeRegexList

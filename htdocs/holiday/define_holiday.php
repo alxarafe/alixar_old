@@ -30,6 +30,7 @@
  */
 
 use DoliCore\Form\Form;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Holiday\Model\Holiday;
 use DoliModules\User\Model\User;
 

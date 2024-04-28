@@ -19,7 +19,7 @@
  */
 
 //require_once DOL_DOCUMENT_ROOT . '/api/class/api.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 use DoliCore\Api\DolibarrApi;
 

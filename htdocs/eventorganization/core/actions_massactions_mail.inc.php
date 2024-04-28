@@ -61,7 +61,7 @@ if (!$error && $massaction == 'confirm_presend_attendees') {
     $nbsent = 0;
     $nbignored = 0;
     $langs->load("mails");
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     $listofobjectid = array();
 

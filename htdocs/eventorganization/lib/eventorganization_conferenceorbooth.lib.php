@@ -86,7 +86,7 @@ function conferenceorboothPrepareHead($object, $with_project = 0)
     $h++;
     */
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->eventorganization->dir_output . "/conferenceorbooth/" . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

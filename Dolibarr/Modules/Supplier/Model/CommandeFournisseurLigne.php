@@ -34,16 +34,13 @@
 
 namespace DoliModules\Supplier\Model;
 
+use DoliModules\Billing\Model\CommonOrderLine;
+
 /**
  *  \file       htdocs/fourn/class/fournisseur.commande.class.php
  *  \ingroup    fournisseur,commande
  *  \brief      File of class to manage suppliers orders
  */
-
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonorder.class.php';
-require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
-if (isModEnabled('productbatch')) {
-}
 
 /**
  *  Class to manage line orders

@@ -25,6 +25,7 @@
  * \ingroup    propal
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Proposal\Model\Propal;
 
 /**
@@ -101,7 +102,7 @@ function propal_prepare_head($object)
         $h++;
     }
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->propal->multidir_output[$object->entity] . "/" . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

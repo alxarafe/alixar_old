@@ -76,7 +76,7 @@ if ($action == 'update' && is_array($arrayofparameters) && !empty($user->admin))
 }
 
 if ($action == 'deletefile' && $modulepart == 'doctemplates' && !empty($user->admin)) {
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     $keyforuploaddir = GETPOST('keyforuploaddir', 'aZ09');
     $listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim(getDolGlobalString($keyforuploaddir))));
 
@@ -127,7 +127,7 @@ if ($action == 'setModuleOptions' && !empty($user->admin)) {
 
     // Process upload fields
     if (GETPOST('upload', 'alpha') && GETPOST('keyforuploaddir', 'aZ09')) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         $keyforuploaddir = GETPOST('keyforuploaddir', 'aZ09');
         $listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim(getDolGlobalString($keyforuploaddir))));
 

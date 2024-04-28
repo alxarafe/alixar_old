@@ -33,7 +33,7 @@ namespace DoliModules\ExpenseReport\Model;
  */
 
 use DoliCore\Base\GenericDocument;
-use WorkboardResponse;
+use DoliCore\Model\WorkboardResponse;
 
 /**
  * Class to manage Trips and Expenses
@@ -1224,7 +1224,7 @@ public $localtax2;
     public function delete(User $user = null, $notrigger = 0)
     {
         global $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -1399,7 +1399,7 @@ public $localtax2;
 
                 // Rename directory if dir was a temporary ref
                 if (preg_match('/^[\(]?PROV/i', $this->ref)) {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                     // Now we rename also files into index
                     $sql = 'UPDATE ' . MAIN_DB_PREFIX . "ecm_files set filename = CONCAT('" . $this->db->escape($this->newref) . "', SUBSTR(filename, " . (strlen($this->ref) + 1) . ")), filepath = 'expensereport/" . $this->db->escape($this->newref) . "'";

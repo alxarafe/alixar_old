@@ -27,6 +27,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/job.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/position.class.php';

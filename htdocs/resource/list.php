@@ -27,6 +27,7 @@
  */
 
 use DoliCore\Form\Form;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Resource\Model\Dolresource;
 
 // Load Dolibarr environment

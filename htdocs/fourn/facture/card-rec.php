@@ -32,6 +32,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 if (isModEnabled('project')) {
     include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
@@ -1286,7 +1288,7 @@ if ($action == 'create') {
                 print '</td><td>';
                 if ($action == 'editmulticurrencyrate' || $action == 'actualizemulticurrencyrate') {
                     if ($action == 'actualizemulticurrencyrate') {
-                        list($object->fk_multicurrency, $object->multicurrency_tx) = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
+                        [$object->fk_multicurrency, $object->multicurrency_tx] = MultiCurrency::getIdAndTxFromCode($object->db, $object->multicurrency_code);
                     }
                     $form->form_multicurrency_rate($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->multicurrency_tx, ($usercancreate ? 'multicurrency_tx' : 'none'), $object->multicurrency_code);
                 } else {

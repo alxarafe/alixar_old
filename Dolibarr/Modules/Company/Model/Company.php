@@ -40,27 +40,18 @@
 
 namespace DoliModules\Company\Model;
 
+use Conf;
+use DoliCore\Base\CommonPeople;
+use DoliCore\Base\GenericDocument;
+use DoliModules\Billing\Trait\CommonIncoterm;
+use DoliModules\Contact\Trait\CommonSocialNetworks;
+use DoliModules\Contact\Trait\Mailing;
+
 /**
  *  \file       htdocs/societe/class/societe.class.php
  *  \ingroup    societe
  *  \brief      File for third party class
  */
-
-use CommonPeople;
-use CommonSocialNetworks;
-use Conf;
-use DoliCore\Base\GenericDocument;
-use DoliDB;
-use DoliModules\Adherent\Model\Adherent;
-use DoliModules\Billing\Model\Facture;
-use DoliModules\Billing\Trait\CommonIncoterm;
-use DoliModules\Contact\Trait\Mailing;
-use DoliModules\Supplier\Model\FactureFournisseur;
-use DoliModules\User\Model\User;
-
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonsocialnetworks.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
-require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
 
 /**
  *  Class to manage third parties objects (customers, suppliers, prospects...)
@@ -5332,7 +5323,7 @@ class Company extends GenericDocument
             $fuser = $user;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $entity = isset($this->entity) ? $this->entity : $conf->entity;
 

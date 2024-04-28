@@ -31,6 +31,7 @@
  */
 
 use DoliCore\Form\Form;
+use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Company\Model\Company;
 use DoliModules\Supplier\Model\FactureFournisseur;
@@ -41,7 +42,7 @@ require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/prelevement.lib.php';
 
 // Load translation files required by the page

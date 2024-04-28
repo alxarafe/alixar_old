@@ -45,12 +45,8 @@ namespace DoliModules\Proposal\Model;
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliCore\Model\WorkboardResponse;
 use DoliModules\Billing\Trait\CommonIncoterm;
-use WorkboardResponse;
-
-require_once DOL_DOCUMENT_ROOT . '/margin/lib/margins.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
 
 /**
  *  Class to manage proposals
@@ -1232,7 +1228,7 @@ public $demand_reason;
     public function delete($user, $notrigger = 0)
     {
         global $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -2124,7 +2120,7 @@ public $demand_reason;
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 

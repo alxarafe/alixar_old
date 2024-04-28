@@ -37,6 +37,7 @@
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Billing\Trait\CommonIncoterm;
 
 require_once DOL_DOCUMENT_ROOT . "/core/class/commonobjectline.class.php";
@@ -493,7 +494,7 @@ class Reception extends GenericDocument
     {
         global $conf, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         dol_syslog(get_class($this) . "::valid");
 
@@ -1049,7 +1050,7 @@ class Reception extends GenericDocument
     public function delete(User $user)
     {
         global $conf, $langs, $user;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
         $this->error = '';

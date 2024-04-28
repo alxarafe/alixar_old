@@ -543,7 +543,7 @@ class Skill extends GenericDocument
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -820,7 +820,7 @@ class Skill extends GenericDocument
             }
         } else {
             if ($withpicto) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                 [$class, $module] = explode('@', $this->picto);
                 $upload_dir = $conf->$module->multidir_output[$conf->entity] . "/$class/" . dol_sanitizeFileName($this->ref);
@@ -1079,13 +1079,13 @@ class Skill extends GenericDocument
         global $langs;
         $result = '';
         switch ($code) {
-            case 0: 
+            case 0:
                 $result = $langs->trans("TypeKnowHow");
                 break; //"Savoir Faire"
-            case 1: 
+            case 1:
                 $result = $langs->trans("TypeHowToBe");
                 break; // "Savoir être"
-            case 9: 
+            case 9:
                 $result = $langs->trans("TypeKnowledge");
                 break; //"Savoir"
         }

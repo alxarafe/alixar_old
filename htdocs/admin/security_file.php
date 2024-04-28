@@ -31,7 +31,7 @@ use DoliCore\Form\FormFile;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('users', 'admin', 'other'));
@@ -60,7 +60,7 @@ $error = 0;
  */
 
 if (GETPOST('sendit') && getDolGlobalString('MAIN_UPLOAD_DOC')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     dol_add_file_process($upload_dir, 1, 0, 'userfile');
 }

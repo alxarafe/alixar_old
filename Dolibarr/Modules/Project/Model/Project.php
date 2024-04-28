@@ -36,8 +36,8 @@ namespace DoliModules\Project\Model;
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliCore\Model\WorkboardResponse;
 use DoliModules\User\Model\User;
-use WorkboardResponse;
 
 /**
  *  Class to manage projects
@@ -646,7 +646,7 @@ public $weekWorkLoadPerTask;
     public function delete($user, $notrigger = 0)
     {
         global $langs, $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -1210,7 +1210,7 @@ public $weekWorkLoadPerTask;
 
             //Duplicate file
             if ($clone_project_file) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                 $clone_project_dir = $conf->project->dir_output . "/" . dol_sanitizeFileName($defaultref);
                 $ori_project_dir = $conf->project->dir_output . "/" . dol_sanitizeFileName($orign_project_ref);
@@ -1596,7 +1596,7 @@ public $weekWorkLoadPerTask;
                         $olddir = $conf->project->dir_output . "/" . dol_sanitizeFileName($this->oldcopy->ref);
                         $newdir = $conf->project->dir_output . "/" . dol_sanitizeFileName($this->ref);
                         if (file_exists($olddir)) {
-                            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                             $res = @rename($olddir, $newdir);
                             if (!$res) {
                                 $langs->load("errors");

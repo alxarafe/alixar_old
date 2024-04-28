@@ -43,7 +43,7 @@ trait ViewTrait
     {
         $this->theme = $_GET['theme'];
         if (empty($this->theme)) {
-            $this->theme = 'adminlte';
+            $this->theme = 'eldy'; // 'adminlte';
         }
 
         if (!isset($this->template)) {

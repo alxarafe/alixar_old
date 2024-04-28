@@ -22,7 +22,7 @@ namespace DoliCore\Api;
 use Luracast\Restler\RestException;
 use User;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
 
 /**
  * API that allows to log in with an user account.

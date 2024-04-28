@@ -33,13 +33,14 @@
  */
 
 use DoliCore\Form\Form;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Holiday\Model\Holiday;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/holiday.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 

@@ -36,9 +36,11 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'bills', 'banks', 'compta'));

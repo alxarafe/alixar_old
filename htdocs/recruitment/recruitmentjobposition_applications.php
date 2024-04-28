@@ -23,6 +23,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentjobposition.class.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/lib/recruitment_recruitmentjobposition.lib.php';

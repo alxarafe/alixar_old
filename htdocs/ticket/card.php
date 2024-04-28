@@ -33,6 +33,7 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
 use DoliCore\Form\FormTicket;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Ticket\Model\ActionsTicket;
 use DoliModules\Ticket\Model\Ticket;
 use DoliModules\User\Model\User;
@@ -41,7 +42,7 @@ use DoliModules\User\Model\User;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
 if (isModEnabled('project')) {

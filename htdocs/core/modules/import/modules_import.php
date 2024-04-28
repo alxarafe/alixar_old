@@ -26,7 +26,7 @@
  *  \brief      File of parent class for import file readers
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 
 /**

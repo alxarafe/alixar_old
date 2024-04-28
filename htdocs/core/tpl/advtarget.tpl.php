@@ -19,6 +19,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Lib\ExtraFields;
+
 if (isModEnabled('category') && $user->hasRight('categorie', 'lire')) {
 }
 

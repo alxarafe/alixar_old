@@ -40,6 +40,8 @@
  *  MEMBER_NEWFORM_FORCECOUNTRYCODE     Force country
  */
 
+use DoliCore\Lib\ExtraFields;
+
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
 defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
 defineIfNotDefined('NOBROWSERNOTIF', '1');
@@ -59,7 +61,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/cunits.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Init vars
 $backtopage = GETPOST('backtopage', 'alpha');

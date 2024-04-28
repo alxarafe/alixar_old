@@ -39,14 +39,8 @@
 
 namespace DoliModules\Billing\Model;
 
-use CommonOrder;
-use WorkboardResponse;
-
-include_once DOL_DOCUMENT_ROOT . '/core/class/commonorder.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
-require_once DOL_DOCUMENT_ROOT . '/margin/lib/margins.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
-
+use DoliCore\Model\WorkboardResponse;
+use DoliModules\Billing\Model\CommonOrder;
 
 /**
  *  Class to manage customers orders
@@ -1855,7 +1849,7 @@ public $source;
     {
         global $conf, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -2446,7 +2440,7 @@ public $source;
     public function delete($user, $notrigger = 0)
     {
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 

@@ -17,6 +17,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Billing\Model;
+
 /**
  *       \file       htdocs/core/class/commonorder.class.php
  *       \ingroup    core
@@ -35,11 +37,17 @@ abstract class CommonOrder extends GenericDocument
 
 
     /**
+     * @var string code
+     */
+    public $code = "";
+
+    /**
      *  Return clicable link of object (with eventually picto)
      *
-     *  @param      string      $option                 Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-     *  @param      array       $arraydata              Array of data
-     *  @return     string                              HTML Code for Kanban thumb.
+     * @param string $option    Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
+     * @param array  $arraydata Array of data
+     *
+     * @return     string                              HTML Code for Kanban thumb.
      */
     public function getKanbanView($option = '', $arraydata = null)
     {
@@ -71,9 +79,4 @@ abstract class CommonOrder extends GenericDocument
         $return .= '</div>';
         return $return;
     }
-
-    /**
-     * @var string code
-     */
-    public $code = "";
 }

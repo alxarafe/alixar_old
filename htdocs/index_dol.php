@@ -29,6 +29,8 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
+use DoliModules\Accounting\Model\BonPrelevement;
+use DoliModules\Accounting\Model\RemiseCheque;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Bank\Model\Account;
 use DoliModules\Billing\Model\Commande;

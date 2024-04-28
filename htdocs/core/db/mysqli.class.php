@@ -1,12 +1,12 @@
 <?php
 
-/* Copyright (C) 2001       Fabien Seisen           <seisen@linuxfr.org>
+/* Copyright (C) 2001		Fabien Seisen			<seisen@linuxfr.org>
  * Copyright (C) 2002-2005	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
  * Copyright (C) 2004-2011	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2006		Andre Cianfarani		<acianfa@free.fr>
  * Copyright (C) 2005-2012	Regis Houssin			<regis.houssin@inodbox.com>
  * Copyright (C) 2015       Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,33 +24,32 @@
  */
 
 /**
- *  \file       htdocs/core/db/mysqli.class.php
- *  \brief      Class file to manage Dolibarr database access for a MySQL database
+ *    \file       htdocs/core/db/mysqli.class.php
+ *    \brief      Class file to manage Dolibarr database access for a MySQL database
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/db/DoliDB.class.php';
 
 /**
- *  Class to manage Dolibarr database access for a MySQL database using the MySQLi extension
+ *    Class to manage Dolibarr database access for a MySQL database using the MySQLi extension
  */
 class DoliDBMysqli extends DoliDB
 {
-    /** @var mysqli Database object */
-    public $db;
-    //! Database type
-    public $type = 'mysqli';
-
-    //! Database label
     const LABEL = 'MySQL or MariaDB';
-    //! Version min database
+    //! Database type
     const VERSIONMIN = '5.0.3';
 
+    //! Database label
+    /** @var mysqli Database object */
+    public $db;
+    //! Version min database
+    public $type = 'mysqli';
     /** @var bool|mysqli_result Resultset of last query */
     private $_results;
 
     /**
-     *  Constructor.
-     *  This create an opened connection to a database server and eventually to a database
+     *    Constructor.
+     *    This create an opened connection to a database server and eventually to a database
      *
      * @param string $type Type of database (mysql, pgsql...). Not used.
      * @param string $host Address of database server
@@ -120,27 +119,27 @@ class DoliDBMysqli extends DoliDB
                     $clientmustbe = 'utf8';
                 }
 
-                $disableforcecharset = 0;   // Set to 1 to test without charset forcing
+                $disableforcecharset = 0;    // Set to 1 to test without charset forcing
                 if (empty($disableforcecharset) && $this->db->character_set_name() != $clientmustbe) {
                     try {
                         //print "You should set the \$dolibarr_main_db_character_set and \$dolibarr_main_db_collation for the PHP to the one of the database ".$this->db->character_set_name();
                         dol_syslog(get_class($this) . "::DoliDBMysqli You should set the \$dolibarr_main_db_character_set and \$dolibarr_main_db_collation for the PHP to the one of the database " . $this->db->character_set_name(), LOG_WARNING);
                         $this->db->set_charset($clientmustbe); // This set charset, but with a bad collation
                     } catch (Exception $e) {
-                        print 'Failed to force character set to ' . $clientmustbe . " according to setup to match the one of the server database.<br>\n";
+                        print 'Failed to force character_set_client to ' . $clientmustbe . " (according to setup) to match the one of the server database.<br>\n";
                         print $e->getMessage();
                         print "<br>\n";
                         if ($clientmustbe != 'utf8') {
-                            print 'Edit conf/conf.php file to set a charset "utf8" instead of "' . $clientmustbe . '".' . "\n";
+                            print 'Edit conf/conf.php file to set a charset "utf8"';
+                            if ($clientmustbe != 'utf8mb4') {
+                                print ' or "utf8mb4"';
+                            }
+                            print ' instead of "' . $clientmustbe . '".' . "\n";
                         }
                         exit;
                     }
 
-                    $collation = 'utf8_unicode_ci';
-                    if (!empty($conf->db->dolibarr_main_db_collation ?? null)) {
-                        $collation = $conf->db->dolibarr_main_db_collation;
-                    }
-
+                    $collation = $conf->db->collation ?? 'utf8_unicode_ci';
                     if (preg_match('/latin1/', $collation)) {
                         $collation = 'utf8_unicode_ci';
                     }
@@ -189,57 +188,6 @@ class DoliDBMysqli extends DoliDB
         }
     }
 
-
-    /**
-     * Return SQL string to force an index
-     *
-     * @param string $nameofindex Name of index
-     *
-     * @return  string                  SQL string
-     */
-    public function hintindex($nameofindex)
-    {
-        return " FORCE INDEX(" . preg_replace('/[^a-z0-9_]/', '', $nameofindex) . ")";
-    }
-
-
-    /**
-     *  Convert a SQL request in Mysql syntax to native syntax
-     *
-     * @param string $line SQL request line to convert
-     * @param string $type Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for create, alter...)
-     *
-     * @return    string           SQL request line converted
-     */
-    public function convertSQLFromMysql($line, $type = 'ddl')
-    {
-        return $line;
-    }
-
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Select a database
-     *
-     * @param string $database Name of database
-     *
-     * @return     boolean             true if OK, false if KO
-     */
-    public function select_db($database)
-    {
-        // phpcs:enable
-        dol_syslog(get_class($this) . "::select_db database=" . $database, LOG_DEBUG);
-        $result = false;
-        try {
-            $result = $this->db->select_db($database);
-        } catch (Exception $e) {
-            // Nothing done on error
-        }
-        return $result;
-    }
-
-
     /**
      * Connect to server
      *
@@ -275,59 +223,42 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     *  Return version of database server
+     *  Select a database
      *
-     * @return         string      Version string
-     */
-    public function getVersion()
-    {
-        return $this->db->server_info;
-    }
-
-    /**
-     *  Return version of database client driver
+     * @param string $database Name of database
      *
-     * @return         string      Version string
+     * @return        boolean            true if OK, false if KO
      */
-    public function getDriverInfo()
+    public function select_db($database)
     {
-        return $this->db->client_info;
-    }
-
-
-    /**
-     *  Close database connection
-     *
-     * @return     bool     True if disconnect successful, false otherwise
-     * @see        connect()
-     */
-    public function close()
-    {
-        if ($this->db) {
-            if ($this->transaction_opened > 0) {
-                dol_syslog(get_class($this) . "::close Closing a connection with an opened transaction depth=" . $this->transaction_opened, LOG_ERR);
-            }
-            $this->connected = false;
-            return $this->db->close();
+        // phpcs:enable
+        dol_syslog(get_class($this) . "::select_db database=" . $database, LOG_DEBUG);
+        $result = false;
+        try {
+            $result = $this->db->select_db($database);
+        } catch (Exception $e) {
+            // Nothing done on error
         }
-        return false;
+        return $result;
     }
 
 
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Execute a SQL request and return the resultset
+     *    Execute a SQL request and return the resultset
      *
-     * @param string $query             SQL query string
-     * @param int    $usesavepoint      0=Default mode, 1=Run a savepoint before and a rollback to savepoint if error
-     *                                  (this allow to have some request with errors inside global transactions). Note
-     *                                  that with Mysql, this parameter is not used as Myssql can already commit a
-     *                                  transaction even if one request is in error, without using savepoints.
-     * @param string $type              Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for
-     *                                  create, alter...)
-     * @param int    $result_mode       Result mode (Using 1=MYSQLI_USE_RESULT instead of 0=MYSQLI_STORE_RESULT will
-     *                                  not buffer the result and save memory)
+     * @param string $query               SQL query string
+     * @param int    $usesavepoint        0=Default mode, 1=Run a savepoint before and a rollback to savepoint if error
+     *                                    (this allow to have some request with errors inside global transactions).
+     *                                    Note that with Mysql, this parameter is not used as Myssql can already commit
+     *                                    a transaction even if one request is in error, without using savepoints.
+     * @param string $type                Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for
+     *                                    create, alter...)
+     * @param int    $result_mode         Result mode (Using 1=MYSQLI_USE_RESULT instead of 0=MYSQLI_STORE_RESULT will
+     *                                    not buffer the result and save memory)
      *
-     * @return bool|mysqli_result      Resultset of answer
+     * @return    bool|mysqli_result        Resultset of answer
      */
     public function query($query, $usesavepoint = 0, $type = 'auto', $result_mode = 0)
     {
@@ -380,176 +311,24 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     * Get caller info
+     *    Return description of last error
      *
-     * @return string
+     * @return    string        Error text
      */
-    final protected static function getCallerInfoString()
+    public function error()
     {
-        $backtrace = debug_backtrace();
-        $msg = "";
-        if (count($backtrace) >= 1) {
-            $trace = $backtrace[1];
-            if (isset($trace['file'], $trace['line'])) {
-                $msg = " From {$trace['file']}:{$trace['line']}.";
-            }
-        }
-        return $msg;
-    }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Returns the current line (as an object) for the resultset cursor
-     *
-     * @param mysqli_result $resultset Curseur de la requete voulue
-     *
-     * @return object|null                 Object result line or null if KO or end of cursor
-     */
-    public function fetch_object($resultset)
-    {
-        // phpcs:enable
-        // If the resultset was not provided, we get the last one for this connection
-        if (!is_object($resultset)) {
-            $resultset = $this->_results;
-        }
-        return $resultset->fetch_object();
-    }
-
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Return datas as an array
-     *
-     * @param mysqli_result $resultset Resultset of request
-     *
-     * @return array|null                  Array or null if KO or end of cursor
-     */
-    public function fetch_array($resultset)
-    {
-        // phpcs:enable
-        // If resultset not provided, we take the last used by connection
-        if (!is_object($resultset)) {
-            $resultset = $this->_results;
-        }
-        return $resultset->fetch_array();
-    }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Return datas as an array
-     *
-     * @param mysqli_result $resultset Resultset of request
-     *
-     * @return array|null|int              Array or null if KO or end of cursor or 0 if resultset is bool
-     */
-    public function fetch_row($resultset)
-    {
-        // phpcs:enable
-        // If resultset not provided, we take the last used by connection
-        if (!is_bool($resultset)) {
-            if (!is_object($resultset)) {
-                $resultset = $this->_results;
-            }
-            return $resultset->fetch_row();
+        if (!$this->connected) {
+            // Si il y a eu echec de connection, $this->db n'est pas valide pour mysqli_error.
+            return 'Not connected. Check setup parameters in conf/conf.php file and your mysql client and server versions';
         } else {
-            // si le curseur est un boolean on retourne la valeur 0
-            return 0;
-        }
-    }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Return number of lines for result of a SELECT
-     *
-     * @param mysqli_result $resultset Resulset of requests
-     *
-     * @return int             Nb of lines
-     * @see    affected_rows()
-     */
-    public function num_rows($resultset)
-    {
-        // phpcs:enable
-        // If resultset not provided, we take the last used by connection
-        if (!is_object($resultset)) {
-            $resultset = $this->_results;
-        }
-        return isset($resultset->num_rows) ? $resultset->num_rows : 0;
-    }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Return the number of lines in the result of a request INSERT, DELETE or UPDATE
-     *
-     * @param mysqli_result $resultset Curseur de la requete voulue
-     *
-     * @return int                         Number of lines
-     * @see    num_rows()
-     */
-    public function affected_rows($resultset)
-    {
-        // phpcs:enable
-        // If resultset not provided, we take the last used by connection
-        if (!is_object($resultset)) {
-            $resultset = $this->_results;
-        }
-        // mysql necessite un link de base pour cette fonction contrairement
-        // a pqsql qui prend un resultset
-        return $this->db->affected_rows;
-    }
-
-
-    /**
-     *  Libere le dernier resultset utilise sur cette connection
-     *
-     * @param mysqli_result $resultset Curseur de la requete voulue
-     *
-     * @return void
-     */
-    public function free($resultset = null)
-    {
-        // If resultset not provided, we take the last used by connection
-        if (!is_object($resultset)) {
-            $resultset = $this->_results;
-        }
-        // Si resultset en est un, on libere la memoire
-        if (is_object($resultset)) {
-            $resultset->free_result();
+            return $this->db->error;
         }
     }
 
     /**
-     *  Escape a string to insert data
+     *    Return generic error code of last operation.
      *
-     * @param string $stringtoencode String to escape
-     *
-     * @return string                      String escaped
-     */
-    public function escape($stringtoencode)
-    {
-        return $this->db->real_escape_string((string) $stringtoencode);
-    }
-
-    /**
-     *  Escape a string to insert data into a like
-     *
-     * @param string $stringtoencode String to escape
-     *
-     * @return string                      String escaped
-     */
-    public function escapeforlike($stringtoencode)
-    {
-        return str_replace(['\\', '_', '%'], ['\\\\', '\_', '\%'], (string) $stringtoencode);
-    }
-
-    /**
-     *  Return generic error code of last operation.
-     *
-     * @return string      Error code (Examples: DB_ERROR_TABLE_ALREADY_EXISTS, DB_ERROR_RECORD_ALREADY_EXISTS...)
+     * @return    string        Error code (Examples: DB_ERROR_TABLE_ALREADY_EXISTS, DB_ERROR_RECORD_ALREADY_EXISTS...)
      */
     public function errno()
     {
@@ -599,21 +378,147 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     *  Return description of last error
+     * Get caller info
      *
-     * @return string      Error text
+     * @return string
      */
-    public function error()
+    final protected static function getCallerInfoString()
     {
-        if (!$this->connected) {
-            // Si il y a eu echec de connection, $this->db n'est pas valide pour mysqli_error.
-            return 'Not connected. Check setup parameters in conf/conf.php file and your mysql client and server versions';
-        } else {
-            return $this->db->error;
+        $backtrace = debug_backtrace();
+        $msg = "";
+        if (count($backtrace) >= 1) {
+            $trace = $backtrace[1];
+            if (isset($trace['file'], $trace['line'])) {
+                $msg = " From {$trace['file']}:{$trace['line']}.";
+            }
         }
+        return $msg;
+    }
+
+    /**
+     * Return SQL string to force an index
+     *
+     * @param string $nameofindex Name of index
+     *
+     * @return    string                    SQL string
+     */
+    public function hintindex($nameofindex)
+    {
+        return " FORCE INDEX(" . preg_replace('/[^a-z0-9_]/', '', $nameofindex) . ")";
+    }
+
+    /**
+     *  Convert a SQL request in Mysql syntax to native syntax
+     *
+     * @param string $line SQL request line to convert
+     * @param string $type Type of SQL order ('ddl' for insert, update, select, delete or 'dml' for create, alter...)
+     *
+     * @return    string        SQL request line converted
+     */
+    public function convertSQLFromMysql($line, $type = 'ddl')
+    {
+        return $line;
+    }
+
+    /**
+     *    Return version of database server
+     *
+     * @return            string      Version string
+     */
+    public function getVersion()
+    {
+        return $this->db->server_info;
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *    Return version of database client driver
+     *
+     * @return            string      Version string
+     */
+    public function getDriverInfo()
+    {
+        return $this->db->client_info;
+    }
+
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *  Close database connection
+     *
+     * @return     bool     True if disconnect successful, false otherwise
+     * @see        connect()
+     */
+    public function close()
+    {
+        if ($this->db) {
+            if ($this->transaction_opened > 0) {
+                dol_syslog(get_class($this) . "::close Closing a connection with an opened transaction depth=" . $this->transaction_opened, LOG_ERR);
+            }
+            $this->connected = false;
+            return $this->db->close();
+        }
+        return false;
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *    Return number of lines for result of a SELECT
+     *
+     * @param mysqli_result $resultset Resulset of requests
+     *
+     * @return    int                Nb of lines
+     * @see    affected_rows()
+     */
+    public function num_rows($resultset)
+    {
+        // phpcs:enable
+        // If resultset not provided, we take the last used by connection
+        if (!is_object($resultset)) {
+            $resultset = $this->_results;
+        }
+        return isset($resultset->num_rows) ? $resultset->num_rows : 0;
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *    Return the number of lines in the result of a request INSERT, DELETE or UPDATE
+     *
+     * @param mysqli_result $resultset Curseur de la requete voulue
+     *
+     * @return int                            Number of lines
+     * @see    num_rows()
+     */
+    public function affected_rows($resultset)
+    {
+        // phpcs:enable
+        // If resultset not provided, we take the last used by connection
+        if (!is_object($resultset)) {
+            $resultset = $this->_results;
+        }
+        // mysql necessite un link de base pour cette fonction contrairement
+        // a pqsql qui prend un resultset
+        return $this->db->affected_rows;
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *    Escape a string to insert data into a like
+     *
+     * @param string $stringtoencode String to escape
+     *
+     * @return    string                        String escaped
+     */
+    public function escapeforlike($stringtoencode)
+    {
+        // We must first replace the \ char into \\, then we can replace _ and % into \_ and \%
+        return str_replace(['\\', '_', '%'], ['\\\\', '\_', '\%'], (string) $stringtoencode);
+    }
 
     /**
      * Get last ID after an insert INSERT
@@ -622,7 +527,7 @@ class DoliDBMysqli extends DoliDB
      *                        avec Postgresql
      * @param string $fieldid Field name
      *
-     * @return  int|string          Id of row
+     * @return  int|string            Id of row
      */
     public function last_insert_id($tab, $fieldid = 'rowid')
     {
@@ -638,7 +543,7 @@ class DoliDBMysqli extends DoliDB
      * @param int    $withQuotes   Return string including the SQL simple quotes. This param must always be 1 (Value 0
      *                             is bugged and deprecated).
      *
-     * @return  string                  XXX(field) or XXX('value') or field or 'value'
+     * @return    string                    XXX(field) or XXX('value') or field or 'value'
      */
     public function encrypt($fieldorvalue, $withQuotes = 1)
     {
@@ -664,11 +569,23 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     *  Decrypt sensitive data in database
+     *    Escape a string to insert data
+     *
+     * @param string $stringtoencode String to escape
+     *
+     * @return    string                        String escaped
+     */
+    public function escape($stringtoencode)
+    {
+        return $this->db->real_escape_string((string) $stringtoencode);
+    }
+
+    /**
+     *    Decrypt sensitive data in database
      *
      * @param string $value Value to decrypt
      *
-     * @return string                  Decrypted value if used
+     * @return    string                    Decrypted value if used
      */
     public function decrypt($value)
     {
@@ -693,13 +610,10 @@ class DoliDBMysqli extends DoliDB
         return $return;
     }
 
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      * Return connection ID
      *
-     * @return          string      Id connection
+     * @return            string      Id connection
      */
     public function DDLGetConnectId()
     {
@@ -716,16 +630,38 @@ class DoliDBMysqli extends DoliDB
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
+     *    Return datas as an array
+     *
+     * @param mysqli_result $resultset Resultset of request
+     *
+     * @return    array|null|int                Array or null if KO or end of cursor or 0 if resultset is bool
+     */
+    public function fetch_row($resultset)
+    {
+        // phpcs:enable
+        // If resultset not provided, we take the last used by connection
+        if (!is_bool($resultset)) {
+            if (!is_object($resultset)) {
+                $resultset = $this->_results;
+            }
+            return $resultset->fetch_row();
+        } else {
+            // si le curseur est un boolean on retourne la valeur 0
+            return 0;
+        }
+    }
+
+    /**
      *  Create a new database
-     *  Do not use function xxx_create_db (xxx=mysql, ...) as they are deprecated
-     *  We force to create database with charset this->forcecharset and collate this->forcecollate
+     *    Do not use function xxx_create_db (xxx=mysql, ...) as they are deprecated
+     *    We force to create database with charset this->forcecharset and collate this->forcecollate
      *
      * @param string $database  Database name to create
      * @param string $charset   Charset used to store data
      * @param string $collation Charset used to sort data
      * @param string $owner     Username of database owner
      *
-     * @return bool|mysqli_result      resource defined if OK, null if KO
+     * @return    bool|mysqli_result        resource defined if OK, null if KO
      */
     public function DDLCreateDb($database, $charset = '', $collation = '', $owner = '')
     {
@@ -752,15 +688,13 @@ class DoliDBMysqli extends DoliDB
         return $ret;
     }
 
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  List tables into a database
      *
      * @param string $database Name of database
      * @param string $table    Name of table filter ('xxx%')
      *
-     * @return array                   List of tables in an array
+     * @return    array                    List of tables in an array
      */
     public function DDLListTables($database, $table = '')
     {
@@ -786,6 +720,7 @@ class DoliDBMysqli extends DoliDB
         return $listtables;
     }
 
+
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
@@ -794,7 +729,7 @@ class DoliDBMysqli extends DoliDB
      * @param string $database Name of database
      * @param string $table    Name of table filter ('xxx%')
      *
-     * @return array                   List of tables in an array
+     * @return    array                    List of tables in an array
      */
     public function DDLListTablesFull($database, $table = '')
     {
@@ -823,11 +758,11 @@ class DoliDBMysqli extends DoliDB
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
-     *  List information of columns into a table.
+     *    List information of columns into a table.
      *
      * @param string $table Name of table
      *
-     * @return array               Tableau des information des champs de la table
+     * @return    array                Tableau des information des champs de la table
      */
     public function DDLInfoTable($table)
     {
@@ -851,84 +786,136 @@ class DoliDBMysqli extends DoliDB
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
-     *  Create a table into database
+     *    Create a table into database
      *
-     * @param string $table         Name of table
-     * @param array  $fields        Tableau associatif [nom champ][tableau des descriptions]
-     * @param string $primary_key   Nom du champ qui sera la clef primaire
-     * @param string $type          Type de la table
-     * @param array  $unique_keys   Tableau associatifs Nom de champs qui seront clef unique => valeur
-     * @param array  $fulltext_keys Tableau des Nom de champs qui seront indexes en fulltext
-     * @param array  $keys          Tableau des champs cles noms => valeur
+     * @param string                                                                                                                                                                                                                                                                                                                                $table         Name
+     *                                                                                                                                                                                                                                                                                                                                                             of
+     *                                                                                                                                                                                                                                                                                                                                                             table
+     * @param array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}> $fields        Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             associatif
+     *                                                                                                                                                                                                                                                                                                                                                             [nom
+     *                                                                                                                                                                                                                                                                                                                                                             champ][tableau
+     *                                                                                                                                                                                                                                                                                                                                                             des
+     *                                                                                                                                                                                                                                                                                                                                                             descriptions]
+     * @param string                                                                                                                                                                                                                                                                                                                                $primary_key   Nom
+     *                                                                                                                                                                                                                                                                                                                                                             du
+     *                                                                                                                                                                                                                                                                                                                                                             champ
+     *                                                                                                                                                                                                                                                                                                                                                             qui
+     *                                                                                                                                                                                                                                                                                                                                                             sera
+     *                                                                                                                                                                                                                                                                                                                                                             la
+     *                                                                                                                                                                                                                                                                                                                                                             clef
+     *                                                                                                                                                                                                                                                                                                                                                             primaire
+     * @param string                                                                                                                                                                                                                                                                                                                                $type          Type
+     *                                                                                                                                                                                                                                                                                                                                                             de
+     *                                                                                                                                                                                                                                                                                                                                                             la
+     *                                                                                                                                                                                                                                                                                                                                                             table
+     * @param array                                                                                                                                                                                                                                                                                                                                 $unique_keys   Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             associatifs
+     *                                                                                                                                                                                                                                                                                                                                                             Nom
+     *                                                                                                                                                                                                                                                                                                                                                             de
+     *                                                                                                                                                                                                                                                                                                                                                             champs
+     *                                                                                                                                                                                                                                                                                                                                                             qui
+     *                                                                                                                                                                                                                                                                                                                                                             seront
+     *                                                                                                                                                                                                                                                                                                                                                             clef
+     *                                                                                                                                                                                                                                                                                                                                                             unique
+     *                                                                                                                                                                                                                                                                                                                                                             =>
+     *                                                                                                                                                                                                                                                                                                                                                             valeur
+     * @param array                                                                                                                                                                                                                                                                                                                                 $fulltext_keys Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             des
+     *                                                                                                                                                                                                                                                                                                                                                             Nom
+     *                                                                                                                                                                                                                                                                                                                                                             de
+     *                                                                                                                                                                                                                                                                                                                                                             champs
+     *                                                                                                                                                                                                                                                                                                                                                             qui
+     *                                                                                                                                                                                                                                                                                                                                                             seront
+     *                                                                                                                                                                                                                                                                                                                                                             indexes
+     *                                                                                                                                                                                                                                                                                                                                                             en
+     *                                                                                                                                                                                                                                                                                                                                                             fulltext
+     * @param array                                                                                                                                                                                                                                                                                                                                 $keys          Tableau
+     *                                                                                                                                                                                                                                                                                                                                                             des
+     *                                                                                                                                                                                                                                                                                                                                                             champs
+     *                                                                                                                                                                                                                                                                                                                                                             cles
+     *                                                                                                                                                                                                                                                                                                                                                             noms
+     *                                                                                                                                                                                                                                                                                                                                                             =>
+     *                                                                                                                                                                                                                                                                                                                                                             valeur
      *
-     * @return     int                     Return integer <0 if KO, >=0 if OK
+     * @return        int                        Return integer <0 if KO, >=0 if OK
      */
     public function DDLCreateTable($table, $fields, $primary_key, $type, $unique_keys = null, $fulltext_keys = null, $keys = null)
     {
         // phpcs:enable
-        // FIXME: $fulltext_keys parameter is unused
+        // @TODO: $fulltext_keys parameter is unused
+
+        if (empty($type)) {
+            $type = 'InnoDB';
+        }
 
         $pk = '';
-        $sqluq = $sqlk = [];
+        $sqlk = [];
+        $sqluq = [];
 
-        // cles recherchees dans le tableau des descriptions (fields) : type,value,attribute,null,default,extra
-        // ex. : $fields['rowid'] = array('type'=>'int','value'=>'11','null'=>'not null','extra'=> 'auto_increment');
-        $sql = "CREATE TABLE " . $table . "(";
+        // Keys found into the array $fields: type,value,attribute,null,default,extra
+        // ex. : $fields['rowid'] = array(
+        //			'type'=>'int' or 'integer',
+        //			'value'=>'11',
+        //			'null'=>'not null',
+        //			'extra'=> 'auto_increment'
+        //		);
+        $sql = "CREATE TABLE " . $this->sanitize($table) . "(";
         $i = 0;
         $sqlfields = [];
         foreach ($fields as $field_name => $field_desc) {
-            $sqlfields[$i] = $field_name . " ";
-            $sqlfields[$i] .= $field_desc['type'];
-            if (preg_match("/^[^\s]/i", $field_desc['value'])) {
-                $sqlfields[$i] .= "(" . $field_desc['value'] . ")";
+            $sqlfields[$i] = $this->sanitize($field_name) . " ";
+            $sqlfields[$i] .= $this->sanitize($field_desc['type']);
+            if (isset($field_desc['value']) && $field_desc['value'] !== '') {
+                $sqlfields[$i] .= "(" . $this->sanitize($field_desc['value']) . ")";
             }
-            if (preg_match("/^[^\s]/i", $field_desc['attribute'])) {
-                $sqlfields[$i] .= " " . $field_desc['attribute'];
+            if (isset($field_desc['attribute']) && $field_desc['attribute'] !== '') {
+                $sqlfields[$i] .= " " . $this->sanitize($field_desc['attribute']);
             }
-            if (preg_match("/^[^\s]/i", $field_desc['default'])) {
-                if ((preg_match("/null/i", $field_desc['default'])) || (preg_match("/CURRENT_TIMESTAMP/i", $field_desc['default']))) {
-                    $sqlfields[$i] .= " default " . $field_desc['default'];
+            if (isset($field_desc['default']) && $field_desc['default'] !== '') {
+                if (in_array($field_desc['type'], ['tinyint', 'smallint', 'int', 'double'])) {
+                    $sqlfields[$i] .= " DEFAULT " . ((float) $field_desc['default']);
+                } elseif ($field_desc['default'] == 'null' || $field_desc['default'] == 'CURRENT_TIMESTAMP') {
+                    $sqlfields[$i] .= " DEFAULT " . $this->sanitize($field_desc['default']);
                 } else {
-                    $sqlfields[$i] .= " default '" . $this->escape($field_desc['default']) . "'";
+                    $sqlfields[$i] .= " DEFAULT '" . $this->escape($field_desc['default']) . "'";
                 }
             }
-            if (preg_match("/^[^\s]/i", $field_desc['null'])) {
-                $sqlfields[$i] .= " " . $field_desc['null'];
+            if (isset($field_desc['null']) && $field_desc['null'] !== '') {
+                $sqlfields[$i] .= " " . $this->sanitize($field_desc['null'], 0, 0, 1);
             }
-            if (preg_match("/^[^\s]/i", $field_desc['extra'])) {
-                $sqlfields[$i] .= " " . $field_desc['extra'];
+            if (isset($field_desc['extra']) && $field_desc['extra'] !== '') {
+                $sqlfields[$i] .= " " . $this->sanitize($field_desc['extra'], 0, 0, 1);
+            }
+            if (!empty($primary_key) && $primary_key == $field_name) {
+                $sqlfields[$i] .= " AUTO_INCREMENT PRIMARY KEY";    // mysql instruction that will be converted by driver late
             }
             $i++;
-        }
-        if ($primary_key != "") {
-            $pk = "primary key(" . $primary_key . ")";
         }
 
         if (is_array($unique_keys)) {
             $i = 0;
             foreach ($unique_keys as $key => $value) {
-                $sqluq[$i] = "UNIQUE KEY '" . $key . "' ('" . $this->escape($value) . "')";
+                $sqluq[$i] = "UNIQUE KEY '" . $this->sanitize($key) . "' ('" . $this->escape($value) . "')";
                 $i++;
             }
         }
         if (is_array($keys)) {
             $i = 0;
             foreach ($keys as $key => $value) {
-                $sqlk[$i] = "KEY " . $key . " (" . $value . ")";
+                $sqlk[$i] = "KEY " . $this->sanitize($key) . " (" . $value . ")";
                 $i++;
             }
         }
-        $sql .= implode(',', $sqlfields);
-        if ($primary_key != "") {
-            $sql .= "," . $pk;
-        }
+        $sql .= implode(', ', $sqlfields);
         if ($unique_keys != "") {
             $sql .= "," . implode(',', $sqluq);
         }
         if (is_array($keys)) {
             $sql .= "," . implode(',', $sqlk);
         }
-        $sql .= ") engine=" . $type;
+        $sql .= ")";
+        $sql .= " engine=" . $this->sanitize($type);
 
         if (!$this->query($sql)) {
             return -1;
@@ -944,14 +931,14 @@ class DoliDBMysqli extends DoliDB
      *
      * @param string $table Name of table
      *
-     * @return     int                     Return integer <0 if KO, >=0 if OK
+     * @return        int                        Return integer <0 if KO, >=0 if OK
      */
     public function DDLDropTable($table)
     {
         // phpcs:enable
         $tmptable = preg_replace('/[^a-z0-9\.\-\_]/i', '', $table);
 
-        $sql = "DROP TABLE " . $tmptable;
+        $sql = "DROP TABLE " . $this->sanitize($tmptable);
 
         if (!$this->query($sql)) {
             return -1;
@@ -963,17 +950,17 @@ class DoliDBMysqli extends DoliDB
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
-     *  Return a pointer of line with description of a table or field
+     *    Return a pointer of line with description of a table or field
      *
      * @param string $table Name of table
      * @param string $field Optionnel : Name of field if we want description of field
      *
-     * @return bool|mysqli_result  Resultset x (x->Field, x->Type, ...)
+     * @return    bool|mysqli_result    Resultset x (x->Field, x->Type, ...)
      */
     public function DDLDescTable($table, $field = "")
     {
         // phpcs:enable
-        $sql = "DESC " . $table . " " . $field;
+        $sql = "DESC " . $this->sanitize($table) . " " . $this->sanitize($field);
 
         dol_syslog(get_class($this) . "::DDLDescTable " . $sql, LOG_DEBUG);
         $this->_results = $this->query($sql);
@@ -983,45 +970,65 @@ class DoliDBMysqli extends DoliDB
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
-     *  Create a new field into table
+     *    Create a new field into table
      *
-     * @param string $table          Name of table
-     * @param string $field_name     Name of field to add
-     * @param string $field_desc     Associative table with description of field to insert [parameter name][parameter
-     *                               value]
-     * @param string $field_position Optional e.g.: "after some_field"
+     * @param string                                                                                                                                                                                                                                                                                                                  $table          Name
+     *                                                                                                                                                                                                                                                                                                                                                of
+     *                                                                                                                                                                                                                                                                                                                                                table
+     * @param string                                                                                                                                                                                                                                                                                                                  $field_name     Name
+     *                                                                                                                                                                                                                                                                                                                                                of
+     *                                                                                                                                                                                                                                                                                                                                                field
+     *                                                                                                                                                                                                                                                                                                                                                to
+     *                                                                                                                                                                                                                                                                                                                                                add
+     * @param array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string} $field_desc     Associative
+     *                                                                                                                                                                                                                                                                                                                                                table
+     *                                                                                                                                                                                                                                                                                                                                                with
+     *                                                                                                                                                                                                                                                                                                                                                description
+     *                                                                                                                                                                                                                                                                                                                                                of
+     *                                                                                                                                                                                                                                                                                                                                                field
+     *                                                                                                                                                                                                                                                                                                                                                to
+     *                                                                                                                                                                                                                                                                                                                                                insert
+     *                                                                                                                                                                                                                                                                                                                                                [parameter
+     *                                                                                                                                                                                                                                                                                                                                                name][parameter
+     *                                                                                                                                                                                                                                                                                                                                                value]
+     * @param string                                                                                                                                                                                                                                                                                                                  $field_position Optional
+     *                                                                                                                                                                                                                                                                                                                                                e.g.:
+     *                                                                                                                                                                                                                                                                                                                                                "after
+     *                                                                                                                                                                                                                                                                                                                                                some_field"
      *
-     * @return int                         Return integer <0 if KO, >0 if OK
+     * @return    int                            Return integer <0 if KO, >0 if OK
      */
     public function DDLAddField($table, $field_name, $field_desc, $field_position = "")
     {
         // phpcs:enable
         // cles recherchees dans le tableau des descriptions (field_desc) : type,value,attribute,null,default,extra
         // ex. : $field_desc = array('type'=>'int','value'=>'11','null'=>'not null','extra'=> 'auto_increment');
-        $sql = "ALTER TABLE " . $table . " ADD " . $field_name . " ";
-        $sql .= $field_desc['type'];
-        if (preg_match("/^[^\s]/i", $field_desc['value'])) {
-            if (!in_array($field_desc['type'], ['date', 'datetime']) && $field_desc['value']) {
-                $sql .= "(" . $field_desc['value'] . ")";
+        $sql = "ALTER TABLE " . $this->sanitize($table) . " ADD " . $this->sanitize($field_name) . " ";
+        $sql .= $this->sanitize($field_desc['type']);
+        if (isset($field_desc['value']) && preg_match("/^[^\s]/i", $field_desc['value'])) {
+            if (!in_array($field_desc['type'], ['tinyint', 'smallint', 'int', 'date', 'datetime']) && $field_desc['value']) {
+                $sql .= "(" . $this->sanitize($field_desc['value']) . ")";
             }
         }
         if (isset($field_desc['attribute']) && preg_match("/^[^\s]/i", $field_desc['attribute'])) {
-            $sql .= " " . $field_desc['attribute'];
+            $sql .= " " . $this->sanitize($field_desc['attribute']);
         }
         if (isset($field_desc['null']) && preg_match("/^[^\s]/i", $field_desc['null'])) {
             $sql .= " " . $field_desc['null'];
         }
         if (isset($field_desc['default']) && preg_match("/^[^\s]/i", $field_desc['default'])) {
-            if (preg_match("/null/i", $field_desc['default'])) {
-                $sql .= " default " . $field_desc['default'];
+            if (in_array($field_desc['type'], ['tinyint', 'smallint', 'int', 'double'])) {
+                $sql .= " DEFAULT " . ((float) $field_desc['default']);
+            } elseif ($field_desc['default'] == 'null' || $field_desc['default'] == 'CURRENT_TIMESTAMP') {
+                $sql .= " DEFAULT " . $this->sanitize($field_desc['default']);
             } else {
-                $sql .= " default '" . $this->escape($field_desc['default']) . "'";
+                $sql .= " DEFAULT '" . $this->escape($field_desc['default']) . "'";
             }
         }
         if (isset($field_desc['extra']) && preg_match("/^[^\s]/i", $field_desc['extra'])) {
-            $sql .= " " . $field_desc['extra'];
+            $sql .= " " . $this->sanitize($field_desc['extra'], 0, 0, 1);
         }
-        $sql .= " " . $field_position;
+        $sql .= " " . $this->sanitize($field_position, 0, 0, 1);
 
         dol_syslog(get_class($this) . "::DDLAddField " . $sql, LOG_DEBUG);
         if ($this->query($sql)) {
@@ -1033,29 +1040,40 @@ class DoliDBMysqli extends DoliDB
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
-     *  Update format of a field into a table
+     *    Update format of a field into a table
      *
-     * @param string $table      Name of table
-     * @param string $field_name Name of field to modify
-     * @param string $field_desc Array with description of field format
+     * @param string                                                                                                                                                                                                                                                                                                                  $table      Name
+     *                                                                                                                                                                                                                                                                                                                                            of
+     *                                                                                                                                                                                                                                                                                                                                            table
+     * @param string                                                                                                                                                                                                                                                                                                                  $field_name Name
+     *                                                                                                                                                                                                                                                                                                                                            of
+     *                                                                                                                                                                                                                                                                                                                                            field
+     *                                                                                                                                                                                                                                                                                                                                            to
+     *                                                                                                                                                                                                                                                                                                                                            modify
+     * @param array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string} $field_desc Array
+     *                                                                                                                                                                                                                                                                                                                                            with
+     *                                                                                                                                                                                                                                                                                                                                            description
+     *                                                                                                                                                                                                                                                                                                                                            of
+     *                                                                                                                                                                                                                                                                                                                                            field
+     *                                                                                                                                                                                                                                                                                                                                            format
      *
-     * @return int                         Return integer <0 if KO, >0 if OK
+     * @return    int                            Return integer <0 if KO, >0 if OK
      */
     public function DDLUpdateField($table, $field_name, $field_desc)
     {
         // phpcs:enable
-        $sql = "ALTER TABLE " . $table;
-        $sql .= " MODIFY COLUMN " . $field_name . " " . $field_desc['type'];
+        $sql = "ALTER TABLE " . $this->sanitize($table);
+        $sql .= " MODIFY COLUMN " . $this->sanitize($field_name) . " " . $this->sanitize($field_desc['type']);
         if (in_array($field_desc['type'], ['double', 'tinyint', 'int', 'varchar']) && $field_desc['value']) {
-            $sql .= "(" . $field_desc['value'] . ")";
+            $sql .= "(" . $this->sanitize($field_desc['value']) . ")";
         }
-        if ($field_desc['null'] == 'not null' || $field_desc['null'] == 'NOT NULL') {
+        if (isset($field_desc['value']) && ($field_desc['null'] == 'not null' || $field_desc['null'] == 'NOT NULL')) {
             // We will try to change format of column to NOT NULL. To be sure the ALTER works, we try to update fields that are NULL
             if ($field_desc['type'] == 'varchar' || $field_desc['type'] == 'text') {
-                $sqlbis = "UPDATE " . $table . " SET " . $field_name . " = '" . $this->escape(isset($field_desc['default']) ? $field_desc['default'] : '') . "' WHERE " . $field_name . " IS NULL";
+                $sqlbis = "UPDATE " . $this->sanitize($table) . " SET " . $this->sanitize($field_name) . " = '" . $this->escape(isset($field_desc['default']) ? $field_desc['default'] : '') . "' WHERE " . $this->sanitize($field_name) . " IS NULL";
                 $this->query($sqlbis);
-            } elseif ($field_desc['type'] == 'tinyint' || $field_desc['type'] == 'int') {
-                $sqlbis = "UPDATE " . $table . " SET " . $field_name . " = " . ((int) $this->escape(isset($field_desc['default']) ? $field_desc['default'] : 0)) . " WHERE " . $field_name . " IS NULL";
+            } elseif (in_array($field_desc['type'], ['tinyint', 'smallint', 'int', 'double'])) {
+                $sqlbis = "UPDATE " . $this->sanitize($table) . " SET " . $this->sanitize($field_name) . " = " . ((float) $this->escape(isset($field_desc['default']) ? $field_desc['default'] : 0)) . " WHERE " . $this->sanitize($field_name) . " IS NULL";
                 $this->query($sqlbis);
             }
 
@@ -1063,8 +1081,8 @@ class DoliDBMysqli extends DoliDB
         }
 
         if (isset($field_desc['default']) && $field_desc['default'] != '') {
-            if ($field_desc['type'] == 'double' || $field_desc['type'] == 'tinyint' || $field_desc['type'] == 'int') {
-                $sql .= " DEFAULT " . $this->escape($field_desc['default']);
+            if (in_array($field_desc['type'], ['tinyint', 'smallint', 'int', 'double'])) {
+                $sql .= " DEFAULT " . ((float) $field_desc['default']);
             } elseif ($field_desc['type'] != 'text') {
                 $sql .= " DEFAULT '" . $this->escape($field_desc['default']) . "'"; // Default not supported on text fields
             }
@@ -1081,19 +1099,19 @@ class DoliDBMysqli extends DoliDB
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
-     *  Drop a field from table
+     *    Drop a field from table
      *
      * @param string $table      Name of table
      * @param string $field_name Name of field to drop
      *
-     * @return int                     Return integer <0 if KO, >0 if OK
+     * @return    int                        Return integer <0 if KO, >0 if OK
      */
     public function DDLDropField($table, $field_name)
     {
         // phpcs:enable
         $tmp_field_name = preg_replace('/[^a-z0-9\.\-\_]/i', '', $field_name);
 
-        $sql = "ALTER TABLE " . $table . " DROP COLUMN `" . $tmp_field_name . "`";
+        $sql = "ALTER TABLE " . $this->sanitize($table) . " DROP COLUMN `" . $this->sanitize($tmp_field_name) . "`";
         if ($this->query($sql)) {
             return 1;
         }
@@ -1101,18 +1119,17 @@ class DoliDBMysqli extends DoliDB
         return -1;
     }
 
-
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
-     *  Create a user and privileges to connect to database (even if database does not exists yet)
+     *    Create a user and privileges to connect to database (even if database does not exists yet)
      *
      * @param string $dolibarr_main_db_host Ip server or '%'
      * @param string $dolibarr_main_db_user Nom new user
      * @param string $dolibarr_main_db_pass Password for the new user
      * @param string $dolibarr_main_db_name Database name where user must be granted
      *
-     * @return int                                 Return integer <0 if KO, >=0 if OK
+     * @return    int                                    Return integer <0 if KO, >=0 if OK
      */
     public function DDLCreateUser($dolibarr_main_db_host, $dolibarr_main_db_user, $dolibarr_main_db_pass, $dolibarr_main_db_name)
     {
@@ -1152,12 +1169,14 @@ class DoliDBMysqli extends DoliDB
         return 1;
     }
 
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Return charset used to store data in current database
+     *    Return charset used to store data in current database
      *  Note: if we are connected to databasename, it is same result than using SELECT default_character_set_name FROM
      *  information_schema.SCHEMATA WHERE schema_name = "databasename";)
      *
-     * @return     string      Charset
+     * @return        string        Charset
      * @see getDefaultCollationDatabase()
      */
     public function getDefaultCharacterSetDatabase()
@@ -1173,10 +1192,32 @@ class DoliDBMysqli extends DoliDB
         return $tmpval;
     }
 
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
-     *  Return list of available charset that can be used to store data in database
+     *    Return datas as an array
      *
-     * @return     array|null      List of Charset
+     * @param mysqli_result $resultset Resultset of request
+     *
+     * @return    array|null                    Array or null if KO or end of cursor
+     */
+    public function fetch_array($resultset)
+    {
+        // phpcs:enable
+        // If resultset not provided, we take the last used by connection
+        if (!is_object($resultset)) {
+            $resultset = $this->_results;
+        }
+        return $resultset->fetch_array();
+    }
+
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *    Return list of available charset that can be used to store data in database
+     *
+     * @return        array|null        List of Charset
      */
     public function getListOfCharacterSet()
     {
@@ -1198,9 +1239,45 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     *  Return collation used in current database
+     *    Returns the current line (as an object) for the resultset cursor
      *
-     * @return     string      Collation value
+     * @param mysqli_result $resultset Curseur de la requete voulue
+     *
+     * @return    object|null                    Object result line or null if KO or end of cursor
+     */
+    public function fetch_object($resultset)
+    {
+        // phpcs:enable
+        // If the resultset was not provided, we get the last one for this connection
+        if (!is_object($resultset)) {
+            $resultset = $this->_results;
+        }
+        return $resultset->fetch_object();
+    }
+
+    /**
+     *    Libere le dernier resultset utilise sur cette connection
+     *
+     * @param mysqli_result $resultset Curseur de la requete voulue
+     *
+     * @return    void
+     */
+    public function free($resultset = null)
+    {
+        // If resultset not provided, we take the last used by connection
+        if (!is_object($resultset)) {
+            $resultset = $this->_results;
+        }
+        // Si resultset en est un, on libere la memoire
+        if (is_object($resultset)) {
+            $resultset->free_result();
+        }
+    }
+
+    /**
+     *    Return collation used in current database
+     *
+     * @return        string        Collation value
      * @see getDefaultCharacterSetDatabase()
      */
     public function getDefaultCollationDatabase()
@@ -1217,9 +1294,9 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     *  Return list of available collation that can be used for database
+     *    Return list of available collation that can be used for database
      *
-     * @return     array|null      Liste of Collation
+     * @return        array|null        Liste of Collation
      */
     public function getListOfCollation()
     {
@@ -1240,9 +1317,9 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     *  Return full path of dump program
+     *    Return full path of dump program
      *
-     * @return     string      Full path of dump program
+     * @return        string        Full path of dump program
      */
     public function getPathOfDump()
     {
@@ -1258,9 +1335,9 @@ class DoliDBMysqli extends DoliDB
     }
 
     /**
-     *  Return full path of restore program
+     *    Return full path of restore program
      *
-     * @return     string      Full path of restore program
+     * @return        string        Full path of restore program
      */
     public function getPathOfRestore()
     {
@@ -1280,7 +1357,7 @@ class DoliDBMysqli extends DoliDB
      *
      * @param string $filter Filter list on a particular value
      *
-     * @return  array               Array of key-values (key=>value)
+     * @return    array                Array of key-values (key=>value)
      */
     public function getServerParametersValues($filter = '')
     {
@@ -1305,7 +1382,7 @@ class DoliDBMysqli extends DoliDB
      *
      * @param string $filter Filter list on a particular value
      *
-     * @return  array               Array of key-values (key=>value)
+     * @return  array                Array of key-values (key=>value)
      */
     public function getServerStatusValues($filter = '')
     {
@@ -1332,8 +1409,8 @@ class DoliDBMysqli extends DoliDB
 class mysqliDoli extends mysqli
 {
     /**
-     *  Constructor.
-     *  This create an opened connection to a database server and eventually to a database
+     *    Constructor.
+     *    This create an opened connection to a database server and eventually to a database
      *
      * @param string $host   Address of database server
      * @param string $user   Name of database user

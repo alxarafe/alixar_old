@@ -1558,7 +1558,7 @@ class InterfaceActionsAuto extends DolibarrTriggers
                     $destdir = $conf->agenda->dir_output . '/' . $ret;
                     $destfile = $destdir . '/' . $object->attachedfiles['names'][$key];
                     if (dol_mkdir($destdir) >= 0) {
-                        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                         dol_copy($srcfile, $destfile);
                     }
                 }

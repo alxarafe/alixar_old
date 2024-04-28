@@ -24,11 +24,12 @@
  */
 
 use DoliCore\Form\Form;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Product\Model\Product;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 

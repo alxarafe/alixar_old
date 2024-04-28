@@ -24,6 +24,8 @@
  * \brief Script de prelevement
  */
 
+use DoliModules\Accounting\Model\BonPrelevement;
+
 defineIfNotDefined('NOSESSION', '1');
 
 $sapi_type = php_sapi_name();

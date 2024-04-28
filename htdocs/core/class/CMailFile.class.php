@@ -1396,7 +1396,7 @@ class CMailFile
             if (getDolGlobalString('MAIN_MAIL_DEBUG_LOG_WITH_DATE')) {
                 $destfile = $dolibarr_main_data_root . "/dolibarr_mail." . dol_print_date(dol_now(), 'dayhourlog', 'gmt') . ".log";
 
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                 dol_move($outputfile, $destfile, 0, 1, 0, 0);
             }
         }
@@ -1440,7 +1440,7 @@ class CMailFile
                 $destfile = $dolibarr_main_data_root . "/dolibarr_mail.err";
             }
 
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             dol_move($srcfile, $destfile, 0, 1, 0, 0);
         }
     }

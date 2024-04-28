@@ -23,6 +23,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 include_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 include_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';

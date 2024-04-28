@@ -32,7 +32,7 @@ use DoliCore\Base\Stats;
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
 include_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinter.class.php';
-include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 
 /**

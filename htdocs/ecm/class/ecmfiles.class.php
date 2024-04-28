@@ -269,7 +269,7 @@ class EcmFiles extends GenericDocument
 
         // If ref not defined
         if (empty($this->ref)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
             $this->ref = dol_hash($this->filepath . '/' . $this->filename, 3);
         }
 

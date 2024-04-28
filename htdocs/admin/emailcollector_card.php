@@ -36,6 +36,7 @@ include_once DOL_DOCUMENT_ROOT . '/emailcollector/class/emailcollectorfilter.cla
 include_once DOL_DOCUMENT_ROOT . '/emailcollector/class/emailcollectoraction.class.php';
 include_once DOL_DOCUMENT_ROOT . '/emailcollector/lib/emailcollector.lib.php';
 
+use DoliCore\Lib\ExtraFields;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 

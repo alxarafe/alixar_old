@@ -36,20 +36,13 @@
 namespace DoliModules\Supplier\Model;
 
 use DoliModules\Billing\Model\CommonInvoice;
-use WorkboardResponse;
+use DoliCore\Model\WorkboardResponse;
 
 /**
  *  \file       htdocs/fourn/class/fournisseur.facture.class.php
  *  \ingroup    fournisseur,facture
  *  \brief      File of class to manage suppliers invoices
  */
-
-include_once DOL_DOCUMENT_ROOT . '/core/class/commoninvoice.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonobjectline.class.php';
-require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
-
-if (isModEnabled('accounting')) {
-}
 
 /**
  *  Class to manage suppliers invoices
@@ -973,7 +966,7 @@ class FactureFournisseur extends CommonInvoice
     {
         global $mysoc, $conf, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $now = dol_now();
 
@@ -1452,7 +1445,7 @@ class FactureFournisseur extends CommonInvoice
 
             // We remove directory
             if ($conf->fournisseur->facture->dir_output) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                 $ref = dol_sanitizeFileName($this->ref);
                 $dir = $conf->fournisseur->facture->dir_output . '/' . get_exdir($this->id, 2, 0, 0, $this, 'invoice_supplier') . $ref;
@@ -3433,7 +3426,7 @@ class FactureFournisseur extends CommonInvoice
             return 0;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
         $formmail = new FormMail($this->db);
 

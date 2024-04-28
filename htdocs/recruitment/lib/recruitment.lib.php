@@ -23,6 +23,8 @@
  * \brief   Library files with common functions for Recruitment
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare admin pages header
  *

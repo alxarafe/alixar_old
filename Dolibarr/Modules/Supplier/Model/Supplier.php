@@ -62,7 +62,7 @@ class Supplier extends Company
      *
      * @return  bool
      */
-    public static function replaceThirdparty(DoliDB $dbs, $origin_id, $dest_id)
+    public static function replaceThirdparty(DoliDB|\DoliModules\Company\Model\DoliDB $dbs, $origin_id, $dest_id)
     {
         $tables = [
             'facture_fourn',

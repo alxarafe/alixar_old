@@ -71,7 +71,7 @@ if ($action == 'update' && !GETPOST("cancel") && $user->hasRight('societe', 'con
 
         $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
         if ($file_OK) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
             if (GETPOST('deletephoto')) {
                 $fileimg = $conf->societe->dir_output . '/contact/' . get_exdir($object->id, 0, 0, 1, $object, 'contact') . '/photos/' . $object->photo;
@@ -287,7 +287,7 @@ if ($action == 'edit') {
     // Date To Birth
     print '<tr>';
     if (!empty($object->birthday)) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         print '<td>' . $langs->trans("DateOfBirth") . '</td><td colspan="3">' . dol_print_date($object->birthday, "day");
 

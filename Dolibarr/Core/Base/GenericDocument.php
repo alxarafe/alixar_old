@@ -54,17 +54,17 @@ use CommonObjectLine;
 use Contact;
 use DiscountAbsolute;
 use DolEditor;
+use DoliCore\Lib\ExtraFields;
+use DoliCore\Model\Interfaces;
 use DoliDB;
 use DoliModules\Billing\Model\OrderLine;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
 use EcmFiles;
-use Extrafields;
 use Facture;
 use FactureFournisseur;
 use FactureLigne;
 use DoliCore\Form\Form;
-use Interfaces;
 use MultiCurrency;
 use Product;
 use ProductFournisseur;
@@ -5756,7 +5756,7 @@ abstract class GenericDocument
             $outputlangs->charset_output = $sav_charset_output;
 
             // We delete old preview
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             dol_delete_preview($this);
 
             // Index file in database
@@ -6267,7 +6267,6 @@ abstract class GenericDocument
         if (!is_array($optionsArray)) {
             // If $extrafields is not a known object, we initialize it. Best practice is to have $extrafields defined into card.php or list.php page.
             if (!isset($extrafields) || !is_object($extrafields)) {
-                require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
                 $extrafields = new ExtraFields($this->db);
             }
 
@@ -7960,7 +7959,7 @@ abstract class GenericDocument
                 $value = '';
             }
         } elseif ($type == 'duration') {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
             if (!is_null($value) && $value !== '') {
                 $value = convertSecondToTime($value, 'allhourmin');
             }
@@ -9116,7 +9115,7 @@ abstract class GenericDocument
         // phpcs:enable
         global $conf, $user, $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
         $sortfield = 'position_name';

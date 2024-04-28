@@ -26,9 +26,12 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+use DoliModules\Accounting\Model\BonPrelevement;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/salaries.lib.php';

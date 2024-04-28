@@ -37,10 +37,10 @@ namespace DoliCore\Form;
  */
 
 use DoliCore\Base\GenericBoxes;
+use DoliCore\Model\InfoBox;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Project\Model\Task;
 use DoliModules\User\Model\User;
-use InfoBox;
 
 /**
  *  Class permettant la generation de composants html autre
@@ -104,8 +104,6 @@ class FormOther
     public static function getBoxesArea($user, $areacode)
     {
         global $conf, $langs, $db;
-
-        include_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
 
         $confuserzone = 'MAIN_BOXES_' . $areacode;
 
@@ -1357,7 +1355,7 @@ class FormOther
         // phpcs:enable
         global $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         if ($longlabel) {
             $montharray = monthArray($langs, 0); // Get array

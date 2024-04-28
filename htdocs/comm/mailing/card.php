@@ -30,13 +30,14 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormMail;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 
 defineIfNotDefined('NOSTYLECHECK', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/emailing.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/mailing.class.php';
@@ -620,7 +621,7 @@ if (empty($reshook)) {
     if (GETPOST('addfile')) {
         $upload_dir = $conf->mailing->dir_output . "/" . get_exdir($object->id, 2, 0, 1, $object, 'mailing');
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // Set tmp user directory
         dol_add_file_process($upload_dir, 0, 0, 'addedfile', '', null, '', 0);
@@ -632,7 +633,7 @@ if (empty($reshook)) {
     if (GETPOST("removedfile")) {
         $upload_dir = $conf->mailing->dir_output . "/" . get_exdir($object->id, 2, 0, 1, $object, 'mailing');
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         dol_remove_file_process(GETPOST('removedfile'), 0, 0); // We really delete file linked to mailing
 
@@ -641,7 +642,7 @@ if (empty($reshook)) {
 
     // Action of emailing update
     if ($action == 'update' && !GETPOST("removedfile") && !$cancel) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $isupload = 0;
 

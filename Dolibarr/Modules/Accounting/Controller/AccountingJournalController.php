@@ -67,7 +67,7 @@ require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/paymentloan.class.php';
@@ -3348,7 +3348,7 @@ GROUP BY fk_facture
                 $filename = 'journal';
                 $type_export = 'journal';
 
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
                 include DOL_DOCUMENT_ROOT . '/accountancy/tpl/export_journal.tpl.php';
 
                 print $result;

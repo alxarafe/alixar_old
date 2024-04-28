@@ -54,7 +54,7 @@ function loan_prepare_head($object)
     // $this->tabs = array('entity:-tabname);                                                   to remove a tab
     complete_head_from_modules($conf, $langs, $object, $head, $tab, 'loan', 'add', 'core');
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->loan->dir_output . "/" . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

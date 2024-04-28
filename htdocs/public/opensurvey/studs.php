@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/opensurvey/class/opensurveysondage.class.php";
 require_once DOL_DOCUMENT_ROOT . "/opensurvey/lib/opensurvey.lib.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 
 // Init vars

@@ -53,7 +53,7 @@ function llxFooter()
 }
 
 require '../../master.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 
 $error = 0;

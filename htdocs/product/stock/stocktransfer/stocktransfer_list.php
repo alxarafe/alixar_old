@@ -24,13 +24,14 @@
  *      \brief      List page for stocktransfer
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/stocktransfer/class/stocktransfer.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/stocktransfer/class/stocktransferline.class.php';
 

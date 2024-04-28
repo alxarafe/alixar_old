@@ -126,7 +126,7 @@ class mailing_xinputuser extends MailingTargets
 		// phpcs:enable
         global $conf, $langs, $_FILES;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $tmparray = explode(';', GETPOST('xinputuser'));
 

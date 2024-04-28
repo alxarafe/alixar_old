@@ -38,7 +38,7 @@ require BASE_PATH . '/main.inc.php';
 use DoliCore\Base\DolibarrController;
 use DoliCore\Lib\Menu;
 use DoliModules\Adherent\Model\AdherentType;
-use ExtraFields;
+use DoliCore\Lib\ExtraFields;
 
 class AdminMenuEditController extends DolibarrController
 {

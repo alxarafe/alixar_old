@@ -127,7 +127,7 @@ class pdf_paiement extends CommonDocGenerator
     public function write_file($_dir, $month, $year, $outputlangs)
     {
 		// phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         global $conf, $hookmanager, $langs, $user;
 

@@ -7,7 +7,7 @@
 if (!getDolGlobalString('EXPENSEREPORT_DISABLE_ATTACHMENT_ON_LINES')) {
     print '<!-- expensereport_linktofile.tpl.php -->' . "\n";
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->expensereport->dir_output . "/" . dol_sanitizeFileName($object->ref);
@@ -68,7 +68,7 @@ if (!getDolGlobalString('EXPENSEREPORT_DISABLE_ATTACHMENT_ON_LINES')) {
                         // Conversion du PDF en image png si fichier png non existent
                         if (!file_exists($fileimage) || (filemtime($fileimage) < filemtime($filepdf))) {
                             if (!getDolGlobalString('MAIN_DISABLE_PDF_THUMBS')) {       // If you experience trouble with pdf thumb generation and imagick, you can disable here.
-                                include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                                include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                                 $ret = dol_convert_file($filepdf, 'png', $fileimage, '0'); // Convert first page of PDF into a file _preview.png
                                 if ($ret < 0) {
                                     $error++;

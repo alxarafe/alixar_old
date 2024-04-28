@@ -34,6 +34,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Project\Model\Project;
 use DoliModules\Project\Model\Task;
@@ -41,7 +42,7 @@ use DoliModules\User\Model\User;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Load translation files required by the page
 $langsLoad = array('projects', 'bills', 'orders', 'companies');

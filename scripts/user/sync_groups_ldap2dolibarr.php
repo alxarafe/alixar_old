@@ -39,7 +39,7 @@ if (substr($sapi_type, 0, 3) == 'cgi') {
 }
 
 require_once $path . "../../htdocs/master.inc.php";
-require_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . "/core/class/ldap.class.php";
 require_once DOL_DOCUMENT_ROOT . "/user/class/user.class.php";
 require_once DOL_DOCUMENT_ROOT . "/user/class/usergroup.class.php";

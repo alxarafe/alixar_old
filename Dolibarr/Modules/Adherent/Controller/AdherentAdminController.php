@@ -47,7 +47,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/member.lib.php';
 
 use DoliCore\Base\DolibarrController;
-use ExtraFields;
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Form\Form;
 
 class AdherentAdminController extends DolibarrController

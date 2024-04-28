@@ -20,9 +20,12 @@ The selected field is optional. By default false.
 @endphp
 <li class="{!! $selected !!}" id="{!! $id !!}">
     <div class="tmenucenter">
-        <a class="tmenuimage {!! $selected !!}" tabindex="-1" href="https://alixar/index.php?mainmenu=home&amp;leftmenu=home" title="{!! $title !!}">
+        <a class="tmenuimage {!! $selected !!}" tabindex="-1" href="{!! $href !!}" title="{!! $title !!}">
             <div class="mainmenu home topmenuimage">{!! $prefix !!}</div>
-        </a><a class="tmenulabel {!! $selected !!}" id="mainmenua_{!! $name !!}" href="https://alixar/index.php?mainmenu=home&amp;leftmenu=home" title="{!! $title !!}"><span class="mainmenuaspan">{!! $title !!}</span></a>
+        </a>
+        <a class="tmenulabel {!! $selected !!}" id="mainmenua_{!! $name !!}" href="{!! $href !!}" title="{!! $title !!}">
+            <span class="mainmenuaspan">{!! $title !!}</span>
+        </a>
     </div>
 </li>
 <!-- End: theme/eldy/component/menu/top_menu_item.blade.php -->

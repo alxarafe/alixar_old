@@ -28,6 +28,8 @@
  * \ingroup product
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare array with list of tabs
  *
@@ -190,7 +192,7 @@ function product_prepare_head($object)
     }
 
     // Attachments
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     if (isModEnabled("product") && ($object->type == Product::TYPE_PRODUCT)) {
         $upload_dir = $conf->product->multidir_output[$object->entity] . '/' . dol_sanitizeFileName($object->ref);
@@ -261,7 +263,7 @@ function productlot_prepare_head($object)
     $h++;
 
     // Attachments
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->productbatch->multidir_output[$object->entity] . '/' . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

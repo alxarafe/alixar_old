@@ -2057,7 +2057,7 @@ class Setup extends DolibarrApi
             throw new RestException(403, 'Error API open to admin users only or to the users with logins defined into constant API_LOGINS_ALLOWED_FOR_INTEGRITY_CHECK');
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
 
         $langs->load("admin");

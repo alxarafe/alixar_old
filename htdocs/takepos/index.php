@@ -41,7 +41,7 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 
 $place = (GETPOST('place', 'aZ09') ? GETPOST('place', 'aZ09') : 0); // $place is id of table for Bar or Restaurant or multiple sales

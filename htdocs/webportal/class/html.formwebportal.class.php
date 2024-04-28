@@ -254,7 +254,7 @@ class FormWebPortal extends Form
     {
         global $conf;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $out = '';
 
@@ -1066,7 +1066,7 @@ class FormWebPortal extends Form
                 $value = '';
             }
         } elseif ($type == 'duration') {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
             if (!is_null($value) && $value !== '') {
                 $value = convertSecondToTime($value, 'allhourmin');
             }

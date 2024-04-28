@@ -29,6 +29,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\User\Model\User;
 use DoliModules\User\Model\UserGroup;
 

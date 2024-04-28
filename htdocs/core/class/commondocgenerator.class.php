@@ -32,6 +32,8 @@
  *      \brief      File of parent class for documents generators
  */
 
+use DoliCore\Lib\ExtraFields;
+
 
 /**
  *  Parent class for documents (PDF, ODT, ...) generators

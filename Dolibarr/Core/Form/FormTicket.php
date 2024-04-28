@@ -29,7 +29,7 @@ use DoliDB;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
 use DoliModules\Ticket\Model\Ticket;
-use ExtraFields;
+use DoliCore\Lib\ExtraFields;
 
 /**
  *    \file       htdocs/core/class/html.formticket.class.php
@@ -1726,7 +1726,7 @@ class FormTicket
     {
         // phpcs:enable
         global $conf, $user;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // Set tmp user directory
         $vardir = $conf->user->dir_output . "/" . $user->id;

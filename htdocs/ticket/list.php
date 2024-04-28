@@ -31,6 +31,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormTicket;
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Ticket\Model\Ticket;

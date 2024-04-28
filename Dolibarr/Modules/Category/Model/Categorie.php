@@ -1880,7 +1880,7 @@ class Categorie extends GenericDocument
      */
     public function isAnyPhotoAvailable($sdir)
     {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
         $sdir .= '/' . get_exdir($this->id, 2, 0, 0, $this, 'category') . $this->id . "/photos/";
@@ -2044,7 +2044,7 @@ class Categorie extends GenericDocument
     public function add_photo($sdir, $file)
     {
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $dir = $sdir . '/' . get_exdir($this->id, 2, 0, 0, $this, 'category') . $this->id . "/";
         $dir .= "photos/";
@@ -2092,7 +2092,7 @@ class Categorie extends GenericDocument
     public function liste_photos($dir, $nbmax = 0)
     {
         // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $nbphoto = 0;
         $tabobj = [];
@@ -2149,7 +2149,7 @@ class Categorie extends GenericDocument
     public function delete_photo($file)
     {
         // phpcs:enable
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $dir = dirname($file) . '/'; // Chemin du dossier contenant l'image d'origine
         $dirthumb = $dir . '/thumbs/'; // Chemin du dossier contenant la vignette

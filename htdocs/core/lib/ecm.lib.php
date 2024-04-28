@@ -24,6 +24,8 @@
  * \ingroup    ecm
  */
 
+use DoliCore\Lib\ExtraFields;
+
 
 /**
  * Prepare array with list of different ecm main dashboard

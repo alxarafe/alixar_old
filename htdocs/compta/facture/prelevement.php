@@ -29,6 +29,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Accounting\Model\BonPrelevement;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';

@@ -46,6 +46,7 @@ use DoliCore\Form\FormFile;
 use DoliCore\Form\FormMargin;
 use DoliCore\Form\FormOther;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Bank\Model\Account;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Company\Model\Company;
@@ -59,7 +60,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
 // Load translation files required by the page

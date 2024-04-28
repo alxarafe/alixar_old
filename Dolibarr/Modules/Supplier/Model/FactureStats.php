@@ -33,7 +33,7 @@ use DoliDB;
 use DoliModules\Billing\Model\Facture;
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/stats.class.php';
-include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 /**
  *  Class to manage stats for invoices (customer and supplier)

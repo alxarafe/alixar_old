@@ -42,7 +42,7 @@
 if (GETPOST('addfile', 'alpha')) {
     $trackid = GETPOST('trackid', 'aZ09');
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     // Set tmp user directory
     $vardir = $conf->user->dir_output . "/" . $user->id;
@@ -58,7 +58,7 @@ if (GETPOST('addfile', 'alpha')) {
 if (GETPOST('removedfile') && !GETPOST('removAll')) {
     $trackid = GETPOST('trackid', 'aZ09');
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     // Set tmp user directory
     $vardir = $conf->user->dir_output . "/" . $user->id;

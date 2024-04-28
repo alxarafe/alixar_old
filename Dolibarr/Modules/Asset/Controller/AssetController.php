@@ -37,15 +37,15 @@ require_once DOL_DOCUMENT_ROOT . '/asset/class/assetaccountancycodes.class.php';
 require_once DOL_DOCUMENT_ROOT . '/asset/class/assetdepreciationoptions.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/asset.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
 use Asset;
 use DoliCore\Base\DolibarrController;
 use DoliCore\Lib\Fields;
-use ExtraFields;
+use DoliCore\Lib\ExtraFields;
 
 class AssetController extends DolibarrController
 {

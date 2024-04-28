@@ -31,7 +31,7 @@ defineIfNotDefined('NOBROWSERNOTIF', '1');
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentjobposition.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
 

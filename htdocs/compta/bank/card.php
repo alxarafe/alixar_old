@@ -36,6 +36,7 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormAccounting;
 use DoliCore\Form\FormBank;
 use DoliCore\Form\FormCompany;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Bank\Model\Account;
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Category\Model\Categorie;

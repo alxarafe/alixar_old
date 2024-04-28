@@ -115,7 +115,7 @@ abstract class Stats
 
         // Search into cache
         if (!empty($cachedelay)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
         }
 
@@ -218,7 +218,7 @@ abstract class Stats
 
         // Search into cache
         if (!empty($cachedelay)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
         }
 
@@ -347,7 +347,7 @@ abstract class Stats
 
         // Search into cache
         if (!empty($cachedelay)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
         }
 

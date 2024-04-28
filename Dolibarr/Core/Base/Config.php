@@ -31,7 +31,6 @@ use Translate;
 require_once BASE_PATH . '/core/class/conf.class.php';
 require_once BASE_PATH . '/core/class/hookmanager.class.php';
 require_once BASE_PATH . '/core/class/translate.class.php';
-require_once BASE_PATH . '/core/lib/functions.lib.php';
 
 /**
  * Generate an object with the configuration of the Dolibarr conf.php file.
@@ -315,7 +314,6 @@ abstract class Config
         $config->server = new stdClass();
         $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
 
-        static::$dolibarrConfig = $conf;
         static::$config = $config;
 
         return $config;
@@ -413,7 +411,7 @@ abstract class Config
     public static function getUser(): ?User
     {
         if (empty(static::$user)) {
-            static::$user = static::getUser();
+            static::$user = static::loadUser();
         }
         return static::$user;
     }
@@ -516,6 +514,7 @@ abstract class Config
         $conf = static::$dolibarrConfig;
         static::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
         static::$dolibarrConfig->setValues(static::$db);
+
         return static::$db;
     }
 

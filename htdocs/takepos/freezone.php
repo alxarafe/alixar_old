@@ -34,7 +34,7 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 global $mysoc;
 

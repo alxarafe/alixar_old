@@ -44,6 +44,7 @@ use DoliCore\Form\FormFile;
 use DoliCore\Form\FormMargin;
 use DoliCore\Form\FormOrder;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Company\Model\Company;
 use DoliModules\Product\Model\Product;

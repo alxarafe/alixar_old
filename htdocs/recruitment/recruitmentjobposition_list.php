@@ -23,13 +23,14 @@
  *      \brief      List page for recruitmentjobposition
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 use DoliCore\Form\Form;
 
 // Load Dolibarr environment
 require_once BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/lib/recruitment_recruitmentjobposition.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentjobposition.class.php';
 

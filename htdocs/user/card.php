@@ -42,6 +42,7 @@ use DoliCore\Form\FormAdmin;
 use DoliCore\Form\FormCompany;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Product\Model\FormProduct;
 use DoliModules\User\Model\User;
@@ -397,7 +398,7 @@ if (empty($reshook)) {
     }
 
     if ($action == 'update' && $canedituser) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         if ($caneditfield) {    // Case we can edit all field
             $error = 0;

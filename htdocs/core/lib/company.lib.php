@@ -37,6 +37,7 @@
  */
 
 use DoliCore\Form\FormActions;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Company\Model\SocieteAccount;
 use DoliModules\Contact\Model\Contact;
@@ -378,7 +379,7 @@ function societe_prepare_head(Company $object)
         if (!is_null($dataretrieved)) {
             $totalAttached = $dataretrieved;
         } else {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
             $upload_dir = $conf->societe->multidir_output[$object->entity] . "/" . $object->id;
             $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

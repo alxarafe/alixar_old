@@ -108,7 +108,7 @@ if ($rss) {
     }
 
     require_once DOL_DOCUMENT_ROOT . "/core/lib/xcal.lib.php";
-    require_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
+    require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
     require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
 
     dol_syslog("build_exportfile Build export file format=" . $format . ", type=" . $type . ", cachedelay=" . $cachedelay . ", filename=" . $filename . ", filters size=" . count($filters), LOG_DEBUG);
@@ -129,7 +129,7 @@ if ($rss) {
 
     if ($cachedelay) {
         $nowgmt = dol_now();
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         if (dol_filemtime($outputfile) > ($nowgmt - $cachedelay)) {
             dol_syslog("build_exportfile file " . $outputfile . " is not older than now - cachedelay (" . $nowgmt . " - " . $cachedelay . "). Build is canceled");
             $buildfile = false;
@@ -196,7 +196,7 @@ if ($rss) {
     readfile(dol_osencode($conf->mycompany->dir_output . "/" . $original_file));
 } else {
     // Find the subdirectory name as the reference
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     $check_access = dol_check_secure_access_document($modulepart, $original_file, $entity, null, $refname);
     $accessallowed              = empty($check_access['accessallowed']) ? '' : $check_access['accessallowed'];
     $sqlprotectagainstexternals = empty($check_access['sqlprotectagainstexternals']) ? '' : $check_access['sqlprotectagainstexternals'];

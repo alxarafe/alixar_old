@@ -35,12 +35,13 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormExpenseReport;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\ExpenseReport\Model\ExpenseReport;
 use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
 

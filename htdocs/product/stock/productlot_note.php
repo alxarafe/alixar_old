@@ -23,6 +23,8 @@
  *  \brief      Tab for notes on productlot
  */
 
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 dol_include_once('/product/stock/class/productlot.class.php');
 dol_include_once('/core/lib/product.lib.php');

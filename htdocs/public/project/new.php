@@ -28,6 +28,8 @@
  *  \brief      Page to record a message/lead into a project/lead
  */
 
+use DoliCore\Lib\ExtraFields;
+
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
 defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
 defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
@@ -46,7 +48,7 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Init vars
 $errmsg = '';

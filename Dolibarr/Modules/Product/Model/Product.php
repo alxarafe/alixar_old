@@ -1525,7 +1525,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
                         $olddir = $conf->product->dir_output . "/" . dol_sanitizeFileName($this->oldcopy->ref);
                         $newdir = $conf->product->dir_output . "/" . dol_sanitizeFileName($this->ref);
                         if (file_exists($olddir)) {
-                            //include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                            //include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                             //$res = dol_move($olddir, $newdir);
                             // do not use dol_move with directory
                             $res = @rename($olddir, $newdir);
@@ -3063,7 +3063,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     public function delete(User $user, $notrigger = 0)
     {
         global $conf, $langs;
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -6000,7 +6000,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
         // phpcs:enable
         global $conf;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $result = 0;
 
@@ -6047,7 +6047,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     public function liste_photos($dir, $nbmax = 0)
     {
         // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
         $nbphoto = 0;
@@ -6109,7 +6109,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     public function delete_photo($file)
     {
         // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
         $dir = dirname($file) . '/'; // Chemin du dossier contenant l'image d'origine
@@ -6510,7 +6510,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     public function is_photo_available($sdir)
     {
         // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 
         global $conf;

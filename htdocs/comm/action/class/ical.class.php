@@ -149,7 +149,7 @@ class ICal
 
         // Save file into a cache
         if ($usecachefile) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             $datefile = dol_filemtime($usecachefile);
             $now = dol_now('gmt');
             //print $datefile.' '.$now.' ...';

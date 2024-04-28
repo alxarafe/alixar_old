@@ -330,7 +330,7 @@ class modAdherent extends DolibarrModules
         $r = 0;
 
         $now = dol_now();
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         $r++;
         $this->import_code[$r] = $this->rights_class . '_' . $r;

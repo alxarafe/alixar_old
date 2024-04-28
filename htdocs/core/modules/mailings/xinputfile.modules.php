@@ -133,7 +133,7 @@ class mailing_xinputfile extends MailingTargets
 		// phpcs:enable
         global $conf, $langs, $_FILES;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // For compatibility with Unix, MS-Dos or Macintosh
         ini_set('auto_detect_line_endings', true);

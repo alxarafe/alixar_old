@@ -34,17 +34,14 @@
 
 namespace DoliModules\Supplier\Model;
 
-use CommonOrder;
-use WorkboardResponse;
+use DoliCore\Model\WorkboardResponse;
+use DoliModules\Billing\Model\CommonOrder;
 
 /**
  *  \file       htdocs/fourn/class/fournisseur.commande.class.php
  *  \ingroup    fournisseur,commande
  *  \brief      File of class to manage suppliers orders
  */
-
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonorder.class.php';
-require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
 
 /**
  *  Class to manage predefined suppliers products
@@ -474,7 +471,7 @@ class SupplierOrder extends CommonOrder
     public function valid($user, $idwarehouse = 0, $notrigger = 0)
     {
         global $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -1221,7 +1218,7 @@ class SupplierOrder extends CommonOrder
     public function approve($user, $idwarehouse = 0, $secondlevel = 0)
     {
         global $langs, $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -2451,7 +2448,7 @@ class SupplierOrder extends CommonOrder
     public function delete(User $user, $notrigger = 0)
     {
         global $langs, $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 

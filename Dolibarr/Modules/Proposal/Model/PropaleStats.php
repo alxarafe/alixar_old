@@ -32,7 +32,7 @@ use DoliModules\SupplierProposal\Model\SupplierProposal;
  *  \brief      File of class to manage proposals statistics
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 
 /**

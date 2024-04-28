@@ -26,6 +26,9 @@
 
 /* We need object $user->default_values
 defineIfNotDefined('NOREQUIREUSER', '1');*/
+
+use DoliCore\Lib\ExtraFields;
+
 defineIfNotDefined('NOREQUIREMENU', '1');
 defineIfNotDefined('NOREQUIREHTML', '1');
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
@@ -42,10 +45,10 @@ if (is_numeric($entity)) {
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 // Load translation files required by the page
@@ -103,7 +106,7 @@ if (empty($reshook)) {
     }
 
     if (GETPOST('addfile', 'alpha') && !GETPOST('save', 'alpha')) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // Set tmp directory
         // TODO Use a dedicated directory for temporary emails files
@@ -119,7 +122,7 @@ if (empty($reshook)) {
 
     // Remove file
     if (GETPOST('removedfile', 'alpha') && !GETPOST('save', 'alpha')) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         // Set tmp directory
         // TODO Use a dedicated directory for temporary emails files
@@ -360,7 +363,7 @@ if (empty($reshook)) {
                     if ($res) {
                         // Create form object
                         include_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
-                        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                         $formmail = new FormMail($db);
 
                         // Init to avoid errors

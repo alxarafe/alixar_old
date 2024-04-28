@@ -26,6 +26,8 @@
  * include DOL_DOCUMENT_ROOT.'/core/customreports.php';
  */
 
+use DoliCore\Lib\ExtraFields;
+
 if (!defined('USE_CUSTOM_REPORT_AS_INCLUDE')) {
     require BASE_PATH . '/main.inc.php';
 
@@ -100,7 +102,7 @@ if (empty($objecttype)) {
 require_once DOL_DOCUMENT_ROOT . "/core/class/extrafields.class.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/lib/company.lib.php";
-require_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/customreports.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/core/class/dolgraph.class.php";
 require_once DOL_DOCUMENT_ROOT . "/core/class/doleditor.class.php";

@@ -30,6 +30,7 @@
  * \ingroup    project
  */
 
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Project\Model\Project;
 
@@ -315,7 +316,7 @@ function project_prepare_head(Project $project, $moreparam = '')
     if (!is_null($dataretrieved)) {
         $totalAttached = $dataretrieved;
     } else {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
         $upload_dir = $conf->project->multidir_output[empty($project->entity) ? 1 : $project->entity] . "/" . dol_sanitizeFileName($project->ref);
         $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
@@ -446,7 +447,7 @@ function task_prepare_head($object)
 
     $head[$h][0] = DOL_URL_ROOT . '/projet/tasks/document.php?id=' . $object->id . (GETPOST('withproject') ? '&withproject=1' : '');
     $filesdir = $conf->project->multidir_output[$object->entity] . "/" . dol_sanitizeFileName($object->project->ref) . '/' . dol_sanitizeFileName($object->ref);
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     include_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $nbFiles = count(dol_dir_list($filesdir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
     $nbLinks = Link::count($db, $object->element, $object->id);
@@ -1412,7 +1413,7 @@ function projectLinesPerDay(&$inc, $parent, $fuser, $lines, &$level, &$projectsr
     $restrictBefore = null;
 
     if (getDolGlobalString('PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS')) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
         $restrictBefore = dol_time_plus_duree(dol_now(), - $conf->global->PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS, 'm');
     }
 
@@ -1811,7 +1812,7 @@ function projectLinesPerWeek(&$inc, $firstdaytoshow, $fuser, $parent, $lines, &$
     $restrictBefore = null;
 
     if (getDolGlobalString('PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS')) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
         $restrictBefore = dol_time_plus_duree(dol_now(), - $conf->global->PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS, 'm');
     }
 
@@ -2208,7 +2209,7 @@ function projectLinesPerMonth(&$inc, $firstdaytoshow, $fuser, $parent, $lines, &
     $restrictBefore = null;
 
     if (getDolGlobalString('PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS')) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
         $restrictBefore = dol_time_plus_duree(dol_now(), - $conf->global->PROJECT_TIMESHEET_PREVENT_AFTER_MONTHS, 'm');
     }
 

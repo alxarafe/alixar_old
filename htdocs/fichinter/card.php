@@ -38,6 +38,7 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormContract;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Intervention\Model\Fichinter;
 
@@ -45,7 +46,7 @@ use DoliModules\Intervention\Model\Fichinter;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/fichinter/modules_fichinter.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fichinter.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 if (getDolGlobalString('FICHEINTER_ADDON') && is_readable(DOL_DOCUMENT_ROOT . "/core/modules/fichinter/mod_" . getDolGlobalString('FICHEINTER_ADDON') . ".php")) {
     require_once DOL_DOCUMENT_ROOT . "/core/modules/fichinter/mod_" . getDolGlobalString('FICHEINTER_ADDON') . '.php';
 }

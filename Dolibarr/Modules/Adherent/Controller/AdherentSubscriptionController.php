@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/member.lib.php';
 
 use DoliCore\Base\DolibarrController;
 use DoliModules\Adherent\Model\Subscription;
-use ExtraFields;
+use DoliCore\Lib\ExtraFields;
 
 class AdherentSubscriptionController extends DolibarrController
 {

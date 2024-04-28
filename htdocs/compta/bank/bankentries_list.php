@@ -37,6 +37,9 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormAccounting;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
+use DoliModules\Accounting\Model\BonPrelevement;
+use DoliModules\Accounting\Model\RemiseCheque;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Bank\Model\Account;
 use DoliModules\Bank\Model\AccountLine;

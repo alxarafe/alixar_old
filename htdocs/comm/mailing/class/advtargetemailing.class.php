@@ -23,6 +23,8 @@
  *  \brief      This file is an example CRUD class file (Create/Read/Update/Delete)
  */
 
+use DoliCore\Lib\ExtraFields;
+
 
 /**
  * Class to manage advanced emailing target selector

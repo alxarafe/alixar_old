@@ -912,7 +912,7 @@ class BlockedLog
 
         $keyforsignature = $this->buildKeyForSignature();
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
 
         $this->signature_line = dol_hash($keyforsignature, '5'); // Not really useful
         $this->signature = dol_hash($previoushash . $keyforsignature, '5');
@@ -1186,7 +1186,7 @@ class BlockedLog
 
         if (!getDolGlobalString('BLOCKEDLOG_ENTITY_FINGERPRINT')) { // creation of a unique fingerprint
             require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/security.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
             require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
 
             $fingerprint = dol_hash(print_r($mysoc, true) . getRandomPassword(1), '5');

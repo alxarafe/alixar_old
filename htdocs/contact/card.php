@@ -37,6 +37,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormAdmin;
 use DoliCore\Form\FormCompany;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
 use DoliModules\Contact\Model\Contact;
@@ -46,7 +47,7 @@ require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 

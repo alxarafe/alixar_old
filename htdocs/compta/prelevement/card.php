@@ -26,9 +26,11 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Accounting\Model\BonPrelevement;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/prelevement.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/ligneprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 
@@ -117,7 +119,7 @@ if (empty($reshook)) {
     }
 
     if ($action == 'infotrans' && $permissiontosend) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $dt = dol_mktime(12, 0, 0, GETPOSTINT('remonth'), GETPOSTINT('reday'), GETPOSTINT('reyear'));
 

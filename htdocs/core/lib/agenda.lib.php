@@ -29,6 +29,7 @@
 use DoliCore\Form\FormActions;
 use DoliCore\Form\FormOther;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Resource\Model\Dolresource;
 use DoliModules\Resource\Model\FormResource;
 
@@ -482,7 +483,7 @@ function actions_prepare_head($object)
     }
 
     // Attached files
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->agenda->dir_output . "/" . $object->id;
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

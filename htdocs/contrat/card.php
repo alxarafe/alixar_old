@@ -39,11 +39,12 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Contract\Model\Contrat;
 
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/contract.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/contract/modules_contract.php';
@@ -966,7 +967,7 @@ if (empty($reshook)) {
                 setEventMessages($object->error, $object->errors, 'errors');
                 $action = 'editref';
             } else {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                 $old_filedir = $conf->contrat->multidir_output[$object->entity] . '/' . dol_sanitizeFileName($old_ref);
                 $new_filedir = $conf->contrat->multidir_output[$object->entity] . '/' . dol_sanitizeFileName($object->ref);
 

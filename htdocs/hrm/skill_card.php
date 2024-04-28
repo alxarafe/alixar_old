@@ -31,6 +31,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 
 // Load Dolibarr environment
@@ -494,7 +495,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 //*---------------------------------------------------------------------------
 
 if ($action != "create" && $action != "edit") {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
     require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
     // load hrm libraries

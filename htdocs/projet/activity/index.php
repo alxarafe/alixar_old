@@ -32,7 +32,7 @@ use DoliModules\Project\Model\Task;
 
 require "../../main.inc.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 $search_project_user = GETPOSTINT('search_project_user');
 $mine = GETPOST('mode', 'aZ09') == 'mine' ? 1 : 0;

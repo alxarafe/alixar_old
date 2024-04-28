@@ -31,6 +31,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
 use DoliModules\Project\Model\Project;
@@ -468,7 +469,7 @@ if (empty($reshook)) {
     // Delete file in doc form
     if ($action == 'remove_file' && $permissiontoadd) {
         if ($object->id > 0) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
             $langs->load("other");
             $upload_dir = $conf->project->multidir_output[$object->entity];

@@ -18,7 +18,7 @@ return [
     'globals_type_map' => [
         'conf' => '\Conf',
         'db' => '\DoliDB',
-        'extrafields' => '\ExtraFields',
+        'extrafields' => '\DoliCore\Lib\ExtraFields',
         'hookmanager' => '\HookManager',
         'langs' => '\Translate',
         'mysoc' => '\Societe',

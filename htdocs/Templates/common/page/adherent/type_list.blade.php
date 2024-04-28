@@ -1,298 +1,123 @@
 @extends('layout.main')
 
 @section('content')
-    <main class="app-main"> <!--begin::App Content Header-->
-        <div class="app-content-header"> <!--begin::Container-->
-            <div class="container-fluid"> <!--begin::Row-->
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h3 class="mb-0">Simple Tables</h3>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-end">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                Simple Tables
-                            </li>
-                        </ol>
-                    </div>
-                </div> <!--end::Row-->
-            </div> <!--end::Container-->
-        </div> <!--end::App Content Header--> <!--begin::App Content-->
-        <div class="app-content"> <!--begin::Container-->
-            <div class="container-fluid"> <!--begin::Row-->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h3 class="card-title">Bordered Table</h3>
-                            </div> <!-- /.card-header -->
-                            <div class="card-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Task</th>
-                                        <th>Progress</th>
-                                        <th style="width: 40px">Label</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="align-middle">
-                                        <td>1.</td>
-                                        <td>Update software</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-danger">55%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>2.</td>
-                                        <td>Clean database</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-warning">70%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>3.</td>
-                                        <td>Cron job running</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-primary">30%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>4.</td>
-                                        <td>Fix and squish bugs</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-success">90%</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div> <!-- /.card-body -->
-                            <div class="card-footer clearfix">
-                                <ul class="pagination pagination-sm m-0 float-end">
-                                    <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                                </ul>
-                            </div>
-                        </div> <!-- /.card -->
-                    </div> <!-- /.col -->
+    <!-- Begin div class="fiche" -->
+    <div class="fiche">
+        <form method="POST" action="{!! $me->url() !!}">
+            <input type="hidden" name="token" value="{!! newToken() !!}">
+            <input type="hidden" name="formfilteraction" id="formfilteraction" value="list">
+            <input type="hidden" name="action" value="list">
+            <input type="hidden" name="sortfield" value="d.lastname">
+            <input type="hidden" name="sortorder" value="DESC">
+            <input type="hidden" name="mode" value="">
 
-                    <div class="col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h3 class="card-title">Condensed Full Width Table</h3>
-                            </div> <!-- /.card-header -->
-                            <div class="card-body p-0">
-                                <table class="table table-sm">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Task</th>
-                                        <th>Progress</th>
-                                        <th style="width: 40px">Label</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="align-middle">
-                                        <td>1.</td>
-                                        <td>Update software</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-danger">55%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>2.</td>
-                                        <td>Clean database</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-warning">70%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>3.</td>
-                                        <td>Cron job running</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-primary">30%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>4.</td>
-                                        <td>Fix and squish bugs</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-success">90%</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div> <!-- /.card-body -->
-                        </div> <!-- /.card -->
-                    </div> <!-- /.col -->
+            <!-- Begin title -->
+            <table class="centpercent notopnoleftnoright table-fiche-title">
+                <tr>
+                    <td class="nobordernopadding widthpictotitle valignmiddle col-picto">
+                        <span class="fas fa-user-friends  em092 infobox-adherent valignmiddle pictotitle widthpictotitle" style=""></span>
+                    </td>
+                    <td class="nobordernopadding valignmiddle col-title">
+                        <div class="titre inline-block">Tipos de miembros
+                            (?=)<span class="opacitymedium colorblack paddingleft">(1)</span></div>
+                    </td>
+                    <td class="nobordernopadding valignmiddle right col-right">
+                        <input type="hidden" name="pageplusoneold" value="1">
 
-                    <div class="col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h3 class="card-title">Simple Full Width Table</h3>
-                                <div class="card-tools">
-                                    <ul class="pagination pagination-sm float-end">
-                                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                                    </ul>
-                                </div>
-                            </div> <!-- /.card-header -->
-                            <div class="card-body p-0">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Task</th>
-                                        <th>Progress</th>
-                                        <th style="width: 40px">Label</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="align-middle">
-                                        <td>1.</td>
-                                        <td>Update software</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-danger">55%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>2.</td>
-                                        <td>Clean database</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-warning">70%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>3.</td>
-                                        <td>Cron job running</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-primary">30%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>4.</td>
-                                        <td>Fix and squish bugs</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-success">90%</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div> <!-- /.card-body -->
-                        </div> <!-- /.card -->
-                    </div> <!-- /.col -->
+                        <!-- Begin: functions.lib.php: print_fleche_navigation -->
+                        <div class="pagination">
+                            <ul>
+                                <li class="pagination">
+                                    <select class="flat selectlimit" name="limit" title="N&ordm; m&aacute;ximo de registros por p&aacute;gina">
+                                        <option name="10">10</option>
+                                        <option name="15">15</option>
+                                        <option name="20" selected="selected">20</option>
+                                        <option name="30">30</option>
+                                        <option name="40">40</option>
+                                        <option name="50">50</option>
+                                        <option name="100">100</option>
+                                        <option name="250">250</option>
+                                        <option name="500">500</option>
+                                        <option name="1000">1000</option>
+                                        <option name="5000">5000</option>
+                                        <option name="10000">10000</option>
+                                        <option name="20000">20000</option>
+                                    </select><!-- JS CODE TO ENABLE select limit to launch submit of page -->
+                                    <script>
+                                        jQuery(document).ready(function () {
+                                            jQuery(".selectlimit").change(function () {
+                                                console.log("Change limit. Send submit");
+                                                $(this).parents('form:first').submit();
+                                            });
+                                        });
+                                    </script>
+                                </li>
+                                <li class="paginationafterarrows">
+                                    <a class="btnTitle reposition btnTitleSelected" href="/adherents/type.php?mode=common&contextpage=ControllerAdherentTypeController" title="Vista de listado">
+                                        <span class="fa fa-bars imgforviewmode valignmiddle btnTitle-icon"></span>
+                                    </a>
+                                    <a class="btnTitle reposition" href="/adherents/type.php?mode=kanban&contextpage=ControllerAdherentTypeController" title="Vista Kanban">
+                                        <span class="fa fa-th-list imgforviewmode valignmiddle btnTitle-icon"></span>
+                                    </a>
+                                    <span class="button-title-separator "></span>
+                                    <a class="btnTitle btnTitlePlus" href="/adherents/type.php?action=create" title="Nuevo tipo de miembro">
+                                        <span class="fa fa-plus-circle valignmiddle btnTitle-icon"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End: functions.lib.php: print_fleche_navigation -->
 
-                    <div class="col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h3 class="card-title">Striped Full Width Table</h3>
-                            </div> <!-- /.card-header -->
-                            <div class="card-body p-0">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Task</th>
-                                        <th>Progress</th>
-                                        <th style="width: 40px">Label</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="align-middle">
-                                        <td>1.</td>
-                                        <td>Update software</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-danger">55%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>2.</td>
-                                        <td>Clean database</td>
-                                        <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-warning">70%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>3.</td>
-                                        <td>Cron job running</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-primary">30%</span></td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td>4.</td>
-                                        <td>Fix and squish bugs</td>
-                                        <td>
-                                            <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge text-bg-success">90%</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div> <!-- /.card-body -->
-                        </div> <!-- /.card -->
-                    </div> <!-- /.col -->
-                </div> <!--end::Row-->
-            </div> <!--end::Container-->
-        </div> <!--end::App Content-->
-    </main> <!--end::App Main--> <!--begin::Footer-->
+                        <script nonce="97094dfb">
+                            jQuery(document).ready(function () {
+                                jQuery(".pageplusone").click(function () {
+                                    jQuery(this).select();
+                                });
+                            });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+            <!-- End title -->
+
+            <div class="div-table-responsive">
+                <table class="tagtable liste">
+                    <tr class="liste_titre">
+                        <th>Ref.</th>
+                        <th>Etiqueta</th>
+                        <th class="center">Naturaleza de los miembros</th>
+                        <th class="center">Duraci&oacute;n</th>
+                        <th class="center">Sujeto a cotizaci&oacute;n</th>
+                        <th class="center">Importe</th>
+                        <th class="center">Cualquier importe</th>
+                        <th class="center">Voto autorizado</th>
+                        <th class="center">Estado</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    <tr class="oddeven">
+                        <td class="nowraponall">
+                            <a href="/adherents/type.php?rowid=7" title="&lt;span class=&quot;fas fa-user-friends  em092 infobox-adherent&quot; style=&quot;&quot;&gt;&lt;/span&gt; &lt;u class=&quot;paddingrightonly&quot;&gt;Tipo de miembro&lt;/u&gt; &lt;span class=&quot;badge  badge-status4 badge-status&quot; title=&quot;Activo&quot;&gt;Activo&lt;/span&gt;&lt;br&gt;Etiqueta: 7&lt;br&gt;Sujeto a cotizaci&oacute;n: S&iacute;" class="classfortooltip"><span class="fas fa-user-friends  em092 infobox-adherent paddingright" style=""></span>7</a>
+                        </td>
+                        <td>Partner</td>
+                        <td class="center">Corporaci&oacute;n e Individuo</td>
+                        <td class="center nowrap">1 A&ntilde;o</td>
+                        <td class="center">S&iacute;</td>
+                        <td class="center"><span class="amount">50,00</span></td>
+                        <td class="center">No</td>
+                        <td class="center">S&iacute;</td>
+                        <td class="center"><span class="badge  badge-status4 badge-status" title="Activo">Activo</span>
+                        </td>
+                        <td class="right">
+                            <a class="editfielda" href="/adherents/type.php?action=edit&rowid=7"><span class="fas fa-pencil-alt" style=" color: #444;" title="Modificar"></span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <!-- End div class="fiche" -->
 @endsection
 
 @push('scripts')
-    <script src="https://alixar/Templates/Lib/additional-script.js"></script>
+    {{-- <script src="https://alixar/Templates/Lib/additional-script.js"></script> --}}
 @endpush

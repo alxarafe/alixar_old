@@ -180,7 +180,7 @@ class modWebsite extends DolibarrModules
             $dest = DOL_DATA_ROOT . '/medias/image/' . $dirtarget;
 
             if (is_dir($src)) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                 dol_mkdir($dest);
                 $result = dolCopyDir($src, $dest, 0, 0);
                 if ($result < 0) {

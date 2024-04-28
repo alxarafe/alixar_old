@@ -536,7 +536,7 @@ class Donation extends GenericDocument
      */
     public function delete($user, $notrigger = 0)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -990,7 +990,7 @@ class Donation extends GenericDocument
                 $outputlangs->charset_output = $sav_charset_output;
 
                 // we delete preview files
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
                 dol_delete_preview($object);
                 return 1;
             } else {

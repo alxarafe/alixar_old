@@ -385,7 +385,7 @@ class Notify
             return 0;
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         dol_syslog(get_class($this) . "::send notifcode=" . $notifcode . ", object id=" . $object->id);
 

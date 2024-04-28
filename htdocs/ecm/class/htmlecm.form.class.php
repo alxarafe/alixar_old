@@ -77,7 +77,7 @@ class FormEcm
             $cat = new EcmDirectory($this->db);
             $cate_arbo = $cat->get_full_arbo();
         } elseif ($module == 'medias') {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
             $path = $conf->medias->multidir_output[$conf->entity];
             $cate_arbo = dol_dir_list($path, 'directories', 1, '', array('(\.meta|_preview.*\.png)$', '^\.'), 'relativename', SORT_ASC);
         }

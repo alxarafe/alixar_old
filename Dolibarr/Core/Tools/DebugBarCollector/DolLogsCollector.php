@@ -28,8 +28,6 @@ use DebugBar\DataCollector\MessagesCollector;
 use Psr\Log\LogLevel;
 use ReflectionClass;
 
-//use ReflectionClass;
-
 /**
  * DolLogsCollector class
  *

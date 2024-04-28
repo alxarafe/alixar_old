@@ -1,6 +1,9 @@
 <?php
 
-/* Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
+/* Copyright (C) 2002-2006 Rodolphe Quiedeville <rodolphe@quiedeville.org>
+ * Copyright (C) 2005-2012 Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,57 +21,121 @@
 
 namespace DoliCore\Model;
 
+/**
+ *  \file       htdocs/core/class/menu.class.php
+ *  \ingroup    core
+ *  \brief      Fichier de la class de gestion du menu gauche
+ */
+
 use DoliCore\Base\Model;
 
-class Menu extends Model
+/**
+ *  Class to manage left menus
+ */
+class Menu
 {
     /**
-     * Indicates whether the automatic record creation and update fields are to be used.
+     * List of menu items
      *
-     * @var bool
+     * @var array<array{url:string,titre:string,enabled:int<0,2>,target:string,mainmenu:string,leftmenu:string,position:int,level?:int,id:string,idsel:string,classname:string,prefix:string}>
      */
-    public $timestamps = true;
+    public $liste;
 
     /**
-     * Name of the table associated with the model. By default, it is the plural model name in
-     * snakecase format: 'mailing_unsubscribes'.
-     *
-     * @var string
+     *  Constructor
      */
-    protected $table = 'menu';
-
-    /**
-     * List of fields that will be autocompleted with 'null' during the registration of a new record.
-     *
-     * @var string[]
-     */
-    protected $fillable = ['module', 'leftmenu', 'fk_mainmenu', 'fk_leftmenu', 'target', 'prefix', 'langs', 'level', 'perms', 'enabled'];
-
-    public static function loadTopMenu($entity, $userType = 0)
+    public function __construct()
     {
-        $entities = [0, (int) $entity];
-        $types = [(int) $userType, 2];
-
-        return static::where('type', 'top')
-            ->whereIn('entity', $entities)
-            ->whereIn('usertype', $types)
-            ->orderBy('type', 'DESC')
-            ->orderBy('position')
-            ->orderBy('rowid')
-            ->get();
+        $this->liste = [];
     }
 
-    public static function loadSideMenu($entity, $userType = 0)
+    /**
+     * Clear property ->liste
+     *
+     * @return  void
+     */
+    public function clear()
     {
-        $entities = [0, (int) $entity];
-        $types = [(int) $userType, 2];
+        $this->liste = [];
+    }
 
-        return static::where('type', 'left')
-            ->whereIn('entity', $entities)
-            ->whereIn('usertype', $types)
-            ->orderBy('type', 'DESC')
-            ->orderBy('position')
-            ->orderBy('rowid')
-            ->get();
+    /**
+     * Add a menu entry into this->liste (at end)
+     *
+     * @param string  $url       Url to follow on click (does not include DOL_URL_ROOT)
+     * @param string  $titre     Label of menu to add. The value must already be translated.
+     * @param integer $level     Level of menu to add
+     * @param int     $enabled   Menu active or not (0=Not active, 1=Active, 2=Active but grey)
+     * @param string  $target    Target link
+     * @param string  $mainmenu  Main menu ('home', 'companies', 'products', ...)
+     * @param string  $leftmenu  Left menu ('setup', 'system', 'admintools', ...)
+     * @param int     $position  Position (not used yet)
+     * @param string  $id        Id
+     * @param string  $idsel     Id sel
+     * @param string  $classname Class name
+     * @param string  $prefix    Prefix to title (image or picto)
+     *
+     * @return  void
+     */
+    public function add($url, $titre, $level = 0, $enabled = 1, $target = '', $mainmenu = '', $leftmenu = '', $position = 0, $id = '', $idsel = '', $classname = '', $prefix = '')
+    {
+        $this->liste[] = ['url' => $url, 'titre' => $titre, 'level' => $level, 'enabled' => $enabled, 'target' => $target, 'mainmenu' => $mainmenu, 'leftmenu' => $leftmenu, 'position' => $position, 'id' => $id, 'idsel' => $idsel, 'classname' => $classname, 'prefix' => $prefix];
+    }
+
+    /**
+     * Insert a menu entry into this->liste (after $idafter)
+     *
+     * @param int     $idafter   Array key after which inserting new entry
+     * @param string  $url       Url to follow on click
+     * @param string  $titre     Label of menu to add. The value must already be translated.
+     * @param integer $level     Level of menu to add
+     * @param int     $enabled   Menu active or not
+     * @param string  $target    Target link
+     * @param string  $mainmenu  Main menu ('home', 'companies', 'products', ...)
+     * @param string  $leftmenu  Left menu ('setup', 'system', 'admintools', ...)
+     * @param int     $position  Position (not used yet)
+     * @param string  $id        Id
+     * @param string  $idsel     Id sel
+     * @param string  $classname Class name
+     * @param string  $prefix    Prefix to title (image or picto)
+     * @return  void
+     */
+    public function insert($idafter, $url, $titre, $level = 0, $enabled = 1, $target = '', $mainmenu = '', $leftmenu = '', $position = 0, $id = '', $idsel = '', $classname = '', $prefix = '')
+    {
+        $array_start = array_slice($this->liste, 0, ($idafter + 1));
+        $array_new = [0 => ['url' => $url, 'titre' => $titre, 'level' => $level, 'enabled' => $enabled, 'target' => $target, 'mainmenu' => $mainmenu, 'leftmenu' => $leftmenu, 'position' => $position, 'id' => $id, 'idsel' => $idsel, 'classname' => $classname, 'prefix' => $prefix]];
+        $array_end = array_slice($this->liste, ($idafter + 1));
+        $this->liste = array_merge($array_start, $array_new, $array_end);
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     * Remove a menu entry from this->liste
+     *
+     * @return  void
+     */
+    public function remove_last()
+    {
+        // phpcs:enable
+        if (count($this->liste) > 1) {
+            array_pop($this->liste);
+        }
+    }
+
+    /**
+     * Return number of visible entries (gray or not)
+     *
+     * @return int     Number of visible (gray or not) menu entries
+     */
+    public function getNbOfVisibleMenuEntries()
+    {
+        $nb = 0;
+        foreach ($this->liste as $val) {
+            if (!empty($val['enabled'])) {
+                $nb++; // $val['enabled'] is already evaluated to 0 or 1, no need for dol_eval()
+            }
+        }
+        return $nb;
     }
 }

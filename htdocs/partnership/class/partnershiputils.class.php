@@ -26,8 +26,8 @@
 //require_once(DOL_DOCUMENT_ROOT."/core/class/commonobject.class.php");
 //require_once(DOL_DOCUMENT_ROOT."/societe/class/societe.class.php");
 require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/partnership/lib/partnership.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/partnership/class/partnership.class.php';

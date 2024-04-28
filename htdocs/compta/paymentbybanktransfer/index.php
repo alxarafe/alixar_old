@@ -27,6 +27,7 @@
  *  \brief      Payment by bank transfer index page
  */
 
+use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Company\Model\Company;
 use DoliModules\Supplier\Model\FactureFournisseur;
 use DoliModules\User\Model\User;

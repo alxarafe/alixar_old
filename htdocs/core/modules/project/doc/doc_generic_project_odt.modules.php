@@ -30,12 +30,14 @@
  *  \brief      File of class to build ODT documents for third parties
  */
 
+use DoliCore\Lib\ExtraFields;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/project/modules_project.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/doc.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 if (isModEnabled("propal")) {
 }
 if (isModEnabled('invoice')) {

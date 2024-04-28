@@ -27,6 +27,8 @@
  * \brief   Library files with common functions for Workstation
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare admin pages header
  *

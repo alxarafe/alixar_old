@@ -28,6 +28,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
+use DoliCore\Lib\ExtraFields;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

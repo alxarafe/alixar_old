@@ -38,7 +38,7 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
 // Load translation files required by the page
@@ -81,7 +81,7 @@ if (preg_match('/^(set|del)_([A-Z_]+)$/', $action, $regs)) {
 
 if ($action == 'removebackgroundlogin' && getDolGlobalString('MAIN_LOGIN_BACKGROUND')) {
     dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", getDolGlobalInt('MAIN_IHM_PARAMS_REV') + 1, 'chaine', 0, '', $conf->entity);
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     $logofile = $conf->mycompany->dir_output . '/logos/' . getDolGlobalString('MAIN_LOGIN_BACKGROUND');
     dol_delete_file($logofile);

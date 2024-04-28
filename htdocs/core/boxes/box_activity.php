@@ -71,8 +71,8 @@ class box_activity extends GenericBoxes
     {
         global $conf, $user, $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $totalnb = 0;
         $line = 0;

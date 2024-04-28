@@ -42,11 +42,7 @@ namespace DoliModules\SupplierProposal\Model;
 
 use DoliCore\Base\GenericDocument;
 use DoliModules\Billing\Trait\CommonIncoterm;
-use WorkboardResponse;
-
-require_once DOL_DOCUMENT_ROOT . '/margin/lib/margins.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonincoterm.class.php';
+use DoliCore\Model\WorkboardResponse;
 
 /**
  *  Class to manage price ask supplier
@@ -796,7 +792,7 @@ public $cond_reglement_doc;
     public function delete($user, $notrigger = 0)
     {
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 
@@ -1587,7 +1583,7 @@ public $cond_reglement_doc;
      */
     public function valid($user, $notrigger = 0)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         global $conf, $langs;
 

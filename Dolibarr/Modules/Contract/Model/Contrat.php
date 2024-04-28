@@ -39,10 +39,7 @@ namespace DoliModules\Contract\Model;
  */
 
 use DoliCore\Base\GenericDocument;
-use WorkboardResponse;
-
-require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/margin/lib/margins.lib.php';
+use DoliCore\Model\WorkboardResponse;
 
 /**
  *  Class to manage contracts
@@ -749,7 +746,7 @@ public $societe;
      */
     public function validate(User $user, $force_number = '', $notrigger = 0)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         global $conf;
 
         $now = dol_now();
@@ -1002,7 +999,7 @@ public $societe;
      */
     public function reopen($user, $notrigger = 0)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $now = dol_now();
 
@@ -1061,7 +1058,7 @@ public $societe;
     public function delete($user)
     {
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         $error = 0;
 

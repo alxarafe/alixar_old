@@ -23,6 +23,8 @@
  *      \brief      base functions for holiday
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  *  Return array head with list of tabs to view object information
  *
@@ -42,7 +44,7 @@ function holiday_prepare_head($object)
     $h++;
 
     // Attachments
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
     $upload_dir = $conf->holiday->multidir_output[$object->entity] . '/' . dol_sanitizeFileName($object->ref);
     $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));

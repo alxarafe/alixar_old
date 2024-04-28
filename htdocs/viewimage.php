@@ -108,7 +108,7 @@ function llxFooter()
 }
 
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 $action = GETPOST('action', 'aZ09');
 $original_file = GETPOST('file', 'alphanohtml');    // Do not use urldecode here ($_GET are already decoded by PHP).

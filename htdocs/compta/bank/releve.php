@@ -29,6 +29,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Accounting\Model\RemiseCheque;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
@@ -37,8 +39,8 @@ require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/cheque/class/remisecheque.class.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/paymentloan.class.php';
 //show files
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("banks", "categories", "companies", "bills", "trips", "donations", "loan", "salaries"));

@@ -23,6 +23,8 @@
  * \brief   Library files with common functions for Mrp
  */
 
+use DoliCore\Lib\ExtraFields;
+
 /**
  * Prepare admin pages header
  *

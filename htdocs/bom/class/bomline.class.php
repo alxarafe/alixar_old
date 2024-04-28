@@ -29,7 +29,7 @@
 
 use DoliCore\Base\GenericDocumentLine;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 if (isModEnabled('workstation')) {
     require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';

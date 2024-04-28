@@ -31,6 +31,8 @@
 // $object = Object fetched;
 // $sendto
 // $withmaindocfilemail
+use DoliCore\Lib\ExtraFields;
+
 if (!empty($sall) || !empty($search_all)) {
     $search_all = empty($sall) ? $search_all : $sall;
 

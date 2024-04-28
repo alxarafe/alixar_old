@@ -25,9 +25,11 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Accounting\Model\BonPrelevement;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/prelevement.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/ligneprelevement.class.php';
 

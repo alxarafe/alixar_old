@@ -66,7 +66,7 @@ class box_birthdays_members extends GenericBoxes
     {
         global $conf, $user, $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
         $memberstatic = new Adherent($this->db);
 
         $langs->load("boxes");

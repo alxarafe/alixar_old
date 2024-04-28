@@ -33,7 +33,7 @@ function printDropdownBookmarksList()
     global $conf, $user, $db, $langs, $sortfield, $sortorder;
 
     require_once DOL_DOCUMENT_ROOT . '/bookmarks/class/bookmark.class.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     $langs->load("bookmarks");
 

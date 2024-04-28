@@ -41,14 +41,13 @@
 
 namespace DoliModules\Adherent\Model;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
-use CommonPeople;
+use DoliCore\Base\CommonPeople;
 use DoliCore\Base\GenericDocument;
 use DoliCore\Form\Form;
 use DoliModules\Category\Model\Categorie;
-use WorkboardResponse;
+use DoliCore\Model\WorkboardResponse;
 
 /**
  *      Class to manage members of a foundation
@@ -1911,7 +1910,7 @@ class Adherent extends GenericDocument
             // Add payment onto invoice
             if (!$error && $option == 'bankviainvoice' && $accountid) {
                 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
                 $amounts = [];
                 $amounts[$invoice->id] = (float) price2num($amount);

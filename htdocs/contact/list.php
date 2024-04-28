@@ -38,6 +38,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormCompany;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Contact\Model\Contact;

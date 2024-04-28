@@ -27,6 +27,7 @@
  *  \brief      Home page for direct debit orders
  */
 
+use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Company\Model\Company;
 

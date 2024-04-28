@@ -23,6 +23,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\ExtraFields;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/webhook/class/target.class.php';
 require_once DOL_DOCUMENT_ROOT . '/webhook/lib/webhook_target.lib.php';

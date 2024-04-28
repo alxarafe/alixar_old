@@ -27,7 +27,7 @@ if (!empty($extrafieldsobjectkey) && !empty($search_array_options) && is_array($
         if ($crit != '' && in_array($typ, array('date', 'datetime', 'timestamp'))) {
             if (is_numeric($crit)) {
                 if ($typ == 'date') {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
                     $crit = dol_get_first_hour($crit);
                 }
                 $sql .= " AND " . $extrafieldsobjectprefix . $tmpkey . " = '" . $db->idate($crit) . "'";

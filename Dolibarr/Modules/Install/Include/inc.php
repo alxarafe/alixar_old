@@ -44,9 +44,9 @@ defineIfNotDefined('DOL_DOCUMENT_ROOT', '..');
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/conf.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 $conf = new Conf();
 

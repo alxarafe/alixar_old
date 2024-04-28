@@ -30,7 +30,7 @@ use CommonHookActions;
  *    \brief      File Class ticket
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonhookactions.class.php';
 

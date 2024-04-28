@@ -230,7 +230,7 @@ if (!defined('NOLOGIN')) {
                 $dol_dst_first = empty($_POST["dst_first"]) ? (empty($_SESSION["dst_first"]) ? '' : $_SESSION["dst_first"]) : $_POST["dst_first"];
                 $dol_dst_second = empty($_POST["dst_second"]) ? (empty($_SESSION["dst_second"]) ? '' : $_SESSION["dst_second"]) : $_POST["dst_second"];
                 if ($dol_dst_first && $dol_dst_second) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/date.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
                     $datenow = dol_now();
                     $datefirst = dol_stringtotime($dol_dst_first);
                     $datesecond = dol_stringtotime($dol_dst_second);

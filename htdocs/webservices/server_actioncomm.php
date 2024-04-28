@@ -24,6 +24,8 @@
  *       \brief      File that is entry point to call Dolibarr WebServices
  */
 
+use DoliCore\Lib\ExtraFields;
+
 defineIfNotDefined('NOCSRFCHECK', '1'); // Do not check anti CSRF attack test
 defineIfNotDefined('NOTOKENRENEWAL', '1'); // Do not check anti POST attack test
 defineIfNotDefined('NOREQUIREMENU', '1'); // If there is no need to load and show top and left menu

@@ -30,6 +30,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
 use DoliModules\Product\Model\FormProduct;

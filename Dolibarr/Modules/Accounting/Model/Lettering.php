@@ -30,7 +30,7 @@ namespace DoliModules\Accounting\Model;
 
 include_once DOL_DOCUMENT_ROOT . "/accountancy/class/bookkeeping.class.php";
 include_once DOL_DOCUMENT_ROOT . "/societe/class/societe.class.php";
-include_once DOL_DOCUMENT_ROOT . "/core/lib/date.lib.php";
+include_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 /**
  * Class Lettering

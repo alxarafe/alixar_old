@@ -25,6 +25,7 @@
  */
 
 use DoliCore\Form\Form;
+use DoliCore\Lib\ExtraFields;
 use DoliModules\Resource\Model\Dolresource;
 use DoliModules\Resource\Model\FormResource;
 

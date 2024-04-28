@@ -25,12 +25,14 @@
  *  \brief      File of class to build PDF documents for stocks movements
  */
 
+use DoliCore\Lib\ExtraFields;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/stock/modules_movement.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
 
 

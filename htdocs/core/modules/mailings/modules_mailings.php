@@ -25,7 +25,7 @@
  *      \brief      File with parent class of emailing target selectors modules
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 
 /**

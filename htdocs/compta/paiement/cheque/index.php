@@ -26,6 +26,7 @@
  *      \brief      Home page for cheque receipts
  */
 
+use DoliModules\Accounting\Model\RemiseCheque;
 use DoliModules\Bank\Model\Account;
 
 // Load Dolibarr environment
