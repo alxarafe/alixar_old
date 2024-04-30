@@ -38,6 +38,9 @@ use DoliCore\Form\FormActions;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
 use DoliCore\Lib\ExtraFields;
+use DoliModules\Agenda\Model\ActionComm;
+use DoliModules\Agenda\Model\ActionCommReminder;
+use DoliModules\Agenda\Model\CActionComm;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Contact\Model\Contact;
 use DoliModules\User\Model\User;
@@ -46,10 +49,6 @@ use DoliModules\User\Model\User;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncommreminder.class.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
-
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "other", "commercial", "bills", "orders", "agenda", "mails"));

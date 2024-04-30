@@ -17,10 +17,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Agenda\Api;
+
 use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
-
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 
 
 /**

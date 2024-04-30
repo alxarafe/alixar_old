@@ -28,6 +28,7 @@
  */
 
 use DoliCore\Base\GenericBoxes;
+use DoliModules\Agenda\Model\ActionComm;
 use DoliModules\Company\Model\Company;
 
 /**

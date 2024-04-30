@@ -5803,7 +5803,6 @@ if ($module == 'initmodule') {
 
         if ($tab == 'triggers') {
             print '<!-- tab=triggers -->' . "\n";
-            require_once DOL_DOCUMENT_ROOT . '/core/class/interfaces.class.php';
 
             $interfaces = new Interfaces($db);
             $triggers = $interfaces->getTriggersList(array('/' . strtolower($module) . '/core/triggers'));

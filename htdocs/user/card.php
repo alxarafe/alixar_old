@@ -54,7 +54,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 if (isModEnabled('ldap')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/ldap.class.php';
 }
@@ -2980,7 +2980,7 @@ if ($action == 'create' || $action == 'adduserldap') {
 }
 
 // Add button to autosuggest a key
-include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 print dolJSToSetRandomPassword('password', 'generate_password', 0);
 if (isModEnabled('api')) {
     print dolJSToSetRandomPassword('api_key', 'generate_api_key', 1);

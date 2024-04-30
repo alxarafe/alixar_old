@@ -1187,7 +1187,7 @@ class Adherent extends GenericDocument
 
         // If new password not provided, we generate one
         if (!$password) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
             $password = getRandomPassword(false);
         }
 
@@ -3196,7 +3196,6 @@ class Adherent extends GenericDocument
                                     $actionmsg = dol_concatdesc($actionmsg, $message);
                                 }
 
-                                require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 
                                 // Insert record of emails sent
                                 $actioncomm = new ActionComm($this->db);

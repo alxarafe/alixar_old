@@ -33,8 +33,12 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliModules\Agenda\Model\ActionComm;
+use DoliModules\Company\Model\Company;
+use DoliModules\User\Model\User;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
 

@@ -26,7 +26,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 
 $action = GETPOST('action', 'aZ09');
 

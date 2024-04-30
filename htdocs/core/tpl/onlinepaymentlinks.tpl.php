@@ -145,7 +145,7 @@ if (isModEnabled('don')) {
 $constname = 'PAYMENT_SECURITY_TOKEN';
 
 // Add button to autosuggest a key
-include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 print dolJSToSetRandomPassword($constname);
 
 print info_admin($langs->trans("YouCanAddTagOnUrl"));

@@ -41,9 +41,15 @@
  * or see https://www.gnu.org/
  */
 
+use DoliCore\Form\FormActions;
 use DoliCore\Tools\Debug;
+use DoliModules\Agenda\Model\ActionComm;
+use DoliModules\Agenda\Model\CActionComm;
 use DoliModules\Company\Model\Company;
+use DoliModules\Contact\Model\Contact;
 use DoliModules\Product\Model\Product;
+use DoliModules\Supplier\Model\ProductFournisseur;
+use DoliModules\User\Model\User;
 
 /**
  * Disable unused stream wrappers
@@ -7604,15 +7610,15 @@ function get_default_tva(Company $thirdparty_seller, Company $thirdparty_buyer, 
 /**
  *    Function that returns whether VAT must be recoverable collected VAT (e.g.: VAT NPR in France)
  *
- * @param Societe $thirdparty_seller Thirdparty seller
- * @param Societe $thirdparty_buyer  Thirdparty buyer
+ * @param Company $thirdparty_seller Thirdparty seller
+ * @param Company $thirdparty_buyer  Thirdparty buyer
  * @param int     $idprod            Id product
  * @param int     $idprodfournprice  Id supplier price for product
  *
  * @return float                            0 or 1
  * @see get_default_tva(), get_default_localtax()
  */
-function get_default_npr(Societe $thirdparty_seller, Societe $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
+function get_default_npr(Company $thirdparty_seller, Company $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
 {
     global $db;
 
@@ -13989,7 +13995,7 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
 
     global $param, $massactionbutton;
 
-    require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 
     // Check parameters
     if (!is_object($filterobj) && !is_object($objcon)) {
@@ -14290,10 +14296,8 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
     if (isModEnabled('agenda') || (isModEnabled('mailing') && !empty($objcon->email))) {
         $delay_warning = $conf->global->MAIN_DELAY_ACTIONS_TODO * 24 * 60 * 60;
 
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
         include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 
         $formactions = new FormActions($db);
 
@@ -14381,7 +14385,7 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
             $tmp .= ($donetodo != 'done' && $donetodo != 'todo' ? ' / ' : '');
             $tmp .= ($donetodo != 'todo' ? $langs->trans("ActionsDoneShort") : '');
             //$out.=$langs->trans("ActionsToDoShort").' / '.$langs->trans("ActionsDoneShort");
-            if ($filterobj instanceof Societe) {
+            if ($filterobj instanceof Company) {
                 $tmp .= '</a>';
             }
             if ($filterobj instanceof User) {
@@ -14390,7 +14394,6 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
             $out .= getTitleFieldOfList($tmp);
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
         $caction = new CActionComm($db);
         $arraylist = $caction->liste_array(1, 'code', '', (!getDolGlobalString('AGENDA_USE_EVENT_TYPE') ? 1 : 0), '', 1);
 

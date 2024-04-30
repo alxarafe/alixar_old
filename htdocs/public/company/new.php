@@ -429,7 +429,7 @@ print '</tr>' . "\n";
 
 // Display Captcha code if is enabled
 if (getDolGlobalString('MAIN_SECURITY_ENABLECAPTCHA')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
     print '<tr><td class="titlefield"><label for="email"><span class="fieldrequired">' . $langs->trans("SecurityCode") . '</span></label></td><td>';
     print '<span class="span-icon-security inline-block">';
     print '<input id="securitycode" placeholder="' . $langs->trans("SecurityCode") . '" class="flat input-icon-security width150" type="text" maxlength="5" name="code" tabindex="3" />';

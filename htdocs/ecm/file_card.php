@@ -174,7 +174,7 @@ if ($action == 'update' && $permissiontoadd) {
 
     if (!$error) {
         if ($shareenabled) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
             $object->share = getRandomPassword(true);
         } else {
             $object->share = '';

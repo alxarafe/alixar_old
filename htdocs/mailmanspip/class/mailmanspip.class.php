@@ -182,7 +182,7 @@ class MailmanSpip
                 $mydb = $this->connectSpip();
 
                 if ($mydb) {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
                     $mdpass = dol_hash($object->pass);
                     $htpass = crypt($object->pass, makesalt());
 

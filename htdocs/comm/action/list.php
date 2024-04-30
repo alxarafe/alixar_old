@@ -39,7 +39,7 @@ use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
 
@@ -924,7 +924,6 @@ $now = dol_now();
 $delay_warning = $conf->global->MAIN_DELAY_ACTIONS_TODO * 24 * 60 * 60;
 $today_start_time = dol_mktime(0, 0, 0, date('m', $now), date('d', $now), date('Y', $now));
 
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
 $caction = new CActionComm($db);
 $arraylist = $caction->liste_array(1, 'code', '', (!getDolGlobalString('AGENDA_USE_EVENT_TYPE') ? 1 : 0), '', 1);
 $contactListCache = array();

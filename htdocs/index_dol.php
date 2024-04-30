@@ -32,6 +32,7 @@ use DoliCore\Form\FormOther;
 use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Accounting\Model\RemiseCheque;
 use DoliModules\Adherent\Model\Adherent;
+use DoliModules\Agenda\Model\ActionComm;
 use DoliModules\Bank\Model\Account;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\Facture;
@@ -177,12 +178,8 @@ if (!getDolGlobalString('MAIN_DISABLE_GLOBAL_WORKBOARD') && getDolGlobalInt('MAI
     //Array that contains all WorkboardResponse classes to process them
     $dashboardlines = array();
 
-    // Do not include sections without management permission
-    require_once DOL_DOCUMENT_ROOT . '/core/class/workboardresponse.class.php';
-
     // Number of actions to do (late)
     if (isModEnabled('agenda') && !getDolGlobalString('MAIN_DISABLE_BLOCK_AGENDA') && $user->hasRight('agenda', 'myactions', 'read')) {
-        include_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
         $board = new ActionComm($db);
         $dashboardlines[$board->element] = $board->load_board($user);
     }

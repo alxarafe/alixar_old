@@ -30,8 +30,7 @@ use DoliCore\Form\Form;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 
 // Load translation files required by the page
 $langs->load("commercial");

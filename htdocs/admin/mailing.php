@@ -27,7 +27,7 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "mails"));
@@ -123,7 +123,7 @@ print load_fiche_titre($langs->trans("MailingSetup"), $linkback, 'title_setup');
 $constname = 'MAILING_EMAIL_UNSUBSCRIBE_KEY';
 
 // Add button to autosuggest a key
-include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 print dolJSToSetRandomPassword($constname);
 
 print '<br>';

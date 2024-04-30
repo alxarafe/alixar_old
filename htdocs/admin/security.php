@@ -31,7 +31,7 @@ use DoliCore\Form\Form;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 
 $action = GETPOST('action', 'aZ09');
 

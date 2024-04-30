@@ -20,6 +20,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Agenda\Model;
+
 /**
  *       \file       htdocs/comm/action/class/ical.class.php
  *       \ingroup    agenda
@@ -185,7 +187,7 @@ class ICal
             $text = trim($text); // trim one line
             if (!empty($text)) {
                 // get Key and Value VCALENDAR:Begin -> Key = VCALENDAR, Value = begin
-                list($key, $value) = $this->retun_key_value($text);
+                [$key, $value] = $this->retun_key_value($text);
                 //var_dump($text.' -> '.$key.' - '.$value);
 
                 switch ($text) { // search special string
@@ -295,9 +297,9 @@ class ICal
 
         if (stristr($key, "DTSTART") || stristr($key, "DTEND") || stristr($key, "DTSTART;VALUE=DATE") || stristr($key, "DTEND;VALUE=DATE")) {
             if (stristr($key, "DTSTART;VALUE=DATE") || stristr($key, "DTEND;VALUE=DATE")) {
-                list($key, $value) = array($key, $value);
+                [$key, $value] = array($key, $value);
             } else {
-                list($key, $value) = $this->ical_dt_date($key, $value);
+                [$key, $value] = $this->ical_dt_date($key, $value);
             }
         }
 

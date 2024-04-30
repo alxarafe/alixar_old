@@ -1132,7 +1132,7 @@ abstract class GenericDocument
         if (empty($ecmfile->id)) {
             // Add entry into index
             if ($initsharekey) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 
                 // TODO We can't, we don't have full path of file, only last_main_doc and ->element, so we must first rebuild full path $destfull
                 /*
@@ -1157,7 +1157,7 @@ abstract class GenericDocument
         } elseif (empty($ecmfile->share)) {
             // Add entry into index
             if ($initsharekey) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
                 $ecmfile->share = getRandomPassword(true);
                 $ecmfile->update($user);
             } else {
@@ -5852,7 +5852,7 @@ abstract class GenericDocument
 
             if ($setsharekey) {
                 if (empty($ecmfile->share)) {   // Because object not found or share not set yet
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
                     $ecmfile->share = getRandomPassword(true);
                 }
             }

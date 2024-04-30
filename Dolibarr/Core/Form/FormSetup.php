@@ -1251,7 +1251,7 @@ class FormSetupItem
         }
 
         // Add button to autosuggest a key
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
         $out .= dolJSToSetRandomPassword($this->confKey, 'generate_token' . $this->confKey);
 
         return $out;

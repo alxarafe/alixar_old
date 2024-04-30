@@ -38,7 +38,7 @@ defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not requ
 defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
 
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 require_once DOL_DOCUMENT_ROOT . '/dav/dav.class.php';
 require_once DOL_DOCUMENT_ROOT . '/dav/dav.lib.php';
 

@@ -42,7 +42,7 @@ use DoliModules\SupplierProposal\Model\SupplierProposal;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 require_once DOL_DOCUMENT_ROOT . '/core/lib/propal.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/order.lib.php';
 

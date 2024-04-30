@@ -85,7 +85,7 @@ function check_authentication($authentication, &$error, &$errorcode, &$errorlabe
             // Set authmode
             $authmode = explode(',', $dolibarr_main_authentication);
 
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
             $login = checkLoginPassEntity($authentication['login'], $authentication['password'], $authentication['entity'], $authmode, 'ws');
             if ($login === '--bad-login-validity--') {
                 $login = '';

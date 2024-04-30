@@ -19,6 +19,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\Agenda\Model;
+
 /**
  * \file        class/actioncommreminder.class.php
  * \ingroup     agenda

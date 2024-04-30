@@ -26,6 +26,8 @@
  *  \brief          Library of ai script
  */
 
+use DoliModules\Ai\Model\Ai;
+
 defineIfNotDefined('NOTOKENRENEWAL', '1'); // Disables token renewal
 defineIfNotDefined('NOREQUIREMENU', '1');
 defineIfNotDefined('NOREQUIREHTML', '1');

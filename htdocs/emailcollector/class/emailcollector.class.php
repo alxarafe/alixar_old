@@ -1071,7 +1071,7 @@ class EmailCollector extends GenericDocument
 
         //$conf->global->SYSLOG_FILE = 'DOL_DATA_ROOT/dolibarr_mydedicatedlofile.log';
 
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
         if (getDolGlobalString('MAIN_IMAP_USE_PHPIMAP')) {
             //require_once DOL_DOCUMENT_ROOT . '/includes/webklex/php-imap/vendor/autoload.php';
         }

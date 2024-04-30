@@ -39,6 +39,8 @@
 
 use DoliCore\Form\Form;
 
+include_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/BookMarks.php';
+
 if (!function_exists('dol_loginfunction')) {
     /**
      * Show Dolibarr default login page.
@@ -1709,7 +1711,6 @@ if (!function_exists('top_menu_bookmark')) {
         }
 
         if (!defined('JS_JQUERY_DISABLE_DROPDOWN') && !empty($conf->use_javascript_ajax)) {     // This may be set by some pages that use different jquery version to avoid errors
-            include_once DOL_DOCUMENT_ROOT . '/bookmarks/bookmarks.lib.php';
             $langs->load("bookmarks");
 
             if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {

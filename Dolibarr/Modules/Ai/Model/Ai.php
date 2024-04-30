@@ -16,9 +16,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  * or see https://www.gnu.org/
  */
+
+namespace DoliModules\Ai\Model;
+
+use DoliDB;
+
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
-
 
 /**
  * Class for AI
@@ -43,7 +47,7 @@ class Ai
     /**
      * Constructor
      *
-     * @param   DoliDB  $db      Database handler
+     * @param DoliDB $db Database handler
      *
      */
     public function __construct($db)
@@ -56,16 +60,18 @@ class Ai
     /**
      * Generate response of instructions
      *
-     * @param   string      $instructions   Instruction to generate content
-     * @param   string      $model          Model name ('gpt-3.5-turbo', 'gpt-4-turbo', 'dall-e-3', ...)
-     * @param   string      $function       Code of the feature we want to use ('textgeneration', 'transcription', 'audiotext', 'imagegeneration', 'translation')
-     * @param   string      $format         Format for output ('', 'html', ...)
+     * @param string $instructions Instruction to generate content
+     * @param string $model        Model name ('gpt-3.5-turbo', 'gpt-4-turbo', 'dall-e-3', ...)
+     * @param string $function     Code of the feature we want to use ('textgeneration', 'transcription', 'audiotext',
+     *                             'imagegeneration', 'translation')
+     * @param string $format       Format for output ('', 'html', ...)
+     *
      * @return  mixed       $response
      */
     public function generateContent($instructions, $model = 'auto', $function = 'textgeneration', $format = '')
     {
         if (empty($this->apiKey)) {
-            return array('error' => true, 'message' => 'API key is no defined');
+            return ['error' => true, 'message' => 'API key is no defined'];
         }
 
         if (empty($this->apiEndpoint)) {
@@ -124,14 +130,14 @@ class Ai
 
             $payload = json_encode([
                 'messages' => [
-                    ['role' => 'user', 'content' => $fullInstructions]
+                    ['role' => 'user', 'content' => $fullInstructions],
                 ],
-                'model' => $model
+                'model' => $model,
             ]);
 
             $headers = ([
                 'Authorization: Bearer ' . $this->apiKey,
-                'Content-Type: application/json'
+                'Content-Type: application/json',
             ]);
             $response = getURLContent($this->apiEndpoint, 'POST', $payload, 1, $headers);
 
@@ -164,7 +170,7 @@ class Ai
                 }
             }
 
-            return array('error' => true, 'message' => $errormessage, 'code' => (empty($response['http_code']) ? 0 : $response['http_code']), 'curl_error_no' => (empty($response['curl_error_no']) ? $response['curl_error_no'] : ''));
+            return ['error' => true, 'message' => $errormessage, 'code' => (empty($response['http_code']) ? 0 : $response['http_code']), 'curl_error_no' => (empty($response['curl_error_no']) ? $response['curl_error_no'] : '')];
         }
     }
 }

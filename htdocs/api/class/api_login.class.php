@@ -124,7 +124,7 @@ class Login
             $entity = 1;
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
         $login = checkLoginPassEntity($login, $password, $entity, $authmode, 'api');        // Check credentials.
         if ($login === '--bad-login-validity--') {
             $login = '';

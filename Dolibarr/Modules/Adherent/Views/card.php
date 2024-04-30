@@ -116,7 +116,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
         // Password
         if (!getDolGlobalString('ADHERENT_LOGIN_NOT_REQUIRED')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
             $generated_password = getRandomPassword(false);
             print '<tr><td><span class="fieldrequired">' . $langs->trans("Password") . '</span></td><td>';
             print '<input type="text" class="minwidth300" maxlength="50" name="password" value="' . dol_escape_htmltag($generated_password) . '">';

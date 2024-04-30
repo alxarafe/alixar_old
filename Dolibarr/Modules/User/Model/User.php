@@ -2143,7 +2143,7 @@ private $cache_childids;
     public function setPassword($user, $password = '', $changelater = 0, $notrigger = 0, $nosyncmember = 0, $passwordalreadycrypted = 0, $flagdelsessionsbefore = 1)
     {
         global $conf, $langs;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 
         $error = 0;
 

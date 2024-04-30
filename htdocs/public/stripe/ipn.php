@@ -622,7 +622,7 @@ if ($event->type == 'payout.created') {
     if ($objpaymentmodetype == 'sepa_debit') {
         $db->begin();
 
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
         $actioncomm = new ActionComm($db);
 
         if ($objinvoiceid > 0) {

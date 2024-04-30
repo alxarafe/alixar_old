@@ -1,5 +1,7 @@
 <?php
 
+use DoliModules\Adherent\Model\Adherent;
+
 $memberstatic = new Adherent($db);
 
 llxHeader('', $langs->trans("MembersStatisticsByProperties"), '', '', 0, 0, ['https://www.google.com/jsapi']);

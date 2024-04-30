@@ -62,7 +62,7 @@ if ($action == 'setTICKET_ENABLE_PUBLIC_INTERFACE') {
         $errors[] = $db->lasterror();
     }
 } elseif ($action == 'setvar') {
-    include_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     if (GETPOSTISSET('TICKET_ENABLE_PUBLIC_INTERFACE')) {   // only for no js case
         $param_enable_public_interface = GETPOST('TICKET_ENABLE_PUBLIC_INTERFACE', 'alpha');

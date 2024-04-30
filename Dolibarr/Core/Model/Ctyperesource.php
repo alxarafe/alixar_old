@@ -468,26 +468,3 @@ class Ctyperesource extends CommonDict
         return 1;
     }
 }
-
-/**
- * Class CtyperesourceLine
- */
-class CtyperesourceLine
-{
-    /**
-     * @var int ID
-     */
-    public $id;
-
-    /**
-     * @var mixed Sample line property 1
-     */
-    public $code;
-
-    /**
-     * @var string Type resource line label
-     */
-    public $label;
-
-    public $active;
-}

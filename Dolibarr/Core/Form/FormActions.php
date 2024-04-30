@@ -21,8 +21,8 @@
 
 namespace DoliCore\Form;
 
-use ActionComm;
-use CActionComm;
+use DoliModules\Agenda\Model\ActionComm;
+use DoliModules\Agenda\Model\CActionComm;
 use DoliModules\User\Model\User;
 
 /**
@@ -186,8 +186,6 @@ class FormActions
     public function showactions($object, $typeelement, $socid = 0, $forceshowtitle = 0, $morecss = 'listactions', $max = 0, $moreparambacktopage = '', $morehtmlcenter = '', $assignedtouser = 0)
     {
         global $langs, $conf, $user;
-
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 
         $sortfield = 'a.datep,a.id';
         $sortorder = 'DESC,DESC';
@@ -378,7 +376,6 @@ class FormActions
             $form = new Form($this->db);
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
         $caction = new CActionComm($this->db);
 
         // Suggest a list with manual events or all auto events

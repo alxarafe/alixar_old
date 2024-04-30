@@ -223,7 +223,7 @@ abstract class ActionsAdherentCardCommon
         if ($action == 'create_user') {
             // Full firstname and lastname separated with a dot : firstname.lastname
             include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
             $login = dol_buildlogin($this->object->lastname, $this->object->firstname);
 
             $generated_password = getRandomPassword(false);

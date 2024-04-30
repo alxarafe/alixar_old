@@ -43,7 +43,7 @@ use DoliModules\Company\Model\Company;
 use DoliModules\Contact\Model\Contact;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
@@ -1291,7 +1291,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
             $generated_password = '';
             if (empty($ldap_sid)) { // TODO ldap_sid ?
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
                 $generated_password = getRandomPassword(false);
             }
             $password = $generated_password;

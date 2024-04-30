@@ -74,7 +74,7 @@ if (!defined('NOLOGIN')) {
     $test = true;
     if (!isset($_SESSION["dol_login"])) {
         // It is not already authenticated and it requests the login / password
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 
         $dol_dst_observed = GETPOSTINT("dst_observed", 3);
         $dol_dst_first = GETPOSTINT("dst_first", 3);

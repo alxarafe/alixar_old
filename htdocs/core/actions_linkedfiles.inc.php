@@ -311,7 +311,7 @@ if ($action == 'confirm_deletefile' && $confirm == 'yes' && !empty($permissionto
         if ($result > 0) {
             if ($shareenabled) {
                 if (empty($ecmfile->share)) {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
                     $ecmfile->share = getRandomPassword(true);
                 }
             } else {

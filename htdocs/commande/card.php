@@ -55,7 +55,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/modules/commande/modules_commande.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/order.lib.php';
 
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
 
 if (isModEnabled("propal")) {
 }

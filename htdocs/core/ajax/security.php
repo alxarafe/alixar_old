@@ -53,7 +53,7 @@ top_httphead();
 // Return a new generated password
 if ($action) {
     if ($action == 'getrandompassword') {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
         $generic = GETPOST('generic') ? true : false;
         echo getRandomPassword($generic);
     }

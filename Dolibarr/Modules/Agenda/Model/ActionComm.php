@@ -1728,7 +1728,7 @@ public $recurdateend;
 
         require_once DOL_DOCUMENT_ROOT . "/core/lib/xcal.lib.php";
         require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-        require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
+        require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
         dol_syslog(get_class($this) . "::build_exportfile Build export file format=" . $format . ", type=" . $type . ", cachedelay=" . $cachedelay . ", filename=" . $filename . ", filters size=" . count($filters), LOG_DEBUG);
 

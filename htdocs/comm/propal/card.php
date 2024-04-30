@@ -52,7 +52,7 @@ use DoliModules\Proposal\Model\Propal;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/propale/modules_propale.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';

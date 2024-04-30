@@ -51,7 +51,7 @@ use DoliCore\Tools\Debug;
 use DoliCore\Base\Config;
 use DoliCore\Base\Constants;
 
-require_once BASE_PATH . '/main.inc.functions.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/MainFunctions.php';
 
 $conf = Config::getConf();
 // If $conf is not empty, we load the "superglobal" variables.
@@ -942,7 +942,7 @@ if (!defined('NOREQUIREMENU')) {
         if (!class_exists('MenuManager')) { // If failed to include, we try with standard eldy_menu.php
             dol_syslog("You define a menu manager '" . $file_menu . "' that can not be loaded.", LOG_WARNING);
             $file_menu = 'eldy_menu.php';
-            include_once DOL_DOCUMENT_ROOT . "/core/menus/standard/" . $file_menu;
+            include_once DOL_DOCUMENT_ROOT . "/../Dolibarr/Core/Menu/standard/" . $file_menu;
         }
     }
     $menumanager = new MenuManager($db, empty($user->socid) ? 0 : 1);

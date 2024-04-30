@@ -171,7 +171,7 @@ if ($action == 'updateMask') {
         $error++;
     }
 } elseif ($action == 'setvar') {
-    include_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
+    include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
     $notification_email = GETPOST('TICKET_NOTIFICATION_EMAIL_FROM', 'alpha');
     $notification_email_description = "Sender of ticket replies sent from Dolibarr";

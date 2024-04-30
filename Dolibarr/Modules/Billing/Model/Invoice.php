@@ -5680,7 +5680,7 @@ class Invoice extends CommonInvoice
                                 $nbMailSend++;
 
                                 // Add a line into event table
-                                require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 
                                 // Insert record of emails sent
                                 $actioncomm = new ActionComm($this->db);
@@ -5720,7 +5720,7 @@ class Invoice extends CommonInvoice
                                 $error++;
 
                                 // Add a line into event table
-                                require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 
                                 // Insert record of emails sent
                                 $actioncomm = new ActionComm($this->db);

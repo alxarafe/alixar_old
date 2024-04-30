@@ -30,16 +30,18 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
+use DoliModules\Company\Model\Company;
+use DoliModules\Company\Model\SocieteAccount;
+use DoliModules\Contact\Model\Contact;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 
-
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "website"));
-
 
 // Get parameters
 $id = GETPOSTINT('id') ? GETPOSTINT('id') : GETPOSTINT('socid');

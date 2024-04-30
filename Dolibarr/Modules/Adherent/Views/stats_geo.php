@@ -1,5 +1,7 @@
 <?php
 
+use DoliModules\Adherent\Model\Adherent;
+
 $memberstatic = new Adherent($db);
 
 $arrayjs = ['https://www.google.com/jsapi'];

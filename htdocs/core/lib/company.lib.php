@@ -40,6 +40,8 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormActions;
 use DoliCore\Form\FormCompany;
 use DoliCore\Lib\ExtraFields;
+use DoliModules\Agenda\Model\ActionComm;
+use DoliModules\Agenda\Model\CActionComm;
 use DoliModules\Company\Model\Company;
 use DoliModules\Company\Model\SocieteAccount;
 use DoliModules\Contact\Model\Contact;
@@ -1735,7 +1737,7 @@ function show_actions_done($conf, $langs, $db, $filterobj, $objcon = null, $nopr
         $tms_start = '';
         $tms_end = '';
     }
-    require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 
     // Check parameters
     if (!is_object($filterobj) && !is_object($objcon)) {
@@ -2074,7 +2076,7 @@ function show_actions_done($conf, $langs, $db, $filterobj, $objcon = null, $nopr
     if (isModEnabled('agenda') || (isModEnabled('mailing') && !empty($objcon->email))) {
         $delay_warning = $conf->global->MAIN_DELAY_ACTIONS_TODO * 24 * 60 * 60;
 
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
         include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 
         $formactions = new FormActions($db);
@@ -2180,7 +2182,6 @@ function show_actions_done($conf, $langs, $db, $filterobj, $objcon = null, $nopr
         }
         $out .= '</tr>';
 
-        require_once DOL_DOCUMENT_ROOT . '/comm/action/class/cactioncomm.class.php';
         $caction = new CActionComm($db);
         $arraylist = $caction->liste_array(1, 'code', '', (!getDolGlobalString('AGENDA_USE_EVENT_TYPE') ? 1 : 0), '', 1);
 

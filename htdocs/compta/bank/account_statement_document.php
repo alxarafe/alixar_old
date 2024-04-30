@@ -28,7 +28,7 @@
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/bank.lib.php";
-require_once DOL_DOCUMENT_ROOT . "/core/lib/files.lib.php";
+require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/images.lib.php";
 
 global $conf, $db, $langs;

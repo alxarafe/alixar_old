@@ -455,7 +455,7 @@ class Documents extends DolibarrApi
 
             $upload_dir = $conf->product->multidir_output[$object->entity] . '/' . get_exdir(0, 0, 0, 1, $object, 'product');
         } elseif ($modulepart == 'agenda' || $modulepart == 'action' || $modulepart == 'event') {
-            require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
 
             if (!DolibarrApiAccess::$user->hasRight('agenda', 'myactions', 'read') && !DolibarrApiAccess::$user->hasRight('agenda', 'allactions', 'read')) {
                 throw new RestException(403);
@@ -700,7 +700,7 @@ class Documents extends DolibarrApi
                 $object = new Propal($this->db);
             } elseif ($modulepart == 'agenda' || $modulepart == 'action' || $modulepart == 'event') {
                 $modulepart = 'agenda';
-                require_once DOL_DOCUMENT_ROOT . '/comm/action/class/actioncomm.class.php';
+
                 $object = new ActionComm($this->db);
             } elseif ($modulepart == 'contact' || $modulepart == 'socpeople') {
                 $modulepart = 'contact';

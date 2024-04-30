@@ -25,6 +25,11 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormMail;
+use DoliModules\Category\Model\Categorie;
+use DoliModules\Product\Model\Product;
+
 require BASE_PATH . '/main.inc.php';
 
 global $langs, $user;
@@ -237,7 +242,7 @@ if ($action == 'edit') {
                 }
 
                 // Add button to autosuggest a key
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/security2.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
                 print dolJSToSetRandomPassword($constname, 'generate_token' . $constname);
             } elseif ($val['type'] == 'product') {
                 if (isModEnabled("product") || isModEnabled("service")) {
