@@ -37,6 +37,8 @@
  *      \brief      File to offer a way to make a payment for a particular Dolibarr object
  */
 
+use DoliModules\Stripe\Model\Stripe;
+
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
 defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
 defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip
@@ -2240,7 +2242,6 @@ if (preg_match('/^dopayment/', $action)) {          // If we chose/clicked on th
         print '<input type="hidden" name="lang" value="' . $getpostlang . '">';
 
         if (getDolGlobalString('STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION') || getDolGlobalString('STRIPE_USE_NEW_CHECKOUT')) { // Use a SCA ready method
-            require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 
             $service = 'StripeLive';
             $servicestatus = 1;

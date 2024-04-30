@@ -8,6 +8,7 @@
  * Copyright (C) 2015-2016  Marcos García        <marcosgdf@gmail.com>
  * Copyright (C) 2015       Alexandre Spangaro   <aspangaro@open-dsi.fr>
  * Copyright (C) 2021       Gauthier VERDOL      <gauthier.verdol@atm-consulting.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,17 +30,19 @@
  *      \brief      Tab for HR and bank
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliModules\ExpenseReport\Model\ExpenseReport;
+use DoliModules\Holiday\Model\Holiday;
+use DoliModules\User\Model\User;
+use DoliModules\User\Model\UserBankAccount;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/user/class/userbankaccount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-if (isModEnabled('holiday')) {
-}
-if (isModEnabled('expensereport')) {
-}
 if (isModEnabled('salaries')) {
     require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
     require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';

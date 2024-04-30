@@ -5042,7 +5042,6 @@ abstract class GenericDocument
 
         // Line extrafield
         if (!is_object($extrafields)) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
             $extrafields = new ExtraFields($this->db);
         }
         $extrafields->fetch_name_optionals_label($this->table_element_line);
@@ -5104,7 +5103,6 @@ abstract class GenericDocument
 
         // Line extrafield
         if (!is_object($extrafields)) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
             $extrafields = new ExtraFields($this->db);
         }
         $extrafields->fetch_name_optionals_label($this->table_element_line);
@@ -6417,7 +6415,6 @@ abstract class GenericDocument
         if (!empty($this->array_options)) {
             // Check parameters
             $langs->load('admin');
-            require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
             $extrafields = new ExtraFields($this->db);
             $target_extrafields = $extrafields->fetch_name_optionals_label($this->table_element);
 
@@ -6833,7 +6830,6 @@ abstract class GenericDocument
         if (!empty($this->array_options) && isset($this->array_options["options_" . $key])) {
             // Check parameters
             $langs->load('admin');
-            require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
             $extrafields = new ExtraFields($this->db);
             $extrafields->fetch_name_optionals_label($this->table_element);
 

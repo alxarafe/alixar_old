@@ -34,11 +34,11 @@ use DoliCore\Form\Form;
 use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Company\Model\Company;
+use DoliModules\Company\Model\CompanyBankAccount;
 use DoliModules\Supplier\Model\FactureFournisseur;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';

@@ -31,6 +31,7 @@
 
 use DoliModules\Accounting\Model\RemiseCheque;
 use DoliModules\Bank\Model\AccountLine;
+use DoliModules\Stripe\Model\Stripe;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
@@ -73,7 +74,6 @@ if ($socid && $socid != $object->thirdparty->id) {
 
 // Init Stripe objects
 if (isModEnabled('stripe')) {
-    require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 
     $service = 'StripeTest';
     $servicestatus = 0;

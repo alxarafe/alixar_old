@@ -1686,7 +1686,6 @@ public $source;
         global $conf, $hookmanager;
 
         require_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
         $error = 0;
 

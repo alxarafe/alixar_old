@@ -689,7 +689,6 @@ public $demand_reason;
         dol_syslog(get_class($this) . "::fetch_lines", LOG_DEBUG);
         $result = $this->db->query($sql);
         if ($result) {
-            require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
             $num = $this->db->num_rows($result);
 

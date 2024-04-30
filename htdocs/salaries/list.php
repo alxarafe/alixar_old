@@ -29,6 +29,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
+use DoliModules\Bank\Model\Account;
 use DoliModules\User\Model\User;
 
 // Load Dolibarr environment

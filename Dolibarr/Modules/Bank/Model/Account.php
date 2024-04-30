@@ -37,6 +37,7 @@ namespace DoliModules\Bank\Model;
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliModules\User\Model\User;
 use DoliDB;
 
 /**

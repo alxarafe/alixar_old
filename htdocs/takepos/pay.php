@@ -34,7 +34,6 @@ defineIfNotDefined('NOREQUIREHTML', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 
 
 // Load translation files required by the page

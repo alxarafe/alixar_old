@@ -36,7 +36,6 @@ use DoliModules\User\Model\User;
 require "../main.inc.php";
 require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 if (isModEnabled('category')) {
 }
 

@@ -458,7 +458,6 @@ class Reception extends GenericDocument
 
                 // Retrieve all extrafields for reception
                 // fetch optionals attributes and labels
-                require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
                 $extrafields = new ExtraFields($this->db);
                 $extrafields->fetch_name_optionals_label($this->table_element, true);
                 $this->fetch_optionals();

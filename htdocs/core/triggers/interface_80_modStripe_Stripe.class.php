@@ -19,6 +19,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliModules\Stripe\Model\Stripe;
 use DoliModules\User\Model\User;
 
 /**
@@ -79,7 +80,6 @@ class InterfaceStripe extends DolibarrTriggers
             return 0;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
         $stripe = new Stripe($db);
 
         $ok = 1;

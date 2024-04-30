@@ -26,6 +26,8 @@
  *                  Example of URL: https://localhost/public/onlinesign/newonlinesign.php?ref=PR...
  */
 
+use DoliModules\Company\Model\CompanyBankAccount;
+
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
 defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
 defineIfNotDefined('NOIPCHECK', '1'); // Do not check IP defined into conf $dolibarr_main_restrict_ip

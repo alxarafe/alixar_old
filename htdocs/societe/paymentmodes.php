@@ -30,17 +30,20 @@
  *      \brief      Tab of payment modes for the customer
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormFile;
+use DoliCore\Form\FormOther;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Company\Model\Company;
+use DoliModules\Company\Model\CompanyBankAccount;
+use DoliModules\Company\Model\CompanyPaymentMode;
+use DoliModules\Stripe\Model\Stripe;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
-
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "commercial", "banks", "bills", 'paypal', 'stripe', 'withdrawals'));

@@ -151,7 +151,6 @@ class doc_generic_project_odt extends ModelePDFProjects
             $array_key . '_statut' => $object->getLibStatut()
         );
 
-        require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
         $extrafields = new ExtraFields($this->db);
         $extrafields->fetch_name_optionals_label($object->table_element, true);
         $object->fetch_optionals();
@@ -192,7 +191,6 @@ class doc_generic_project_odt extends ModelePDFProjects
             'task_note_public' => $task->note_public
         );
 
-        require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
         $extrafields = new ExtraFields($this->db);
         $extrafields->fetch_name_optionals_label($task->table_element, true);
         $task->fetch_optionals();
@@ -237,7 +235,6 @@ class doc_generic_project_odt extends ModelePDFProjects
             $ret[$pc . 'phone_mobile'] = $ct->phone_mobile;
 
             // fetch external user extrafields
-            require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
             $extrafields = new ExtraFields($this->db);
             $extrafields->fetch_name_optionals_label($ct->table_element, true);
             $extrafields_num = $ct->fetch_optionals();

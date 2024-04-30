@@ -28,6 +28,7 @@
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliModules\Company\Model\CompanyBankAccount;
 
 /**
  *  Class to manage salary payments

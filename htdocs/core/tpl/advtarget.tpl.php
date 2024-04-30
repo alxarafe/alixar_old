@@ -277,7 +277,6 @@ if (!getDolGlobalString('MAIN_EXTRAFIELDS_DISABLED')) {
     $socstatic = new Company($db);
     $elementtype = $socstatic->table_element;
     // fetch optionals attributes and labels
-    require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
     $extrafields = new ExtraFields($db);
     $extrafields->fetch_name_optionals_label($elementtype);
     foreach ($extrafields->attributes[$elementtype]['label'] as $key => $val) {

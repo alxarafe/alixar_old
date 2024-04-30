@@ -41,7 +41,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 require_once DOL_DOCUMENT_ROOT . "/categories/class/categorie.class.php";
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 
 

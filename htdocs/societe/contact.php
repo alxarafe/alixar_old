@@ -33,6 +33,10 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormAdmin;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 
@@ -40,10 +44,6 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
-if (isModEnabled('member')) {
-}
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "commercial", "bills", "banks", "users"));

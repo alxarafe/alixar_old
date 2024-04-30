@@ -28,6 +28,8 @@
  *      \brief      Page to setup the bank module
  */
 
+use DoliModules\Company\Model\CompanyBankAccount;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';

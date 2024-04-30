@@ -42,6 +42,8 @@
  */
 
 use DoliCore\Tools\Debug;
+use DoliModules\Company\Model\Company;
+use DoliModules\Product\Model\Product;
 
 /**
  * Disable unused stream wrappers
@@ -7328,8 +7330,6 @@ function get_product_vat_for_country($idprod, $thirdpartytouse, $idprodfournpric
 {
     global $db, $mysoc;
 
-    require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
-
     $ret = 0;
     $found = 0;
 
@@ -7487,15 +7487,15 @@ function get_product_localtax_for_country($idprod, $local, $thirdpartytouse)
  *     European Community) and (buyer = company) then VAT by default=0. End of rule VATRULE 6: Otherwise the VAT
  *     proposed by default=0. End of rule.
  *
- * @param Societe $thirdparty_seller Object Seller company
- * @param Societe $thirdparty_buyer  Object Buyer company
+ * @param Company $thirdparty_seller Object Seller company
+ * @param Company $thirdparty_buyer  Object Buyer company
  * @param int     $idprod            Id product
  * @param int     $idprodfournprice  Id product_fournisseur_price (for supplier order/invoice)
  *
  * @return float|string                        Vat rate to use with format 5.0 or '5.0 (XXX)', -1 if we can't guess it
  * @see get_default_localtax(), get_default_npr()
  */
-function get_default_tva(Societe $thirdparty_seller, Societe $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
+function get_default_tva(Company $thirdparty_seller, Company $thirdparty_buyer, $idprod = 0, $idprodfournprice = 0)
 {
     global $conf;
 

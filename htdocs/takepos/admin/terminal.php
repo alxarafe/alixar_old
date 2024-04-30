@@ -26,11 +26,12 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Stripe\Model\Stripe;
+
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/takepos.lib.php";
-require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 
 $terminal = GETPOSTINT('terminal');
 // If socid provided by ajax company selector

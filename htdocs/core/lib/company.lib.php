@@ -36,7 +36,9 @@
  *  \ingroup    societe
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Form\FormActions;
+use DoliCore\Form\FormCompany;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\Company\Model\Company;
 use DoliModules\Company\Model\SocieteAccount;

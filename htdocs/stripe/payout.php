@@ -23,9 +23,9 @@
 // Load Dolibarr environment
 use DoliCore\Form\Form;
 use DoliModules\Bank\Model\Account;
+use DoliModules\Stripe\Model\Stripe;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('compta', 'salaries', 'bills', 'hrm', 'stripe'));

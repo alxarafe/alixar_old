@@ -41,7 +41,6 @@ if (is_numeric($entity)) {
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorbooth.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/facture/class/paymentterm.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';

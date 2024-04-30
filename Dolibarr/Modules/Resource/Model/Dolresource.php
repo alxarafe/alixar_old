@@ -623,7 +623,6 @@ class Dolresource extends GenericDocument
      */
     public function fetchAll(string $sortorder, string $sortfield, int $limit, int $offset, $filter = '')
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
         $extrafields = new ExtraFields($this->db);
 
         $sql = "SELECT ";

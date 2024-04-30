@@ -29,6 +29,7 @@
  *  \brief      Page of third party projects
  */
 
+use DoliCore\Form\Form;
 use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment

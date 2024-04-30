@@ -58,7 +58,6 @@ if (!$res) {
     die("Include of main fails");
 }
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once '../lib/mymodule.lib.php';
 
 // Load translation files required by the page

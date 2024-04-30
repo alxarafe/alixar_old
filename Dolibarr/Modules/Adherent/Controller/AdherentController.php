@@ -46,25 +46,22 @@ global $mysoc;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once BASE_PATH . '/core/class/extrafields.class.php';
 require_once BASE_PATH . '/core/class/ldap.class.php';
 require_once BASE_PATH . '/core/class/vcard.class.php';
-require_once BASE_PATH . '/core/lib/date.lib.php';
 require_once BASE_PATH . '/core/lib/company.lib.php';
-require_once BASE_PATH . '/core/lib/files.lib.php';
 require_once BASE_PATH . '/core/lib/functions2.lib.php';
 require_once BASE_PATH . '/core/lib/images.lib.php';
 require_once BASE_PATH . '/core/lib/ldap.lib.php';
 require_once BASE_PATH . '/core/lib/member.lib.php';
-require_once BASE_PATH . '/core/class/extrafields.class.php';
 require_once BASE_PATH . '/partnership/class/partnership.class.php';
 require_once BASE_PATH . '/partnership/lib/partnership.lib.php';
 
 use DoliCore\Base\DolibarrController;
+use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
-use DoliCore\Lib\ExtraFields;
+use DoliModules\User\Model\User;
 use MailmanSpip;
 
 class AdherentController extends DolibarrController

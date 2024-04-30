@@ -27,7 +27,8 @@
  *  \brief      File Class actionsstripeconnect
  */
 
-require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
+use DoliModules\Stripe\Model\Stripe;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonhookactions.class.php';
 
 

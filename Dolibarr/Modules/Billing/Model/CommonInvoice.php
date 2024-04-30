@@ -1243,7 +1243,6 @@ abstract class CommonInvoice extends GenericDocument
                     $this->db->begin();
 
                     // Create a prelevement_bon
-                    require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
                     $bon = new BonPrelevement($this->db);
                     if (!$error) {
                         if (empty($obj->fk_prelevement_bons)) {

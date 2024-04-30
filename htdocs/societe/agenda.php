@@ -7,6 +7,7 @@
  * Copyright (C) 2007      Patrick Raguin  		<patrick.raguin@gmail.com>
  * Copyright (C) 2010      Juanjo Menent        <jmenent@2byte.es>
  * Copyright (C) 2015      Marcos García        <marcosgdf@gmail.com>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,9 @@
  *  \ingroup    societe
  *  \brief      Page of third party events
  */
+
+use DoliCore\Form\Form;
+use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

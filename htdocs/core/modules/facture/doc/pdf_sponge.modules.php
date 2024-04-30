@@ -34,6 +34,8 @@
  *  \brief      File of class to generate customers invoices from sponge model
  */
 
+use DoliModules\Company\Model\CompanyBankAccount;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';

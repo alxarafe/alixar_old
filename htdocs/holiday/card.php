@@ -41,7 +41,6 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/holiday.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 // Get parameters
 $action = GETPOST('action', 'aZ09');

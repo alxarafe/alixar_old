@@ -29,6 +29,8 @@
  *  \brief      Add a tab on thirdparty view to list all products/services bought or sells by thirdparty
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormOther;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Company\Model\Company;

@@ -33,6 +33,9 @@
  *       \brief      Page to show customer card of a third party
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Form\FormCompany;
+use DoliCore\Form\FormFile;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Billing\Model\Commande;

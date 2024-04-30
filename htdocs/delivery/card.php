@@ -36,7 +36,6 @@ require_once DOL_DOCUMENT_ROOT . '/delivery/class/delivery.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/delivery/modules_delivery.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/sendings.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 if (isModEnabled("product") || isModEnabled("service")) {
 }
 if (isModEnabled('shipping')) {

@@ -30,6 +30,11 @@
  */
 
 
+namespace DoliModules\Company\Model;
+
+use DoliModules\Bank\Model\Account;
+use DoliModules\User\Model\User;
+use DoliDB;
 
 /**
  *  Class to manage bank accounts description of third parties
@@ -111,8 +116,7 @@ class CompanyBankAccount extends Account
     public $table_element = 'societe_rib';
     /**
      * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>
-     *       Array with all fields and their property. Do not use it as a static var. It may be modified by
-     *       constructor.
+     *      Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
      */
     public $fields = [
         'rowid' => ['type' => 'integer', 'label' => 'TechnicalID', 'enabled' => 1, 'position' => 10, 'notnull' => 1, 'visible' => -1,],
@@ -254,7 +258,7 @@ class CompanyBankAccount extends Account
     public $preapproval_key;
     public $starting_date;
     public $total_amount_of_all_payments;   // Name of the external payment system ('StripeLive', 'StripeTest', 'StancerLive', 'StancerTest', ...)
-/**
+    /**
      * @var string external payment site
      */
     public $ext_payment_site;

@@ -22,9 +22,11 @@
  *  \brief      Page for invoice margins of a thirdparty
  */
 
-// Load Dolibarr environment
+use DoliCore\Form\Form;
 use DoliModules\Billing\Model\Facture;
+use DoliModules\Company\Model\Company;
 
+// Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
 

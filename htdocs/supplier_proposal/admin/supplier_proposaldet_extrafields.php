@@ -27,7 +27,6 @@ use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/supplier_proposal.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 
 
 if (!$user->admin) {

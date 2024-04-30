@@ -30,11 +30,11 @@
 
 // Load Dolibarr environment
 use DoliModules\Accounting\Model\BonPrelevement;
+use DoliModules\Company\Model\CompanyBankAccount;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/fourn.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 
 // Load translation files required by the page

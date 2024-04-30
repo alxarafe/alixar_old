@@ -24,13 +24,14 @@
 
 namespace DoliModules\User\Model;
 
+use DoliDB;
+use DoliModules\Bank\Model\Account;
+
 /**
  *      \file       htdocs/user/class/userbankaccount.class.php
  *      \ingroup    user
  *      \brief      File of class to manage bank accounts description of users
  */
-
-
 
 /**
  *  Class to manage bank accounts description of users

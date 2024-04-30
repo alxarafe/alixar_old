@@ -43,9 +43,12 @@ namespace DoliModules\Company\Model;
 use Conf;
 use DoliCore\Base\CommonPeople;
 use DoliCore\Base\GenericDocument;
+use DoliModules\Billing\Model\Facture;
 use DoliModules\Billing\Trait\CommonIncoterm;
 use DoliModules\Contact\Trait\CommonSocialNetworks;
 use DoliModules\Contact\Trait\Mailing;
+use DoliModules\Supplier\Model\FactureFournisseur;
+use DoliModules\User\Model\User;
 
 /**
  *  \file       htdocs/societe/class/societe.class.php
@@ -2885,7 +2888,6 @@ class Company extends GenericDocument
                 return $bac->getRibLabel(true);
             } elseif ($mode == 'rum') {
                 if (empty($bac->rum)) {
-                    require_once DOL_DOCUMENT_ROOT . '/compta/prelevement/class/bonprelevement.class.php';
                     $prelevement = new BonPrelevement($this->db);
                     $bac->fetch_thirdparty();
                     $bac->rum = $prelevement->buildRumNumber($bac->thirdparty->code_client, $bac->datec, $bac->id);

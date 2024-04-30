@@ -20,8 +20,9 @@
 // Put here all includes required by your class file
 
 // Load Dolibarr environment
+use DoliModules\Stripe\Model\Stripe;
+
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/stripe/class/stripe.class.php';
 //require_once DOL_DOCUMENT_ROOT.'/core/lib/stripe.lib.php';
 if (isModEnabled('accounting')) {
 }

@@ -28,6 +28,9 @@
  *      \brief      Page to set permission of a user record
  */
 
+use DoliCore\Form\Form;
+use DoliModules\User\Model\User;
+
 defineIfNotDefined('CSRFCHECK_WITH_TOKEN', '1'); // Force use of CSRF protection with tokens even for GET
 
 // Load Dolibarr environment

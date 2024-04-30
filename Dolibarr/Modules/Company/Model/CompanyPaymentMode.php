@@ -25,7 +25,11 @@
  * \brief       This file is a CRUD class file for CompanyPaymentMode (Create/Read/Update/Delete)
  */
 
+namespace DoliModules\Company\Model;
+
 use DoliCore\Base\GenericDocument;
+use DoliDB;
+use User;
 
 /**
  * Class for CompanyPaymentMode
@@ -81,8 +85,7 @@ class CompanyPaymentMode extends GenericDocument
     // BEGIN MODULEBUILDER PROPERTIES
     /**
      * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull:int,visible:int,noteditable?:int,default?:string,index?:int,foreignkey?:string,searchall?:int,isameasure?:int,css?:string,csslist?:string,help?:string,showoncombobox?:int,disabled?:int,arrayofkeyval?:array<int,string>,comment?:string}>
-     *       Array with all fields and their property. Do not use it as a static var. It may be modified by
-     *       constructor.
+     *      Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
      */
     public $fields = [
         'rowid' => ['type' => 'integer', 'label' => 'Rowid', 'enabled' => 1, 'visible' => -2, 'notnull' => 1, 'position' => 10],

@@ -39,7 +39,6 @@ use DoliModules\Accounting\Model\RemiseCheque;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 // Load translation files required by the page

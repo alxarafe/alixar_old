@@ -22,6 +22,8 @@
  *    \brief      File to make Ajax action on Knowledge Management
  */
 
+use DoliModules\Company\Model\CompanyBankAccount;
+
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', '1'); // Disables token renewal
 }
