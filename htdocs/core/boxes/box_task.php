@@ -73,7 +73,7 @@ class box_task extends GenericBoxes
         global $conf, $user, $langs;
 
         $this->max = $max;
-        require_once DOL_DOCUMENT_ROOT . "/core/lib/project.lib.php";
+
         $projectstatic = new Project($this->db);
         $taskstatic = new Task($this->db);
         $form = new Form($this->db);

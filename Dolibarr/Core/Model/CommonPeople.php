@@ -25,6 +25,15 @@
  */
 
 
+namespace DoliCore\Model;
+
+use Contact;
+use ExtraLanguages;
+use Form;
+use Societe;
+use Translate;
+use User;
+
 /**
  *      Support class for thirdparties, contacts, members, users or resources
  */
@@ -46,7 +55,7 @@ trait CommonPeople
     public $town;
 
     /**
-     * @var int     $state_id
+     * @var int $state_id
      */
     public $state_id; // The state/department
     public $state_code;
@@ -66,11 +75,13 @@ trait CommonPeople
     /**
      *  Return full name (civility+' '+name+' '+lastname)
      *
-     *  @param  Translate   $langs          Language object for translation of civility (used only if option is 1)
-     *  @param  int         $option         0=No option, 1=Add civility
-     *  @param  int         $nameorder      -1=Auto, 0=Lastname+Firstname, 1=Firstname+Lastname, 2=Firstname, 3=Firstname if defined else lastname, 4=Lastname, 5=Lastname if defined else firstname
-     *  @param  int         $maxlen         Maximum length
-     *  @return string                      String with full name
+     * @param Translate $langs     Language object for translation of civility (used only if option is 1)
+     * @param int       $option    0=No option, 1=Add civility
+     * @param int       $nameorder -1=Auto, 0=Lastname+Firstname, 1=Firstname+Lastname, 2=Firstname, 3=Firstname if
+     *                             defined else lastname, 4=Lastname, 5=Lastname if defined else firstname
+     * @param int       $maxlen    Maximum length
+     *
+     * @return string                      String with full name
      */
     public function getFullName($langs, $option = 0, $nameorder = -1, $maxlen = 0)
     {
@@ -98,15 +109,16 @@ trait CommonPeople
     /**
      *  Return full address for banner
      *
-     *  @param      string      $htmlkey            HTML id to make banner content unique
-     *  @param      Object      $object             Object (thirdparty, thirdparty of contact for contact, null for a member)
-     *  @return     string                          Full address string
+     * @param string $htmlkey HTML id to make banner content unique
+     * @param Object $object  Object (thirdparty, thirdparty of contact for contact, null for a member)
+     *
+     * @return     string                          Full address string
      */
     public function getBannerAddress($htmlkey, $object)
     {
         global $conf, $langs, $form, $extralanguages;
 
-        $countriesusingstate = array('AU', 'US', 'IN', 'GB', 'ES', 'UK', 'TR'); // See also option MAIN_FORCE_STATE_INTO_ADDRESS
+        $countriesusingstate = ['AU', 'US', 'IN', 'GB', 'ES', 'UK', 'TR']; // See also option MAIN_FORCE_STATE_INTO_ADDRESS
 
         $contactid = 0;
         $thirdpartyid = 0;
@@ -151,7 +163,7 @@ trait CommonPeople
             $outdone++;
 
             // List of extra languages
-            $arrayoflangcode = array();
+            $arrayoflangcode = [];
             if (getDolGlobalString('PDF_USE_ALSO_LANGUAGE_CODE')) {
                 $arrayoflangcode[] = getDolGlobalString('PDF_USE_ALSO_LANGUAGE_CODE');
             }
@@ -185,7 +197,7 @@ trait CommonPeople
         // If MAIN_FORCE_STATE_INTO_ADDRESS is on, state is already returned previously with getFullAddress
         if (
             !in_array($this->country_code, $countriesusingstate) && !getDolGlobalString('MAIN_FORCE_STATE_INTO_ADDRESS')
-                && !getDolGlobalString('SOCIETE_DISABLE_STATE') && $this->state
+            && !getDolGlobalString('SOCIETE_DISABLE_STATE') && $this->state
         ) {
             if (getDolGlobalInt('MAIN_SHOW_REGION_IN_STATE_SELECT') == 1 && $this->region) {
                 $out .= ($outdone ? ' - ' : '') . $this->region . ' - ' . $this->state;

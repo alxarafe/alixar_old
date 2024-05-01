@@ -38,13 +38,12 @@ namespace DoliModules\Contact\Model;
  *  \brief      File of contacts class
  */
 
-use CommonPeople;
 use CommonSocialNetworks;
 use DoliCore\Base\GenericDocument;
+use DoliCore\Model\CommonPeople;
 use DoliModules\Contact\Trait\Mailing;
 
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonsocialnetworks.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
 
 /**
  *  Class to manage contact/addresses

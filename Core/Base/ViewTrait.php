@@ -56,9 +56,9 @@ trait ViewTrait
             BASE_PATH . '/Templates/theme/' . $this->theme,
             BASE_PATH . '/Templates/common',
         ];
-        $cachePaths = realpath(BASE_PATH . '/../tmp') . '/blade';
-        if (!is_dir($cachePaths) && !mkdir($cachePaths) && !is_dir($cachePaths)) {
-            die('Could not create cache directory for templates.');
+        $cachePaths = realpath(BASE_PATH . '/..') . '/tmp/blade';
+        if (!is_dir($cachePaths) && !mkdir($cachePaths, 0777, true) && !is_dir($cachePaths)) {
+            die('Could not create cache directory for templates: ' . $cachePaths);
         }
         $blade = new Blade($viewPaths, $cachePaths);
         echo $blade->render($this->template, $vars);

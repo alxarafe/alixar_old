@@ -24,14 +24,14 @@
  *    \brief      Page display/creation of bookmarks
  */
 
+use DoliCore\Form\Form;
+use DoliCore\Model\Bookmark;
+
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/bookmarks/class/bookmark.class.php';
-
 
 // Load translation files required by the page
 $langs->loadLangs(array('bookmarks', 'other'));
-
 
 // Get Parameters
 $id = GETPOSTINT("id");
@@ -43,7 +43,6 @@ $target = GETPOSTINT("target");
 $userid = GETPOSTINT("userid");
 $position = GETPOSTINT("position");
 $backtopage = GETPOST('backtopage', 'alpha');
-
 
 // Initialize Objects
 $object = new Bookmark($db);
@@ -132,8 +131,6 @@ if ($action == 'add' || $action == 'addproduct' || $action == 'update') {
     }
 }
 
-
-
 /*
  * View
  */
@@ -141,7 +138,6 @@ if ($action == 'add' || $action == 'addproduct' || $action == 'update') {
 llxHeader();
 
 $form = new Form($db);
-
 
 $head = array();
 $h = 1;

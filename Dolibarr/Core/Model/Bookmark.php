@@ -20,6 +20,7 @@
 
 namespace DoliCore\Model;
 
+use DoliCore\Base\GenericDocument;
 use DoliDB;
 
 /**

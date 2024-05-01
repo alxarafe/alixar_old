@@ -27,13 +27,12 @@ namespace DoliModules\Resource\Model;
  *  \brief      Class file for resource object
  */
 
-use CommonPeople;
 use DoliCore\Base\GenericDocument;
-use DoliDB;
 use DoliCore\Lib\ExtraFields;
+use DoliCore\Model\CommonPeople;
+use DoliDB;
 
-require_once DOL_DOCUMENT_ROOT . "/core/lib/functions2.lib.php";
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 /**
  *  DAO Resource object

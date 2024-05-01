@@ -34,10 +34,9 @@ namespace DoliModules\Donation\Model;
  *      \brief      File of class to manage donations
  */
 
-use CommonPeople;
 use DoliCore\Base\GenericDocument;
+use DoliCore\Model\CommonPeople;
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/commonpeople.class.php';
 
 /**
  *      Class to manage donations

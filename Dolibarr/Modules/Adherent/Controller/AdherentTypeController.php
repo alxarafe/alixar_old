@@ -28,9 +28,20 @@
 
 namespace DoliModules\Adherent\Controller;
 
+global $conf;
+global $db;
+global $user;
+global $hookmanager;
+global $user;
+global $menumanager;
+global $langs;
+global $mysoc;
+
+// Load Dolibarr environment
+require_once BASE_PATH . '/main.inc.php';
+
 use DoliCore\Base\DolibarrController;
 use DoliCore\Lib\ExtraFields;
-use DoliCore\Lib\Menu;
 use DoliModules\Adherent\Model\AdherentType;
 
 class AdherentTypeController extends DolibarrController
@@ -42,87 +53,13 @@ class AdherentTypeController extends DolibarrController
      */
     public function index($executeActions = true): bool
     {
-
-// If there is a POST parameter to tell to save automatically some POST parameters into cookies, we do it.
-// This is used for example by form of boxes to save personalization of some options.
-// DOL_AUTOSET_COOKIE=cookiename:val1,val2 and  cookiename_val1=aaa cookiename_val2=bbb will set cookie_name with value json_encode(array('val1'=> , ))
-        if (!empty($_POST["DOL_AUTOSET_COOKIE"])) {
-            $tmpautoset = explode(':', $_POST["DOL_AUTOSET_COOKIE"], 2);
-            $tmplist = explode(',', $tmpautoset[1]);
-            $cookiearrayvalue = [];
-            foreach ($tmplist as $tmpkey) {
-                $postkey = $tmpautoset[0] . '_' . $tmpkey;
-                //var_dump('tmpkey='.$tmpkey.' postkey='.$postkey.' value='.$_POST[$postkey]);
-                if (!empty($_POST[$postkey])) {
-                    $cookiearrayvalue[$tmpkey] = $_POST[$postkey];
-                }
-            }
-            $cookiename = $tmpautoset[0];
-            $cookievalue = json_encode($cookiearrayvalue);
-            //var_dump('setcookie cookiename='.$cookiename.' cookievalue='.$cookievalue);
-            if (PHP_VERSION_ID < 70300) {
-                setcookie($cookiename, empty($cookievalue) ? '' : $cookievalue, empty($cookievalue) ? 0 : (time() + (86400 * 354)), '/', '', ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true), true); // keep cookie 1 year and add tag httponly
-            } else {
-                // Only available for php >= 7.3
-                $cookieparams = [
-                    'expires' => empty($cookievalue) ? 0 : (time() + (86400 * 354)),
-                    'path' => '/',
-                    //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
-                    'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
-                    'httponly' => true,
-                    'samesite' => 'Lax', // None || Lax  || Strict
-                ];
-                setcookie($cookiename, empty($cookievalue) ? '' : $cookievalue, $cookieparams);
-            }
-            if (empty($cookievalue)) {
-                unset($_COOKIE[$cookiename]);
-            }
-        }
-
-// Set the handler of session
-// if (ini_get('session.save_handler') == 'user')
-        if (!empty($php_session_save_handler) && $php_session_save_handler == 'db') {
-            require_once 'core/lib/phpsessionin' . $php_session_save_handler . '.lib.php';
-        }
-
-// Init session. Name of session is specific to Dolibarr instance.
-// Must be done after the include of filefunc.inc.php so global variables of conf file are defined (like $dolibarr_main_instance_unique_id or $dolibarr_main_force_https).
-// Note: the function dol_getprefix() is defined into functions.lib.php but may have been defined to return a different key to manage another area to protect.
-        $prefix = dol_getprefix('');
-        $sessionname = 'DOLSESSID_' . $prefix;
-        $sessiontimeout = 'DOLSESSTIMEOUT_' . $prefix;
-        if (!empty($_COOKIE[$sessiontimeout])) {
-            ini_set('session.gc_maxlifetime', $_COOKIE[$sessiontimeout]);
-        }
-
-// This create lock, released by session_write_close() or end of page.
-// We need this lock as long as we read/write $_SESSION ['vars']. We can remove lock when finished.
-        if (!defined('NOSESSION')) {
-            if (PHP_VERSION_ID < 70300) {
-                session_set_cookie_params(0, '/', null, ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true), true); // Add tag secure and httponly on session cookie (same as setting session.cookie_httponly into php.ini). Must be called before the session_start.
-            } else {
-                // Only available for php >= 7.3
-                $sessioncookieparams = [
-                    'lifetime' => 0,
-                    'path' => '/',
-                    //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
-                    'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
-                    'httponly' => true,
-                    'samesite' => 'Lax', // None || Lax  || Strict
-                ];
-                session_set_cookie_params($sessioncookieparams);
-            }
-            session_name($sessionname);
-            session_start();    // This call the open and read of session handler
-            //exit; // this exist generates a call to write and close
-        }
-
-        $login = $_SESSION["dol_login"];
-        $entity = isset($_SESSION["dol_entity"]) ? $_SESSION["dol_entity"] : 0;
-
-        $resultFetchUser = $this->user->fetch('', $login, '', 1, ($entity > 0 ? $entity : -1));
-
-        $menu = Menu::loadMenu();
+        global $conf;
+        global $db;
+        global $user;
+        global $hookmanager;
+        global $user;
+        global $menumanager;
+        global $langs;
 
         // Load translation files required by the page
         $this->langs->load("members");
@@ -194,9 +131,6 @@ class AdherentTypeController extends DolibarrController
 
         // Fetch optionals attributes and labels
         $extrafields->fetch_name_optionals_label($object->table_element);
-
-        // Security check
-        $result = restrictedArea($this->user, 'adherent', $rowid, 'adherent_type');
 
         /*
          *  Actions

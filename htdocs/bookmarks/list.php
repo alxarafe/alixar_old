@@ -23,10 +23,11 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
+use DoliCore\Model\Bookmark;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/bookmarks/class/bookmark.class.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bookmarks', 'admin'));

@@ -23,7 +23,7 @@ namespace DoliCore\Base;
  *
  * @package    Alxarafe\Base
  *
- * @package DoliCore\Base
+ * @package    DoliCore\Base
  */
 abstract class DolibarrController extends DolibarrViewController
 {
@@ -34,16 +34,6 @@ abstract class DolibarrController extends DolibarrViewController
     public $hookmanager;
     public $user;
     public $langs;
-
-    private function isLogged()
-    {
-        return true;
-    }
-
-    public function doLogin($user, $password)
-    {
-        return true;
-    }
 
     public function __construct()
     {
@@ -56,5 +46,15 @@ abstract class DolibarrController extends DolibarrViewController
         $this->langs = Config::getLangs($this->conf);
 
         parent::__construct();
+    }
+
+    public function doLogin($user, $password)
+    {
+        return true;
+    }
+
+    private function isLogged()
+    {
+        return true;
     }
 }
