@@ -27,7 +27,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Contact.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'other'));
@@ -72,7 +72,7 @@ if ($action == 'update' && !GETPOST("cancel") && $user->hasRight('societe', 'con
         $file_OK = is_uploaded_file($_FILES['photo']['tmp_name']);
         if ($file_OK) {
             require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
             if (GETPOST('deletephoto')) {
                 $fileimg = $conf->societe->dir_output . '/contact/' . get_exdir($object->id, 0, 0, 1, $object, 'contact') . '/photos/' . $object->photo;
                 $dirthumbs = $conf->societe->dir_output . '/contact/' . get_exdir($object->id, 0, 0, 1, $object, 'contact') . '/photos/thumbs';

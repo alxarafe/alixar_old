@@ -52,8 +52,8 @@ use DoliModules\Product\Model\Product;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/commande/modules_commande.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/order.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/order.php';
 
 
 if (isModEnabled("propal")) {
@@ -3116,7 +3116,7 @@ if ($action == 'create' && $usercancreate) {
             }
             if ($object->statut != Commande::STATUS_DRAFT && $useonlinepayment) {
                 print '<br><!-- Link to pay -->';
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
                 print showOnlinePaymentUrl('order', $object->ref) . '<br>';
             }
 

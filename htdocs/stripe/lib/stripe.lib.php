@@ -22,7 +22,7 @@
  *  \brief          Library for common stripe functions
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
 
 /**
  *  Define head array for tabs of stripe tools setup pages

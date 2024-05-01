@@ -26,11 +26,11 @@
 use DoliCore\Form\Form;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/events.class.php';
 

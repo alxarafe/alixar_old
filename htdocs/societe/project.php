@@ -110,7 +110,7 @@ $massactionbutton = $form->selectMassAction('', $arrayofmassactions);
 
 unset($_SESSION['pageforbacktolist']['project']);
 if ($socid) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
     $langs->load("companies");
 

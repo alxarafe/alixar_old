@@ -487,7 +487,7 @@ class AccountingAccount extends GenericDocument
     public function getNomUrl($withpicto = 0, $withlabel = 0, $nourl = 0, $moretitle = '', $notooltip = 0, $save_lastsearch_value = -1, $withcompletelabel = 0, $option = '')
     {
         global $langs, $conf, $hookmanager;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
         if (!empty($conf->dol_no_mouse_hover)) {
             $notooltip = 1; // Force disable tooltips
@@ -759,7 +759,7 @@ class AccountingAccount extends GenericDocument
                 $const_name = "BUY";
             }
 
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
             $isBuyerInEEC = isInEEC($buyer);
             $isSellerInEEC = isInEEC($seller);
             $code_l = '';   // Default value for generic product/service

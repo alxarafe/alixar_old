@@ -475,7 +475,7 @@ class FichinterRec extends Fichinter
     {
         global $mysoc;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         // Check parameters
         if ($type < 0) {

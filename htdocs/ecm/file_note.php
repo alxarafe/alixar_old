@@ -30,7 +30,7 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ecm.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ecm.php';
 require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmdirectory.class.php';
 require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmfiles.class.php';
 

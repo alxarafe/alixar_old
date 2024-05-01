@@ -45,7 +45,7 @@ use DoliModules\Supplier\Model\FactureFournisseur;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolgraph.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
 
 // L'espace compta/treso doit toujours etre actif car c'est un espace partage
 // par de nombreux modules (banque, facture, commande a facturer, etc...) independamment

@@ -37,7 +37,7 @@ require_once DOL_DOCUMENT_ROOT . '/hrm/class/job.class.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_position.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/lib/hrm_job.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 
 // Load translation files required by the page

@@ -39,7 +39,7 @@ use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/fichinter/class/fichinterrec.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/fichinter.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/FichInter.php';
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 if (isModEnabled('project')) {

@@ -26,7 +26,7 @@
 include '../../main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/margin/lib/margins.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . "/compta/facture/class/facture.class.php";
 
 $langs->loadLangs(array("admin", "bills", "margins", "stocks"));

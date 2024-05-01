@@ -40,7 +40,7 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/holiday.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Holiday.php';
 
 // Get parameters
 $action = GETPOST('action', 'aZ09');

@@ -28,8 +28,8 @@ define("NOLOGIN", 1); // This means this output page does not require to be logg
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/UserGroups.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 if (isModEnabled('ldap')) {
     require_once DOL_DOCUMENT_ROOT . '/core/class/ldap.class.php';
 }

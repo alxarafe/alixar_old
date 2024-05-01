@@ -55,7 +55,7 @@ if (!isset($usedbyinclude) || empty($usedbyinclude)) {
     }
 }
 
-include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
+include_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/Json.php';
 
 $hookmanager->initHooks(array('searchform'));
 

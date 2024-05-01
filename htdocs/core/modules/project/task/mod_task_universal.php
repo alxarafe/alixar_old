@@ -129,7 +129,7 @@ class mod_task_universal extends ModeleNumRefTask
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $mask = getDolGlobalString('PROJECT_TASK_UNIVERSAL_MASK');
 

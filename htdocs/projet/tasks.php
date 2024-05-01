@@ -34,7 +34,7 @@ use DoliModules\Project\Model\Task;
 use DoliModules\User\Model\User;
 
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 if (isModEnabled('category')) {
 }
@@ -1154,12 +1154,12 @@ if ($action == 'create' && $user->hasRight('projet', 'creer') && (empty($object-
     if ($user->hasRight('projet', 'all', 'lire')) { // We make test to clean only if user has permission to see all (test may report false positive otherwise)
         if ($search_user_id == $user->id) {
             if ($nboftaskshown < count($tasksrole)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
                 cleanCorruptedTree($db, 'projet_task', 'fk_task_parent');
             }
         } else {
             if ($nboftaskshown < count($tasksarray) && !GETPOSTINT('search_user_id')) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
                 cleanCorruptedTree($db, 'projet_task', 'fk_task_parent');
             }
         }

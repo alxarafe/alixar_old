@@ -28,7 +28,7 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/salaries.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Salaries.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "salaries"));

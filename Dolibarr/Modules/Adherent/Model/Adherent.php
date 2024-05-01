@@ -766,7 +766,7 @@ class Adherent extends GenericDocument
     {
         global $langs, $hookmanager;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $nbrowsaffected = 0;
         $error = 0;

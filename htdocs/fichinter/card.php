@@ -45,7 +45,7 @@ use DoliModules\Intervention\Model\Fichinter;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/fichinter/modules_fichinter.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/fichinter.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/FichInter.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 if (getDolGlobalString('FICHEINTER_ADDON') && is_readable(DOL_DOCUMENT_ROOT . "/core/modules/fichinter/mod_" . getDolGlobalString('FICHEINTER_ADDON') . ".php")) {
     require_once DOL_DOCUMENT_ROOT . "/core/modules/fichinter/mod_" . getDolGlobalString('FICHEINTER_ADDON') . '.php';
@@ -1763,7 +1763,7 @@ if ($action == 'create') {
         // Show online signature link
         if ($object->statut != Fichinter::STATUS_DRAFT && getDolGlobalString('FICHINTER_ALLOW_ONLINE_SIGN')) {
             print '<br><!-- Link to sign -->';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
 
             print showOnlineSignatureUrl('fichinter', $object->ref, $object) . '<br>';
         }

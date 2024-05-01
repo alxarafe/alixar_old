@@ -30,7 +30,7 @@ use DoliCore\Lib\ExtraFields;
 
 // Load Dolibarr environment
 require_once BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentjobposition.class.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/class/recruitmentcandidature.class.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/lib/recruitment_recruitmentcandidature.lib.php';
@@ -412,7 +412,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
         $login = (GETPOSTISSET('login') ? GETPOST('login', 'alphanohtml') : $object->login);
         if (empty($login)) {
             // Full firstname and name separated with a dot : firstname.name
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             $login = dol_buildlogin($object->lastname, $object->firstname);
         }
         if (empty($login)) {

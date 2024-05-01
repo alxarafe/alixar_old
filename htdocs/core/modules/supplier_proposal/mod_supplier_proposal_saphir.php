@@ -132,7 +132,7 @@ class mod_supplier_proposal_saphir extends ModeleNumRefSupplierProposal
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // On defini critere recherche compteur
         $mask = !getDolGlobalString('SUPPLIER_PROPOSAL_SAPHIR_MASK') ? '' : $conf->global->SUPPLIER_PROPOSAL_SAPHIR_MASK;

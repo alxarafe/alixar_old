@@ -31,7 +31,7 @@ use DoliModules\Resource\Model\FormResource;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';
 

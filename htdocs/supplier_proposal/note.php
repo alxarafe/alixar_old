@@ -29,7 +29,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/supplier_proposal.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/SupplierProposal.php';
 if (isModEnabled('project')) {
 }
 // Load translation files required by the page

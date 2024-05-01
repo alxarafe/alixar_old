@@ -2120,7 +2120,7 @@ if (!function_exists('left_menu')) {
 
             // Link to bugtrack
             if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK')) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
                 if (getDolGlobalString('MAIN_BUGTRACK_ENABLELINK') == 'github') {
                     $bugbaseurl = 'https://github.com/Dolibarr/dolibarr/issues/new?labels=Bug';
@@ -2556,7 +2556,7 @@ if (!function_exists("llxFooter")) {
                     if (getDolGlobalString('MAIN_LAST_PING_KO_DATE') && substr($conf->global->MAIN_LAST_PING_KO_DATE, 0, 6) == dol_print_date(dol_now(), '%Y%m') && !$forceping) {
                         print "\n<!-- NO JS CODE TO ENABLE the anonymous Ping. An error already occurred this month, we will try later. -->\n";
                     } else {
-                        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
                         print "\n" . '<!-- Includes JS for Ping of Dolibarr forceping=' . $forceping . ' MAIN_FIRST_PING_OK_DATE=' . getDolGlobalString("MAIN_FIRST_PING_OK_DATE") . ' MAIN_FIRST_PING_OK_ID=' . getDolGlobalString("MAIN_FIRST_PING_OK_ID") . ' MAIN_LAST_PING_KO_DATE=' . getDolGlobalString("MAIN_LAST_PING_KO_DATE") . ' -->' . "\n";
                         print "\n<!-- JS CODE TO ENABLE the anonymous Ping -->\n";
@@ -2630,7 +2630,7 @@ if (!function_exists("llxFooter")) {
                 } else {
                     $now = dol_now();
                     print "\n<!-- NO JS CODE TO ENABLE the anonymous Ping. It was disabled -->\n";
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
                     dolibarr_set_const($db, 'MAIN_FIRST_PING_OK_DATE', dol_print_date($now, 'dayhourlog', 'gmt'), 'chaine', 0, '', $conf->entity);
                     dolibarr_set_const($db, 'MAIN_FIRST_PING_OK_ID', 'disabled', 'chaine', 0, '', $conf->entity);
                 }

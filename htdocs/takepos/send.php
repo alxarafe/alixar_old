@@ -34,7 +34,7 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 $facid = GETPOSTINT('facid');
 $action = GETPOST('action', 'aZ09');

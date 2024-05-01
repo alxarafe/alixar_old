@@ -1125,7 +1125,7 @@ class EmailCollector extends GenericDocument
                 // Mode OAUth2 (access_type == 1) with PHP-IMAP
                 $this->debuginfo .= 'doCollectOneCollector is using method MAIN_IMAP_USE_PHPIMAP=1, access_type=1 (OAUTH2)<br>';
 
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/oauth.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/OAuth.php';
 
                 $supportedoauth2array = getSupportedOauth2Array();
 
@@ -2478,7 +2478,7 @@ class EmailCollector extends GenericDocument
                                         } else {
                                             // Search country by name or code
                                             if (!empty($contactstatic->country)) {
-                                                require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+                                                require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
                                                 $result = getCountry('', 3, $this->db, '', 1, $contactstatic->country);
                                                 if ($result == 'NotDefined') {
                                                     $errorforactions++;
@@ -2492,7 +2492,7 @@ class EmailCollector extends GenericDocument
                                                     $operationslog .= '<br>We set property country_id=' . dol_escape_htmltag($result);
                                                 }
                                             } elseif (!empty($contactstatic->country_code)) {
-                                                require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+                                                require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
                                                 $result = getCountry($contactstatic->country_code, 3, $this->db);
                                                 if ($result == 'NotDefined') {
                                                     $errorforactions++;
@@ -3655,7 +3655,7 @@ class EmailCollector extends GenericDocument
      */
     private function saveAttachment($destdir, $filename, $content)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         $tmparraysize = getDefaultImageSizes();
         $maxwidthsmall = $tmparraysize['maxwidthsmall'];

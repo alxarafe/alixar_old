@@ -126,7 +126,7 @@ class mod_ticket_universal extends ModeleNumRefTicket
     {
         global $db, $conf;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We define criterion search counter
         $mask = getDolGlobalString("TICKET_UNIVERSAL_MASK");

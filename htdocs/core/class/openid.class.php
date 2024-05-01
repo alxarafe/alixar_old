@@ -238,7 +238,7 @@ class SimpleOpenID
         foreach ($response as $line) {
             $line = trim($line);
             if ($line != "") {
-                list($key, $value) = explode(":", $line, 2);
+                [$key, $value] = explode(":", $line, 2);
                 $r[trim($key)] = trim($value);
             }
         }
@@ -370,14 +370,14 @@ class SimpleOpenID
 		// phpcs:enable
         global $conf;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
         if (empty($url)) {
             $url = getDolGlobalString('MAIN_AUTHENTICATION_OPENID_URL');
         }
 
         $response = getURLContent($url, 'GET', '', 1, array(), array('http', 'https'));
 
-        list($servers, $delegates) = $this->HTML2OpenIDServer($response);
+        [$servers, $delegates] = $this->HTML2OpenIDServer($response);
         if (count($servers) == 0) {
             $this->ErrorStore('OPENID_NOSERVERSFOUND');
             return false;
@@ -501,7 +501,7 @@ class SimpleOpenID
     {
         global $conf;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
         if (empty($url)) {
             $url = getDolGlobalString('MAIN_AUTHENTICATION_OPENID_URL');
         }

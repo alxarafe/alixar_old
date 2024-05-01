@@ -201,7 +201,7 @@ class FormContract
 
             if (!empty($conf->use_javascript_ajax)) {
                 // Make select dynamic
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $ret .= ajax_combobox($htmlname);
             }
 

@@ -641,7 +641,7 @@ function updateContact($authentication, $contact)
     if (!$error) {
         $objectfound = false;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         $object = new Contact($db);
         $result = $object->fetch($contact['id'], 0, $contact['ref_ext']);

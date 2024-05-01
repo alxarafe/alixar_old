@@ -869,7 +869,7 @@ class PaymentVarious extends GenericDocument
      */
     public function lengthAccountg($account)
     {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
         /*
         if (isModEnabled('accounting')) {
@@ -889,7 +889,7 @@ class PaymentVarious extends GenericDocument
      */
     public function lengthAccounta($account)
     {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
         return length_accounta($account);
     }

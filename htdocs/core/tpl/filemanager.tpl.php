@@ -231,7 +231,7 @@ if ($action == 'convertimgwebp' && $permtoadd) {
         $imagefolder = $conf->ecm->dir_output . '/' . dol_sanitizePathName(GETPOST('section_dir', 'alpha'));
     }
 
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
     if (!empty($file)) {
         $filelist = array();

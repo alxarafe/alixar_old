@@ -127,7 +127,7 @@ class Invoices extends DolibarrApi
         $this->invoice->fetchObjectLinked();
 
         // Add online_payment_url, copied from order
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
         $this->invoice->online_payment_url = getOnlinePaymentUrl(0, 'invoice', $this->invoice->ref);
 
         return $this->_cleanObjectDatas($this->invoice);
@@ -283,7 +283,7 @@ class Invoices extends DolibarrApi
                         $invoice_static->contacts_ids = $tmparray;
                     }
                     // Add online_payment_url, copied from order
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
                     $invoice_static->online_payment_url = getOnlinePaymentUrl(0, 'invoice', $invoice_static->ref);
 
                     $obj_ret[] = $this->_filterObjectProperties($this->_cleanObjectDatas($invoice_static), $properties);
@@ -1038,7 +1038,7 @@ class Invoices extends DolibarrApi
         }
 
         // copy from order
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
         $this->invoice->online_payment_url = getOnlinePaymentUrl(0, 'invoice', $this->invoice->ref);
 
         return $this->_cleanObjectDatas($this->invoice);

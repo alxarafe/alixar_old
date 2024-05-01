@@ -29,10 +29,10 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/UserGroups.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('admin', 'bills', 'companies', 'languages', 'members', 'other', 'products', 'propal', 'receptions', 'stocks', 'trips', 'orders'));

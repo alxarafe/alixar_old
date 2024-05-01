@@ -42,7 +42,7 @@ require_once $path . "../../htdocs/master.inc.php";
 require_once DOL_DOCUMENT_ROOT . "/compta/facture/class/facture.class.php";
 require_once DOL_DOCUMENT_ROOT . "/core/modules/facture/modules_facture.php";
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoce2.php';
 
 // Load main language strings
 $langs->load("main");

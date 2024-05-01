@@ -33,8 +33,8 @@ use DoliModules\Category\Model\Categorie;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/treeview.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/TreeView.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 // Load translation files required by the page
 $langs->load("categories");

@@ -127,7 +127,7 @@ class mod_commande_saphir extends ModeleNumRefCommandes
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We get cursor rule
         $mask = getDolGlobalString("COMMANDE_SAPHIR_MASK");

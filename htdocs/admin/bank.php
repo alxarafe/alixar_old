@@ -31,8 +31,8 @@
 use DoliModules\Company\Model\CompanyBankAccount;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "companies", "bills", "other", "banks"));

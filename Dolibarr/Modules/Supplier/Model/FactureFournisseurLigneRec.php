@@ -222,7 +222,7 @@ class FactureFournisseurLigneRec extends GenericDocumentLine
 
         $error = 0;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         $sql = 'UPDATE ' . MAIN_DB_PREFIX . 'facture_fourn_det_rec SET';
         $sql .= ' fk_facture_fourn = ' . (int) $this->fk_facture_fourn;

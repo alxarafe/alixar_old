@@ -112,7 +112,7 @@ class mod_holiday_immaculate extends ModelNumRefHolidays
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $mask = getDolGlobalString('HOLIDAY_IMMACULATE_MASK');
 

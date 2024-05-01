@@ -23,7 +23,7 @@
  *  \brief          Library for common paypal functions
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
 
 
 /**

@@ -24,9 +24,9 @@
  */
 
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/contract.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Contract.php';
 if (isModEnabled('project')) {
 }
 
@@ -137,7 +137,7 @@ if ($object->id > 0) {
         $modCodeContract = new $module();
     }
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
     $object->fetch_thirdparty();
 
@@ -266,7 +266,7 @@ if ($object->id > 0) {
         }
 
         // Try to know count of actioncomm from cache
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
         $cachekey = 'count_events_thirdparty_' . $object->id;
         $nbEvent = dol_getcache($cachekey);
 

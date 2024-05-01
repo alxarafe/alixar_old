@@ -26,7 +26,7 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/stock.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Stock.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('products', 'stocks', 'companies'));

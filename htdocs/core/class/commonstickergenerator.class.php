@@ -52,8 +52,8 @@
  *  \brief      generate pdf document with labels or cards in Avery or custom format
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';
 
 

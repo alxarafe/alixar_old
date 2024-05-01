@@ -57,8 +57,8 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
@@ -1938,7 +1938,7 @@ if (empty($reshook)) {
                 $object->type = Facture::TYPE_SITUATION;
 
                 if (!empty($origin) && !empty($originid)) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
                     $object->origin = $origin;
                     $object->origin_id = $originid;
@@ -3291,7 +3291,7 @@ if ($action == 'create') {
     $note_private = $object->getDefaultCreateValueFor('note_private', ((!empty($origin) && !empty($originid) && is_object($objectsrc) && getDolGlobalString('FACTURE_REUSE_NOTES_ON_CREATE_FROM')) ? $objectsrc->note_private : null));
 
     if (!empty($conf->use_javascript_ajax)) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
         print ajax_combobox('fac_replacement');
         print ajax_combobox('fac_avoir');
         print ajax_combobox('situations');
@@ -6058,7 +6058,7 @@ if ($action == 'create') {
 
         if ($object->status != Facture::STATUS_DRAFT && $useonlinepayment) {
             print '<br><!-- Link to pay -->' . "\n";
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
             print showOnlinePaymentUrl('invoice', $object->ref) . '<br>';
         }
 

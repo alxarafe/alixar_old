@@ -24,9 +24,9 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 $action = GETPOST('action', 'aZ09');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'adminaccoutant'; // To manage different context of search

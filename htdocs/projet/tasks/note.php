@@ -23,7 +23,7 @@
  */
 
 require "../../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 
 // Load translation files required by the page
 $langs->load('projects');

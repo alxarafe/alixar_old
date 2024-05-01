@@ -416,7 +416,7 @@ if (!getDolGlobalString('ADD_UNSPLASH_LOGIN_BACKGROUND')) {
 
         // Add commit strip
         if (getDolGlobalString('MAIN_EASTER_EGG_COMMITSTRIP')) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
             if (substr($langs->defaultlang, 0, 2) == 'fr') {
                 $resgetcommitstrip = getURLContent("https://www.commitstrip.com/fr/feed/");
             } else {

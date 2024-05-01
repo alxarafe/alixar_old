@@ -1853,10 +1853,10 @@ class SupplierOrder extends CommonOrder
         global $langs, $mysoc, $conf;
 
         dol_syslog(get_class($this) . "::addline $desc, $pu_ht, $qty, $txtva, $txlocaltax1, $txlocaltax2, $fk_product, $fk_prod_fourn_price, $ref_supplier, $remise_percent, $price_base_type, $pu_ttc, $type, $info_bits, $notrigger, $date_start, $date_end, $fk_unit, $pu_ht_devise, $origin, $origin_id");
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         if ($this->statut == self::STATUS_DRAFT) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
             // Clean parameters
             if (empty($qty)) {
@@ -2828,7 +2828,7 @@ class SupplierOrder extends CommonOrder
     {
         global $mysoc, $conf, $langs;
         dol_syslog(get_class($this) . "::updateline $rowid, $desc, $pu, $qty, $remise_percent, $txtva, $price_base_type, $info_bits, $type, $fk_unit");
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         $error = 0;
 

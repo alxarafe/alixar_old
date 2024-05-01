@@ -26,9 +26,9 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bills', 'companies'));

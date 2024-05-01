@@ -52,7 +52,7 @@ if ($reshook < 0) {
 $form = new Form($db);
 
 if ($id) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Contact.php';
 
     $object = new Contact($db);
 

@@ -37,7 +37,7 @@ use DoliCore\Base\GenericDocument;
 use DoliCore\Base\Config;
 use DoliCore\Model\WorkboardResponse;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ticket.php';
 
 
 /**
@@ -2247,7 +2247,7 @@ const STATUS_CANCELED = 9;
         // Create form object
         include_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         $maxwidthsmall = 270;
         $maxheightsmall = 150;

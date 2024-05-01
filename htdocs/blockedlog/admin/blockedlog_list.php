@@ -32,7 +32,7 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/blockedlog/lib/blockedlog.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/blockedlog.class.php';
 require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/authority.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Load translation files required by the page

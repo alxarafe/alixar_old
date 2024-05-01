@@ -33,7 +33,8 @@
  * - The class name must be InterfaceMytrigger
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/triggers/dolibarrtriggers.class.php';
+use DoliCore\Base\DolibarrTriggers;
+
 
 
 /**

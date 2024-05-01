@@ -32,9 +32,9 @@
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/stocktransfer/modules_stocktransfer.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
 
 /**

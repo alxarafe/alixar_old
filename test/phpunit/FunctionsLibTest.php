@@ -756,7 +756,7 @@ class FunctionsLibTest extends CommonClassTest
      */
     public function testDolStringNoSpecial()
     {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $text = "A string with space and special char like ' or ° and more...\n";
         $after = dol_string_nospecial($text, '_', '', '', 0);

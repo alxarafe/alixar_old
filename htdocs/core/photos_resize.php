@@ -30,8 +30,8 @@
 use DoliModules\Ticket\Model\Ticket;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("products", "other"));

@@ -42,8 +42,8 @@ use DoliModules\Stripe\Model\Stripe;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "commercial", "banks", "bills", 'paypal', 'stripe', 'withdrawals'));
@@ -1735,7 +1735,7 @@ if ($socid && $action != 'edit' && $action != 'create' && $action != 'editcard' 
                 print '<td class="right nowraponall">';
                 $useonlinesignature = 1;
                 if ($useonlinesignature) {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
                     print showOnlineSignatureUrl($companybankaccount->element, $rib->id, $rib);
                 }
                 print '</td>';

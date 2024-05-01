@@ -114,7 +114,7 @@ class ApiController extends DolibarrController
 
 //require_once DOL_DOCUMENT_ROOT . '/api/class/api.class.php';
 //require_once DOL_DOCUMENT_ROOT . '/api/class/api_access.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 
         // $url = $_SERVER['PHP_SELF'];

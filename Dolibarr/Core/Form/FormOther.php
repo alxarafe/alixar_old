@@ -76,7 +76,7 @@ class FormOther
     public static function showColor($color, $textifnotdefined = '')
     {
         $textcolor = 'FFF';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
         if (colorIsLight($color)) {
             $textcolor = '000';
         }
@@ -159,7 +159,7 @@ class FormOther
             }
             $selectboxlist .= '</form>';
             if (!empty($conf->use_javascript_ajax)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $selectboxlist .= ajax_combobox("boxcombo");
             }
         }
@@ -731,7 +731,7 @@ class FormOther
 
         // Enhance with select2
         if ($conf->use_javascript_ajax) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $comboenhancement = ajax_combobox('select_categ_' . $htmlname);
             $moreforfilter .= $comboenhancement;
         }
@@ -913,7 +913,7 @@ class FormOther
 
         // Enhance with select2
         if ($conf->use_javascript_ajax) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
 
             $comboenhancement = ajax_combobox($htmlname);
             if ($comboenhancement) {
@@ -1381,7 +1381,7 @@ class FormOther
         // Add code for jquery to use multiselect
         if ($addjscombo) {
             // Enhance with select2
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $select_month .= ajax_combobox($htmlname);
         }
 
@@ -1468,7 +1468,7 @@ class FormOther
         // Add code for jquery to use multiselect
         if ($addjscombo) {
             // Enhance with select2
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $out .= ajax_combobox($htmlname);
         }
 

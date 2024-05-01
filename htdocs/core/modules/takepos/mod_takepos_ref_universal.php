@@ -127,7 +127,7 @@ class mod_takepos_ref_universal extends ModeleNumRefTakepos
     {
         global $db;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We define search criteria counter
         $mask = getDolGlobalString('TAKEPOS_REF_UNIVERSAL_MASK');

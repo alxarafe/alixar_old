@@ -30,7 +30,7 @@
 use DoliCore\Lib\ExtraFields;
 
 require "../../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/project/task/modules_task.php';
 

@@ -37,7 +37,7 @@ use DoliCore\Lib\ExtraFields;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/paymentvat.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/vat.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Vat.php';
 
 if (isModEnabled('accounting')) {
     include_once DOL_DOCUMENT_ROOT . '/accountancy/class/accountingjournal.class.php';

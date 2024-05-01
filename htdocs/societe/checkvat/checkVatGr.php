@@ -50,7 +50,7 @@ function checkVATGR($username, $password, $AFMcalledby, $AFMcalledfor)
     /*
     $WS_DOL_URL_WSDL = "https://www1.gsis.gr/webtax2/wsgsis/RgWsPublic/RgWsPublicPort?WSDL";
 
-    require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+    require_once DOL_DOCUMENT_ROOT.'/../Dolibarr/Lib/Functions2.php';
     $params = getSoapParams();
     //ini_set('default_socket_timeout', $params['response_timeout']);
     $soapclient = new nusoap_client($WS_DOL_URL_WSDL, true, $params['proxy_host'], $params['proxy_port'], $params['proxy_login'], $params['proxy_password'], $params['connection_timeout'], $params['response_timeout']);

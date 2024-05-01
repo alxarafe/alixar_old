@@ -131,7 +131,7 @@ class mod_arctic extends ModeleNumRefFicheinter
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We define the search criteria of the counter
         $mask = getDolGlobalString("FICHINTER_ARTIC_MASK");

@@ -583,7 +583,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
             $login = (GETPOSTISSET('login') ? GETPOST('login', 'alphanohtml') : $object->login);
             if (empty($login)) {
                 // Full firstname and name separated with a dot : firstname.name
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
                 $login = dol_buildlogin($object->lastname, $object->firstname);
             }
             if (empty($login)) {
@@ -945,7 +945,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
         // Default language
         if (getDolGlobalInt('MAIN_MULTILANGS')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             print '<tr><td>' . $langs->trans("DefaultLang") . '</td><td>';
             //$s=picto_from_langcode($object->default_lang);
             //print ($s?$s.' ':'');
@@ -1205,7 +1205,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
                 if (empty($amount)) {
                     $amount = 0;
                 }
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
                 print showOnlinePaymentUrl('membersubscription', $object->ref, $amount);
             }
 

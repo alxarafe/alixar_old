@@ -127,7 +127,7 @@ class mod_bom_advanced extends ModeleNumRefBoms
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We get cursor rule
         $mask = getDolGlobalString('BOM_ADVANCED_MASK');

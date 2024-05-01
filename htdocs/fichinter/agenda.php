@@ -26,9 +26,9 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/fichinter.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/FichInter.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("fichinter", "other"));
@@ -233,7 +233,7 @@ if ($object->id > 0) {
         }
 
         // Try to know count of actioncomm from cache
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
         $cachekey = 'count_events_fichinter_' . $object->id;
         $nbEvent = dol_getcache($cachekey);
 

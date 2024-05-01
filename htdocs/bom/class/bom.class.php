@@ -600,7 +600,7 @@ class BOM extends GenericDocument
         dol_syslog(get_class($this) . $logtext, LOG_DEBUG);
 
         if ($this->statut == self::STATUS_DRAFT) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
             // Clean parameters
             if (empty($qty)) {
@@ -708,7 +708,7 @@ class BOM extends GenericDocument
         dol_syslog(get_class($this) . $logtext, LOG_DEBUG);
 
         if ($this->statut == self::STATUS_DRAFT) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
             // Clean parameters
             if (empty($qty)) {
@@ -1333,7 +1333,7 @@ class BOM extends GenericDocument
     {
 		// phpcs:enable
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         $sdir .= '/' . get_exdir(0, 0, 0, 0, $this, 'bom');
 

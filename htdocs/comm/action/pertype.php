@@ -34,7 +34,7 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
 
 
 if (!isset($conf->global->AGENDA_MAX_EVENTS_DAY_VIEW)) {

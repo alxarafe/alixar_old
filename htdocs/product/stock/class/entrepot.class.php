@@ -514,7 +514,7 @@ class Entrepot extends GenericDocument
                 // fetch optionals attributes and labels
                 $this->fetch_optionals();
 
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
                 $tmp = getCountry($this->country_id, 'all');
                 $this->country = $tmp['label'];
                 $this->country_code = $tmp['code'];

@@ -32,7 +32,7 @@ use DoliModules\Resource\Model\Dolresource;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('resource', 'other', 'interventions'));
@@ -316,7 +316,7 @@ if (!$ret) {
 
     // Specific to agenda module
     if (($element_id || $element_ref) && $element == 'action') {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
 
         // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
         $hookmanager->initHooks(array('actioncard', 'globalcard'));
@@ -497,7 +497,7 @@ if (!$ret) {
             $savobject = $object;
             $object = $socstatic;
 
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
             $head = societe_prepare_head($socstatic);
 
             print dol_get_fiche_head($head, 'resources', $langs->trans("ThirdParty"), -1, 'company');
@@ -526,7 +526,7 @@ if (!$ret) {
 
     // Specific to fichinter module
     if (($element_id || $element_ref) && $element == 'fichinter') {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/fichinter.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/FichInter.php';
 
         $fichinter = new Fichinter($db);
         $fichinter->fetch($element_id, $element_ref);
@@ -581,7 +581,7 @@ if (!$ret) {
 
     // Specific to product/service module
     if (($element_id || $element_ref) && ($element == 'product' || $element == 'service')) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
         $product = new Product($db);
         $product->fetch($element_id, $element_ref);

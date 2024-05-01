@@ -96,7 +96,7 @@ if ($action == "importSignature") {
         $data = base64_decode($signature);
 
         if ($mode == "propale" || $mode == 'proposal') {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
             $object = new Propal($db);
             $object->fetch(0, $ref);
 
@@ -257,7 +257,7 @@ if ($action == "importSignature") {
                 }
             }
         } elseif ($mode == 'contract') {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
             $object = new Contrat($db);
             $object->fetch(0, $ref);
 
@@ -364,7 +364,7 @@ if ($action == "importSignature") {
                 }
             }
         } elseif ($mode == 'fichinter') {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
             $object = new Fichinter($db);
             $object->fetch(0, $ref);
 
@@ -477,7 +477,7 @@ if ($action == "importSignature") {
             }
         } elseif ($mode == "societe_rib") {
             $langs->load('withdrawals');
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
             $modelpath = "core/modules/bank/doc/";
             $object = new CompanyBankAccount($db);
             $object->fetch($ref);

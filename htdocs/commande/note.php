@@ -28,7 +28,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/order.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/order.php';
 if (isModEnabled('project')) {
 }
 

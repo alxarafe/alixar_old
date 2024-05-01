@@ -170,7 +170,7 @@ class mod_codeproduct_elephant extends ModeleProductCode
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // Get Mask value
         $mask = '';
@@ -252,7 +252,7 @@ class mod_codeproduct_elephant extends ModeleProductCode
     {
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $result = 0;
         $code = strtoupper(trim($code));

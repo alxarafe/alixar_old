@@ -25,8 +25,8 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/events.class.php';
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
@@ -408,7 +408,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
             if ($object->acces_type == 1) {
                 // Mode OAUth2 with PHP-IMAP
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/oauth.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/OAuth.php';
 
                 $supportedoauth2array = getSupportedOauth2Array();
 

@@ -24,10 +24,10 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/website.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/WebSite.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/website/class/website.class.php';
 

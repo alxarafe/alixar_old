@@ -25,8 +25,8 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/hrm.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Hrm.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/hrm/class/establishment.class.php';
 
 // Load translation files required by the page

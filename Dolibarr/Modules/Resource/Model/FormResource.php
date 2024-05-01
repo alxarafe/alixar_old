@@ -393,7 +393,7 @@ class FormResource
 
         // Make select dynamic
         if (!empty($htmlname)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $out .= ajax_combobox($htmlname);
         }
 

@@ -29,11 +29,11 @@
 use DoliModules\Company\Model\CompanyBankAccount;
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/propale/modules_propale.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/doc.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Doc.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
 
 
 /**

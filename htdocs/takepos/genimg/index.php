@@ -47,7 +47,7 @@ if (!isModEnabled('takepos')) {
  */
 
 if ($query == "cat") {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/categories.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Categories.php';
 
     $object = new Categorie($db);
     $result = $object->fetch($id);

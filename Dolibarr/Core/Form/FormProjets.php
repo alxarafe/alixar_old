@@ -305,7 +305,7 @@ class FormProjets extends Form
 
                 // Use select2 selector
                 if (!empty($conf->use_javascript_ajax)) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                     $comboenhancement = ajax_combobox($htmlid, [], 0, $forcefocus);
                     $out .= $comboenhancement;
                     $morecss .= ' minwidth100';
@@ -394,7 +394,7 @@ class FormProjets extends Form
         if ($resql) {
             // Use select2 selector
             if (empty($option_only) && !empty($conf->use_javascript_ajax)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $comboenhancement = ajax_combobox($htmlname, '', 0, $forcefocus);
                 $out .= $comboenhancement;
                 $morecss .= ' minwidth150imp';
@@ -770,7 +770,7 @@ class FormProjets extends Form
             if ($resql) {
                 // Use select2 selector
                 if (!empty($conf->use_javascript_ajax)) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                     $comboenhancement = ajax_combobox($htmlNameInvoice, [['method' => 'getLines', 'url' => dol_buildpath('/core/ajax/ajaxinvoiceline.php', 1), 'htmlname' => $htmlNameInvoiceLine]], 0, 0);
                     $out .= $comboenhancement;
                     $morecss = 'minwidth200imp maxwidth500';
@@ -822,7 +822,7 @@ class FormProjets extends Form
             // Use select2 selector
             if (empty($lineOnly)) {
                 if (!empty($conf->use_javascript_ajax)) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                     $comboenhancement = ajax_combobox($htmlNameInvoiceLine, '', 0, 0);
                     $out .= $comboenhancement;
                     $morecss = 'minwidth200imp maxwidth500';

@@ -11,7 +11,7 @@ if (!defined('ISLOADEDBYSTEELSHEET')) {
  */
 
 <?php
-include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 $prefix = '';
 if (getDolGlobalString('THEME_INFOBOX_COLOR_ON_BACKGROUND')) {
@@ -406,7 +406,7 @@ a.info-box-text{ text-decoration: none;}
 
 /* ICONS INFO BOX */
 <?php
-include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 $prefix = '';
 if (getDolGlobalString('THEME_INFOBOX_COLOR_ON_BACKGROUND')) {

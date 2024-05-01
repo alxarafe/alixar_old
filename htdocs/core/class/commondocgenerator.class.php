@@ -855,7 +855,7 @@ abstract class CommonDocGenerator
 		// phpcs:enable
         global $extrafields;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
         $object->list_delivery_methods($object->shipping_method_id);
         $calculatedVolume = ($object->trueWidth * $object->trueHeight * $object->trueDepth);

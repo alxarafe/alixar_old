@@ -141,7 +141,7 @@ class modProductBatch extends DolibarrModules
 
         if (!empty($conf->cashdesk->enabled)) {
             if (!getDolGlobalString('CASHDESK_NO_DECREASE_STOCK')) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
                 $res = dolibarr_set_const($db, "CASHDESK_NO_DECREASE_STOCK", 1, 'chaine', 0, '', $conf->entity);
             }
         }

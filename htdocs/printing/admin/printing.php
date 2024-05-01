@@ -26,7 +26,7 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/printing/modules_printing.php';
 require_once DOL_DOCUMENT_ROOT . '/printing/lib/printing.lib.php';

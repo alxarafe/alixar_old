@@ -500,7 +500,7 @@ class LoanSchedule extends GenericDocument
     private function transPayment()
     {
         require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/loan.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Loan.php';
         require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
         $toinsert = array();

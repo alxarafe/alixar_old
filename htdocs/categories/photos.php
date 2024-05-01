@@ -29,7 +29,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/categories.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Categories.php';
 
 // Load translation files required by the page
 $langs->loadlangs(array('categories', 'bills'));

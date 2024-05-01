@@ -17,7 +17,7 @@
  * or see https://www.gnu.org/
  */
 
-include_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 if (!class_exists('PrestaShopWebservice')) { // We keep this because some modules add this lib too into a different path. This is to avoid "Cannot declare class PrestaShopWebservice" errors.
     include_once DOL_DOCUMENT_ROOT . '/admin/dolistore/class/PSWebServiceLibrary.class.php';
 }

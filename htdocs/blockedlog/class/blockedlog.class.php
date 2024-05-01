@@ -1185,7 +1185,7 @@ class BlockedLog
         global $db, $conf, $mysoc;
 
         if (!getDolGlobalString('BLOCKEDLOG_ENTITY_FINGERPRINT')) { // creation of a unique fingerprint
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
             require_once BASE_PATH . '/../Dolibarr/Lib/Security.php';
             require_once BASE_PATH . '/../Dolibarr/Lib/Security2.php';
 

@@ -342,7 +342,7 @@ class Translate
 
                 if ($usecachekey) {
                     //dol_syslog('Translate::Load we will cache result into usecachekey '.$usecachekey);
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
                     $tmparray = dol_getcache($usecachekey);
                     if (is_array($tmparray) && count($tmparray)) {
                         $this->tab_translate += $tmparray; // Faster than array_merge($tmparray,$this->tab_translate). Note: If a value already exists into tab_translate, value into tmparaay is not added.
@@ -533,7 +533,7 @@ class Translate
             //dol_syslog('Translate::Load we will cache result into usecachekey '.$usecachekey);
             //global $aaa; $aaa+=1;
             //print $aaa." ".$usecachekey."\n";
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
             $tmparray = dol_getcache($usecachekey);
             if (is_array($tmparray) && count($tmparray)) {
                 $this->tab_translate += $tmparray; // Faster than array_merge($tmparray,$this->tab_translate). Note: If a value already exists into tab_translate, value into tmparaay is not added.

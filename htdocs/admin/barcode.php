@@ -27,7 +27,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formbarcode.class.php';
 
 // Load translation files required by the page

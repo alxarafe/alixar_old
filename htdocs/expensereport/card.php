@@ -44,10 +44,10 @@ use DoliModules\Project\Model\Project;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/ecm/class/ecmfiles.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/ExpenseReport.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/expensereport/modules_expensereport.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
@@ -2426,7 +2426,7 @@ if ($action == 'create') {
                 $arrayoffiles = array();
                 if (!getDolGlobalString('EXPENSEREPORT_DISABLE_ATTACHMENT_ON_LINES')) {
                     require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
                     require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
                     $upload_dir = $conf->expensereport->dir_output . "/" . dol_sanitizeFileName($object->ref);
                     $arrayoffiles = dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png|' . preg_quote(dol_sanitizeFileName($object->ref . '.pdf'), '/') . ')$');

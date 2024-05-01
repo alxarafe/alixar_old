@@ -53,8 +53,8 @@ if (!$res) {
 }
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once '../lib/mymodule.lib.php';
 
 // Translations

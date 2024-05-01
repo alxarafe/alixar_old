@@ -206,7 +206,7 @@ class RssParser
     public function parser($urlRSS, $maxNb = 0, $cachedelay = 60, $cachedir = '')
     {
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 
         $rss = '';
         $str = ''; // This will contain content of feed

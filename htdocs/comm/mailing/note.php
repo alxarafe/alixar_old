@@ -29,7 +29,7 @@ use DoliCore\Lib\ExtraFields;
 require BASE_PATH . '/main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/mailing.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/emailing.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Emailing.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("mails", "mailing", "companies"));

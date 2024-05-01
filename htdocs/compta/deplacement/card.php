@@ -28,7 +28,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/trip.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Trip.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/deplacement/class/deplacement.class.php';
 if (isModEnabled('project')) {
 }

@@ -345,7 +345,7 @@ function FileUpload($resourceType, $currentFolder, $sCommand, $CKEcallback = '')
             $sErrorNumber = '202';
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
         //var_dump($sFileName); var_dump(image_format_supported($sFileName));exit;
         $imgsupported = image_format_supported($sFileName);
         $isImageValid = ($imgsupported >= 0 ? true : false);

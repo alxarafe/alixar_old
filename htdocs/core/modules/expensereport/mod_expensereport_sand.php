@@ -129,7 +129,7 @@ class mod_expensereport_sand extends ModeleNumRefExpenseReport
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We get cursor rule
         $mask = !getDolGlobalString('EXPENSEREPORT_SAND_MASK') ? '' : $conf->global->EXPENSEREPORT_SAND_MASK;

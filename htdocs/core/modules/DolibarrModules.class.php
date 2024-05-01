@@ -698,7 +698,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
         $langs->load("admin");
 
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 
         $content = '';
         $pathoffile = $this->getDescLongReadmeFound();
@@ -707,7 +707,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
             $content = file_get_contents($pathoffile);
 
             if ((float) DOL_VERSION >= 6.0) {
-                @include_once DOL_DOCUMENT_ROOT . '/core/lib/parsemd.lib.php';
+                @include_once BASE_PATH . '/../Dolibarr/Lib/ParseMd.php';
 
                 $content = dolMd2Html(
                     $content,
@@ -787,7 +787,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
         $langs->load("admin");
 
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 
         $filefound = false;
 
@@ -808,7 +808,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
             $content = file_get_contents($pathoffile);
 
             if ((float) DOL_VERSION >= 6.0) {
-                @include_once DOL_DOCUMENT_ROOT . '/core/lib/parsemd.lib.php';
+                @include_once BASE_PATH . '/../Dolibarr/Lib/ParseMd.php';
 
                 $content = dolMd2Html($content, 'parsedown', ['doc/' => dol_buildpath(strtolower($this->name) . '/doc/', 1)]);
             } else {
@@ -1154,7 +1154,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
             return 1;
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 
         $ok = 1;
         foreach ($conf->file->dol_document_root as $dirroot) {
@@ -2583,7 +2583,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
      */
     public function checkForUpdate()
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
         if (!empty($this->url_last_version)) {
             $lastVersion = getURLContent($this->url_last_version, 'GET', '', 1, [], ['http', 'https'], 0);    // Accept http or https links on external remote server only
             if (isset($lastVersion['content']) && strlen($lastVersion['content']) < 30) {

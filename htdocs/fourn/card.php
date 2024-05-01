@@ -34,13 +34,13 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 if (isModEnabled('member')) {
 }
 if (isModEnabled('category')) {
 }
 if (!empty($conf->accounting->enabled)) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 }
 
 // Load translation files required by page

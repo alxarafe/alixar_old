@@ -37,8 +37,8 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_expression.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_parser.class.php';
 
@@ -114,7 +114,7 @@ if (empty($reshook)) {
     }
 
     if ($action == 'setlabelsellingprice' && $user->admin) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
         $keyforlabel = 'PRODUIT_MULTIPRICES_LABEL' . GETPOST('pricelevel');
         dolibarr_set_const($db, $keyforlabel, GETPOST('labelsellingprice', 'alpha'), 'chaine', 0, '', $conf->entity);
         $action = '';

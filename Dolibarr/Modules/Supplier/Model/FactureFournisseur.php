@@ -378,7 +378,7 @@ class FactureFournisseur extends CommonInvoice
         // phpcs:enable
         global $conf, $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
         include_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 
         $this->db->begin();
@@ -2430,7 +2430,7 @@ class FactureFournisseur extends CommonInvoice
         global $mysoc, $langs;
 
         dol_syslog(get_class($this) . "::updateline $id,$desc,$pu,$vatrate,$qty,$idproduct,$price_base_type,$info_bits,$type,$remise_percent,$notrigger,$date_start,$date_end,$fk_unit,$pu_devise,$ref_supplier", LOG_DEBUG);
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         $pu = price2num($pu);
         $qty = price2num($qty);
@@ -2809,7 +2809,7 @@ class FactureFournisseur extends CommonInvoice
         global $langs, $mysoc, $conf;
 
         dol_syslog(get_class($this) . "::addline $desc,$pu,$qty,$txtva,$fk_product,$remise_percent,$date_start,$date_end,$fk_code_ventilation,$info_bits,$price_base_type,$type,$fk_unit,fk_remise_except=$fk_remise_except", LOG_DEBUG);
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         if ($this->statut == self::STATUS_DRAFT) {
             // Clean parameters

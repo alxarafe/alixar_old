@@ -131,7 +131,7 @@ class mod_delivery_saphir extends ModeleNumRefDeliveryOrder
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // On defini critere recherche compteur
         $mask = getDolGlobalString('DELIVERY_SAPHIR_MASK');

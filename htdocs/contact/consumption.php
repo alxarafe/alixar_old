@@ -28,7 +28,7 @@
 
 // Load Dolibarr environment
 require "../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Contact.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 $optioncss = GETPOST('optioncss', 'aZ'); // Option for the css output (always '' except when 'print')

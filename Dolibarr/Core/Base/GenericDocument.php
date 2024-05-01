@@ -1085,14 +1085,14 @@ abstract class GenericDocument
     public function getFullAddress($withcountry = 0, $sep = "\n", $withregion = 0, $extralangcode = '')
     {
         if ($withcountry && $this->country_id && (empty($this->country_code) || empty($this->country))) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
             $tmparray = getCountry($this->country_id, 'all');
             $this->country_code = $tmparray['code'];
             $this->country = $tmparray['label'];
         }
 
         if ($withregion && $this->state_id && (empty($this->state_code) || empty($this->state) || empty($this->region) || empty($this->region_code))) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
             $tmparray = getState($this->state_id, 'all', 0, 1);
             $this->state_code   = $tmparray['code'];
             $this->state        = $tmparray['label'];
@@ -3768,7 +3768,7 @@ abstract class GenericDocument
             }
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         $forcedroundingmode = $roundingadjust;
         if ($forcedroundingmode == 'auto' && isset($conf->global->MAIN_ROUNDOFTOTAL_NOT_TOTALOFROUND)) {
@@ -5921,7 +5921,7 @@ abstract class GenericDocument
         $file_osencoded = dol_osencode($file);
 
         if (file_exists($file_osencoded)) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
             $tmparraysize = getDefaultImageSizes();
             $maxwidthsmall = $tmparraysize['maxwidthsmall'];
@@ -7335,7 +7335,7 @@ abstract class GenericDocument
         } elseif ($type == 'select') {  // combo list
             $out = '';  // @phan-suppress-current-line PhanPluginRedundantAssignment
             if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_EXTRAFIELDS_DISABLE_SELECT2')) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($keyprefix . $key . $keysuffix, array(), 0);
             }
 
@@ -7367,7 +7367,7 @@ abstract class GenericDocument
         } elseif ($type == 'sellist') {
             $out = '';  // @phan-suppress-current-line PhanPluginRedundantAssignment
             if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_EXTRAFIELDS_DISABLE_SELECT2')) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($keyprefix . $key . $keysuffix, array(), 0);
             }
 
@@ -9112,7 +9112,7 @@ abstract class GenericDocument
         global $conf, $user, $langs;
 
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         $sortfield = 'position_name';
         $sortorder = 'asc';

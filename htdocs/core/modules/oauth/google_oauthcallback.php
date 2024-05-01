@@ -212,7 +212,7 @@ if (!GETPOST('code')) {
         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
         //$urlwithroot = DOL_MAIN_URL_ROOT;             // This is to use same domain name than current
 
-        include DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
         $currentrooturl = getRootURLFromURL(DOL_MAIN_URL_ROOT);
         $externalrooturl = getRootURLFromURL($urlwithroot);
 

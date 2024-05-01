@@ -22,7 +22,7 @@ if (empty($conf) || !is_object($conf)) {
     exit(1);
 }
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
 
 print '<!-- BEGIN PHP TEMPLATE ONLINEPAYMENTLINKS -->';
 

@@ -27,7 +27,7 @@
 require BASE_PATH . '/main.inc.php';
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/zapier/lib/zapier.lib.php';
 
 // Translations

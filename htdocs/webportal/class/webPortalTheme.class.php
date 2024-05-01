@@ -25,7 +25,7 @@
  * \brief      File of class with theme definition for WebPortal
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php'; // used for color functions
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php'; // used for color functions
 
 /**
  * Class WebPortalTheme

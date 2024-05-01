@@ -34,11 +34,11 @@ defineIfNotDefined('NOBROWSERNOTIF', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/bookcal/class/calendar.class.php';
 require_once DOL_DOCUMENT_ROOT . '/bookcal/class/availabilities.class.php';
 

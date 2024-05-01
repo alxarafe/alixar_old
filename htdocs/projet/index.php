@@ -33,7 +33,7 @@ use DoliModules\Project\Model\Project;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 $hookmanager = new HookManager($db);
@@ -81,7 +81,7 @@ if (empty($reshook)) {
         $search_project_user = GETPOSTINT('search_project_user');
         $tabparam = array("MAIN_SEARCH_PROJECT_USER_PROJECTSINDEX" => $search_project_user);
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
         $result = dol_set_user_param($db, $conf, $user, $tabparam);
     }
 }

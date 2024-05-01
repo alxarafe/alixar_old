@@ -2200,7 +2200,7 @@ class BookKeeping extends GenericDocument
 		// phpcs:enable
         global $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
         $pcgver = getDolGlobalInt('CHARTOFACCOUNTS');
 

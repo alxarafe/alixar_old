@@ -1977,7 +1977,7 @@ function dol_add_file_process($upload_dir, $allowoverwrite = 0, $donotupdatesess
                 $resupload = dol_move_uploaded_file($TFile['tmp_name'][$i], $destfull, $allowoverwrite, 0, $TFile['error'][$i], 0, $varfiles, $upload_dir);
 
                 if (is_numeric($resupload) && $resupload > 0) {   // $resupload can be 'ErrorFileAlreadyExists'
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
                     $tmparraysize = getDefaultImageSizes();
                     $maxwidthsmall = $tmparraysize['maxwidthsmall'];

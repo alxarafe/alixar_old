@@ -44,9 +44,9 @@ use DoliModules\Contact\Model\Contact;
 
 require BASE_PATH . '/main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Contact.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
@@ -1286,7 +1286,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
         if ($action == 'create_user') {
             // Full firstname and lastname separated with a dot : firstname.lastname
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             $login = dol_buildlogin($object->lastname, $object->firstname);
 
             $generated_password = '';
@@ -1372,7 +1372,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 
         // Default language
         if (getDolGlobalInt('MAIN_MULTILANGS')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             print '<tr><td>' . $langs->trans("DefaultLang") . '</td><td>';
             //$s=picto_from_langcode($object->default_lang);
             //print ($s?$s.' ':'');

@@ -44,10 +44,10 @@ use DoliCore\Base\BasicModel;
 use DoliDB;
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 /**
@@ -2062,7 +2062,7 @@ class AccountancyExport extends BasicModel
      */
     public function exportLDCompta10($objectLines, $exportFile = null)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         $separator = ';';
         $end_line = "\r\n";

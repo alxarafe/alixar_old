@@ -211,6 +211,13 @@ if (!defined('NOLOGIN')) {
                 }
             }
 
+            dump([
+                $usertotest,
+                $passwordtotest,
+                $entitytotest,
+                $authmode,
+            ]);
+
             $login = checkLoginPassEntity($usertotest, $passwordtotest, $entitytotest, $authmode);
             if ($login === '--bad-login-validity--') {
                 $login = '';

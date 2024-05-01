@@ -39,7 +39,7 @@ require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.ph
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/paymentsocialcontribution.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/tax.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Tax.php';
 if (isModEnabled('project')) {
     include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
     include_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';

@@ -37,7 +37,7 @@ defineIfNotDefined('NOSESSION', '1');
 
 require BASE_PATH . '/main.inc.php';
 //require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ws.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 require_once DOL_DOCUMENT_ROOT . "/categories/class/categorie.class.php";
@@ -529,7 +529,7 @@ function createProductOrService($authentication, $product)
     }
 
     if (!$error) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         $newobject = new Product($db);
         $newobject->ref = $product['ref'];
@@ -694,7 +694,7 @@ function updateProductOrService($authentication, $product)
     }
 
     if (!$error) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         $newobject = new Product($db);
         $newobject->fetch($product['id']);

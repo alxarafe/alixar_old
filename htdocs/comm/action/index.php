@@ -43,7 +43,7 @@ use DoliModules\User\Model\User;
 
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
 
 if (!isset($conf->global->AGENDA_MAX_EVENTS_DAY_VIEW)) {
     $conf->global->AGENDA_MAX_EVENTS_DAY_VIEW = 3;
@@ -2230,7 +2230,7 @@ function show_day_events($db, $day, $month, $year, $monthshown, $style, &$eventa
                                 }
                             }
                             if (!empty($event->fk_element) && $event->fk_element > 0 && !empty($event->elementtype) && getDolGlobalString('AGENDA_SHOW_LINKED_OBJECT')) {
-                                include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                                include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
                                 if ($linerelatedto) {
                                     $linerelatedto .= '<br>';
                                 }

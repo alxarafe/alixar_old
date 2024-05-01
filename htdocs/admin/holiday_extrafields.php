@@ -31,7 +31,7 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/holiday.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Holiday.php';
 
 if (!$user->admin) {
     accessforbidden();

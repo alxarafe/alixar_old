@@ -181,8 +181,8 @@ class mod_barcode_thirdparty_standard extends ModeleNumRefBarCode
     {
         global $db;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/barcode.lib.php'; // to be able to call function barcode_gen_ean_sum($ean)
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Barcode.php'; // to be able to call function barcode_gen_ean_sum($ean)
 
         if (empty($type)) {
             $type = getDolGlobalString('GENBARCODE_BARCODETYPE_THIRDPARTY');
@@ -242,7 +242,7 @@ class mod_barcode_thirdparty_standard extends ModeleNumRefBarCode
      */
     public function verif($db, &$code, $thirdparty, $thirdparty_type, $type)
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $result = 0;
         $code = strtoupper(trim($code));

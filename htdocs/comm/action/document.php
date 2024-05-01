@@ -33,10 +33,10 @@ use DoliCore\Form\Form;
 use DoliModules\User\Model\User;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'commercial', 'other', 'bills'));

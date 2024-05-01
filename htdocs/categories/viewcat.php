@@ -32,7 +32,7 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/categories.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Categories.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("categories", "compta"));
@@ -437,7 +437,7 @@ if ($cats < 0) {
 
     $nbofentries = (count($data) - 1);
     if ($nbofentries > 0) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/treeview.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/TreeView.php';
         print '<tr class="pair">';
         print '<td colspan="3">';
 

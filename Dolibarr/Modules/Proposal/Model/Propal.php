@@ -798,7 +798,7 @@ public $demand_reason;
         // phpcs:enable
         global $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
         include_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 
         $this->db->begin();
@@ -895,7 +895,7 @@ public $demand_reason;
 
         dol_syslog(get_class($this) . "::updateLine rowid=$rowid, pu=$pu, qty=$qty, remise_percent=$remise_percent,
         txtva=$txtva, desc=$desc, price_base_type=$price_base_type, info_bits=$info_bits, special_code=$special_code, fk_parent_line=$fk_parent_line, pa_ht=$pa_ht, type=$type, date_start=$date_start, date_end=$date_end");
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         // Clean parameters
         $remise_percent = price2num($remise_percent);
@@ -1896,7 +1896,7 @@ public $demand_reason;
         dol_syslog(get_class($this) . "::addline propalid=$this->id, desc=$desc, pu_ht=$pu_ht, qty=$qty, txtva=$txtva, fk_product=$fk_product, remise_except=$remise_percent, price_base_type=$price_base_type, pu_ttc=$pu_ttc, info_bits=$info_bits, type=$type, fk_remise_except=" . $fk_remise_except);
 
         if ($this->statut == self::STATUS_DRAFT) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
             // Clean parameters
             if (empty($remise_percent)) {

@@ -49,8 +49,8 @@ use DoliModules\SupplierProposal\Model\SupplierProposal;
 require BASE_PATH . '/main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_proposal/modules_supplier_proposal.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/supplier_proposal.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/SupplierProposal.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'supplier_proposal', 'compta', 'bills', 'propal', 'orders', 'products', 'deliveries', 'sendings'));

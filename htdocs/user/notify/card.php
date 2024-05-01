@@ -33,8 +33,8 @@ use DoliModules\User\Model\User;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/notify.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/triggers/interface_50_modNotification_Notification.class.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/UserGroups.php';
+require_once BASE_PATH . '/../Dolibarr/Core/Triggers/interface_50_modNotification_Notification.class.php';
 
 // Load translation files required by page
 $langs->loadLangs(array('companies', 'mails', 'admin', 'other', 'errors'));

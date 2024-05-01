@@ -31,7 +31,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/rssparser.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
 
@@ -302,7 +302,7 @@ if ($resql) {
             $imageurl = $rssparser->getImageUrl();
             $linkrss = $rssparser->getLink();
             if (!preg_match('/^http/', $imageurl)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
                 if (image_format_supported($imageurl) >= 0) {
                     // If we are sure imageurl is a path to an image file, and if it does not start with http, we append root url to it.
                     $imageurl = $linkrss . $imageurl;

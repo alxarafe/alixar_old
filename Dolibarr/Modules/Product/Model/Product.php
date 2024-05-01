@@ -45,7 +45,7 @@ namespace DoliModules\Product\Model;
 use DoliCore\Base\GenericDocument;
 use DoliDB;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/productlot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 
@@ -2341,7 +2341,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
      */
     public function fetch($id = 0, $ref = '', $ref_ext = '', $barcode = '', $ignore_expression = 0, $ignore_price_load = 0, $ignore_lang_load = 0)
     {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         global $langs, $conf;
 
@@ -6048,7 +6048,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     {
         // phpcs:enable
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         $nbphoto = 0;
         $tabobj = [];
@@ -6110,7 +6110,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     {
         // phpcs:enable
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         $dir = dirname($file) . '/'; // Chemin du dossier contenant l'image d'origine
         $dirthumb = $dir . '/thumbs/'; // Chemin du dossier contenant la vignette
@@ -6511,7 +6511,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     {
         // phpcs:enable
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         global $conf;
 
@@ -6559,7 +6559,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
     public function getNomUrl($withpicto = 0, $option = '', $maxlength = 0, $save_lastsearch_value = -1, $notooltip = 0, $morecss = '', $add_label = 0, $sep = ' - ')
     {
         global $conf, $langs, $hookmanager, $user;
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
         $result = '';
 
@@ -6750,7 +6750,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
 
             if (isModEnabled('accounting')) {
                 if ($this->status && isset($this->accountancy_code_sell)) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
                     $selllabel = '<br>';
                     $selllabel .= '<br><b>' . $langs->trans('ProductAccountancySellCode') . ':</b> ' . length_accountg($this->accountancy_code_sell);
                     $selllabel .= '<br><b>' . $langs->trans('ProductAccountancySellIntraCode') . ':</b> ' . length_accountg($this->accountancy_code_sell_intra);
@@ -6758,7 +6758,7 @@ public $regeximgext = '\.gif|\.jpg|\.jpeg|\.png|\.bmp|\.webp|\.xpm|\.xbm'; // Se
                     $datas['accountancysell'] = $selllabel;
                 }
                 if ($this->status_buy && isset($this->accountancy_code_buy)) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
                     $buylabel = '';
                     if (empty($this->status)) {
                         $buylabel .= '<br>';

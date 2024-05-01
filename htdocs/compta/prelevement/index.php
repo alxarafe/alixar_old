@@ -33,7 +33,7 @@ use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/prelevement.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Prelevement.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'categories', 'withdrawals'));

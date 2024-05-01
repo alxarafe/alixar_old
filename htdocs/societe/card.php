@@ -53,12 +53,12 @@ use DoliModules\Category\Model\Categorie;
 use DoliModules\Company\Model\Company;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 }
 if (isModEnabled('eventorganization')) {
     require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorboothattendee.class.php';
@@ -278,7 +278,7 @@ if (empty($reshook)) {
         (!GETPOST('getcustomercode') && !GETPOST('getsuppliercode'))
         && ($action == 'add' || $action == 'update') && $user->hasRight('societe', 'creer')
     ) {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         if (!GETPOST('name')) {
             setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("ThirdPartyName")), null, 'errors');
@@ -2980,7 +2980,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
             // Default language
             if (getDolGlobalInt('MAIN_MULTILANGS')) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
                 print '<tr><td>' . $langs->trans("DefaultLang") . '</td><td>';
                 //$s=picto_from_langcode($object->default_lang);
                 //print ($s?$s.' ':'');

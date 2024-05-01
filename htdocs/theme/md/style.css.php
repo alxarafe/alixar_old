@@ -56,7 +56,7 @@ session_cache_limiter('public');
 
 
 require_once __DIR__ . '/../../main.inc.php'; // __DIR__ allow this script to be included in custom themes
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 // Load user to have $user->conf loaded (not done into main because of NOLOGIN constant defined)
 // and permission, so we can later calculate number of top menu ($nbtopmenuentries) according to user profile.

@@ -42,7 +42,7 @@ use DoliModules\Accounting\Model\AccountingAccount;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 class AccountingExpenseReportController extends DolibarrController
@@ -428,7 +428,7 @@ class AccountingExpenseReportController extends DolibarrController
 
         if (GETPOST('sortfield') == 'erd.date, erd.rowid') {
             $value = (GETPOST('sortorder') == 'asc,asc' ? 0 : 1);
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
             $res = dolibarr_set_const($db, "ACCOUNTING_LIST_SORT_VENTILATION_DONE", $value, 'yesno', 0, '', $conf->entity);
         }
 
@@ -632,7 +632,7 @@ class AccountingExpenseReportController extends DolibarrController
 
         if (GETPOST('sortfield') == 'erd.date, erd.rowid') {
             $value = (GETPOST('sortorder') == 'asc,asc' ? 0 : 1);
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
             $res = dolibarr_set_const($db, "ACCOUNTING_LIST_SORT_VENTILATION_TODO", $value, 'yesno', 0, '', $conf->entity);
         }
 

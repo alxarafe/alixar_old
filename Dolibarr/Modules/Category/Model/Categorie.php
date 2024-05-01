@@ -1881,7 +1881,7 @@ class Categorie extends GenericDocument
     public function isAnyPhotoAvailable($sdir)
     {
         include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
         $sdir .= '/' . get_exdir($this->id, 2, 0, 0, $this, 'category') . $this->id . "/photos/";
 

@@ -30,9 +30,9 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
 // Load translation files required by the page
 $langs->load("companies");
@@ -127,7 +127,7 @@ $contactstatic = new Contact($db);
 $form = new Form($db);
 
 if ($id > 0 || $ref) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
     $langs->load("companies");
 

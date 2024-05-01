@@ -52,7 +52,7 @@ abstract class ModelePDFRecruitmentJobPosition extends CommonDocGenerator
         $type = 'recruitmentjobposition';
         $list = array();
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
         $list = getListOfModels($db, $type, $maxfilenamelength);
 
         return $list;

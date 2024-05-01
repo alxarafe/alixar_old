@@ -29,7 +29,7 @@ use DoliCore\Lib\Fields;
 
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 // load webhook libraries
 require_once DOL_DOCUMENT_ROOT . '/webhook/class/target.class.php';

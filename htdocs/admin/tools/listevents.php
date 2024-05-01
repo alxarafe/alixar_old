@@ -33,7 +33,7 @@ use DoliModules\User\Model\User;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/events.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/triggers/interface_20_all_Logevents.class.php';
+require_once BASE_PATH . '/../Dolibarr/Core/Triggers/interface_20_all_Logevents.class.php';
 
 if (!$user->admin) {
     accessforbidden();

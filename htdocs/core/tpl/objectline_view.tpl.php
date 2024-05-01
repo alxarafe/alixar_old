@@ -363,7 +363,7 @@ if (getDolGlobalString('PRODUCT_USE_UNITS')) {
 if (!empty($line->remise_percent) && $line->special_code != 3) {
     print '<td class="linecoldiscount right">';
     $coldisplay++;
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
     print dol_print_reduction($line->remise_percent, $langs);
     print '</td>';
 } else {
@@ -373,7 +373,7 @@ if (!empty($line->remise_percent) && $line->special_code != 3) {
 
 // Fields for situation invoices
 if (isset($this->situation_cycle_ref) && $this->situation_cycle_ref) {
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
     $coldisplay++;
     print '<td class="linecolcycleref nowrap right">' . $line->situation_percent . '%</td>';
     $coldisplay++;

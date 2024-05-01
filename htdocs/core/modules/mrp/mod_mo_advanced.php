@@ -128,7 +128,7 @@ class mod_mo_advanced extends ModeleNumRefMos
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We get cursor rule
         $mask = getDolGlobalString('MRP_MO_ADVANCED_MASK');

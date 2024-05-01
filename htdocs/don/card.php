@@ -39,9 +39,9 @@ use DoliModules\Donation\Model\Don;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/dons/modules_don.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/donation.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Donation.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
 $langs->loadLangs(array('bills', 'companies', 'donations', 'users'));
@@ -984,7 +984,7 @@ if (!empty($id) && $action != 'edit') {
 
     if ($useonlinepayment) { //$object->statut != Facture::STATUS_DRAFT &&
         print '<br><!-- Link to pay -->' . "\n";
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
         print showOnlinePaymentUrl('donation', $object->ref) . '<br>';
     }
 

@@ -1712,7 +1712,7 @@ class Company extends GenericDocument
     {
         global $langs, $conf, $hookmanager;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         if (empty($id)) {
             $id = $this->id;
@@ -3149,7 +3149,7 @@ class Company extends GenericDocument
         global $conf;
 
         // load the library necessary to check the professional identifiers
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/profid.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/ProfId.php';
 
         $ok = 1;
 
@@ -3313,7 +3313,7 @@ class Company extends GenericDocument
      */
     public function isInEEC()
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
         return isInEEC($this);
     }
 
@@ -3638,7 +3638,7 @@ class Company extends GenericDocument
             } else {
                 // For backward compatibility
                 dol_syslog("Your country setup use an old syntax. Reedit it using setup area.", LOG_WARNING);
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
                 $country_code = getCountry($country_id, 2, $this->db); // This need a SQL request, but it's the old feature that should not be used anymore
                 $country_label = getCountry($country_id, 0, $this->db); // This need a SQL request, but it's the old feature that should not be used anymore
             }
@@ -3662,7 +3662,7 @@ class Company extends GenericDocument
                 $state_label = $tmp[2];
             } else { // For backward compatibility
                 dol_syslog("Your setup of State has an old syntax (entity=" . $conf->entity . "). Go in Home - Setup - Organization then Save should remove this error.", LOG_ERR);
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
                 $state_code = getState($state_id, 2, $this->db); // This need a SQL request, but it's the old feature that should not be used anymore
                 $state_label = getState($state_id, 0, $this->db); // This need a SQL request, but it's the old feature that should not be used anymore
             }

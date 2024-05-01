@@ -512,7 +512,7 @@ public $cond_reglement_doc;
         // phpcs:enable
         global $langs;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
         include_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 
         $this->db->begin();
@@ -597,7 +597,7 @@ public $cond_reglement_doc;
         global $conf, $user, $langs, $mysoc;
 
         dol_syslog(get_class($this) . "::updateLine $rowid, $pu, $qty, $remise_percent, $txtva, $desc, $price_base_type, $info_bits");
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         // Clean parameters
         $remise_percent = price2num($remise_percent);
@@ -1254,7 +1254,7 @@ public $cond_reglement_doc;
         global $mysoc, $conf, $langs;
 
         dol_syslog(get_class($this) . "::addline supplier_proposalid=$this->id, desc=$desc, pu_ht=$pu_ht, qty=$qty, txtva=$txtva, fk_product=$fk_product, remise_except=$remise_percent, price_base_type=$price_base_type, pu_ttc=$pu_ttc, info_bits=$info_bits, type=$type");
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         // Clean parameters
         if (empty($remise_percent)) {

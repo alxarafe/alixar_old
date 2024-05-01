@@ -867,7 +867,7 @@ class Asset extends GenericDocument
         if (!$error) {
             // Get fiscal period
             require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
             $dates = getDefaultDatesForTransfer();
             $init_fiscal_period_start = $dates['date_start'];
             $init_fiscal_period_end = $dates['date_end'];

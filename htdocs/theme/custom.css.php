@@ -30,7 +30,7 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 session_cache_limiter('public');
 
 require_once __DIR__ . '/../main.inc.php'; // __DIR__ allow this script to be included in custom themes
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 // Define css type
 top_httphead('text/css');

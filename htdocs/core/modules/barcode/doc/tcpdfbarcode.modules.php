@@ -25,7 +25,7 @@
  */
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/barcode/modules_barcode.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/barcode.lib.php'; // This is to include def like $genbarcode_loc and $font_loc
+require_once BASE_PATH . '/../Dolibarr/Lib/Barcode.php'; // This is to include def like $genbarcode_loc and $font_loc
 
 /**
  *  Class to generate barcode images using tcpdf barcode generator

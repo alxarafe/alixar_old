@@ -40,18 +40,18 @@ use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ticket.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 if (isModEnabled('project')) {
     include_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
     include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 if (isModEnabled('contract')) {
     include_once DOL_DOCUMENT_ROOT . '/core/class/html.formcontract.class.php';
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/contract.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Contract.php';
     include_once DOL_DOCUMENT_ROOT . '/contrat/class/contrat.class.php';
 }
 

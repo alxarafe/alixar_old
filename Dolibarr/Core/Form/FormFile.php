@@ -1447,7 +1447,7 @@ class FormFile
 
             $nboffiles = count($filearray);
             if ($nboffiles > 0) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
             }
 
             $i = 0;
@@ -2213,7 +2213,7 @@ class FormFile
         print '</tr>';
         $nboflinks = count($links);
         if ($nboflinks > 0) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
         }
 
         foreach ($links as $link) {

@@ -25,7 +25,7 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/expensereport/modules_expensereport.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/ExpenseReport.php';
 if (isModEnabled("bank")) {
 }
 

@@ -34,7 +34,7 @@ require BASE_PATH . '/main.inc.php';
 
 global $conf, $langs, $user;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/stock.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Stock.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('stock@stock', 'admin'));

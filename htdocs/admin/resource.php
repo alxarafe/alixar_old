@@ -27,9 +27,9 @@
 require BASE_PATH . '/main.inc.php';
 
 // Class
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/resource.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Resource.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "resource"));

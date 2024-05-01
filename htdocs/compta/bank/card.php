@@ -42,8 +42,8 @@ use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Category\Model\Categorie;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 // Load translation files required by the page
 $langs->loadLangs(["banks", "bills", "categories", "companies", "compta", "withdrawals"]);

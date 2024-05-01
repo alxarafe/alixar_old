@@ -40,7 +40,7 @@ namespace DoliModules\Contract\Model;
 
 use DoliCore\Base\GenericDocumentLine;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 require_once DOL_DOCUMENT_ROOT . '/margin/lib/margins.lib.php';
 
 /**

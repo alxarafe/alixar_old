@@ -166,7 +166,7 @@ print '<tr><td class="titlefield">' . $langs->trans("DateOfBirth") . '</td><td c
 
 // Default language
 if (getDolGlobalInt('MAIN_MULTILANGS')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
     print '<tr><td>' . $langs->trans("DefaultLang") . '</td><td>';
     //$s=picto_from_langcode($object->default_lang);
     //print ($s?$s.' ':'');
@@ -407,7 +407,7 @@ if (($action != 'addsubscription' && $action != 'create_thirdparty')) {
     if ($useonlinepayment) {
         print '<br>';
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
         print showOnlinePaymentUrl('membersubscription', $object->ref);
         print '<br>';
     }

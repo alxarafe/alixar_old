@@ -54,7 +54,7 @@ use DoliModules\Proposal\Model\Propal;
 require BASE_PATH . '/main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/propale/modules_propale.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
 // Load translation files required by the page
@@ -3172,7 +3172,7 @@ if ($action == 'create') {
 
         if ($object->statut != Propal::STATUS_DRAFT && $useonlinesignature) {
             print '<br><!-- Link to sign -->';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
             print showOnlineSignatureUrl('proposal', $object->ref, $object) . '<br>';
         }
 

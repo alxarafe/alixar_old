@@ -112,7 +112,7 @@ class mod_contract_magre extends ModelNumRefContracts
     {
         global $db;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $mask = getDolGlobalString("CONTRACT_MAGRE_MASK");
 

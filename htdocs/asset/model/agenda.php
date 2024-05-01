@@ -27,10 +27,10 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/asset.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Asset.php';
 require_once DOL_DOCUMENT_ROOT . '/asset/class/assetmodel.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("assets", "other"));

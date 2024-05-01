@@ -28,8 +28,8 @@ use DoliModules\Category\Model\Categorie;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/tax.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Report.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Tax.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Load translation files required by the page

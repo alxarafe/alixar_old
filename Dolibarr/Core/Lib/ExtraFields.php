@@ -1219,7 +1219,7 @@ class ExtraFields
                 $out .= $form->multiselectarray($keyprefix . $key . $keysuffix, $options, $selected, 0, 0, $morecss, 0, 0, '', '', '', !empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_EXTRAFIELDS_DISABLE_SELECT2'));
             } else {
                 if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_EXTRAFIELDS_DISABLE_SELECT2')) {
-                    include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                    include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                     $out .= ajax_combobox($keyprefix . $key . $keysuffix, [], 0);
                 }
 
@@ -1251,7 +1251,7 @@ class ExtraFields
         } elseif ($type == 'sellist') {
             $out = '';  // @phan-suppress-current-line PhanPluginRedundantAssignment
             if (!empty($conf->use_javascript_ajax) && !getDolGlobalString('MAIN_EXTRAFIELDS_DISABLE_SELECT2')) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($keyprefix . $key . $keysuffix, [], 0);
             }
 

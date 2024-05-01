@@ -30,9 +30,9 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/contract.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Contract.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('agenda', 'contrat', 'companies'));
@@ -139,7 +139,7 @@ if ($result > 0) {
     $modCodeContract = new $module();
 }
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 $object->fetch_thirdparty();
 
@@ -249,7 +249,7 @@ if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') ||
     }
 
     // Try to know count of actioncomm from cache
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
     $cachekey = 'count_events_thirdparty_' . $object->id;
     $nbEvent = dol_getcache($cachekey);
 

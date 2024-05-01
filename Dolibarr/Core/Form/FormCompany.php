@@ -323,7 +323,7 @@ class FormCompany extends Form
 
         // Make select dynamic
         if (!empty($htmlname)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $out .= ajax_combobox($htmlname);
         }
 
@@ -472,7 +472,7 @@ class FormCompany extends Form
 
             if ($addjscombo) {
                 // Enhance with select2
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname);
             }
         } else {
@@ -592,7 +592,7 @@ class FormCompany extends Form
             }
 
             // Make select dynamic
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $out .= ajax_combobox($htmlname);
 
             $out .= '</div>';

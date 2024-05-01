@@ -1978,7 +1978,7 @@ class Form
         // Add code for jquery to use multiselect
         if ($addjscombo && $jsbeautify) {
             // Enhance with select2
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $out .= ajax_combobox($idname, [], 0, 0, 'resolve', (((int) $show_empty) < 0 ? (string) $show_empty : '-1'), $morecss);
         }
 
@@ -2306,7 +2306,7 @@ class Form
         }
 
         // Make select dynamic
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
         $out .= ajax_combobox('select' . $htmlname, [], 0, 0, 'resolve');
 
         return $out;
@@ -2352,7 +2352,7 @@ class Form
         $resql = $this->db->query($sql);
         if ($resql) {
             if ($conf->use_javascript_ajax && !$forcecombo) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname, $events);
             }
 
@@ -2816,7 +2816,7 @@ class Form
             }
 
             if ($conf->use_javascript_ajax && !$forcecombo && !$options_only) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlid, $events, getDolGlobalString("CONTACT_USE_SEARCH_TO_SELECT"));
             }
 
@@ -3116,7 +3116,7 @@ class Form
 
             if ($num && !$forcecombo) {
                 // Enhance with select2
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname);
             }
         } else {
@@ -3754,14 +3754,14 @@ class Form
         $result = $this->db->query($sql);
         if ($result) {
             require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_parser.class.php';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
             $num = $this->db->num_rows($result);
 
             $events = null;
 
             if (!$forcecombo) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname, $events, getDolGlobalInt("PRODUIT_USE_SEARCH_TO_SELECT"));
             }
 
@@ -3944,7 +3944,7 @@ class Form
         $outdurationunit = $outtype == Product::TYPE_SERVICE ? substr($objp->duration, -1) : '';
 
         if ($outorigin && getDolGlobalString('PRODUCT_SHOW_ORIGIN_IN_COMBO')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
         }
 
         // Units
@@ -4246,7 +4246,7 @@ class Form
         $out = '';
 
         if (!$forcecombo) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $events = [];
             $out .= ajax_combobox($htmlname, $events, getDolGlobalInt("PRODUIT_USE_SEARCH_TO_SELECT"));
         }
@@ -4468,7 +4468,7 @@ class Form
         $result = $this->db->query($sql);
         if ($result) {
             require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_parser.class.php';
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
             $num = $this->db->num_rows($result);
 
@@ -4794,7 +4794,7 @@ class Form
 
             $this->db->free($result);
 
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $out .= ajax_combobox($htmlname);
         } else {
             dol_print_error($this->db);
@@ -6222,7 +6222,7 @@ class Form
         // phpcs:enable
         global $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 
         $out = '';
 
@@ -7058,7 +7058,7 @@ class Form
             print '<input type="submit" class="button smallpaddingimp valignmiddle" value="' . $langs->trans("Modify") . '">';
             print '</form>';
         } else {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
             print !empty($selected) ? currency_name($selected, 1) : '&nbsp;';
         }
     }
@@ -7127,7 +7127,7 @@ class Form
         $out .= '</select>';
 
         // Make select dynamic
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
         $out .= ajax_combobox($htmlname);
 
         return $out;
@@ -7502,7 +7502,7 @@ class Form
                 $ajaxoptions = [];
             }
 
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
 
             // No immediate load of all database
             $placeholder = '';
@@ -7685,7 +7685,7 @@ class Form
         $resql = $this->db->query($sql);
         if ($resql) {
             if (!$forcecombo) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname, $events, getDolGlobalString("COMPANY_USE_SEARCH_TO_SELECT"));
             }
 
@@ -7865,7 +7865,7 @@ class Form
         }
 
         // Make select dynamic
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
         $out .= ajax_combobox($htmlname);
 
         return $out;
@@ -7942,7 +7942,7 @@ class Form
             $code_country = "'" . $mysoc->country_code . "'"; // Pour compatibilite ascendente
         }
         if (getDolGlobalString('SERVICE_ARE_ECOMMERCE_200238EC')) {    // If option to have vat for end customer for services is on
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
             // If SERVICE_ARE_ECOMMERCE_200238EC=1 combo list vat rate of purchaser and seller countries
             // If SERVICE_ARE_ECOMMERCE_200238EC=2 combo list only the vat rate of the purchaser country
             $selectVatComboMode = getDolGlobalString('SERVICE_ARE_ECOMMERCE_200238EC');
@@ -8533,14 +8533,14 @@ class Form
         dol_syslog(get_class($this) . "::selectTicketsList search tickets", LOG_DEBUG);
         $result = $this->db->query($sql);
         if ($result) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Ticket.php';
 
             $num = $this->db->num_rows($result);
 
             $events = null;
 
             if (!$forcecombo) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname, $events, $conf->global->TICKET_USE_SEARCH_TO_SELECT);
             }
 
@@ -8762,14 +8762,14 @@ class Form
         dol_syslog(get_class($this) . "::selectProjectsList search projects", LOG_DEBUG);
         $result = $this->db->query($sql);
         if ($result) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 
             $num = $this->db->num_rows($result);
 
             $events = null;
 
             if (!$forcecombo) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname, $events, $conf->global->PROJECT_USE_SEARCH_TO_SELECT);
             }
 
@@ -8999,14 +8999,14 @@ class Form
         dol_syslog(get_class($this) . "::selectMembersList search adherents", LOG_DEBUG);
         $result = $this->db->query($sql);
         if ($result) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/member.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Member.php';
 
             $num = $this->db->num_rows($result);
 
             $events = null;
 
             if (!$forcecombo) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname, $events, getDolGlobalString('PROJECT_USE_SEARCH_TO_SELECT') ? $conf->global->PROJECT_USE_SEARCH_TO_SELECT : '');
             }
 
@@ -9452,7 +9452,7 @@ class Form
             $out .= '</select>' . "\n";
 
             if (!$forcecombo) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $out .= ajax_combobox($htmlname, null, getDolGlobalInt($confkeyforautocompletemode, 0));
             }
         } else {
@@ -10405,7 +10405,7 @@ class Form
         $resql = $this->db->query($sql);
         if ($resql) {
             // Enhance with select2
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
 
             $out .= '<select class="flat minwidth200' . ($morecss ? ' ' . $morecss : '') . '" id="' . $htmlname . '" name="' . $htmlname . ($multiple ? '[]' : '') . '" ' . ($multiple ? 'multiple' : '') . ' ' . ($disabled ? ' disabled' : '') . '>';
 
@@ -10784,7 +10784,7 @@ class Form
         if ($resql) {
             // Use select2 selector
             if (!empty($conf->use_javascript_ajax)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $comboenhancement = ajax_combobox($htmlname, '', 0, $forcefocus);
                 $out .= $comboenhancement;
                 $morecss = 'minwidth200imp maxwidth500';
@@ -10908,7 +10908,7 @@ class Form
         if ($resql) {
             // Use select2 selector
             if (!empty($conf->use_javascript_ajax)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
                 $comboenhancement = ajax_combobox($htmlname, '', 0, $forcefocus);
                 $out .= $comboenhancement;
                 $morecss = 'minwidth200imp maxwidth500';
@@ -11020,7 +11020,7 @@ class Form
                     $this->error = 'ERROR in parsing search string: ' . $errormessage;
                 }
                 // Remove first and last parenthesis but only if first is the opening and last the closing of the same group
-                include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
                 $searchtags = removeGlobalParenthesis($searchtags);
 
                 $ret .= '<span class="marginleftonlyshort valignmiddle tagsearch" data-ufilterid="' . ($tmpkey + 1) . '" data-ufilter="' . dol_escape_htmltag($tmpval) . '">';

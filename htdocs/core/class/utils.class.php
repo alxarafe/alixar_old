@@ -906,7 +906,7 @@ class Utils
                     $contentreadme = file_get_contents($dirofmoduletmp . '/README.md');
                     $contentchangelog = file_get_contents($dirofmoduletmp . '/ChangeLog.md');
 
-                    include DOL_DOCUMENT_ROOT . '/core/lib/parsemd.lib.php';
+                    include BASE_PATH . '/../Dolibarr/Lib/ParseMd.php';
 
                     //var_dump($phpfileval['fullname']);
                     $arrayreplacement = array(

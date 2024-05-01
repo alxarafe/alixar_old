@@ -226,7 +226,7 @@ class FactureLigneRec extends CommonInvoiceLine
             $this->fk_parent_line = 0;
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
         $sql = "UPDATE " . MAIN_DB_PREFIX . "facturedet_rec SET";
         $sql .= " fk_facture = " . ((int) $this->fk_facture);

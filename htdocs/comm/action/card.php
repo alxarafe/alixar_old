@@ -47,7 +47,7 @@ use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Load translation files required by the page
@@ -1578,7 +1578,7 @@ if ($action == 'create') {
 
     // Object linked
     if (!empty($origin) && !empty($originid)) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $hasPermissionOnLinkedObject = 0;
         if ($user->hasRight($origin, 'read')) {
@@ -2047,7 +2047,7 @@ if ($id > 0) {
 
         // Object linked
         if (!empty($object->fk_element) && !empty($object->elementtype)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             print '<tr>';
             print '<td>' . $langs->trans("LinkedObject") . '</td>';
 
@@ -2459,7 +2459,7 @@ if ($id > 0) {
         // Object linked (if link is for thirdparty, contact, project it is a recording error. We should not have links in link table
         // for such objects because there is already a dedicated field into table llx_actioncomm.
         if (!empty($object->fk_element) && !empty($object->elementtype) && !in_array($object->elementtype, array('societe', 'contact', 'project'))) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             print '<tr><td>' . $langs->trans("LinkedObject") . '</td>';
             $link = dolGetElementUrl($object->fk_element, $object->elementtype, 1);
             print '<td>';

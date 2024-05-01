@@ -36,10 +36,10 @@ defineIfNotDefined('NOSTYLECHECK', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/emailing.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Emailing.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/mailing.class.php';
 
 // Load translation files required by the page
@@ -280,7 +280,7 @@ if (empty($reshook)) {
                             $onlinepaymentenabled++;
                         }
                         if ($onlinepaymentenabled && getDolGlobalString('PAYMENT_SECURITY_TOKEN')) {
-                            require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                            require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
                             $substitutionarray['__ONLINEPAYMENTLINK_MEMBER__'] = getHtmlOnlinePaymentLink('member', $obj->source_id);
                             $substitutionarray['__ONLINEPAYMENTLINK_DONATION__'] = getHtmlOnlinePaymentLink('donation', $obj->source_id);
                             $substitutionarray['__ONLINEPAYMENTLINK_ORDER__'] = getHtmlOnlinePaymentLink('order', $obj->source_id);

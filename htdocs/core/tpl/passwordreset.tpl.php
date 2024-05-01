@@ -33,7 +33,7 @@ if ($size > 10000) {
     httponly_accessforbidden('<center>' . $langs->trans("ErrorRequestTooLarge") . '<br><a href="' . DOL_URL_ROOT . '">' . $langs->trans("ClickHereToGoToApp") . '</a></center>', 413, 1);
 }
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 header('Cache-Control: Public, must-revalidate');
 

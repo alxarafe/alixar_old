@@ -39,7 +39,7 @@ if (GETPOST('formfilteraction', 'alphanohtml') == 'listafterchangingselectedfiel
         $tabparam["MAIN_SELECTEDFIELDS_" . $varpage] = '';
     }
 
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
     $result = dol_set_user_param($db, $conf, $user, $tabparam);
 

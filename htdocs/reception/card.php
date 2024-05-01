@@ -46,8 +46,8 @@ use DoliModules\Supplier\Model\CommandeFournisseur;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/reception.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Reception.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/reception/modules_reception.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';

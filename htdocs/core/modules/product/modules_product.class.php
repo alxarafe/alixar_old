@@ -53,7 +53,7 @@ abstract class ModelePDFProduct extends CommonDocGenerator
         $type = 'product';
         $list = array();
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
         $list = getListOfModels($dbs, $type, $maxfilenamelength);
         return $list;
     }

@@ -116,7 +116,7 @@ abstract class Stats
         // Search into cache
         if (!empty($cachedelay)) {
             include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
+            include_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/Json.php';
         }
 
         $newpathofdestfile = $conf->user->dir_temp . '/' . get_class($this) . '_' . __FUNCTION__ . '_' . (empty($this->cachefilesuffix) ? '' : $this->cachefilesuffix . '_') . $langs->defaultlang . '_entity.' . $conf->entity . '_user' . $user->id . '.cache';
@@ -219,7 +219,7 @@ abstract class Stats
         // Search into cache
         if (!empty($cachedelay)) {
             include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
+            include_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/Json.php';
         }
 
         $newpathofdestfile = $conf->user->dir_temp . '/' . get_class($this) . '_' . __FUNCTION__ . '_' . (empty($this->cachefilesuffix) ? '' : $this->cachefilesuffix . '_') . $langs->defaultlang . '_entity.' . $conf->entity . '_user' . $user->id . '.cache';
@@ -348,7 +348,7 @@ abstract class Stats
         // Search into cache
         if (!empty($cachedelay)) {
             include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/json.lib.php';
+            include_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/Json.php';
         }
 
         $newpathofdestfile = $conf->user->dir_temp . '/' . get_class($this) . '_' . __FUNCTION__ . '_' . (empty($this->cachefilesuffix) ? '' : $this->cachefilesuffix . '_') . $langs->defaultlang . '_entity.' . $conf->entity . '_user' . $user->id . '.cache';

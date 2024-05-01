@@ -29,8 +29,8 @@
 use DoliCore\Form\Form;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'products', 'admin'));
@@ -138,7 +138,7 @@ print load_fiche_titre($title, '', 'title_setup');
 $aCurrencies = array($conf->currency); // Default currency always first position
 
 if (isModEnabled('multicompany') && getDolGlobalString('MULTICURRENCY_USE_LIMIT_BY_CURRENCY')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/multicurrency.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/MultiCurrency.php';
 
     $sql = "SELECT rowid, code FROM " . MAIN_DB_PREFIX . "multicurrency";
     $sql .= " WHERE entity = " . ((int) $conf->entity);

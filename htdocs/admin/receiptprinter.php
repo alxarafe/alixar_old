@@ -30,9 +30,9 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/receiptprinter.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/ReceiptPrinter.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/dolreceiptprinter.class.php';
 
 // Load translation files required by the page

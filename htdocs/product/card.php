@@ -58,11 +58,11 @@ use DoliModules\Product\Model\Product;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/canvas.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/genericobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/product/modules_product.class.php';
 if (isModEnabled('accounting')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 }
 if (isModEnabled('bom')) {
     require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';

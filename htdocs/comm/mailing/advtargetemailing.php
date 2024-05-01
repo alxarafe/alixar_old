@@ -29,7 +29,7 @@ defineIfNotDefined('NOSTYLECHECK', '1');
 require BASE_PATH . '/main.inc.php';
 
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/mailing.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/emailing.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Emailing.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/advtargetemailing.class.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/html.formadvtargetemailing.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/mailings/advthirdparties.modules.php';

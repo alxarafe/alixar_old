@@ -28,8 +28,8 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/takepos.lib.php";
 
 // Security check

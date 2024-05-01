@@ -126,7 +126,7 @@ class mod_recruitmentjobposition_advanced extends ModeleNumRefRecruitmentJobPosi
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We get cursor rule
         $mask = getDolGlobalString('RECRUITMENT_RECRUITMENTJOBPOSITION_ADVANCED_MASK');

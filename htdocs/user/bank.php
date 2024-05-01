@@ -39,10 +39,10 @@ use DoliModules\User\Model\UserBankAccount;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/UserGroups.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 if (isModEnabled('salaries')) {
     require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
     require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';

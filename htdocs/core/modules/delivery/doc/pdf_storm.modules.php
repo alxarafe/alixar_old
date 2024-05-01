@@ -32,8 +32,8 @@
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/delivery/modules_delivery.php';
 require_once DOL_DOCUMENT_ROOT . '/delivery/class/delivery.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
 
 
 /**

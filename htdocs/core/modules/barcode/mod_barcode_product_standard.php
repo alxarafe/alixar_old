@@ -174,8 +174,8 @@ class mod_barcode_product_standard extends ModeleNumRefBarCode
             return -1;
         }
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/barcode.lib.php'; // to be able to call function barcode_gen_ean_sum($ean)
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Barcode.php'; // to be able to call function barcode_gen_ean_sum($ean)
 
         if (empty($type)) {
             $type = getDolGlobalString('PRODUIT_DEFAULT_BARCODE_TYPE');
@@ -239,7 +239,7 @@ class mod_barcode_product_standard extends ModeleNumRefBarCode
 
         //var_dump($code.' '.$product->ref.' '.$thirdparty_type);exit;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $result = 0;
         $code = strtoupper(trim($code));

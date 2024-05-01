@@ -37,7 +37,7 @@ use DoliModules\Project\Model\Task;
 use DoliModules\User\Model\User;
 
 require "../../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 // Load translation files required by the page

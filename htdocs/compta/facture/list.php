@@ -58,10 +58,10 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('bills', 'companies', 'products', 'categories'));

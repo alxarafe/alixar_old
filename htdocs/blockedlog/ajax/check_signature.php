@@ -35,7 +35,7 @@ defineIfNotDefined('NOREQUIREHTML', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/blockedlog.class.php';
 require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/authority.class.php';
 

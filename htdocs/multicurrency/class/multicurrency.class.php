@@ -666,7 +666,7 @@ class MultiCurrency extends GenericDocument
             $key = getDolGlobalString("MULTICURRENCY_APP_ID");
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 
         $urlendpoint = 'http://api.currencylayer.com/live?access_key=' . $key;
         $urlendpoint .= '&source=' . (!getDolGlobalString('MULTICURRENCY_APP_SOURCE') ? 'USD' : $conf->global->MULTICURRENCY_APP_SOURCE);

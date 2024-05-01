@@ -574,7 +574,7 @@ if (!defined('NOLOGIN') && !defined('NOIPCHECK') && !empty($dolibarr_main_restri
 }
 
 if (!defined('NOREQUIREAJAX')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php'; // Need 22ko memory
+    require_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php'; // Need 22ko memory
 }
 
 // If install or upgrade process not done or not completely finished, we call the install page.
@@ -596,7 +596,7 @@ if (!getDolGlobalString('MAIN_VERSION_LAST_UPGRADE') && getDolGlobalString('MAIN
 
 if ($checkifupgraderequired) {
     $versiontocompare = getDolGlobalString('MAIN_VERSION_LAST_UPGRADE', getDolGlobalString('MAIN_VERSION_LAST_INSTALL'));
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
     $dolibarrversionlastupgrade = preg_split('/[.-]/', $versiontocompare);
     $dolibarrversionprogram = preg_split('/[.-]/', DOL_VERSION);
     $rescomp = versioncompare($dolibarrversionprogram, $dolibarrversionlastupgrade);

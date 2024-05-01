@@ -28,8 +28,8 @@ namespace DoliModules\Agenda\Model;
  *       \brief      File of class to parse ical calendars
  */
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/xcal.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/XCal.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 
 
 /**

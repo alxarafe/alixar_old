@@ -29,9 +29,9 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/core/lib/treeview.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/TreeView.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 
 $langs->loadLangs(array("main", "categories", "takepos", "printing"));
 

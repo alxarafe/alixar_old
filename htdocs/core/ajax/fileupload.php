@@ -33,7 +33,7 @@ defineIfNotDefined('NOREQUIRESOC', '1');
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/fileupload.class.php';  // Class to upload common files
 require_once DOL_DOCUMENT_ROOT . '/core/class/genericobject.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 
 $id = GETPOSTINT('fk_element');
 $element = GETPOST('element', 'alpha'); // 'myobject' (myobject=mymodule) or 'myobject@mymodule' or 'myobject_mysubobject' (myobject=mymodule)

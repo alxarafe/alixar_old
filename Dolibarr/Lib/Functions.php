@@ -3812,7 +3812,7 @@ function getArrayOfSocialNetworks()
 
     $socialnetworks = [];
     // Enable caching of array
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
     $cachekey = 'socialnetworks_' . $conf->entity;
     $dataretrieved = dol_getcache($cachekey);
     if (!is_null($dataretrieved)) {
@@ -6936,7 +6936,7 @@ function price2num($amount, $rounding = '', $option = 0)
  */
 function showDimensionInBestUnit($dimension, $unit, $type, $outputlangs, $round = -1, $forceunitoutput = 'no', $use_short_label = 0)
 {
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
     if (($forceunitoutput == 'no' && $dimension < 1 / 10000 && $unit < 90) || (is_numeric($forceunitoutput) && $forceunitoutput == -6)) {
         $dimension *= 1000000;
@@ -7505,7 +7505,7 @@ function get_default_tva(Company $thirdparty_seller, Company $thirdparty_buyer, 
 {
     global $conf;
 
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
     // Note: possible values for tva_assuj are 0/1 or franchise/reel
     $seller_use_vat = ((is_numeric($thirdparty_seller->tva_assuj) && !$thirdparty_seller->tva_assuj) || (!is_numeric($thirdparty_seller->tva_assuj) && $thirdparty_seller->tva_assuj == 'franchise')) ? 0 : 1;
@@ -7524,7 +7524,7 @@ function get_default_tva(Company $thirdparty_seller, Company $thirdparty_buyer, 
         if ($seller_in_cee && $buyer_in_cee) {
             $isacompany = $thirdparty_buyer->isACompany();
             if ($isacompany && getDolGlobalString('MAIN_USE_VAT_COMPANIES_IN_EEC_WITH_INVALID_VAT_ID_ARE_INDIVIDUAL')) {
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
                 if (!isValidVATID($thirdparty_buyer)) {
                     $isacompany = 0;
                 }
@@ -7575,7 +7575,7 @@ function get_default_tva(Company $thirdparty_seller, Company $thirdparty_buyer, 
     if (($seller_in_cee && $buyer_in_cee)) {
         $isacompany = $thirdparty_buyer->isACompany();
         if ($isacompany && getDolGlobalString('MAIN_USE_VAT_COMPANIES_IN_EEC_WITH_INVALID_VAT_ID_ARE_INDIVIDUAL')) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             if (!isValidVATID($thirdparty_buyer)) {
                 $isacompany = 0;
             }
@@ -9223,7 +9223,7 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
                 $paymenturl = '';
             } else {
                 // Set the online payment url link into __ONLINE_PAYMENT_URL__ key
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
                 $outputlangs->loadLangs(['paypal', 'other']);
 
                 $amounttouse = 0;
@@ -9288,7 +9288,7 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
 
                 if (is_object($object) && $object->element == 'propal') {
                     $substitutionarray['__URL_PROPOSAL__'] = DOL_MAIN_URL_ROOT . "/comm/propal/card.php?id=" . $object->id;
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
                     $substitutionarray['__ONLINE_SIGN_URL__'] = getOnlineSignatureUrl(0, 'proposal', $object->ref, 1, $object);
                 }
                 if (is_object($object) && $object->element == 'commande') {
@@ -9299,12 +9299,12 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
                 }
                 if (is_object($object) && $object->element == 'contrat') {
                     $substitutionarray['__URL_CONTRACT__'] = DOL_MAIN_URL_ROOT . "/contrat/card.php?id=" . $object->id;
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
                     $substitutionarray['__ONLINE_SIGN_URL__'] = getOnlineSignatureUrl(0, 'contract', $object->ref, 1, $object);
                 }
                 if (is_object($object) && $object->element == 'fichinter') {
                     $substitutionarray['__URL_FICHINTER__'] = DOL_MAIN_URL_ROOT . "/fichinter/card.php?id=" . $object->id;
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
                     $substitutionarray['__ONLINE_SIGN_FICHINTER_URL__'] = getOnlineSignatureUrl(0, 'fichinter', $object->ref, 1, $object);
                 }
                 if (is_object($object) && $object->element == 'supplier_proposal') {
@@ -9327,7 +9327,7 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
         }
     }
     if ((empty($exclude) || !in_array('objectamount', $exclude)) && (empty($include) || in_array('objectamount', $include))) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functionsnumtoword.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/FunctionsNumToWord.php';
 
         $substitutionarray['__DATE_YMD__'] = is_object($object) ? (isset($object->date) ? dol_print_date($object->date, 'day', 0, $outputlangs) : null) : '';
         $substitutionarray['__DATE_DUE_YMD__'] = is_object($object) ? (isset($object->date_lim_reglement) ? dol_print_date($object->date_lim_reglement, 'day', 0, $outputlangs) : null) : '';
@@ -14297,7 +14297,7 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
         $delay_warning = $conf->global->MAIN_DELAY_ACTIONS_TODO * 24 * 60 * 60;
 
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $formactions = new FormActions($db);
 

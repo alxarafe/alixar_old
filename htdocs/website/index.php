@@ -43,11 +43,11 @@ defineIfNotDefined('DISABLE_JS_GRAHP', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/website.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/website2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/WebSite.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/WebSite2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/website/class/website.class.php';
 require_once DOL_DOCUMENT_ROOT . '/website/class/websitepage.class.php';
@@ -763,7 +763,7 @@ if ($action == 'addcontainer' && $usercanedit) {
         $grabimages = GETPOST('grabimages', 'alpha');
         $grabimagesinto = GETPOST('grabimagesinto', 'alpha');
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
         // The include seems to break typing on variables
 
         if (empty($urltograb)) {
@@ -4778,7 +4778,7 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
         print '</div>';
         print '<div class="tagtd">';
         print img_picto('', 'category', 'class="paddingrightonly"') . ' ' . $form->select_all_categories(Categorie::TYPE_WEBSITE_PAGE, GETPOSTISSET('optioncategory') ? GETPOST('optioncategory') : '', 'optioncategory', 0, 0, 0, 0, 'minwidth125 maxwidth400 widthcentpercentminusx');
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
         print ajax_combobox('optioncategory');
         print '</div>';
         print '</div>';
@@ -4830,7 +4830,7 @@ if ($mode == 'replacesite' || $massaction == 'replace') {
             $massactionbutton .= '<div class="massactionother massactionsetcategory massactiondelcategory hidden">';
             $massactionbutton .= img_picto('', 'category') . ' ' . $langs->trans("Category");
             $massactionbutton .= ' ' . $form->select_all_categories(Categorie::TYPE_WEBSITE_PAGE, GETPOSTISSET('setcategory') ? GETPOST('setcategory') : '', 'setcategory', 64, 0, 0, 0, 'minwidth300 alignstart');
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $massactionbutton .= ajax_combobox('setcategory');
             $massactionbutton .= '</div>';
 

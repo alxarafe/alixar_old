@@ -27,8 +27,8 @@
 require BASE_PATH . '/main.inc.php';
 
 // Class
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/salaries.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Salaries.php';
 if (isModEnabled('accounting')) {
 }
 

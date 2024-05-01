@@ -1528,7 +1528,7 @@ private $cache_childids;
         $this->employee = 0;
 
         if (empty($login)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             $login = dol_buildlogin($contact->lastname, $contact->firstname);
         }
         $this->login = $login;
@@ -2317,7 +2317,7 @@ private $cache_childids;
         $this->pass_crypted = $member->pass_indatabase_crypted;
 
         if (empty($login)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             $login = dol_buildlogin($member->lastname, $member->firstname);
         }
         $this->login = $login;

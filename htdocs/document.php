@@ -111,7 +111,7 @@ function llxFooter()
 
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
 $encoding = '';
 $action = GETPOST('action', 'aZ09');

@@ -1123,7 +1123,7 @@ class BonPrelevement extends GenericDocument
 
         if (!$error) {
             // Make some checks
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
             $tmpsoc = new Company($this->db);
             $tmpuser = new User($this->db);
@@ -2196,7 +2196,7 @@ class BonPrelevement extends GenericDocument
         // phpcs:enable
         global $conf;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $CrLf = "\n";
         $Rowing = sprintf("%010d", $row_idfac);

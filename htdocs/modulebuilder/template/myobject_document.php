@@ -78,9 +78,9 @@ if (!$res) {
     die("Include of main fails");
 }
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 dol_include_once('/mymodule/class/myobject.class.php');
 dol_include_once('/mymodule/lib/mymodule_myobject.lib.php');
 

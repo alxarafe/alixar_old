@@ -53,12 +53,12 @@ global $mysoc;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/fiscalyear.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/fiscalyear.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/report.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/FiscalYear.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Report.php';
 
 use DoliCore\Base\DolibarrController;
 use DoliCore\Form\FormAccounting;

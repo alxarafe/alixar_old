@@ -40,10 +40,10 @@ use DoliModules\Supplier\Model\FactureFournisseur;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/salaries/class/salary.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/prelevement.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Prelevement.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('banks', 'categories', 'withdrawals', 'companies', 'bills'));

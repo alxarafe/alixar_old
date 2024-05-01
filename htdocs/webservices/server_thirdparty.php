@@ -33,7 +33,7 @@ defineIfNotDefined('NOSESSION', '1');
 
 require BASE_PATH . '/main.inc.php';
 //require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ws.php';
 
 
 
@@ -448,7 +448,7 @@ function createThirdParty($authentication, $thirdparty)
 
 
     if (!$error) {
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         $newobject = new Company($db);
         $newobject->ref = $thirdparty['ref'];
@@ -581,7 +581,7 @@ function updateThirdParty($authentication, $thirdparty)
     if (!$error) {
         $objectfound = false;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         $object = new Company($db);
         $result = $object->fetch($thirdparty['id']);

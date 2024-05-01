@@ -25,9 +25,9 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("bills", "other"));
@@ -241,7 +241,7 @@ if ($object->id > 0) {
         }
 
         // Try to know count of actioncomm from cache
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
         $cachekey = 'count_events_facture_' . $object->id;
         $nbEvent = dol_getcache($cachekey);
 

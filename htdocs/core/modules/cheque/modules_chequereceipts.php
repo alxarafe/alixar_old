@@ -62,7 +62,7 @@ abstract class ModeleChequeReceipts extends CommonDocGenerator
         $type = 'chequereceipt';
         $list = array();
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
         $list = getListOfModels($db, $type, $maxfilenamelength);
         // TODO Remove this to use getListOfModels only
         $list = array('blochet' => 'blochet');

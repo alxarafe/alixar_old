@@ -982,7 +982,7 @@ class FormMail extends Form
                     $paymenturl = '';
                 } else {
                     // Set the online payment url link into __ONLINE_PAYMENT_URL__ key
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
                     $langs->loadLangs(['paypal', 'other']);
                     $typeforonlinepayment = 'free';
                     if ($this->param["models"] == 'order' || $this->param["models"] == 'order_send') {
@@ -1795,7 +1795,7 @@ class FormMail extends Form
      */
     public function getModelEmailTemplate($htmlContent = 'message')
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/emaillayout.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/EmailLayout.php';
 
         $out = '<div id="template-selector" class="template-container hidden">';
         $templates = [

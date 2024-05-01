@@ -134,7 +134,7 @@ class mod_propale_saphir extends ModeleNumRefPropales
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // On defini critere recherche compteur
         $mask = !getDolGlobalString('PROPALE_SAPHIR_MASK') ? '' : $conf->global->PROPALE_SAPHIR_MASK;

@@ -45,8 +45,8 @@ use DoliModules\Contract\Model\Contrat;
 
 require "../main.inc.php";
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/contract.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Contract.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/contract/modules_contract.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 
@@ -2276,7 +2276,7 @@ if ($action == 'create') {
             // Show online signature link
             if ($object->statut != Contrat::STATUS_DRAFT && getDolGlobalString('CONTRACT_ALLOW_ONLINESIGN')) {
                 print '<br><!-- Link to sign -->';
-                require_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+                require_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
 
                 print showOnlineSignatureUrl('contract', $object->ref) . '<br>';
             }

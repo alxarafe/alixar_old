@@ -36,7 +36,7 @@ defineIfNotDefined('NOSESSION', '1');
 
 require BASE_PATH . '/main.inc.php';
 //require_once NUSOAP_PATH . '/nusoap.php'; // Include SOAP
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ws.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ws.php';
 require_once DOL_DOCUMENT_ROOT . "/commande/class/commande.class.php";
 
 
@@ -896,7 +896,7 @@ function updateOrder($authentication, $order)
     if (!$error) {
         $objectfound = false;
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
         $object = new Commande($db);
         $result = $object->fetch($order['id'], (empty($order['id']) ? $order['ref'] : ''), (empty($order['id']) && empty($order['ref']) ? $order['ref_ext'] : ''));

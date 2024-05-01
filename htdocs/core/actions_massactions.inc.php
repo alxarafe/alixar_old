@@ -81,7 +81,7 @@ if (!$error && $massaction == 'confirm_presend') {
     $nbignored = 0;
     $langs->load("mails");
     include_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/signature.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
 
     $listofobjectid = array();
     $listofobjectthirdparties = array();
@@ -739,7 +739,7 @@ if (!$error && $massaction == "builddoc" && $permissiontoread && !GETPOST('butto
     }
 
     require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/pdf.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
     require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
     $objecttmp = new $objectclass($db);

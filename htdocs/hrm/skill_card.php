@@ -496,7 +496,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 if ($action != "create" && $action != "edit") {
     require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
     // load hrm libraries
     require_once __DIR__ . '/class/skilldet.class.php';

@@ -116,7 +116,7 @@ class Orders extends DolibarrApi
         $this->commande->fetchObjectLinked();
 
         // Add online_payment_url, cf #20477
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
         $this->commande->online_payment_url = getOnlinePaymentUrl(0, 'order', $this->commande->ref);
 
         return $this->_cleanObjectDatas($this->commande);
@@ -264,7 +264,7 @@ class Orders extends DolibarrApi
                         $commande_static->contacts_ids = $tmparray;
                     }
                     // Add online_payment_url, cf #20477
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
                     $commande_static->online_payment_url = getOnlinePaymentUrl(0, 'order', $commande_static->ref);
 
                     $obj_ret[] = $this->_filterObjectProperties($this->_cleanObjectDatas($commande_static), $properties);
@@ -822,7 +822,7 @@ class Orders extends DolibarrApi
         $this->commande->fetchObjectLinked();
 
         //fix #20477 : add online_payment_url
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
         $this->commande->online_payment_url = getOnlinePaymentUrl(0, 'order', $this->commande->ref);
 
         return $this->_cleanObjectDatas($this->commande);

@@ -35,7 +35,7 @@ use DoliModules\Bank\Model\Account;
 use DoliModules\Category\Model\Categorie;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/tva/class/tva.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/sociales/class/chargesociales.class.php';
 

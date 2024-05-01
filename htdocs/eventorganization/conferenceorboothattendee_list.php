@@ -31,8 +31,8 @@ use DoliCore\Lib\Fields;
 require BASE_PATH . '/main.inc.php';
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 
 require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorbooth.class.php';
 require_once DOL_DOCUMENT_ROOT . '/eventorganization/class/conferenceorboothattendee.class.php';

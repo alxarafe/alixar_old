@@ -29,7 +29,7 @@ namespace DoliModules\Accounting\Model;
 
 use DoliCore\Base\BasicModel;
 
-require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
 /**
  * Class to manage categories of an accounting account
@@ -530,7 +530,7 @@ class AccountancyCategory extends BasicModel
         global $conf;
         $error = 0;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
         $sql = "SELECT aa.rowid, aa.account_number";
         $sql .= " FROM " . MAIN_DB_PREFIX . "accounting_account as aa";

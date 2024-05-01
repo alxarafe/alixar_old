@@ -134,7 +134,7 @@ class mod_project_universal extends ModeleNumRefProjects
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We define criterion search counter
         $mask = getDolGlobalString('PROJECT_UNIVERSAL_MASK');

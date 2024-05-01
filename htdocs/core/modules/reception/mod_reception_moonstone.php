@@ -106,7 +106,7 @@ class mod_reception_moonstone extends ModelNumRefReception
     {
         global $db;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $mask = getDolGlobalString("RECEPTION_MOONSTONE_MASK");
 

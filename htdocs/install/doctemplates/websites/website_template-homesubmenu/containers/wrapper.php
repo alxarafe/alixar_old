@@ -8,7 +8,7 @@ if (strpos($_SERVER['PHP_SELF'], 'website/samples/wrapper.php')) {
 if (!defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {
     require_once './master.inc.php';
 } // Load master if not already loaded
-include_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
 $encoding = '';
 

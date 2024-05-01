@@ -34,7 +34,7 @@ use DoliCore\Form\FormProjets;
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/loan.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Loan.php';
 require_once DOL_DOCUMENT_ROOT . '/loan/class/loan.class.php';
 
 // Load translation files required by the page

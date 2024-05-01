@@ -37,7 +37,7 @@ use DoliModules\Bank\Model\PaymentVarious;
 use DoliModules\Project\Model\Project;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array("compta", "banks", "bills", "accountancy"));
@@ -831,7 +831,7 @@ while ($i < $imaxinloop) {
 
         // Accounting account
         if (!empty($arrayfields['account']['checked'])) {
-            require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+            require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
             $result = $accountingaccount->fetch('', $obj->accountancy_code, 1);
             if ($result > 0) {
                 print '<td class="tdoverflowmax150" title="' . dol_escape_htmltag($obj->accountancy_code . ' ' . $accountingaccount->label) . '">' . $accountingaccount->getNomUrl(0, 1, 1, '', 1) . '</td>';

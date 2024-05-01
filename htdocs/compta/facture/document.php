@@ -31,9 +31,9 @@
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/invoice.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 if (isModEnabled('project')) {
     include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }

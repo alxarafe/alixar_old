@@ -265,7 +265,10 @@ class Interfaces
         $orders = [];
         $i = 0;
 
-        $dirtriggers = array_merge(['/core/triggers/'], $conf->modules_parts['triggers']);
+        /**
+         * TODO: Add new system modules outside of htdocs
+         */
+        $dirtriggers = array_merge(['/../Dolibarr/Core/Triggers/'], $conf->modules_parts['triggers']);
         if (is_array($forcedirtriggers)) {
             $dirtriggers = $forcedirtriggers;
         }
@@ -337,7 +340,7 @@ class Interfaces
             try {
                 $objMod = new $modName($db);
 
-                if (is_subclass_of($objMod, 'DolibarrTriggers')) {
+                if (is_subclass_of($objMod, 'DoliCore\Base\DolibarrTriggers')) {
                     // Define disabledbyname and disabledbymodule
                     $disabledbyname = 0;
                     $disabledbymodule = 1;

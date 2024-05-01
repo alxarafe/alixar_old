@@ -41,8 +41,8 @@ if (is_numeric($entity)) {
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
 
 if (isModEnabled('paypal')) {
     require_once DOL_DOCUMENT_ROOT . '/paypal/lib/paypal.lib.php';
@@ -271,7 +271,7 @@ if (!empty($conf->global->$key)) {
 $type = GETPOST('s', 'alpha');
 $ref = GETPOST('ref', 'alphanohtml');
 $tag = GETPOST('tag', 'alpha');
-require_once DOL_DOCUMENT_ROOT . '/core/lib/payments.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Payments.php';
 if ($type || $tag) {
     $urlsubscription = getOnlinePaymentUrl(0, ($type ? $type : 'free'), $ref, $FinalPaymentAmt, $tag);
 

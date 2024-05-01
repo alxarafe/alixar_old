@@ -100,7 +100,7 @@ class FormProduct
         $nbofworkstations = count($this->cache_workstations);
 
         if ($conf->use_javascript_ajax && !$forcecombo) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $comboenhancement = ajax_combobox($htmlname, $events);
             $out .= $comboenhancement;
         }
@@ -312,7 +312,7 @@ class FormProduct
         $nbofwarehouses = count($this->cache_warehouses);
 
         if ($conf->use_javascript_ajax && !$forcecombo) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $comboenhancement = ajax_combobox($htmlname, $events);
             $out .= $comboenhancement;
         }
@@ -760,7 +760,7 @@ class FormProduct
         $nboflot = $this->loadLotStock($productIdArray);
 
         if ($conf->use_javascript_ajax && !$forcecombo) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Ajax.php';
             $comboenhancement = ajax_combobox($htmlname, $events);
             $out .= $comboenhancement;
         }

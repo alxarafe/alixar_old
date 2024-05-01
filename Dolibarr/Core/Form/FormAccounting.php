@@ -467,7 +467,7 @@ class FormAccounting extends Form
         // phpcs:enable
         global $conf, $langs;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 
         $out = '';
 

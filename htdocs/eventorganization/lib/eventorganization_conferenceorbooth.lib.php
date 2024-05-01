@@ -135,7 +135,7 @@ function conferenceorboothProjectPrepareHead($object)
     // Enable caching of conf or booth count attendees
     $nbAttendees = 0;
     $nbConferenceOrBooth = 0;
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
     $cachekey = 'count_conferenceorbooth_project_' . $object->id;
     $dataretrieved = dol_getcache($cachekey);
     if (!is_null($dataretrieved)) {
@@ -161,7 +161,7 @@ function conferenceorboothProjectPrepareHead($object)
     $head[$h][2] = 'attendees';
     // Enable caching of conf or booth count attendees
     $nbAttendees = 0;
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
     $cachekey = 'count_attendees_conferenceorbooth_project_' . $object->id;
     $dataretrieved = dol_getcache($cachekey);
     if (!is_null($dataretrieved)) {

@@ -38,8 +38,8 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_expression.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_parser.class.php';
 if (isModEnabled('barcode')) {

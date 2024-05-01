@@ -30,7 +30,7 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require DOL_DOCUMENT_ROOT . '/core/lib/loan.lib.php';
+require BASE_PATH . '/../Dolibarr/Lib/Loan.php';
 
 $mens = price2num(GETPOST('mens'));
 $capital = price2num(GETPOST('capital'));

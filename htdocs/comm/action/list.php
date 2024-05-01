@@ -41,7 +41,7 @@ use DoliModules\User\Model\User;
 require BASE_PATH . '/main.inc.php';
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/agenda.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
 
 include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
 
@@ -1189,7 +1189,7 @@ while ($i < $imaxinloop) {
         print '<td class="tdoverflowmax150">';
         //var_dump($obj->fkelement.' '.$obj->elementtype);
         if ($obj->fk_element > 0 && !empty($obj->elementtype)) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
             print dolGetElementUrl($obj->fk_element, $obj->elementtype, 1);
         } else {
             print "&nbsp;";

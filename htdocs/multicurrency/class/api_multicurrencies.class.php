@@ -20,7 +20,7 @@ use DoliCore\Api\DolibarrApi;
 use Luracast\Restler\RestException;
 
 //require_once DOL_DOCUMENT_ROOT.'/multicurrency/class/multicurrency.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/multicurrency.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/MultiCurrency.php';
 
 /**
  * API class for MultiCurrency

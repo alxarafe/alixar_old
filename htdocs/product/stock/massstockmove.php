@@ -34,7 +34,7 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/import/import_csv.modules.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/import.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Import.php';
 
 $confirm = GETPOST('confirm', 'alpha');
 $filetoimport = GETPOST('filetoimport');

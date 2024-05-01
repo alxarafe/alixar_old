@@ -29,9 +29,9 @@ use DoliModules\User\Model\User;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/usergroups.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/UserGroups.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 // Load translation files required by page
 $langs->load("users");
@@ -197,7 +197,7 @@ if (isModEnabled('agenda') && ($user->hasRight('agenda', 'myactions', 'read') ||
 
 
     // Try to know count of actioncomm from cache
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/memory.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Memory.php';
     $cachekey = 'count_events_user_' . $object->id;
     $nbEvent = dol_getcache($cachekey);
 

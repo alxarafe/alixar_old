@@ -36,7 +36,7 @@ global $langs, $user;
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/eventorganization.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/EventOrganization.php';
 
 // Translations
 $langs->loadLangs(array("admin", "eventorganization", "categories"));

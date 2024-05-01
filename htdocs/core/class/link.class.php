@@ -155,7 +155,7 @@ class Link extends GenericDocument
     public function update(User $user, $call_trigger = 1)
     {
         global $langs, $conf;
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         $langs->load("errors");
         $error = 0;

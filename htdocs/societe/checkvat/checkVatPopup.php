@@ -27,7 +27,7 @@ if (! defined('NOTOKENRENEWAL')) {
 }       // Do not roll the Anti CSRF token (used if MAIN_SECURITY_CSRF_WITH_TOKEN is on)
 
 require "../../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 //require_once NUSOAP_PATH . '/nusoap.php';
 
 $langs->load("companies");
@@ -71,7 +71,7 @@ if (!$vatNumber) {
 
     // Set the WebService URL
     dol_syslog("Create nusoap_client for URL=" . $WS_DOL_URL . " WSDL=" . $WS_DOL_URL_WSDL);
-    require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+    require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
     $params = getSoapParams();
     //ini_set('default_socket_timeout', $params['response_timeout']);
     //$soapclient = new SoapClient($WS_DOL_URL_WSDL,$params);

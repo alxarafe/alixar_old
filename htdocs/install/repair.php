@@ -33,7 +33,7 @@ if (file_exists($conffile)) {
     include_once $conffile;
 }
 require_once $dolibarr_main_document_root . '/core/lib/admin.lib.php';
-include_once $dolibarr_main_document_root . '/core/lib/images.lib.php';
+include_once $dolibarr_main_document_root . '/../Dolibarr/Lib/Images.php';
 require_once $dolibarr_main_document_root . '/core/class/extrafields.class.php';
 require_once 'lib/repair.lib.php';
 

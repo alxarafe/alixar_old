@@ -859,7 +859,7 @@ public $listmeths;
         dol_syslog(get_class($this) . "::fetch_lines", LOG_DEBUG);
         $resql = $this->db->query($sql);
         if ($resql) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Price.php';
 
             $num = $this->db->num_rows($resql);
             $i = 0;

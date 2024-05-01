@@ -143,7 +143,7 @@ class mod_sn_advanced extends ModeleNumRefBatch
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // We get cursor rule
         $mask = getDolGlobalString('SN_ADVANCED_MASK');

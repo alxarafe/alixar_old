@@ -1019,7 +1019,7 @@ class CMailFile
                 }
 
                 if (getDolGlobalString($keyforsmtpauthtype) === "XOAUTH2") {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/oauth.lib.php'; // define $supportedoauth2array
+                    require_once BASE_PATH . '/../Dolibarr/Lib/OAuth.php'; // define $supportedoauth2array
 
                     $supportedoauth2array = getSupportedOauth2Array();
 
@@ -1174,7 +1174,7 @@ class CMailFile
                     $this->transport->setPassword($conf->global->$keyforsmtppw);
                 }
                 if (getDolGlobalString($keyforsmtpauthtype) === "XOAUTH2") {
-                    require_once DOL_DOCUMENT_ROOT . '/core/lib/oauth.lib.php';
+                    require_once BASE_PATH . '/../Dolibarr/Lib/OAuth.php';
 
                     $supportedoauth2array = getSupportedOauth2Array();
 

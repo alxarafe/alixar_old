@@ -28,14 +28,14 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/ticket.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Ticket.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/images.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 require_once DOL_DOCUMENT_ROOT . "/core/lib/company.lib.php";
 if (isModEnabled('project')) {
     include_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
     include_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
-    include_once DOL_DOCUMENT_ROOT . '/core/lib/project.lib.php';
+    include_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 }
 
 // Load translation files required by the page

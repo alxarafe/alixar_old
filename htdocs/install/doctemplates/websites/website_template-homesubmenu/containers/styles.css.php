@@ -2,7 +2,7 @@
 $websitekey = basename(__DIR__);
 if (! defined('USEDOLIBARRSERVER') && ! defined('USEDOLIBARREDITOR')) { require_once __DIR__ . '/master.inc.php'; 
 } // Load env if not already loaded
-require_once DOL_DOCUMENT_ROOT . '/core/lib/website.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/WebSite.php';
 require_once DOL_DOCUMENT_ROOT . '/core/website.inc.php';
 ob_start();
 if (! headers_sent()) { /* because file is included inline when in edit mode and we don't want warning */ 

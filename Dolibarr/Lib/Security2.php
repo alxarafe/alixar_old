@@ -79,7 +79,7 @@ function checkLoginPassEntity($usertotest, $passwordtotest, $entitytotest, $auth
                 // Validation of login/pass/entity for mode $mode
                 $mode = trim($mode);
                 $authfile = 'functions_' . $mode . '.php';
-                $fullauthfile = realpath(BASE_PATH . '/../Dolibarr/Login/' . $authfile);
+                $fullauthfile = realpath(BASE_PATH . '/../Dolibarr/Core/Login/' . $authfile);
 
                 $result = false;
                 if ($fullauthfile) {

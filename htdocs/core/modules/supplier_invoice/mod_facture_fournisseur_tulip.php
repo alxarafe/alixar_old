@@ -157,7 +157,7 @@ class mod_facture_fournisseur_tulip extends ModeleNumRefSuppliersInvoices
     {
         global $db, $conf;
 
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
         // Get Mask value
         $mask = '';

@@ -38,7 +38,7 @@ use DoliModules\Company\Model\Company;
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/reception/class/reception.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 $langs->loadLangs(array("sendings", "receptions", "deliveries", 'companies', 'bills', 'orders'));
 

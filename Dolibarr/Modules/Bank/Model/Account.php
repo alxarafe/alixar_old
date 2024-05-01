@@ -983,7 +983,7 @@ class Account extends GenericDocument
         }
 
         // Load the library to validate/check a BAN account
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
         $now = dol_now();
 
@@ -1243,7 +1243,7 @@ class Account extends GenericDocument
         global $conf, $langs;
 
         // Load library to get BAN control function
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
         dol_syslog(get_class($this) . "::update_bban $this->code_banque,$this->code_guichet,$this->number,$this->cle_rib,$this->iban");
 
@@ -1527,7 +1527,7 @@ class Account extends GenericDocument
      */
     public function verif()
     {
-        require_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+        require_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
         $error = 0;
 
@@ -1745,7 +1745,7 @@ class Account extends GenericDocument
             $notooltip = 1; // Force disable tooltips
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
         $result = '';
         $classfortooltip = 'classfortooltip';
@@ -1831,7 +1831,7 @@ class Account extends GenericDocument
     {
         global $langs;
         $langs->loadLangs(['banks', 'compta']);
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/bank.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/Bank.php';
 
         $datas = [];
 
@@ -1848,7 +1848,7 @@ class Account extends GenericDocument
         $datas['accountcurrency'] = '<br><b>' . $langs->trans("AccountCurrency") . ':</b> ' . $this->currency_code;
 
         if (isModEnabled('accounting')) {
-            include_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
+            include_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
             $langs->load("accountancy");
             $datas['accountaccounting'] = '<br><b>' . $langs->trans('AccountAccounting') . ':</b> ' . length_accountg($this->account_number);
             $datas['accountancyjournal'] = '<br><b>' . $langs->trans('AccountancyJournal') . ':</b> ' . $this->accountancy_journal;

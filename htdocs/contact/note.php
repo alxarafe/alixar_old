@@ -28,7 +28,7 @@
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/contact.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Contact.php';
 
 $action = GETPOST('action', 'aZ09');
 

@@ -835,7 +835,7 @@ class SecurityTest extends CommonClassTest
     public function testGetURLContent()
     {
         global $conf;
-        include_once DOL_DOCUMENT_ROOT . '/core/lib/geturl.lib.php';
+        include_once BASE_PATH . '/../Dolibarr/Lib/GetUrl.php';
 
         $url = 'ftp://mydomain.com';
         $tmp = getURLContent($url);

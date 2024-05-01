@@ -49,9 +49,9 @@ use DoliModules\Product\Model\Product;
 use DoliModules\Supplier\Model\ProductFournisseur;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/accounting.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/company.lib.php';
-require_once DOL_DOCUMENT_ROOT . '/core/lib/product.lib.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 
 if (isModEnabled('workstation')) {
     require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';
