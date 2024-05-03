@@ -47,7 +47,7 @@ trait ViewTrait
         }
 
         if (!isset($this->template)) {
-            $this->template = 'index';
+            return;
         }
 
         $vars = ['me' => $this];

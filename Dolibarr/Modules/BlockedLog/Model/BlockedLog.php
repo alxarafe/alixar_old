@@ -23,6 +23,22 @@
  */
 
 
+namespace DoliModules\BlockedLog\Model;
+
+use CashControl;
+use DoliDB;
+use Don;
+use Facture;
+use FactureFournisseur;
+use MouvementStock;
+use Paiement;
+use PaiementFourn;
+use PaymentDonation;
+use PaymentVarious;
+use Project;
+use Subscription;
+use User;
+
 /**
  *  Class to manage Blocked Log
  */
@@ -53,7 +69,7 @@ class BlockedLog
     /**
      * @var string[] Error codes (or messages)
      */
-    public $errors = array();
+    public $errors = [];
 
     /**
      * Unique fingerprint of the log
@@ -105,7 +121,7 @@ class BlockedLog
     public $date_creation;
 
     /**
-     * @var integer|string $date_modification;
+     * @var integer|string $date_modification ;
      */
     public $date_modification;
 
@@ -122,14 +138,13 @@ class BlockedLog
      * Array of tracked event codes
      * @var string[]
      */
-    public $trackedevents = array();
-
+    public $trackedevents = [];
 
 
     /**
      *      Constructor
      *
-     *      @param      DoliDB      $db      Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct(DoliDB $db)
     {
@@ -146,7 +161,7 @@ class BlockedLog
     {
         global $conf;
 
-        $this->trackedevents = array();
+        $this->trackedevents = [];
 
         // Customer Invoice/Facture / Payment
         if (isModEnabled('invoice')) {
@@ -339,7 +354,7 @@ class BlockedLog
 
         if (empty($cachedUser)) {
             // @phan-suppress-next-line PhanPluginRedundantAssignment
-            $cachedUser = array();
+            $cachedUser = [];
         }
 
         if (empty($cachedUser[$this->fk_user])) {
@@ -359,11 +374,12 @@ class BlockedLog
     /**
      *      Populate properties of log from object data
      *
-     *      @param      Object      $object     object to store
-     *      @param      string      $action     action
-     *      @param      string      $amounts    amounts
-     *      @param      User        $fuser      User object (forced)
-     *      @return     int                     >0 if OK, <0 if KO
+     * @param Object $object  object to store
+     * @param string $action  action
+     * @param string $amounts amounts
+     * @param User   $fuser   User object (forced)
+     *
+     * @return     int                     >0 if OK, <0 if KO
      */
     public function setObjectData(&$object, $action, $amounts, $fuser = null)
     {
@@ -409,7 +425,7 @@ class BlockedLog
         // Set object_data
         $this->object_data = new stdClass();
         // Add fields to exclude
-        $arrayoffieldstoexclude = array(
+        $arrayoffieldstoexclude = [
             'table_element', 'fields', 'ref_previous', 'ref_next', 'origin', 'origin_id', 'oldcopy', 'picto', 'error', 'errors', 'model_pdf', 'modelpdf', 'last_main_doc', 'civility_id', 'contact', 'contact_id',
             'table_element_line', 'ismultientitymanaged', 'isextrafieldmanaged',
             'array_languages',
@@ -424,14 +440,15 @@ class BlockedLog
             'projet',          // There is already ->fk_project
             'restrictiononfksoc',
             'specimen',
-        );
+        ];
         // Add more fields to exclude depending on object type
         if ($this->element == 'cashcontrol') {
-            $arrayoffieldstoexclude = array_merge($arrayoffieldstoexclude, array(
+            $arrayoffieldstoexclude = array_merge($arrayoffieldstoexclude, [
                 'name', 'lastname', 'firstname', 'region', 'region_id', 'region_code', 'state', 'state_id', 'state_code', 'country', 'country_id', 'country_code',
                 'total_ht', 'total_tva', 'total_ttc', 'total_localtax1', 'total_localtax2',
                 'barcode_type', 'barcode_type_code', 'barcode_type_label', 'barcode_type_coder', 'mode_reglement_id', 'cond_reglement_id', 'mode_reglement', 'cond_reglement', 'shipping_method_id',
-                'fk_incoterms', 'label_incoterms', 'location_incoterms', 'lines'));
+                'fk_incoterms', 'label_incoterms', 'location_incoterms', 'lines',
+            ]);
         }
 
         // Add thirdparty info
@@ -446,10 +463,10 @@ class BlockedLog
                     continue; // Discard some properties
                 }
                 if (
-                    !in_array($key, array(
-                    'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
-                    'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur'
-                    ))
+                    !in_array($key, [
+                        'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
+                        'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur',
+                    ])
                 ) {
                     continue; // Discard if not into a dedicated list
                 }
@@ -468,10 +485,10 @@ class BlockedLog
                     continue; // Discard some properties
                 }
                 if (
-                    !in_array($key, array(
-                    'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
-                    'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur'
-                    ))
+                    !in_array($key, [
+                        'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
+                        'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur',
+                    ])
                 ) {
                     continue; // Discard if not into a dedicated list
                 }
@@ -494,9 +511,9 @@ class BlockedLog
                     continue; // Discard some properties
                 }
                 if (
-                    !in_array($key, array(
-                    'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'datev', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public', 'lines'
-                    ))
+                    !in_array($key, [
+                        'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'datev', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public', 'lines',
+                    ])
                 ) {
                     continue; // Discard if not into a dedicated list
                 }
@@ -506,9 +523,9 @@ class BlockedLog
                         $lineid++;
                         foreach ($tmpline as $keyline => $valueline) {
                             if (
-                                !in_array($keyline, array(
-                                'ref', 'multicurrency_code', 'multicurrency_total_ht', 'multicurrency_total_tva', 'multicurrency_total_ttc', 'qty', 'product_type', 'vat_src_code', 'tva_tx', 'info_bits', 'localtax1_tx', 'localtax2_tx', 'total_ht', 'total_tva', 'total_ttc', 'total_localtax1', 'total_localtax2'
-                                ))
+                                !in_array($keyline, [
+                                    'ref', 'multicurrency_code', 'multicurrency_total_ht', 'multicurrency_total_tva', 'multicurrency_total_ttc', 'qty', 'product_type', 'vat_src_code', 'tva_tx', 'info_bits', 'localtax1_tx', 'localtax2_tx', 'total_ht', 'total_tva', 'total_ttc', 'total_localtax1', 'total_localtax2',
+                                ])
                             ) {
                                 continue; // Discard if not into a dedicated list
                             }
@@ -536,9 +553,9 @@ class BlockedLog
                     continue; // Discard some properties
                 }
                 if (
-                    !in_array($key, array(
-                    'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public'
-                    ))
+                    !in_array($key, [
+                        'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public',
+                    ])
                 ) {
                     continue; // Discard if not into a dedicated list
                 }
@@ -608,7 +625,7 @@ class BlockedLog
                     $paymentpart = new stdClass();
                     $paymentpart->amount = $amount;
 
-                    if (!in_array($this->element, array('payment_donation', 'payment_various'))) {
+                    if (!in_array($this->element, ['payment_donation', 'payment_various'])) {
                         $result = $tmpobject->fetch_thirdparty();
                         if ($result == 0) {
                             $this->error = 'Failed to fetch thirdparty for object with id ' . $tmpobject->id;
@@ -627,10 +644,10 @@ class BlockedLog
                                 continue; // Discard some properties
                             }
                             if (
-                                !in_array($key, array(
-                                'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
-                                'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur'
-                                ))
+                                !in_array($key, [
+                                    'name', 'name_alias', 'ref_ext', 'address', 'zip', 'town', 'state_code', 'country_code', 'idprof1', 'idprof2', 'idprof3', 'idprof4', 'idprof5', 'idprof6', 'phone', 'fax', 'email', 'barcode',
+                                    'tva_intra', 'localtax1_assuj', 'localtax1_value', 'localtax2_assuj', 'localtax2_value', 'managers', 'capital', 'typent_code', 'forme_juridique_code', 'code_client', 'code_fournisseur',
+                                ])
                             ) {
                                 continue; // Discard if not into a dedicated list
                             }
@@ -653,9 +670,9 @@ class BlockedLog
                                 continue; // Discard some properties
                             }
                             if (
-                                !in_array($key, array(
-                                'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public'
-                                ))
+                                !in_array($key, [
+                                    'ref', 'ref_client', 'ref_supplier', 'date', 'datef', 'type', 'total_ht', 'total_tva', 'total_ttc', 'localtax1', 'localtax2', 'revenuestamp', 'datepointoftax', 'note_public',
+                                ])
                             ) {
                                 continue; // Discard if not into a dedicated list
                             }
@@ -684,7 +701,7 @@ class BlockedLog
                 $this->object_data->ref = $object->newref;
             }
         } elseif ($this->element == 'payment_salary') {
-            $this->object_data->amounts = array($object->amount);
+            $this->object_data->amounts = [$object->amount];
 
             if (!empty($object->newref)) {
                 $this->object_data->ref = $object->newref;
@@ -695,9 +712,9 @@ class BlockedLog
                     continue; // Discard some properties
                 }
                 if (
-                    !in_array($key, array(
-                    'id', 'datec', 'dateh', 'datef', 'fk_adherent', 'amount', 'import_key', 'statut', 'note'
-                    ))
+                    !in_array($key, [
+                        'id', 'datec', 'dateh', 'datef', 'fk_adherent', 'amount', 'import_key', 'statut', 'note',
+                    ])
                 ) {
                     continue; // Discard if not into a dedicated list
                 }
@@ -744,8 +761,9 @@ class BlockedLog
     /**
      *  Get object from database
      *
-     *  @param      int     $id         Id of object to load
-     *  @return     int                     >0 if OK, <0 if KO, 0 if not found
+     * @param int $id Id of object to load
+     *
+     * @return     int                     >0 if OK, <0 if KO, 0 if not found
      */
     public function fetch($id)
     {
@@ -767,15 +785,15 @@ class BlockedLog
         if ($resql) {
             $obj = $this->db->fetch_object($resql);
             if ($obj) {
-                $this->id               = $obj->rowid;
-                $this->entity           = $obj->entity;
+                $this->id = $obj->rowid;
+                $this->entity = $obj->entity;
 
-                $this->date_creation    = $this->db->jdate($obj->date_creation);
+                $this->date_creation = $this->db->jdate($obj->date_creation);
                 $this->date_modification = $this->db->jdate($obj->tms);
 
-                $this->amounts          = (float) $obj->amounts;
-                $this->action           = $obj->action;
-                $this->element          = $obj->element;
+                $this->amounts = (float) $obj->amounts;
+                $this->action = $obj->action;
+                $this->element = $obj->element;
 
                 $this->fk_object = $obj->fk_object;
                 $this->date_object = $this->db->jdate($obj->date_object);
@@ -787,9 +805,9 @@ class BlockedLog
                 $this->object_data = $this->dolDecodeBlockedData($obj->object_data);
                 $this->object_version = $obj->object_version;
 
-                $this->signature        = $obj->signature;
-                $this->signature_line   = $obj->signature_line;
-                $this->certified        = ($obj->certified == 1);
+                $this->signature = $obj->signature;
+                $this->signature_line = $obj->signature_line;
+                $this->certified = ($obj->certified == 1);
 
                 return 1;
             } else {
@@ -807,8 +825,9 @@ class BlockedLog
     /**
      * Encode data
      *
-     * @param   string  $data   Data to serialize
-     * @param   int     $mode   0=serialize, 1=json_encode
+     * @param string $data Data to serialize
+     * @param int    $mode 0=serialize, 1=json_encode
+     *
      * @return  string          Value serialized, an object (stdClass)
      */
     public function dolEncodeBlockedData($data, $mode = 0)
@@ -827,8 +846,9 @@ class BlockedLog
     /**
      * Decode data
      *
-     * @param   string  $data   Data to unserialize
-     * @param   int     $mode   0=unserialize, 1=json_decode
+     * @param string $data Data to unserialize
+     * @param int    $mode 0=unserialize, 1=json_decode
+     *
      * @return  object          Value unserialized, an object (stdClass)
      */
     public function dolDecodeBlockedData($data, $mode = 0)
@@ -847,7 +867,7 @@ class BlockedLog
     /**
      *  Set block certified by authority
      *
-     *  @return boolean
+     * @return boolean
      */
     public function setCertified()
     {
@@ -862,9 +882,10 @@ class BlockedLog
     /**
      *  Create blocked log in database.
      *
-     *  @param  User    $user               Object user that create
-     *  @param  string      $forcesignature     Force signature (for example '0000000000' when we disabled the module)
-     *  @return int                         Return integer <0 if KO, >0 if OK
+     * @param User   $user           Object user that create
+     * @param string $forcesignature Force signature (for example '0000000000' when we disabled the module)
+     *
+     * @return int                         Return integer <0 if KO, >0 if OK
      */
     public function create($user, $forcesignature = '')
     {
@@ -989,9 +1010,12 @@ class BlockedLog
     /**
      *  Check if current signature still correct compared to the value in chain
      *
-     *  @param  string          $previoushash       If previous signature hash is known, we can provide it to avoid to make a search of it in database.
-     *  @param  int             $returnarray        1=Return array of details, 2=Return array of details including keyforsignature, 0=Boolean
-     *  @return boolean|array                       True if OK, False if KO
+     * @param string $previoushash If previous signature hash is known, we can provide it to avoid to make a search of
+     *                             it in database.
+     * @param int    $returnarray  1=Return array of details, 2=Return array of details including keyforsignature,
+     *                             0=Boolean
+     *
+     * @return boolean|array                       True if OK, False if KO
      */
     public function checkSignature($previoushash = '', $returnarray = 0)
     {
@@ -1014,9 +1038,9 @@ class BlockedLog
         if ($returnarray) {
             if ($returnarray == 1) {
                 unset($keyforsignature);
-                return array('checkresult' => $res, 'calculatedsignature' => $signature, 'previoushash' => $previoushash);
+                return ['checkresult' => $res, 'calculatedsignature' => $signature, 'previoushash' => $previoushash];
             } else {    // Consume much memory ($keyforsignature is a large var)
-                return array('checkresult' => $res, 'calculatedsignature' => $signature, 'previoushash' => $previoushash, 'keyforsignature' => $keyforsignature);
+                return ['checkresult' => $res, 'calculatedsignature' => $signature, 'previoushash' => $previoushash, 'keyforsignature' => $keyforsignature];
             }
         } else {
             unset($keyforsignature);
@@ -1045,9 +1069,11 @@ class BlockedLog
     /**
      *  Get previous signature/hash in chain
      *
-     *  @param int  $withlock       1=With a lock
-     *  @param int  $beforeid       ID of a record
-     *  @return string              Hash of previous record (if beforeid is defined) or hash of last record (if beforeid is 0)
+     * @param int $withlock 1=With a lock
+     * @param int $beforeid ID of a record
+     *
+     * @return string              Hash of previous record (if beforeid is defined) or hash of last record (if beforeid
+     *                             is 0)
      */
     public function getPreviousHash($withlock = 0, $beforeid = 0)
     {
@@ -1085,18 +1111,19 @@ class BlockedLog
     /**
      *  Return array of log objects (with criteria)
      *
-     *  @param  string  $element        element to search
-     *  @param  int     $fk_object      id of object to search
-     *  @param  int     $limit          max number of element, 0 for all
-     *  @param  string  $sortfield      sort field
-     *  @param  string  $sortorder      sort order
-     *  @param  int     $search_fk_user id of user(s)
-     *  @param  int     $search_start   start time limit
-     *  @param  int     $search_end     end time limit
-     *  @param  string  $search_ref     search ref
-     *  @param  string  $search_amount  search amount
-     *  @param  string  $search_code    search code
-     *  @return array|int               Array of object log or <0 if error
+     * @param string $element        element to search
+     * @param int    $fk_object      id of object to search
+     * @param int    $limit          max number of element, 0 for all
+     * @param string $sortfield      sort field
+     * @param string $sortorder      sort order
+     * @param int    $search_fk_user id of user(s)
+     * @param int    $search_start   start time limit
+     * @param int    $search_end     end time limit
+     * @param string $search_ref     search ref
+     * @param string $search_amount  search amount
+     * @param string $search_code    search code
+     *
+     * @return array|int               Array of object log or <0 if error
      */
     public function getLog($element, $fk_object, $limit = 0, $sortfield = '', $sortorder = '', $search_fk_user = -1, $search_start = -1, $search_end = -1, $search_ref = '', $search_amount = '', $search_code = '')
     {
@@ -1147,7 +1174,7 @@ class BlockedLog
 
         $res = $this->db->query($sql);
         if ($res) {
-            $results = array();
+            $results = [];
 
             $i = 0;
             while ($obj = $this->db->fetch_object($res)) {
@@ -1178,7 +1205,7 @@ class BlockedLog
     /**
      *  Return the signature (hash) of the "genesis-block" (Block 0).
      *
-     *  @return string                  Signature of genesis-block for current conf->entity
+     * @return string                  Signature of genesis-block for current conf->entity
      */
     public function getSignature()
     {
@@ -1203,7 +1230,8 @@ class BlockedLog
     /**
      * Check if module was already used or not for at least one recording.
      *
-     * @param   int     $ignoresystem       Ignore system events for the test
+     * @param int $ignoresystem Ignore system events for the test
+     *
      * @return  bool
      */
     public function alreadyUsed($ignoresystem = 0)

@@ -22,6 +22,8 @@
  *    \brief      Library for common blockedlog functions
  */
 
+use DoliModules\BlockedLog\Model\BlockedLog;
+
 /**
  *  Define head array for tabs of blockedlog tools setup pages
  *

@@ -26,6 +26,8 @@
 // This script is called with a POST method.
 // Directory to scan (full path) is inside POST['dir'].
 
+use DoliModules\BlockedLog\Model\BlockedLogAuthority;
+
 if (!defined('NOTOKENRENEWAL')) {
     define('NOTOKENRENEWAL', 1); // Disables token renewal
 }

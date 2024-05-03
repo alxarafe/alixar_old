@@ -41,6 +41,7 @@
  */
 
 use DoliModules\Billing\Model\OrderLine;
+use DoliModules\BlockedLog\Model\BlockedLog;
 
 define('ALLOWED_IF_UPGRADE_UNLOCK_FOUND', 1);
 include_once 'inc.php';

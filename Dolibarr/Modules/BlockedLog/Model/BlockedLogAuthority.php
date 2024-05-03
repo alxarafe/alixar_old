@@ -16,6 +16,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\BlockedLog\Model;
+
+use DoliDB;
+use User;
+
 /**
  *  Class to manage certif authority
  */
@@ -65,7 +70,7 @@ class BlockedLogAuthority
     /**
      *      Constructor
      *
-     *      @param      DoliDB      $db      Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct($db)
     {
@@ -75,7 +80,7 @@ class BlockedLogAuthority
     /**
      *  Get the blockchain
      *
-     *  @return     string                  blockchain
+     * @return     string                  blockchain
      */
     public function getLocalBlockChain()
     {
@@ -99,7 +104,7 @@ class BlockedLogAuthority
     /**
      *  Get hash of the block chain to check
      *
-     *  @return     string                  hash md5 of blockchain
+     * @return     string                  hash md5 of blockchain
      */
     public function getBlockchainHash()
     {
@@ -109,8 +114,9 @@ class BlockedLogAuthority
     /**
      *  Get hash of the block chain to check
      *
-     *  @param      string      $hash       hash md5 of blockchain to test
-     *  @return     boolean
+     * @param string $hash hash md5 of blockchain to test
+     *
+     * @return     boolean
      */
     public function checkBlockchain($hash)
     {
@@ -120,8 +126,9 @@ class BlockedLogAuthority
     /**
      *  Add a new block to the chain
      *
-     *  @param      string      $block      new block to chain
-     *  @return void
+     * @param string $block new block to chain
+     *
+     * @return void
      */
     public function addBlock($block)
     {
@@ -131,8 +138,9 @@ class BlockedLogAuthority
     /**
      *  hash already exist into chain ?
      *
-     *  @param      string      $block      new block to chain
-     *  @return     boolean
+     * @param string $block new block to chain
+     *
+     * @return     boolean
      */
     public function checkBlock($block)
     {
@@ -153,9 +161,10 @@ class BlockedLogAuthority
     /**
      *  Get object from database
      *
-     *  @param      int         $id             Id of object to load
-     *  @param      string      $signature      Signature of object to load
-     *  @return     int                         >0 if OK, <0 if KO, 0 if not found
+     * @param int    $id        Id of object to load
+     * @param string $signature Signature of object to load
+     *
+     * @return     int                         >0 if OK, <0 if KO, 0 if not found
      */
     public function fetch($id, $signature = '')
     {
@@ -206,8 +215,9 @@ class BlockedLogAuthority
     /**
      *  Create authority in database.
      *
-     *  @param  User    $user           Object user that create
-     *  @return int                     Return integer <0 if KO, >0 if OK
+     * @param User $user Object user that create
+     *
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function create($user)
     {
@@ -253,8 +263,9 @@ class BlockedLogAuthority
     /**
      *  Create authority in database.
      *
-     *  @param  User    $user           Object user that create
-     *  @return int                     Return integer <0 if KO, >0 if OK
+     * @param User $user Object user that create
+     *
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function update($user)
     {
@@ -287,7 +298,7 @@ class BlockedLogAuthority
     /**
      *  For cron to sync to authority.
      *
-     *  @return int                     Return integer <0 if KO, >0 if OK
+     * @return int                     Return integer <0 if KO, >0 if OK
      */
     public function syncSignatureWithAuthority()
     {

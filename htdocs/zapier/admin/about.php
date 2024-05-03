@@ -1,8 +1,8 @@
 <?php
 
-/* Copyright (C) 2004-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2019 Frédéric FRANCE <frederic.france@free.fr>
- *
+/* Copyright (C) 2004-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2019       Frédéric FRANCE         <frederic.france@free.fr>
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * LICENSE =================================================================
  *
@@ -18,7 +18,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 /**
@@ -28,6 +27,9 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliModules\User\Model\User;
+
 require BASE_PATH . '/main.inc.php';
 
 // Libraries
@@ -46,23 +48,20 @@ if (!$user->admin) {
 if (!isModEnabled('zapier')) {
     accessforbidden();
 }
+
 if (empty($user->admin)) {
     accessforbidden();
 }
 
-
 // Parameters
 $action = GETPOST('action', 'aZ09');
 $backtopage = GETPOST('backtopage', 'alpha');
-
-
 
 /*
  * Actions
  */
 
 // None
-
 
 /*
  * View
@@ -91,3 +90,5 @@ print $tmpmodule->getDescLong();
 print dol_get_fiche_end();
 llxFooter();
 $db->close();
+
+die('1');

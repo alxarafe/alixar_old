@@ -26,8 +26,10 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+use DoliCore\Form\FormSetup;
+
 require_once "../../main.inc.php";
-require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once DOL_DOCUMENT_ROOT . "/webportal/lib/webportal.lib.php";
 
 // Translations
@@ -57,9 +59,6 @@ if (!$user->admin) {
 // Set this to 1 to use the factory to manage constants. Warning, the generated module will be compatible with version v15+ only
 $useFormSetup = 1;
 
-if (!class_exists('FormSetup')) {
-    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
-}
 $formSetup = new FormSetup($db);
 
 // root url

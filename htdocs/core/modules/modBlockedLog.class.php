@@ -24,6 +24,8 @@
  *  \brief      Description and activation file for the module BlockedLog
  */
 
+use DoliModules\BlockedLog\Model\BlockedLog;
+
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
 /**

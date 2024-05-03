@@ -385,7 +385,6 @@ foreach ($modulesdir as $dir) {
             //print "$i ".$file."\n<br>";
             if (is_readable($dir . $file) && substr($file, 0, 3) == 'mod' && substr($file, dol_strlen($file) - 10) == '.class.php') {
                 $modName = substr($file, 0, dol_strlen($file) - 10);
-
                 if ($modName) {
                     if (!empty($modNameLoaded[$modName])) {   // In cache of already loaded modules ?
                         $mesg = "Error: Module " . $modName . " was found twice: Into " . $modNameLoaded[$modName] . " and " . $dir . ". You probably have an old file on your disk.<br>";
