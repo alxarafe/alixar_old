@@ -27,6 +27,7 @@
 
 // Load Dolibarr environment
 use DoliCore\Lib\ExtraFields;
+use DoliModules\Bom\Model\Bom;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
@@ -805,7 +806,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
         $bomcost = 0;
         if ($object->fk_bom > 0) {
-            $bom = new BOM($db);
+            $bom = new Bom($db);
             $res = $bom->fetch($object->fk_bom);
             if ($res > 0) {
                 $bom->calculateCosts();

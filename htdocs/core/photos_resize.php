@@ -27,6 +27,7 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Bom\Model\Bom;
 use DoliModules\Ticket\Model\Ticket;
 
 require BASE_PATH . '/main.inc.php';
@@ -223,7 +224,7 @@ if ($modulepart == 'produit' || $modulepart == 'product' || $modulepart == 'serv
     }
 } elseif ($modulepart == 'bom') {
     require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
-    $object = new BOM($db);
+    $object = new Bom($db);
     if ($id > 0) {
         $result = $object->fetch($id);
         if ($result <= 0) {

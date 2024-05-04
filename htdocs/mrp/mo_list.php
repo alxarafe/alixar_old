@@ -25,6 +25,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
+use DoliModules\Bom\Model\Bom;
 use DoliModules\Product\Model\Product;
 
 // Load Dolibarr environment
@@ -608,7 +609,7 @@ if (isset($extrafields->attributes[$object->table_element]['computed']) && is_ar
 }
 
 
-$bom = new BOM($db);
+$bom = new Bom($db);
 $product = new Product($db);
 
 // Loop on record

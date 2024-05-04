@@ -28,6 +28,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Bom\Model\Bom;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
@@ -48,7 +50,7 @@ $result = restrictedArea($user, 'bom|mrp');
  * View
  */
 
-$staticbom = new BOM($db);
+$staticbom = new Bom($db);
 $staticmo = new Mo($db);
 
 llxHeader('', $langs->trans("MRP"), '');

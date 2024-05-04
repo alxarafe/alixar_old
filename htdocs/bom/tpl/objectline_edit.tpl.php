@@ -32,6 +32,8 @@
  * $inputalsopricewithtax (0 by default, 1 to also show column with unit price including tax)
  */
 
+use DoliModules\Bom\Model\BomLine;
+
 require_once DOL_DOCUMENT_ROOT . "/product/class/html.formproduct.class.php";
 
 

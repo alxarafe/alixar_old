@@ -51,6 +51,7 @@ use DoliCore\Form\FormBarCode;
 use DoliCore\Form\FormCompany;
 use DoliCore\Form\FormFile;
 use DoliCore\Lib\ExtraFields;
+use DoliModules\Bom\Model\Bom;
 use DoliModules\Category\Model\Categorie;
 use DoliModules\Product\Model\FormProduct;
 use DoliModules\Product\Model\Product;
@@ -2712,7 +2713,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
                 if (!$object->isService() && isModEnabled('bom') && $object->finished) {
                     print '<tr><td class="titlefield">' . $form->textwithpicto($langs->trans("DefaultBOM"), $langs->trans("DefaultBOMDesc", $langs->transnoentitiesnoconv("Finished"))) . '</td><td>';
                     if ($object->fk_default_bom) {
-                        $bom_static = new BOM($db);
+                        $bom_static = new Bom($db);
                         $bom_static->fetch($object->fk_default_bom);
                         print $bom_static->getNomUrl(1);
                     }

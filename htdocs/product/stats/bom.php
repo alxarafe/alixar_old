@@ -26,6 +26,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Bom\Model\Bom;
+
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Product.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
@@ -159,7 +161,7 @@ if ($id > 0 || !empty($ref)) {
 
         $result = $db->query($sql);
         if ($result) {
-            $bomtmp = new BOM($db);
+            $bomtmp = new Bom($db);
             $num = $db->num_rows($result);
             $i = 0;
             if ($num > 0) {
@@ -220,7 +222,7 @@ if ($id > 0 || !empty($ref)) {
 
         $result = $db->query($sql);
         if ($result) {
-            $bomtmp = new BOM($db);
+            $bomtmp = new Bom($db);
             $num = $db->num_rows($result);
             $i = 0;
             if ($num > 0) {

@@ -18,6 +18,9 @@
  */
 
 // Protection to avoid direct call of template
+use DoliModules\Bom\Model\Bom;
+use DoliModules\Bom\Model\BomLine;
+
 if (empty($conf) || !is_object($conf)) {
     print "Error, template page can't be called as URL";
     exit(1);
@@ -41,7 +44,7 @@ $tmpproduct = new Product($db);
 if ($line->fk_product > 0) {
     $tmpproduct->fetch($line->fk_product);
 }
-$tmpbom = new BOM($db);
+$tmpbom = new Bom($db);
 if ($line->fk_bom_child > 0) {
     $res = $tmpbom->fetch($line->fk_bom_child);
 }
@@ -121,7 +124,7 @@ if ($resql) {
         $sub_bom_product->fetch($obj->fk_product);
         $sub_bom_product->load_stock();
 
-        $sub_bom = new BOM($db);
+        $sub_bom = new Bom($db);
         $sub_bom->fetch($obj->fk_bom_child);
 
         $sub_bom_line = new BomLine($db);

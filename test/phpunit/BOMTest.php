@@ -24,7 +24,11 @@
  * \brief   PHPUnit test for BillOfMaterials class.
  */
 
-global $conf,$user,$langs,$db;
+global
+
+use DoliModules\Bom\Model\Bom;
+
+$conf,$user,$langs,$db;
 //define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
@@ -63,7 +67,7 @@ class BOMTest extends CommonClassTest
         $langs = $this->savlangs;
         $db = $this->savdb;
 
-        $localobject = new BOM($db);
+        $localobject = new Bom($db);
         $localobject->initAsSpecimen();
         $result = $localobject->create($user);
 
@@ -90,7 +94,7 @@ class BOMTest extends CommonClassTest
         $langs = $this->savlangs;
         $db = $this->savdb;
 
-        $localobject = new BOM($db);
+        $localobject = new Bom($db);
         $result = $localobject->fetch($id);
         $result = $localobject->delete($user);
 

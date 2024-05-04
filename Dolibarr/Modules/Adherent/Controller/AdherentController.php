@@ -57,6 +57,7 @@ require_once BASE_PATH . '/partnership/class/partnership.class.php';
 require_once BASE_PATH . '/partnership/lib/partnership.lib.php';
 
 use DoliCore\Base\DolibarrController;
+use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 use DoliCore\Model\MailmanSpip;

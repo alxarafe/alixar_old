@@ -28,6 +28,8 @@
  *  \brief      File of class to build ODT documents for BOMs
  */
 
+use DoliModules\Bom\Model\Bom;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/bom/modules_bom.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
@@ -229,7 +231,7 @@ class doc_generic_bom_odt extends ModelePDFBom
             // If $object is id instead of object
             if (!is_object($object)) {
                 $id = $object;
-                $object = new BOM($this->db);
+                $object = new Bom($this->db);
                 $result = $object->fetch($id);
                 if ($result < 0) {
                     dol_print_error($this->db, $object->error);

@@ -30,6 +30,8 @@
  * $forceall (0 by default, 1 for supplier invoices/orders)
  */
 
+use DoliModules\Bom\Model\BomLine;
+
 require_once DOL_DOCUMENT_ROOT . "/product/class/html.formproduct.class.php";
 
 // Protection to avoid direct call of template

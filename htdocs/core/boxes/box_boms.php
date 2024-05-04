@@ -1,9 +1,9 @@
 <?php
 
-/* Copyright (C) 2003-2007 Rodolphe Quiedeville <rodolphe@quiedeville.org>
- * Copyright (C) 2004-2009 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2005-2009 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2015      Frederic France      <frederic.france@free.fr>
+/* Copyright (C) 2003-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
+ * Copyright (C) 2004-2009  Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2005-2009  Regis Houssin           <regis.houssin@inodbox.com>
+ * Copyright (C) 2015       Frederic France         <frederic.france@free.fr>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,7 @@
  */
 
 use DoliCore\Base\GenericBoxes;
+use DoliModules\Bom\Model\Bom;
 use DoliModules\Product\Model\Product;
 use DoliModules\User\Model\User;
 
@@ -69,7 +70,7 @@ class box_boms extends GenericBoxes
 
         include_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 
-        $bomstatic = new BOM($this->db);
+        $bomstatic = new Bom($this->db);
         $productstatic = new Product($this->db);
         $userstatic = new User($this->db);
 

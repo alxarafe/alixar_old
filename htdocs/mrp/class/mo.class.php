@@ -27,6 +27,7 @@
  */
 
 use DoliCore\Base\GenericDocument;
+use DoliModules\Bom\Model\Bom;
 
 /**
  * Class for Mo
@@ -313,7 +314,7 @@ class Mo extends GenericDocument
         if ($this->fk_bom > 0) {
             // If there is a known BOM, we force the type of MO to the type of BOM
             include_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
-            $tmpbom = new BOM($this->db);
+            $tmpbom = new Bom($this->db);
             $tmpbom->fetch($this->fk_bom);
 
             $this->mrptype = $tmpbom->bomtype;
@@ -715,7 +716,7 @@ class Mo extends GenericDocument
 
             if ($this->fk_bom > 0) {    // If a BOM is defined, we know what to produce.
                 include_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
-                $bom = new BOM($this->db);
+                $bom = new Bom($this->db);
                 $bom->fetch($this->fk_bom);
                 if ($bom->bomtype == 1) {
                     $role = 'toproduce';

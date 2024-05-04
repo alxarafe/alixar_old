@@ -23,6 +23,8 @@
 
 //if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER','1');    // Not disabled cause need to load personalized language
 //if (! defined('NOREQUIREDB'))     define('NOREQUIREDB','1');      // Not disabled cause need to load personalized language
+use DoliModules\Bom\Model\Bom;
+
 defineIfNotDefined('NOREQUIRESOC', '1');
 //if (! defined('NOREQUIRETRAN'))       define('NOREQUIRETRAN','1');
 defineIfNotDefined('NOTOKENRENEWAL', '1');
@@ -37,7 +39,7 @@ require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 $idbom = GETPOST('idbom', 'alpha');
 //$action = GETPOST('action', 'aZ09');
 
-$object = new BOM($db);
+$object = new Bom($db);
 $result = $object->fetch($idbom);
 
 // Security check

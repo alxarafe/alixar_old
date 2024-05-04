@@ -27,6 +27,8 @@
  * \brief      File containing class for numbering model of BOMs advanced
  */
 
+use DoliModules\Bom\Model\Bom;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/bom/modules_bom.php';
 
 

@@ -1,4 +1,4 @@
 ### Folder Migration Status
 - **admin**: (LIKE) Fully migrated as **???**.
-- **class**: (LIKE) Partially migrated as **???**.
-- *root*: (LIKE) Pending migration to **???**.
+- **class**: (LIKE) Fully migrated as **???**.
+- *root*: (LIKE) Fully migration to **???**.

@@ -28,6 +28,8 @@ use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliCore\Form\FormProjets;
 use DoliCore\Lib\ExtraFields;
+use DoliModules\Bom\Model\Bom;
+use DoliModules\Bom\Model\BomLine;
 
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
@@ -59,7 +61,7 @@ $socid = GETPOSTINT("socid");
 
 // Initialize technical objects
 $object = new Mo($db);
-$objectbom = new BOM($db);
+$objectbom = new Bom($db);
 
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->mrp->dir_output . '/temp/massgeneration/' . $user->id;

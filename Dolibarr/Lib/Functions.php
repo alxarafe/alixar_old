@@ -45,6 +45,7 @@ use DoliCore\Form\FormActions;
 use DoliCore\Tools\Debug;
 use DoliModules\Agenda\Model\ActionComm;
 use DoliModules\Agenda\Model\CActionComm;
+use DoliModules\Bom\Model\Bom;
 use DoliModules\Company\Model\Company;
 use DoliModules\Contact\Model\Contact;
 use DoliModules\Product\Model\Product;

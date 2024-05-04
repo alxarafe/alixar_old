@@ -38,6 +38,9 @@
 
 /** var ObjectLine $line */
 
+use DoliModules\Bom\Model\Bom;
+use DoliModules\Bom\Model\BomLine;
+
 require_once DOL_DOCUMENT_ROOT . '/workstation/class/workstation.class.php';
 
 // Protection to avoid direct call of template
@@ -103,7 +106,7 @@ print '<div id="line_' . $line->id . '"></div>';
 $coldisplay++;
 $tmpproduct = new Product($object->db);
 $tmpproduct->fetch($line->fk_product);
-$tmpbom = new BOM($object->db);
+$tmpbom = new Bom($object->db);
 $res = $tmpbom->fetch($line->fk_bom_child);
 if ($tmpbom->id > 0) {
     print $tmpproduct->getNomUrl(1);
@@ -260,7 +263,7 @@ if ($resql) {
         $sub_bom_product = new Product($object->db);
         $sub_bom_product->fetch($obj->fk_product);
 
-        $sub_bom = new BOM($object->db);
+        $sub_bom = new Bom($object->db);
         if (!empty($obj->fk_bom_child)) {
             $sub_bom->fetch($obj->fk_bom_child);
         }

@@ -29,6 +29,8 @@
  *  \brief      File of class to generate MO document from vinci model
  */
 
+use DoliModules\Bom\Model\Bom;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/mrp/modules_mo.php';
 require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
@@ -407,7 +409,7 @@ class pdf_vinci extends ModelePDFMo
                 $pageposbeforeprintlines = $pdf->getPage();
                 $pagenb = $pageposbeforeprintlines;
 
-                $bom = new BOM($this->db);
+                $bom = new Bom($this->db);
                 $bom -> fetch($object->fk_bom);
 
                 $nblines = count($bom->lines);

@@ -25,6 +25,8 @@
  */
 
 // Load Dolibarr environment
+use DoliModules\Bom\Model\Bom;
+
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
@@ -73,7 +75,7 @@ if ($action == 'updateMask') {
 } elseif ($action == 'specimen') {
     $modele = GETPOST('module', 'alpha');
 
-    $bom = new BOM($db);
+    $bom = new Bom($db);
     $bom->initAsSpecimen();
 
     // Search template files
@@ -248,7 +250,7 @@ foreach ($dirmodels as $reldir) {
                         }
                         print '</td>';
 
-                        $bom = new BOM($db);
+                        $bom = new Bom($db);
                         $bom->initAsSpecimen();
 
                         // Info
