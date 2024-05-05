@@ -32,7 +32,7 @@ require BASE_PATH . '/main.inc.php';
 global $langs, $user;
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/stocktransfer/class/stocktransfer.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/stocktransfer/lib/stocktransfer.lib.php';
 

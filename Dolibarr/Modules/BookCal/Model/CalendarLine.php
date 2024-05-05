@@ -20,7 +20,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace DoliModules\BookCal\Model;
+
 use DoliCore\Base\GenericDocumentLine;
+use DoliDB;
 
 /**
  * Class CalendarLine. You can also remove this and generate a CRUD class for lines objects.

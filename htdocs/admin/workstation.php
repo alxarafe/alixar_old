@@ -29,7 +29,7 @@
 require "../main.inc.php";
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/workstation/lib/workstation.lib.php';
 //require_once "../class/myclass.class.php";
 

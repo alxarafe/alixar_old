@@ -1,6 +1,6 @@
 <?php
 
-/* Copyright (C) 2022 Alice Adminson <aadminson@example.com>
+/* Copyright (C) 2023 Alice Adminson <aadminson@example.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,18 +18,20 @@
  */
 
 /**
- * \file    lib/bookcal_availabilities.lib.php
+ * \file    lib/bookcal_calendar.lib.php
  * \ingroup bookcal
- * \brief   Library files with common functions for Availabilities
+ * \brief   Library files with common functions for Calendar
  */
 
+use DoliModules\BookCal\Model\Calendar;
+
 /**
- * Prepare array of tabs for Availabilities
+ * Prepare array of tabs for Calendar
  *
- * @param   Availabilities  $object     Availabilities
+ * @param   Calendar    $object     Calendar
  * @return  array                   Array of tabs
  */
-function availabilitiesPrepareHead($object)
+function calendarPrepareHead($object)
 {
     global $db, $langs, $conf;
 
@@ -38,18 +40,26 @@ function availabilitiesPrepareHead($object)
     $showtabofpagecontact = 0;
     $showtabofpagenote = 1;
     $showtabofpagedocument = 0;
-    $showtabofpageagenda = 0;
+    $showtabofpageagenda = 1;
 
     $h = 0;
     $head = array();
 
-    $head[$h][0] = DOL_URL_ROOT . '/bookcal/availabilities_card.php?id=' . $object->id;
-    $head[$h][1] = $langs->trans("Card");
+    $head[$h][0] = DOL_URL_ROOT . '/bookcal/calendar_card.php?id=' . $object->id;
+    $head[$h][1] = $langs->trans("Calendar");
     $head[$h][2] = 'card';
     $h++;
 
+    if ($object->status == Calendar::STATUS_VALIDATED) {
+        $head[$h][0] = DOL_URL_ROOT . '/bookcal/booking_list.php?id=' . $object->id;
+        $head[$h][1] = $langs->trans("Bookings");
+        $head[$h][2] = 'booking';
+        $h++;
+    }
+
+
     if ($showtabofpagecontact) {
-        $head[$h][0] = DOL_URL_ROOT . '/bookcal/availabilities_contact.php?id=' . $object->id;
+        $head[$h][0] = DOL_URL_ROOT . '/bookcal/calendar_contact.php?id=' . $object->id;
         $head[$h][1] = $langs->trans("Contacts");
         $head[$h][2] = 'contact';
         $h++;
@@ -64,10 +74,10 @@ function availabilitiesPrepareHead($object)
             if (!empty($object->note_public)) {
                 $nbNote++;
             }
-            $head[$h][0] = DOL_URL_ROOT . '/bookcal/availabilities_note.php?id=' . $object->id;
+            $head[$h][0] = DOL_URL_ROOT . '/bookcal/calendar_note.php?id=' . $object->id;
             $head[$h][1] = $langs->trans('Notes');
             if ($nbNote > 0) {
-                $head[$h][1] .= (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') ? '<span class="badge marginleftonlyshort">' . $nbNote . '</span>' : '');
+                $head[$h][1] .= (!getDolGlobalInt('MAIN_OPTIMIZEFORTEXTBROWSER') ? '<span class="badge marginleftonlyshort">' . $nbNote . '</span>' : '');
             }
             $head[$h][2] = 'note';
             $h++;
@@ -77,10 +87,10 @@ function availabilitiesPrepareHead($object)
     if ($showtabofpagedocument) {
         require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
         require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
-        $upload_dir = $conf->bookcal->dir_output . "/availabilities/" . dol_sanitizeFileName($object->ref);
+        $upload_dir = $conf->bookcal->dir_output . "/calendar/" . dol_sanitizeFileName($object->ref);
         $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
         $nbLinks = Link::count($db, $object->element, $object->id);
-        $head[$h][0] = DOL_URL_ROOT . '/bookcal/availabilities_document.php?id=' . $object->id;
+        $head[$h][0] = DOL_URL_ROOT . '/bookcal/calendar_document.php?id=' . $object->id;
         $head[$h][1] = $langs->trans('Documents');
         if (($nbFiles + $nbLinks) > 0) {
             $head[$h][1] .= '<span class="badge marginleftonlyshort">' . ($nbFiles + $nbLinks) . '</span>';
@@ -90,7 +100,7 @@ function availabilitiesPrepareHead($object)
     }
 
     if ($showtabofpageagenda) {
-        $head[$h][0] = DOL_URL_ROOT . '/bookcal/availabilities_agenda.php?id=' . $object->id;
+        $head[$h][0] = DOL_URL_ROOT . '/bookcal/calendar_agenda.php?id=' . $object->id;
         $head[$h][1] = $langs->trans("Events");
         $head[$h][2] = 'agenda';
         $h++;
@@ -104,9 +114,9 @@ function availabilitiesPrepareHead($object)
     //$this->tabs = array(
     //  'entity:-tabname:Title:@bookcal:/bookcal/mypage.php?id=__ID__'
     //); // to remove a tab
-    complete_head_from_modules($conf, $langs, $object, $head, $h, 'availabilities@bookcal');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'calendar@bookcal');
 
-    complete_head_from_modules($conf, $langs, $object, $head, $h, 'availabilities@bookcal', 'remove');
+    complete_head_from_modules($conf, $langs, $object, $head, $h, 'calendar@bookcal', 'remove');
 
     return $head;
 }

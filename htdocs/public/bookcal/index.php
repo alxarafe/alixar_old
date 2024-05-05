@@ -28,6 +28,9 @@
  *                  Example of URL: https://localhost/public/bookcal/index.php?id=...
  */
 
+use DoliModules\BookCal\Model\Availabilities;
+use DoliModules\BookCal\Model\Calendar;
+
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.
 defineIfNotDefined('NOCSRFCHECK', '1'); // We accept to go on this page from external web site.
 defineIfNotDefined('NOBROWSERNOTIF', '1');
@@ -40,7 +43,6 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once DOL_DOCUMENT_ROOT . '/bookcal/class/calendar.class.php';
-require_once DOL_DOCUMENT_ROOT . '/bookcal/class/availabilities.class.php';
 
 
 // Security check

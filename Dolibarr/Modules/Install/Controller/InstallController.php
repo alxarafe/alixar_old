@@ -424,11 +424,11 @@ class InstallController extends DolibarrNoLoginController
                 if (file_exists($conffile)) {
                     include_once $conffile;
                     if (!empty($dolibarr_main_db_type) && !empty($dolibarr_main_document_root)) {
-                        if (!file_exists($dolibarr_main_document_root . "/core/lib/admin.lib.php")) {
+                        if (!file_exists($dolibarr_main_document_root . '/../Dolibarr/Lib/Admin.php')) {
                             print '<span class="error">A ' . $conffiletoshow . ' file exists with a dolibarr_main_document_root to ' . $dolibarr_main_document_root . ' that seems wrong. Try to fix or remove the ' . $conffiletoshow . ' file.</span><br>' . "\n";
                             dol_syslog("A '" . $conffiletoshow . "' file exists with a dolibarr_main_document_root to " . $dolibarr_main_document_root . " that seems wrong. Try to fix or remove the '" . $conffiletoshow . "' file.", LOG_WARNING);
                         } else {
-                            require_once $dolibarr_main_document_root . '/core/lib/admin.lib.php';
+                            require_once $dolibarr_main_document_root . '/../Dolibarr/Lib/Admin.php';;
 
                             // If password is encoded, we decode it
                             if (preg_match('/crypted:/i', $dolibarr_main_db_pass) || !empty($dolibarr_main_db_encrypted_pass)) {

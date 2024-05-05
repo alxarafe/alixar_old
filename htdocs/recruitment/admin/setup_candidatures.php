@@ -30,7 +30,7 @@ require BASE_PATH . '/main.inc.php';
 global $conf, $langs, $user;
 
 // Libraries
-require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once DOL_DOCUMENT_ROOT . '/recruitment/lib/recruitment.lib.php';
 require_once DOL_DOCUMENT_ROOT . "/recruitment/class/recruitmentjobposition.class.php";
 
