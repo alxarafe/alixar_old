@@ -35,6 +35,8 @@ abstract class DolibarrController extends DolibarrViewController
     public $user;
     public $langs;
 
+    public $object;
+
     public function __construct()
     {
         $this->conf = Config::getConf();
@@ -48,8 +50,38 @@ abstract class DolibarrController extends DolibarrViewController
         parent::__construct();
     }
 
+    function filterPost($field, $filter)
+    {
+        if (!isset($_REQUEST[$field])) {
+            return $this->object->$field ?? false;
+        }
+        return GETPOST($field, $filter);
+    }
+
+    function filterPostInt($field)
+    {
+        return (int) $this->filterPost($field, 'int');
+    }
+
     public function doLogin($user, $password)
     {
+        return true;
+    }
+
+    public function index($executeActions = true): bool
+    {
+        if (method_exists($this, 'loadRecord') && !$this->loadRecord()) {
+            return false;
+        }
+
+        if (method_exists($this, 'loadPost') && !$this->loadPost()) {
+            return false;
+        }
+
+        if (!parent::index($executeActions)) {
+            return $this->action === null;
+        }
+
         return true;
     }
 

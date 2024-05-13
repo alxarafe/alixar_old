@@ -15,20 +15,21 @@
         </table>
         <form href="/adherents/type.php" method="POST">
             <input type="hidden" name="token" value="{!! newToken() !!}">
-            <input type="hidden">
             <!-- dol_fiche_head - dol_get_fiche_head -->
             <div id="dragDropAreaTabBar" class="tabBar tabBarWithBottom">
                 <table class="border centpercent">
                     <tbody>
                     <tr>
                         <td class="titlefieldcreate fieldrequired">Etiqueta</td>
-                        <td><input type="text" class="minwidth200" name="label" autofocus="autofocus"></td>
+                        <td>
+                            <input type="text" class="minwidth200" name="label" autofocus="autofocus" value="{!! $me->object->label !!}">
+                        </td>
                     </tr>
                     <tr>
                         <td>Estado</td>
                         <td><select id="status" class="flat status minwidth100 selectformat" name="status">
-                                <option value="0">Cerrado</option>
-                                <option value="1" selected>Activo</option>
+                                <option value="0" @if($me->object->status === "0") selected @endif >Cerrado</option>
+                                <option value="1" @if($me->object->status === "1") selected @endif >Activo</option>
                             </select>
                             <!-- JS CODE TO ENABLE select2 for id = status -->
                             <script>
@@ -86,9 +87,12 @@
                     <tr>
                         <td><span>Naturaleza de los miembros</span></td>
                         <td><select id="morphy" class="flat morphy minwidth75 selectformat" name="morphy">
-                                <option value="">Corporaci&oacute;n e Individuo</option>
-                                <option value="phy">Individual</option>
-                                <option value="mor">Corporaci&oacute;n</option>
+                                <option value="" @if($me->object->morphy === "") selected @endif >Corporaci&oacute;n e
+                                    Individuo
+                                </option>
+                                <option value="phy" @if($me->object->morphy === "phy") selected @endif >Individual
+                                </option>
+                                <option value="mor" @if($me->object->morphy === "mor") selected @endif >Corporaci&oacute;n</option>
                             </select>
                             <!-- JS CODE TO ENABLE select2 for id = morphy -->
                             <script>
@@ -148,44 +152,52 @@
                             <span style="padding: 0px; padding-right: 3px;">Sujeto a cotizaci&oacute;n</span><span class="classfortooltip" style="padding: 0px; padding: 0px; padding-right: 3px;" title="Si se requiere suscripci&oacute;n, se debe registrar una suscripci&oacute;n con una fecha de inicio o finalizaci&oacute;n para tener al miembro al d&iacute;a (cualquiera que sea el monto de la suscripci&oacute;n, incluso si la suscripci&oacute;n es gratuita)."><span class="fas fa-info-circle  em088 opacityhigh" style=" vertical-align: middle; cursor: help"></span></span>
                         </td>
                         <td><select class="flat width75" id="subscription" name="subscription">
-                                <option value="1" selected>S&iacute;</option>
-                                <option value="0">No</option>
+                                <option value="1" @if($me->object->subscription === "1") selected @endif >S&iacute;
+                                </option>
+                                <option value="0" @if($me->object->subscription === "0") selected @endif >No</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>Importe</td>
-                        <td><input name="amount" size="5" value="0,00"></td>
+                        <td><input name="amount" size="5" value="{!! $me->object->amount !!}"></td>
                     </tr>
                     <tr>
                         <td>
                             <span style="padding: 0px; padding-right: 3px;">Cualquier importe</span><span class="classfortooltip" style="padding: 0px; padding: 0px; padding-right: 3px;" title="El monto de la suscripci&oacute;n puede ser definido por el miembro"><span class="fas fa-info-circle  em088 opacityhigh" style=" vertical-align: middle; cursor: help"></span></span>
                         </td>
                         <td><select class="flat width75" id="caneditamount" name="caneditamount">
-                                <option value="1">S&iacute;</option>
-                                <option value="0" selected>No</option>
+                                <option value="1" @if($me->object->caneditamount === "1") selected @endif >S&iacute;
+                                </option>
+                                <option value="0" @if($me->object->caneditamount === "0") selected @endif >No</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>Voto autorizado</td>
                         <td><select class="flat width75" id="vote" name="vote">
-                                <option value="1" selected>S&iacute;</option>
-                                <option value="0">No</option>
+                                <option value="1" @if($me->object->vote === "1") selected @endif >S&iacute;</option>
+                                <option value="0" @if($me->object->vote === "0") selected @endif >No</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>Duraci&oacute;n</td>
-                        <td colspan="3"><input name="duration_value" size="5" value="">
+                        <td colspan="3">
+                            <input name="duration_value" size="5" value="{!! $me->object->duration_value !!}">
                             <select class="flat maxwidth125" name="duration_unit" id="duration_unit">
-                                <option value="s">Segundo</option>
-                                <option value="i">Minuto</option>
-                                <option value="h">Hora</option>
-                                <option value="d">D&iacute;a</option>
-                                <option value="w">Semana</option>
-                                <option value="m">Mes</option>
-                                <option value="y" selected>A&ntilde;o</option>
+                                <option value="s" @if($me->object->duration_unit === "s") selected @endif >Segundo
+                                </option>
+                                <option value="i" @if($me->object->duration_unit === "i") selected @endif >Minuto
+                                </option>
+                                <option value="h" @if($me->object->duration_unit === "h") selected @endif >Hora</option>
+                                <option value="d" @if($me->object->duration_unit === "d") selected @endif >D&iacute;a
+                                </option>
+                                <option value="w" @if($me->object->duration_unit === "w") selected @endif >Semana
+                                </option>
+                                <option value="m" @if($me->object->duration_unit === "m") selected @endif >Mes</option>
+                                <option value="y" @if($me->object->duration_unit === "y") selected @endif >A&ntilde;o
+                                </option>
                             </select>
                             <!-- JS CODE TO ENABLE select2 for id = duration_unit -->
                             <script>
@@ -243,7 +255,7 @@
                     <tr>
                         <td class="tdtop">Descripci&oacute;n</td>
                         <td>
-                            <textarea id="comment" name="comment" rows="15" style="margin-top: 5px; width: 90%" class="flat "></textarea>
+                            <textarea id="comment" name="comment" rows="15" style="margin-top: 5px; width: 90%" class="flat ">{!! $me->object->note !!}</textarea>
                             <!-- Output ckeditor $disallowAnyContent=1 toolbarname=dolibarr_notes -->
                             <script nonce="da1ab1e8" type="text/javascript">
                                 $(document).ready(function () {
@@ -306,7 +318,7 @@
                     <tr>
                         <td class="tdtop">Email de bienvenida</td>
                         <td>
-                            <textarea id="mail_valid" name="mail_valid" rows="15" style="margin-top: 5px; width: 90%" class="flat "></textarea>
+                            <textarea id="mail_valid" name="mail_valid" rows="15" style="margin-top: 5px; width: 90%" class="flat ">{!! $me->object->mail_valid !!}</textarea>
                             <!-- Output ckeditor $disallowAnyContent=1 toolbarname=dolibarr_notes -->
                             <script nonce="da1ab1e8" type="text/javascript">
                                 $(document).ready(function () {

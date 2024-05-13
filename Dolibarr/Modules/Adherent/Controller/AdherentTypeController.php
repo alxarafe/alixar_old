@@ -64,7 +64,11 @@ class AdherentTypeController extends DolibarrController
         // Load translation files required by the page
         $this->langs->load("members");
 
-        $action = GETPOST('action', 'aZ09');
+        if (!parent::index($executeActions)) {
+            return false;
+        }
+
+        $action = $this->filterPost('action', 'aZ09');
         if ($action === 'create') {
             $this->template = '/page/adherent/type_edit';
             return true;
@@ -75,68 +79,11 @@ class AdherentTypeController extends DolibarrController
             return true;
         }
 
-        $rowid = GETPOSTINT('rowid');
-        $massaction = GETPOST('massaction', 'alpha');
-        $cancel = GETPOST('cancel', 'alpha');
-        $toselect = GETPOST('toselect', 'array');
-        $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : str_replace('_', '', basename(dirname(__FILE__)) . basename(__FILE__, '.php')); // To manage different context of search
-        $backtopage = GETPOST('backtopage', 'alpha');
-        $mode = GETPOST('mode', 'alpha');
-
-        $sall = GETPOST("sall", "alpha");
-        $filter = GETPOST("filter", 'alpha');
-        $search_ref = GETPOST('search_ref', 'alpha');
-        $search_lastname = GETPOST('search_lastname', 'alpha');
-        $search_login = GETPOST('search_login', 'alpha');
-        $search_email = GETPOST('search_email', 'alpha');
-        $type = GETPOST('type', 'intcomma');
-        $status = GETPOST('status', 'alpha');
-        $optioncss = GETPOST('optioncss', 'alpha');
-
-        // Load variable for pagination
-        $limit = GETPOSTINT('limit') ? GETPOSTINT('limit') : $conf->liste_limit;
-        $sortfield = GETPOST('sortfield', 'aZ09comma');
-        $sortorder = GETPOST('sortorder', 'aZ09comma');
-        $page = GETPOSTISSET('pageplusone') ? (GETPOSTINT('pageplusone') - 1) : GETPOSTINT("page");
-        if (empty($page) || $page < 0 || GETPOST('button_search', 'alpha') || GETPOST('button_removefilter', 'alpha')) {
-            // If $page is not defined, or '' or -1 or if we click on clear filters
-            $page = 0;
-        }
-        $offset = $limit * $page;
-        $pageprev = $page - 1;
-        $pagenext = $page + 1;
-        if (!$sortorder) {
-            $sortorder = "DESC";
-        }
-        if (!$sortfield) {
-            $sortfield = "d.lastname";
-        }
-
-        $label = GETPOST("label", "alpha");
-        $morphy = GETPOST("morphy", "alpha");
-        $status = GETPOSTINT("status");
-        $subscription = GETPOSTINT("subscription");
-        $amount = GETPOST('amount', 'alpha');
-        $duration_value = GETPOSTINT('duration_value');
-        $duration_unit = GETPOST('duration_unit', 'alpha');
-        $vote = GETPOSTINT("vote");
-        $comment = GETPOST("comment", 'restricthtml');
-        $mail_valid = GETPOST("mail_valid", 'restricthtml');
-        $caneditamount = GETPOSTINT("caneditamount");
-
-        // Initialize technical objects
-        $object = new AdherentType($this->db);
-        $extrafields = new ExtraFields($this->db);
-        $this->hookmanager->initHooks(['membertypecard', 'globalcard']);
-
-        // Fetch optionals attributes and labels
-        $extrafields->fetch_name_optionals_label($object->table_element);
-
         /*
          *  Actions
          */
 
-        if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter', 'alpha')) { // All tests are required to be compatible with all browsers
+        if ($this->filterPost('button_removefilter_x', 'alpha') || $this->filterPost('button_removefilter_x', 'alpha') || $this->filterPost('button_removefilter', 'alpha')) { // All tests are required to be compatible with all browsers
             $search_ref = "";
             $search_lastname = "";
             $search_login = "";
@@ -145,12 +92,12 @@ class AdherentTypeController extends DolibarrController
             $sall = "";
         }
 
-        if (GETPOST('cancel', 'alpha')) {
+        if ($this->filterPost('cancel', 'alpha')) {
             $action = 'list';
             $massaction = '';
         }
 
-        if (!GETPOST('confirmmassaction', 'alpha') && $massaction != 'presend' && $massaction != 'confirm_presend') {
+        if (!$this->filterPost('confirmmassaction', 'alpha') && $massaction != 'presend' && $massaction != 'confirm_presend') {
             $massaction = '';
         }
 
@@ -164,30 +111,30 @@ class AdherentTypeController extends DolibarrController
         }
 
         if ($action == 'add' && $user->hasRight('adherent', 'configurer')) {
-            $object->label = trim($label);
-            $object->morphy = trim($morphy);
-            $object->status = (int) $status;
-            $object->subscription = (int) $subscription;
-            $object->amount = ($amount == '' ? '' : price2num($amount, 'MT'));
-            $object->caneditamount = $caneditamount;
-            $object->duration_value = $duration_value;
-            $object->duration_unit = $duration_unit;
-            $object->note_public = trim($comment);
-            $object->note_private = '';
-            $object->mail_valid = trim($mail_valid);
-            $object->vote = (int) $vote;
+            $this->object->label = trim($label);
+            $this->object->morphy = trim($morphy);
+            $this->object->status = (int) $status;
+            $this->object->subscription = (int) $subscription;
+            $this->object->amount = ($amount == '' ? '' : price2num($amount, 'MT'));
+            $this->object->caneditamount = $caneditamount;
+            $this->object->duration_value = $duration_value;
+            $this->object->duration_unit = $duration_unit;
+            $this->object->note_public = trim($comment);
+            $this->object->note_private = '';
+            $this->object->mail_valid = trim($mail_valid);
+            $this->object->vote = (int) $vote;
 
             // Fill array 'array_options' with data from add form
-            $ret = $extrafields->setOptionalsFromPost(null, $object);
+            $ret = $extrafields->setOptionalsFromPost(null, $this->object);
             if ($ret < 0) {
                 $error++;
             }
 
-            if (empty($object->label)) {
+            if (empty($this->object->label)) {
                 $error++;
                 setEventMessages($this->langs->trans("ErrorFieldRequired", $this->langs->transnoentities("Label")), null, 'errors');
             } else {
-                $sql = "SELECT libelle FROM " . MAIN_DB_PREFIX . "adherent_type WHERE libelle = '" . $this->db->escape($object->label) . "'";
+                $sql = "SELECT libelle FROM " . MAIN_DB_PREFIX . "adherent_type WHERE libelle = '" . $this->db->escape($this->object->label) . "'";
                 $sql .= " WHERE entity IN (" . getEntity('member_type') . ")";
                 $result = $this->db->query($sql);
                 $num = null;
@@ -202,12 +149,12 @@ class AdherentTypeController extends DolibarrController
             }
 
             if (!$error) {
-                $id = $object->create($user);
+                $id = $this->object->create($user);
                 if ($id > 0) {
                     header("Location: " . $_SERVER['PHP_SELF']);
                     exit;
                 } else {
-                    setEventMessages($object->error, $object->errors, 'errors');
+                    setEventMessages($this->object->error, $this->object->errors, 'errors');
                     $action = 'create';
                 }
             } else {
@@ -216,44 +163,44 @@ class AdherentTypeController extends DolibarrController
         }
 
         if ($action == 'update' && $user->hasRight('adherent', 'configurer')) {
-            $object->fetch($rowid);
+            $this->object->fetch($this->rowid);
 
-            $object->oldcopy = dol_clone($object, 2);
+            $this->object->oldcopy = dol_clone($this->object, 2);
 
-            $object->label = trim($label);
-            $object->morphy = trim($morphy);
-            $object->status = (int) $status;
-            $object->subscription = (int) $subscription;
-            $object->amount = ($amount == '' ? '' : price2num($amount, 'MT'));
-            $object->caneditamount = $caneditamount;
-            $object->duration_value = $duration_value;
-            $object->duration_unit = $duration_unit;
-            $object->note_public = trim($comment);
-            $object->note_private = '';
-            $object->mail_valid = trim($mail_valid);
-            $object->vote = (bool) trim($vote);
+            $this->object->label = trim($label);
+            $this->object->morphy = trim($morphy);
+            $this->object->status = (int) $status;
+            $this->object->subscription = (int) $subscription;
+            $this->object->amount = ($amount == '' ? '' : price2num($amount, 'MT'));
+            $this->object->caneditamount = $caneditamount;
+            $this->object->duration_value = $duration_value;
+            $this->object->duration_unit = $duration_unit;
+            $this->object->note_public = trim($comment);
+            $this->object->note_private = '';
+            $this->object->mail_valid = trim($mail_valid);
+            $this->object->vote = (bool) trim($vote);
 
             // Fill array 'array_options' with data from add form
-            $ret = $extrafields->setOptionalsFromPost(null, $object, '@GETPOSTISSET');
+            $ret = $extrafields->setOptionalsFromPost(null, $this->object, '@GETPOSTISSET');
             if ($ret < 0) {
                 $error++;
             }
 
-            $ret = $object->update($user);
+            $ret = $this->object->update($user);
 
-            if ($ret >= 0 && !count($object->errors)) {
+            if ($ret >= 0 && !count($this->object->errors)) {
                 setEventMessages($this->langs->trans("MemberTypeModified"), null, 'mesgs');
             } else {
-                setEventMessages($object->error, $object->errors, 'errors');
+                setEventMessages($this->object->error, $this->object->errors, 'errors');
             }
 
-            header("Location: " . $_SERVER['PHP_SELF'] . "?rowid=" . $object->id);
+            header("Location: " . $_SERVER['PHP_SELF'] . "?rowid=" . $this->object->id);
             exit;
         }
 
         if ($action == 'confirm_delete' && $user->hasRight('adherent', 'configurer')) {
-            $object->fetch($rowid);
-            $res = $object->delete($user);
+            $this->object->fetch($this->rowid);
+            $res = $this->object->delete($user);
 
             if ($res > 0) {
                 setEventMessages($this->langs->trans("MemberTypeDeleted"), null, 'mesgs');
@@ -268,6 +215,14 @@ class AdherentTypeController extends DolibarrController
         $this->db->close();
 
         $this->template = '/page/adherent/type_list';
+        if ($this->rowid) {
+            if ($_GET['action'] === 'edit') {
+                $this->template = '/page/adherent/type_edit';
+            } else {
+                $this->template = '/page/adherent/type_show';
+            }
+        }
+
 
         $this->menu = [];
         foreach ($menu as $item) {
@@ -282,6 +237,77 @@ class AdherentTypeController extends DolibarrController
                 'selected' => false,
             ];
         }
+
+        return true;
+    }
+
+    public function loadRecord()
+    {
+        // Initialize technical objects
+        $this->object = new AdherentType($this->db);
+        $this->extrafields = new ExtraFields($this->db);
+        $this->hookmanager->initHooks(['membertypecard', 'globalcard']);
+
+        // Fetch optionals attributes and labels
+        $this->extrafields->fetch_name_optionals_label($this->object->table_element);
+
+        $this->rowid = $this->filterPostInt('rowid');
+        if ($this->rowid) {
+            $this->object->fetch($this->rowid);
+        }
+
+        return true;
+    }
+
+    public function loadPost()
+    {
+        $this->massaction = $this->filterPost('massaction', 'alpha');
+        $this->cancel = $this->filterPost('cancel', 'alpha');
+        $this->toselect = $this->filterPost('toselect', 'array');
+        $this->contextpage = $this->filterPost('contextpage', 'aZ') ? $this->filterPost('contextpage', 'aZ') : str_replace('_', '', basename(dirname(__FILE__)) . basename(__FILE__, '.php')); // To manage different context of search
+        $this->backtopage = $this->filterPost('backtopage', 'alpha');
+        $this->mode = $this->filterPost('mode', 'alpha');
+
+        $this->sall = $this->filterPost("sall", "alpha");
+        $this->filter = $this->filterPost("filter", 'alpha');
+        $this->search_ref = $this->filterPost('search_ref', 'alpha');
+        $this->search_lastname = $this->filterPost('search_lastname', 'alpha');
+        $this->search_login = $this->filterPost('search_login', 'alpha');
+        $this->search_email = $this->filterPost('search_email', 'alpha');
+        $this->type = $this->filterPost('type', 'intcomma');
+        $this->status = $this->filterPost('status', 'alpha');
+        $this->optioncss = $this->filterPost('optioncss', 'alpha');
+
+        // Load variable for pagination (move to trait? Create a class? A component?)
+        $this->limit = $this->filterPostInt('limit') ? $this->filterPostInt('limit') : $conf->liste_limit;
+        $this->sortfield = $this->filterPost('sortfield', 'aZ09comma');
+        $this->sortorder = $this->filterPost('sortorder', 'aZ09comma');
+        $this->page = GETPOSTISSET('pageplusone') ? ($this->filterPostInt('pageplusone') - 1) : $this->filterPostInt("page");
+        if (empty($this->page) || $this->page < 0 || $this->filterPost('button_search', 'alpha') || $this->filterPost('button_removefilter', 'alpha')) {
+            // If $this->page is not defined, or '' or -1 or if we click on clear filters
+            $this->page = 0;
+        }
+        $this->offset = $limit * $this->page;
+        $this->pageprev = $this->page - 1;
+        $this->pagenext = $this->page + 1;
+        if (!$this->sortorder) {
+            $this->sortorder = "DESC";
+        }
+        if (!$this->sortfield) {
+            $this->sortfield = "d.lastname";
+        }
+
+        $this->label = $this->filterPost("label", "alpha");
+        $this->morphy = $this->filterPost("morphy", "alpha");
+        $this->status = $this->filterPostInt("status");
+        $this->subscription = $this->filterPostInt("subscription");
+        $this->amount = $this->filterPost('amount', 'alpha');
+        $this->duration_value = $this->filterPostInt('duration_value');
+        $this->duration_unit = $this->filterPost('duration_unit', 'alpha');
+        $this->vote = $this->filterPostInt("vote");
+        $this->comment = $this->filterPost("comment", 'restricthtml');
+        $this->mail_valid = $this->filterPost("mail_valid", 'restricthtml');
+        $this->caneditamount = $this->filterPostInt("caneditamount");
 
         return true;
     }

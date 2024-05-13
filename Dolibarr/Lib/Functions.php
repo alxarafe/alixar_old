@@ -167,7 +167,6 @@ if (!function_exists('str_contains')) {
     }
 }
 
-
 /**
  * Return the full path of the directory where a module (or an object of a module) stores its files. Path may depends
  * on the entity if a multicompany module is enabled.
@@ -276,31 +275,28 @@ function getDolUserInt($key, $default = 0, $tmpuser = null)
  *
  * The value is typically the name of module's root directory.
  */
-define(
-    'MODULE_MAPPING',
-    [
-        // Map deprecated names to new names
-        'adherent' => 'member',  // Has new directory
-        'member_type' => 'adherent_type',   // No directory, but file called adherent_type
-        'banque' => 'bank',   // Has new directory
-        'contrat' => 'contract', // Has new directory
-        'entrepot' => 'stock',   // Has new directory
-        'projet' => 'project', // Has new directory
-        'categorie' => 'category', // Has old directory
-        'commande' => 'order',    // Has old directory
-        'expedition' => 'shipping', // Has old directory
-        'facture' => 'invoice', // Has old directory
-        'fichinter' => 'intervention', // Has old directory
-        'ficheinter' => 'intervention',  // Backup for 'fichinter'
-        'propale' => 'propal', // Has old directory
-        'socpeople' => 'contact', // Has old directory
-        'fournisseur' => 'supplier',  // Has old directory
+const MODULE_MAPPING = [
+    // Map deprecated names to new names
+    'adherent' => 'member',  // Has new directory
+    'member_type' => 'adherent_type',   // No directory, but file called adherent_type
+    'banque' => 'bank',   // Has new directory
+    'contrat' => 'contract', // Has new directory
+    'entrepot' => 'stock',   // Has new directory
+    'projet' => 'project', // Has new directory
+    'categorie' => 'category', // Has old directory
+    'commande' => 'order',    // Has old directory
+    'expedition' => 'shipping', // Has old directory
+    'facture' => 'invoice', // Has old directory
+    'fichinter' => 'intervention', // Has old directory
+    'ficheinter' => 'intervention',  // Backup for 'fichinter'
+    'propale' => 'propal', // Has old directory
+    'socpeople' => 'contact', // Has old directory
+    'fournisseur' => 'supplier',  // Has old directory
 
-        'actioncomm' => 'agenda',  // NO module directory (public dir agenda)
-        'product_price' => 'productprice', // NO directory
-        'product_fournisseur_price' => 'productsupplierprice', // NO directory
-    ]
-);
+    'actioncomm' => 'agenda',  // NO module directory (public dir agenda)
+    'product_price' => 'productprice', // NO directory
+    'product_fournisseur_price' => 'productsupplierprice', // NO directory
+];
 
 /**
  * Is Dolibarr module enabled
@@ -352,6 +348,7 @@ function isModEnabled($module)
  * @param int|string|null $timestamp timestamp to check
  *
  * @return bool
+ * @throws Exception
  */
 function isDolTms($timestamp)
 {
@@ -13995,7 +13992,6 @@ function show_actions_messaging($conf, $langs, $db, $filterobj, $objcon = null, 
     global $form;
 
     global $param, $massactionbutton;
-
 
 
     // Check parameters
