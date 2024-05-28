@@ -228,10 +228,13 @@ class modApi extends DolibarrModules
      */
     public function remove($options = '')
     {
+        global $config;
+        $dbPrefix = $config->db->prefix;
+
         // Remove old constants with entity fields different of 0
         $sql = array(
-            "DELETE FROM " . MAIN_DB_PREFIX . "const WHERE name = " . $this->db->encrypt('MAIN_MODULE_API'),      // API can't be enabled per environment. Why ?
-            "DELETE FROM " . MAIN_DB_PREFIX . "const WHERE name = " . $this->db->encrypt('API_PRODUCTION_MODE')   // Not in production mode by default at activation
+            "DELETE FROM " . $dbPrefix . "const WHERE name = " . $this->db->encrypt('MAIN_MODULE_API'),      // API can't be enabled per environment. Why ?
+            "DELETE FROM " . $dbPrefix . "const WHERE name = " . $this->db->encrypt('API_PRODUCTION_MODE')   // Not in production mode by default at activation
         );
 
         return $this->_remove($sql, $options);

@@ -30,9 +30,19 @@
 
 namespace DoliModules\Install\Controller;
 
+global $conf;
+global $db;
+global $user;
+global $hookmanager;
+global $user;
+global $menumanager;
+global $langs;
+global $mysoc;
+
 use DoliCore\Base\Config;
 use DoliCore\Base\DolibarrNoLoginController;
 use DoliCore\Form\FormAdmin;
+use DoliModules\User\Model\User;
 
 include_once realpath(BASE_PATH . '/../Dolibarr/Modules/Install/Include/inc.php');
 
@@ -102,6 +112,8 @@ class InstallController extends DolibarrNoLoginController
         if ($err == 0) {
             pFooter(0);
         }
+
+		return true;
     }
 
     public function check($testget = false)
@@ -2993,7 +3005,8 @@ $(".runupgrade").click(function() {
 
         $hash_unique_id = dol_hash('dolibarr' . $conf->file->instance_unique_id, 'sha256');   // Note: if the global salt changes, this hash changes too so ping may be counted twice. We don't mind. It is for statistics purpose only.
 
-        $out = '<input type="checkbox" name="dolibarrpingno" id="dolibarrpingno"' . ((getDolGlobalString('MAIN_FIRST_PING_OK_ID') == 'disabled') ? '' : ' value="checked" checked="true"') . '> ';
+        //$out = '<input type="checkbox" name="dolibarrpingno" id="dolibarrpingno"' . ((getDolGlobalString('MAIN_FIRST_PING_OK_ID') == 'disabled') ? '' : ' value="checked" checked="true"') . '> ';
+		$out = '<input type="checkbox" name="dolibarrpingno" id="dolibarrpingno"' . ((getDolGlobalString('MAIN_FIRST_PING_OK_ID') == 'disabled') ? '' : ' value="checked"') . '> ';
         $out .= '<label for="dolibarrpingno">' . $langs->trans("MakeAnonymousPing") . '</label>';
 
         $out .= '<!-- Add js script to manage the uncheck of option to not send the ping -->';
@@ -3137,7 +3150,9 @@ $(".runupgrade").click(function() {
 
     public function step5()
     {
-        global $langs, $db;
+        global $langs, $db, $hookmanager;
+		global $config;
+		$dbPrefix = $config->db->prefix;
 
         $conffile = Config::getDolibarrConfigFilename();
         $conffiletoshow = $conffile;
@@ -3223,10 +3238,9 @@ $(".runupgrade").click(function() {
             }
         }
 
-
-        /*
-         *  View
-         */
+		/*
+		 *  View
+		 */
 
         $morehtml = '';
 
@@ -3262,11 +3276,14 @@ $(".runupgrade").click(function() {
 
             $db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
 
-            // Create the global $hookmanager object
-            include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-            $hookmanager = new HookManager($db);
+			$conf = Config::getConf();
+			$config=Config::getConfig();
 
-            $ok = 0;
+			// Create the global $hookmanager object
+            // include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
+            // $hookmanager = new HookManager($db);
+
+			$ok = 0;
 
             // If first install
             if ($action == "set") {
@@ -3293,7 +3310,7 @@ $(".runupgrade").click(function() {
 
                     // Set default encryption to yes, generate a salt and set default encryption algorithm (but only if there is no user yet into database)
                     $sql = "SELECT u.rowid, u.pass, u.pass_crypted";
-                    $sql .= " FROM " . MAIN_DB_PREFIX . "user as u";
+                    $sql .= " FROM " . $dbPrefix . "user as u";
                     $resql = $db->query($sql);
                     if ($resql) {
                         $numrows = $db->num_rows($resql);
@@ -3329,6 +3346,7 @@ $(".runupgrade").click(function() {
                     $conf->global->USER_PASSWORD_GENERATED = '';    // To not use any rule for password validation
 
                     $result = $newuser->create($createuser, 1);
+
                     if ($result > 0) {
                         print $langs->trans("AdminLoginCreatedSuccessfuly", $login) . "<br>";
                         $success = 1;
@@ -3350,7 +3368,7 @@ $(".runupgrade").click(function() {
                         // Insert MAIN_VERSION_FIRST_INSTALL in a dedicated transaction. So if it fails (when first install was already done), we can do other following requests.
                         $db->begin();
                         dolibarr_install_syslog('step5: set MAIN_VERSION_FIRST_INSTALL const to ' . $targetversion, LOG_DEBUG);
-                        $resql = $db->query("INSERT INTO " . MAIN_DB_PREFIX . "const(name, value, type, visible, note, entity) values(" . $db->encrypt('MAIN_VERSION_FIRST_INSTALL') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version when first install', 0)");
+                        $resql = $db->query("INSERT INTO " . $dbPrefix . "const(name, value, type, visible, note, entity) values(" . $db->encrypt('MAIN_VERSION_FIRST_INSTALL') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version when first install', 0)");
                         if ($resql) {
                             $conf->global->MAIN_VERSION_FIRST_INSTALL = $targetversion;
                             $db->commit();
@@ -3362,11 +3380,11 @@ $(".runupgrade").click(function() {
                         $db->begin();
 
                         dolibarr_install_syslog('step5: set MAIN_VERSION_LAST_INSTALL const to ' . $targetversion, LOG_DEBUG);
-                        $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_VERSION_LAST_INSTALL'");
+                        $resql = $db->query("DELETE FROM " . $dbPrefix . "const WHERE " . $db->decrypt('name') . " = 'MAIN_VERSION_LAST_INSTALL'");
                         if (!$resql) {
                             dol_print_error($db, 'Error in setup program');
                         }
-                        $resql = $db->query("INSERT INTO " . MAIN_DB_PREFIX . "const(name,value,type,visible,note,entity) values(" . $db->encrypt('MAIN_VERSION_LAST_INSTALL') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version when last install', 0)");
+                        $resql = $db->query("INSERT INTO " . $dbPrefix . "const(name,value,type,visible,note,entity) values(" . $db->encrypt('MAIN_VERSION_LAST_INSTALL') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version when last install', 0)");
                         if (!$resql) {
                             dol_print_error($db, 'Error in setup program');
                         }
@@ -3374,13 +3392,13 @@ $(".runupgrade").click(function() {
 
                         if ($useforcedwizard) {
                             dolibarr_install_syslog('step5: set MAIN_REMOVE_INSTALL_WARNING const to 1', LOG_DEBUG);
-                            $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_REMOVE_INSTALL_WARNING'");
+                            $resql = $db->query("DELETE FROM " . $dbPrefix . "const WHERE " . $db->decrypt('name') . " = 'MAIN_REMOVE_INSTALL_WARNING'");
                             if (!$resql) {
                                 dol_print_error($db, 'Error in setup program');
                             }
                             // The install.lock file is created few lines later if version is last one or if option MAIN_ALWAYS_CREATE_LOCK_AFTER_LAST_UPGRADE is on
                             /* No need to enable this
-                            $resql = $db->query("INSERT INTO ".MAIN_DB_PREFIX."const(name,value,type,visible,note,entity) values(".$db->encrypt('MAIN_REMOVE_INSTALL_WARNING').", ".$db->encrypt(1).", 'chaine', 1, 'Disable install warnings', 0)");
+                            $resql = $db->query("INSERT INTO ".$dbPrefix."const(name,value,type,visible,note,entity) values(".$db->encrypt('MAIN_REMOVE_INSTALL_WARNING').", ".$db->encrypt(1).", 'chaine', 1, 'Disable install warnings', 0)");
                             if (!$resql) {
                                 dol_print_error($db, 'Error in setup program');
                             }
@@ -3404,7 +3422,6 @@ $(".runupgrade").click(function() {
 
                         // Search modules dirs
                         $modulesdir[] = BASE_PATH . '/core/modules/';
-
                         foreach ($modulesdir as $dir) {
                             // Load modules attributes in arrays (name, numero, orders) from dir directory
                             //print $dir."\n<br>";
@@ -3460,14 +3477,14 @@ $(".runupgrade").click(function() {
 
                         // Now delete the flag that say installation is not complete
                         dolibarr_install_syslog('step5: remove MAIN_NOT_INSTALLED const');
-                        $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_NOT_INSTALLED'");
+                        $resql = $db->query("DELETE FROM " . $dbPrefix . "const WHERE " . $db->decrypt('name') . " = 'MAIN_NOT_INSTALLED'");
                         if (!$resql) {
                             dol_print_error($db, 'Error in setup program');
                         }
 
                         // May fail if parameter already defined
                         dolibarr_install_syslog('step5: set the default language');
-                        $resql = $db->query("INSERT INTO " . MAIN_DB_PREFIX . "const(name,value,type,visible,note,entity) VALUES (" . $db->encrypt('MAIN_LANG_DEFAULT') . ", " . $db->encrypt($setuplang) . ", 'chaine', 0, 'Default language', 1)");
+                        $resql = $db->query("INSERT INTO " . $dbPrefix . "const(name,value,type,visible,note,entity) VALUES (" . $db->encrypt('MAIN_LANG_DEFAULT') . ", " . $db->encrypt($setuplang) . ", 'chaine', 0, 'Default language', 1)");
                         //if (! $resql) dol_print_error($db,'Error in setup program');
 
                         $db->commit();
@@ -3499,11 +3516,11 @@ $(".runupgrade").click(function() {
 
                     if ($tagdatabase) {
                         dolibarr_install_syslog('step5: set MAIN_VERSION_LAST_UPGRADE const to value ' . $targetversion);
-                        $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_VERSION_LAST_UPGRADE'");
+                        $resql = $db->query("DELETE FROM " . $dbPrefix . "const WHERE " . $db->decrypt('name') . " = 'MAIN_VERSION_LAST_UPGRADE'");
                         if (!$resql) {
                             dol_print_error($db, 'Error in setup program');
                         }
-                        $resql = $db->query("INSERT INTO " . MAIN_DB_PREFIX . "const(name, value, type, visible, note, entity) VALUES (" . $db->encrypt('MAIN_VERSION_LAST_UPGRADE') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version for last upgrade', 0)");
+                        $resql = $db->query("INSERT INTO " . $dbPrefix . "const(name, value, type, visible, note, entity) VALUES (" . $db->encrypt('MAIN_VERSION_LAST_UPGRADE') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version for last upgrade', 0)");
                         if (!$resql) {
                             dol_print_error($db, 'Error in setup program');
                         }
@@ -3513,7 +3530,7 @@ $(".runupgrade").click(function() {
 
                         // Force the delete of the flag that say installation is not complete
                         dolibarr_install_syslog('step5: remove MAIN_NOT_INSTALLED const after upgrade process (should not exists but this is a security)');
-                        $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_NOT_INSTALLED'");
+                        $resql = $db->query("DELETE FROM " . $dbPrefix . "const WHERE " . $db->decrypt('name') . " = 'MAIN_NOT_INSTALLED'");
                         if (!$resql) {
                             dol_print_error($db, 'Error in setup program');
                         }

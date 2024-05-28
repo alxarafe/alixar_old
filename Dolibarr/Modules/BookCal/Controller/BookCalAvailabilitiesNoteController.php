@@ -45,7 +45,6 @@ require_once BASE_PATH . '/../Dolibarr/Modules/BookCal/Lib/BookCalAvailabilities
 
 class BookCalAvailabilitiesNoteController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;

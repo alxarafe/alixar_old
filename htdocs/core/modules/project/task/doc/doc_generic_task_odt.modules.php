@@ -57,7 +57,6 @@ if (isModEnabled('deplacement')) {
     require_once DOL_DOCUMENT_ROOT . '/compta/deplacement/class/deplacement.class.php';
 }
 if (isModEnabled('agenda')) {
-
 }
 
 

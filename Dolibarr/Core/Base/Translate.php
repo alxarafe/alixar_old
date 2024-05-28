@@ -105,7 +105,7 @@ class Translate
         if ($dir) {
             $this->dir = [$dir];
         } else {
-            $this->dir = $conf->file->dol_document_root;
+            $this->dir = $conf->file->main_path;
         }
     }
 

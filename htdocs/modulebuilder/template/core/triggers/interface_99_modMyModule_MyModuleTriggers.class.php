@@ -35,8 +35,6 @@
 
 use DoliCore\Base\DolibarrTriggers;
 
-
-
 /**
  *  Class of triggers for MyModule module
  */

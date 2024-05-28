@@ -25,7 +25,6 @@
  *  \brief      Index page for menu editor
  */
 
-
 use DoliModules\Admin\Controller\AdminMenuIndexController;
 
 new AdminMenuIndexController();

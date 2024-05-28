@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2019       Maxime Kohlhaas         <maxime@atm-consulting.fr>
  * Copyright (C) 2019-2023  Frédéric France         <frederic.france@netlogic.fr>
  *

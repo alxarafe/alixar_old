@@ -21,4 +21,4 @@
 
 use DoliModules\BlockedLog\Controller\BlockedLogAdminListController;
 
-new BlockedLogAdminListController;
+new BlockedLogAdminListController();

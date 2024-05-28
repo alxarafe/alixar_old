@@ -21,16 +21,14 @@ namespace DoliCore\Base;
 use Conf;
 use DoliCore\Lib\TraceableDB;
 use DoliCore\Tools\Debug;
-use DoliDB;
 use DoliModules\User\Model\User;
-use HookManager;
 use MenuManager;
+use HookManager;
 use stdClass;
-use Translate;
 
 require_once BASE_PATH . '/core/class/conf.class.php';
 require_once BASE_PATH . '/core/class/hookmanager.class.php';
-require_once BASE_PATH . '/core/class/translate.class.php';
+require_once BASE_PATH . '/../Dolibarr/Core/Menu/standard/eldy_menu.php';
 
 /**
  * Generate an object with the configuration of the Dolibarr conf.php file.
@@ -149,7 +147,7 @@ abstract class Config
         $conf->db->user = empty($dolibarr_main_db_user) ? '' : $dolibarr_main_db_user;
         $conf->db->pass = empty($dolibarr_main_db_pass) ? '' : $dolibarr_main_db_pass;
         $conf->db->type = $dolibarr_main_db_type ?? 'mysqli';
-        $conf->db->prefix = $dolibarr_main_db_prefix ?? 'alx_';
+        $conf->db->prefix = $dolibarr_main_db_prefix ?? self::DEFAULT_DB_PREFIX;
         $conf->db->charset = $dolibarr_main_db_character_set ?? 'utf8';
         $conf->db->collation = $dolibarr_main_db_collation ?? 'utf8-unicode-ci';
         $conf->db->encryption = $dolibarr_main_db_encryption ?? 0;
@@ -183,7 +181,7 @@ abstract class Config
 
             $i = 0;
             foreach ($path as $value) {
-                $conf->file->path['alt' . ($i++)] = (string) $value;
+                $conf->file->path['alt' . ($i++)] = (string)$value;
             }
             $values = preg_split('/[;,]/', $dolibarr_main_url_root_alt);
             $i = 0;
@@ -203,7 +201,7 @@ abstract class Config
                     print "\"/custom\"<br>\n";
                     exit;
                 }
-                $conf->file->url['alt' . ($i++)] = (string) $value;
+                $conf->file->url['alt' . ($i++)] = (string)$value;
             }
         }
 
@@ -418,7 +416,7 @@ abstract class Config
 
     public static function getMenuManager($conf)
     {
-        if (!empty(static::$menumanager)) {
+        if (empty(static::$menumanager)) {
             static::$menumanager = static::loadMenuManager();
         }
         return static::$menumanager;
@@ -445,7 +443,7 @@ abstract class Config
             }
             if (!class_exists('MenuManager')) {
                 $menufound = 0;
-                $dirmenus = array_merge(["/core/menus/"], (array) $conf->modules_parts['menus']);
+                $dirmenus = array_merge(["/core/menus/"], (array)$conf->modules_parts['menus']);
                 foreach ($dirmenus as $dirmenu) {
                     $menufound = dol_include_once($dirmenu . "standard/" . $file_menu);
                     if (class_exists('MenuManager')) {
@@ -512,7 +510,7 @@ abstract class Config
     private static function loadDb()
     {
         $conf = static::$dolibarrConfig;
-        static::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+        static::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int)$conf->db->port);
         static::$dolibarrConfig->setValues(static::$db);
 
         return static::$db;

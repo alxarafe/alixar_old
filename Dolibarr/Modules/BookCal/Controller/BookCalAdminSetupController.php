@@ -53,7 +53,6 @@ require_once BASE_PATH . '/../Dolibarr/Modules/BookCal/Lib/BookCal.php';
 
 class BookCalAdminSetupController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;

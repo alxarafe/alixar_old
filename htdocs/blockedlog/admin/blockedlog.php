@@ -20,4 +20,4 @@
 
 use DoliModules\BlockedLog\Controller\BlockedLogAdminController;
 
-new BlockedLogAdminController;
+new BlockedLogAdminController();

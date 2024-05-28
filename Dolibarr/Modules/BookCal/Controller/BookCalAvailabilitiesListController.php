@@ -49,7 +49,6 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 //dol_include_once('/othermodule/class/otherobject.class.php');
 class BookCalAvailabilitiesListController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;

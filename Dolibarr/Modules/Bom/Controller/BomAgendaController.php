@@ -122,7 +122,7 @@ class BomAgendaController extends DolibarrController
         restrictedArea($user, 'bom', $object->id, $object->table_element, '', '', 'rowid', $isdraft);
 
         /*
-         *	Actions
+         *  Actions
          */
 
         $parameters = ['id' => $socid];
@@ -146,7 +146,7 @@ class BomAgendaController extends DolibarrController
         }
 
         /*
-         *	View
+         *  View
          */
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/Bom/Views/bom_agenda.php');
 

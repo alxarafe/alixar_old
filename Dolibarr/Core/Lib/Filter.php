@@ -66,6 +66,4 @@ abstract class Filter
         }
         return false;
     }
-
-
 }

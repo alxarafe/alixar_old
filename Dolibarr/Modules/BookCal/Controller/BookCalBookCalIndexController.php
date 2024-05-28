@@ -44,7 +44,6 @@ require BASE_PATH . '/main.inc.php';
 
 class BookCalBookCalIndexController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;

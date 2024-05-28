@@ -56,7 +56,6 @@ require_once __DIR__ . '/class/calendar.class.php';
 
 class BookCalBookingListController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;

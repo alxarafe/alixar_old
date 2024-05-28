@@ -303,6 +303,4 @@ class BomListController extends DolibarrController
 
         return true;
     }
-
 }
-

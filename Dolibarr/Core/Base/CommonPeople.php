@@ -152,8 +152,10 @@ trait CommonPeople
         }
 
         // If MAIN_FORCE_STATE_INTO_ADDRESS is on, state is already returned previously with getFullAddress
-        if (!in_array($this->country_code, $countriesusingstate) && !getDolGlobalString('MAIN_FORCE_STATE_INTO_ADDRESS')
-            && !getDolGlobalString('SOCIETE_DISABLE_STATE') && $this->state) {
+        if (
+            !in_array($this->country_code, $countriesusingstate) && !getDolGlobalString('MAIN_FORCE_STATE_INTO_ADDRESS')
+            && !getDolGlobalString('SOCIETE_DISABLE_STATE') && $this->state
+        ) {
             if (getDolGlobalInt('MAIN_SHOW_REGION_IN_STATE_SELECT') == 1 && $this->region) {
                 $out .= ($outdone ? ' - ' : '') . $this->region . ' - ' . $this->state;
             } else {

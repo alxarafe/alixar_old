@@ -64,4 +64,3 @@ trait ViewTrait
         echo $blade->render($this->template, $vars);
     }
 }
-

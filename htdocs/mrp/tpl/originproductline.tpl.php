@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2010-2012  Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2017		Charlie Benke	        <charlie@patas-monkey.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>

@@ -280,7 +280,7 @@ class modBom extends DolibarrModules
         $this->export_label[$r] = 'BomAndBomLines'; // Translation key (used only if key ExportDataset_xxx_z not found)
         $this->export_permission[$r] = array(array("bom", "read"));
         $this->export_icon[$r] = 'bom';
-        $keyforclass = 'BOM';
+        $keyforclass = 'Bom';
         $keyforclassfile = '/bom/class/bom.class.php';
         $keyforelement = 'bom';
         include DOL_DOCUMENT_ROOT . '/core/commonfieldsinexport.inc.php';

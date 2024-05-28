@@ -37,6 +37,7 @@
 
 use DoliModules\Company\Model\Company;
 use DoliModules\User\Model\User;
+use DoliCore\Base\Config;
 
 // Include the conf.php and functions.lib.php and security.lib.php. This defined the constants like DOL_DOCUMENT_ROOT, DOL_DATA_ROOT, DOL_URL_ROOT...
 // This file may have been already required by main.inc.php. But may not by scripts. So, here the require_once must be kept.
@@ -70,7 +71,7 @@ $conf->db->name = empty($dolibarr_main_db_name) ? '' : $dolibarr_main_db_name;
 $conf->db->user = empty($dolibarr_main_db_user) ? '' : $dolibarr_main_db_user;
 $conf->db->pass = empty($dolibarr_main_db_pass) ? '' : $dolibarr_main_db_pass;
 $conf->db->type = $dolibarr_main_db_type;
-$conf->db->prefix = $dolibarr_main_db_prefix;
+$conf->db->prefix = $dolibarr_main_db_prefix ?? Config::DEFAULT_DB_PREFIX;
 $conf->db->character_set = $dolibarr_main_db_character_set;
 $conf->db->dolibarr_main_db_collation = $dolibarr_main_db_collation;
 $conf->db->dolibarr_main_db_encryption = $dolibarr_main_db_encryption;
@@ -89,14 +90,14 @@ $conf->file->main_force_https = empty($dolibarr_main_force_https) ? '' : $doliba
 $conf->file->strict_mode = empty($dolibarr_strict_mode) ? '' : $dolibarr_strict_mode; // Force php strict mode (for debug)
 $conf->file->instance_unique_id = empty($dolibarr_main_instance_unique_id) ? (empty($dolibarr_main_cookie_cryptkey) ? '' : $dolibarr_main_cookie_cryptkey) : $dolibarr_main_instance_unique_id; // Unique id of instance
 $conf->file->dol_main_url_root = $dolibarr_main_url_root;   // Define url inside the config file
-$conf->file->dol_document_root = array('main' => (string) DOL_DOCUMENT_ROOT); // Define array of document root directories ('/home/htdocs')
-$conf->file->dol_url_root = array('main' => (string) DOL_URL_ROOT); // Define array of url root path ('' or '/dolibarr')
+$conf->file->dol_document_root = array('main' => (string)DOL_DOCUMENT_ROOT); // Define array of document root directories ('/home/htdocs')
+$conf->file->dol_url_root = array('main' => (string)DOL_URL_ROOT); // Define array of url root path ('' or '/dolibarr')
 if (!empty($dolibarr_main_document_root_alt)) {
     // dolibarr_main_document_root_alt can contains several directories
     $values = preg_split('/[;,]/', $dolibarr_main_document_root_alt);
     $i = 0;
     foreach ($values as $value) {
-        $conf->file->dol_document_root['alt' . ($i++)] = (string) $value;
+        $conf->file->dol_document_root['alt' . ($i++)] = (string)$value;
     }
     $values = preg_split('/[;,]/', $dolibarr_main_url_root_alt);
     $i = 0;
@@ -116,7 +117,7 @@ if (!empty($dolibarr_main_document_root_alt)) {
             print "\"/custom\"<br>\n";
             exit;
         }
-        $conf->file->dol_url_root['alt' . ($i++)] = (string) $value;
+        $conf->file->dol_url_root['alt' . ($i++)] = (string)$value;
     }
 }
 
@@ -137,7 +138,7 @@ if (!defined('NOREQUIRETRAN')) {
  */
 //$db = null;
 if (!isset($db) && !defined('NOREQUIREDB')) {
-    $db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int) $conf->db->port);
+    $db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int)$conf->db->port);
 
     if ($db->error) {
         // If we were into a website context

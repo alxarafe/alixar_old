@@ -36,7 +36,6 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Project.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 if (isModEnabled('agenda')) {
-
 }
 if (isModEnabled('bank')) {
 }

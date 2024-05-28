@@ -27,7 +27,6 @@
 
 use DoliModules\Accounting\Model\BonPrelevement;
 
-
 /**
  * Prepare array with list of tabs
  *

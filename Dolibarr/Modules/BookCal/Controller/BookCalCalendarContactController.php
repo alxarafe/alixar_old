@@ -50,7 +50,6 @@ dol_include_once('/bookcal/lib/bookcal_calendar.lib.php');
 
 class BookCalCalendarContactController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;

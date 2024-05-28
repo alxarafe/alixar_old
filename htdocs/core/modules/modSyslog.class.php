@@ -111,8 +111,10 @@ class modSyslog extends DolibarrModules
             )
         );
 
+        /*
         if (isset($conf->modules['syslog'])) {
             Debug::getDebugBar()->addCollector(new DolLogsCollector());
         }
+        */
     }
 }

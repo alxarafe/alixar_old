@@ -1,6 +1,5 @@
 <?php
 
-
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
 use DoliModules\Bom\Model\Bom;

@@ -48,7 +48,6 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 
 class BookCalCalendarListController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;

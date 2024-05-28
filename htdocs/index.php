@@ -53,6 +53,7 @@ const DOL_URL_ROOT = BASE_URL;
  */
 define('DOL_DATA_ROOT', $conf->main->data_path ?? Config::getDataDir(BASE_PATH));
 
+
 /**
  * Load the configuration file and initialize all the variables of the Config class.
  * At the moment it uses Config in Deprecated, but the functionalities will have to be moved to Core.
@@ -63,6 +64,7 @@ try {
     dump($e);
     die('loading-error');
 }
+
 $conf = Config::getConf()->modules;
 
 /**
@@ -73,8 +75,8 @@ const MODULE_NAME_VAR = 'module';
 const CONTROLLER_VAR = 'controller';
 $module = filter_input(INPUT_GET, MODULE_NAME_VAR);
 $controller = filter_input(INPUT_GET, CONTROLLER_VAR);
-if ($module && $controller) {
-    if (Dispatcher::run($module, $controller)) {
+if (isset($module) && isset($controller)) {
+	if (Dispatcher::run($module, $controller)) {
         die(); // The controller has been executed succesfully!
     }
 }
@@ -96,7 +98,7 @@ if ($api) {
 }
 
 if (empty($page) && empty($ctrl)) {
-    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
+	require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
     die();
 }
 

@@ -58,6 +58,7 @@ defineIfNotDefined('APPLICATION_VERSION', '0.0');
 require_once BASE_PATH . '/../Dolibarr/Lib/MainFunctions.php';
 
 $conf = Config::getConf();
+
 // If $conf is not empty, we load the "superglobal" variables.
 if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
     if (!isset($db)) {

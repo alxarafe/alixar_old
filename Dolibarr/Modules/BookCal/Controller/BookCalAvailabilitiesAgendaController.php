@@ -47,7 +47,6 @@ require_once BASE_PATH . '/../Dolibarr/Modules/BookCal/Lib/BookCalAvailabilities
 
 class BookCalAvailabilitiesAgendaController extends DolibarrController
 {
-
     public function index(bool $executeActions = true): bool
     {
         global $conf;
@@ -163,7 +162,7 @@ class BookCalAvailabilitiesAgendaController extends DolibarrController
 
 
         /*
-         *	View
+         *  View
          */
         require_once realpath(BASE_PATH . '/../Dolibarr/Modules/BookCal/Views/availabilities_agenda.php');
 
