@@ -37,7 +37,7 @@ require_once DOL_DOCUMENT_ROOT . '/salaries/class/paymentsalary.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Salaries.php';
 
 
-require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoice.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Fourn.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 if (isModEnabled('project')) {

@@ -31,7 +31,7 @@
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
-require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoice.php';
 
 // Load translation files required by the page
 $langs->loadlangs(array('companies', 'admin', 'bills'));

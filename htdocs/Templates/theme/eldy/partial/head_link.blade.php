@@ -28,14 +28,14 @@
 </script>
 <!-- Includes JS of Dolibarr -->
 <script nonce="97094dfb" src="https://alixar/core/js/lib_head.js.php?lang=es_ES&amp;layout=classic&amp;version=20.0.0-alpha"></script>
-<link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/vendor/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/vendor/highlightjs/styles/github.css">
+<link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/lib/highlightjs/styles/github.css">
 <link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/debugbar.css">
 <link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/widgets.css">
 <link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/openhandler.css">
 <link rel="stylesheet" type="text/css" href="https://alixar/Templates/DebugBar/Resources/widgets/sqlqueries/widget.css">
-<script type="text/javascript" src="https://alixar/Templates/DebugBar/Resources/vendor/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="https://alixar/Templates/DebugBar/Resources/vendor/highlightjs/highlight.pack.js"></script>
+<script type="text/javascript" src="https://alixar/Templates/DebugBar/Resources/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="https://alixar/Templates/DebugBar/Resources/lib/highlightjs/highlight.pack.js"></script>
 <script type="text/javascript" src="https://alixar/Templates/DebugBar/Resources/debugbar.js"></script>
 <script type="text/javascript" src="https://alixar/Templates/DebugBar/Resources/widgets.js"></script>
 <script type="text/javascript" src="https://alixar/Templates/DebugBar/Resources/openhandler.js"></script>

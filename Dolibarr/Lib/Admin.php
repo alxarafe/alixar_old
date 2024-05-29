@@ -161,22 +161,22 @@ function versiondolibarrarray()
  *  Note that Sql files must have all comments at start of line. Also this function take ';' as the char to detect end
  *  of sql request
  *
- * @param string $sqlfile                 Full path to sql file
- * @param int    $silent                  1=Do not output anything, 0=Output line for update page
- * @param int    $entity                  Entity targeted for multicompany module
- * @param int    $usesavepoint            1=Run a savepoint before each request and a rollback to savepoint if error
+ * @param string $sqlfile Full path to sql file
+ * @param int $silent 1=Do not output anything, 0=Output line for update page
+ * @param int $entity Entity targeted for multicompany module
+ * @param int $usesavepoint 1=Run a savepoint before each request and a rollback to savepoint if error
  *                                        (this allow to have some request with errors inside global transactions).
- * @param string $handler                 Handler targeted for menu (replace __HANDLER__ with this value between
+ * @param string $handler Handler targeted for menu (replace __HANDLER__ with this value between
  *                                        quotes)
- * @param string $okerror                 Family of errors we accept ('default', 'none')
- * @param int    $linelengthlimit         Limit for length of each line (Use 0 if unknown, may be faster if defined)
- * @param int    $nocommentremoval        Do no try to remove comments (in such a case, we consider that each line is a
+ * @param string $okerror Family of errors we accept ('default', 'none')
+ * @param int $linelengthlimit Limit for length of each line (Use 0 if unknown, may be faster if defined)
+ * @param int $nocommentremoval Do no try to remove comments (in such a case, we consider that each line is a
  *                                        request, so use also $linelengthlimit=0)
- * @param int    $offsetforchartofaccount Offset to use to load chart of account table to update sql on the fly to add
+ * @param int $offsetforchartofaccount Offset to use to load chart of account table to update sql on the fly to add
  *                                        offset to rowid and account_parent value
- * @param int    $colspan                 2=Add a colspan=2 on td
- * @param int    $onlysqltoimportwebsite  Only sql requests used to import a website template are allowed
- * @param string $database                Database (replace __DATABASE__ with this value)
+ * @param int $colspan 2=Add a colspan=2 on td
+ * @param int $onlysqltoimportwebsite Only sql requests used to import a website template are allowed
+ * @param string $database Database (replace __DATABASE__ with this value)
  *
  * @return     int                                     Return integer <=0 if KO, >0 if OK
  */
@@ -325,8 +325,8 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
             // with
             // 'INSERT INTO llx_accounting_account (entity, rowid, fk_pcg_version, pcg_type, account_number, account_parent, label, active) VALUES (__ENTITY__, 1401 + 200100000, 'PCG99-ABREGE','CAPIT', '1234', 1400 + 200100000,...'
             // Note: string with 'PCG99-ABREGE','CAPIT', 1234  instead of  'PCG99-ABREGE','CAPIT', '1234' is also supported
-            $newsql = preg_replace('/VALUES\s*\(__ENTITY__, \s*(\d+)\s*,(\s*\'[^\',]*\'\s*,\s*\'[^\',]*\'\s*,\s*\'?[^\',]*\'?\s*),\s*\'?([^\',]*)\'?/ims', 'VALUES (__ENTITY__, \1 + ' . ((int) $offsetforchartofaccount) . ', \2, \3 + ' . ((int) $offsetforchartofaccount), $newsql);
-            $newsql = preg_replace('/([,\s])0 \+ ' . ((int) $offsetforchartofaccount) . '/ims', '\1 0', $newsql);
+            $newsql = preg_replace('/VALUES\s*\(__ENTITY__, \s*(\d+)\s*,(\s*\'[^\',]*\'\s*,\s*\'[^\',]*\'\s*,\s*\'?[^\',]*\'?\s*),\s*\'?([^\',]*)\'?/ims', 'VALUES (__ENTITY__, \1 + ' . ((int)$offsetforchartofaccount) . ', \2, \3 + ' . ((int)$offsetforchartofaccount), $newsql);
+            $newsql = preg_replace('/([,\s])0 \+ ' . ((int)$offsetforchartofaccount) . '/ims', '\1 0', $newsql);
             //var_dump($newsql);
             $arraysql[$i] = $newsql;
 
@@ -567,9 +567,9 @@ function run_sql($sqlfile, $silent = 1, $entity = 0, $usesavepoint = 1, $handler
 /**
  *  Delete a constant
  *
- * @param DoliDB     $db     Database handler
- * @param string|int $name   Name of constant or rowid of line
- * @param int        $entity Multi company id, -1 for all entities
+ * @param DoliDB $db Database handler
+ * @param string|int $name Name of constant or rowid of line
+ * @param int $entity Multi company id, -1 for all entities
  *
  * @return     int                     Return integer <0 if KO, >0 if OK
  *
@@ -587,11 +587,11 @@ function dolibarr_del_const($db, $name, $entity = 1)
     $sql = "DELETE FROM " . MAIN_DB_PREFIX . "const";
     $sql .= " WHERE (" . $db->decrypt('name') . " = '" . $db->escape($name) . "'";
     if (is_numeric($name)) {
-        $sql .= " OR rowid = " . ((int) $name);
+        $sql .= " OR rowid = " . ((int)$name);
     }
     $sql .= ")";
     if ($entity >= 0) {
-        $sql .= " AND entity = " . ((int) $entity);
+        $sql .= " AND entity = " . ((int)$entity);
     }
 
     dol_syslog("admin.lib::dolibarr_del_const", LOG_DEBUG);
@@ -608,9 +608,9 @@ function dolibarr_del_const($db, $name, $entity = 1)
 /**
  *  Get the value of a setup constant from database
  *
- * @param DoliDB $db     Database handler
- * @param string $name   Name of constant
- * @param int    $entity Multi company id
+ * @param DoliDB $db Database handler
+ * @param string $name Name of constant
+ * @param int $entity Multi company id
  *
  * @return     string                  Value of constant
  *
@@ -623,7 +623,7 @@ function dolibarr_get_const($db, $name, $entity = 1)
     $sql = "SELECT " . $db->decrypt('value') . " as value";
     $sql .= " FROM " . MAIN_DB_PREFIX . "const";
     $sql .= " WHERE name = " . $db->encrypt($name);
-    $sql .= " AND entity = " . ((int) $entity);
+    $sql .= " AND entity = " . ((int)$entity);
 
     dol_syslog("admin.lib::dolibarr_get_const", LOG_DEBUG);
     $resql = $db->query($sql);
@@ -641,14 +641,14 @@ function dolibarr_get_const($db, $name, $entity = 1)
 /**
  *  Insert a parameter (key,value) into database (delete old key then insert it again).
  *
- * @param DoliDB $db      Database handler
- * @param string $name    Name of constant
- * @param string $value   Value of constant
- * @param string $type    Type of constant. Deprecated, only strings are allowed for $value. Caller must json
+ * @param DoliDB $db Database handler
+ * @param string $name Name of constant
+ * @param string $value Value of constant
+ * @param string $type Type of constant. Deprecated, only strings are allowed for $value. Caller must json
  *                        encode/decode to store other type of data.
- * @param int    $visible Is constant visible in Setup->Other page (0 by default)
- * @param string $note    Note on parameter
- * @param int    $entity  Multi company id (0 means all entities)
+ * @param int $visible Is constant visible in Setup->Other page (0 by default)
+ * @param string $note Note on parameter
+ * @param int $entity Multi company id (0 means all entities)
  *
  * @return     int                     -1 if KO, 1 if OK
  *
@@ -674,7 +674,7 @@ function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, 
     $sql = "DELETE FROM " . MAIN_DB_PREFIX . "const";
     $sql .= " WHERE name = " . $db->encrypt($name);
     if ($entity >= 0) {
-        $sql .= " AND entity = " . ((int) $entity);
+        $sql .= " AND entity = " . ((int)$entity);
     }
 
     dol_syslog("admin.lib::dolibarr_set_const", LOG_DEBUG);
@@ -696,7 +696,7 @@ function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, 
         $sql .= " VALUES (";
         $sql .= $db->encrypt($name);
         $sql .= ", " . $db->encrypt($newvalue);
-        $sql .= ", '" . $db->escape($type) . "', " . ((int) $visible) . ", '" . $db->escape($note) . "', " . ((int) $entity) . ")";
+        $sql .= ", '" . $db->escape($type) . "', " . ((int)$visible) . ", '" . $db->escape($note) . "', " . ((int)$entity) . ")";
 
         //print "sql".$value."-".pg_escape_string($value)."-".$sql;exit;
         //print "xx".$db->escape($value);
@@ -719,8 +719,8 @@ function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, 
 /**
  * Prepare array with list of tabs
  *
- * @param int $nbofactivatedmodules    Number if activated modules
- * @param int $nboftotalmodules        Nb of total modules
+ * @param int $nbofactivatedmodules Number if activated modules
+ * @param int $nboftotalmodules Nb of total modules
  * @param int $nbmodulesnotautoenabled Nb of modules not auto enabled that are activated
  *
  * @return  array                               Array of tabs to show
@@ -859,7 +859,7 @@ function security_prepare_head()
     $sql = "SELECT COUNT(r.id) as nb";
     $sql .= " FROM " . MAIN_DB_PREFIX . "rights_def as r";
     $sql .= " WHERE r.libelle NOT LIKE 'tou%'"; // On ignore droits "tous"
-    $sql .= " AND entity = " . ((int) $conf->entity);
+    $sql .= " AND entity = " . ((int)$conf->entity);
     $sql .= " AND bydefault = 1";
     if (!getDolGlobalString('MAIN_USE_ADVANCED_PERMS')) {
         $sql .= " AND r.perms NOT LIKE '%_advance'"; // Hide advanced perms if option is not enabled
@@ -1121,9 +1121,9 @@ function purgeSessions($mysessionid)
 /**
  *  Enable a module
  *
- * @param string $value              Name of module to activate
- * @param int    $withdeps           Activate/Disable also all dependencies
- * @param int    $noconfverification Remove verification of $conf variable for module
+ * @param string $value Name of module to activate
+ * @param int $withdeps Activate/Disable also all dependencies
+ * @param int $noconfverification Remove verification of $conf variable for module
  *
  * @return     array                               array('nbmodules'=>nb modules activated with success, 'errors=>array
  *                                                 of error messages, 'nbperms'=>Nb permission added);
@@ -1189,7 +1189,6 @@ function activateModule($value, $withdeps = 1, $noconfverification = 0)
     }
 
     $result = $objMod->init(); // Enable module
-
     if ($result <= 0) {
         $ret['errors'][] = $objMod->error;
     } else {
@@ -1265,8 +1264,8 @@ function activateModule($value, $withdeps = 1, $noconfverification = 0)
 /**
  *  Disable a module
  *
- * @param string $value      Nom du module a desactiver
- * @param int    $requiredby 1=Desactive aussi modules dependants
+ * @param string $value Nom du module a desactiver
+ * @param int $requiredby 1=Desactive aussi modules dependants
  *
  * @return     string                           Error message or '';
  */
@@ -1332,18 +1331,18 @@ function unActivateModule($value, $requiredby = 1)
  *  Add external modules to list of dictionaries.
  *  Addition is done into var $taborder, $tabname, etc... that are passed with pointers.
  *
- * @param array $taborder       Taborder
- * @param array $tabname        Tabname
- * @param array $tablib         Tablib
- * @param array $tabsql         Tabsql
- * @param array $tabsqlsort     Tabsqlsort
- * @param array $tabfield       Tabfield
- * @param array $tabfieldvalue  Tabfieldvalue
+ * @param array $taborder Taborder
+ * @param array $tabname Tabname
+ * @param array $tablib Tablib
+ * @param array $tabsql Tabsql
+ * @param array $tabsqlsort Tabsqlsort
+ * @param array $tabfield Tabfield
+ * @param array $tabfieldvalue Tabfieldvalue
  * @param array $tabfieldinsert Tabfieldinsert
- * @param array $tabrowid       Tabrowid
- * @param array $tabcond        Tabcond
- * @param array $tabhelp        Tabhelp
- * @param array $tabcomplete    Tab complete (will replace all other in future). Key is table name.
+ * @param array $tabrowid Tabrowid
+ * @param array $tabcond Tabcond
+ * @param array $tabhelp Tabhelp
+ * @param array $tabcomplete Tab complete (will replace all other in future). Key is table name.
  *
  * @return     int         1
  */
@@ -1682,14 +1681,14 @@ function complete_elementList_with_modules(&$elementList)
 /**
  *  Show array with constants to edit
  *
- * @param array  $tableau           Array of constants array('key'=>array('type'=>type, 'label'=>label)
+ * @param array $tableau Array of constants array('key'=>array('type'=>type, 'label'=>label)
  *                                  where type can be 'string', 'text', 'textarea', 'html', 'yesno',
  *                                  'emailtemplate:xxx', ...
- * @param int    $strictw3c         0=Include form into table (deprecated), 1=Form is outside table to respect W3C
+ * @param int $strictw3c 0=Include form into table (deprecated), 1=Form is outside table to respect W3C
  *                                  (deprecated), 2=No form nor button at all, 3=No form nor button at all and each
  *                                  field has a unique name (form is output by caller, recommended)
- * @param string $helptext          Tooltip help to use for the column name of values
- * @param string $text              Text to use for the column name of values
+ * @param string $helptext Tooltip help to use for the column name of values
+ * @param string $text Text to use for the column name of values
  *
  * @return void
  */
@@ -1756,7 +1755,7 @@ function form_constantes($tableau, $strictw3c = 0, $helptext = '', $text = 'Valu
             $obj = $db->fetch_object($result); // Take first result of select
 
             if (empty($obj)) {  // If not yet into table
-                $obj = (object) ['rowid' => '', 'name' => $const, 'value' => '', 'type' => $type, 'note' => ''];
+                $obj = (object)['rowid' => '', 'name' => $const, 'value' => '', 'type' => $type, 'note' => ''];
             }
 
             if (empty($strictw3c)) {
@@ -1943,9 +1942,9 @@ function showModulesExludedForExternal($modules)
 /**
  *  Add document model used by doc generator
  *
- * @param string $name        Model name
- * @param string $type        Model type
- * @param string $label       Model label
+ * @param string $name Model name
+ * @param string $type Model type
+ * @param string $label Model label
  * @param string $description Model description
  *
  * @return     int                     Return integer <0 if KO, >0 if OK
@@ -1957,7 +1956,7 @@ function addDocumentModel($name, $type, $label = '', $description = '')
     $db->begin();
 
     $sql = "INSERT INTO " . MAIN_DB_PREFIX . "document_model (nom, type, entity, libelle, description)";
-    $sql .= " VALUES ('" . $db->escape($name) . "','" . $db->escape($type) . "'," . ((int) $conf->entity) . ", ";
+    $sql .= " VALUES ('" . $db->escape($name) . "','" . $db->escape($type) . "'," . ((int)$conf->entity) . ", ";
     $sql .= ($label ? "'" . $db->escape($label) . "'" : 'null') . ", ";
     $sql .= (!empty($description) ? "'" . $db->escape($description) . "'" : "null");
     $sql .= ")";
@@ -1991,7 +1990,7 @@ function delDocumentModel($name, $type)
     $sql = "DELETE FROM " . MAIN_DB_PREFIX . "document_model";
     $sql .= " WHERE nom = '" . $db->escape($name) . "'";
     $sql .= " AND type = '" . $db->escape($type) . "'";
-    $sql .= " AND entity = " . ((int) $conf->entity);
+    $sql .= " AND entity = " . ((int)$conf->entity);
 
     dol_syslog("admin.lib::delDocumentModel", LOG_DEBUG);
     $resql = $db->query($sql);

@@ -1,16 +1,16 @@
 <?php
 
 /* Copyright (C) 2003-2007  Rodolphe Quiedeville    <rodolphe@quiedeville.org>
- * Copyright (C) 2003		Jean-Louis Bergamo		<jlb@j1b.org>
- * Copyright (C) 2004-2017	Laurent Destailleur		<eldy@users.sourceforge.net>
- * Copyright (C) 2004		Eric Seigne				<eric.seigne@ryxeo.com>
- * Copyright (C) 2005-2017	Regis Houssin			<regis.houssin@inodbox.com>
- * Copyright (C) 2011-2023	Juanjo Menent			<jmenent@2byte.es>
- * Copyright (C) 2015		Jean-François Ferry		<jfefe@aternatik.fr>
- * Copyright (C) 2015		Raphaël Doursenaud		<rdoursenaud@gpcsolutions.fr>
- * Copyright (C) 2018		Nicolas ZABOURI 		<info@inovea-conseil.com>
+ * Copyright (C) 2003        Jean-Louis Bergamo        <jlb@j1b.org>
+ * Copyright (C) 2004-2017    Laurent Destailleur        <eldy@users.sourceforge.net>
+ * Copyright (C) 2004        Eric Seigne                <eric.seigne@ryxeo.com>
+ * Copyright (C) 2005-2017    Regis Houssin            <regis.houssin@inodbox.com>
+ * Copyright (C) 2011-2023    Juanjo Menent            <jmenent@2byte.es>
+ * Copyright (C) 2015        Jean-François Ferry        <jfefe@aternatik.fr>
+ * Copyright (C) 2015        Raphaël Doursenaud        <rdoursenaud@gpcsolutions.fr>
+ * Copyright (C) 2018        Nicolas ZABOURI         <info@inovea-conseil.com>
  * Copyright (C) 2021-2023  Frédéric France         <frederic.france@netlogic.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024        MDW                        <mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -67,13 +67,12 @@ $search_status = GETPOST('search_status', 'alpha');
 $search_nature = GETPOST('search_nature', 'alpha');
 $search_version = GETPOST('search_version', 'alpha');
 
-
 // For dolistore search
 $options = [];
 $options['per_page'] = 20;
-$options['categorie'] = ((int) (GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
-$options['start'] = ((int) (GETPOSTINT('start') ? GETPOSTINT('start') : 0));
-$options['end'] = ((int) (GETPOSTINT('end') ? GETPOSTINT('end') : 0));
+$options['categorie'] = ((int)(GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
+$options['start'] = ((int)(GETPOSTINT('start') ? GETPOSTINT('start') : 0));
+$options['end'] = ((int)(GETPOSTINT('end') ? GETPOSTINT('end') : 0));
 $options['search'] = GETPOST('search_keyword', 'alpha');
 $dolistore = new Dolistore(false);
 
@@ -126,7 +125,6 @@ if ($max_time && $max_time < $max_execution_time_for_deploy) {
     dol_syslog("max_execution_time=" . $max_time . " is lower than max_execution_time_for_deploy=" . $max_execution_time_for_deploy . ". We try to increase it dynamically.");
     @ini_set("max_execution_time", $max_execution_time_for_deploy); // This work only if safe mode is off. also web servers has timeout of 300
 }
-
 
 /*
  * Actions
@@ -280,6 +278,7 @@ if ($action == 'set' && $user->admin) {
     if ($csrfCheckOldValue != getDolGlobalInt('MAIN_SECURITY_CSRF_WITH_TOKEN')) {
         setEventMessage($langs->trans('WarningModuleHasChangedSecurityCsrfParameter', $value), 'warnings');
     }
+
     dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", getDolGlobalInt('MAIN_IHM_PARAMS_REV') + 1, 'chaine', 0, '', $conf->entity);
     if (!empty($resarray['errors'])) {
         setEventMessages('', $resarray['errors'], 'errors');
@@ -312,13 +311,13 @@ if ($action == 'set' && $user->admin) {
     exit;
 } elseif (getDolGlobalInt("MAIN_FEATURES_LEVEL") > 1 && $action == 'reload' && $user->admin && GETPOST('confirm') == 'yes') {
     $result = unActivateModule($value, 0);
-    dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", (int) $conf->global->MAIN_IHM_PARAMS_REV + 1, 'chaine', 0, '', $conf->entity);
+    dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", (int)$conf->global->MAIN_IHM_PARAMS_REV + 1, 'chaine', 0, '', $conf->entity);
     if ($result) {
         setEventMessages($result, null, 'errors');
         header("Location: " . $_SERVER['PHP_SELF'] . "?mode=" . $mode . $param . ($page_y ? '&page_y=' . $page_y : ''));
     }
     $resarray = activateModule($value, 0, 1);
-    dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", (int) $conf->global->MAIN_IHM_PARAMS_REV + 1, 'chaine', 0, '', $conf->entity);
+    dolibarr_set_const($db, "MAIN_IHM_PARAMS_REV", (int)$conf->global->MAIN_IHM_PARAMS_REV + 1, 'chaine', 0, '', $conf->entity);
     if (!empty($resarray['errors'])) {
         setEventMessages('', $resarray['errors'], 'errors');
     } else {
@@ -359,7 +358,6 @@ $dirins_ok = (dol_is_dir($dirins));
 $help_url = 'EN:First_setup|FR:Premiers_paramétrages|ES:Primeras_configuraciones';
 llxHeader('', $langs->trans("Setup"), $help_url, '', '', '', $morejs, $morecss, 0, 0);
 
-
 // Search modules dirs
 $modulesdir = dolGetModulesDirs();
 
@@ -380,127 +378,134 @@ foreach ($modulesdir as $dir) {
     //print $dir."\n<br>";
     dol_syslog("Scan directory " . $dir . " for module descriptor files (modXXX.class.php)");
     $handle = @opendir($dir);
-    if (is_resource($handle)) {
-        while (($file = readdir($handle)) !== false) {
-            //print "$i ".$file."\n<br>";
-            if (is_readable($dir . $file) && substr($file, 0, 3) == 'mod' && substr($file, dol_strlen($file) - 10) == '.class.php') {
-                $modName = substr($file, 0, dol_strlen($file) - 10);
-                if ($modName) {
-                    if (!empty($modNameLoaded[$modName])) {   // In cache of already loaded modules ?
-                        $mesg = "Error: Module " . $modName . " was found twice: Into " . $modNameLoaded[$modName] . " and " . $dir . ". You probably have an old file on your disk.<br>";
-                        setEventMessages($mesg, null, 'warnings');
-                        dol_syslog($mesg, LOG_ERR);
-                        continue;
-                    }
+    if (!is_resource($handle)) {
+        dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
+        continue;
+    }
 
-                    try {
-                        $res = include_once $dir . $file; // A class already exists in a different file will send a non catchable fatal error.
-                        if (class_exists($modName)) {
-                            $objMod = new $modName($db);
-                            '@phan-var-force DolibarrModules $objMod';
-                            $modNameLoaded[$modName] = $dir;
-                            if (!$objMod->numero > 0 && $modName != 'modUser') {
-                                dol_syslog('The module descriptor ' . $modName . ' must have a numero property', LOG_ERR);
-                            }
-                            $j = $objMod->numero;
+    while (($file = readdir($handle)) !== false) {
+        //print "$i ".$file."\n<br>";
+        if (!is_readable($dir . $file) || substr($file, 0, 3) !== 'mod' || substr($file, -10) !== '.class.php') {
+            continue;
+        }
 
-                            $modulequalified = 1;
+        $modName = substr($file, 0, dol_strlen($file) - 10);
+        if (empty($modName)) {
+            continue;
+        }
 
-                            // We discard modules according to features level (PS: if module is activated we always show it)
-                            $const_name = 'MAIN_MODULE_' . strtoupper(preg_replace('/^mod/i', '', get_class($objMod)));
-                            if ($objMod->version == 'development' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2))) {
-                                $modulequalified = 0;
-                            }
-                            if ($objMod->version == 'experimental' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 1))) {
-                                $modulequalified = 0;
-                            }
-                            if (preg_match('/deprecated/', $objMod->version) && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0))) {
-                                $modulequalified = 0;
-                            }
+        if (!empty($modNameLoaded[$modName])) {   // In cache of already loaded modules ?
+            $mesg = "Error: Module " . $modName . " was found twice: Into " . $modNameLoaded[$modName] . " and " . $dir . ". You probably have an old file on your disk.<br>";
+            setEventMessages($mesg, null, 'warnings');
+            dol_syslog($mesg, LOG_ERR);
+            continue;
+        }
 
-                            // We discard modules according to property ->hidden
-                            if (!empty($objMod->hidden)) {
-                                $modulequalified = 0;
-                            }
+        try {
+            $res = include_once $dir . $file; // A class already exists in a different file will send a non catchable fatal error.
+            if (!class_exists($modName)) {
+                print info_admin("admin/modules.php Warning bad descriptor file : " . $dir . $file . " (Class " . $modName . " not found into file)", 0, 0, '1', 'warning');
+                continue;
+            }
 
-                            if ($modulequalified > 0) {
-                                $publisher = dol_escape_htmltag($objMod->getPublisher());
-                                $external = ($objMod->isCoreOrExternalModule() == 'external');
-                                if ($external) {
-                                    if ($publisher) {
-                                        $arrayofnatures['external_' . $publisher] = $langs->trans("External") . ' - ' . $publisher;
-                                    } else {
-                                        $arrayofnatures['external_'] = $langs->trans("External") . ' - ' . $langs->trans("UnknownPublishers");
-                                    }
-                                }
-                                ksort($arrayofnatures);
+            $objMod = new $modName($db);
+            '@phan-var-force DolibarrModules $objMod';
+            $modNameLoaded[$modName] = $dir;
+            if (!$objMod->numero > 0 && $modName != 'modUser') {
+                dol_syslog('The module descriptor ' . $modName . ' must have a numero property', LOG_ERR);
+            }
+            $j = $objMod->numero;
 
-                                // Define array $categ with categ with at least one qualified module
-                                $filename[$i] = $modName;
-                                $modules[$modName] = $objMod;
+            $modulequalified = 1;
 
-                                // Gives the possibility to the module, to provide his own family info and position of this family
-                                if (is_array($objMod->familyinfo) && !empty($objMod->familyinfo)) {
-                                    $familyinfo = array_merge($familyinfo, $objMod->familyinfo);
-                                    $familykey = key($objMod->familyinfo);
-                                } else {
-                                    $familykey = $objMod->family;
-                                }
-                                '@phan-var-force string $familykey';  // if not, phan considers $familykey may be null
+            // We discard modules according to features level (PS: if module is activated we always show it)
+            $const_name = 'MAIN_MODULE_' . strtoupper(preg_replace('/^mod/i', '', get_class($objMod)));
+            if ($objMod->version == 'development' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2))) {
+                $modulequalified = 0;
+            }
+            if ($objMod->version == 'experimental' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 1))) {
+                $modulequalified = 0;
+            }
+            if (preg_match('/deprecated/', $objMod->version) && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0))) {
+                $modulequalified = 0;
+            }
 
-                                $moduleposition = ($objMod->module_position ? $objMod->module_position : '50');
-                                if ($objMod->isCoreOrExternalModule() == 'external' && $moduleposition < 100000) {
-                                    // an external module should never return a value lower than '80'.
-                                    $moduleposition = '80'; // External modules at end by default
-                                }
+            // We discard modules according to property ->hidden
+            if (!empty($objMod->hidden)) {
+                $modulequalified = 0;
+            }
 
-                                // Add list of warnings to show into arrayofwarnings and arrayofwarningsext
-                                if (!empty($objMod->warnings_activation)) {
-                                    $arrayofwarnings[$modName] = $objMod->warnings_activation;
-                                }
-                                if (!empty($objMod->warnings_activation_ext)) {
-                                    $arrayofwarningsext[$modName] = $objMod->warnings_activation_ext;
-                                }
+            if ($modulequalified === 0) {
+                dol_syslog("Module " . get_class($objMod) . " not qualified");
+                continue;
+            }
 
-                                $familyposition = (empty($familyinfo[$familykey]['position']) ? '0' : $familyinfo[$familykey]['position']);
-                                $listOfOfficialModuleGroups = ['hr', 'technic', 'interface', 'technic', 'portal', 'financial', 'crm', 'base', 'products', 'srm', 'ecm', 'projects', 'other'];
-                                if ($external && !in_array($familykey, $listOfOfficialModuleGroups)) {
-                                    // If module is extern and into a custom group (not into an official predefined one), it must appear at end (custom groups should not be before official groups).
-                                    if (is_numeric($familyposition)) {
-                                        $familyposition = sprintf("%03d", (int) $familyposition + 100);
-                                    }
-                                }
-
-                                $orders[$i] = $familyposition . "_" . $familykey . "_" . $moduleposition . "_" . $j; // Sort by family, then by module position then number
-
-                                // Set categ[$i]
-                                $specialstring = 'unknown';
-                                if ($objMod->version == 'development' || $objMod->version == 'experimental') {
-                                    $specialstring = 'expdev';
-                                }
-                                if (isset($categ[$specialstring])) {
-                                    $categ[$specialstring]++; // Array of all different modules categories
-                                } else {
-                                    $categ[$specialstring] = 1;
-                                }
-                                $j++;
-                                $i++;
-                            } else {
-                                dol_syslog("Module " . get_class($objMod) . " not qualified");
-                            }
-                        } else {
-                            print info_admin("admin/modules.php Warning bad descriptor file : " . $dir . $file . " (Class " . $modName . " not found into file)", 0, 0, '1', 'warning');
-                        }
-                    } catch (Exception $e) {
-                        dol_syslog("Failed to load " . $dir . $file . " " . $e->getMessage(), LOG_ERR);
-                    }
+            $publisher = dol_escape_htmltag($objMod->getPublisher());
+            $external = ($objMod->isCoreOrExternalModule() == 'external');
+            if ($external) {
+                if ($publisher) {
+                    $arrayofnatures['external_' . $publisher] = $langs->trans("External") . ' - ' . $publisher;
+                } else {
+                    $arrayofnatures['external_'] = $langs->trans("External") . ' - ' . $langs->trans("UnknownPublishers");
                 }
             }
+            ksort($arrayofnatures);
+
+            // Define array $categ with categ with at least one qualified module
+            $filename[$i] = $modName;
+            $modules[$modName] = $objMod;
+
+            // Gives the possibility to the module, to provide his own family info and position of this family
+            if (is_array($objMod->familyinfo) && !empty($objMod->familyinfo)) {
+                $familyinfo = array_merge($familyinfo, $objMod->familyinfo);
+                $familykey = key($objMod->familyinfo);
+            } else {
+                $familykey = $objMod->family;
+            }
+            '@phan-var-force string $familykey';  // if not, phan considers $familykey may be null
+
+            $moduleposition = ($objMod->module_position ? $objMod->module_position : '50');
+            if ($objMod->isCoreOrExternalModule() == 'external' && $moduleposition < 100000) {
+                // an external module should never return a value lower than '80'.
+                $moduleposition = '80'; // External modules at end by default
+            }
+
+            // Add list of warnings to show into arrayofwarnings and arrayofwarningsext
+            if (!empty($objMod->warnings_activation)) {
+                $arrayofwarnings[$modName] = $objMod->warnings_activation;
+            }
+            if (!empty($objMod->warnings_activation_ext)) {
+                $arrayofwarningsext[$modName] = $objMod->warnings_activation_ext;
+            }
+
+            $familyposition = (empty($familyinfo[$familykey]['position']) ? '0' : $familyinfo[$familykey]['position']);
+            $listOfOfficialModuleGroups = ['hr', 'technic', 'interface', 'technic', 'portal', 'financial', 'crm', 'base', 'products', 'srm', 'ecm', 'projects', 'other'];
+            if ($external && !in_array($familykey, $listOfOfficialModuleGroups)) {
+                // If module is extern and into a custom group (not into an official predefined one), it must appear at end (custom groups should not be before official groups).
+                if (is_numeric($familyposition)) {
+                    $familyposition = sprintf("%03d", (int)$familyposition + 100);
+                }
+            }
+
+            $orders[$i] = $familyposition . "_" . $familykey . "_" . $moduleposition . "_" . $j; // Sort by family, then by module position then number
+
+            // Set categ[$i]
+            $specialstring = 'unknown';
+            if ($objMod->version == 'development' || $objMod->version == 'experimental') {
+                $specialstring = 'expdev';
+            }
+            if (isset($categ[$specialstring])) {
+                $categ[$specialstring]++; // Array of all different modules categories
+            } else {
+                $categ[$specialstring] = 1;
+            }
+            $j++;
+            $i++;
+        } catch (Exception $e) {
+            dol_syslog("Failed to load " . $dir . $file . " " . $e->getMessage(), LOG_ERR);
         }
-        closedir($handle);
-    } else {
-        dol_syslog("htdocs/admin/modules.php: Failed to open directory " . $dir . ". See permission and open_basedir option.", LOG_WARNING);
     }
+    closedir($handle);
 }
 
 if ($action == 'reset_confirm' && $user->admin) {
@@ -935,10 +940,10 @@ if ($mode == 'common' || $mode == 'commonkanban') {
                             }
                         }
                     }
-                } elseif (preg_match('/^([^@]+)@([^@]+)$/i', (string) $objMod->config_page_url, $regs)) {
+                } elseif (preg_match('/^([^@]+)@([^@]+)$/i', (string)$objMod->config_page_url, $regs)) {
                     $codetoconfig .= '<a class="valignmiddle" href="' . dol_buildpath('/' . $regs[2] . '/admin/' . $regs[1], 1) . '?save_lastsearch_values=1&backtopage=' . urlencode($backtourl) . '" title="' . $langs->trans("Setup") . '">' . img_picto($langs->trans("Setup"), "setup", 'style="padding-right: 6px"', false, 0, 0, '', 'fa-15') . '</a>';
                 } else {
-                    $codetoconfig .= '<a class="valignmiddle" href="' . ((string) $objMod->config_page_url) . '?save_lastsearch_values=1&backtopage=' . urlencode($backtourl) . '" title="' . $langs->trans("Setup") . '">' . img_picto($langs->trans("Setup"), "setup", 'style="padding-right: 6px"', false, 0, 0, '', 'fa-15') . '</a>';
+                    $codetoconfig .= '<a class="valignmiddle" href="' . ((string)$objMod->config_page_url) . '?save_lastsearch_values=1&backtopage=' . urlencode($backtourl) . '" title="' . $langs->trans("Setup") . '">' . img_picto($langs->trans("Setup"), "setup", 'style="padding-right: 6px"', false, 0, 0, '', 'fa-15') . '</a>';
                 }
             } else {
                 $codetoconfig .= img_picto($langs->trans("NothingToSetup"), "setup", 'class="opacitytransp" style="padding-right: 6px"', false, 0, 0, '', 'fa-15');
@@ -1033,7 +1038,7 @@ if ($mode == 'common' || $mode == 'commonkanban') {
             // Help
             print '<td class="center nowrap" style="width: 82px;">';
             //print $form->textwithpicto('', $text, 1, $imginfo, 'minheight20', 0, 2, 1);
-            print '<a href="javascript:document_preview(\'' . DOL_URL_ROOT . '/admin/modulehelp.php?id=' . ((int) $objMod->numero) . '\',\'text/html\',\'' . dol_escape_js($langs->trans("Module")) . '\')">' . img_picto(($objMod->isCoreOrExternalModule() == 'external' ? $langs->trans("ExternalModule") . ' - ' : '') . $langs->trans("ClickToShowDescription"), $imginfo) . '</a>';
+            print '<a href="javascript:document_preview(\'' . DOL_URL_ROOT . '/admin/modulehelp.php?id=' . ((int)$objMod->numero) . '\',\'text/html\',\'' . dol_escape_js($langs->trans("Module")) . '\')">' . img_picto(($objMod->isCoreOrExternalModule() == 'external' ? $langs->trans("ExternalModule") . ' - ' : '') . $langs->trans("ClickToShowDescription"), $imginfo) . '</a>';
             print '</td>';
 
             // Version
@@ -1141,11 +1146,13 @@ if ($mode == 'marketplace') {
         <input type="hidden" name="token" value="<?php echo newToken(); ?>">
         <input type="hidden" name="mode" value="marketplace">
         <div class="divsearchfield">
-            <input name="search_keyword" placeholder="<?php echo $langs->trans('Keyword') ?>" id="search_keyword" type="text" class="minwidth200" value="<?php echo dol_escape_htmltag($options['search']) ?>"><br>
+            <input name="search_keyword" placeholder="<?php echo $langs->trans('Keyword') ?>" id="search_keyword"
+                   type="text" class="minwidth200" value="<?php echo dol_escape_htmltag($options['search']) ?>"><br>
         </div>
         <div class="divsearchfield">
             <input class="button buttongen" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
-            <a class="buttonreset" href="<?php echo urlencode($dolistore->url) ?>"><?php echo $langs->trans('Reset') ?></a>
+            <a class="buttonreset"
+               href="<?php echo urlencode($dolistore->url) ?>"><?php echo $langs->trans('Reset') ?></a>
 
             &nbsp;
         </div>
@@ -1306,15 +1313,15 @@ if ($mode == 'deploy') {
 
             if ($maxmin > 0) {
                 print '<script type="text/javascript">
-				$(document).ready(function() {
-					jQuery("#fileinstall").on("change", function() {
-						if(this.files[0].size > ' . ($maxmin * 1024) . ') {
-							alert("' . dol_escape_js($langs->trans("ErrorFileSizeTooLarge")) . '");
-							this.value = "";
-						}
-					});
-				});
-				</script>' . "\n";
+                $(document).ready(function() {
+                    jQuery("#fileinstall").on("change", function() {
+                        if(this.files[0].size > ' . ($maxmin * 1024) . ') {
+                            alert("' . dol_escape_js($langs->trans("ErrorFileSizeTooLarge")) . '");
+                            this.value = "";
+                        }
+                    });
+                });
+                </script>' . "\n";
                 // MAX_FILE_SIZE doit précéder le champ input de type file
                 print '<input type="hidden" name="MAX_FILE_SIZE" value="' . ($maxmin * 1024) . '">';
             }

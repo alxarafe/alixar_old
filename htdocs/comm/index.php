@@ -42,9 +42,8 @@ use DoliModules\SupplierProposal\Model\SupplierProposal;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Agenda.php';
-
+require_once BASE_PATH . '/../Dolibarr/Lib/Order.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Propal.php';
-require_once BASE_PATH . '/../Dolibarr/Lib/order.php';
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
 $hookmanager = new HookManager($db);

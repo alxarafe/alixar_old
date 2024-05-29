@@ -41,7 +41,7 @@ class modAdherent extends DolibarrModules
     /**
      *   Constructor. Define names, constants, directories, boxes, permissions
      *
-     *   @param      DoliDB     $db      Database handler
+     * @param DoliDB $db Database handler
      */
     public function __construct($db)
     {
@@ -317,7 +317,7 @@ class modAdherent extends DolibarrModules
         include DOL_DOCUMENT_ROOT . '/core/extrafieldsinexport.inc.php';
         // End add axtra fields
         $this->export_sql_start[$r] = 'SELECT DISTINCT ';
-        $this->export_sql_end[$r]  = ' FROM (' . MAIN_DB_PREFIX . 'adherent_type as ta, ' . MAIN_DB_PREFIX . 'adherent as a)';
+        $this->export_sql_end[$r] = ' FROM (' . MAIN_DB_PREFIX . 'adherent_type as ta, ' . MAIN_DB_PREFIX . 'adherent as a)';
         $this->export_sql_end[$r] .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'adherent_extrafields as extra ON a.rowid = extra.fk_object';
         $this->export_sql_end[$r] .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'subscription as c ON c.fk_adherent = a.rowid';
         $this->export_sql_end[$r] .= ' LEFT JOIN ' . MAIN_DB_PREFIX . 'c_departements as d ON a.state_id = d.rowid';
@@ -428,8 +428,8 @@ class modAdherent extends DolibarrModules
      *      The init function add constants, boxes, permissions and menus (defined in constructor) into Dolibarr database.
      *      It also creates data directories
      *
-     *      @param      string  $options    Options when enabling module ('', 'newboxdefonly', 'noboxes')
-     *      @return     int                 1 if OK, 0 if KO
+     * @param string $options Options when enabling module ('', 'newboxdefonly', 'noboxes')
+     * @return     int                 1 if OK, 0 if KO
      */
     public function init($options = '')
     {
@@ -456,8 +456,8 @@ class modAdherent extends DolibarrModules
         }*/
 
         $sql = array(
-            "DELETE FROM " . MAIN_DB_PREFIX . "document_model WHERE nom = '" . $this->db->escape($this->const[0][2]) . "' AND type='member' AND entity = " . ((int) $conf->entity),
-            "INSERT INTO " . MAIN_DB_PREFIX . "document_model (nom, type, entity) VALUES('" . $this->db->escape($this->const[0][2]) . "','member'," . ((int) $conf->entity) . ")"
+            "DELETE FROM " . MAIN_DB_PREFIX . "document_model WHERE nom = '" . $this->db->escape($this->const[0][2]) . "' AND type='member' AND entity = " . ((int)$conf->entity),
+            "INSERT INTO " . MAIN_DB_PREFIX . "document_model (nom, type, entity) VALUES('" . $this->db->escape($this->const[0][2]) . "','member'," . ((int)$conf->entity) . ")"
         );
 
         return $this->_init($sql, $options);

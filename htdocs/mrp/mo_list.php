@@ -32,7 +32,6 @@ use DoliModules\Product\Model\Product;
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
-require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 
 // load mrp libraries
 require_once __DIR__ . '/class/mo.class.php';

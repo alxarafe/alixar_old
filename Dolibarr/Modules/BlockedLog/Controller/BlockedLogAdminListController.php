@@ -43,7 +43,7 @@ use DoliModules\BlockedLog\Model\BlockedLogAuthority;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Modules/BlockedLog/Lib/BlockedLog.php';
-Asrequire_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 class BlockedLogAdminListController extends DolibarrController

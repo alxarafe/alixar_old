@@ -33,7 +33,7 @@ use DoliModules\Accounting\Model\BonPrelevement;
 use DoliModules\Company\Model\CompanyBankAccount;
 
 require BASE_PATH . '/main.inc.php';
-require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoice.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Fourn.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
 

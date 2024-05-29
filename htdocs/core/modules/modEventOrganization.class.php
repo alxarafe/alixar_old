@@ -27,6 +27,8 @@
  *  \brief      Description and activation file for the EventOrganization
  */
 
+use DoliCore\Form\FormMail;
+
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
 
 /**
@@ -483,8 +485,6 @@ class modEventOrganization extends DolibarrModules
         $init = $this->_init($sql, $options);
 
 
-        // Insert some vars
-        include_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
         $formmail = new FormMail($this->db);
 
         if (!is_object($user)) {

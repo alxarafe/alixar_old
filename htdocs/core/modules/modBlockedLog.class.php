@@ -173,9 +173,6 @@ class modBlockedLog extends DolibarrModules
 
         $sql = array();
 
-        // If already used, we add an entry to show we enable module
-        require_once DOL_DOCUMENT_ROOT . '/blockedlog/class/blockedlog.class.php';
-
         $object = new stdClass();
         $object->id = 1;
         $object->element = 'module';

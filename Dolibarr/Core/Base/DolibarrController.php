@@ -68,7 +68,7 @@ abstract class DolibarrController extends DolibarrViewController
         return true;
     }
 
-    public function index($executeActions = true): bool
+    public function index(bool $executeActions = true): bool
     {
         if (method_exists($this, 'loadRecord') && !$this->loadRecord()) {
             return false;

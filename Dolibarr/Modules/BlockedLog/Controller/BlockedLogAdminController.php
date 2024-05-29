@@ -42,7 +42,6 @@ require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Modules/BlockedLog/Lib/BlockedLog.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 
-
 class BlockedLogAdminController extends DolibarrController
 {
     public function blockedlog(bool $executeActions = true): bool

@@ -26,6 +26,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
+
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 

@@ -31,7 +31,6 @@
 use DoliModules\Bom\Model\Bom;
 
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/class/mo.class.php';
 
 $hookmanager = new HookManager($db);

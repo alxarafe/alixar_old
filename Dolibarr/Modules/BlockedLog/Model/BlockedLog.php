@@ -36,6 +36,7 @@ use PaiementFourn;
 use PaymentDonation;
 use PaymentVarious;
 use Project;
+use stdClass;
 use Subscription;
 use User;
 

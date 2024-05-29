@@ -53,7 +53,7 @@ require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/modules/commande/modules_commande.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
-require_once BASE_PATH . '/../Dolibarr/Lib/order.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Order.php';
 
 
 if (isModEnabled("propal")) {

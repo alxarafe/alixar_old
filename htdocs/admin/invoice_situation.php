@@ -33,7 +33,7 @@ require BASE_PATH . '/main.inc.php';
 
 // Libraries
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
-require_once BASE_PATH . '/../Dolibarr/Lib/Invoce.php';
+require_once BASE_PATH . '/../Dolibarr/Lib/Invoice.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formsetup.class.php';
 
 // Load translation files required by the page

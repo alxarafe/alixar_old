@@ -44,7 +44,6 @@ use DoliModules\Bom\Model\BomLine;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/bom/class/bom.class.php';
 require_once DOL_DOCUMENT_ROOT . '/mrp/lib/mrp.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Modules/Bom/Lib/Bom.php';
 

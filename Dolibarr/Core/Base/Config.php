@@ -21,6 +21,7 @@ namespace DoliCore\Base;
 use Conf;
 use DoliCore\Lib\TraceableDB;
 use DoliCore\Tools\Debug;
+use DoliDB;
 use DoliModules\User\Model\User;
 use MenuManager;
 use HookManager;
