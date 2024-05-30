@@ -51,10 +51,6 @@ use DoliCore\Tools\Debug;
 use DoliCore\Base\Config;
 use DoliCore\Base\Constants;
 
-defineIfNotDefined('DOL_APPLICATION_TITLE', 'Alixar');
-defineIfNotDefined('DOL_VERSION', '20.0.0-alpha');
-defineIfNotDefined('APPLICATION_VERSION', '0.0');
-
 require_once BASE_PATH . '/../Dolibarr/Lib/MainFunctions.php';
 
 $conf = Config::getConf();

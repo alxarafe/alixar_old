@@ -74,7 +74,9 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // Include configuration
 // $result = @include $conffile; // Keep @ because with some error reporting mode, this breaks the redirect done when file is not found
 
-unregisterStreamWrappers($config->security->stream_to_disable);
+if (isset($config)) {
+    unregisterStreamWrappers($config->security->stream_to_disable);
+}
 
 // Force PHP error_reporting setup (Dolibarr may report warning without this)
 if (!empty($dolibarr_strict_mode)) {

@@ -35,6 +35,7 @@ ClientCharset=Conjunto de caracteres del cliente
 ClientSortingCharset=Recopilación del cliente
 WarningModuleNotActive=El módulo <b>%s</b> debe estar habilitado
 WarningOnlyPermissionOfActivatedModules=Sólo los permisos relacionados a los módulos activados son mostrados aquí. Puedes activar otros módulos en la página Inicio->Configuración->Módulos
+AlixarSetup=Instalación o actualización de Alixar
 DolibarrSetup=Instalación o actualización de Dolibarr
 UploadNewTemplate=Cargar plantilla(s) nuevas
 FormToTestFileUploadForm=Formulario para probar la carga de archivos (según la configuración)

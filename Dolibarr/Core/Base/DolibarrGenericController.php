@@ -35,6 +35,9 @@ abstract class DolibarrGenericController extends GenericController
      * @var string
      */
     protected string $controller;
+    //private $conf;
+    public $config;
+    public $langs;
 
     /**
      * GenericController constructor.
@@ -43,18 +46,23 @@ abstract class DolibarrGenericController extends GenericController
     {
         parent::__construct();
 
-        $this->controller = filter_input(INPUT_GET, GET_FILENAME_VAR);
-        $this->action = filter_input(INPUT_GET, 'action');
+        $this->config = Config::getConfig(Config::getConf());
+        $this->langs = Config::getLangs();
 
-        if (empty($this->controller)) {
-            $this->controller = 'index';
-        }
-
+        $this->controller = filter_input(INPUT_GET, GET_FILENAME_VAR) ?? 'index';
         if (method_exists($this, $this->controller)) {
             return $this->{$this->controller}();
         }
 
         return $this->index();
+    }
+
+    public function syslog($message, $level = LOG_DEBUG)
+    {
+        if (!defined('LOG_DEBUG')) {
+            define('LOG_DEBUG', 6);
+        }
+        dol_syslog($message, $level);
     }
 
     /**

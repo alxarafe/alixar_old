@@ -38,13 +38,11 @@ trait ViewTrait
 
     public $body_class;
 
+    public $template;
 
     public function __destruct()
     {
-        $this->theme = $_GET['theme'];
-        if (empty($this->theme)) {
-            $this->theme = 'eldy'; // 'adminlte';
-        }
+        $this->theme = $_GET['theme'] ?? 'eldy';
 
         if (!isset($this->template)) {
             return;

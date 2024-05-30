@@ -22,6 +22,8 @@
 
 namespace DoliCore\Form;
 
+use DoliCore\Base\Config;
+
 /**
  *      \file       htdocs/core/class/html.formadmin.class.php
  *      \ingroup    core
@@ -82,6 +84,8 @@ class FormAdmin
     {
         // phpcs:enable
         global $conf, $langs;
+
+        $langs = Config::getLangs();
 
         if (getDolGlobalString('MAIN_DEFAULT_LANGUAGE_FILTER')) {
             if (!is_array($filter)) {

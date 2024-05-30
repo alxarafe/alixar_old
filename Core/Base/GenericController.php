@@ -96,7 +96,7 @@ abstract class GenericController
      */
     private function executeAction(): bool
     {
-        $actionMethod = 'do' . ucfirst($this->action);
+        $actionMethod = 'do' . ucfirst($this->action ?? 'index');
         if (!method_exists($this, $actionMethod)) {
             Debug::message('Does not exist the method ' . $actionMethod);
             return false;

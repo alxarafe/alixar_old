@@ -163,6 +163,10 @@ abstract class Debug
      */
     private static function addMessage(string $channel, string $message): void
     {
+        if (!isset(self::$debugBar[$channel])) {
+            return;
+        }
+
 //        if (!defined('DEBUG') || constant('DEBUG') !== true) {
 //            return;
 //        }

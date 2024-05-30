@@ -206,6 +206,7 @@ abstract class Config
             }
         }
 
+        $conf->file->theme = $dolibarr_main_theme ?? 'eldy';
         $conf->file->dol_main_stream_to_disable = $dolibarr_main_stream_to_disable ?? null;
         $conf->debug = intval($dolibarr_main_prod ?? 1) === 0;
 
@@ -277,6 +278,7 @@ abstract class Config
         $config->main->data_path = $conf->file->main_doc ?? '';
         $config->main->alt_base_path = $conf->file->path;
         $config->main->alt_base_url = $conf->file->url;
+        $config->main->theme = $conf->file->theme;
 
         // 'db' section
         $config->db = $conf->db;

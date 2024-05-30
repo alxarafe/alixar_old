@@ -93,9 +93,9 @@ class Translate
     /**
      *    Constructor
      *
-     * @param string $dir  Force directory that contains /langs subdirectory (value is sometimes '..' like into
+     * @param string $dir Force directory that contains /langs subdirectory (value is sometimes '..' like into
      *                     install/* pages or support/* pages). Use '' by default.
-     * @param Conf   $conf Object with Dolibarr configuration
+     * @param Conf $conf Object with Dolibarr configuration
      */
     public function __construct($dir, $conf)
     {
@@ -237,19 +237,19 @@ class Translate
      *
      *  Value for hash are: 1:Loaded from disk, 2:Not found, 3:Loaded from cache
      *
-     * @param string  $domain                         File name to load (.lang file). Must be "file" or "file@module"
+     * @param string $domain File name to load (.lang file). Must be "file" or "file@module"
      *                                                for module language files: If $domain is "file@module" instead of
      *                                                "file" then we look for module lang file in
      *                                                htdocs/custom/modules/mymodule/langs/code_CODE/file.lang then in
      *                                                htdocs/module/langs/code_CODE/file.lang instead of
      *                                                htdocs/langs/code_CODE/file.lang
-     * @param integer $alt                            0 (try xx_ZZ then 1), 1 (try xx_XX then 2), 2 (try en_US)
-     * @param int     $stopafterdirection             Stop when the DIRECTION tag is found (optimize speed)
-     * @param string  $forcelangdir                   To force a different lang directory
-     * @param int     $loadfromfileonly               1=Do not load overwritten translation from file or old conf.
-     * @param int     $forceloadifalreadynotfound     Force attempt to reload lang file if it was previously not found
-     * @param array   $tabtranslatedomain             Store translations to be stored in cache
-     * @param string  $langkey                        To create key for cachekey in recursivity
+     * @param integer $alt 0 (try xx_ZZ then 1), 1 (try xx_XX then 2), 2 (try en_US)
+     * @param int $stopafterdirection Stop when the DIRECTION tag is found (optimize speed)
+     * @param string $forcelangdir To force a different lang directory
+     * @param int $loadfromfileonly 1=Do not load overwritten translation from file or old conf.
+     * @param int $forceloadifalreadynotfound Force attempt to reload lang file if it was previously not found
+     * @param array $tabtranslatedomain Store translations to be stored in cache
+     * @param string $langkey To create key for cachekey in recursivity
      *
      * @return    int                                    Return integer <0 if KO, 0 if already loaded or loading not
      *                                                   required, >0 if OK
@@ -301,17 +301,23 @@ class Translate
         $langkey = (empty($langkey) ? $langofdir : $langkey);
 
         // Redefine alt
-        $langarray = explode('_', $langofdir);
-        if ($alt < 1 && isset($langarray[1]) && (strtolower($langarray[0]) == strtolower($langarray[1]) || in_array(strtolower($langofdir), ['el_gr']))) {
-            $alt = 1;
-        }
-        if ($alt < 2 && strtolower($langofdir) == 'en_us') {
-            $alt = 2;
+        if (!empty($langofdir)) {
+            $langarray = explode('_', $langofdir);
+            if ($alt < 1 && isset($langarray[1]) && (strtolower($langarray[0]) == strtolower($langarray[1]) || in_array(strtolower($langofdir), ['el_gr']))) {
+                $alt = 1;
+            }
+            if ($alt < 2 && strtolower($langofdir) == 'en_us') {
+                $alt = 2;
+            }
         }
 
         if (empty($langofdir)) {    // This may occurs when load is called without setting the language and without providing a value for forcelangdir
             dol_syslog("Error: " . get_class($this) . "::load was called for domain=" . $domain . " but language was not set yet with langs->setDefaultLang(). Nothing will be loaded.", LOG_WARNING);
             return -1;
+        }
+
+        if (!is_array($this->dir)) {
+            $this->dir = empty($this->dir) ? [] : [$this->dir];
         }
 
         $usecachekey = '';
@@ -622,7 +628,7 @@ class Translate
     /**
      *  Return translation of a key depending on country
      *
-     * @param string $str         string root to translate
+     * @param string $str string root to translate
      * @param string $countrycode country code (FR, ...)
      *
      * @return    string                    translated string
@@ -645,12 +651,12 @@ class Translate
      *  The parameters of this method should not contain HTML tags. If there is, they will be htmlencoded to have no
      *  effect.
      *
-     * @param string $key     Key to translate
-     * @param string $param1  param1 string
-     * @param string $param2  param2 string
-     * @param string $param3  param3 string
-     * @param string $param4  param4 string
-     * @param int    $maxsize Max length of text. Warning: Will not work if paramX has HTML content. deprecated.
+     * @param string $key Key to translate
+     * @param string $param1 param1 string
+     * @param string $param2 param2 string
+     * @param string $param3 param3 string
+     * @param string $param4 param4 string
+     * @param int $maxsize Max length of text. Warning: Will not work if paramX has HTML content. deprecated.
      *
      * @return string            Translated string (encoded into HTML entities and UTF8)
      */
@@ -764,16 +770,16 @@ class Translate
      *      Search into translation array, then into cache, then if still not found, search into database.
      *      Store key-label found into cache variable $this->cache_labels to save SQL requests to get labels.
      *
-     * @param DoliDB $db             Database handler
-     * @param string $key            Translation key to get label (key in language file)
-     * @param string $tablename      Table name without prefix. This value must always be a hardcoded string and not a
+     * @param DoliDB $db Database handler
+     * @param string $key Translation key to get label (key in language file)
+     * @param string $tablename Table name without prefix. This value must always be a hardcoded string and not a
      *                               value coming from user input.
-     * @param string $fieldkey       Field for key. This value must always be a hardcoded string and not a value coming
+     * @param string $fieldkey Field for key. This value must always be a hardcoded string and not a value coming
      *                               from user input.
-     * @param string $fieldlabel     Field for label. This value must always be a hardcoded string and not a value
+     * @param string $fieldlabel Field for label. This value must always be a hardcoded string and not a value
      *                               coming from user input.
-     * @param string $keyforselect   Use another value than the translation key for the where into select
-     * @param int    $filteronentity Use a filter on entity
+     * @param string $keyforselect Use another value than the translation key for the where into select
+     * @param int $filteronentity Use a filter on entity
      *
      * @return string|int                Label in UTF8 (but without entities) or -1 if error
      * @see dol_getIdFromCode()
@@ -835,7 +841,7 @@ class Translate
      *               No conversion to encoding charset of lang object is done.
      *               Parameters of this method must not contains any HTML tags.
      *
-     * @param string $key    Key to translate
+     * @param string $key Key to translate
      * @param string $param1 chaine de param1
      * @param string $param2 chaine de param2
      * @param string $param3 chaine de param3
@@ -880,7 +886,7 @@ class Translate
     /**
      *  Retourne la version traduite du texte passe en parameter complete du code pays
      *
-     * @param string $str         string root to translate
+     * @param string $str string root to translate
      * @param string $countrycode country code (FR, ...)
      *
      * @return string                    translated string
@@ -902,7 +908,7 @@ class Translate
      *               it is returned as is.
      *               Parameters of this method must not contain any HTML tags.
      *
-     * @param string $key    Key to translate
+     * @param string $key Key to translate
      * @param string $param1 chaine de param1
      * @param string $param2 chaine de param2
      * @param string $param3 chaine de param3
@@ -923,7 +929,7 @@ class Translate
      *  Convert a string into output charset (this->charset_output that should be defined to
      *  conf->file->character_set_client)
      *
-     * @param string $str          String to convert
+     * @param string $str String to convert
      * @param string $pagecodefrom Page code of src string
      *
      * @return string                    Converted string
@@ -946,10 +952,10 @@ class Translate
     /**
      *  Return list of all available languages
      *
-     * @param string  $langdir      Directory to scan
-     * @param integer $maxlength    Max length for each value in combo box (will be truncated)
-     * @param int     $usecode      1=Show code instead of country name for language variant, 2=Show only code
-     * @param int     $mainlangonly 1=Show only main languages ('fr_FR' no' fr_BE', 'es_ES' not 'es_MX', ...)
+     * @param string $langdir Directory to scan
+     * @param integer $maxlength Max length for each value in combo box (will be truncated)
+     * @param int $usecode 1=Show code instead of country name for language variant, 2=Show only code
+     * @param int $mainlangonly 1=Show only main languages ('fr_FR' no' fr_BE', 'es_ES' not 'es_MX', ...)
      *
      * @return array                    List of languages
      */
@@ -1026,7 +1032,7 @@ class Translate
     /**
      *  Return if a filename $filename exists for current language (or alternate language)
      *
-     * @param string  $filename  Language filename to search
+     * @param string $filename Language filename to search
      * @param integer $searchalt Search also alternate language file
      *
      * @return boolean                true if exists and readable
@@ -1060,8 +1066,8 @@ class Translate
      *      This function need module "numberwords" to be installed. If not it will return
      *      same number (this module is not provided by default as it use non GPL source code).
      *
-     * @param int|string $number   Number to encode in full text
-     * @param string     $isamount ''=it's just a number, '1'=It's an amount (default currency), 'currencycode'=It's an
+     * @param int|string $number Number to encode in full text
+     * @param string $isamount ''=it's just a number, '1'=It's an amount (default currency), 'currencycode'=It's an
      *                             amount (foreign currency)
      *
      * @return string                    Label translated in UTF8 (but without entities)
@@ -1101,7 +1107,7 @@ class Translate
      *    Return a currency code into its symbol
      *
      * @param string $currency_code Currency Code
-     * @param string $amount        If not '', show currency + amount according to langs ($10, 10€).
+     * @param string $amount If not '', show currency + amount according to langs ($10, 10€).
      *
      * @return    string                        Amount + Currency symbol encoded into UTF8
      * @deprecated                            Use method price to output a price
@@ -1122,8 +1128,8 @@ class Translate
      *    Return a currency code into its symbol.
      *  If mb_convert_encoding is not available, return currency code.
      *
-     * @param string  $currency_code Currency code
-     * @param integer $forceloadall  1=Force to load all currencies into cache. We know we need to use all of them. By
+     * @param string $currency_code Currency code
+     * @param integer $forceloadall 1=Force to load all currencies into cache. We know we need to use all of them. By
      *                               default read and cache only the requested currency.
      *
      * @return    string                        Currency symbol encoded into UTF8
@@ -1189,7 +1195,7 @@ class Translate
                 if ($obj) {
                     // If a translation exists, we use it lese we use the default label
                     $this->cache_currencies[$obj->code_iso]['label'] = ($obj->code_iso && $this->trans("Currency" . $obj->code_iso) != "Currency" . $obj->code_iso ? $this->trans("Currency" . $obj->code_iso) : ($obj->label != '-' ? $obj->label : ''));
-                    $this->cache_currencies[$obj->code_iso]['unicode'] = (array) json_decode((empty($obj->unicode) ? '' : $obj->unicode), true);
+                    $this->cache_currencies[$obj->code_iso]['unicode'] = (array)json_decode((empty($obj->unicode) ? '' : $obj->unicode), true);
                     $label[$obj->code_iso] = $this->cache_currencies[$obj->code_iso]['label'];
                 }
                 $i++;
