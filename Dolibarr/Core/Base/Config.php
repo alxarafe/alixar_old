@@ -166,9 +166,9 @@ abstract class Config
         $conf->file->main_force_https = empty($dolibarr_main_force_https) ? '' : $dolibarr_main_force_https; // Force https
         $conf->file->strict_mode = empty($dolibarr_strict_mode) ? '' : $dolibarr_strict_mode; // Force php strict mode (for debug)
         $conf->file->instance_unique_id = empty($dolibarr_main_instance_unique_id) ? (empty($dolibarr_main_cookie_cryptkey) ? '' : $dolibarr_main_cookie_cryptkey) : $dolibarr_main_instance_unique_id; // Unique id of instance
-        $conf->file->main_path = $dolibarr_main_document_root ?? BASE_PATH;  // Define htdocs path inside the config file
-        $conf->file->main_url = $dolibarr_main_url_root ?? BASE_URL;    // Define url inside the config file
-        $conf->file->main_doc = $dolibarr_main_data_root ?? static::getDataDir($conf->file->main_path);
+        $conf->file->main_path = empty($dolibarr_main_document_root ?? '') ? BASE_PATH : $dolibarr_main_document_root;  // Define htdocs path inside the config file
+        $conf->file->main_url = empty($dolibarr_main_url_root ?? '') ? BASE_URL : $dolibarr_main_url_root;    // Define url inside the config file
+        $conf->file->main_doc = empty($dolibarr_main_data_root ?? '') ? static::getDataDir($conf->file->main_path) : $dolibarr_main_data_root;
         $conf->file->path = ['main' => $conf->file->main_path];
         $conf->file->url = ['main' => '/'];
         if (!empty($dolibarr_main_document_root_alt)) {

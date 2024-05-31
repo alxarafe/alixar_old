@@ -34,6 +34,7 @@
 
             <form name="forminstall" style="width: 100%" method="POST">
                 <input type="hidden" name="action" value="update">
+                <input type="hidden" name="selectlang" value="{!! $me->selectLang !!}">
                 <table width="100%" class="listofchoices">
                     @foreach($me->availableChoices ?? [] as $choice)
                         <tr class="trlineforchoice{!! $choice['selected'] ? ' choiceselected' : '' !!}">

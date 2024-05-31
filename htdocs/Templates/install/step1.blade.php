@@ -4,6 +4,7 @@
     <tbody>
     <input type="hidden" name="testpost" value="ok">
     <input type="hidden" name="action" value="step2">
+    <input type="hidden" name="selectlang" value="{!! $me->selectLang !!}">
     <tr>
         @foreach($me->errors as $error)
             <div class="error">{!! $error !!}</div>

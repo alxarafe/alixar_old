@@ -1,16 +1,16 @@
-@extends('master/install_layout')
+@extends('install/master/install_layout')
 
 @section('body')
     <tbody>
-    <input type="hidden" name="testpost" value="ok">
     <input type="hidden" name="action" value="config">
+    <input type="hidden" name="selectlang" value="{!! $me->selectLang !!}">
     <tr>
         <div>
-            <table class="nobordernopadding @if ($force_install_noedit) hidewhennoedit @endif">
+            <table class="nobordernopadding @if ($me->force_install_noedit) hidewhennoedit @endif">
                 <tr>
                     <td colspan="3" class="label">
                         <h3>
-                            <img class="valignmiddle inline-block paddingright" src="Resources/img/octicons/build/svg/globe.svg" width="20" alt="webserver">{!! $me->langs->trans("WebServer") !!}
+                            <img class="valignmiddle inline-block paddingright" src="{!! $me->config->file->main_url !!}/Templates/common/octicons/build/svg/globe.svg" width="20" alt="webserver">{!! $me->langs->trans("WebServer") !!}
                         </h3>
                     </td>
                 </tr>
@@ -22,8 +22,8 @@
                                class="minwidth300"
                                id="main_dir"
                                name="main_dir"
-                               value="{!! $config->main_document_root !!}"
-                               @if (!empty($force_install_noedit)) disabled @endif
+                               value="{!! $me->config->main->base_path !!}"
+                               @if (!empty($me->force_install_noedit)) disabled @endif
                         >
                     </td>
                     <td class="comment">
@@ -46,8 +46,8 @@
                                class="minwidth300"
                                id="main_data_dir"
                                name="main_data_dir"
-                               value="{!! $config->main_data_root !!}"
-                               @if (!empty($force_install_noedit)) disabled @endif
+                               value="{!! $me->config->main->data_path !!}"
+                               @if (!empty($me->force_install_noedit)) disabled @endif
                         >
                     </td>
                     <td class="comment">
@@ -70,8 +70,8 @@
                                class="minwidth300"
                                id="main_url"
                                name="main_url"
-                               value="{!!  $config->main_url_root!!} "
-                               @if (!empty($force_install_noedit)) disabled @endif
+                               value="{!! $me->config->main->base_url !!} "
+                               @if (!empty($me->force_install_noedit)) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("Examples") !!}:<br>
@@ -89,11 +89,13 @@
                         <td class="label">
                             <label for="main_force_https">{!! $me->langs->trans("ForceHttps") !!}</label></td>
                         <td class="label">
+                            <input type="hidden" name = "main_force_https" value="off">
                             <input type="checkbox"
                                    id="main_force_https"
                                    name="main_force_https"
-                                   @if (!empty($force_install_mainforcehttps)) checked @endif
-                                   @if($force_install_noedit == 2 && $force_install_mainforcehttps !== null) disabled @endif
+                                   value="on"
+                                   @if (!empty($me->force_install_mainforcehttps)) checked @endif
+                                   @if($me->force_install_noedit == 2 && $me->force_install_mainforcehttps !== null) disabled @endif
                             >
                         </td>
                         <td class="comment">{!! $me->langs->trans("CheckToForceHttps") !!}
@@ -105,7 +107,7 @@
                 <tr>
                     <td colspan="3" class="label"><br>
                         <h3>
-                            <img class="valignmiddle inline-block paddingright" src="Resources/img/octicons/build/svg/database.svg" width="20" alt="webserver"> {!! $me->langs->trans("DolibarrDatabase") !!}
+                            <img class="valignmiddle inline-block paddingright" src="{!! $me->config->file->main_url !!}/Templates/common/octicons/build/svg/database.svg" width="20" alt="webserver"> {!! $me->langs->trans("DolibarrDatabase") !!}
                         </h3>
                     </td>
                 </tr>
@@ -118,8 +120,8 @@
                         <input type="text"
                                id="db_name"
                                name="db_name"
-                               value="{!! !empty($config->main_db_name) ? $config->main_db_name : ($force_install_database ? $force_install_database : 'dolibarr') !!}"
-                               @if ($force_install_noedit == 2 && $force_install_database !== null)  disabled @endif
+                               value="{!! !empty($me->config->db->name) ? $me->config->db->name : (empty($me->force_install_database) ? 'alixar' : $me->force_install_database) !!}"
+                               @if ($me->force_install_noedit == 2 && $me->force_install_database !== null)  disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("DatabaseName") !!}</td>
@@ -133,13 +135,13 @@
                     <td class="label">
                         <select id="db_type"
                                 name="db_type"
-                                @if ($force_install_noedit == 2 && $force_install_type !== null) disabled @endif
+                                @if ($me->force_install_noedit == 2 && $me->force_install_type !== null) disabled @endif
                         >
-                            @foreach($db_types as $key => $db_type)
+                            @foreach($me->db_types as $key => $db_type)
                                 <option value="{!! $db_type['classname'] !!}"
-                                        @if($key === $config->main_db_type) selected @endif
+                                        @if($key === $me->config->db->type) selected @endif
                                         @if(!empty($db_type['comment'])) disabled @endif
-                                >{!! $db_type['shortname'] . ' ' . $db_type['classname'] . ' ' . $db_type['min_version'] . ' ' . $db_type['comment'] !!}</option>
+                                >{!! $db_type['shortname'] . ' ' . $db_type['min_version'] . ' ' . $db_type['comment'] !!}</option>
                             @endforeach
                         </select>
                     </td>
@@ -153,8 +155,8 @@
                         <input type="text"
                                id="db_host"
                                name="db_host"
-                               value="{!! (!empty($force_install_dbserver) ? $force_install_dbserver : (!empty($dolibarr_main_db_host) ? $dolibarr_main_db_host : 'localhost')) !!}"
-                               @if ($force_install_noedit == 2 && $force_install_dbserver !== null) disabled @endif
+                               value="{!! (!empty($me->force_install_dbserver) ? $me->force_install_dbserver : (!empty($dolibarr_main_db_host) ? $dolibarr_main_db_host : 'localhost')) !!}"
+                               @if ($me->force_install_noedit == 2 && $me->force_install_dbserver !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("ServerAddressDescription") !!}
@@ -168,8 +170,8 @@
                         <input type="text"
                                name="db_port"
                                id="db_port"
-                               value="{!! $install_port !!}"
-                               @if ($force_install_noedit == 2 && $force_install_port !== null) disabled @endif
+                               value="{!! $me->config->db->port !!}"
+                               @if ($me->force_install_noedit == 2 && $me->force_install_port !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("ServerPortDescription") !!}
@@ -183,8 +185,8 @@
                         <input type="text"
                                id="db_prefix"
                                name="db_prefix"
-                               value="{!! $install_prefix !!}"
-                               @if ($force_install_noedit == 2 && $force_install_prefix !== null) disabled @endif
+                               value="{!! $me->config->db->prefix !!}"
+                               @if ($me->force_install_noedit == 2 && $me->force_install_prefix !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("DatabasePrefixDescription") !!}</td>
@@ -198,8 +200,8 @@
                                id="db_create_database"
                                name="db_create_database"
                                value="on"
-                               @if ($install_createdatabase) checked @endif
-                               @if ($install_noedit) disabled @endif
+                               @if ($me->install_createdatabase) checked @endif
+                               @if ($me->install_noedit) disabled @endif
                         >
                     </td>
                     <td class="comment">
@@ -213,8 +215,8 @@
                         <input type="text"
                                id="db_user"
                                name="db_user"
-                               value="{!!  (!empty($force_install_databaselogin)) ? $force_install_databaselogin : $config->main_db_user!!}"
-                               @if($force_install_noedit == 2 && $force_install_databaselogin !== null) disabled @endif
+                               value="{!! $me->config->db->user!!}"
+                               @if($me->force_install_noedit == 2 && $me->force_install_databaselogin !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("AdminLogin") !!}</td>
@@ -226,8 +228,8 @@
                         <input type="password" class="text-security"
                                id="db_pass" autocomplete="off"
                                name="db_pass"
-                               value="{!! $autofill !!}"
-                               @if($force_install_noedit == 2 && $force_install_databasepass !== null) disabled @endif
+                               value="{!! $me->config->db->pass !!}"
+                               @if($me->force_install_noedit == 2 && $me->force_install_databasepass !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("AdminPassword") !!}</td>
@@ -241,8 +243,8 @@
                                id="db_create_user"
                                name="db_create_user"
                                value="on"
-                               @if (!empty($force_install_createuser)) checked @endif
-                               @if($force_install_noedit == 2 && $force_install_createuser !== null) disabled @endif
+                               @if (!empty($me->force_install_createuser)) checked @endif
+                               @if($me->force_install_noedit == 2 && $me->force_install_createuser !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">
@@ -254,7 +256,7 @@
                 <tr class="hidesqlite hideroot">
                     <td colspan="3" class="label"><br>
                         <h3>
-                            <img class="valignmiddle inline-block paddingright" src="Resources/img/octicons/build/svg/shield.svg" width="20" alt="webserver"> {!! $me->langs->trans("DatabaseSuperUserAccess") !!}
+                            <img class="valignmiddle inline-block paddingright" src="{!! $me->config->file->main_url !!}/Templates/common/octicons/build/svg/shield.svg" width="20" alt="webserver"> {!! $me->langs->trans("DatabaseSuperUserAccess") !!}
                         </h3>
                     </td>
                 </tr>
@@ -267,8 +269,8 @@
                                id="db_user_root"
                                name="db_user_root"
                                class="needroot"
-                               value="{!! $install_databaserootlogin !!}"
-                               @if ($force_install_noedit > 0 && !empty($force_install_databaserootlogin)) disabled @endif
+                               value="{!! $me->db_user_root !!}"
+                               @if ($me->force_install_noedit > 0 && !empty($me->force_install_databaserootlogin)) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("DatabaseRootLoginDescription") !!}
@@ -290,8 +292,8 @@
                                id="db_pass_root"
                                name="db_pass_root"
                                class="needroot text-security"
-                               value="{!! $autofill_pass_root !!}"
-                               @if ($force_install_noedit > 0 && !empty($force_install_databaserootpass)) disabled /*
+                               value="{!! $me->db_pass_root !!}"
+                               @if ($me->force_install_noedit > 0 && !empty($me->force_install_databaserootpass)) disabled /*
                         May be removed by javascript*/ @endif
                         >
                     </td>
@@ -303,7 +305,7 @@
 
         <script type="text/javascript">
             function init_needroot() {
-                console.log("init_needroot force_install_noedit={!! $force_install_noedit !!}");
+                console.log("init_needroot force_install_noedit={!! $me->force_install_noedit !!}");
                 console.log(jQuery("#db_create_database").is(":checked"));
                 console.log(jQuery("#db_create_user").is(":checked"));
 
@@ -311,7 +313,7 @@
                     console.log("init_needroot show root section");
                     jQuery(".hideroot").show();
                     <?php
-                    if (empty($force_install_noedit)) { ?>
+                    if (empty($me->force_install_noedit)) { ?>
                     jQuery(".needroot").removeAttr('disabled');
                     <?php } ?>
                 } else {
@@ -335,33 +337,33 @@
 
                 if (document.forminstall.main_dir.value == '') {
                     ok = false;
-                    alert('{!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("WebPagesDirectory"))) !!}');
+                    alert('{!! dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("WebPagesDirectory"))) !!}');
                 } else if (document.forminstall.main_data_dir.value == '') {
                     ok = false;
-                    alert(' {!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("DocumentsDirectory"))) !!}');
+                    alert(' {!! dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("DocumentsDirectory"))) !!}');
                 } else if (document.forminstall.main_url.value == '') {
                     ok = false;
-                    alert(' {!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("URLRoot"))) !!}');
+                    alert(' {!! dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("URLRoot"))) !!}');
                 } else if (document.forminstall.db_host.value == '') {
                     ok = false;
-                    alert(' {!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("Server"))) !!}');
+                    alert(' {!! dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("Server"))) !!}');
                 } else if (document.forminstall.db_name.value == '') {
                     ok = false;
-                    alert(' {!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("DatabaseName"))) !!}');
+                    alert(' {!! dol_escape_js($me->langs->transnoentities("ErrorFieldRequired", $me->langs->transnoentitiesnoconv("DatabaseName"))) !!}');
                 } else if (!checkDatabaseName(document.forminstall.db_name.value)) {
                     ok = false;
-                    alert(' {!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("ErrorFieldCanNotContainSpecialCharacters", $me->langs->transnoentitiesnoconv("DatabaseName"))) !!}');
+                    alert(' {!! dol_escape_js($me->langs->transnoentities("ErrorFieldCanNotContainSpecialCharacters", $me->langs->transnoentitiesnoconv("DatabaseName"))) !!}');
                 }
                 // If create database asked
                 else if (document.forminstall.db_create_database.checked == true && (document.forminstall.db_user_root.value == '')) {
                     ok = false;
-                    alert(' {!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("YouAskToCreateDatabaseSoRootRequired")) !!}');
+                    alert(' {!! dol_escape_js($me->langs->transnoentities("YouAskToCreateDatabaseSoRootRequired")) !!}');
                     init_needroot();
                 }
                 // If create user asked
                 else if (document.forminstall.db_create_user.checked == true && (document.forminstall.db_user_root.value == '')) {
                     ok = false;
-                    alert(' {!! \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("YouAskToCreateDatabaseUserSoRootRequired")) !!}');
+                    alert(' {!! dol_escape_js($me->langs->transnoentities("YouAskToCreateDatabaseUserSoRootRequired")) !!}');
                     init_needroot();
                 }
 
@@ -402,7 +404,7 @@
                     console.log("click on db_create_user");
                     init_needroot();
                 });
-                <?php if ($force_install_noedit == 2 && empty($force_install_databasepass)) { ?>
+                <?php if ($me->force_install_noedit == 2 && empty($me->force_install_databasepass)) { ?>
                 jQuery("#db_pass").focus();
                 <?php } ?>
 

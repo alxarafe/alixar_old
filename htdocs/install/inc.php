@@ -36,9 +36,7 @@ use DoliCore\Base\Config;
 if (!defined('DOL_INC_FOR_VERSION_ERROR')) {
     define('DOL_INC_FOR_VERSION_ERROR', '1');
 }
-require_once '../filefunc.inc.php';
-
-
+require_once BASE_PATH . '/filefunc.inc.php';
 
 // Define DOL_DOCUMENT_ROOT used for install/upgrade process
 if (!defined('DOL_DOCUMENT_ROOT')) {
@@ -91,7 +89,7 @@ $long_options = array(
  * determine whether it was an error or not.
  *
  * @param string $program the script that was originally run
- * @param string $header  the message to signal to the user
+ * @param string $header the message to signal to the user
  * @return void
  */
 function usage($program, $header)
@@ -134,7 +132,7 @@ function usage($program, $header)
     echo "      Display this help message.\n";
 }
 
-if (php_sapi_name() === "cli" && (float) PHP_VERSION > 7.0) {
+if (php_sapi_name() === "cli" && (float)PHP_VERSION > 7.0) {
     $rest_index = 0;
     $opts = getopt($short_options, $long_options, $rest_index);
 
@@ -164,11 +162,11 @@ if (php_sapi_name() === "cli" && (float) PHP_VERSION > 7.0) {
         }
     );
     $parsed_options = array_map(
-        /**
-         * Previx option with '-' for single characters and -- for more than single characters
-         * @param string $arg
-         * @return string
-         */
+    /**
+     * Previx option with '-' for single characters and -- for more than single characters
+     * @param string $arg
+     * @return string
+     */
         static function ($arg) {
             if (strlen($arg) > 1) {
                 return "--" . $arg;
@@ -218,9 +216,9 @@ if (!defined('DONOTLOADCONF') && file_exists($conffile) && filesize($conffile) >
 
         // Clean parameters
         $dolibarr_main_data_root = isset($dolibarr_main_data_root) ? trim($dolibarr_main_data_root) : DOL_DOCUMENT_ROOT . '/../documents';
-        $dolibarr_main_url_root         = isset($dolibarr_main_url_root) ? trim($dolibarr_main_url_root) : '';
-        $dolibarr_main_url_root_alt     = isset($dolibarr_main_url_root_alt) ? trim($dolibarr_main_url_root_alt) : '';
-        $dolibarr_main_document_root    = isset($dolibarr_main_document_root) ? trim($dolibarr_main_document_root) : '';
+        $dolibarr_main_url_root = isset($dolibarr_main_url_root) ? trim($dolibarr_main_url_root) : '';
+        $dolibarr_main_url_root_alt = isset($dolibarr_main_url_root_alt) ? trim($dolibarr_main_url_root_alt) : '';
+        $dolibarr_main_document_root = isset($dolibarr_main_document_root) ? trim($dolibarr_main_document_root) : '';
         $dolibarr_main_document_root_alt = isset($dolibarr_main_document_root_alt) ? trim($dolibarr_main_document_root_alt) : '';
 
         // Remove last / or \ on directories or url value
@@ -319,7 +317,7 @@ if (constant('DOL_DATA_ROOT') === null) {
 }
 $islocked = false;
 if (@file_exists($lockfile) || @file_exists($lockfile2)) {
-    if (!defined('ALLOWED_IF_UPGRADE_UNLOCK_FOUND') || (! @file_exists($upgradeunlockfile) && ! @file_exists($upgradeunlockfile2))) {
+    if (!defined('ALLOWED_IF_UPGRADE_UNLOCK_FOUND') || (!@file_exists($upgradeunlockfile) && !@file_exists($upgradeunlockfile2))) {
         // If this is a dangerous install page (ALLOWED_IF_UPGRADE_UNLOCK_FOUND not defined) or
         // if there is no upgrade unlock files, we lock the pages.
         $islocked = true;
@@ -413,7 +411,7 @@ if (GETPOST('lang', 'aZ09')) {
 /**
  * Load conf file (file must exists)
  *
- * @param   string      $dolibarr_main_document_root        Root directory of Dolibarr bin files
+ * @param string $dolibarr_main_document_root Root directory of Dolibarr bin files
  * @return  int                                             Return integer <0 if KO, >0 if OK
  */
 function conf($dolibarr_main_document_root)
@@ -520,12 +518,12 @@ function conf($dolibarr_main_document_root)
 /**
  * Show HTML header of install pages
  *
- * @param   string      $subtitle           Title
- * @param   string      $next               Next
- * @param   string      $action             Action code ('set' or 'upgrade')
- * @param   string      $param              Param
- * @param   string      $forcejqueryurl     Set jquery relative URL (must end with / if defined)
- * @param   string      $csstable           Css for table
+ * @param string $subtitle Title
+ * @param string $next Next
+ * @param string $action Action code ('set' or 'upgrade')
+ * @param string $param Param
+ * @param string $forcejqueryurl Set jquery relative URL (must end with / if defined)
+ * @param string $csstable Css for table
  * @return  void
  */
 function pHeader($subtitle, $next, $action = 'set', $param = '', $forcejqueryurl = '', $csstable = 'main-inside')
@@ -610,11 +608,11 @@ function pHeader($subtitle, $next, $action = 'set', $param = '', $forcejqueryurl
 /**
  * Print HTML footer of install pages
  *
- * @param   integer $nonext             1=No button "Next step", 2=Show button but disabled with a link to enable
- * @param   string  $setuplang          Language code
- * @param   string  $jscheckfunction    Add a javascript check function
- * @param   integer $withpleasewait     Add also please wait tags
- * @param   string  $morehtml           Add more HTML content
+ * @param integer $nonext 1=No button "Next step", 2=Show button but disabled with a link to enable
+ * @param string $setuplang Language code
+ * @param string $jscheckfunction Add a javascript check function
+ * @param integer $withpleasewait Add also please wait tags
+ * @param string $morehtml Add more HTML content
  * @return  void
  */
 function pFooter($nonext = 0, $setuplang = '', $jscheckfunction = '', $withpleasewait = 0, $morehtml = '')
@@ -674,8 +672,8 @@ function pFooter($nonext = 0, $setuplang = '', $jscheckfunction = '', $withpleas
 /**
  * Log function for install pages
  *
- * @param   string  $message    Message
- * @param   int     $level      Level of log
+ * @param string $message Message
+ * @param int $level Level of log
  * @return  void
  */
 function dolibarr_install_syslog($message, $level = LOG_DEBUG)

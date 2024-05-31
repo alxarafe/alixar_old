@@ -35,6 +35,7 @@ use DoliCore\Base\DolibarrViewController;
 use DoliCore\Form\FormAdmin;
 use DoliModules\Install\Lib\Check;
 use DoliModules\Install\Lib\Status;
+use PDO;
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/install/inc.php';
@@ -64,6 +65,12 @@ class InstallController extends DolibarrViewController
     public $htmlComboLanguages;
     public $notAvailableChoices;
     public $printVersion;
+    public $force_install_noedit;
+    public $force_install_mainforcehttps;
+    public $install_createdatabase;
+    public $install_noedit;
+    public $autofill;
+    public $install_databaserootlogin;
 
     /**
      *  Create main file. No particular permissions are set by installer.
@@ -718,56 +725,29 @@ class InstallController extends DolibarrViewController
         return true;
     }
 
-    public function _actionStart()
+    /**
+     * Allows to configure database access parameters.
+     *
+     * @return true
+     */
+    public function doStart(): bool
     {
+        $this->langs->setDefaultLang('auto');
+        $this->langs->loadLangs(['main', 'admin', 'install']);
+
         $this->template = 'install/start';
         $this->nextButton = true;
 
-        $err = 0;
-
-        dolibarr_install_syslog("- fileconf: entering fileconf.php page");
-
-// You can force preselected values of the config step of Dolibarr by adding a file
-// install.forced.php into directory htdocs/install (This is the case with some wizard
-// installer like DoliWamp, DoliMamp or DoliBuntu).
-// We first init "forced values" to nothing.
-        if (!isset($force_install_noedit)) {
-            $force_install_noedit = ''; // 1=To block vars specific to distrib, 2 to block all technical parameters
-        }
-        if (!isset($force_install_type)) {
-            $force_install_type = '';
-        }
-        if (!isset($force_install_dbserver)) {
-            $force_install_dbserver = '';
-        }
-        if (!isset($force_install_port)) {
-            $force_install_port = '';
-        }
-        if (!isset($force_install_database)) {
-            $force_install_database = '';
-        }
-        if (!isset($force_install_prefix)) {
-            $force_install_prefix = '';
-        }
-        if (!isset($force_install_createdatabase)) {
-            $force_install_createdatabase = '';
-        }
-        if (!isset($force_install_databaselogin)) {
-            $force_install_databaselogin = '';
-        }
-        if (!isset($force_install_databasepass)) {
-            $force_install_databasepass = '';
-        }
-        if (!isset($force_install_databaserootlogin)) {
-            $force_install_databaserootlogin = '';
-        }
-        if (!isset($force_install_databaserootpass)) {
-            $force_install_databaserootpass = '';
-        }
-
-        $this->force_install_noedit = $force_install_noedit;
-        $this->force_install_database = $force_install_database;
-
+        /**
+         * There may be a file called install.forced.php with predefined parameters for the
+         * installation. In that case, these parameters cannot be modified. Used for guided
+         * installations.
+         *
+         * At the moment, we prefer not to implement this option.
+         *
+         * The best place to implement it is when creating the conf.php file, because it is
+         * not even necessary to install the program.
+         */
 
         /*
         // Now we load forced values from install.forced.php file.
@@ -782,83 +762,137 @@ class InstallController extends DolibarrViewController
         }
         */
 
+        dolibarr_install_syslog("- fileconf: entering fileconf.php page");
+
+        /**
+         * You can force preselected values of the config step of Dolibarr by adding a file
+         * install.forced.php into directory htdocs/install (This is the case with some wizard
+         * installer like DoliWamp, DoliMamp or DoliBuntu).
+         * We first init "forced values" to nothing.
+         *
+         * $force_install_noedit empty if no block:
+         *   1 = To block vars specific to distrib
+         *   2 = To block all technical parameters
+         */
+
+        $this->force_install_noedit = '';
+
+        $this->db_types = $this->getDbTypes();
+
+        $this->refreshConfigFromPost();
+
+        /**
+         * If it is active it is 'on', if it is not active it is 'off'.
+         * But if it's the first time, it will be 'null', and we use it as 'on'.
+         */
+        $this->force_install_mainforcehttps = ($_POST['main_force_https'] ?? 'on') === 'on';
+        $this->install_createdatabase = ($_POST['db_create_database'] ?? 'off') === 'on';
+        $this->force_install_createuser = ($_POST['db_create_user'] ?? 'off') === 'on';
+
+        $this->db_user_root = getIfIsset('db_user_root', $this->db_user_root ?? '');
+        $this->db_pass_root = getIfIsset('db_pass_root', $this->db_pass_root ?? '');
+
         session_start(); // To be able to keep info into session (used for not losing pass during navigation. pass must not transit through parameters)
 
         $this->subtitle = $this->langs->trans("ConfigurationFile");
 
-        /**
-         * It has been verified before
-         *
-         *
-         * // Test if we can run a first install process
-         * if (!is_writable($conffile)) {
-         * print $this->langs->trans("ConfFileIsNotWritable", $conffiletoshow);
-         * dolibarr_install_syslog("fileconf: config file is not writable", LOG_WARNING);
-         * dolibarr_install_syslog("- fileconf: end");
-         * pFooter(1, $setuplang, 'jscheckparam');
-         * exit;
-         * }
-         */
-
-        if (empty($this->config->main_document_root)) {
-            $this->config->main_document_root = BASE_PATH;
-        }
-        if (!empty($force_install_main_data_root)) {
-            $this->config->main_data_root = @$force_install_main_data_root;
-        }
-        if (empty($this->config->main_data_root)) {
-            $this->config->main_data_root = GETPOSTISSET('main_data_dir') ? GETPOST('main_data_dir') : $this->detect_dolibarr_main_data_root($this->config->main_document_root);
-        }
-        if (empty($this->config->main_url_root)) {
-            $this->config->main_url_root = GETPOSTISSET('main_url') ? GETPOST('main_url') : $this->detect_dolibarr_main_url_root();
-        }
-        if (empty($this->config->main_db_type)) {
-            $this->config->main_db_type = 'mysqli';
-        }
-        if (!isset($this->config->main_db_host)) {
-            $this->config->main_db_host = "localhost";
-        }
-
-        $this->db_types = $this->getDbTypes();
-
-        // If $force_install_databasepass is on, we don't want to set password, we just show '***'. Real value will be extracted from the forced install file at step1.
-        $autofill = ((!empty($_SESSION['dol_save_pass'])) ? $_SESSION['dol_save_pass'] : str_pad('', strlen($force_install_databasepass), '*'));
-        if (!empty($dolibarr_main_prod) && empty($_SESSION['dol_save_pass'])) {    // So value can't be found if install page still accessible
-            $autofill = '';
-        }
-        $this->autofill = dol_escape_htmltag($autofill);
-
-        $this->install_port = !empty($force_install_port) ? $force_install_port : $this->config->main_db_port;
-        $this->install_prefix = !empty($force_install_prefix) ? $force_install_prefix : (!empty($this->config->main_db_prefix) ? $this->config->main_db_prefix : Globals::DEFAULT_DB_PREFIX);
-
-        $this->install_createdatabase = $force_install_createdatabase;
-        $this->install_noedit = $force_install_noedit == 2 && $force_install_createdatabase !== null;
-
-        $this->force_install_databaserootlogin = $this->parse_database_login($force_install_databaserootlogin);
-        $this->force_install_databaserootpass = $this->parse_database_pass($force_install_databaserootpass);
-
-        $this->install_databaserootlogin = (!empty($force_install_databaserootlogin)) ? $force_install_databaserootlogin : (GETPOSTISSET('db_user_root') ? GETPOST('db_user_root') : (isset($this->db_user_root) ? $this->db_user_root : ''));
-
-        // If $force_install_databaserootpass is on, we don't want to set password here, we just show '***'. Real value will be extracted from the forced install file at step1.
-        $autofill_pass_root = ((!empty($force_install_databaserootpass)) ? str_pad('', strlen($force_install_databaserootpass), '*') : (isset($this->db_pass_root) ? $this->db_pass_root : ''));
-        if (!empty($dolibarr_main_prod)) {
-            $autofill_pass_root = '';
-        }
-
-        // Do not autofill password if instance is a production instance
-        if (
-            !empty($_SERVER["SERVER_NAME"]) && !in_array(
-                $_SERVER["SERVER_NAME"],
-                ['127.0.0.1', 'localhost', 'localhostgit']
-            )
-        ) {
-            $autofill_pass_root = '';
-        }    // Do not autofill password for remote access
-        $this->autofill_pass_root = dol_escape_htmltag($autofill_pass_root);
-
         $this->nextButtonJs = 'return jscheckparam();';
 
         return true;
+    }
+
+    private function getDbTypes()
+    {
+        $drivers = PDO::getAvailableDrivers();
+        foreach ($drivers as $driver) {
+            switch ($driver) {
+                case 'mysql':
+                    $result[] = [
+                        'shortname' => 'MySQL/MariaDB',
+                        'classname' => $driver,
+                        'min_version' => '',
+                        'comment' => '',
+                    ];
+                    break;
+                case 'pgsql':
+                    $result[] = [
+                        'shortname' => 'PostgreSQL',
+                        'classname' => $driver,
+                        'min_version' => '',
+                        'comment' => '',
+                    ];
+                    break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Complete all configuration values, as received by POST.
+     *
+     * @return void
+     */
+    private function refreshConfigFromPost()
+    {
+        /**
+         * config:
+         *      "main"
+         *          "base_path"
+         *          "base_url"
+         *          "data_path"
+         *          "alt_base_path": array
+         *          "alt_base_url": array:1
+         *          "theme": "eldy"
+         *      "db"
+         *          "host"
+         *          "port"
+         *          "name"
+         *          "user"
+         *          "pass"
+         *          "type"
+         *          "prefix": "alx_"
+         *          "charset": "utf8"
+         *          "collation": "utf8_unicode_ci"
+         *          "encryption": 0
+         *          "cryptkey": ""
+         */
+
+        $this->config->main->base_path = getIfIsset('main_dir', $this->config->main->base_path);
+        $this->config->main->data_path = getIfIsset('main_data_dir', $this->config->main->data_path);
+        $this->config->main->base_url = getIfIsset('main_url', $this->config->main->base_url);
+
+        $this->config->db->name = getIfIsset('db_name', $this->config->db->name);
+        $this->config->db->type = getIfIsset('db_type', $this->config->db->type);
+        $this->config->db->host = getIfIsset('db_host', $this->config->db->host);
+        $this->config->db->port = getIfIsset('db_port', $this->config->db->port);
+        $this->config->db->prefix = getIfIsset('db_prefix', $this->config->db->prefix);
+
+        $this->config->db->user = getIfIsset('db_user', $this->config->db->user);
+        $this->config->db->pass = getIfIsset('db_pass', $this->config->db->pass);
+    }
+
+    /**
+     * Replaces automatic database login by actual value
+     *
+     * @param string $force_install_databaserootlogin Login
+     *
+     * @return string
+     */
+    function parse_database_login($force_install_databaserootlogin)
+    {
+        return preg_replace('/__SUPERUSERLOGIN__/', 'root', $force_install_databaserootlogin);
+    }
+
+    /**
+     * Replaces automatic database password by actual value
+     *
+     * @param string $force_install_databaserootpass Password
+     *
+     * @return string
+     */
+    function parse_database_pass($force_install_databaserootpass)
+    {
+        return preg_replace('/__SUPERUSERPASSWORD__/', '', $force_install_databaserootpass);
     }
 
     /**
@@ -907,30 +941,6 @@ class InstallController extends DolibarrViewController
         return $dolibarr_main_url_root;
     }
 
-    /**
-     * Replaces automatic database login by actual value
-     *
-     * @param string $force_install_databaserootlogin Login
-     *
-     * @return string
-     */
-    function parse_database_login($force_install_databaserootlogin)
-    {
-        return preg_replace('/__SUPERUSERLOGIN__/', 'root', $force_install_databaserootlogin);
-    }
-
-    /**
-     * Replaces automatic database password by actual value
-     *
-     * @param string $force_install_databaserootpass Password
-     *
-     * @return string
-     */
-    function parse_database_pass($force_install_databaserootpass)
-    {
-        return preg_replace('/__SUPERUSERPASSWORD__/', '', $force_install_databaserootpass);
-    }
-
     public function _body()
     {
         $this->selectLang = filter_input(INPUT_POST, 'selectlang');
@@ -945,7 +955,7 @@ class InstallController extends DolibarrViewController
 
     /**
      * Main installation/update screen that allows to select the language
-     * if it was not previously selected..
+     * if it was not previously selected.
      *
      * @return bool
      */
@@ -967,8 +977,15 @@ class InstallController extends DolibarrViewController
         return true;
     }
 
-    public function doChecked()
+    /**
+     * Perform a needs check for the application to determine if it meets all the
+     * essential requirements.
+     *
+     * @return bool
+     */
+    public function doChecked(): bool
     {
+        $this->selectLang = $_POST['selectlang'];
         $this->langs->setDefaultLang('auto');
         $this->langs->loadLangs(['main', 'admin', 'install']);
 
@@ -1187,8 +1204,15 @@ class InstallController extends DolibarrViewController
             $foundrecommandedchoice = 1; // To show only once
         }
 
+        /*
         $button = $this->allowInstall
             ? '<input class="button" type="submit" name="action" value="' . $this->langs->trans("Start") . '">'
+            : ($foundrecommandedchoice ? '<span class="warning">' : '') . $this->langs->trans("InstallNotAllowed") . ($foundrecommandedchoice ? '</span>' : '');
+        */
+
+        // TODO: We have to see how we can use the action, and that the text is displayed in the correct language
+        $button = $this->allowInstall
+            ? '<input class="button" type="submit" name="action" value="start">' . $this->langs->trans("Start")
             : ($foundrecommandedchoice ? '<span class="warning">' : '') . $this->langs->trans("InstallNotAllowed") . ($foundrecommandedchoice ? '</span>' : '');
 
         // Show line of first install choice
@@ -1314,317 +1338,6 @@ class InstallController extends DolibarrViewController
         krsort($this->availableChoices, SORT_NATURAL);
     }
 
-    private function _checkBrowser()
-    {
-        $useragent = $_SERVER['HTTP_USER_AGENT'];
-        if (empty($useragent)) {
-            return false;
-        }
-
-        $tmp = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
-        $browsername = $tmp['browsername'];
-        $browserversion = $tmp['browserversion'];
-        if ($browsername == 'ie' && $browserversion < 7) {
-            $result = [];
-            $result['ok'] = true;
-            $result['icon'] = 'warning';
-            $result['text'] = $this->langs->trans("WarningBrowserTooOld");
-            return $result;
-        }
-
-        return false;
-    }
-
-    private function _checkMinPhp()
-    {
-        $arrayphpminversionerror = [7, 0, 0];
-        $arrayphpminversionwarning = [7, 1, 0];
-
-        $result = [];
-        $result['ok'] = true;
-
-        if (versioncompare(versionphparray(), $arrayphpminversionerror) < 0) {        // Minimum to use (error if lower)
-            $result['ok'] = false;
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPVersionTooLow", versiontostring($arrayphpminversionerror));
-        } elseif (versioncompare(versionphparray(), $arrayphpminversionwarning) < 0) {    // Minimum supported (warning if lower)
-            $result['icon'] = 'warning';
-            $result['text'] = $this->langs->trans("ErrorPHPVersionTooLow", versiontostring($arrayphpminversionwarning));
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPVersion") . " " . versiontostring(versionphparray());
-        }
-
-        if (empty($force_install_nophpinfo)) {
-            $result['text'] .= ' (<a href="phpinfo.php" target="_blank" rel="noopener noreferrer">' . $this->langs->trans("MoreInformation") . '</a>)';
-        }
-
-        return $result;
-    }
-
-    private function _checkMaxPhp()
-    {
-        $arrayphpmaxversionwarning = [8, 2, 0];
-        if (versioncompare(versionphparray(), $arrayphpmaxversionwarning) > 0 && versioncompare(versionphparray(), $arrayphpmaxversionwarning) < 3) {        // Maximum to use (warning if higher)
-            $result = [];
-            $result['ok'] = false;
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPVersionTooHigh", versiontostring($arrayphpmaxversionwarning));
-            return $result;
-        }
-
-        return false;
-    }
-
-    private function _checkGetPostSupport()
-    {
-        $result = [];
-        $result['ok'] = true;
-        if (empty($_GET) || empty($_POST)) {   // We must keep $_GET and $_POST here
-            $result['icon'] = 'warning';
-            $result['text'] = $this->langs->trans("PHPSupportPOSTGETKo") . ' (<a href="' . dol_escape_htmltag($_SERVER["PHP_SELF"]) . '?testget=ok">' . $this->langs->trans("Recheck") . '</a>)';
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupportPOSTGETOk");
-        }
-        return $result;
-    }
-
-    private function _checkSessionId()
-    {
-        $result = [];
-        $result['ok'] = function_exists("session_id");
-        if ($result['ok']) {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupportSessions");
-        } else {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupportSessions");
-        }
-        return $result;
-    }
-
-    private function _checkMbStringExtension()
-    {
-        $result = [];
-        $result['ok'] = extension_loaded("mbstring");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "MBString");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "MBString");
-        }
-        return $result;
-    }
-
-    private function _checkJsonExtension()
-    {
-        $result = [];
-        $result['ok'] = extension_loaded("json");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "JSON");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "JSON");
-        }
-        return $result;
-    }
-
-    private function _checkGdExtension()
-    {
-        $result = [];
-        $result['ok'] = true;
-        if (!function_exists("imagecreate")) {
-            $result['icon'] = 'warning';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "GD");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "GD");
-        }
-        return $result;
-    }
-
-    private function _checkCurlExtension()
-    {
-        $result = [];
-        $result['ok'] = true;
-        if (!function_exists("curl_init")) {
-            $result['icon'] = 'warning';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Curl");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "Curl");
-        }
-        return $result;
-    }
-
-    private function _checkCalendarExtension()
-    {
-        $result = [];
-        $result['ok'] = function_exists("easter_date");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Calendar");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "Calendar");
-        }
-        return $result;
-    }
-
-    private function _checkXmlExtension()
-    {
-        $result = [];
-        $result['ok'] = function_exists("simplexml_load_string");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Xml");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "Xml");
-        }
-        return $result;
-    }
-
-    private function _checkUtfExtension()
-    {
-        $result = [];
-        $result['ok'] = function_exists("utf8_encode");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "UTF8");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "UTF8");
-        }
-        return $result;
-    }
-
-    private function _checkIntlExtension()
-    {
-        if (empty($_SERVER["SERVER_ADMIN"]) || $_SERVER["SERVER_ADMIN"] != 'doliwamp@localhost') {
-            $result = [];
-            $result['ok'] = function_exists("locale_get_primary_language") && function_exists("locale_get_region");
-            if (!$result['ok']) {
-                $result['icon'] = 'error';
-                $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Intl");
-            } else {
-                $result['icon'] = 'ok';
-                $result['text'] = $this->langs->trans("PHPSupport", "Intl");
-            }
-            return $result;
-        }
-
-        return false;
-    }
-
-    private function _checkImapExtension()
-    {
-        if (PHP_VERSION_ID > 80300) {
-            return false;
-        }
-
-        $result = [];
-        $result['ok'] = function_exists("imap_open");
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "IMAP");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "IMAP");
-        }
-        return $result;
-    }
-
-    private function _checkZipExtension()
-    {
-        $result = [];
-        $result['ok'] = class_exists('ZipArchive');
-        if (!$result['ok']) {
-            $result['icon'] = 'error';
-            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "ZIP");
-        } else {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPSupport", "ZIP");
-        }
-        return $result;
-    }
-
-    private function _checkMemory()
-    {
-        $memmaxorig = @ini_get("memory_limit");
-        if (empty($memmaxorig)) {
-            return false;
-        }
-
-        $memmax = $memmaxorig;
-        $memrequiredorig = '64M';
-        $memrequired = 64 * 1024 * 1024;
-        preg_match('/([0-9]+)([a-zA-Z]*)/i', $memmax, $reg);
-        if ($reg[2]) {
-            if (strtoupper($reg[2]) == 'G') {
-                $memmax = $reg[1] * 1024 * 1024 * 1024;
-            }
-            if (strtoupper($reg[2]) == 'M') {
-                $memmax = $reg[1] * 1024 * 1024;
-            }
-            if (strtoupper($reg[2]) == 'K') {
-                $memmax = $reg[1] * 1024;
-            }
-        }
-
-        $result = [];
-        $result['ok'] = $memmax >= $memrequired || $memmax == -1;
-        if ($result['ok']) {
-            $result['icon'] = 'ok';
-            $result['text'] = $this->langs->trans("PHPMemoryOK", $memmaxorig, $memrequiredorig);
-        } else {
-            $result['icon'] = 'warning';
-            $result['text'] = $this->langs->trans("PHPMemoryTooLow", $memmaxorig, $memrequiredorig);
-        }
-        return $result;
-    }
-
-    private function _checkConfFile()
-    {
-        $result = false;
-        $conffile = Config::getDolibarrConfigFilename();
-
-        clearstatcache();
-        if (is_readable($conffile) && filesize($conffile) > 8) {
-            $this->syslog("check: conf file '" . $conffile . "' already defined");
-            return $result;
-        }
-
-        // If not, we create it
-        $this->syslog("check: we try to create conf file '" . $conffile . "'");
-
-        // First we try by copying example
-        if (@copy($conffile . ".example", $conffile)) {
-            // Success
-            $this->syslog("check: successfully copied file " . $conffile . ".example into " . $conffile);
-        } else {
-            // If failed, we try to create an empty file
-            $this->syslog("check: failed to copy file " . $conffile . ".example into " . $conffile . ". We try to create it.", LOG_WARNING);
-
-            $fp = @fopen($conffile, "w");
-            if ($fp) {
-                @fwrite($fp, '<?php');
-                @fwrite($fp, "\n");
-                fclose($fp);
-            } else {
-                $this->syslog("check: failed to create a new file " . $conffile . " into current dir " . getcwd() . ". Please check permissions.", LOG_ERR);
-                $result = [];
-                $result['ok'] = false;
-                $result['icon'] = 'error';
-                $result['text'] = $this->langs->trans('ConfFileDoesNotExistsAndCouldNotBeCreated', 'conf.php');
-            }
-        }
-        return $result;
-    }
-
     private function getMigrationScript()
     {
         $dir = BASE_PATH . "/../Dolibarr/Modules/Install/mysql/migration/";   // We use mysql migration scripts whatever is database driver
@@ -1651,54 +1364,46 @@ class InstallController extends DolibarrViewController
         return dol_sort_array($migrationscript, 'from', 'asc', 1);
     }
 
-    private function _actionConfig()
+    public function doConfig(): bool
     {
+        $this->langs->setDefaultLang('auto');
+        $this->langs->loadLangs(['main', 'admin', 'install', 'errors']);
+
+        /**
+         * "main_dir"
+         * "main_data_dir"
+         * "main_url"
+         * "db_name"
+         * "db_type"
+         * "db_host"
+         * "db_port"
+         * "db_prefix"
+         * "db_user"
+         * "db_pass"
+         * "db_create_user"
+         * "db_create_database"
+         *      "db_user_root"
+         *      "db_pass_root"
+         */
+
         $this->template = 'install/step1';
         $this->nextButton = true;
 
-        $action = GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : (empty($argv[1]) ? '' : $argv[1]);
-        $setuplang = GETPOST('selectlang', 'aZ09', 3) ? GETPOST('selectlang', 'aZ09', 3) : (empty($argv[2]) ? 'auto' : $argv[2]);
-        $this->lang->setDefaultLang($setuplang);
-
-        $this->lang->loadLangs(["admin", "install", "errors"]);
-
-// Dolibarr pages directory
-        $this->main_dir = GETPOST('main_dir') ? GETPOST('main_dir') : (empty($argv[3]) ? '' : $argv[3]);
-// Directory for generated documents (invoices, orders, ecm, etc...)
-        $this->main_data_dir = GETPOST('main_data_dir') ? GETPOST('main_data_dir') : (empty($argv[4]) ? ($this->main_dir . '/documents') : $argv[4]);
-// Dolibarr root URL
-        $this->main_url = GETPOST('main_url') ? GETPOST('main_url') : (empty($argv[5]) ? '' : $argv[5]);
-// Database login information
-        $userroot = GETPOST('db_user_root', 'alpha') ? GETPOST('db_user_root', 'alpha') : (empty($argv[6]) ? '' : $argv[6]);
-        $passroot = GETPOST('db_pass_root', 'none') ? GETPOST('db_pass_root', 'none') : (empty($argv[7]) ? '' : $argv[7]);
-// Database server
-        $this->db_type = GETPOST('db_type', 'aZ09') ? GETPOST('db_type', 'aZ09') : (empty($argv[8]) ? '' : $argv[8]);
-        $this->db_host = GETPOST('db_host', 'alpha') ? GETPOST('db_host', 'alpha') : (empty($argv[9]) ? '' : $argv[9]);
-        $this->db_name = GETPOST('db_name', 'aZ09') ? GETPOST('db_name', 'aZ09') : (empty($argv[10]) ? '' : $argv[10]);
-        $this->db_user = GETPOST('db_user', 'alpha') ? GETPOST('db_user', 'alpha') : (empty($argv[11]) ? '' : $argv[11]);
-        $this->db_pass = GETPOST('db_pass', 'none') ? GETPOST('db_pass', 'none') : (empty($argv[12]) ? '' : $argv[12]);
-        $this->db_port = GETPOST('db_port', 'int') ? GETPOST('db_port', 'int') : (empty($argv[13]) ? '' : $argv[13]);
-        $this->db_prefix = GETPOST('db_prefix', 'aZ09') ? GETPOST('db_prefix', 'aZ09') : (empty($argv[14]) ? '' : $argv[14]);
-        $this->db_create_database = GETPOST('db_create_database', 'alpha') ? GETPOST('db_create_database', 'alpha') : (empty($argv[15]) ? '' : $argv[15]);
-        $this->db_create_user = GETPOST('db_create_user', 'alpha') ? GETPOST('db_create_user', 'alpha') : (empty($argv[16]) ? '' : $argv[16]);
-// Force https
-        $this->main_force_https = ((GETPOST("main_force_https", 'alpha') && (GETPOST("main_force_https", 'alpha') == "on" || GETPOST("main_force_https", 'alpha') == 1)) ? '1' : '0');
-// Use alternative directory
-        $this->main_use_alt_dir = ((GETPOST("main_use_alt_dir", 'alpha') == '' || (GETPOST("main_use_alt_dir", 'alpha') == "on" || GETPOST("main_use_alt_dir", 'alpha') == 1)) ? '' : '//');
-// Alternative root directory name
-        $this->main_alt_dir_name = ((GETPOST("main_alt_dir_name", 'alpha') && GETPOST("main_alt_dir_name", 'alpha') != '') ? GETPOST("main_alt_dir_name", 'alpha') : 'custom');
+        $oldConf = $this->config;
+        $this->refreshConfigFromPost();
 
         $this->dolibarr_main_distrib = 'standard';
 
         session_start(); // To be able to keep info into session (used for not losing password during navigation. The password must not transit through parameters)
 
-// Save a flag to tell to restore input value if we go back
+        // Save a flag to tell to restore input value if we go back
         $_SESSION['dol_save_pass'] = $this->db_pass;
-//$_SESSION['dol_save_passroot']=$passroot;
+        //$_SESSION['dol_save_passroot']=$passroot;
 
         $conffile = Config::getDolibarrConfigFilename();
 
-// Now we load forced values from install.forced.php file.
+        /*
+        // Now we load forced values from install.forced.php file.
         $useforcedwizard = false;
         $forcedfile = "./install.forced.php";
         if ($conffile == "/etc/dolibarr/conf.php") {
@@ -1776,6 +1481,7 @@ class InstallController extends DolibarrViewController
                 $this->dolibarr_main_distrib = $force_install_distrib;
             }
         }
+        */
 
         dolibarr_install_syslog("--- step1: entering step1.php page");
 
@@ -2705,49 +2411,315 @@ class InstallController extends DolibarrViewController
         return 1;
     }
 
-    private function _getDbTypes()
+    private function _checkBrowser()
     {
-        $options = [];
-        $dir = realpath(BASE_PATH . '/../Core/DB/Engines');
-        $handle = opendir($dir);
-        if (is_resource($handle)) {
-            while (($file = readdir($handle)) !== false) {
-                if (is_readable($dir . "/" . $file) && substr($file, -10) === 'Engine.php') {
-                    $shortName = substr($file, 0, -10);
-                    $className = substr($file, 0, -4);
-                    if ($className === 'Sqlite3Engine') {
-                        continue; // We hide sqlite3 because support can't be complete until sqlite does not manage foreign key creation after table creation (ALTER TABLE child ADD CONSTRAINT not supported)
-                    }
+        $useragent = $_SERVER['HTTP_USER_AGENT'];
+        if (empty($useragent)) {
+            return false;
+        }
 
-                    $class = 'Alxarafe\\DB\\Engines\\' . $className;
+        $tmp = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
+        $browsername = $tmp['browsername'];
+        $browserversion = $tmp['browserversion'];
+        if ($browsername == 'ie' && $browserversion < 7) {
+            $result = [];
+            $result['ok'] = true;
+            $result['icon'] = 'warning';
+            $result['text'] = $this->langs->trans("WarningBrowserTooOld");
+            return $result;
+        }
 
-                    // Version min of database
-                    $note = '(' . $class::LABEL . ' >= ' . $class::VERSIONMIN . ')';
+        return false;
+    }
 
-                    if ($file == 'MySqliEngine.php') {
-                        $oldname = 'mysqli';
-                        $testfunction = 'mysqli_connect';
-                    }
-                    if ($file == 'PgSqlEngine.php') {
-                        $oldname = 'pgsql';
-                        $testfunction = 'pg_connect';
-                    }
+    private function _checkMinPhp()
+    {
+        $arrayphpminversionerror = [7, 0, 0];
+        $arrayphpminversionwarning = [7, 1, 0];
 
-                    $comment = '';
-                    if (!function_exists($testfunction)) {
-                        $comment = ' - ' . $this->langs->trans("FunctionNotAvailableInThisPHP");
-                    }
+        $result = [];
+        $result['ok'] = true;
 
-                    $options[] = [
-                        'shortname' => $shortName,
-                        'classname' => $className,
-                        'min_version' => $note,
-                        'comment' => $comment,
-                    ];
-                }
+        if (versioncompare(versionphparray(), $arrayphpminversionerror) < 0) {        // Minimum to use (error if lower)
+            $result['ok'] = false;
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPVersionTooLow", versiontostring($arrayphpminversionerror));
+        } elseif (versioncompare(versionphparray(), $arrayphpminversionwarning) < 0) {    // Minimum supported (warning if lower)
+            $result['icon'] = 'warning';
+            $result['text'] = $this->langs->trans("ErrorPHPVersionTooLow", versiontostring($arrayphpminversionwarning));
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPVersion") . " " . versiontostring(versionphparray());
+        }
+
+        if (empty($force_install_nophpinfo)) {
+            $result['text'] .= ' (<a href="phpinfo.php" target="_blank" rel="noopener noreferrer">' . $this->langs->trans("MoreInformation") . '</a>)';
+        }
+
+        return $result;
+    }
+
+    private function _checkMaxPhp()
+    {
+        $arrayphpmaxversionwarning = [8, 2, 0];
+        if (versioncompare(versionphparray(), $arrayphpmaxversionwarning) > 0 && versioncompare(versionphparray(), $arrayphpmaxversionwarning) < 3) {        // Maximum to use (warning if higher)
+            $result = [];
+            $result['ok'] = false;
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPVersionTooHigh", versiontostring($arrayphpmaxversionwarning));
+            return $result;
+        }
+
+        return false;
+    }
+
+    private function _checkGetPostSupport()
+    {
+        $result = [];
+        $result['ok'] = true;
+        if (empty($_GET) || empty($_POST)) {   // We must keep $_GET and $_POST here
+            $result['icon'] = 'warning';
+            $result['text'] = $this->langs->trans("PHPSupportPOSTGETKo") . ' (<a href="' . dol_escape_htmltag($_SERVER["PHP_SELF"]) . '?testget=ok">' . $this->langs->trans("Recheck") . '</a>)';
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupportPOSTGETOk");
+        }
+        return $result;
+    }
+
+    private function _checkSessionId()
+    {
+        $result = [];
+        $result['ok'] = function_exists("session_id");
+        if ($result['ok']) {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupportSessions");
+        } else {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupportSessions");
+        }
+        return $result;
+    }
+
+    private function _checkMbStringExtension()
+    {
+        $result = [];
+        $result['ok'] = extension_loaded("mbstring");
+        if (!$result['ok']) {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "MBString");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "MBString");
+        }
+        return $result;
+    }
+
+    private function _checkJsonExtension()
+    {
+        $result = [];
+        $result['ok'] = extension_loaded("json");
+        if (!$result['ok']) {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "JSON");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "JSON");
+        }
+        return $result;
+    }
+
+    private function _checkGdExtension()
+    {
+        $result = [];
+        $result['ok'] = true;
+        if (!function_exists("imagecreate")) {
+            $result['icon'] = 'warning';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "GD");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "GD");
+        }
+        return $result;
+    }
+
+    private function _checkCurlExtension()
+    {
+        $result = [];
+        $result['ok'] = true;
+        if (!function_exists("curl_init")) {
+            $result['icon'] = 'warning';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Curl");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "Curl");
+        }
+        return $result;
+    }
+
+    private function _checkCalendarExtension()
+    {
+        $result = [];
+        $result['ok'] = function_exists("easter_date");
+        if (!$result['ok']) {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Calendar");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "Calendar");
+        }
+        return $result;
+    }
+
+    private function _checkXmlExtension()
+    {
+        $result = [];
+        $result['ok'] = function_exists("simplexml_load_string");
+        if (!$result['ok']) {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Xml");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "Xml");
+        }
+        return $result;
+    }
+
+    private function _checkUtfExtension()
+    {
+        $result = [];
+        $result['ok'] = function_exists("utf8_encode");
+        if (!$result['ok']) {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "UTF8");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "UTF8");
+        }
+        return $result;
+    }
+
+    private function _checkIntlExtension()
+    {
+        if (empty($_SERVER["SERVER_ADMIN"]) || $_SERVER["SERVER_ADMIN"] != 'doliwamp@localhost') {
+            $result = [];
+            $result['ok'] = function_exists("locale_get_primary_language") && function_exists("locale_get_region");
+            if (!$result['ok']) {
+                $result['icon'] = 'error';
+                $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "Intl");
+            } else {
+                $result['icon'] = 'ok';
+                $result['text'] = $this->langs->trans("PHPSupport", "Intl");
+            }
+            return $result;
+        }
+
+        return false;
+    }
+
+    private function _checkImapExtension()
+    {
+        if (PHP_VERSION_ID > 80300) {
+            return false;
+        }
+
+        $result = [];
+        $result['ok'] = function_exists("imap_open");
+        if (!$result['ok']) {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "IMAP");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "IMAP");
+        }
+        return $result;
+    }
+
+    private function _checkZipExtension()
+    {
+        $result = [];
+        $result['ok'] = class_exists('ZipArchive');
+        if (!$result['ok']) {
+            $result['icon'] = 'error';
+            $result['text'] = $this->langs->trans("ErrorPHPDoesNotSupport", "ZIP");
+        } else {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPSupport", "ZIP");
+        }
+        return $result;
+    }
+
+    private function _checkMemory()
+    {
+        $memmaxorig = @ini_get("memory_limit");
+        if (empty($memmaxorig)) {
+            return false;
+        }
+
+        $memmax = $memmaxorig;
+        $memrequiredorig = '64M';
+        $memrequired = 64 * 1024 * 1024;
+        preg_match('/([0-9]+)([a-zA-Z]*)/i', $memmax, $reg);
+        if ($reg[2]) {
+            if (strtoupper($reg[2]) == 'G') {
+                $memmax = $reg[1] * 1024 * 1024 * 1024;
+            }
+            if (strtoupper($reg[2]) == 'M') {
+                $memmax = $reg[1] * 1024 * 1024;
+            }
+            if (strtoupper($reg[2]) == 'K') {
+                $memmax = $reg[1] * 1024;
             }
         }
-        return $options;
+
+        $result = [];
+        $result['ok'] = $memmax >= $memrequired || $memmax == -1;
+        if ($result['ok']) {
+            $result['icon'] = 'ok';
+            $result['text'] = $this->langs->trans("PHPMemoryOK", $memmaxorig, $memrequiredorig);
+        } else {
+            $result['icon'] = 'warning';
+            $result['text'] = $this->langs->trans("PHPMemoryTooLow", $memmaxorig, $memrequiredorig);
+        }
+        return $result;
+    }
+
+    private function _checkConfFile()
+    {
+        $result = false;
+        $conffile = Config::getDolibarrConfigFilename();
+
+        clearstatcache();
+        if (is_readable($conffile) && filesize($conffile) > 8) {
+            $this->syslog("check: conf file '" . $conffile . "' already defined");
+            return $result;
+        }
+
+        // If not, we create it
+        $this->syslog("check: we try to create conf file '" . $conffile . "'");
+
+        // First we try by copying example
+        if (@copy($conffile . ".example", $conffile)) {
+            // Success
+            $this->syslog("check: successfully copied file " . $conffile . ".example into " . $conffile);
+        } else {
+            // If failed, we try to create an empty file
+            $this->syslog("check: failed to copy file " . $conffile . ".example into " . $conffile . ". We try to create it.", LOG_WARNING);
+
+            $fp = @fopen($conffile, "w");
+            if ($fp) {
+                @fwrite($fp, '<?php');
+                @fwrite($fp, "\n");
+                fclose($fp);
+            } else {
+                $this->syslog("check: failed to create a new file " . $conffile . " into current dir " . getcwd() . ". Please check permissions.", LOG_ERR);
+                $result = [];
+                $result['ok'] = false;
+                $result['icon'] = 'error';
+                $result['text'] = $this->langs->trans('ConfFileDoesNotExistsAndCouldNotBeCreated', 'conf.php');
+            }
+        }
+        return $result;
     }
 
     private function _getDbType()

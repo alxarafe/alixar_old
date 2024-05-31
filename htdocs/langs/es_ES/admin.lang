@@ -51,6 +51,7 @@ ClientSortingCharset=Colación de clientes
 WarningModuleNotActive=El módulo <b>%s</b> debe ser activado
 WarningOnlyPermissionOfActivatedModules=Atención, solamente los permisos relacionados con los módulos activados se indican aquí. Puede activar los otros módulos en la página Configuración->Módulos
 DolibarrSetup=Instalación/Actualización de Dolibarr
+AlixarSetup=Instalación o actualización de Alixar
 DolibarrUpgrade=Actualización Dolibarr
 DolibarrAddonInstall=Instalación de módulos Addon/Externos (cargados o generados)
 InternalUsers=Usuarios internos

@@ -139,6 +139,10 @@ class Translate
 
         //dol_syslog(get_class($this)."::setDefaultLang srclang=".$srclang,LOG_DEBUG);
 
+        if (empty($this->dir)) {
+            $this->dir = BASE_PATH;
+        }
+
         // If a module ask to force a priority on langs directories (to use its own lang files)
         if (getDolGlobalString('MAIN_FORCELANGDIR')) {
             $more = [];
