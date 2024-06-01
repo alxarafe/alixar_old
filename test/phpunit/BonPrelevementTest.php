@@ -18,6 +18,8 @@
  * or see https://www.gnu.org/
  */
 
+use DoliModules\Accounting\Model\BonPrelevement;
+
 /**
  *      \file       test/phpunit/BonPrelevementTest.php
  *      \ingroup    test
@@ -25,11 +27,7 @@
  *      \remarks    To run this script as CLI:  phpunit filename.php
  */
 
-global
-
-use DoliModules\Accounting\Model\BonPrelevement;
-
-$conf,$user,$langs,$db;
+global $conf,$user,$langs,$db;
 //define('TEST_DB_FORCE_TYPE','mysql'); // This is to force using mysql driver
 //require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__) . '/../../htdocs/master.inc.php';
