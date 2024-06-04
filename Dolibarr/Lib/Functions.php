@@ -377,7 +377,7 @@ function isDolTms($timestamp)
  */
 function getDoliDBInstance($type, $host, $user, $pass, $name, $port)
 {
-    require_once DOL_DOCUMENT_ROOT . "/core/db/" . $type . '.class.php';
+    require_once BASE_PATH . "/core/db/" . $type . '.class.php';
 
     $class = 'DoliDB' . ucfirst($type);
     $db = new $class($type, $host, $user, $pass, $name, $port);

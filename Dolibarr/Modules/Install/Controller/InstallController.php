@@ -71,6 +71,10 @@ class InstallController extends DolibarrViewController
     public $install_noedit;
     public $autofill;
     public $install_databaserootlogin;
+    public $db_create_user;
+    public $db_create_database;
+    public $db_user_root;
+    public $db_pass_root;
 
     /**
      *  Create main file. No particular permissions are set by installer.
@@ -809,7 +813,7 @@ class InstallController extends DolibarrViewController
                 case 'mysql':
                     $result[] = [
                         'shortname' => 'MySQL/MariaDB',
-                        'classname' => $driver,
+                        'classname' => 'mysqli',
                         'min_version' => '',
                         'comment' => '',
                     ];
@@ -817,7 +821,7 @@ class InstallController extends DolibarrViewController
                 case 'pgsql':
                     $result[] = [
                         'shortname' => 'PostgreSQL',
-                        'classname' => $driver,
+                        'classname' => 'pgsql',
                         'min_version' => '',
                         'comment' => '',
                     ];
@@ -1389,106 +1393,57 @@ class InstallController extends DolibarrViewController
         $this->template = 'install/step1';
         $this->nextButton = true;
 
+        session_start(); // To be able to keep info into session (used for not losing password during navigation. The password must not transit through parameters)
+
         $oldConf = $this->config;
         $this->refreshConfigFromPost();
 
         $this->dolibarr_main_distrib = 'standard';
 
-        session_start(); // To be able to keep info into session (used for not losing password during navigation. The password must not transit through parameters)
-
-        // Save a flag to tell to restore input value if we go back
-        $_SESSION['dol_save_pass'] = $this->db_pass;
-        //$_SESSION['dol_save_passroot']=$passroot;
-
-        $conffile = Config::getDolibarrConfigFilename();
-
-        /*
-        // Now we load forced values from install.forced.php file.
-        $useforcedwizard = false;
-        $forcedfile = "./install.forced.php";
-        if ($conffile == "/etc/dolibarr/conf.php") {
-            $forcedfile = "/etc/dolibarr/install.forced.php";
+        if ($_POST['main_force_https'] === 'off') {
+            $this->config->main->base_url = 'http' . substr($this->config->main->base_url, 5);
         }
-        if (@file_exists($forcedfile)) {
-            $useforcedwizard = true;
-            include_once $forcedfile;
-            // If forced install is enabled, replace the post values. These are empty because form fields are disabled.
-            if ($force_install_noedit) {
-                $this->main_dir = detect_dolibarr_main_document_root();
-                if (!empty($argv[3])) {
-                    $this->main_dir = $argv[3]; // override when executing the script in command line
-                }
-                if (!empty($force_install_main_data_root)) {
-                    $this->main_data_dir = $force_install_main_data_root;
-                } else {
-                    $this->main_data_dir = detect_dolibarr_main_data_root($this->main_dir);
-                }
-                if (!empty($argv[4])) {
-                    $this->main_data_dir = $argv[4]; // override when executing the script in command line
-                }
-                $this->main_url = detect_dolibarr_main_url_root();
-                if (!empty($argv[5])) {
-                    $this->main_url = $argv[5]; // override when executing the script in command line
-                }
 
-                if (!empty($force_install_databaserootlogin)) {
-                    $userroot = parse_database_login($force_install_databaserootlogin);
-                }
-                if (!empty($argv[6])) {
-                    $userroot = $argv[6]; // override when executing the script in command line
-                }
-                if (!empty($force_install_databaserootpass)) {
-                    $passroot = parse_database_pass($force_install_databaserootpass);
-                }
-                if (!empty($argv[7])) {
-                    $passroot = $argv[7]; // override when executing the script in command line
-                }
-            }
-            if ($force_install_noedit == 2) {
-                if (!empty($force_install_type)) {
-                    $this->db_type = $force_install_type;
-                }
-                if (!empty($force_install_dbserver)) {
-                    $this->db_host = $force_install_dbserver;
-                }
-                if (!empty($force_install_database)) {
-                    $this->db_name = $force_install_database;
-                }
-                if (!empty($force_install_databaselogin)) {
-                    $this->db_user = $force_install_databaselogin;
-                }
-                if (!empty($force_install_databasepass)) {
-                    $this->db_pass = $force_install_databasepass;
-                }
-                if (!empty($force_install_port)) {
-                    $this->db_port = $force_install_port;
-                }
-                if (!empty($force_install_prefix)) {
-                    $this->db_prefix = $force_install_prefix;
-                }
-                if (!empty($force_install_createdatabase)) {
-                    $this->db_create_database = $force_install_createdatabase;
-                }
-                if (!empty($force_install_createuser)) {
-                    $this->db_create_user = $force_install_createuser;
-                }
-                if (!empty($force_install_mainforcehttps)) {
-                    $this->main_force_https = $force_install_mainforcehttps;
-                }
-            }
+        $this->db_create_database = ($_POST['db_create_database'] ?? 'off') === 'on';
+        $this->db_create_user = ($_POST['db_create_user'] ?? 'off') === 'on';
+        $superuser = $this->db_create_database || $this->db_create_user;
 
-            if (!empty($force_install_distrib)) {
-                $this->dolibarr_main_distrib = $force_install_distrib;
+        $db_user = $this->config->db->user;
+        $db_pass = $this->config->db->pass;
+
+        if ($superuser) {
+            $this->db_user_root = getIfIsset('db_user_root', $this->db_user_root);
+            $this->db_pass_root = getIfIsset('db_pass_root', $this->db_pass_root);
+
+            $db_user = $this->db_user_root;
+            $db_pass = $this->db_pass_root;
+
+            $db = getDoliDBInstance(
+                $this->config->db->type,
+                $this->config->db->host,
+                $db_user,
+                $db_pass,
+                'User an database creation',
+                (int) $this->config->db->port
+            );
+
+            if ($this->db_create_user) {
+                // $result = $db->DDLCreateUser();
             }
         }
-        */
+
+        if ($this->db_create_user) {
+
+        }
+
+        $config_filename = Config::getDolibarrConfigFilename();
 
         dolibarr_install_syslog("--- step1: entering step1.php page");
 
         // Test if we can run a first install process
-        if (!is_writable($conffile)) {
+        if (!is_writable($config_filename)) {
             $this->template = 'install/step1-error';
-            $this->errorMessage = $this->langs->trans("ConfFileIsNotWritable", $conffile);
+            $this->errorMessage = $this->langs->trans("ConfFileIsNotWritable", $config_filename);
             return false;
         }
 
