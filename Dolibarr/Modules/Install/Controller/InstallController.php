@@ -75,6 +75,7 @@ class InstallController extends DolibarrViewController
     public $db_create_database;
     public $db_user_root;
     public $db_pass_root;
+    public $errors;
 
     /**
      *  Create main file. No particular permissions are set by installer.
@@ -1392,6 +1393,7 @@ class InstallController extends DolibarrViewController
 
         $this->template = 'install/step1';
         $this->nextButton = true;
+        $this->errors = [];
 
         session_start(); // To be able to keep info into session (used for not losing password during navigation. The password must not transit through parameters)
 
@@ -1424,244 +1426,55 @@ class InstallController extends DolibarrViewController
                 $db_user,
                 $db_pass,
                 'User an database creation',
-                (int) $this->config->db->port
+                (int)$this->config->db->port
             );
 
+            if ($this->db_create_database) {
+                $result = $db->DDLCreateDb(
+                    $this->config->db->name,
+                    $this->config->db->charset,
+                    $this->config->db->collation,
+                    $this->config->db->user
+                );
+
+                if (!$result) {
+                    $this->errors[] = $this->langs->trans("IfDatabaseExistsGoBackAndCheckCreate");
+                    return false;
+                }
+            }
+
             if ($this->db_create_user) {
-                // $result = $db->DDLCreateUser();
+                $result = $db->DDLCreateUser(
+                    $this->config->db->host,
+                    $this->config->db->user,
+                    $this->config->db->pass,
+                    $this->config->db->name
+                );
+
+                if ($result !== 1) {
+                    $this->errors[] = $this->langs->trans("IfLoginDoesNotExistsCheckCreateUser");
+                    return false;
+                }
             }
         }
 
-        if ($this->db_create_user) {
+        $db = getDoliDBInstance(
+            $this->config->db->type,
+            $this->config->db->host,
+            $this->config->db->user,
+            $this->config->db->pass,
+            $this->config->db->name,
+            (int)$this->config->db->port
+        );
 
-        }
-
-        $config_filename = Config::getDolibarrConfigFilename();
-
-        dolibarr_install_syslog("--- step1: entering step1.php page");
-
-        // Test if we can run a first install process
-        if (!is_writable($config_filename)) {
-            $this->template = 'install/step1-error';
-            $this->errorMessage = $this->langs->trans("ConfFileIsNotWritable", $config_filename);
+        if (!$db->ok) {
+            $this->errors[] = $this->langs->trans("ErrorConnection", $this->config->db->host, $this->config->db->name, $this->config->db->user);
             return false;
         }
 
-        $errors = [];
+        dd([$db, $this->config]);
 
-        // Check parameters
-        $is_sqlite = false;
-
-        if (empty($this->db_type)) {
-            $errors[] = $this->langs->trans("ErrorFieldRequired", $this->langs->transnoentities("DatabaseType"));
-        } else {
-            $is_sqlite = ($this->db_type === 'sqlite' || $this->db_type === 'sqlite3');
-        }
-
-        if (empty($this->db_host) && !$is_sqlite) {
-            $errors[] = $this->langs->trans("ErrorFieldRequired", $this->langs->transnoentities("Server"));
-        }
-
-        if (empty($this->db_name)) {
-            $errors[] = $this->langs->trans("ErrorFieldRequired", $this->langs->transnoentities("DatabaseName"));
-        }
-
-        if (empty($this->db_user) && !$is_sqlite) {
-            $errors[] = $this->langs->trans("ErrorFieldRequired", $this->langs->transnoentities("Login"));
-        }
-
-        if (!empty($this->db_port) && !is_numeric($this->db_port)) {
-            $errors[] = $this->langs->trans("ErrorBadValueForParameter", $this->db_port, $this->langs->transnoentities("Port"));
-        }
-
-        if (!empty($this->db_prefix) && !preg_match('/^[a-z0-9]+_$/i', $this->db_prefix)) {
-            $errors[] = $this->langs->trans("ErrorBadValueForParameter", $this->db_prefix, $this->langs->transnoentities("DatabasePrefix"));
-        }
-
-        $this->main_dir = dol_sanitizePathName($this->main_dir);
-        $this->main_data_dir = dol_sanitizePathName($this->main_data_dir);
-
-        if (!filter_var($this->main_url, FILTER_VALIDATE_URL)) {
-            $errors[] = $this->langs->trans("ErrorBadValueForParameter", $this->main_url, $this->langs->transnoentitiesnoconv("URLRoot"));
-        }
-
-        // Remove last / into dans main_dir
-        if (substr($this->main_dir, dol_strlen($this->main_dir) - 1) == "/") {
-            $this->main_dir = substr($this->main_dir, 0, dol_strlen($this->main_dir) - 1);
-        }
-
-        // Remove last / into dans main_url
-        if (!empty($this->main_url) && substr($this->main_url, dol_strlen($this->main_url) - 1) == "/") {
-            $this->main_url = substr($this->main_url, 0, dol_strlen($this->main_url) - 1);
-        }
-
-        $enginesDir = realpath(BASE_PATH . '/../Core/DB/Engines') . '/';
-        if (!Files::dol_is_dir($enginesDir)) {
-            $errors[] = $this->langs->trans("ErrorBadValueForParameter", $this->main_dir, $this->langs->transnoentitiesnoconv("WebPagesDirectory"));
-        }
-
-        $this->errors = $errors;
-        $error = count($errors) > 0;
-
-        // Test database connection
-        if (!$error) {
-            $result = @include_once $enginesDir . $this->db_type . '.php';
-
-            if ($result) {
-                // If we require database or user creation we need to connect as root, so we need root login credentials
-                if (!empty($this->db_create_database) && !$userroot) {
-                    print '
-        <div class="error">' . $this->langs->trans("YouAskDatabaseCreationSoDolibarrNeedToConnect", $this->db_name) . '</div>
-        ';
-                    print '<br>';
-                    print $this->langs->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                    print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-                    $error++;
-                }
-                if (!empty($this->db_create_user) && !$userroot) {
-                    print '
-        <div class="error">' . $this->langs->trans("YouAskLoginCreationSoDolibarrNeedToConnect", $this->db_user) . '</div>
-        ';
-                    print '<br>';
-                    print $this->langs->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                    print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-                    $error++;
-                }
-
-                // If we need root access
-                if (!$error && (!empty($this->db_create_database) || !empty($this->db_create_user))) {
-                    $databasefortest = $this->db_name;
-                    if (!empty($this->db_create_database)) {
-                        if ($this->db_type == 'mysql' || $this->db_type == 'mysqli') {
-                            $databasefortest = 'mysql';
-                        } elseif ($this->db_type == 'pgsql') {
-                            $databasefortest = 'postgres';
-                        } else {
-                            $databasefortest = 'master';
-                        }
-                    }
-
-                    $db = getDoliDBInstance($this->db_type, $this->db_host, $userroot, $passroot, $databasefortest, (int)$this->db_port);
-
-                    dol_syslog("databasefortest=" . $databasefortest . " connected=" . $db->connected . " database_selected=" . $db->database_selected, LOG_DEBUG);
-                    //print "databasefortest=".$databasefortest." connected=".$db->connected." database_selected=".$db->database_selected;
-
-                    if (empty($this->db_create_database) && $db->connected && !$db->database_selected) {
-                        print '
-        <div class="error">' . $this->langs->trans("ErrorConnectedButDatabaseNotFound", $this->db_name) . '</div>
-        ';
-                        print '<br>';
-                        if (!$db->connected) {
-                            print $this->langs->trans("IfDatabaseNotExistsGoBackAndUncheckCreate") . '<br><br>';
-                        }
-                        print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-                        $error++;
-                    } elseif ($db->error && !(!empty($this->db_create_database) && $db->connected)) {
-                        // Note: you may experience error here with message "No such file or directory" when mysql was installed for the first time but not yet launched.
-                        if ($db->error == "No such file or directory") {
-                            print '
-        <div class="error">' . $this->langs->trans("ErrorToConnectToMysqlCheckInstance") . '</div>
-        ';
-                        } else {
-                            print '
-        <div class="error">' . $db->error . '</div>
-        ';
-                        }
-                        if (!$db->connected) {
-                            print $this->langs->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                        }
-                        //print '<a href="#" onClick="javascript: history.back();">';
-                        print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-                        //print '</a>';
-                        $error++;
-                    }
-                }
-
-                // If we need simple access
-                if (!$error && (empty($this->db_create_database) && empty($this->db_create_user))) {
-                    $db = getDoliDBInstance($this->db_type, $this->db_host, $this->db_user, $this->db_pass, $this->db_name, (int)$this->db_port);
-
-                    if ($db->error) {
-                        print '
-        <div class="error">' . $db->error . '</div>
-        ';
-                        if (!$db->connected) {
-                            print $this->langs->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-                        }
-                        //print '<a href="#" onClick="javascript: history.back();">';
-                        print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-                        //print '</a>';
-                        $error++;
-                    }
-                }
-            } else {
-                print "<br>\nFailed to include_once(\"" . $enginesDir . $this->db_type . ".class.php\")<br>\n";
-                print '
-        <div class="error">' . $this->langs->trans(
-                        "ErrorWrongValueForParameter",
-                        $this->langs->transnoentities("WebPagesDirectory")) . '
-        </div>
-        ';
-                //print '<a href="#" onClick="javascript: history.back();">';
-                print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-                //print '</a>';
-                $error++;
-            }
-        } else {
-            if (isset($db)) {
-                print $db->lasterror();
-            }
-            if (isset($db) && !$db->connected) {
-                print '<br>' . $this->langs->trans("BecauseConnectionFailedParametersMayBeWrong") . '<br><br>';
-            }
-            print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-            $error++;
-        }
-
-        if (!$error && $db->connected) {
-            if (!empty($this->db_create_database)) {
-                $result = $db->select_db($this->db_name);
-                if ($result) {
-                    print '<div class="error">' . $this->langs->trans("ErrorDatabaseAlreadyExists", $this->db_name) . '</div>';
-                    print $this->langs->trans("IfDatabaseExistsGoBackAndCheckCreate") . '<br><br>';
-                    print $this->langs->trans("ErrorGoBackAndCorrectParameters");
-                    $error++;
-                }
-            }
-        }
-
-// Define $defaultCharacterSet and $defaultDBSortingCollation
-        if (!$error && $db->connected) {
-            if (!empty($this->db_create_database)) {    // If we create database, we force default value
-                // Default values come from the database handler
-
-                $defaultCharacterSet = $db->forcecharset;
-                $defaultDBSortingCollation = $db->forcecollate;
-            } else { // If already created, we take current value
-                $defaultCharacterSet = $db->getDefaultCharacterSetDatabase();
-                $defaultDBSortingCollation = $db->getDefaultCollationDatabase();
-            }
-
-            // It seems some PHP driver mysqli does not support utf8mb3
-            if ($defaultCharacterSet == 'utf8mb3' || $defaultDBSortingCollation == 'utf8mb3_unicode_ci') {
-                $defaultCharacterSet = 'utf8';
-                $defaultDBSortingCollation = 'utf8_unicode_ci';
-            }
-            // Force to avoid utf8mb4 because index on field char 255 reach limit of 767 char for indexes (example with mysql 5.6.34 = mariadb 10.0.29)
-            // TODO Remove this when utf8mb4 is supported
-            if ($defaultCharacterSet == 'utf8mb4' || $defaultDBSortingCollation == 'utf8mb4_unicode_ci') {
-                $defaultCharacterSet = 'utf8';
-                $defaultDBSortingCollation = 'utf8_unicode_ci';
-            }
-
-            print '<input type="hidden" name="dolibarr_main_db_character_set" value="' . $defaultCharacterSet . '">';
-            print '<input type="hidden" name="dolibarr_main_db_collation" value="' . $defaultDBSortingCollation . '">';
-            $this->db_character_set = $defaultCharacterSet;
-            $this->db_collation = $defaultDBSortingCollation;
-            dolibarr_install_syslog("step1: db_character_set=" . $this->db_character_set . " db_collation=" . $this->db_collation);
-        }
-
-// Create config file
+        // Create config file
         if (!$error && $db->connected) {
             umask(0);
             if (is_array($_POST)) {

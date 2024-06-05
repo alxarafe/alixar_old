@@ -1,7 +1,6 @@
-@extends('master/install_layout')
+@extends('install/master/install_layout')
 
 @section('body')
-    <tbody>
     <input type="hidden" name="testpost" value="ok">
     <input type="hidden" name="action" value="step2">
     <input type="hidden" name="selectlang" value="{!! $me->selectLang !!}">
@@ -18,7 +17,7 @@
                 function jsinfo() {
                     ok = true;
 
-                    //alert('<?php echo \Alxarafe\Lib\Functions::dol_escape_js($me->langs->transnoentities("NextStepMightLastALongTime")); ?>');
+                    alert('<?php echo dol_escape_js($me->langs->transnoentities("NextStepMightLastALongTime")); ?>');
 
                     document.getElementById('nextbutton').style.visibility = "hidden";
                     document.getElementById('pleasewait').style.visibility = "visible";
@@ -28,5 +27,4 @@
             </script>
 
     </tr>
-    </tbody>
-    @endsection
+@endsection
