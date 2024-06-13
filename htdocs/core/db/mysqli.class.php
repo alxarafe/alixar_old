@@ -139,13 +139,13 @@ class DoliDBMysqli extends DoliDB
                         exit;
                     }
 
-                    $collation = $conf->db->collation ?? 'utf8_unicode_ci';
+                    $collation = $conf->db->collation ?? 'utf8_general_ci';
                     if (preg_match('/latin1/', $collation)) {
-                        $collation = 'utf8_unicode_ci';
+                        $collation = 'utf8_general_ci';
                     }
 
                     if (!preg_match('/general/', $collation)) {
-                        $this->db->query("SET collation_connection = " . $collation);
+                        $this->db->query("SET collation_connection = '$collation';");
                     }
                 }
             } else {

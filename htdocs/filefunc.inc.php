@@ -74,7 +74,7 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // Include configuration
 // $result = @include $conffile; // Keep @ because with some error reporting mode, this breaks the redirect done when file is not found
 
-if (isset($config)) {
+if (isset($config) && isset($config->security)) {
     unregisterStreamWrappers($config->security->stream_to_disable);
 }
 
@@ -99,24 +99,24 @@ if (!isset($db)) {
 }
 
 /**
- * @deprecated Contains the main_url. Use BASE_URL or $config->main->base_url instead!
+ * @deprecated Contains the main_url. Use BASE_URL or $config->main->url instead!
  */
-$dolibarr_main_url_root = $config->main->base_url;
+$dolibarr_main_url_root = $config->main->url;
 
 /**
  * @deprecated Contains the main_document_root. Use BASE_PATH or $config->file->base_path instead!
  */
-$dolibarr_main_document_root = $config->main->base_path;
+$dolibarr_main_document_root = $config->main->path;
 
 /**
  * @deprecated Contains the alternative main_url_root. Use $config->main->file->alt_base_url instead!
  */
-$dolibarr_main_url_root_alt = implode(',', $config->file->url);
+$dolibarr_main_url_root_alt = is_array($config->main->url) ? implode(',', $config->main->url) : '/';
 
 /**
  * @deprecated Contains the alternative main_datadocument_root. Use $config->main->alt_base_path instead!
  */
-$dolibarr_main_document_root_alt = implode(',', $config->file->path);
+$dolibarr_main_document_root_alt = is_array($config->main->path) ? implode(',', $config->main->path) : $config->main->path;
 
 /**
  * @deprecated Contains the main_path. Use $config->main->data_path instead!

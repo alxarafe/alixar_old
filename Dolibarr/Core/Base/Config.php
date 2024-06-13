@@ -26,6 +26,7 @@ use DoliModules\User\Model\User;
 use MenuManager;
 use HookManager;
 use stdClass;
+use Alxarafe\Base\Config as ConfigBase;
 
 require_once BASE_PATH . '/core/class/conf.class.php';
 require_once BASE_PATH . '/core/class/hookmanager.class.php';
@@ -40,7 +41,7 @@ require_once BASE_PATH . '/../Dolibarr/Core/Menu/standard/eldy_menu.php';
  *
  * @package DoliCore\Base
  */
-abstract class Config
+abstract class Config extends ConfigBase
 {
     const DEFAULT_DB_PREFIX = 'alx_';
 
@@ -150,7 +151,7 @@ abstract class Config
         $conf->db->type = $dolibarr_main_db_type ?? 'mysqli';
         $conf->db->prefix = $dolibarr_main_db_prefix ?? self::DEFAULT_DB_PREFIX;
         $conf->db->charset = $dolibarr_main_db_character_set ?? 'utf8';
-        $conf->db->collation = $dolibarr_main_db_collation ?? 'utf8-unicode-ci';
+        $conf->db->collation = $dolibarr_main_db_collation ?? 'utf8_general_ci';
         $conf->db->encryption = $dolibarr_main_db_encryption ?? 0;
         $conf->db->cryptkey = $dolibarr_main_db_cryptkey ?? '';
         if (defined('TEST_DB_FORCE_TYPE')) {
@@ -260,10 +261,16 @@ abstract class Config
     /**
      * Returns a normalized config file.
      *
+     * @param bool $reload
      * @return stdClass|null
      */
-    private static function loadConfig()
+    public static function loadConfig(bool $reload = false): stdClass
     {
+        $conf = parent::loadConfig($reload);
+        if ($conf) {
+            return $conf;
+        }
+
         $conf = static::loadConf();
         if (empty($conf)) {
             return null;
@@ -273,8 +280,8 @@ abstract class Config
 
         // 'main' section
         $config->main = new stdClass();
-        $config->main->base_path = $conf->file->main_path ?? constant('BASE_PATH');
-        $config->main->base_url = $conf->file->main_url ?? constant('BASE_URL');
+        $config->main->path = $conf->file->main_path ?? constant('BASE_PATH');
+        $config->main->url = $conf->file->main_url ?? constant('BASE_URL');
         $config->main->data_path = $conf->file->main_doc ?? '';
         $config->main->alt_base_path = $conf->file->path;
         $config->main->alt_base_url = $conf->file->url;
@@ -417,6 +424,12 @@ abstract class Config
         return static::$user;
     }
 
+    private static function loadUser()
+    {
+        static::$user = new User(static::$db);
+        return static::$user;
+    }
+
     public static function getMenuManager($conf)
     {
         if (empty(static::$menumanager)) {
@@ -472,7 +485,7 @@ abstract class Config
      * @return false|void
      * @throws \DebugBar\DebugBarException
      */
-    public static function load()
+    public static function load(): bool
     {
         global $conf;
         global $config;
@@ -482,8 +495,9 @@ abstract class Config
         global $user;
         global $menumanager;
 
+        $config = parent::loadConfig();
         $conf = static::$dolibarrConfig = static::loadConf();
-        if (empty($conf->db->name ?? '')) {
+        if (!isset($config->db) || empty($conf->db->name ?? '')) {
             return false;
         }
 
@@ -502,6 +516,8 @@ abstract class Config
         // TODO: Example of calling a SELECT from Eloquent and from Dolibarr
         // DB::select('SELECT * FROM alx_user'); // use Illuminate\Database\Capsule\Manager as DB;
         // $db->query('SELECT * FROM alx_user');
+
+        return true;
     }
 
     /**
@@ -517,11 +533,5 @@ abstract class Config
         static::$dolibarrConfig->setValues(static::$db);
 
         return static::$db;
-    }
-
-    private static function loadUser()
-    {
-        static::$user = new User(static::$db);
-        return static::$user;
     }
 }

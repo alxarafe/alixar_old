@@ -51,11 +51,15 @@ class Database extends CapsuleManager
             'collation' => $db->collation,
             'prefix' => $db->prefix,
         ]);
+
         $this->setAsGlobal();
         $this->bootEloquent();
 
         // Obtains Eloquent PDO
         $pdo = $this->getConnection()->getPdo();
-        Debug::getDebugBar()->addCollector(new PDOCollector($pdo));
+        $debugBar = Debug::getDebugBar();
+        if ($debugBar) {
+            $debugBar->addCollector(new PDOCollector($pdo));
+        }
     }
 }

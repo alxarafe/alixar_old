@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Alixar installer">
-    <link rel="stylesheet" type="text/css" href="{!! $me->config->file->main_url !!}/Templates/install/css/install_default.css">
+    <link rel="stylesheet" type="text/css" href="{!! $me->config->main->url !!}/Templates/install/css/install_default.css">
     <!-- Includes CSS for JQuery -->
-    <link rel="stylesheet" type="text/css" href="{!! $me->config->file->main_url !!}/Templates/Lib/jquery/css/base/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{!! $me->config->main->url !!}/Templates/Lib/jquery/css/base/jquery-ui.min.css"/>
     <!-- Includes JS for JQuery -->
-    <script type="text/javascript" src="{!! $me->config->file->main_url !!}/Templates/Lib/jquery/js/jquery.min.js"></script>
-    <script type="text/javascript" src="{!! $me->config->file->main_url !!}/Templates/Lib/jquery/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{!! $me->config->main->url !!}/Templates/Lib/jquery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{!! $me->config->main->url !!}/Templates/Lib/jquery/js/jquery-ui.min.js"></script>
     <title>{!! $me->langs->trans('DolibarrSetup') !!}</title>
 </head>
 <body>
 <div class="divlogoinstall" style="text-align:center">
-    <img class="imglogoinstall" src="{!! $me->config->file->main_url !!}/Templates/common/img/alixar_rectangular_logo.svg" alt="Alixar logo" width="300px"><br>{!! DOL_VERSION !!}
+    <img class="imglogoinstall" src="{!! $me->config->main->url !!}/Templates/common/img/alixar_rectangular_logo.svg" alt="Alixar logo" width="300px"><br>{!! DOL_VERSION !!}
 </div>
 <br><span class="titre">{!! $me->langs->trans('AlixarSetup') !!}
     @if(isset($subtitle))

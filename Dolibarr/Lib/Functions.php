@@ -41,6 +41,7 @@
  * or see https://www.gnu.org/
  */
 
+use DoliCore\Base\Config;
 use DoliCore\Form\FormActions;
 use DoliCore\Tools\Debug;
 use DoliModules\Agenda\Model\ActionComm;
@@ -3205,6 +3206,7 @@ function dol_strftime($fmt, $ts = false, $is_gmt = false)
 function dol_print_date($time, $format = '', $tzoutput = 'auto', $outputlangs = null, $encodetooutput = false)
 {
     global $conf, $langs;
+    $langs = Config::getLangs();
 
     // If date undefined or "", we return ""
     if (dol_strlen($time) == 0) {

@@ -89,8 +89,11 @@ abstract class Debug
      * @return StandardDebugBar
      * @throws DebugBarException
      */
-    public static function getDebugBar(): StandardDebugBar
+    public static function getDebugBar(): ?StandardDebugBar
     {
+        if (!isset(self::$debugBar)) {
+            return null;
+        }
         return self::$debugBar;
     }
 

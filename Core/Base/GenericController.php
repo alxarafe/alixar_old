@@ -101,6 +101,31 @@ abstract class GenericController
             Debug::message('Does not exist the method ' . $actionMethod);
             return false;
         }
-        return $this->$actionMethod();
+        return $this->beforeAction() && $this->$actionMethod() && $this->afterAction();
     }
+
+
+    /**
+     * You can include code here that is common to call all controller actions.
+     * If you need to do something, override this method.
+     *
+     * @return bool
+     */
+    public function beforeAction(): bool
+    {
+        return true;
+    }
+
+
+    /**
+     * You can include code here common to calling all controller actions, which will be executed after the action.
+     * If you need to do something, override this method.
+     *
+     * @return bool
+     */
+    public function afterAction(): bool
+    {
+        return true;
+    }
+
 }

@@ -50,6 +50,7 @@ global $db;
 use DoliCore\Tools\Debug;
 use DoliCore\Base\Config;
 use DoliCore\Base\Constants;
+use DoliModules\Install\Controller\InstallController;
 
 require_once BASE_PATH . '/../Dolibarr/Lib/MainFunctions.php';
 
@@ -59,6 +60,10 @@ $conf = Config::getConf();
 if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
     if (!isset($db)) {
         $db = Config::getDb($conf);
+        if (!isset($db)) {
+            new InstallController();
+            die();
+        }
     }
 
     $config = Config::getConfig($conf);
@@ -67,6 +72,10 @@ if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
     $hookmanager = Config::getHookManager();
     $langs = Config::getLangs($conf);
     $user = Config::getUser();
+    if ($user === null || $user->db->lasterrno === 'DB_ERROR_NOSUCHTABLE') {
+        new InstallController();
+        die();
+    }
     $menumanager = Config::getMenuManager($conf);
 
     Config::setConfigValues($conf, $db);
@@ -76,9 +85,9 @@ if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
 
 // For optional tuning. Enabled if environment variable MAIN_SHOW_TUNING_INFO is defined.
 $micro_start_time = 0;
-if (isset($config) && $config->server->detailed_info) {
+if (isset($config) && isset($config->server) && $config->server->detailed_info) {
     [$usec, $sec] = explode(" ", microtime());
-    $micro_start_time = ((float) $usec + (float) $sec);
+    $micro_start_time = ((float)$usec + (float)$sec);
     // Add Xdebug code coverage
     //define('XDEBUGCOVERAGE',1);
     if (defined('XDEBUGCOVERAGE')) {
@@ -107,7 +116,7 @@ if (!function_exists('realCharForNumericEntities')) {
 
         // The numeric value we don't want as entities because they encode ascii char, and why using html entities on ascii except for haking ?
         if (($newstringnumentity >= 65 && $newstringnumentity <= 90) || ($newstringnumentity >= 97 && $newstringnumentity <= 122)) {
-            return chr((int) $newstringnumentity);
+            return chr((int)$newstringnumentity);
         }
 
         return '&#' . $matches[1]; // Value will be unchanged because regex was /&#(  )/
@@ -119,7 +128,7 @@ if (!function_exists('realCharForNumericEntities')) {
  * Warning: Such a protection can't be enough. It is not reliable as it will always be possible to bypass this. Good
  * protection can only be guaranteed by escaping data during output.
  *
- * @param string $val  Brute value found into $_GET, $_POST or PHP_SELF
+ * @param string $val Brute value found into $_GET, $_POST or PHP_SELF
  * @param string $type 0=POST, 1=GET, 2=PHP_SELF, 3=GET without sql reserved keywords (the less tolerant test)
  *
  * @return      int                     >0 if there is an injection, 0 if none
@@ -260,9 +269,9 @@ if (!function_exists('testSqlAndScriptInject')) {
 /**
  * Return true if security check on parameters are OK, false otherwise.
  *
- * @param string|array $var      Variable name
- * @param int          $type     1=GET, 0=POST, 2=PHP_SELF
- * @param int          $stopcode 0=No stop code, 1=Stop code (default) if injection found
+ * @param string|array $var Variable name
+ * @param int $type 1=GET, 0=POST, 2=PHP_SELF
+ * @param int $stopcode 0=No stop code, 1=Stop code (default) if injection found
  *
  * @return      boolean|null                True if there is no injection.
  */
@@ -707,7 +716,7 @@ if ((!defined('NOCSRFCHECK') && empty($dolibarr_nocsrfcheck) && getDolGlobalInt(
         }
         $savid = null;
         if (isset($_POST['id'])) {
-            $savid = ((int) $_POST['id']);
+            $savid = ((int)$_POST['id']);
         }
         unset($_POST);
         unset($_GET['confirm']);
@@ -716,7 +725,7 @@ if ((!defined('NOCSRFCHECK') && empty($dolibarr_nocsrfcheck) && getDolGlobalInt(
         unset($_GET['massaction']);
         unset($_GET['token']);          // TODO Make a redirect if we have a token in url to remove it ?
         if (isset($savid)) {
-            $_POST['id'] = ((int) $savid);
+            $_POST['id'] = ((int)$savid);
         }
         // So rest of code can know something was wrong here
         $_GET['errorcode'] = 'InvalidToken';
@@ -933,7 +942,7 @@ if (!defined('NOREQUIREMENU')) {
     }
     if (!class_exists('MenuManager')) {
         $menufound = 0;
-        $dirmenus = array_merge(["/core/menus/"], (array) $conf->modules_parts['menus']);
+        $dirmenus = array_merge(["/core/menus/"], (array)$conf->modules_parts['menus']);
         foreach ($dirmenus as $dirmenu) {
             $menufound = dol_include_once($dirmenu . "standard/" . $file_menu);
             if (class_exists('MenuManager')) {

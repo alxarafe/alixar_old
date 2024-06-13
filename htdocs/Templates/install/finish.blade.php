@@ -3,8 +3,8 @@
 @section('body')
     <tbody>
     <input type="hidden" name="testpost" value="ok">
-    <input type="hidden" name="action" value="step4">
-    <input type="hidden" name="selectlang" value="{!! $me->selectLang !!}">
+    <input type="hidden" name="action" value="finish">
+    <input type="hidden" name="language" value="{!! $me->config->main->language!!}">
     <tr>
 
     </tr>

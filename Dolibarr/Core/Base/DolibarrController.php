@@ -44,10 +44,19 @@ abstract class DolibarrController extends DolibarrViewController
         $this->db = Config::getDb($this->conf);
         $this->hookmanager = Config::getHookManager();
         $this->user = Config::getUser();
+        if ($this->user === null || $this->user->db->lasterrno === 'DB_ERROR_NOSUCHTABLE') {
+            new InstallController();
+            die();
+        }
         $this->menumanager = Config::getMenuManager($this->conf);
         $this->langs = Config::getLangs($this->conf);
 
         parent::__construct();
+    }
+
+    function filterPostInt($field)
+    {
+        return (int)$this->filterPost($field, 'int');
     }
 
     function filterPost($field, $filter)
@@ -56,11 +65,6 @@ abstract class DolibarrController extends DolibarrViewController
             return $this->object->$field ?? false;
         }
         return GETPOST($field, $filter);
-    }
-
-    function filterPostInt($field)
-    {
-        return (int) $this->filterPost($field, 'int');
     }
 
     public function doLogin($user, $password)

@@ -62,30 +62,32 @@ class FormAdmin
     /**
      *  Return html select list with available languages (key='en_US', value='United States' for example)
      *
-     * @param string|array $selected     Language pre-selected. Can be an array if $multiselect is 1.
-     * @param string       $htmlname     Name of HTML select
-     * @param int          $showauto     Show 'auto' choice
-     * @param array        $filter       Array of keys to exclude in list (opposite of $onlykeys)
-     * @param int|string   $showempty    '1'=Add empty value or 'string to show'
-     * @param int          $showwarning  Show a warning if language is not complete
-     * @param int          $disabled     Disable edit of select
-     * @param string       $morecss      Add more css styles
-     * @param int          $showcode     1=Add language code into label at beginning, 2=Add language code into label at
+     * @param string|array $selected Language pre-selected. Can be an array if $multiselect is 1.
+     * @param string $htmlname Name of HTML select
+     * @param int $showauto Show 'auto' choice
+     * @param array $filter Array of keys to exclude in list (opposite of $onlykeys)
+     * @param int|string $showempty '1'=Add empty value or 'string to show'
+     * @param int $showwarning Show a warning if language is not complete
+     * @param int $disabled Disable edit of select
+     * @param string $morecss Add more css styles
+     * @param int $showcode 1=Add language code into label at beginning, 2=Add language code into label at
      *                                   end
-     * @param int          $forcecombo   Force to use combo box (so no ajax beautify effect)
-     * @param int          $multiselect  Make the combo a multiselect
-     * @param array        $onlykeys     Array of language keys to restrict list with the following keys (opposite of
+     * @param int $forcecombo Force to use combo box (so no ajax beautify effect)
+     * @param int $multiselect Make the combo a multiselect
+     * @param array $onlykeys Array of language keys to restrict list with the following keys (opposite of
      *                                   $filter). Example array('fr', 'es', ...)
-     * @param int          $mainlangonly 1=Show only main languages ('fr_FR' no' fr_BE', 'es_ES' not 'es_MX', ...)
+     * @param int $mainlangonly 1=Show only main languages ('fr_FR' no' fr_BE', 'es_ES' not 'es_MX', ...)
      *
      * @return     string                          Return HTML select string with list of languages
      */
-    public function select_language($selected = '', $htmlname = 'lang_id', $showauto = 0, $filter = [], $showempty = '', $showwarning = 0, $disabled = 0, $morecss = '', $showcode = 0, $forcecombo = 0, $multiselect = 0, $onlykeys = [], $mainlangonly = 0)
+    public function select_language($selected = 'auto', $htmlname = 'lang_id', $showauto = 0, $filter = [], $showempty = '', $showwarning = 0, $disabled = 0, $morecss = '', $showcode = 0, $forcecombo = 0, $multiselect = 0, $onlykeys = [], $mainlangonly = 0)
     {
         // phpcs:enable
         global $conf, $langs;
 
         $langs = Config::getLangs();
+        $langs->setDefaultLang($selected);
+        $langs->loadLangs(['main', 'admin']);
 
         if (getDolGlobalString('MAIN_DEFAULT_LANGUAGE_FILTER')) {
             if (!is_array($filter)) {
@@ -172,7 +174,7 @@ class FormAdmin
             }
 
             $valuetoshow = picto_from_langcode($key, 'class="saturatemedium"') . ' ' . $valuetoshow;
-            if ((is_string($selected) && (string) $selected == (string) $keytouse) || (is_array($selected) && in_array($keytouse, $selected))) {
+            if ((is_string($selected) && (string)$selected == (string)$keytouse) || (is_array($selected) && in_array($keytouse, $selected))) {
                 $out .= '<option value="' . $keytouse . '" selected data-html="' . dol_escape_htmltag($valuetoshow) . '">' . $valuetoshow . '</option>';
             } else {
                 $out .= '<option value="' . $keytouse . '" data-html="' . dol_escape_htmltag($valuetoshow) . '">' . $valuetoshow . '</option>';
@@ -189,15 +191,36 @@ class FormAdmin
         return $out;
     }
 
+    public function select_theme($selected = 'adminlte')
+    {
+        $options = [
+            'adminlte' => 'AdminLTE',
+            'eldy' => 'Dolibarr Eldy (deprecated)',
+            'md' => 'Dolibarr MD (deprecated)',
+        ];
+
+        $out = '';
+        $out .= '<select class="flat" id="theme" name="theme">';
+        foreach ($options as $key => $option) {
+            $isSelected = '';
+            if ($selected === $key) {
+                $isSelected = ' selected';
+            }
+            $out .= '<option value = "' . $key . '"' . $isSelected . '>' . $option . '</option>';
+        }
+        $out .= '</select>';
+        return $out;
+    }
+
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
      *    Return list of available menus (eldy_backoffice, ...)
      *
-     * @param string $selected     Preselected menu value
-     * @param string $htmlname     Name of html select
-     * @param array  $dirmenuarray Array of directories to scan
-     * @param string $moreattrib   More attributes on html select tag
+     * @param string $selected Preselected menu value
+     * @param string $htmlname Name of html select
+     * @param array $dirmenuarray Array of directories to scan
+     * @param string $moreattrib More attributes on html select tag
      *
      * @return   integer|void
      */
@@ -304,8 +327,8 @@ class FormAdmin
     /**
      *  Return combo list of available menu families
      *
-     * @param string   $selected     Menu pre-selected
-     * @param string   $htmlname     Name of html select
+     * @param string $selected Menu pre-selected
+     * @param string $htmlname Name of html select
      * @param string[] $dirmenuarray Directories to scan
      *
      * @return void
@@ -441,11 +464,11 @@ class FormAdmin
     /**
      *  Return html select list with available languages (key='en_US', value='United States' for example)
      *
-     * @param string $selected   Paper format pre-selected
-     * @param string $htmlname   Name of HTML select field
-     * @param string $filter     Value to filter on code
-     * @param int    $showempty  Add empty value
-     * @param int    $forcecombo Force to load all values and output a standard combobox (with no beautification)
+     * @param string $selected Paper format pre-selected
+     * @param string $htmlname Name of HTML select field
+     * @param string $filter Value to filter on code
+     * @param int $showempty Add empty value
+     * @param int $forcecombo Force to load all values and output a standard combobox (with no beautification)
      *
      * @return     string                  Return HTML output
      */
@@ -512,9 +535,9 @@ class FormAdmin
     /**
      * Function to show the combo select to chose a type of field (varchar, int, email, ...)
      *
-     * @param string $htmlname            Name of HTML select component
-     * @param string $type                Type preselected
-     * @param array  $typewecanchangeinto Array of possible switch combination from 1 type to another one. This will
+     * @param string $htmlname Name of HTML select component
+     * @param string $type Type preselected
+     * @param array $typewecanchangeinto Array of possible switch combination from 1 type to another one. This will
      *                                    grey not possible combinations.
      *
      * @return  string                          The combo HTML select component

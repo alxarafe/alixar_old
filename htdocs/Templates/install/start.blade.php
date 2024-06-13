@@ -3,14 +3,19 @@
 @section('body')
     <tbody>
     <input type="hidden" name="action" value="config">
-    <input type="hidden" name="selectlang" value="{!! $me->selectLang !!}">
+    <input type="hidden" name="language" value="{!! $me->config->main->language!!}">
     <tr>
         <div>
-            <table class="nobordernopadding @if ($me->force_install_noedit) hidewhennoedit @endif">
+            @foreach($me->vars->errors ?? [] as $error)
+                <div class="error">{!! $error !!}</div>
+            @endforeach
+            <table class="nobordernopadding @if ($me->vars->install_noedit) hidewhennoedit @endif">
                 <tr>
                     <td colspan="3" class="label">
                         <h3>
-                            <img class="valignmiddle inline-block paddingright" src="{!! $me->config->file->main_url !!}/Templates/common/octicons/build/svg/globe.svg" width="20" alt="webserver">{!! $me->langs->trans("WebServer") !!}
+                            <img class="valignmiddle inline-block paddingright"
+                                 src="{!! $me->config->main->url !!}/Templates/common/octicons/build/svg/globe.svg"
+                                 width="20" alt="webserver">{!! $me->langs->trans("WebServer") !!}
                         </h3>
                     </td>
                 </tr>
@@ -20,10 +25,9 @@
                     <td class="label">
                         <input type="text"
                                class="minwidth300"
-                               id="main_dir"
-                               name="main_dir"
-                               value="{!! $me->config->main->base_path !!}"
-                               @if (!empty($me->force_install_noedit)) disabled @endif
+                               name="base_path"
+                               value="{!! $me->config->main->path !!}"
+                               disabled
                         >
                     </td>
                     <td class="comment">
@@ -36,6 +40,28 @@
                     </td>
                 </tr>
 
+                <!-- Root URL $dolibarr_main_url_root -->
+                <tr>
+                    <td class="label"><label for="main_url"><b>{!! $me->langs->trans("URLRoot") !!}</b></label>
+                    </td>
+                    <td class="label">
+                        <input type="text"
+                               class="minwidth300"
+                               id="base_url"
+                               name="base_url"
+                               value="{!! $me->config->main->url !!} "
+                               disabled
+                        >
+                    </td>
+                    <td class="comment">{!! $me->langs->trans("Examples") !!}:<br>
+                        <ul>
+                            <li>http://localhost/</li>
+                            <li>http://www.myserver.com:8180/dolibarr</li>
+                            <li>https://www.myvirtualfordolibarr.com/</li>
+                        </ul>
+                    </td>
+                </tr>
+
                 <!-- Documents URL $dolibarr_main_data_root -->
                 <tr>
                     <td class="label">
@@ -44,10 +70,10 @@
                     <td class="label">
                         <input type="text"
                                class="minwidth300"
-                               id="main_data_dir"
-                               name="main_data_dir"
-                               value="{!! $me->config->main->data_path !!}"
-                               @if (!empty($me->force_install_noedit)) disabled @endif
+                               id="documents"
+                               name="documents"
+                               value="{!! $me->config->main->documents !!}"
+                               @if (!empty($me->vars->install_noedit)) disabled @endif
                         >
                     </td>
                     <td class="comment">
@@ -61,41 +87,19 @@
                     </td>
                 </tr>
 
-                <!-- Root URL $dolibarr_main_url_root -->
-                <tr>
-                    <td class="label"><label for="main_url"><b>{!! $me->langs->trans("URLRoot") !!}</b></label>
-                    </td>
-                    <td class="label">
-                        <input type="text"
-                               class="minwidth300"
-                               id="main_url"
-                               name="main_url"
-                               value="{!! $me->config->main->base_url !!} "
-                               @if (!empty($me->force_install_noedit)) disabled @endif
-                        >
-                    </td>
-                    <td class="comment">{!! $me->langs->trans("Examples") !!}:<br>
-                        <ul>
-                            <li>http://localhost/</li>
-                            <li>http://www.myserver.com:8180/dolibarr</li>
-                            <li>https://www.myvirtualfordolibarr.com/</li>
-                        </ul>
-                    </td>
-                </tr>
-
                 @if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on')
                     <!--  // Enabled if the installation process is "https://" -->
                     <tr>
                         <td class="label">
-                            <label for="main_force_https">{!! $me->langs->trans("ForceHttps") !!}</label></td>
+                            <label for="force_https">{!! $me->langs->trans("ForceHttps") !!}</label></td>
                         <td class="label">
-                            <input type="hidden" name = "main_force_https" value="off">
+                            <input type="hidden" name="force_https" value="off">
                             <input type="checkbox"
-                                   id="main_force_https"
-                                   name="main_force_https"
+                                   id="force_https"
+                                   name="force_https"
                                    value="on"
-                                   @if (!empty($me->force_install_mainforcehttps)) checked @endif
-                                   @if($me->force_install_noedit == 2 && $me->force_install_mainforcehttps !== null) disabled @endif
+                                   @if (!empty($me->vars->force_https)) checked @endif
+                                   @if($me->vars->install_noedit == 2 && $me->vars->force_https !== null) disabled @endif
                             >
                         </td>
                         <td class="comment">{!! $me->langs->trans("CheckToForceHttps") !!}
@@ -107,7 +111,9 @@
                 <tr>
                     <td colspan="3" class="label"><br>
                         <h3>
-                            <img class="valignmiddle inline-block paddingright" src="{!! $me->config->file->main_url !!}/Templates/common/octicons/build/svg/database.svg" width="20" alt="webserver"> {!! $me->langs->trans("DolibarrDatabase") !!}
+                            <img class="valignmiddle inline-block paddingright"
+                                 src="{!! $me->config->main->url !!}/Templates/common/octicons/build/svg/database.svg"
+                                 width="20" alt="webserver"> {!! $me->langs->trans("DolibarrDatabase") !!}
                         </h3>
                     </td>
                 </tr>
@@ -121,7 +127,7 @@
                                id="db_name"
                                name="db_name"
                                value="{!! !empty($me->config->db->name) ? $me->config->db->name : (empty($me->force_install_database) ? 'alixar' : $me->force_install_database) !!}"
-                               @if ($me->force_install_noedit == 2 && $me->force_install_database !== null)  disabled @endif
+                               @if ($me->vars->install_noedit == 2 && $me->force_install_database !== null)  disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("DatabaseName") !!}</td>
@@ -135,9 +141,9 @@
                     <td class="label">
                         <select id="db_type"
                                 name="db_type"
-                                @if ($me->force_install_noedit == 2 && $me->force_install_type !== null) disabled @endif
+                                @if ($me->vars->install_noedit == 2 && $me->force_install_type !== null) disabled @endif
                         >
-                            @foreach($me->db_types as $key => $db_type)
+                            @foreach($me->vars->db_types as $key => $db_type)
                                 <option value="{!! $db_type['classname'] !!}"
                                         @if($key === $me->config->db->type) selected @endif
                                         @if(!empty($db_type['comment'])) disabled @endif
@@ -156,7 +162,7 @@
                                id="db_host"
                                name="db_host"
                                value="{!! (!empty($me->force_install_dbserver) ? $me->force_install_dbserver : (!empty($dolibarr_main_db_host) ? $dolibarr_main_db_host : 'localhost')) !!}"
-                               @if ($me->force_install_noedit == 2 && $me->force_install_dbserver !== null) disabled @endif
+                               @if ($me->vars->install_noedit == 2 && $me->force_install_dbserver !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("ServerAddressDescription") !!}
@@ -171,7 +177,7 @@
                                name="db_port"
                                id="db_port"
                                value="{!! $me->config->db->port !!}"
-                               @if ($me->force_install_noedit == 2 && $me->force_install_port !== null) disabled @endif
+                               @if ($me->vars->install_noedit == 2 && $me->force_install_port !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("ServerPortDescription") !!}
@@ -186,7 +192,7 @@
                                id="db_prefix"
                                name="db_prefix"
                                value="{!! $me->config->db->prefix !!}"
-                               @if ($me->force_install_noedit == 2 && $me->force_install_prefix !== null) disabled @endif
+                               @if ($me->vars->install_noedit == 2 && $me->force_install_prefix !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("DatabasePrefixDescription") !!}</td>
@@ -200,8 +206,8 @@
                                id="db_create_database"
                                name="db_create_database"
                                value="on"
-                               @if ($me->install_createdatabase) checked @endif
-                               @if ($me->install_noedit) disabled @endif
+                               @if ($me->vars->create_database) checked @endif
+                               @if ($me->vars->install_noedit) disabled @endif
                         >
                     </td>
                     <td class="comment">
@@ -216,7 +222,7 @@
                                id="db_user"
                                name="db_user"
                                value="{!! $me->config->db->user!!}"
-                               @if($me->force_install_noedit == 2 && $me->force_install_databaselogin !== null) disabled @endif
+                               @if($me->vars->install_noedit == 2 && $me->force_install_databaselogin !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("AdminLogin") !!}</td>
@@ -229,7 +235,7 @@
                                id="db_pass" autocomplete="off"
                                name="db_pass"
                                value="{!! $me->config->db->pass !!}"
-                               @if($me->force_install_noedit == 2 && $me->force_install_databasepass !== null) disabled @endif
+                               @if($me->vars->install_noedit == 2 && $me->force_install_databasepass !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("AdminPassword") !!}</td>
@@ -243,8 +249,8 @@
                                id="db_create_user"
                                name="db_create_user"
                                value="on"
-                               @if (!empty($me->force_install_createuser)) checked @endif
-                               @if($me->force_install_noedit == 2 && $me->force_install_createuser !== null) disabled @endif
+                               @if (!empty($me->vars->create_user)) checked @endif
+                               @if($me->vars->install_noedit == 2 && $me->vars->create_user !== null) disabled @endif
                         >
                     </td>
                     <td class="comment">
@@ -256,7 +262,9 @@
                 <tr class="hidesqlite hideroot">
                     <td colspan="3" class="label"><br>
                         <h3>
-                            <img class="valignmiddle inline-block paddingright" src="{!! $me->config->file->main_url !!}/Templates/common/octicons/build/svg/shield.svg" width="20" alt="webserver"> {!! $me->langs->trans("DatabaseSuperUserAccess") !!}
+                            <img class="valignmiddle inline-block paddingright"
+                                 src="{!! $me->config->main->url !!}/Templates/common/octicons/build/svg/shield.svg"
+                                 width="20" alt="webserver"> {!! $me->langs->trans("DatabaseSuperUserAccess") !!}
                         </h3>
                     </td>
                 </tr>
@@ -269,8 +277,8 @@
                                id="db_user_root"
                                name="db_user_root"
                                class="needroot"
-                               value="{!! $me->db_user_root !!}"
-                               @if ($me->force_install_noedit > 0 && !empty($me->force_install_databaserootlogin)) disabled @endif
+                               value="{!! $me->vars->root_user !!}"
+                               @if ($me->vars->install_noedit > 0 && !empty($me->force_install_databaserootlogin)) disabled @endif
                         >
                     </td>
                     <td class="comment">{!! $me->langs->trans("DatabaseRootLoginDescription") !!}
@@ -292,8 +300,9 @@
                                id="db_pass_root"
                                name="db_pass_root"
                                class="needroot text-security"
-                               value="{!! $me->db_pass_root !!}"
-                               @if ($me->force_install_noedit > 0 && !empty($me->force_install_databaserootpass)) disabled /*
+                               value="{!! $me->vars->root_pass !!}"
+                               @if ($me->vars->install_noedit > 0 && !empty($me->force_install_databaserootpass)) disabled
+                        /*
                         May be removed by javascript*/ @endif
                         >
                     </td>
@@ -305,7 +314,7 @@
 
         <script type="text/javascript">
             function init_needroot() {
-                console.log("init_needroot force_install_noedit={!! $me->force_install_noedit !!}");
+                console.log("init_needroot install_noedit={!! $me->vars->install_noedit !!}");
                 console.log(jQuery("#db_create_database").is(":checked"));
                 console.log(jQuery("#db_create_user").is(":checked"));
 
@@ -313,7 +322,7 @@
                     console.log("init_needroot show root section");
                     jQuery(".hideroot").show();
                     <?php
-                    if (empty($me->force_install_noedit)) { ?>
+                    if (empty($me->vars->install_noedit)) { ?>
                     jQuery(".needroot").removeAttr('disabled');
                     <?php } ?>
                 } else {
@@ -404,9 +413,22 @@
                     console.log("click on db_create_user");
                     init_needroot();
                 });
-                <?php if ($me->force_install_noedit == 2 && empty($me->force_install_databasepass)) { ?>
+
+                <?php if ($me->vars->install_noedit == 2 && empty($me->force_install_databasepass)) { ?>
                 jQuery("#db_pass").focus();
                 <?php } ?>
+
+                let force_https = jQuery('#force_https');
+                force_https.click(function () {
+                    let base_url = jQuery('#base_url');
+                    let text = base_url.val();
+                    if (force_https.prop('checked')) {
+                        text = text.replace('http://', 'https://');
+                    } else {
+                        text = text.replace('https://', 'http://');
+                    }
+                    base_url.val(text);
+                });
 
                 init_needroot();
             });
