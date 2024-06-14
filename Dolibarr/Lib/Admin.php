@@ -28,6 +28,8 @@
  *  \brief          Library of admin functions
  */
 
+use DoliCore\Base\Config;
+
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 
 /**
@@ -656,7 +658,7 @@ function dolibarr_get_const($db, $name, $entity = 1)
  */
 function dolibarr_set_const($db, $name, $value, $type = 'chaine', $visible = 0, $note = '', $entity = 1)
 {
-    global $conf;
+    $conf = Config::getConf();
 
     // Clean parameters
     $name = trim($name);

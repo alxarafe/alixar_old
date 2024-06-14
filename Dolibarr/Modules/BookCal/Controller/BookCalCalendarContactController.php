@@ -31,6 +31,8 @@ global $langs;
 global $mysoc;
 
 use DoliCore\Base\DolibarrController;
+use DoliCore\Lib\ExtraFields;
+use DoliModules\BookCal\Model\Calendar;
 
 /**
  *  \file       htdocs/bookcal/calendar_contact.php
@@ -39,10 +41,6 @@ use DoliCore\Base\DolibarrController;
  */
 
 // Load Dolibarr environment
-use DoliCore\Base\DolibarrController;
-use DoliCore\Lib\ExtraFields;
-use DoliModules\BookCal\Model\Calendar;
-
 require BASE_PATH . '/main.inc.php';
 
 dol_include_once('/bookcal/class/calendar.class.php');

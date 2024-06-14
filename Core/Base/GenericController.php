@@ -19,6 +19,7 @@
 namespace Alxarafe\Base;
 
 use Alxarafe\Tools\Debug;
+use Illuminate\Support\Str;
 
 /**
  * Class GenericController. The generic controller contains what is necessary for any controller
@@ -96,7 +97,7 @@ abstract class GenericController
      */
     private function executeAction(): bool
     {
-        $actionMethod = 'do' . ucfirst($this->action ?? 'index');
+        $actionMethod = 'do' . ucfirst(Str::camel($this->action ?? 'index'));
         if (!method_exists($this, $actionMethod)) {
             Debug::message('Does not exist the method ' . $actionMethod);
             return false;

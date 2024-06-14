@@ -2,7 +2,7 @@
 
 @section('body')
     <tbody>
-    <input type="hidden" name="action" value="finish">
+    <input type="hidden" name="action" value="create_admin_user">
     <input type="hidden" name="language" value="{!! $me->config->main->language!!}">
     <h3>
         <img class="valignmiddle inline-block paddingright"
@@ -24,5 +24,24 @@
             </tr>
         @endforeach
     </table>
+    <input type="checkbox" name="dolibarrpingno" id="dolibarrpingno" @if(getDolGlobalString('MAIN_FIRST_PING_OK_ID') !== 'disabled') value="checked" @endif >
+        <label for="dolibarrpingno">{!! $me->langs->trans("MakeAnonymousPing") !!}</label>
+
+    <!-- Add js script to manage the uncheck of option to not send the ping -->
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            document.cookie = "DOLINSTALLNOPING_{!! $me->vars->hash_unique_id !!}=0; path=/"
+            jQuery("#dolibarrpingno").click(function () {
+                if (!$(this).is(':checked')) {
+                    console.log("We uncheck anonymous ping");
+                    document.cookie = "DOLINSTALLNOPING_{!! $me->vars->hash_unique_id !!}=1; path=/"
+                } else {
+                    console.log("We check anonymous ping");
+                    document.cookie = "DOLINSTALLNOPING_{!! $me->vars->hash_unique_id !!}=0; path=/"
+                }
+            });
+        });
+    </script>
+
     </tbody>
 @endsection

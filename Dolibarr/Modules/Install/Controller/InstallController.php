@@ -35,6 +35,8 @@ use DoliCore\Base\DolibarrViewController;
 use DoliCore\Form\FormAdmin;
 use DoliModules\Install\Lib\Check;
 use DoliModules\Install\Lib\Status;
+use DoliModules\User\Model\User;
+use modUser;
 use PDO;
 use stdClass;
 
@@ -106,7 +108,6 @@ class InstallController extends DolibarrViewController
      */
     public function beforeAction(): bool
     {
-        dump($this->action);
         $this->vars = new stdClass();
 
         $https = $this->config->main->url ?? 'https';
@@ -564,6 +565,315 @@ class InstallController extends DolibarrViewController
         return dol_sort_array($migrationscript, 'from', 'asc', 1);
     }
 
+    public function doCreateAdminUser()
+    {
+        $this->langs->setDefaultLang($this->config->main->language);
+        $this->langs->loadLangs(['main', 'admin', 'install']);
+
+        $this->subtitle = $this->langs->trans("AdminAccountCreation");
+        $this->template = 'install/create_admin_user';
+
+        /*
+        // Now we load forced value from install.forced.php file.
+        $useforcedwizard = false;
+        $forcedfile = "./install.forced.php";
+        if ($conffile == "/etc/dolibarr/conf.php") {
+            $forcedfile = "/etc/dolibarr/install.forced.php";
+        }
+        if (@file_exists($forcedfile)) {
+            $useforcedwizard = true;
+            include_once $forcedfile;
+        }
+        */
+
+        dolibarr_install_syslog("--- step4: entering step4.php page");
+
+        $this->vars->minLen = 8;
+        $this->vars->login = (GETPOSTISSET("login")
+            ? GETPOST("login", 'alpha')
+            : (isset($force_install_dolibarrlogin)
+                ? $force_install_dolibarrlogin
+                : ''
+            ));
+
+        $this->nextButton = true;
+    }
+
+    public function doVerifyAdminUser()
+    {
+        $this->langs->setDefaultLang($this->config->main->language);
+        $this->langs->loadLangs(['main', 'admin', 'install']);
+
+        $this->vars->login = GETPOST('login');
+        $this->vars->pass = GETPOST('pass');
+        $this->vars->pass_verif = GETPOST('pass_verif');
+        $this->vars->minLen = 8;
+
+        $this->nextButton = true;
+
+        $this->vars->errors = [];
+
+        if (empty($this->vars->login)) {
+            $this->vars->errors[] = $this->langs->trans("PleaseTypeALogin");
+        }
+
+        if (strlen($this->vars->pass) < $this->vars->minLen) {
+            $this->vars->errors[] = $this->langs->trans("PleaseTypePassword");
+        }
+
+        if ($this->vars->pass !== $this->vars->pass_verif) {
+            $this->vars->errors[] = $this->langs->trans("PasswordsMismatch");
+        }
+
+        if (!empty($this->vars->errors)) {
+            $this->template = 'install/create_admin_user';
+            return false;
+        }
+
+        if (!$this->createUser($this->vars->login, $this->vars->pass)) {
+            $this->template = 'install/create_admin_user';
+            return false;
+        }
+
+        $this->template = 'install/finish';
+        return true;
+
+        $conffile = Config::getDolibarrConfigFilename();
+
+
+        $error = 0;
+        $ok = 0;
+
+        $this->vars->config_read_only = !is_writable($conffile);
+
+        $db = getDoliDBInstance(
+            $this->config->db->type,
+            $this->config->db->host,
+            $this->config->db->user,
+            $this->config->db->pass,
+            $this->config->db->name,
+            (int)$this->config->db->port
+        );
+
+        dolibarr_install_syslog("Exit " . $ret);
+
+        dolibarr_install_syslog("--- step4: end");
+
+        return true;
+    }
+
+    private function createUser(string $username, string $password): bool
+    {
+        $db = Config::getDb();
+        $conf = Config::getConf();
+
+        // Active module user
+        include_once BASE_PATH . '/core/modules/modUser.class.php';
+        $objMod = new modUser($db);
+
+        dolibarr_install_syslog('step5: load module user ' . DOL_DOCUMENT_ROOT . "/core/modules/" . $file, LOG_INFO);
+        $result = $objMod->init();
+        if (!$result) {
+            print "ERROR: failed to init module file = " . $file;
+        }
+
+        if ($db->connected) {
+            $conf->setValues($db);
+            // Reset forced setup after the setValues
+            if (defined('SYSLOG_FILE')) {
+                $conf->global->SYSLOG_FILE = constant('SYSLOG_FILE');
+            }
+            $conf->global->MAIN_ENABLE_LOG_TO_HTML = 1;
+
+            // Create admin user
+            include_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
+
+            // Set default encryption to yes, generate a salt and set default encryption algorithm (but only if there is no user yet into database)
+            $sql = "SELECT u.rowid, u.pass, u.pass_crypted";
+            $sql .= " FROM " . MAIN_DB_PREFIX . "user as u";
+            $resql = $db->query($sql);
+            if ($resql) {
+                $numrows = $db->num_rows($resql);
+                if ($numrows == 0) {
+                    // Define default setup for password encryption
+                    dolibarr_set_const($db, "DATABASE_PWD_ENCRYPTED", "1", 'chaine', 0, '', $conf->entity);
+                    dolibarr_set_const($db, "MAIN_SECURITY_SALT", dol_print_date(dol_now(), 'dayhourlog'), 'chaine', 0, '', 0); // All entities
+                    if (function_exists('password_hash')) {
+                        dolibarr_set_const($db, "MAIN_SECURITY_HASH_ALGO", 'password_hash', 'chaine', 0, '', 0); // All entities
+                    } else {
+                        dolibarr_set_const($db, "MAIN_SECURITY_HASH_ALGO", 'sha1md5', 'chaine', 0, '', 0); // All entities
+                    }
+                }
+
+                dolibarr_install_syslog('step5: DATABASE_PWD_ENCRYPTED = ' . getDolGlobalString('DATABASE_PWD_ENCRYPTED') . ' MAIN_SECURITY_HASH_ALGO = ' . getDolGlobalString('MAIN_SECURITY_HASH_ALGO'), LOG_INFO);
+            }
+
+            // Create user used to create the admin user
+            $createuser = new User($db);
+            $createuser->id = 0;
+            $createuser->admin = 1;
+
+            // Set admin user
+            $newuser = new User($db);
+            $newuser->lastname = 'SuperAdmin';
+            $newuser->firstname = '';
+            $newuser->login = $username;
+            $newuser->pass = $password;
+            $newuser->admin = 1;
+            $newuser->entity = 0;
+
+            $conf->global->USER_MAIL_REQUIRED = 0;            // Force global option to be sure to create a new user with no email
+            $conf->global->USER_PASSWORD_GENERATED = '';    // To not use any rule for password validation
+
+            $result = $newuser->create($createuser, 1);
+            if ($result > 0) {
+                print $this->langs->trans("AdminLoginCreatedSuccessfuly", $login) . "<br>";
+                $success = 1;
+            } else {
+                if ($result == -6) {    //login or email already exists
+                    dolibarr_install_syslog('step5: AdminLoginAlreadyExists', LOG_WARNING);
+                    print '<br><div class="warning">' . $newuser->error . "</div><br>";
+                    $success = 1;
+                } else {
+                    dolibarr_install_syslog('step5: FailedToCreateAdminLogin ' . $newuser->error, LOG_ERR);
+                    setEventMessages($this->langs->trans("FailedToCreateAdminLogin") . ' ' . $newuser->error, null, 'errors');
+                    //header("Location: step4.php?error=3&selectlang=$setuplang".(isset($login) ? '&login='.$login : ''));
+                    print '<br><div class="error">' . $this->langs->trans("FailedToCreateAdminLogin") . ': ' . $newuser->error . '</div><br><br>';
+                    print $this->langs->trans("ErrorGoBackAndCorrectParameters") . '<br><br>';
+                }
+            }
+
+            if ($success) {
+                // Insert MAIN_VERSION_FIRST_INSTALL in a dedicated transaction. So if it fails (when first install was already done), we can do other following requests.
+                $db->begin();
+                dolibarr_install_syslog('step5: set MAIN_VERSION_FIRST_INSTALL const to ' . $targetversion, LOG_DEBUG);
+                $resql = $db->query("INSERT INTO " . MAIN_DB_PREFIX . "const(name, value, type, visible, note, entity) values(" . $db->encrypt('MAIN_VERSION_FIRST_INSTALL') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version when first install', 0)");
+                if ($resql) {
+                    $conf->global->MAIN_VERSION_FIRST_INSTALL = $targetversion;
+                    $db->commit();
+                } else {
+                    //if (! $resql) dol_print_error($db,'Error in setup program');      // We ignore errors. Key may already exists
+                    $db->commit();
+                }
+
+                $db->begin();
+
+                dolibarr_install_syslog('step5: set MAIN_VERSION_LAST_INSTALL const to ' . $targetversion, LOG_DEBUG);
+                $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_VERSION_LAST_INSTALL'");
+                if (!$resql) {
+                    dol_print_error($db, 'Error in setup program');
+                }
+                $resql = $db->query("INSERT INTO " . MAIN_DB_PREFIX . "const(name,value,type,visible,note,entity) values(" . $db->encrypt('MAIN_VERSION_LAST_INSTALL') . ", " . $db->encrypt($targetversion) . ", 'chaine', 0, 'Dolibarr version when last install', 0)");
+                if (!$resql) {
+                    dol_print_error($db, 'Error in setup program');
+                }
+                $conf->global->MAIN_VERSION_LAST_INSTALL = $targetversion;
+
+                if ($useforcedwizard) {
+                    dolibarr_install_syslog('step5: set MAIN_REMOVE_INSTALL_WARNING const to 1', LOG_DEBUG);
+                    $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_REMOVE_INSTALL_WARNING'");
+                    if (!$resql) {
+                        dol_print_error($db, 'Error in setup program');
+                    }
+                    // The install.lock file is created few lines later if version is last one or if option MAIN_ALWAYS_CREATE_LOCK_AFTER_LAST_UPGRADE is on
+                    /* No need to enable this
+                    $resql = $db->query("INSERT INTO ".MAIN_DB_PREFIX."const(name,value,type,visible,note,entity) values(".$db->encrypt('MAIN_REMOVE_INSTALL_WARNING').", ".$db->encrypt(1).", 'chaine', 1, 'Disable install warnings', 0)");
+                    if (!$resql) {
+                        dol_print_error($db, 'Error in setup program');
+                    }
+                    $conf->global->MAIN_REMOVE_INSTALL_WARNING = 1;
+                    */
+                }
+
+                // List of modules to enable
+                $tmparray = array();
+
+                // If we ask to force some modules to be enabled
+                if (!empty($force_install_module)) {
+                    if (!defined('DOL_DOCUMENT_ROOT') && !empty($dolibarr_main_document_root)) {
+                        define('DOL_DOCUMENT_ROOT', $dolibarr_main_document_root);
+                    }
+
+                    $tmparray = explode(',', $force_install_module);
+                }
+
+                $modNameLoaded = array();
+
+                // Search modules dirs
+                $modulesdir[] = $dolibarr_main_document_root . '/core/modules/';
+
+                foreach ($modulesdir as $dir) {
+                    // Load modules attributes in arrays (name, numero, orders) from dir directory
+                    //print $dir."\n<br>";
+                    dol_syslog("Scan directory " . $dir . " for module descriptor files (modXXX.class.php)");
+                    $handle = @opendir($dir);
+                    if (is_resource($handle)) {
+                        while (($file = readdir($handle)) !== false) {
+                            if (is_readable($dir . $file) && substr($file, 0, 3) == 'mod' && substr($file, dol_strlen($file) - 10) == '.class.php') {
+                                $modName = substr($file, 0, dol_strlen($file) - 10);
+                                if ($modName) {
+                                    if (!empty($modNameLoaded[$modName])) {   // In cache of already loaded modules ?
+                                        $mesg = "Error: Module " . $modName . " was found twice: Into " . $modNameLoaded[$modName] . " and " . $dir . ". You probably have an old file on your disk.<br>";
+                                        setEventMessages($mesg, null, 'warnings');
+                                        dol_syslog($mesg, LOG_ERR);
+                                        continue;
+                                    }
+
+                                    try {
+                                        $res = include_once $dir . $file; // A class already exists in a different file will send a non catchable fatal error.
+                                        if (class_exists($modName)) {
+                                            $objMod = new $modName($db);
+                                            $modNameLoaded[$modName] = $dir;
+                                            if (!empty($objMod->enabled_bydefault) && !in_array($file, $tmparray)) {
+                                                $tmparray[] = $file;
+                                            }
+                                        }
+                                    } catch (Exception $e) {
+                                        dol_syslog("Failed to load " . $dir . $file . " " . $e->getMessage(), LOG_ERR);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Loop on each modules to activate it
+                if (!empty($tmparray)) {
+                    foreach ($tmparray as $modtoactivate) {
+                        $modtoactivatenew = preg_replace('/\.class\.php$/i', '', $modtoactivate);
+                        //print $this->langs->trans("ActivateModule", $modtoactivatenew).'<br>';
+
+                        $file = $modtoactivatenew . '.class.php';
+                        dolibarr_install_syslog('step5: activate module file=' . $file);
+                        $res = dol_include_once("/core/modules/" . $file);
+
+                        $res = activateModule($modtoactivatenew, 1);
+                        if (!empty($res['errors'])) {
+                            print 'ERROR: failed to activateModule() file=' . $file;
+                        }
+                    }
+                    //print '<br>';
+                }
+
+                // Now delete the flag that say installation is not complete
+                dolibarr_install_syslog('step5: remove MAIN_NOT_INSTALLED const');
+                $resql = $db->query("DELETE FROM " . MAIN_DB_PREFIX . "const WHERE " . $db->decrypt('name') . " = 'MAIN_NOT_INSTALLED'");
+                if (!$resql) {
+                    dol_print_error($db, 'Error in setup program');
+                }
+
+                // May fail if parameter already defined
+                dolibarr_install_syslog('step5: set the default language');
+                $resql = $db->query("INSERT INTO " . MAIN_DB_PREFIX . "const(name,value,type,visible,note,entity) VALUES (" . $db->encrypt('MAIN_LANG_DEFAULT') . ", " . $db->encrypt($setuplang) . ", 'chaine', 0, 'Default language', 1)");
+                //if (! $resql) dol_print_error($db,'Error in setup program');
+
+                $db->commit();
+            }
+        } else {
+            print $this->langs->trans("ErrorFailedToConnect") . "<br>";
+        }
+    }
+
     public function checkDatabase()
     {
         if (isset($_POST['return'])) {
@@ -759,17 +1069,25 @@ class InstallController extends DolibarrViewController
                         ) {
                             //print "<td>already existing</td></tr>";
                         } else {
-                            print "<tr><td>" . $this->langs->trans("CreateTableAndPrimaryKey", $name);
-                            print "<br>\n" . $this->langs->trans("Request") . ' ' . $requestnb . ' : ' . $buffer . ' <br>Executed query : ' . $db->lastquery;
-                            print "\n</td>";
-                            print '<td><span class="error">' . $this->langs->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span></td></tr>';
+                            $text = $this->langs->trans("CreateTableAndPrimaryKey", $name)
+                                . "\n" . $this->langs->trans("Request") . ' ' . $requestnb . ' : ' . $buffer
+                                . "\n" . 'Executed query: ' . $db->lastquery
+                                . "\n" . '<span class="error">' . $this->langs->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span>';
+                            $checks[] = [
+                                'text' => $text,
+                                'status' => Status::FAIL,
+                            ];
                             $error++;
                         }
                     }
                 } else {
-                    print "<tr><td>" . $this->langs->trans("CreateTableAndPrimaryKey", $name);
-                    print "</td>";
-                    print '<td><span class="error">' . $this->langs->trans("Error") . ' Failed to open file ' . $dir . $file . '</span></td></tr>';
+                    $text = $this->langs->trans("CreateTableAndPrimaryKey", $name)
+                        . "\n" . $this->langs->trans("CreateTableAndPrimaryKey", $name)
+                        . "\n" . '<span class="error">' . $this->langs->trans("Error") . ' Failed to open file ' . $dir . $file . '</span>';
+                    $checks[] = [
+                        'text' => $text,
+                        'status' => Status::FAIL,
+                    ];
                     $error++;
                     dolibarr_install_syslog("step2: failed to open file " . $dir . $file, LOG_ERR);
                 }
@@ -777,13 +1095,18 @@ class InstallController extends DolibarrViewController
 
             if ($tablefound) {
                 if ($error == 0) {
-                    print '<tr><td>';
-                    print $this->langs->trans("TablesAndPrimaryKeysCreation") . '</td><td><img src="../theme/eldy/img/ok.png" alt="Ok"></td></tr>';
+                    $checks[] = [
+                        'text' => $this->langs->trans("TablesAndPrimaryKeysCreation"),
+                        'status' => Status::OK,
+                    ];
                     $ok = 1;
                 }
             } else {
                 //print '<tr><td>' . $this->langs->trans("ErrorFailedToFindSomeFiles", $dir) . '</td><td><img src="../theme/eldy/img/error.png" alt="Error"></td></tr>';
-                print '<tr><td>' . $this->langs->trans("FileIntegritySomeFilesWereRemovedOrModified", $dir) . '</td><td><img src="../theme/eldy/img/error.png" alt="Error"></td></tr>';
+                $checks[] = [
+                    'text' => $this->langs->trans("FileIntegritySomeFilesWereRemovedOrModified", $dir),
+                    'status' => Status::FAIL,
+                ];
                 dolibarr_install_syslog("step2: failed to find files to create database in directory " . $dir, LOG_ERR);
             }
         }
@@ -891,27 +1214,35 @@ class InstallController extends DolibarrViewController
                                     //print "<td>Deja existante</td></tr>";
                                     $key_exists = 1;
                                 } else {
-                                    print "<tr><td>" . $this->langs->trans("CreateOtherKeysForTable", $name);
-                                    print "<br>\n" . $this->langs->trans("Request") . ' ' . $requestnb . ' : ' . $db->lastqueryerror();
-                                    print "\n</td>";
-                                    print '<td><span class="error">' . $this->langs->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span></td></tr>';
+                                    $text = $this->langs->trans("CreateOtherKeysForTable", $name)
+                                        . "\n" . $this->langs->trans("Request") . ' ' . $requestnb . ' : ' . $db->lastqueryerror()
+                                        . "\n" . '<span class="error">' . $this->langs->trans("ErrorSQL") . " " . $db->errno() . " " . $db->error() . '</span>';
+                                    $checks[] = [
+                                        'text' => $text,
+                                        'status' => Status::FAIL,
+                                    ];
                                     $error++;
                                 }
                             }
                         }
                     }
                 } else {
-                    print "<tr><td>" . $this->langs->trans("CreateOtherKeysForTable", $name);
-                    print "</td>";
-                    print '<td><span class="error">' . $this->langs->trans("Error") . " Failed to open file " . $dir . $file . "</span></td></tr>";
+                    $text = $this->langs->trans("CreateOtherKeysForTable", $name)
+                        . "\n" . '<span class="error">' . $this->langs->trans("Error") . ' Failed to open file ' . $dir . $file . '</span>';
+                    $checks[] = [
+                        'text' => $text,
+                        'status' => Status::FAIL,
+                    ];
                     $error++;
                     dolibarr_install_syslog("step2: failed to open file " . $dir . $file, LOG_ERR);
                 }
             }
 
             if ($tablefound && $error == 0) {
-                print '<tr><td>';
-                print $this->langs->trans("OtherKeysCreation") . '</td><td><img src="../theme/eldy/img/ok.png" alt="Ok"></td></tr>';
+                $checks[] = [
+                    'text' => $this->langs->trans("OtherKeysCreation"),
+                    'status' => Status::OK,
+                ];
                 $okkeys = 1;
             }
         }
@@ -1103,15 +1434,11 @@ class InstallController extends DolibarrViewController
                 }
             }
 
-            print "<tr><td>" . $this->langs->trans("ReferenceDataLoading") . "</td>";
-            if ($ok) {
-                print '<td><img src="../theme/eldy/img/ok.png" alt="Ok"></td></tr>';
-            } else {
-                print '<td><img src="../theme/eldy/img/error.png" alt="Error"></td></tr>';
-                $ok = 1; // Data loading are not blocking errors
-            }
+            $checks[] = [
+                'text' => $this->langs->trans("ReferenceDataLoading"),
+                'status' => $ok ? Status::OK : Status::FAIL,
+            ];
         }
-        print '</table>';
 
         $ret = 0;
         if (!$ok && isset($argv[1])) {
@@ -1124,29 +1451,7 @@ class InstallController extends DolibarrViewController
 // Force here a value we need after because master.inc.php is not loaded into step2.
 // This code must be similar with the one into main.inc.php
 
-        $hash_unique_id = dol_hash('dolibarr' . $this->config->main->unique_id, 'sha256');   // Note: if the global salt changes, this hash changes too so ping may be counted twice. We don't mind. It is for statistics purpose only.
-
-        $out = '<input type="checkbox" name="dolibarrpingno" id="dolibarrpingno"' . ((getDolGlobalString('MAIN_FIRST_PING_OK_ID') == 'disabled') ? '' : ' value="checked" checked="true"') . '> ';
-        $out .= '<label for="dolibarrpingno">' . $this->langs->trans("MakeAnonymousPing") . '</label>';
-
-        $out .= '<!-- Add js script to manage the uncheck of option to not send the ping -->';
-        $out .= '<script type="text/javascript">';
-        $out .= 'jQuery(document).ready(function(){';
-        $out .= '  document.cookie = "DOLINSTALLNOPING_' . $hash_unique_id . '=0; path=/"' . "\n";
-        $out .= '  jQuery("#dolibarrpingno").click(function() {';
-        $out .= '    if (! $(this).is(\':checked\')) {';
-        $out .= '      console.log("We uncheck anonymous ping");';
-        $out .= '      document.cookie = "DOLINSTALLNOPING_' . $hash_unique_id . '=1; path=/"' . "\n";
-        $out .= '    } else {' . "\n";
-        $out .= '      console.log("We check anonymous ping");';
-        $out .= '      document.cookie = "DOLINSTALLNOPING_' . $hash_unique_id . '=0; path=/"' . "\n";
-        $out .= '    }' . "\n";
-        $out .= '  });';
-        $out .= '});';
-        $out .= '</script>';
-
-
-        print $out;
+        $this->vars->hash_unique_id = dol_hash('dolibarr' . $this->config->main->unique_id, 'sha256');   // Note: if the global salt changes, this hash changes too so ping may be counted twice. We don't mind. It is for statistics purpose only.
 
         return static::setIcons($checks);
     }

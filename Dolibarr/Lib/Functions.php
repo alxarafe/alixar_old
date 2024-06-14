@@ -378,6 +378,9 @@ function isDolTms($timestamp)
  */
 function getDoliDBInstance($type, $host, $user, $pass, $name, $port)
 {
+    if ($type === 'mysql') {
+        $type = 'mysqli';
+    }
     require_once BASE_PATH . "/core/db/" . $type . '.class.php';
 
     $class = 'DoliDB' . ucfirst($type);
