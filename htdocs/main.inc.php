@@ -61,6 +61,7 @@ if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
     if (!isset($db)) {
         $db = Config::getDb($conf);
         if (!isset($db)) {
+            header('Location: ' . BASE_URL . '/install');
             new InstallController();
             die();
         }
@@ -73,7 +74,7 @@ if ($conf !== null && isset($conf->db->name) && !empty($conf->db->name)) {
     $langs = Config::getLangs($conf);
     $user = Config::getUser();
     if ($user === null || $user->db->lasterrno === 'DB_ERROR_NOSUCHTABLE') {
-        new InstallController();
+        header('Location: ' . BASE_URL . '/install');
         die();
     }
     $menumanager = Config::getMenuManager($conf);

@@ -45,7 +45,7 @@ abstract class DolibarrController extends DolibarrViewController
         $this->hookmanager = Config::getHookManager();
         $this->user = Config::getUser();
         if ($this->user === null || $this->user->db->lasterrno === 'DB_ERROR_NOSUCHTABLE') {
-            new InstallController();
+            header('Location: ' . BASE_URL . '/install');
             die();
         }
         $this->menumanager = Config::getMenuManager($this->conf);

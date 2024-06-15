@@ -94,8 +94,8 @@ if (!empty($dolibarr_main_prod)) {
  * If no DB connection, executes installation.
  */
 if (!isset($db)) {
-    new InstallController();
-    die();
+    header("Location: " . BASE_URL . '/install');
+    exit;
 }
 
 /**

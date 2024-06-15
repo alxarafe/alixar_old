@@ -31,6 +31,7 @@
  * \brief          File of parent class of module descriptor class files
  */
 
+use DoliCore\Base\Config;
 use DoliCore\Model\InfoBox;
 use DoliCore\Model\Menubase;
 use DoliModules\User\Model\User;
@@ -1166,7 +1167,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
     public function insert_boxes($option = '')
     {
         // phpcs:enable
-        global $conf;
+        $conf = Config::getConf();
         $dbPrefix = $conf->db->prefix;
 
         $err = 0;
@@ -1404,7 +1405,8 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
     public function insert_permissions($reinitadminperms = 0, $force_entity = null, $notrigger = 0)
     {
         // phpcs:enable
-        global $conf, $user;
+        global $user;
+        $conf = Config::getConf();
         $dbPrefix = $conf->db->prefix;
 
         $err = 0;
@@ -1879,7 +1881,7 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
     public function delete_tabs()
     {
         // phpcs:enable
-        global $conf;
+        $conf = Config::getConf();
         $dbPrefix = $conf->db->prefix;
 
         $err = 0;
