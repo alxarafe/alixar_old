@@ -31,6 +31,7 @@
 // Load Dolibarr environment
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\Company;
 
 require BASE_PATH . '/main.inc.php';

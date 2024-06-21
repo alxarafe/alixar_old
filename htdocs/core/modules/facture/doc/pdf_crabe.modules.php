@@ -34,6 +34,7 @@
  *  \brief      File of class to generate customers invoices from crabe model
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\CompanyBankAccount;
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/facture/modules_facture.php';

@@ -32,7 +32,7 @@ class Dispatcher
     public static function run($module, $controller): bool
     {
         $controller .= 'Controller';
-        if (self::processFolder($module, $controller)) {
+        if (static::processFolder($module, $controller)) {
             Debug::message("Dispatcher::process(): Ok");
             return true;
         }
@@ -40,10 +40,18 @@ class Dispatcher
         return false;
     }
 
-    private static function processFolder(string $module, string $controller): bool
+    /**
+     * Process modern application controller paths.
+     *
+     * @param string $module
+     * @param string $controller
+     * @return bool
+     */
+    protected static function processFolder(string $module, string $controller): bool
     {
         $className = 'Modules\\' . $module . '\\Controller\\' . $controller;
-        $filename = realpath(constant('BASE_PATH') . '/../Modules/' . $module . '/Controller/' . $controller . '.php');
+        $basepath = realpath(constant('BASE_PATH') . '/../Modules/' . $module);
+        $filename = $basepath . '/Controller/' . $controller . '.php';
         Debug::message('Filename: ' . $filename);
         Debug::message('Class: ' . $className);
         if (!file_exists($filename)) {
@@ -52,6 +60,9 @@ class Dispatcher
         $controller = new $className();
         if ($controller === null) {
             return false;
+        }
+        if (method_exists($controller, 'setTemplatesPath')) {
+            $controller->setTemplatesPath($basepath . '/Templates');
         }
         $controller->index();
         return true;

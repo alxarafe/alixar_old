@@ -30,6 +30,7 @@
  *  \brief      Page list of expenses
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\ExpenseReport\Model\ExpenseReport;
 
 // Load Dolibarr environment

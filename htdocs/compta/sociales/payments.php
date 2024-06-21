@@ -31,6 +31,7 @@
  */
 
 use DoliCore\Form\FormSocialContrib;
+use DoliCore\Lib\HookManager;
 use DoliModules\User\Model\User;
 
 // Load Dolibarr environment

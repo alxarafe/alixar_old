@@ -27,6 +27,7 @@
  *       \brief      Home page of shipping area.
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Company\Model\Company;
 use DoliModules\Shipment\Model\Expedition;

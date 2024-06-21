@@ -26,6 +26,7 @@
  */
 
 use DoliCore\Lib\ExtraFields;
+use DoliCore\Lib\HookManager;
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/stock/modules_movement.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';

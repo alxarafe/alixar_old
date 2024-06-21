@@ -35,15 +35,15 @@
  *              This script reads the conf file, init $lang, $db and empty $user
  */
 
+use DoliCore\Base\Config;
+use DoliCore\Lib\Conf;
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\Company;
 use DoliModules\User\Model\User;
-use DoliCore\Base\Config;
 
 // Include the conf.php and functions.lib.php and security.lib.php. This defined the constants like DOL_DOCUMENT_ROOT, DOL_DATA_ROOT, DOL_URL_ROOT...
 // This file may have been already required by main.inc.php. But may not by scripts. So, here the require_once must be kept.
 require_once BASE_PATH . '/filefunc.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/conf.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 
 if (!function_exists('is_countable')) {
     /**

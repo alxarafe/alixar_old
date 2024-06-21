@@ -26,6 +26,8 @@
  *  \brief      File to build payment reports
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/commondocgenerator.class.php';

@@ -26,6 +26,7 @@
  *  \brief      Home page of donation module
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Donation\Model\Don;
 
 // Load Dolibarr environment

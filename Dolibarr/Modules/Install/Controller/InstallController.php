@@ -30,13 +30,12 @@
 
 namespace DoliModules\Install\Controller;
 
+use Alxarafe\Base\Controller\ViewController;
 use DoliCore\Base\Config;
-use DoliCore\Base\DolibarrViewController;
 use DoliCore\Form\FormAdmin;
 use DoliModules\Install\Lib\Check;
 use DoliModules\Install\Lib\Status;
 use DoliModules\User\Model\User;
-use Illuminate\Database\Capsule\Manager as DB;
 use modUser;
 use PDO;
 use stdClass;
@@ -44,7 +43,7 @@ use stdClass;
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/install/inc.php';
 
-class InstallController extends DolibarrViewController
+class InstallController extends ViewController
 {
     /**
      * Set to true if we can continue with the installation
@@ -132,7 +131,6 @@ class InstallController extends DolibarrViewController
             'language' => $this->config->main->language,
             'theme' => $this->config->main->theme,
         ]);
-        Config::saveConfig();
 
         return $this->doIndex();
     }
@@ -145,14 +143,17 @@ class InstallController extends DolibarrViewController
      */
     public function doIndex(): bool
     {
+        $x=Config::checkOldConfig();
+
+        dd([
+            $this,
+            $x,
+            debug_backtrace(),
+        ]);
+
         if (!isset($this->config->main->language)) {
             $this->config->main->language = 'auto';
         }
-
-        Config::setMainConfig([
-            'language' => getIfIsset('language', $this->config->main->language),
-            'theme' => getIfIsset('theme', $this->config->main->theme ?? 'eldy'),
-        ]);
 
         $form = new FormAdmin(null);
         $this->selectLanguages = $form->select_language($this->config->main->language, 'language', 1, 0, 0, 1);
@@ -1596,13 +1597,13 @@ class InstallController extends DolibarrViewController
             $this->config->main->unique_id = md5(uniqid(mt_rand(), true));
         }
 
-        if (!isset($this->config->main->documents)) {
-            $this->config->main->documents = Config::getDataDir($this->config->main->path);
+        if (!isset($this->config->main->data)) {
+            $this->config->main->data = Config::getDataDir($this->config->main->path);
         }
 
         $this->config->main->path = getIfIsset('base_path', $this->config->main->path);
         $this->config->main->url = getIfIsset('base_url', $this->config->main->url);
-        $this->config->main->documents = getIfIsset('data_path', $this->config->main->documents);
+        $this->config->main->data = getIfIsset('data_path', $this->config->main->data);
 
         if ($this->force_https) {
             str_replace('http://', 'https://', $this->config->main->url);

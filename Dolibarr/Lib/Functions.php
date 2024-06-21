@@ -43,6 +43,8 @@
 
 use DoliCore\Base\Config;
 use DoliCore\Form\FormActions;
+use DoliCore\Lib\Conf;
+use DoliCore\Lib\HookManager;
 use DoliCore\Tools\Debug;
 use DoliModules\Agenda\Model\ActionComm;
 use DoliModules\Agenda\Model\CActionComm;

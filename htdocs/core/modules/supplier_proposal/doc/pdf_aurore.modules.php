@@ -29,6 +29,8 @@
  *  \brief      File of the class allowing to generate the supplier proposals to the Aurore model
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_proposal/modules_supplier_proposal.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';

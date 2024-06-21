@@ -28,6 +28,8 @@
  *      \brief      File of class to manage notifications
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 
 /**

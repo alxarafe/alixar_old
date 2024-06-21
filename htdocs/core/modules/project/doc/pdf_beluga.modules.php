@@ -25,6 +25,8 @@
  *  \brief      File of class to generate project document beluga
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/project/modules_project.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';

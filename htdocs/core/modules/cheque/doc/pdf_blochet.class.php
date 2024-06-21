@@ -25,6 +25,7 @@
  *  \brief      File to build cheque deposit receipts
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Accounting\Model\RemiseCheque;
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';

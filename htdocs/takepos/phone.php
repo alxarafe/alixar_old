@@ -34,7 +34,6 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 if (!defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE')) {
     require BASE_PATH . '/main.inc.php';
 }
-require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 
 if (defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE')) {
     // Decode place if it is an order from a customer phone

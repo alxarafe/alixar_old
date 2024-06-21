@@ -18,18 +18,16 @@
 
 namespace DoliCore\Base;
 
-use Conf;
+use Alxarafe\Base\Config as ConfigBase;
+use DoliCore\Lib\Conf;
+use DoliCore\Lib\HookManager;
 use DoliCore\Lib\TraceableDB;
 use DoliCore\Tools\Debug;
 use DoliDB;
 use DoliModules\User\Model\User;
 use MenuManager;
-use HookManager;
 use stdClass;
-use Alxarafe\Base\Config as ConfigBase;
 
-require_once BASE_PATH . '/core/class/conf.class.php';
-require_once BASE_PATH . '/core/class/hookmanager.class.php';
 require_once BASE_PATH . '/../Dolibarr/Core/Menu/standard/eldy_menu.php';
 
 /**
@@ -43,8 +41,45 @@ require_once BASE_PATH . '/../Dolibarr/Core/Menu/standard/eldy_menu.php';
  */
 abstract class Config extends ConfigBase
 {
-    const DEFAULT_DB_PREFIX = 'alx_';
+    /**
+     * Dolibarr configuration filename.
+     */
+    private const CONFIG_FILENAME = '/conf/conf.php';
 
+    public const DEFAULT_DB_PREFIX = 'alx_';
+
+    private const DEFAULT_THEME = 'alixar';
+
+    private const DOLIBARR_CONFIG_STRUCTURE = [
+        'main' => [
+            'dolibarr_main_document_root' => 'path',
+            'dolibarr_main_url_root' => 'url',
+            'dolibarr_main_data_root' => 'data',
+        ],
+        'db' => [
+            'dolibarr_main_db_type' => 'type',
+            'dolibarr_main_db_host' => 'host',
+            'dolibarr_main_db_user' => 'user',
+            'dolibarr_main_db_pass' => 'pass',
+            'dolibarr_main_db_name' => 'name',
+            'dolibarr_main_db_port' => 'port',
+            'dolibarr_main_db_prefix' => 'prefix',
+            'dolibarr_main_db_character_set' => 'charset',
+            'dolibarr_main_db_collation' => 'collation',
+            'dolibarr_main_db_encryption' => 'encryption',
+            'dolibarr_main_db_cryptkey' => 'encrypt_type',
+        ],
+        'security' => [
+            'dolibarr_main_authentication' => 'authentication_method',
+            'dolibarr_main_instance_unique_id' => 'unique_id',
+            'dolibarr_main_force_https' => 'https',
+            'dolibarr_main_prod' => 'demo',
+            'dolibarr_main_restrict_os_commands' => 'restrict_os_commands',
+            'dolibarr_nocsrfcheck' => 'nocsrfcheck',
+            'dolibarr_mailing_limit_sendbyweb' => 'mailing_limit_sendbyweb',
+            'dolibarr_mailing_limit_sendbycli' => 'mailing_limit_sendbycli',
+        ]
+    ];
     /**
      * Contains the information of the old $conf global var.
      *
@@ -60,7 +95,6 @@ abstract class Config extends ConfigBase
      * @deprecated Use $config instead
      */
     private static $dolibarrConfig = null;
-
     /**
      * Contains the information from the conf.php file in a normalized stdClass.
      *
@@ -70,55 +104,123 @@ abstract class Config extends ConfigBase
      * @var null|stdClass
      */
     private static $config = null;
-
     /**
      * Contains a DoliDB connection.
      *
      * @var DoliDB, null
      */
     private static $db;
-
     /**
      * Contains a HookManager class.
      *
      * @var $hookManager
      */
     private static $hookManager;
-
     /**
      * Contains a Translate class
      *
      * @var Translate
      */
     private static $langs;
-
     /**
      * Contains a User class instance.
      *
      * @var User
      */
     private static $user;
-
     private static $menumanager;
 
-    /**
-     * Load the Dolibarr configuration file and enter the content for the Dolibarr global
-     * variable $conf.
-     *
-     * The result is cached for future queries. If we want to reload the configuration file
-     * we will have to pass the parameter true.
-     *
-     * @param $reload
-     *
-     * @return stdClass|null
-     */
-    public static function getConf($reload = false): ?stdClass
+    public static function checkOldConfig()
     {
-        if ($reload || !isset(static::$dolibarrConfig)) {
-            static::$dolibarrConfig = static::loadConf();
+        if (empty(self::$config)) {
+            self::$config = parent::loadConfig();
+        }
+        if (empty(self::$config)) {
+            self::$config = new stdClass();
+            self::$config->main = self::getDefaultMainFileInfo();
         }
 
-        return static::$dolibarrConfig;
+        $filename = self::getDolibarrConfigFilename();
+        if (!file_exists($filename) || !is_readable($filename)) {
+            return false;
+        }
+
+        $data = self::getConfigFrom($filename);
+        if (empty($data)) {
+            return false;
+        }
+
+        return static::setConfig($data);
+    }
+
+    /**
+     * Returns a normalized config file.
+     *
+     * @param bool $reload
+     * @return stdClass|null
+     */
+    public static function loadConfig(bool $reload = false): ?stdClass
+    {
+        $conf = parent::loadConfig($reload);
+
+        if ($conf) {
+            return $conf;
+        }
+
+        $conf = static::loadConf();
+        if (empty($conf)) {
+            return null;
+        }
+
+        $config = new stdClass();
+
+        // 'main' section
+        $config->main = new stdClass();
+        $config->main->path = $conf->file->main_path ?? constant('BASE_PATH');
+        $config->main->url = $conf->file->main_url ?? constant('BASE_URL');
+        $config->main->data_path = $conf->file->main_doc ?? '';
+        $config->main->alt_base_path = $conf->file->path;
+        $config->main->alt_base_url = $conf->file->url;
+        $config->main->theme = $conf->file->theme;
+
+        // 'db' section
+        $config->db = $conf->db;
+        $config->db->charset = $conf->db->charset;
+        $config->db->collation = $conf->db->collation;
+        $config->db->encryption = $conf->db->encryption;
+        $config->db->cryptkey = $conf->db->cryptkey;
+
+        // 'security' section
+        $config->security = new stdClass();
+        $config->security->authentication_type = $conf->file->main_authentication;
+        $config->security->force_https = $conf->file->main_force_https;
+        $config->security->unique_id = $conf->file->instance_unique_id;
+        $config->security->stream_to_disable = null;
+        if (is_array($conf->file->dol_main_stream_to_disable)) {
+            $config->security->stream_to_disable = $conf->file->dol_main_stream_to_disable;
+        }
+
+        $config->file = $conf->file;
+
+        // Others
+        $demo = $dolibarr_main_demo ?? false;
+        if ($demo !== false) {
+            $credentials = explode(',', $demo);
+            if (count($credentials) === 2) {
+                $config->demo->user = trim($credentials[0]);
+                $config->demo->pass = trim($credentials[1]);
+            }
+        }
+
+        $config->debug = $conf->debug;
+
+        // 'Server' section
+        $config->server = new stdClass();
+        $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
+
+        static::$config = $config;
+
+        return $config;
     }
 
     /**
@@ -227,7 +329,7 @@ abstract class Config extends ConfigBase
      */
     public static function getDolibarrConfigFilename()
     {
-        return BASE_PATH . '/conf/conf.php';
+        return BASE_PATH . self::CONFIG_FILENAME;
     }
 
     /**
@@ -240,6 +342,71 @@ abstract class Config extends ConfigBase
     public static function getDataDir($pathDir)
     {
         return preg_replace("/\/htdocs$/", "", $pathDir) . '/documents';
+    }
+
+    /**
+     * Those configuration parameters that we can obtain at run time,
+     * or their default values, are obtained.
+     *
+     * @return stdClass
+     */
+    public static function getDefaultMainFileInfo(): stdClass
+    {
+        $result = parent::getDefaultMainFileInfo();
+        $result->data = static::getDataDir($result->path);
+        $result->language = 'auto';
+        $result->theme = self::DEFAULT_THEME;
+        return $result;
+    }
+
+    private static function getConfigFrom(string $filename): array
+    {
+        $result = [];
+
+        if (!file_exists($filename)) {
+            error_log($filename . ' does not exists!');
+            return $result;
+        }
+
+        if (!is_readable($filename)) {
+            error_log($filename . ' exists, but is not readable!');
+            return $result;
+        }
+
+        require $filename;
+
+        $data = [];
+        foreach (self::DOLIBARR_CONFIG_STRUCTURE as $section => $values) {
+            $data[$section] = [];
+            foreach ($values as $key => $value) {
+                if (!isset(${$key})) {
+                    continue;
+                }
+                $data[$section][$value] = ${$key};
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Load the Dolibarr configuration file and enter the content for the Dolibarr global
+     * variable $conf.
+     *
+     * The result is cached for future queries. If we want to reload the configuration file
+     * we will have to pass the parameter true.
+     *
+     * @param $reload
+     *
+     * @return stdClass|null
+     */
+    public static function getConf($reload = false): ?stdClass
+    {
+        if ($reload || !isset(static::$dolibarrConfig)) {
+            static::$dolibarrConfig = static::loadConf();
+        }
+
+        return static::$dolibarrConfig;
     }
 
     /**
@@ -256,75 +423,6 @@ abstract class Config extends ConfigBase
         }
 
         return static::$config;
-    }
-
-    /**
-     * Returns a normalized config file.
-     *
-     * @param bool $reload
-     * @return stdClass|null
-     */
-    public static function loadConfig(bool $reload = false): stdClass
-    {
-        $conf = parent::loadConfig($reload);
-        if ($conf) {
-            return $conf;
-        }
-
-        $conf = static::loadConf();
-        if (empty($conf)) {
-            return null;
-        }
-
-        $config = new stdClass();
-
-        // 'main' section
-        $config->main = new stdClass();
-        $config->main->path = $conf->file->main_path ?? constant('BASE_PATH');
-        $config->main->url = $conf->file->main_url ?? constant('BASE_URL');
-        $config->main->data_path = $conf->file->main_doc ?? '';
-        $config->main->alt_base_path = $conf->file->path;
-        $config->main->alt_base_url = $conf->file->url;
-        $config->main->theme = $conf->file->theme;
-
-        // 'db' section
-        $config->db = $conf->db;
-        $config->db->charset = $conf->db->charset;
-        $config->db->collation = $conf->db->collation;
-        $config->db->encryption = $conf->db->encryption;
-        $config->db->cryptkey = $conf->db->cryptkey;
-
-        // 'security' section
-        $config->security = new stdClass();
-        $config->security->authentication_type = $conf->file->main_authentication;
-        $config->security->force_https = $conf->file->main_force_https;
-        $config->security->unique_id = $conf->file->instance_unique_id;
-        $config->security->stream_to_disable = null;
-        if (is_array($conf->file->dol_main_stream_to_disable)) {
-            $config->security->stream_to_disable = $conf->file->dol_main_stream_to_disable;
-        }
-
-        $config->file = $conf->file;
-
-        // Others
-        $demo = $dolibarr_main_demo ?? false;
-        if ($demo !== false) {
-            $credentials = explode(',', $demo);
-            if (count($credentials) === 2) {
-                $config->demo->user = trim($credentials[0]);
-                $config->demo->pass = trim($credentials[1]);
-            }
-        }
-
-        $config->debug = $conf->debug;
-
-        // 'Server' section
-        $config->server = new stdClass();
-        $config->server->detailed_info = !empty($_SERVER['MAIN_SHOW_TUNING_INFO']);
-
-        static::$config = $config;
-
-        return $config;
     }
 
     /**
@@ -494,6 +592,8 @@ abstract class Config extends ConfigBase
         global $langs;
         global $user;
         global $menumanager;
+
+        self::checkOldConfig();
 
         $config = parent::loadConfig();
         $conf = static::$dolibarrConfig = static::loadConf();

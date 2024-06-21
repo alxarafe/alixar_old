@@ -27,6 +27,7 @@
 // Load Dolibarr environment
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
+use DoliCore\Lib\HookManager;
 use DoliModules\Ticket\Model\Ticket;
 use DoliModules\Ticket\Model\TicketStats;
 

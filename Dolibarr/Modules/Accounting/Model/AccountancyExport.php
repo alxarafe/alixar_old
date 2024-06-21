@@ -45,7 +45,6 @@ use DoliDB;
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';

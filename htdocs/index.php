@@ -17,8 +17,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alxarafe\Tools\Dispatcher;
 use DoliCore\Base\Config;
+use DoliCore\Tools\Dispatcher;
 use DoliModules\Api\Controller\ApiController;
 
 /**

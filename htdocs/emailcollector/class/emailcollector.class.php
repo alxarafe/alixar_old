@@ -30,11 +30,12 @@ include_once DOL_DOCUMENT_ROOT . '/emailcollector/lib/emailcollector.lib.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 use DoliCore\Base\GenericDocument;
+use DoliCore\Lib\HookManager;
+use OAuth\Common\Consumer\Credentials;
+use OAuth\Common\Storage\DoliStorage;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\InvalidWhereQueryCriteriaException;
-use OAuth\Common\Storage\DoliStorage;
-use OAuth\Common\Consumer\Credentials;
 
 /**
  * Class for EmailCollector

@@ -25,6 +25,8 @@
  *  \brief      File of class to build ODT documents for stocks/services
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/stock/modules_stock.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';

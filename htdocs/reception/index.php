@@ -28,6 +28,7 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\Company;
 use DoliModules\Supplier\Model\CommandeFournisseur;
 

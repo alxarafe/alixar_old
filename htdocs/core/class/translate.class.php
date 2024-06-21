@@ -26,6 +26,8 @@
  *      \brief      File for Translate class
  */
 
+use DoliCore\Lib\Conf;
+
 
 /**
  *      Class to manage translations

@@ -1,9 +1,10 @@
 @extends('install/master/install_layout')
 
 @section('body')
+    @dump($me)
     <tbody>
     <input type="hidden" name="action" value="config">
-    <input type="hidden" name="language" value="{!! $me->config->main->language!!}">
+    <input type="hidden" name="language" value="{!! $me->config->main->language !!}">
     <div>
         @foreach($me->vars->errors ?? [] as $error)
             <div class="error">{!! $error !!}</div>
@@ -71,7 +72,7 @@
                            class="minwidth300"
                            id="documents"
                            name="documents"
-                           value="{!! $me->config->main->documents !!}"
+                           value="{!! $me->config->main->data !!}"
                            @if (!empty($me->vars->install_noedit)) disabled @endif
                     >
                 </td>

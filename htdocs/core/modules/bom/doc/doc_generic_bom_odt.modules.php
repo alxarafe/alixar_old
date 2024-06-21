@@ -28,6 +28,7 @@
  *  \brief      File of class to build ODT documents for BOMs
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Bom\Model\Bom;
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/bom/modules_bom.php';

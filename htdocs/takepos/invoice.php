@@ -44,7 +44,6 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 if (!defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE')) {
     require BASE_PATH . '/main.inc.php';
 }
-require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 
 $hookmanager->initHooks(array('takeposinvoice'));

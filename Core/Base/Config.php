@@ -22,23 +22,61 @@ use Exception;
 use PDO;
 use stdClass;
 
+/**
+ * Manage the configuration file
+ */
 abstract class Config
 {
-    private const  AVAILABLE_GROUPS = ['main', 'db'];
+    /**
+     * Configuration filename.
+     */
+    private const CONFIG_FILENAME = 'config.json';
 
+    /**
+     * Defines the configuration file structure
+     */
+    private const  CONFIG_STRUCTURE = [
+        'main' => [
+            'path', // Path to the public folder (usually htdocs)
+            'url',
+            'data', // Route to the private folder that stores the documents.
+            'theme',
+            'language',
+        ],
+        'db' => [
+            'type',
+            'host',
+            'user',
+            'pass',
+            'name',
+            'port',
+            'prefix',
+            'charset',
+            'collation',
+            'encryption', // Pending review: If true, some database fields are encrypted.
+            'encrypt_type', // Pending review: Encryption type ('0' if none, '1' if DES and '2' if AES)
+        ],
+        'security' => [
+            'unique_id', // Unique identifier of the installation.
+            'https', // If true, the use of https is forced (recommended)
+        ]
+    ];
+
+    /**
+     * Contains configuration file information
+     *
+     * @var stdClass|null
+     */
     private static ?stdClass $config = null;
 
-    public static function setDbConfig($values)
-    {
-        $data = (object)$values;
-        if (!self::checkDatabaseConnection($data)) {
-            return false;
-        }
-        self::saveConfig();
-        return static::setConfig('db', $values);
-    }
-
-    private static function checkDatabaseConnection($data)
+    /**
+     * Checks if the connection to the database is possible with the parameters
+     * defined in the configuration file.
+     *
+     * @param $data
+     * @return bool
+     */
+    public static function checkDatabaseConnection($data): bool
     {
         $dsn = "$data->type:host=$data->host;dbname=$data->name;charset=$data->charset";
         try {
@@ -50,14 +88,68 @@ abstract class Config
 
             $pdo = new PDO($dsn, $data->user, $data->pass, $options);
 
-            // Ejecutar una simple consulta para verificar la conexión
+            // Run a simple query to verify the connection
             $pdo->query('SELECT 1');
-
-            return true;
         } catch (Exception $e) {
-            // Capturar errores y devolver false si la conexión falla
+            // Catch errors and return false if connection fails
+            error_log($e->getMessage());
             return false;
         }
+        return true;
+    }
+
+    /**
+     * Add the configuration parameters received in $data in the configuration file.
+     *
+     * @param array $data
+     * @return bool
+     */
+    public static function setConfig(array $data): bool
+    {
+        /**
+         * If the configuration file is empty, we add the parameters
+         * that we can obtain at runtime (getDefaultMainFileInfo).
+         */
+        if (empty(self::$config)) {
+            self::$config = new stdClass();
+            self::$config->main = static::getDefaultMainFileInfo();
+        }
+
+        foreach (self::CONFIG_STRUCTURE as $section => $values) {
+            foreach ($values as $key) {
+                if (!isset($data[$section])) {
+                    error_log($section . ' is not defined!');
+                    continue;
+                }
+                if (!isset($data[$section][$key])) {
+                    error_log($key . ' is not defined in ' . $section . '!');
+                    continue;
+                }
+                if (!isset(self::$config->{$section})) {
+                    self::$config->{$section} = new stdClass();
+                }
+                self::$config->{$section}->{$key} = $data[$section][$key];
+            }
+        }
+
+        /**
+         * Save the configuration in the configuration file.
+         */
+        return self::saveConfig();
+    }
+
+    /**
+     * Those configuration parameters that we can obtain at run time,
+     * or their default values, are obtained.
+     *
+     * @return stdClass
+     */
+    public static function getDefaultMainFileInfo(): stdClass
+    {
+        $result = new stdClass();
+        $result->path = constant('BASE_PATH');
+        $result->url = constant('BASE_URL');
+        return $result;
     }
 
     /**
@@ -65,7 +157,7 @@ abstract class Config
      *
      * @return bool
      */
-    public static function saveConfig(): bool
+    private static function saveConfig(): bool
     {
         if (empty(self::$config)) {
             return true;
@@ -73,35 +165,14 @@ abstract class Config
         return file_put_contents(self::getConfigFilename(), json_encode(self::$config, JSON_PRETTY_PRINT)) !== false;
     }
 
-    private static function setConfig(string $group, array $values): bool
+    /**
+     * Returns the config.json complete path.
+     *
+     * @return string
+     */
+    private static function getConfigFilename(): string
     {
-        if (empty($values)) {
-            return true;
-        }
-
-        $group = trim(strtolower($group));
-        if (!in_array($group, self::AVAILABLE_GROUPS)) {
-            return false;
-        }
-
-        if (!isset(self::$config)) {
-            self::$config = self::loadConfig();
-            if (self::$config === null) {
-                self::$config = new stdClass();
-                self::$config->main = self::getDefaultMainFileInfo();
-            }
-        }
-
-        $branch = self::$config->{$group} ?? new stdClass();
-        foreach ($values as $key => $value) {
-            $branch->{$key} = $value;
-        }
-
-        if (!empty($branch)) {
-            self::$config->{$group} = $branch;
-        }
-
-        return static::saveConfig();
+        return realpath(BASE_PATH . '/..') . DIRECTORY_SEPARATOR . self::CONFIG_FILENAME;
     }
 
     /**
@@ -111,7 +182,7 @@ abstract class Config
      * to true to force a reload of the configuration file.
      *
      * @param bool $reload
-     * @return stdClass
+     * @return stdClass|null
      */
     public static function loadConfig(bool $reload = false): ?stdClass
     {
@@ -135,28 +206,5 @@ abstract class Config
         }
 
         return $result;
-    }
-
-    /**
-     * Returns the config.json complete path.
-     *
-     * @return string
-     */
-    private static function getConfigFilename(): string
-    {
-        return realpath(BASE_PATH . '/..') . DIRECTORY_SEPARATOR . 'config.json';
-    }
-
-    private static function getDefaultMainFileInfo()
-    {
-        $result = new stdClass();
-        $result->path = constant('BASE_PATH');
-        $result->url = constant('BASE_URL');
-        return $result;
-    }
-
-    public static function setMainConfig($values)
-    {
-        return static::setConfig('main', $values);
     }
 }

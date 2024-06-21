@@ -28,6 +28,7 @@
  *      \brief      Home page of contract area
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\Company;
 use DoliModules\Contract\Model\Contrat;
 use DoliModules\Contract\Model\ContratLigne;

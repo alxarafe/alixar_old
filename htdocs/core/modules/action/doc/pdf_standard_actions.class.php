@@ -25,6 +25,8 @@
  *  \brief      File to build PDF with events
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';

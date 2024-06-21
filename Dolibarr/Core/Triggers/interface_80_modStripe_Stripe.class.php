@@ -20,6 +20,7 @@
  */
 
 use DoliCore\Base\DolibarrTriggers;
+use DoliCore\Lib\Conf;
 use DoliModules\Stripe\Model\Stripe;
 use DoliModules\User\Model\User;
 

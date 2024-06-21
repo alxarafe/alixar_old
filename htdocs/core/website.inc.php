@@ -25,6 +25,8 @@
  */
 
 // Load website class
+use DoliCore\Lib\HookManager;
+
 include_once DOL_DOCUMENT_ROOT . '/website/class/website.class.php';
 include_once DOL_DOCUMENT_ROOT . '/website/class/websitepage.class.php';
 

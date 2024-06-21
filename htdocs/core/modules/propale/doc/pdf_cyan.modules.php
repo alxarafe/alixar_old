@@ -31,6 +31,8 @@
  *  \brief      File of Class to generate PDF proposal with Cyan template
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/propale/modules_propale.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';

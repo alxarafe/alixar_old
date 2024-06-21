@@ -30,6 +30,8 @@
  *  \brief      Class file used to generate the dispatch slips for the Eagle model
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/stocktransfer/modules_stocktransfer.php';
 require_once DOL_DOCUMENT_ROOT . '/product/stock/class/entrepot.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';

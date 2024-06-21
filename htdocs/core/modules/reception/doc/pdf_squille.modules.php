@@ -24,6 +24,8 @@
  *  \brief      Fichier de la class permettant de generer les bordereaux envoi au modele Squille
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/reception/modules_reception.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';

@@ -38,6 +38,8 @@
 // Functions
 
 use DoliCore\Form\Form;
+use DoliCore\Lib\Conf;
+use DoliCore\Lib\HookManager;
 
 include_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/BookMarks.php';
 

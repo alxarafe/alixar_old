@@ -3,7 +3,7 @@
 <head>
     @include('partial.head')
 </head>
-<body class="{!! $me->body_class !!}">
+<body class="container">
 @include('partial.body')
 @stack('scripts')
 </body>

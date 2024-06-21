@@ -25,6 +25,8 @@
  *  \brief      File of class to build ODT documents for third parties
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/societe/modules_societe.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';

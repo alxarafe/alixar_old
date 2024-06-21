@@ -2,7 +2,7 @@
 
 @section('body')
     <input type="hidden" name="testpost" value="ok">
-    <input type="hidden" name="language" value="{!! $me->config->main->language!!}">
+    <input type="hidden" name="language" value="{!! $me->config->main->language !!}">
     <tr>
         <td>
             <h3>

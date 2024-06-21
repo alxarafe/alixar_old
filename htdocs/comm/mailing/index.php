@@ -26,6 +26,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\HookManager;
+
 require BASE_PATH . '/main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/comm/mailing/class/mailing.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';

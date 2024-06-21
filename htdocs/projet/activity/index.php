@@ -27,6 +27,7 @@
  *  \brief      Page on activity of projects
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Project\Model\Project;
 use DoliModules\Project\Model\Task;
 

@@ -28,6 +28,7 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\HookManager;
 use DoliModules\Bom\Model\Bom;
 
 require BASE_PATH . '/main.inc.php';

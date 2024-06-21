@@ -18,7 +18,7 @@
 
 namespace DoliCore\Base;
 
-use Alxarafe\Base\GenericController;
+use Alxarafe\Base\Controller\GenericController;
 
 /**
  * Class DolibarrGenericController. The generic controller contains what is necessary for any controller

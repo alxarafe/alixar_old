@@ -25,6 +25,8 @@
  *      \brief      Ensemble de functions de base pour les contacts
  */
 
+use DoliCore\Lib\Conf;
+
 /**
  * Prepare array with list of tabs
  *

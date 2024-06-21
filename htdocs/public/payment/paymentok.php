@@ -30,6 +30,7 @@
  *                  This token and session can be used to get more information.
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Stripe\Model\Stripe;
 
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.

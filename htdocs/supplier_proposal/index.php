@@ -28,6 +28,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\Company;
 use DoliModules\SupplierProposal\Model\SupplierProposal;
 

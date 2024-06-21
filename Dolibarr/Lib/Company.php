@@ -39,6 +39,7 @@
 use DoliCore\Form\Form;
 use DoliCore\Form\FormActions;
 use DoliCore\Form\FormCompany;
+use DoliCore\Lib\Conf;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\Agenda\Model\ActionComm;
 use DoliModules\Agenda\Model\CActionComm;

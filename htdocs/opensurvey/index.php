@@ -25,6 +25,8 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\HookManager;
+
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';

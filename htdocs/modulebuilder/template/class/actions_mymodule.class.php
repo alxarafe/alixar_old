@@ -24,6 +24,8 @@
  * Put detailed description here.
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/class/commonhookactions.class.php';
 
 /**

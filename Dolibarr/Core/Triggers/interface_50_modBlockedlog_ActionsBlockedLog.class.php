@@ -18,6 +18,7 @@
  */
 
 use DoliCore\Base\DolibarrTriggers;
+use DoliCore\Lib\Conf;
 use DoliModules\BlockedLog\Model\BlockedLog;
 use DoliModules\User\Model\User;
 

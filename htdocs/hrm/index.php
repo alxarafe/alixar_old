@@ -28,6 +28,7 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Lib\HookManager;
 use DoliModules\Holiday\Model\Holiday;
 use DoliModules\User\Model\User;
 

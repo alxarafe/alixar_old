@@ -28,6 +28,7 @@
  */
 
 use DoliCore\Form\FormFile;
+use DoliCore\Lib\HookManager;
 use DoliModules\Supplier\Model\CommandeFournisseur;
 use DoliModules\User\Model\User;
 

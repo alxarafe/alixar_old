@@ -39,6 +39,8 @@
  *  \ingroup    core
  */
 
+use DoliCore\Lib\HookManager;
+
 include_once BASE_PATH . '/../Dolibarr/Lib/Signature.php';
 
 

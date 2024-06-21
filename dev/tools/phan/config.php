@@ -16,10 +16,10 @@ return [
     'simplify_ast' => true,
     'analyzed_file_extensions' => ['php','inc'],
     'globals_type_map' => [
-        'conf' => '\Conf',
+        'conf' => '\DoliCore\Lib\Conf',
         'db' => '\DoliDB',
         'extrafields' => '\DoliCore\Lib\ExtraFields',
-        'hookmanager' => '\HookManager',
+        'hookmanager' => '\DoliCore\Lib\HookManager',
         'langs' => '\Translate',
         'mysoc' => '\Societe',
         'nblines' => '\int',

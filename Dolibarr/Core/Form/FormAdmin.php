@@ -191,10 +191,10 @@ class FormAdmin
         return $out;
     }
 
-    public function select_theme($selected = 'adminlte')
+    public function select_theme($selected = 'alixar')
     {
         $options = [
-            'adminlte' => 'AdminLTE',
+            'alixar' => 'Alixar',
             'eldy' => 'Dolibarr Eldy (deprecated)',
             'md' => 'Dolibarr MD (deprecated)',
         ];

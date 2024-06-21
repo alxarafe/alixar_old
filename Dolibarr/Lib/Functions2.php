@@ -27,6 +27,7 @@
  */
 
 use DoliCore\Lib\AveryLabels;
+use DoliCore\Lib\Conf;
 use DoliModules\User\Model\User;
 
 /**

@@ -29,6 +29,7 @@
 
 use DoliCore\Form\Form;
 use DoliCore\Form\FormFile;
+use DoliCore\Lib\HookManager;
 use DoliModules\Billing\Model\Commande;
 use DoliModules\Company\Model\Company;
 

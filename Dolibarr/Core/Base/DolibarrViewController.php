@@ -18,7 +18,7 @@
 
 namespace DoliCore\Base;
 
-use Alxarafe\Base\ViewTrait;
+use Alxarafe\Base\Controller\Trait\ViewTrait;
 
 /**
  * Class ViewController. The views controller adds support for views to the generic controller.

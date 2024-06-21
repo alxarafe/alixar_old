@@ -37,6 +37,8 @@
  *      \brief      Run migration script
  */
 
+use DoliCore\Lib\HookManager;
+
 define('ALLOWED_IF_UPGRADE_UNLOCK_FOUND', 1);
 include_once 'inc.php';
 if (!file_exists($conffile)) {

@@ -30,7 +30,7 @@
  *      \brief      Page to list payments of special expenses
  */
 
-use DoliCore\Form\Form;
+use DoliCore\Lib\HookManager;
 use DoliModules\Bank\Model\Account;
 
 // Load Dolibarr environment

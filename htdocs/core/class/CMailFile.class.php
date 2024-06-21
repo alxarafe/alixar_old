@@ -32,8 +32,9 @@
  *      \brief      File of class to send emails (with attachments or not)
  */
 
-use OAuth\Common\Storage\DoliStorage;
+use DoliCore\Lib\HookManager;
 use OAuth\Common\Consumer\Credentials;
+use OAuth\Common\Storage\DoliStorage;
 
 /**
  *  Class to send emails (with attachments or not)

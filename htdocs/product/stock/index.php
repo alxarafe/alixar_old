@@ -27,6 +27,7 @@
  *  \brief      Home page of stock area
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Product\Model\Product;
 
 // Load Dolibarr environment

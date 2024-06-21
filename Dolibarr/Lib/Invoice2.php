@@ -26,6 +26,8 @@
  *      \brief      Function to rebuild PDF and merge PDF files into one
  */
 
+use DoliCore\Lib\Conf;
+
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';
 

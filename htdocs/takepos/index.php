@@ -40,7 +40,6 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php'; // Load $user and permissions
-require_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
 
 

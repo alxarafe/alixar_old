@@ -24,6 +24,8 @@
  *      \brief      File with parent class for password generating classes
  */
 
+use DoliCore\Lib\Conf;
+
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 
 

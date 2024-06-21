@@ -3,7 +3,7 @@
 @section('body')
     <tbody>
     <input type="hidden" name="action" value="create_admin_user">
-    <input type="hidden" name="language" value="{!! $me->config->main->language!!}">
+    <input type="hidden" name="language" value="{!! $me->config->main->language !!}">
     <h3>
         <img class="valignmiddle inline-block paddingright"
              src="{!! $me->config->main->url !!}/Templates/common/octicons/build/svg/database.svg"

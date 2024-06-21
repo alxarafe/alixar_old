@@ -31,6 +31,8 @@
  *  \brief      File of Class to build interventions documents with model Soleil
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/fichinter/modules_fichinter.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';

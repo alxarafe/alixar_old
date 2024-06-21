@@ -40,6 +40,8 @@
  *  \brief      Upgrade some data
  */
 
+use DoliCore\Lib\Conf;
+use DoliCore\Lib\HookManager;
 use DoliModules\Billing\Model\OrderLine;
 use DoliModules\BlockedLog\Model\BlockedLog;
 

@@ -24,6 +24,7 @@
  *  \brief      File of class to generate document with template sepamandate
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\CompanyBankAccount;
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/bank/modules_bank.php';

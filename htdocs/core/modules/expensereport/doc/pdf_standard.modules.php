@@ -32,6 +32,8 @@
  *  \brief      File of class to generate expense report from standard model
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/expensereport/modules_expensereport.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';

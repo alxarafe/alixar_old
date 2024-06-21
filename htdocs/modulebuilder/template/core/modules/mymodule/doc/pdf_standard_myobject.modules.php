@@ -32,6 +32,8 @@
  *  \brief      File of class to generate document from standard template
  */
 
+use DoliCore\Lib\HookManager;
+
 dol_include_once('/mymodule/core/modules/mymodule/modules_myobject.php');
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';

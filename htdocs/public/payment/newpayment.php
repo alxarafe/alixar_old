@@ -37,6 +37,7 @@
  *      \brief      File to offer a way to make a payment for a particular Dolibarr object
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Stripe\Model\Stripe;
 
 defineIfNotDefined('NOLOGIN', '1'); // This means this output page does not require to be logged.

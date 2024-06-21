@@ -26,6 +26,8 @@
  *      \brief      File to manage no password generation.
  */
 
+use DoliCore\Lib\Conf;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/security/generate/modules_genpassword.php';
 
 

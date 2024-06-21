@@ -22,6 +22,7 @@
  */
 
 use DoliCore\Base\DolibarrTriggers;
+use DoliCore\Lib\Conf;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\User\Model\User;
 

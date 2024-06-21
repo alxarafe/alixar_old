@@ -22,6 +22,8 @@
  */
 
 use DoliCore\Base\DolibarrTriggers;
+use DoliCore\Lib\Conf;
+use DoliCore\Lib\HookManager;
 use DoliModules\User\Model\User;
 
 /**

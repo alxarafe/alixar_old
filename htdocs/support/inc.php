@@ -26,9 +26,10 @@
  */
 
 // Define DOL_DOCUMENT_ROOT
+use DoliCore\Lib\Conf;
+
 defineIfNotDefined('DOL_DOCUMENT_ROOT', '..');
 
-require_once DOL_DOCUMENT_ROOT . '/core/class/conf.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/translate.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
@@ -191,7 +192,7 @@ function loadconf($dolibarr_main_document_root)
     global $character_set_client;
 
     $return = 1;
-    if (!class_exists('Conf')) {
+    if (!class_exists('DoliCore\Lib\Conf')) {
         $return = include_once $dolibarr_main_document_root . '/core/class/conf.class.php';
     }
     if (!$return) {

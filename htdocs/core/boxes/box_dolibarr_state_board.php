@@ -26,8 +26,9 @@
  *  \brief      Module Dolibarr state base
  */
 
-use DoliCore\Lib\Misc;
 use DoliCore\Base\GenericBoxes;
+use DoliCore\Lib\HookManager;
+use DoliCore\Lib\Misc;
 
 /**
  * Class to manage the box to show last thirdparties

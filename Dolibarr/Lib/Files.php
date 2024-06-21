@@ -30,6 +30,8 @@
  *  \brief      Library for file managing functions
  */
 
+use DoliCore\Lib\HookManager;
+
 /**
  * Make a basename working with all page code (default PHP basenamed fails with cyrillic).
  * We suppose dir separator for input is '/'.

@@ -8,6 +8,7 @@
  *            because it is used at low code level.
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\User\Model\User;
 
 /**

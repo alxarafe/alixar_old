@@ -40,9 +40,9 @@
 
 namespace DoliModules\Company\Model;
 
-use Conf;
 use DoliCore\Base\CommonPeople;
 use DoliCore\Base\GenericDocument;
+use DoliCore\Lib\Conf;
 use DoliModules\Billing\Model\Facture;
 use DoliModules\Billing\Trait\CommonIncoterm;
 use DoliModules\Contact\Trait\CommonSocialNetworks;

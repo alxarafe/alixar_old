@@ -26,6 +26,8 @@
  *  \brief      Class file to generate the supplier invoice payment file with the standard model
  */
 
+use DoliCore\Lib\HookManager;
+
 require_once DOL_DOCUMENT_ROOT . '/core/modules/supplier_payment/modules_supplier_payment.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Pdf.php';

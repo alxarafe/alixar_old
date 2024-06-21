@@ -26,6 +26,7 @@
  *  \brief      File of class to build ODT documents for third parties
  */
 
+use DoliCore\Lib\HookManager;
 use DoliModules\Company\Model\CompanyBankAccount;
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/propale/modules_propale.php';

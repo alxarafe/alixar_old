@@ -19,7 +19,7 @@
 
 namespace DoliCore\Base;
 
-use Conf;
+use DoliCore\Lib\Conf;
 use DoliDB;
 use DoliModules\User\Model\User;
 use Translate;
