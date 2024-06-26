@@ -41,7 +41,7 @@ abstract class DolibarrController extends DolibarrViewController
     {
         $this->conf = Config::getConf();
         $this->config = Config::getConfig($this->conf);
-        $this->db = Config::getDb($this->conf);
+        $this->db = Config::getDb($this->config->db);
         $this->hookmanager = Config::getHookManager();
         $this->user = Config::getUser();
         if ($this->user === null || $this->user->db->lasterrno === 'DB_ERROR_NOSUCHTABLE') {

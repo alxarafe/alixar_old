@@ -432,20 +432,15 @@ if (!empty($_COOKIE[$sessiontimeout])) {
 // This create lock, released by session_write_close() or end of page.
 // We need this lock as long as we read/write $_SESSION ['vars']. We can remove lock when finished.
 if (!defined('NOSESSION')) {
-    if (PHP_VERSION_ID < 70300) {
-        session_set_cookie_params(0, '/', null, ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true), true); // Add tag secure and httponly on session cookie (same as setting session.cookie_httponly into php.ini). Must be called before the session_start.
-    } else {
-        // Only available for php >= 7.3
-        $sessioncookieparams = [
-            'lifetime' => 0,
-            'path' => '/',
-            //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
-            'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
-            'httponly' => true,
-            'samesite' => 'Lax', // None || Lax  || Strict
-        ];
-        session_set_cookie_params($sessioncookieparams);
-    }
+    $sessioncookieparams = [
+        'lifetime' => 0,
+        'path' => '/',
+        //'domain' => '.mywebsite.com', // the dot at the beginning allows compatibility with subdomains
+        'secure' => ((empty($dolibarr_main_force_https) && isHTTPS() === false) ? false : true),
+        'httponly' => true,
+        'samesite' => 'Lax', // None || Lax  || Strict
+    ];
+    session_set_cookie_params($sessioncookieparams);
     session_name($sessionname);
     session_start();    // This call the open and read of session handler
     //exit; // this exist generates a call to write and close
@@ -453,6 +448,16 @@ if (!defined('NOSESSION')) {
 
 // Init the 6 global objects, this include will make the 'new Xxx()' and set properties for: $conf, $db, $langs, $user, $mysoc, $hookmanager
 require_once 'master.inc.php';
+/*
+dd([
+    'conf' => $conf,
+    'langs' => $langs,
+    'db' => $db,
+    'user' => $user,
+    'mysoc'=>$mysoc,
+    'hookmanager' => $hookmanager,
+]);
+*/
 
 // Uncomment this and set session.save_handler = user to use local session storing
 // include DOL_DOCUMENT_ROOT.'/core/lib/phpsessionindb.inc.php
@@ -776,6 +781,7 @@ if (is_array($modulepart)) {
 }
 
 require_once BASE_PATH . '/login.inc.php';
+dd('end');
 
 // Case forcing style from url
 if (GETPOST('theme', 'aZ09')) {

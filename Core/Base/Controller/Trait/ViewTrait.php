@@ -22,25 +22,39 @@ use Jenssegers\Blade\Blade;
 
 trait ViewTrait
 {
+    public static $messages = [];
     /**
      * Theme name. TODO: Has to be updated according to the configuration.
      *
      * @var string
      */
     public $theme;
-
     /**
      * Code lang for <html lang> tag
      *
      * @var string
      */
     public $lang = 'en';
-
     public $body_class;
-
     public $templatesPath;
     public $template;
     public $title;
+    public $alerts;
+
+    public static function addMessage($message)
+    {
+        self::$messages[]['success'] = $message;
+    }
+
+    public static function addAdvice($message)
+    {
+        self::$messages[]['warning'] = $message;
+    }
+
+    public static function addError($message)
+    {
+        self::$messages[]['danger'] = $message;
+    }
 
     public function __destruct()
     {
@@ -56,6 +70,8 @@ trait ViewTrait
             $this->title = 'Alixar';
         }
 
+        $this->alerts = static::getMessages();
+
         $vars = ['me' => $this];
         $viewPaths = [
             $this->templatesPath,
@@ -69,6 +85,21 @@ trait ViewTrait
         }
         $blade = new Blade($viewPaths, $cachePaths);
         echo $blade->render($this->template, $vars);
+    }
+
+    public static function getMessages()
+    {
+        $alerts = [];
+        foreach (self::$messages as $message) {
+            foreach ($message as $type => $text) {
+                $alerts[] = [
+                    'type' => $type,
+                    'text' => $text
+                ];
+            }
+        }
+        self::$messages = [];
+        return $alerts;
     }
 
     public function getTemplatesPath(): string

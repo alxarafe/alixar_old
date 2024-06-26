@@ -430,9 +430,12 @@ abstract class Config extends ConfigBase
      *
      * @return DoliDB|null
      */
-    public static function getDb(): ?DoliDB
+    public static function getDb($db): ?DoliDB
     {
-        return static::$db;
+        if (!isset(self::$db)) {
+            self::$db = getDoliDBInstance($db->type, $db->host, $db->user, $db->pass, $db->name, (int)$db->port);
+        }
+        return self::$db;
     }
 
     /**

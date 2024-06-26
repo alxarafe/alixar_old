@@ -18,8 +18,36 @@
 
 namespace Alxarafe\Lib;
 
+use Alxarafe\Model\User;
+
 abstract class Auth
 {
+    private const COOKIE_NAME = 'alxarafe_login';
+    private const COOKIE_USER = self::COOKIE_NAME . '_user';
+    private const COOKIE_EXPIRE_TIME = 30 * 86400; // 30 days
+    private const COOKIE_SAMESITE = 'Strict';
+
+    public static $user = null;
+
+    public static function isLogged()
+    {
+        $userId = FILTER_INPUT(INPUT_COOKIE, self::COOKIE_USER);
+        $token = FILTER_INPUT(INPUT_COOKIE, self::COOKIE_NAME);
+        if (empty($token)) {
+            return false;
+        }
+
+        if (!isset(self::$user)) {
+            self::$user = User::find($userId);
+        }
+
+        if (!isset(self::$user)) {
+            return false;
+        }
+
+        return self::$user->token === $token;
+    }
+
     /**
      * Return true if login is correct with user/mail and password.
      * TODO: This is a test. It will be checked against a user database.
@@ -31,34 +59,56 @@ abstract class Auth
      */
     public static function login($username, $password)
     {
-        static::logout();
+        //static::logout();
 
-        // If bad user or password, no login
-        if ($username !== 'user' || $password !== 'password') {
+        $user = User::where('name', $username)->first();
+        if (!isset($user)) {
             return false;
         }
 
-        // Save the cookie
-        $rememberme = filter_input(INPUT_POST, 'rememberme');
-        $time = time() + 3600;
-        if (isset($rememberme)) {
-            $time += 365 * 24 * 60 * 60;
+        if (!password_verify($password, $user->password)) {
+            return false;
         }
-        setcookie('login_alixar', $username, $time);
+
+        self::setLoginCookie($user->id);
+
         return true;
+    }
+
+    public static function setLoginCookie($userId)
+    {
+        $token = self::generateToken();
+
+        if (!isset(self::$user)) {
+            self::$user = User::find($userId);
+        }
+        if (isset(self::$user)) {
+            self::$user->saveToken($token);
+        }
+
+        $cookie_options = [
+            'expires' => time() + self::COOKIE_EXPIRE_TIME,
+            'path' => '/',
+            'domain' => $_SERVER['HTTP_HOST'],
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => self::COOKIE_SAMESITE,
+        ];
+
+        setcookie(self::COOKIE_USER, $userId);
+        setcookie(self::COOKIE_NAME, $token, $cookie_options);
+    }
+
+    private static function generateToken($length = 32)
+    {
+        return bin2hex(random_bytes($length));
     }
 
     public static function logout()
     {
-        // Erase old cookie.
-        setcookie('login_alixar', '', time() - 60);
+        // Erase old cookies.
+        setcookie(self::COOKIE_USER, '', time() - 60);
+        setcookie(self::COOKIE_NAME, '', time() - 60);
     }
 
-    public static function isLogged()
-    {
-        /**
-         * TODO: This is a test.
-         */
-        return $_COOKIE['login_alixar'];
-    }
 }

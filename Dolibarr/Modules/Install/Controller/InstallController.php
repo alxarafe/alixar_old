@@ -41,7 +41,7 @@ use PDO;
 use stdClass;
 
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
-require_once BASE_PATH . '/install/inc.php';
+//require_once BASE_PATH . '/install/inc.php';
 
 class InstallController extends ViewController
 {

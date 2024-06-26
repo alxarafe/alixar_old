@@ -18,7 +18,7 @@
 
 namespace Alxarafe\Base\Controller;
 
-// use Illuminate\Database\Capsule\Manager as DB;
+use Alxarafe\Base\Database;
 use Alxarafe\Base\Controller\Trait\DbTrait;
 use Alxarafe\Lib\Auth;
 
@@ -30,67 +30,25 @@ use Alxarafe\Lib\Auth;
 abstract class Controller extends ViewController
 {
     use DbTrait;
-    private static $config=null;
+
+    public $db = null;
+    public $username;
 
     public function __construct()
     {
-        static::connectDb();
-
-        // $db = DB::connection()->getPdo();
-
         parent::__construct();
-        $this->checkLogin();
-    }
 
-    public function checkLogin()
-    {
-        if ($this->action === 'logout') {
-            return $this->doLogout();
+        if (!static::connectDb($this->config->db)) {
+            throw new \Exception('Cannot connect to database.');
         }
-        if ($this->action !== 'login') {
-            return true;
-        }
-        $this->doLogin();
-    }
 
-    public function doLogout()
-    {
-        Auth::logout();
-        return true;
-    }
+        $this->db = new Database($this->config->db);
 
-    public function doLogin()
-    {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $ok = Auth::login($username, $password);
-        if ($ok) {
-            $this->message = 'Login ok';
-        } else {
-            $this->alert = 'Login KO';
+        if (!Auth::isLogged()) {
+            dump('Usuario no identificado');
+            header('Location: ' . BASE_URL . '/index.php?module=Admin&controller=Auth');
         }
-        return $ok;
-    }
 
-    public function index(bool $executeActions = true): bool
-    {
-        $log = $this->isLogged();
-        if (!$log) {
-            $login = $this->doLogin();
-            if (!$login) {
-                $this->template = 'auth/login';
-                $this->action = 'index';
-                $executeActions = false;
-            }
-        }
-        return parent::index($executeActions);
-    }
-
-    private function isLogged()
-    {
-        if (!isset($this->username)) {
-            $this->username = Auth::isLogged();
-        }
-        return isset($this->username);
+        $this->username = Auth::$user->name;
     }
 }

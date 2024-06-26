@@ -17,16 +17,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use DoliCore\Base\Config;
 use DoliCore\Tools\Dispatcher;
 use DoliModules\Api\Controller\ApiController;
 
-/**
- * @deprecated It is needed only to display queries to the database using Dolibarr calls.
- */
-global $db;
-
 const BASE_PATH = __DIR__;
+
 $autoload_filename = realpath(BASE_PATH . '/../vendor/autoload.php');
 if (!file_exists($autoload_filename)) {
     die('<h1>COMPOSER ERROR</h1><p>You need to run: "composer install"</p>');
@@ -36,39 +31,9 @@ require_once $autoload_filename;
 
 define('BASE_URL', getUrl());
 
-/**
- * @deprecated Use BASE_PATH instead.
- */
-const DOL_DOCUMENT_ROOT = BASE_PATH;
-
-/**
- * @deprecated Use BASE_URL instead.
- */
-const DOL_URL_ROOT = BASE_URL;
-
-//$conf = Config::loadConfig();
-
-/**
- * @deprecated Necessary for compatibility with Dolibarr
- */
-define('DOL_DATA_ROOT', $conf->main->data_path ?? Config::getDataDir(BASE_PATH));
-
 const DOL_APPLICATION_TITLE = 'Alixar';
 const DOL_VERSION = '20.0.0-alpha';
 const APPLICATION_VERSION = '0.0';
-
-/**
- * Load the configuration file and initialize all the variables of the Config class.
- * At the moment it uses Config in Deprecated, but the functionalities will have to be moved to Core.
- */
-try {
-    Config::load();
-} catch (\DebugBar\DebugBarException $e) {
-    dump($e);
-    die('loading-error');
-}
-
-$conf = Config::getConf()->modules;
 
 /**
  * If a value has been defined for the GET controller variable, an attempt
@@ -95,13 +60,9 @@ $page = filter_input(INPUT_GET, GET_ROUTE_VAR);
 $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
 $api = filter_input(INPUT_GET, GET_API_VAR);
 
+// TODO: Does not work!
 if ($api) {
     new ApiController($api);
-    die();
-}
-
-if (empty($page) && empty($ctrl)) {
-    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
     die();
 }
 
@@ -114,8 +75,8 @@ if (!empty($api)) {
 
 $path = BASE_PATH . DIRECTORY_SEPARATOR . $page . DIRECTORY_SEPARATOR . $ctrl . '.php';
 if (!file_exists($path)) {
-    require BASE_PATH . DIRECTORY_SEPARATOR . 'index_dol.php';
-    die();
+    $path = BASE_PATH . '/user/dashboard.php';
 }
 
+require BASE_PATH . '/dolibarr.php';
 require $path;

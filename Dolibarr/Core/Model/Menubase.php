@@ -22,6 +22,8 @@
 
 namespace DoliCore\Model;
 
+use DoliCore\Base\Config;
+
 /**
  *  \file       htdocs/core/class/menubase.class.php
  *  \ingroup    core
@@ -804,8 +806,10 @@ class Menubase
      */
     public function menuLoad($mymainmenu, $myleftmenu, $type_user, $menu_handler, &$tabMenu)
     {
-        global $langs, $user, $conf; // To export to dol_eval function
+        global $langs, $user; // To export to dol_eval function
         global $mainmenu, $leftmenu; // To export to dol_eval function
+
+        $conf = Config::getConf();
 
         $mainmenu = $mymainmenu; // To export to dol_eval function
         $leftmenu = $myleftmenu; // To export to dol_eval function

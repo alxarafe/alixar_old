@@ -23,20 +23,18 @@ use DoliModules\Install\Controller\InstallController;
 
 trait DbTrait
 {
-    public static function connectDb(?stdClass $db=null): bool
+    public static function connectDb(\stdClass|null $db = null): bool
     {
         if ($db === null) {
             return false;
         }
+
         $checkDatabase = Config::checkDatabaseConnection($db);
         if (!$checkDatabase) {
-            dump([
-                'db' => $db,
-                'check' => $checkDatabase,
-            ]);
             (new InstallController())->doIndex();
             die();
         }
+        return true;
     }
 
 }

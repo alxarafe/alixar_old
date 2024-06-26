@@ -1,11 +1,12 @@
 <?php
 
-/* Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
+/**
+ * Copyright (C) 2024       Rafael San José         <rsanjose@alxarafe.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
- * any later version.
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,16 +17,12 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Modules\Admin\Controller;
+/**
+ * @deprecated Use BASE_PATH or config->main->path instead!
+ */
+const DOL_DOCUMENT_ROOT = BASE_PATH;
 
-use Alxarafe\Base\Controller\PublicController as BasePublicController;
-
-class PublicController extends BasePublicController
-{
-
-    public function doIndex(): bool
-    {
-        $this->template = 'page/public';
-        return true;
-    }
-}
+/**
+ * @deprecated Use BASE_URL or config->main->url instead!
+ */
+const DOL_URL_ROOT = BASE_URL;

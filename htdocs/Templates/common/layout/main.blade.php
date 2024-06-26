@@ -4,7 +4,7 @@
     @include('partial.head')
 </head>
 <body class="container">
-@include('partial.body')
-@stack('scripts')
+@include('partial.body_standard')
+@include('partial.footer')
 </body>
 </html>

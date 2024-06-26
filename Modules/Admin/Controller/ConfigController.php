@@ -38,7 +38,31 @@ class ConfigController extends ViewController
         return true;
     }
 
-    public function doSave():bool
+    public function doLogin()
+    {
+        $this->template = 'page/admin/login';
+        $login = filter_input(INPUT_POST, 'login');
+        if (!$login) {
+            return true;
+        }
+
+        $username = filter_input(INPUT_POST, 'username');
+        $password = filter_input(INPUT_POST, 'password');
+        if (!Auth::login($username, $password)) {
+            $this->advice[] = 'Usuario o contraseña incorrectos';
+            dump($this);
+            return true;
+        }
+        $this->template = 'page/admin/info';
+    }
+
+    public function doLogout()
+    {
+        Auth::logout(true);
+        return true;
+    }
+
+    public function doSave(): bool
     {
         dump($_POST);
         return false;

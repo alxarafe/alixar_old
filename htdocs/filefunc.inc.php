@@ -74,7 +74,7 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // Include configuration
 // $result = @include $conffile; // Keep @ because with some error reporting mode, this breaks the redirect done when file is not found
 
-if (isset($config) && isset($config->security)) {
+if (isset($config->security->stream_to_disable)) {
     unregisterStreamWrappers($config->security->stream_to_disable);
 }
 
@@ -121,7 +121,7 @@ $dolibarr_main_document_root_alt = is_array($config->main->path) ? implode(',', 
 /**
  * @deprecated Contains the main_path. Use $config->main->data_path instead!
  */
-$dolibarr_main_data_root = $config->main->data_path;
+$dolibarr_main_data_root = $config->main->data;
 
 /**
  * @deprecated Contains the db host. Use $config->db->host instead!
@@ -156,12 +156,12 @@ $dolibarr_main_db_collation = $config->db->collation;
 /**
  * @deprecated Contains the encryption. Use $config->db->encryption instead!
  */
-$dolibarr_main_db_encryption = $config->db->encryption;
+$dolibarr_main_db_encryption = $config->db->encryption ?? 0;
 
 /**
  * @deprecated Contains the cryptkey. Use $config->db->cryptkey instead!
  */
-$dolibarr_main_db_cryptkey = $config->db->cryptkey;
+$dolibarr_main_db_cryptkey = $config->db->cryptkey ?? '';
 
 /**
  * TODO: Add to $config

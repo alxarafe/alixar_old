@@ -25,7 +25,7 @@ class InfoController extends Controller
 
     public function doIndex(): bool
     {
-        dump(['doIndex in InfoController' => $this]);
+        $this->template = 'page/info';
         return true;
     }
 }

@@ -19,6 +19,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use DoliCore\Base\Config;
+
 /**
  * \file        htdocs/core/db/DoliDB.class.php
  * \brief        Class file to manage Dolibarr database access
@@ -83,7 +85,8 @@ abstract class DoliDB implements Database
      */
     public function prefix()
     {
-        global $conf;
+        $conf = Config::getConfig();
+
         return (empty($this->prefix_db) ? $conf->db->prefix : $this->prefix_db);
     }
 
