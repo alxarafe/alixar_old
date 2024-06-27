@@ -666,8 +666,8 @@ class InstallController extends ViewController
 
     private function createUser(string $username, string $password): bool
     {
-        $db = Config::getDb();
         $conf = Config::getConf();
+        $db = Config::getDb($conf->db);
 
         if (!isset($this->vars->errors)) {
             $this->vars->errors = [];

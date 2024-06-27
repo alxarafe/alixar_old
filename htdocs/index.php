@@ -36,11 +36,19 @@ const DOL_VERSION = '20.0.0-alpha';
 const APPLICATION_VERSION = '0.0';
 
 /**
+ * @see htdocs/.htaccess
+ */
+const GET_ROUTE_VAR = 'url_route';
+const GET_FILENAME_VAR = 'url_filename';
+const GET_API_VAR = 'api_route';
+
+/**
  * If a value has been defined for the GET controller variable, an attempt
  * is made to launch the controller.const CONTROLLER_VAR = 'controller';
  */
 const MODULE_NAME_VAR = 'module';
 const CONTROLLER_VAR = 'controller';
+
 $module = filter_input(INPUT_GET, MODULE_NAME_VAR);
 $controller = filter_input(INPUT_GET, CONTROLLER_VAR);
 if (isset($module) && isset($controller)) {
@@ -48,13 +56,6 @@ if (isset($module) && isset($controller)) {
         die(); // The controller has been executed succesfully!
     }
 }
-
-/**
- * @see htdocs/.htaccess
- */
-const GET_ROUTE_VAR = 'url_route';
-const GET_FILENAME_VAR = 'url_filename';
-const GET_API_VAR = 'api_route';
 
 $page = filter_input(INPUT_GET, GET_ROUTE_VAR);
 $ctrl = filter_input(INPUT_GET, GET_FILENAME_VAR);
@@ -78,5 +79,4 @@ if (!file_exists($path)) {
     $path = BASE_PATH . '/user/dashboard.php';
 }
 
-require BASE_PATH . '/dolibarr.php';
 require $path;

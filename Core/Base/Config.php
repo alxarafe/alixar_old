@@ -18,6 +18,7 @@
 
 namespace Alxarafe\Base;
 
+use DoliCore\Base\Constants;
 use Exception;
 use PDO;
 use stdClass;
@@ -96,6 +97,17 @@ abstract class Config
             return false;
         }
         return true;
+    }
+
+    public static function getConfig(bool $reload = false): ?stdClass
+    {
+        if ($reload || !isset(self::$config)) {
+            self::$config = self::loadConfig($reload);
+        }
+
+        Constants::define(self::$config);
+
+        return self::$config;
     }
 
     /**
@@ -184,7 +196,7 @@ abstract class Config
      * @param bool $reload
      * @return stdClass|null
      */
-    public static function loadConfig(bool $reload = false): ?stdClass
+    private static function loadConfig(bool $reload = false): ?stdClass
     {
         if (!$reload && isset(self::$config)) {
             return self::$config;

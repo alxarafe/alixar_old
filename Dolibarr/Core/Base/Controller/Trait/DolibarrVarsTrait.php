@@ -16,25 +16,35 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Alxarafe\Base\Controller;
+namespace DoliCore\Base\Controller\Trait;
 
 use Alxarafe\Base\Config;
-use Alxarafe\Base\Controller\Trait\ViewTrait;
+use DoliCore\Tools\Load;
 
-/**
- * Class ViewController. The views controller adds support for views to the generic controller.
- *
- * @package Alxarafe\Base
- */
-abstract class ViewController extends GenericController
+trait DolibarrVarsTrait
 {
-    use ViewTrait;
+    public $conf;
+    public $config;
+    public $db;
+    public $menumanager;
+    public $hookmanager;
+    public $user;
+    public $langs;
+    public $mysoc;
 
-    public $config = null;
-
-    public function __construct()
+    public function loadVars()
     {
-        parent::__construct();
+        $this->conf = Load::getConfig();
         $this->config = Config::getConfig();
+        $this->db = Load::getDB();
+        $this->hookmanager = Load::getHookManager();
+        $this->langs = Load::getLangs();
+        $this->user = Load::getUser();
+        $this->menumanager = Load::getMenuManager();
+        if (isset($this->menumanager)) {
+            $this->menumanager->loadMenu();
+        }
+        $this->mysoc = Load::getMySoc();
     }
+
 }

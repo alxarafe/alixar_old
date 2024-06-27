@@ -74,11 +74,15 @@ trait ViewTrait
 
         $vars = ['me' => $this];
         $viewPaths = [
-            $this->templatesPath,
             BASE_PATH . '/Templates',
             BASE_PATH . '/Templates/theme/' . $this->theme,
             BASE_PATH . '/Templates/common',
         ];
+
+        if (isset($this->templatesPath)) {
+            array_unshift($viewPaths, $this->templatesPath);
+        }
+
         $cachePaths = realpath(BASE_PATH . '/..') . '/tmp/blade';
         if (!is_dir($cachePaths) && !mkdir($cachePaths, 0777, true) && !is_dir($cachePaths)) {
             die('Could not create cache directory for templates: ' . $cachePaths);

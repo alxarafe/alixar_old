@@ -9,6 +9,7 @@
  */
 
 use DoliCore\Lib\HookManager;
+use DoliCore\Tools\Load;
 use DoliModules\User\Model\User;
 
 /**
@@ -172,7 +173,7 @@ function dolEncrypt($chain, $key = '', $ciphering = 'AES-256-CTR', $forceseed = 
  */
 function dolDecrypt($chain, $key = '')
 {
-    global $conf;
+    $conf = Load::getConfig();
 
     if ($chain === '' || is_null($chain)) {
         return '';

@@ -5,7 +5,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
- * any later version.
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,48 +16,33 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Modules\Admin\Controller;
+namespace DoliModules\Auth\Controller;
 
-use Alxarafe\Base\Controller\Trait\DbTrait;
-use Alxarafe\Base\Controller\ViewController;
-use Alxarafe\Base\Database;
-use Alxarafe\Lib\Auth;
-use Alxarafe\Model\User;
+use Alxarafe\Base\Controller\PublicController;
+use DoliCore\Base\Controller\Trait\DolibarrVarsTrait;
+use DoliLib\DolibarrAuth;
+use DoliModules\User\Controller\DashboardController;
 
-class AuthController extends ViewController
+/**
+ * This is the Dolibarr Login controller
+ */
+class LoginController extends PublicController
 {
-    use DbTrait;
+    use DolibarrVarsTrait;
 
     public $username;
     public $password;
     public $remember;
-    public $db;
 
-    public function __construct()
-    {
-        parent::__construct();
-        if (!static::connectDb($this->config->db)) {
-            throw new \Exception('Cannot connect to database.');
-        }
-
-        $this->db = new Database($this->config->db);
-
-        if (!User::exists()) {
-            User::createTable();
-        }
-
-        if (User::count() === 0) {
-            User::createAdmin();
-        }
-    }
-
-    public function doIndex()
+    public function doIndex(): bool
     {
         return $this->doLogin();
     }
 
-    public function doLogin()
+    public function doLogin(): bool
     {
+        $this->loadVars();
+
         $this->template = 'page/admin/login';
 
         $this->username = filter_input(INPUT_POST, 'username');
@@ -69,21 +54,19 @@ class AuthController extends ViewController
             return true;
         }
 
-        if (!Auth::login($this->username, $this->password)) {
+        $auth = DolibarrAuth::login($this->username, $this->password);
+        if (!$auth) {
             static::addAdvice('Usuario o contraseña incorrectos');
             return true;
         }
+        static::addMessage("Usuario '$this->username' identificado correctamente.");
 
-        $this->template = 'page/info';
-        static::addMessage('Usuario ' . $this->username . ' identificado correctamente');
+        DolibarrAuth::setSession($this->username);
 
-        return true;
+        $dashboard = new DashboardController();
+
+        dd($this,$dashboard);
+        $dashboard->index();
+        die();
     }
-
-    public function doLogout()
-    {
-        Auth::logout();
-        return true;
-    }
-
 }

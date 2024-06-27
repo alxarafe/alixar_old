@@ -36,6 +36,8 @@ abstract class Constants
 
     public static function define($config)
     {
+        static::defineIfNotExists('DOL_DOCUMENT_ROOT', constant('BASE_PATH'));
+        static::defineIfNotExists('DOL_URL_ROOT', constant('BASE_URL'));
         static::defineIfNotExists('DOL_DATA_ROOT', $config->main->data);
         static::defineIfNotExists('MAIN_DB_PREFIX', $config->db->prefix);
     }

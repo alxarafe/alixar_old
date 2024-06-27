@@ -81,7 +81,8 @@
       "Alixar\\": "htdocs/",
       "Modules\\": "Modules/",
       "DoliCore\\": "Dolibarr/Core",
-      "DoliModules\\": "Dolibarr/Modules"
+      "DoliModules\\": "Dolibarr/Modules",
+      "DoliLib\\": "Dolibarr/Lib"
     },
     "files": [
       "Core/Lib/Functions.php",

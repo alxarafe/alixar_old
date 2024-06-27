@@ -10,6 +10,7 @@ class User extends Model
 {
     protected $table = 'users';
     protected $fillable = ['name', 'email', 'password', 'token', 'is_admin'];
+    protected $hidden = ['password', 'token'];
 
     public static function createTable()
     {
@@ -38,12 +39,12 @@ class User extends Model
 
     public function saveToken($token)
     {
-        $this->token = $token;
+        $this->attributes['token'] = $token;
         return $this->save();
     }
 
     public function getToken()
     {
-        return $this->token;
+        return $this->attributes['token'];
     }
 }

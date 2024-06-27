@@ -39,6 +39,7 @@ use DoliCore\Base\Config;
 use DoliCore\Base\GenericDocument;
 use DoliCore\Form\Form;
 use DoliCore\Model\DefaultValues;
+use DoliCore\Tools\Load;
 use DoliDB;
 use stdClass;
 
@@ -1112,7 +1113,7 @@ class User extends GenericDocument
     public function fetch($id = 0, $login = '', $sid = '', $loadpersonalconf = 0, $entity = -1, $email = '', $fk_socpeople = 0, $use_email_oauth2 = 0)
     {
         global $conf, $user;
-        global $config;
+        $config = Load::getConfig();
         $dbPrefix = $config->db->prefix;
 
         // Clean parameters
@@ -1343,7 +1344,8 @@ class User extends GenericDocument
      */
     public function loadPersonalConf()
     {
-        global $conf;
+        $conf = Load::getConfig();
+        $dbPrefix = $conf->db->prefix;
 
         // Load user->conf for user
         $sql = "SELECT param, value FROM " . $dbPrefix . "user_param";

@@ -18,6 +18,8 @@
 
 namespace DoliCore\Base;
 
+use DoliCore\Base\Controller\Trait\DolibarrVarsTrait;
+
 /**
  * Class DolibarrController. Controller to carry out the migration from Dolibarr to Alixar.
  *
@@ -27,30 +29,13 @@ namespace DoliCore\Base;
  */
 abstract class DolibarrController extends DolibarrViewController
 {
-    public $conf;
-    public $config;
-    public $db;
-    public $menumanager;
-    public $hookmanager;
-    public $user;
-    public $langs;
+    use DolibarrVarsTrait;
 
     public $object;
 
     public function __construct()
     {
-        $this->conf = Config::getConf();
-        $this->config = Config::getConfig($this->conf);
-        $this->db = Config::getDb($this->config->db);
-        $this->hookmanager = Config::getHookManager();
-        $this->user = Config::getUser();
-        if ($this->user === null || $this->user->db->lasterrno === 'DB_ERROR_NOSUCHTABLE') {
-            header('Location: ' . BASE_URL . '/install');
-            die();
-        }
-        $this->menumanager = Config::getMenuManager($this->conf);
-        $this->langs = Config::getLangs($this->conf);
-
+        $this->loadVars();
         parent::__construct();
     }
 

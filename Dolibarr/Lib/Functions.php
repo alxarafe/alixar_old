@@ -46,6 +46,7 @@ use DoliCore\Form\FormActions;
 use DoliCore\Lib\Conf;
 use DoliCore\Lib\HookManager;
 use DoliCore\Tools\Debug;
+use DoliCore\Tools\Load;
 use DoliModules\Agenda\Model\ActionComm;
 use DoliModules\Agenda\Model\CActionComm;
 use DoliModules\Bom\Model\Bom;
@@ -1376,7 +1377,7 @@ function dol_include_once($relpath, $classname = '')
  */
 function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
 {
-    global $conf;
+    $conf = Load::getConfig();
 
     $path = preg_replace('/^\//', '', $path);
 
@@ -3210,8 +3211,8 @@ function dol_strftime($fmt, $ts = false, $is_gmt = false)
  */
 function dol_print_date($time, $format = '', $tzoutput = 'auto', $outputlangs = null, $encodetooutput = false)
 {
-    global $conf, $langs;
-    $langs = Config::getLangs();
+    $conf = Load::getConfig();
+    $langs = Load::getLangs();
 
     // If date undefined or "", we return ""
     if (dol_strlen($time) == 0) {

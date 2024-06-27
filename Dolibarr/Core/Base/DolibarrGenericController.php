@@ -35,9 +35,6 @@ abstract class DolibarrGenericController extends GenericController
      * @var string
      */
     protected string $controller;
-    //private $conf;
-    public $config;
-    public $langs;
 
     /**
      * GenericController constructor.
@@ -46,10 +43,7 @@ abstract class DolibarrGenericController extends GenericController
     {
         parent::__construct();
 
-        $this->config = Config::getConfig(Config::getConf());
-        $this->langs = Config::getLangs();
-
-        $this->controller = filter_input(INPUT_GET, GET_FILENAME_VAR) ?? 'index';
+        $this->controller = filter_input(INPUT_GET, constant('GET_FILENAME_VAR')) ?? 'index';
         if (method_exists($this, $this->controller)) {
             return $this->{$this->controller}();
         }
