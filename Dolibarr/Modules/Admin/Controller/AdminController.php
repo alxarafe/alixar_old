@@ -21,19 +21,11 @@
 
 namespace DoliModules\Admin\Controller;
 
-global $conf;
-global $db;
-global $user;
-global $hookmanager;
-global $user;
-global $menumanager;
-global $langs;
-global $mysoc;
-
-
 // Load Dolibarr environment
-/*
 require BASE_PATH . '/main.inc.php';
+require_once realpath(BASE_PATH . '/../Dolibarr/Lib/MainFunctions.php');
+
+/*
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
@@ -42,7 +34,10 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 */
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
+use DoliCore\Form\Form;
+
+global $langs;
 
 /**
  *      \file       htdocs/admin/index.php

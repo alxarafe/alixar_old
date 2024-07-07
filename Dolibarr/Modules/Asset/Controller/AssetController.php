@@ -43,7 +43,7 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Images.php';
 
 use Asset;
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Lib\Fields;
 use DoliCore\Lib\ExtraFields;
 

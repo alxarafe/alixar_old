@@ -25,6 +25,7 @@
  *  \brief      File of class to build ODT documents for third parties
  */
 
+use DoliCore\Form\Form;
 use DoliCore\Lib\HookManager;
 
 require_once DOL_DOCUMENT_ROOT . '/core/modules/societe/modules_societe.class.php';

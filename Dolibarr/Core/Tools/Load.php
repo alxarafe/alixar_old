@@ -18,6 +18,7 @@
 
 namespace DoliCore\Tools;
 
+use Alxarafe\Base\Database;
 use DoliCore\Base\Config;
 use DoliCore\Base\Constants;
 use DoliCore\Base\Translate;
@@ -159,8 +160,8 @@ abstract class Load
     {
         $conf = self::$config;
         self::$db = getDoliDBInstance($conf->db->type, $conf->db->host, $conf->db->user, $conf->db->pass, $conf->db->name, (int)$conf->db->port);
+        new Database($conf->db);
         self::$config->setValues(self::$db);
-
         return self::$db;
     }
 

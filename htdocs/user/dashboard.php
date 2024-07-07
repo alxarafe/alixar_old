@@ -29,4 +29,5 @@
 
 use DoliModules\User\Controller\DashboardController;
 
-new DashboardController();
+$dashboard=new DashboardController();
+$dashboard->index();

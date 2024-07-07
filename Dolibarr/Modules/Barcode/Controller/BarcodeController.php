@@ -31,7 +31,7 @@ global $menumanager;
 global $langs;
 global $mysoc;
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Form\FormBarCode;
 use DoliCore\Lib\AveryLabels;
 use DoliModules\Company\Model\Societe;

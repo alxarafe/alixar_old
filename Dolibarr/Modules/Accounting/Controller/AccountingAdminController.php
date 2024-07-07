@@ -50,9 +50,9 @@ global $langs;
 global $mysoc;
 
 // Load Dolibarr environment
-require BASE_PATH . '/main.inc.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/fiscalyear.class.php';
+require_once BASE_PATH . '/main.inc.php';
+require_once BASE_PATH . '/core/class/doleditor.class.php';
+require_once BASE_PATH . '/core/class/fiscalyear.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Accounting.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Date.php';
@@ -60,10 +60,11 @@ require_once BASE_PATH . '/../Dolibarr/Lib/FiscalYear.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Report.php';
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Form\FormAccounting;
 use DoliCore\Form\FormAdmin;
 use DoliCore\Form\FormCompany;
+use DoliCore\Tools\Load;
 use DoliModules\Accounting\Model\AccountancyCategory;
 use DoliModules\Accounting\Model\AccountancyExport;
 use DoliModules\Accounting\Model\AccountingAccount;
@@ -2029,10 +2030,13 @@ class AccountingAdminController extends DolibarrController
         global $menumanager;
         global $langs;
 
-// Load translation files required by the page
+        $langs = $this->langs;
+        $user = $this->user;
+
+        // Load translation files required by the page
         $langs->loadLangs(["compta", "bills", "admin", "accountancy", "other"]);
 
-// Security access
+        // Security access
         if (!$user->hasRight('accounting', 'chartofaccount')) {
             accessforbidden();
         }

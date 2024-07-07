@@ -35,7 +35,7 @@ global $mysoc;
  */
 
 // Load Dolibarr environment
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\Bom\Model\Bom;
 

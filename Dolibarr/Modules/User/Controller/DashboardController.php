@@ -34,14 +34,14 @@ global $langs;
 global $mysoc;
 
 // Load Dolibarr environment
-require BASE_PATH . '/main.inc.php';
+// require BASE_PATH . '/main.inc.php';
 
 /**
  *  \file       htdocs/index.php
  *  \brief      Dolibarr home page
  */
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Form\Form;
 use DoliCore\Form\FormOther;
 use DoliModules\Accounting\Model\BonPrelevement;
@@ -78,7 +78,7 @@ class DashboardController extends DolibarrController
 
         require BASE_PATH . '/main.inc.php';
 
-// If not defined, we select menu "home"
+        // If not defined, we select menu "home"
         $_GET['mainmenu'] = GETPOST('mainmenu', 'aZ09') ? GETPOST('mainmenu', 'aZ09') : 'home';
         $action = GETPOST('action', 'aZ09');
 

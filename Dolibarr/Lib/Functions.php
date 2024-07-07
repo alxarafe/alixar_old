@@ -311,7 +311,7 @@ const MODULE_MAPPING = [
  */
 function isModEnabled($module)
 {
-    global $conf;
+    $conf = Load::getConfig();
 
     // Fix old names (map to new names)
     $arrayconv = MODULE_MAPPING;
@@ -1418,32 +1418,9 @@ function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
             $res = DOL_URL_ROOT . '/' . $path;
         }
 
-        foreach ($conf->file->dol_document_root as $key => $dirroot) {    // ex: array(["main"]=>"/home/main/htdocs", ["alt0"]=>"/home/dirmod/htdocs", ...)
-            if ($key == 'main') {
-                if ($type == 3) {
-                    /*global $dolibarr_main_url_root;*/
-
-                    // Define $urlwithroot
-                    $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($conf->file->dol_main_url_root));
-                    $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
-                    //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
-
-                    $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : $urlwithroot) . '/' . $path; // Test on start with http is for old conf syntax
-                }
-                continue;
-            }
-            $regs = [];
-            preg_match('/^([^\?]+(\.css\.php|\.css|\.js\.php|\.js|\.png|\.jpg|\.php)?)/i', $path, $regs); // Take part before '?'
-            if (!empty($regs[1])) {
-                //print $key.'-'.$dirroot.'/'.$path.'-'.$conf->file->dol_url_root[$type].'<br>'."\n";
-                //if (file_exists($dirroot.'/'.$regs[1])) {
-                if (@file_exists($dirroot . '/' . $regs[1])) {    // avoid [php:warn]
-                    if ($type == 1) {
-                        $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : DOL_URL_ROOT) . $conf->file->dol_url_root[$key] . '/' . $path;
-                    }
-                    if ($type == 2) {
-                        $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : DOL_MAIN_URL_ROOT) . $conf->file->dol_url_root[$key] . '/' . $path;
-                    }
+        if (is_array($conf->file->dol_document_root)) {
+            foreach ($conf->file->dol_document_root as $key => $dirroot) {    // ex: array(["main"]=>"/home/main/htdocs", ["alt0"]=>"/home/dirmod/htdocs", ...)
+                if ($key == 'main') {
                     if ($type == 3) {
                         /*global $dolibarr_main_url_root;*/
 
@@ -1452,9 +1429,34 @@ function dol_buildpath($path, $type = 0, $returnemptyifnotfound = 0)
                         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
                         //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
 
-                        $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : $urlwithroot) . $conf->file->dol_url_root[$key] . '/' . $path; // Test on start with http is for old conf syntax
+                        $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : $urlwithroot) . '/' . $path; // Test on start with http is for old conf syntax
                     }
-                    break;
+                    continue;
+                }
+                $regs = [];
+                preg_match('/^([^\?]+(\.css\.php|\.css|\.js\.php|\.js|\.png|\.jpg|\.php)?)/i', $path, $regs); // Take part before '?'
+                if (!empty($regs[1])) {
+                    //print $key.'-'.$dirroot.'/'.$path.'-'.$conf->file->dol_url_root[$type].'<br>'."\n";
+                    //if (file_exists($dirroot.'/'.$regs[1])) {
+                    if (@file_exists($dirroot . '/' . $regs[1])) {    // avoid [php:warn]
+                        if ($type == 1) {
+                            $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : DOL_URL_ROOT) . $conf->file->dol_url_root[$key] . '/' . $path;
+                        }
+                        if ($type == 2) {
+                            $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : DOL_MAIN_URL_ROOT) . $conf->file->dol_url_root[$key] . '/' . $path;
+                        }
+                        if ($type == 3) {
+                            /*global $dolibarr_main_url_root;*/
+
+                            // Define $urlwithroot
+                            $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($conf->file->dol_main_url_root));
+                            $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file
+                            //$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+
+                            $res = (preg_match('/^http/i', $conf->file->dol_url_root[$key]) ? '' : $urlwithroot) . $conf->file->dol_url_root[$key] . '/' . $path; // Test on start with http is for old conf syntax
+                        }
+                        break;
+                    }
                 }
             }
         }
@@ -5168,16 +5170,17 @@ function img_picto($titlealt, $picto, $moreatt = '', $pictoisfullpath = 0, $srco
         }
         // If alt path are defined, define url where img file is, according to physical path
         // ex: array(["main"]=>"/home/maindir/htdocs", ["alt0"]=>"/home/moddir0/htdocs", ...)
-        foreach ($conf->file->dol_document_root as $type => $dirroot) {
-            if ($type == 'main') {
-                continue;
+            $conf->file->dol_document_root = ['main'=>BASE_PATH];
+            foreach ($conf->file->dol_document_root as $type => $dirroot) {
+                if ($type == 'main') {
+                    continue;
+                }
+                // This need a lot of time, that's why enabling alternative dir like "custom" dir is not recommended
+                if (file_exists($dirroot . '/' . $path . '/img/' . $picto)) {
+                    $url = DOL_URL_ROOT . $conf->file->dol_url_root[$type];
+                    break;
+                }
             }
-            // This need a lot of time, that's why enabling alternative dir like "custom" dir is not recommended
-            if (file_exists($dirroot . '/' . $path . '/img/' . $picto)) {
-                $url = DOL_URL_ROOT . $conf->file->dol_url_root[$type];
-                break;
-            }
-        }
 
         // $url is '' or '/custom', $path is current theme or
         $fullpathpicto = $url . '/' . $path . '/img/' . $picto;
@@ -9431,7 +9434,7 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
         $substitutionarray = array_merge($substitutionarray, ['__ENTITY_ID__' => $conf->entity]);
     }
     if ((empty($exclude) || !in_array('system', $exclude)) && (empty($include) || in_array('user', $include))) {
-        $substitutionarray['__DOL_MAIN_URL_ROOT__'] = DOL_MAIN_URL_ROOT;
+        $substitutionarray['__DOL_MAIN_URL_ROOT__'] = BASE_URL; // DOL_MAIN_URL_ROOT;
         $substitutionarray['__(AnyTranslationKey)__'] = $outputlangs->trans('TranslationOfKey');
         $substitutionarray['__(AnyTranslationKey|langfile)__'] = $outputlangs->trans('TranslationOfKey') . ' (load also language file before)';
         $substitutionarray['__[AnyConstantKey]__'] = $outputlangs->trans('ValueOfConstantKey');

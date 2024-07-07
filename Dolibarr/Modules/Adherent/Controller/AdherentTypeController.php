@@ -40,18 +40,54 @@ global $mysoc;
 // Load Dolibarr environment
 require_once BASE_PATH . '/main.inc.php';
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Lib\ExtraFields;
+use DoliCore\Tools\Load;
 use DoliModules\Adherent\Model\AdherentType;
 
 class AdherentTypeController extends DolibarrController
 {
+    public $rowid;
+    public $extrafields;
+    public $massaction;
+    public $cancel;
+    public $toselect;
+    public $contextpage;
+    public $backtopage;
+    public $mode;
+    public $sall;
+    public $filter;
+    public $search_ref;
+    public $search_lastname;
+    public $search_login;
+    public $search_email;
+    public $type;
+    public $status;
+    public $optioncss;
+    public $limit;
+    public $sortfield;
+    public $sortorder;
+    public $page;
+    public $pagenext;
+    public $label;
+    public $morphy;
+    public $offset;
+    public $pageprev;
+    public $subscription;
+    public $amount;
+    public $duration_value;
+    public $duration_unit;
+    public $vote;
+    public $comment;
+    public $mail_valid;
+    public $caneditamount;
+
     /**
      *      \file       htdocs/adherents/type.php
      *      \ingroup    member
      *      \brief      Member's type setup
      */
-    public function index($executeActions = true): bool
+    public function doIndex(): bool
     {
         global $conf;
         global $db;
@@ -63,10 +99,6 @@ class AdherentTypeController extends DolibarrController
 
         // Load translation files required by the page
         $this->langs->load("members");
-
-        if (!parent::index($executeActions)) {
-            return false;
-        }
 
         $action = $this->filterPost('action', 'aZ09');
         if ($action === 'create') {
@@ -113,8 +145,8 @@ class AdherentTypeController extends DolibarrController
         if ($action == 'add' && $user->hasRight('adherent', 'configurer')) {
             $this->object->label = trim($label);
             $this->object->morphy = trim($morphy);
-            $this->object->status = (int) $status;
-            $this->object->subscription = (int) $subscription;
+            $this->object->status = (int)$status;
+            $this->object->subscription = (int)$subscription;
             $this->object->amount = ($amount == '' ? '' : price2num($amount, 'MT'));
             $this->object->caneditamount = $caneditamount;
             $this->object->duration_value = $duration_value;
@@ -122,7 +154,7 @@ class AdherentTypeController extends DolibarrController
             $this->object->note_public = trim($comment);
             $this->object->note_private = '';
             $this->object->mail_valid = trim($mail_valid);
-            $this->object->vote = (int) $vote;
+            $this->object->vote = (int)$vote;
 
             // Fill array 'array_options' with data from add form
             $ret = $extrafields->setOptionalsFromPost(null, $this->object);
@@ -169,8 +201,8 @@ class AdherentTypeController extends DolibarrController
 
             $this->object->label = trim($label);
             $this->object->morphy = trim($morphy);
-            $this->object->status = (int) $status;
-            $this->object->subscription = (int) $subscription;
+            $this->object->status = (int)$status;
+            $this->object->subscription = (int)$subscription;
             $this->object->amount = ($amount == '' ? '' : price2num($amount, 'MT'));
             $this->object->caneditamount = $caneditamount;
             $this->object->duration_value = $duration_value;
@@ -178,7 +210,7 @@ class AdherentTypeController extends DolibarrController
             $this->object->note_public = trim($comment);
             $this->object->note_private = '';
             $this->object->mail_valid = trim($mail_valid);
-            $this->object->vote = (bool) trim($vote);
+            $this->object->vote = (bool)trim($vote);
 
             // Fill array 'array_options' with data from add form
             $ret = $extrafields->setOptionalsFromPost(null, $this->object, '@GETPOSTISSET');
@@ -279,7 +311,7 @@ class AdherentTypeController extends DolibarrController
         $this->optioncss = $this->filterPost('optioncss', 'alpha');
 
         // Load variable for pagination (move to trait? Create a class? A component?)
-        $this->limit = $this->filterPostInt('limit') ? $this->filterPostInt('limit') : $conf->liste_limit;
+        $this->limit = $this->filterPostInt('limit') ? $this->filterPostInt('limit') : $this->conf->liste_limit;
         $this->sortfield = $this->filterPost('sortfield', 'aZ09comma');
         $this->sortorder = $this->filterPost('sortorder', 'aZ09comma');
         $this->page = GETPOSTISSET('pageplusone') ? ($this->filterPostInt('pageplusone') - 1) : $this->filterPostInt("page");
@@ -287,7 +319,7 @@ class AdherentTypeController extends DolibarrController
             // If $this->page is not defined, or '' or -1 or if we click on clear filters
             $this->page = 0;
         }
-        $this->offset = $limit * $this->page;
+        $this->offset = $this->limit * $this->page;
         $this->pageprev = $this->page - 1;
         $this->pagenext = $this->page + 1;
         if (!$this->sortorder) {

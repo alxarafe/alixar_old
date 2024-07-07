@@ -17,7 +17,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use DoliCore\Tools\Dispatcher;
+use Alxarafe\Lib\Functions;
+use Alxarafe\Tools\Dispatcher;
+use DoliCore\Tools\Dispatcher as DoliDispatcher;
 use DoliModules\Api\Controller\ApiController;
 
 const BASE_PATH = __DIR__;
@@ -29,7 +31,22 @@ if (!file_exists($autoload_filename)) {
 
 require_once $autoload_filename;
 
-define('BASE_URL', getUrl());
+define('BASE_URL', Functions::getUrl());
+
+/**
+ * If a value has been defined for the GET controller variable, an attempt
+ * is made to launch the controller.const CONTROLLER_VAR = 'controller';
+ */
+const MODULE_NAME_VAR = 'module';
+const CONTROLLER_VAR = 'controller';
+
+$module = filter_input(INPUT_GET, MODULE_NAME_VAR) ?? 'Admin';
+$controller = filter_input(INPUT_GET, CONTROLLER_VAR) ?? 'Public';
+if (isset($module) && isset($controller)) {
+    if (Dispatcher::run($module, $controller, ['Modules' => 'Modules'])) {
+        die(); // The controller has been executed succesfully!
+    }
+}
 
 const DOL_APPLICATION_TITLE = 'Alixar';
 const DOL_VERSION = '20.0.0-alpha';
@@ -52,7 +69,7 @@ const CONTROLLER_VAR = 'controller';
 $module = filter_input(INPUT_GET, MODULE_NAME_VAR);
 $controller = filter_input(INPUT_GET, CONTROLLER_VAR);
 if (isset($module) && isset($controller)) {
-    if (Dispatcher::run($module, $controller)) {
+    if (DoliDispatcher::run($module, $controller)) {
         die(); // The controller has been executed succesfully!
     }
 }

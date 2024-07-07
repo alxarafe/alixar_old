@@ -33,6 +33,7 @@ class LoginController extends PublicController
     public $username;
     public $password;
     public $remember;
+    public $menu;
 
     public function doIndex(): bool
     {
@@ -42,6 +43,7 @@ class LoginController extends PublicController
     public function doLogin(): bool
     {
         $this->loadVars();
+        $this->langs->load('errors');
 
         $this->template = 'page/admin/login';
 
@@ -56,17 +58,15 @@ class LoginController extends PublicController
 
         $auth = DolibarrAuth::login($this->username, $this->password);
         if (!$auth) {
-            static::addAdvice('Usuario o contraseña incorrectos');
+            static::addAdvice($this->langs->trans('ErrorBadLoginPassword'));
             return true;
         }
-        static::addMessage("Usuario '$this->username' identificado correctamente.");
 
+        static::addMessage("Usuario '$this->username' identificado correctamente2");
         DolibarrAuth::setSession($this->username);
 
-        $dashboard = new DashboardController();
-
-        dd($this,$dashboard);
-        $dashboard->index();
-        die();
+        $this->menu = [];
+        $this->template = 'page/admin/logged';
+        return true;
     }
 }

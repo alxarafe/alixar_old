@@ -30,6 +30,7 @@ use DoliCore\Base\Config;
  *      \brief      File of class for html functions for admin pages
  */
 
+require_once realpath(BASE_PATH.'/../Dolibarr/Lib/Ajax.php');
 
 /**
  *      Class to generate html code for admin pages

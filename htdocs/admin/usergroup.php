@@ -29,11 +29,13 @@
  */
 
 // Load Dolibarr environment
+use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
 
 require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/UserGroups.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
+require_once realpath(BASE_PATH.'/../Dolibarr/Lib/MainFunctions.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("admin", "members", "users"));
@@ -56,7 +58,7 @@ $type = 'group';
 include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
 
 if ($action == 'set_default') {
-    $ret = addDocumentModel($value, $type, $label, $scandir);
+    $ret = addDocumentModel($value, $type/*, $label, $scandir*/);
     $res = true;
 } elseif ($action == 'del_default') {
     $ret = delDocumentModel($value, $type);
@@ -77,7 +79,7 @@ if ($action == 'set_default') {
     // On active le modele
     $ret = delDocumentModel($value, $type);
     if ($ret > 0) {
-        $ret = addDocumentModel($value, $type, $label, $scandir);
+        $ret = addDocumentModel($value, $type/*, $label, $scandir*/);
     }
     $res = true;
 } elseif (preg_match('/set_([a-z0-9_\-]+)/i', $action, $reg)) {

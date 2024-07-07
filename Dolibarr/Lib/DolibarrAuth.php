@@ -7,6 +7,50 @@ use DoliCore\Tools\Load;
 
 class DolibarrAuth
 {
+    private const COOKIE_NAME = 'dol_login';
+    private const COOKIE_USER = self::COOKIE_NAME . '_user';
+    private const COOKIE_EXPIRE_TIME = 30 * 86400; // 30 days
+    private const COOKIE_SAMESITE = 'Strict';
+
+    public static $user = null;
+
+    public static function isLogged()
+    {
+        $userId = FILTER_INPUT(INPUT_COOKIE, self::COOKIE_USER);
+        $token = FILTER_INPUT(INPUT_COOKIE, self::COOKIE_NAME);
+        if (empty($token)) {
+            return false;
+        }
+
+        self::$user = Load::getUser();
+        $result = self::$user->fetch($userId, '', '', 1, 1);
+        if ($result <= 0) {
+            return false;
+        }
+
+        return self::checkToken(self::$user->login, $token);
+    }
+
+    private static function checkToken($username, $token)
+    {
+        $token_file = self::getTokenFilename($username);
+        if (!file_exists($token_file)) {
+            return false;
+        }
+        $stored_token = file_get_contents($token_file);
+        return $token === $stored_token;
+    }
+
+    private static function getTokenFilename($username)
+    {
+        $tokens_path = realpath(BASE_PATH . '/..') . '/tmp/tokens/';
+        if (!is_dir($tokens_path) && !mkdir($tokens_path, 0777, true) && !is_dir($tokens_path)) {
+            die('Could not create tokens directory:' . $tokens_path);
+        }
+
+        return $tokens_path . md5($username) . '.token';
+    }
+
     public static function login($username, $password, $entity = 1)
     {
         $conf = Config::getConfig();
@@ -38,30 +82,46 @@ class DolibarrAuth
 
     public static function setSession($username, $entitytotest = 1)
     {
-
         $user = Load::getUser();
-        $result = $user->fetch('', $username, '', 1, ($entitytotest > 0 ? $entitytotest : -1)); // value for $login was retrieved previously when checking password.
+        $result = $user->fetch('', $username, '', 1, ($entitytotest > 0 ? $entitytotest : -1));
         if ($result <= 0) {
             return false;
         }
 
-        // Store value into session (values always stored)
-        $_SESSION['dol_login'] = $user->login;
-        /*
-        $_SESSION["dol_logindate"] = dol_now('gmt');
-        $_SESSION["dol_authmode"] = isset($dol_authmode) ? $dol_authmode : '';
-        $_SESSION["dol_tz"] = isset($dol_tz) ? $dol_tz : '';
-        $_SESSION["dol_tz_string"] = isset($dol_tz_string) ? $dol_tz_string : '';
-        $_SESSION["dol_dst"] = isset($dol_dst) ? $dol_dst : '';
-        $_SESSION["dol_dst_observed"] = isset($dol_dst_observed) ? $dol_dst_observed : '';
-        $_SESSION["dol_dst_first"] = isset($dol_dst_first) ? $dol_dst_first : '';
-        $_SESSION["dol_dst_second"] = isset($dol_dst_second) ? $dol_dst_second : '';
-        $_SESSION["dol_screenwidth"] = isset($dol_screenwidth) ? $dol_screenwidth : '';
-        $_SESSION["dol_screenheight"] = isset($dol_screenheight) ? $dol_screenheight : '';
-        $_SESSION["dol_company"] = getDolGlobalString("MAIN_INFO_SOCIETE_NOM");
-        $_SESSION["dol_entity"] = $conf->entity;
-        */
+        $cookie_options = [
+            'expires' => time() + self::COOKIE_EXPIRE_TIME,
+            'path' => '/',
+            'domain' => $_SERVER['HTTP_HOST'],
+            'secure' => true, // Ensure the cookie is sent over HTTPS only
+            'httponly' => true, // Prevent JavaScript from accessing the cookie
+            'samesite' => self::COOKIE_SAMESITE, // Mitigate CSRF attacks
+        ];
+
+        $token = self::generateToken();
+
+        // Set the user ID cookie securely
+        setcookie(self::COOKIE_USER, $user->id, $cookie_options);
+
+        // Set the authentication token cookie securely
+        setcookie(self::COOKIE_NAME, $token, $cookie_options);
+
+        if (!self::setToken($username, $token)) {
+            die('Can`t write to token for ' . $username);
+            return false;
+        }
 
         return true;
     }
+
+    private static function generateToken($length = 32)
+    {
+        return bin2hex(random_bytes($length));
+    }
+
+    private static function setToken($username, $token)
+    {
+        $token_file = self::getTokenFilename($username);
+        return file_put_contents($token_file, $token) > 0;
+    }
+
 }

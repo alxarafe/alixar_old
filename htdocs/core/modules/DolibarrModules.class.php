@@ -1264,9 +1264,6 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
      */
     public function insert_cronjobs()
     {
-        // phpcs:enable
-        include_once DOL_DOCUMENT_ROOT . '/core/class/infobox.class.php';
-
         global $conf;
         $dbPrefix = $conf->db->prefix;
 
@@ -2469,157 +2466,158 @@ class DolibarrModules // Can not be abstract, because we need to instantiate it 
         include_once BASE_PATH . '/../Dolibarr/Lib/Admin.php';
 
         $ok = 1;
-        foreach ($conf->file->dol_document_root as $dirroot) {
-            if ($ok) {
-                $dirsql = $dirroot . $reldir;
-                $ok = 0;
+        if (isset($conf->file->dol_document_root)) {
+            foreach ($conf->file->dol_document_root as $dirroot) {
+                if ($ok) {
+                    $dirsql = $dirroot . $reldir;
+                    $ok = 0;
 
-                // We will loop on xxx/, xxx/tables/, xxx/data/
-                $listofsubdir = ['', 'tables/', 'data/'];
-                if ($this->db->type == 'pgsql') {
-                    $listofsubdir[] = '../pgsql/functions/';
-                }
-
-                foreach ($listofsubdir as $subdir) {
-                    $dir = $dirsql . $subdir;
-
-                    $handle = @opendir($dir); // Dir may not exists
-                    if (is_resource($handle)) {
-                        $dirfound++;
-
-                        // Run llx_mytable.sql files, then llx_mytable_*.sql
-                        $files = [];
-                        while (($file = readdir($handle)) !== false) {
-                            $files[] = $file;
-                        }
-                        sort($files);
-                        foreach ($files as $file) {
-                            if ($onlywithsuffix) {
-                                if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
-                                    //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
-                                    continue;
-                                } else {
-                                    //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
-                                }
-                            }
-                            if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 4) == 'llx_') {
-                                $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
-                                if ($result <= 0) {
-                                    $error++;
-                                }
-                            }
-                        }
-
-                        rewinddir($handle);
-
-                        // Run llx_mytable.key.sql files (Must be done after llx_mytable.sql) then then llx_mytable_*.key.sql
-                        $files = [];
-                        while (($file = readdir($handle)) !== false) {
-                            $files[] = $file;
-                        }
-                        sort($files);
-                        foreach ($files as $file) {
-                            if ($onlywithsuffix) {
-                                if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
-                                    //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
-                                    continue;
-                                } else {
-                                    //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
-                                }
-                            }
-                            if (preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 4) == 'llx_') {
-                                $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
-                                if ($result <= 0) {
-                                    $error++;
-                                }
-                            }
-                        }
-
-                        rewinddir($handle);
-
-                        // Run functions-xxx.sql files (Must be done after llx_mytable.key.sql)
-                        $files = [];
-                        while (($file = readdir($handle)) !== false) {
-                            $files[] = $file;
-                        }
-                        sort($files);
-                        foreach ($files as $file) {
-                            if ($onlywithsuffix) {
-                                if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
-                                    //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
-                                    continue;
-                                } else {
-                                    //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
-                                }
-                            }
-                            if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 9) == 'functions') {
-                                $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
-                                if ($result <= 0) {
-                                    $error++;
-                                }
-                            }
-                        }
-
-                        rewinddir($handle);
-
-                        // Run data_xxx.sql files (Must be done after llx_mytable.key.sql)
-                        $files = [];
-                        while (($file = readdir($handle)) !== false) {
-                            $files[] = $file;
-                        }
-                        sort($files);
-                        foreach ($files as $file) {
-                            if ($onlywithsuffix) {
-                                if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
-                                    //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
-                                    continue;
-                                } else {
-                                    //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
-                                }
-                            }
-                            if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 4) == 'data') {
-                                $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
-                                if ($result <= 0) {
-                                    $error++;
-                                }
-                            }
-                        }
-
-                        rewinddir($handle);
-
-                        // Run update_xxx.sql files
-                        $files = [];
-                        while (($file = readdir($handle)) !== false) {
-                            $files[] = $file;
-                        }
-                        sort($files);
-                        foreach ($files as $file) {
-                            if ($onlywithsuffix) {
-                                if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
-                                    //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
-                                    continue;
-                                } else {
-                                    //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
-                                }
-                            }
-                            if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 6) == 'update') {
-                                $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
-                                if ($result <= 0) {
-                                    $error++;
-                                }
-                            }
-                        }
-
-                        closedir($handle);
+                    // We will loop on xxx/, xxx/tables/, xxx/data/
+                    $listofsubdir = ['', 'tables/', 'data/'];
+                    if ($this->db->type == 'pgsql') {
+                        $listofsubdir[] = '../pgsql/functions/';
                     }
-                }
 
-                if ($error == 0) {
-                    $ok = 1;
+                    foreach ($listofsubdir as $subdir) {
+                        $dir = $dirsql . $subdir;
+
+                        $handle = @opendir($dir); // Dir may not exists
+                        if (is_resource($handle)) {
+                            $dirfound++;
+
+                            // Run llx_mytable.sql files, then llx_mytable_*.sql
+                            $files = [];
+                            while (($file = readdir($handle)) !== false) {
+                                $files[] = $file;
+                            }
+                            sort($files);
+                            foreach ($files as $file) {
+                                if ($onlywithsuffix) {
+                                    if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
+                                        //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
+                                        continue;
+                                    } else {
+                                        //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
+                                    }
+                                }
+                                if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 4) == 'llx_') {
+                                    $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
+                                    if ($result <= 0) {
+                                        $error++;
+                                    }
+                                }
+                            }
+
+                            rewinddir($handle);
+
+                            // Run llx_mytable.key.sql files (Must be done after llx_mytable.sql) then then llx_mytable_*.key.sql
+                            $files = [];
+                            while (($file = readdir($handle)) !== false) {
+                                $files[] = $file;
+                            }
+                            sort($files);
+                            foreach ($files as $file) {
+                                if ($onlywithsuffix) {
+                                    if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
+                                        //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
+                                        continue;
+                                    } else {
+                                        //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
+                                    }
+                                }
+                                if (preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 4) == 'llx_') {
+                                    $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
+                                    if ($result <= 0) {
+                                        $error++;
+                                    }
+                                }
+                            }
+
+                            rewinddir($handle);
+
+                            // Run functions-xxx.sql files (Must be done after llx_mytable.key.sql)
+                            $files = [];
+                            while (($file = readdir($handle)) !== false) {
+                                $files[] = $file;
+                            }
+                            sort($files);
+                            foreach ($files as $file) {
+                                if ($onlywithsuffix) {
+                                    if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
+                                        //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
+                                        continue;
+                                    } else {
+                                        //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
+                                    }
+                                }
+                                if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 9) == 'functions') {
+                                    $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
+                                    if ($result <= 0) {
+                                        $error++;
+                                    }
+                                }
+                            }
+
+                            rewinddir($handle);
+
+                            // Run data_xxx.sql files (Must be done after llx_mytable.key.sql)
+                            $files = [];
+                            while (($file = readdir($handle)) !== false) {
+                                $files[] = $file;
+                            }
+                            sort($files);
+                            foreach ($files as $file) {
+                                if ($onlywithsuffix) {
+                                    if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
+                                        //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
+                                        continue;
+                                    } else {
+                                        //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
+                                    }
+                                }
+                                if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 4) == 'data') {
+                                    $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
+                                    if ($result <= 0) {
+                                        $error++;
+                                    }
+                                }
+                            }
+
+                            rewinddir($handle);
+
+                            // Run update_xxx.sql files
+                            $files = [];
+                            while (($file = readdir($handle)) !== false) {
+                                $files[] = $file;
+                            }
+                            sort($files);
+                            foreach ($files as $file) {
+                                if ($onlywithsuffix) {
+                                    if (!preg_match('/\-' . preg_quote($onlywithsuffix, '/') . '\./i', $file)) {
+                                        //print 'File '.$file.' does not match suffix '.$onlywithsuffix.' so it is discarded<br>'."\n";
+                                        continue;
+                                    } else {
+                                        //print 'File '.$file.' match suffix '.$onlywithsuffix.' so we keep it<br>'."\n";
+                                    }
+                                }
+                                if (preg_match('/\.sql$/i', $file) && !preg_match('/\.key\.sql$/i', $file) && substr($file, 0, 6) == 'update') {
+                                    $result = run_sql($dir . $file, !getDolGlobalString('MAIN_DISPLAY_SQL_INSTALL_LOG') ? 1 : 0, '', 1);
+                                    if ($result <= 0) {
+                                        $error++;
+                                    }
+                                }
+                            }
+
+                            closedir($handle);
+                        }
+                    }
+
+                    if ($error == 0) {
+                        $ok = 1;
+                    }
                 }
             }
         }
-
         if (!$dirfound) {
             dol_syslog("A module ask to load sql files into " . $reldir . " but this directory was not found.", LOG_WARNING);
         }

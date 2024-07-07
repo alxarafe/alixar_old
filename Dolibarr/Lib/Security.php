@@ -578,7 +578,15 @@ function restrictedArea(User $user, $features, $object = 0, $tableandshare = '',
                 $readok = 0; // All tests are ko (we manage here the and, the or will be managed later using $nbko).
                 $nbko++;
             }
+
         } elseif (!empty($feature) && ($feature != 'user' && $feature != 'usergroup')) {        // This is permissions on 1 level (module->read)
+
+            dd([
+                'lire' => $user->hasRight($feature, 'lire'),
+                'read' => $user->hasRight($feature, 'read'),
+                'run' => $user->hasRight($feature, 'run'),
+            ]);
+
             if (!$user->hasRight($feature, 'lire')
                 && !$user->hasRight($feature, 'read')
                 && !$user->hasRight($feature, 'run')) {

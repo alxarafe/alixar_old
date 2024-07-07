@@ -33,7 +33,7 @@ global $langs;
 global $mysoc;
 
 use DoliCore\Api\DolibarrApi;
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use Luracast\Restler\Defaults;
 use Luracast\Restler\Format\UploadFormat;
 use Luracast\Restler\Scope;

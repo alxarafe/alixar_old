@@ -36,7 +36,7 @@ global $mysoc;
  *    \brief      Page setup for blockedlog module
  */
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliModules\BlockedLog\Model\BlockedLog;
 use DoliModules\BlockedLog\Model\BlockedLogAuthority;
 

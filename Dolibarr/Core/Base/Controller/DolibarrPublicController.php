@@ -16,16 +16,18 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Modules\Admin\Controller;
+namespace DoliCore\Base\Controller;
 
-use Alxarafe\Base\Controller\PublicController as BasePublicController;
+use Alxarafe\Base\Controller\PublicController;
+use DoliCore\Base\Controller\Trait\DolibarrVarsTrait;
 
-class PublicController extends BasePublicController
+class DolibarrPublicController extends PublicController
 {
+    use DolibarrVarsTrait;
 
-    public function doIndex(): bool
+    public function __construct()
     {
-        $this->template = 'page/public';
-        return true;
+        parent::__construct();
+        $this->loadVars();
     }
 }

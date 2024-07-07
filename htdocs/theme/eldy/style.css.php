@@ -66,6 +66,7 @@ if (empty($user->id) && !empty($_SESSION['dol_login'])) {
     $menumanager->loadMenu();
 }
 
+require_once realpath(BASE_PATH.'/../Dolibarr/Lib/MainFunctions.php');
 
 // Define css type
 top_httphead('text/css');

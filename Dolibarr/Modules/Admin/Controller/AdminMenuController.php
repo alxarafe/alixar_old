@@ -34,7 +34,7 @@ global $mysoc;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 
 class AdminMenuController extends DolibarrController
 {

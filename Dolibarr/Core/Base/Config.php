@@ -189,6 +189,20 @@ abstract class Config extends ConfigBase
         $conf->file->dol_main_stream_to_disable = $dolibarr_main_stream_to_disable ?? null;
         $conf->debug = intval($dolibarr_main_prod ?? 1) === 0;
 
+        // Detection browser (copy of code from main.inc.php)
+        if (isset($_SERVER["HTTP_USER_AGENT"]) && is_object($conf) && empty($conf->browser->name)) {
+            $tmp = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
+            $conf->browser->name = $tmp['browsername'];
+            $conf->browser->os = $tmp['browseros'];
+            $conf->browser->version = $tmp['browserversion'];
+            $conf->browser->layout = $tmp['layout']; // 'classic', 'phone', 'tablet'
+            //var_dump($conf->browser);
+
+            if ($conf->browser->layout == 'phone') {
+                $conf->dol_no_mouse_hover = 1;
+            }
+        }
+
         // Load the main includes of common libraries
         if (!defined('NOREQUIRETRAN')) {
             require_once BASE_PATH . '/core/class/translate.class.php';

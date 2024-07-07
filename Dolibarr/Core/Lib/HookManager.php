@@ -88,6 +88,10 @@ class HookManager
     {
         global $conf;
 
+        if (!isset($conf->modules_parts)) {
+            return 0;
+        }
+
         // Test if there is hooks to manage
         if (!is_array($conf->modules_parts['hooks']) || empty($conf->modules_parts['hooks'])) {
             return 0;

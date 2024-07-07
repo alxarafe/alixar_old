@@ -35,7 +35,7 @@ global $mysoc;
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Lib\Menu;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliCore\Lib\ExtraFields;

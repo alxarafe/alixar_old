@@ -30,8 +30,10 @@ namespace DoliCore\Lib;
  */
 
 use DoliDB;
+use Illuminate\Database\Capsule\Manager as DB;
 use LogHandlerInterface;
 use stdClass;
+
 
 /**
  *  Class to stock current configuration
@@ -342,12 +344,9 @@ class Conf extends stdClass
             $sql .= " WHERE entity IN (0," . $this->entity . ")";
             $sql .= " ORDER BY entity"; // This is to have entity 0 first, then entity 1 that overwrite.
 
-            $resql = $db->query($sql);
+            $resql = DB::select($sql);
             if ($resql) {
-                $i = 0;
-                $numr = $db->num_rows($resql);
-                while ($i < $numr) {
-                    $objp = $db->fetch_object($resql);
+                foreach ($resql as $objp) {
                     $key = $objp->name;
                     $value = $objp->value;
                     if ($key) {
@@ -421,10 +420,7 @@ class Conf extends stdClass
                             }
                         }
                     }
-                    $i++;
                 }
-
-                $db->free($resql);
             }
 
             // Include other local file xxx/zzz_consts.php to overwrite some variables

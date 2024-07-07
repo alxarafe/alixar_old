@@ -697,7 +697,7 @@ class User extends GenericDocument
     public function getrights($moduletag = '', $forcereload = 0)
     {
         global $conf;
-        $dbPrefix=$conf->db->prefix;
+        $dbPrefix = $conf->db->prefix;
 
         $alreadyloaded = false;
 
@@ -935,162 +935,158 @@ class User extends GenericDocument
     }
 
     /**
-     *  Change status of a user
+     * Return array of data to show into tooltips
      *
-     * @param int $status Status to set
+     * @param array $params Array with options, infologin
      *
-     * @return int                 Return integer <0 if KO, 0 if nothing is done, >0 if OK
+     * @return array
+     * @since v18
      */
-    public function setstatus($status)
+    public function getTooltipContentArray($params)
     {
-        global $conf, $langs, $user;
+        global $conf, $langs, $menumanager;
+        global $dolibarr_main_demo;
 
-        $error = 0;
+        $infologin = $params['infologin'] ?? 0;
+        $option = $params['option'] ?? '';
 
-        // Check parameters
-        if (isset($this->statut)) {
-            if ($this->statut == $status) {
-                return 0;
-            }
-        } elseif (isset($this->status) && $this->status == $status) {
-            return 0;
+        $data = [];
+        if (!empty($this->photo)) {
+            $photo = '<div class="photointooltip floatright">';
+            $photo .= Form::showphoto('userphoto', $this, 0, 60, 0, 'photoref photowithmargin photologintooltip', 'small', 0, 1); // Force height to 60 so we total height of tooltip can be calculated and collision can be managed
+            $photo .= '</div>';
+            $data['photo'] = $photo;
+            //$label .= '<div style="clear: both;"></div>';
         }
 
-        $this->db->begin();
-
-        // Save in database
-        $sql = "UPDATE " . $dbPrefix . "user";
-        $sql .= " SET statut = " . ((int)$status);
-        $sql .= " WHERE rowid = " . ((int)$this->id);
-        $result = $this->db->query($sql);
-
-        dol_syslog(get_class($this) . "::setstatus", LOG_DEBUG);
-        if ($result) {
-            if ($status == 0) {
-                $this->context['actionmsg'] = 'User ' . $this->login . ' disabled';
-            } else {
-                $this->context['actionmsg'] = 'User ' . $this->login . ' enabled';
+        // Info Login
+        $data['opendiv'] = '<div class="centpercent divtooltip">';
+        $data['picto'] = img_picto('', $this->picto) . ' <u class="paddingrightonly">' . $langs->trans("User") . '</u> ' . $this->getLibStatut(4);
+        $data['name'] = '<br><b>' . $langs->trans('Name') . ':</b> ' . dol_string_nohtmltag($this->getFullName($langs, ''));
+        if (!empty($this->login)) {
+            $data['login'] = '<br><b>' . $langs->trans('Login') . ':</b> ' . dol_string_nohtmltag($this->login);
+        }
+        if (!empty($this->job)) {
+            $data['job'] = '<br><b>' . $langs->trans("Job") . ':</b> ' . dol_string_nohtmltag($this->job);
+        }
+        $data['email'] = '<br><b>' . $langs->trans("Email") . ':</b> ' . dol_string_nohtmltag($this->email);
+        if (!empty($this->office_phone) || !empty($this->office_fax) || !empty($this->fax)) {
+            $phonelist = [];
+            if ($this->office_phone) {
+                $phonelist[] = dol_print_phone($this->office_phone, $this->country_code, $this->id, 0, '', '&nbsp', 'phone');
             }
-            // Call trigger
-            $result = $this->call_trigger('USER_ENABLEDISABLE', $user);
-            if ($result < 0) {
-                $error++;
+            if ($this->office_fax) {
+                $phonelist[] = dol_print_phone($this->office_fax, $this->country_code, $this->id, 0, '', '&nbsp', 'fax');
             }
-            // End call triggers
+            if ($this->user_mobile) {
+                $phonelist[] = dol_print_phone($this->user_mobile, $this->country_code, $this->id, 0, '', '&nbsp', 'mobile');
+            }
+            $data['phones'] = '<br><b>' . $langs->trans('Phone') . ':</b> ' . implode('&nbsp;', $phonelist);
+        }
+        if (!empty($this->admin)) {
+            $data['administrator'] = '<br><b>' . $langs->trans("Administrator") . '</b>: ' . yn($this->admin);
+        }
+        if (!empty($this->accountancy_code) || $option == 'accountancy') {
+            $langs->load("companies");
+            $data['accountancycode'] = '<br><b>' . $langs->trans("AccountancyCode") . '</b>: ' . $this->accountancy_code;
+        }
+        $company = '';
+        if (!empty($this->socid)) { // Add thirdparty for external users
+            $thirdpartystatic = new Societe($this->db);
+            $thirdpartystatic->fetch($this->socid);
+            $companyimg = '';
+            if (empty($params['hidethirdpartylogo'])) {
+                $companyimg = ' ' . $thirdpartystatic->getNomUrl(2, (($option == 'nolink') ? 'nolink' : '')); // picto only of company
+            }
+            $company = ' (' . $langs->trans("Company") . ': ' . ($companyimg ? $companyimg : img_picto('', 'company')) . ' ' . dol_string_nohtmltag($thirdpartystatic->name) . ')';
+        }
+        $type = ($this->socid ? $langs->trans("ExternalUser") . $company : $langs->trans("InternalUser"));
+        $data['type'] = '<br><b>' . $langs->trans("Type") . ':</b> ' . $type;
+        $data['closediv'] = '</div>';
+
+        if ($infologin > 0) {
+            $data['newlinelogin'] = '<br>';
+            $data['session'] = '<br><u>' . $langs->trans("Session") . '</u>';
+            $data['ip'] = '<br><b>' . $langs->trans("IPAddress") . '</b>: ' . dol_string_nohtmltag(getUserRemoteIP());
+            if (getDolGlobalString('MAIN_MODULE_MULTICOMPANY')) {
+                $data['multicompany'] = '<br><b>' . $langs->trans("ConnectedOnMultiCompany") . ':</b> ' . $conf->entity . ' (User entity ' . $this->entity . ')';
+            }
+            $data['authentication'] = '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . dol_string_nohtmltag($_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)'));
+            $data['connectedsince'] = '<br><b>' . $langs->trans("ConnectedSince") . ':</b> ' . dol_print_date($this->datelastlogin, "dayhour", 'tzuser');
+            $data['previousconnexion'] = '<br><b>' . $langs->trans("PreviousConnexion") . ':</b> ' . dol_print_date($this->datepreviouslogin, "dayhour", 'tzuser');
+            $data['currenttheme'] = '<br><b>' . $langs->trans("CurrentTheme") . ':</b> ' . dol_string_nohtmltag($conf->theme);
+            $data['currentmenumanager'] = '<br><b>' . $langs->trans("CurrentMenuManager") . ':</b> ' . dol_string_nohtmltag($menumanager->name);
+            $s = picto_from_langcode($langs->getDefaultLang());
+            $data['currentuserlang'] = '<br><b>' . $langs->trans("CurrentUserLanguage") . ':</b> ' . dol_string_nohtmltag(($s ? $s . ' ' : '') . $langs->getDefaultLang());
+            $data['browser'] = '<br><b>' . $langs->trans("Browser") . ':</b> ' . dol_string_nohtmltag($conf->browser->name . ($conf->browser->version ? ' ' . $conf->browser->version : '') . ' (' . $_SERVER['HTTP_USER_AGENT'] . ')');
+            $data['layout'] = '<br><b>' . $langs->trans("Layout") . ':</b> ' . dol_string_nohtmltag($conf->browser->layout);
+            $data['screen'] = '<br><b>' . $langs->trans("Screen") . ':</b> ' . dol_string_nohtmltag($_SESSION['dol_screenwidth'] . ' x ' . $_SESSION['dol_screenheight']);
+            if ($conf->browser->layout == 'phone') {
+                $data['phone'] = '<br><b>' . $langs->trans("Phone") . ':</b> ' . $langs->trans("Yes");
+            }
+            if (!empty($_SESSION["disablemodules"])) {
+                $data['disabledmodules'] = '<br><b>' . $langs->trans("DisabledModules") . ':</b> <br>' . dol_string_nohtmltag(implode(', ', explode(',', $_SESSION["disablemodules"])));
+            }
         }
 
-        if ($error) {
-            $this->db->rollback();
-            return -$error;
-        } else {
-            $this->status = $status;
-            $this->statut = $status;
-            $this->db->commit();
-            return 1;
-        }
+        return $data;
     }
 
     /**
-     * Sets object to supplied categories.
+     *  Return the label of the status of user (active, inactive)
      *
-     * Deletes object from existing categories not supplied.
-     * Adds it to non existing supplied categories.
-     * Existing categories are left untouch.
+     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                  label + Picto, 6=Long label + Picto
      *
-     * @param int[]|int $categories Category or categories IDs
-     *
-     * @return  int                         Return integer <0 if KO, >0 if OK
+     * @return string                 Label of status
      */
-    public function setCategories($categories)
+    public function getLibStatut($mode = 0)
     {
-        return parent::setCategoriesCommon($categories, Categorie::TYPE_USER);
+        return $this->LibStatut(isset($this->statut) ? (int)$this->statut : (int)$this->status, $mode);
     }
 
     /**
-     *  Delete the user
+     *  Return the label of a status of user (active, inactive)
      *
-     * @param User $user User than delete
+     * @param int $status Id status
+     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
+     *                    label + Picto, 6=Long label + Picto
      *
-     * @return     int             Return integer <0 if KO, >0 if OK
+     * @return string                  Label of status
      */
-    public function delete(User $user)
+    public function LibStatut($status, $mode = 0)
     {
-        global $conf, $langs;
+        // phpcs:enable
+        global $langs;
 
-        $error = 0;
-
-        $this->db->begin();
-
-        $this->fetch($this->id);
-
-        dol_syslog(get_class($this) . "::delete", LOG_DEBUG);
-
-        // Remove rights
-        $sql = "DELETE FROM " . $dbPrefix . "user_rights WHERE fk_user = " . ((int)$this->id);
-
-        if (!$error && !$this->db->query($sql)) {
-            $error++;
-            $this->error = $this->db->lasterror();
+        if (empty($this->labelStatus) || empty($this->labelStatusShort)) {
+            global $langs;
+            //$langs->load("mymodule");
+            $this->labelStatus[self::STATUS_ENABLED] = $langs->transnoentitiesnoconv('Enabled');
+            $this->labelStatus[self::STATUS_DISABLED] = $langs->transnoentitiesnoconv('Disabled');
+            $this->labelStatusShort[self::STATUS_ENABLED] = $langs->transnoentitiesnoconv('Enabled');
+            $this->labelStatusShort[self::STATUS_DISABLED] = $langs->transnoentitiesnoconv('Disabled');
         }
 
-        // Remove group
-        $sql = "DELETE FROM " . $dbPrefix . "usergroup_user WHERE fk_user  = " . ((int)$this->id);
-        if (!$error && !$this->db->query($sql)) {
-            $error++;
-            $this->error = $this->db->lasterror();
+        $statusType = 'status5';
+        if ($status == self::STATUS_ENABLED) {
+            $statusType = 'status4';
         }
 
-        // Remove params
-        $sql = "DELETE FROM " . $dbPrefix . "user_param WHERE fk_user  = " . ((int)$this->id);
-        if (!$error && !$this->db->query($sql)) {
-            $error++;
-            $this->error = $this->db->lasterror();
+        $label = $this->labelStatus[$status];
+        $labelshort = $this->labelStatusShort[$status];
+
+        $now = dol_now();
+        if (!empty($this->datestartvalidity) && $now < $this->datestartvalidity) {
+            $statusType = 'status3';
+            $label .= ' (' . $langs->trans("UserNotYetValid") . ')';
+        }
+        if (!empty($this->dateendvalidity) && $now > ($this->dateendvalidity + 24 * 3600 - 1)) {
+            $statusType = 'status2';
+            $label .= ' (' . $langs->trans("UserExpired") . ')';
         }
 
-        // If contact, remove link
-        if ($this->contact_id > 0) {
-            $sql = "UPDATE " . $dbPrefix . "socpeople SET fk_user_creat = null WHERE rowid = " . ((int)$this->contact_id);
-            if (!$error && !$this->db->query($sql)) {
-                $error++;
-                $this->error = $this->db->lasterror();
-            }
-        }
-
-        // Remove extrafields
-        if (!$error) {
-            $result = $this->deleteExtraFields();
-            if ($result < 0) {
-                $error++;
-                dol_syslog(get_class($this) . "::delete error -4 " . $this->error, LOG_ERR);
-            }
-        }
-
-        // Remove user
-        if (!$error) {
-            $sql = "DELETE FROM " . $dbPrefix . "user WHERE rowid = " . ((int)$this->id);
-            dol_syslog(get_class($this) . "::delete", LOG_DEBUG);
-            if (!$this->db->query($sql)) {
-                $error++;
-                $this->error = $this->db->lasterror();
-            }
-        }
-
-        if (!$error) {
-            // Call trigger
-            $result = $this->call_trigger('USER_DELETE', $user);
-            if ($result < 0) {
-                $error++;
-                $this->db->rollback();
-                return -1;
-            }
-            // End call triggers
-
-            $this->db->commit();
-            return 1;
-        } else {
-            $this->db->rollback();
-            return -1;
-        }
+        return dolGetStatus($label, $labelshort, '', $statusType, $mode);
     }
 
     /**
@@ -1501,6 +1497,473 @@ class User extends GenericDocument
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
+     *  Return a HTML link to the user card (with optionally the picto)
+     *  Use this->id,this->lastname, this->firstname
+     *
+     * @param int $withpictoimg Include picto in link (0=No picto, 1=Include picto into link, 2=Only
+     *                                       picto, -1=Include photo into link, -2=Only picto photo, -3=Only photo very
+     *                                       small)
+     * @param string $option On what the link point to ('leave', 'accountancy', 'nolink', )
+     * @param integer $infologin 0=Add default info tooltip, 1=Add complete info tooltip, -1=No info
+     *                                       tooltip
+     * @param integer $notooltip 1=Disable tooltip on picto and name
+     * @param int $maxlen Max length of visible user name
+     * @param int $hidethirdpartylogo Hide logo of thirdparty if user is external user
+     * @param string $mode ''=Show firstname and lastname, 'firstname'=Show only firstname,
+     *                                       'firstelselast'=Show firstname or lastname if not defined, 'login'=Show
+     *                                       login
+     * @param string $morecss Add more css on link
+     * @param int $save_lastsearch_value -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save
+     *                                       lastsearch_values whenclicking
+     *
+     * @return string                              String with URL
+     */
+    public function getNomUrl($withpictoimg = 0, $option = '', $infologin = 0, $notooltip = 0, $maxlen = 24, $hidethirdpartylogo = 0, $mode = '', $morecss = '', $save_lastsearch_value = -1)
+    {
+        global $langs, $conf, $db, $hookmanager, $user;
+        global $dolibarr_main_authentication, $dolibarr_main_demo;
+
+        if (!$user->hasRight('user', 'user', 'read') && $user->id != $this->id) {
+            $option = 'nolink';
+        }
+
+        if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && $withpictoimg) {
+            $withpictoimg = 0;
+        }
+
+        $result = '';
+        $params = [
+            'id' => $this->id,
+            'objecttype' => $this->element,
+            'infologin' => $infologin,
+            'option' => $option,
+            'hidethirdpartylogo' => $hidethirdpartylogo,
+        ];
+        $classfortooltip = 'classfortooltip';
+        $dataparams = '';
+        if (getDolGlobalInt('MAIN_ENABLE_AJAX_TOOLTIP')) {
+            $classfortooltip = 'classforajaxtooltip';
+            $dataparams = ' data-params="' . dol_escape_htmltag(json_encode($params)) . '"';
+            $label = '';
+        } else {
+            $label = implode($this->getTooltipContentArray($params));
+        }
+
+        $companylink = '';
+        if (!empty($this->socid)) { // Add thirdparty for external users
+            $thirdpartystatic = new Societe($this->db);
+            $thirdpartystatic->fetch($this->socid);
+            if (empty($hidethirdpartylogo)) {
+                $companylink = ' ' . $thirdpartystatic->getNomUrl(2, (($option == 'nolink') ? 'nolink' : '')); // picto only of company
+            }
+        }
+
+        if ($infologin < 0) {
+            $label = '';
+        }
+
+        $url = DOL_URL_ROOT . '/user/card.php?id=' . $this->id;
+        if ($option == 'leave') {
+            $url = DOL_URL_ROOT . '/holiday/list.php?id=' . $this->id;
+        }
+
+        if ($option != 'nolink') {
+            // Add param to save lastsearch_values or not
+            $add_save_lastsearch_values = ($save_lastsearch_value == 1 ? 1 : 0);
+            if ($save_lastsearch_value == -1 && isset($_SERVER['PHP_SELF']) && preg_match('/list\.php/', $_SERVER['PHP_SELF'])) {
+                $add_save_lastsearch_values = 1;
+            }
+            if ($add_save_lastsearch_values) {
+                $url .= '&save_lastsearch_values=1';
+            }
+        }
+
+        $linkstart = '<a href="' . $url . '"';
+        $linkclose = "";
+        if (empty($notooltip)) {
+            if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                $langs->load("users");
+                $label = $langs->trans("ShowUser");
+                $linkclose .= ' alt="' . dol_escape_htmltag($label, 1) . '"';
+            }
+            $linkclose .= ($label ? ' title="' . dol_escape_htmltag($label, 1) . '"' : ' title="tocomplete"');
+            $linkclose .= $dataparams . ' class="' . $classfortooltip . ($morecss ? ' ' . $morecss : '') . '"';
+        } else {
+            $linkclose = ($morecss ? ' class="' . $morecss . '"' : '');
+        }
+
+        $linkstart .= $linkclose . '>';
+        $linkend = '</a>';
+
+        //if ($withpictoimg == -1) $result.='<div class="nowrap">';
+        $result .= (($option == 'nolink') ? '' : $linkstart);
+        if ($withpictoimg) {
+            $paddafterimage = '';
+            if (abs((int)$withpictoimg) == 1) {
+                $paddafterimage = 'style="margin-' . ($langs->trans("DIRECTION") == 'rtl' ? 'left' : 'right') . ': 3px;"';
+            }
+            // Only picto
+            if ($withpictoimg > 0) {
+                $picto = '<!-- picto user --><span class="nopadding userimg' . ($morecss ? ' ' . $morecss : '') . '"><div class="valignmiddle userphoto inline-block center marginrightonlyshort"' . ($paddafterimage ? ' ' . $paddafterimage : '') . '>' . img_object('', 'user', 'class=""', 0, 0, $notooltip ? 0 : 1) . '</div></span>';
+            } else {
+                // Picto must be a photo
+                $picto = '<!-- picto photo user --><span class="nopadding userimg' . ($morecss ? ' ' . $morecss : '') . '"' . ($paddafterimage ? ' ' . $paddafterimage : '') . '>' . Form::showphoto('userphoto', $this, 0, 0, 0, 'userphoto' . ($withpictoimg == -3 ? 'small' : ''), 'mini', 0, 1) . '</span>';
+            }
+            $result .= $picto;
+        }
+        if ($withpictoimg > -2 && $withpictoimg != 2) {
+            if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                $result .= '<span class="nopadding usertext' . ((!isset($this->status) || $this->status) ? '' : ' strikefordisabled') . ($morecss ? ' ' . $morecss : '') . '">';
+            }
+            if ($mode == 'login') {
+                $result .= dol_string_nohtmltag(dol_trunc($this->login, $maxlen));
+            } else {
+                $result .= dol_string_nohtmltag($this->getFullName($langs, '', ($mode == 'firstelselast' ? 3 : ($mode == 'firstname' ? 2 : -1)), $maxlen));
+            }
+            if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
+                $result .= '</span>';
+            }
+        }
+        $result .= (($option == 'nolink') ? '' : $linkend);
+        //if ($withpictoimg == -1) $result.='</div>';
+
+        $result .= $companylink;
+
+        global $action;
+        $hookmanager->initHooks(['userdao']);
+        $parameters = ['id' => $this->id, 'getnomurl' => &$result];
+        $reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
+        if ($reshook > 0) {
+            $result = $hookmanager->resPrint;
+        } else {
+            $result .= $hookmanager->resPrint;
+        }
+
+        return $result;
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     *  Return if a user has a permission.
+     *  You can use it like this: if ($user->hasRight('module', 'level11')).
+     *  It replaces old syntax: if ($user->rights->module->level1)
+     *
+     * @param string $module Module of permission to check
+     * @param string $permlevel1 Permission level1 (Example: 'read', 'write', 'delete')
+     * @param string $permlevel2 Permission level2
+     *
+     * @return int                     1 if user has permission, 0 if not.
+     * @see    clearrights(), delrights(), getrights(), hasRight()
+     */
+    public function hasRight($module, $permlevel1, $permlevel2 = '')
+    {
+        // For compatibility with bad naming permissions on module
+        $moduletomoduletouse = [
+            'compta' => 'comptabilite',
+            'contract' => 'contrat',
+            'member' => 'adherent',
+            'mo' => 'mrp',
+            'order' => 'commande',
+            'produit' => 'product',
+            'project' => 'projet',
+            'propale' => 'propal',
+            'shipping' => 'expedition',
+            'task' => 'task@projet',
+            'fichinter' => 'ficheinter',
+            'inventory' => 'stock',
+            'invoice' => 'facture',
+            'invoice_supplier' => 'fournisseur',
+            'order_supplier' => 'fournisseur',
+            'knowledgerecord' => 'knowledgerecord@knowledgemanagement',
+            'skill@hrm' => 'all@hrm', // skill / job / position objects rights are for the moment grouped into right level "all"
+            'job@hrm' => 'all@hrm', // skill / job / position objects rights are for the moment grouped into right level "all"
+            'position@hrm' => 'all@hrm', // skill / job / position objects rights are for the moment grouped into right level "all"
+            'facturerec' => 'facture',
+            'margins' => 'margin',
+        ];
+
+        if (!empty($moduletomoduletouse[$module])) {
+            $module = $moduletomoduletouse[$module];
+        }
+
+        $moduleRightsMapping = [
+            'product' => 'produit',
+            'margin' => 'margins',
+            'comptabilite' => 'compta',
+        ];
+
+        $rightsPath = $module;
+        if (!empty($moduleRightsMapping[$rightsPath])) {
+            $rightsPath = $moduleRightsMapping[$rightsPath];
+        }
+
+        // If module is abc@module, we check permission user->hasRight(module, abc, permlevel1)
+        $tmp = explode('@', $rightsPath, 2);
+        if (!empty($tmp[1])) {
+            if (strpos($module, '@') !== false) {
+                $module = $tmp[1];
+            }
+            if ($tmp[0] != $tmp[1]) {
+                // If $module = 'myobject@mymodule'
+                $rightsPath = $tmp[1];
+                $permlevel2 = $permlevel1;
+                $permlevel1 = $tmp[0];
+            } else {
+                // If $module = 'abc@abc'
+                $rightsPath = $tmp[1];
+            }
+        }
+
+        // In $conf->modules, we have 'accounting', 'product', 'facture', ...
+        // In $user->rights, we have 'accounting', 'produit', 'facture', ...
+        //var_dump($this->rights->$rightsPath);
+        //var_dump($conf->modules);
+        //var_dump($module.' '.isModEnabled($module).' '.$rightsPath.' '.$permlevel1.' '.$permlevel2);
+        if (!isModEnabled($module)) {
+            // dump("$module is not enabled!");
+            return 0;
+        }
+
+        // Special case for external user
+        if (!empty($this->socid)) {
+            // dump('External user!');
+            if ($module = 'societe' && $permlevel1 == 'client' && $permlevel2 == 'voir') {
+                return 0;   // An external user never has the permission ->societe->client->voir to see all thirdparties (always restricted to himself)
+            }
+        }
+
+        // For compatibility with bad naming permissions on permlevel1
+        if ($permlevel1 == 'propale') {
+            $permlevel1 = 'propal';
+        }
+        if ($permlevel1 == 'member') {
+            $permlevel1 = 'adherent';
+        }
+        if ($permlevel1 == 'recruitmentcandidature') {
+            $permlevel1 = 'recruitmentjobposition';
+        }
+
+        //var_dump($this->rights);
+        //var_dump($rightsPath.' '.$permlevel1.' '.$permlevel2);
+        if (empty($rightsPath) || empty($this->rights) || empty($this->rights->$rightsPath) || empty($permlevel1)) {
+            /*
+            dump([
+                'this->rights' => $this->rights,
+                'rightsPath' => $rightsPath,
+                '$this->rights->' . $rightsPath => $this->rights->$rightsPath??null,
+            ]);
+            */
+            return 0;
+        }
+
+        if ($permlevel2) {
+            if (!empty($this->rights->$rightsPath->$permlevel1)) {
+                if (!empty($this->rights->$rightsPath->$permlevel1->$permlevel2)) {
+                    return $this->rights->$rightsPath->$permlevel1->$permlevel2;
+                }
+                // For backward compatibility with old permissions called "lire", "creer", "create", "supprimer"
+                // instead of "read", "write", "delete"
+                if ($permlevel2 == 'read' && !empty($this->rights->$rightsPath->$permlevel1->lire)) {
+                    return $this->rights->$rightsPath->$permlevel1->lire;
+                }
+                if ($permlevel2 == 'write' && !empty($this->rights->$rightsPath->$permlevel1->creer)) {
+                    return $this->rights->$rightsPath->$permlevel1->creer;
+                }
+                if ($permlevel2 == 'write' && !empty($this->rights->$rightsPath->$permlevel1->create)) {
+                    return $this->rights->$rightsPath->$permlevel1->create;
+                }
+                if ($permlevel2 == 'delete' && !empty($this->rights->$rightsPath->$permlevel1->supprimer)) {
+                    return $this->rights->$rightsPath->$permlevel1->supprimer;
+                }
+            }
+        } else {
+            if (!empty($this->rights->$rightsPath->$permlevel1)) {
+                return $this->rights->$rightsPath->$permlevel1;
+            }
+            // For backward compatibility with old permissions called "lire", "creer", "create", "supprimer"
+            // instead of "read", "write", "delete"
+            if ($permlevel1 == 'read' && !empty($this->rights->$rightsPath->lire)) {
+                return $this->rights->$rightsPath->lire;
+            }
+            if ($permlevel1 == 'write' && !empty($this->rights->$rightsPath->creer)) {
+                return $this->rights->$rightsPath->creer;
+            }
+            if ($permlevel1 == 'write' && !empty($this->rights->$rightsPath->create)) {
+                return $this->rights->$rightsPath->create;
+            }
+            if ($permlevel1 == 'delete' && !empty($this->rights->$rightsPath->supprimer)) {
+                return $this->rights->$rightsPath->supprimer;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     *  Change status of a user
+     *
+     * @param int $status Status to set
+     *
+     * @return int                 Return integer <0 if KO, 0 if nothing is done, >0 if OK
+     */
+    public function setstatus($status)
+    {
+        global $conf, $langs, $user;
+
+        $error = 0;
+
+        // Check parameters
+        if (isset($this->statut)) {
+            if ($this->statut == $status) {
+                return 0;
+            }
+        } elseif (isset($this->status) && $this->status == $status) {
+            return 0;
+        }
+
+        $this->db->begin();
+
+        // Save in database
+        $sql = "UPDATE " . $dbPrefix . "user";
+        $sql .= " SET statut = " . ((int)$status);
+        $sql .= " WHERE rowid = " . ((int)$this->id);
+        $result = $this->db->query($sql);
+
+        dol_syslog(get_class($this) . "::setstatus", LOG_DEBUG);
+        if ($result) {
+            if ($status == 0) {
+                $this->context['actionmsg'] = 'User ' . $this->login . ' disabled';
+            } else {
+                $this->context['actionmsg'] = 'User ' . $this->login . ' enabled';
+            }
+            // Call trigger
+            $result = $this->call_trigger('USER_ENABLEDISABLE', $user);
+            if ($result < 0) {
+                $error++;
+            }
+            // End call triggers
+        }
+
+        if ($error) {
+            $this->db->rollback();
+            return -$error;
+        } else {
+            $this->status = $status;
+            $this->statut = $status;
+            $this->db->commit();
+            return 1;
+        }
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
+     * Sets object to supplied categories.
+     *
+     * Deletes object from existing categories not supplied.
+     * Adds it to non existing supplied categories.
+     * Existing categories are left untouch.
+     *
+     * @param int[]|int $categories Category or categories IDs
+     *
+     * @return  int                         Return integer <0 if KO, >0 if OK
+     */
+    public function setCategories($categories)
+    {
+        return parent::setCategoriesCommon($categories, Categorie::TYPE_USER);
+    }
+
+    /**
+     *  Delete the user
+     *
+     * @param User $user User than delete
+     *
+     * @return     int             Return integer <0 if KO, >0 if OK
+     */
+    public function delete(User $user)
+    {
+        global $conf, $langs;
+
+        $error = 0;
+
+        $this->db->begin();
+
+        $this->fetch($this->id);
+
+        dol_syslog(get_class($this) . "::delete", LOG_DEBUG);
+
+        // Remove rights
+        $sql = "DELETE FROM " . $dbPrefix . "user_rights WHERE fk_user = " . ((int)$this->id);
+
+        if (!$error && !$this->db->query($sql)) {
+            $error++;
+            $this->error = $this->db->lasterror();
+        }
+
+        // Remove group
+        $sql = "DELETE FROM " . $dbPrefix . "usergroup_user WHERE fk_user  = " . ((int)$this->id);
+        if (!$error && !$this->db->query($sql)) {
+            $error++;
+            $this->error = $this->db->lasterror();
+        }
+
+        // Remove params
+        $sql = "DELETE FROM " . $dbPrefix . "user_param WHERE fk_user  = " . ((int)$this->id);
+        if (!$error && !$this->db->query($sql)) {
+            $error++;
+            $this->error = $this->db->lasterror();
+        }
+
+        // If contact, remove link
+        if ($this->contact_id > 0) {
+            $sql = "UPDATE " . $dbPrefix . "socpeople SET fk_user_creat = null WHERE rowid = " . ((int)$this->contact_id);
+            if (!$error && !$this->db->query($sql)) {
+                $error++;
+                $this->error = $this->db->lasterror();
+            }
+        }
+
+        // Remove extrafields
+        if (!$error) {
+            $result = $this->deleteExtraFields();
+            if ($result < 0) {
+                $error++;
+                dol_syslog(get_class($this) . "::delete error -4 " . $this->error, LOG_ERR);
+            }
+        }
+
+        // Remove user
+        if (!$error) {
+            $sql = "DELETE FROM " . $dbPrefix . "user WHERE rowid = " . ((int)$this->id);
+            dol_syslog(get_class($this) . "::delete", LOG_DEBUG);
+            if (!$this->db->query($sql)) {
+                $error++;
+                $this->error = $this->db->lasterror();
+            }
+        }
+
+        if (!$error) {
+            // Call trigger
+            $result = $this->call_trigger('USER_DELETE', $user);
+            if ($result < 0) {
+                $error++;
+                $this->db->rollback();
+                return -1;
+            }
+            // End call triggers
+
+            $this->db->commit();
+            return 1;
+        } else {
+            $this->db->rollback();
+            return -1;
+        }
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
+    /**
      *  Create a user from a contact object. User will be internal but if contact is linked to a third party, user will
      *  be external
      *
@@ -1586,8 +2049,6 @@ class User extends GenericDocument
             return $result;
         }
     }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
      *  Create a user into database
@@ -1734,6 +2195,9 @@ class User extends GenericDocument
             return -2;
         }
     }
+
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
      *    Assign rights by default
@@ -2137,6 +2601,9 @@ class User extends GenericDocument
         }
     }
 
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Change password of a user
      *
@@ -2390,9 +2857,6 @@ class User extends GenericDocument
         }
     }
 
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Update the user's last login date in the database.
      *  Function called when a new connection is made by the user
@@ -2430,8 +2894,6 @@ class User extends GenericDocument
             return -1;
         }
     }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
      *  Send a new password (or instructions to reset it) by email
@@ -2478,6 +2940,10 @@ class User extends GenericDocument
         $appli = getDolGlobalString('MAIN_APPLICATION_TITLE', constant('DOL_APPLICATION_TITLE'));
 
         $subject = '[' . $appli . '] ' . $outputlangs->transnoentitiesnoconv("SubjectNewPassword", $appli);
+
+        if (!isset($dolibarr_main_url_root)) {
+            $dolibarr_main_url_root = '';
+        }
 
         // Define $urlwithroot
         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
@@ -2553,9 +3019,6 @@ class User extends GenericDocument
         }
     }
 
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
     /**
      *  Read clicktodial information for user
      *
@@ -2588,8 +3051,6 @@ class User extends GenericDocument
             return -1;
         }
     }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
     /**
      *  Update clicktodial info
@@ -2688,6 +3149,8 @@ class User extends GenericDocument
         }
     }
 
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Remove a user from a group
      *
@@ -2769,6 +3232,10 @@ class User extends GenericDocument
         return 0;
     }
 
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+
     /**
      *  Return a link with photo
      *  Use this->id,this->photo
@@ -2788,461 +3255,6 @@ class User extends GenericDocument
         $result .= '</a>';
 
         return $result;
-    }
-
-    /**
-     * Return array of data to show into tooltips
-     *
-     * @param array $params Array with options, infologin
-     *
-     * @return array
-     * @since v18
-     */
-    public function getTooltipContentArray($params)
-    {
-        global $conf, $langs, $menumanager;
-        global $dolibarr_main_demo;
-
-        $infologin = $params['infologin'] ?? 0;
-        $option = $params['option'] ?? '';
-
-        $data = [];
-        if (!empty($this->photo)) {
-            $photo = '<div class="photointooltip floatright">';
-            $photo .= Form::showphoto('userphoto', $this, 0, 60, 0, 'photoref photowithmargin photologintooltip', 'small', 0, 1); // Force height to 60 so we total height of tooltip can be calculated and collision can be managed
-            $photo .= '</div>';
-            $data['photo'] = $photo;
-            //$label .= '<div style="clear: both;"></div>';
-        }
-
-        // Info Login
-        $data['opendiv'] = '<div class="centpercent divtooltip">';
-        $data['picto'] = img_picto('', $this->picto) . ' <u class="paddingrightonly">' . $langs->trans("User") . '</u> ' . $this->getLibStatut(4);
-        $data['name'] = '<br><b>' . $langs->trans('Name') . ':</b> ' . dol_string_nohtmltag($this->getFullName($langs, ''));
-        if (!empty($this->login)) {
-            $data['login'] = '<br><b>' . $langs->trans('Login') . ':</b> ' . dol_string_nohtmltag($this->login);
-        }
-        if (!empty($this->job)) {
-            $data['job'] = '<br><b>' . $langs->trans("Job") . ':</b> ' . dol_string_nohtmltag($this->job);
-        }
-        $data['email'] = '<br><b>' . $langs->trans("Email") . ':</b> ' . dol_string_nohtmltag($this->email);
-        if (!empty($this->office_phone) || !empty($this->office_fax) || !empty($this->fax)) {
-            $phonelist = [];
-            if ($this->office_phone) {
-                $phonelist[] = dol_print_phone($this->office_phone, $this->country_code, $this->id, 0, '', '&nbsp', 'phone');
-            }
-            if ($this->office_fax) {
-                $phonelist[] = dol_print_phone($this->office_fax, $this->country_code, $this->id, 0, '', '&nbsp', 'fax');
-            }
-            if ($this->user_mobile) {
-                $phonelist[] = dol_print_phone($this->user_mobile, $this->country_code, $this->id, 0, '', '&nbsp', 'mobile');
-            }
-            $data['phones'] = '<br><b>' . $langs->trans('Phone') . ':</b> ' . implode('&nbsp;', $phonelist);
-        }
-        if (!empty($this->admin)) {
-            $data['administrator'] = '<br><b>' . $langs->trans("Administrator") . '</b>: ' . yn($this->admin);
-        }
-        if (!empty($this->accountancy_code) || $option == 'accountancy') {
-            $langs->load("companies");
-            $data['accountancycode'] = '<br><b>' . $langs->trans("AccountancyCode") . '</b>: ' . $this->accountancy_code;
-        }
-        $company = '';
-        if (!empty($this->socid)) { // Add thirdparty for external users
-            $thirdpartystatic = new Societe($this->db);
-            $thirdpartystatic->fetch($this->socid);
-            $companyimg = '';
-            if (empty($params['hidethirdpartylogo'])) {
-                $companyimg = ' ' . $thirdpartystatic->getNomUrl(2, (($option == 'nolink') ? 'nolink' : '')); // picto only of company
-            }
-            $company = ' (' . $langs->trans("Company") . ': ' . ($companyimg ? $companyimg : img_picto('', 'company')) . ' ' . dol_string_nohtmltag($thirdpartystatic->name) . ')';
-        }
-        $type = ($this->socid ? $langs->trans("ExternalUser") . $company : $langs->trans("InternalUser"));
-        $data['type'] = '<br><b>' . $langs->trans("Type") . ':</b> ' . $type;
-        $data['closediv'] = '</div>';
-
-        if ($infologin > 0) {
-            $data['newlinelogin'] = '<br>';
-            $data['session'] = '<br><u>' . $langs->trans("Session") . '</u>';
-            $data['ip'] = '<br><b>' . $langs->trans("IPAddress") . '</b>: ' . dol_string_nohtmltag(getUserRemoteIP());
-            if (getDolGlobalString('MAIN_MODULE_MULTICOMPANY')) {
-                $data['multicompany'] = '<br><b>' . $langs->trans("ConnectedOnMultiCompany") . ':</b> ' . $conf->entity . ' (User entity ' . $this->entity . ')';
-            }
-            $data['authentication'] = '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . dol_string_nohtmltag($_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)'));
-            $data['connectedsince'] = '<br><b>' . $langs->trans("ConnectedSince") . ':</b> ' . dol_print_date($this->datelastlogin, "dayhour", 'tzuser');
-            $data['previousconnexion'] = '<br><b>' . $langs->trans("PreviousConnexion") . ':</b> ' . dol_print_date($this->datepreviouslogin, "dayhour", 'tzuser');
-            $data['currenttheme'] = '<br><b>' . $langs->trans("CurrentTheme") . ':</b> ' . dol_string_nohtmltag($conf->theme);
-            $data['currentmenumanager'] = '<br><b>' . $langs->trans("CurrentMenuManager") . ':</b> ' . dol_string_nohtmltag($menumanager->name);
-            $s = picto_from_langcode($langs->getDefaultLang());
-            $data['currentuserlang'] = '<br><b>' . $langs->trans("CurrentUserLanguage") . ':</b> ' . dol_string_nohtmltag(($s ? $s . ' ' : '') . $langs->getDefaultLang());
-            $data['browser'] = '<br><b>' . $langs->trans("Browser") . ':</b> ' . dol_string_nohtmltag($conf->browser->name . ($conf->browser->version ? ' ' . $conf->browser->version : '') . ' (' . $_SERVER['HTTP_USER_AGENT'] . ')');
-            $data['layout'] = '<br><b>' . $langs->trans("Layout") . ':</b> ' . dol_string_nohtmltag($conf->browser->layout);
-            $data['screen'] = '<br><b>' . $langs->trans("Screen") . ':</b> ' . dol_string_nohtmltag($_SESSION['dol_screenwidth'] . ' x ' . $_SESSION['dol_screenheight']);
-            if ($conf->browser->layout == 'phone') {
-                $data['phone'] = '<br><b>' . $langs->trans("Phone") . ':</b> ' . $langs->trans("Yes");
-            }
-            if (!empty($_SESSION["disablemodules"])) {
-                $data['disabledmodules'] = '<br><b>' . $langs->trans("DisabledModules") . ':</b> <br>' . dol_string_nohtmltag(implode(', ', explode(',', $_SESSION["disablemodules"])));
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     *  Return the label of the status of user (active, inactive)
-     *
-     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
-     *                  label + Picto, 6=Long label + Picto
-     *
-     * @return string                 Label of status
-     */
-    public function getLibStatut($mode = 0)
-    {
-        return $this->LibStatut(isset($this->statut) ? (int)$this->statut : (int)$this->status, $mode);
-    }
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Return the label of a status of user (active, inactive)
-     *
-     * @param int $status Id status
-     * @param int $mode 0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short
-     *                    label + Picto, 6=Long label + Picto
-     *
-     * @return string                  Label of status
-     */
-    public function LibStatut($status, $mode = 0)
-    {
-        // phpcs:enable
-        global $langs;
-
-        if (empty($this->labelStatus) || empty($this->labelStatusShort)) {
-            global $langs;
-            //$langs->load("mymodule");
-            $this->labelStatus[self::STATUS_ENABLED] = $langs->transnoentitiesnoconv('Enabled');
-            $this->labelStatus[self::STATUS_DISABLED] = $langs->transnoentitiesnoconv('Disabled');
-            $this->labelStatusShort[self::STATUS_ENABLED] = $langs->transnoentitiesnoconv('Enabled');
-            $this->labelStatusShort[self::STATUS_DISABLED] = $langs->transnoentitiesnoconv('Disabled');
-        }
-
-        $statusType = 'status5';
-        if ($status == self::STATUS_ENABLED) {
-            $statusType = 'status4';
-        }
-
-        $label = $this->labelStatus[$status];
-        $labelshort = $this->labelStatusShort[$status];
-
-        $now = dol_now();
-        if (!empty($this->datestartvalidity) && $now < $this->datestartvalidity) {
-            $statusType = 'status3';
-            $label .= ' (' . $langs->trans("UserNotYetValid") . ')';
-        }
-        if (!empty($this->dateendvalidity) && $now > ($this->dateendvalidity + 24 * 3600 - 1)) {
-            $statusType = 'status2';
-            $label .= ' (' . $langs->trans("UserExpired") . ')';
-        }
-
-        return dolGetStatus($label, $labelshort, '', $statusType, $mode);
-    }
-
-    /**
-     *  Return a HTML link to the user card (with optionally the picto)
-     *  Use this->id,this->lastname, this->firstname
-     *
-     * @param int $withpictoimg Include picto in link (0=No picto, 1=Include picto into link, 2=Only
-     *                                       picto, -1=Include photo into link, -2=Only picto photo, -3=Only photo very
-     *                                       small)
-     * @param string $option On what the link point to ('leave', 'accountancy', 'nolink', )
-     * @param integer $infologin 0=Add default info tooltip, 1=Add complete info tooltip, -1=No info
-     *                                       tooltip
-     * @param integer $notooltip 1=Disable tooltip on picto and name
-     * @param int $maxlen Max length of visible user name
-     * @param int $hidethirdpartylogo Hide logo of thirdparty if user is external user
-     * @param string $mode ''=Show firstname and lastname, 'firstname'=Show only firstname,
-     *                                       'firstelselast'=Show firstname or lastname if not defined, 'login'=Show
-     *                                       login
-     * @param string $morecss Add more css on link
-     * @param int $save_lastsearch_value -1=Auto, 0=No save of lastsearch_values when clicking, 1=Save
-     *                                       lastsearch_values whenclicking
-     *
-     * @return string                              String with URL
-     */
-    public function getNomUrl($withpictoimg = 0, $option = '', $infologin = 0, $notooltip = 0, $maxlen = 24, $hidethirdpartylogo = 0, $mode = '', $morecss = '', $save_lastsearch_value = -1)
-    {
-        global $langs, $conf, $db, $hookmanager, $user;
-        global $dolibarr_main_authentication, $dolibarr_main_demo;
-
-        if (!$user->hasRight('user', 'user', 'read') && $user->id != $this->id) {
-            $option = 'nolink';
-        }
-
-        if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER') && $withpictoimg) {
-            $withpictoimg = 0;
-        }
-
-        $result = '';
-        $params = [
-            'id' => $this->id,
-            'objecttype' => $this->element,
-            'infologin' => $infologin,
-            'option' => $option,
-            'hidethirdpartylogo' => $hidethirdpartylogo,
-        ];
-        $classfortooltip = 'classfortooltip';
-        $dataparams = '';
-        if (getDolGlobalInt('MAIN_ENABLE_AJAX_TOOLTIP')) {
-            $classfortooltip = 'classforajaxtooltip';
-            $dataparams = ' data-params="' . dol_escape_htmltag(json_encode($params)) . '"';
-            $label = '';
-        } else {
-            $label = implode($this->getTooltipContentArray($params));
-        }
-
-        $companylink = '';
-        if (!empty($this->socid)) { // Add thirdparty for external users
-            $thirdpartystatic = new Societe($this->db);
-            $thirdpartystatic->fetch($this->socid);
-            if (empty($hidethirdpartylogo)) {
-                $companylink = ' ' . $thirdpartystatic->getNomUrl(2, (($option == 'nolink') ? 'nolink' : '')); // picto only of company
-            }
-        }
-
-        if ($infologin < 0) {
-            $label = '';
-        }
-
-        $url = DOL_URL_ROOT . '/user/card.php?id=' . $this->id;
-        if ($option == 'leave') {
-            $url = DOL_URL_ROOT . '/holiday/list.php?id=' . $this->id;
-        }
-
-        if ($option != 'nolink') {
-            // Add param to save lastsearch_values or not
-            $add_save_lastsearch_values = ($save_lastsearch_value == 1 ? 1 : 0);
-            if ($save_lastsearch_value == -1 && isset($_SERVER['PHP_SELF']) && preg_match('/list\.php/', $_SERVER['PHP_SELF'])) {
-                $add_save_lastsearch_values = 1;
-            }
-            if ($add_save_lastsearch_values) {
-                $url .= '&save_lastsearch_values=1';
-            }
-        }
-
-        $linkstart = '<a href="' . $url . '"';
-        $linkclose = "";
-        if (empty($notooltip)) {
-            if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-                $langs->load("users");
-                $label = $langs->trans("ShowUser");
-                $linkclose .= ' alt="' . dol_escape_htmltag($label, 1) . '"';
-            }
-            $linkclose .= ($label ? ' title="' . dol_escape_htmltag($label, 1) . '"' : ' title="tocomplete"');
-            $linkclose .= $dataparams . ' class="' . $classfortooltip . ($morecss ? ' ' . $morecss : '') . '"';
-        } else {
-            $linkclose = ($morecss ? ' class="' . $morecss . '"' : '');
-        }
-
-        $linkstart .= $linkclose . '>';
-        $linkend = '</a>';
-
-        //if ($withpictoimg == -1) $result.='<div class="nowrap">';
-        $result .= (($option == 'nolink') ? '' : $linkstart);
-        if ($withpictoimg) {
-            $paddafterimage = '';
-            if (abs((int)$withpictoimg) == 1) {
-                $paddafterimage = 'style="margin-' . ($langs->trans("DIRECTION") == 'rtl' ? 'left' : 'right') . ': 3px;"';
-            }
-            // Only picto
-            if ($withpictoimg > 0) {
-                $picto = '<!-- picto user --><span class="nopadding userimg' . ($morecss ? ' ' . $morecss : '') . '"><div class="valignmiddle userphoto inline-block center marginrightonlyshort"' . ($paddafterimage ? ' ' . $paddafterimage : '') . '>' . img_object('', 'user', 'class=""', 0, 0, $notooltip ? 0 : 1) . '</div></span>';
-            } else {
-                // Picto must be a photo
-                $picto = '<!-- picto photo user --><span class="nopadding userimg' . ($morecss ? ' ' . $morecss : '') . '"' . ($paddafterimage ? ' ' . $paddafterimage : '') . '>' . Form::showphoto('userphoto', $this, 0, 0, 0, 'userphoto' . ($withpictoimg == -3 ? 'small' : ''), 'mini', 0, 1) . '</span>';
-            }
-            $result .= $picto;
-        }
-        if ($withpictoimg > -2 && $withpictoimg != 2) {
-            if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-                $result .= '<span class="nopadding usertext' . ((!isset($this->status) || $this->status) ? '' : ' strikefordisabled') . ($morecss ? ' ' . $morecss : '') . '">';
-            }
-            if ($mode == 'login') {
-                $result .= dol_string_nohtmltag(dol_trunc($this->login, $maxlen));
-            } else {
-                $result .= dol_string_nohtmltag($this->getFullName($langs, '', ($mode == 'firstelselast' ? 3 : ($mode == 'firstname' ? 2 : -1)), $maxlen));
-            }
-            if (!getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
-                $result .= '</span>';
-            }
-        }
-        $result .= (($option == 'nolink') ? '' : $linkend);
-        //if ($withpictoimg == -1) $result.='</div>';
-
-        $result .= $companylink;
-
-        global $action;
-        $hookmanager->initHooks(['userdao']);
-        $parameters = ['id' => $this->id, 'getnomurl' => &$result];
-        $reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
-        if ($reshook > 0) {
-            $result = $hookmanager->resPrint;
-        } else {
-            $result .= $hookmanager->resPrint;
-        }
-
-        return $result;
-    }
-
-
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore
-    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-
-    /**
-     *  Return if a user has a permission.
-     *  You can use it like this: if ($user->hasRight('module', 'level11')).
-     *  It replaces old syntax: if ($user->rights->module->level1)
-     *
-     * @param string $module Module of permission to check
-     * @param string $permlevel1 Permission level1 (Example: 'read', 'write', 'delete')
-     * @param string $permlevel2 Permission level2
-     *
-     * @return int                     1 if user has permission, 0 if not.
-     * @see    clearrights(), delrights(), getrights(), hasRight()
-     */
-    public function hasRight($module, $permlevel1, $permlevel2 = '')
-    {
-        // For compatibility with bad naming permissions on module
-        $moduletomoduletouse = [
-            'compta' => 'comptabilite',
-            'contract' => 'contrat',
-            'member' => 'adherent',
-            'mo' => 'mrp',
-            'order' => 'commande',
-            'produit' => 'product',
-            'project' => 'projet',
-            'propale' => 'propal',
-            'shipping' => 'expedition',
-            'task' => 'task@projet',
-            'fichinter' => 'ficheinter',
-            'inventory' => 'stock',
-            'invoice' => 'facture',
-            'invoice_supplier' => 'fournisseur',
-            'order_supplier' => 'fournisseur',
-            'knowledgerecord' => 'knowledgerecord@knowledgemanagement',
-            'skill@hrm' => 'all@hrm', // skill / job / position objects rights are for the moment grouped into right level "all"
-            'job@hrm' => 'all@hrm', // skill / job / position objects rights are for the moment grouped into right level "all"
-            'position@hrm' => 'all@hrm', // skill / job / position objects rights are for the moment grouped into right level "all"
-            'facturerec' => 'facture',
-            'margins' => 'margin',
-        ];
-
-        if (!empty($moduletomoduletouse[$module])) {
-            $module = $moduletomoduletouse[$module];
-        }
-
-        $moduleRightsMapping = [
-            'product' => 'produit',
-            'margin' => 'margins',
-            'comptabilite' => 'compta',
-        ];
-
-        $rightsPath = $module;
-        if (!empty($moduleRightsMapping[$rightsPath])) {
-            $rightsPath = $moduleRightsMapping[$rightsPath];
-        }
-
-        // If module is abc@module, we check permission user->hasRight(module, abc, permlevel1)
-        $tmp = explode('@', $rightsPath, 2);
-        if (!empty($tmp[1])) {
-            if (strpos($module, '@') !== false) {
-                $module = $tmp[1];
-            }
-            if ($tmp[0] != $tmp[1]) {
-                // If $module = 'myobject@mymodule'
-                $rightsPath = $tmp[1];
-                $permlevel2 = $permlevel1;
-                $permlevel1 = $tmp[0];
-            } else {
-                // If $module = 'abc@abc'
-                $rightsPath = $tmp[1];
-            }
-        }
-
-        // In $conf->modules, we have 'accounting', 'product', 'facture', ...
-        // In $user->rights, we have 'accounting', 'produit', 'facture', ...
-        //var_dump($this->rights->$rightsPath);
-        //var_dump($conf->modules);
-        //var_dump($module.' '.isModEnabled($module).' '.$rightsPath.' '.$permlevel1.' '.$permlevel2);
-        if (!isModEnabled($module)) {
-            return 0;
-        }
-
-        // Special case for external user
-        if (!empty($this->socid)) {
-            if ($module = 'societe' && $permlevel1 == 'client' && $permlevel2 == 'voir') {
-                dump('return 0');
-                return 0;   // An external user never has the permission ->societe->client->voir to see all thirdparties (always restricted to himself)
-            }
-        }
-
-        // For compatibility with bad naming permissions on permlevel1
-        if ($permlevel1 == 'propale') {
-            $permlevel1 = 'propal';
-        }
-        if ($permlevel1 == 'member') {
-            $permlevel1 = 'adherent';
-        }
-        if ($permlevel1 == 'recruitmentcandidature') {
-            $permlevel1 = 'recruitmentjobposition';
-        }
-
-        //var_dump($this->rights);
-        //var_dump($rightsPath.' '.$permlevel1.' '.$permlevel2);
-        if (empty($rightsPath) || empty($this->rights) || empty($this->rights->$rightsPath) || empty($permlevel1)) {
-            return 0;
-        }
-
-        if ($permlevel2) {
-            if (!empty($this->rights->$rightsPath->$permlevel1)) {
-                if (!empty($this->rights->$rightsPath->$permlevel1->$permlevel2)) {
-                    return $this->rights->$rightsPath->$permlevel1->$permlevel2;
-                }
-                // For backward compatibility with old permissions called "lire", "creer", "create", "supprimer"
-                // instead of "read", "write", "delete"
-                if ($permlevel2 == 'read' && !empty($this->rights->$rightsPath->$permlevel1->lire)) {
-                    return $this->rights->$rightsPath->$permlevel1->lire;
-                }
-                if ($permlevel2 == 'write' && !empty($this->rights->$rightsPath->$permlevel1->creer)) {
-                    return $this->rights->$rightsPath->$permlevel1->creer;
-                }
-                if ($permlevel2 == 'write' && !empty($this->rights->$rightsPath->$permlevel1->create)) {
-                    return $this->rights->$rightsPath->$permlevel1->create;
-                }
-                if ($permlevel2 == 'delete' && !empty($this->rights->$rightsPath->$permlevel1->supprimer)) {
-                    return $this->rights->$rightsPath->$permlevel1->supprimer;
-                }
-            }
-        } else {
-            if (!empty($this->rights->$rightsPath->$permlevel1)) {
-                return $this->rights->$rightsPath->$permlevel1;
-            }
-            // For backward compatibility with old permissions called "lire", "creer", "create", "supprimer"
-            // instead of "read", "write", "delete"
-            if ($permlevel1 == 'read' && !empty($this->rights->$rightsPath->lire)) {
-                return $this->rights->$rightsPath->lire;
-            }
-            if ($permlevel1 == 'write' && !empty($this->rights->$rightsPath->creer)) {
-                return $this->rights->$rightsPath->creer;
-            }
-            if ($permlevel1 == 'write' && !empty($this->rights->$rightsPath->create)) {
-                return $this->rights->$rightsPath->create;
-            }
-            if ($permlevel1 == 'delete' && !empty($this->rights->$rightsPath->supprimer)) {
-                return $this->rights->$rightsPath->supprimer;
-            }
-        }
-
-        return 0;
     }
 
     // phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore
@@ -4148,6 +4160,11 @@ class User extends GenericDocument
         } else {
             $entity_qr = '';
         }
+
+        if (!isset($dolibarr_main_url_root)) {
+            $dolibarr_main_url_root = '';
+        }
+
         // Define $urlwithroot
         $urlwithouturlroot = preg_replace('/' . preg_quote(DOL_URL_ROOT, '/') . '$/i', '', trim($dolibarr_main_url_root));
         $urlwithroot = $urlwithouturlroot . DOL_URL_ROOT; // This is to use external domain name found into config file

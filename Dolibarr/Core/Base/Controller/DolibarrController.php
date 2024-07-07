@@ -16,27 +16,25 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace DoliCore\Base;
+namespace DoliCore\Base\Controller;
 
-use DoliCore\Base\Controller\Trait\DolibarrVarsTrait;
+use DoliLib\DolibarrAuth;
 
-/**
- * Class DolibarrController. Controller to carry out the migration from Dolibarr to Alixar.
- *
- * @package    Alxarafe\Base
- *
- * @package    DoliCore\Base
- */
-abstract class DolibarrController extends DolibarrViewController
+class DolibarrController extends DolibarrPublicController
 {
-    use DolibarrVarsTrait;
-
     public $object;
+    public $username;
 
     public function __construct()
     {
-        $this->loadVars();
         parent::__construct();
+        if (!DolibarrAuth::isLogged()) {
+            header('Location: ' . BASE_URL . '/index.php?module=Auth&controller=Login');
+        }
+
+        $this->username = DolibarrAuth::$user->login;
+
+        return $this->index();
     }
 
     function filterPostInt($field)
@@ -50,11 +48,6 @@ abstract class DolibarrController extends DolibarrViewController
             return $this->object->$field ?? false;
         }
         return GETPOST($field, $filter);
-    }
-
-    public function doLogin($user, $password)
-    {
-        return true;
     }
 
     public function index(bool $executeActions = true): bool
@@ -71,11 +64,6 @@ abstract class DolibarrController extends DolibarrViewController
             return $this->action === null;
         }
 
-        return true;
-    }
-
-    private function isLogged()
-    {
         return true;
     }
 }

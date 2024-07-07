@@ -28,6 +28,7 @@ use DoliModules\Company\Model\Company;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';
+require_once realpath(BASE_PATH.'/../Dolibarr/Lib/MainFunctions.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "other"));

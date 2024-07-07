@@ -19,6 +19,7 @@
 namespace DoliCore\Base\Controller\Trait;
 
 use Alxarafe\Base\Config;
+use Alxarafe\Base\Database;
 use DoliCore\Tools\Load;
 
 trait DolibarrVarsTrait
@@ -36,8 +37,12 @@ trait DolibarrVarsTrait
     {
         $this->conf = Load::getConfig();
         $this->config = Config::getConfig();
+
+        new Database($this->config->db);
+
         $this->db = Load::getDB();
         $this->hookmanager = Load::getHookManager();
+        $this->conf->setValues($this->db);
         $this->langs = Load::getLangs();
         $this->user = Load::getUser();
         $this->menumanager = Load::getMenuManager();

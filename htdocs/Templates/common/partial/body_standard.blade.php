@@ -2,7 +2,7 @@
     @include('partial.top_bar')
     @include('partial.side_bar')
     <div id="id-right">
-        @include('alerts')
+        @include('partial.alerts')
         @yield('content')
     </div>
 </div>

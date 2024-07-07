@@ -40,7 +40,7 @@ global $langs;
 global $mysoc;
 
 use ChargeSociales;
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliModules\Accounting\Model\AccountingJournal;
 use DoliModules\Adherent\Model\Subscription;

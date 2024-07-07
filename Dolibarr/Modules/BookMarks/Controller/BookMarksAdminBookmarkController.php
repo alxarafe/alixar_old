@@ -30,7 +30,7 @@ global $menumanager;
 global $langs;
 global $mysoc;
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 
 
 /**     \file       htdocs/bookmarks/admin/bookmark.php

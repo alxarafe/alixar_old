@@ -21,12 +21,6 @@ use Alxarafe\Base\Config as BaseConfig;
 use DoliCore\Tools\Load;
 use DoliLib\DolibarrAuth;
 
-$authenticated = $_SESSION['dol_login'] ?? false;
-if (!$authenticated) {
-    header('Location: ' . constant('BASE_URL') . '/index.php?module=Auth&controller=Login');
-    die();
-}
-
 global $conf;
 global $config;
 global $db;
@@ -36,12 +30,11 @@ global $user;
 global $menumanager;
 global $mysoc; // From master.inc.php
 
-DolibarrAuth::setSession($authenticated);
-
 $conf = Load::getConfig();
 $config = BaseConfig::getConfig();
 $db = Load::getDB();
 $hookmanager = Load::getHookManager();
+$conf->setValues($db);
 $langs = Load::getLangs();
 $user = Load::getUser();
 $menumanager = Load::getMenuManager();
@@ -49,3 +42,10 @@ if (isset($menumanager)) {
     $menumanager->loadMenu();
 }
 $mysoc = Load::getMySoc();
+
+if (!DolibarrAuth::isLogged()) {
+    header('Location: ' . constant('BASE_URL') . '/index.php?module=Auth&controller=Login');
+    die();
+}
+
+$langs->setDefaultLang($config->main->language);

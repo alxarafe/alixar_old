@@ -47,7 +47,7 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Files.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 */
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 
 /**
  *  \file       htdocs/admin/company.php

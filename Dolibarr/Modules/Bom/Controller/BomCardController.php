@@ -37,7 +37,7 @@ global $mysoc;
  *    \brief      Page to create/edit/view Bill Of Material
  */
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Lib\ExtraFields;
 use DoliModules\Bom\Model\Bom;
 use DoliModules\Bom\Model\BomLine;

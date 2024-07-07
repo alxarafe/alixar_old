@@ -6040,7 +6040,6 @@ abstract class GenericDocument
             $langs = new Translate('', $conf);
         }
 
-        include_once DOL_DOCUMENT_ROOT . '/core/class/interfaces.class.php';
         $interface = new Interfaces($this->db);
         $result = $interface->run_triggers($triggerName, $this, $user, $langs, $conf);
 

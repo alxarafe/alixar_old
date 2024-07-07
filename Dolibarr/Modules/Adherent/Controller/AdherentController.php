@@ -45,7 +45,7 @@ global $langs;
 global $mysoc;
 
 // Load Dolibarr environment
-require BASE_PATH . '/main.inc.php';
+//require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/core/class/ldap.class.php';
 require_once BASE_PATH . '/core/class/vcard.class.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Company.php';
@@ -56,11 +56,12 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Member.php';
 require_once BASE_PATH . '/partnership/class/partnership.class.php';
 require_once BASE_PATH . '/partnership/lib/partnership.lib.php';
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;
 use DoliCore\Model\MailmanSpip;
+use DoliCore\Tools\Load;
 use DoliModules\Adherent\Model\Adherent;
 use DoliModules\Adherent\Model\AdherentType;
 use DoliModules\User\Model\User;
@@ -325,7 +326,7 @@ class AdherentController extends DolibarrController
                 if (!$error) {
                     if ($socid != $object->socid) { // If link differs from currently in database
                         $sql = "SELECT rowid FROM " . MAIN_DB_PREFIX . "adherent";
-                        $sql .= " WHERE socid = " . ((int) $socid);
+                        $sql .= " WHERE socid = " . ((int)$socid);
                         $sql .= " AND entity = " . $conf->entity;
                         $resql = $db->query($sql);
                         if ($resql) {
@@ -817,7 +818,7 @@ class AdherentController extends DolibarrController
                             $msg = $arraydefaultmessage->content;
                         }
 
-                        if (empty($labeltouse) || (int) $labeltouse === -1) {
+                        if (empty($labeltouse) || (int)$labeltouse === -1) {
                             //fallback on the old configuration.
                             $langs->load("errors");
                             setEventMessages('<a href="' . DOL_URL_ROOT . '/adherents/admin/member_emails.php">' . $langs->trans('WarningMandatorySetupNotComplete') . '</a>', null, 'errors');
@@ -885,7 +886,7 @@ class AdherentController extends DolibarrController
                                 $msg = $arraydefaultmessage->content;
                             }
 
-                            if (empty($labeltouse) || (int) $labeltouse === -1) {
+                            if (empty($labeltouse) || (int)$labeltouse === -1) {
                                 //fallback on the old configuration.
                                 setEventMessages('WarningMandatorySetupNotComplete', null, 'errors');
                                 $error++;
@@ -952,7 +953,7 @@ class AdherentController extends DolibarrController
                                 $msg = $arraydefaultmessage->content;
                             }
 
-                            if (empty($labeltouse) || (int) $labeltouse === -1) {
+                            if (empty($labeltouse) || (int)$labeltouse === -1) {
                                 //fallback on the old configuration.
                                 setEventMessages('WarningMandatorySetupNotComplete', null, 'errors');
                                 $error++;
@@ -1141,10 +1142,16 @@ class AdherentController extends DolibarrController
         global $menumanager;
         global $langs;
 
-// Load translation files required by the page
+        $langs = Load::getLangs();
+        $hookmanager = Load::getHookManager();
+        $user = Load::getUser();
+
+        $langs->setDefaultLang($this->config->main->language);
+
+        // Load translation files required by the page
         $langs->loadLangs(["companies", "members"]);
 
-        // $hookmanager = new HookManager($db);
+        //$hookmanager = new HookManager($db);
 
 // Initialize technical object to manage hooks. Note that conf->hooks_modules contains array
         $hookmanager->initHooks(['membersindex']);

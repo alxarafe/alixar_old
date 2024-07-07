@@ -40,8 +40,9 @@
 use DoliCore\Form\Form;
 use DoliCore\Lib\Conf;
 use DoliCore\Lib\HookManager;
+use DoliCore\Tools\Load;
 
-include_once DOL_DOCUMENT_ROOT . '/../Dolibarr/Lib/BookMarks.php';
+include_once BASE_PATH . '/../Dolibarr/Lib/BookMarks.php';
 
 if (!function_exists('dol_loginfunction')) {
     /**
@@ -186,7 +187,7 @@ if (!function_exists('dol_loginfunction')) {
             $width = 128;
         } elseif (!empty($mysoc->logo_squarred_small) && is_readable($conf->mycompany->dir_output . '/logos/thumbs/' . $mysoc->logo_squarred_small)) {
             $urllogo = DOL_URL_ROOT . '/viewimage.php?cache=1&amp;modulepart=mycompany&amp;file=' . urlencode('logos/thumbs/' . $mysoc->logo_squarred_small);
-        } elseif (is_readable(DOL_DOCUMENT_ROOT . '/theme/alixar_rectangular_logo.svg')) {
+        } elseif (is_readable(BASE_PATH . '/theme/alixar_rectangular_logo.svg')) {
             $urllogo = DOL_URL_ROOT . '/theme/alixar_rectangular_logo.svg';
         }
 
@@ -400,8 +401,7 @@ if (!function_exists("top_httphead")) {
             $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSPRO');
 
             if (!is_object($hookmanager)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
-                $hookmanager = new HookManager($db);
+                $hookmanager = Load::getHookmanager();
             }
             $hookmanager->initHooks(["main"]);
 
@@ -437,7 +437,7 @@ if (!function_exists("top_httphead")) {
             $contentsecuritypolicy = getDolGlobalString('MAIN_SECURITY_FORCECSP');
 
             if (!is_object($hookmanager)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
+                include_once BASE_PATH . '/core/class/hookmanager.class.php';
                 $hookmanager = new HookManager($db);
             }
             $hookmanager->initHooks(["main"]);
@@ -509,7 +509,7 @@ if (!function_exists('top_htmlhead')) {
         //print '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">'."\n";
         if (empty($disablehead)) {
             if (!is_object($hookmanager)) {
-                include_once DOL_DOCUMENT_ROOT . '/core/class/hookmanager.class.php';
+                include_once BASE_PATH . '/core/class/hookmanager.class.php';
                 $hookmanager = new HookManager($db);
             }
             $hookmanager->initHooks(["main"]);
@@ -641,7 +641,7 @@ if (!function_exists('top_htmlhead')) {
                 if (getDolGlobalString('MAIN_USE_JQUERY_THEME')) {
                     $jquerytheme = getDolGlobalString('MAIN_USE_JQUERY_THEME');
                 }
-                if (constant('JS_JQUERY_UI')) {
+                if (defined('JS_JQUERY_UI') && constant('JS_JQUERY_UI')) {
                     print '<link rel="stylesheet" type="text/css" href="' . JS_JQUERY_UI . 'css/' . $jquerytheme . '/jquery-ui.min.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // Forced JQuery
                 } else {
                     print '<link rel="stylesheet" type="text/css" href="' . DOL_URL_ROOT . '/Templates/Lib/jquery/css/' . $jquerytheme . '/jquery-ui.css' . ($ext ? '?' . $ext : '') . '">' . "\n"; // JQuery
@@ -822,7 +822,7 @@ if (!function_exists('top_htmlhead')) {
                     if (isModEnabled('agenda') && getDolGlobalString('AGENDA_REMINDER_BROWSER')) {
                         $enablebrowsernotif = true;
                     }
-                    if ($conf->browser->layout == 'phone') {
+                    if ($conf->browser->layout ?? 'none'== 'phone') {
                         $enablebrowsernotif = false;
                     }
                     if ($enablebrowsernotif) {
@@ -981,13 +981,13 @@ if (!function_exists('top_menu')) {
                 } else {
                     $stringforfirstkey .= ' CTL +';
                 }
-                if ($_SESSION["dol_authmode"] != 'forceuser' && $_SESSION["dol_authmode"] != 'http') {
+                if (isset($_SESSION['dol_authmode']) && $_SESSION["dol_authmode"] != 'forceuser' && $_SESSION["dol_authmode"] != 'http') {
                     $logouthtmltext .= $langs->trans("Logout") . '<br>';
                     $logouttext .= '<a accesskey="l" href="' . DOL_URL_ROOT . '/user/logout.php?token=' . newToken() . '">';
                     $logouttext .= img_picto($langs->trans('Logout') . ' (' . $stringforfirstkey . ' l)', 'sign-out', '', false, 0, 0, '', 'atoplogin valignmiddle');
                     $logouttext .= '</a>';
                 } else {
-                    $logouthtmltext .= $langs->trans("NoLogoutProcessWithAuthMode", $_SESSION["dol_authmode"]);
+                    $logouthtmltext .= $langs->trans("NoLogoutProcessWithAuthMode", $_SESSION["dol_authmode"]??'dolibarr');
                     $logouttext .= img_picto($langs->trans('Logout') . ' (' . $stringforfirstkey . ' l)', 'sign-out', '', false, 0, 0, '', 'atoplogin valignmiddle opacitymedium');
                 }
             }
@@ -1250,7 +1250,7 @@ if (!function_exists('top_menu_user')) {
         if (getDolGlobalString('MAIN_MODULE_MULTICOMPANY')) {
             $dropdownBody .= '<br><b>' . $langs->trans("ConnectedOnMultiCompany") . ':</b> ' . $conf->entity . ' (user entity ' . $user->entity . ')';
         }
-        $dropdownBody .= '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . $_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)');
+        //$dropdownBody .= '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . $_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)');
         $dropdownBody .= '<br><b>' . $langs->trans("ConnectedSince") . ':</b> ' . dol_print_date($user->datelastlogin, "dayhour", 'tzuser');
         $dropdownBody .= '<br><b>' . $langs->trans("PreviousConnexion") . ':</b> ' . dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser');
         $dropdownBody .= '<br><b>' . $langs->trans("CurrentTheme") . ':</b> ' . $conf->theme;
@@ -1258,16 +1258,16 @@ if (!function_exists('top_menu_user')) {
         $langFlag = picto_from_langcode($langs->getDefaultLang());
         $dropdownBody .= '<br><b>' . $langs->trans("CurrentUserLanguage") . ':</b> ' . ($langFlag ? $langFlag . ' ' : '') . $langs->getDefaultLang();
 
-        $tz = (int) $_SESSION['dol_tz'] + (int) $_SESSION['dol_dst'];
-        $dropdownBody .= '<br><b>' . $langs->trans("ClientTZ") . ':</b> ' . ($tz ? ($tz >= 0 ? '+' : '') . $tz : '');
-        $dropdownBody .= ' (' . $_SESSION['dol_tz_string'] . ')';
+        //$tz = (int) $_SESSION['dol_tz'] + (int) $_SESSION['dol_dst'];
+        //$dropdownBody .= '<br><b>' . $langs->trans("ClientTZ") . ':</b> ' . ($tz ? ($tz >= 0 ? '+' : '') . $tz : '');
+        //$dropdownBody .= ' (' . $_SESSION['dol_tz_string'] . ')';
         //$dropdownBody .= ' &nbsp; &nbsp; &nbsp; '.$langs->trans("DaylingSavingTime").': ';
         //if ($_SESSION['dol_dst'] > 0) $dropdownBody .= yn(1);
         //else $dropdownBody .= yn(0);
 
         $dropdownBody .= '<br><b>' . $langs->trans("Browser") . ':</b> ' . $conf->browser->name . ($conf->browser->version ? ' ' . $conf->browser->version : '') . ' <small class="opacitymedium">(' . dol_escape_htmltag($_SERVER['HTTP_USER_AGENT']) . ')</small>';
         $dropdownBody .= '<br><b>' . $langs->trans("Layout") . ':</b> ' . $conf->browser->layout;
-        $dropdownBody .= '<br><b>' . $langs->trans("Screen") . ':</b> ' . $_SESSION['dol_screenwidth'] . ' x ' . $_SESSION['dol_screenheight'];
+        //$dropdownBody .= '<br><b>' . $langs->trans("Screen") . ':</b> ' . $_SESSION['dol_screenwidth'] . ' x ' . $_SESSION['dol_screenheight'];
         if ($conf->browser->layout == 'phone') {
             $dropdownBody .= '<br><b>' . $langs->trans("Phone") . ':</b> ' . $langs->trans("Yes");
         }
@@ -1782,7 +1782,7 @@ if (!function_exists('top_menu_search')) {
 
         $usedbyinclude = 1;
         $arrayresult = [];
-        include DOL_DOCUMENT_ROOT . '/core/ajax/selectsearchbox.php'; // This sets $arrayresult
+        include BASE_PATH . '/core/ajax/selectsearchbox.php'; // This sets $arrayresult
 
         // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
         // accesskey is for Mac:               CTRL + key for all browsers
@@ -1989,7 +1989,7 @@ if (!function_exists('left_menu')) {
 
                 $usedbyinclude = 1;
                 $arrayresult = [];
-                include DOL_DOCUMENT_ROOT . '/core/ajax/selectsearchbox.php'; // This make initHooks('searchform') then set $arrayresult
+                include BASE_PATH . '/core/ajax/selectsearchbox.php'; // This make initHooks('searchform') then set $arrayresult
 
                 if ($conf->use_javascript_ajax && !getDolGlobalString('MAIN_USE_OLD_SEARCH_FORM')) {
                     // accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox

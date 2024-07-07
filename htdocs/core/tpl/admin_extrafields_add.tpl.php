@@ -29,6 +29,8 @@
  */
 
 // Protection to avoid direct call of template
+use DoliCore\Form\FormAdmin;
+
 if (empty($conf) || !is_object($conf)) {
     print "Error, template page can't be called as URL";
     exit(1);
@@ -163,7 +165,6 @@ $listofexamplesforlink = 'Societe:societe/class/societe.class.php<br>Contact:con
 <?php
 // Combo with list of fields
 if (empty($formadmin)) {
-    include_once DOL_DOCUMENT_ROOT . '/core/class/html.formadmin.class.php';
     $formadmin = new FormAdmin($db);
 }
 print $formadmin->selectTypeOfFields('type', GETPOST('type', 'alpha'));

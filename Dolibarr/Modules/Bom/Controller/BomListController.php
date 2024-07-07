@@ -35,7 +35,7 @@ global $mysoc;
  *    \brief      List page for BillOfMaterials
  */
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Form\Form;
 use DoliCore\Lib\ExtraFields;
 use DoliCore\Lib\Fields;

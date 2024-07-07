@@ -36,7 +36,7 @@ require BASE_PATH . '/main.inc.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Member.php';
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliModules\Adherent\Model\Subscription;
 use DoliCore\Lib\ExtraFields;
 

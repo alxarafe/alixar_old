@@ -35,7 +35,7 @@ global $mysoc;
  *  \brief      Page setup for blockedlog module
  */
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 
 // Load Dolibarr environment
 require BASE_PATH . '/main.inc.php';

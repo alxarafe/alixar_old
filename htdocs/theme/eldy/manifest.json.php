@@ -37,7 +37,7 @@ defineIfNotDefined('NOREQUIREHTML', '1');
 defineIfNotDefined('NOREQUIREAJAX', '1');
 defineIfNotDefined('NOSESSION', '1');
 
-require_once __DIR__ . '/../../main.inc.php';
+require_once realpath(BASE_PATH.'/../Dolibarr/Lib/MainFunctions.php');
 
 top_httphead('text/json');
 // Important: Following code is to avoid page request by browser and PHP CPU at each Dolibarr page access.
@@ -74,8 +74,8 @@ if (!preg_match('/#[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]$/', $manifes
 $manifest->display = getDolGlobalString('MAIN_MANIFEST_DISPLAY', "minimal-ui");
 $manifest->splash_pages = null;
 $manifest->icons = array();
-$manifest->start_url = constant('DOL_MAIN_URL_ROOT');
-$manifest->id = constant('DOL_MAIN_URL_ROOT');
+$manifest->start_url = constant('BASE_URL');
+$manifest->id = constant('BASE_URL');
 
 if (getDolGlobalString('MAIN_MANIFEST_APPLI_LOGO_URL')) {
     $icon = new stdClass();
@@ -95,7 +95,7 @@ if (getDolGlobalString('MAIN_MANIFEST_APPLI_LOGO_URL')) {
             $imgSize = getimagesize($iconPath);
             if (!empty($imgSize)) {
                 $icon = new stdClass();
-                $icon->src = DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode($iconRelativePath);
+                $icon->src = BASE_URL . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode($iconRelativePath);
                 $icon->sizes = $imgSize[0] . "x" . $imgSize[1];
                 $icon->type = "image/png";
                 $manifest->icons[] = $icon;
@@ -110,7 +110,7 @@ if (getDolGlobalString('MAIN_MANIFEST_APPLI_LOGO_URL')) {
             $imgSize = getimagesize($iconPath);
             if ($imgSize) {
                 $icon = new stdClass();
-                $icon->src = DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode($iconRelativePath);
+                $icon->src = BASE_URL . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode($iconRelativePath);
                 $icon->sizes = $imgSize[0] . "x" . $imgSize[1];
                 $icon->type = "image/png";
                 $manifest->icons[] = $icon;
@@ -125,7 +125,7 @@ if (getDolGlobalString('MAIN_MANIFEST_APPLI_LOGO_URL')) {
             $imgSize = getimagesize($iconPath);
             if ($imgSize) {
                 $icon = new stdClass();
-                $icon->src = DOL_URL_ROOT . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode($iconRelativePath);
+                $icon->src = BASE_URL . '/viewimage.php?cache=1&modulepart=mycompany&file=' . urlencode($iconRelativePath);
                 $icon->sizes = $imgSize[0] . "x" . $imgSize[1];
                 $icon->type = "image/png";
                 $manifest->icons[] = $icon;
@@ -137,7 +137,7 @@ if (getDolGlobalString('MAIN_MANIFEST_APPLI_LOGO_URL')) {
 // Add Dolibarr std icon
 if (empty($manifest->icons)) {
     $icon = new stdClass();
-    $icon->src = DOL_URL_ROOT . '/theme/alixar_square_logo_256x256_color.png';
+    $icon->src = BASE_URL . '/theme/alixar_square_logo_256x256_color.png';
     $icon->sizes = "256x256";
     $icon->type = "image/png";
     $manifest->icons[] = $icon;

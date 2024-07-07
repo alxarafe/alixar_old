@@ -36,7 +36,7 @@ require_once BASE_PATH . '/../Dolibarr/Lib/Functions2.php';
 require_once BASE_PATH . '/../Dolibarr/Lib/Member.php';
 
 use DolGraph;
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 
 class AdherentStatsController extends DolibarrController
 {

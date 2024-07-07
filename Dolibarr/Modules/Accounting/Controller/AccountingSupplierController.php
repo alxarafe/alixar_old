@@ -36,7 +36,7 @@ global $menumanager;
 global $langs;
 global $mysoc;
 
-use DoliCore\Base\DolibarrController;
+use DoliCore\Base\Controller\DolibarrController;
 use DoliCore\Form\FormAccounting;
 use DoliModules\Accounting\Model\AccountingAccount;
 use DoliCore\Form\Form;

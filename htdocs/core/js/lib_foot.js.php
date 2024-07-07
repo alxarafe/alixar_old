@@ -33,7 +33,7 @@ defineIfNotDefined('NOREQUIREAJAX', '1');
 session_cache_limiter('public');
 
 require_once BASE_PATH . '/main.inc.php';
-
+require_once realpath(BASE_PATH.'/../Dolibarr/Lib/MainFunctions.php');
 
 /*
  * View

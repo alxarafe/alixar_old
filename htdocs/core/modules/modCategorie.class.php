@@ -32,7 +32,6 @@
 use DoliModules\Category\Model\Categorie;
 
 include_once DOL_DOCUMENT_ROOT . '/core/modules/DolibarrModules.class.php';
-include_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 
 
 /**
