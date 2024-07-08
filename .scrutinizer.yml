@@ -20,8 +20,6 @@ build:
 filter:
   paths:
     - 'htdocs/**'
-    - 'Core/**'
-    - 'Modules/**'
     - 'Dolibarr/**'
   excluded_paths:
     - 'test/**'
